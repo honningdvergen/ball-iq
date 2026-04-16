@@ -541,7 +541,7 @@ const QB = [
   { q:"Which club won the most consecutive Premier League titles — four in a row from 2000 to 2003?", o:["Arsenal","Chelsea","Liverpool","Manchester United"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Who scored the 10,000th Premier League goal in 2012?", o:["Wayne Rooney","Peter Crouch","Kevin Davies","Papiss Cissé"], a:1, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which club was the first to reach 100 points in a Premier League season?", o:["Arsenal","Chelsea","Manchester City","Liverpool"], a:2, cat:"PL", diff:"medium", type:"mcq" },
-  { q:"Who is the only player to have won the Premier League with three different clubs?", o:["Anelka","Ashley Cole","Kolo Touré","Robbie Keane"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which player was the FIRST to win the Premier League with two different clubs?", o:["Henning Berg","Nicolas Anelka","Ashley Cole","Carlos Tevez"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which stadium hosted the first ever Premier League match in August 1992?", o:["Highbury","Bramall Lane","Selhurst Park","Highfield Road"], a:1, cat:"PL", diff:"hard", type:"mcq" },
 
   // ── BATCH 4: MANAGERS — UNUSUAL FACTS ──
@@ -649,7 +649,7 @@ const QB = [
   { q:"Which club did Pep Guardiola win his first ever managerial trophy with in 2008?", o:["Manchester City","Bayern Munich","Barcelona","Barcelona B"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
   { q:"Who managed Leicester City after Claudio Ranieri was sacked despite winning the title?", o:["Puel","Shakespeare","Rodgers","Mahrez"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
   { q:"Which manager holds the record for most wins in La Liga history?", o:["Mourinho","Guardiola","Zidane","Luis Aragonés"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
-  { q:"Carlo Ancelotti is the only manager to win the Champions League four times — with which clubs?", o:["AC Milan & Real Madrid","Chelsea & Real Madrid","AC Milan, Chelsea & Real Madrid","AC Milan, Chelsea, Real Madrid & Bayern"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager has won more Champions League titles than any other?", o:["Ancelotti","Guardiola","Zidane","Mourinho"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
   { q:"Which manager led Portugal to Euro 2016 glory despite not winning a single match in 90 minutes during the group stage?", o:["Queiroz","Mourinho","Lopetegui","Fernando Santos"], a:3, cat:"Managers", diff:"medium", type:"mcq" },
 
   // ── BATCH 6: ASSISTS & CREATIVE PLAYS ──
@@ -713,7 +713,7 @@ const QB = [
   { q:"What did Eric Cantona famously say at a press conference after his kung fu kick ban: 'When the seagulls follow the trawler...'?", o:["it is because they think sardines will be thrown","it is to find the fish","they always find what they seek","the storm is coming"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"In which season did Leicester City win the Premier League as 5000-1 outsiders?", o:["2014-15","2015-16","2016-17","2013-14"], a:1, cat:"PL", diff:"easy", type:"mcq" },
   { q:"Which player scored a hat-trick for Real Madrid in the 2017 UCL final vs Juventus?", o:["Bale","Benzema","Isco","Ronaldo"], a:3, cat:"UCL", diff:"medium", type:"mcq" },
-  { q:"Maradona's 'Hand of God' goal vs England in 1986 — how many minutes had passed when he scored it?", o:["38","41","51","62"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Maradona's 'Hand of God' goal vs England in 1986 came in which half of the match?", o:["First half opening minutes","Late first half","Early second half","Injury time"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Which nation did Senegal beat in a famous 2002 World Cup group stage upset on the opening day?", o:["France","Brazil","Argentina","Germany"], a:0, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"What was unusual about the 2005 FA Cup final between Arsenal and Manchester United?", o:["Both teams finished with 10 men","It ended 0-0 after extra time","Arsenal's keeper saved 3 penalties","It was played on a Wednesday"], a:1, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which team did Greece beat in the opening game of Euro 2004 — then went on to win the whole tournament?", o:["Spain","England","France","Portugal"], a:3, cat:"Euros", diff:"medium", type:"mcq" },
@@ -761,7 +761,7 @@ const QB = [
   { q:"Which La Liga club has the nickname 'Los Blanquiazules'?", o:["Deportivo La Coruña","Real Sociedad","Espanyol","Celta Vigo"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Who scored Barcelona's opening goal in the 2011 Champions League final vs Manchester United?", o:["Messi","Villa","Pedro","Xavi"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Which squad number did Karim Benzema wear at Real Madrid?", o:["7","9","10","11"], a:1, cat:"LaLiga", diff:"easy", type:"mcq" },
-  { q:"Who scored the only goal in the 2014 Champions League final for Real Madrid vs Atletico?", o:["Bale","Ramos","Benzema","Ramos (ET)"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Who scored the only goal in the 2014 Champions League final for Real Madrid vs Atletico?", o:["Bale","Ramos","Benzema","Sergio Ramos"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Valencia won La Liga in 2002 and 2004 — who was their Spanish striker nicknamed 'El Guaje'?", o:["David Silva","David Villa","Juan Mata","Baraja"], a:1, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Which club won La Liga in 2015-16, breaking Barça and Real's duopoly?", o:["Atletico Madrid","Sevilla","Villarreal","Valencia"], a:0, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Luka Modrić joined Real Madrid from which English club?", o:["Arsenal","Chelsea","Tottenham","Liverpool"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
@@ -840,7 +840,7 @@ const QB = [
   { q:"Wayne Rooney wore which squad number when he broke the Manchester United scoring record?", o:["7","8","9","10"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Who was the first player to score 50 goals in a single European season across all competitions?", o:["Messi","Ronaldo","Lewandowski","Van Nistelrooy"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Which iconic number did Johan Cruyff wear for the Netherlands — later retired by the Dutch FA?", o:["9","10","11","14"], a:3, cat:"Legends", diff:"medium", type:"mcq" },
-  { q:"Who is the only player to have won the Champions League, Europa League, World Cup, and European Championship?", o:["Xavi","Iniesta","Piqué","Busquets"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which Spanish striker won the Champions League, Europa League, World Cup AND European Championship?", o:["Fernando Torres","David Villa","Sergio Ramos","Andres Iniesta"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Arsenal's all-time record Premier League win is 7-0 — against which club in 2023?", o:["Everton","Leeds","Crystal Palace","Man City"], a:0, cat:"PL", diff:"medium", type:"mcq" },
 
   // ── WORLD CUP DEEP CUTS ─────────────────────────────────────────────────────
@@ -998,7 +998,7 @@ const QB = [
   { q:"Which former England internationals reached number 12 in the UK Singles Chart with 'Diamond Lights' in 1987?", o:["Gascoigne & Beardsley","Waddle & Hoddle","Lineker & Shilton","Barnes & Beardsley"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Pelé starred alongside which Hollywood actors in the 1981 film 'Escape to Victory'?", o:["Clint Eastwood & Burt Reynolds","Michael Caine & Sylvester Stallone","Robert De Niro & Al Pacino","Harrison Ford & Sean Connery"], a:1, cat:"Records", diff:"medium", type:"mcq" },
   { q:"What is the fastest goal ever scored in an international football match — 8.3 seconds for San Marino vs England in 1993?", o:["Marcello Lippi","Davide Gualtieri","Luigi Gasperini","Marco Macina"], a:1, cat:"Records", diff:"hard", type:"mcq" },
-  { q:"Which goalkeeper is the only one to win the Premier League Golden Glove with two different clubs?", o:["Peter Schmeichel","David Seaman","Joe Hart","Petr Čech"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which goalkeeper won the Premier League Golden Glove with both Chelsea and Arsenal?", o:["Petr Cech","Joe Hart","Thibaut Courtois","David De Gea"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Derby County hold the unwanted record for fewest points in a Premier League season — how many in 2007-08?", o:["9","11","15","17"], a:1, cat:"Records", diff:"medium", type:"mcq" },
   { q:"Which player scored in 21 consecutive Premier League matches — a record — for Leicester in 2015-16?", o:["Riyad Mahrez","Shinji Okazaki","Jamie Vardy","Andy King"], a:2, cat:"Records", diff:"easy", type:"mcq" },
   { q:"Which country has appeared in every single FIFA World Cup finals tournament?", o:["Germany","Italy","Argentina","Brazil"], a:3, cat:"WorldCup", diff:"easy", type:"mcq" },
@@ -1225,7 +1225,6 @@ const QB = [
   { q:"Which player has won the most Champions League titles as a player — 6?", o:["Cristiano Ronaldo","Gento","Maldini","Carvajal"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"What is the record transfer fee in football history — paid for Neymar in 2017?", o:["€180m","€200m","€222m","€250m"], a:2, cat:"Records", diff:"easy", type:"mcq" },
   { q:"Which player scored in the most consecutive Premier League games — 21?", o:["Alan Shearer","Ruud van Nistelrooy","Jamie Vardy","Robbie Fowler"], a:2, cat:"Records", diff:"easy", type:"mcq" },
-  { q:"Who is the only player to win the Ballon d'Or, World Cup and Champions League in the same year?", o:["Zidane","Ronaldo R9","Rivaldo","Ronaldinho"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Which country has played the most World Cup matches in history?", o:["Italy","Germany","Brazil","Argentina"], a:2, cat:"Records", diff:"medium", type:"mcq" },
   { q:"The highest score in an international football match — 31-0 — was achieved against which team?", o:["Guam","Tonga","Fiji","American Samoa"], a:3, cat:"Records", diff:"medium", type:"mcq" },
   { q:"Who was the first player to score 100 Champions League goals?", o:["Messi","Benzema","Ronaldo","Raúl"], a:2, cat:"Records", diff:"easy", type:"mcq" },
@@ -1274,7 +1273,7 @@ const QB = [
   { q:"Which national team is nicknamed 'Les Bleus'?", o:["Belgium","Portugal","France","Italy"], a:2, cat:"Records", diff:"easy", type:"mcq" },
   { q:"The trophy for winning the Premier League is which shade of what colour?", o:["Gold","Silver with gold trim","Blue and gold","Silver"], a:1, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which Spanish club did Sir Bobby Robson manage before becoming England manager?", o:["Real Madrid","Atletico","Sporting Lisbon","Barcelona"], a:3, cat:"Managers", diff:"medium", type:"mcq" },
-  { q:"Who was the first player to score 50 Premier League goals for two different clubs?", o:["Nicolas Anelka","Andrew Cole","Les Ferdinand","Robbie Fowler"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who was the first player to score 50 Premier League goals for two different clubs?", o:["Nicolas Anelka","Les Ferdinand","Les Ferdinand","Robbie Fowler"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"What nationality is Didier Drogba?", o:["Ghanaian","Senegalese","Ivorian","Cameroonian"], a:2, cat:"Records", diff:"easy", type:"mcq" },
   { q:"Which country knocked out defending champions France in the group stage of the 2002 World Cup?", o:["Senegal","Denmark","South Korea","USA"], a:0, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which Premier League club moved into a brand new 60,000-seat stadium in 2019?", o:["Everton","Brentford","Tottenham","West Ham"], a:2, cat:"PL", diff:"easy", type:"mcq" },
@@ -1908,7 +1907,6 @@ const QB = [
   { q:"Which Bundesliga club has been in the top flight every single season since 1963?", o:["Bayern Munich","Borussia Dortmund","Hamburger SV","Werder Bremen"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
 
   // ── BATCH 2: SERIE A DEEP CUTS ──
-  { q:"Which club did Zlatan Ibrahimović play for when he scored a stunning 30-yard overhead kick in a Milan derby?", o:["Juventus","Inter Milan","AC Milan","Napoli"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Which Serie A club did Roberto Baggio join from Fiorentina in 1990 in a move that caused riots in Florence?", o:["Inter Milan","AC Milan","Roma","Juventus"], a:3, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Who scored the most Serie A goals in a single season with 36 for Lazio in 1999-2000?", o:["Del Piero","Vieri","Totti","Crespo"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Which Italian club has won the Coppa Italia the most times?", o:["AC Milan","Juventus","Inter Milan","Roma"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
@@ -1961,7 +1959,7 @@ const QB = [
   { q:"Which player scored on his Barcelona debut in a 3-1 win over Real Sociedad in 2004 aged just 16?", o:["Pedri","Iniesta","Xavi","Messi"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Wayne Rooney scored a stunning hat-trick on his Champions League debut for Man United in 2004 against which club?", o:["Fenerbahçe","CSKA Moscow","Villarreal","Dinamo Bucharest"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Who scored twice on his Juventus debut in 2018 — a Serie A match against Chievo?", o:["Dybala","Higuaín","Ronaldo","Costa"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
-  { q:"Which player scored on his full England international debut against France in 1992 aged 17?", o:["Fowler","Owen","Andy Cole","Alan Shearer"], a:3, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which striker scored on his full England international debut against France in 1992?", o:["Alan Shearer","Teddy Sheringham","Ian Wright","Gary Lineker"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
 
   // ── BATCH 3: ASSISTS & CREATIVE RECORDS ──
   { q:"Who holds the all-time Champions League assist record?", o:["Xavi","Messi","Ronaldo","Cristiano Ronaldo"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
@@ -1977,7 +1975,7 @@ const QB = [
   { q:"For how much did Barcelona sell Neymar to PSG in 2017 — still the world record?", o:["£180m","€200m","€222m","€199m"], a:2, cat:"Records", diff:"medium", type:"mcq" },
   { q:"Which club bought Romelu Lukaku for a club record £97.5m in 2021?", o:["PSG","Real Madrid","Man City","Chelsea"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Paul Pogba's £89m move to Manchester United in 2016 was from which club?", o:["PSG","Inter Milan","Juventus","Monaco"], a:2, cat:"PL", diff:"easy", type:"mcq" },
-  { q:"Who did Arsenal sell to Real Madrid for £35m in 2000 — a British record at the time?", o:["Overmars","Petit","Vieira","Marc Overmars"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who did Arsenal sell to Real Madrid for £35m in 2000 — a British record at the time?", o:["Overmars","Petit","Vieira","Nicolas Anelka"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"For how much did Man City buy Jack Grealish from Aston Villa in 2021?", o:["£75m","£85m","£100m","£110m"], a:2, cat:"PL", diff:"medium", type:"mcq" },
 
   // ── BATCH 3: SPECIFIC FINAL MOMENTS ──
@@ -2078,7 +2076,6 @@ const QB = [
 
   // ── BATCH 4: FAMOUS GOALS & MOMENTS ──
   { q:"Roberto Carlos scored a stunning free kick in 1997 against which country — bending the ball impossibly?", o:["England","Germany","Italy","France"], a:3, cat:"Legends", diff:"easy", type:"mcq" },
-  { q:"Which player scored the famous 'Panenka' penalty in the 1976 European Championship final?", o:["Platini","Panenka","Boniek","Nehoda"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"Who scored the winning penalty for Arsenal in their 2005 FA Cup final shootout win over Manchester United?", o:["Henry","Pires","Vieira","Bergkamp"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which player scored the iconic stoppage-time winner for Liverpool vs AC Milan in the 2005 UCL final comeback?", o:["Gerrard","Cissé","Smicer","Xabi Alonso"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Who scored the famous overhead kick in the Premiership for Manchester City vs Sunderland in 2012 — not the Agüero goal but 3 minutes before?", o:["Tevez","Balotelli","Džeko","Silva"], a:2, cat:"PL", diff:"hard", type:"mcq" },
@@ -2135,7 +2132,7 @@ const QB = [
   { q:"Who scored the Premier League's 20,000th goal — for Sunderland against Arsenal in 2012?", o:["Fletcher","Larsson","Wickham","Sessegnon"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which player has scored the most hat-tricks in Premier League history?", o:["Cole","Rooney","Agüero","Shearer"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Who scored a 25-yard chip against Manchester United in 2010 — dubbed 'that Nani goal'?", o:["Berbatov","Nani","Rooney","Park Ji-sung"], a:1, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Which club did Jamie Vardy leave to sign for Leicester City in 2012?", o:["Lincoln City","Stocksbridge Park Steels","Halifax Town","FC Halifax Town"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club did Jamie Vardy leave to sign for Leicester City in 2012?", o:["Lincoln City","Stocksbridge Park Steels","Halifax Town","Fleetwood Town"], a:1, cat:"PL", diff:"hard", type:"mcq" },
   { q:"How many consecutive Premier League games did Jamie Vardy score in during the 2015-16 season — breaking Ruud van Nistelrooy's record?", o:["10","11","12","13"], a:2, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which goalkeeper made 14 saves in a single Premier League game for Crystal Palace against Liverpool in 2017?", o:["Hennessey","Speroni","Heaton","de Gea"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Who scored a famous lob over the goalkeeper from near the halfway line for Chelsea against Wimbledon in 1996?", o:["Gullit","Zola","Hughes","Di Matteo"], a:1, cat:"PL", diff:"hard", type:"mcq" },
@@ -2158,7 +2155,6 @@ const QB = [
   { q:"Bayer Leverkusen went unbeaten in all 34 Bundesliga games in 2023-24 — what was their points total?", o:["88","89","90","91"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
   { q:"Which Bundesliga club did Jürgen Klopp manage before taking the Dortmund job?", o:["Mainz 05","Kaiserslautern","Hamburger SV","Stuttgart"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq" },
   { q:"Who scored the winning goal for Germany in the 2014 World Cup final — a player from the Bundesliga?", o:["Müller","Klose","Götze","Kroos"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq" },
-  { q:"Borussia Dortmund play in which German city — sharing it with a rival club?", o:["Düsseldorf","Cologne","Essen","Dortmund"], a:3, cat:"Bundesliga", diff:"easy", type:"mcq" },
   { q:"What is the maximum capacity of Signal Iduna Park — Borussia Dortmund's stadium?", o:["71,000","77,000","81,365","85,000"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
 
   // ── BATCH 5: LA LIGA — STORIES & RECORDS ──
@@ -2220,7 +2216,6 @@ const QB = [
   // ── BATCH 6: ICONIC PENALTIES ──
   { q:"Who scored the winning penalty for Argentina in the 2022 World Cup final shootout?", o:["Messi","Dybala","Montiel","Paredes"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Which player had his penalty saved by the goalkeeper who then scored to win the shootout — all in the same World Cup 1994 final?", o:["Baggio","Baresi","Mussi","Donadoni"], a:0, cat:"WorldCup", diff:"medium", type:"mcq" },
-  { q:"Who scored the famous 'Panenka' chip penalty in the 1976 European Championship final?", o:["Boniek","Nehoda","Panenka","Masný"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"Which England player had a penalty saved in the Euro 2020 final shootout?", o:["Rashford","Sancho","Saka","Trippier"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
   { q:"David Beckham scored a penalty against Argentina at the 2002 World Cup — what was the final score?", o:["1-0","2-0","1-1","2-1"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Which goalkeeper saved Gareth Southgate's penalty in the Euro 1996 semi-final?", o:["Köpke","Illgner","Kahn","Boer"], a:0, cat:"Euros", diff:"hard", type:"mcq" },
@@ -2236,11 +2231,10 @@ const QB = [
 
   // ── BATCH 6: RECORDS — YOUNGEST & OLDEST ──
   { q:"Who is the youngest player to score in the Premier League — aged 15 years and 174 days for Everton in 2005?", o:["Wayne Rooney","Jack Wilshere","James Vaughan","Jack Rodwell"], a:2, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Who was the oldest outfield player to score in the Premier League at age 40 in 2021?", o:["Teddy Sheringham","Dean Windass","Aaron Mooy","Zlatan Ibrahimović"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"At what age did Cesc Fàbregas make his Arsenal debut in 2003?", o:["15","16","17","18"], a:1, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Who was the youngest player to score at a World Cup when he netted against Wales in 1958?", o:["Garrincha","Vavá","Pelé","Didi"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which player became the oldest to score in a Champions League final when he netted for AC Milan in 2003?", o:["Shevchenko","Inzaghi","Maldini","Nesta"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
-  { q:"Who became the oldest ever Champions League scorer aged 40 in 2022?", o:["Zlatan Ibrahimović","Ronaldo","Buffon","Pepe"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Who became the oldest ever Champions League scorer aged 40 in 2022?", o:["Zlatan Ibrahimović","Cristiano Ronaldo","Buffon","Pepe"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
 
   // ── BATCH 6: GREAT GOALS — SPECIFIC & VERIFIABLE ──
   { q:"Whose bicycle kick goal in the 2018 UCL quarter-final vs Juventus was voted UEFA's best ever goal?", o:["Benzema","Bale","Asensio","Ronaldo"], a:3, cat:"UCL", diff:"medium", type:"mcq" },
@@ -2389,7 +2383,7 @@ const QB = [
   { q:"Which club won the first ever Champions League under its current name and format in 1992-93?", o:["AC Milan","Barcelona","Marseille","PSG"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"How many goals did Ronaldo score in the group stage of Euro 2020 — setting a new record?", o:["4","5","6","7"], a:1, cat:"Euros", diff:"medium", type:"mcq" },
   { q:"Which English club won the first UEFA Cup in 1972?", o:["Arsenal","Liverpool","Wolverhampton Wanderers","Tottenham Hotspur"], a:3, cat:"Legends", diff:"hard", type:"mcq" },
-  { q:"Who scored a famous long-range goal to open the scoring for Juventus vs Real Madrid in the 1998 UCL final?", o:["Del Piero","Zidane","Mijatović","Pedrag Mijatović"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Who scored a famous long-range goal to open the scoring for Juventus vs Real Madrid in the 1998 UCL final?", o:["Del Piero","Zidane","Mijatović","Clarence Seedorf"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Which goalkeeper is credited with inventing the modern sweeper-keeper role at Bayern Munich?", o:["Kahn","Neuer","Maier","Enke"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
   { q:"The 'Hand of God' goal and 'Goal of the Century' were scored in the same match — what was the final score?", o:["Argentina 1-0 England","Argentina 2-0 England","Argentina 2-1 England","Argentina 3-1 England"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which La Liga club won back-to-back Champions League titles in 2015 and 2016?", o:["Barcelona in 2015 and Real Madrid in 2016","Real Madrid both years","Barcelona both years","Atletico both years"], a:0, cat:"UCL", diff:"medium", type:"mcq" },
@@ -2424,8 +2418,6 @@ const QB = [
   { q:"Philipp Lahm went an entire year without committing a foul — how many yellow cards did he receive in his whole career?", o:["6","14","26","38"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
   { q:"In 2003, Inter Milan were famously eliminated from the Champions League on away goals — who were they playing?", o:["Juventus","Roma","AC Milan","Lazio"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Which player is the only one to have scored in a FA Cup final, League Cup final, UEFA Cup final and Champions League final?", o:["Lampard","Terry","Gerrard","Owen"], a:2, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Zlatan Ibrahimović has scored in every top derby he's played in across multiple countries — which league is the odd one out where he did NOT score in the top derby?", o:["Italy","France","England","There is no odd one out — he scored in all"], a:3, cat:"Records", diff:"hard", type:"mcq" },
-  { q:"Which Premier League title winner has a surname made entirely of Roman numerals?", o:["Vidić","Vidic","Nemanja Vidić","Berbatov"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Norway are unbeaten against Brazil in all matches ever played — what is their record?", o:["Won all 4","Won 2, drew 2","Won 3, lost 1","Won 1, drew 3"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Which player won league titles at PSG, Juventus and Bayern Munich — and has never lost a league title race when he started the season?", o:["Dani Alves","Kingsley Coman","Thiago","Rabiot"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Dundee United hold a 100% winning record against which European giant — four wins from four?", o:["Real Madrid","Ajax","AC Milan","Barcelona"], a:3, cat:"Legends", diff:"hard", type:"mcq" },
@@ -2475,7 +2467,6 @@ const QB = [
   { q:"Which La Liga club have been in the top division for every season since it began in 1929 alongside Real Madrid and Barcelona?", o:["Atletico Madrid","Sevilla","Athletic Bilbao","Valencia"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Antoine Griezmann spent nearly 16 years playing in La Liga — how many league titles did he win?", o:["0","1","2","3"], a:0, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Which La Liga club only signs players who were born in the Basque Country or trained in their academy?", o:["Osasuna","Real Sociedad","Athletic Bilbao","Eibar"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
-  { q:"Messi scored against which opponent in his very first La Liga start aged 16 in 2004?", o:["Getafe","Sevilla","Atletico Madrid","Espanyol"], a:3, cat:"LaLiga", diff:"hard", type:"mcq" },
 
   // ── BATCH 9: LEGENDS — UNUSUAL CAREERS ──
   { q:"Carlos 'Kaiser' Raposo had a professional football career from 1979-1992 without ever doing what?", o:["Scoring a goal","Leaving Brazil","Playing in a match","Signing a contract"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
@@ -2501,7 +2492,7 @@ const QB = [
   { q:"Barcelona won the 2024-25 La Liga title — which teenage sensation was their standout player?", o:["Pedri","Yamal","Gavi","Fermin Lopez"], a:1, cat:"LaLiga", diff:"easy", type:"mcq" },
   { q:"Which club did Ruben Amorim join as manager in November 2024?", o:["Manchester City","Arsenal","Chelsea","Manchester United"], a:3, cat:"Managers", diff:"easy", type:"mcq" },
   { q:"Which English club was relegated with a record low points total in 2024-25?", o:["Ipswich","Leicester","Everton","Southampton"], a:3, cat:"PL", diff:"medium", type:"mcq" },
-  { q:"Inter Milan won the 2024-25 Serie A title — who was their manager?", o:["Spalletti","Conte","Inzaghi","Simone Inzaghi"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Inter Milan won the 2024-25 Serie A title — who was their manager?", o:["Spalletti","Conte","Simone Inzaghi","Andreazzoli"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
 
   // ── BATCH 10: WORLD CUP DEEP CUTS ──
   { q:"Which player has scored in the most World Cup tournaments — netting at five different editions?", o:["Pelé","Uwe Seeler","Ronaldo","Lothar Matthäus"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
@@ -2525,12 +2516,12 @@ const QB = [
   { q:"No English manager has ever won the Premier League — which nationality has won it the most times?", o:["French","Italian","Portuguese","Scottish"], a:3, cat:"Managers", diff:"medium", type:"mcq" },
   { q:"Which manager won the Champions League with Barcelona and then Bayern Munich?", o:["Van Gaal","Rijkaard","Guardiola","Mourinho"], a:2, cat:"Managers", diff:"easy", type:"mcq" },
   { q:"Carlo Ancelotti is the only manager to win the Champions League how many times?", o:["3","4","5","6"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
-  { q:"Which manager famously quit international management saying 'I don't do international football'?", o:["Mourinho","Wenger","Guardiola","Jose Mourinho"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager famously quit international management saying 'I don't do international football'?", o:["Mourinho","Wenger","Guardiola","Sven-Goran Eriksson"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
   { q:"Jürgen Klopp won the Champions League with Liverpool in 2019 — what was his win percentage at Liverpool?", o:["55%","60%","65%","57%"], a:3, cat:"Managers", diff:"hard", type:"mcq" },
   { q:"Which manager led Atletico Madrid to their shock La Liga title in 2013-14 — their first in 18 years?", o:["Benitez","Quique Flores","Simeone","Emery"], a:2, cat:"Managers", diff:"easy", type:"mcq" },
 
   // ── BATCH 10: RECORDS — SHOOTING & SCORING ──
-  { q:"Which player scored the most goals in a single calendar year before Messi's 91 in 2012?", o:["Ronaldo","Müller","Gerd Müller","Puskás"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player scored the most goals in a single calendar year before Messi's 91 in 2012?", o:["Ronaldo","Müller","Gerd Muller","Puskás"], a:2, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Peter Crouch holds the Guinness World Record for the most what in the Premier League?", o:["Penalty misses","Headed goals","Yellow cards without a red","Assists from long throws"], a:1, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which player scored 85 goals in a single season across all competitions in 2011-12 for club and country?", o:["Ronaldo","Messi","Müller","Lewandowski"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Who scored the most goals ever for a single club — 483 goals for Barcelona?", o:["Ronaldo","Cruyff","Messi","Kubala"], a:2, cat:"Records", diff:"medium", type:"mcq" },
@@ -2607,7 +2598,7 @@ const QB = [
   { q:"Which Italian club dominated the country in the 1940s before being almost entirely wiped out in the Superga air disaster of 1949?", o:["Juventus","AC Milan","Bologna","Torino"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Napoli's stadium was renamed in 2020 after which legendary player?", o:["Maradona","Ferrara","Bruscolotti","Careca"], a:0, cat:"SerieA", diff:"easy", type:"mcq" },
   { q:"Gonzalo Higuaín scored 36 Serie A goals in 2015-16 — whose long-standing record did he break?", o:["Batistuta","Signori","Nordahl","Inzaghi"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
-  { q:"Which Swedish player was the first to win five Serie A titles as a foreign player?", o:["Zlatan Ibrahimović","Freddie Ljungberg","Sebastian Larsson","Henrik Larsson"], a:0, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Which Swedish striker won Serie A titles with Juventus, Inter Milan AND AC Milan?", o:["Zlatan Ibrahimović","Freddie Ljungberg","Henrik Larsson","Kennet Andersson"], a:0, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Javier Zanetti holds which record in Serie A?", o:["Most goals","Most red cards","Most consecutive appearances","Most assists"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Which was the first non-Italian manager to win Serie A — doing so with Lazio?", o:["Mourinho","Wenger","Sven-Göran Eriksson","Advocaat"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Which Italian club won the first Serie A title when the league started in its current format in 1929-30?", o:["Juventus","Inter Milan","Ambrosiana-Inter","Torino"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
@@ -2697,7 +2688,7 @@ const QB = [
 
   // ── BATCH 13: DUTCH FOOTBALL ──
   { q:"Ajax's famous 1995 Champions League winning team was managed by which legendary Dutch coach?", o:["Cruyff","Michels","Van Gaal","Koeman"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
-  { q:"Which Dutch player was the centrepiece of Ajax's 1995 UCL win and went on to star at Juventus?", o:["Davids","Kluivert","Overmars","Patrick Kluivert"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which Dutch player was the centrepiece of Ajax's 1995 UCL win and went on to star at Juventus?", o:["Davids","Kluivert","Overmars","Marc Overmars"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"The Netherlands lost three World Cup finals — in 1974, 1978 and which other year?", o:["1994","1998","2010","2014"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"PSV Eindhoven won the European Cup in 1988 — which English club did they beat in the semi-final?", o:["Nottingham Forest","Arsenal","Liverpool","Everton"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Which Dutch club is nicknamed 'De Godenzonen' — Sons of the Gods — and is one of Holland's most historic?", o:["Ajax","PSV","Feyenoord","AZ Alkmaar"], a:0, cat:"Records", diff:"hard", type:"mcq" },
@@ -2792,7 +2783,7 @@ const QB = [
   { q:"Which club pipped Liverpool to the Premier League title by a single point on the final day in 2018-19?", o:["Chelsea","Arsenal","Tottenham","Manchester City"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Man City's 100-point season in 2017-18 — how many goals did they score in the league?", o:["96","100","106","112"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Arsenal's 49-game unbeaten run started with a draw against which club in May 2003?", o:["Bolton","Middlesbrough","Southampton","Aston Villa"], a:1, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Which player scored the goal that ended Arsenal's 49-game unbeaten run for Man United in 2004?", o:["Scholes","Van Nistelrooy","Rooney","Wayne Rooney"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which player scored the goal that ended Arsenal's 49-game unbeaten run for Man United in 2004?", o:["Scholes","Van Nistelrooy","Rooney","Ruud van Nistelrooy"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Leicester won the 2015-16 Premier League at 5000-1 odds — by how many points did they win the title?", o:["8","10","12","14"], a:1, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which club did Liverpool beat on the final day of 2019-20 to confirm their first league title in 30 years?", o:["Crystal Palace","Chelsea","Arsenal","Burnley"], a:0, cat:"PL", diff:"hard", type:"mcq" },
 
@@ -2841,7 +2832,7 @@ const QB = [
   // ── BATCH 16: PL — PLAYERS & MOMENTS ──
   { q:"Which player scored 31 goals in his debut Premier League season for Man City in 2022-23?", o:["Jesus","Sterling","De Bruyne","Haaland"], a:3, cat:"PL", diff:"easy", type:"mcq" },
   { q:"Who scored a hat-trick for Liverpool in 8 minutes vs Arsenal in 1994 — the fastest in top-flight history at the time?", o:["Fowler","Rush","Owen","Collymore"], a:0, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Which player became the youngest to score a Premier League hat-trick aged 17 for Blackpool in 2010?", o:["Rooney","Walcott","Jay Rodriguez","DJ Campbell"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which Arsenal player scored a Premier League hat-trick against newly-promoted Blackpool in August 2010?", o:["Theo Walcott","Samir Nasri","Robin van Persie","Andrey Arshavin"], a:0, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Thierry Henry scored how many Premier League goals — making him Arsenal's all-time top scorer?", o:["174","175","176","177"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which club did Eric Cantona join Man United from in November 1992 for just £1.2m?", o:["Marseille","Nantes","Lyon","Leeds United"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Andy Cole scored 34 Premier League goals in 1993-94 for which club — a single-season record at the time?", o:["Blackburn","Manchester United","Newcastle United","Liverpool"], a:2, cat:"PL", diff:"medium", type:"mcq" },
@@ -2921,7 +2912,7 @@ const QB = [
   { q:"What was the first season Tottenham finished above Arsenal in the Premier League?", o:["1995-96","1998-99","1999-2000","2000-01"], a:3, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which Premier League club has spent the most consecutive seasons in the top flight without winning it?", o:["Arsenal","Everton","Aston Villa","Southampton"], a:1, cat:"PL", diff:"medium", type:"mcq" },
   { q:"The Premier League's record biggest defeat was 9-0 — achieved twice. Who inflicted it most recently?", o:["Man City vs Watford","Liverpool vs Bournemouth","Man City vs Fulham","Leicester vs Southampton"], a:1, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Who scored on their Premier League debut for Arsenal against Sheffield United in 1992?", o:["Wright","Bergkamp","Merson","Ian Wright"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who scored on their Premier League debut for Arsenal against Sheffield United in 1992?", o:["Wright","Bergkamp","Merson","Kevin Campbell"], a:0, cat:"PL", diff:"hard", type:"mcq" },
 
   // Champions League — Extra
   { q:"Which club won the very first UEFA Cup in 1972?", o:["Ajax","Arsenal","Wolves","Tottenham Hotspur"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
@@ -2962,7 +2953,6 @@ const QB = [
   { q:"Arrigo Sacchi had never played professionally above amateur level — what was his job before becoming a top manager?", o:["Shoe salesman","Butcher","Teacher","Factory worker"], a:0, cat:"Managers", diff:"hard", type:"mcq" },
 
   // Serie A — Extra
-  { q:"Which Italian club were founded in 1900 and are known as 'Il Grande Torino' for their domination of the 1940s?", o:["AC Milan","Bologna","Torino","Fiorentina"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Which goalkeeper played for Juventus from 2001 to 2018 and won five Serie A titles with them?", o:["Peruzzi","Buffon","Storari","Doni"], a:1, cat:"SerieA", diff:"easy", type:"mcq" },
   { q:"Inter Milan's famous 2009-10 treble — which three trophies did they win?", o:["Serie A, Coppa Italia, Champions League","Serie A, Supercoppa, Champions League","Serie A, Coppa Italia, Europa League","Serie A, Champions League, Club World Cup"], a:0, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Which Serie A club was founded in Milan in 1908 as a breakaway from AC Milan?", o:["Inter Milan","Juventus","Roma","Lazio"], a:0, cat:"SerieA", diff:"medium", type:"mcq" },
@@ -3083,7 +3073,7 @@ const QB = [
 
   // ── BATCH 20: WORLD CUP — FINAL PUSH ──
   { q:"Which World Cup saw the introduction of the group stage format for the first time?", o:["1950","1954","1958","1962"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
-  { q:"Who scored the only goal as England beat Argentina 1-0 at the 1966 World Cup quarter-final?", o:["Charlton","Hurst","Peters","Geoff Hurst"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Who scored the only goal as England beat Argentina 1-0 at the 1966 World Cup quarter-final?", o:["Charlton","Hurst","Peters","Bobby Charlton"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Brazil have won the World Cup five times — how many times have they reached the final overall?", o:["6","7","8","9"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which player scored the fastest goal in World Cup knockout stage history — for Turkey in 2002?", o:["Mansiz","Nihat","Hakan Şükür","Hasan Şaş"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which player wore the number 10 shirt for Brazil at every World Cup from 1970 to 1986?", o:["Zico","Falcão","Rivelino","Sócrates"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
@@ -3155,7 +3145,7 @@ const QB = [
   { q:"Which player joined Arsenal on a free transfer from Real Madrid in 1999 — having previously been sold by Arsenal?", o:["Anelka","Petit","Overmars","Ljungberg"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which club paid a then British record £8.5m for Stan Collymore in 1995?", o:["Aston Villa","Everton","Liverpool","Nottingham Forest"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Harry Kane joined Bayern Munich in 2023 — from which Premier League club?", o:["Arsenal","Chelsea","Manchester City","Tottenham Hotspur"], a:3, cat:"PL", diff:"easy", type:"mcq" },
-  { q:"Which player was sold by Arsenal to Barcelona for £35m in 2011 — and later returned to Arsenal?", o:["Fabregas","van Persie","Nasri","Samir Nasri"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which player was sold by Arsenal to Barcelona for £35m in 2011 — and later returned to Arsenal?", o:["Fabregas","van Persie","Nasri","Gael Clichy"], a:0, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which club did Robinho join in 2008 to become Manchester City's first big signing after the Abu Dhabi takeover?", o:["Real Madrid","Santos","AC Milan","Atletico Madrid"], a:0, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Dimitar Berbatov joined Man United in 2008 for £30.75m — from which club?", o:["Bayer Leverkusen","Aston Villa","Liverpool","Tottenham Hotspur"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which player won the PFA Players' Player of the Year award in 2003 and 2004 — the only player to win it back to back?", o:["Thierry Henry","Ruud van Nistelrooy","Ledley King","Wayne Rooney"], a:0, cat:"PL", diff:"hard", type:"mcq" },
@@ -3225,7 +3215,7 @@ const QB = [
   // Premier League — Extra History
   { q:"Which club did Cantona join from Man United when he abruptly retired in 1997?", o:["No club — he retired immediately","Marseille","Barcelona","Juventus"], a:0, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Arsenal's famous back four of the 1990s included Adams, Keown, Bould — who was the fourth?", o:["Dixon","Winterburn","Winterburn or Dixon — both played","Both Lee Dixon and Nigel Winterburn rotated"], a:2, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Who scored a famous diving header for Man United vs Liverpool at Old Trafford in 2000?", o:["Cole","Solskjær","Sheringham","Teddy Sheringham"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who scored a famous diving header for Man United vs Liverpool at Old Trafford in 2000?", o:["Cole","Solskjær","Sheringham","Dwight Yorke"], a:2, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Which Premier League club first moved to an all-seater stadium — following the Taylor Report after Hillsborough?", o:["Arsenal","Man United","Tottenham","Liverpool"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Kevin Keegan's famous 'I will love it if we beat them' rant in 1996 was aimed at which manager?", o:["Wenger","Dalglish","Robson","Ferguson"], a:3, cat:"PL", diff:"medium", type:"mcq" },
   { q:"Which player scored on his Manchester United debut against a Glazer protest backdrop in 2005?", o:["Rooney","Park Ji-sung","Saha","Smith"], a:1, cat:"PL", diff:"hard", type:"mcq" },
@@ -3241,7 +3231,7 @@ const QB = [
 
   // Legends & Records — Mixed
   { q:"George Best scored how many goals for Manchester United in all competitions?", o:["153","178","199","207"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
-  { q:"Which player won the World Cup, Champions League, Ballon d'Or and Euro — all in the same calendar year?", o:["Ronaldo","Zidane","Cannavaro","Fabio Cannavaro"], a:3, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player won the World Cup, Champions League, Ballon d'Or and Euro — all in the same calendar year?", o:["Ronaldo","Zidane","Cannavaro","Roberto Carlos"], a:3, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Maradona left Napoli under a cloud in 1991 — why was he banned for 15 months?", o:["Financial irregularities","Failed a drug test for cocaine","Tax evasion","Match fixing"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"Which player is the only one to have won the Premier League, Champions League and World Cup in consecutive years?", o:["Cantona","Ronaldo 2008-09","Anelka","Desailly"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Pelé scored his 1,000th career goal from which spot — making it an iconic moment in 1969?", o:["Free kick","Header","Volley","Penalty"], a:3, cat:"Legends", diff:"medium", type:"mcq" },
@@ -3308,13 +3298,11 @@ const QB = [
   // Records — Surprising Feats
   { q:"Which manager won the Primera División in Spain and the Bundesliga in Germany in back-to-back seasons?", o:["Guardiola","Van Gaal","Capello","Jupp Heynckes"], a:0, cat:"Managers", diff:"hard", type:"mcq" },
   { q:"Lionel Messi went an entire La Liga season without being tackled — in which year?", o:["2009-10","2010-11","2011-12","2012-13"], a:1, cat:"Records", diff:"hard", type:"mcq" },
-  { q:"Which player has played at the World Cup in the most countries — representing three different nations?", o:["Robert Prosinecki","Salif Keita","Dariusz Dziekanowski","Zlatan Ibrahimovic"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"Manchester City scored in how many consecutive Premier League games to set a record in 2021-22?", o:["20","22","26","30"], a:2, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Which player made his international debut aged 13 years and 310 days for Wales in 2006?", o:["Bale","Ramsey","Wilson","Ledley"], a:1, cat:"Records", diff:"hard", type:"mcq" },
 
   // Managers — More Firsts
   { q:"Who was the first manager to take charge of a team at five World Cups?", o:["Zagallo","Bora Milutinovic","Otto Rehhagel","Marcello Lippi"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
-  { q:"Which manager was sacked by Real Madrid despite winning La Liga — reportedly because the players demanded his removal?", o:["Benitez","Mourinho","Lopetegui","Julen Lopetegui"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager was sacked by Real Madrid despite winning La Liga — reportedly because the players demanded his removal?", o:["Benitez","Mourinho","Lopetegui","Manuel Pellegrini"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
   { q:"Unai Emery has won the Europa League how many times — a record for a manager?", o:["3","4","5","6"], a:1, cat:"Managers", diff:"medium", type:"mcq" },
   { q:"Which club did Johan Cruyff manage — revolutionising their style and setting up their famous academy?", o:["Ajax","PSV","Barcelona","Feyenoord"], a:2, cat:"Managers", diff:"easy", type:"mcq" },
 
@@ -3384,7 +3372,7 @@ const QB = [
   { q:"Messi's record 91 goals in 2012 — how many came for Argentina vs Barcelona?", o:["12 and 79","8 and 83","10 and 81","7 and 84"], a:1, cat:"Records", diff:"hard", type:"mcq" },
 
   // Legends — Final
-  { q:"Which player won the World Cup in 1958 aged 17 — and was not called up for the 1962 tournament due to injury concerns?", o:["Garrincha","Pelé","Didi","Vavá"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which player won the World Cup in 1958 aged 17?", o:["Pele","Garrincha","Didi","Vava"], a:0, cat:"WorldCup", diff:"easy", type:"mcq" },
   { q:"Ronaldo R9 scored the winning goal in the 2002 World Cup final — it was also his last World Cup match. How old was he?", o:["25","26","27","28"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Which legendary player earned the nickname 'The Phenomenon' for his early career brilliance?", o:["Garrincha","Pelé","Ronaldo R9","Ronaldinho"], a:2, cat:"Legends", diff:"easy", type:"mcq" },
   { q:"Johan Cruyff said 'Every disadvantage has its advantage' — which club did he say this while managing?", o:["Ajax","Barcelona","Both","Neither — it was a general life philosophy"], a:3, cat:"Legends", diff:"hard", type:"mcq" },
@@ -3568,7 +3556,7 @@ const QB = [
   { q:"The Euro 2020 final at Wembley — what time did the match start in UK?", o:["7pm","8pm","9pm","10pm"], a:1, cat:"Euros", diff:"hard", type:"mcq" },
 
   // Records — Firsts & Bests
-  { q:"Which player has appeared in the most different top 5 European leagues — playing in all five?", o:["Ibrahimović","Anelka","Nicolas Anelka","Both Ibrahimović and Anelka"], a:3, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player has appeared in the most different top 5 European leagues — playing in all five?", o:["Ibrahimović","Nicolas Anelka","Robinho","David Beckham"], a:3, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Who was the first player to score 50 goals in a single European league season?", o:["Ronaldo for Real Madrid","Messi for Barcelona","Gerd Müller for Bayern","Both Ronaldo and Messi in different years"], a:1, cat:"Records", diff:"hard", type:"mcq" },
   { q:"Which club holds the record for most consecutive league titles in Europe — winning 9 in a row in Scotland?", o:["Rangers","Celtic","Both have done it","Juventus"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"The longest penalty shootout in World Cup history had how many kicks?", o:["16","20","24","28"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
@@ -3624,7 +3612,7 @@ const QB = [
   { q:"Who managed Liverpool when they won the Champions League in 2019 — their sixth European title?", o:["Dalglish","Benitez","Rodgers","Klopp"], a:3, cat:"UCL", diff:"easy", type:"mcq" },
   { q:"Which club has reached the Champions League semi-final the most times without winning it?", o:["Arsenal","Tottenham","Atletico Madrid","Roma"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Real Madrid beat Borussia Dortmund in the 2024 Champions League final — what was the score?", o:["1-0","2-0","2-1","3-1"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
-  { q:"Who scored both goals as PSG won the 2024-25 Champions League final 5-0 vs Inter Milan — one of the biggest final wins ever?", o:["Mbappé","Dembélé","Vitinha","Ousmane Dembélé"], a:3, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Who scored both goals as PSG won the 2024-25 Champions League final 5-0 vs Inter Milan — one of the biggest final wins ever?", o:["Mbappé","Dembélé","Vitinha","Fabian Ruiz"], a:3, cat:"UCL", diff:"medium", type:"mcq" },
 
   // Serie A — Closing
   { q:"Which Italian club has produced the most players who have won the Ballon d'Or?", o:["AC Milan","Juventus","Inter Milan","Roma"], a:0, cat:"SerieA", diff:"hard", type:"mcq" },
@@ -3815,13 +3803,12 @@ const QB = [
   { q:"England star Jude Bellingham plays for which club going into the 2026 World Cup?", o:["Chelsea","Man City","Real Madrid","Liverpool"], a:2, cat:"WorldCup", tag:"wc2026", diff:"easy", type:"mcq" },
   { q:"Which South American nation has Enzo Fernandez as one of their stars for 2026?", o:["Brazil","Uruguay","Argentina","Chile"], a:2, cat:"WorldCup", tag:"wc2026", diff:"easy", type:"mcq" },
   { q:"Nigeria qualified for 2026 — how many World Cups have they appeared in total?", o:["5","6","7","8"], a:2, cat:"WorldCup", tag:"wc2026", diff:"hard", type:"mcq" },
-  { q:"Which host nation — USA, Canada or Mexico — has won the most World Cup matches historically?", o:["USA","Canada","Mexico","All equal"], a:2, cat:"WorldCup", tag:"wc2026", diff:"medium", type:"mcq" },
+  { q:"Among the three 2026 World Cup host nations, which has the best all-time World Cup record?", o:["USA","Canada","Mexico","All equal"], a:2, cat:"WorldCup", tag:"wc2026", diff:"medium", type:"mcq" },
   { q:"Pedri plays for which club and country heading into 2026?", o:["Real Madrid and Spain","Barcelona and Spain","Barcelona and Portugal","Real Madrid and Argentina"], a:1, cat:"WorldCup", tag:"wc2026", diff:"easy", type:"mcq" },
   { q:"Which African nation has qualified for the most World Cups as of 2026?", o:["Nigeria","Cameroon","Morocco","Ivory Coast"], a:1, cat:"WorldCup", tag:"wc2026", diff:"medium", type:"mcq" },
   { q:"How many teams from CONCACAF will qualify for the 2026 World Cup including the three hosts?", o:["6","8","9","10"], a:2, cat:"WorldCup", tag:"wc2026", diff:"hard", type:"mcq" },
   { q:"Which 2026 host city is furthest north — making it a potentially cold venue?", o:["Seattle","Vancouver","Kansas City","Toronto"], a:1, cat:"WorldCup", tag:"wc2026", diff:"hard", type:"mcq" },
   { q:"Vinicius Jr is the star of which country heading into the 2026 World Cup?", o:["Portugal","Spain","Argentina","Brazil"], a:3, cat:"WorldCup", tag:"wc2026", diff:"easy", type:"mcq" },
-  { q:"Which country won the first World Cup held in Uruguay in 1930?", o:["Argentina","Brazil","USA","Uruguay"], a:3, cat:"WorldCup", diff:"easy", type:"mcq" },
   { q:"Who scored the winning goal for England in the 1966 World Cup final?", o:["Bobby Charlton","Roger Hunt","Martin Peters","Geoff Hurst"], a:3, cat:"WorldCup", diff:"medium", type:"mcq" },
   { q:"Which player scored in the most World Cup finals — appearing in three finals?", o:["Pele","Ronaldo R9","Klose","Zidane"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
   { q:"How many teams played in the first World Cup in 1930?", o:["12","13","16","18"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
@@ -3975,13 +3962,11 @@ const QB = [
   { q:"Which Spanish city is home to both Deportivo Alaves and CD Vitoria?", o:["Pamplona","San Sebastian","Vitoria-Gasteiz","Bilbao"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Which La Liga player scored 40 league goals in 2022-23 — setting a new record?", o:["Benzema","Lewandowski","Vinicius","Robert Lewandowski"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Real Betis won their only La Liga title in which decade?", o:["1930s","1950s","1970s","1980s"], a:0, cat:"LaLiga", diff:"hard", type:"mcq" },
-  { q:"Which La Liga club's full name is Real Club Deportivo de La Coruña?", o:["Celta Vigo","Racing Santander","Deportivo","Rayo Vallecano"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
   { q:"Who is Barcelona's all-time record goalscorer — ahead of Kubala and Ronaldo?", o:["Cruyff","Romario","Suarez","Messi"], a:3, cat:"LaLiga", diff:"easy", type:"mcq" },
   { q:"Atletico Madrid won two La Liga titles under Simeone — in 2013-14 and which other year?", o:["2018-19","2020-21","2019-20","2021-22"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
 
   // Legends
   { q:"Which player scored for Juventus, AC Milan AND Inter Milan in Serie A — playing for all three?", o:["Baggio","Vieri","Seedorf","Ibrahimovic"], a:3, cat:"Legends", diff:"medium", type:"mcq" },
-  { q:"Which Brazilian legend was nicknamed 'The Little Bird' — Garrincha's real nickname?", o:["Pele","Garrincha","Didi","Vava"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"Ferenc Puskas — of the Puskas Award fame — played international football for two countries. Which two?", o:["Hungary and West Germany","Hungary and Spain","Hungary and France","Hungary and Argentina"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
   { q:"Which legendary goalkeeper is the only player to win the World Cup, European Cup and Olympic gold?", o:["Yashin","Sepp Maier","Gylmar","Zoff"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Marco van Basten retired at just 30 due to injury — how many international goals had he scored?", o:["24","28","30","37"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
@@ -4045,7 +4030,6 @@ const QB = [
   { q:"Roma's Francesco Totti scored a famous Panenka penalty in the World Cup — against which country?", o:["Germany","France","Australia","England"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Which Serie A club play at the Stadio Olimpico — sharing it with another Rome club?", o:["Lazio — sharing with Roma","Roma — sharing with Lazio","Both — they share it"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
   { q:"Fabio Cannavaro won both the World Cup and Ballon d'Or in 2006 — which club was he at?", o:["Juventus","Real Madrid","Inter Milan","Napoli"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
-  { q:"Which Serie A club was known as 'Grande Torino' before the Superga disaster?", o:["Inter Milan","Juventus","Torino","Fiorentina"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
 
   // Euros - Extra
   { q:"Euro 2024 had the most goals ever in a European Championship — how many?", o:["127","136","141","153"], a:2, cat:"Euros", diff:"hard", type:"mcq" },
@@ -4223,7 +4207,6 @@ const QB = [
   // Serie A
   { q:"Which Serie A club plays the Derby della Mole against Torino?", o:["Inter Milan","AC Milan","Juventus","Roma"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Who is the Serie A record scorer in a single match — scoring six goals in one game?", o:["Inzaghi","Nordahl","Silvio Piola","Toni"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
-  { q:"Which Serie A club went an entire season unbeaten in 1991-92 with AC Milan?", o:["Juventus","AC Milan","Sampdoria","Inter"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Romelu Lukaku joined Inter Milan from which club in 2019 for €80m?", o:["Chelsea","Manchester United","Arsenal","Everton"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Which Serie A club celebrated their 100th anniversary in 1999 and is nicknamed I Neroverdi?", o:["Reggina","Avellino","Sassuolo","Venezia"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Juventus won their 36th Scudetto in 2019-20 — but was later stripped of two for which scandal?", o:["Match fixing in 2006","Financial irregularities in 2023","Doping allegations","Both A and B"], a:3, cat:"SerieA", diff:"hard", type:"mcq" },
@@ -4262,7 +4245,7 @@ const QB = [
   { q:"George Best scored his famous dribbling solo goal against which club in 1970 — often voted greatest ever?", o:["Arsenal","Chelsea","Northampton Town","Liverpool"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Which Ballon d'Or winner scored 60 goals in 58 appearances for his country — still a record?", o:["Gerd Muller","Ronaldo","Pele","Ali Daei"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Paolo Maldini famously said he would never do what — revealing his class as a defender?", o:["Dive","Slide tackle — preferring to always stay on his feet","Play for any other club","Shoot on goal"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
-  { q:"Which legendary player scored in the first minute of his debut for Brazil aged 16 — in 1956?", o:["Garrincha","Didi","Pele","Vava"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which player scored on his debut for Brazil aged 16?", o:["Pele","Ronaldinho","Neymar","Rivaldo"], a:0, cat:"Legends", diff:"easy", type:"mcq" },
 
   // Records
   { q:"Which club went 5,000 days between Champions League knockout stage exits — always going out at the same round?", o:["Atletico Madrid losing semi-finals","Arsenal losing in round of 16","Juventus in quarter-finals","Benfica losing finals"], a:1, cat:"Records", diff:"hard", type:"mcq" },
@@ -4528,7 +4511,7 @@ const QB = [
   { q:"Which Bundesliga club has been promoted to the top flight the most times?", o:["Cologne","Hamburg","Kaiserslautern","Nuremberg"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
 
   // Serie A — more
-  { q:"Which club did Zlatan Ibrahimovic score his famous overhead kick for against Juventus?", o:["Inter Milan","AC Milan","PSG","Barcelona"], a:0, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Zlatan Ibrahimović's iconic 30-yard bicycle kick in 2012 came against which country?", o:["England","France","Germany","Norway"], a:0, cat:"Legends", diff:"easy", type:"mcq" },
   { q:"The Supercoppa Italiana is contested between which two clubs each year?", o:["The two highest league finishers","The league champion and cup winner","The two cup finalists","The top two in the league"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
   { q:"Hellas Verona famously won Serie A in 1984-85 — who was their manager?", o:["Arrigo Sacchi","Osvaldo Bagnoli","Giovanni Trapattoni","Zdenek Zeman"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
   { q:"Which Serie A club has the most Coppa Italia titles — with 14?", o:["Inter Milan","Roma","Lazio","Juventus"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
@@ -5005,6 +4988,502 @@ const QB = [
   { q:"Jose Mourinho has won trophies in Portugal, England, Italy and Spain.", a:1, cat:"Managers", diff:"medium", type:"tf" },
   { q:"Luka Modric won the Ballon d'Or in 2018 — ending the Messi and Ronaldo duopoly.", a:1, cat:"Records", diff:"medium", type:"tf" },
 
+
+  // ── BATCH 43 ────────────────────────────────────────────────────────────────
+
+  // PL — stories and characters
+  { q:"Which club did Alan Shearer leave to join Newcastle United for a world record £15m in 1996?", o:["Manchester United","Arsenal","Blackburn Rovers","Tottenham"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Who is Everton's all-time top scorer with 383 goals?", o:["Gary Lineker","Wayne Rooney","Dixie Dean","Tommy Lawton"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club did Steve Bruce manage to promotion in their first season back in the Premier League?", o:["Hull City","Aston Villa","Wigan","Sheffield United"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"What was unusual about Swindon Town's only Premier League season in 1993-94?", o:["They won the title","They were relegated with a record low points tally","They scored 100 goals","They had the youngest squad"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club won the League Cup five times in a row from 1981 to 1984?", o:["Aston Villa","Liverpool","Nottingham Forest","Arsenal"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Marcus Rashford scored how many goals in all competitions in 2022-23 — his best ever season?", o:["25","28","30","35"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which Premier League club is known as The Saints?", o:["Crystal Palace","Southampton","Fulham","QPR"], a:1, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"Which club did Jurgen Klopp almost sign before choosing Liverpool in 2015?", o:["Arsenal","Man City","Tottenham","Everton"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Aston Villa's famous European Cup win in 1982 was against which club?", o:["Bayern Munich","Barcelona","Hamburg","Juventus"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which player scored a hat-trick on his Premier League debut for Liverpool in 1994?", o:["Robbie Fowler","Stan Collymore","Neil Ruddock","Ian Rush"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Newcastle United's record Premier League win was 8-0 — against which club in 1999?", o:["Sheffield Wednesday","Sunderland","Bradford","Wimbledon"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club won the first ever Premier League title with a record 84 points?", o:["Arsenal","Blackburn","Leeds","Manchester United"], a:3, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"How many clean sheets did Petr Cech keep in Chelsea's record 2004-05 title season?", o:["24","25","27","29"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+
+  // World Cup — deeper stories
+  { q:"Which team did Cameroon sensationally beat in the opening game of the 1990 World Cup?", o:["Brazil","Argentina","West Germany","Italy"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"The Hand of God goal — in which city was it scored?", o:["Buenos Aires","Madrid","Mexico City","Montevideo"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Which country's team bus was stoned after their 1966 World Cup exit at the hands of North Korea?", o:["Argentina","Brazil","Italy","England"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Who scored the first ever World Cup goal in 1930?", o:["Lucien Laurent","Carlos Vidal","Pablo Dorado","Bert Patenaude"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"The 1954 World Cup final — known as the Miracle of Bern — saw West Germany beat Hungary. What was the score?", o:["2-1","3-2","4-2","3-1"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which referee officiated the 2022 World Cup final?", o:["Howard Webb","Pierluigi Collina","Szymon Marciniak","Felix Brych"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"France beat Morocco in the 2022 World Cup semi-final — what was the score?", o:["1-0","2-0","2-1","3-0"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Which country won the first ever FIFA Women's World Cup in 1991?", o:["Norway","Germany","Sweden","USA"], a:3, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"The 1998 World Cup was held in France — how many teams competed?", o:["24","28","32","36"], a:2, cat:"WorldCup", diff:"easy", type:"mcq" },
+  { q:"Who scored the golden goal winner for France in the Euro 2000 final?", o:["Trezeguet","Henry","Zidane","Pires"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
+
+  // UCL — great nights
+  { q:"Which club beat Barcelona 3-0 at the Nou Camp in the 1994-95 Champions League?", o:["AC Milan","Ajax","Real Madrid","PSG"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Tottenham's miracle comeback vs Ajax in 2019 — who scored the decisive goal in the 96th minute?", o:["Son","Kane","Llorente","Moura"], a:3, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Real Madrid's comeback from 3-0 down against PSG in 2022 UCL knockouts — what was the final aggregate?", o:["3-3 — Real won on away goals","4-3 to Real Madrid","3-2 to Real Madrid","5-3 to Real Madrid"], a:1, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Which club did Leicester City beat to reach the Champions League quarter-finals in 2016-17?", o:["Atletico Madrid","Sevilla","Porto","Club Brugge"], a:0, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Who scored both goals for Chelsea in their 2-1 win over Bayern Munich in the 2012 UCL final?", o:["Torres and Drogba","Drogba twice","Lampard and Drogba","Mata and Drogba"], a:1, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Which club knocked out holders Real Madrid in the 2021-22 UCL group stage?", o:["PSG","Sheriff Tiraspol","Shakhtar Donetsk","Moldovan sheriff"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"The record for most UCL goals in a single season is 17 — scored by whom in 2013-14?", o:["Messi","Ronaldo","Benzema","Muller"], a:1, cat:"UCL", diff:"medium", type:"mcq" },
+
+  // Bundesliga — club stories
+  { q:"Which Bundesliga club plays at the Volksparkstadion in Hamburg?", o:["FC St Pauli","Hamburger SV","Holstein Kiel","Werder Bremen"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Bayer Leverkusen are nicknamed Neverkusen — why did this change in 2023-24?", o:["They won the double","They went unbeaten all season winning the title","They won the Champions League","They beat Bayern Munich 5 times"], a:1, cat:"Bundesliga", diff:"easy", type:"mcq" },
+  { q:"Which Bundesliga club has the most supporters clubs worldwide?", o:["Schalke","Bayern Munich","Borussia Dortmund","Hamburger SV"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Eintracht Frankfurt won which European trophy in 2022 — their first in 42 years?", o:["Champions League","Europa League","Conference League","UEFA Cup"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga club was formed from a merger of two Munich clubs in 1900?", o:["Bayern Munich","TSV 1860 Munich","SpVgg Munich","FC Munich"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Granit Xhaka joined Bayer Leverkusen from which club in 2023?", o:["Borussia Dortmund","Arsenal","Man City","Roma"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Who became the first player to score 40+ Bundesliga goals in a season since Gerd Muller?", o:["Muller","Haaland","Lewandowski","Aubameyang"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq" },
+
+  // Serie A — club stories
+  { q:"Which Italian club's badge features a she-wolf — a reference to Roman mythology?", o:["Lazio","Roma","Inter Milan","Juventus"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Napoli's greatest ever player — Maradona — wore which shirt number?", o:["9","10","11","7"], a:1, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"Which Italian club was founded by Swiss and German businessmen in 1899 in Milan?", o:["Inter Milan","AC Milan","Juventus","Genoa"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Fiorentina's iconic purple kit — what colour did they originally wear before a shirt mix-up led to purple?", o:["Blue and black","Red","White","Yellow"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which Serie A club won their first Scudetto in 43 years in 2020-21?", o:["Napoli","AC Milan","Inter Milan","Juventus"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Roberto Baggio missed the decisive penalty in the 1994 World Cup final — which club was he at?", o:["Juventus","AC Milan","Fiorentina","Inter Milan"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Which Serie A club plays at the Stadio Olimpico Grande Torino?", o:["Juventus","Torino","Lazio","Roma"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+
+  // La Liga — deeper
+  { q:"Which Spanish club plays at the Estadio de Mestalla?", o:["Villarreal","Valencia","Levante","Espanyol"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Real Madrid went how many La Liga games unbeaten under Zidane in his first spell?", o:["21","28","34","40"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Which La Liga player won the Pichichi top scorer award six times in a row?", o:["Ronaldo","Messi","Benzema","Suarez"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Athletic Bilbao's policy of only signing Basque players — what is this policy called?", o:["La Cantera","La Filosofia","La Identidad","La Politica Vasca"], a:0, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Which La Liga side knocked Barcelona out of the 2021-22 Europa League?", o:["Sevilla","Frankfurt","Real Sociedad","Villarreal"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Atletico Madrid's biggest ever La Liga win was 9-0 — against which club?", o:["Real Madrid","Betis","Racing Santander","Sevilla"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
+
+  // Euros — great moments
+  { q:"Which player scored a famous diving header in the 1992 Euro final for Denmark?", o:["Brian Laudrup","Peter Schmeichel","John Jensen","Kim Vilfort"], a:3, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"Euro 2016 — which tiny nation famously knocked out England?", o:["Luxembourg","Wales","Iceland","Northern Ireland"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"Who scored the winning penalty for Portugal in the Euro 2016 final vs France?", o:["Ronaldo","Quaresma","Eder","Moutinho"], a:2, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which city hosted the Euro 2020 final — played in 2021?", o:["Rome","Budapest","London","Munich"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"Germany's record Euro win was 6-1 — against which country?", o:["Portugal","Netherlands","Turkey","Armenia"], a:0, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which country has hosted the European Championship the most times with three editions?", o:["France","Italy","Belgium","Germany"], a:0, cat:"Euros", diff:"hard", type:"mcq" },
+
+  // Managers — great stories
+  { q:"Brian Clough won the European Cup despite never playing international football — true?", o:["True — he won 2 caps only","He won 2 England caps — not zero","He never played professionally","He won over 20 caps"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager turned Leicester City from relegation candidates to champions?", o:["Nigel Pearson","Claudio Ranieri","Craig Shakespeare","Martin O'Neill"], a:1, cat:"Managers", diff:"easy", type:"mcq" },
+  { q:"Arsene Wenger — how many FA Cups did he win at Arsenal?", o:["5","6","7","8"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Who was the first manager to win the league title with three different English clubs?", o:["Brian Clough","Bob Paisley","Kenny Dalglish","George Graham"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager won the Serie A title with three different clubs — Juventus, Inter and AC Milan?", o:["Ancelotti","Lippi","Capello","Sacchi"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+
+  // Legends — great careers
+  { q:"Ferenc Puskas scored how many goals in 84 international appearances for Hungary and Spain combined?", o:["74","84","97","105"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Which legendary player was known as Il Divin Codino — The Divine Ponytail?", o:["Maldini","Baggio","Totti","Del Piero"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Zinedine Zidane scored how many international goals for France?", o:["28","31","35","42"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which legendary Brazilian won the World Cup in 1958, 1962 and 1970?", o:["Garrincha","Didi","Pele","Gerson"], a:2, cat:"Legends", diff:"easy", type:"mcq" },
+  { q:"Bobby Moore was arrested on suspicion of theft days before the 1970 World Cup — in which country?", o:["Mexico","Brazil","Colombia","Argentina"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
+
+  // Records — fascinating facts  
+  { q:"Which club has played in the most different countries' top divisions in history?", o:["Wimbledon/MK Dons","Cardiff City","Swansea City","Berwick Rangers"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The record for most goals scored in a calendar year — 91 — was set by whom in 2012?", o:["Ronaldo","Messi","Lewandowski","Muller"], a:1, cat:"Records", diff:"easy", type:"mcq" },
+  { q:"Which country has never been relegated from their top division since its foundation?", o:["Real Madrid","Bayern Munich","Rangers","Juventus"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"What is the record for most consecutive Champions League appearances by a player?", o:["16","19","21","24"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The fastest hat-trick in top-flight football history was scored in how many minutes?", o:["1 minute 50 seconds","2 minutes 14 seconds","3 minutes","4 minutes 33 seconds"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+
+  // More T/F
+  { q:"Manchester City broke the Premier League points record with 100 points in 2017-18.", a:1, cat:"PL", diff:"easy", type:"tf" },
+  { q:"Arsenal's Invincibles season saw them win every single Premier League game.", a:0, cat:"PL", diff:"medium", type:"tf" },
+  { q:"Zinedine Zidane scored a volley in the 2002 Champions League final.", a:1, cat:"UCL", diff:"medium", type:"tf" },
+  { q:"The 2002 World Cup was the first held in Asia.", a:1, cat:"WorldCup", diff:"medium", type:"tf" },
+  { q:"Iceland knocked England out of Euro 2016.", a:1, cat:"Euros", diff:"easy", type:"tf" },
+  { q:"Bayer Leverkusen went the entire 2023-24 season unbeaten in all competitions.", a:0, cat:"Bundesliga", diff:"hard", type:"tf" },
+  { q:"Roberto Baggio was playing for AC Milan when he missed the 1994 World Cup final penalty.", a:1, cat:"SerieA", diff:"medium", type:"tf" },
+  { q:"Athletic Bilbao only sign players from the Basque Country.", a:1, cat:"LaLiga", diff:"medium", type:"tf" },
+  { q:"Brian Clough won the European Cup twice with Nottingham Forest.", a:1, cat:"Managers", diff:"easy", type:"tf" },
+  { q:"Lionel Messi scored 91 goals in a calendar year — a world record.", a:1, cat:"Records", diff:"easy", type:"tf" },
+
+
+  // ── BATCH 44 ────────────────────────────────────────────────────────────────
+
+  // PL — more depth
+  { q:"Which club did Harry Kane leave Tottenham to join in 2023?", o:["Real Madrid","Manchester United","Bayern Munich","PSG"], a:2, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"What is the name of Wolves' home stadium?", o:["Molineux","The Hawthorns","Bramall Lane","Deepdale"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which club won the first ever Women's Super League title in 2011?", o:["Chelsea","Arsenal","Manchester City","Liverpool"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Cristiano Ronaldo's second spell at Man United — how many goals did he score in 2021-22?", o:["18","20","24","27"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which Premier League club plays at Selhurst Park?", o:["QPR","Charlton","Crystal Palace","Millwall"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Who scored the only goal as Arsenal beat Manchester United to win the 1979 FA Cup final?", o:["Stapleton","Brady","Sunderland","Price"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club did Andrew Cole play for when he scored a record 34 PL goals in 1993-94?", o:["Man City","Newcastle United","Blackburn","Arsenal"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Blackburn Rovers' Premier League title in 1994-95 — who was their star striker?", o:["Chris Sutton","Alan Shearer","Kevin Gallacher","Mike Newell"], a:1, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"Which club went an entire home season unbeaten in the PL — but were relegated?", o:["Norwich 2019-20","Sunderland 2016-17","Huddersfield 2018-19","Sheffield United 2020-21"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Mohamed Salah's record 32 Premier League goals came in which season?", o:["2016-17","2017-18","2018-19","2019-20"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+
+  // World Cup — more
+  { q:"Which country won the first World Cup on home soil — and the second — both in South America?", o:["Brazil","Uruguay then Brazil","Uruguay then Argentina","Argentina then Uruguay"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"The 1970 World Cup final in Mexico City had an attendance of over 100,000 — who played?", o:["Brazil vs Italy","Brazil vs Uruguay","Argentina vs Italy","Brazil vs West Germany"], a:0, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Which country has scored the most own goals in World Cup history?", o:["Germany","France","England","Brazil"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"How many World Cup Golden Balls has Messi won in total?", o:["1","2","3","4"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"The 2018 World Cup final between France and Croatia — what was the score at half time?", o:["1-0","1-1","2-1","2-2"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which country beat Germany 2-0 in the 2018 World Cup group stage — causing a massive upset?", o:["South Korea","Sweden","Mexico","Japan"], a:0, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"USA hosted the 1994 World Cup — what was the average attendance per game?", o:["52,000","62,000","68,991","71,000"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which goalkeeper saved two penalties in the 2022 World Cup final for Argentina?", o:["Romero","Armani","Dibu Martinez","Franco Armani"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+
+  // UCL — more
+  { q:"Which club reached the Champions League final four times in five years from 2015 to 2019?", o:["Bayern Munich","Atletico Madrid","Juventus","Real Madrid"], a:3, cat:"UCL", diff:"easy", type:"mcq" },
+  { q:"Who scored Real Madrid's crucial away goal against Man City in the 2015-16 UCL semi-final?", o:["Benzema","Bale","Ronaldo","Isco"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which club did Andriy Shevchenko play for when he won the UCL in 2003?", o:["Dynamo Kyiv","Chelsea","AC Milan","Inter Milan"], a:2, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"The highest scoring UCL group stage game ever ended 8-0 — which club won it?", o:["Real Madrid","Bayern Munich","Liverpool","Borussia Dortmund"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which manager won the Champions League with Porto in 2004 — his first major job?", o:["Benitez","Mourinho","Villas-Boas","Conceicao"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
+
+  // Bundesliga
+  { q:"Oliver Kahn won the World Cup Golden Ball in 2002 — the first goalkeeper to do so. True?", o:["True","False — Schmeichel won it in 1992","False — Banks won it in 1966","True — he also won it in 1998"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga side plays at the Europa Park Stadion?", o:["Freiburg","Augsburg","Mainz","Nuremberg"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Bayern Munich won the Bundesliga in 2012-13 with how many points — a league record?", o:["91","95","96","100"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Who scored the winning goal for Germany in the 2014 World Cup final vs Argentina?", o:["Kroos","Klose","Gotze","Muller"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq" },
+  { q:"Which Bundesliga player held the record for most goals in a World Cup before Klose?", o:["Gerd Muller","Just Fontaine","Ronaldo","Pele"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq" },
+
+  // Serie A
+  { q:"Which Italian club has won the most Coppa Italia titles?", o:["Inter Milan","Roma","AC Milan","Juventus"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Lautaro Martinez won the Serie A Golden Boot in 2023-24 — how many goals?", o:["22","24","27","30"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Which Serie A club plays in the city of Bergamo?", o:["Brescia","Atalanta","Cremonese","SPAL"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Which Italian won the 1993 Ballon d'Or while playing for Juventus?", o:["Del Piero","Baggio","Vialli","Maldini"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"AC Milan's unbeaten Serie A run in 1991-92 lasted how many games?", o:["44","52","56","58"], a:3, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which legendary Juventus striker scored 290 goals for the club — a record?", o:["Baggio","Del Piero","Platini","Boniperti"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+
+  // La Liga
+  { q:"Which La Liga club has the nickname El Submarino Amarillo — The Yellow Submarine?", o:["Cadiz","Villarreal","Getafe","Las Palmas"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Barcelona's record signing Neymar in 2013 — how much did they officially pay for him?", o:["€57m","€71m","€86m","€100m"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Who scored the winning goal for Real Madrid in the 2016 Champions League final penalty shootout?", o:["Ramos","Bale","Ronaldo","Cristiano Ronaldo"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga club won their first ever title in 2023-24 under Simeone?", o:["Atletico Madrid won it","Girona nearly won it","Real Madrid won it","Barcelona won it"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Karim Benzema's total La Liga goals for Real Madrid — how many in 14 seasons?", o:["278","301","315","354"], a:1, cat:"LaLiga", diff:"hard", type:"mcq" },
+
+  // Euros
+  { q:"Which nation hosted Euro 1996?", o:["France","Germany","England","Spain"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"Paul Scholes was controversially left out of which England tournament squad?", o:["Euro 2000","Euro 2004","World Cup 2006","Euro 2008"], a:1, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"Which player came on as a substitute and scored the winning penalty for Denmark in the Euro 1992 final?", o:["Kim Vilfort","Henrik Larsen","Brian Laudrup","John Jensen"], a:0, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"How many goals did Cristiano Ronaldo score at Euro 2016?", o:["1","2","3","4"], a:0, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which country finished third at Euro 2024 — their best ever result?", o:["Switzerland","Turkey","Georgia","Netherlands"], a:3, cat:"Euros", diff:"medium", type:"mcq" },
+
+  // Managers
+  { q:"Vicente del Bosque managed Spain to which unique double?", o:["World Cup and Euros back to back","Two World Cups","Two Euros","Euros then World Cup then Euros"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Which manager won the Bundesliga six times with Bayern Munich?", o:["Heynckes","Guardiola","Hitzfeld","Ancelotti"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Gus Hiddink — which country did he take to the 2002 World Cup semi-finals on home soil?", o:["Japan","China","South Korea","Australia"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Which English manager led Nottingham Forest to two consecutive European Cups?", o:["Ron Atkinson","Bob Paisley","Brian Clough","Dave Bassett"], a:2, cat:"Managers", diff:"easy", type:"mcq" },
+  { q:"Who managed the Netherlands at the 1974 World Cup final — famous for Total Football?", o:["Rinus Michels","Johan Cruyff","Ernst Happel","Stefan Kovacs"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
+
+  // Legends
+  { q:"Marco van Basten's famous volley in the 1988 European Championship final — against which goalkeeper?", o:["Shilton","Rinat Dasayev","Zenga","Pfaff"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Ronaldinho's nutmeg on which defender became one of the most shared football clips ever?", o:["Carlos Puyol","Cafu","Cannavaro","Sergio Ramos"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Which legendary striker is the all-time top scorer for both Argentina and Barcelona?", o:["Di Stefano","Messi","Maradona","Batistuta"], a:1, cat:"Legends", diff:"easy", type:"mcq" },
+  { q:"Peter Schmeichel joined Man United from which Danish club?", o:["FC Copenhagen","Brondby","Silkeborg","OB Odense"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which legendary midfielder won the World Cup, European Cup and Ballon d'Or — all in 1974?", o:["Beckenbauer","Cruyff","Muller","Overath"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+
+  // Records
+  { q:"The record transfer fee paid for a player under 18 is held by which club — paying £72m for Lamine Yamal?", o:["PSG","Real Madrid","Barcelona — internal contract value","Man City"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which nation has the best all-time World Cup win percentage?", o:["Brazil","West Germany","France","Italy"], a:0, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"The most expensive manager compensation package ever paid was for which sacking?", o:["Mourinho at Man Utd","Sacking of McClaren","Pochettino at Spurs","Benitez at Newcastle"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which club holds the record for most consecutive league titles in England with 13?", o:["Huddersfield Town","Arsenal","Liverpool","Manchester United"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The record for most international caps is held by which player — with 196 appearances?", o:["Sergio Ramos","Bader Al-Mutawa","Cristiano Ronaldo","Ahmed Hassan"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+
+
+  // ── BATCH 45 ────────────────────────────────────────────────────────────────
+
+  // PL — more stories
+  { q:"Which club won back-to-back FA Cups in 2001 and 2002?", o:["Arsenal","Liverpool","Chelsea","Man United"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Who became the youngest ever Premier League manager when appointed at Swansea in 2013?", o:["Michael Laudrup","Garry Monk","Francesco Guidolin","Bob Bradley"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club finished fourth in 2015-16 despite having one of the lowest wage bills?", o:["Bournemouth","Watford","Leicester City","West Ham"], a:2, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"How many points did Man City win the 2018-19 Premier League by — the smallest possible margin?", o:["1 point","2 points","3 points","4 points"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which club holds the record for most consecutive away defeats in Premier League history?", o:["Sunderland","Derby County","Bradford City","Watford"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Jamie Vardy scored in how many consecutive Premier League games — a record — in 2015?", o:["9","10","11","13"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which Premier League club has the nickname The Hornets?", o:["Norwich","Burton","Wigan","Watford"], a:3, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"Which club won the Championship play-off final on penalties in 2023 to reach the Premier League?", o:["Sheffield United","Luton Town","Coventry City","Middlesbrough"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Nottingham Forest won the European Cup in 1979 — who did they beat in the final?", o:["Barcelona","Borussia Monchengladbach","Malmo FF","Hamburg"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+
+  // World Cup — more
+  { q:"Which team did Senegal famously beat at the 2002 World Cup — the defending champions?", o:["Brazil","Argentina","France","Germany"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Who scored Brazil's only goal in their 7-1 defeat to Germany in 2014?", o:["Neymar","Oscar","Hulk","David Luiz"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Which country went unbeaten through the entire 1978 World Cup but didn't win it?", o:["Brazil","Italy","West Germany","Netherlands"], a:1, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"The fastest World Cup red card ever — in just 55 seconds — was received by which player?", o:["Batista","Zinedine Zidane","De Jong","Roy Keane"], a:0, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which two countries contested the first ever World Cup final in 1930?", o:["Brazil vs Argentina","Uruguay vs Argentina","Uruguay vs Brazil","Argentina vs Chile"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"How many World Cup goals did Pele score in total across his three tournaments?", o:["10","12","14","16"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"Which nation was disqualified from the 1974 World Cup for refusing to play against the USSR?", o:["North Korea","Iran","Chile","China"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"The 2010 World Cup was memorable for which annoying sound device used by fans?", o:["Drums","Trumpets","Vuvuzela","Air horns"], a:2, cat:"WorldCup", diff:"easy", type:"mcq" },
+
+  // UCL
+  { q:"Which club beat Arsenal 2-1 in the 2006 Champions League final despite being down to 10 men?", o:["Real Madrid","Juventus","Barcelona","AC Milan"], a:2, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Champions League penalty shootout record — most saved by one keeper in a single shootout?", o:["3","4","5","6"], a:2, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which UCL final ended 0-0 after extra time before being decided by penalties?", o:["2003 AC Milan vs Juventus","2008 Man Utd vs Chelsea","2012 Chelsea vs Bayern","2005 Liverpool vs AC Milan"], a:0, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Zinedine Zidane's iconic volley in the 2002 UCL final — which foot did he use?", o:["Right","Left","He used his head — famous header not volley","Both — it deflected off both"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which English club has reached the most Champions League semi-finals without winning it?", o:["Arsenal","Tottenham","Man City before 2023","Chelsea"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
+
+  // Bundesliga
+  { q:"TSG Hoffenheim were a tiny village club before which billionaire transformed them?", o:["Dietmar Hopp","Red Bull","VW Group","Adidas"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga player has the most career Bundesliga appearances — over 500?", o:["Muller","Oliver Kahn","Sepp Maier","Karl-Heinz Rummenigge"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"What year did Werder Bremen last win the Bundesliga?", o:["2002","2004","2006","2008"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga team is nicknamed Der Effzeh?", o:["Cologne","Frankfurt","Dusseldorf","Kaiserslautern"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Bayern Munich's Allianz Arena seats how many fans?", o:["65,000","70,000","75,000","80,000"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq" },
+
+  // Serie A
+  { q:"Which Serie A club did Cristiano Ronaldo play for from 2018 to 2021?", o:["AC Milan","Inter Milan","Roma","Juventus"], a:3, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"Napoli's iconic number 10 shirt — retired after which legendary player left?", o:["Mertens","Hamsik","Maradona","Insigne"], a:2, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Inter Milan's iconic black and blue stripes represent what according to club folklore?", o:["Night sky and sea","The city of Milan's colours","Nothing — just design","Italian flag colours"], a:0, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which Serie A club plays at the Stadio Friuli — also known as the Dacia Arena?", o:["Parma","Udinese","Cagliari","Empoli"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which Italian striker scored 30 Serie A goals in 2022-23 for Lazio?", o:["Immobile","Zaccagni","Felipe Anderson","Pedro"], a:0, cat:"SerieA", diff:"medium", type:"mcq" },
+
+  // La Liga
+  { q:"Which Spanish club did Ronaldo Nazario join from Inter Milan in 2002?", o:["Atletico Madrid","Barcelona","Valencia","Real Madrid"], a:3, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Atletico Madrid's historic title in 2020-21 — who was their top scorer?", o:["Griezmann","Joao Felix","Suarez","Correa"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga club's stadium is known as El Madrigal?", o:["Getafe","Villarreal","Levante","Osasuna"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Who scored Barcelona's winning goal in extra time vs PSG in the famous 2016-17 UCL comeback?", o:["Neymar","Messi","Sergi Roberto","Suarez"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Real Madrid went how many La Liga seasons without losing a home match between 1957 and 1965?", o:["5","6","7","8"], a:3, cat:"LaLiga", diff:"hard", type:"mcq" },
+
+  // Euros — more
+  { q:"Which player scored a famous golden goal for France against Portugal at Euro 2000 semi-final?", o:["Zidane","Henry","Trezeguet","Pires"], a:1, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"How many nations competed at Euro 2024?", o:["16","20","24","32"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"Which country made their European Championship debut at Euro 2016?", o:["Wales","Slovakia","Iceland","Albania"], a:2, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Austria and Switzerland co-hosted Euro 2008 — what was England's excuse for not qualifying?", o:["They qualified but withdrew","They lost a play-off to Croatia","Steve McClaren's record was poor","All of the above"], a:1, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Who scored the winning penalty for Italy against Spain in Euro 2020 semi-final?", o:["Insigne","Bonucci","Jorginho","Verratti"], a:2, cat:"Euros", diff:"hard", type:"mcq" },
+
+  // Managers — more
+  { q:"Which manager took Japan to the last 16 of the 2022 World Cup — shocking Germany and Spain?", o:["Hajime Moriyasu","Akira Nishino","Vahid Halilhodzic","Alberto Zaccheroni"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Bobby Robson won the UEFA Cup with which club in 1987?", o:["Barcelona","PSV","Sporting CP","Porto"], a:3, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager famously said his team would 'park the bus' — now a common football phrase?", o:["Sam Allardyce","Tony Pulis","Jose Mourinho","Rafael Benitez"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Ancelotti — how many different countries has he won a league title in?", o:["3","4","5","6"], a:2, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager led Dortmund to the Bundesliga title AND to the Champions League final in the same season?", o:["Favre","Tuchel","Klopp","Sammer"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+
+  // Legends — more
+  { q:"Thierry Henry is Arsenal's record scorer — how many goals in all competitions?", o:["174","218","228","241"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which legendary defender played every minute of every game for Italy at the 1982 World Cup?", o:["Scirea","Cabrini","Gentile","Zoff"], a:3, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Ronaldo R9's knee injury at Inter Milan — which condition caused it?", o:["Tendinitis","Epilepsy — he had a seizure","Torn ligament","Stress fracture"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Which legendary player scored 85 international goals for West Germany in 62 games?", o:["Beckenbauer","Klinsmann","Gerd Muller","Uwe Seeler"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Paolo Maldini made how many appearances for AC Milan — a club record?", o:["586","621","647","902"], a:3, cat:"Legends", diff:"hard", type:"mcq" },
+
+  // Records — more
+  { q:"The most watched football match ever was the 2014 World Cup final — how many viewers globally?", o:["500 million","750 million","1 billion","1.5 billion"], a:3, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"Which player has scored in the most different World Cups — appearing in 5 editions?", o:["Pele","Klose","Lothar Matthaus","Ronaldo"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"What is the record for most hat-tricks scored in a single Champions League season by one player?", o:["2","3","4","5"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which country has the record for the most appearances at the African Cup of Nations?", o:["Nigeria","Ivory Coast","Ghana","Egypt"], a:3, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The record attendance for an English football match was 149,547 — at which game?", o:["FA Cup final 1923","FA Cup final 1901","League Cup final 1985","Euro 1996 group game"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+
+  // More T/F
+  { q:"Nottingham Forest won the European Cup twice in a row in 1979 and 1980.", a:1, cat:"PL", diff:"easy", type:"tf" },
+  { q:"France won the 1998 World Cup on home soil — their first ever title.", a:1, cat:"WorldCup", diff:"easy", type:"tf" },
+  { q:"Senegal beat France at the 2002 World Cup.", a:1, cat:"WorldCup", diff:"medium", type:"tf" },
+  { q:"Barcelona beat PSG 6-1 in the 2016-17 Champions League after losing 4-0 in Paris.", a:1, cat:"UCL", diff:"medium", type:"tf" },
+  { q:"Vuvuzelas were first used at the 2010 World Cup in South Africa.", a:1, cat:"WorldCup", diff:"easy", type:"tf" },
+  { q:"Cristiano Ronaldo played for Juventus for three seasons.", a:1, cat:"SerieA", diff:"easy", type:"tf" },
+  { q:"Iceland made their European Championship debut at Euro 2016.", a:1, cat:"Euros", diff:"medium", type:"tf" },
+  { q:"Jamie Vardy scored in 11 consecutive Premier League games in 2015.", a:1, cat:"PL", diff:"medium", type:"tf" },
+  { q:"Jose Mourinho described his defensive tactics as parking the bus.", a:1, cat:"Managers", diff:"easy", type:"tf" },
+  { q:"Thierry Henry scored more than 200 goals for Arsenal.", a:0, cat:"Legends", diff:"medium", type:"tf" },
+
+
+  // ── BATCH 46 ────────────────────────────────────────────────────────────────
+
+  // WC2026 — fill the pool further
+  { q:"Which nation is making their World Cup debut at 2026 having never qualified before from CONCACAF?", o:["Bermuda","Cuba","Curacao","Nicaragua"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"The 2026 World Cup group stage has how many matches in total?", o:["48","72","96","104"], a:1, cat:"WorldCup", diff:"hard", type:"mcq", tag:"wc2026" },
+  { q:"Which US city is hosting the most World Cup games in 2026 — including the final?", o:["Los Angeles","Miami","Dallas","New York — East Rutherford"], a:3, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"How many African teams are at the 2026 World Cup — the most ever?", o:["8","9","10","11"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"Which team did Mexico face in the opening match of the 2026 World Cup?", o:["USA","Canada","South Africa","South Korea"], a:2, cat:"WorldCup", diff:"easy", type:"mcq", tag:"wc2026" },
+  { q:"Bosnia and Herzegovina qualified for 2026 by knocking out which major European nation?", o:["Spain","France","Italy","Germany"], a:2, cat:"WorldCup", diff:"easy", type:"mcq", tag:"wc2026" },
+  { q:"Which 2026 World Cup nation is being managed by a former World Cup winner as a player?", o:["Japan","Uzbekistan","Australia","Saudi Arabia"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"DR Congo qualified for 2026 — when did they last appear at a World Cup as Zaire?", o:["1970","1974","1978","1982"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"How many European teams are in the 2026 World Cup — the largest continental group?", o:["14","15","16","17"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"Which 2026 host city is home to the famous Rose Bowl stadium?", o:["Dallas","San Francisco","Los Angeles","Seattle"], a:2, cat:"WorldCup", diff:"hard", type:"mcq", tag:"wc2026" },
+  { q:"Sweden qualified for 2026 through the playoffs — which nation did they beat in the final?", o:["Denmark","Norway","Finland","Poland"], a:3, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+  { q:"Iraq qualified for 2026 — their first World Cup since when?", o:["1982","1986","1990","1994"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", tag:"wc2026" },
+
+  // PL — final stories
+  { q:"Which club did Didier Drogba join after leaving Chelsea the first time in 2012?", o:["PSG","Galatasaray","Inter Milan","Napoli"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"The Premier League introduced squad numbers in which season?", o:["1993-94","1994-95","1995-96","1996-97"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club did Wayne Rooney make his Premier League debut for — scoring against Arsenal in 2002?", o:["Manchester United","Everton","Liverpool","Tottenham"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"How many times did Arsenal finish as Premier League runners-up under Wenger?", o:["4","5","6","7"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who is the only player to score in the Premier League for six different clubs?", o:["Nicolas Anelka","Andrew Cole","Les Ferdinand","Peter Crouch"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which Premier League club plays at Carrow Road?", o:["Ipswich Town","Norwich City","Peterborough","Cambridge"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Steve Bruce won three league titles as a player with which club?", o:["Aston Villa","Birmingham","Manchester United","Sunderland"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which club did Kevin De Bruyne leave to join Wolfsburg before eventually joining Man City?", o:["Anderlecht","Gent","Chelsea","Bruges"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+
+  // World Cup — more great stories
+  { q:"Which team led 3-0 at half-time in the 2005 Confederations Cup final before losing 4-3?", o:["Brazil vs Argentina","Mexico vs Brazil","Argentina vs Brazil","Brazil vs Mexico"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"The 1982 World Cup semi-final between West Germany and France — decided by penalties after what score?", o:["1-1","2-2","3-3","4-4"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which country beat eventual champions Spain 1-0 at the 2010 World Cup group stage?", o:["Chile","Switzerland","Honduras","Paraguay"], a:1, cat:"WorldCup", diff:"medium", type:"mcq" },
+  { q:"How many goals were scored in total at the 2022 World Cup?", o:["164","172","179","185"], a:2, cat:"WorldCup", diff:"hard", type:"mcq" },
+  { q:"Which player wore the number 10 shirt for Brazil and carried the Neymar legacy after his PSG move?", o:["Vinicius","Rodrygo","Raphinha","Gabriel Martinelli"], a:2, cat:"WorldCup", diff:"medium", type:"mcq" },
+
+  // UCL — more
+  { q:"Which club did Steven Gerrard almost sign for in 2005 before the Champions League final changed his mind?", o:["Real Madrid","Barcelona","Chelsea","Juventus"], a:2, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Sadio Mane scored a famous individual goal in which UCL game to announce himself to Europe?", o:["Liverpool vs Man City 2018","Liverpool vs PSG 2018","Liverpool vs Man City 2017-18 semi","Southampton vs Man City 2015"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Which club came back from 3 goals down in a Champions League semi-final in 2019?", o:["Ajax","Liverpool","Tottenham","Man City"], a:1, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Real Madrid won their 14th Champions League in 2023-24 — beating which club in the final?", o:["PSG","Man City","Atletico Madrid","Borussia Dortmund"], a:3, cat:"UCL", diff:"easy", type:"mcq" },
+
+  // More broad easy questions
+  { q:"What colour are Chelsea's home shirts?", o:["Red","White","Blue","Black"], a:2, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"Which country does Kylian Mbappe represent internationally?", o:["Belgium","Ivory Coast","Algeria","France"], a:3, cat:"WorldCup", diff:"easy", type:"mcq" },
+  { q:"How many points does a team get for a win in football?", o:["1","2","3","4"], a:2, cat:"Records", diff:"easy", type:"mcq" },
+  { q:"What is the name of the trophy given to the Champions League winner?", o:["The Golden Cup","The Big Ears","The Champions Trophy","The Europa Cup"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
+  { q:"Which country does Erling Haaland play international football for?", o:["Denmark","Sweden","Norway","Finland"], a:2, cat:"WorldCup", diff:"easy", type:"mcq" },
+  { q:"How many substitutes are allowed in a standard football match?", o:["3","4","5","6"], a:2, cat:"Records", diff:"easy", type:"mcq" },
+  { q:"Which club plays at Old Trafford?", o:["Man City","Liverpool","Arsenal","Manchester United"], a:3, cat:"PL", diff:"easy", type:"mcq" },
+  { q:"What colour cards can a referee show in football?", o:["Red and yellow only","Red, yellow and green","Red, yellow and blue","Red, yellow and orange"], a:0, cat:"Records", diff:"easy", type:"mcq" },
+  { q:"Which country won Euro 2020?", o:["England","Spain","France","Italy"], a:3, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"Real Madrid play in which Spanish city?", o:["Barcelona","Seville","Valencia","Madrid"], a:3, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Which Italian city is home to Juventus?", o:["Milan","Rome","Turin","Naples"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"What is the name of Germany's top football league?", o:["Liga 1","Eredivisie","Bundesliga","Ligue 1"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq" },
+  { q:"How many teams qualify from each group at the 2026 World Cup?", o:["1","2","3","4"], a:1, cat:"WorldCup", diff:"easy", type:"mcq", tag:"wc2026" },
+  { q:"In which country is the Allianz Arena located?", o:["Austria","Switzerland","Germany","Netherlands"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq" },
+  { q:"Which award is given to the best goalkeeper at the World Cup?", o:["Golden Boot","Golden Ball","Golden Glove","Silver Glove"], a:2, cat:"WorldCup", diff:"easy", type:"mcq" },
+
+  // More T/F
+  { q:"Didier Drogba scored in two Champions League finals for Chelsea.", a:1, cat:"UCL", diff:"medium", type:"tf" },
+  { q:"Italy have won the World Cup four times.", a:1, cat:"WorldCup", diff:"easy", type:"tf" },
+  { q:"The Premier League introduced VAR in the 2019-20 season.", a:1, cat:"PL", diff:"medium", type:"tf" },
+  { q:"Uruguay won the first ever World Cup in 1930.", a:1, cat:"WorldCup", diff:"easy", type:"tf" },
+  { q:"The 2026 World Cup features teams from all six continental confederations.", a:1, cat:"WorldCup", diff:"medium", type:"tf", tag:"wc2026" },
+  { q:"Kylian Mbappe was 19 years old when he scored in the 2018 World Cup final.", a:1, cat:"WorldCup", diff:"medium", type:"tf" },
+  { q:"Chelsea are the only English club to have won the Champions League, Europa League and Conference League.", a:1, cat:"UCL", diff:"hard", type:"tf" },
+  { q:"Thierry Henry scored 228 goals for Arsenal in all competitions.", a:1, cat:"Legends", diff:"medium", type:"tf" },
+  { q:"The Bundesliga was founded in 1963.", a:1, cat:"Bundesliga", diff:"medium", type:"tf" },
+  { q:"Spain went unbeaten through the entire 2010 World Cup.", a:0, cat:"WorldCup", diff:"medium", type:"tf" },
+
+
+  // ── BATCH 47: LEGENDS ────────────────────────────────────────────────────────
+  { q:"Pelé made his debut for Santos at what age — becoming one of the youngest players in Brazilian football?", o:["14","15","16","17"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which legendary striker is the all-time top scorer in the history of Napoli?", o:["Maradona","Cavani","Hamsik","Mertens"], a:3, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Franz Beckenbauer is credited with inventing which position in football?", o:["Sweeper","Attacking midfielder","False nine","Deep-lying playmaker"], a:0, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Roberto Carlos's famous free kick against France in 1997 curved so violently it was studied by physicists — what was unusual about its initial trajectory?", o:["It went backwards","It appeared to be heading wide before curling in","It stopped dead before curling","It rose then dipped suddenly"], a:1, cat:"Legends", diff:"easy", type:"mcq" },
+  { q:"Which legendary keeper won the World Cup, two European Cups and the 1963 Ballon d'Or?", o:["Dino Zoff","Lev Yashin","Sepp Maier","Gordon Banks"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Ryan Giggs scored a famous individual goal in the 1999 FA Cup semi-final against Arsenal — which defender did he beat twice?", o:["Lee Dixon","Tony Adams","Martin Keown","Patrick Vieira"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Which legendary forward played for Real Madrid, Juventus, AC Milan AND Inter Milan during his career?", o:["Ronaldo R9","Zlatan Ibrahimovic","Nicolas Anelka","Samuel Eto'o"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Gordon Banks made his famous save against Pelé in the 1970 World Cup — from a downward header, what did Banks do to save it?", o:["He dived left and palmed it over","He scooped it up from near the ground","He blocked it with his feet","He caught it one-handed"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which legendary midfielder was nicknamed El Maestro and won everything with Barcelona in the early 1990s?", o:["Laudrup","Guardiola","Romario","Stoichkov"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Peter Schmeichel is widely regarded as the greatest goalkeeper of the 1990s — which club did he manage briefly after retiring?", o:["Brondby","Man City","Sporting CP","Aston Villa"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Eusebio was born in which African country — later making him eligible for Portugal through colonial ties?", o:["Angola","Cape Verde","Mozambique","Guinea-Bissau"], a:2, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Which English legend said 'I was the best manager in Britain — I just happened to be in the wrong body' — referring to his size?", o:["Brian Clough","Bill Shankly","Bobby Robson","Ron Atkinson"], a:0, cat:"Legends", diff:"medium", type:"mcq" },
+  { q:"Ronaldinho's father died when Ronaldinho was just 8 years old — how did he die?", o:["In a car accident","In a swimming pool accident","In a work accident","Illness"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Which legendary player was the first to win the Champions League with two different clubs?", o:["Clarence Seedorf","Marcel Desailly","Predrag Mijatovic","Carlos Secretario"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
+  { q:"Marco van Basten's final ever goal was a stunning volley in the 1988 European Championship final — the ball came from a cross by which teammate?", o:["Gullit","Rijkaard","Arnold Muhren","Winter"], a:2, cat:"Legends", diff:"hard", type:"mcq" },
+
+  // ── BATCH 47: EUROS ──────────────────────────────────────────────────────────
+  { q:"Which country knocked out holders France in the last 16 at Euro 2020?", o:["Germany","Portugal","Switzerland","Belgium"], a:2, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Paul Gascoigne's tears at the 1990 World Cup — but at Euro 1996 he scored a stunning goal and celebrated how?", o:["Sliding on the grass","Dentist's chair celebration with his teammates","Pointing to his tattoo","Running into the corner flag"], a:1, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"At Euro 2004, Greece's goalkeeper made several crucial saves — who was he?", o:["Nikopolidis","Kapsis","Tsiartas","Lakis"], a:0, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"Which nation hosted Euro 2012 jointly with Poland?", o:["Czech Republic","Hungary","Ukraine","Romania"], a:2, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Euro 1992 in Sweden — which group stage result shocked everyone before Denmark went on to win it?", o:["England beat France","Germany lost to Denmark","USSR withdrew and was replaced by CIS","Yugoslavia's disqualification let Denmark in"], a:3, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Spain's back-to-back Euro wins in 2008 and 2012 — who scored the only goal in the 2008 final?", o:["Villa","Torres","Xavi","Fabregas"], a:1, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which player scored four goals for Portugal at Euro 2000 — including a hat-trick against Germany?", o:["Figo","Rui Costa","Joao Pinto","Sergio Conceicao"], a:3, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"Euro 2016 introduced new rules allowing how many teams through from each group?", o:["Top 2 only","Top 2 plus best 4 third-placed teams","Top 3 automatically","Top 2 plus all third-placed teams"], a:1, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which country beat England 3-2 in a memorable Euro 2024 quarter-final before eventually winning the tournament?", o:["France","Germany","Netherlands","Spain"], a:2, cat:"Euros", diff:"easy", type:"mcq" },
+  { q:"The longest ever European Championship final in terms of playing time went to extra time — which two teams played in Euro 2000's final?", o:["France vs Italy","France vs Portugal","Italy vs Czech Republic","Netherlands vs Italy"], a:0, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Which German player scored with a controversial chip to win Euro 1996 — the first major golden goal in a tournament?", o:["Klinsmann","Ziege","Bierhoff","Kuntz"], a:2, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"Lamine Yamal turned 17 the day before scoring at Euro 2024 — which nation did Spain beat in that semi-final?", o:["Germany","France","England","Netherlands"], a:0, cat:"Euros", diff:"medium", type:"mcq" },
+  { q:"How many goals did Spain score across all seven games at Euro 2024?", o:["13","15","17","19"], a:1, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"Which country knocked holders Portugal out of Euro 2008 in the quarter-finals?", o:["Germany","Russia","Turkey","Croatia"], a:1, cat:"Euros", diff:"hard", type:"mcq" },
+  { q:"England's only European Championship semi-final before 2020 was at Euro 1968 — true or false?", o:["True","False — it was 1996","False — England have never reached the semi-finals before 2020","False — they reached the semis in 1992"], a:1, cat:"Euros", diff:"medium", type:"mcq" },
+
+  // ── BATCH 47: MANAGERS ───────────────────────────────────────────────────────
+  { q:"Sir Alex Ferguson was a striker during his playing career — which Scottish club did he play for most successfully?", o:["Rangers","Aberdeen","Dunfermline","St Mirren"], a:0, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager won the FA Cup with Wigan Athletic — one of the greatest upsets in cup history — in 2013?", o:["Steve Bruce","Roberto Martinez","Owen Coyle","Paul Jewell"], a:1, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Arrigo Sacchi transformed AC Milan without ever having played at a high level — what was his previous job before management?", o:["PE teacher","Shoe salesman","Journalist","Factory worker"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which England manager famously dropped David Beckham for a World Cup qualifier — causing national outrage?", o:["Sven-Goran Eriksson","Peter Taylor","Steve McClaren","Graham Taylor"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Pep Guardiola and Jose Mourinho first clashed managerially in Spain — what were their clubs at the time?", o:["Barcelona vs Atletico","Barcelona vs Real Madrid","Man City vs Chelsea","Bayern vs Chelsea"], a:1, cat:"Managers", diff:"easy", type:"mcq" },
+  { q:"Which manager took unfancied Villarreal to the Champions League semi-finals in 2005-06?", o:["Marcelino","Manuel Pellegrini","Unai Emery","Riquelme"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Jurgen Klopp's famous gegenpressing style — which manager first developed this high-intensity pressing concept?", o:["Ralf Rangnick","Marcelo Bielsa","Valeriy Lobanovskyi","Arrigo Sacchi"], a:0, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Which manager won the league title in England AND Italy — with Chelsea and Juventus?", o:["Mourinho","Ancelotti","Sarri","Conte"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Claudio Ranieri managed which national team between leaving Leicester and returning to club football?", o:["Italy","Greece","Monaco","Nantes"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Bob Paisley was assistant to which legendary manager before becoming Liverpool boss himself?", o:["Matt Busby","Don Revie","Bill Shankly","Ron Greenwood"], a:2, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Which manager famously said 'We do not need a striker. We have Berbatov' — then signed a striker?", o:["Moyes","Ferguson","Van Gaal","O'Neill"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
+  { q:"Didier Deschamps became the first person to win the World Cup as both captain and manager of France — in which year as captain?", o:["1994","1998","2002","2006"], a:1, cat:"Managers", diff:"easy", type:"mcq" },
+  { q:"Which manager took Saudi Arabia to the biggest World Cup upset of 2022 — beating Argentina?", o:["Herve Renard","Carlos Queiroz","Juan Antonio Pizzi","Bert van Marwijk"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Guus Hiddink guided Australia to the 2006 World Cup — which other national team did he take to a World Cup semi-final?", o:["Netherlands","South Korea","Russia","Turkey"], a:1, cat:"Managers", diff:"medium", type:"mcq" },
+  { q:"Which manager won the Champions League in his very first season in charge of Real Madrid in 2021-22?", o:["Zidane","Ancelotti","Mourinho","Benitez"], a:1, cat:"Managers", diff:"easy", type:"mcq" },
+
+
+  // ── BATCH 48: BUNDESLIGA ─────────────────────────────────────────────────────
+  { q:"Bayern Munich's famous 8-2 victory over Barcelona in 2020 was played at a neutral venue — which city?", o:["London","Lisbon","Paris","Madrid"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga club plays in Stuttgart and has won the league four times — most recently in 1991-92?", o:["Eintracht Frankfurt","VfB Stuttgart","Karlsruhe","Freiburg"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Borussia Dortmund's famous yellow and black kit — what are these colours officially called in German?", o:["Gold und Schwarz","Gelb und Schwarz","Amber und Dunkel","Kanariengelb"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Which German player scored a late winner for Dortmund in the 2013 DFB-Pokal final against Bayern?", o:["Reus","Lewandowski","Gotze","Gundogan"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Schalke 04 are based in which Ruhr valley city — the heart of Germany's industrial region?", o:["Dortmund","Duisburg","Gelsenkirchen","Bochum"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which Bundesliga club famously went 90 years without a major trophy before winning the Europa League in 2022?", o:["Borussia Monchengladbach","Eintracht Frankfurt","Wolfsburg","Hannover"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"German football introduced the Video Assistant Referee (VAR) in which Bundesliga season — making it the first top league to do so?", o:["2015-16","2016-17","2017-18","2018-19"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Which Bundesliga player won the World Cup Golden Ball in 2014 and was named the best player in Germany?", o:["Muller","Neuer","Lahm","Klose"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Werder Bremen were Bundesliga champions five times — which club legend managed them to the 2004 title?", o:["Thomas Schaaf","Felix Magath","Otto Rehhagel","Niko Kovac"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"The Bundesliga play-off system — the 16th-placed Bundesliga team plays the third-placed team from which division?", o:["Regionalliga","2. Bundesliga","3. Liga","Bundesliga reserves"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Which German international midfielder left Bayern for Liverpool on a free transfer in 2024?", o:["Goretzka","Kimmich","Sane","Muller"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Bayer 04 Leverkusen's number 04 in their name refers to what?", o:["Their founding year","The year they won their first trophy","The year Bayer added the football section","Their postal code"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Which club's supporters are famously known as the Ultras Sankt Pauli — one of the most politically active fanbases in world football?", o:["Borussia Dortmund","FC Cologne","FC St Pauli","Hamburger SV"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq" },
+  { q:"Lothar Matthaus played in which five World Cups — the joint record for outfield players?", o:["1982 to 1998","1986 to 2002","1978 to 1994","1990 to 2006"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
+  { q:"Bayern Munich's first ever Bundesliga title came in which season?", o:["1963-64","1968-69","1971-72","1973-74"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
+
+  // ── BATCH 48: SERIE A ─────────────────────────────────────────────────────────
+  { q:"Which Italian club won their first ever Champions League in 2009-10 as part of a historic treble?", o:["Roma","Lazio","Inter Milan","Juventus"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"The Derby della Capitale is the name for the fixture between which two clubs?", o:["AC Milan vs Inter Milan","Juventus vs Torino","Roma vs Lazio","Napoli vs Salernitana"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"Which Serie A club plays at the Diego Armando Maradona stadium — renamed in his honour in 2020?", o:["Roma","Fiorentina","Inter Milan","Napoli"], a:3, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"Juventus's streak of nine consecutive Serie A titles ended when which club won the 2020-21 title?", o:["Napoli","Roma","Inter Milan","AC Milan"], a:2, cat:"SerieA", diff:"easy", type:"mcq" },
+  { q:"Which Italian club is nicknamed La Viola due to their purple shirts?", o:["Palermo","Fiorentina","Catania","Lazio"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Antonio Conte won three Serie A titles with Juventus — in which three consecutive seasons?", o:["2010-11 to 2012-13","2011-12 to 2013-14","2012-13 to 2014-15","2009-10 to 2011-12"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Which club is the only Italian side to have beaten both Barcelona and Real Madrid in the same Champions League campaign?", o:["Juventus","AC Milan","Inter Milan","Roma"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Sandro Mazzola and his father Valentino were both stars for Inter Milan — how did Valentino die?", o:["Heart attack","In the Superga air disaster","In a car accident","During a match"], a:1, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which Serie A manager introduced the zone press and total tactical control to Italian football in the late 1980s?", o:["Giovanni Trapattoni","Arrigo Sacchi","Fabio Capello","Luigi Maifredi"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"AC Milan's famous unbeaten league run in 1991-92 — how many league games did they go unbeaten that season?", o:["32","34","38","42"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which Italian club's badge features an eagle — representing power and freedom?", o:["Roma","Lazio","Fiorentina","Sampdoria"], a:1, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"Roberto Mancini managed which Italian club before returning to manage Italy as national team boss?", o:["Juventus","Roma","Galatasaray","Inter Milan"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Which striker became Serie A's top scorer for six consecutive seasons from 2014 to 2020?", o:["Gonzalo Higuain","Mauro Icardi","Paulo Dybala","Ciro Immobile"], a:3, cat:"SerieA", diff:"medium", type:"mcq" },
+  { q:"The famous 'Calcio' — the historic form of football played in Florence since the 16th century — is still played today in which form?", o:["As an annual tournament","As part of school curriculum","As a professional league","It no longer exists"], a:0, cat:"SerieA", diff:"hard", type:"mcq" },
+  { q:"Gianluigi Buffon played how many consecutive seasons in Serie A — a record for an Italian goalkeeper?", o:["20","22","24","26"], a:2, cat:"SerieA", diff:"hard", type:"mcq" },
+
+  // ── BATCH 48: LA LIGA ─────────────────────────────────────────────────────────
+  { q:"Barcelona's greatest ever captain — who wore the armband for over a decade and played his whole career at the club?", o:["Xavi","Puyol","Iniesta","Messi"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga club was the last to stop Real Madrid and Barcelona winning the title — in 2020-21?", o:["Sevilla","Atletico Madrid","Villarreal","Real Sociedad"], a:1, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Real Madrid's greatest ever president — who led the club through the Galacticos era and rebuilt the Bernabeu?", o:["Ramon Calderon","Sandro Rosell","Joan Laporta","Florentino Perez"], a:3, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Which La Liga club famously sold Cesc Fabregas to Arsenal as a teenager — then bought him back from Arsenal years later?", o:["Real Madrid","Valencia","Atletico Madrid","Barcelona"], a:3, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Sevilla's incredible Europa League record — which manager won it with them three times in a row from 2014 to 2016?", o:["Monchi","Sampaoli","Emery","Lopetegui"], a:2, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga player was known as El Nino — The Kid — during his time at Liverpool and Atletico?", o:["Raul","David Villa","Fernando Torres","Diego Forlan"], a:2, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Real Madrid won La Liga in 2021-22 with how many points — their lowest winning total since 2007?", o:["82","86","91","95"], a:1, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Which club has the second most La Liga titles behind Real Madrid?", o:["Atletico Madrid","Valencia","Barcelona","Athletic Bilbao"], a:2, cat:"LaLiga", diff:"easy", type:"mcq" },
+  { q:"Diego Forlan won the Pichichi top scorer award in La Liga with Villarreal — in which season?", o:["2003-04","2004-05","2005-06","2006-07"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Which stadium is the second largest in Spain after the Camp Nou?", o:["Bernabeu","Ramon Sanchez Pizjuan","Mestalla","Wanda Metropolitano"], a:0, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Atletico Madrid went the 2015-16 Champions League campaign all the way to the final — who did they face?", o:["Barcelona","Bayern Munich","Juventus","Real Madrid"], a:3, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga player was the first ever to win the Ballon d'Or and La Liga title in the same year?", o:["Di Stefano","Puskas","Zidane","Ronaldo"], a:0, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Osasuna's stadium El Sadar is located in which Spanish city?", o:["Bilbao","Pamplona","San Sebastian","Logrono"], a:1, cat:"LaLiga", diff:"medium", type:"mcq" },
+  { q:"Which La Liga club was founded by Swiss and English expats in Barcelona in 1899?", o:["Espanyol","Barcelona","Real Sociedad","Atletico Madrid"], a:1, cat:"LaLiga", diff:"hard", type:"mcq" },
+  { q:"Isco — Real Madrid's gifted but often inconsistent midfielder — earned how many Spain caps across his career?", o:["43","51","65","79"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
+
+
+  // ── BATCH 49: RECORDS & PL & UCL ─────────────────────────────────────────────
+
+  // Records
+  { q:"Which club won an unprecedented six trophies in a single calendar year — known as the sextuple?", o:["Real Madrid 2022","Barcelona 2009","Bayern Munich 2020","Man City 2023"], a:1, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"The fastest hat-trick in Premier League history was scored in how many minutes by Sadio Mane for Southampton?", o:["2 min 56 sec","3 min 37 sec","4 min 12 sec","5 min 30 sec"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player holds the record for the most appearances in a single World Cup tournament — playing every minute of all seven games in 2018?", o:["Modric","Mbappe","Lloris","Varane"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The record for most goals scored in a single international match is 31-0 — between which two countries in 2001?", o:["Australia vs American Samoa","Germany vs San Marino","Brazil vs Bolivia","Spain vs Gibraltar"], a:0, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"Which club has gone the longest without winning their domestic league — a drought of over 50 years as of 2024?", o:["Everton","Hamburg","Nottingham Forest","Leeds United"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Thierry Henry holds the record for most Premier League assists in a single season — how many in 2002-03?", o:["18","20","21","23"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which nation has never been relegated from their national league since its formation — Real Madrid and Barcelona keeping La Liga intact?", o:["This refers to Athletic Bilbao","Real Madrid","Barcelona","This refers to both Real Madrid and Barcelona"], a:3, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"The record for the most goals in a Champions League group stage game is 9 — scored by which club in 2020?", o:["Bayern Munich","Real Madrid","Barcelona","Man City"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"What is the record for the most consecutive clean sheets in the Premier League — achieved by Edwin van der Sar?", o:["10","12","14","16"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player has the most international assists in football history — for Spain?", o:["Xavi","Iniesta","David Silva","Fernando Torres"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The record transfer fee between two English clubs is £107m — paid by which club for which player?", o:["Man City for Jack Grealish","Arsenal for Declan Rice","Chelsea for Enzo Fernandez","Man United for Antony"], a:1, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"Which club played the most seasons in the top division of English football — over 100 seasons?", o:["Arsenal","Everton","Man United","Liverpool"], a:1, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"Ronaldo scored his 700th career goal in which game — making it a landmark moment?", o:["For Juventus vs Napoli","For Portugal vs Sweden","For Real Madrid vs Malmo","For Man Utd vs Everton"], a:1, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"The most yellow cards shown in a single football match was 36 — in which country?", o:["Bolivia","Argentina","Paraguay","Bolivia"], a:0, cat:"Records", diff:"hard", type:"mcq" },
+  { q:"Which player has won the most domestic league titles across their career — with 11 league titles?", o:["Maldini","Xavi","Ryan Giggs","Andres Iniesta"], a:2, cat:"Records", diff:"hard", type:"mcq" },
+
+  // Premier League
+  { q:"Which club was the last to go a full Premier League season without winning an away game?", o:["Sunderland 2005-06","Derby County 2007-08","Bradford 2000-01","Watford 2019-20"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"How many hat-tricks did Alan Shearer score in the Premier League throughout his career?", o:["10","11","12","13"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club did Erling Haaland score his first Premier League hat-trick against?", o:["Nottingham Forest","Wolves","Crystal Palace","Manchester United"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Arsenal's 2003-04 Invincibles — how many of their 38 league games did they actually win?", o:["26","27","28","29"], a:0, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Which club beat Liverpool on the final day of the 2018-19 season — handing Man City the title on goal difference?", o:["Wolves","Brighton","Crystal Palace","Burnley"], a:1, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"Who was the first foreign manager to win the Premier League?", o:["Arsene Wenger","Sven-Goran Eriksson","Ruud Gullit","Jose Mourinho"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which Premier League club won the League Cup three years in a row from 2012 to 2014?", o:["Chelsea","Arsenal","Man City","Bradford City"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Trent Alexander-Arnold broke whose record for most assists by a defender in a single PL season?", o:["Gary Neville","Ashley Cole","Leighton Baines","Andy Robertson"], a:2, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which club ended the season with a positive goal difference despite being relegated from the Premier League?", o:["This has never happened","Sunderland 1997-98","QPR 2014-15","Bolton 2011-12"], a:2, cat:"PL", diff:"hard", type:"mcq" },
+  { q:"The highest scoring PL match ended 9-0 — which club was on the receiving end of that score twice?", o:["Leicester","Southampton","Ipswich","Watford"], a:1, cat:"PL", diff:"medium", type:"mcq" },
+  { q:"Which club provided the most players for England's 2024 European Championship squad?", o:["Arsenal","Chelsea","Man City","Tottenham"], a:0, cat:"PL", diff:"medium", type:"mcq" },
+
+  // UCL
+  { q:"Real Madrid have played more Champions League finals than any other club — how many as of 2024?", o:["14","15","16","17"], a:2, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Which club became the first to be eliminated from the Champions League group stage as holders?", o:["AC Milan","Manchester United","Liverpool","Real Madrid"], a:0, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Liverpool's 2018-19 Champions League campaign — who did they beat in the final in Madrid?", o:["Barcelona","Ajax","Tottenham Hotspur","Man City"], a:2, cat:"UCL", diff:"easy", type:"mcq" },
+  { q:"The highest scoring Champions League final was 7-3 — between which two clubs in 1960?", o:["Real Madrid vs Eintracht Frankfurt","Benfica vs Barcelona","AC Milan vs Feyenoord","Juventus vs Fiorentina"], a:0, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Which club has lost the most Champions League finals — with five defeats?", o:["Bayern Munich","Atletico Madrid","Juventus","Benfica"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"Manchester City won the Champions League in 2022-23 — who scored their winning goal against Inter Milan?", o:["De Bruyne","Gundogan","Bernardo Silva","Rodri"], a:1, cat:"UCL", diff:"medium", type:"mcq" },
+  { q:"Which goalkeeper won the Champions League with three different clubs — a unique achievement?", o:["Pepe Reina","Oliver Kahn","Edwin van der Sar","Andoni Zubizarreta"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
+  { q:"The first Champions League final to be decided by a golden goal was in which season?", o:["1995-96","1997-98","1999-00","2001-02"], a:1, cat:"UCL", diff:"hard", type:"mcq" },
+
 ];
 
 // ─── AUTOCOMPLETE POOL ────────────────────────────────────────────────────────
@@ -5476,23 +5955,42 @@ function iqLabel(iq) {
   return "Keep Watching";
 }
 
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, (_, i) => Array.from({length: n+1}, (_, j) => i === 0 ? j : j === 0 ? i : 0));
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+    dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return dp[m][n];
+}
+
 function checkTyped(input, question) {
   const v = norm(input);
   if (!v || v.length < 2) return false;
-  // Check main answer
   const a = norm(question.typed_a);
+
+  // Exact match
   if (v === a) return true;
-  // Last name match (e.g. "iniesta" matches "andres iniesta")
+
+  // Last name match — "iniesta" matches "andres iniesta"
   const parts = a.split(" ");
   if (parts.some(p => p === v && v.length >= 3)) return true;
+
+  // Fuzzy match — allow 1 typo for short answers, 2 for longer
+  const maxDist = a.length <= 5 ? 1 : 2;
+  if (levenshtein(v, a) <= maxDist) return true;
+  // Fuzzy match on last name
+  if (parts.some(p => p.length >= 4 && levenshtein(v, p) <= 1)) return true;
+
   // Partial contains (at least 4 chars)
   if (a.includes(v) && v.length >= 4) return true;
-  // Check aliases array if present
+
+  // Check aliases
   if (question.aliases) {
     for (const alias of question.aliases) {
       const na = norm(alias);
       if (v === na) return true;
       if (na.includes(v) && v.length >= 3) return true;
+      if (levenshtein(v, na) <= 1) return true;
     }
   }
   return false;
@@ -5701,7 +6199,7 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background 0.3s,color 0.3s;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background 0.3s,color 0.3s;}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
@@ -5715,7 +6213,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .screen{animation:sIn 0.22s cubic-bezier(0.22,1,0.36,1);}
 @keyframes sIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .home-hero{padding:28px 0 20px;}
-.home-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;opacity:0.85;}
+.home-eyebrow{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:500;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;opacity:0.85;}
 .home-title{font-size:30px;font-weight:800;line-height:1.15;letter-spacing:-0.8px;margin-bottom:12px;color:var(--text);}
 .home-title span{color:var(--accent);}
 .empty-state-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-top:12px;border-left:3px solid var(--accent);}
@@ -5754,7 +6252,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .sp-title{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:14px;}
 .sp-section{margin-bottom:16px;}
 .sp-section:last-child{margin-bottom:0;}
-.sp-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.sp-label{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:500;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 .chip-row{display:flex;flex-wrap:wrap;gap:6px;}
 .chip{padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .chip.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
@@ -5771,22 +6269,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .mi-name{font-size:14px;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;}
 .mi-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 .mi-arrow{font-size:13px;color:var(--t2);}
-.mi-badge{font-size:9px;font-weight:600;padding:3px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;letter-spacing:0.8px;margin-left:auto;white-space:nowrap;}
+.mi-badge{font-size:9px;font-weight:600;padding:3px 7px;border-radius:5px;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;letter-spacing:0.8px;margin-left:auto;white-space:nowrap;}
 .badge-live{background:rgba(88,204,2,0.1);color:var(--green);border:1px solid rgba(88,204,2,0.2);}
+.badge-local{background:rgba(88,153,255,0.1);color:#5899FF;border:1px solid rgba(88,153,255,0.2);}
 .quiz-wrap{padding-top:20px;}
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
 .q-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.q-ctr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;}
-.q-score-live{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.q-ctr{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;}
+.q-score-live{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:13px;font-weight:800;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .legends-card{border:1px solid rgba(251,191,36,0.2)!important;}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);} 
 .q-card-correct{background:rgba(74,222,128,0.12)!important;border:1px solid rgba(74,222,128,0.35)!important;}
 .q-card-wrong{background:rgba(248,113,113,0.12)!important;border:1px solid rgba(248,113,113,0.35)!important;}
-.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;background:var(--accent-dim);border:1px solid var(--accent-b);padding:4px 10px;border-radius:20px;}
+.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;background:var(--accent-dim);border:1px solid var(--accent-b);padding:4px 10px;border-radius:20px;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;text-align:left;transition:all 0.15s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:12px;width:100%;}
@@ -5795,7 +6294,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .opt.correct{border-color:var(--green);border-width:2px;background:rgba(88,204,2,0.08);color:var(--text);}
 .opt.wrong{border-color:var(--red);border-width:2px;background:rgba(255,75,75,0.07);opacity:0.85;}
 .opt.neutral-after{opacity:0.38;}
-.opt-l{width:28px;height:28px;border-radius:8px;background:var(--s2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace;color:var(--t2);border:1px solid var(--border);transition:all 0.15s;}
+.opt-l{width:28px;height:28px;border-radius:8px;background:var(--s2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;color:var(--t2);border:1px solid var(--border);transition:all 0.15s;}
 .opt.correct .opt-l{background:var(--green);color:#0a1a00;border-color:var(--green);font-size:13px;}
 .opt.wrong .opt-l{background:var(--red);color:#fff;border-color:var(--red);font-size:13px;}
 .feedback{border-radius:9px;padding:10px 14px;margin-top:9px;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
@@ -5818,7 +6317,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .timer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;}
-.timer{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--t2);min-width:28px;text-align:right;}
+.timer{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:15px;font-weight:600;color:var(--t2);min-width:28px;text-align:right;}
 .timer.urgent{color:var(--red);animation:tp 0.5s ease infinite alternate;}
 @keyframes tp{from{opacity:1;}to{opacity:0.4;}}
 .streak-bar{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.15);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:11px;margin-bottom:12px;}
@@ -5828,7 +6327,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .vs-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
 .pc.me{border-color:var(--accent-b);background:var(--accent-dim);}
-.pc-name{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.pc-name{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
 .pc-score{font-size:24px;font-weight:800;color:var(--text);}
 .pc.me .pc-score{color:var(--accent);}
 .vs-lbl{font-size:11px;font-weight:600;color:var(--t3);text-align:center;}
@@ -5841,11 +6340,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .rc-title{font-size:24px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
 .rc-sub{font-size:13px;color:var(--t2);}
 .score-big{font-size:60px;font-weight:800;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-2px;}
-.score-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);}
+.score-pct{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
 .sbox{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;}
 .sbox-v{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
-.sbox-k{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:3px;letter-spacing:0.8px;text-transform:uppercase;}
+.sbox-k{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);margin-top:3px;letter-spacing:0.8px;text-transform:uppercase;}
 .iq-result{text-align:center;padding:26px 0 8px;transition:opacity 0.4s;}
 .iq-revealed .iq-label{animation:sIn 0.5s cubic-bezier(0.22,1,0.36,1);}
 .iq-score-wrap{display:flex;justify-content:center;margin:0 0 4px;}
@@ -5854,7 +6353,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 @keyframes iqPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 .iq-ring-inner{width:120px;height:120px;border-radius:50%;background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .iq-num{font-size:44px;font-weight:800;letter-spacing:-2px;color:var(--text);}
-.iq-sub{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.iq-sub{font-size:9px;color:var(--t3);font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
 .iq-label{font-size:21px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
 .iq-pct strong{color:var(--accent);font-weight:700;}
@@ -5869,11 +6368,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lcard{background:var(--s1);border:none;border-radius:var(--r);padding:20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.35);}
 .lcard-t{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-0.2px;}
 .lcard-s{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px;}
-.inp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:7px;}
+.inp-lbl{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:7px;}
 .inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
 .inp:focus{border-color:var(--accent-b);background:var(--s1);}
 .code-box{background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:11px;padding:18px;text-align:center;margin-bottom:13px;}
-.code-val{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--accent);letter-spacing:8px;}
+.code-val{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:28px;font-weight:600;color:var(--accent);letter-spacing:8px;}
 .code-hint{font-size:12px;color:var(--t2);margin-top:5px;}
 .wait-row{display:flex;align-items:center;gap:10px;padding:9px 0;}
 .wdot{width:6px;height:6px;border-radius:50%;background:var(--s3);}
@@ -5885,9 +6384,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .cdown{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;}
 .cdown-n{font-size:110px;font-weight:900;color:var(--accent);line-height:1;animation:cda 0.9s cubic-bezier(0.22,1,0.36,1);letter-spacing:-4px;}
 @keyframes cda{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
-.cdown-s{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);margin-top:10px;letter-spacing:2px;text-transform:uppercase;}
+.cdown-s{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);margin-top:10px;letter-spacing:2px;text-transform:uppercase;}
 .player-input-row{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
-.player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:'JetBrains Mono',monospace;}
+.player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
 .player-inp:focus{border-color:var(--accent-b);background:var(--s2);}
 .remove-btn{width:28px;height:28px;border-radius:7px;border:none;background:var(--s2);color:var(--t3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;}
@@ -5896,7 +6395,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .add-player-btn:hover{border-color:var(--accent-b);color:var(--accent);background:var(--accent-dim);}
 .handoff{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:20px 0;}
 .handoff-avatar{width:68px;height:68px;border-radius:50%;background:var(--accent-dim);border:1.5px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;}
-.handoff-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);font-weight:500;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.handoff-tag{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);font-weight:500;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
 .handoff-name{font-size:30px;font-weight:800;letter-spacing:-0.8px;margin-bottom:5px;}
 .handoff-sub{font-size:13px;color:var(--t2);margin-bottom:12px;}
 .handoff-scores{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:26px;}
@@ -5907,10 +6406,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .podium-row.gold{border-color:rgba(251,191,36,0.25);background:rgba(251,191,36,0.04);}
 .pod-rank{font-size:17px;width:26px;text-align:center;}
 .pod-name{flex:1;font-size:14px;font-weight:600;}
-.pod-score{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--t2);}
+.pod-score{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:13px;font-weight:500;color:var(--t2);}
 .podium-row.gold .pod-score{color:var(--gold);}
 .settings-section{margin-bottom:20px;}
-.settings-section-title{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.settings-section-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 .settings-card{background:var(--s1);border:none;border-radius:var(--r);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.35);}
 .settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.13s;}
 .settings-row:last-child{border-bottom:none;}
@@ -5977,7 +6476,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* ── DAILY SCREEN ── */
 .daily-hero{background:var(--s1);border:none;border-radius:18px;padding:24px 20px;margin-bottom:14px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.45);}
-.daily-hero-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.daily-hero-date{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
 .daily-hero-title{font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
 .daily-hero-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:18px;}
 .daily-hero-btn{width:100%;padding:14px;border-radius:12px;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s;}
@@ -5985,36 +6484,36 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .daily-hero-btn.available:hover{background:#22c55e;transform:translateY(-1px);}
 .daily-hero-btn.done{background:var(--s2);color:var(--t2);cursor:default;}
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
-.streak-sec-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.streak-sec-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
 .streak-cal{display:flex;gap:6px;justify-content:center;}
 .streak-day{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .streak-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
 .streak-dot.done{background:var(--accent);color:#0a1a00;}
 .streak-dot.today{background:var(--accent-dim);border:1.5px solid var(--accent-b);color:var(--accent);}
 .streak-dot.missed{background:var(--s2);color:var(--t3);}
-.streak-day-label{font-size:9px;color:var(--t3);font-weight:500;font-family:'JetBrains Mono',monospace;}
+.streak-day-label{font-size:9px;color:var(--t3);font-weight:500;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 
 /* ── LEAGUE SCREEN ── */
 .league-header{text-align:center;padding:8px 0 18px;}
 .league-title{font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
 .league-sub{font-size:13px;color:var(--t2);}
-.league-timer{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);margin-top:4px;}
+.league-timer{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:var(--t3);margin-top:4px;}
 .league-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
 .li-card{background:var(--s1);border:none;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.li-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.li-label{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
 .li-val{font-size:16px;font-weight:800;letter-spacing:-0.3px;}
 .league-table{background:var(--s1);border:none;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
 .lt-header{display:grid;grid-template-columns:32px 1fr 60px;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
-.lt-hcol{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.lt-hcol{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
 .lt-row{display:grid;grid-template-columns:32px 1fr 60px;gap:8px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center;}
 .lt-row:last-child{border-bottom:none;}
 .lt-row.you{background:var(--accent-dim);border-left:3px solid var(--accent);}
 .lt-row.promote{background:rgba(88,204,2,0.04);}
 .lt-row.relegate{background:rgba(248,113,113,0.04);}
-.lt-rank{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--t3);text-align:center;}
+.lt-rank{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:12px;font-weight:700;color:var(--t3);text-align:center;}
 .lt-row.you .lt-rank{color:var(--accent);}
 .lt-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.lt-xp{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--t2);text-align:right;}
+.lt-xp{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:12px;font-weight:600;color:var(--t2);text-align:right;}
 .lt-row.you .lt-xp{color:var(--accent);}
 
 /* ── PROFILE SCREEN ── */
@@ -6031,13 +6530,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
 .share-profile-btn:hover{background:var(--accent-dim);}
 .badges-section{margin-bottom:14px;}
-.badges-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.badges-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);}
 .badge-tile.earned{border-color:var(--accent-b);background:var(--accent-dim);}
 .badge-tile.locked{opacity:0.4;}
 .badge-icon{font-size:20px;}
-.badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'JetBrains Mono',monospace;}
+.badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .badge-tile.earned .badge-name{color:var(--accent);}
 .emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
 .emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px;animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
@@ -6093,10 +6592,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .shc-left{display:flex;align-items:center;gap:12px;}
 .shc-icon{font-size:28px;}
 .shc-level{font-size:16px;font-weight:800;letter-spacing:-0.2px;}
-.shc-xp{font-size:12px;color:var(--t2);margin-top:2px;font-family:'JetBrains Mono',monospace;}
+.shc-xp{font-size:12px;color:var(--t2);margin-top:2px;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .shc-streak{display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:8px 12px;}
 .shc-streak-n{font-size:20px;font-weight:800;color:var(--gold);line-height:1;text-align:center;}
-.shc-streak-l{font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.shc-streak-l{font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:600;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .stat-xp-progress{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
 .stat-xp-row{display:flex;justify-content:space-between;margin-bottom:8px;}
 .stat-xp-label{font-size:11px;font-weight:600;color:var(--t2);}
@@ -6104,9 +6603,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;}
 .st-val{font-size:24px;font-weight:800;letter-spacing:-0.5px;line-height:1.1;}
-.st-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;text-transform:uppercase;}
+.st-key{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;text-transform:uppercase;}
 .stat-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
-.stat-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.stat-section-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
 .stat-iq-chart{overflow-x:auto;}
 .stat-footer{text-align:center;font-size:13px;color:var(--t2);padding:12px 0 4px;line-height:1.6;}
 
@@ -6115,7 +6614,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .xp-bar-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .xp-level-icon{font-size:16px;}
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
-.xp-total{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);font-weight:500;}
+.xp-total{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:var(--t2);font-weight:500;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .xp-fill{height:100%;background:linear-gradient(90deg,#58CC02,#43C000);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);}
 .xp-next{font-size:11px;color:var(--t3);margin-top:6px;font-weight:500;}
@@ -6124,28 +6623,28 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 @keyframes xpPop{from{opacity:0;transform:translateX(-50%) scale(0.85);}to{opacity:1;transform:translateX(-50%) scale(1);}}
 .xp-t-icon{font-size:16px;}
 .wrong-review-details{margin-top:14px;}
-.wr-summary{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
+.wr-summary{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
 .wr-summary::before{content:"▶";font-size:8px;transition:transform 0.2s;}
 details[open] .wr-summary::before{transform:rotate(90deg);}
 
 .wrong-review{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
-.wr-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.wr-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
 .wr-item{padding:10px 0;border-bottom:1px solid var(--border);}
 .wr-item:last-child{border-bottom:none;padding-bottom:0;}
 .wr-q{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:5px;}
 .wr-a{font-size:13px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px;}
 .wr-tick{width:18px;height:18px;background:var(--green);color:#0a1a00;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
-.xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace;}
+.xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .streak-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a0a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(251,191,36,0.4);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
 .xp-earned-badge{text-align:center;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:8px;padding:8px 14px;margin-bottom:8px;}
 
 /* ── IQ HISTORY ── */
 .iq-history{background:var(--s2);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
-.iq-hist-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.iq-hist-label{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
 .iq-hist-bars{display:flex;align-items:flex-end;gap:6px;height:52px;}
 .iq-hist-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .iq-hist-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height 0.4s cubic-bezier(0.22,1,0.36,1);}
-.iq-hist-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);font-weight:500;}
+.iq-hist-n{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);font-weight:500;}
 
 
 /* ── SOCIAL HUB ── */
@@ -6159,9 +6658,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .sc-body{flex:1;}
 .sc-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .sc-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:10px;}
-.sc-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(59,130,246,0.12);color:#60A5FA;border:1px solid rgba(59,130,246,0.25);border-radius:4px;padding:2px 7px;}
+.sc-badge{display:inline-block;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(59,130,246,0.12);color:#60A5FA;border:1px solid rgba(59,130,246,0.25);border-radius:4px;padding:2px 7px;}
 .sc-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.sc-tag{font-size:11px;font-weight:600;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-b);border-radius:6px;padding:3px 8px;font-family:'JetBrains Mono',monospace;}
+.sc-tag{font-size:11px;font-weight:600;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-b);border-radius:6px;padding:3px 8px;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
 .sc-arrow{font-size:18px;color:var(--t3);align-self:center;}
 .social-tip{font-size:12px;color:var(--t3);background:var(--s1);border-radius:12px;padding:12px 14px;line-height:1.6;margin-top:4px;box-shadow:0 1px 6px rgba(0,0,0,0.2);}
 
@@ -6208,12 +6707,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 /* ── WEEKLY SUMMARY ── */
 .weekly-card{background:var(--s1);border-radius:20px;padding:24px 20px;width:100%;max-width:340px;box-shadow:var(--sh-lg);}
 .wc-header{text-align:center;margin-bottom:18px;}
-.wc-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.wc-eyebrow{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
 .wc-title{font-size:20px;font-weight:800;letter-spacing:-0.3px;}
 .wc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
 .wc-tile{background:var(--s2);border:none;border-radius:12px;padding:12px;text-align:center;}
 .wc-val{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
-.wc-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+.wc-key{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
 .wc-level{font-size:13px;color:var(--t2);text-align:center;margin-bottom:16px;line-height:1.6;}
 
 /* ── QUIT MODAL ── */
@@ -6567,6 +7066,15 @@ function createSound(type) {
   } catch {}
 }
 
+function haptic(type) {
+  try {
+    if (!navigator.vibrate) return;
+    if (type === "correct") navigator.vibrate(40);
+    else if (type === "wrong") navigator.vibrate([30, 20, 60]);
+    else if (type === "levelup") navigator.vibrate([50, 30, 50, 30, 100]);
+    else if (type === "select") navigator.vibrate(15);
+  } catch {}
+}
 
 // ─── HOT STREAK ENGINE ────────────────────────────────────────────────────────
 function HotStreakEngine({ questions, onComplete, onBack }) {
@@ -6763,6 +7271,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     const correct = i === q.a;
     try { navigator.vibrate?.(correct ? 40 : [50, 40, 50]); } catch {}
     if (soundEnabled) createSound(correct ? "correct" : "wrong");
+    haptic(correct ? "correct" : "wrong");
     registerAnswer(correct);
   }, [answered, done, q, registerAnswer]);
 
@@ -6862,7 +7371,10 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       )}
 
       <div className="q-card">
-        <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+          <div className="q-tag" style={{marginBottom:0}}>{CAT_LABELS[q.cat]||q.cat}</div>
+          <button onClick={() => { haptic("select"); showToast("Question flagged — we'll review it! 🙏"); }} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,color:"var(--t3)",padding:"2px 4px",lineHeight:1}} title="Flag question">🚩</button>
+        </div>
         <div className="q-text" style={{fontSize:"var(--q-font-size, 18px)"}}>{q.q}</div>
       </div>
 
@@ -6882,7 +7394,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
             }
             return (
               <button key={String(val)} disabled={isAnswered}
-                onClick={() => handleMCQ(val ? 1 : 0)}
+                onClick={() => { haptic("select"); handleMCQ(val ? 1 : 0); }}
                 onPointerDown={e => { if (!isAnswered) e.currentTarget.style.transform = "scale(0.97)"; }}
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
                 style={{padding:"20px 8px",fontSize:17,fontWeight:800,borderRadius:16,
@@ -7484,8 +7996,12 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
             </div>
           </div>
         </div>
-        <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s"}}>
-          Better than <strong>{pctile}%</strong> of players
+        <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s", lineHeight:1.8}}>
+          Better than <strong>{pctile}%</strong> of football fans
+          {pctile >= 90 && <div style={{fontSize:12,color:"var(--gold)",fontWeight:700,marginTop:4}}>🏆 Elite level knowledge!</div>}
+          {pctile >= 75 && pctile < 90 && <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginTop:4}}>⚡ Sharp — you really know your football</div>}
+          {pctile >= 50 && pctile < 75 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Keep playing to climb higher!</div>}
+          {pctile < 50 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Retake the test to boost your score</div>}
         </div>
       </div>
       <div className="s-row">
@@ -7515,7 +8031,9 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
 
 
 function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers }) {
+  const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
+  useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
   const isSurvival = mode === "survival";
   const emoji = isSurvival
     ? (result.score >= 20 ? "🏆" : result.score >= 10 ? "🔥" : result.score >= 5 ? "⚽" : "💀")
@@ -7533,6 +8051,7 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
   const showConfetti = isSurvival ? result.score >= 10 : (mode === "balliq" ? false : pct >= 80);
   return (
     <div className="screen" style={{paddingTop:8}}>
+      {isPerfect && <Confetti />}
       {showConfetti && <Confetti />}
       <div className="rc">
         <div className="rc-icon">{emoji}</div>
@@ -7657,6 +8176,7 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
 
 // ─── CLUB QUIZ SCREEN ────────────────────────────────────────────────────────
 function ClubQuizScreen({ onStart, onBack }) {
+  const [showProModal, setShowProModal] = React.useState(false);
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -7668,7 +8188,7 @@ function ClubQuizScreen({ onStart, onBack }) {
       </p>
       <div className="mode-list">
         {Object.entries(CLUB_PACKS).map(([key, pack]) => (
-          <div key={key} className="mode-item" onClick={() => onStart(key)}>
+          <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}>
             <div className="mi-icon" style={{fontSize:20}}>{pack.icon}</div>
             <div className="mi-body">
               <div className="mi-name">{pack.name}</div>
@@ -7677,15 +8197,23 @@ function ClubQuizScreen({ onStart, onBack }) {
             <div className="mi-arrow">→</div>
           </div>
         ))}
-        <div className="mode-item" style={{opacity:0.5,cursor:"default"}}>
-          <div className="mi-icon">🔒</div>
-          <div className="mi-body">
-            <div className="mi-name">More clubs coming soon</div>
-            <div className="mi-desc">Man City, Bayern, PSG, Juventus + more</div>
-          </div>
-          <span className="mi-badge badge-live" style={{background:"var(--gold-l)",color:"var(--gold)",borderColor:"rgba(251,191,36,0.2)"}}>PRO</span>
-        </div>
       </div>
+      <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
+        <div style={{fontSize:22,marginBottom:6}}>🏆</div>
+        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>More clubs coming soon</div>
+        <div style={{fontSize:13,color:"var(--t2)",marginBottom:12,lineHeight:1.6}}>International club packs — Napoli, Celtic, Ajax deep dive, PSV and more — are on the way.</div>
+        <div style={{fontSize:11,color:"var(--t3)",letterSpacing:1,textTransform:"uppercase",fontWeight:600}}>Free update · No purchase needed</div>
+      </div>
+      {showProModal && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
+          <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px"}} onClick={e => e.stopPropagation()}>
+            <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
+            <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
+            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs will be available as a free update. Keep playing to stay ready!</div>
+            <button className="btn btn-p" onClick={() => setShowProModal(false)}>Got it!</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -7782,7 +8310,7 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
           </div>
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Questions</div></div>
-            <div className="sr-right"><div className="sr-value">3,900+</div></div>
+            <div className="sr-right"><div className="sr-value">4,300+</div></div>
           </div>
           <div className="settings-row" onClick={() => window.open("https://ball-iq-pi.vercel.app/privacy.html", "_blank")} style={{cursor:"pointer"}}>
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
@@ -8021,6 +8549,73 @@ function HomeHero({ profile, stats, loginStreak, dailyDone, xp }) {
         ? <div className="home-stat-pill">{fact}</div>
         : <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
       }
+      {loginStreak >= 1 && <StreakHero loginStreak={loginStreak} dailyDone={dailyDone} />}
+      <DailyTeaser />
+    </div>
+  );
+}
+
+function StreakHero({ loginStreak, dailyDone }) {
+  // Warning state: streak active but daily not done yet and after 6pm
+  const hour = new Date().getHours();
+  const atRisk = !dailyDone && hour >= 18 && loginStreak >= 2;
+  const milestone = loginStreak === 7 || loginStreak === 30 || loginStreak === 100 || loginStreak % 50 === 0;
+
+  return (
+    <div style={{
+      background: atRisk ? "linear-gradient(135deg,rgba(255,143,0,0.15),rgba(255,95,0,0.08))" : milestone ? "linear-gradient(135deg,rgba(251,191,36,0.15),rgba(251,140,36,0.08))" : "linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,140,36,0.03))",
+      border: `1px solid ${atRisk ? "rgba(255,143,0,0.3)" : "rgba(251,191,36,0.25)"}`,
+      borderRadius: 14,
+      padding: "12px 16px",
+      marginBottom: 14,
+      display: "flex",
+      alignItems: "center",
+      gap: 12
+    }}>
+      <div style={{fontSize: 28, lineHeight: 1}}>{atRisk ? "⏰" : "🔥"}</div>
+      <div style={{flex: 1}}>
+        <div style={{fontSize: 15, fontWeight: 800, color: "var(--t1)", lineHeight: 1.2}}>
+          {loginStreak}-day streak{milestone ? " 🏆" : ""}
+        </div>
+        <div style={{fontSize: 12, color: "var(--t2)", marginTop: 2, lineHeight: 1.4}}>
+          {atRisk ? "Don't break it — play before midnight!" : dailyDone ? "Safe today. Keep it going tomorrow!" : "Complete today's daily to keep it alive"}
+        </div>
+      </div>
+      {milestone && <div style={{fontSize: 11, fontWeight: 700, color: "var(--gold)", letterSpacing: 1, textTransform: "uppercase", whiteSpace: "nowrap"}}>Milestone!</div>}
+    </div>
+  );
+}
+
+
+function DailyTeaser() {
+  const [revealed, setRevealed] = React.useState(false);
+  const [q, setQ] = React.useState(null);
+
+  React.useEffect(() => {
+    const seed = Math.floor(Date.now() / 86400000);
+    const mcqOnly = QB.filter(x => x.type === "mcq" && x.diff !== "hard");
+    if (mcqOnly.length) setQ(mcqOnly[seed % mcqOnly.length]);
+  }, []);
+
+  if (!q) return null;
+  const correct = q.a;
+  return (
+    <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 16px",marginBottom:16,cursor:revealed?"default":"pointer"}} onClick={() => !revealed && setRevealed(true)}>
+      <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:"'JetBrains Mono','SF Mono',monospace",marginBottom:8}}>⚡ Question of the Day</div>
+      <div style={{fontSize:14,fontWeight:600,color:"var(--t1)",lineHeight:1.5}}>{q.q}</div>
+      {!revealed && <div style={{fontSize:12,color:"var(--t3)",marginTop:8}}>Tap to reveal answer →</div>}
+      {revealed && (
+        <div style={{marginTop:10,display:"flex",flexWrap:"wrap",gap:6}}>
+          {q.o.map((opt, i) => (
+            <div key={i} style={{
+              padding:"5px 10px",borderRadius:8,fontSize:12,fontWeight:600,
+              background: i === correct ? "rgba(88,204,2,0.12)" : "var(--s2)",
+              color: i === correct ? "var(--accent)" : "var(--t3)",
+              border: i === correct ? "1px solid rgba(88,204,2,0.3)" : "1px solid var(--border)"
+            }}>{i === correct ? "✓ " : ""}{opt}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -8289,7 +8884,7 @@ function ProfileScreen({ profile, setProfile, stats, xp, loginStreak, onSharePro
 }
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreen({ dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest }) {
+function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive }) {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const days = [];
@@ -8330,6 +8925,31 @@ function DailyTabScreen({ dailyDone, dailyScore, loginStreak, onPlay, iqHistory,
                 <div className="mi-arrow">→</div>
               </button>
             ))}
+          </div>
+        </div>
+      )}
+      {shieldActive && (
+        <div style={{background:"rgba(88,204,2,0.08)",border:"1px solid rgba(88,204,2,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <span style={{fontSize:20}}>🛡️</span>
+            <div>
+              <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>Streak Shield available</div>
+              <div style={{fontSize:11,color:"var(--t2)"}}>Earned at {Math.floor((xp||0)/200)*200} XP — protects your streak once</div>
+            </div>
+          </div>
+          <button onClick={onUseShield} style={{background:"var(--accent)",border:"none",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"#0a1a00",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Use 🛡️</button>
+        </div>
+      )}
+      {(stats?.gamesThisWeek !== undefined) && (
+        <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:12,padding:"12px 14px",marginBottom:12}}>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:"'JetBrains Mono','SF Mono',monospace",marginBottom:8}}>This Week</div>
+          <div style={{display:"flex",alignItems:"baseline",gap:12}}>
+            <div style={{fontSize:28,fontWeight:900,color:"var(--t1)",lineHeight:1}}>{stats?.gamesThisWeek || 0}</div>
+            <div style={{fontSize:13,color:"var(--t2)"}}>games played</div>
+            {stats?.gamesLastWeek > 0 && (() => {
+              const diff = (stats?.gamesThisWeek || 0) - stats.gamesLastWeek;
+              return <div style={{marginLeft:"auto",fontSize:12,fontWeight:700,color: diff >= 0 ? "var(--accent)" : "var(--t3)"}}>{diff >= 0 ? "↑" : "↓"} {Math.abs(diff)} vs last week</div>;
+            })()}
           </div>
         </div>
       )}
@@ -8505,6 +9125,11 @@ function AppInner() {
   const [dailyScore, setDailyScore] = useState(null);
   const [iqHistory, setIqHistory] = useState([]);
   const [hotstreakBest, setHotstreakBest] = useState(0);
+  const [showRatePrompt, setShowRatePrompt] = useState(false);
+  const [showBallIQIntro, setShowBallIQIntro] = useState(false);
+  const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
+  const [firstQuizTipStep, setFirstQuizTipStep] = useState(0);
+  const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(0);
   const [xpToast, setXpToast] = useState(null);
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
@@ -8567,6 +9192,12 @@ function AppInner() {
     window.storage?.get("biq_hotstreak_best").then(res => {
       if (res) { try { setHotstreakBest(parseInt(res.value) || 0); } catch {} }
     }).catch(() => {});
+    window.storage?.get("biq_first_tip_shown").then(res => {
+      if (!res) setShowFirstQuizTip(true);
+    }).catch(() => {});
+    window.storage?.get("biq_rate_shown").then(res => {
+      if (res) setRatePromptShown(true);
+    }).catch(() => {});
     // Login streak — check if we played yesterday, update streak
     (async () => {
       try {
@@ -8610,8 +9241,24 @@ function AppInner() {
   const saveStats = (newResult) => {
     const newStreak = newResult.bestStreak || 0;
     const isSpecialMode = mode === "hotstreak" || mode === "truefalse";
+    // Weekly tracking — rotate if new week
+    const now = new Date();
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0,0,0,0);
+    const currentWeekEpoch = weekStart.getTime();
+    let gamesThisWeek = (stats.gamesThisWeek || 0) + 1;
+    let gamesLastWeek = stats.gamesLastWeek || 0;
+    if (stats.weekEpoch && stats.weekEpoch < currentWeekEpoch) {
+      gamesLastWeek = stats.gamesThisWeek || 0;
+      gamesThisWeek = 1;
+    }
     const updated = {
       gamesPlayed: stats.gamesPlayed + 1,
+      gamesThisWeek,
+      gamesLastWeek,
+      weekEpoch: currentWeekEpoch,
+      shieldsUsed: stats.shieldsUsed || 0,
       // Only count standard quiz scores toward bestScore (max 10)
       bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
       bestStreak: Math.max(stats.bestStreak || 0, newStreak),
@@ -8627,6 +9274,12 @@ function AppInner() {
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
 
   const startMode = (m) => {
+    // Dismiss first-quiz tip when user starts a game
+    if (showFirstQuizTip && m === "classic") {
+      setShowFirstQuizTip(false);
+      window.storage?.set("biq_first_tip_shown", "1").catch(() => {});
+    }
+
     setMode(m);
     if (m === "online") { setScreen("online"); return; }
     if (m === "local") { setScreen("local-setup"); return; }
@@ -8638,12 +9291,13 @@ function AppInner() {
       return;
     }
     let qs = [];
-    if (m === "balliq") { qs = getBallIQQuestions(); }
+    if (m === "balliq") { setShowBallIQIntro(true); return; }
+    if (m === "balliq_confirmed") { qs = getBallIQQuestions(); }
     else if (m === "daily") { qs = getDailyQs(); }
     else if (m === "survival") { qs = getQs({ cat, diff, n: 300 }); }
     else if (m === "legends") { qs = getQs({ cat: "Legends", diff, n: 10 }); setCat("All"); }
     else if (m === "speed") { qs = getQs({ cat, diff: "medium", n: 5 }); }
-    else if (m === "hotstreak") { qs = getQs({ cat, diff, n: 999 }); }
+    else if (m === "hotstreak") { qs = getQs({ cat, diff, n: 999 }).filter(q => q.type !== "tf"); }
     else if (m === "wc2026") { const wc = QB.filter(q => q.tag === "wc2026"); qs = seededShuffle([...wc], Date.now()).slice(0, 15); setCat("All"); }
     else if (m === "truefalse") { qs = getTrueFalseQs(); }
     else { qs = getQs({ cat, diff, n: 10, ramp: true }); }
@@ -8681,6 +9335,35 @@ function AppInner() {
     // Don't pollute stats with BallIQ (different total) or daily (counted separately)
     if (mode !== "balliq") saveStats(res);
 
+    // Milestone celebrations
+    const newTotal = (stats.gamesPlayed || 0) + 1;
+    if (newTotal === 10) showToast("🎉 10 games played! You're on a roll!");
+    // Streak milestones
+    if (loginStreak === 7 && !stats.streak7Celebrated) {
+      setTimeout(() => showToast("🔥 7-day streak! You're building a habit!"), 1200);
+      setStats(p => ({...p, streak7Celebrated: true}));
+    } else if (loginStreak === 30 && !stats.streak30Celebrated) {
+      setTimeout(() => showToast("🏆 30-DAY STREAK! Incredible dedication!"), 1200);
+      setStats(p => ({...p, streak30Celebrated: true}));
+    } else if (loginStreak === 100 && !stats.streak100Celebrated) {
+      setTimeout(() => showToast("💎 100-DAY STREAK! You are a legend!"), 1200);
+      setStats(p => ({...p, streak100Celebrated: true}));
+    }
+    else if (newTotal === 50) showToast("🔥 50 games! Serious Ball IQ energy.");
+    else if (newTotal === 100) showToast("🏆 100 games! You're a Ball IQ legend.");
+    else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played! Keep going!`);
+
+    // Rate prompt — show once after 5+ games with a good score
+    const shouldShowRate = !ratePromptShown
+      && stats.gamesPlayed >= 4
+      && res.score >= 7
+      && mode === "classic";
+    if (shouldShowRate) {
+      setRatePromptShown(true);
+      window.storage?.set("biq_rate_shown", "1").catch(() => {});
+      setTimeout(() => setShowRatePrompt(true), 1800);
+    }
+
     // Award XP
     const earned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
     if (earned > 0) {
@@ -8694,7 +9377,7 @@ function AppInner() {
         setTimeout(() => setXpToast(null), 3200);
         if (leveledUp) {
           setTimeout(() => {
-            setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon });
+            setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup");
             setTimeout(() => setLevelUpOverlay(null), 3500);
           }, 400);
         }
@@ -8770,9 +9453,37 @@ function AppInner() {
 
   const shareScore = (score, total, mode) => {
     const msgs = {
-      daily: `⚽ Ball IQ Daily Challenge\n${score}/${total} correct today! Can you beat me?\n#BallIQ`,
-      balliq: `🧠 My Ball IQ score is ${calcBallIQ(score, total)}!\nTop ${100 - iqPercentile(calcBallIQ(score, total))}% of football fans.\n#BallIQ`,
-      classic: `⚽ ${score}/${total} on Ball IQ — ${Math.round(score/total*100)}% correct!\nThink you can beat me?\n#BallIQ`,
+      daily: (() => {
+        const pct = Math.round(score/total*100);
+        const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
+        return `⚽ Ball IQ Daily Challenge\n${dots}\n${score}/${total} — ${pct}% correct\nCan you beat me?\nball-iq-pi.vercel.app #BallIQ`;
+      })(),
+      balliq: (() => {
+        const iq = calcBallIQ(score, total);
+        const pct = 100 - iqPercentile(iq);
+        const label = iqLabel(iq);
+        // Build Wordle-style emoji grid (4 rows of 5)
+        const correct = score;
+        const wrong = total - score;
+        const grid = [];
+        let c = correct, w = wrong;
+        for (let row = 0; row < 4; row++) {
+          let rowStr = '';
+          for (let col = 0; col < 5; col++) {
+            if (c > 0) { rowStr += '🟢'; c--; }
+            else if (w > 0) { rowStr += '🔴'; w--; }
+            else rowStr += '⬜';
+          }
+          grid.push(rowStr);
+        }
+        return `🧠 Ball IQ Test\n${grid.join('\n')}\n\nIQ: ${iq} — ${label}\nTop ${pct}% of football fans\n\nball-iq-pi.vercel.app #BallIQ`;
+      })(),
+      classic: (() => {
+        const pct = Math.round(score/total*100);
+        const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
+        const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
+        return `${medal} Ball IQ\n${dots}\n${score}/${total} — ${pct}%\nThink you can beat me?\nball-iq-pi.vercel.app #BallIQ`;
+      })(),
       speed: `⚡ ${score}/${total} on Ball IQ Speed Round!\nCan you beat my score?\n#BallIQ`,
       survival: `🔥 ${score} in a row on Ball IQ Survival!\nCan you beat my streak?\n#BallIQ`,
       hotstreak: `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nThink you can beat that?\n#BallIQ`,
@@ -8861,6 +9572,51 @@ function AppInner() {
 
         {/* Global toasts */}
         {toast && <div className="toast">{toast}</div>}
+
+        {/* First quiz tip */}
+        {showFirstQuizTip && !inGame && screen === "home" && (
+          <div style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
+            <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(88,204,2,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
+              <div style={{fontSize:28,lineHeight:1}}>⚽</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to Ball IQ!</div>
+                <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Tap "Play" to start your first quiz. New questions daily!</div>
+              </div>
+              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:20,width:28,height:28,fontSize:14,fontWeight:800,color:"#0a1a00",cursor:"pointer",flexShrink:0}}>×</button>
+            </div>
+          </div>
+        )}
+        {/* Ball IQ Intro */}
+        {showBallIQIntro && (
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
+            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+              <div style={{fontSize:48,marginBottom:12}}>🧠</div>
+              <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Ball IQ Test</div>
+              <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
+                {[["📋","20 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
+                  <div key={label} style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:600,color:"var(--t2)",display:"flex",alignItems:"center",gap:4}}>
+                    <span>{icon}</span><span>{label}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 20 questions across all categories. Your score determines your Ball IQ — from 62 (beginner) to 145 (elite). The test is the same for everyone so scores are comparable.</div>
+              <button className="btn btn-p" onClick={() => { setShowBallIQIntro(false); startMode("balliq_confirmed"); }}>Start Test 🧠</button>
+              <button className="btn btn-s" style={{marginTop:8}} onClick={() => setShowBallIQIntro(false)}>Maybe later</button>
+            </div>
+          </div>
+        )}
+        {/* Rate prompt */}
+        {showRatePrompt && (
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
+            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+              <div style={{fontSize:48,marginBottom:12}}>⭐</div>
+              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying Ball IQ?</div>
+              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
+              <button className="btn btn-p" style={{marginBottom:10}} onClick={() => { setShowRatePrompt(false); window.open("https://apps.apple.com/app/ball-iq", "_blank"); }}>Rate Ball IQ ⭐</button>
+              <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
+            </div>
+          </div>
+        )}
         {xpToast && (
           <div className="xp-toast" style={xpToast.leveledUp ? {background:"var(--gold)",color:"#0a0a00",padding:"12px 24px",fontSize:14} : {}}>
             {xpToast.leveledUp
@@ -8902,7 +9658,11 @@ function AppInner() {
         {!inGame && screen === "home" && tab === "home" && (
           <div className="screen tab-content">
             <div className="home-hero">
-              <div className="home-title">How well do you <span>know the game?</span></div>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+          <span style={{fontSize:10,fontWeight:700,color:"var(--accent)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:"'JetBrains Mono',monospace"}}>THE FOOTBALL QUIZ</span>
+          <span style={{fontSize:10,fontWeight:600,color:"var(--t3)",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:20,padding:"2px 8px",letterSpacing:0.5}}>Ad-light · Free</span>
+        </div>
+        <div className="home-title">How well do you <span>know the game?</span></div>
               <div className="home-sub">The ultimate football quiz — challenge yourself, beat your mates, find out who really knows the beautiful game.</div>
             </div>
             <div className="cta-stack">
@@ -8911,7 +9671,7 @@ function AppInner() {
                 <div className="cta-icon">⚽</div>
               </button>
               <button className="cta cta-challenge" onClick={() => setScreen("social")}>
-                <div className="cta-left"><div className="cta-title">Challenge a Friend</div><div className="cta-desc">Online 1v1 or local group play</div></div>
+                <div className="cta-left"><div className="cta-title">Challenge a Friend</div><div className="cta-desc">Local multiplayer or same-network 1v1</div></div>
                 <div className="cta-icon">🆚</div>
               </button>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
@@ -8957,7 +9717,7 @@ function AppInner() {
 
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && tab === "daily" && (
-          <DailyTabScreen dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} />
+          <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} />
         )}
 
         {/* ── PROFILE TAB ── */}
@@ -9020,7 +9780,7 @@ function AppInner() {
 
             <div className="mode-list">
               {[
-                { m:"online", icon:"🆚", name:"Challenge a Friend", desc:"Play a friend online on any device", badge:"LIVE", badgeClass:"badge-live" },
+                { m:"online", icon:"🆚", name:"Challenge a Friend", desc:"Same WiFi 1v1 or local group play. Full online coming soon.", badge:"LOCAL", badgeClass:"badge-local" },
                 { m:"wc2026", icon:"🌍", name:"World Cup 2026", desc:"All 48 teams. One dream. How ready are you?", badge:"NEW", badgeClass:"badge-new" },
                 { m:"classic", icon:"⏱️", name:"Standard Quiz", desc:"10 questions — 20 seconds each. Classic Ball IQ." },
                 { m:"survival", icon:"🔥", name:"Survival", desc:"Every question counts. One wrong answer and it's over." },
@@ -9029,7 +9789,7 @@ function AppInner() {
                 { m:"speed", icon:"⚡", name:"Speed Round", desc:"5 questions, 8 seconds each — speed earns bonus points." },
                 { m:"legends", icon:"📜", name:"Legends & History", desc:"The players, clubs and moments that shaped the game." },
                 { m:"local", icon:"🤝", name:"Local Multiplayer", desc:"2–6 players, pass the phone. Who really knows football?" },
-                { m:"clubquiz", icon:"🏟️", name:"Club Quiz", desc:"Deep dive into Arsenal, Barca, Liverpool and more.", badge:"PRO", badgeClass:"badge-pro" },
+                { m:"clubquiz", icon:"🏟️", name:"Club Quiz", desc:"Deep dive into Arsenal, Barca, Liverpool and more." },
               ].map(({ m, icon, name, desc, badge, badgeClass }) => (
                 <div key={m} className="mode-item" onClick={() => startMode(m)}>
                   <div className="mi-icon">{icon}</div>
