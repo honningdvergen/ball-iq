@@ -6504,6 +6504,27 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .cta-icon{font-size:20px;}
 .cta-arrow{font-size:16px;color:var(--t3);}
+/* ── Quick Play row ── */
+.quick-play{margin-top:14px;}
+.quick-play-label{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:10px;padding-left:2px;}
+.quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;}
+.quick-play-scroll::-webkit-scrollbar{display:none;}
+.qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:108px;}
+@media (hover: hover) { .qp-chip:hover{background:var(--s2);border-color:var(--border2);transform:translateY(-1px);} }
+.qp-chip:active{transform:scale(0.97);}
+.qp-icon{font-size:18px;margin-bottom:4px;line-height:1;}
+.qp-name{font-size:13px;font-weight:800;color:var(--t1);letter-spacing:-0.1px;}
+.qp-desc{font-size:10.5px;color:var(--t3);font-weight:500;}
+
+/* ── At a Glance card ── */
+.glance-card{margin-top:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
+.glance-label{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px;}
+.glance-rows{display:flex;flex-direction:column;gap:10px;}
+.glance-row{display:flex;align-items:center;gap:12px;font-size:13px;}
+.glance-row-icon{font-size:15px;width:22px;flex-shrink:0;}
+.glance-row-name{flex:1;color:var(--t2);font-weight:500;}
+.glance-row-val{font-family:'JetBrains Mono','SF Mono',monospace;font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
+
 .stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;}
 .sbar-box{background:var(--s1);border:none;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
 .sbar-val{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);}
@@ -7838,6 +7859,8 @@ function OnlineLobby({ onStart, onBack }) {
     try {
       await window.storage?.set(`biq_room:${rc}`, JSON.stringify(room), true);
       setCode(rc); setRoomData(room); setView("waiting");
+      // Clear any existing poll before starting a new one
+      if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
       pollRef.current = setInterval(async () => {
         try {
           const res = await window.storage?.get(`biq_room:${rc}`, true);
@@ -7864,9 +7887,27 @@ function OnlineLobby({ onStart, onBack }) {
   useEffect(() => {
     if (view !== "countdown") return;
     let c = 3; setCdNum(c);
-    const t = setInterval(() => { c--; setCdNum(c); if (c <= 0) { clearInterval(t); onStart({ questions:roomData.questions, roomCode:code, playerName:name.trim(), isHost:roomData?.host===name.trim() }); } }, 1000);
+    const t = setInterval(() => {
+      c--;
+      setCdNum(c);
+      if (c <= 0) {
+        clearInterval(t);
+        // Defensive: roomData could be null if polling failed or user navigated
+        if (!roomData || !roomData.questions) {
+          t$("Connection lost — try again");
+          setView("menu");
+          return;
+        }
+        onStart({
+          questions: roomData.questions,
+          roomCode: code,
+          playerName: name.trim(),
+          isHost: roomData.host === name.trim()
+        });
+      }
+    }, 1000);
     return () => clearInterval(t);
-  }, [view]);
+  }, [view, roomData, code, name, onStart]);
 
   useEffect(() => () => clearInterval(pollRef.current), []);
 
@@ -9870,6 +9911,7 @@ function AppInner() {
 
       setMode(m);
       if (m === "online") { setScreen("online"); return; }
+      if (m === "social") { setScreen("social"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       // Reset category for special modes that ignore it
@@ -10297,6 +10339,7 @@ function AppInner() {
           <div className="screen tab-content">
             <div className="home-hero">
               <div className="home-title">How well do you <span>know the game?</span></div>
+              <div className="home-sub">Daily challenges, survival mode, and 4,000+ questions across every league and era. Test yourself or challenge friends.</div>
             </div>
             <div className="cta-stack">
               {/* ── HERO: DAILY CHALLENGE ── */}
@@ -10365,12 +10408,86 @@ function AppInner() {
                 </div>
               </button>
             </div>
+
+            {/* ── QUICK PLAY ROW ── Horizontal scroll of fast one-tap modes */}
+            <div className="quick-play">
+              <div className="quick-play-label">Quick Play</div>
+              <div className="quick-play-scroll">
+                <button className="qp-chip" onClick={() => startMode("hotstreak")}>
+                  <span className="qp-icon">⚡🔥</span>
+                  <span className="qp-name">Hot Streak</span>
+                  <span className="qp-desc">60s sprint</span>
+                </button>
+                <button className="qp-chip" onClick={() => startMode("survival")}>
+                  <span className="qp-icon">🔥</span>
+                  <span className="qp-name">Survival</span>
+                  <span className="qp-desc">One shot</span>
+                </button>
+                <button className="qp-chip" onClick={() => startMode("truefalse")}>
+                  <span className="qp-icon">✅</span>
+                  <span className="qp-name">True/False</span>
+                  <span className="qp-desc">20 statements</span>
+                </button>
+                <button className="qp-chip" onClick={() => startMode("speed")}>
+                  <span className="qp-icon">⚡</span>
+                  <span className="qp-name">Speed</span>
+                  <span className="qp-desc">5 questions</span>
+                </button>
+                <button className="qp-chip" onClick={() => startMode("legends")}>
+                  <span className="qp-icon">📜</span>
+                  <span className="qp-name">Legends</span>
+                  <span className="qp-desc">Pre-2000</span>
+                </button>
+              </div>
+            </div>
+
             <XPBar xp={xp} streak={loginStreak} />
-            {stats.gamesPlayed > 0 && (
-              <div className="stats-bar" style={{marginTop:10}}>
-                <div className="sbar-box"><div className="sbar-val">{stats.gamesPlayed}</div><div className="sbar-key">Played</div></div>
-                <div className="sbar-box"><div className="sbar-val">{stats.bestScore}/10</div><div className="sbar-key">Best Score</div></div>
-                <div className="sbar-box"><div className="sbar-val">{stats.bestStreak}</div><div className="sbar-key">🔥 Streak</div></div>
+            {stats.gamesPlayed > 0 ? (
+              <>
+                <div className="stats-bar" style={{marginTop:10}}>
+                  <div className="sbar-box"><div className="sbar-val">{stats.gamesPlayed}</div><div className="sbar-key">Played</div></div>
+                  <div className="sbar-box"><div className="sbar-val">{stats.bestScore}/10</div><div className="sbar-key">Best Score</div></div>
+                  <div className="sbar-box"><div className="sbar-val">{stats.bestStreak}</div><div className="sbar-key">🔥 Streak</div></div>
+                </div>
+
+                {/* ── AT A GLANCE CARD ── Only shown once user has stats */}
+                <div className="glance-card">
+                  <div className="glance-label">At a glance</div>
+                  <div className="glance-rows">
+                    {stats.bestHotStreak > 0 && (
+                      <div className="glance-row">
+                        <span className="glance-row-icon">⚡🔥</span>
+                        <span className="glance-row-name">Hot Streak best</span>
+                        <span className="glance-row-val">{stats.bestHotStreak}</span>
+                      </div>
+                    )}
+                    {stats.bestSurvival > 0 && (
+                      <div className="glance-row">
+                        <span className="glance-row-icon">🔥</span>
+                        <span className="glance-row-name">Survival best</span>
+                        <span className="glance-row-val">{stats.bestSurvival}</span>
+                      </div>
+                    )}
+                    {stats.bestIQ > 0 && (
+                      <div className="glance-row">
+                        <span className="glance-row-icon">🧠</span>
+                        <span className="glance-row-name">Ball IQ high</span>
+                        <span className="glance-row-val">{stats.bestIQ}</span>
+                      </div>
+                    )}
+                    <div className="glance-row">
+                      <span className="glance-row-icon">📊</span>
+                      <span className="glance-row-name">Questions seen</span>
+                      <span className="glance-row-val">{Math.min(stats.gamesPlayed * 8, 4000)}+</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* New user empty state */
+              <div className="empty-state-card" style={{marginTop:14}}>
+                <div className="es-title">🎯 Play your first quiz</div>
+                <div className="es-body">Pick any mode above to unlock your Ball IQ score, start a streak, and climb the weekly league.</div>
               </div>
             )}
           </div>
@@ -10444,7 +10561,7 @@ function AppInner() {
 
             <div className="mode-list">
               {[
-                { m:"online", icon:"🆚", name:"Challenge a Friend", desc:"Same WiFi 1v1 or local group play. Full online coming soon.", badge:"LOCAL", badgeClass:"badge-local" },
+                { m:"social", icon:"🆚", name:"Challenge a Friend", desc:"Pass the phone or play 1v1 with a room code." },
                 { m:"wc2026", icon:"🌍", name:"World Cup 2026", desc:"All 48 teams. One dream. How ready are you?", badge:"NEW", badgeClass:"badge-new" },
                 { m:"classic", icon:"⏱️", name:"Standard Quiz", desc:"10 questions — 20 seconds each. Classic Ball IQ." },
                 { m:"survival", icon:"🔥", name:"Survival", desc:"Every question counts. One wrong answer and it's over." },
