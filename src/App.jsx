@@ -6096,12 +6096,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .quick-play-label{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:10px;padding-left:2px;}
 .quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;}
 .quick-play-scroll::-webkit-scrollbar{display:none;}
-.qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:108px;}
+.qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:118px;color:var(--t1);font-family:inherit;}
 @media (hover: hover) { .qp-chip:hover{background:var(--s2);border-color:var(--border2);transform:translateY(-1px);} }
 .qp-chip:active{transform:scale(0.97);}
 .qp-icon{font-size:18px;margin-bottom:4px;line-height:1;}
 .qp-name{font-size:13px;font-weight:800;color:var(--t1);letter-spacing:-0.1px;}
-.qp-desc{font-size:10.5px;color:var(--t3);font-weight:500;}
+.qp-desc{font-size:10.5px;color:var(--t3);font-weight:500;white-space:nowrap;}
 
 /* ── At a Glance card ── */
 .home-section-label{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;margin-bottom:2px;}
@@ -6484,14 +6484,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .stat-footer{text-align:center;font-size:13px;color:var(--t2);padding:12px 0 4px;line-height:1.6;}
 
 /* ── XP BAR ── */
-.xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:14px;}
+.xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
 .xp-bar-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .xp-level-icon{font-size:16px;}
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
 .xp-total{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:var(--t2);font-weight:500;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .xp-fill{height:100%;background:linear-gradient(90deg,#58CC02,#43C000);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);}
-.xp-next{font-size:11px;color:var(--t3);margin-top:6px;font-weight:500;}
+.xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
 /* ── XP TOAST ── */
 .xp-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a1a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(88,204,2,0.35);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);}
 @keyframes xpPop{from{opacity:0;transform:translateX(-50%) scale(0.85);}to{opacity:1;transform:translateX(-50%) scale(1);}}
@@ -9929,7 +9929,7 @@ function AppInner() {
           <div className="screen tab-content">
             <div className="home-hero">
               <div className="home-title">How well do you <span>know the game?</span></div>
-              <div className="home-sub">Daily challenges, survival mode, and 4,000+ questions across every league and era. Test yourself or challenge friends.</div>
+              <div className="home-sub">Test what you really know.</div>
             </div>
             <div className="cta-stack">
               {/* ── HERO: DAILY CHALLENGE ── */}
@@ -9984,7 +9984,7 @@ function AppInner() {
               <button className="cta cta-iq" onClick={() => startMode("balliq")} style={{padding:"12px 16px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
                   <div style={{display:"flex",alignItems:"center",gap:12}}>
-                    <span style={{fontSize:22}}>🧠</span>
+                    <span style={{fontSize:20,opacity:0.85}}>🧠</span>
                     <div style={{textAlign:"left"}}>
                       <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Ball IQ Test</div>
                       <div style={{fontSize:11,color:"var(--t2)"}}>See your percentile</div>
