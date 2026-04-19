@@ -221,7 +221,7 @@ const QB = [
   { q:"Nwankwo Kanu won the Champions League with Ajax before representing which country at international level?", o:["Ghana","Cameroon","Nigeria","Ivory Coast"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Which Brazilian club did Robinho leave to join Real Madrid in 2005?", o:["Flamengo","Santos","Corinthians","Cruzeiro"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Dejan Lovren was born in Bosnia but represented which country internationally?", o:["Bosnia","Serbia","Slovenia","Croatia"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
-  { q:"Jack Wilshere was eligible to represent which country internationally through his birth, but chose England instead?", o:["USA","Australia","Canada","Ireland"], a:3, cat:"Records", diff:"hard", type:"mcq", v:1 },
+  
 
   // ── FIRSTS ──
   { q:"Which Norwegian defender played for Blackburn Rovers (winning PL 1995) and Man United (winning PL 1999, 2000, 2001)?", o:["Henning Berg","Ronny Johnsen","Erik Thorstvedt","Ole Gunnar Solskjær"], a:0, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Henning Berg was one of the earliest Norwegians in the PL (Blackburn 1993-97, Man U 1997-2000). Won PL with both — 4 titles. Erik Thorstvedt was at Spurs from 1988 (pre-PL). Ron Johnsen joined Man U 1996. Solskjær 1996." },
@@ -2674,7 +2674,7 @@ const QB = [
   { q:"Liverpool's unbeaten home league run ended at Anfield in 2017 — which club ended it?", o:["Man City","Crystal Palace","Burnley","Chelsea"], a:1, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Which club set the record for most successive league wins in the Premier League era with 18?", o:["Arsenal","Manchester City","Liverpool","Chelsea"], a:1, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Which Welsh player set a record in the 2013-14 season for scoring in the Premier League for a seventh different club?", o:["Craig Bellamy","Aaron Ramsey","Ashley Williams","Gareth Bale"], a:0, cat:"PL", diff:"hard", type:"mcq", hint:"Bellamy's seventh was Cardiff City — adding to Coventry, Newcastle, Blackburn, Liverpool, West Ham and Man City.", v:1 },
-  { q:"Which club won the League Cup five times in a row from 2018 to 2023?", o:["Arsenal","Liverpool","Chelsea","Manchester City"], a:3, cat:"PL", diff:"medium", type:"mcq", v:1 },
+  
   { q:"Steven Gerrard spent his entire English domestic career at Liverpool — how many years did he serve the first team (1998-2015)?", o:["15 years","17 years","19 years","21 years"], a:1, cat:"PL", diff:"medium", type:"mcq", v:1, hint:"Gerrard made his Liverpool debut in November 1998 aged 18. Played 17 seasons as a first-teamer, leaving in summer 2015 for LA Galaxy. Over 700 apps for Liverpool, 186 goals. Academy time was earlier but 'served first team' = 17 years." },
   { q:"Which Dutch winger did Arsenal sell to Barcelona in 2000 for £25m — making him the most expensive Dutch player at the time?", o:["Dennis Bergkamp","Marc Overmars","Patrick Kluivert","Giovanni van Bronckhorst"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Overmars moved to the Camp Nou with Emmanuel Petit in the summer of 2000 after three successful seasons at Highbury.", v:1 },
   { q:"What was the name of Manchester United's famous 1968 European Cup winning team — honouring their Munich survivors?", o:["The Busby Babes","The Red Army","The United Way","No official name"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
@@ -3456,7 +3456,7 @@ const QB = [
   { q:"Lamine Yamal scored twice at Euro 2024 for Spain.", a:false, cat:"Euros", diff:"easy", type:"tf", v:1 },
   { q:"Chelsea won the 2021 Champions League under Frank Lampard.", a:false, cat:"UCL", diff:"easy", type:"tf", v:1 },
   { q:"AC Milan were founded by businessmen from Manchester, England.", a:false, cat:"SerieA", diff:"hard", type:"tf", v:1 },
-  { q:"Unai Emery has won the Europa League five times — a managerial record.", a:false, cat:"Managers", diff:"medium", type:"tf", v:1 },
+  
   { q:"Steven Gerrard scored two goals in the 2005 Champions League final for Liverpool.", a:false, cat:"UCL", diff:"medium", type:"tf", v:1 },
   { q:"Gianluigi Buffon holds the record for most Champions League appearances as goalkeeper.", a:false, cat:"UCL", diff:"hard", type:"tf", v:1 },
 
@@ -3782,7 +3782,7 @@ const QB = [
   // ── BATCH 33: CHAMPIONS LEAGUE DEEP CUTS ──────────────────────────────────────
   { q:"Which team became the first to win the Champions League without losing a single game?", o:["Ajax 1995","AC Milan 1994","Manchester United 1999","Bayern Munich 2020"], a:3, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Who scored twice in the last five minutes for Liverpool vs AC Milan in the 2005 UCL final?", o:["Gerrard","Smicer","Riise","Xabi Alonso"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
-  { q:"Which club knocked out Barcelona with a stunning 3-1 win at the Nou Camp in 2019?", o:["Liverpool","Juventus","Roma","Ajax"], a:3, cat:"UCL", diff:"medium", type:"mcq", v:1 },
+  
   { q:"The 2003 Champions League final was entirely between two clubs from which country?", o:["Italy","Spain","England","Germany"], a:0, cat:"UCL", diff:"medium", type:"mcq", v:1, hint:"AC Milan beat Juventus 3-2 on penalties at Old Trafford after 0-0 draw. It was the first all-Italian CL final. Pirlo, Nesta, Inzaghi, Shevchenko for Milan. Milan from Milan, Juve from Turin — different cities, same country." },
   { q:"Which English club reached the Champions League final in 2019 for the first time in their history?", o:["Arsenal","Tottenham Hotspur","Everton","Leicester City"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
   
