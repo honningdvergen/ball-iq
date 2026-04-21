@@ -44,16 +44,27 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function loadProfile(userId) {
+  try {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
     
-    if (data) setProfile(data)
+    if (error) {
+      console.error('loadProfile error:', error)
+    }
+    if (data) {
+      setProfile(data)
+    } else {
+      console.warn('No profile row found for user', userId)
+    }
+  } catch (e) {
+    console.error('loadProfile exception:', e)
+  } finally {
     setLoading(false)
   }
-
+}
  async function signUp(email, password, username) {
     const { data, error } = await supabase.auth.signUp({
       email,
