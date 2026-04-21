@@ -8400,6 +8400,25 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </div>
             </>
+          ) : user ? (
+            <>
+              <div className="settings-row" style={{cursor:"default"}}>
+                <div className="sr-left">
+                  <div className="sr-label">Signed in</div>
+                  <div className="sr-desc">{user.email} — profile loading…</div>
+                </div>
+              </div>
+              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={async () => {
+                if (confirm("Sign out of your Ball IQ account?")) {
+                  await signOut();
+                }
+              }}>
+                <div className="sr-left">
+                  <div className="sr-label">Sign out</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </button>
+            </>
           ) : (
             <>
               <div className="settings-row" style={{cursor:"default"}}>
@@ -8408,12 +8427,12 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
                   <div className="sr-desc">Sign up to unlock leaderboards and online play</div>
                 </div>
               </div>
-              <div className="settings-row" onClick={() => exitGuestMode()} style={{cursor:"pointer"}}>
+              <button className="settings-row" onClick={() => exitGuestMode()} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
                 <div className="sr-left">
                   <div className="sr-label" style={{color:"#22c55e"}}>Sign in / Create account</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </div>
+              </button>
             </>
           )}
         </div>
