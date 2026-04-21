@@ -9,10 +9,9 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [isGuest, setIsGuest] = useState(false)
 
-  // Auto-reload profile whenever user changes
   useEffect(() => {
     if (user?.id) {
-      loadProfile(user.id)
+      loadProfile(user.id, user)
     } else {
       setProfile(null)
     }
@@ -45,7 +44,19 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  async function loadProfile(userId) {
+  async function loadProfile(userId, userObj) {
+    // Fallback: use user metadata so UI doesn't hang
+    const fallbackProfile = {
+      id: userId,
+      username: userObj?.user_metadata?.username || userObj?.email?.split('@')[0] || 'Player',
+      avatar_id: 'ball',
+      total_score: 0,
+      games_played: 0,
+      correct_answers: 0,
+    }
+    setProfile(fallbackProfile)
+    
+    // Try to load real profile from database
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -59,8 +70,6 @@ export function AuthProvider({ children }) {
       }
       if (data) {
         setProfile(data)
-      } else {
-        console.warn('No profile row found for user', userId)
       }
     } catch (e) {
       console.error('loadProfile exception:', e)
