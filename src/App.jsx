@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { useAuth } from './useAuth.js';
+import { useAuth } from './useAuth.jsx';
 import Login from './Login.jsx';
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
