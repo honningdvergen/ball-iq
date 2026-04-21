@@ -6203,7 +6203,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:84px;}
+.tab-content{padding-bottom:84px;background:var(--bg);min-height:100vh;}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
