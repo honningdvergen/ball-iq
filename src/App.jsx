@@ -8363,6 +8363,7 @@ function ClubQuizScreen({ onStart, onBack }) {
 
 
 function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
+  const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const Toggle = ({ val, onChange }) => (
     <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
       <div className="toggle-knob" />
@@ -8374,6 +8375,47 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
       <div className="page-hdr">
         <button className="back-btn" onClick={onBack}>←</button>
         <div className="page-title">Settings</div>
+      </div>
+
+      <div className="settings-section">
+        <div className="settings-section-title">Account</div>
+        <div className="settings-card">
+          {user && profile ? (
+            <>
+              <div className="settings-row" style={{cursor:"default"}}>
+                <div className="sr-left">
+                  <div className="sr-label">Signed in as</div>
+                  <div className="sr-desc">{profile.username}</div>
+                </div>
+              </div>
+              <div className="settings-row danger" onClick={async () => {
+                if (confirm("Sign out of your Ball IQ account?")) {
+                  await signOut();
+                }
+              }}>
+                <div className="sr-left">
+                  <div className="sr-label">Sign out</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="settings-row" style={{cursor:"default"}}>
+                <div className="sr-left">
+                  <div className="sr-label">Playing as guest</div>
+                  <div className="sr-desc">Sign up to unlock leaderboards and online play</div>
+                </div>
+              </div>
+              <div className="settings-row" onClick={() => exitGuestMode()} style={{cursor:"pointer"}}>
+                <div className="sr-left">
+                  <div className="sr-label" style={{color:"#22c55e"}}>Sign in / Create account</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="settings-section">
