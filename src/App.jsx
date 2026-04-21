@@ -5869,7 +5869,7 @@ const css = `
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background 0.3s,color 0.3s;}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
@@ -5879,8 +5879,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hdr-actions{display:flex;align-items:center;gap:8px;}
 .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
 .icon-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
-.screen{animation:sIn 0.22s cubic-bezier(0.22,1,0.36,1);}
-@keyframes sIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.screen{animation:sIn 0.18s ease-out;}
+@keyframes sIn{from{transform:translateY(4px);}to{transform:translateY(0);}}
 .home-hero{padding:24px 0 16px;}
 .home-eyebrow{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 .home-title{font-size:22px;font-weight:800;line-height:1.2;letter-spacing:-0.4px;margin-bottom:8px;color:var(--text);}
@@ -5984,7 +5984,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cat-scroll-wrap::-webkit-scrollbar{display:none;}
 .cat-scroll-inner{display:flex;gap:6px;padding-bottom:2px;}
 .mode-list{display:flex;flex-direction:column;gap:8px;}
-.mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;}
+.mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
 @media (hover: hover) { .mode-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(2px);} }
 .mode-item:active{background:var(--s2);transform:scale(0.98);}
 .mi-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;background:var(--s2);border-radius:9px;display:flex;align-items:center;justify-content:center;}
@@ -9149,7 +9149,7 @@ function ProfileScreen({ profile, setProfile, stats, xp, loginStreak, onSharePro
 }
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive }) {
+function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare }) {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const days = [];
@@ -9173,6 +9173,11 @@ function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqH
         <button className={`daily-hero-btn ${dailyDone?"done":"available"}`} onClick={onPlay} disabled={dailyDone}>
           {dailyDone ? <DailyCountdown score={dailyScore} /> : "Play Today's Challenge"}
         </button>
+        {dailyDone && onShare && (
+          <button onClick={onShare} style={{marginTop:10,background:"var(--accent)",border:"none",borderRadius:12,padding:"12px 18px",fontSize:14,fontWeight:700,color:"#0a1a00",cursor:"pointer",width:"100%",fontFamily:"inherit"}}>
+            Share Today's Result 📤
+          </button>
+        )}
       </div>
       {dailyDone && (
         <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginBottom:16}}>
@@ -9551,13 +9556,24 @@ function AppInner() {
 
     // Sync aggregate stats to user profile if logged in
     if (user?.id) {
-      supabase.from('profiles').update({
-        total_score: (authProfile?.total_score || 0) + newResult.score,
-        games_played: updated.gamesPlayed,
-        correct_answers: updated.totalCorrect,
-      }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error('Profile sync failed:', error);
-      });
+      // Use functional update to correctly increment the total score
+      (async () => {
+        try {
+          const { data: currentProfile } = await supabase
+            .from('profiles')
+            .select('total_score')
+            .eq('id', user.id)
+            .maybeSingle();
+          const currentTotal = currentProfile?.total_score || 0;
+          await supabase.from('profiles').update({
+            total_score: currentTotal + (newResult.score || 0),
+            games_played: updated.gamesPlayed,
+            correct_answers: updated.totalCorrect,
+          }).eq('id', user.id);
+        } catch (e) {
+          console.error('Profile sync failed:', e);
+        }
+      })();
     }
   };
 
@@ -10182,7 +10198,7 @@ function AppInner() {
 
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && tab === "daily" && (
-          <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} />
+          <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />
         )}
 
         {/* ── PROFILE TAB ── */}
