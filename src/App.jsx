@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
-
+import { useAuth } from './useAuth.js';
+import Login from './Login.jsx';
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
   // WORLD CUP — easy
@@ -10307,4 +10308,31 @@ function AppInner() {
   );
 }
 
-export default function App() { return <ErrorBoundary><AppInner /></ErrorBoundary>; }
+function AppGate() {
+  const { user, isGuest, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: '#0a0a0a',
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Inter, -apple-system, sans-serif',
+        fontSize: '16px'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+  
+  if (!user && !isGuest) {
+    return <Login />;
+  }
+  
+  return <AppInner />;
+}
+
+export default function App() { return <ErrorBoundary><AppGate /></ErrorBoundary>; }
