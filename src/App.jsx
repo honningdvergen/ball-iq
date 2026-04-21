@@ -2,6 +2,43 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { useAuth } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import Login from './Login.jsx';
+
+// ─── STORAGE SHIM ─────────────────────────────────────────────────────────────
+// Provides window.storage API using localStorage as fallback when deployed.
+// This ensures game progress persists across sessions on Vercel/mobile.
+if (typeof window !== 'undefined' && !window.storage) {
+  window.storage = {
+    get: async (key) => {
+      try {
+        const value = localStorage.getItem(key);
+        return value !== null ? { key, value } : null;
+      } catch { return null; }
+    },
+    set: async (key, value) => {
+      try {
+        localStorage.setItem(key, String(value));
+        return { key, value };
+      } catch { return null; }
+    },
+    delete: async (key) => {
+      try {
+        localStorage.removeItem(key);
+        return { key, deleted: true };
+      } catch { return null; }
+    },
+    list: async (prefix) => {
+      try {
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (!prefix || k.startsWith(prefix)) keys.push(k);
+        }
+        return { keys, prefix };
+      } catch { return { keys: [] }; }
+    },
+  };
+}
+
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
   // WORLD CUP — easy
