@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useAuth } from './useAuth.jsx';
 import Login from './Login.jsx';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
   // WORLD CUP — easy
@@ -10377,4 +10378,4 @@ function AppGate() {
   return <AppInner />;
 }
 
-export default function App() { return <ErrorBoundary><AppGate /></ErrorBoundary>; }
+export default function App() { return <><ErrorBoundary><AppGate /></ErrorBoundary><SpeedInsights /></>; }
