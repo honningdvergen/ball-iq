@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useAuth } from './useAuth.jsx';
+import { supabase } from './supabase.js';
 import Login from './Login.jsx';
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
@@ -9312,6 +9313,7 @@ const HOW_TO_PLAY = {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
+  const { user, profile: authProfile } = useAuth();
   const [screen, setScreen] = useState("home");
   const [hasOnboarded, setHasOnboarded] = useState(true); // optimistic — corrected on load
   const [tab, setTab] = useState("home");
@@ -9477,6 +9479,30 @@ function AppInner() {
     };
     setStats(updated);
     window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+
+    // Save individual score to Supabase if user is logged in
+    if (user?.id && newResult.score !== undefined) {
+      supabase.from('scores').insert({
+        user_id: user.id,
+        game_mode: mode || 'classic',
+        score: newResult.score,
+        correct_answers: newResult.score,
+        total_questions: newResult.total || 10,
+      }).then(({ error }) => {
+        if (error) console.error('Score save failed:', error);
+      });
+    }
+
+    // Sync aggregate stats to user profile if logged in
+    if (user?.id) {
+      supabase.from('profiles').update({
+        total_score: (authProfile?.total_score || 0) + newResult.score,
+        games_played: updated.gamesPlayed,
+        correct_answers: updated.totalCorrect,
+      }).eq('id', user.id).then(({ error }) => {
+        if (error) console.error('Profile sync failed:', error);
+      });
+    }
   };
 
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
