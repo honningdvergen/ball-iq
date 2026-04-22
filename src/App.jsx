@@ -6925,7 +6925,9 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
     playSound(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
     setPicked({ choice: i, correct });
-    setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, 400);
+    // Give the player time to read the hint on a wrong answer; otherwise advance quickly
+    const delay = !correct && q.hint ? 1800 : 400;
+    setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, delay);
   };
 
   const pct = (timeLeft / 60) * 100;
@@ -6960,6 +6962,22 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
           );
         })}
       </div>
+      {picked && !picked.correct && q.hint && (
+        <div style={{
+          marginTop:10,
+          padding:"10px 14px",
+          background:"var(--s1)",
+          border:"1px solid var(--border)",
+          borderRadius:10,
+          fontSize:13,
+          lineHeight:1.5,
+          color:"var(--t2)",
+          animation:"fadeIn 0.3s ease-out"
+        }}>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div>{q.hint}</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -6986,7 +7004,8 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
     if (picked) return;
     if (!questions || !questions[idx]) return;
     // Bulletproof: handle both a:true/false (boolean) and a:1/0 (number) formats
-    const qa = questions[idx]?.a;
+    const qCur = questions[idx];
+    const qa = qCur?.a;
     const qAsBool = qa === true || qa === 1;
     const correct = val === qAsBool;
     haptic(correct ? "correct" : "wrong");
@@ -6994,11 +7013,13 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
     if (correct) setScore(s => s + 1);
     setPicked({ val, correct });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    // Extra breathing room on a wrong answer that has a hint
+    const delay = !correct && qCur?.hint ? 2400 : 900;
     timeoutRef.current = setTimeout(() => {
       setPicked(null);
       if (idx + 1 >= total) setDone(true);
       else setIdx(i => i + 1);
-    }, 900);
+    }, delay);
   };
 
   // Safety: if questions missing or done, render nothing (onComplete will have fired)
@@ -7053,6 +7074,22 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
       {picked && (
         <div style={{textAlign:'center',marginTop:14,fontSize:16,fontWeight:700,color: picked.correct ? 'var(--green)' : 'var(--red)'}}>
           {picked.correct ? '✓ Correct!' : `✗ Correct answer: ${qAsBool ? 'TRUE' : 'FALSE'}`}
+        </div>
+      )}
+      {picked && !picked.correct && q.hint && (
+        <div style={{
+          marginTop:10,
+          padding:"10px 14px",
+          background:"var(--s1)",
+          border:"1px solid var(--border)",
+          borderRadius:10,
+          fontSize:13,
+          lineHeight:1.5,
+          color:"var(--t2)",
+          animation:"fadeIn 0.3s ease-out"
+        }}>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div>{q.hint}</div>
         </div>
       )}
     </div>
@@ -7353,22 +7390,28 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         }} />
       )}
 
-      {answered && q?.hint && (
-        <div style={{
-          marginTop:10,
-          padding:"10px 14px",
-          background:"var(--s1)",
-          border:"1px solid var(--border)",
-          borderRadius:10,
-          fontSize:13,
-          lineHeight:1.5,
-          color:"var(--t2)",
-          animation:"fadeIn 0.4s ease-out"
-        }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
-          <div>{q.hint}</div>
-        </div>
-      )}
+      {answered && q?.hint && (() => {
+        const isCorrect = isTF
+          ? ((selected === 1) === (q?.a === true || q?.a === 1))
+          : (selected === q?.a || typedResult === "correct");
+        if (isCorrect) return null;
+        return (
+          <div style={{
+            marginTop:10,
+            padding:"10px 14px",
+            background:"var(--s1)",
+            border:"1px solid var(--border)",
+            borderRadius:10,
+            fontSize:13,
+            lineHeight:1.5,
+            color:"var(--t2)",
+            animation:"fadeIn 0.4s ease-out"
+          }}>
+            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+            <div>{q.hint}</div>
+          </div>
+        );
+      })()}
 
       {answered && (
         <div className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
@@ -7862,6 +7905,82 @@ async function shareCard(dataURL, fallbackText) {
   } catch {
     navigator.clipboard?.writeText(fallbackText).catch(() => {});
   }
+}
+
+// ─── BRANDED SCORE CARD ──────────────────────────────────────────────────────
+// Renders a 1080×1080 PNG suitable for social share. Dark background, muted
+// green accent, Ball IQ wordmark at top, score in the middle, watermark below.
+function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak, date }) {
+  const W = 1080, H = 1080;
+  const canvas = document.createElement("canvas");
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext("2d");
+
+  // Background
+  ctx.fillStyle = "#0a0a0a";
+  ctx.fillRect(0, 0, W, H);
+
+  // Soft green glow behind the score number
+  const radial = ctx.createRadialGradient(W/2, 540, 40, W/2, 540, 480);
+  radial.addColorStop(0, "rgba(34,197,94,0.18)");
+  radial.addColorStop(1, "rgba(34,197,94,0)");
+  ctx.fillStyle = radial;
+  ctx.fillRect(0, 0, W, H);
+
+  // Top accent bar
+  const grad = ctx.createLinearGradient(0, 0, W, 0);
+  grad.addColorStop(0, "#16a34a");
+  grad.addColorStop(1, "#22c55e");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, 14);
+
+  // Wordmark
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "800 64px Inter, -apple-system, sans-serif";
+  ctx.fillText("⚽ Ball IQ", W/2, 145);
+
+  // Mode subtitle
+  ctx.fillStyle = "#22c55e";
+  ctx.font = "600 30px Inter, -apple-system, sans-serif";
+  ctx.fillText(modeLabel || "Quiz", W/2, 200);
+
+  // Main score — huge accent green
+  ctx.fillStyle = "#22c55e";
+  const scoreFontSize = String(mainScore).length > 4 ? 220 : 280;
+  ctx.font = `900 ${scoreFontSize}px Inter, -apple-system, sans-serif`;
+  ctx.fillText(String(mainScore), W/2, 580);
+
+  // Score caption
+  if (scoreCaption) {
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "700 28px Inter, -apple-system, sans-serif";
+    ctx.fillText(scoreCaption, W/2, 650);
+  }
+
+  // Percentile (optional)
+  if (percentile) {
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "700 38px Inter, -apple-system, sans-serif";
+    ctx.fillText(percentile, W/2, 750);
+  }
+
+  // Bottom stats row
+  const parts = [];
+  if (streak && streak > 0) parts.push(`🔥 ${streak}-day streak`);
+  if (date) parts.push(date);
+  if (parts.length) {
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "500 28px Inter, -apple-system, sans-serif";
+    ctx.fillText(parts.join("   ·   "), W/2, percentile ? 840 : 790);
+  }
+
+  // Watermark
+  ctx.fillStyle = "#6b7280";
+  ctx.font = "600 26px Inter, -apple-system, sans-serif";
+  ctx.fillText("balliq.app", W/2, 1010);
+
+  return canvas.toDataURL("image/png");
 }
 
 
@@ -10201,18 +10320,18 @@ function AppInner() {
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
-  const shareScore = useCallback((score, total, mode) => {
+  const shareScore = useCallback(async (score, total, mode) => {
+    // Fallback text per mode (used if image share unavailable)
     const msgs = {
       daily: (() => {
         const pct = Math.round(score/total*100);
         const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
-        return `⚽ Ball IQ Daily Challenge\n${dots}\n${score}/${total} — ${pct}% correct\nCan you beat me?\nball-iq-pi.vercel.app #BallIQ`;
+        return `⚽ Ball IQ Daily Challenge\n${dots}\n${score}/${total} — ${pct}% correct\nCan you beat me?\nballiq.app #BallIQ`;
       })(),
       balliq: (() => {
         const iq = calcBallIQ(score, total);
         const pct = 100 - iqPercentile(iq);
         const label = iqLabel(iq);
-        // Build Wordle-style emoji grid (4 rows of 5)
         const correct = score;
         const wrong = total - score;
         const grid = [];
@@ -10226,29 +10345,83 @@ function AppInner() {
           }
           grid.push(rowStr);
         }
-        return `🧠 Ball IQ Test\n${grid.join('\n')}\n\nIQ: ${iq} — ${label}\nTop ${pct}% of football fans\n\nball-iq-pi.vercel.app #BallIQ`;
+        return `🧠 Ball IQ Test\n${grid.join('\n')}\n\nIQ: ${iq} — ${label}\nTop ${pct}% of football fans\n\nballiq.app #BallIQ`;
       })(),
       classic: (() => {
         const pct = Math.round(score/total*100);
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
         const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
-        return `${medal} Ball IQ\n${dots}\n${score}/${total} — ${pct}%\nThink you can beat me?\nball-iq-pi.vercel.app #BallIQ`;
+        return `${medal} Ball IQ\n${dots}\n${score}/${total} — ${pct}%\nThink you can beat me?\nballiq.app #BallIQ`;
       })(),
-      speed: `⚡ ${score}/${total} on Ball IQ Speed Round!\nCan you beat my score?\n#BallIQ`,
-      survival: `🔥 ${score} in a row on Ball IQ Survival!\nCan you beat my streak?\n#BallIQ`,
-      hotstreak: `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nThink you can beat that?\n#BallIQ`,
-      truefalse: `✅ ${score}/${total} on Ball IQ True or False!\n${Math.round(score/total*100)}% accuracy — can you do better?\n#BallIQ`,
-      legends: `📜 ${score}/${total} on Ball IQ Legends & History!\nHow well do you know the game's greatest stories?\n#BallIQ`,
-      wc2026: `🌍 ${score}/${total} on Ball IQ World Cup 2026!\nAre you ready for the tournament?\n#BallIQ`,
-      local: `🤝 Just played Ball IQ Local Multiplayer!\nWho knows football best in your group?\n#BallIQ`,
+      speed: `⚡ ${score}/${total} on Ball IQ Speed Round!\nballiq.app #BallIQ`,
+      survival: `🔥 ${score} in a row on Ball IQ Survival!\nballiq.app #BallIQ`,
+      hotstreak: `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nballiq.app #BallIQ`,
+      truefalse: `✅ ${score}/${total} on Ball IQ True or False!\nballiq.app #BallIQ`,
+      legends: `📜 ${score}/${total} on Ball IQ Legends & History!\nballiq.app #BallIQ`,
+      wc2026: `🌍 ${score}/${total} on Ball IQ World Cup 2026!\nballiq.app #BallIQ`,
+      local: `🤝 Just played Ball IQ Local Multiplayer!\nballiq.app #BallIQ`,
     };
     const text = msgs[mode] || msgs.classic;
-    if (navigator.share) {
-      navigator.share({ text }).catch(() => {});
+
+    // Build canvas card data
+    const MODE_LABELS = {
+      classic: "Classic Quiz",
+      daily: "Daily Challenge",
+      survival: "Survival",
+      hotstreak: "Hot Streak",
+      truefalse: "True or False",
+      balliq: "Ball IQ Test",
+      speed: "Speed Round",
+      legends: "Legends & History",
+      wc2026: "World Cup 2026",
+      local: "Local Multiplayer",
+    };
+    const modeLabel = MODE_LABELS[mode] || "Quiz";
+    let mainScore, scoreCaption, percentile = null;
+    if (mode === "balliq") {
+      const iq = calcBallIQ(score, total);
+      mainScore = String(iq);
+      scoreCaption = "BALL IQ";
+      percentile = `Top ${100 - iqPercentile(iq)}% of football fans`;
+    } else if (mode === "hotstreak") {
+      mainScore = String(score);
+      scoreCaption = "CORRECT IN 60 SECONDS";
+    } else if (mode === "survival") {
+      mainScore = String(score);
+      scoreCaption = "IN A ROW";
     } else {
-      navigator.clipboard?.writeText(text).then(() => showToast("Copied to clipboard! 📋")).catch(() => showToast("Score: " + text.split("\n")[0]));
+      mainScore = `${score}/${total}`;
+      const pct = total ? Math.round(score/total*100) : 0;
+      scoreCaption = `${pct}% CORRECT`;
     }
-  }, [showToast]);
+    const date = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    try {
+      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak: loginStreak, date });
+      const blob = await (await fetch(dataURL)).blob();
+      const file = new File([blob], "balliq-score.png", { type: "image/png" });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], text }).catch(() => {});
+        return;
+      }
+      // No file share — try plain text share
+      if (navigator.share) {
+        await navigator.share({ text }).catch(() => {});
+        return;
+      }
+      // Download image as a last-resort fallback, then copy text
+      const a = document.createElement("a");
+      a.href = dataURL; a.download = "balliq-score.png"; a.click();
+      navigator.clipboard?.writeText(text).then(() => showToast("Image saved · text copied 📋")).catch(() => {});
+    } catch {
+      try {
+        await navigator.clipboard?.writeText(text);
+        showToast("Copied to clipboard! 📋");
+      } catch {
+        showToast("Score: " + text.split("\n")[0]);
+      }
+    }
+  }, [showToast, loginStreak]);
 
   const shareProfile = useCallback(() => {
     const { level } = getLevelInfo(xp);
