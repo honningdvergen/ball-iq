@@ -5746,8 +5746,8 @@ const css = `
   --border2:#C7C7CC;
   --text:#1C1C1E;
   --t1:#1C1C1E;
-  --t2:#636366;
-  --t3:#AEAEB2;
+  --t2:#48484A;          /* darker secondary — readable on white */
+  --t3:#6E6E73;          /* darker tertiary — readable on white */
   --accent:#34A853;
   --accent-dim:rgba(52,168,83,0.10);
   --accent-b:rgba(52,168,83,0.25);
@@ -5837,6 +5837,9 @@ const css = `
 .light .xp-bar-track { background:#E5E5EA; }
 .light .settings-panel { background:#FFFFFF; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
 .light .daily-hero { background:linear-gradient(135deg,#34A853,#2D9247); }
+.light .daily-hero-title { color:#FFFFFF; }
+.light .daily-hero-date { color:rgba(255,255,255,0.82); }
+.light .daily-hero-sub { color:rgba(255,255,255,0.92); }
 .light .badge-tile.locked { background:#F2F2F7; border-color:#E5E5EA; }
 .light .badge-tile.earned { background:rgba(52,168,83,0.08); border-color:rgba(52,168,83,0.2); }
 
@@ -5868,6 +5871,7 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
+html,#root{background:var(--bg);min-height:100vh;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
@@ -9895,11 +9899,14 @@ function AppInner() {
   useEffect(() => {
     const body = document.body;
     const root = document.documentElement;
-    // Theme
+    // Theme — apply .light to both html and body so edge surfaces (html, #root)
+    // can also resolve var(--bg) to the light palette.
     if (settings.theme === "light") {
       body.classList.add("light");
+      root.classList.add("light");
     } else {
       body.classList.remove("light");
+      root.classList.remove("light");
     }
     // Text size — scale the entire app by adjusting html font-size
     // All rem-based sizes scale automatically
@@ -10174,11 +10181,6 @@ function AppInner() {
                         <span className="glance-row-val">{stats.bestIQ}</span>
                       </div>
                     )}
-                    <div className="glance-row">
-                      <span className="glance-row-icon">📊</span>
-                      <span className="glance-row-name">Questions seen</span>
-                      <span className="glance-row-val">{Math.min(stats.gamesPlayed * 8, 4000)}+</span>
-                    </div>
                   </div>
                 </div>
               </>
@@ -10201,11 +10203,6 @@ function AppInner() {
                     <span className="glance-row-icon">🔥</span>
                     <span className="glance-row-name">Best streak</span>
                     <span className="glance-row-val" style={{color:"var(--t3)"}}>—</span>
-                  </div>
-                  <div className="glance-row">
-                    <span className="glance-row-icon">📊</span>
-                    <span className="glance-row-name">Questions seen</span>
-                    <span className="glance-row-val" style={{color:"var(--t3)"}}>0</span>
                   </div>
                 </div>
               </div>
