@@ -6419,6 +6419,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .badge-icon{font-size:20px;}
 .badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'Inter',sans-serif;}
 .badge-tile.earned .badge-name{color:var(--accent);}
+.avatar-spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(34,197,94,0.25);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.avatar-menu{display:flex;flex-direction:column;gap:8px;padding:4px 0 8px;}
+.avatar-menu-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s2);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:background 0.15s,transform 0.1s;}
+.avatar-menu-row:hover{background:var(--s3);}
+.avatar-menu-row:active{transform:scale(0.98);}
+
 .emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
 .emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px;animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .emoji-picker-title{font-size:14px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t2);}
@@ -9703,22 +9710,86 @@ function computeBadges(stats, xp, loginStreak) {
 const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","💎","🦁","🦅","🐺","🐉","🚀","⚡","🏅","🥇","🥈","🥉","🔮","🌟","💫","🌈","🎭","🎨","🦊","🐬","🦋","🎵","🌺","🏄"];
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast }) {
+  const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
   const [editingName, setEditingName] = useState(false);
   const [nameVal, setNameVal] = useState(profile?.name || "");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
   const earned = earnedBadges || computeBadges(stats, xp, loginStreak);
   const iq = stats.bestIQ || null;
   const pctile = iq ? iqPercentile(iq) : null;
+  const avatarUrl = authProfile?.avatar_url || null;
+  const toast = onToast || ((m) => { try { window.alert(m); } catch {} });
   const saveName = () => { setEditingName(false); if (nameVal.trim()) setProfile(p => ({ ...p, name: nameVal.trim() })); };
+
+  const openAvatarPicker = () => {
+    if (uploading) return;
+    // Guests can only use emoji — logged-in users get the full menu
+    if (user && !isGuest) setShowAvatarMenu(true);
+    else setShowEmojiPicker(true);
+  };
+
+  const pickFromLibrary = () => {
+    setShowAvatarMenu(false);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChosen = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    // Reset the input so selecting the same file again still triggers onChange
+    if (e.target) e.target.value = "";
+    if (!file) return;
+    if (!uploadAvatar) { toast("Photo upload unavailable"); return; }
+    setUploading(true);
+    try {
+      const result = await uploadAvatar(file);
+      if (result?.error) {
+        toast("Could not upload photo — try again");
+      } else {
+        toast("Profile photo updated ✓");
+      }
+    } catch {
+      toast("Could not upload photo — try again");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="tab-content" style={{background:"var(--bg)"}}>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChosen}
+        style={{display:"none"}}
+      />
       <div className="profile-card">
         <div className="profile-avatar-wrap">
-          <div className="profile-avatar" onClick={() => setShowEmojiPicker(true)}>{profile?.avatar || "⚽"}</div>
-          <div className="profile-avatar-edit" onClick={() => setShowEmojiPicker(true)}>+</div>
+          <div
+            className="profile-avatar"
+            onClick={openAvatarPicker}
+            style={avatarUrl ? {padding:0, overflow:"hidden", background:"var(--s2)"} : undefined}
+          >
+            {uploading ? (
+              <span className="avatar-spinner" aria-label="Uploading" />
+            ) : avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt="Profile"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+                style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}}
+              />
+            ) : (
+              profile?.avatar || "⚽"
+            )}
+          </div>
+          <div className="profile-avatar-edit" onClick={openAvatarPicker}>+</div>
         </div>
         {editingName
           ? <input className="profile-name-input" value={nameVal} onChange={e => setNameVal(e.target.value)} onBlur={saveName} onKeyDown={e => e.key==="Enter"&&saveName()} autoFocus maxLength={20} />
@@ -9794,6 +9865,29 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           ))}
         </div>
       </div>
+      {showAvatarMenu && (
+        <div className="emoji-picker-overlay" onClick={() => setShowAvatarMenu(false)}>
+          <div className="emoji-picker-sheet" onClick={e => e.stopPropagation()}>
+            <div className="emoji-picker-title">Profile photo</div>
+            <div className="avatar-menu">
+              <button className="avatar-menu-row" onClick={pickFromLibrary}>
+                <span style={{fontSize:22}}>🖼️</span>
+                <div style={{flex:1, minWidth:0}}>
+                  <div style={{fontSize:14, fontWeight:700, color:"var(--t1)"}}>Choose from library</div>
+                  <div style={{fontSize:12, color:"var(--t3)"}}>Upload a photo from your device</div>
+                </div>
+              </button>
+              <button className="avatar-menu-row" onClick={() => { setShowAvatarMenu(false); setShowEmojiPicker(true); }}>
+                <span style={{fontSize:22}}>😀</span>
+                <div style={{flex:1, minWidth:0}}>
+                  <div style={{fontSize:14, fontWeight:700, color:"var(--t1)"}}>Choose emoji avatar</div>
+                  <div style={{fontSize:12, color:"var(--t3)"}}>Pick from the emoji set</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showEmojiPicker && (
         <div className="emoji-picker-overlay" onClick={() => setShowEmojiPicker(false)}>
           <div className="emoji-picker-sheet" onClick={e => e.stopPropagation()}>
@@ -11249,7 +11343,7 @@ function AppInner() {
         {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />}
 
         {/* ── PROFILE TAB ── */}
-        {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
+        {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} />}
 
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
