@@ -8619,7 +8619,7 @@ function XPBar({ xp, streak }) {
 
 
 // ─── STATS SCREEN ─────────────────────────────────────────────────────────────
-function StatsScreen({ stats, xp, loginStreak, iqHistory, onBack }) {
+function StatsScreenImpl({ stats, xp, loginStreak, iqHistory, onBack }) {
   const { level, nextLevel, progress } = getLevelInfo(xp);
   const totalCorrect = stats.totalCorrect || 0;
   const winRate = stats.gamesPlayed > 0
@@ -8727,6 +8727,7 @@ function StatsScreen({ stats, xp, loginStreak, iqHistory, onBack }) {
     </div>
   );
 }
+const StatsScreen = React.memo(StatsScreenImpl);
 
 
 // ─── WEEKLY SUMMARY ───────────────────────────────────────────────────────────
@@ -9162,7 +9163,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
 const ProfileScreen = React.memo(ProfileScreenImpl);
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare }) {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const days = [];
@@ -9263,6 +9264,7 @@ function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqH
     </div>
   );
 }
+const DailyTabScreen = React.memo(DailyTabScreenImpl);
 
 // ─── LEAGUE SCREEN ────────────────────────────────────────────────────────────
 const LEAGUE_NAMES = ["Carlos","Mikkel","Priya","Tomas","Yuki","Fatima","Ollie","Zara","Nnamdi","Bjorn"];
@@ -9613,10 +9615,10 @@ function AppInner() {
 
   const todayKey = useMemo(() => `biq_daily_${Math.floor(Date.now() / 86400000)}`, []);
 
-  const showToast = (msg, duration = 2800) => {
+  const showToast = useCallback((msg, duration = 2800) => {
     setToast(msg);
     setTimeout(() => setToast(null), duration);
-  };
+  }, []);
 
   const dismissLeagueNudge = (goToLeague = false) => {
     setShowLeagueNudge(false);
@@ -9702,7 +9704,7 @@ function AppInner() {
     }).catch(() => {});
   }, []);
 
-  const saveStats = (newResult) => {
+  const saveStats = useCallback((newResult) => {
     const newStreak = newResult.bestStreak || 0;
     const isSpecialMode = mode === "hotstreak" || mode === "truefalse";
     // Weekly tracking — rotate if new week
@@ -9768,11 +9770,11 @@ function AppInner() {
         }
       })();
     }
-  };
+  }, [mode, stats, user]);
 
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
 
-  const startMode = (m) => {
+  const startMode = useCallback((m) => {
     try {
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
@@ -9814,9 +9816,9 @@ function AppInner() {
       console.error("startMode error:", err);
       showToast(`Error: ${err.message || "Could not start mode"}`);
     }
-  };
+  }, [showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
-  const startLocalGame = (players) => {
+  const startLocalGame = useCallback((players) => {
     const gm = socialMode || "classic";
     let sharedQs;
     if (gm === "survival") sharedQs = getQs({ cat, diff, n: 300 });
@@ -9831,14 +9833,14 @@ function AppInner() {
     setQuestions(sharedQs);
     setShowHandoff(true);
     setScreen("local-handoff");
-  };
+  }, [socialMode, cat, diff]);
 
-  const handleHandoffReady = () => {
+  const handleHandoffReady = useCallback(() => {
     setShowHandoff(false);
     setScreen("quiz");
-  };
+  }, []);
 
-  const handleComplete = (res) => {
+  const handleComplete = useCallback((res) => {
     // Don't pollute stats with BallIQ (different total) or daily (counted separately)
     if (mode !== "balliq") saveStats(res);
 
@@ -9988,11 +9990,11 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  };
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast]);
 
-  const handleOnlineStart = (conf) => {
+  const handleOnlineStart = useCallback((conf) => {
     setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
-  };
+  }, []);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
@@ -10004,7 +10006,7 @@ function AppInner() {
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
-  const shareScore = (score, total, mode) => {
+  const shareScore = useCallback((score, total, mode) => {
     const msgs = {
       daily: (() => {
         const pct = Math.round(score/total*100);
@@ -10051,7 +10053,7 @@ function AppInner() {
     } else {
       navigator.clipboard?.writeText(text).then(() => showToast("Copied to clipboard! 📋")).catch(() => showToast("Score: " + text.split("\n")[0]));
     }
-  };
+  }, [showToast]);
 
   const shareProfile = useCallback(() => {
     const { level } = getLevelInfo(xp);
@@ -10106,6 +10108,17 @@ function AppInner() {
 
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
+
+  // Stable callbacks for memoized children
+  const goHome = useCallback(() => { setScreen("home"); setTab("home"); }, []);
+  const playDaily = useCallback(() => startMode("daily"), [startMode]);
+  const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
+  const useShield = useCallback(() => {
+    setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
+    showToast("🛡️ Streak shield activated! Your streak is safe today.");
+  }, [showToast]);
+  const shareDaily = useCallback(() => shareScore(dailyScore, 10, "daily"), [shareScore, dailyScore]);
+  const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   return (
     <>
@@ -10397,7 +10410,7 @@ function AppInner() {
         {!inGame && screen === "home" && tab === "league" && <LeagueScreen xp={xp} profile={profile} />}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />}
+        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} />}
 
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
@@ -10412,7 +10425,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={() => { setScreen("home"); setTab("home"); }} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={goHome} />}
 
         {/* ── MODES ── */}
         {screen === "modes" && (
