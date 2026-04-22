@@ -6898,7 +6898,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
 function TrueFalseEngine({ questions, onComplete, onBack }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
-  const [flash, setFlash] = useState(null);
+  const [picked, setPicked] = useState(null); // { val, correct } | null
   const [done, setDone] = useState(false);
   const total = questions?.length || 0;
   const timeoutRef = useRef(null);
@@ -6913,7 +6913,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
   }, [done, score, total]);
 
   const answer = (val) => {
-    if (flash) return;
+    if (picked) return;
     if (!questions || !questions[idx]) return;
     // Bulletproof: handle both a:true/false (boolean) and a:1/0 (number) formats
     const qa = questions[idx]?.a;
@@ -6921,13 +6921,13 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
     const correct = val === qAsBool;
     haptic(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
-    setFlash(correct ? 'correct' : 'wrong');
+    setPicked({ val, correct });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      setFlash(null);
+      setPicked(null);
       if (idx + 1 >= total) setDone(true);
       else setIdx(i => i + 1);
-    }, 700);
+    }, 900);
   };
 
   // Safety: if questions missing or done, render nothing (onComplete will have fired)
@@ -6935,34 +6935,53 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
   const q = questions[idx];
   if (!q) return null;
 
+  const qAsBool = q.a === true || q.a === 1;
+
+  const tfStyle = (isTrueBtn) => {
+    const base = { padding:'22px', fontSize:18, fontWeight:800, borderRadius:16, fontFamily:'inherit', cursor: picked ? 'default' : 'pointer', transition:'background 0.2s, color 0.2s, border-color 0.2s' };
+    if (!picked) {
+      return {
+        ...base,
+        background: 'var(--s1)',
+        border: '2px solid var(--border)',
+        color: 'var(--t1)',
+      };
+    }
+    const isCorrectBtn = isTrueBtn === qAsBool;
+    const userPickedThis = picked.val === isTrueBtn;
+    if (isCorrectBtn) {
+      return { ...base, background: 'var(--green)', border: '2px solid var(--green)', color: '#fff' };
+    }
+    if (userPickedThis) {
+      return { ...base, background: 'var(--red)', border: '2px solid var(--red)', color: '#fff' };
+    }
+    return { ...base, background: 'var(--s2)', border: '2px solid var(--border)', color: 'var(--t3)', opacity: 0.55 };
+  };
+
   return (
     <div className="quiz-wrap">
       <div className="q-top">
         <button className="back-btn" onClick={onBack}>←</button>
-        <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (flash?1:0)) / total) * 100}%`}} /></div>
+        <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (picked?1:0)) / total) * 100}%`}} /></div>
         <span className="q-ctr">{idx + 1}/{total}</span>
       </div>
       <div style={{textAlign:'center',padding:'8px 0 4px'}}>
         <span style={{fontSize:10,fontFamily:"'JetBrains Mono',monospace",color:'var(--accent)',letterSpacing:2,textTransform:'uppercase'}}>✅ TRUE OR FALSE</span>
       </div>
-      <div className={`q-card${flash ? ` q-card-${flash}` : ''}`} style={{minHeight:140,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center',transition:'background 0.3s'}}>
+      <div className="q-card" style={{minHeight:140,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
         <div className="q-text" style={{fontSize:'var(--q-font-size, 18px)',lineHeight:1.5}}>{q?.s || q?.q}</div>
       </div>
-      {flash && (
-        <div className={`feedback ${flash}`} style={{textAlign:'center',fontSize:20,fontWeight:800}}>
-          {flash === 'correct' ? '✓ Correct!' : `✗ ${(q.a === true || q.a === 1) ? 'TRUE' : 'FALSE'}`}
-        </div>
-      )}
-      {!flash && (
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
-          <button className="btn" onClick={() => answer(true)}
-            style={{padding:'22px',fontSize:18,fontWeight:800,borderRadius:16,background:'rgba(74,222,128,0.12)',border:'2px solid var(--accent)',color:'var(--accent)'}}>
-            ✓ TRUE
-          </button>
-          <button className="btn" onClick={() => answer(false)}
-            style={{padding:'22px',fontSize:18,fontWeight:800,borderRadius:16,background:'rgba(248,113,113,0.12)',border:'2px solid var(--red)',color:'var(--red)'}}>
-            ✗ FALSE
-          </button>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
+        <button onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
+          ✓ TRUE
+        </button>
+        <button onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
+          ✗ FALSE
+        </button>
+      </div>
+      {picked && (
+        <div style={{textAlign:'center',marginTop:14,fontSize:16,fontWeight:700,color: picked.correct ? 'var(--green)' : 'var(--red)'}}>
+          {picked.correct ? '✓ Correct!' : `✗ Correct answer: ${qAsBool ? 'TRUE' : 'FALSE'}`}
         </div>
       )}
     </div>
@@ -10345,62 +10364,10 @@ function AppInner() {
 
             <XPBar xp={xp} streak={loginStreak} />
             {stats.gamesPlayed > 0 && (
-              <>
-                <div className="stats-bar" style={{marginTop:10}}>
-                  <div className="sbar-box"><div className="sbar-val">{stats.gamesPlayed}</div><div className="sbar-key">Played</div></div>
-                  <div className="sbar-box"><div className="sbar-val">{stats.bestScore}/10</div><div className="sbar-key">Best Score</div></div>
-                  <div className="sbar-box"><div className="sbar-val">{stats.bestStreak}</div><div className="sbar-key">🔥 Streak</div></div>
-                </div>
-
-                {/* ── AT A GLANCE CARD ── */}
-                <div className="glance-card">
-                  <div className="glance-label">At a glance</div>
-                  <div className="glance-rows">
-                    {stats.bestHotStreak > 0 && (
-                      <div className="glance-row">
-                        <span className="glance-row-icon">⚡🔥</span>
-                        <span className="glance-row-name">Hot Streak best</span>
-                        <span className="glance-row-val">{stats.bestHotStreak}</span>
-                      </div>
-                    )}
-                    {stats.bestSurvival > 0 && (
-                      <div className="glance-row">
-                        <span className="glance-row-icon">🔥</span>
-                        <span className="glance-row-name">Survival best</span>
-                        <span className="glance-row-val">{stats.bestSurvival}</span>
-                      </div>
-                    )}
-                    {stats.bestIQ > 0 && (
-                      <div className="glance-row">
-                        <span className="glance-row-icon">🧠</span>
-                        <span className="glance-row-name">Ball IQ high</span>
-                        <span className="glance-row-val">{stats.bestIQ}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-            {stats.gamesPlayed === 0 && (
-              <div className="glance-card" style={{marginTop:12}}>
-                <div className="glance-label">Your stats</div>
-                <div className="glance-rows">
-                  <div className="glance-row">
-                    <span className="glance-row-icon">🎯</span>
-                    <span className="glance-row-name">Games played</span>
-                    <span className="glance-row-val" style={{color:"var(--t3)"}}>0</span>
-                  </div>
-                  <div className="glance-row">
-                    <span className="glance-row-icon">🧠</span>
-                    <span className="glance-row-name">Ball IQ score</span>
-                    <span className="glance-row-val" style={{color:"var(--t3)"}}>—</span>
-                  </div>
-                  <div className="glance-row">
-                    <span className="glance-row-icon">🔥</span>
-                    <span className="glance-row-name">Best streak</span>
-                    <span className="glance-row-val" style={{color:"var(--t3)"}}>—</span>
-                  </div>
-                </div>
+              <div className="stats-bar" style={{marginTop:10}}>
+                <div className="sbar-box"><div className="sbar-val">{stats.gamesPlayed}</div><div className="sbar-key">Played</div></div>
+                <div className="sbar-box"><div className="sbar-val">{stats.bestScore}/10</div><div className="sbar-key">Best Score</div></div>
+                <div className="sbar-box"><div className="sbar-val">{stats.bestStreak}</div><div className="sbar-key">🔥 Streak</div></div>
               </div>
             )}
           </div>
