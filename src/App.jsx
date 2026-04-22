@@ -5265,9 +5265,21 @@ function getBallIQQuestions() {
   });
 }
 
-function getDailyQs() {
+function dateToYMD(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+function keyForDate(date) { return `biq_daily_${dateToYMD(date)}`; }
+function dayIndexForDate(date) {
+  // Use UTC midnight of the local date so the seed is stable across timezones
+  return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000);
+}
+
+function getDailyQsForDate(date) {
   // MCQ only for daily — consistent experience, no typed surprises
-  const seed = Math.floor(Date.now() / 86400000);
+  const seed = dayIndexForDate(date);
   const mcqOnly = QB.filter(q => q.type === "mcq");
   const sorted = [...mcqOnly].sort((a, b) => {
     const sa = Math.sin(seed * 2654435769 + mcqOnly.indexOf(a) * 1013904223) - 0.5;
@@ -5280,6 +5292,7 @@ function getDailyQs() {
     return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a) };
   });
 }
+function getDailyQs() { return getDailyQsForDate(new Date()); }
 
 // ── TRUE / FALSE STATEMENTS ────────────────────────────────────────────────────
 const TF_STATEMENTS = [
@@ -6229,6 +6242,31 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .streak-dot.today{background:var(--accent-dim);border:1.5px solid var(--accent-b);color:var(--accent);}
 .streak-dot.missed{background:var(--s2);color:var(--t3);}
 .streak-day-label{font-size:9px;color:var(--t3);font-weight:500;font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;}
+
+/* ── MONTHLY CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
+.cal-nav{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--t1);cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;}
+.cal-nav:hover:not(:disabled){background:var(--s3);}
+.cal-nav:disabled{opacity:0.35;cursor:not-allowed;}
+.cal-month{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;text-align:center;flex:1;}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+.cal-dow-cell{font-size:9px;font-weight:700;color:var(--t3);text-align:center;letter-spacing:0.8px;text-transform:uppercase;font-family:'JetBrains Mono','SF Mono',monospace;padding:4px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-cell{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--t1);font-size:13px;font-weight:600;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;padding:0;transition:background 0.15s,border-color 0.15s,transform 0.1s;gap:1px;min-height:36px;}
+.cal-cell:hover:not(:disabled):not(.cal-future):not(.cal-empty){background:var(--s3);}
+.cal-cell:active:not(:disabled):not(.cal-future):not(.cal-empty){transform:scale(0.94);}
+.cal-cell.cal-empty{background:transparent;border-color:transparent;pointer-events:none;visibility:hidden;}
+.cal-cell.cal-done{background:var(--accent);border-color:var(--accent);color:#fff;}
+.cal-cell.cal-done .cal-num{color:#fff;}
+.cal-cell.cal-today{border-color:var(--accent);border-width:2px;font-weight:800;background:var(--accent-dim);color:var(--accent);}
+.cal-cell.cal-today.cal-done{background:var(--accent);color:#fff;}
+.cal-cell.cal-future{opacity:0.35;cursor:not-allowed;color:var(--t3);background:transparent;border-style:dashed;}
+.cal-cell.cal-missed{background:var(--s2);color:var(--t3);border-color:var(--border);}
+.cal-num{line-height:1;font-size:13px;}
+.cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
+.cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'JetBrains Mono','SF Mono',monospace;letter-spacing:0.5px;}
+.cal-legend-item{display:flex;align-items:center;gap:5px;}
+.cal-legend-dot{width:10px;height:10px;border-radius:3px;}
 
 /* ── LEAGUE SCREEN ── */
 .league-header{text-align:center;padding:8px 0 18px;}
@@ -9175,18 +9213,84 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
 }
 const ProfileScreen = React.memo(ProfileScreenImpl);
 
+function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, onViewScore }) {
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  const firstOfMonth = new Date(year, month, 1);
+  const startOffset = (firstOfMonth.getDay() + 6) % 7; // Monday-first
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const cells = [];
+  for (let i = 0; i < startOffset; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const monthLabel = viewDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+
+  // Disable forward nav when the viewed month is the current month or later
+  const viewedMonthIdx = year * 12 + month;
+  const todayMonthIdx = today.getFullYear() * 12 + today.getMonth();
+  const atCurrentMonth = viewedMonthIdx >= todayMonthIdx;
+
+  return (
+    <div className="streak-section">
+      <div className="cal-header">
+        <button className="cal-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label="Previous month">←</button>
+        <div className="cal-month">{monthLabel}</div>
+        <button className="cal-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} disabled={atCurrentMonth} aria-label="Next month">→</button>
+      </div>
+      <div className="cal-dow">
+        {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => (
+          <div key={d} className="cal-dow-cell">{d}</div>
+        ))}
+      </div>
+      <div className="cal-grid">
+        {cells.map((d, i) => {
+          if (!d) return <div key={`e-${i}`} className="cal-cell cal-empty" />;
+          const ymd = dateToYMD(d);
+          const score = history[ymd];
+          const isCompleted = typeof score === "number";
+          const dTime = d.getTime();
+          const isToday = dTime === todayMidnight;
+          const isFuture = dTime > todayMidnight;
+          const isPastMissed = dTime < todayMidnight && !isCompleted;
+
+          let cls = "cal-cell";
+          if (isCompleted) cls += " cal-done";
+          if (isToday) cls += " cal-today";
+          if (isFuture) cls += " cal-future";
+          else if (isPastMissed) cls += " cal-missed";
+
+          const handleClick = () => {
+            if (isFuture) return;
+            if (isCompleted) onViewScore(d, score);
+            else onPlayDate(d);
+          };
+
+          return (
+            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture} aria-label={`${ymd}${isCompleted ? ` completed ${score}/7` : isToday ? " today" : isPastMissed ? " missed" : ""}`}>
+              <span className="cal-num">{d.getDate()}</span>
+              {isCompleted && <span className="cal-check">✓</span>}
+            </button>
+          );
+        })}
+      </div>
+      <div className="cal-legend">
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent)"}} />Done</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent-dim)", border:"1.5px solid var(--accent)"}} />Today</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--s2)"}} />Missed</span>
+      </div>
+    </div>
+  );
+}
+
+
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare, dailyHistory, onPlayDate, onViewScore }) {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today); d.setDate(today.getDate()-i);
-    const label = d.toLocaleDateString("en-GB",{weekday:"short"}).slice(0,2);
-    const isToday = i===0;
-    const status = isToday ? (dailyDone?"done":"today") : loginStreak>i ? "done" : "missed";
-    days.push({label, status});
-  }
+  const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   return (
     <div className="tab-content">
       <div className="daily-hero">
@@ -9250,17 +9354,17 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           </div>
         </div>
       )}
-      <div className="streak-section">
-        <div className="streak-sec-title">🔥 {loginStreak}-Day Streak</div>
-        <div className="streak-cal">
-          {days.map((d,i) => (
-            <div key={i} className="streak-day">
-              <div className={`streak-dot ${d.status}`}>{d.status==="done"?"✓":d.status==="today"?"⚽":""}</div>
-              <div className="streak-day-label">{d.label}</div>
-            </div>
-          ))}
-        </div>
+      <div className="streak-section" style={{paddingBottom:12}}>
+        <div className="streak-sec-title" style={{marginBottom:10}}>🔥 {loginStreak}-Day Streak</div>
       </div>
+      <MonthlyCalendar
+        history={dailyHistory || {}}
+        today={today}
+        viewDate={viewDate}
+        setViewDate={setViewDate}
+        onPlayDate={onPlayDate}
+        onViewScore={onViewScore}
+      />
       {iqHistory && iqHistory.length > 0 && (
         <div className="streak-section">
           <div className="streak-sec-title">Ball IQ History</div>
@@ -9626,7 +9730,9 @@ function AppInner() {
     });
   }, []);
 
-  const todayKey = useMemo(() => `biq_daily_${Math.floor(Date.now() / 86400000)}`, []);
+  const todayKey = useMemo(() => keyForDate(new Date()), []);
+  const [dailyHistory, setDailyHistory] = useState({});
+  const [activeDailyDate, setActiveDailyDate] = useState(null);
 
   const showToast = useCallback((msg, duration = 2800) => {
     setToast(msg);
@@ -9660,6 +9766,25 @@ function AppInner() {
     window.storage?.get(todayKey).then(res => {
       if (res) { try { const d = JSON.parse(res.value); setDailyDone(true); setDailyScore(d.score); } catch {} }
     }).catch(() => {});
+    // Load full daily history — any biq_daily_YYYY-MM-DD entry
+    (async () => {
+      try {
+        const listRes = await window.storage?.list("biq_daily_");
+        const keys = listRes?.keys || [];
+        const hist = {};
+        for (const k of keys) {
+          const m = k.match(/^biq_daily_(\d{4}-\d{2}-\d{2})$/);
+          if (!m) continue;
+          try {
+            const r = await window.storage?.get(k);
+            if (!r) continue;
+            const parsed = JSON.parse(r.value);
+            if (typeof parsed?.score === "number") hist[m[1]] = parsed.score;
+          } catch {}
+        }
+        setDailyHistory(hist);
+      } catch {}
+    })();
     window.storage?.get("biq_league_nudge_seen").then(r => { setLeagueNudgeSeen(!!r); }).catch(() => setLeagueNudgeSeen(false));
     window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
     window.storage?.get("biq_iq_history").then(res => {
@@ -9809,7 +9934,7 @@ function AppInner() {
       let qs = [];
       if (m === "balliq") { setShowBallIQIntro(true); return; }
       if (m === "balliq_confirmed") { qs = getBallIQQuestions(); }
-      else if (m === "daily") { qs = getDailyQs(); }
+      else if (m === "daily") { qs = getDailyQs(); setActiveDailyDate(new Date()); }
       else if (m === "survival") { qs = getQs({ cat: "All", diff, n: 300 }); }
       else if (m === "legends") { qs = getQs({ cat: "Legends", diff, n: 10 }); }
       else if (m === "speed") { qs = getQs({ cat: "All", diff: "medium", n: 5 }); }
@@ -9968,10 +10093,19 @@ function AppInner() {
       });
     }
 
-    // Save daily completion
+    // Save daily completion (today or a past "catch-up" day)
     if (mode === "daily") {
-      setDailyDone(true); setDailyScore(res.score);
-      window.storage?.set(todayKey, JSON.stringify({ score: res.score })).catch(() => {});
+      const targetDate = activeDailyDate || new Date();
+      const targetYMD = dateToYMD(targetDate);
+      const key = keyForDate(targetDate);
+      window.storage?.set(key, JSON.stringify({ score: res.score })).catch(() => {});
+      setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
+      const todayYMD = dateToYMD(new Date());
+      if (targetYMD === todayYMD) {
+        setDailyDone(true);
+        setDailyScore(res.score);
+      }
+      setActiveDailyDate(null);
     }
 
     if (mode === "local") {
@@ -10003,7 +10137,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast, activeDailyDate]);
 
   const handleOnlineStart = useCallback((conf) => {
     setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
@@ -10086,10 +10220,22 @@ function AppInner() {
     const reset = { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
     setStats(reset);
     setDailyDone(false); setDailyScore(null);
+    setDailyHistory({});
     window.storage?.set("biq_stats", JSON.stringify(reset)).catch(() => {});
-    window.storage?.delete(todayKey).catch(() => {});
+    // Wipe all stored daily completions
+    (async () => {
+      try {
+        const listRes = await window.storage?.list("biq_daily_");
+        const keys = listRes?.keys || [];
+        for (const k of keys) {
+          if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k)) {
+            await window.storage?.delete(k).catch(() => {});
+          }
+        }
+      } catch {}
+    })();
     showToast("Stats cleared ✓");
-  }, [todayKey]);
+  }, [showToast]);
 
   const textSizeMap = { S: "15px", M: "18px", L: "21px" };
 
@@ -10132,6 +10278,21 @@ function AppInner() {
   }, [showToast]);
   const shareDaily = useCallback(() => shareScore(dailyScore, 7, "daily"), [shareScore, dailyScore]);
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
+
+  const playDailyForDate = useCallback((date) => {
+    const qs = getDailyQsForDate(date);
+    if (!qs || qs.length === 0) { showToast("No questions available for that day."); return; }
+    setActiveDailyDate(date);
+    setMode("daily");
+    setCat("All");
+    setQuestions(qs);
+    setScreen("quiz");
+  }, [showToast]);
+
+  const viewDailyScore = useCallback((date, score) => {
+    const label = date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+    showToast(`${label} — you scored ${score}/7 🏅`);
+  }, [showToast]);
 
   return (
     <>
@@ -10371,7 +10532,7 @@ function AppInner() {
         {!inGame && screen === "home" && tab === "league" && <LeagueScreen xp={xp} profile={profile} />}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} />}
+        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />}
 
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
