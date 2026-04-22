@@ -6303,7 +6303,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:84px;background:var(--bg);min-height:100vh;}
+.tab-content{padding-bottom:84px;background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
@@ -7809,8 +7809,22 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
 // ─── ONLINE LOBBY ─────────────────────────────────────────────────────────────
 function OnlineLobby({ onStart, onBack }) {
+  const { profile: authProfile } = useAuth();
+  // Prefer the authenticated username, then the locally-stored profile name,
+  // falling back to a reasonable default so the user never has to type it.
+  const defaultName = (() => {
+    if (authProfile?.username) return authProfile.username;
+    try {
+      const raw = localStorage.getItem("biq_profile");
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p?.name) return p.name;
+      }
+    } catch {}
+    return "";
+  })();
   const [view, setView] = useState("menu");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(defaultName);
   const [code, setCode] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [roomData, setRoomData] = useState(null);
@@ -7818,6 +7832,11 @@ function OnlineLobby({ onStart, onBack }) {
   const [cdNum, setCdNum] = useState(3);
   const pollRef = useRef(null);
   const t$ = m => { setToast(m); setTimeout(() => setToast(null), 2200); };
+
+  // Sync when the auth profile arrives after mount
+  useEffect(() => {
+    if (!name && authProfile?.username) setName(authProfile.username);
+  }, [authProfile?.username, name]);
 
   const create = async () => {
     if (!name.trim()) { t$("Enter your name"); return; }
@@ -9915,8 +9934,6 @@ function CropModal({ file, onCancel, onConfirm }) {
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast }) {
   const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
-  const [editingName, setEditingName] = useState(false);
-  const [nameVal, setNameVal] = useState(profile?.name || "");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -9929,7 +9946,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const pctile = iq ? iqPercentile(iq) : null;
   const avatarUrl = authProfile?.avatar_url || null;
   const toast = onToast || ((m) => { try { window.alert(m); } catch {} });
-  const saveName = () => { setEditingName(false); if (nameVal.trim()) setProfile(p => ({ ...p, name: nameVal.trim() })); };
 
   const openAvatarPicker = () => {
     if (uploading) return;
@@ -10006,10 +10022,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </div>
           <div className="profile-avatar-edit" onClick={openAvatarPicker}>+</div>
         </div>
-        {editingName
-          ? <input className="profile-name-input" value={nameVal} onChange={e => setNameVal(e.target.value)} onBlur={saveName} onKeyDown={e => e.key==="Enter"&&saveName()} autoFocus maxLength={20} />
-          : <div className="profile-name" onClick={() => setEditingName(true)}>{profile?.name || "Tap to set name"} <span style={{fontSize:12,color:"var(--t3)"}}>edit</span></div>
-        }
+        <div className="profile-name" style={{cursor:"default"}}>
+          {authProfile?.username || profile?.name || "Player"}
+        </div>
         <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
         {iq && <div className="profile-iq-line">Ball IQ: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
       </div>
@@ -10227,25 +10242,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           </button>
         )}
       </div>
-      {dailyDone && (
-        <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginBottom:16}}>
-          <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>While you wait for tomorrow…</div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {[
-              {icon:"🧠", label:"Take the Ball IQ Test", action:"balliq"},
-              {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
-              {icon:"✅", label:"Play True or False", action:"truefalse"},
-              {icon:"🔥", label:"Try Survival Mode", action:"survival"},
-            ].map(({icon, label, action}) => (
-              <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
-                <div className="mi-icon" style={{fontSize:18}}>{icon}</div>
-                <div className="mi-body"><div className="mi-name" style={{fontSize:14}}>{label}</div></div>
-                <div className="mi-arrow">→</div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -10271,9 +10267,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           </div>
         </div>
       )}
-      <div className="streak-section" style={{paddingBottom:12}}>
-        <div className="streak-sec-title" style={{marginBottom:10}}>🔥 {loginStreak}-Day Streak</div>
-      </div>
       <MonthlyCalendar
         history={dailyHistory || {}}
         today={today}
@@ -10282,6 +10275,25 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
         onPlayDate={onPlayDate}
         onViewScore={onViewScore}
       />
+      {dailyDone && (
+        <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginTop:12,marginBottom:16}}>
+          <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>While you wait for tomorrow…</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {[
+              {icon:"🧠", label:"Take the Ball IQ Test", action:"balliq"},
+              {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
+              {icon:"✅", label:"Play True or False", action:"truefalse"},
+              {icon:"🔥", label:"Try Survival Mode", action:"survival"},
+            ].map(({icon, label, action}) => (
+              <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
+                <div className="mi-icon" style={{fontSize:18}}>{icon}</div>
+                <div className="mi-body"><div className="mi-name" style={{fontSize:14}}>{label}</div></div>
+                <div className="mi-arrow">→</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       {iqHistory && iqHistory.length > 0 && (
         <div className="streak-section">
           <div className="streak-sec-title">Ball IQ History</div>
