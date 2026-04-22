@@ -9918,9 +9918,6 @@ function AppInner() {
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
 
-  // Stable callback refs so memoized child screens don't re-render on every parent render.
-  const handleSettingsBack = useCallback(() => { setScreen("home"); setTab("home"); }, []);
-
   return (
     <>
       <style>{css}</style>
@@ -9941,7 +9938,16 @@ function AppInner() {
         )}
 
         {hasOnboarded && <>
-        {!inGame && <div className="hdr"><div className="logo">Ball <em>IQ</em></div></div>}
+        {!inGame && (
+          <div className="hdr">
+            <div className="logo">Ball <em>IQ</em></div>
+            {screen === "home" && (
+              <div className="hdr-actions">
+                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Global toasts */}
         {toast && <div className="toast">{toast}</div>}
@@ -10217,9 +10223,6 @@ function AppInner() {
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
 
-        {/* ── SETTINGS TAB ── */}
-        {!inGame && screen === "home" && tab === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={handleSettingsBack} />}
-
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
           <SocialHub
@@ -10444,7 +10447,6 @@ function AppInner() {
               { id:"league",   icon:"🏆", label:"League"  },
               { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
               { id:"profile",  icon:"👤", label:"Profile" },
-              { id:"settings", icon:"⚙️", label:"Settings"},
             ].map(({ id, icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => setTab(id)}>
                 <span className="tab-icon">{icon}</span>
