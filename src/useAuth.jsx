@@ -163,37 +163,110 @@ export function AuthProvider({ children }) {
     return blob
   }
 
-  // Uploads an avatar image for the current user to the "avatars" Storage bucket
-  // at "{userId}.jpg" (upsert), updates profiles.avatar_url, and refreshes
-  // the in-memory profile so the UI shows it immediately.
+  // Dumps EVERY property of an error-like object — Supabase's storage errors
+  // are plain objects (not Error instances), so JSON.stringify can collapse
+  // them to "{}" unless we pull props out by name.
+  function dumpErr(e) {
+    if (!e) return null
+    const out = {}
+    const keys = [
+      'message', 'statusCode', 'status', 'error', 'cause', 'name', 'code',
+      'details', 'hint', 'stack', 'originalError', 'body',
+    ]
+    for (const k of keys) {
+      try { if (e[k] !== undefined) out[k] = e[k] } catch {}
+    }
+    try {
+      for (const k of Object.getOwnPropertyNames(e)) {
+        if (out[k] === undefined) out[k] = e[k]
+      }
+    } catch {}
+    return out
+  }
+
+  // TEMP DEBUG BUILD — simplified to isolate where the upload is failing.
+  // Step 1: upload a 1×1 white PNG test blob with NO resize step.
+  // Step 2: if the test upload succeeds, also run the real image upload.
+  // All error objects are fully expanded. Also logs a prefix of the session
+  // access token so we can confirm auth is reaching the storage request.
   async function uploadAvatar(file) {
     console.log('[uploadAvatar] called', { hasFile: !!file, userId: user?.id, isGuest })
     if (!user?.id) {
       console.error('[uploadAvatar] aborted: no signed-in user')
       return { error: new Error('Not signed in') }
     }
-    if (!file) {
-      console.error('[uploadAvatar] aborted: no file')
-      return { error: new Error('No file provided') }
-    }
-    // Verify the Supabase client actually has an auth session — storage RLS relies on it.
+
+    // ── Session + token snapshot ──────────────────────────────────────────────
+    let accessToken = null
     try {
       const { data: sessionData, error: sessErr } = await supabase.auth.getSession()
-      if (sessErr) console.error('[uploadAvatar] session fetch error', sessErr)
+      if (sessErr) console.error('[uploadAvatar] session fetch error', dumpErr(sessErr))
       const session = sessionData?.session
+      accessToken = session?.access_token || null
       console.log('[uploadAvatar] session check', {
         hasSession: !!session,
         sessionUserId: session?.user?.id,
         sessionUserMatches: session?.user?.id === user.id,
-        accessTokenPresent: !!session?.access_token,
+        accessTokenPresent: !!accessToken,
+        accessTokenPrefix: accessToken ? accessToken.slice(0, 20) + '…' : null,
         expiresAt: session?.expires_at,
+        expiresInSec: session?.expires_at ? session.expires_at - Math.floor(Date.now() / 1000) : null,
       })
       if (!session) {
         console.error('[uploadAvatar] no active session — cannot upload under RLS')
         return { error: new Error('No active auth session — please sign in again') }
       }
     } catch (sessEx) {
-      console.error('[uploadAvatar] session check threw', sessEx)
+      console.error('[uploadAvatar] session check threw', dumpErr(sessEx))
+    }
+
+    // ── STEP 1: tiny 1×1 PNG probe, no resize ────────────────────────────────
+    // A 1×1 white PNG (base64). Smallest valid PNG we can throw at the bucket.
+    const WHITE_1x1_PNG_B64 =
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
+    let probeBlob = null
+    try {
+      const bin = atob(WHITE_1x1_PNG_B64)
+      const bytes = new Uint8Array(bin.length)
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+      probeBlob = new Blob([bytes], { type: 'image/png' })
+      console.log('[uploadAvatar] probe blob ready', { size: probeBlob.size, type: probeBlob.type })
+    } catch (probeEx) {
+      console.error('[uploadAvatar] could not build probe blob', dumpErr(probeEx))
+    }
+
+    const probePath = `${user.id}-probe.png`
+    console.log('[uploadAvatar] probe upload begin', { bucket: 'avatars', path: probePath })
+    let probeResult
+    try {
+      probeResult = await supabase.storage
+        .from('avatars')
+        .upload(probePath, probeBlob, { contentType: 'image/png', upsert: true })
+    } catch (probeThrow) {
+      console.error('[uploadAvatar] PROBE threw — storage connection itself failed', dumpErr(probeThrow))
+      return { error: probeThrow }
+    }
+    if (probeResult?.error) {
+      console.error('[uploadAvatar] PROBE rejected by Supabase', dumpErr(probeResult.error))
+      console.error('[uploadAvatar] PROBE full result object', probeResult)
+      console.error(
+        '[uploadAvatar] PROBE hint: to inspect your storage policies run this in the Supabase SQL Editor:\n' +
+        "SELECT policyname, cmd, qual, with_check\n" +
+        "FROM pg_policies\n" +
+        "WHERE tablename = 'objects' AND schemaname = 'storage';\n" +
+        'Expected "avatars" bucket INSERT/UPDATE policies to allow:\n' +
+        "  bucket_id = 'avatars' AND auth.role() = 'authenticated' AND name = auth.uid()::text || '.png'  -- (for flat path)\n" +
+        'OR for a folder path:\n' +
+        "  bucket_id = 'avatars' AND auth.role() = 'authenticated' AND (storage.foldername(name))[1] = auth.uid()::text"
+      )
+      return { error: probeResult.error }
+    }
+    console.log('[uploadAvatar] PROBE succeeded', probeResult?.data)
+
+    // ── STEP 2: proceed with the real photo upload ───────────────────────────
+    if (!file) {
+      console.warn('[uploadAvatar] probe succeeded but no file provided — done')
+      return { url: null, probeOnly: true }
     }
 
     let blob
@@ -204,34 +277,27 @@ export function AuthProvider({ children }) {
         return { error: new Error('Failed to generate image') }
       }
     } catch (e) {
-      console.error('[uploadAvatar] resize step threw', e)
+      console.error('[uploadAvatar] resize step threw', dumpErr(e))
       return { error: e }
     }
 
-    // Use a flat "{userId}.jpg" path (some folder-based RLS policies cause 403s
-    // for the "{userId}/avatar.jpg" pattern; flat keeps RLS simpler).
     const path = `${user.id}.jpg`
-    console.log('[uploadAvatar] uploading', { bucket: 'avatars', path, size: blob.size })
+    console.log('[uploadAvatar] real upload begin', { bucket: 'avatars', path, size: blob.size })
     let upResult
     try {
       upResult = await supabase.storage
         .from('avatars')
         .upload(path, blob, { contentType: 'image/jpeg', upsert: true, cacheControl: '3600' })
     } catch (uploadEx) {
-      console.error('[uploadAvatar] storage.upload threw', uploadEx)
+      console.error('[uploadAvatar] real upload threw', dumpErr(uploadEx))
       return { error: uploadEx }
     }
     if (upResult?.error) {
-      console.error('[uploadAvatar] storage upload failed', {
-        message: upResult.error.message,
-        statusCode: upResult.error.statusCode,
-        error: upResult.error.error,
-        name: upResult.error.name,
-        hint: 'If statusCode is 403 or 401 the RLS policy on storage.objects is rejecting the insert — verify the "avatars" bucket policy checks (auth.uid())::text = (storage.foldername(name))[1] for folder paths, or name = auth.uid() || \'.jpg\' for flat paths.',
-      })
+      console.error('[uploadAvatar] real upload rejected', dumpErr(upResult.error))
+      console.error('[uploadAvatar] real upload full result object', upResult)
       return { error: upResult.error }
     }
-    console.log('[uploadAvatar] storage upload succeeded', upResult?.data)
+    console.log('[uploadAvatar] real upload succeeded', upResult?.data)
 
     let publicUrl
     try {
@@ -239,7 +305,7 @@ export function AuthProvider({ children }) {
       publicUrl = pub?.publicUrl
       console.log('[uploadAvatar] public URL resolved', { publicUrl })
     } catch (urlEx) {
-      console.error('[uploadAvatar] getPublicUrl threw', urlEx)
+      console.error('[uploadAvatar] getPublicUrl threw', dumpErr(urlEx))
       return { error: urlEx }
     }
     if (!publicUrl) {
@@ -257,16 +323,11 @@ export function AuthProvider({ children }) {
         .update({ avatar_url: publicUrl })
         .eq('id', user.id)
     } catch (updEx) {
-      console.error('[uploadAvatar] profiles.update threw', updEx)
+      console.error('[uploadAvatar] profiles.update threw', dumpErr(updEx))
       return { error: updEx }
     }
     if (updResult?.error) {
-      console.error('[uploadAvatar] profile update failed', {
-        message: updResult.error.message,
-        code: updResult.error.code,
-        details: updResult.error.details,
-        hint: updResult.error.hint,
-      })
+      console.error('[uploadAvatar] profile update failed', dumpErr(updResult.error))
       return { error: updResult.error }
     }
     console.log('[uploadAvatar] profile row updated')
