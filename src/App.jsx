@@ -6002,6 +6002,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-cta span{font-size:18px;transition:transform 0.2s;}
 @media (hover: hover) { .dhero:hover .dhero-cta span{transform:translateX(3px);} .dhero:hover .dhero-cta{background:#4aad00;} .dhero-done:hover .dhero-cta{background:var(--s3);} }
 @keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.dhero-compact{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--s1);border:1px solid rgba(34,197,94,0.25);border-radius:12px;cursor:pointer;font-family:inherit;color:var(--t1);transition:background 0.15s,transform 0.1s,border-color 0.15s;box-shadow:0 1px 6px rgba(0,0,0,0.18);}
+.dhero-compact:hover{background:var(--s2);border-color:rgba(34,197,94,0.4);}
+.dhero-compact:active{transform:scale(0.99);}
+.dhero-compact-dot{font-size:15px;line-height:1;}
+.dhero-compact-text{flex:1;font-size:13px;font-weight:700;color:var(--t1);text-align:left;letter-spacing:-0.1px;}
+.dhero-compact-score{color:var(--accent);}
+.dhero-compact-arrow{font-size:16px;color:var(--t3);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
 .wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,box-shadow 0.15s,border-color 0.15s;text-align:left;}
@@ -11200,40 +11207,31 @@ function AppInner() {
               <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
             </div>
             <div className="cta-stack">
-              {/* ── HERO: DAILY CHALLENGE ── */}
-              <button className={`dhero${dailyDone?" dhero-done":""}`} onClick={() => dailyDone ? setTab("daily") : startMode("daily")}>
-                <div className="dhero-top">
-                  <div className="dhero-label">
-                    <span className="dhero-label-dot">●</span>
-                    {dailyDone ? "DAILY · COMPLETED" : "DAILY CHALLENGE"}
+              {/* ── HERO: DAILY CHALLENGE (full card, only while not yet done) ── */}
+              {!dailyDone && (
+                <button className="dhero" onClick={() => startMode("daily")}>
+                  <div className="dhero-top">
+                    <div className="dhero-label">
+                      <span className="dhero-label-dot">●</span>
+                      DAILY CHALLENGE
+                    </div>
+                    <div className="dhero-countdown">
+                      <span style={{opacity:0.6}}>resets in</span> <DailyHeroCountdown />
+                    </div>
                   </div>
-                  <div className="dhero-countdown">
-                    {dailyDone
-                      ? <>🏅 {dailyScore}/7</>
-                      : <><span style={{opacity:0.6}}>resets in</span> <DailyHeroCountdown /></>
-                    }
+                  <div className="dhero-body">
+                    <div className="dhero-date">
+                      {new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}
+                      {loginStreak > 1 && <span className="dhero-streak">🔥 {loginStreak}d</span>}
+                    </div>
+                    <div className="dhero-title">7 questions. <span className="dhero-highlight">One shot.</span></div>
                   </div>
-                </div>
-                <div className="dhero-body">
-                  <div className="dhero-date">
-                    {new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}
-                    {loginStreak > 1 && <span className="dhero-streak">🔥 {loginStreak}d</span>}
+                  <div className="dhero-cta">
+                    <span style={{fontSize:14}}>Play now</span>
+                    <span>→</span>
                   </div>
-                  <div className="dhero-title">
-                    {dailyDone
-                      ? (dailyScore === 7 ? <>Perfect <span className="dhero-highlight">7/7</span></>
-                        : dailyScore >= 5 ? <>Solid. <span className="dhero-highlight">{dailyScore}/7</span></>
-                        : dailyScore >= 3 ? <>You got <span className="dhero-highlight">{dailyScore}/7</span></>
-                        : <>Tough one. <span className="dhero-highlight">{dailyScore}/7</span></>)
-                      : <>7 questions. <span className="dhero-highlight">One shot.</span></>
-                    }
-                  </div>
-                </div>
-                <div className="dhero-cta">
-                  <span style={{fontSize:14}}>{dailyDone ? "See results & share" : "Play now"}</span>
-                  <span>→</span>
-                </div>
-              </button>
+                </button>
+              )}
 
               {/* ── WORLD CUP 2026 COUNTDOWN ── */}
               {(() => {
@@ -11272,6 +11270,21 @@ function AppInner() {
                   <div className="cta-icon" style={{fontSize:22}}>🆚</div>
                 </button>
               </div>
+
+              {/* ── COMPACT DAILY COMPLETION BADGE (only once today is done) ── */}
+              {dailyDone && (
+                <button
+                  className="dhero-compact"
+                  onClick={() => setTab("daily")}
+                  aria-label={`Daily challenge complete: ${dailyScore} out of 7. View daily tab.`}
+                >
+                  <span className="dhero-compact-dot">✅</span>
+                  <span className="dhero-compact-text">
+                    Daily done · <span className="dhero-compact-score">{dailyScore}/7</span>
+                  </span>
+                  <span className="dhero-compact-arrow">→</span>
+                </button>
+              )}
 
               {/* ── TERTIARY: BALL IQ TEST ── */}
               <button className="cta cta-iq" onClick={() => startMode("balliq")} style={{padding:"12px 16px"}}>
