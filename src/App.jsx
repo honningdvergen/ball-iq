@@ -6422,7 +6422,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .avatar-spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(34,197,94,0.25);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .avatar-menu{display:flex;flex-direction:column;gap:8px;padding:4px 0 8px;}
-.avatar-menu-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s2);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:background 0.15s,transform 0.1s;}
+.avatar-menu-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s2);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:background 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;}
 .avatar-menu-row:hover{background:var(--s3);}
 .avatar-menu-row:active{transform:scale(0.98);}
 
