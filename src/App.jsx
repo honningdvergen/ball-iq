@@ -7224,13 +7224,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
             const qAsBool = q.a === true || q.a === 1;
             const isCorrect = val === qAsBool;
             const isChosen = selected === (val ? 1 : 0);
-            let bg = val ? "rgba(74,222,128,0.1)" : "rgba(248,113,113,0.1)";
-            let border = val ? "2px solid var(--accent)" : "2px solid var(--red)";
-            let color = val ? "var(--accent)" : "var(--red)";
+            // Pre-answer: neutral — no colour bias toward TRUE or FALSE
+            let bg = "var(--s1)";
+            let border = "2px solid var(--border)";
+            let color = "var(--t1)";
             if (isAnswered) {
-              if (isCorrect) { bg = "rgba(74,222,128,0.25)"; border = "2px solid var(--accent)"; }
-              else if (isChosen) { bg = "rgba(248,113,113,0.25)"; border = "2px solid var(--red)"; }
-              else { bg = "var(--s2)"; border = "2px solid transparent"; color = "var(--t3)"; }
+              if (isCorrect) { bg = "var(--green)"; border = "2px solid var(--green)"; color = "#fff"; }
+              else if (isChosen) { bg = "var(--red)"; border = "2px solid var(--red)"; color = "#fff"; }
+              else { bg = "var(--s2)"; border = "2px solid var(--border)"; color = "var(--t3)"; }
             }
             return (
               <button key={String(val)} disabled={isAnswered}
@@ -7238,7 +7239,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
                 onPointerDown={e => { if (!isAnswered) e.currentTarget.style.transform = "scale(0.97)"; }}
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
                 style={{padding:"20px 8px",fontSize:17,fontWeight:800,borderRadius:16,
-                  background:bg,border,color,cursor:isAnswered?"default":"pointer",transition:"all 0.15s"}}>
+                  background:bg,border,color,cursor:isAnswered?"default":"pointer",transition:"all 0.2s",fontFamily:"inherit",
+                  opacity: isAnswered && !isCorrect && !isChosen ? 0.55 : 1}}>
                 {isAnswered && isCorrect ? "✓ " : isAnswered && isChosen && !isCorrect ? "✗ " : ""}{val ? "TRUE" : "FALSE"}
               </button>
             );
