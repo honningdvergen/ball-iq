@@ -6391,6 +6391,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .journey-badge.next{background:rgba(34,197,94,0.15);color:var(--accent);border:1px solid rgba(34,197,94,0.3);}
 .journey-badge.goal{background:rgba(255,200,0,0.12);color:var(--gold);border:1px solid rgba(255,200,0,0.3);}
 
+.club-crest svg{width:100%;height:100%;display:block;}
+
 .badges-section{margin-bottom:14px;}
 .badges-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
@@ -7007,6 +7009,7 @@ function ClubCrest({ clubKey, size = 48 }) {
   }
   return (
     <div
+      className="club-crest"
       aria-hidden="true"
       style={{width:size, height:size, display:"inline-block", flexShrink:0, filter:"drop-shadow(0 1px 2px rgba(0,0,0,0.25))"}}
       dangerouslySetInnerHTML={{__html: svg}}
@@ -7080,7 +7083,18 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 
 // ─── SOUND EFFECTS ────────────────────────────────────────────────────────────
 // Pure Web-Audio sound synthesis. Honours biq_settings.sound and no-ops on
-// environments without AudioContext or with the setting disabled.
+// environments without AudioContext or with the setting disabled. Reuses a
+// single AudioContext across calls (iOS Safari limits to ~4 concurrent ones).
+let _audioCtx = null;
+function _getAudioCtx() {
+  try {
+    if (_audioCtx) return _audioCtx;
+    const AC = typeof window !== "undefined" && (window.AudioContext || window.webkitAudioContext);
+    if (!AC) return null;
+    _audioCtx = new AC();
+    return _audioCtx;
+  } catch { return null; }
+}
 function playSound(type) {
   try {
     // Honour user sound preference (read synchronously so we can be called from anywhere)
@@ -7091,9 +7105,13 @@ function playSound(type) {
     } catch {}
     if (!enabled) return;
 
-    const AC = typeof window !== "undefined" && (window.AudioContext || window.webkitAudioContext);
-    if (!AC) return;
-    const ctx = new AC();
+    const ctx = _getAudioCtx();
+    if (!ctx) return;
+    // iOS Safari often keeps the context in "suspended" state until a user gesture.
+    // Calling resume() inside a touch handler (where playSound usually fires) is safe.
+    if (ctx.state === "suspended" && typeof ctx.resume === "function") {
+      try { ctx.resume(); } catch {}
+    }
     const now = ctx.currentTime;
 
     // Helper: schedule a single sine note with a short attack + exponential release
@@ -9606,7 +9624,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         {iq && <div className="profile-iq-line">Ball IQ: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
       </div>
       <button className="share-profile-btn" onClick={onShareProfile}>Share Profile Card</button>
-      <button className="share-profile-btn" style={{marginTop:-4}} onClick={onShowWeekly}>Weekly Summary 📊</button>
+      {onShowWeekly && (
+        <button className="share-profile-btn" style={{marginTop:-4}} onClick={onShowWeekly}>Weekly Summary 📊</button>
+      )}
       <div className="stat-grid" style={{marginBottom:16}}>
         <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="st-key">Games</div></div>
         <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="st-key">Day Streak</div></div>
@@ -10397,9 +10417,10 @@ function AppInner() {
   const startMode = useCallback((m) => {
     try {
       haptic("soft");
-      // A club quiz sets activeClub before delegating to startMode('classic'),
-      // so only clear it when the next mode is NOT a club-quiz path.
-      if (m !== "clubquiz") setActiveClub(null);
+      // Club quiz bypasses startMode entirely (it sets activeClub + setMode directly).
+      // Any mode reaching this function should clear it so a stale crest banner
+      // doesn't appear on the next quiz.
+      setActiveClub(null);
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
