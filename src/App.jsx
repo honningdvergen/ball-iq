@@ -6828,7 +6828,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
-  const [flash, setFlash] = useState(null); // 'correct' | 'wrong'
+  const [picked, setPicked] = useState(null); // { choice, correct } | null
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
   const q = questions[idx % questions.length];
@@ -6850,12 +6850,12 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
   }, [done]);
 
   const answer = (i) => {
-    if (done || flash) return;
+    if (done || picked) return;
     const correct = i === q.a;
     haptic(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
-    setFlash(correct ? 'correct' : 'wrong');
-    setTimeout(() => { setFlash(null); setIdx(i => i + 1); }, 400);
+    setPicked({ choice: i, correct });
+    setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, 400);
   };
 
   const pct = (timeLeft / 60) * 100;
@@ -6872,16 +6872,23 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
         <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'JetBrains Mono',monospace",letterSpacing:1}}>⚡🔥 HOT STREAK</div>
         <div style={{fontSize:22,fontWeight:800,color:'var(--accent)'}}>{score} <span style={{fontSize:13,color:'var(--t3)',fontWeight:500}}>pts</span></div>
       </div>
-      <div className={`q-card${flash ? ` q-card-${flash}` : ''}`} style={{transition:'background 0.2s'}}>
+      <div className="q-card">
         <div className="q-tag">{CAT_LABELS[q.cat] || q.cat}</div>
         <div className="q-text">{q.q}</div>
       </div>
       <div className="opts">
-        {q.o.map((opt, i) => (
-          <button key={i} className="opt" onClick={() => answer(i)} disabled={!!flash}>
-            <span className="opt-l">{['A','B','C','D'][i]}</span>{opt}
-          </button>
-        ))}
+        {q.o.map((opt, i) => {
+          let cls = 'opt';
+          if (picked) {
+            if (i === picked.choice) cls += picked.correct ? ' correct' : ' wrong';
+            else if (!picked.correct && i === q.a) cls += ' correct';
+          }
+          return (
+            <button key={i} className={cls} onClick={() => answer(i)} disabled={!!picked}>
+              <span className="opt-l">{['A','B','C','D'][i]}</span>{opt}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -10392,9 +10399,6 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />}
 
-        {/* ── LEADERBOARD TAB ── */}
-        {!inGame && screen === "home" && tab === "leaderboard" && <LeaderboardScreen currentUserId={user?.id} />}
-
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
 
@@ -10618,11 +10622,10 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <nav className="tab-bar">
             {[
-              { id:"home",        icon:"⚽", label:"Play"    },
-              { id:"league",      icon:"🏆", label:"League"  },
-              { id:"daily",       icon:"📅", label:"Daily",  badge: !dailyDone },
-              { id:"leaderboard", icon:"🏅", label:"Top"     },
-              { id:"profile",     icon:"👤", label:"Profile" },
+              { id:"home",     icon:"⚽", label:"Play"    },
+              { id:"league",   icon:"🏆", label:"League"  },
+              { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
+              { id:"profile",  icon:"👤", label:"Profile" },
             ].map(({ id, icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => setTab(id)}>
                 <span className="tab-icon">{icon}</span>
