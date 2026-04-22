@@ -8400,7 +8400,7 @@ function ClubQuizScreen({ onStart, onBack }) {
 }
 
 
-function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onBack }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const Toggle = ({ val, onChange }) => (
     <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
@@ -8578,6 +8578,7 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
     </div>
   );
 }
+const SettingsScreen = React.memo(SettingsScreenImpl);
 
 // ─── XP BAR COMPONENT ─────────────────────────────────────────────────────────
 function XPBar({ xp, streak }) {
@@ -9076,12 +9077,13 @@ function computeBadges(stats, xp, loginStreak) {
 const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","💎","🦁","🦅","🐺","🐉","🚀","⚡","🏅","🥇","🥈","🥉","🔮","🌟","💫","🌈","🎭","🎨","🦊","🐬","🦋","🎵","🌺","🏄"];
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreen({ profile, setProfile, stats, xp, loginStreak, onShareProfile, onShowWeekly }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly }) {
   const [editingName, setEditingName] = useState(false);
   const [nameVal, setNameVal] = useState(profile?.name || "");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const { level } = getLevelInfo(xp);
-  const earned = computeBadges(stats, xp, loginStreak);
+  // Prefer memoized values from the parent; fall back for any legacy caller.
+  const level = levelProp || getLevelInfo(xp).level;
+  const earned = earnedBadges || computeBadges(stats, xp, loginStreak);
   const iq = stats.bestIQ || null;
   const pctile = iq ? iqPercentile(iq) : null;
   const saveName = () => { setEditingName(false); if (nameVal.trim()) setProfile(p => ({ ...p, name: nameVal.trim() })); };
@@ -9147,6 +9149,7 @@ function ProfileScreen({ profile, setProfile, stats, xp, loginStreak, onSharePro
     </div>
   );
 }
+const ProfileScreen = React.memo(ProfileScreenImpl);
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
 function DailyTabScreen({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare }) {
@@ -9271,7 +9274,7 @@ function getLeagueCohort(userXp, weekSeed) {
   }));
 }
 
-function LeagueScreen({ xp, weeklyXp, profile }) {
+function LeagueScreenImpl({ xp, weeklyXp, profile }) {
   const myWeeklyXp = weeklyXp || 0;
   const weekSeed = getWeekSeed();
   const baseOpponents = getLeagueCohort(Math.max(myWeeklyXp, 50), weekSeed);
@@ -9361,6 +9364,7 @@ function LeagueScreen({ xp, weeklyXp, profile }) {
     </div>
   );
 }
+const LeagueScreen = React.memo(LeagueScreenImpl);
 
 
 
@@ -9410,13 +9414,13 @@ function AppInner() {
   const [toast, setToast] = useState(null);
 
 
-  const setProfile = (updater) => {
+  const setProfile = useCallback((updater) => {
     setProfileState(prev => {
       const next = typeof updater === "function" ? updater(prev) : updater;
       window.storage?.set("biq_profile", JSON.stringify(next)).catch(() => {});
       return next;
     });
-  };
+  }, []);
 
   const todayKey = useMemo(() => `biq_daily_${Math.floor(Date.now() / 86400000)}`, []);
 
@@ -9801,13 +9805,15 @@ function AppInner() {
     setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
   };
 
-  const updateSettings = (patch) => {
-    const updated = { ...settings, ...patch };
-    setSettings(updated);
-    window.storage?.set("biq_settings", JSON.stringify(updated)).catch(() => {});
+  const updateSettings = useCallback((patch) => {
+    setSettings(prev => {
+      const updated = { ...prev, ...patch };
+      window.storage?.set("biq_settings", JSON.stringify(updated)).catch(() => {});
+      return updated;
+    });
     // Apply defaultDiff immediately
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
-  };
+  }, []);
 
   const shareScore = (score, total, mode) => {
     const msgs = {
@@ -9858,7 +9864,7 @@ function AppInner() {
     }
   };
 
-  const shareProfile = () => {
+  const shareProfile = useCallback(() => {
     const { level } = getLevelInfo(xp);
     const iq = stats.bestIQ;
     const lines = [
@@ -9870,16 +9876,16 @@ function AppInner() {
     ].filter(Boolean).join("\n");
     if (navigator.share) navigator.share({ text: lines }).catch(()=>{});
     else navigator.clipboard?.writeText(lines).then(()=>showToast("Profile copied!")).catch(()=>{});
-  };
+  }, [xp, stats, profile, loginStreak]);
 
-  const clearStats = () => {
+  const clearStats = useCallback(() => {
     const reset = { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
     setStats(reset);
     setDailyDone(false); setDailyScore(null);
     window.storage?.set("biq_stats", JSON.stringify(reset)).catch(() => {});
     window.storage?.delete(todayKey).catch(() => {});
     showToast("Stats cleared ✓");
-  };
+  }, [todayKey]);
 
   const textSizeMap = { S: "15px", M: "18px", L: "21px" };
 
@@ -9905,6 +9911,18 @@ function AppInner() {
   }, [settings.theme, settings.textSize]);
 
   const inGame = ["quiz","local-handoff","local-results"].includes(screen);
+
+  // iOS Safari PWA flashes white when toggling display:none/block on tab switches.
+  // visibility:hidden + position:absolute keeps the element painted, avoiding the flash.
+  const tabStyle = (isActive) => isActive
+    ? { position: "relative" }
+    : { visibility: "hidden", position: "absolute", top: 0, left: 0, right: 0, pointerEvents: "none" };
+
+  const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
+  const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
+
+  // Stable callback refs so memoized child screens don't re-render on every parent render.
+  const handleSettingsBack = useCallback(() => { setScreen("home"); setTab("home"); }, []);
 
   return (
     <>
@@ -10014,7 +10032,7 @@ function AppInner() {
 
         {/* ── HOME TAB ── */}
         {!inGame && screen === "home" && (
-          <div className="screen tab-content" style={{display: tab === "home" ? "block" : "none"}}>
+          <div className="screen tab-content" style={tabStyle(tab === "home")} aria-hidden={tab !== "home"}>
             <div className="home-hero">
               <div className="home-title">How well do you <span>know the game?</span></div>
               <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
@@ -10194,16 +10212,16 @@ function AppInner() {
         )}
 
         {/* ── LEAGUE TAB ── */}
-        {!inGame && screen === "home" && <div style={{display: tab === "league" ? "block" : "none"}}><LeagueScreen xp={xp} profile={profile} /></div>}
+        {!inGame && screen === "home" && <div style={tabStyle(tab === "league")} aria-hidden={tab !== "league"}><LeagueScreen xp={xp} profile={profile} /></div>}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && <div style={{display: tab === "daily" ? "block" : "none"}}><DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} /></div>}
+        {!inGame && screen === "home" && <div style={tabStyle(tab === "daily")} aria-hidden={tab !== "daily"}><DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} /></div>}
 
         {/* ── PROFILE TAB ── */}
-        {!inGame && screen === "home" && <div style={{display: tab === "profile" ? "block" : "none"}}><ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} onShareProfile={shareProfile} /></div>}
+        {!inGame && screen === "home" && <div style={tabStyle(tab === "profile")} aria-hidden={tab !== "profile"}><ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} /></div>}
 
         {/* ── SETTINGS TAB ── */}
-        {!inGame && screen === "home" && tab === "settings" && <div style={{display: "block"}}><SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={() => { setScreen("home"); setTab("home"); }} /></div>}
+        {!inGame && screen === "home" && <div style={tabStyle(tab === "settings")} aria-hidden={tab !== "settings"}><SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={handleSettingsBack} /></div>}
 
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
