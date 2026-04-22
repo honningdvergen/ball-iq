@@ -6054,10 +6054,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-done .dhero-label{color:#fbbf24;}
 .dhero-label-dot{font-size:8px;animation:dheroPulse 2s ease-in-out infinite;}
 .dhero-done .dhero-label-dot{animation:none;}
-.dhero-countdown{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px;}
+.dhero-countdown{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px;}
 .dhero-body{display:flex;flex-direction:column;gap:4px;}
 .dhero-date{font-size:11px;font-weight:500;color:var(--t3);letter-spacing:0.2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.dhero-streak{font-size:10px;font-weight:700;background:var(--s2);padding:2px 8px;border-radius:10px;letter-spacing:0.3px;text-transform:none;color:var(--t2);display:inline-flex;align-items:center;gap:3px;}
+.dhero-streak{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:10px;font-weight:700;background:var(--s2);padding:2px 8px;border-radius:10px;letter-spacing:0.3px;text-transform:none;color:var(--t2);display:inline-flex;align-items:center;gap:3px;}
 .dhero-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;line-height:1.1;color:var(--t1);}
 .dhero-highlight{color:var(--accent);}
 .dhero-done .dhero-highlight{color:#fbbf24;}
@@ -6099,7 +6099,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 .dhero-compact-dot{font-size:15px;line-height:1;}
 .dhero-compact-text{flex:1;font-size:13px;font-weight:700;color:var(--t1);text-align:left;letter-spacing:-0.1px;}
-.dhero-compact-score{color:var(--accent);}
+.dhero-compact-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
 .dhero-compact-arrow{font-size:16px;color:var(--t3);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
@@ -6112,7 +6112,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .wc-label{color:#B45309;}
 .wc-days{font-size:22px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:#fff;}
 .light .wc-days{color:#1C1C1E;}
-.wc-days em{font-style:normal;color:#FFC800;}
+.wc-days em{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-style:normal;color:#FFC800;}
 .light .wc-days em{color:#B45309;}
 .wc-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;font-weight:500;}
 .light .wc-sub{color:#48484A;}
@@ -6157,7 +6157,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 .stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;}
 .sbar-box{background:var(--s1);border:none;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.sbar-val{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);}
+.sbar-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);}
 .sbar-key{font-size:10px;color:var(--t3);margin-top:3px;font-weight:500;letter-spacing:0.8px;}
 .page-hdr{display:flex;align-items:center;gap:12px;padding:18px 0 22px;}
 .back-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2);transition:all 0.15s;}
@@ -6193,8 +6193,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
 .q-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.q-ctr{font-family:'Inter',sans-serif;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;}
-.q-score-live{font-family:'Inter',sans-serif;font-size:13px;font-weight:800;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.q-ctr{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
+.q-score-live{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .legends-card{border:1px solid rgba(251,191,36,0.2)!important;}
@@ -6236,7 +6236,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .timer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;}
-.timer{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:var(--t2);min-width:28px;text-align:right;}
+.timer{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--t2);min-width:28px;text-align:right;}
 .timer.urgent{color:var(--red);animation:tp 0.5s ease infinite alternate;}
 @keyframes tp{from{opacity:1;}to{opacity:0.4;}}
 .streak-bar{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.15);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:11px;margin-bottom:12px;}
@@ -6258,8 +6258,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .rc-title{animation:sIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.05s both;}
 .rc-title{font-size:24px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
 .rc-sub{font-size:13px;color:var(--t2);}
-.score-big{font-size:60px;font-weight:800;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-2px;}
-.score-pct{font-family:'Inter',sans-serif;font-size:11px;color:var(--t3);}
+.score-big{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-2px;}
+.score-pct{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
 .sbox{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;animation:sboxIn 0.4s cubic-bezier(0.22,1,0.36,1) both;}
 .s-row .sbox:nth-child(1){animation-delay:0.55s;}
@@ -6274,8 +6274,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cat-breakdown{animation:sboxIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.9s both;margin:0 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:7px;}
 .cat-chip{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:11px;line-height:1.35;}
 .cat-chip-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.8px;margin-bottom:3px;}
-.cat-chip-val{font-size:13px;font-weight:700;color:var(--text);}
-.cat-chip-val .cat-score{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--t2);margin-left:4px;}
+.cat-chip-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--text);}
+.cat-chip-val .cat-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;color:var(--t2);margin-left:4px;}
 .cat-chip.strong{border-color:rgba(52,199,89,0.35);background:linear-gradient(135deg,rgba(52,199,89,0.08),transparent);}
 .cat-chip.strong .cat-chip-label{color:var(--green);}
 .cat-chip.weak{border-color:rgba(255,69,58,0.28);background:linear-gradient(135deg,rgba(255,69,58,0.06),transparent);}
@@ -6287,7 +6287,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-ring.great{animation:iqPulse 1.5s ease infinite;}
 @keyframes iqPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 .iq-ring-inner{width:120px;height:120px;border-radius:50%;background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.iq-num{font-size:44px;font-weight:800;letter-spacing:-2px;color:var(--text);}
+.iq-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;letter-spacing:-2px;color:var(--text);}
 .iq-sub{font-size:9px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.2px;margin-top:2px;}
 .iq-label{font-size:21px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
@@ -6307,7 +6307,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
 .inp:focus{border-color:var(--accent-b);background:var(--s1);}
 .code-box{background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:11px;padding:18px;text-align:center;margin-bottom:13px;}
-.code-val{font-family:'Inter',sans-serif;font-size:28px;font-weight:600;color:var(--accent);letter-spacing:8px;}
+.code-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:8px;}
 .code-hint{font-size:12px;color:var(--t2);margin-top:5px;}
 .wait-row{display:flex;align-items:center;gap:10px;padding:9px 0;}
 .wdot{width:6px;height:6px;border-radius:50%;background:var(--s3);}
@@ -6448,7 +6448,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-today.cal-done{background:var(--accent);color:#fff;}
 .cal-cell.cal-future{opacity:0.35;cursor:not-allowed;color:var(--t3);background:transparent;border-style:dashed;}
 .cal-cell.cal-missed{background:var(--s2);color:var(--t3);border-color:var(--border);}
-.cal-num{line-height:1;font-size:13px;}
+.cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
 .cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
 .cal-legend-item{display:flex;align-items:center;gap:5px;}
@@ -6462,7 +6462,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .league-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
 .li-card{background:var(--s1);border:none;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
 .li-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-bottom:6px;}
-.li-val{font-size:16px;font-weight:800;letter-spacing:-0.3px;}
+.li-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:16px;font-weight:700;letter-spacing:-0.3px;}
 .league-table{background:var(--s1);border:none;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
 .lt-header{display:grid;grid-template-columns:32px 1fr 60px;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
 .lt-hcol{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;font-weight:600;}
@@ -6471,10 +6471,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .lt-row.you{background:var(--accent-dim);border-left:3px solid var(--accent);}
 .lt-row.promote{background:rgba(34,197,94,0.04);}
 .lt-row.relegate{background:rgba(248,113,113,0.04);}
-.lt-rank{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--t3);text-align:center;}
+.lt-rank{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;color:var(--t3);text-align:center;}
 .lt-row.you .lt-rank{color:var(--accent);}
 .lt-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.lt-xp{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--t2);text-align:right;}
+.lt-xp{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;color:var(--t2);text-align:right;}
 .lt-row.you .lt-xp{color:var(--accent);}
 
 /* ── PROFILE SCREEN ── */
@@ -6487,7 +6487,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
 .profile-level-badge{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
-.profile-iq-line strong{color:var(--accent);}
+.profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
 .share-profile-btn:hover{background:var(--accent-dim);}
 /* ── YOUR JOURNEY (league pyramid) ── */
@@ -6602,9 +6602,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .shc-left{display:flex;align-items:center;gap:12px;}
 .shc-icon{font-size:28px;}
 .shc-level{font-size:16px;font-weight:800;letter-spacing:-0.2px;}
-.shc-xp{font-size:12px;color:var(--t2);margin-top:2px;font-family:'Inter',sans-serif;}
+.shc-xp{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;color:var(--t2);margin-top:2px;font-weight:600;}
 .shc-streak{display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:8px 12px;}
-.shc-streak-n{font-size:20px;font-weight:800;color:var(--gold);line-height:1;text-align:center;}
+.shc-streak-n{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;color:var(--gold);line-height:1;text-align:center;}
 .shc-streak-l{font-size:9px;color:var(--gold);letter-spacing:0.2px;font-weight:600;font-family:'Inter',sans-serif;}
 .stat-xp-progress{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
 .stat-xp-row{display:flex;justify-content:space-between;margin-bottom:8px;}
@@ -6612,7 +6612,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .stat-xp-sub{font-size:11px;color:var(--t3);margin-top:6px;text-align:center;}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;}
-.st-val{font-size:24px;font-weight:800;letter-spacing:-0.5px;line-height:1.1;}
+.st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
 .st-key{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;}
 .stat-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
 .stat-section-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
@@ -6624,7 +6624,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .xp-bar-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .xp-level-icon{font-size:16px;}
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
-.xp-total{font-family:'Inter',sans-serif;font-size:11px;color:var(--t2);font-weight:500;}
+.xp-total{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t2);font-weight:600;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .xp-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);}
 .xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
@@ -6654,7 +6654,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .iq-hist-bars{display:flex;align-items:flex-end;gap:6px;height:52px;}
 .iq-hist-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .iq-hist-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height 0.4s cubic-bezier(0.22,1,0.36,1);}
-.iq-hist-n{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);font-weight:500;}
+.iq-hist-n{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:9px;color:var(--t3);font-weight:500;}
 
 
 /* ── SOCIAL HUB ── */
@@ -7395,7 +7395,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
       </div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
         <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}>⚡🔥 Hot Streak</div>
-        <div style={{fontSize:22,fontWeight:800,color:'var(--accent)'}}>{score} <span style={{fontSize:13,color:'var(--t3)',fontWeight:500}}>pts</span></div>
+        <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>pts</span></div>
       </div>
       <div className="q-card">
         <div className="q-tag">{CAT_LABELS[q.cat] || q.cat}</div>
