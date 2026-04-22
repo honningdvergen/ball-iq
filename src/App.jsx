@@ -6551,23 +6551,43 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .ln-close:hover{color:rgba(255,255,255,0.7);}
 
 /* ── ONBOARDING ── */
-.onboard-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0F1117 65%);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;}
+.onboard-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
 .light .onboard-wrap{background:radial-gradient(ellipse at 50% 0%, #FFFFFF 0%, #F2F2F7 65%);}
-.onboard-slide{display:flex;flex-direction:column;align-items:center;gap:16px;animation:sIn 0.35s cubic-bezier(0.22,1,0.36,1);}
-.onboard-icon{font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
-.onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);}
-.onboard-body{font-size:15px;color:var(--t2);line-height:1.7;max-width:300px;}
-.onboard-dots{display:flex;gap:8px;margin:28px 0 20px;}
-.onboard-dot{width:8px;height:8px;border-radius:50%;background:var(--s3);cursor:pointer;transition:all 0.2s;}
-.onboard-dot.active{width:24px;border-radius:4px;background:var(--accent);}
-.onboard-btn{width:100%;max-width:300px;padding:16px;background:var(--accent);border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:#0a1a00;cursor:pointer;letter-spacing:-0.2px;transition:all 0.2s;box-shadow:0 4px 20px rgba(34,197,94,0.3);}
-.onboard-btn:hover{background:#22c55e;transform:translateY(-1px);}
-.onboard-skip{margin-top:14px;background:none;border:none;color:var(--t3);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;padding:8px;}
+.onboard-progress{display:flex;gap:6px;padding:0 24px;margin-bottom:24px;}
+.onboard-bar{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,0.12);transition:background 0.25s;}
+.light .onboard-bar{background:rgba(0,0,0,0.08);}
+.onboard-bar.done{background:var(--accent);}
+.onboard-bar.active{background:var(--accent);box-shadow:0 0 8px rgba(34,197,94,0.5);}
+.onboard-viewport{flex:1;overflow:hidden;width:100%;}
+.onboard-track{display:flex;height:100%;width:400%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
+.onboard-step{width:25%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-step-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:360px;margin:0 auto;flex:1;}
+.onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
+.onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
+.onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
+.onboard-body{font-size:15px;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:24px;}
+.onboard-btn{width:100%;max-width:340px;padding:16px;background:var(--accent);border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:-0.2px;transition:background 0.15s,transform 0.1s;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
+.onboard-btn:hover{background:#16a34a;}
+.onboard-btn:active{transform:scale(0.98);}
+.onboard-btn-inline{max-width:180px;flex:1;}
+.onboard-skip{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;padding:12px 16px;}
 .onboard-skip:hover{color:var(--t2);}
-.onboard-name-wrap{width:100%;max-width:300px;margin-top:8px;}
-.onboard-name-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:var(--text);outline:none;text-align:center;transition:border-color 0.2s;}
-.onboard-name-input::placeholder{color:rgba(255,255,255,0.35);}
-.onboard-name-input:focus{border-color:rgba(255,255,255,0.5);}
+.onboard-actions{display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;}
+.onboard-club-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:360px;margin:8px 0 12px;}
+.onboard-club{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:var(--s1);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.15s,background 0.15s,transform 0.1s;}
+.onboard-club:hover{background:var(--s2);}
+.onboard-club:active{transform:scale(0.97);}
+.onboard-club.on{border-color:var(--accent);background:var(--accent-dim);box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
+.onboard-club-name{font-size:11px;font-weight:700;color:var(--t1);line-height:1.2;text-align:center;}
+.onboard-skill-list{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;}
+.onboard-skill{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s1);border:2px solid var(--border);border-radius:14px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color 0.15s,background 0.15s,transform 0.1s;}
+.onboard-skill:hover{background:var(--s2);}
+.onboard-skill:active{transform:scale(0.98);}
+.onboard-skill.on{border-color:var(--accent);background:var(--accent-dim);box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
+.onboard-skill-icon{font-size:28px;flex-shrink:0;}
+.onboard-skill-body{flex:1;min-width:0;}
+.onboard-skill-name{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:2px;}
+.onboard-skill-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 
 /* ── WEEKLY SUMMARY ── */
 .weekly-card{background:var(--s1);border-radius:20px;padding:24px 20px;width:100%;max-width:340px;box-shadow:var(--sh-lg);}
@@ -9389,87 +9409,154 @@ function DailyTeaser() {
 
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
-const ONBOARDING_SLIDES = [
-  {
-    icon: "⚽",
-    title: "Welcome to Ball IQ",
-    body: "The ultimate football quiz. Test your knowledge across World Cup, Premier League, Champions League and more.",
-    accent: "#4ADE80",
-  },
-  {
-    icon: "🏆",
-    title: "Climb the Leagues",
-    body: "Earn XP every game. Level up from Sunday League all the way to Legend. Compete in weekly leagues against other players.",
-    accent: "#FBBF24",
-  },
-  {
-    icon: "📅",
-    title: "Come Back Every Day",
-    body: "A fresh Daily Challenge every 24 hours. Build your streak, track your Ball IQ score, and share your results.",
-    accent: "#3B82F6",
-  },
+// 4-step welcome flow shown once per device after auth. Persists:
+//   biq_fav_club     — chosen CLUB_PACKS key (or absent if skipped)
+//   biq_skill_level  — "casual" | "fan" | "expert" (or absent)
+//   biq_onboarded    — "1" once completed (or skipped to end)
+const SKILL_OPTIONS = [
+  { id: "casual", icon: "🌱", name: "Casual Fan", desc: "I watch the big games and know the top teams.",           diff: "easy"   },
+  { id: "fan",    icon: "⚽", name: "Football Fan", desc: "I follow a league or two and the major competitions.",   diff: "medium" },
+  { id: "expert", icon: "🧠", name: "Expert",      desc: "I know obscure facts and follow football history.",      diff: "hard"   },
 ];
 
-function OnboardingScreen({ onDone, onSetName }) {
-  const [slide, setSlide] = useState(0);
-  const [nameInput, setNameInput] = useState("");
-  const current = ONBOARDING_SLIDES[slide] || ONBOARDING_SLIDES[0] || { title: "Ball IQ", body: "", icon: "⚽", accent: "#22c55e" };
-  const isLast = slide >= ONBOARDING_SLIDES.length - 1;
-  const [chosenAvatar, setChosenAvatar] = useState("⚽");
-  const PICK_AVATARS = ["⚽","🏆","🧠","🔥","⚡","🎯","🥇","🦁","🐐","🇧🇷","🇩🇪","🇦🇷","🏴󠁧󠁢󠁥󠁮󠁧󠁿","🇪🇸","🇫🇷"];
+function OnboardingScreen({ onDone }) {
+  const [step, setStep] = useState(0);
+  const [favClub, setFavClub] = useState(null);
+  const [skillLevel, setSkillLevel] = useState(null);
+  const TOTAL = 4;
 
-  const finish = () => {
-    const name = nameInput.trim() || "Football Fan";
-    if (onSetName) onSetName(name);
-    onDone(name, chosenAvatar);
+  const persistAndFinish = () => {
+    try {
+      if (favClub) localStorage.setItem("biq_fav_club", favClub);
+      if (skillLevel) {
+        localStorage.setItem("biq_skill_level", skillLevel);
+        const diffFor = SKILL_OPTIONS.find(s => s.id === skillLevel)?.diff;
+        if (diffFor) {
+          try {
+            const raw = localStorage.getItem("biq_settings");
+            const s = raw
+              ? JSON.parse(raw)
+              : { textSize: "M", defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false };
+            s.defaultDiff = diffFor;
+            localStorage.setItem("biq_settings", JSON.stringify(s));
+          } catch {}
+        }
+      }
+      localStorage.setItem("biq_onboarded", "1");
+    } catch {}
+    try { window.storage?.set("biq_onboarded", "1").catch(() => {}); } catch {}
+    onDone?.();
+  };
+
+  const next = () => {
+    haptic("soft");
+    if (step < TOTAL - 1) setStep(s => s + 1);
+    else persistAndFinish();
+  };
+  const skip = () => {
+    haptic("soft");
+    if (step < TOTAL - 1) setStep(s => s + 1);
+    else persistAndFinish();
+  };
+  const requestNotif = async () => {
+    try {
+      if (typeof Notification !== "undefined" && Notification.requestPermission) {
+        await Notification.requestPermission();
+      }
+    } catch {}
+    persistAndFinish();
   };
 
   return (
     <div className="onboard-wrap">
-      <div className="onboard-slide" key={slide}>
-        <div className="onboard-icon" style={{filter:`drop-shadow(0 0 24px ${current.accent}66)`}}>{current.icon}</div>
-        <div className="onboard-title">{current.title}</div>
-        <div className="onboard-body">{current.body}</div>
-        {isLast && (
-          <div className="onboard-name-wrap">
-            <input
-              className="onboard-name-input"
-              placeholder="Enter your name (optional)"
-              value={nameInput}
-              onChange={e => setNameInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && finish()}
-              maxLength={20}
-              autoFocus
-            />
-            <div style={{marginTop:18}}>
-              <div style={{fontSize:11,color:"var(--t3)",textAlign:"center",marginBottom:10,letterSpacing:1,fontWeight:600}}>Pick your avatar</div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center"}}>
-                {PICK_AVATARS.map(em => (
-                  <button key={em} onClick={() => setChosenAvatar(em)}
-                    style={{fontSize:22,background:chosenAvatar===em?"rgba(34,197,94,0.18)":"var(--s2)",border:chosenAvatar===em?"2px solid var(--accent)":"2px solid transparent",borderRadius:12,padding:"6px 8px",cursor:"pointer",transition:"all 0.15s",lineHeight:1}}>
-                    {em}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="onboard-dots">
-        {ONBOARDING_SLIDES.map((_, i) => (
-          <div key={i} className={`onboard-dot${i === slide ? " active" : ""}`} onClick={() => setSlide(i)} />
+      <div className="onboard-progress">
+        {Array.from({ length: TOTAL }).map((_, i) => (
+          <div
+            key={i}
+            className={`onboard-bar${i < step ? " done" : ""}${i === step ? " active" : ""}`}
+          />
         ))}
       </div>
 
-      <button className="onboard-btn" style={{background: current.accent, color: "#0a0a0a"}}
-        onClick={() => { if (isLast) finish(); else setSlide(s => s + 1); }}>
-        {isLast ? `Let's Play ${chosenAvatar}` : "Next →"}
-      </button>
+      <div className="onboard-viewport">
+        <div className="onboard-track" style={{ transform: `translateX(-${step * 25}%)` }}>
+          {/* 1. Welcome */}
+          <div className="onboard-step">
+            <div className="onboard-step-top">
+              <div className="onboard-icon">⚽</div>
+              <div className="onboard-title">Welcome to Ball IQ</div>
+              <div className="onboard-body">
+                The ultimate football quiz. Test your knowledge, beat your mates, climb the league.
+              </div>
+            </div>
+            <button className="onboard-btn" onClick={next}>Get Started</button>
+          </div>
 
-      {!isLast && (
-        <button className="onboard-skip" onClick={finish}>Skip</button>
-      )}
+          {/* 2. Favourite Club */}
+          <div className="onboard-step">
+            <div style={{width:"100%"}}>
+              <div className="onboard-title" style={{marginTop:16}}>Who do you support?</div>
+              <div className="onboard-body">Pick your club — we'll personalise your experience.</div>
+            </div>
+            <div className="onboard-club-grid">
+              {Object.entries(CLUB_PACKS).map(([key, pack]) => (
+                <button
+                  key={key}
+                  className={`onboard-club${favClub === key ? " on" : ""}`}
+                  onClick={() => { haptic("soft"); setFavClub(key); }}
+                  aria-pressed={favClub === key}
+                >
+                  <ClubCrest clubKey={key} size={44} />
+                  <div className="onboard-club-name">{pack.name}</div>
+                </button>
+              ))}
+            </div>
+            <div className="onboard-actions">
+              <button className="onboard-skip" onClick={skip}>Skip</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>Next →</button>
+            </div>
+          </div>
+
+          {/* 3. Skill Level */}
+          <div className="onboard-step">
+            <div style={{width:"100%"}}>
+              <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
+              <div className="onboard-body">We'll tune the default difficulty to match.</div>
+            </div>
+            <div className="onboard-skill-list">
+              {SKILL_OPTIONS.map(opt => (
+                <button
+                  key={opt.id}
+                  className={`onboard-skill${skillLevel === opt.id ? " on" : ""}`}
+                  onClick={() => { haptic("soft"); setSkillLevel(opt.id); }}
+                  aria-pressed={skillLevel === opt.id}
+                >
+                  <span className="onboard-skill-icon">{opt.icon}</span>
+                  <div className="onboard-skill-body">
+                    <div className="onboard-skill-name">{opt.name}</div>
+                    <div className="onboard-skill-desc">{opt.desc}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="onboard-actions">
+              <button className="onboard-skip" onClick={skip}>Skip</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>Next →</button>
+            </div>
+          </div>
+
+          {/* 4. Notifications */}
+          <div className="onboard-step">
+            <div className="onboard-step-top">
+              <div className="onboard-icon">🔔</div>
+              <div className="onboard-title">Never miss your daily challenge</div>
+              <div className="onboard-body">Stay on your streak with a daily reminder.</div>
+            </div>
+            <button className="onboard-btn" onClick={requestNotif}>Enable Notifications</button>
+            <button className="onboard-skip" onClick={persistAndFinish} style={{marginTop:6}}>Maybe Later</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -10882,13 +10969,19 @@ function AppInner() {
         {/* ── ONBOARDING — shown to first-time users only ── */}
         {!hasOnboarded && (
           <OnboardingScreen
-            onDone={(name, avatar) => {
-              const p = { name, avatar: avatar || "⚽" };
-              setProfile(p);
+            onDone={() => {
               setHasOnboarded(true);
-              window.storage?.set("biq_onboarded", "1").catch(() => {});
+              // The component has already written biq_onboarded + any chosen fav_club / skill_level.
+              // Pull through the new default difficulty so it takes effect immediately.
+              try {
+                const raw = localStorage.getItem("biq_settings");
+                if (raw) {
+                  const s = JSON.parse(raw);
+                  setSettings(prev => ({ ...prev, ...s }));
+                  if (s.defaultDiff) setDiff(s.defaultDiff === "med" ? "medium" : s.defaultDiff);
+                }
+              } catch {}
             }}
-            onSetName={(n) => setProfile(prev => ({ ...prev, name: n }))}
           />
         )}
 
