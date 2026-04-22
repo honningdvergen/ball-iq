@@ -6433,6 +6433,25 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .avatar-menu-row:hover{background:var(--s3);}
 .avatar-menu-row:active{transform:scale(0.98);}
 
+/* ── IMAGE CROP MODAL ── */
+.crop-overlay{position:fixed;inset:0;background:#0a0a0a;z-index:600;display:flex;flex-direction:column;color:#fff;animation:fadeIn 0.18s ease;}
+.crop-header{padding:calc(18px + env(safe-area-inset-top,0)) 20px 12px;text-align:center;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:#fff;flex-shrink:0;}
+.crop-stage{flex:1;position:relative;overflow:hidden;background:#0a0a0a;min-height:0;display:flex;align-items:center;justify-content:center;}
+.crop-stage img{display:block;max-width:100%;max-height:100%;}
+.crop-circle-mask .cropper-view-box,.crop-circle-mask .cropper-face{border-radius:50%;}
+.crop-circle-mask .cropper-view-box{outline:2px solid #fff;outline-color:rgba(255,255,255,0.85);}
+.crop-status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
+.crop-status-err{color:#FF6B6B;}
+.crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,0));background:#0a0a0a;flex-shrink:0;}
+.crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;}
+.crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
+.crop-btn.primary:hover:not(:disabled){background:#16a34a;}
+.crop-btn.primary:active:not(:disabled){transform:scale(0.98);}
+.crop-btn.secondary{background:rgba(255,255,255,0.1);color:#fff;}
+.crop-btn.secondary:hover:not(:disabled){background:rgba(255,255,255,0.18);}
+.crop-btn.secondary:active:not(:disabled){transform:scale(0.98);}
+
 .emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
 .emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px;animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .emoji-picker-title{font-size:14px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t2);}
@@ -9716,6 +9735,183 @@ function computeBadges(stats, xp, loginStreak) {
 
 const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","💎","🦁","🦅","🐺","🐉","🚀","⚡","🏅","🥇","🥈","🥉","🔮","🌟","💫","🌈","🎭","🎨","🦊","🐬","🦋","🎵","🌺","🏄"];
 
+// ─── IMAGE CROPPER (cropperjs from CDN) ──────────────────────────────────────
+let _cropperPromise = null;
+function ensureCropperLoaded() {
+  if (_cropperPromise) return _cropperPromise;
+  _cropperPromise = new Promise((resolve, reject) => {
+    try {
+      if (typeof window !== "undefined" && window.Cropper) {
+        resolve(window.Cropper);
+        return;
+      }
+      if (typeof document === "undefined") {
+        reject(new Error("No document"));
+        return;
+      }
+      // Inject CSS once
+      if (!document.querySelector('link[data-cropperjs]')) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css";
+        link.setAttribute("data-cropperjs", "1");
+        document.head.appendChild(link);
+      }
+      // Reuse an existing script tag if present
+      let script = document.querySelector('script[data-cropperjs]');
+      if (!script) {
+        script = document.createElement("script");
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js";
+        script.async = true;
+        script.setAttribute("data-cropperjs", "1");
+        document.head.appendChild(script);
+      }
+      script.addEventListener("load", () => {
+        if (window.Cropper) resolve(window.Cropper);
+        else reject(new Error("Cropper global missing after load"));
+      }, { once: true });
+      script.addEventListener("error", () => reject(new Error("cropper.js failed to load")), { once: true });
+      // Already loaded edge case
+      if (window.Cropper) resolve(window.Cropper);
+    } catch (e) {
+      reject(e);
+    }
+  });
+  return _cropperPromise;
+}
+
+function CropModal({ file, onCancel, onConfirm }) {
+  const imgRef = useRef(null);
+  const cropperRef = useRef(null);
+  const [imgUrl, setImgUrl] = useState(null);
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  // Build an object URL for the selected file
+  useEffect(() => {
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setImgUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
+
+  // Load cropperjs from CDN (cached after first call)
+  useEffect(() => {
+    let cancelled = false;
+    ensureCropperLoaded()
+      .then(() => { if (!cancelled) setReady(true); })
+      .catch((e) => { if (!cancelled) setError(e?.message || "Could not load cropper"); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Initialize Cropper once the library is loaded AND the image element is in the DOM
+  useEffect(() => {
+    if (!ready || !imgUrl || !imgRef.current) return;
+    const Cropper = window.Cropper;
+    if (!Cropper) return;
+    const node = imgRef.current;
+    const init = () => {
+      try {
+        cropperRef.current = new Cropper(node, {
+          aspectRatio: 1,
+          viewMode: 1,
+          dragMode: "move",
+          autoCropArea: 1,
+          background: false,
+          responsive: true,
+          restore: false,
+          zoomable: true,
+          scalable: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+          guides: false,
+          center: true,
+          movable: true,
+        });
+      } catch (e) {
+        setError(e?.message || "Cropper init failed");
+      }
+    };
+    if (node.complete && node.naturalWidth > 0) init();
+    else {
+      const onLoad = () => init();
+      node.addEventListener("load", onLoad, { once: true });
+      node.addEventListener("error", () => setError("Image failed to load"), { once: true });
+      // Cleanup listener if the effect tears down before load
+      return () => {
+        node.removeEventListener("load", onLoad);
+        if (cropperRef.current) { try { cropperRef.current.destroy(); } catch {} cropperRef.current = null; }
+      };
+    }
+    return () => {
+      if (cropperRef.current) { try { cropperRef.current.destroy(); } catch {} cropperRef.current = null; }
+    };
+  }, [ready, imgUrl]);
+
+  const handleUse = async () => {
+    if (!cropperRef.current || busy) return;
+    setBusy(true);
+    try {
+      const canvas = cropperRef.current.getCroppedCanvas({
+        width: 400,
+        height: 400,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: "high",
+      });
+      if (!canvas) throw new Error("Could not get cropped canvas");
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (b) => (b ? resolve(b) : reject(new Error("Canvas toBlob returned null"))),
+          "image/jpeg",
+          0.9
+        );
+      });
+      await onConfirm?.(blob);
+    } catch (e) {
+      setError(e?.message || "Crop failed");
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="crop-overlay" role="dialog" aria-modal="true" aria-label="Crop your photo">
+      <div className="crop-header">Crop your photo</div>
+      <div className="crop-stage crop-circle-mask">
+        {imgUrl && (
+          <img
+            ref={imgRef}
+            src={imgUrl}
+            alt=""
+            style={{ maxWidth: "100%", maxHeight: "100%", display: "block" }}
+          />
+        )}
+        {!ready && !error && (
+          <div className="crop-status">Loading cropper…</div>
+        )}
+        {error && <div className="crop-status crop-status-err">{error}</div>}
+      </div>
+      <div className="crop-actions">
+        <button
+          className="crop-btn secondary"
+          onClick={onCancel}
+          disabled={busy}
+        >
+          Cancel
+        </button>
+        <button
+          className="crop-btn primary"
+          onClick={handleUse}
+          disabled={!ready || busy || !!error}
+        >
+          {busy ? "Uploading…" : "Use Photo"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast }) {
   const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
@@ -9724,6 +9920,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
   const fileInputRef = useRef(null);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
@@ -9746,15 +9943,26 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     fileInputRef.current?.click();
   };
 
-  const handleFileChosen = async (e) => {
+  const handleFileChosen = (e) => {
     const file = e.target.files && e.target.files[0];
     // Reset the input so selecting the same file again still triggers onChange
     if (e.target) e.target.value = "";
     if (!file) return;
     if (!uploadAvatar) { toast("Photo upload unavailable"); return; }
+    // Defer upload — route through the crop modal first
+    setPendingCrop(file);
+  };
+
+  const handleCropCancel = () => {
+    setPendingCrop(null);
+  };
+
+  const handleCropConfirm = async (blob) => {
+    setPendingCrop(null);
+    if (!blob) return;
     setUploading(true);
     try {
-      const result = await uploadAvatar(file);
+      const result = await uploadAvatar(blob);
       if (result?.error) {
         toast("Could not upload photo — try again");
       } else {
@@ -9909,6 +10117,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             </div>
           </div>
         </div>
+      )}
+      {pendingCrop && (
+        <CropModal
+          file={pendingCrop}
+          onCancel={handleCropCancel}
+          onConfirm={handleCropConfirm}
+        />
       )}
     </div>
   );
