@@ -6370,6 +6370,27 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-iq-line strong{color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
 .share-profile-btn:hover{background:var(--accent-dim);}
+/* ── YOUR JOURNEY (league pyramid) ── */
+.journey-section{margin:2px 0 16px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 14px 10px;box-shadow:0 2px 10px rgba(0,0,0,0.28);}
+.journey-title{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.journey-list{position:relative;display:flex;flex-direction:column;}
+.journey-line{position:absolute;left:24px;top:22px;bottom:22px;width:2px;background:var(--border);border-radius:2px;z-index:0;}
+.journey-row{display:flex;align-items:center;gap:12px;padding:7px 8px;border-radius:10px;position:relative;z-index:1;transition:background 0.15s;}
+.journey-row + .journey-row{margin-top:2px;}
+.journey-dot{width:34px;height:34px;border-radius:50%;background:var(--s2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.journey-row.current{background:var(--accent-dim);border:1px solid rgba(34,197,94,0.3);padding:7px 9px;}
+.journey-row.current .journey-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(34,197,94,0.18);}
+.journey-row.current .journey-name{color:var(--accent);}
+.journey-row.done{opacity:0.6;}
+.journey-row.done .journey-dot{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);color:var(--accent);font-weight:800;}
+.journey-body{flex:1;min-width:0;}
+.journey-name{font-size:14px;font-weight:700;color:var(--t1);line-height:1.2;}
+.journey-sub{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500;}
+.journey-badge{font-size:10px;font-weight:800;letter-spacing:0.3px;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.journey-badge.current{background:var(--accent);color:#fff;}
+.journey-badge.next{background:rgba(34,197,94,0.15);color:var(--accent);border:1px solid rgba(34,197,94,0.3);}
+.journey-badge.goal{background:rgba(255,200,0,0.12);color:var(--gold);border:1px solid rgba(255,200,0,0.3);}
+
 .badges-section{margin-bottom:14px;}
 .badges-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
@@ -9412,6 +9433,41 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="st-key">⚡ Hot Streak</div></div>}
         {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="st-key">✅ T/F Best</div></div>}
       </div>
+      {(() => {
+        const currentIdx = LEVELS.indexOf(level);
+        const topIdx = LEVELS.length - 1;
+        const ordered = LEVELS.map((l, i) => ({ ...l, idx: i })).slice().reverse();
+        return (
+          <div className="journey-section">
+            <div className="journey-title">🏆 Your Journey</div>
+            <div className="journey-list">
+              <div className="journey-line" />
+              {ordered.map(tier => {
+                const isCurrent = tier.idx === currentIdx;
+                const isDone = tier.idx < currentIdx;
+                const isNext = tier.idx === currentIdx + 1;
+                const isTop = tier.idx === topIdx;
+                const state = isCurrent ? "current" : isDone ? "done" : "";
+                const xpToGo = Math.max(0, tier.xpNeeded - xp);
+                return (
+                  <div key={tier.name} className={`journey-row ${state}`}>
+                    <div className="journey-dot">{isDone ? "✓" : tier.icon}</div>
+                    <div className="journey-body">
+                      <div className="journey-name">{tier.name}</div>
+                      <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
+                    </div>
+                    {isCurrent && <div className="journey-badge current">YOU ARE HERE</div>}
+                    {isNext && <div className="journey-badge next">{xpToGo.toLocaleString()} XP to go</div>}
+                    {!isCurrent && !isNext && !isDone && isTop && (
+                      <div className="journey-badge goal">Ultimate goal</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
       <div className="badges-section">
         <div className="badges-title">Badges — {earned.size}/{BADGE_DEFS.length} earned</div>
         {earned.size === 0 && (
