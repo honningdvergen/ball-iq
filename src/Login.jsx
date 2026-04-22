@@ -1,6 +1,15 @@
 import React, { useState } from 'react'
 import { useAuth } from './useAuth.jsx'
 
+function readTheme() {
+  try {
+    const raw = localStorage.getItem('biq_settings')
+    if (!raw) return 'dark'
+    const s = JSON.parse(raw)
+    return s.theme === 'light' ? 'light' : 'dark'
+  } catch { return 'dark' }
+}
+
 export default function Login() {
   const { signUp, signIn, continueAsGuest } = useAuth()
   const [mode, setMode] = useState('login') // 'login' or 'signup'
@@ -10,6 +19,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const isLight = readTheme() === 'light'
 
   async function handleSubmit() {
     setError('')
@@ -37,11 +47,35 @@ export default function Login() {
     setLoading(false)
   }
 
+  const palette = isLight
+    ? {
+        bg: '#F2F2F7',
+        text: '#1C1C1E',
+        subtle: '#48484A',
+        muted: '#6E6E73',
+        divider: '#8E8E93',
+        border: '#E5E5EA',
+        inputBg: '#FFFFFF',
+        accent: '#34A853',
+        accentText: '#FFFFFF',
+      }
+    : {
+        bg: '#0a0a0a',
+        text: '#fff',
+        subtle: '#888',
+        muted: '#666',
+        divider: '#555',
+        border: '#2a2a2a',
+        inputBg: '#141414',
+        accent: '#22c55e',
+        accentText: '#000',
+      }
+
   const styles = {
     container: {
       minHeight: '100vh',
-      backgroundColor: '#0a0a0a',
-      color: '#fff',
+      backgroundColor: palette.bg,
+      color: palette.text,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -61,7 +95,7 @@ export default function Login() {
     },
     subtitle: {
       fontSize: '15px',
-      color: '#888',
+      color: palette.subtle,
       marginBottom: '40px',
       textAlign: 'center',
     },
@@ -76,9 +110,9 @@ export default function Login() {
       padding: '14px 16px',
       fontSize: '16px',
       borderRadius: '12px',
-      border: '1px solid #2a2a2a',
-      backgroundColor: '#141414',
-      color: '#fff',
+      border: `1px solid ${palette.border}`,
+      backgroundColor: palette.inputBg,
+      color: palette.text,
       outline: 'none',
       fontFamily: 'inherit',
     },
@@ -88,8 +122,8 @@ export default function Login() {
       fontWeight: 600,
       borderRadius: '12px',
       border: 'none',
-      backgroundColor: '#22c55e',
-      color: '#000',
+      backgroundColor: palette.accent,
+      color: palette.accentText,
       cursor: 'pointer',
       fontFamily: 'inherit',
       marginTop: '8px',
@@ -100,12 +134,12 @@ export default function Login() {
     },
     toggleText: {
       fontSize: '14px',
-      color: '#888',
+      color: palette.subtle,
       textAlign: 'center',
       marginTop: '16px',
     },
     toggleLink: {
-      color: '#22c55e',
+      color: palette.accent,
       cursor: 'pointer',
       fontWeight: 600,
     },
@@ -113,23 +147,23 @@ export default function Login() {
       display: 'flex',
       alignItems: 'center',
       margin: '24px 0',
-      color: '#555',
+      color: palette.divider,
       fontSize: '13px',
       gap: '12px',
     },
     dividerLine: {
       flex: 1,
       height: '1px',
-      backgroundColor: '#2a2a2a',
+      backgroundColor: palette.border,
     },
     guestButton: {
       padding: '14px 16px',
       fontSize: '15px',
       fontWeight: 500,
       borderRadius: '12px',
-      border: '1px solid #2a2a2a',
+      border: `1px solid ${palette.border}`,
       backgroundColor: 'transparent',
-      color: '#ccc',
+      color: palette.text,
       cursor: 'pointer',
       fontFamily: 'inherit',
       width: '100%',
@@ -141,14 +175,14 @@ export default function Login() {
       marginTop: '8px',
     },
     message: {
-      color: '#22c55e',
+      color: palette.accent,
       fontSize: '14px',
       textAlign: 'center',
       marginTop: '8px',
     },
     guestNote: {
       fontSize: '12px',
-      color: '#666',
+      color: palette.muted,
       textAlign: 'center',
       marginTop: '8px',
       maxWidth: '280px',
