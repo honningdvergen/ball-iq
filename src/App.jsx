@@ -6045,6 +6045,33 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-cta span{font-size:18px;transition:transform 0.2s;}
 @media (hover: hover) { .dhero:hover .dhero-cta span{transform:translateX(3px);} .dhero:hover .dhero-cta{background:#4aad00;} .dhero-done:hover .dhero-cta{background:var(--s3);} }
 @keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ── HOME MODE GRID ── */
+.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 16px 16px;min-height:138px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;}
+.play-card:hover{background:var(--s2);border-color:var(--border2);}
+.play-card:active{transform:scale(0.98);}
+.light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+.play-card-icon{font-size:30px;line-height:1;margin-bottom:2px;}
+.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;}
+.play-card-desc{font-size:11px;color:var(--t2);line-height:1.4;font-weight:500;}
+.play-card-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;letter-spacing:0.5px;padding:3px 7px;border-radius:20px;background:var(--accent);color:#fff;}
+
+/* ── CLASSIC DIFFICULTY SHEET ── */
+.diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
+.diff-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
+.diff-sheet-title{font-size:17px;font-weight:900;color:var(--t1);text-align:center;margin-bottom:6px;letter-spacing:-0.3px;}
+.diff-sheet-sub{font-size:13px;color:var(--t3);text-align:center;margin-bottom:18px;}
+.diff-options{display:flex;flex-direction:column;gap:10px;}
+.diff-option{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s2);border:2px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.diff-option:hover{background:var(--s3);}
+.diff-option:active{transform:scale(0.98);}
+.diff-option.default{border-color:var(--accent);background:var(--accent-dim);}
+.diff-option-icon{font-size:26px;flex-shrink:0;}
+.diff-option-body{flex:1;min-width:0;}
+.diff-option-name{font-size:15px;font-weight:800;color:var(--t1);}
+.diff-option-desc{font-size:12px;color:var(--t2);margin-top:2px;font-weight:500;}
+
 .dhero-compact{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--s1);border:1px solid rgba(34,197,94,0.25);border-radius:12px;cursor:pointer;font-family:inherit;color:var(--t1);transition:background 0.15s,transform 0.1s,border-color 0.15s;box-shadow:0 1px 6px rgba(0,0,0,0.18);}
 .dhero-compact:hover{background:var(--s2);border-color:rgba(34,197,94,0.4);}
 .dhero-compact:active{transform:scale(0.99);}
@@ -9173,21 +9200,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="settings-card">
           <div className="settings-row">
             <div className="sr-left">
-              <div className="sr-label">Default Difficulty</div>
-              <div className="sr-desc">Starting difficulty for new games</div>
-            </div>
-            <div className="sr-right">
-              <div className="size-btns">
-                {["easy","medium","hard"].map(d => (
-                  <button key={d} className={`size-btn${settings.defaultDiff===d?" on":""}`} onClick={() => onUpdate({defaultDiff:d})}>
-                    {d.charAt(0).toUpperCase() + d.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="settings-row">
-            <div className="sr-left">
               <div className="sr-label">Show Hints</div>
               <div className="sr-desc">First-letter hints on typed questions (Easy mode)</div>
             </div>
@@ -10701,7 +10713,7 @@ function AppInner() {
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [onlineConf, setOnlineConf] = useState(null);
   const [stats, setStats] = useState({ gamesPlayed: 0, bestScore: 0, bestStreak: 0 });
-  const [settings, setSettings] = useState({ textSize:"M", defaultDiff:"medium", hints:true, timer:true, theme:"dark" });
+  const [settings, setSettings] = useState({ textSize:"M", hints:true, timer:true, theme:"dark" });
   const [prevScreen, setPrevScreen] = useState("home");
   const [dailyDone, setDailyDone] = useState(false);
   const [dailyScore, setDailyScore] = useState(null);
@@ -11359,6 +11371,22 @@ function AppInner() {
   const shareDaily = useCallback(() => shareScore(dailyScore, 7, "daily"), [shareScore, dailyScore]);
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
+  const [showDiffPicker, setShowDiffPicker] = useState(false);
+  const startClassicWithDiff = useCallback((d) => {
+    // Build a Classic game with the explicitly-chosen difficulty — don't rely
+    // on the async setDiff → startMode closure, build the questions inline.
+    setShowDiffPicker(false);
+    haptic("soft");
+    setDiff(d);
+    setActiveClub(null);
+    const qs = getQs({ cat: "All", diff: d, n: 10, ramp: true });
+    if (!qs || qs.length === 0) { showToast("No questions — try another difficulty"); return; }
+    setMode("classic");
+    setCat("All");
+    setQuestions(qs);
+    setScreen("quiz");
+  }, [showToast]);
+
   const playDailyForDate = useCallback((date) => {
     const qs = getDailyQsForDate(date);
     if (!qs || qs.length === 0) { showToast("No questions available for that day."); return; }
@@ -11496,6 +11524,35 @@ function AppInner() {
         )}
         {streakToast && <div className="streak-toast"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
 
+        {/* ── CLASSIC DIFFICULTY SHEET ── */}
+        {showDiffPicker && (
+          <div className="diff-overlay" onClick={() => setShowDiffPicker(false)}>
+            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+              <div className="diff-sheet-title">Choose Difficulty</div>
+              <div className="diff-sheet-sub">10 questions, 20 seconds each</div>
+              <div className="diff-options">
+                {[
+                  { id:"easy",   icon:"🌱", name:"Easy",   desc:"Gentle warm-up questions" },
+                  { id:"medium", icon:"⚽", name:"Medium", desc:"Balanced challenge — a solid test" },
+                  { id:"hard",   icon:"🧠", name:"Hard",   desc:"Deep knowledge — some typed answers" },
+                ].map(opt => (
+                  <button
+                    key={opt.id}
+                    className={`diff-option${opt.id === "medium" ? " default" : ""}`}
+                    onClick={() => startClassicWithDiff(opt.id)}
+                  >
+                    <span className="diff-option-icon">{opt.icon}</span>
+                    <div className="diff-option-body">
+                      <div className="diff-option-name">{opt.name}</div>
+                      <div className="diff-option-desc">{opt.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ── HOME TAB ── */}
         {!inGame && screen === "home" && tab === "home" && (
           <div className="screen tab-content">
@@ -11555,19 +11612,6 @@ function AppInner() {
                 );
               })()}
 
-              {/* ── SECONDARY: PLAY + CHALLENGE ── */}
-              <div className="home-section-label" style={{marginTop:2}}>Modes</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
-                <button className="cta cta-play" onClick={() => setScreen("modes")} style={{padding:"14px 14px"}}>
-                  <div className="cta-left"><div className="cta-title" style={{fontSize:15}}>Play</div><div className="cta-desc" style={{fontSize:11}}>Choose mode</div></div>
-                  <div className="cta-icon" style={{fontSize:22}}>⚽</div>
-                </button>
-                <button className="cta cta-challenge" onClick={() => setScreen("social")} style={{padding:"14px 14px"}}>
-                  <div className="cta-left"><div className="cta-title" style={{fontSize:15}}>Challenge</div><div className="cta-desc" style={{fontSize:11}}>Play friends</div></div>
-                  <div className="cta-icon" style={{fontSize:22}}>🆚</div>
-                </button>
-              </div>
-
               {/* ── COMPACT DAILY COMPLETION BADGE (only once today is done) ── */}
               {dailyDone && (
                 <button
@@ -11583,55 +11627,30 @@ function AppInner() {
                 </button>
               )}
 
-              {/* ── TERTIARY: BALL IQ TEST ── */}
-              <button className="cta cta-iq" onClick={() => startMode("balliq")} style={{padding:"12px 16px"}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:12}}>
-                    <span style={{fontSize:20,opacity:0.85}}>🧠</span>
-                    <div style={{textAlign:"left"}}>
-                      <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Ball IQ Test</div>
-                      <div style={{fontSize:11,color:"var(--t2)"}}>See your percentile</div>
-                    </div>
-                  </div>
-                  <div style={{textAlign:"right"}}>
-                    {iqHistory && iqHistory.length > 0
-                      ? <><div style={{fontSize:18,fontWeight:800,color:"var(--accent)"}}>{iqHistory[iqHistory.length-1].iq}</div><div style={{fontSize:9,color:"var(--t3)"}}>last score</div></>
-                      : <div style={{fontSize:12,color:"var(--t3)"}}>Take the test →</div>
-                    }
-                  </div>
-                </div>
-              </button>
-            </div>
-
-            {/* ── QUICK PLAY ROW ── Horizontal scroll of fast one-tap modes */}
-            <div className="quick-play">
-              <div className="home-section-label">Quick Play</div>
-              <div className="quick-play-scroll">
-                <button className="qp-chip" onClick={() => startMode("hotstreak")}>
-                  <span className="qp-icon">⚡🔥</span>
-                  <span className="qp-name">Hot Streak</span>
-                  <span className="qp-desc">60s sprint</span>
-                </button>
-                <button className="qp-chip" onClick={() => startMode("survival")}>
-                  <span className="qp-icon">🔥</span>
-                  <span className="qp-name">Survival</span>
-                  <span className="qp-desc">One shot</span>
-                </button>
-                <button className="qp-chip" onClick={() => startMode("truefalse")}>
-                  <span className="qp-icon">✅</span>
-                  <span className="qp-name">True/False</span>
-                  <span className="qp-desc">20 statements</span>
-                </button>
-                <button className="qp-chip" onClick={() => startMode("speed")}>
-                  <span className="qp-icon">⚡</span>
-                  <span className="qp-name">Speed</span>
-                  <span className="qp-desc">5 questions</span>
-                </button>
-                <button className="qp-chip" onClick={() => startMode("legends")}>
-                  <span className="qp-icon">📜</span>
-                  <span className="qp-name">Legends</span>
-                  <span className="qp-desc">Pre-2000</span>
-                </button>
+              {/* ── MODE CARDS (the whole Play surface — no more intermediate Modes screen) ── */}
+              <div className="home-section-label" style={{marginTop:4}}>Modes</div>
+              <div className="play-grid">
+                {[
+                  { key:"classic",   icon:"⏱️",  name:"Classic",         desc:"10 questions, 20s each", onTap:() => setShowDiffPicker(true) },
+                  { key:"survival",  icon:"🔥",  name:"Survival",        desc:"One wrong and it's over" },
+                  { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",      desc:"60-second sprint" },
+                  { key:"truefalse", icon:"✅",  name:"True or False",   desc:"20 quick statements" },
+                  { key:"legends",   icon:"📜",  name:"Legends",         desc:"Pre-2000 greats" },
+                  { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",    desc:"Find your percentile" },
+                  { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",       desc:"15 top clubs" },
+                  { key:"local",     icon:"🤝",  name:"Local Multi",     desc:"Pass the phone" },
+                  { key:"online",    icon:"🆚",  name:"Online 1v1",      desc:"Play a friend" },
+                ].map(({ key, icon, name, desc, onTap }) => (
+                  <button
+                    key={key}
+                    className="play-card"
+                    onClick={onTap || (() => startMode(key))}
+                  >
+                    <span className="play-card-icon">{icon}</span>
+                    <span className="play-card-name">{name}</span>
+                    <span className="play-card-desc">{desc}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -11667,72 +11686,7 @@ function AppInner() {
         {/* ── SETTINGS SCREEN ── */}
         {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} />}
 
-        {/* ── MODES ── */}
-        {screen === "modes" && (
-          <div className="screen">
-            <div className="page-hdr">
-              <button className="back-btn" onClick={() => { setScreen("home"); setTab("home"); }}>←</button>
-              <div className="page-title">Game Modes</div>
-            </div>
-
-            <div className="settings-panel">
-              <div className="sp-title">Game Options</div>
-              <div className="sp-section">
-                <div className="sp-label">Difficulty</div>
-                <div className="chip-row">
-                  {["easy","medium","hard"].map(d => (
-                    <button key={d} className={`chip${diff===d?" on":""}`} onClick={() => setDiff(d)}>
-                      {d==="easy"?"Easy":d==="medium"?"Medium":"Hard"}
-                    </button>
-                  ))}
-                </div>
-                {diff==="hard" && <div style={{fontSize:12,color:"var(--t3)",marginTop:8,fontWeight:500}}>Harder questions — includes some typed answers</div>}
-              </div>
-              <div className="sp-section">
-                <div className="sp-label">Category</div>
-                <div className="cat-scroll-wrap">
-                  <div className="cat-scroll-inner">
-                    {CATS.filter(c => c !== "Legends").map(c => {
-                      const count = c === "All" ? QB.filter(q => q.type==="mcq").length : QB.filter(q => q.cat===c).length;
-                      return (
-                        <button key={c} className={`chip${cat===c?" on":""}`} onClick={() => setCat(c)}>
-                          {c==="All"?"All":CAT_LABELS[c]}
-                          <span style={{fontSize:10,opacity:0.6,marginLeft:4}}>{count}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mode-list">
-              {[
-                { m:"social", icon:"🆚", name:"Challenge a Friend", desc:"Pass the phone or play 1v1 with a room code." },
-                { m:"wc2026", icon:"🌍", name:"World Cup 2026", desc:"All 48 teams. One dream. How ready are you?", badge:"NEW", badgeClass:"badge-new" },
-                { m:"classic", icon:"⏱️", name:"Standard Quiz", desc:"10 questions — 20 seconds each. Classic Ball IQ." },
-                { m:"survival", icon:"🔥", name:"Survival", desc:"Every question counts. One wrong answer and it's over." },
-                { m:"hotstreak", icon:"⚡🔥", name:"Hot Streak", desc:"60 seconds. Answer as fast as you can. No limits." },
-                { m:"truefalse", icon:"✅", name:"True or False", desc:"20 statements. Trust your gut. True or false?" },
-                { m:"speed", icon:"⚡", name:"Speed Round", desc:"5 questions, 8 seconds each — speed earns bonus points." },
-                { m:"legends", icon:"📜", name:"Legends & History", desc:"The players, clubs and moments that shaped the game." },
-                { m:"local", icon:"🤝", name:"Local Multiplayer", desc:"2–6 players, pass the phone. Who really knows football?" },
-                { m:"clubquiz", icon:"🏟️", name:"Club Quiz", desc:"Deep dive into Arsenal, Barca, Liverpool and more." },
-              ].map(({ m, icon, name, desc, badge, badgeClass }) => (
-                <div key={m} className="mode-item" role="button" tabIndex={0}
-                  onClick={() => startMode(m)}
-                  style={{WebkitTapHighlightColor:"rgba(34,197,94,0.15)"}}>
-                  <div className="mi-icon">{icon}</div>
-                  <div className="mi-body"><div className="mi-name">{name}</div><div className="mi-desc">{desc}</div></div>
-                  <div style={{display:"flex",alignItems:"center",gap:6}}>
-                    {HOW_TO_PLAY[m] && <button onClick={e=>{e.stopPropagation();setHowToPlay(m);}} style={{width:22,height:22,borderRadius:"50%",background:"var(--s3)",border:"none",color:"var(--t3)",fontSize:11,fontWeight:700,cursor:"pointer",flexShrink:0}}>?</button>}
-                    {badge ? <span className={`mi-badge ${badgeClass}`}>{badge}</span> : <div className="mi-arrow">→</div>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* The separate "Modes" screen has been removed — all mode tiles live on the Home tab. */}
 
         {/* ── CLUB QUIZ ── */}
         {screen === "club-quiz" && (
@@ -11745,13 +11699,13 @@ function AppInner() {
               setQuestions(qs);
               setScreen("quiz");
             }}
-            onBack={() => setScreen("modes")}
+            onBack={() => { setScreen("home"); setTab("home"); }}
           />
         )}
 
         {/* ── LOCAL SETUP ── */}
         {screen === "local-setup" && (
-          <LocalSetup onStart={startLocalGame} onBack={() => setScreen("modes")} />
+          <LocalSetup onStart={startLocalGame} onBack={() => { setScreen("home"); setTab("home"); }} />
         )}
 
         {/* ── LOCAL HANDOFF ── */}
@@ -11771,7 +11725,7 @@ function AppInner() {
           <HotStreakEngine
             questions={questions}
             onComplete={handleComplete}
-            onBack={() => setScreen("modes")}
+            onBack={() => { setScreen("home"); setTab("home"); }}
           />
         )}
 
@@ -11780,7 +11734,7 @@ function AppInner() {
           <TrueFalseEngine
             questions={questions}
             onComplete={handleComplete}
-            onBack={() => setScreen("modes")}
+            onBack={() => { setScreen("home"); setTab("home"); }}
           />
         )}
 
@@ -11830,7 +11784,7 @@ function AppInner() {
               roomCode={onlineConf?.roomCode}
               isHost={onlineConf?.isHost}
               onComplete={handleComplete}
-              onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else if(mode==="balliq"){setScreen("home");setTab("home");}else{setScreen("modes");} }}
+              onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
             />
           </div>
         )}
