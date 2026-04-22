@@ -6847,12 +6847,13 @@ function createSound(type) {
 
 function haptic(type) {
   try {
-    if (!navigator.vibrate) return;
+    if (typeof navigator === "undefined" || !navigator.vibrate) return;
     if (type === "correct") navigator.vibrate(40);
+    else if (type === "wrong") navigator.vibrate([30, 20, 30]);
+    else if (type === "soft" || type === "select") navigator.vibrate(15);
+    else if (type === "heavy") navigator.vibrate(100);
     else if (type === "hardCorrect") navigator.vibrate([30, 40, 30, 40, 60]);  // Triumphant triple-buzz for hard questions
-    else if (type === "wrong") navigator.vibrate([30, 20, 60]);
     else if (type === "levelup") navigator.vibrate([50, 30, 50, 30, 100]);
-    else if (type === "select") navigator.vibrate(15);
   } catch {}
 }
 
@@ -9823,6 +9824,7 @@ function AppInner() {
           await window.storage?.set("biq_login_streak", JSON.stringify({ streak: newStreak, lastDay: todayNum }));
           if (newStreak > 1) {
             setStreakToast(newStreak);
+            haptic("heavy");
             setTimeout(() => setStreakToast(null), 3500);
           }
         } else if (data.lastDay < todayNum - 1) {
@@ -9919,6 +9921,7 @@ function AppInner() {
 
   const startMode = useCallback((m) => {
     try {
+      haptic("soft");
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
@@ -9996,13 +9999,13 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      setTimeout(() => showToast("🔥 7-day streak! You're building a habit!"), 1200);
+      setTimeout(() => { showToast("🔥 7-day streak! You're building a habit!"); haptic("heavy"); }, 1200);
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      setTimeout(() => showToast("🏆 30-DAY STREAK! Incredible dedication!"), 1200);
+      setTimeout(() => { showToast("🏆 30-day streak! Incredible dedication!"); haptic("heavy"); }, 1200);
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      setTimeout(() => showToast("💎 100-DAY STREAK! You are a legend!"), 1200);
+      setTimeout(() => { showToast("💎 100-day streak! You are a legend!"); haptic("heavy"); }, 1200);
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
@@ -10111,6 +10114,7 @@ function AppInner() {
         setDailyScore(res.score);
       }
       setActiveDailyDate(null);
+      haptic("heavy");
     }
 
     if (mode === "local") {
@@ -10287,6 +10291,7 @@ function AppInner() {
   const playDailyForDate = useCallback((date) => {
     const qs = getDailyQsForDate(date);
     if (!qs || qs.length === 0) { showToast("No questions available for that day."); return; }
+    haptic("soft");
     setActiveDailyDate(date);
     setMode("daily");
     setCat("All");
@@ -10767,7 +10772,7 @@ function AppInner() {
               { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
               { id:"profile",  icon:"👤", label:"Profile" },
             ].map(({ id, icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => setTab(id)}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => { haptic("soft"); setTab(id); }}>
                 <span className="tab-icon">{icon}</span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}
