@@ -5112,33 +5112,90 @@ function getClubTag(q) {
   return null;
 }
 
-// ─── SEEN QUESTION TRACKING ───────────────────────────────────────────────────
-// Deprioritises recently seen questions so the bank feels larger
-const SEEN_MAX = 400; // track last 400 seen questions (~40 games worth)
-let _seenCache = null; // lazy-loaded from storage
+// ─── SEEN QUESTION HISTORY ────────────────────────────────────────────────────
+// Tracks questions already shown to the user with a timestamp, and filters
+// them out of future selections for 14 days. Stored as { "<histKey>": ts }
+// under localStorage key "biq_seen_history". Keys are namespaced by source:
+//   - QB questions       → "q:<QB index>"
+//   - TF_STATEMENTS items → "tf:<TF_STATEMENTS index>"
+const SEEN_HISTORY_KEY = "biq_seen_history";
+const SEEN_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+let _seenHistory = null; // { histKey: timestamp }
 
-async function loadSeenCache() {
-  if (_seenCache !== null) return _seenCache;
+// Build a fast QB → index lookup once at module load
+const QB_INDEX_BY_REF = new Map();
+QB.forEach((q, i) => { if (q && typeof q === "object") QB_INDEX_BY_REF.set(q, i); });
+const qbHistKey = (origQ) => {
+  const i = QB_INDEX_BY_REF.get(origQ);
+  return typeof i === "number" ? `q:${i}` : null;
+};
+
+function _readSeenHistoryRaw() {
   try {
-    const r = await window.storage?.get("biq_seen_qs");
-    _seenCache = r ? JSON.parse(r.value) : [];
-  } catch { _seenCache = []; }
-  return _seenCache;
+    if (typeof localStorage === "undefined") return {};
+    const raw = localStorage.getItem(SEEN_HISTORY_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return (parsed && typeof parsed === "object" && !Array.isArray(parsed)) ? parsed : {};
+  } catch { return {}; }
 }
-
-function getSeenSync() {
-  return _seenCache || [];
-}
-
-async function recordSeenQuestions(questions) {
+function _writeSeenHistoryRaw(obj) {
   try {
-    const current = await loadSeenCache();
-    // Add new question indices (use q text as key since index may shift)
-    const newKeys = questions.map(q => q.q.slice(0, 40));
-    const combined = [...current, ...newKeys];
-    _seenCache = combined.slice(-SEEN_MAX); // keep last SEEN_MAX
-    await window.storage?.set("biq_seen_qs", JSON.stringify(_seenCache));
+    if (typeof localStorage !== "undefined") localStorage.setItem(SEEN_HISTORY_KEY, JSON.stringify(obj));
   } catch {}
+}
+
+// Load + auto-prune entries older than the 14-day window
+function loadSeenHistory() {
+  const raw = _readSeenHistoryRaw();
+  const cutoff = Date.now() - SEEN_WINDOW_MS;
+  const cleaned = {};
+  for (const k in raw) {
+    const ts = Number(raw[k]);
+    if (ts && ts >= cutoff) cleaned[k] = ts;
+  }
+  _seenHistory = cleaned;
+  _writeSeenHistoryRaw(cleaned);
+  return cleaned;
+}
+function getSeenHistory() {
+  if (_seenHistory === null) loadSeenHistory();
+  return _seenHistory;
+}
+function getSeenKeySet() {
+  const hist = getSeenHistory();
+  const cutoff = Date.now() - SEEN_WINDOW_MS;
+  const set = new Set();
+  for (const k in hist) {
+    if (hist[k] >= cutoff) set.add(k);
+  }
+  return set;
+}
+// Filter originals (not clones) out of a pool when they've been seen recently.
+// Falls back to the full pool if the filter would leave fewer than `needed`.
+function applySeenFilter(pool, needed, toKey) {
+  const seen = getSeenKeySet();
+  if (seen.size === 0) return pool;
+  const fresh = pool.filter(q => {
+    const k = toKey(q);
+    return !k || !seen.has(k);
+  });
+  return fresh.length >= needed ? fresh : pool;
+}
+function recordSeenQuestions(questions) {
+  if (!questions || !questions.length) return;
+  const hist = getSeenHistory();
+  const now = Date.now();
+  for (const q of questions) {
+    const k = q && q._histKey;
+    if (k) hist[k] = now;
+  }
+  _seenHistory = hist;
+  _writeSeenHistoryRaw(hist);
+}
+function clearSeenHistory() {
+  _seenHistory = {};
+  _writeSeenHistoryRaw({});
 }
 
 
@@ -5150,16 +5207,10 @@ function getQs({ cat, diff, n = 10, ramp = false }) {
   if (pool.length < n) pool = [...QB];
   if (diff === "easy") pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
   else if (diff === "medium") pool = pool.filter(q => q.diff !== "hard");
+  // Hide questions seen within the last 14 days; fall back to full pool if too few remain
+  pool = applySeenFilter(pool, n, qbHistKey);
   // For hard + default: shuffle first so diversity filter samples evenly across all cats
   pool = shuffle(pool);
-  // Deprioritise seen questions — push them to end of pool
-  const seen = getSeenSync();
-  if (seen.length > 0) {
-    const seenSet = new Set(seen);
-    const unseen = pool.filter(q => !seenSet.has(q.q.slice(0, 40)));
-    const seenPool = pool.filter(q => seenSet.has(q.q.slice(0, 40)));
-    pool = [...unseen, ...seenPool]; // unseen first
-  }
   if (diff === "hard") {
     // Weight toward hard but still shuffle — diversity filter picks from this shuffled pool
     const hard = pool.filter(q => q.diff === "hard");
@@ -5190,10 +5241,11 @@ function getQs({ cat, diff, n = 10, ramp = false }) {
     if (got.length === 10) {
       // Shuffle only within same-difficulty groups so order stays easy→hard
       return [...shuffle(easy), ...shuffle(med), ...shuffle(hard)].map(q => {
-        if (q.type !== "mcq" || !q.o) return q;
+        const histKey = qbHistKey(q);
+        if (q.type !== "mcq" || !q.o) return { ...q, _histKey: histKey };
         const indices = [0,1,2,3].slice(0, q.o.length);
         const sh = shuffle(indices);
-        return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a) };
+        return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
       });
     }
     // Fallback to normal if not enough questions
@@ -5228,13 +5280,15 @@ function getQs({ cat, diff, n = 10, ramp = false }) {
 
   // Shuffle options for each question so correct answer isn't always same position
   return shuffle(selected).map(q => {
-    if (q.type !== "mcq" || !q.o) return q;
+    const histKey = qbHistKey(q);
+    if (q.type !== "mcq" || !q.o) return { ...q, _histKey: histKey };
     const indices = [0,1,2,3].slice(0, q.o.length);
     const shuffled = shuffle(indices);
     return {
       ...q,
       o: shuffled.map(i => q.o[i]),
-      a: shuffled.indexOf(q.a)
+      a: shuffled.indexOf(q.a),
+      _histKey: histKey,
     };
   });
 }
@@ -5255,13 +5309,19 @@ function getBallIQQuestions() {
   const seed = Math.floor(Date.now() / 86400000);
   const mcqOnly = QB.filter(q => q.type === "mcq");
   const shuffled = seededShuffle(mcqOnly, seed * 1013904223);
-  const easy = shuffled.filter(q => q.diff === "easy").slice(0, 5);
-  const med  = shuffled.filter(q => q.diff === "medium").slice(0, 6);
-  const hard = shuffled.filter(q => q.diff === "hard").slice(0, 4);
+  const takeFresh = (difficulty, count) => {
+    const bucket = shuffled.filter(q => q.diff === difficulty);
+    const fresh = applySeenFilter(bucket, count, qbHistKey);
+    return fresh.slice(0, count);
+  };
+  const easy = takeFresh("easy", 5);
+  const med  = takeFresh("medium", 6);
+  const hard = takeFresh("hard", 4);
   return shuffle([...easy, ...med, ...hard]).map(q => {
+    const histKey = qbHistKey(q);
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = seededShuffle(indices, seed + easy.indexOf(q) + 1);
-    return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a) };
+    return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
   });
 }
 
@@ -5286,10 +5346,13 @@ function getDailyQsForDate(date) {
     const sb = Math.sin(seed * 2654435769 + mcqOnly.indexOf(b) * 1013904223) - 0.5;
     return sa - sb;
   });
-  return sorted.slice(0, 7).map(q => {
+  // Hide questions seen within the last 14 days (falls back to full pool if < 7 remain)
+  const filtered = applySeenFilter(sorted, 7, qbHistKey);
+  return filtered.slice(0, 7).map(q => {
+    const histKey = qbHistKey(q);
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = shuffle(indices);
-    return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a) };
+    return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
   });
 }
 function getDailyQs() { return getDailyQsForDate(new Date()); }
@@ -5597,7 +5660,10 @@ const TF_STATEMENTS = [
 ];
 
 function getTrueFalseQs() {
-  return shuffle([...TF_STATEMENTS]).slice(0, 20);
+  const indexed = TF_STATEMENTS.map((s, i) => ({ ...s, _tfIdx: i }));
+  const keyFn = (s) => (typeof s._tfIdx === "number" ? `tf:${s._tfIdx}` : null);
+  const filtered = applySeenFilter(indexed, 20, keyFn);
+  return shuffle(filtered).slice(0, 20).map(s => ({ ...s, _histKey: keyFn(s) }));
 }
 
 
@@ -8623,7 +8689,7 @@ function ClubQuizScreen({ onStart, onBack }) {
 }
 
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onBack }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const Toggle = ({ val, onChange }) => (
     <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
@@ -8796,6 +8862,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onBack }) {
             </div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
           </div>
+          {onClearSeen && (
+            <div className="settings-row" onClick={onClearSeen}>
+              <div className="sr-left">
+                <div className="sr-label">Clear question history</div>
+                <div className="sr-desc">Allow recently-seen questions to reappear now</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -9917,6 +9992,8 @@ function AppInner() {
   const [showHandoff, setShowHandoff] = useState(false);
 
   useEffect(() => {
+    // Prune expired seen-question history (>14 days old) on mount
+    try { loadSeenHistory(); } catch {}
     // Check if first-time user — show onboarding if not seen before
     window.storage?.get("biq_onboarded").then(r => {
       if (!r) setHasOnboarded(false);
@@ -10104,7 +10181,11 @@ function AppInner() {
       else if (m === "legends") { qs = getQs({ cat: "Legends", diff, n: 10 }); }
       else if (m === "speed") { qs = getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = (getQs({ cat: "All", diff, n: 999 }) || []).filter(q => q.type !== "tf"); }
-      else if (m === "wc2026") { const wc = QB.filter(q => q.tag === "wc2026"); qs = seededShuffle([...wc], Date.now()).slice(0, 15); }
+      else if (m === "wc2026") {
+        const wc = QB.filter(q => q.tag === "wc2026");
+        const fresh = applySeenFilter(wc, 15, qbHistKey);
+        qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
+      }
       else if (m === "truefalse") { qs = getTrueFalseQs(); }
       else { qs = getQs({ cat, diff, n: 10, ramp: true }); }
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
@@ -10301,10 +10382,16 @@ function AppInner() {
         window.storage?.set("biq_hotstreak_best", String(res.score)).catch(() => {});
       }
     }
+    // Record the questions actually shown into the 14-day seen history
+    try {
+      const shownCount = typeof res.total === "number" ? res.total : (questions?.length || 0);
+      const shown = (questions || []).slice(0, Math.max(0, shownCount));
+      recordSeenQuestions(shown);
+    } catch {}
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast, activeDailyDate]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
 
   const handleOnlineStart = useCallback((conf) => {
     setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
@@ -10436,6 +10523,11 @@ function AppInner() {
     if (navigator.share) navigator.share({ text: lines }).catch(()=>{});
     else navigator.clipboard?.writeText(lines).then(()=>showToast("Profile copied!")).catch(()=>{});
   }, [xp, stats, profile, loginStreak]);
+
+  const clearSeen = useCallback(() => {
+    clearSeenHistory();
+    showToast("Question history cleared ✓");
+  }, [showToast]);
 
   const clearStats = useCallback(() => {
     const reset = { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
@@ -10769,7 +10861,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={goHome} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} />}
 
         {/* ── MODES ── */}
         {screen === "modes" && (
