@@ -5868,8 +5868,10 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background 0.3s,color 0.3s;}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);}
+html{background:#0F1117;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#0F1117;color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;}
+body.light{background:var(--bg);}
+.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:#0F1117;transition:none;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
@@ -5879,7 +5881,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hdr-actions{display:flex;align-items:center;gap:8px;}
 .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
 .icon-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
-.screen{animation:sIn 0.18s ease-out;}
+.screen{animation:none;opacity:1;}
+.tab-content{animation:none;opacity:1;}
 @keyframes sIn{from{transform:translateY(4px);}to{transform:translateY(0);}}
 .home-hero{padding:24px 0 16px;}
 .home-eyebrow{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
@@ -8409,7 +8412,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onBack }) {
   );
 
   return (
-    <div className="screen">
+    <div className="screen" style={{background:"#0F1117"}}>
       <div className="page-hdr">
         <button className="back-btn" onClick={onBack}>←</button>
         <div className="page-title">Settings</div>
@@ -9088,7 +9091,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const pctile = iq ? iqPercentile(iq) : null;
   const saveName = () => { setEditingName(false); if (nameVal.trim()) setProfile(p => ({ ...p, name: nameVal.trim() })); };
   return (
-    <div className="tab-content">
+    <div className="tab-content" style={{background:"#0F1117"}}>
       <div className="profile-card">
         <div className="profile-avatar-wrap">
           <div className="profile-avatar" onClick={() => setShowEmojiPicker(true)}>{profile?.avatar || "⚽"}</div>
@@ -9912,12 +9915,6 @@ function AppInner() {
 
   const inGame = ["quiz","local-handoff","local-results"].includes(screen);
 
-  // iOS Safari PWA flashes white when toggling display:none/block on tab switches.
-  // visibility:hidden + position:absolute keeps the element painted, avoiding the flash.
-  const tabStyle = (isActive) => isActive
-    ? { position: "relative" }
-    : { visibility: "hidden", position: "absolute", top: 0, left: 0, right: 0, pointerEvents: "none" };
-
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
 
@@ -10031,8 +10028,8 @@ function AppInner() {
         {streakToast && <div className="streak-toast"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
 
         {/* ── HOME TAB ── */}
-        {!inGame && screen === "home" && (
-          <div className="screen tab-content" style={tabStyle(tab === "home")} aria-hidden={tab !== "home"}>
+        {!inGame && screen === "home" && tab === "home" && (
+          <div className="screen tab-content">
             <div className="home-hero">
               <div className="home-title">How well do you <span>know the game?</span></div>
               <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
@@ -10212,16 +10209,16 @@ function AppInner() {
         )}
 
         {/* ── LEAGUE TAB ── */}
-        {!inGame && screen === "home" && <div style={tabStyle(tab === "league")} aria-hidden={tab !== "league"}><LeagueScreen xp={xp} profile={profile} /></div>}
+        {!inGame && screen === "home" && tab === "league" && <LeagueScreen xp={xp} profile={profile} />}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && <div style={tabStyle(tab === "daily")} aria-hidden={tab !== "daily"}><DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} /></div>}
+        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />}
 
         {/* ── PROFILE TAB ── */}
-        {!inGame && screen === "home" && <div style={tabStyle(tab === "profile")} aria-hidden={tab !== "profile"}><ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} /></div>}
+        {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
 
         {/* ── SETTINGS TAB ── */}
-        {!inGame && screen === "home" && <div style={tabStyle(tab === "settings")} aria-hidden={tab !== "settings"}><SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={handleSettingsBack} /></div>}
+        {!inGame && screen === "home" && tab === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={handleSettingsBack} />}
 
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
