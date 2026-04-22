@@ -184,157 +184,103 @@ export function AuthProvider({ children }) {
     return out
   }
 
-  // TEMP DEBUG BUILD — simplified to isolate where the upload is failing.
-  // Step 1: upload a 1×1 white PNG test blob with NO resize step.
-  // Step 2: if the test upload succeeds, also run the real image upload.
-  // All error objects are fully expanded. Also logs a prefix of the session
-  // access token so we can confirm auth is reaching the storage request.
+  // Direct REST-API upload path. Bypasses the supabase-js storage client
+  // entirely and POSTs the blob straight to the Supabase Storage endpoint
+  // with the current session's Bearer token, so we can see the raw HTTP
+  // status + body if anything fails.
   async function uploadAvatar(file) {
     console.log('[uploadAvatar] called', { hasFile: !!file, userId: user?.id, isGuest })
-    if (!user?.id) {
-      console.error('[uploadAvatar] aborted: no signed-in user')
-      return { error: new Error('Not signed in') }
-    }
-
-    // ── Session + token snapshot ──────────────────────────────────────────────
-    let accessToken = null
-    try {
-      const { data: sessionData, error: sessErr } = await supabase.auth.getSession()
-      if (sessErr) console.error('[uploadAvatar] session fetch error', dumpErr(sessErr))
-      const session = sessionData?.session
-      accessToken = session?.access_token || null
-      console.log('[uploadAvatar] session check', {
-        hasSession: !!session,
-        sessionUserId: session?.user?.id,
-        sessionUserMatches: session?.user?.id === user.id,
-        accessTokenPresent: !!accessToken,
-        accessTokenPrefix: accessToken ? accessToken.slice(0, 20) + '…' : null,
-        expiresAt: session?.expires_at,
-        expiresInSec: session?.expires_at ? session.expires_at - Math.floor(Date.now() / 1000) : null,
-      })
-      if (!session) {
-        console.error('[uploadAvatar] no active session — cannot upload under RLS')
-        return { error: new Error('No active auth session — please sign in again') }
-      }
-    } catch (sessEx) {
-      console.error('[uploadAvatar] session check threw', dumpErr(sessEx))
-    }
-
-    // ── STEP 1: tiny 1×1 PNG probe, no resize ────────────────────────────────
-    // A 1×1 white PNG (base64). Smallest valid PNG we can throw at the bucket.
-    const WHITE_1x1_PNG_B64 =
-      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
-    let probeBlob = null
-    try {
-      const bin = atob(WHITE_1x1_PNG_B64)
-      const bytes = new Uint8Array(bin.length)
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
-      probeBlob = new Blob([bytes], { type: 'image/png' })
-      console.log('[uploadAvatar] probe blob ready', { size: probeBlob.size, type: probeBlob.type })
-    } catch (probeEx) {
-      console.error('[uploadAvatar] could not build probe blob', dumpErr(probeEx))
-    }
-
-    const probePath = `${user.id}-probe.png`
-    console.log('[uploadAvatar] probe upload begin', { bucket: 'avatars', path: probePath })
-    let probeResult
-    try {
-      probeResult = await supabase.storage
-        .from('avatars')
-        .upload(probePath, probeBlob, { contentType: 'image/png', upsert: true })
-    } catch (probeThrow) {
-      console.error('[uploadAvatar] PROBE threw — storage connection itself failed', dumpErr(probeThrow))
-      return { error: probeThrow }
-    }
-    if (probeResult?.error) {
-      console.error('[uploadAvatar] PROBE rejected by Supabase', dumpErr(probeResult.error))
-      console.error('[uploadAvatar] PROBE full result object', probeResult)
-      console.error(
-        '[uploadAvatar] PROBE hint: to inspect your storage policies run this in the Supabase SQL Editor:\n' +
-        "SELECT policyname, cmd, qual, with_check\n" +
-        "FROM pg_policies\n" +
-        "WHERE tablename = 'objects' AND schemaname = 'storage';\n" +
-        'Expected "avatars" bucket INSERT/UPDATE policies to allow:\n' +
-        "  bucket_id = 'avatars' AND auth.role() = 'authenticated' AND name = auth.uid()::text || '.png'  -- (for flat path)\n" +
-        'OR for a folder path:\n' +
-        "  bucket_id = 'avatars' AND auth.role() = 'authenticated' AND (storage.foldername(name))[1] = auth.uid()::text"
-      )
-      return { error: probeResult.error }
-    }
-    console.log('[uploadAvatar] PROBE succeeded', probeResult?.data)
-
-    // ── STEP 2: proceed with the real photo upload ───────────────────────────
     if (!file) {
-      console.warn('[uploadAvatar] probe succeeded but no file provided — done')
-      return { url: null, probeOnly: true }
+      console.error('[uploadAvatar] aborted: no file')
+      return { error: 'No file provided' }
     }
 
+    // 1. Pull the live session — need the access_token for the Bearer header
+    //    and user.id for the object path.
+    const { data: sessionData, error: sessErr } = await supabase.auth.getSession()
+    if (sessErr) console.error('[uploadAvatar] getSession error', dumpErr(sessErr))
+    const token = sessionData?.session?.access_token
+    const userId = sessionData?.session?.user?.id
+    console.log('[uploadAvatar] session', {
+      hasToken: !!token,
+      tokenPrefix: token ? token.slice(0, 20) + '…' : null,
+      userId,
+      userMatches: userId === user?.id,
+      expiresAt: sessionData?.session?.expires_at,
+    })
+    if (!token || !userId) {
+      console.error('[uploadAvatar] aborted: no session token / user id')
+      return { error: 'No session' }
+    }
+
+    // 2. Resize/crop to a 400×400 JPEG blob
     let blob
     try {
       blob = await resizeImageToBlob(file, 400, 400)
-      if (!blob || blob.size === 0) {
-        console.error('[uploadAvatar] blob generation yielded empty result')
-        return { error: new Error('Failed to generate image') }
-      }
+      if (!blob || blob.size === 0) return { error: 'Empty blob after resize' }
+      console.log('[uploadAvatar] blob ready', { size: blob.size, type: blob.type })
     } catch (e) {
-      console.error('[uploadAvatar] resize step threw', dumpErr(e))
-      return { error: e }
+      console.error('[uploadAvatar] resize threw', dumpErr(e))
+      return { error: e?.message || 'Resize failed' }
     }
 
-    const path = `${user.id}.jpg`
-    console.log('[uploadAvatar] real upload begin', { bucket: 'avatars', path, size: blob.size })
-    let upResult
+    // 3. Upload via REST — POST /storage/v1/object/avatars/{path}
+    const path = `${userId}.jpg`
+    const url = `https://blcisypmngimqkwxrrdm.supabase.co/storage/v1/object/avatars/${path}`
+    console.log('[uploadAvatar] POST', url)
+    let response
     try {
-      upResult = await supabase.storage
-        .from('avatars')
-        .upload(path, blob, { contentType: 'image/jpeg', upsert: true, cacheControl: '3600' })
-    } catch (uploadEx) {
-      console.error('[uploadAvatar] real upload threw', dumpErr(uploadEx))
-      return { error: uploadEx }
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'image/jpeg',
+          'x-upsert': 'true',
+        },
+        body: blob,
+      })
+    } catch (fetchEx) {
+      console.error('[uploadAvatar] fetch threw (network-level failure)', dumpErr(fetchEx))
+      return { error: fetchEx?.message || 'Network error' }
     }
-    if (upResult?.error) {
-      console.error('[uploadAvatar] real upload rejected', dumpErr(upResult.error))
-      console.error('[uploadAvatar] real upload full result object', upResult)
-      return { error: upResult.error }
-    }
-    console.log('[uploadAvatar] real upload succeeded', upResult?.data)
 
-    let publicUrl
+    if (!response.ok) {
+      const bodyText = await response.text().catch(() => '<unreadable body>')
+      console.error('[uploadAvatar] Storage upload failed:', response.status, bodyText)
+      console.error('[uploadAvatar] response details', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.url,
+        contentType: response.headers.get('content-type'),
+      })
+      return { error: bodyText }
+    }
+
+    console.log('[uploadAvatar] upload OK', response.status)
+
+    // 4. Build a public URL with a cache-busting query string
+    const publicUrl = `https://blcisypmngimqkwxrrdm.supabase.co/storage/v1/object/public/avatars/${path}?t=${Date.now()}`
+    console.log('[uploadAvatar] public URL', publicUrl)
+
+    // 5. Persist onto the profile row
     try {
-      const { data: pub } = supabase.storage.from('avatars').getPublicUrl(path)
-      publicUrl = pub?.publicUrl
-      console.log('[uploadAvatar] public URL resolved', { publicUrl })
-    } catch (urlEx) {
-      console.error('[uploadAvatar] getPublicUrl threw', dumpErr(urlEx))
-      return { error: urlEx }
-    }
-    if (!publicUrl) {
-      console.error('[uploadAvatar] getPublicUrl returned no URL')
-      return { error: new Error('No public URL returned') }
-    }
-
-    // Cache-bust so the freshly uploaded image replaces any cached copy
-    const cachedUrl = `${publicUrl}?t=${Date.now()}`
-
-    let updResult
-    try {
-      updResult = await supabase
+      const { error: updErr } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
-        .eq('id', user.id)
+        .eq('id', userId)
+      if (updErr) {
+        console.error('[uploadAvatar] profile update failed', dumpErr(updErr))
+      } else {
+        console.log('[uploadAvatar] profile row updated')
+      }
     } catch (updEx) {
-      console.error('[uploadAvatar] profiles.update threw', dumpErr(updEx))
-      return { error: updEx }
+      console.error('[uploadAvatar] profile update threw', dumpErr(updEx))
     }
-    if (updResult?.error) {
-      console.error('[uploadAvatar] profile update failed', dumpErr(updResult.error))
-      return { error: updResult.error }
-    }
-    console.log('[uploadAvatar] profile row updated')
 
-    setProfile(prev => (prev ? { ...prev, avatar_url: cachedUrl } : prev))
-    console.log('[uploadAvatar] complete', { cachedUrl })
-    return { url: cachedUrl }
+    // Update in-memory profile so the avatar swaps immediately
+    setProfile(prev => (prev ? { ...prev, avatar_url: publicUrl } : prev))
+    console.log('[uploadAvatar] complete', { publicUrl })
+    return { url: publicUrl }
   }
 
   return (
