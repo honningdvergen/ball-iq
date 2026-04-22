@@ -5769,6 +5769,49 @@ function getACSuggestions(val) {
 
 function generateCode() { return Math.random().toString(36).substring(2, 7).toUpperCase(); }
 
+// ─── GAME ROOMS (online multiplayer backend) ─────────────────────────────────
+// Supabase-backed persistence for multiplayer rooms. Before this, rooms lived
+// in localStorage via the window.storage shim — which meant Player A's room
+// was invisible to Player B's device and every join returned "Room not found".
+// Expected Supabase schema (public.game_rooms):
+//   code         text primary key
+//   host_name    text not null
+//   guest_name   text
+//   questions    jsonb not null
+//   host_score   int  default 0
+//   guest_score  int  default 0
+//   created_at   timestamptz default now()
+// RLS: enable select/insert/update for the `authenticated` and/or `anon` role.
+async function gameRoomCreate(code, hostName, questions) {
+  const row = { code, host_name: hostName, guest_name: null, questions, host_score: 0, guest_score: 0 };
+  const { data, error } = await supabase.from('game_rooms').insert(row).select().single();
+  if (error) console.error('[gameRoom] create failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  return { data, error };
+}
+async function gameRoomGet(code) {
+  const { data, error } = await supabase.from('game_rooms').select('*').eq('code', code).maybeSingle();
+  if (error) console.error('[gameRoom] get failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  return { data, error };
+}
+async function gameRoomJoin(code, guestName) {
+  // Only join if the seat is still empty — prevents race where two people click Join
+  const { data, error } = await supabase
+    .from('game_rooms')
+    .update({ guest_name: guestName })
+    .eq('code', code)
+    .is('guest_name', null)
+    .select()
+    .maybeSingle();
+  if (error) console.error('[gameRoom] join failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  return { data, error };
+}
+async function gameRoomSetScore(code, isHost, score) {
+  const field = isHost ? 'host_score' : 'guest_score';
+  const { error } = await supabase.from('game_rooms').update({ [field]: score }).eq('code', code);
+  if (error) console.error('[gameRoom] score update failed', { code, field, message: error.message });
+  return { error };
+}
+
 const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
@@ -7512,11 +7555,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       const timeBonus = timeLeft * 10;
       setSpeedScore(prev => prev + 100 + timeBonus);
     }
-    if (mode === "online" && roomCode && window.storage) {
-      const key = isHost ? "hostScore" : "guestScore";
-      window.storage?.get(`biq_room:${roomCode}`, true).then(res => {
-        if (res) { const r = JSON.parse(res.value); r[key] = ns; window.storage?.set(`biq_room:${roomCode}`, JSON.stringify(r), true); }
-      }).catch(() => {});
+    if (mode === "online" && roomCode) {
+      gameRoomSetScore(roomCode, !!isHost, ns).catch(() => {});
     }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, mode, roomCode, isHost, advance]);
@@ -7573,8 +7613,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     if (mode !== "online" || !roomCode) return;
     pollRef.current = setInterval(async () => {
       try {
-        const res = await window.storage?.get(`biq_room:${roomCode}`, true);
-        if (res) { const r = JSON.parse(res.value); const os = isHost ? r.guestScore : r.hostScore; if (os != null) setOpponentScore(os); }
+        const { data: row } = await gameRoomGet(roomCode);
+        if (row) {
+          const os = isHost ? row.guest_score : row.host_score;
+          if (os != null) setOpponentScore(os);
+        }
       } catch {}
     }, 2000);
     return () => clearInterval(pollRef.current);
@@ -7838,36 +7881,63 @@ function OnlineLobby({ onStart, onBack }) {
     if (!name && authProfile?.username) setName(authProfile.username);
   }, [authProfile?.username, name]);
 
+  // Helper: shape a Supabase game_rooms row into the UI's expected { host, guest, questions } form
+  const normaliseRoom = (row) => row && ({
+    code: row.code,
+    host: row.host_name,
+    guest: row.guest_name,
+    questions: row.questions,
+    hostScore: row.host_score,
+    guestScore: row.guest_score,
+  });
+
   const create = async () => {
     if (!name.trim()) { t$("Enter your name"); return; }
     const rc = generateCode();
-    const room = { code:rc, host:name.trim(), guest:null, questions:getQs({n:10}), created:Date.now() };
-    try {
-      await window.storage?.set(`biq_room:${rc}`, JSON.stringify(room), true);
-      setCode(rc); setRoomData(room); setView("waiting");
-      // Clear any existing poll before starting a new one
-      if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
-      pollRef.current = setInterval(async () => {
-        try {
-          const res = await window.storage?.get(`biq_room:${rc}`, true);
-          if (res) { let r = null; try { r = JSON.parse(res.value); } catch {} if (r) setRoomData(r); if (r.guest) { clearInterval(pollRef.current); setView("countdown"); } }
-        } catch {}
-      }, 2000);
-    } catch { t$("Failed — try again"); }
+    const questions = getQs({ n: 10 });
+    console.log('[OnlineLobby] creating room', { rc, host: name.trim() });
+    const { data, error } = await gameRoomCreate(rc, name.trim(), questions);
+    if (error || !data) {
+      t$(error?.message ? `Create failed: ${error.message.slice(0, 40)}` : "Failed — try again");
+      return;
+    }
+    const room = normaliseRoom(data);
+    setCode(rc); setRoomData(room); setView("waiting");
+    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
+    pollRef.current = setInterval(async () => {
+      try {
+        const { data: fresh } = await gameRoomGet(rc);
+        if (fresh) {
+          const r = normaliseRoom(fresh);
+          setRoomData(r);
+          if (r.guest) { clearInterval(pollRef.current); setView("countdown"); }
+        }
+      } catch (e) { console.error('[OnlineLobby] poll error', e); }
+    }, 2000);
   };
 
   const join = async () => {
     if (!name.trim()) { t$("Enter your name"); return; }
     if (!joinCode.trim()) { t$("Enter a room code"); return; }
-    try {
-      const res = await window.storage?.get(`biq_room:${joinCode.toUpperCase()}`, true);
-      if (!res) { t$("Room not found"); return; }
-      const r = JSON.parse(res.value);
-      if (r.guest) { t$("Room is full"); return; }
-      r.guest = name.trim();
-      await window.storage?.set(`biq_room:${joinCode.toUpperCase()}`, JSON.stringify(r), true);
-      setCode(joinCode.toUpperCase()); setRoomData(r); setView("countdown");
-    } catch { t$("Room not found"); }
+    const rc = joinCode.toUpperCase().trim();
+    console.log('[OnlineLobby] looking up room', { rc });
+    // 1. Check the room exists at all
+    const { data: existing, error: getErr } = await gameRoomGet(rc);
+    if (getErr) {
+      t$(`Lookup failed: ${getErr.message?.slice(0, 40) || 'try again'}`);
+      return;
+    }
+    if (!existing) { t$("Room not found"); return; }
+    if (existing.guest_name) { t$("Room is full"); return; }
+    // 2. Atomically claim the guest seat
+    const { data: joined, error: joinErr } = await gameRoomJoin(rc, name.trim());
+    if (joinErr) {
+      t$(`Join failed: ${joinErr.message?.slice(0, 40) || 'try again'}`);
+      return;
+    }
+    if (!joined) { t$("Room is full"); return; }
+    const r = normaliseRoom(joined);
+    setCode(rc); setRoomData(r); setView("countdown");
   };
 
   useEffect(() => {
