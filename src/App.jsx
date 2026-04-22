@@ -7573,7 +7573,17 @@ function LocalHandoff({ player, previousScores, onReady }) {
 
 // ─── LOCAL RESULTS ────────────────────────────────────────────────────────────
 function LocalResults({ scores, onHome, onRetry }) {
-  const sorted = [...scores].sort((a, b) => b.score - a.score);
+  const sorted = [...(scores || [])].sort((a, b) => b.score - a.score);
+  if (sorted.length === 0) {
+    return (
+      <div className="screen" style={{paddingTop:8}}>
+        <div className="rc" style={{marginBottom:16}}>
+          <div className="rc-title">No results to show</div>
+        </div>
+        <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      </div>
+    );
+  }
   const winner = sorted[0];
   const tied = sorted.filter(s => s.score === winner.score).length > 1;
 
@@ -7595,19 +7605,6 @@ function LocalResults({ scores, onHome, onRetry }) {
         ))}
       </div>
 
-      {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned</div>}
-      {wrongAnswers && wrongAnswers.length > 0 && (
-        <div className="wrong-review">
-          <div className="wr-title">📖 Review — {wrongAnswers.length} missed</div>
-          {wrongAnswers.map((w, i) => (
-            <div key={i} className="wr-item">
-              <div className="wr-q">{w.q}</div>
-              <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
-            </div>
-          ))}
-        </div>
-      )}
-      <button className="btn btn-share" onClick={onShare}>Share Score 📤</button>
       <button className="btn btn-p" onClick={onRetry}>Play Again</button>
       <button className="btn btn-s" onClick={onHome}>Back to Home</button>
     </div>
@@ -8972,7 +8969,7 @@ function DailyCountdown({ score }) {
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
-      setTimeStr(`${score}/10 · resets in ${h}h ${m}m`);
+      setTimeStr(score != null ? `${score}/10 · resets in ${h}h ${m}m` : `Resets in ${h}h ${m}m`);
     };
     update();
     const id = setInterval(update, 30000);
