@@ -45,34 +45,37 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function loadProfile(userId, userObj) {
-    // Fallback: use user metadata so UI doesn't hang
+    const metaUsername = userObj?.user_metadata?.username
     const fallbackProfile = {
       id: userId,
-      username: userObj?.user_metadata?.username || userObj?.email?.split('@')[0] || 'Player',
+      username: metaUsername || 'Player',
       avatar_id: 'ball',
       total_score: 0,
       games_played: 0,
       correct_answers: 0,
     }
     setProfile(fallbackProfile)
-    
-    // Try to load real profile from database
+
     try {
-      const { data, error } = await supabase
+      const { data, error, status } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle()
-      
+
       if (error) {
-        console.error('loadProfile error:', error)
+        console.error('[loadProfile] supabase error', { userId, status, code: error.code, message: error.message, details: error.details, hint: error.hint })
         return
       }
-      if (data) {
-        setProfile(data)
+      if (!data) {
+        console.warn('[loadProfile] no profile row found for user — keeping metadata fallback', { userId, username: metaUsername })
+        return
       }
+      // Merge: if DB row is missing username, prefer user_metadata.username over blank
+      const merged = { ...data, username: data.username || metaUsername || 'Player' }
+      setProfile(merged)
     } catch (e) {
-      console.error('loadProfile exception:', e)
+      console.error('[loadProfile] exception', { userId, error: e })
     }
   }
 

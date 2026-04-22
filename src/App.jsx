@@ -5274,7 +5274,7 @@ function getDailyQs() {
     const sb = Math.sin(seed * 2654435769 + mcqOnly.indexOf(b) * 1013904223) - 0.5;
     return sa - sb;
   });
-  return sorted.slice(0, 10).map(q => {
+  return sorted.slice(0, 7).map(q => {
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = shuffle(indices);
     return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a) };
@@ -5871,9 +5871,9 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
-html,#root{background:var(--bg);min-height:100vh;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;}
+html,#root{background:var(--bg);min-height:100vh;scroll-behavior:smooth;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
@@ -5883,8 +5883,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hdr-actions{display:flex;align-items:center;gap:8px;}
 .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
 .icon-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
-.screen{animation:none;opacity:1;}
-.tab-content{animation:none;opacity:1;}
+.screen{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+.tab-content{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 @keyframes sIn{from{transform:translateY(4px);}to{transform:translateY(0);}}
 .home-hero{padding:24px 0 16px;}
 .home-eyebrow{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
@@ -5949,7 +5949,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── Quick Play row ── */
 .quick-play{margin-top:14px;}
 .quick-play-label{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:10px;padding-left:2px;}
-.quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;}
+.quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .quick-play-scroll::-webkit-scrollbar{display:none;}
 .qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:118px;color:var(--t1);font-family:inherit;}
 @media (hover: hover) { .qp-chip:hover{background:var(--s2);border-color:var(--border2);transform:translateY(-1px);} }
@@ -5958,15 +5958,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .qp-name{font-size:13px;font-weight:800;color:var(--t1);letter-spacing:-0.1px;}
 .qp-desc{font-size:10.5px;color:var(--t3);font-weight:500;white-space:nowrap;}
 
-/* ── At a Glance card ── */
 .home-section-label{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;margin-bottom:2px;}
-.glance-card{margin-top:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
-.glance-label{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px;}
-.glance-rows{display:flex;flex-direction:column;gap:10px;}
-.glance-row{display:flex;align-items:center;gap:12px;font-size:13px;}
-.glance-row-icon{font-size:15px;width:22px;flex-shrink:0;}
-.glance-row-name{flex:1;color:var(--t2);font-weight:500;}
-.glance-row-val{font-family:'JetBrains Mono','SF Mono',monospace;font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
 
 .stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;}
 .sbar-box{background:var(--s1);border:none;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
@@ -5985,7 +5977,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .chip{padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .chip.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
 .chip:hover:not(.on){border-color:var(--border2);color:var(--text);}
-.cat-scroll-wrap{overflow-x:auto;scrollbar-width:none;}
+.cat-scroll-wrap{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .cat-scroll-wrap::-webkit-scrollbar{display:none;}
 .cat-scroll-inner{display:flex;gap:6px;padding-bottom:2px;}
 .mode-list{display:flex;flex-direction:column;gap:8px;}
@@ -6331,7 +6323,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── STATS SCREEN ── */
 .stats-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;animation:fadeIn 0.2s ease;}
-.stats-sheet{width:100%;max-height:92vh;background:var(--bg);transition:background 0.25s;border-radius:20px 20px 0 0;overflow-y:auto;padding:0 20px 40px;animation:slideUp 0.3s cubic-bezier(0.22,1,0.36,1);}
+.stats-sheet{width:100%;max-height:92vh;background:var(--bg);transition:background 0.25s;border-radius:20px 20px 0 0;overflow-y:auto;padding:0 20px 40px;animation:slideUp 0.3s cubic-bezier(0.22,1,0.36,1);-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .stat-hero-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .shc-left{display:flex;align-items:center;gap:12px;}
@@ -6351,7 +6343,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .st-key{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;text-transform:uppercase;}
 .stat-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
 .stat-section-title{font-family:'JetBrains Mono','SF Mono','Fira Code','Courier New',monospace;font-size:10px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
-.stat-iq-chart{overflow-x:auto;}
+.stat-iq-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .stat-footer{text-align:center;font-size:13px;color:var(--t2);padding:12px 0 4px;line-height:1.6;}
 
 /* ── XP BAR ── */
@@ -8044,11 +8036,11 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
 // Distribution follows a realistic curve: most players score 5-7, few score 10.
 function DailySocialProof({ score, total }) {
   const { percentile, playersToday } = useMemo(() => {
-    // Realistic score distribution for 10-question daily:
-    // Score 0-2: 8%, 3-4: 22%, 5-6: 35%, 7-8: 25%, 9: 8%, 10: 2%
-    const cumulativeBelow = [0, 2, 5, 14, 30, 50, 65, 80, 92, 98, 100];
+    // Realistic score distribution for 7-question daily:
+    // Score 0-1: 10%, 2: 15%, 3: 20%, 4: 20%, 5: 18%, 6: 12%, 7: 5%
+    const cumulativeBelow = [0, 10, 25, 40, 60, 75, 88, 96];
     // Percentile = % of players you beat (strictly less than your score)
-    const pct = cumulativeBelow[Math.max(0, Math.min(10, score))];
+    const pct = cumulativeBelow[Math.max(0, Math.min(7, score))];
     
     // Seed the "players today" number from the day
     const now = new Date();
@@ -9202,8 +9194,8 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
         <div className="daily-hero-title">{dailyDone ? "Challenge Complete!" : "Today's Challenge"}</div>
         <div className="daily-hero-sub">
           {dailyDone ? (
-            <>You scored {dailyScore}/10 today. <DailyCountdown /></>
-          ) : "10 questions. One chance per day."}
+            <>You scored {dailyScore}/7 today. <DailyCountdown /></>
+          ) : "7 questions. One chance per day."}
         </div>
         <button className={`daily-hero-btn ${dailyDone?"done":"available"}`} onClick={onPlay} disabled={dailyDone}>
           {dailyDone ? <DailyCountdown score={dailyScore} /> : "Play Today's Challenge"}
@@ -9811,7 +9803,7 @@ function AppInner() {
       // Reset category for special modes that ignore it
       if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse") setCat("All");
       if (m === "daily" && dailyDone) {
-        showToast(`Already done today — ${dailyScore}/10. Come back tomorrow! 📅`);
+        showToast(`Already done today — ${dailyScore}/7. Come back tomorrow! 📅`);
         return;
       }
       let qs = [];
@@ -10138,7 +10130,7 @@ function AppInner() {
     setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
     showToast("🛡️ Streak shield activated! Your streak is safe today.");
   }, [showToast]);
-  const shareDaily = useCallback(() => shareScore(dailyScore, 10, "daily"), [shareScore, dailyScore]);
+  const shareDaily = useCallback(() => shareScore(dailyScore, 7, "daily"), [shareScore, dailyScore]);
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   return (
@@ -10273,7 +10265,7 @@ function AppInner() {
                   </div>
                   <div className="dhero-countdown">
                     {dailyDone
-                      ? <>🏅 {dailyScore}/10</>
+                      ? <>🏅 {dailyScore}/7</>
                       : <><span style={{opacity:0.6}}>resets in</span> <DailyHeroCountdown /></>
                     }
                   </div>
@@ -10285,11 +10277,11 @@ function AppInner() {
                   </div>
                   <div className="dhero-title">
                     {dailyDone
-                      ? (dailyScore === 10 ? <>Perfect <span className="dhero-highlight">10/10</span></>
-                        : dailyScore >= 8 ? <>Solid. <span className="dhero-highlight">{dailyScore}/10</span></>
-                        : dailyScore >= 5 ? <>You got <span className="dhero-highlight">{dailyScore}/10</span></>
-                        : <>Tough one. <span className="dhero-highlight">{dailyScore}/10</span></>)
-                      : <>10 questions. <span className="dhero-highlight">One shot.</span></>
+                      ? (dailyScore === 7 ? <>Perfect <span className="dhero-highlight">7/7</span></>
+                        : dailyScore >= 5 ? <>Solid. <span className="dhero-highlight">{dailyScore}/7</span></>
+                        : dailyScore >= 3 ? <>You got <span className="dhero-highlight">{dailyScore}/7</span></>
+                        : <>Tough one. <span className="dhero-highlight">{dailyScore}/7</span></>)
+                      : <>7 questions. <span className="dhero-highlight">One shot.</span></>
                     }
                   </div>
                 </div>
