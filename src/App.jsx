@@ -6002,6 +6002,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-cta span{font-size:18px;transition:transform 0.2s;}
 @media (hover: hover) { .dhero:hover .dhero-cta span{transform:translateX(3px);} .dhero:hover .dhero-cta{background:#4aad00;} .dhero-done:hover .dhero-cta{background:var(--s3);} }
 @keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ── WORLD CUP 2026 COUNTDOWN ── */
+.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,box-shadow 0.15s,border-color 0.15s;text-align:left;}
+.wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
+.wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
+.wc-card:active{transform:scale(0.99);}
+.light .wc-card{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);color:#1C1C1E;border-color:rgba(234,179,8,0.35);}
+.wc-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#FFC800;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.light .wc-label{color:#B45309;}
+.wc-days{font-size:22px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:#fff;}
+.light .wc-days{color:#1C1C1E;}
+.wc-days em{font-style:normal;color:#FFC800;}
+.light .wc-days em{color:#B45309;}
+.wc-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;font-weight:500;}
+.light .wc-sub{color:#48484A;}
+.wc-arrow{font-size:20px;color:#FFC800;flex-shrink:0;margin-left:auto;}
+.light .wc-arrow{color:#B45309;}
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
 /* ── Play button: neutral elevated (accent reserved for Daily action) ── */
 .cta-play{background:var(--s1);border:1px solid var(--border);}
@@ -11123,6 +11140,31 @@ function AppInner() {
                   <span>→</span>
                 </div>
               </button>
+
+              {/* ── WORLD CUP 2026 COUNTDOWN ── */}
+              {(() => {
+                const kickoff = new Date(2026, 5, 11); // June 11, 2026 — local
+                const now = new Date();
+                const msPerDay = 86400000;
+                const dayNow = Math.floor(now.getTime() / msPerDay);
+                const dayKick = Math.floor(kickoff.getTime() / msPerDay);
+                const daysTo = dayKick - dayNow;
+                const started = daysTo <= 0;
+                return (
+                  <button className="wc-card" onClick={() => startMode("wc2026")} aria-label="World Cup 2026 quiz">
+                    <div style={{flex:1, minWidth:0}}>
+                      <div className="wc-label">🏆 World Cup 2026</div>
+                      {started ? (
+                        <div className="wc-days"><em>It's here!</em></div>
+                      ) : (
+                        <div className="wc-days"><em>{daysTo}</em> day{daysTo === 1 ? "" : "s"} to go</div>
+                      )}
+                      <div className="wc-sub">{started ? "Tap to play the tournament quiz" : "North America awaits"}</div>
+                    </div>
+                    <div className="wc-arrow">→</div>
+                  </button>
+                );
+              })()}
 
               {/* ── SECONDARY: PLAY + CHALLENGE ── */}
               <div className="home-section-label" style={{marginTop:2}}>Modes</div>
