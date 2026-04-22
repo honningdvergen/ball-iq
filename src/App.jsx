@@ -6047,15 +6047,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 @keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
 /* ── HOME MODE GRID ── */
-.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 16px 16px;min-height:138px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;}
+.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.play-card{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:72px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-.play-card-icon{font-size:30px;line-height:1;margin-bottom:2px;}
-.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;}
-.play-card-desc{font-size:11px;color:var(--t2);line-height:1.4;font-weight:500;}
-.play-card-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;letter-spacing:0.5px;padding:3px 7px;border-radius:20px;background:var(--accent);color:#fff;}
+.play-card-icon{font-size:28px;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;}
+.play-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-desc{font-size:13px;color:var(--t2);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-badge{position:absolute;top:6px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
 .diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
@@ -11411,6 +11412,20 @@ function AppInner() {
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
+  const [showLeaguePicker, setShowLeaguePicker] = useState(false);
+  const startLeagueQuiz = useCallback((leagueCat) => {
+    setShowLeaguePicker(false);
+    haptic("soft");
+    setActiveClub(null);
+    setDiff("medium");
+    setCat(leagueCat);
+    const qs = getQs({ cat: leagueCat, diff: "medium", n: 10, ramp: false });
+    if (!qs || qs.length === 0) { showToast("Not enough questions for this league yet"); return; }
+    setMode("classic");
+    setQuestions(qs);
+    setScreen("quiz");
+  }, [showToast]);
+
   const startClassicWithDiff = useCallback((d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
     // on the async setDiff → startMode closure, build the questions inline.
@@ -11592,6 +11607,37 @@ function AppInner() {
           </div>
         )}
 
+        {/* ── LEAGUE QUIZ SHEET ── */}
+        {showLeaguePicker && (
+          <div className="diff-overlay" onClick={() => setShowLeaguePicker(false)}>
+            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+              <div className="diff-sheet-title">Pick a League</div>
+              <div className="diff-sheet-sub">10 questions from that competition</div>
+              <div className="diff-options">
+                {[
+                  { id:"PL",         icon:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", name:"Premier League",   desc:"England's top flight" },
+                  { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
+                  { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
+                  { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
+                  { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
+                ].map(opt => (
+                  <button
+                    key={opt.id}
+                    className="diff-option"
+                    onClick={() => startLeagueQuiz(opt.id)}
+                  >
+                    <span className="diff-option-icon">{opt.icon}</span>
+                    <div className="diff-option-body">
+                      <div className="diff-option-name">{opt.name}</div>
+                      <div className="diff-option-desc">{opt.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ── HOME TAB ── */}
         {!inGame && screen === "home" && tab === "home" && (
           <div className="screen tab-content">
@@ -11670,15 +11716,16 @@ function AppInner() {
               <div className="home-section-label" style={{marginTop:4}}>Modes</div>
               <div className="play-grid">
                 {[
-                  { key:"classic",   icon:"⏱️",  name:"Classic",         desc:"10 questions, 20s each", onTap:() => setShowDiffPicker(true) },
-                  { key:"survival",  icon:"🔥",  name:"Survival",        desc:"One wrong and it's over" },
-                  { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",      desc:"60-second sprint" },
-                  { key:"truefalse", icon:"✅",  name:"True or False",   desc:"20 quick statements" },
-                  { key:"legends",   icon:"📜",  name:"Legends",         desc:"Pre-2000 greats" },
-                  { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",    desc:"Find your percentile" },
-                  { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",       desc:"15 top clubs" },
-                  { key:"local",     icon:"🤝",  name:"Local Multi",     desc:"Pass the phone" },
-                  { key:"online",    icon:"🆚",  name:"Online 1v1",      desc:"Play a friend" },
+                  { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",  onTap:() => setShowDiffPicker(true) },
+                  { key:"league",    icon:"🏆",  name:"League Quiz",   desc:"Pick your league", onTap:() => setShowLeaguePicker(true) },
+                  { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
+                  { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
+                  { key:"truefalse", icon:"✅",  name:"True/False",    desc:"20 statements" },
+                  { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
+                  { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
+                  { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
+                  { key:"local",     icon:"🤝",  name:"Local Multi",   desc:"Pass the phone" },
+                  { key:"online",    icon:"🆚",  name:"Online 1v1",    desc:"Play a friend" },
                 ].map(({ key, icon, name, desc, onTap }) => (
                   <button
                     key={key}
@@ -11686,8 +11733,10 @@ function AppInner() {
                     onClick={onTap || (() => startMode(key))}
                   >
                     <span className="play-card-icon">{icon}</span>
-                    <span className="play-card-name">{name}</span>
-                    <span className="play-card-desc">{desc}</span>
+                    <span className="play-card-body">
+                      <span className="play-card-name">{name}</span>
+                      <span className="play-card-desc">{desc}</span>
+                    </span>
                   </button>
                 ))}
               </div>
