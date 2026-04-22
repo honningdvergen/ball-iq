@@ -10013,8 +10013,8 @@ function AppInner() {
         {streakToast && <div className="streak-toast"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
 
         {/* ── HOME TAB ── */}
-        {!inGame && screen === "home" && tab === "home" && (
-          <div className="screen tab-content">
+        {!inGame && screen === "home" && (
+          <div className="screen tab-content" style={{display: tab === "home" ? "block" : "none"}}>
             <div className="home-hero">
               <div className="home-title">How well do you <span>know the game?</span></div>
               <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
@@ -10194,22 +10194,16 @@ function AppInner() {
         )}
 
         {/* ── LEAGUE TAB ── */}
-        {!inGame && screen === "home" && tab === "league" && <LeagueScreen xp={xp} profile={profile} />}
+        {!inGame && screen === "home" && <div style={{display: tab === "league" ? "block" : "none"}}><LeagueScreen xp={xp} profile={profile} /></div>}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && tab === "daily" && (
-          <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />
-        )}
+        {!inGame && screen === "home" && <div style={{display: tab === "daily" ? "block" : "none"}}><DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} /></div>}
 
         {/* ── PROFILE TAB ── */}
-        {!inGame && screen === "home" && tab === "profile" && (
-          <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} onShareProfile={shareProfile} />
-        )}
+        {!inGame && screen === "home" && <div style={{display: tab === "profile" ? "block" : "none"}}><ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} onShareProfile={shareProfile} /></div>}
 
         {/* ── SETTINGS TAB ── */}
-        {!inGame && (screen === "settings" || (screen === "home" && tab === "settings")) && (
-          <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={() => { setScreen("home"); setTab("home"); }} />
-        )}
+        {!inGame && screen === "home" && tab === "settings" && <div style={{display: "block"}}><SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={() => { setScreen("home"); setTab("home"); }} /></div>}
 
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
@@ -10219,6 +10213,9 @@ function AppInner() {
             onBack={() => { setScreen("home"); setTab("home"); }}
           />
         )}
+
+        {/* ── SETTINGS SCREEN ── */}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onBack={() => { setScreen("home"); setTab("home"); }} />}
 
         {/* ── MODES ── */}
         {screen === "modes" && (
