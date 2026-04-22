@@ -8550,7 +8550,7 @@ function SettingsScreen({ settings, onUpdate, onClearStats, onBack }) {
         <div className="settings-card">
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Version</div></div>
-            <div className="sr-right"><div className="sr-value">Ball IQ v1.0.0</div></div>
+            <div className="sr-right"><div className="sr-value">Ball IQ v1.1.0</div></div>
           </div>
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Questions</div></div>
