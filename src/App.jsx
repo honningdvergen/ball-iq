@@ -5868,10 +5868,8 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
 }
-html{background:#0F1117;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#0F1117;color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;}
-body.light{background:var(--bg);}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:#0F1117;transition:none;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
@@ -6431,6 +6429,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 /* ── ONBOARDING ── */
 .onboard-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0F1117 65%);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;}
+.light .onboard-wrap{background:radial-gradient(ellipse at 50% 0%, #FFFFFF 0%, #F2F2F7 65%);}
 .onboard-slide{display:flex;flex-direction:column;align-items:center;gap:16px;animation:sIn 0.35s cubic-bezier(0.22,1,0.36,1);}
 .onboard-icon{font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);}
@@ -8412,7 +8411,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onBack }) {
   );
 
   return (
-    <div className="screen" style={{background:"#0F1117"}}>
+    <div className="screen" style={{background:"var(--bg)"}}>
       <div className="page-hdr">
         <button className="back-btn" onClick={onBack}>←</button>
         <div className="page-title">Settings</div>
@@ -9091,7 +9090,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const pctile = iq ? iqPercentile(iq) : null;
   const saveName = () => { setEditingName(false); if (nameVal.trim()) setProfile(p => ({ ...p, name: nameVal.trim() })); };
   return (
-    <div className="tab-content" style={{background:"#0F1117"}}>
+    <div className="tab-content" style={{background:"var(--bg)"}}>
       <div className="profile-card">
         <div className="profile-avatar-wrap">
           <div className="profile-avatar" onClick={() => setShowEmojiPicker(true)}>{profile?.avatar || "⚽"}</div>
