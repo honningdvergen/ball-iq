@@ -9370,6 +9370,185 @@ function LeagueScreenImpl({ xp, weeklyXp, profile }) {
 const LeagueScreen = React.memo(LeagueScreenImpl);
 
 
+function LeaderboardScreenImpl({ currentUserId }) {
+  const [entries, setEntries] = useState([]);
+  const [profilesById, setProfilesById] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError('');
+    (async () => {
+      try {
+        let q = supabase
+          .from('scores')
+          .select('id, user_id, game_mode, score, created_at')
+          .order('score', { ascending: false })
+          .limit(20);
+        if (filter !== 'all') q = q.eq('game_mode', filter);
+        const { data: scoreData, error: scoreErr } = await q;
+        if (cancelled) return;
+        if (scoreErr) {
+          setError('Failed to load leaderboard');
+          setLoading(false);
+          return;
+        }
+        const list = scoreData || [];
+        const userIds = [...new Set(list.map(s => s.user_id).filter(Boolean))];
+        const pMap = {};
+        if (userIds.length) {
+          const { data: profData } = await supabase
+            .from('profiles')
+            .select('id, username, avatar_id')
+            .in('id', userIds);
+          (profData || []).forEach(p => { pMap[p.id] = p; });
+        }
+        if (cancelled) return;
+        setEntries(list);
+        setProfilesById(pMap);
+        setLoading(false);
+      } catch (e) {
+        if (!cancelled) { setError('Failed to load leaderboard'); setLoading(false); }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [filter]);
+
+  const filters = [
+    { id: 'all',      label: 'All' },
+    { id: 'classic',  label: 'Classic' },
+    { id: 'survival', label: 'Survival' },
+    { id: 'daily',    label: 'Daily' },
+    { id: 'balliq',   label: 'Ball IQ' },
+  ];
+
+  const modeLabel = {
+    classic: 'Classic', survival: 'Survival', daily: 'Daily', balliq: 'Ball IQ',
+    hotstreak: 'Hot Streak', truefalse: 'True/False', speed: 'Speed',
+    legends: 'Legends', wc2026: 'WC 2026', online: 'Online', local: 'Local',
+  };
+
+  const formatDate = (iso) => {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      const now = new Date();
+      const sameYear = d.getFullYear() === now.getFullYear();
+      return d.toLocaleDateString(undefined, sameYear
+        ? { day: 'numeric', month: 'short' }
+        : { day: 'numeric', month: 'short', year: 'numeric' });
+    } catch { return ''; }
+  };
+
+  const myIdx = currentUserId ? entries.findIndex(e => e.user_id === currentUserId) : -1;
+  const myRank = myIdx >= 0 ? myIdx + 1 : 0;
+
+  return (
+    <div className="tab-content" style={{padding:'20px 16px 84px'}}>
+      <div style={{textAlign:'center', marginBottom:18}}>
+        <div style={{fontSize:28, fontWeight:800, color:'var(--t1)', letterSpacing:'-0.5px'}}>🏅 Leaderboard</div>
+        <div style={{fontSize:13, color:'var(--t2)', marginTop:4}}>Top 20 worldwide</div>
+      </div>
+
+      <div style={{display:'flex', gap:6, overflowX:'auto', padding:'2px 2px 10px', marginBottom:4, WebkitOverflowScrolling:'touch', scrollbarWidth:'none'}}>
+        {filters.map(f => {
+          const active = filter === f.id;
+          return (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              style={{
+                flex:'0 0 auto', padding:'8px 14px', borderRadius:20,
+                border:'1px solid ' + (active ? 'var(--accent)' : 'var(--border)'),
+                cursor:'pointer', fontWeight:600, fontSize:13,
+                background: active ? 'var(--accent)' : 'var(--s1)',
+                color: active ? '#fff' : 'var(--t2)',
+                fontFamily:'inherit', transition:'all 0.18s',
+                whiteSpace:'nowrap',
+              }}
+            >{f.label}</button>
+          );
+        })}
+      </div>
+
+      {currentUserId && !loading && !error && (
+        <div style={{
+          background:'var(--s1)', borderRadius:12, padding:'10px 14px', marginBottom:12,
+          display:'flex', justifyContent:'space-between', alignItems:'center',
+          border:'1px solid var(--border)',
+        }}>
+          <div style={{fontSize:11, color:'var(--t3)', fontWeight:700, letterSpacing:1}}>YOUR RANK</div>
+          <div style={{fontSize:15, fontWeight:700, color: myRank ? 'var(--accent)' : 'var(--t3)'}}>
+            {myRank ? `#${myRank}` : 'Not in top 20'}
+          </div>
+        </div>
+      )}
+
+      {loading && (
+        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--t2)'}}>
+          <div style={{fontSize:28, marginBottom:8}}>⏳</div>
+          <div style={{fontSize:14}}>Loading leaderboard…</div>
+        </div>
+      )}
+
+      {!loading && error && (
+        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--red)'}}>
+          <div style={{fontSize:28, marginBottom:8}}>⚠️</div>
+          <div style={{fontSize:14}}>{error}</div>
+        </div>
+      )}
+
+      {!loading && !error && entries.length === 0 && (
+        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--t2)'}}>
+          <div style={{fontSize:28, marginBottom:8}}>🏆</div>
+          <div style={{fontSize:14}}>No scores yet. Be the first!</div>
+        </div>
+      )}
+
+      {!loading && !error && entries.length > 0 && (
+        <div style={{background:'var(--s1)', borderRadius:14, overflow:'hidden', border:'1px solid var(--border)'}}>
+          {entries.map((e, i) => {
+            const rank = i + 1;
+            const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : null;
+            const isMe = currentUserId && e.user_id === currentUserId;
+            const p = profilesById[e.user_id];
+            const name = p?.username || 'Player';
+            return (
+              <div
+                key={e.id}
+                style={{
+                  display:'flex', alignItems:'center', padding:'12px 14px',
+                  borderBottom: i < entries.length - 1 ? '0.5px solid var(--border)' : 'none',
+                  background: isMe ? 'var(--accent-dim)' : 'transparent',
+                  gap: 12,
+                }}
+              >
+                <div style={{width:32, textAlign:'center', fontSize: medal ? 20 : 14, fontWeight:700, color: medal ? 'var(--t1)' : 'var(--t3)'}}>
+                  {medal || rank}
+                </div>
+                <div style={{flex:1, minWidth:0}}>
+                  <div style={{fontSize:15, fontWeight:600, color:'var(--t1)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                    {name}
+                    {isMe && <span style={{marginLeft:6, fontSize:10, background:'var(--accent)', color:'#fff', padding:'1px 6px', borderRadius:4, fontWeight:700, verticalAlign:'middle'}}>YOU</span>}
+                  </div>
+                  <div style={{fontSize:12, color:'var(--t3)', marginTop:2}}>
+                    {modeLabel[e.game_mode] || e.game_mode || '—'} · {formatDate(e.created_at)}
+                  </div>
+                </div>
+                <div style={{fontSize:18, fontWeight:800, color:'var(--accent)'}}>{e.score}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+const LeaderboardScreen = React.memo(LeaderboardScreenImpl);
+
 
 const HOW_TO_PLAY = {
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
@@ -10213,6 +10392,9 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={() => startMode("daily")} onSuggest={(m) => { startMode(m); }} xp={xp} shieldActive={Math.floor(xp/200) > (stats.shieldsUsed||0)} onUseShield={() => { setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1})); showToast("🛡️ Streak shield activated! Your streak is safe today."); }} onShare={() => shareScore(dailyScore, 10, "daily")} />}
 
+        {/* ── LEADERBOARD TAB ── */}
+        {!inGame && screen === "home" && tab === "leaderboard" && <LeaderboardScreen currentUserId={user?.id} />}
+
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} />}
 
@@ -10436,10 +10618,11 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <nav className="tab-bar">
             {[
-              { id:"home",     icon:"⚽", label:"Play"    },
-              { id:"league",   icon:"🏆", label:"League"  },
-              { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
-              { id:"profile",  icon:"👤", label:"Profile" },
+              { id:"home",        icon:"⚽", label:"Play"    },
+              { id:"league",      icon:"🏆", label:"League"  },
+              { id:"daily",       icon:"📅", label:"Daily",  badge: !dailyDone },
+              { id:"leaderboard", icon:"🏅", label:"Top"     },
+              { id:"profile",     icon:"👤", label:"Profile" },
             ].map(({ id, icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => setTab(id)}>
                 <span className="tab-icon">{icon}</span>
