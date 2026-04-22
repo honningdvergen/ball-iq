@@ -6832,6 +6832,188 @@ const CLUB_PACKS = {
   },
 };
 
+// ─── CLUB CRESTS ─────────────────────────────────────────────────────────────
+// Custom simplified SVG crests for each club pack. All share the same shield
+// path (viewBox 100×100) so they feel like a cohesive set.
+const CLUB_CRESTS = {
+  Arsenal: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#EF0107"/>
+    <rect x="24" y="48" width="42" height="8" rx="2" fill="#FFFFFF"/>
+    <polygon points="64,44 80,52 64,60" fill="#FFFFFF"/>
+    <circle cx="32" cy="66" r="9" fill="#FFFFFF"/>
+    <circle cx="32" cy="66" r="3" fill="#EF0107"/>
+    <line x1="32" y1="57" x2="32" y2="75" stroke="#EF0107" stroke-width="1.5"/>
+    <line x1="23" y1="66" x2="41" y2="66" stroke="#EF0107" stroke-width="1.5"/>
+  </svg>`,
+  Liverpool: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#C8102E"/>
+    <ellipse cx="50" cy="50" rx="10" ry="14" fill="#FFFFFF"/>
+    <circle cx="50" cy="32" r="6.5" fill="#FFFFFF"/>
+    <polygon points="56,30 64,28 57,36" fill="#F6EB61"/>
+    <path d="M40 46 Q30 44 32 56 Q39 54 42 52 Z" fill="#FFFFFF"/>
+    <path d="M60 46 Q70 44 68 56 Q61 54 58 52 Z" fill="#FFFFFF"/>
+    <path d="M40 70 Q44 62 46 70" stroke="#F6EB61" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M54 70 Q58 62 60 70" stroke="#F6EB61" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M47 74 Q50 66 53 74" stroke="#F6EB61" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>`,
+  ManUtd: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#DA291C"/>
+    <circle cx="44" cy="34" r="6" fill="#FFFFFF"/>
+    <polygon points="40,29 38,22 43,27" fill="#FFFFFF"/>
+    <polygon points="48,29 50,22 45,27" fill="#FFFFFF"/>
+    <path d="M37 42 L51 42 L51 66 Q44 70 37 66 Z" fill="#FFFFFF"/>
+    <path d="M51 55 Q58 56 58 66 Q54 70 52 64 Z" fill="#FFFFFF"/>
+    <rect x="63" y="34" width="3" height="36" fill="#FBE122"/>
+    <polygon points="58,34 64.5,24 71,34 68,34 68,40 61,40 61,34" fill="#FBE122"/>
+  </svg>`,
+  Barcelona: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="bcn_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#bcn_clip)">
+      <rect x="12" y="10" width="15.2" height="90" fill="#A50044"/>
+      <rect x="27.2" y="10" width="15.2" height="90" fill="#004D98"/>
+      <rect x="42.4" y="10" width="15.2" height="90" fill="#A50044"/>
+      <rect x="57.6" y="10" width="15.2" height="90" fill="#004D98"/>
+      <rect x="72.8" y="10" width="15.2" height="90" fill="#A50044"/>
+    </g>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#EDBB00" stroke-width="3"/>
+  </svg>`,
+  RealMadrid: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#FFFFFF"/>
+    <rect x="28" y="32" width="44" height="6" fill="#00529F"/>
+    <polygon points="28,32 33,20 38,32" fill="#00529F"/>
+    <polygon points="42,32 50,18 58,32" fill="#00529F"/>
+    <polygon points="62,32 67,20 72,32" fill="#00529F"/>
+    <circle cx="33" cy="22" r="2.4" fill="#FEBE10"/>
+    <circle cx="50" cy="20" r="3" fill="#FEBE10"/>
+    <circle cx="67" cy="22" r="2.4" fill="#FEBE10"/>
+    <text x="50" y="72" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-weight="900" font-size="22" fill="#00529F">RM</text>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#FEBE10" stroke-width="3"/>
+  </svg>`,
+  ManCity: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#6CABDD"/>
+    <ellipse cx="50" cy="54" rx="7" ry="14" fill="#FFFFFF"/>
+    <circle cx="50" cy="34" r="5.5" fill="#FFFFFF"/>
+    <polygon points="55,33 62,31 55,38" fill="#1C2C5B"/>
+    <path d="M43 44 Q26 42 24 60 Q33 58 43 54 Z" fill="#FFFFFF"/>
+    <path d="M57 44 Q74 42 76 60 Q67 58 57 54 Z" fill="#FFFFFF"/>
+    <path d="M32 48 L40 51 M30 54 L42 54" stroke="#1C2C5B" stroke-width="1"/>
+    <path d="M68 48 L60 51 M70 54 L58 54" stroke="#1C2C5B" stroke-width="1"/>
+  </svg>`,
+  Chelsea: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#034694"/>
+    <path d="M38 34 Q37 26 44 24 Q53 26 51 34 L54 52 L51 68 L47 77 L43 77 L43 60 L38 52 Z" fill="#FFFFFF"/>
+    <circle cx="45" cy="30" r="6" fill="#FFFFFF"/>
+    <rect x="54" y="38" width="12" height="3" rx="1" fill="#FFFFFF" transform="rotate(-20 60 40)"/>
+    <rect x="66" y="18" width="2.5" height="52" fill="#FFFFFF"/>
+    <circle cx="67.3" cy="18" r="3" fill="#FFFFFF"/>
+    <path d="M38 62 Q30 66 32 74 Q34 78 37 74" stroke="#FFFFFF" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>`,
+  BayernMunich: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="bayern_diamond" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="12" height="12" fill="#FFFFFF"/>
+        <rect width="6" height="6" fill="#0066B2"/>
+        <rect x="6" y="6" width="6" height="6" fill="#0066B2"/>
+      </pattern>
+    </defs>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#DC052D"/>
+    <circle cx="50" cy="52" r="22" fill="url(#bayern_diamond)" stroke="#FFFFFF" stroke-width="2"/>
+  </svg>`,
+  Juventus: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="juve_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#juve_clip)">
+      <rect x="12" y="10" width="38" height="90" fill="#000000"/>
+      <rect x="50" y="10" width="38" height="90" fill="#FFFFFF"/>
+    </g>
+    <rect x="28" y="42" width="44" height="7" fill="#FFFFFF" stroke="#000000" stroke-width="1.2"/>
+    <polygon points="28,42 33,28 38,42" fill="#FFFFFF" stroke="#000000" stroke-width="1.2"/>
+    <polygon points="42,42 50,25 58,42" fill="#FFFFFF" stroke="#000000" stroke-width="1.2"/>
+    <polygon points="62,42 67,28 72,42" fill="#FFFFFF" stroke="#000000" stroke-width="1.2"/>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#000000" stroke-width="2"/>
+  </svg>`,
+  AcMilan: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="acm_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#acm_clip)">
+      <rect x="12" y="10" width="15.2" height="90" fill="#FB090B"/>
+      <rect x="27.2" y="10" width="15.2" height="90" fill="#000000"/>
+      <rect x="42.4" y="10" width="15.2" height="90" fill="#FB090B"/>
+      <rect x="57.6" y="10" width="15.2" height="90" fill="#000000"/>
+      <rect x="72.8" y="10" width="15.2" height="90" fill="#FB090B"/>
+    </g>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#000000" stroke-width="2"/>
+  </svg>`,
+  Atletico: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="atl_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#atl_clip)">
+      <rect x="12" y="10" width="15.2" height="90" fill="#FFFFFF"/>
+      <rect x="27.2" y="10" width="15.2" height="90" fill="#CB3524"/>
+      <rect x="42.4" y="10" width="15.2" height="90" fill="#FFFFFF"/>
+      <rect x="57.6" y="10" width="15.2" height="90" fill="#CB3524"/>
+      <rect x="72.8" y="10" width="15.2" height="90" fill="#FFFFFF"/>
+    </g>
+    <ellipse cx="40" cy="65" rx="8" ry="6" fill="#272727"/>
+    <circle cx="34" cy="57" r="5" fill="#272727"/>
+    <rect x="34" y="65" width="2.5" height="8" fill="#272727"/>
+    <rect x="42" y="65" width="2.5" height="8" fill="#272727"/>
+    <rect x="58" y="54" width="2.5" height="20" fill="#272727"/>
+    <ellipse cx="59.3" cy="51" rx="6" ry="8" fill="#272727"/>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#272727" stroke-width="2"/>
+  </svg>`,
+  Dortmund: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#FDE100"/>
+    <text x="50" y="60" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-weight="900" font-size="28" fill="#000000">BVB</text>
+    <text x="50" y="78" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-weight="700" font-size="10" fill="#000000">09</text>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#000000" stroke-width="2"/>
+  </svg>`,
+  PSG: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#003170"/>
+    <rect x="12" y="47" width="76" height="7" fill="#DA291C"/>
+    <polygon points="50,18 47,30 53,30" fill="#FFFFFF"/>
+    <polygon points="46,32 54,32 55,44 45,44" fill="#FFFFFF"/>
+    <polygon points="44,45 56,45 58,58 42,58" fill="#FFFFFF"/>
+    <polygon points="42,59 58,59 61,80 39,80" fill="#FFFFFF"/>
+  </svg>`,
+  InterMilan: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="int_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#int_clip)">
+      <rect x="0" y="0" width="100" height="100" fill="#010E80"/>
+      <g transform="rotate(18 50 50)">
+        <rect x="-40" y="-20" width="14" height="160" fill="#000000"/>
+        <rect x="-15" y="-20" width="14" height="160" fill="#000000"/>
+        <rect x="10" y="-20" width="14" height="160" fill="#000000"/>
+        <rect x="35" y="-20" width="14" height="160" fill="#000000"/>
+        <rect x="60" y="-20" width="14" height="160" fill="#000000"/>
+        <rect x="85" y="-20" width="14" height="160" fill="#000000"/>
+      </g>
+    </g>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#000000" stroke-width="2"/>
+  </svg>`,
+  Ajax: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#FFFFFF"/>
+    <text x="50" y="75" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-weight="900" font-size="60" fill="#CC0000">A</text>
+    <rect x="22" y="42" width="56" height="2.5" fill="#CC0000"/>
+    <rect x="22" y="52" width="56" height="2.5" fill="#CC0000"/>
+    <rect x="22" y="62" width="56" height="2.5" fill="#CC0000"/>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#CC0000" stroke-width="2"/>
+  </svg>`,
+};
+
+function ClubCrest({ clubKey, size = 48 }) {
+  const svg = CLUB_CRESTS[clubKey];
+  if (!svg) {
+    return (
+      <div style={{width:size, height:size, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:Math.round(size*0.5)}}>⚽</div>
+    );
+  }
+  return (
+    <div
+      aria-hidden="true"
+      style={{width:size, height:size, display:"inline-block", flexShrink:0, filter:"drop-shadow(0 1px 2px rgba(0,0,0,0.25))"}}
+      dangerouslySetInnerHTML={{__html: svg}}
+    />
+  );
+}
+
 // ─── TYPED INPUT WITH AUTOCOMPLETE ───────────────────────────────────────────
 function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
   const [val, setVal] = useState("");
@@ -8680,7 +8862,9 @@ function ClubQuizScreen({ onStart, onBack }) {
       <div className="mode-list">
         {Object.entries(CLUB_PACKS).map(([key, pack]) => (
           <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}>
-            <div className="mi-icon" style={{fontSize:20}}>{pack.icon}</div>
+            <div className="mi-icon" style={{background:"transparent", padding:0, width:56, height:56, display:"flex", alignItems:"center", justifyContent:"center"}}>
+              <ClubCrest clubKey={key} size={48} />
+            </div>
             <div className="mi-body">
               <div className="mi-name">{pack.name}</div>
               <div className="mi-desc">{(pack?.questions?.length) || 0} questions</div>
@@ -10026,6 +10210,7 @@ function AppInner() {
   const todayKey = useMemo(() => keyForDate(new Date()), []);
   const [dailyHistory, setDailyHistory] = useState({});
   const [activeDailyDate, setActiveDailyDate] = useState(null);
+  const [activeClub, setActiveClub] = useState(null);
 
   const showToast = useCallback((msg, duration = 2800) => {
     setToast(msg);
@@ -10212,6 +10397,9 @@ function AppInner() {
   const startMode = useCallback((m) => {
     try {
       haptic("soft");
+      // A club quiz sets activeClub before delegating to startMode('classic'),
+      // so only clear it when the next mode is NOT a club-quiz path.
+      if (m !== "clubquiz") setActiveClub(null);
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
@@ -10992,6 +11180,7 @@ function AppInner() {
             onStart={(clubKey) => {
               const pack = CLUB_PACKS[clubKey];
               const qs = shuffle(pack.questions).slice(0, 10).map(q => ({...q, type:"mcq", cat:"ClubQuiz"}));
+              setActiveClub(clubKey);
               setMode("classic");
               setQuestions(qs);
               setScreen("quiz");
@@ -11058,6 +11247,15 @@ function AppInner() {
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",borderRadius:12,border:"1px solid rgba(251,191,36,0.15)"}}>
                 <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>📜 Legends & History</div>
                 <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Take your time. These are the stories that made the game.</div>
+              </div>
+            )}
+            {activeClub && CLUB_PACKS[activeClub] && (
+              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"10px 14px",background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14}}>
+                <ClubCrest clubKey={activeClub} size={80} />
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>Club Quiz</div>
+                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{CLUB_PACKS[activeClub].name}</div>
+                </div>
               </div>
             )}
             <QuizEngine
