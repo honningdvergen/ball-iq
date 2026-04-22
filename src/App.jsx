@@ -6686,21 +6686,21 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
 .onboard-body{font-size:15px;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:24px;}
-.onboard-btn{width:100%;max-width:340px;padding:16px;background:var(--accent);border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:-0.2px;transition:background 0.15s,transform 0.1s;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
+.onboard-btn{width:100%;max-width:340px;padding:16px;background:var(--accent);border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:-0.2px;transition:background 0.15s,transform 0.1s;box-shadow:0 4px 20px rgba(34,197,94,0.28);-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#fff;}
 .onboard-btn:hover{background:#16a34a;}
 .onboard-btn:active{transform:scale(0.98);}
 .onboard-btn-inline{max-width:180px;flex:1;}
-.onboard-skip{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;padding:12px 16px;}
+.onboard-skip{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;padding:12px 16px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
 .onboard-skip:hover{color:var(--t2);}
 .onboard-actions{display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;}
 .onboard-club-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:360px;margin:8px 0 12px;}
-.onboard-club{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:var(--s1);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.15s,background 0.15s,transform 0.1s;}
+.onboard-club{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:var(--s1);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;color:var(--text);transition:border-color 0.15s,background 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
 .onboard-club:hover{background:var(--s2);}
 .onboard-club:active{transform:scale(0.97);}
 .onboard-club.on{border-color:var(--accent);background:var(--accent-dim);box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
 .onboard-club-name{font-size:11px;font-weight:700;color:var(--t1);line-height:1.2;text-align:center;}
 .onboard-skill-list{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;}
-.onboard-skill{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s1);border:2px solid var(--border);border-radius:14px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color 0.15s,background 0.15s,transform 0.1s;}
+.onboard-skill{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s1);border:2px solid var(--border);border-radius:14px;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:border-color 0.15s,background 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
 .onboard-skill:hover{background:var(--s2);}
 .onboard-skill:active{transform:scale(0.98);}
 .onboard-skill.on{border-color:var(--accent);background:var(--accent-dim);box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
@@ -7638,7 +7638,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   useEffect(() => {
     if (mode !== "online" || !roomCode) return;
-    pollRef.current = setInterval(async () => {
+    // Prime with a single read so the opponent score appears immediately on entry
+    (async () => {
       try {
         const { data: row } = await gameRoomGet(roomCode);
         if (row) {
@@ -7646,8 +7647,24 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           if (os != null) setOpponentScore(os);
         }
       } catch {}
-    }, 2000);
-    return () => clearInterval(pollRef.current);
+    })();
+    // Realtime subscription — instant opponent-score updates, no polling
+    const channel = supabase
+      .channel(`room-score:${roomCode}`)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'game_rooms', filter: `code=eq.${roomCode}` },
+        (payload) => {
+          const row = payload.new;
+          if (!row) return;
+          const os = isHost ? row.guest_score : row.host_score;
+          if (os != null) setOpponentScore(os);
+        }
+      )
+      .subscribe();
+    return () => {
+      try { supabase.removeChannel(channel); } catch {}
+    };
   }, [mode, roomCode, isHost]);
 
   if (done) return null;
@@ -7900,8 +7917,18 @@ function OnlineLobby({ onStart, onBack }) {
   const [roomData, setRoomData] = useState(null);
   const [toast, setToast] = useState(null);
   const [cdNum, setCdNum] = useState(3);
-  const pollRef = useRef(null);
+  const pollRef = useRef(null);     // legacy — still cleaned up if anything fell through
+  const channelRef = useRef(null);  // Supabase realtime channel
   const t$ = m => { setToast(m); setTimeout(() => setToast(null), 2200); };
+
+  // Tear down any active realtime channel + poll
+  const tearDownWatch = () => {
+    if (channelRef.current) {
+      try { supabase.removeChannel(channelRef.current); } catch {}
+      channelRef.current = null;
+    }
+    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
+  };
 
   // Sync when the auth profile arrives after mount
   useEffect(() => {
@@ -7930,17 +7957,29 @@ function OnlineLobby({ onStart, onBack }) {
     }
     const room = normaliseRoom(data);
     setCode(rc); setRoomData(room); setView("waiting");
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
-    pollRef.current = setInterval(async () => {
-      try {
-        const { data: fresh } = await gameRoomGet(rc);
-        if (fresh) {
-          const r = normaliseRoom(fresh);
+    tearDownWatch();
+    // Realtime: listen for any UPDATE on this specific room row so the host
+    // sees the guest appear instantly instead of after a 2-second poll.
+    const channel = supabase
+      .channel(`room:${rc}`)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'game_rooms', filter: `code=eq.${rc}` },
+        (payload) => {
+          const r = normaliseRoom(payload.new);
+          if (!r) return;
           setRoomData(r);
-          if (r.guest) { clearInterval(pollRef.current); setView("countdown"); }
+          if (r.guest) {
+            console.log('[OnlineLobby] realtime: guest joined', { rc, guest: r.guest });
+            tearDownWatch();
+            setView("countdown");
+          }
         }
-      } catch (e) { console.error('[OnlineLobby] poll error', e); }
-    }, 2000);
+      )
+      .subscribe((status) => {
+        console.log('[OnlineLobby] host channel status', status);
+      });
+    channelRef.current = channel;
   };
 
   const join = async () => {
@@ -7992,14 +8031,14 @@ function OnlineLobby({ onStart, onBack }) {
     return () => clearInterval(t);
   }, [view, roomData, code, name, onStart]);
 
-  useEffect(() => () => clearInterval(pollRef.current), []);
+  useEffect(() => () => tearDownWatch(), []);
 
   if (view === "countdown") return <div className="cdown"><div className="cdown-n" key={cdNum}>{cdNum}</div><div className="cdown-s">Get ready</div></div>;
 
   if (view === "waiting") return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={() => { clearInterval(pollRef.current); setView("menu"); }}>←</button>
+        <button className="back-btn" onClick={() => { tearDownWatch(); setView("menu"); }}>←</button>
         <div className="page-title">Room Created 🎉</div>
       </div>
       <div className="lcard">
