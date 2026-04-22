@@ -6810,36 +6810,71 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 }
 
 // ─── SOUND EFFECTS ────────────────────────────────────────────────────────────
-function createSound(type) {
+// Pure Web-Audio sound synthesis. Honours biq_settings.sound and no-ops on
+// environments without AudioContext or with the setting disabled.
+function playSound(type) {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    // Honour user sound preference (read synchronously so we can be called from anywhere)
+    let enabled = false;
+    try {
+      const raw = localStorage.getItem("biq_settings");
+      if (raw) enabled = JSON.parse(raw)?.sound === true;
+    } catch {}
+    if (!enabled) return;
+
+    const AC = typeof window !== "undefined" && (window.AudioContext || window.webkitAudioContext);
+    if (!AC) return;
+    const ctx = new AC();
+    const now = ctx.currentTime;
+
+    // Helper: schedule a single sine note with a short attack + exponential release
+    const note = (freq, start, dur, vol = 0.13, wave = "sine") => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = wave;
+      osc.frequency.value = freq;
+      const t0 = now + start;
+      const tAttackEnd = t0 + 0.02;
+      const tEnd = t0 + dur;
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(vol, tAttackEnd);
+      gain.gain.exponentialRampToValueAtTime(0.0001, tEnd);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t0);
+      osc.stop(tEnd + 0.05);
+    };
+
     if (type === "correct") {
-      osc.frequency.setValueAtTime(523, ctx.currentTime);       // C5
-      osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1); // E5
-      gain.gain.setValueAtTime(0.15, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-      osc.start(); osc.stop(ctx.currentTime + 0.3);
+      // Two-tone ascending chime: C5 → G5, ~600ms total
+      note(523.25, 0,    0.28, 0.15);
+      note(783.99, 0.22, 0.38, 0.15);
     } else if (type === "wrong") {
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(200, ctx.currentTime);
-      osc.frequency.setValueAtTime(150, ctx.currentTime + 0.1);
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
-      osc.start(); osc.stop(ctx.currentTime + 0.25);
+      // Soft sine glide 300 → 200Hz over 400ms — gentle, not harsh
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.linearRampToValueAtTime(200, now + 0.4);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.09, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.45);
+    } else if (type === "streak") {
+      // C5 → E5 → G5, each 150ms, overlapping slightly
+      note(523.25, 0.00, 0.22, 0.14);
+      note(659.25, 0.12, 0.22, 0.14);
+      note(783.99, 0.24, 0.30, 0.14);
+    } else if (type === "daily_complete") {
+      // Warm celebratory C-major chord with 800ms soft fade
+      note(523.25, 0, 0.8, 0.09);
+      note(659.25, 0, 0.8, 0.09);
+      note(783.99, 0, 0.8, 0.09);
     } else if (type === "levelup") {
-      [523,659,784,1047].forEach((freq, i) => {
-        const o2 = ctx.createOscillator();
-        const g2 = ctx.createGain();
-        o2.connect(g2); g2.connect(ctx.destination);
-        o2.frequency.value = freq;
-        g2.gain.setValueAtTime(0.12, ctx.currentTime + i*0.1);
-        g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.1 + 0.2);
-        o2.start(ctx.currentTime + i*0.1);
-        o2.stop(ctx.currentTime + i*0.1 + 0.2);
+      // Ascending 4-note fanfare, 120ms each
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        note(freq, i * 0.12, 0.20, 0.13);
       });
     }
   } catch {}
@@ -6887,6 +6922,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
     if (done || picked) return;
     const correct = i === q.a;
     haptic(correct ? "correct" : "wrong");
+    playSound(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
     setPicked({ choice: i, correct });
     setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, 400);
@@ -6954,6 +6990,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
     const qAsBool = qa === true || qa === 1;
     const correct = val === qAsBool;
     haptic(correct ? "correct" : "wrong");
+    playSound(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
     setPicked({ val, correct });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -7096,7 +7133,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     // T/F questions store answer as boolean OR number; MCQ stores as index
     const qAsBool = q.a === true || q.a === 1;
     const correct = q.type === "tf" ? ((i === 1) === qAsBool) : (i === q.a);
-    if (soundEnabled) createSound(correct ? "correct" : "wrong");
+    playSound(correct ? "correct" : "wrong");
     // Bigger celebration for HARD questions right
     if (correct && q.diff === "hard") {
       haptic("hardCorrect");
@@ -9825,6 +9862,7 @@ function AppInner() {
           if (newStreak > 1) {
             setStreakToast(newStreak);
             haptic("heavy");
+            playSound("streak");
             setTimeout(() => setStreakToast(null), 3500);
           }
         } else if (data.lastDay < todayNum - 1) {
@@ -9999,13 +10037,13 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      setTimeout(() => { showToast("🔥 7-day streak! You're building a habit!"); haptic("heavy"); }, 1200);
+      setTimeout(() => { showToast("🔥 7-day streak! You're building a habit!"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      setTimeout(() => { showToast("🏆 30-day streak! Incredible dedication!"); haptic("heavy"); }, 1200);
+      setTimeout(() => { showToast("🏆 30-day streak! Incredible dedication!"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      setTimeout(() => { showToast("💎 100-day streak! You are a legend!"); haptic("heavy"); }, 1200);
+      setTimeout(() => { showToast("💎 100-day streak! You are a legend!"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
@@ -10076,7 +10114,7 @@ function AppInner() {
         setTimeout(() => setXpToast(null), 3200);
         if (leveledUp) {
           setTimeout(() => {
-            setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup");
+            setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
             setTimeout(() => setLevelUpOverlay(null), 3500);
           }, 400);
         }
@@ -10115,6 +10153,7 @@ function AppInner() {
       }
       setActiveDailyDate(null);
       haptic("heavy");
+      playSound("daily_complete");
     }
 
     if (mode === "local") {
