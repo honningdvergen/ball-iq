@@ -347,7 +347,6 @@ const QB = [
 
   // ── PREMIER LEAGUE EXTRA ──
   { q:"Who scored a hat-trick in Manchester City's 4-3 away win at Newcastle in May 2021 — becoming the youngest player ever to net a league hat-trick for a Pep Guardiola side, beating Lionel Messi's record?", o:["Ferran Torres","Raheem Sterling","Gabriel Jesus","Phil Foden"], a:0, cat:"PL", diff:"hard", type:"mcq", hint:"The Spaniard, 21 years 74 days old, was 125 days younger than Messi when the Argentine set the previous mark in 2010. All three goals came in a frantic 24-minute spell either side of half-time at St James' Park.", v:1 },
-  { q:"Which club won the Premier League in 2000 and 2001 under manager Sir Alex Ferguson?", o:["Arsenal","Chelsea","Liverpool","Man Utd"], a:3, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Who won the Premier League Golden Boot in the 2018-19 season with 22 goals — shared between three players?", o:["Mané, Salah and Firmino","Salah, Mané and Aubameyang","Kane, Agüero and Salah","Sterling, Salah and Kane"], a:1, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Which manager led Arsenal to their unbeaten 'Invincibles' season of 2003-04?", o:["George Graham","Terry Neill","Bruce Rioch","Arsène Wenger"], a:3, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Man United beat which club 2-0 in the 1999 FA Cup final, with Sheringham and Scholes scoring?", o:["Wimbledon","Arsenal","Liverpool","Newcastle"], a:3, cat:"PL", diff:"medium", type:"mcq", v:1 },
@@ -4598,7 +4597,6 @@ const QB = [
   { q:"Real Madrid won their 14th Champions League in 2023-24 — beating which club in the final?", o:["PSG","Man City","Atlético","Dortmund"], a:3, cat:"UCL", diff:"easy", type:"mcq", v:1 },
 
   // More broad easy questions
-  { q:"What colour are Chelsea's home shirts?", o:["Red","White","Blue","Black"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Which country does Kylian Mbappe represent internationally?", o:["Belgium","Ivory Coast","Algeria","France"], a:3, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
   { q:"How many points does a team get for a win in football?", o:["1","2","3","4"], a:2, cat:"Records", diff:"easy", type:"mcq", v:1 },
   { q:"What is the name of the trophy given to the Champions League winner?", o:["The Golden Cup","The Big Ears","The Champions Trophy","The Europa Cup"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
