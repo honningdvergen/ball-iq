@@ -9597,7 +9597,7 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
 
   return (
@@ -9733,22 +9733,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="sr-left"><div className="sr-label">Questions</div></div>
             <div className="sr-right"><div className="sr-value">4,300+</div></div>
           </div>
-          <a
-            className="settings-row"
-            href="https://ball-iq-pi.vercel.app/privacy.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              background: "transparent",
-              WebkitTapHighlightColor: "transparent",
-              outline: "none",
-            }}
-          >
+          <div className="settings-row" onClick={onShowPrivacy}>
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
-          </a>
+          </div>
         </div>
       </div>
 
@@ -9777,6 +9765,103 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   );
 }
 const SettingsScreen = React.memo(SettingsScreenImpl);
+
+// ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
+// Full-screen in-app overlay. Content is hardcoded (mirrors public/privacy.html)
+// so there's no network fetch, no CORS/asset-path pitfalls, and no flash of a
+// blank iframe. Rendered above the app when showPrivacy is true.
+function PrivacyScreen({ onClose }) {
+  return (
+    <div style={{
+      position: "fixed",
+      inset: 0,
+      background: "#0a0a0a",
+      color: "#F0F1F5",
+      zIndex: 1000,
+      overflowY: "auto",
+      WebkitOverflowScrolling: "touch",
+      fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif",
+    }}>
+      <div style={{
+        position: "sticky", top: 0,
+        background: "rgba(10,10,10,0.95)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid #2A2D3A",
+        padding: "14px 20px",
+        display: "flex", alignItems: "center", gap: 12,
+        zIndex: 1,
+      }}>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close privacy policy"
+          style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: "#1A1D27", border: "1px solid #2A2D3A",
+            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            cursor: "pointer", display: "flex",
+            alignItems: "center", justifyContent: "center",
+            WebkitTapHighlightColor: "transparent",
+            outline: "none",
+          }}
+        >←</button>
+        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Privacy Policy</div>
+      </div>
+      <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
+        <div style={{fontSize: 22, fontWeight: 900, color: "#58CC02", marginBottom: 8}}>⚽ Ball IQ</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: April 16, 2026</div>
+
+        <div style={{
+          background: "#1A1D27", borderRadius: 16,
+          padding: "18px 20px", margin: "12px 0 24px",
+          border: "1px solid #2A2D3A",
+        }}>
+          <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
+            <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
+            Ball IQ does not collect, store or share any personal data. All your game progress is stored locally on your device and never leaves it.
+          </p>
+        </div>
+
+        <h2 style={privacyH2}>1. Information We Collect</h2>
+        <p style={privacyP}>Ball IQ does not collect any personal information. We do not require you to create an account, provide an email address, or share any identifying information to use the app.</p>
+
+        <h2 style={privacyH2}>2. Data Storage</h2>
+        <p style={privacyP}>All app data — including your scores, XP, badges, settings and game history — is stored locally on your device using your browser's local storage. This data:</p>
+        <ul style={{paddingLeft: 20, marginBottom: 12}}>
+          <li style={privacyLi}>Never leaves your device</li>
+          <li style={privacyLi}>Is never transmitted to our servers</li>
+          <li style={privacyLi}>Is never shared with third parties</li>
+          <li style={privacyLi}>Can be cleared at any time by clearing your browser or app data</li>
+        </ul>
+
+        <h2 style={privacyH2}>3. Analytics</h2>
+        <p style={privacyP}>Ball IQ does not use any analytics tools, tracking pixels, or third-party SDKs that collect usage data. We do not track how you use the app.</p>
+
+        <h2 style={privacyH2}>4. Advertising</h2>
+        <p style={privacyP}>Ball IQ does not display advertisements and does not work with any advertising networks.</p>
+
+        <h2 style={privacyH2}>5. Third-Party Services</h2>
+        <p style={privacyP}>Ball IQ uses Google Fonts (Inter and JetBrains Mono) to display text. This means your device makes a request to Google's servers to download these fonts. Please refer to Google's Privacy Policy for information on how they handle font requests.</p>
+        <p style={privacyP}>No other third-party services are used.</p>
+
+        <h2 style={privacyH2}>6. Children's Privacy</h2>
+        <p style={privacyP}>Ball IQ does not knowingly collect any information from children under the age of 13. The app contains no inappropriate content and is suitable for all ages.</p>
+
+        <h2 style={privacyH2}>7. Changes to This Policy</h2>
+        <p style={privacyP}>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
+
+        <h2 style={privacyH2}>8. Contact</h2>
+        <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: privacy@ball-iq.app</p>
+
+        <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 Ball IQ. All rights reserved.</p>
+      </div>
+    </div>
+  );
+}
+const privacyH2 = {fontSize: 17, fontWeight: 700, color: "#F0F1F5", margin: "28px 0 10px"};
+const privacyP = {fontSize: 15, color: "#9BA0B8", marginBottom: 12};
+const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 
 // ─── XP BAR COMPONENT ─────────────────────────────────────────────────────────
 function XPBar({ xp, streak }) {
@@ -10840,6 +10925,7 @@ function AppInner() {
   const [showRatePrompt, setShowRatePrompt] = useState(false);
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
     try {
@@ -11462,6 +11548,8 @@ function AppInner() {
 
   // Stable callbacks for memoized children
   const goHome = useCallback(() => { setScreen("home"); setTab("home"); }, []);
+  const openPrivacy = useCallback(() => setShowPrivacy(true), []);
+  const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
   const useShield = useCallback(() => {
@@ -11838,7 +11926,10 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} />}
+
+        {/* ── PRIVACY POLICY (in-app overlay) ── */}
+        {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
 
         {/* The separate "Modes" screen has been removed — all mode tiles live on the Home tab. */}
 
