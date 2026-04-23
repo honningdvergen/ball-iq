@@ -5764,15 +5764,28 @@ function generateCode() { return Math.random().toString(36).substring(2, 7).toUp
 //   guest_score  int  default 0
 //   created_at   timestamptz default now()
 // RLS: enable select/insert/update for the `authenticated` and/or `anon` role.
+// Pull every field off a Supabase/PostgREST error object so we never lose the
+// real reason (column missing, RLS denial, schema-cache mismatch, etc.).
+function _fullRoomErr(e) {
+  if (!e) return null;
+  const out = {};
+  for (const k of ['message','code','details','hint','status','statusCode','name','error','body','cause']) {
+    try { if (e[k] !== undefined) out[k] = e[k]; } catch {}
+  }
+  try { for (const k of Object.getOwnPropertyNames(e)) if (out[k] === undefined) out[k] = e[k]; } catch {}
+  return out;
+}
+
 async function gameRoomCreate(code, hostName, questions) {
   const row = { code, host_name: hostName, guest_name: null, questions, host_score: 0, guest_score: 0 };
+  console.log('[gameRoom] insert row', { code, host_name: hostName, questions_len: Array.isArray(questions) ? questions.length : 0 });
   const { data, error } = await supabase.from('game_rooms').insert(row).select().single();
-  if (error) console.error('[gameRoom] create failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  if (error) console.error('[gameRoom] create failed (FULL)', _fullRoomErr(error));
   return { data, error };
 }
 async function gameRoomGet(code) {
   const { data, error } = await supabase.from('game_rooms').select('*').eq('code', code).maybeSingle();
-  if (error) console.error('[gameRoom] get failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  if (error) console.error('[gameRoom] get failed (FULL)', _fullRoomErr(error));
   return { data, error };
 }
 async function gameRoomJoin(code, guestName) {
@@ -5784,7 +5797,7 @@ async function gameRoomJoin(code, guestName) {
     .is('guest_name', null)
     .select()
     .maybeSingle();
-  if (error) console.error('[gameRoom] join failed', { code, message: error.message, code_: error.code, details: error.details, hint: error.hint });
+  if (error) console.error('[gameRoom] join failed (FULL)', _fullRoomErr(error));
   return { data, error };
 }
 async function gameRoomSetScore(code, isHost, score) {
@@ -8029,7 +8042,10 @@ function OnlineLobby({ onStart, onBack }) {
     console.log('[OnlineLobby] creating room', { rc, host: name.trim() });
     const { data, error } = await gameRoomCreate(rc, name.trim(), questions);
     if (error || !data) {
-      t$(error?.message ? `Create failed: ${error.message.slice(0, 40)}` : "Failed — try again");
+      // Surface the real reason — column mismatches, RLS denials and schema-cache
+      // misses all have useful text we want the user (and the console) to see.
+      const msg = error?.message || error?.details || error?.hint || "try again";
+      t$(`Create failed: ${String(msg).slice(0, 80)}`);
       return;
     }
     const room = normaliseRoom(data);
@@ -8067,7 +8083,8 @@ function OnlineLobby({ onStart, onBack }) {
     // 1. Check the room exists at all
     const { data: existing, error: getErr } = await gameRoomGet(rc);
     if (getErr) {
-      t$(`Lookup failed: ${getErr.message?.slice(0, 40) || 'try again'}`);
+      const msg = getErr.message || getErr.details || getErr.hint || "try again";
+      t$(`Lookup failed: ${String(msg).slice(0, 80)}`);
       return;
     }
     if (!existing) { t$("Room not found"); return; }
@@ -8075,7 +8092,8 @@ function OnlineLobby({ onStart, onBack }) {
     // 2. Atomically claim the guest seat
     const { data: joined, error: joinErr } = await gameRoomJoin(rc, name.trim());
     if (joinErr) {
-      t$(`Join failed: ${joinErr.message?.slice(0, 40) || 'try again'}`);
+      const msg = joinErr.message || joinErr.details || joinErr.hint || "try again";
+      t$(`Join failed: ${String(msg).slice(0, 80)}`);
       return;
     }
     if (!joined) { t$("Room is full"); return; }
