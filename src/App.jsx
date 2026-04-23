@@ -9722,13 +9722,16 @@ function ClubQuizScreen({ onStart, onBack }) {
 }
 
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack }) {
-  const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
-  const Toggle = ({ val, onChange }) => (
+function SettingsToggle({ val, onChange }) {
+  return (
     <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
       <div className="toggle-knob" />
     </button>
   );
+}
+
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack }) {
+  const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
 
   return (
     <div className="screen" style={{background:"var(--bg)"}}>
@@ -9828,7 +9831,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">First-letter hints on typed questions (Easy mode)</div>
             </div>
             <div className="sr-right">
-              <Toggle val={settings.hints} onChange={v => onUpdate({hints:v})} />
+              <SettingsToggle val={settings.hints} onChange={v => onUpdate({hints:v})} />
             </div>
           </div>
           <div className="settings-row">
@@ -9837,7 +9840,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">Enable countdown timer in Standard, Speed and WC2026 modes</div>
             </div>
             <div className="sr-right">
-              <Toggle val={settings.timer} onChange={v => onUpdate({timer:v})} />
+              <SettingsToggle val={settings.timer} onChange={v => onUpdate({timer:v})} />
             </div>
           </div>
           <div className="settings-row">
@@ -9846,7 +9849,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">Audio feedback on correct and wrong answers</div>
             </div>
             <div className="sr-right">
-              <Toggle val={settings.sound} onChange={v => onUpdate({sound:v})} />
+              <SettingsToggle val={settings.sound} onChange={v => onUpdate({sound:v})} />
             </div>
           </div>
         </div>
@@ -10350,7 +10353,7 @@ function DailyCountdown({ score }) {
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
-      setTimeStr(score != null ? `${score}/10 · resets in ${h}h ${m}m` : `Resets in ${h}h ${m}m`);
+      setTimeStr(score != null ? `${score}/7 · resets in ${h}h ${m}m` : `Resets in ${h}h ${m}m`);
     };
     update();
     const id = setInterval(update, 30000);
