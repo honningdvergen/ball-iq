@@ -9327,96 +9327,93 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
   const isSurvival = mode === "survival";
-  const emoji = isSurvival
-    ? (result.score >= 20 ? "🏆" : result.score >= 10 ? "🔥" : result.score >= 5 ? "⚽" : "💀")
-    : (pct === 100 ? "🐐" : pct >= 80 ? "🏆" : pct >= 60 ? "⚽" : pct >= 40 ? "🎯" : pct === 0 ? "😬" : "📚");
-  const title = isSurvival
-    ? (result.score >= 20 ? "Unstoppable!" : result.score >= 10 ? "On Fire!" : result.score >= 5 ? "Good Effort" : "Better luck next time!")
-    : (pct === 100 ? "Perfect Score! 🐐" : result.score === 9 && result.total === 10 ? "So close to perfect! 🎯" : pct >= 80 ? "World Class" : pct >= 60 ? "Solid Result" : pct >= 40 ? "Not Bad" : pct === 0 ? "Even Mourinho had bad days…" : "Keep Watching");
+  const isSpeed = mode === "speed";
+  const isDaily = mode === "daily";
 
   if (mode === "balliq") {
     return <BallIQResults result={result} iqHistory={iqHistory} onRetry={onRetry} onShare={onShare} onHome={onHome} />;
   }
 
   const xpEarned = getXPForResult(result.score, result.total, mode);
-  const isSpeed = mode === 'speed';
-  const isDaily = mode === "daily";
-  const showConfetti = isSurvival ? result.score >= 10 : (mode === "balliq" ? false : pct >= 80);
+  const showConfetti = isSurvival ? result.score >= 10 : pct >= 80;
 
-  // Personal best detection (classic/standard/legends modes with 10 questions)
+  // Personal best detection
   const eligibleForPB = mode === "classic" && result.total === 10;
-  const isNewBest = eligibleForPB && result.score > (classicBest || 0);
-  const isFirstScore = eligibleForPB && !classicBest && result.score > 0;
-
-  // Survival personal best
+  const isNewBest = eligibleForPB && result.score > (classicBest || 0) && result.score > 0;
   const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;
+  const isNewPersonalBest = isNewBest || survivalNewBest;
 
-  // Category breakdown
-  const breakdown = getCategoryBreakdown(wrongAnswers, askedQuestions);
-  const strongCat = breakdown.length > 0 && breakdown[0].pct >= 67 ? breakdown[0] : null;
-  const weakCat = breakdown.length > 1 && breakdown[breakdown.length - 1].pct < 67 && breakdown[breakdown.length - 1].cat !== strongCat?.cat ? breakdown[breakdown.length - 1] : null;
+  // Huge-score display + caption per mode
+  const hugeScore = isSpeed ? (result.speedScore || 0) : result.score;
+  const scoreCaption = isSpeed
+    ? `${result.score} correct out of ${result.total} · speed bonus included`
+    : isSurvival
+    ? `${result.score} in a row before missing one`
+    : `${result.score} correct out of ${result.total}`;
 
   return (
     <div className="screen" style={{paddingTop:8}}>
-      {isPerfect && <Confetti />}
-      {showConfetti && <Confetti />}
-      
-      {/* ── DAILY SOCIAL PROOF — shown only for Daily Challenge ── */}
+      {(isPerfect || showConfetti) && <Confetti />}
+
+      {/* Daily social proof — only Daily Challenge */}
       {isDaily && <DailySocialProof score={result.score} total={result.total} />}
-      
-      <div className="rc">
-        <div className="rc-icon">{emoji}</div>
-        <div className="rc-title">{title}</div>
-        {isSpeed
-          ? <><div className="score-big" style={{color:"var(--gold)"}}><CountUp value={result.speedScore||0} duration={1100} delay={250} triggerHaptic /></div><div className="score-pct">{result.score}/{result.total} correct · speed bonus included</div></>
-          : isSurvival
-          ? <><div className="score-big"><CountUp value={result.score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}> correct</span></div><div className="score-pct">in a row before missing one</div></>
-          : <><div className="score-big"><CountUp value={result.score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:30,color:"var(--t2)"}}>/{result.total}</span></div><div className="score-pct">{pct}% correct</div></>
-        }
-      </div>
 
-      {/* 🏆 Personal best callout */}
-      {isNewBest && !isFirstScore && <div className="new-best">🏆 New personal best — was {classicBest}!</div>}
-      {isFirstScore && <div className="new-best">🎯 First score logged: {result.score}/10</div>}
-      {survivalNewBest && <div className="new-best">🔥 New Survival record — was {survivalBest}!</div>}
-
-      <div className="s-row">
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--green)"}}><CountUp value={result.score} duration={700} delay={550} /></div><div className="sbox-k">Correct</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}><CountUp value={isSurvival ? 1 : result.total - result.score} duration={700} delay={650} /></div><div className="sbox-k">Wrong</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={result.bestStreak||0} duration={700} delay={750} /></div><div className="sbox-k">🔥 Streak</div></div>
-      </div>
-
-      {/* 💪 Category breakdown — only shown when meaningful */}
-      {(strongCat || weakCat) && (
-        <div className="cat-breakdown">
-          {strongCat && (
-            <div className="cat-chip strong">
-              <div className="cat-chip-label">💪 Strongest</div>
-              <div className="cat-chip-val">{strongCat.cat}<span className="cat-score">{strongCat.correct}/{strongCat.total}</span></div>
-            </div>
-          )}
-          {weakCat && (
-            <div className="cat-chip weak">
-              <div className="cat-chip-label">📚 Focus area</div>
-              <div className="cat-chip-val">{weakCat.cat}<span className="cat-score">{weakCat.correct}/{weakCat.total}</span></div>
-            </div>
-          )}
+      {/* Final score eyebrow + huge green number + caption */}
+      <div style={{textAlign:"center", padding:"20px 0 8px"}}>
+        <div className="ds-eyebrow">Final score</div>
+        <div
+          className="numeric"
+          style={{
+            marginTop:8,
+            fontSize:88,
+            fontWeight:900,
+            color:"#58CC02",
+            letterSpacing:"-0.03em",
+            lineHeight:1,
+            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
+          }}
+        >
+          <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
         </div>
+        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}</div>
+        {isNewPersonalBest && (
+          <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
+            <span>⭐</span>
+            <span>Personal best{isNewBest && classicBest ? ` — was ${classicBest}` : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div style={{height:1, background:"var(--border)", margin:"18px 0 4px"}} />
+
+      {/* Stat rows */}
+      <div style={{display:"flex", flexDirection:"column"}}>
+        {!isSurvival && <StatRow label="Accuracy" value={`${pct}%`} />}
+        {result.bestStreak != null && (
+          <StatRow label="Best streak" value={`${result.bestStreak} in a row`} />
+        )}
+        {xpEarned > 0 && (
+          <StatRow label="XP earned" value={`+${xpEarned}`} valueColor="#58CC02" />
+        )}
+      </div>
+
+      {result.winner && (
+        <div style={{textAlign:"center", margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}>🏆 {result.winner} wins!</div>
       )}
 
-      {result.winner && <div style={{textAlign:"center",marginBottom:14,fontSize:15,fontWeight:700,color:"var(--gold)"}}>🏆 {result.winner} wins!</div>}
+      {/* Three stacked full-width actions */}
+      <div style={{marginTop:18}}>
+        <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>Play Again</button>
+        <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      </div>
 
-      {/* Primary actions FIRST — always visible without scrolling */}
-      {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Play Again</button>
-      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
-      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
-
-      {/* Wrong answers review — below the fold, players scroll if interested */}
+      {/* Wrong answers review — below the buttons */}
       {wrongAnswers && wrongAnswers.length > 0 && (
-        <div style={{marginTop:8}}>
-          <div style={{fontSize:12,fontWeight:700,color:"var(--t2)",letterSpacing:1,marginBottom:8,textAlign:"center"}}>
-            📚 Review {wrongAnswers.length} Missed {wrongAnswers.length === 1 ? "Answer" : "Answers"}
+        <div style={{marginTop:24}}>
+          <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
+            Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
           </div>
           <div className="wrong-review">
             {wrongAnswers.map((w, i) => (
@@ -9428,6 +9425,23 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function StatRow({ label, value, valueColor }) {
+  return (
+    <div style={{
+      display:"flex", alignItems:"center", justifyContent:"space-between",
+      padding:"12px 2px", borderBottom:"1px solid var(--border)",
+    }}>
+      <span style={{fontSize:14, color:"var(--t2)", fontWeight:500}}>{label}</span>
+      <span
+        className="numeric-mono"
+        style={{fontSize:16, fontWeight:700, color:valueColor || "var(--t1)"}}
+      >
+        {value}
+      </span>
     </div>
   );
 }
