@@ -5982,6 +5982,7 @@ const css = `
 }
 /* Global: kill the grey/white tap flash Safari draws on every tappable element. */
 *{-webkit-tap-highlight-color:transparent;}
+a{-webkit-tap-highlight-color:transparent;}
 html,#root{background:var(--bg);min-height:100vh;scroll-behavior:smooth;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
@@ -9732,30 +9733,22 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="sr-left"><div className="sr-label">Questions</div></div>
             <div className="sr-right"><div className="sr-value">4,300+</div></div>
           </div>
-          <button
-            type="button"
+          <a
             className="settings-row"
-            onClick={() => {
-              window.open(
-                "https://ball-iq-pi.vercel.app/privacy.html",
-                "_blank",
-                "noopener,noreferrer"
-              );
-            }}
+            href="https://ball-iq-pi.vercel.app/privacy.html"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
-              width: "100%",
-              background: "none",
-              border: "none",
-              font: "inherit",
+              textDecoration: "none",
               color: "inherit",
-              textAlign: "left",
+              background: "transparent",
               WebkitTapHighlightColor: "transparent",
               outline: "none",
             }}
           >
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
-          </button>
+          </a>
         </div>
       </div>
 

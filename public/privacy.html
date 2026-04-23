@@ -1,26 +1,18 @@
 <!DOCTYPE html>
-<!--
-  DIAGNOSTIC: temporary red background to identify the source of the white flash.
-  If the tab opens with a red flash, the privacy page is the culprit.
-  If the flash is still white, the flash is coming from the Ball IQ app itself
-  (i.e. the Settings screen briefly rendering white before the new tab takes
-  over). Revert html/body background-color back to #0a0a0a once diagnosed.
--->
-<html lang="en" style="background-color:#FF0000;">
+<html lang="en" style="background-color:#0a0a0a;">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FF0000" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="color-scheme" content="dark" />
   <title>Privacy Policy — Ball IQ</title>
   <style>
-    /* DIAGNOSTIC: red root so the flash colour reveals whether the privacy
-       page or the Ball IQ app is flashing. Revert to #0a0a0a once confirmed. */
-    html { background-color: #FF0000; }
+    /* Paint dark before any other CSS parses — kills the white flash on tab open. */
+    html { background-color: #0a0a0a; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      background-color: #FF0000;
+      background-color: #0a0a0a;
       color: #F0F1F5;
       line-height: 1.7;
       padding: 40px 24px 80px;
