@@ -10926,7 +10926,7 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
 function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare, dailyHistory, onPlayDate, onViewScore }) {
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   return (
@@ -11319,6 +11319,8 @@ const HOW_TO_PLAY = {
   balliq: { title:"🧠 Ball IQ Test", steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
 };
 
+const TEXT_SIZE_MAP = { S: "15px", M: "18px", L: "21px" };
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   const { user, profile: authProfile } = useAuth();
@@ -11435,9 +11437,14 @@ function AppInner() {
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
 
+  const toastTimerRef = useRef(null);
   const showToast = useCallback((msg, duration = 2800) => {
     setToast(msg);
-    setTimeout(() => setToast(null), duration);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToast(null);
+      toastTimerRef.current = null;
+    }, duration);
   }, []);
 
   const dismissLeagueNudge = (goToLeague = false) => {
@@ -11991,8 +11998,6 @@ function AppInner() {
     showToast("Stats cleared ✓");
   }, [showToast]);
 
-  const textSizeMap = { S: "15px", M: "18px", L: "21px" };
-
   // Apply theme and font size to document root
   useEffect(() => {
     const body = document.body;
@@ -12016,6 +12021,11 @@ function AppInner() {
     root.style.setProperty("--q-font-size", qSize);
     root.style.setProperty("--ui-font-size", uiSize);
   }, [settings.theme, settings.textSize]);
+
+  const appRootStyle = useMemo(
+    () => ({ "--q-font-size": TEXT_SIZE_MAP[settings.textSize] || "18px" }),
+    [settings.textSize]
+  );
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
@@ -12082,7 +12092,7 @@ function AppInner() {
   return (
     <>
       <style>{css}</style>
-      <div className={`app${settings.theme === "light" ? " light" : ""}`} style={{"--q-font-size": textSizeMap[settings.textSize] || "18px"}}>
+      <div className={`app${settings.theme === "light" ? " light" : ""}`} style={appRootStyle}>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only ── */}
