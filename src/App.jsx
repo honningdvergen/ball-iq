@@ -6067,17 +6067,46 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 @media (hover: hover) { .dhero:hover .dhero-cta span{transform:translateX(3px);} .dhero:hover .dhero-cta{background:#4aad00;} .dhero-done:hover .dhero-cta{background:var(--s3);} }
 @keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* ── HOME MODE GRID ── */
-.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
-.play-card{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:72px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;}
+/* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
+.home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
+.home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);}
+.home-stat-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
+.home-stat-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
+.home-stat-val.green{color:var(--accent);}
+.home-stat-val.flame{color:#FF6A00;}
+
+/* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
+.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:20px;min-height:130px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
+.hero-daily-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.7);}
+.hero-daily-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:#1A0F05;}
+.hero-daily-sub{font-family:'Inter',sans-serif;font-size:12.5px;opacity:0.85;margin-top:4px;color:#1A0F05;}
+.hero-daily-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.25));pointer-events:none;opacity:0.95;}
+.hero-daily-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;background:#1A1D27;color:#F0F1F5;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.01em;box-shadow:0 4px 0 #0A0A0A;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-text-fill-color:#F0F1F5;}
+.hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
+
+/* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:20px;min-height:130px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
+.hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
+.hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
+.hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
+.hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
+.hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;box-shadow:0 4px 0 #46A302;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.hero-online:active .hero-online-cta{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+
+/* ── MORE MODES section eyebrow ── */
+.more-modes-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:4px 0 10px;padding-left:2px;}
+
+/* ── HOME MODE GRID (icon-top vertical tiles) ── */
+.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-.play-card-icon{font-size:28px;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;}
-.play-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
+.play-card-body{display:flex;flex-direction:column;gap:1px;}
 .play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.play-card-desc{font-size:13px;color:var(--t2);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.play-card-badge{position:absolute;top:6px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
+.play-card-desc{font-size:12px;color:var(--t3);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
 .diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
@@ -11666,40 +11695,99 @@ function AppInner() {
         {/* ── HOME TAB ── */}
         {!inGame && screen === "home" && tab === "home" && (
           <div className="screen tab-content">
-            <div className="home-hero">
-              <div className="home-title">How well do you <span>know the game?</span></div>
-              <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
+            {/* Greeting row */}
+            <div style={{padding:"10px 0 12px", display:"flex", alignItems:"baseline", gap:10}}>
+              <div style={{fontSize:13, color:"var(--t3)"}}>
+                {(() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })()}
+              </div>
+              <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
+                {authProfile?.username || profile?.name || "Guest"}
+              </div>
             </div>
-            <div className="cta-stack">
-              {/* ── HERO: DAILY CHALLENGE (full card, only while not yet done) ── */}
-              {!dailyDone && (
-                <button className="dhero" onClick={() => startMode("daily")}>
-                  <div className="dhero-top">
-                    <div className="dhero-label">
-                      <span className="dhero-label-dot">●</span>
-                      DAILY CHALLENGE
-                    </div>
-                    <div className="dhero-countdown">
-                      <span style={{opacity:0.6}}>resets in</span> <DailyHeroCountdown />
-                    </div>
-                  </div>
-                  <div className="dhero-body">
-                    <div className="dhero-date">
-                      {new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}
-                      {loginStreak > 1 && <span className="dhero-streak">🔥 {loginStreak}d</span>}
-                    </div>
-                    <div className="dhero-title">7 questions. <span className="dhero-highlight">One shot.</span></div>
-                  </div>
-                  <div className="dhero-cta">
-                    <span style={{fontSize:14}}>Play now</span>
-                    <span>→</span>
-                  </div>
-                </button>
-              )}
 
-              {/* ── WORLD CUP 2026 COUNTDOWN ── */}
+            {/* Stat chips row */}
+            <div className="home-stat-row">
+              <div className="home-stat-chip">
+                <div className="home-stat-label">IQ Score</div>
+                <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
+              </div>
+              <div className="home-stat-chip">
+                <div className="home-stat-label">Streak</div>
+                <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
+              </div>
+              <div className="home-stat-chip">
+                <div className="home-stat-label">Games</div>
+                <div className="home-stat-val">{(stats.gamesPlayed || 0).toLocaleString()}</div>
+              </div>
+            </div>
+
+            {/* ── HERO: DAILY (flame gradient when not done, compact badge when done) ── */}
+            {!dailyDone ? (
+              <button className="hero-daily" onClick={() => startMode("daily")} aria-label="Play today's daily challenge">
+                <div className="hero-daily-eyebrow">Daily Challenge</div>
+                <div className="hero-daily-title">Today's 7</div>
+                <div className="hero-daily-sub">
+                  Everyone plays the same 7 · Resets in <DailyHeroCountdown />
+                </div>
+                <div className="hero-daily-cta">Play</div>
+                <div className="hero-daily-emoji">🔥</div>
+              </button>
+            ) : (
+              <button
+                className="dhero-compact"
+                onClick={() => setTab("daily")}
+                aria-label={`Daily challenge complete: ${dailyScore} out of 7. View daily tab.`}
+                style={{marginBottom:12}}
+              >
+                <span className="dhero-compact-dot">✅</span>
+                <span className="dhero-compact-text">
+                  Daily done · <span className="dhero-compact-score">{dailyScore}/7</span>
+                </span>
+                <span className="dhero-compact-arrow">→</span>
+              </button>
+            )}
+
+            {/* ── HERO: ONLINE 1v1 ── */}
+            <button className="hero-online" onClick={() => startMode("online")} aria-label="Play online 1v1">
+              <div className="hero-online-eyebrow">Online 1v1</div>
+              <div className="hero-online-title">Find a match</div>
+              <div className="hero-online-sub">Head-to-head · Room codes to play friends</div>
+              <div className="hero-online-cta">Find</div>
+              <div className="hero-online-emoji">⚽</div>
+            </button>
+
+            {/* ── MORE MODES ── */}
+            <div className="more-modes-eyebrow">More modes</div>
+            <div className="play-grid">
+              {[
+                { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
+                { key:"league",    icon:"🏆",  name:"League Quiz",   desc:"Pick your league",  onTap:() => setShowLeaguePicker(true) },
+                { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
+                { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
+                { key:"truefalse", icon:"✅",  name:"True/False",    desc:"20 statements" },
+                { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
+                { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
+                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
+                { key:"local",     icon:"🤝",  name:"Local Multi",   desc:"Pass the phone" },
+              ].map(({ key, icon, name, desc, onTap }) => (
+                <button
+                  key={key}
+                  className="play-card"
+                  onClick={onTap || (() => startMode(key))}
+                >
+                  <span className="play-card-icon">{icon}</span>
+                  <span className="play-card-body">
+                    <span className="play-card-name">{name}</span>
+                    <span className="play-card-desc">{desc}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* ── WORLD CUP 2026 COUNTDOWN — pushed below the main modes grid ── */}
+            <div style={{marginTop:14}}>
               {(() => {
-                const kickoff = new Date(2026, 5, 11); // June 11, 2026 — local
+                const kickoff = new Date(2026, 5, 11);
                 const now = new Date();
                 const msPerDay = 86400000;
                 const dayNow = Math.floor(now.getTime() / msPerDay);
@@ -11721,60 +11809,9 @@ function AppInner() {
                   </button>
                 );
               })()}
-
-              {/* ── COMPACT DAILY COMPLETION BADGE (only once today is done) ── */}
-              {dailyDone && (
-                <button
-                  className="dhero-compact"
-                  onClick={() => setTab("daily")}
-                  aria-label={`Daily challenge complete: ${dailyScore} out of 7. View daily tab.`}
-                >
-                  <span className="dhero-compact-dot">✅</span>
-                  <span className="dhero-compact-text">
-                    Daily done · <span className="dhero-compact-score">{dailyScore}/7</span>
-                  </span>
-                  <span className="dhero-compact-arrow">→</span>
-                </button>
-              )}
-
-              {/* ── MODE CARDS (the whole Play surface — no more intermediate Modes screen) ── */}
-              <div className="home-section-label" style={{marginTop:4}}>Modes</div>
-              <div className="play-grid">
-                {[
-                  { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",  onTap:() => setShowDiffPicker(true) },
-                  { key:"league",    icon:"🏆",  name:"League Quiz",   desc:"Pick your league", onTap:() => setShowLeaguePicker(true) },
-                  { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
-                  { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
-                  { key:"truefalse", icon:"✅",  name:"True/False",    desc:"20 statements" },
-                  { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
-                  { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
-                  { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
-                  { key:"local",     icon:"🤝",  name:"Local Multi",   desc:"Pass the phone" },
-                  { key:"online",    icon:"🆚",  name:"Online 1v1",    desc:"Play a friend" },
-                ].map(({ key, icon, name, desc, onTap }) => (
-                  <button
-                    key={key}
-                    className="play-card"
-                    onClick={onTap || (() => startMode(key))}
-                  >
-                    <span className="play-card-icon">{icon}</span>
-                    <span className="play-card-body">
-                      <span className="play-card-name">{name}</span>
-                      <span className="play-card-desc">{desc}</span>
-                    </span>
-                  </button>
-                ))}
-              </div>
             </div>
 
             <XPBar xp={xp} streak={loginStreak} />
-            {stats.gamesPlayed > 0 && (
-              <div className="stats-bar" style={{marginTop:10}}>
-                <div className="sbar-box"><div className="sbar-val">{stats.gamesPlayed}</div><div className="sbar-key">Played</div></div>
-                <div className="sbar-box"><div className="sbar-val">{stats.bestScore}/10</div><div className="sbar-key">Best Score</div></div>
-                <div className="sbar-box"><div className="sbar-val">{stats.bestStreak}</div><div className="sbar-key">🔥 Streak</div></div>
-              </div>
-            )}
           </div>
         )}
 
