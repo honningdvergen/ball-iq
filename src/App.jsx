@@ -8391,25 +8391,36 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     : players[chunkIdx % players.length];
   const currentQ = questions[currentQIdx];
 
-  // End-of-game (survival): ≤1 survivor
+  // End-of-game:
+  // - Classic/Sprint: ran off the end of the question list → rank by score.
+  // - Survival — three ways to finish:
+  //     last-standing : exactly one player alive
+  //     total-wipe    : all remaining players answered wrong on the same question
+  //     questions-out : pool exhausted with 2+ survivors still alive (rank by score among them)
   useEffect(() => {
-    if (mode !== "survival") return;
-    if (survivors.length <= 1 && phase !== "done") {
-      setPhase("done");
-      onComplete({ players, scores, eliminatedIds, mode, winnerId: survivors[0]?.id ?? null });
+    if (phase === "done") return;
+    if (mode !== "survival") {
+      if (currentQIdx >= totalQs) {
+        setPhase("done");
+        onComplete({ players, scores, eliminatedIds, mode, winnerId: null, endReason: "questions-out" });
+      }
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eliminatedIds, mode, phase]);
-
-  // End-of-game (classic/sprint): ran off the end of the question list
-  useEffect(() => {
-    if (mode === "survival" || phase === "done") return;
+    // Survival
+    if (survivors.length <= 1) {
+      const winnerId = survivors[0]?.id ?? null;
+      const endReason = survivors.length === 1 ? "last-standing" : "total-wipe";
+      setPhase("done");
+      onComplete({ players, scores, eliminatedIds, mode, winnerId, endReason });
+      return;
+    }
     if (currentQIdx >= totalQs) {
+      // Two or more players still alive but the question pool is exhausted
       setPhase("done");
-      onComplete({ players, scores, eliminatedIds, mode, winnerId: null });
+      onComplete({ players, scores, eliminatedIds, mode, winnerId: null, endReason: "questions-out" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentQIdx, totalQs, mode, phase]);
+  }, [currentQIdx, totalQs, mode, phase, eliminatedIds]);
 
   if (phase === "done" || !currentQ) {
     return (
@@ -8498,9 +8509,15 @@ function LocalGameScreen({ config, onComplete, onExit }) {
         setEliminatedIds(allOut);
         setNewEliminatedIds([]);
         const nextSurvivors = players.filter(p => !allOut.includes(p.id));
-        if (nextSurvivors.length <= 1) return; // game-end effect handles it
+        // Total wipe or sole survivor → end-game effect fires (sees survivors.length <= 1).
+        if (nextSurvivors.length <= 1) return;
         const nextQ = currentQIdx + 1;
-        if (nextQ >= totalQs) return; // game-end effect
+        // Questions-out with 2+ alive → bump currentQIdx past the pool so the end-game
+        // effect catches it and fires with endReason = 'questions-out'.
+        if (nextQ >= totalQs) {
+          setCurrentQIdx(nextQ);
+          return;
+        }
         setCurrentQIdx(nextQ);
         setTurnIdx(0);
         setChunkPicks([]);
@@ -8717,35 +8734,74 @@ function LocalResults({ result, onHome, onRetry }) {
       </div>
     );
   }
-  const { players, scores, eliminatedIds, mode, winnerId } = result;
+  const { players, scores, eliminatedIds, mode, winnerId, endReason } = result;
   const isSurvival = mode === "survival";
+  const elimList = eliminatedIds || [];
 
-  // Ranking
+  // Rank players differently per end state:
+  // - Survival last-standing: sole survivor first, then eliminated in reverse
+  // - Survival total-wipe:    nobody wins; eliminated in reverse elimination order
+  // - Survival questions-out: surviving players ranked by score, then eliminated in reverse
+  // - Classic/Sprint:         everyone ranked by score descending
   let ranked;
+  let headline;
+  let subHeadline = null;
+  let iconTop = "🏆";
   if (isSurvival) {
-    // Winner first; then eliminated in reverse elimination order (last-out = 2nd place)
-    const winner = players.find(p => p.id === winnerId);
-    const elimOrderDesc = [...eliminatedIds].reverse();
-    const rest = elimOrderDesc.map(id => players.find(p => p.id === id)).filter(Boolean);
-    ranked = (winner ? [winner, ...rest] : rest);
-  } else {
-    ranked = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-  }
+    const survivors = players.filter(p => !elimList.includes(p.id));
+    const elimRev = [...elimList].reverse().map(id => players.find(p => p.id === id)).filter(Boolean);
 
-  const top = ranked[0];
-  const topScore = scores[top?.id] ?? 0;
-  const tied = !isSurvival && ranked.filter(p => scores[p.id] === topScore).length > 1;
-  const headlineName = isSurvival ? top?.name : (tied ? null : top?.name);
+    if (endReason === "total-wipe" || (survivors.length === 0 && !winnerId)) {
+      iconTop = "💀";
+      headline = "Nobody Survives!";
+      subHeadline = "All players went out on the same question";
+      ranked = elimRev;
+    } else if (endReason === "last-standing" || survivors.length === 1) {
+      const winner = players.find(p => p.id === winnerId) || survivors[0];
+      iconTop = "🏆";
+      headline = winner ? `${winner.name} Survives!` : "Nobody Survives!";
+      subHeadline = winner ? `${scores[winner.id] || 0} correct · last one standing` : null;
+      ranked = winner ? [winner, ...elimRev.filter(p => p.id !== winner.id)] : elimRev;
+    } else {
+      // questions-out with 2+ survivors — highest score among survivors wins (or draw)
+      const byScore = [...survivors].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+      const topScore = scores[byScore[0]?.id] ?? 0;
+      const topCount = byScore.filter(p => (scores[p.id] || 0) === topScore).length;
+      if (topCount > 1) {
+        iconTop = "🤝";
+        headline = "It's a draw!";
+        subHeadline = `${topCount} players tied on ${topScore}`;
+      } else {
+        const top = byScore[0];
+        iconTop = top?.emoji || "🏆";
+        headline = top ? `${top.name} Wins!` : "Game Over";
+        subHeadline = top ? `${topScore} correct · questions ran out` : null;
+      }
+      ranked = [...byScore, ...elimRev];
+    }
+  } else {
+    // Classic / Sprint
+    ranked = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+    const topScore = scores[ranked[0]?.id] ?? 0;
+    const topCount = ranked.filter(p => (scores[p.id] || 0) === topScore).length;
+    const top = ranked[0];
+    if (topCount > 1) {
+      iconTop = "🤝";
+      headline = "It's a draw!";
+      subHeadline = `${topCount} players tied on ${topScore}`;
+    } else {
+      iconTop = top?.emoji || "🏆";
+      headline = top ? `${top.name} wins!` : "Game Over";
+      subHeadline = top ? `${topScore} correct` : null;
+    }
+  }
 
   return (
     <div className="screen" style={{paddingTop:8}}>
       <div className="rc" style={{marginBottom:16}}>
-        <div className="rc-icon">{isSurvival ? "🏆" : (top?.emoji || "🏆")}</div>
-        <div className="rc-title">
-          {tied ? "It's a draw!" : (isSurvival ? `${headlineName || "No one"} survives!` : `${headlineName} wins!`)}
-        </div>
-        {!tied && !isSurvival && top && <div className="rc-sub" style={{marginTop:4}}>{topScore} correct</div>}
-        {isSurvival && top && <div className="rc-sub" style={{marginTop:4}}>{topScore} correct · last one standing</div>}
+        <div className="rc-icon">{iconTop}</div>
+        <div className="rc-title">{headline}</div>
+        {subHeadline && <div className="rc-sub" style={{marginTop:4}}>{subHeadline}</div>}
       </div>
 
       {/* Podium top 3 */}
@@ -8773,11 +8829,11 @@ function LocalResults({ result, onHome, onRetry }) {
         </div>
       )}
 
-      {isSurvival && eliminatedIds && eliminatedIds.length > 0 && (
+      {isSurvival && elimList.length > 0 && (
         <div style={{marginTop:14}}>
           <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.14em",color:"var(--t3)",textTransform:"uppercase",marginBottom:8}}>Elimination order</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-            {eliminatedIds.map((id, i) => {
+            {elimList.map((id, i) => {
               const p = players.find(pp => pp.id === id);
               if (!p) return null;
               return (
