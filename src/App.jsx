@@ -5980,6 +5980,8 @@ const css = `
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
   transition:background 0.18s,border-color 0.15s,color 0.18s;
 }
+/* Global: kill the grey/white tap flash Safari draws on every tappable element. */
+*{-webkit-tap-highlight-color:transparent;}
 html,#root{background:var(--bg);min-height:100vh;scroll-behavior:smooth;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
@@ -9730,23 +9732,30 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="sr-left"><div className="sr-label">Questions</div></div>
             <div className="sr-right"><div className="sr-value">4,300+</div></div>
           </div>
-          <a
+          <button
+            type="button"
             className="settings-row"
-            href="https://ball-iq-pi.vercel.app/privacy.html"
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => {
+              window.open(
+                "https://ball-iq-pi.vercel.app/privacy.html",
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }}
             style={{
-              // .settings-row already sets display:flex, which promotes the anchor
-              // to block-level layout and prevents inline-baseline quirks.
-              // These inline overrides strip the default link underline + color.
-              textDecoration: "none",
+              width: "100%",
+              background: "none",
+              border: "none",
+              font: "inherit",
               color: "inherit",
+              textAlign: "left",
               WebkitTapHighlightColor: "transparent",
+              outline: "none",
             }}
           >
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
-          </a>
+          </button>
         </div>
       </div>
 
