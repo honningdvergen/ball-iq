@@ -9735,14 +9735,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             href="https://ball-iq-pi.vercel.app/privacy.html"
             target="_blank"
             rel="noopener noreferrer"
-            style={{cursor:"pointer", textDecoration:"none", color:"inherit"}}
-            onClick={(e) => {
-              // Belt-and-braces: if the anchor is somehow prevented (e.g. an outer
-              // handler calls preventDefault), fall back to window.open so the link
-              // still resolves on both mobile Safari and desktop.
-              if (!e.defaultPrevented) return;
-              window.open("https://ball-iq-pi.vercel.app/privacy.html", "_blank", "noopener,noreferrer");
-            }}
+            style={{textDecoration:"none", color:"inherit"}}
           >
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
