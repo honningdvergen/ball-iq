@@ -5949,7 +5949,6 @@ const css = `
 .light .opt { border:1px solid #E5E5EA; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
 .light .opt:hover:not(:disabled) { background:#F9F9F9; box-shadow:0 2px 8px rgba(0,0,0,0.10); border-color:#D1D1D6; }
 .light .logo { color:#1C1C1E; }
-.light .home-title { color:#1C1C1E; }
 .light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
 .light .xp-bar-track { background:#E5E5EA; }
 .light .settings-panel { background:#FFFFFF; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
@@ -5961,7 +5960,6 @@ const css = `
 .light .badge-tile.earned { background:rgba(52,168,83,0.08); border-color:rgba(52,168,83,0.2); }
 
 /* Eyebrow — full opacity in light */
-.light .home-eyebrow { opacity:1; }
 
 /* Play CTA — vibrant green with warm shadow */
 .light .cta-play { box-shadow:0 4px 20px rgba(48,168,85,0.28),0 1px 4px rgba(48,168,85,0.18); }
@@ -5978,18 +5976,12 @@ const css = `
 .light .opt.correct { border:1.5px solid var(--green); background:rgba(34,197,94,0.09); }
 .light .opt.wrong   { border:1.5px solid var(--red); background:rgba(255,59,48,0.07); }
 
-/* Home sub text a touch darker for contrast */
-.light .home-sub { color:#3C3C43CC; }
-
-/* Separator line between eyebrow and title area */
-.light .home-hero { padding-top:32px; }
-
 /* Smooth theme transitions */
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
-  transition:background 0.25s,box-shadow 0.25s,border-color 0.15s,color 0.2s;
+  transition:background 0.18s,border-color 0.15s,color 0.18s;
 }
 html,#root{background:var(--bg);min-height:100vh;scroll-behavior:smooth;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.3s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
 /* ── DESIGN-SYSTEM UTILITIES ─────────────────────────────────────────── */
 /* Numeric displays (scores, timers, IQ, streak counters). Tabular-nums prevents
@@ -6024,21 +6016,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .screen{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .tab-content{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 @keyframes sIn{from{transform:translateY(4px);}to{transform:translateY(0);}}
-.home-hero{padding:24px 0 16px;}
-.home-eyebrow{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
-.home-title{font-size:22px;font-weight:800;line-height:1.2;letter-spacing:-0.4px;margin-bottom:8px;color:var(--text);}
-.home-title span{color:var(--accent);}
-.empty-state-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-top:12px;border-left:3px solid var(--accent);}
-.es-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;}
-.es-body{font-size:13px;color:var(--t2);line-height:1.6;}
-.home-stat-pill{display:inline-flex;align-items:center;gap:6px;background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--t2);margin-top:8px;}
-.home-sub{font-size:13px;color:var(--t3);line-height:1.6;margin-bottom:4px;}
 .cta-stack{display:flex;flex-direction:column;gap:9px;}
 .cta{border-radius:var(--r);padding:15px 16px 15px 18px;cursor:pointer;transition:all 0.2s cubic-bezier(0.22,1,0.36,1);border:1px solid var(--border);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--s1);position:relative;overflow:hidden;color:var(--t1);font-family:inherit;}
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
 /* ── DAILY HERO v2 — Linear-inspired refinement ── */
 /* Principle: neutral elevated card with subtle green accent only on the action. */
-.dhero{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 22px;cursor:pointer;color:var(--t1);text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.25);transition:all 0.25s cubic-bezier(0.22,1,0.36,1);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;display:flex;flex-direction:column;gap:14px;width:100%;}
+.dhero{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 22px;cursor:pointer;color:var(--t1);text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.25);transition:background 0.18s,border-color 0.15s,transform 0.15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;display:flex;flex-direction:column;gap:14px;width:100%;}
 .dhero::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);opacity:0.8;}
 @media (hover: hover) { .dhero:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.3);} }
 .dhero:active{transform:scale(0.995);}
@@ -6093,7 +6076,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
@@ -6127,7 +6110,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact-arrow{font-size:16px;color:var(--t3);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,box-shadow 0.15s,border-color 0.15s;text-align:left;}
+.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
@@ -6200,7 +6183,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cat-scroll-wrap::-webkit-scrollbar{display:none;}
 .cat-scroll-inner{display:flex;gap:6px;padding-bottom:2px;}
 .mode-list{display:flex;flex-direction:column;gap:8px;}
-.mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
+.mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:background 0.18s,transform 0.12s;display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
 @media (hover: hover) { .mode-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(2px);} }
 .mode-item:active{background:var(--s2);transform:scale(0.98);}
 .mi-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;background:var(--s2);border-radius:9px;display:flex;align-items:center;justify-content:center;}
@@ -6259,7 +6242,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hint-note{font-size:12px;color:var(--t3);margin-top:7px;font-style:italic;}
 .timer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;}
+.timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;will-change:width;}
 .timer{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--t2);min-width:28px;text-align:right;}
 .timer.urgent{color:var(--red);animation:tp 0.5s ease infinite alternate;}
 @keyframes tp{from{opacity:1;}to{opacity:0.4;}}
@@ -6470,6 +6453,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
   background:transparent;padding:6px 4px 10px;
+  touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;position:relative;
   transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -6585,7 +6569,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .journey-line{position:absolute;left:24px;top:22px;bottom:22px;width:2px;background:var(--border);border-radius:2px;z-index:0;}
 .journey-row{display:flex;align-items:center;gap:12px;padding:7px 8px;border-radius:10px;position:relative;z-index:1;transition:background 0.15s;}
 .journey-row + .journey-row{margin-top:2px;}
-.journey-dot{width:34px;height:34px;border-radius:50%;background:var(--s2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.journey-dot{width:34px;height:34px;border-radius:50%;background:var(--s2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background 0.2s,border-color 0.2s;}
 .journey-row.current{background:var(--accent-dim);border:1px solid rgba(34,197,94,0.3);padding:7px 9px;}
 .journey-row.current .journey-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(34,197,94,0.18);}
 .journey-row.current .journey-name{color:var(--accent);}
@@ -6682,30 +6666,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cat-Records .q-tag{color:#EC4899;}
 .cat-Legends .q-tag{color:#FBBF24;}
 
-/* ── STATS SCREEN ── */
-.stats-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;animation:fadeIn 0.2s ease;}
-.stats-sheet{width:100%;max-height:92vh;background:var(--bg);transition:background 0.25s;border-radius:20px 20px 0 0;overflow-y:auto;padding:0 20px 40px;animation:slideUp 0.3s cubic-bezier(0.22,1,0.36,1);-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+/* ── STAT GRID (used in Profile) ── */
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.stat-hero-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.shc-left{display:flex;align-items:center;gap:12px;}
-.shc-icon{font-size:28px;}
-.shc-level{font-size:16px;font-weight:800;letter-spacing:-0.2px;}
-.shc-xp{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;color:var(--t2);margin-top:2px;font-weight:600;}
-.shc-streak{display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:8px 12px;}
-.shc-streak-n{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;color:var(--gold);line-height:1;text-align:center;}
-.shc-streak-l{font-size:9px;color:var(--gold);letter-spacing:0.2px;font-weight:600;font-family:'Inter',sans-serif;}
-.stat-xp-progress{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
-.stat-xp-row{display:flex;justify-content:space-between;margin-bottom:8px;}
-.stat-xp-label{font-size:11px;font-weight:600;color:var(--t2);}
-.stat-xp-sub{font-size:11px;color:var(--t3);margin-top:6px;text-align:center;}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;}
 .st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
 .st-key{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;}
-.stat-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
-.stat-section-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
-.stat-iq-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.stat-footer{text-align:center;font-size:13px;color:var(--t2);padding:12px 0 4px;line-height:1.6;}
 
 /* ── XP BAR ── */
 .xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
@@ -6714,7 +6680,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
 .xp-total{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t2);font-weight:600;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
-.xp-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);}
+.xp-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
 /* ── XP TOAST ── */
 .xp-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a1a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(34,197,94,0.35);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);}
@@ -6747,7 +6713,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 /* ── SOCIAL HUB ── */
 .social-intro{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:18px;}
-.social-card{background:var(--s1);border-radius:16px;padding:18px 16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;margin-bottom:12px;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);box-shadow:0 2px 12px rgba(0,0,0,0.35);}
+.social-card{background:var(--s1);border-radius:16px;padding:18px 16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;margin-bottom:12px;transition:background 0.18s,transform 0.12s;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .social-card:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
 .social-card:active{transform:scale(0.98);}
 .sc-icon-wrap{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
@@ -6823,16 +6789,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-skill-name{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:2px;}
 .onboard-skill-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 
-/* ── WEEKLY SUMMARY ── */
-.weekly-card{background:var(--s1);border-radius:20px;padding:24px 20px;width:100%;max-width:340px;box-shadow:var(--sh-lg);}
-.wc-header{text-align:center;margin-bottom:18px;}
-.wc-eyebrow{font-family:'Inter',sans-serif;font-size:10px;color:var(--accent);letter-spacing:0.2px;margin-bottom:6px;}
-.wc-title{font-size:20px;font-weight:800;letter-spacing:-0.3px;}
-.wc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.wc-tile{background:var(--s2);border:none;border-radius:12px;padding:12px;text-align:center;}
-.wc-val{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
-.wc-key{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-top:3px;}
-.wc-level{font-size:13px;color:var(--t2);text-align:center;margin-bottom:16px;line-height:1.6;}
 
 /* ── QUIT MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;animation:fadeIn 0.15s ease;}
@@ -8904,106 +8860,6 @@ function getXPForResult(score, total, mode) {
 }
 
 
-// ─── CANVAS SHARE CARD ────────────────────────────────────────────────────────
-function drawShareCard({ name, avatar, levelName, levelIcon, xp, iq, pctile, streak, gamesPlayed, theme }) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 600; canvas.height = 320;
-  const ctx = canvas.getContext("2d");
-  const dark = theme !== "light";
-
-  // Background
-  ctx.fillStyle = dark ? "#0C0E13" : "#F2F2F7";
-  ctx.roundRect(0, 0, 600, 320, 20);
-  ctx.fill();
-
-  // Accent bar top
-  const grad = ctx.createLinearGradient(0, 0, 600, 0);
-  grad.addColorStop(0, "#4ADE80");
-  grad.addColorStop(1, "#3B82F6");
-  ctx.fillStyle = grad;
-  ctx.roundRect(0, 0, 600, 6, [20, 20, 0, 0]);
-  ctx.fill();
-
-  // Card surface
-  ctx.fillStyle = dark ? "#161921" : "#FFFFFF";
-  ctx.shadowColor = dark ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.1)";
-  ctx.shadowBlur = 20;
-  ctx.roundRect(24, 24, 552, 272, 16);
-  ctx.fill();
-  ctx.shadowBlur = 0;
-
-  // Avatar circle
-  ctx.fillStyle = "rgba(34,197,94,0.12)";
-  ctx.beginPath(); ctx.arc(80, 100, 36, 0, Math.PI*2); ctx.fill();
-  ctx.font = "38px serif";
-  ctx.textAlign = "center";
-  ctx.fillText(avatar || "⚽", 80, 113);
-
-  // Name + level
-  ctx.textAlign = "left";
-  ctx.fillStyle = dark ? "#F0F1F5" : "#000000";
-  ctx.font = "bold 22px Inter, sans-serif";
-  ctx.fillText(name || "Ball IQ Player", 130, 88);
-  ctx.fillStyle = dark ? "#9BA0B8" : "#6B7280";
-  ctx.font = "14px Inter, sans-serif";
-  ctx.fillText(levelIcon + " " + levelName + "  ·  " + xp.toLocaleString() + " XP", 130, 112);
-
-  // Ball IQ score — big number
-  if (iq) {
-    ctx.fillStyle = "#4ADE80";
-    ctx.font = "bold 56px Inter, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(String(iq), 96, 210);
-    ctx.fillStyle = dark ? "#9BA0B8" : "#6B7280";
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("BALL IQ", 96, 228);
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("TOP " + pctile + "%", 96, 244);
-  }
-
-  // Stats row
-  const stats = [
-    { val: String(gamesPlayed), key: "GAMES" },
-    { val: "🔥" + streak, key: "STREAK" },
-  ];
-  stats.forEach((s, i) => {
-    const x = iq ? 200 + i * 130 : 130 + i * 150;
-    ctx.fillStyle = dark ? "#F0F1F5" : "#000";
-    ctx.font = "bold 28px Inter, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(s.val, x, 200);
-    ctx.fillStyle = dark ? "#9BA0B8" : "#6B7280";
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText(s.key, x, 220);
-  });
-
-  // Brand watermark
-  ctx.fillStyle = dark ? "#9BA0B8" : "#6B7280";
-  ctx.font = "12px Inter, sans-serif";
-  ctx.textAlign = "right";
-  ctx.fillText("Ball IQ ⚽", 572, 280);
-
-  return canvas.toDataURL("image/png");
-}
-
-async function shareCard(dataURL, fallbackText) {
-  try {
-    const blob = await (await fetch(dataURL)).blob();
-    const file = new File([blob], "balliq-score.png", { type: "image/png" });
-    if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ files: [file] });
-      return;
-    }
-  } catch {}
-  // Fallback: open image in new tab or copy text
-  try {
-    const a = document.createElement("a");
-    a.href = dataURL; a.download = "balliq-score.png"; a.click();
-  } catch {
-    navigator.clipboard?.writeText(fallbackText).catch(() => {});
-  }
-}
-
 // ─── BRANDED SCORE CARD ──────────────────────────────────────────────────────
 // Renders a 1080×1080 PNG suitable for social share. Dark background, muted
 // green accent, Ball IQ wordmark at top, score in the middle, watermark below.
@@ -9927,265 +9783,6 @@ function XPBar({ xp, streak }) {
 }
 
 
-// ─── STATS SCREEN ─────────────────────────────────────────────────────────────
-function StatsScreenImpl({ stats, xp, loginStreak, iqHistory, onBack }) {
-  const { level, nextLevel, progress } = getLevelInfo(xp);
-  const totalCorrect = stats.totalCorrect || 0;
-  const winRate = stats.gamesPlayed > 0
-    ? Math.round((stats.totalCorrect / (stats.gamesPlayed * 10)) * 100)
-    : 0;
-
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <div className="page-title">Your Stats</div>
-      </div>
-
-      {/* Level card */}
-      <div className="stat-hero-card">
-        <div className="shc-left">
-          <div className="shc-icon">{level.icon}</div>
-          <div>
-            <div className="shc-level">{level.name}</div>
-            <div className="shc-xp">{xp.toLocaleString()} XP total</div>
-          </div>
-        </div>
-        {loginStreak > 0 && (
-          <div className="shc-streak">
-            <span style={{fontSize:20}}>🔥</span>
-            <div>
-              <div className="shc-streak-n">{loginStreak}</div>
-              <div className="shc-streak-l">day streak</div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* XP progress */}
-      {nextLevel && (
-        <div className="stat-xp-progress">
-          <div className="stat-xp-row">
-            <span className="stat-xp-label">{level.name}</span>
-            <span className="stat-xp-label">{nextLevel.name}</span>
-          </div>
-          <div className="xp-track" style={{height:8,borderRadius:4}}>
-            <div className="xp-fill" style={{width:`${progress}%`}} />
-          </div>
-          <div className="stat-xp-sub">{nextLevel.xpNeeded - xp} XP to next level</div>
-        </div>
-      )}
-
-      {/* Key numbers */}
-      <div className="stat-grid">
-        <div className="stat-tile">
-          <div className="st-val">{stats.gamesPlayed}</div>
-          <div className="st-key">Games Played</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--accent)"}}>{stats.bestScore}<span style={{fontSize:14,fontWeight:500,color:"var(--t2)"}}>/10</span></div>
-          <div className="st-key">Best Score</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--gold)"}}>{stats.bestStreak}</div>
-          <div className="st-key">Best Streak</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--green)"}}>{totalCorrect}</div>
-          <div className="st-key">Total Correct</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val">{winRate}<span style={{fontSize:14,fontWeight:500,color:"var(--t2)"}}>%</span></div>
-          <div className="st-key">Win Rate</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ || "—"}</div>
-          <div className="st-key">Best IQ</div>
-        </div>
-      </div>
-
-      {/* IQ history */}
-      {iqHistory && iqHistory.length > 0 && (
-        <div className="stat-section">
-          <div className="stat-section-title">Ball IQ History</div>
-          <div className="stat-iq-chart">
-            <div className="iq-hist-bars" style={{height:64,alignItems:"flex-end"}}>
-              {iqHistory.map((h, i) => (
-                <div key={i} className="iq-hist-col">
-                  <div className="iq-hist-bar" style={{
-                    height:`${Math.round(((h.iq-60)/85)*56)+4}px`,
-                    background: h.iq >= 120 ? "var(--accent)" : h.iq >= 100 ? "var(--gold)" : "var(--t3)"
-                  }}/>
-                  <div className="iq-hist-n">{h.iq}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Motivational footer */}
-      <div className="stat-footer">
-        {stats.gamesPlayed === 0
-          ? "Play your first game to start tracking stats 🎯"
-          : stats.gamesPlayed < 10
-          ? `${10 - stats.gamesPlayed} more games to unlock full stats 📈`
-          : `You've answered ${totalCorrect} questions correctly. Keep going! ⚽`
-        }
-      </div>
-    </div>
-  );
-}
-const StatsScreen = React.memo(StatsScreenImpl);
-
-
-// ─── WEEKLY SUMMARY ───────────────────────────────────────────────────────────
-function WeeklySummary({ stats, xp, loginStreak, onShare, onClose }) {
-  const { level } = getLevelInfo(xp);
-  const iq = stats.bestIQ;
-  const pctile = iq ? (100 - iqPercentile(iq)) : null;
-  const winRate = stats.gamesPlayed > 0
-    ? Math.round(((stats.totalCorrect||0) / (stats.gamesPlayed * 10)) * 100) : 0;
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="weekly-card" onClick={e => e.stopPropagation()}>
-        <div className="wc-header">
-          <div className="wc-eyebrow">Ball IQ ⚽ · Weekly Wrap</div>
-          <div className="wc-title">Your week in football</div>
-        </div>
-        <div className="wc-grid">
-          <div className="wc-tile">
-            <div className="wc-val">{stats.gamesPlayed||0}</div>
-            <div className="wc-key">Games Played</div>
-          </div>
-          <div className="wc-tile">
-            <div className="wc-val" style={{color:"var(--accent)"}}>{stats.bestScore||0}/10</div>
-            <div className="wc-key">Best Score</div>
-          </div>
-          <div className="wc-tile">
-            <div className="wc-val" style={{color:"var(--gold)"}}>🔥{loginStreak}</div>
-            <div className="wc-key">Day Streak</div>
-          </div>
-          <div className="wc-tile">
-            <div className="wc-val">{winRate}%</div>
-            <div className="wc-key">Win Rate</div>
-          </div>
-        </div>
-        <div className="wc-level">
-          {level.icon} <strong>{level.name}</strong> · {xp.toLocaleString()} XP
-          {iq && <span> · Ball IQ <strong style={{color:"var(--accent)"}}>{iq}</strong> (Top {pctile}%)</span>}
-        </div>
-        <button className="btn btn-p" onClick={onShare} style={{marginBottom:8}}>Share This Card 📤</button>
-        <button className="btn btn-s" onClick={onClose}>Close</button>
-      </div>
-    </div>
-  );
-}
-
-
-// ─── HOME HERO ────────────────────────────────────────────────────────────────
-function HomeHero({ profile, stats, loginStreak, dailyDone, xp }) {
-  const name = profile?.name;
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  const { level } = getLevelInfo(xp);
-
-  // Rotating dynamic stat
-  const facts = [
-    stats.gamesPlayed > 0 && `${stats.gamesPlayed} games played`,
-    stats.totalCorrect > 0 && `${stats.totalCorrect} correct answers`,
-    stats.bestStreak > 0 && `Best streak: ${stats.bestStreak}`,
-    loginStreak > 1 && `${loginStreak} day streak`,
-    stats.bestIQ && `Best Ball IQ: ${stats.bestIQ}`,
-    dailyDone && "Daily challenge done today",
-    `${level.icon} ${level.name}`,
-  ].filter(Boolean);
-
-  const fact = facts.length > 0 ? facts[Math.floor(Date.now() / 60000) % facts.length] : null;
-
-  return (
-    <div className="home-hero">
-      {name
-        ? <div className="home-title">{greeting}, <span>{name}</span></div>
-        : <div className="home-title">How well do you <span>know the game?</span></div>
-      }
-      {fact
-        ? <div className="home-stat-pill">{fact}</div>
-        : <div className="home-sub">Challenge yourself, beat your mates, find out who really knows football.</div>
-      }
-      {loginStreak >= 1 && <StreakHero loginStreak={loginStreak} dailyDone={dailyDone} />}
-      <DailyTeaser />
-    </div>
-  );
-}
-
-function StreakHero({ loginStreak, dailyDone }) {
-  // Warning state: streak active but daily not done yet and after 6pm
-  const hour = new Date().getHours();
-  const atRisk = !dailyDone && hour >= 18 && loginStreak >= 2;
-  const milestone = loginStreak === 7 || loginStreak === 30 || loginStreak === 100 || loginStreak % 50 === 0;
-
-  return (
-    <div style={{
-      background: atRisk ? "linear-gradient(135deg,rgba(255,143,0,0.15),rgba(255,95,0,0.08))" : milestone ? "linear-gradient(135deg,rgba(251,191,36,0.15),rgba(251,140,36,0.08))" : "linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,140,36,0.03))",
-      border: `1px solid ${atRisk ? "rgba(255,143,0,0.3)" : "rgba(251,191,36,0.25)"}`,
-      borderRadius: 14,
-      padding: "12px 16px",
-      marginBottom: 14,
-      display: "flex",
-      alignItems: "center",
-      gap: 12
-    }}>
-      <div style={{fontSize: 28, lineHeight: 1}}>{atRisk ? "⏰" : "🔥"}</div>
-      <div style={{flex: 1}}>
-        <div style={{fontSize: 15, fontWeight: 800, color: "var(--t1)", lineHeight: 1.2}}>
-          {loginStreak}-day streak{milestone ? " 🏆" : ""}
-        </div>
-        <div style={{fontSize: 12, color: "var(--t2)", marginTop: 2, lineHeight: 1.4}}>
-          {atRisk ? "Don't break it — play before midnight!" : dailyDone ? "Safe today. Keep it going tomorrow!" : "Complete today's daily to keep it alive"}
-        </div>
-      </div>
-      {milestone && <div style={{fontSize: 12, fontWeight: 700, color: "var(--gold)", letterSpacing: 0.2, whiteSpace: "nowrap"}}>Milestone!</div>}
-    </div>
-  );
-}
-
-
-function DailyTeaser() {
-  const [revealed, setRevealed] = React.useState(false);
-  const [q, setQ] = React.useState(null);
-
-  React.useEffect(() => {
-    const seed = Math.floor(Date.now() / 86400000);
-    const mcqOnly = QB.filter(x => x.type === "mcq" && x.diff !== "hard");
-    if (mcqOnly.length) setQ(mcqOnly[seed % mcqOnly.length]);
-  }, []);
-
-  if (!q) return null;
-  const correct = q.a;
-  return (
-    <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 16px",marginBottom:16,cursor:revealed?"default":"pointer"}} onClick={() => !revealed && setRevealed(true)}>
-      <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:8}}>⚡ Question of the Day</div>
-      <div style={{fontSize:14,fontWeight:600,color:"var(--t1)",lineHeight:1.5}}>{q.q}</div>
-      {!revealed && <div style={{fontSize:12,color:"var(--t3)",marginTop:8}}>Tap to reveal answer →</div>}
-      {revealed && (
-        <div style={{marginTop:10,display:"flex",flexWrap:"wrap",gap:6}}>
-          {q.o.map((opt, i) => (
-            <div key={i} style={{
-              padding:"5px 10px",borderRadius:8,fontSize:12,fontWeight:600,
-              background: i === correct ? "rgba(34,197,94,0.12)" : "var(--s2)",
-              color: i === correct ? "var(--accent)" : "var(--t3)",
-              border: i === correct ? "1px solid rgba(34,197,94,0.3)" : "1px solid var(--border)"
-            }}>{i === correct ? "✓ " : ""}{opt}</div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
 // 4-step welcome flow shown once per device after auth. Persists:
 //   biq_fav_club     — chosen CLUB_PACKS key (or absent if skipped)
@@ -10977,7 +10574,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
         </div>
       )}
       <MonthlyCalendar
-        history={dailyHistory || {}}
+        history={dailyHistory}
         today={today}
         viewDate={viewDate}
         setViewDate={setViewDate}
@@ -11134,186 +10731,6 @@ function LeagueScreenImpl({ xp, weeklyXp, profile }) {
 const LeagueScreen = React.memo(LeagueScreenImpl);
 
 
-function LeaderboardScreenImpl({ currentUserId }) {
-  const [entries, setEntries] = useState([]);
-  const [profilesById, setProfilesById] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [filter, setFilter] = useState('all');
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError('');
-    (async () => {
-      try {
-        let q = supabase
-          .from('scores')
-          .select('id, user_id, game_mode, score, created_at')
-          .order('score', { ascending: false })
-          .limit(20);
-        if (filter !== 'all') q = q.eq('game_mode', filter);
-        const { data: scoreData, error: scoreErr } = await q;
-        if (cancelled) return;
-        if (scoreErr) {
-          setError('Failed to load leaderboard');
-          setLoading(false);
-          return;
-        }
-        const list = scoreData || [];
-        const userIds = [...new Set(list.map(s => s.user_id).filter(Boolean))];
-        const pMap = {};
-        if (userIds.length) {
-          const { data: profData } = await supabase
-            .from('profiles')
-            .select('id, username, avatar_id')
-            .in('id', userIds);
-          (profData || []).forEach(p => { pMap[p.id] = p; });
-        }
-        if (cancelled) return;
-        setEntries(list);
-        setProfilesById(pMap);
-        setLoading(false);
-      } catch (e) {
-        if (!cancelled) { setError('Failed to load leaderboard'); setLoading(false); }
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [filter]);
-
-  const filters = [
-    { id: 'all',      label: 'All' },
-    { id: 'classic',  label: 'Classic' },
-    { id: 'survival', label: 'Survival' },
-    { id: 'daily',    label: 'Daily' },
-    { id: 'balliq',   label: 'Ball IQ' },
-  ];
-
-  const modeLabel = {
-    classic: 'Classic', survival: 'Survival', daily: 'Daily', balliq: 'Ball IQ',
-    hotstreak: 'Hot Streak', truefalse: 'True/False', speed: 'Speed',
-    legends: 'Legends', wc2026: 'WC 2026', online: 'Online', local: 'Local',
-  };
-
-  const formatDate = (iso) => {
-    if (!iso) return '';
-    try {
-      const d = new Date(iso);
-      const now = new Date();
-      const sameYear = d.getFullYear() === now.getFullYear();
-      return d.toLocaleDateString(undefined, sameYear
-        ? { day: 'numeric', month: 'short' }
-        : { day: 'numeric', month: 'short', year: 'numeric' });
-    } catch { return ''; }
-  };
-
-  const myIdx = currentUserId ? entries.findIndex(e => e.user_id === currentUserId) : -1;
-  const myRank = myIdx >= 0 ? myIdx + 1 : 0;
-
-  return (
-    <div className="tab-content" style={{padding:'20px 16px 84px'}}>
-      <div style={{textAlign:'center', marginBottom:18}}>
-        <div style={{fontSize:28, fontWeight:800, color:'var(--t1)', letterSpacing:'-0.5px'}}>🏅 Leaderboard</div>
-        <div style={{fontSize:13, color:'var(--t2)', marginTop:4}}>Top 20 worldwide</div>
-      </div>
-
-      <div style={{display:'flex', gap:6, overflowX:'auto', padding:'2px 2px 10px', marginBottom:4, WebkitOverflowScrolling:'touch', scrollbarWidth:'none'}}>
-        {filters.map(f => {
-          const active = filter === f.id;
-          return (
-            <button
-              key={f.id}
-              onClick={() => setFilter(f.id)}
-              style={{
-                flex:'0 0 auto', padding:'8px 14px', borderRadius:20,
-                border:'1px solid ' + (active ? 'var(--accent)' : 'var(--border)'),
-                cursor:'pointer', fontWeight:600, fontSize:13,
-                background: active ? 'var(--accent)' : 'var(--s1)',
-                color: active ? '#fff' : 'var(--t2)',
-                fontFamily:'inherit', transition:'all 0.18s',
-                whiteSpace:'nowrap',
-              }}
-            >{f.label}</button>
-          );
-        })}
-      </div>
-
-      {currentUserId && !loading && !error && (
-        <div style={{
-          background:'var(--s1)', borderRadius:12, padding:'10px 14px', marginBottom:12,
-          display:'flex', justifyContent:'space-between', alignItems:'center',
-          border:'1px solid var(--border)',
-        }}>
-          <div style={{fontSize:11, color:'var(--t3)', fontWeight:700, letterSpacing:1}}>YOUR RANK</div>
-          <div style={{fontSize:15, fontWeight:700, color: myRank ? 'var(--accent)' : 'var(--t3)'}}>
-            {myRank ? `#${myRank}` : 'Not in top 20'}
-          </div>
-        </div>
-      )}
-
-      {loading && (
-        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--t2)'}}>
-          <div style={{fontSize:28, marginBottom:8}}>⏳</div>
-          <div style={{fontSize:14}}>Loading leaderboard…</div>
-        </div>
-      )}
-
-      {!loading && error && (
-        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--red)'}}>
-          <div style={{fontSize:28, marginBottom:8}}>⚠️</div>
-          <div style={{fontSize:14}}>{error}</div>
-        </div>
-      )}
-
-      {!loading && !error && entries.length === 0 && (
-        <div style={{textAlign:'center', padding:'40px 20px', color:'var(--t2)'}}>
-          <div style={{fontSize:28, marginBottom:8}}>🏆</div>
-          <div style={{fontSize:14}}>No scores yet. Be the first!</div>
-        </div>
-      )}
-
-      {!loading && !error && entries.length > 0 && (
-        <div style={{background:'var(--s1)', borderRadius:14, overflow:'hidden', border:'1px solid var(--border)'}}>
-          {entries.map((e, i) => {
-            const rank = i + 1;
-            const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : null;
-            const isMe = currentUserId && e.user_id === currentUserId;
-            const p = profilesById[e.user_id];
-            const name = p?.username || 'Player';
-            return (
-              <div
-                key={e.id}
-                style={{
-                  display:'flex', alignItems:'center', padding:'12px 14px',
-                  borderBottom: i < entries.length - 1 ? '0.5px solid var(--border)' : 'none',
-                  background: isMe ? 'var(--accent-dim)' : 'transparent',
-                  gap: 12,
-                }}
-              >
-                <div style={{width:32, textAlign:'center', fontSize: medal ? 20 : 14, fontWeight:700, color: medal ? 'var(--t1)' : 'var(--t3)'}}>
-                  {medal || rank}
-                </div>
-                <div style={{flex:1, minWidth:0}}>
-                  <div style={{fontSize:15, fontWeight:600, color:'var(--t1)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
-                    {name}
-                    {isMe && <span style={{marginLeft:6, fontSize:10, background:'var(--accent)', color:'#fff', padding:'1px 6px', borderRadius:4, fontWeight:700, verticalAlign:'middle'}}>YOU</span>}
-                  </div>
-                  <div style={{fontSize:12, color:'var(--t3)', marginTop:2}}>
-                    {modeLabel[e.game_mode] || e.game_mode || '—'} · {formatDate(e.created_at)}
-                  </div>
-                </div>
-                <div style={{fontSize:18, fontWeight:800, color:'var(--accent)'}}>{e.score}</div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-const LeaderboardScreen = React.memo(LeaderboardScreenImpl);
-
-
 const HOW_TO_PLAY = {
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
@@ -11334,8 +10751,6 @@ function AppInner() {
     try { return localStorage.getItem("biq_onboarded") === "1"; } catch { return true; }
   });
   const [tab, setTab] = useState("home");
-  const [leagueNudgeSeen, setLeagueNudgeSeen] = useState(true);
-  const [showLeagueNudge, setShowLeagueNudge] = useState(false);
   const [profile, setProfileState] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_profile");
@@ -11343,7 +10758,6 @@ function AppInner() {
     } catch {}
     return { name:"", avatar:"⚽" };
   });
-  const [statsVisible, setStatsVisible] = useState(false);
   const [mode, setMode] = useState(null);
   const [diff, setDiff] = useState("medium");
   const [cat, setCat] = useState("All");
@@ -11366,7 +10780,6 @@ function AppInner() {
     } catch {}
     return defaults;
   });
-  const [prevScreen, setPrevScreen] = useState("home");
   // Read today's daily completion synchronously so the Daily hero doesn't flash
   // the "Play today's challenge" state before the async check resolves.
   const [dailyDone, setDailyDone] = useState(() => {
@@ -11404,7 +10817,6 @@ function AppInner() {
   const [showRatePrompt, setShowRatePrompt] = useState(false);
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
-  const [firstQuizTipStep, setFirstQuizTipStep] = useState(0);
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
     try {
@@ -11450,15 +10862,7 @@ function AppInner() {
     }, duration);
   }, []);
 
-  const dismissLeagueNudge = (goToLeague = false) => {
-    setShowLeagueNudge(false);
-    setLeagueNudgeSeen(true);
-    window.storage?.set("biq_league_nudge_seen", "1").catch(() => {});
-    if (goToLeague) { setScreen("home"); setTab("league"); }
-  };
-
   // Multi-player local state
-  const [socialMode, setSocialMode] = useState("classic");
   const [localConfig, setLocalConfig] = useState(null); // { players, mode, diff } set by LocalSetup
   const [localResult, setLocalResult] = useState(null); // populated by LocalGameScreen onComplete
 
@@ -11495,7 +10899,6 @@ function AppInner() {
         setDailyHistory(hist);
       } catch {}
     })();
-    window.storage?.get("biq_league_nudge_seen").then(r => { setLeagueNudgeSeen(!!r); }).catch(() => setLeagueNudgeSeen(false));
     window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
     window.storage?.get("biq_iq_history").then(res => {
       if (res) { try { setIqHistory(JSON.parse(res.value)); } catch {} }
@@ -11793,8 +11196,7 @@ function AppInner() {
     // Save BallIQ history (last 7 scores) + best IQ in stats
     if (mode === "balliq") {
       const iq = calcBallIQ(res.score, res.total);
-      window.storage?.get("biq_league_nudge_seen").then(r => { setLeagueNudgeSeen(!!r); }).catch(() => setLeagueNudgeSeen(false));
-    window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
+      window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
     window.storage?.get("biq_iq_history").then(r => {
         const hist = (() => { try { return r ? JSON.parse(r.value) : []; } catch { return []; } })();
         const updated = [...hist, { iq, date: Date.now() }].slice(-7);
@@ -12406,8 +11808,8 @@ function AppInner() {
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
           <SocialHub
-            onOnline={(m) => { setSocialMode(m); startMode("online"); }}
-            onLocal={(m) => { setSocialMode(m); setScreen("local-setup"); }}
+            onOnline={() => startMode("online")}
+            onLocal={() => setScreen("local-setup")}
             onBack={() => { setScreen("home"); setTab("home"); }}
           />
         )}
