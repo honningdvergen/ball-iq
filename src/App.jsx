@@ -6339,6 +6339,46 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .remove-btn:hover{background:rgba(248,113,113,0.12);color:var(--red);}
 .add-player-btn{width:100%;padding:11px;border-radius:9px;border:1px dashed var(--border);background:transparent;color:var(--t2);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;margin-bottom:14px;}
 .add-player-btn:hover{border-color:var(--accent-b);color:var(--accent);background:var(--accent-dim);}
+
+/* ── LOCAL MULTIPLAYER SETUP ── */
+.local-section-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:12px 0 8px;}
+.local-count-row{display:flex;gap:8px;margin-bottom:4px;}
+.local-count-btn{flex:1;min-height:46px;padding:10px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;color:var(--t1);font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
+.local-count-btn:hover{background:var(--s2);}
+.local-count-btn.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.local-count-btn:active{transform:scale(0.96);}
+.local-names{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}
+.local-mode-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.local-mode-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
+.local-mode-chip:hover{background:var(--s2);}
+.local-mode-chip:active{transform:scale(0.97);}
+.local-mode-chip.on{background:var(--accent-dim);border-color:var(--accent);}
+.local-mode-icon{font-size:22px;line-height:1;}
+.local-mode-name{font-size:13px;font-weight:800;color:var(--t1);margin-top:2px;}
+.local-mode-chip.on .local-mode-name{color:var(--accent);}
+.local-mode-desc{font-size:10px;color:var(--t3);line-height:1.3;}
+.local-diff-row{display:flex;gap:8px;}
+.local-diff-chip{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
+.local-diff-chip:hover{background:var(--s2);}
+.local-diff-chip:active{transform:scale(0.97);}
+.local-diff-chip.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+
+/* ── LOCAL GAME: READY/HANDOFF SCREEN (must reveal nothing about the question) ── */
+.local-ready{position:relative;min-height:calc(100vh - 120px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:12px;}
+.local-ready-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);}
+.local-ready-emoji{font-size:84px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));}
+.local-ready-name{font-size:28px;font-weight:900;color:var(--t1);letter-spacing:-0.5px;}
+.local-ready-sub{font-size:14px;color:var(--t2);max-width:300px;line-height:1.5;margin-bottom:8px;}
+.local-out-list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 10px;max-width:340px;}
+.local-out-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--border);font-size:11px;color:var(--t3);opacity:0.65;}
+
+/* ── LOCAL GAME: ROUND SUMMARY (between-question flash) ── */
+.local-summary-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.85);z-index:450;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.18s ease;}
+.local-summary-card{width:100%;max-width:340px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:var(--sh-lg);animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
+.local-summary-title{font-size:13px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;margin-bottom:12px;}
+.local-summary-row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:0.5px solid var(--border);font-size:14px;}
+.local-summary-row:last-child{border-bottom:none;}
+.local-summary-score{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent);}
 .handoff{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:20px 0;}
 .handoff-avatar{width:68px;height:68px;border-radius:50%;background:var(--accent-dim);border:1.5px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;}
 .handoff-tag{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);font-weight:500;letter-spacing:0.2px;margin-bottom:7px;}
@@ -8179,30 +8219,20 @@ function SocialHub({ onOnline, onLocal, onBack }) {
 }
 
 function LocalSetup({ onStart, onBack }) {
-  const [players, setPlayers] = useState([{ name:"", id:0 }, { name:"", id:1 }]);
-  const nextId = useRef(2);
+  const [count, setCount] = useState(2);
+  const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
+  const [lmode, setLmode] = useState("classic");
+  const [ldiff, setLdiff] = useState("medium");
 
-  const addPlayer = () => {
-    if (players.length >= 6) return;
-    setPlayers(p => [...p, { name:"", id: nextId.current++ }]);
-  };
-
-  const removePlayer = (id) => {
-    if (players.length <= 2) return;
-    setPlayers(p => p.filter(pl => pl.id !== id));
-  };
-
-  const updateName = (id, val) => {
-    setPlayers(p => p.map(pl => pl.id === id ? { ...pl, name: val } : pl));
-  };
+  const setName = (idx, val) => setNames(n => { const copy = n.slice(); copy[idx] = val; return copy; });
 
   const launch = () => {
-    const named = players.map((pl, i) => ({
-      ...pl,
-      name: pl.name.trim() || `Player ${i + 1}`,
+    const players = Array.from({ length: count }, (_, i) => ({
+      id: i,
+      name: (names[i] || "").trim() || `Player ${i + 1}`,
       emoji: EMOJIS[i % EMOJIS.length],
     }));
-    onStart(named);
+    onStart({ players, mode: lmode, diff: ldiff });
   };
 
   return (
@@ -8212,63 +8242,282 @@ function LocalSetup({ onStart, onBack }) {
         <div className="page-title">Local Multiplayer</div>
       </div>
 
-      <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:22}}>
-        Add up to 6 players. Everyone takes turns on the same device — perfect for halftime.
-      </p>
+      {/* Player count picker */}
+      <div className="local-section-label">Players</div>
+      <div className="local-count-row">
+        {[2,3,4,5,6].map(n => (
+          <button key={n} className={`local-count-btn${count===n?" on":""}`} onClick={() => setCount(n)}>{n}</button>
+        ))}
+      </div>
 
-      {players.map((pl, i) => (
-        <div key={pl.id} className="player-input-row">
-          <div className="player-num">{i + 1}</div>
-          <input
-            className="player-inp"
-            placeholder={`Player ${i + 1}`}
-            value={pl.name}
-            onChange={e => updateName(pl.id, e.target.value)}
-            maxLength={16}
-          />
-          {players.length > 2 && (
-            <button className="remove-btn" onClick={() => removePlayer(pl.id)}>×</button>
-          )}
-        </div>
-      ))}
+      {/* Names */}
+      <div className="local-section-label">Names</div>
+      <div className="local-names">
+        {Array.from({ length: count }, (_, i) => (
+          <div key={i} className="player-input-row">
+            <div className="player-num">{EMOJIS[i % EMOJIS.length]}</div>
+            <input
+              className="player-inp"
+              placeholder={`Player ${i + 1}`}
+              value={names[i]}
+              onChange={e => setName(i, e.target.value)}
+              maxLength={16}
+            />
+          </div>
+        ))}
+      </div>
 
-      {players.length < 6 && (
-        <button className="add-player-btn" onClick={addPlayer}>+ Add player</button>
-      )}
+      {/* Mode */}
+      <div className="local-section-label">Mode</div>
+      <div className="local-mode-row">
+        {[
+          { id:"classic",  icon:"⏱️", name:"Classic",  desc:"10 questions" },
+          { id:"sprint",   icon:"⚡",  name:"Sprint",   desc:"5 questions" },
+          { id:"survival", icon:"🔥", name:"Survival", desc:"Eliminated on wrong" },
+        ].map(m => (
+          <button key={m.id} className={`local-mode-chip${lmode===m.id?" on":""}`} onClick={() => setLmode(m.id)}>
+            <span className="local-mode-icon">{m.icon}</span>
+            <span className="local-mode-name">{m.name}</span>
+            <span className="local-mode-desc">{m.desc}</span>
+          </button>
+        ))}
+      </div>
 
-      <button className="btn btn-p" onClick={launch}>
-        Start with {players.length} players →
+      {/* Difficulty */}
+      <div className="local-section-label">Difficulty</div>
+      <div className="local-diff-row">
+        {[
+          { id:"easy",   icon:"🌱", name:"Easy" },
+          { id:"medium", icon:"⚽", name:"Medium" },
+          { id:"hard",   icon:"🧠", name:"Hard" },
+        ].map(d => (
+          <button key={d.id} className={`local-diff-chip${ldiff===d.id?" on":""}`} onClick={() => setLdiff(d.id)}>
+            <span style={{fontSize:18}}>{d.icon}</span>
+            <span>{d.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <button className="btn-3d" style={{marginTop:18}} onClick={launch}>
+        Start with {count} players →
       </button>
     </div>
   );
 }
 
-// ─── LOCAL HANDOFF SCREEN ─────────────────────────────────────────────────────
-function LocalHandoff({ player, previousScores, onReady }) {
-  return (
-    <div className="handoff">
-      <div className="handoff-avatar">{player.emoji}</div>
-      <div className="handoff-tag">Up next</div>
-      <div className="handoff-name">{player.name}</div>
-      <div className="handoff-sub">Pass the phone — it's your turn!</div>
-      {previousScores.length > 0 && (
-        <div className="handoff-scores">
-          {previousScores.map((s, i) => (
-            <div key={i} className="handoff-chip">{s.emoji} <strong>{s.name}</strong> {s.score}/10</div>
+// ─── LOCAL GAME (unified handoff → question → feedback → summary engine) ─────
+function LocalGameScreen({ config, onComplete, onExit }) {
+  const { players, mode, diff } = config;
+  const TARGETS = { classic: 10, sprint: 5, survival: 30 };
+  const target = TARGETS[mode] || 10;
+
+  // Build the question pool once per game.
+  const [questions] = useState(() => {
+    const raw = getQs({ cat: "All", diff, n: target, ramp: mode === "classic" });
+    return (raw || []).filter(q => q && q.type !== "tf" && q.type !== "typed");
+  });
+
+  // Running state
+  const [questionIdx, setQuestionIdx] = useState(0);
+  const [turnIdx, setTurnIdx] = useState(0);           // index into surviving players for this question
+  const [phase, setPhase] = useState("handoff");        // 'handoff' | 'question' | 'feedback' | 'summary'
+  const [scores, setScores] = useState(() => Object.fromEntries(players.map(p => [p.id, 0])));
+  const [eliminatedIds, setEliminatedIds] = useState([]); // ordered, first-out first
+  const [answered, setAnswered] = useState(new Set());    // player ids who answered current question
+  const [picked, setPicked] = useState(null);             // { pIdx, isCorrect } for the feedback render
+
+  const currentQ = questions[questionIdx];
+  const survivors = players.filter(p => !eliminatedIds.includes(p.id));
+  const currentPlayer = survivors[turnIdx];
+
+  // End-of-game check (survival)
+  useEffect(() => {
+    if (mode !== "survival") return;
+    if (survivors.length <= 1 && phase !== "done") {
+      // final scoreboard; winner is whoever survived (if any)
+      setPhase("done");
+      onComplete({
+        players,
+        scores,
+        eliminatedIds,
+        mode,
+        winnerId: survivors[0]?.id ?? null,
+      });
+    }
+  }, [eliminatedIds, mode, phase, onComplete, players, scores, survivors]);
+
+  // End-of-game check (classic / sprint) — all questions answered
+  useEffect(() => {
+    if (mode === "survival" || phase === "done") return;
+    if (questionIdx >= questions.length) {
+      setPhase("done");
+      onComplete({ players, scores, eliminatedIds, mode, winnerId: null });
+    }
+  }, [questionIdx, questions.length, mode, phase, onComplete, players, scores, eliminatedIds]);
+
+  // If the current question doesn't exist (pool too small), bail
+  if (!currentQ || phase === "done") {
+    return (
+      <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14}}>
+        <div style={{fontSize:36}}>⚽</div>
+        <div style={{fontSize:14,color:"var(--t2)"}}>Finishing up…</div>
+      </div>
+    );
+  }
+
+  const pick = (optIdx) => {
+    if (phase !== "question" || !currentPlayer) return;
+    const isCorrect = optIdx === currentQ.a;
+    haptic(isCorrect ? "correct" : "wrong");
+    playSound(isCorrect ? "correct" : "wrong");
+    setPicked({ pIdx: optIdx, isCorrect });
+    if (isCorrect) {
+      setScores(s => ({ ...s, [currentPlayer.id]: (s[currentPlayer.id] || 0) + 1 }));
+    }
+    // Mark this player as having answered this question
+    const newAnswered = new Set(answered);
+    newAnswered.add(currentPlayer.id);
+    setAnswered(newAnswered);
+    setPhase("feedback");
+
+    setTimeout(() => {
+      let nextEliminated = eliminatedIds;
+      if (mode === "survival" && !isCorrect) {
+        nextEliminated = [...eliminatedIds, currentPlayer.id];
+        setEliminatedIds(nextEliminated);
+      }
+      const nextSurvivors = players.filter(p => !nextEliminated.includes(p.id));
+      // How many survivors still need to answer this question?
+      const stillToAnswer = nextSurvivors.filter(p => !newAnswered.has(p.id));
+      if (mode === "survival" && nextSurvivors.length <= 1) {
+        // end-of-game effect will fire
+        return;
+      }
+      if (stillToAnswer.length === 0) {
+        // Everyone has answered → mini summary (classic/sprint) OR straight to next q in survival
+        setPicked(null);
+        if (mode === "survival") {
+          nextQuestion(nextEliminated, nextSurvivors);
+        } else {
+          setPhase("summary");
+          setTimeout(() => nextQuestion(nextEliminated, nextSurvivors), 2000);
+        }
+      } else {
+        // Next player's turn — find their index in the current survivors list
+        const nextIdx = nextSurvivors.findIndex(p => !newAnswered.has(p.id));
+        setTurnIdx(Math.max(0, nextIdx));
+        setPicked(null);
+        setPhase("handoff");
+      }
+    }, 1500);
+  };
+
+  const nextQuestion = (nextEliminated, nextSurvivors) => {
+    const survivingList = nextSurvivors || players.filter(p => !(nextEliminated || eliminatedIds).includes(p.id));
+    setQuestionIdx(i => i + 1);
+    setAnswered(new Set());
+    setTurnIdx(0);
+    setPicked(null);
+    // If game-end conditions hold, effects above will fire
+    if (questionIdx + 1 < questions.length && survivingList.length > (mode === "survival" ? 1 : 0)) {
+      setPhase("handoff");
+    }
+  };
+
+  const prog = `Q ${String(questionIdx + 1).padStart(2, "0")} / ${String(Math.min(target, questions.length)).padStart(2, "0")}`;
+
+  // ── Render by phase ────────────────────────────────────────────────────────
+
+  if (phase === "handoff") {
+    return (
+      <div className="local-ready">
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
+        <div className="local-ready-eyebrow">
+          {questionIdx === 0 && answered.size === 0 ? "Get ready" : "Next up"} · {prog}
+        </div>
+        <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
+        <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
+        <div className="local-ready-sub">Pass the phone. Tap Ready when you've got it.</div>
+        {mode === "survival" && eliminatedIds.length > 0 && (
+          <div className="local-out-list">
+            {eliminatedIds.map(id => {
+              const p = players.find(pp => pp.id === id);
+              return p ? <span key={id} className="local-out-chip">{p.emoji} {p.name}</span> : null;
+            })}
+          </div>
+        )}
+        <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
+          I'm Ready →
+        </button>
+      </div>
+    );
+  }
+
+  if (phase === "question" || phase === "feedback") {
+    return (
+      <div className="quiz-wrap">
+        <div className="q-top">
+          <button className="back-btn" onClick={onExit}>✕</button>
+          <div className="prog-wrap">
+            <div className="prog-bar" style={{ width: `${Math.min(100, ((questionIdx + 1) / Math.max(1, Math.min(target, questions.length))) * 100)}%` }} />
+          </div>
+          <span className="q-ctr">{prog}</span>
+        </div>
+        <div style={{textAlign:"center",padding:"6px 0 8px",fontSize:13,fontWeight:700,color:"var(--accent)"}}>
+          🎮 {currentPlayer?.name}'s turn
+        </div>
+        <div className="q-card">
+          <div className="q-tag">{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
+          <div className="q-text">{currentQ.q}</div>
+        </div>
+        <div className="opts">
+          {currentQ.o.map((opt, i) => {
+            let cls = "opt";
+            if (phase === "feedback" && picked) {
+              if (i === currentQ.a) cls += " correct";
+              else if (i === picked.pIdx) cls += " wrong";
+              else cls += " neutral-after";
+            }
+            return (
+              <button key={i} className={cls} onClick={() => pick(i)} disabled={phase === "feedback"}>
+                <span className="opt-l">{["A","B","C","D"][i]}</span>{opt}
+              </button>
+            );
+          })}
+        </div>
+        {phase === "feedback" && picked && (
+          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color: picked.isCorrect ? "var(--green)" : "var(--red)"}}>
+            {picked.isCorrect ? "✓ Correct!" : (mode === "survival" ? `❌ ${currentPlayer.name} has been eliminated!` : `✗ Correct answer: ${currentQ.o[currentQ.a]}`)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (phase === "summary") {
+    const rows = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+    return (
+      <div className="local-summary-overlay">
+        <div className="local-summary-card">
+          <div className="local-summary-title">After Q{questionIdx + 1}</div>
+          {rows.map(p => (
+            <div key={p.id} className="local-summary-row">
+              <span>{p.emoji}</span>
+              <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
+              <span className="local-summary-score">{scores[p.id] || 0}</span>
+            </div>
           ))}
         </div>
-      )}
-      <button className="btn btn-p" style={{width:"100%"}} onClick={onReady}>
-        I'm ready →
-      </button>
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── LOCAL RESULTS ────────────────────────────────────────────────────────────
-function LocalResults({ scores, onHome, onRetry }) {
-  const sorted = [...(scores || [])].sort((a, b) => b.score - a.score);
-  if (sorted.length === 0) {
+function LocalResults({ result, onHome, onRetry }) {
+  if (!result || !result.players || result.players.length === 0) {
     return (
       <div className="screen" style={{paddingTop:8}}>
         <div className="rc" style={{marginBottom:16}}>
@@ -8278,29 +8527,82 @@ function LocalResults({ scores, onHome, onRetry }) {
       </div>
     );
   }
-  const winner = sorted[0];
-  const tied = sorted.filter(s => s.score === winner.score).length > 1;
+  const { players, scores, eliminatedIds, mode, winnerId } = result;
+  const isSurvival = mode === "survival";
+
+  // Ranking
+  let ranked;
+  if (isSurvival) {
+    // Winner first; then eliminated in reverse elimination order (last-out = 2nd place)
+    const winner = players.find(p => p.id === winnerId);
+    const elimOrderDesc = [...eliminatedIds].reverse();
+    const rest = elimOrderDesc.map(id => players.find(p => p.id === id)).filter(Boolean);
+    ranked = (winner ? [winner, ...rest] : rest);
+  } else {
+    ranked = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+  }
+
+  const top = ranked[0];
+  const topScore = scores[top?.id] ?? 0;
+  const tied = !isSurvival && ranked.filter(p => scores[p.id] === topScore).length > 1;
+  const headlineName = isSurvival ? top?.name : (tied ? null : top?.name);
 
   return (
     <div className="screen" style={{paddingTop:8}}>
       <div className="rc" style={{marginBottom:16}}>
-        <div className="rc-icon">{winner.emoji}</div>
-        <div className="rc-title">{tied ? "It's a draw!" : `${winner.name} wins!`}</div>
-        {!tied && <div className="rc-sub" style={{marginTop:4}}>{winner.score}/10 correct</div>}
+        <div className="rc-icon">{isSurvival ? "🏆" : (top?.emoji || "🏆")}</div>
+        <div className="rc-title">
+          {tied ? "It's a draw!" : (isSurvival ? `${headlineName || "No one"} survives!` : `${headlineName} wins!`)}
+        </div>
+        {!tied && !isSurvival && top && <div className="rc-sub" style={{marginTop:4}}>{topScore} correct</div>}
+        {isSurvival && top && <div className="rc-sub" style={{marginTop:4}}>{topScore} correct · last one standing</div>}
       </div>
 
+      {/* Podium top 3 */}
       <div className="podium">
-        {sorted.map((s, i) => (
-          <div key={s.id} className={`podium-row${i === 0 && !tied ? " gold" : ""}`}>
-            <div className="pod-rank">{i === 0 && !tied ? "🏆" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i+1}`}</div>
-            <div className="pod-name">{s.emoji} {s.name}</div>
-            <div className="pod-score">{s.score}/10</div>
+        {ranked.slice(0, 3).map((p, i) => (
+          <div key={p.id} className={`podium-row${i === 0 ? " gold" : ""}`}>
+            <div className="pod-rank">{["🥇","🥈","🥉"][i]}</div>
+            <div className="pod-name">{p.emoji} {p.name}</div>
+            <div className="pod-score">{scores[p.id] || 0}</div>
           </div>
         ))}
       </div>
 
-      <button className="btn btn-p" onClick={onRetry}>Play Again</button>
-      <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      {/* Full ranked list */}
+      {ranked.length > 3 && (
+        <div style={{marginTop:14,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:12,overflow:"hidden"}}>
+          {ranked.slice(3).map((p, i) => (
+            <div key={p.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderTop: i===0?"none":"0.5px solid var(--border)"}}>
+              <span style={{width:24,color:"var(--t3)",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>{i + 4}</span>
+              <span style={{fontSize:18}}>{p.emoji}</span>
+              <span style={{flex:1,color:"var(--t1)",fontWeight:700}}>{p.name}</span>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontVariantNumeric:"tabular-nums",fontWeight:700,color:"var(--accent)"}}>{scores[p.id] || 0}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isSurvival && eliminatedIds && eliminatedIds.length > 0 && (
+        <div style={{marginTop:14}}>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.14em",color:"var(--t3)",textTransform:"uppercase",marginBottom:8}}>Elimination order</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {eliminatedIds.map((id, i) => {
+              const p = players.find(pp => pp.id === id);
+              if (!p) return null;
+              return (
+                <span key={id} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 10px",borderRadius:20,background:"var(--s2)",border:"1px solid var(--border)",fontSize:12,color:"var(--t2)"}}>
+                  <span style={{opacity:0.5,fontFamily:"'JetBrains Mono',monospace"}}>#{i+1}</span>
+                  {p.emoji} {p.name}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <button className="btn-3d" style={{marginTop:16}} onClick={onRetry}>Play Again</button>
+      <button className="btn btn-s" style={{marginTop:10}} onClick={onHome}>Back to Home</button>
     </div>
   );
 }
@@ -10835,12 +11137,9 @@ function AppInner() {
   };
 
   // Multi-player local state
-  const [localPlayers, setLocalPlayers] = useState([]);
-  const [localTurnIdx, setLocalTurnIdx] = useState(0);
   const [socialMode, setSocialMode] = useState("classic");
-  const [localScores, setLocalScores] = useState([]);
-  const [localQuestions, setLocalQuestions] = useState([]);
-  const [showHandoff, setShowHandoff] = useState(false);
+  const [localConfig, setLocalConfig] = useState(null); // { players, mode, diff } set by LocalSetup
+  const [localResult, setLocalResult] = useState(null); // populated by LocalGameScreen onComplete
 
   useEffect(() => {
     // Prune expired seen-question history (>14 days old) on mount
@@ -11057,26 +11356,19 @@ function AppInner() {
     }
   }, [showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
-  const startLocalGame = useCallback((players) => {
-    const gm = socialMode || "classic";
-    let sharedQs;
-    if (gm === "survival") sharedQs = getQs({ cat, diff, n: 300 });
-    else if (gm === "legends") sharedQs = getQs({ cat: "Legends", diff, n: 10 });
-    else if (gm === "speed") sharedQs = getQs({ cat, diff: "medium", n: 5 });
-    else sharedQs = getQs({ cat, diff, n: 10, ramp: true });
-    setMode(gm);
-    setLocalPlayers(players);
-    setLocalTurnIdx(0);
-    setLocalScores([]);
-    setLocalQuestions(sharedQs);
-    setQuestions(sharedQs);
-    setShowHandoff(true);
-    setScreen("local-handoff");
-  }, [socialMode, cat, diff]);
+  // LocalSetup gives us a fully-formed config — LocalGameScreen owns the rest
+  // (questions, turns, scores, eliminations). No legacy state touched here.
+  const startLocalGame = useCallback((config) => {
+    setActiveClub(null);
+    setLocalConfig(config);
+    setLocalResult(null);
+    setMode("local");
+    setScreen("local-game");
+  }, []);
 
-  const handleHandoffReady = useCallback(() => {
-    setShowHandoff(false);
-    setScreen("quiz");
+  const handleLocalComplete = useCallback((result) => {
+    setLocalResult(result);
+    setScreen("local-results");
   }, []);
 
   const handleComplete = useCallback((res) => {
@@ -11211,24 +11503,7 @@ function AppInner() {
       playSound("daily_complete");
     }
 
-    if (mode === "local") {
-      const currentPlayer = localPlayers[localTurnIdx];
-      const newScores = [...localScores, { ...currentPlayer, score: res.score }];
-      setLocalScores(newScores);
-
-      const nextIdx = localTurnIdx + 1;
-      if (nextIdx < localPlayers.length) {
-        // More players to go
-        setLocalTurnIdx(nextIdx);
-        setQuestions(localQuestions);
-        setShowHandoff(true);
-        setScreen("local-handoff");
-      } else {
-        // All done — show final results
-        setScreen("local-results");
-      }
-      return;
-    }
+    // (local multiplayer no longer flows through handleComplete — LocalGameScreen handles its own end-of-game.)
 
     // Save hotstreak personal best
     if (mode === "hotstreak") {
@@ -11246,7 +11521,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, localPlayers, localTurnIdx, localScores, localQuestions, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
 
   const handleOnlineStart = useCallback((conf) => {
     setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
@@ -11431,7 +11706,7 @@ function AppInner() {
     root.style.setProperty("--ui-font-size", uiSize);
   }, [settings.theme, settings.textSize]);
 
-  const inGame = ["quiz","local-handoff","local-results"].includes(screen);
+  const inGame = ["quiz","local-game","local-results"].includes(screen);
 
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
@@ -11838,12 +12113,12 @@ function AppInner() {
           <LocalSetup onStart={startLocalGame} onBack={() => { setScreen("home"); setTab("home"); }} />
         )}
 
-        {/* ── LOCAL HANDOFF ── */}
-        {screen === "local-handoff" && (
-          <LocalHandoff
-            player={localPlayers[localTurnIdx]}
-            previousScores={localScores}
-            onReady={handleHandoffReady}
+        {/* ── LOCAL GAME (unified handoff → question → feedback → summary engine) ── */}
+        {screen === "local-game" && localConfig && (
+          <LocalGameScreen
+            config={localConfig}
+            onComplete={handleLocalComplete}
+            onExit={() => { setScreen("home"); setTab("home"); }}
           />
         )}
 
@@ -11871,16 +12146,6 @@ function AppInner() {
         {/* ── QUIZ ── */}
         {screen === "quiz" && mode !== "hotstreak" && mode !== "truefalse" && (
           <div>
-            {mode === "local" && (
-              <div style={{textAlign:"center", padding:"14px 0 10px"}}>
-                <div style={{fontFamily:"'Inter',sans-serif", fontSize:12, fontWeight:600, color:"var(--t2)", marginBottom:4}}>
-                  {localPlayers[localTurnIdx]?.emoji} {localPlayers[localTurnIdx]?.name}'s turn
-                </div>
-                <div style={{fontSize:12, color:"var(--t3)"}}>
-                  Player {localTurnIdx + 1} of {localPlayers.length}
-                </div>
-              </div>
-            )}
             {mode === "balliq" && (
               <div style={{marginTop:14,marginBottom:4}}>
                 <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",fontWeight:500,letterSpacing:0.2,marginBottom:4}}>Ball IQ Test · 20 Questions</div>
@@ -11903,7 +12168,7 @@ function AppInner() {
               </div>
             )}
             <QuizEngine
-              key={`${mode}-${localTurnIdx}`}
+              key={mode}
               questions={questions}
               mode={mode}
               diff={diff}
@@ -11922,9 +12187,9 @@ function AppInner() {
         {/* ── LOCAL RESULTS ── */}
         {screen === "local-results" && (
           <LocalResults
-            scores={localScores}
+            result={localResult}
             onHome={() => { setScreen("home"); setTab("home"); }}
-            onRetry={() => startLocalGame(localPlayers)}
+            onRetry={() => { if (localConfig) startLocalGame(localConfig); }}
           />
         )}
 
