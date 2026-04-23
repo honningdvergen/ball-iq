@@ -6392,6 +6392,30 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .local-summary-row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:0.5px solid var(--border);font-size:14px;}
 .local-summary-row:last-child{border-bottom:none;}
 .local-summary-score{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent);}
+
+/* ── LOCAL GAME: LOCKED ANSWER STATE (neutral blue highlight on picked option) ── */
+.opt.locked{border-color:rgba(59,130,246,0.55) !important;background:rgba(59,130,246,0.12) !important;color:#8FB4FF !important;}
+.opt.locked .opt-l{background:#3B82F6 !important;color:#fff !important;border-color:#3B82F6 !important;}
+
+/* ── LOCAL GAME: REVEAL SCREEN (all picks shown at once) ── */
+.local-reveal{padding:24px 20px 40px;display:flex;flex-direction:column;gap:12px;}
+.local-reveal-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;}
+.local-reveal-q{font-size:16px;font-weight:700;color:var(--t1);line-height:1.4;text-align:center;margin:4px 8px;}
+.local-reveal-correct{font-size:13px;color:var(--t2);text-align:center;margin-bottom:6px;}
+.local-reveal-correct strong{color:var(--accent);font-weight:800;}
+.local-reveal-list{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.local-reveal-row{display:flex;align-items:center;gap:10px;padding:11px 14px;font-size:14px;border-bottom:0.5px solid var(--border);}
+.local-reveal-row:last-child{border-bottom:none;}
+.local-reveal-row.ok{background:rgba(88,204,2,0.06);}
+.local-reveal-row.no{background:rgba(255,59,48,0.05);}
+.local-reveal-row.out{opacity:0.7;}
+.local-reveal-chose{font-size:12px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.local-reveal-mark{font-size:16px;font-weight:800;width:22px;text-align:right;}
+.local-reveal-row.ok .local-reveal-mark{color:var(--accent);}
+.local-reveal-row.no .local-reveal-mark{color:var(--red);}
+.local-reveal-qn{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;color:var(--t3);width:34px;flex-shrink:0;}
+.local-reveal-eliminate{text-align:center;font-size:15px;font-weight:800;color:var(--red);margin-top:4px;padding:10px;border-radius:12px;background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.2);}
+.local-reveal-tally{text-align:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);margin-top:4px;}
 .handoff{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:20px 0;}
 .handoff-avatar{width:68px;height:68px;border-radius:50%;background:var(--accent-dim);border:1.5px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;}
 .handoff-tag{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);font-weight:500;letter-spacing:0.2px;margin-bottom:7px;}
@@ -8323,58 +8347,71 @@ function LocalSetup({ onStart, onBack }) {
   );
 }
 
-// ─── LOCAL GAME (unified handoff → question → feedback → summary engine) ─────
+// ─── LOCAL GAME ENGINE ────────────────────────────────────────────────────────
+// Flow (classic / sprint — chunk mode):
+//   handoff → question → locked (0.8s) → next Q in chunk OR chunk-end reveal (2s)
+//     → summary (1.2s) → handoff for next player's chunk
+// Flow (survival — round-robin mode):
+//   handoff → question → locked (0.8s) → playerSwap → … → question → locked → reveal (2s)
+//     → advance to next Q + handoff (eliminations applied during reveal)
+//
+// Hidden-answer rule: correct/wrong is never revealed after a single pick; the
+// reveal phase shows all the picks + correct answer in one go, so a later
+// player can't see what's right from an earlier player's feedback.
 function LocalGameScreen({ config, onComplete, onExit }) {
   const { players, mode, diff } = config;
   const TARGETS = { classic: 10, sprint: 5, survival: 30 };
   const target = TARGETS[mode] || 10;
+  const CHUNK_SIZE = mode === "survival" ? 1 : 3;
 
-  // Build the question pool once per game.
   const [questions] = useState(() => {
     const raw = getQs({ cat: "All", diff, n: target, ramp: mode === "classic" });
     return (raw || []).filter(q => q && q.type !== "tf" && q.type !== "typed");
   });
+  const totalQs = questions.length;
 
-  // Running state
-  const [questionIdx, setQuestionIdx] = useState(0);
-  const [turnIdx, setTurnIdx] = useState(0);           // index into surviving players for this question
-  const [phase, setPhase] = useState("handoff");        // 'handoff' | 'question' | 'feedback' | 'summary'
+  const [currentQIdx, setCurrentQIdx] = useState(0);  // index of question currently on screen
+  const [turnIdx, setTurnIdx] = useState(0);           // survival: which surviving player is answering
+  const [phase, setPhase] = useState("handoff");
   const [scores, setScores] = useState(() => Object.fromEntries(players.map(p => [p.id, 0])));
-  const [eliminatedIds, setEliminatedIds] = useState([]); // ordered, first-out first
-  const [answered, setAnswered] = useState(new Set());    // player ids who answered current question
-  const [picked, setPicked] = useState(null);             // { pIdx, isCorrect } for the feedback render
+  const [eliminatedIds, setEliminatedIds] = useState([]);
+  const [newEliminatedIds, setNewEliminatedIds] = useState([]);
+  const [chunkPicks, setChunkPicks] = useState([]);   // [{qIdx, playerId, optIdx}] for the active chunk/question
+  const [lastPick, setLastPick] = useState(null);      // the just-submitted pick, for the locked-state highlight
 
-  const currentQ = questions[questionIdx];
   const survivors = players.filter(p => !eliminatedIds.includes(p.id));
-  const currentPlayer = survivors[turnIdx];
+  const chunkIdx = Math.floor(currentQIdx / CHUNK_SIZE);
+  const chunkStartQ = chunkIdx * CHUNK_SIZE;
+  const chunkEndQ = Math.min(chunkStartQ + CHUNK_SIZE - 1, totalQs - 1);
+  const chunkQSize = chunkEndQ - chunkStartQ + 1;
+  // In classic/sprint, the chunk rotates through players. In survival, the "chunk player" is
+  // the current surviving answerer.
+  const currentPlayer = mode === "survival"
+    ? survivors[turnIdx]
+    : players[chunkIdx % players.length];
+  const currentQ = questions[currentQIdx];
 
-  // End-of-game check (survival)
+  // End-of-game (survival): ≤1 survivor
   useEffect(() => {
     if (mode !== "survival") return;
     if (survivors.length <= 1 && phase !== "done") {
-      // final scoreboard; winner is whoever survived (if any)
       setPhase("done");
-      onComplete({
-        players,
-        scores,
-        eliminatedIds,
-        mode,
-        winnerId: survivors[0]?.id ?? null,
-      });
+      onComplete({ players, scores, eliminatedIds, mode, winnerId: survivors[0]?.id ?? null });
     }
-  }, [eliminatedIds, mode, phase, onComplete, players, scores, survivors]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eliminatedIds, mode, phase]);
 
-  // End-of-game check (classic / sprint) — all questions answered
+  // End-of-game (classic/sprint): ran off the end of the question list
   useEffect(() => {
     if (mode === "survival" || phase === "done") return;
-    if (questionIdx >= questions.length) {
+    if (currentQIdx >= totalQs) {
       setPhase("done");
       onComplete({ players, scores, eliminatedIds, mode, winnerId: null });
     }
-  }, [questionIdx, questions.length, mode, phase, onComplete, players, scores, eliminatedIds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQIdx, totalQs, mode, phase]);
 
-  // If the current question doesn't exist (pool too small), bail
-  if (!currentQ || phase === "done") {
+  if (phase === "done" || !currentQ) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14}}>
         <div style={{fontSize:36}}>⚽</div>
@@ -8383,79 +8420,140 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     );
   }
 
+  // ── Actions ────────────────────────────────────────────────────────────────
   const pick = (optIdx) => {
     if (phase !== "question" || !currentPlayer) return;
-    const isCorrect = optIdx === currentQ.a;
-    haptic(isCorrect ? "correct" : "wrong");
-    playSound(isCorrect ? "correct" : "wrong");
-    setPicked({ pIdx: optIdx, isCorrect });
-    if (isCorrect) {
-      setScores(s => ({ ...s, [currentPlayer.id]: (s[currentPlayer.id] || 0) + 1 }));
-    }
-    // Mark this player as having answered this question
-    const newAnswered = new Set(answered);
-    newAnswered.add(currentPlayer.id);
-    setAnswered(newAnswered);
-    setPhase("feedback");
+    haptic("soft");
+    playSound("soft");
+    const entry = { qIdx: currentQIdx, playerId: currentPlayer.id, optIdx };
+    const nextPicks = [...chunkPicks, entry];
+    setChunkPicks(nextPicks);
+    setLastPick(entry);
+    setPhase("locked");
 
     setTimeout(() => {
-      let nextEliminated = eliminatedIds;
-      if (mode === "survival" && !isCorrect) {
-        nextEliminated = [...eliminatedIds, currentPlayer.id];
-        setEliminatedIds(nextEliminated);
-      }
-      const nextSurvivors = players.filter(p => !nextEliminated.includes(p.id));
-      // How many survivors still need to answer this question?
-      const stillToAnswer = nextSurvivors.filter(p => !newAnswered.has(p.id));
-      if (mode === "survival" && nextSurvivors.length <= 1) {
-        // end-of-game effect will fire
-        return;
-      }
-      if (stillToAnswer.length === 0) {
-        // Everyone has answered → mini summary (classic/sprint) OR straight to next q in survival
-        setPicked(null);
-        if (mode === "survival") {
-          nextQuestion(nextEliminated, nextSurvivors);
+      if (mode === "survival") {
+        // Same question, advance to next surviving player who hasn't answered
+        const answeredIds = new Set(nextPicks.filter(p => p.qIdx === currentQIdx).map(p => p.playerId));
+        const nextI = survivors.findIndex(p => !answeredIds.has(p.id));
+        if (nextI !== -1) {
+          setTurnIdx(nextI);
+          setLastPick(null);
+          setPhase("playerSwap");
         } else {
-          setPhase("summary");
-          setTimeout(() => nextQuestion(nextEliminated, nextSurvivors), 2000);
+          // Everyone answered this question → reveal
+          revealSurvivalQuestion(nextPicks);
         }
       } else {
-        // Next player's turn — find their index in the current survivors list
-        const nextIdx = nextSurvivors.findIndex(p => !newAnswered.has(p.id));
-        setTurnIdx(Math.max(0, nextIdx));
-        setPicked(null);
-        setPhase("handoff");
+        // classic/sprint: same player, next question in chunk OR chunk-end reveal
+        if (currentQIdx < chunkEndQ) {
+          setCurrentQIdx(currentQIdx + 1);
+          setLastPick(null);
+          setPhase("question"); // no inter-question screen; same player continues
+        } else {
+          revealChunk(nextPicks);
+        }
       }
-    }, 1500);
+    }, 800);
   };
 
-  const nextQuestion = (nextEliminated, nextSurvivors) => {
-    const survivingList = nextSurvivors || players.filter(p => !(nextEliminated || eliminatedIds).includes(p.id));
-    setQuestionIdx(i => i + 1);
-    setAnswered(new Set());
-    setTurnIdx(0);
-    setPicked(null);
-    // If game-end conditions hold, effects above will fire
-    if (questionIdx + 1 < questions.length && survivingList.length > (mode === "survival" ? 1 : 0)) {
-      setPhase("handoff");
+  const revealSurvivalQuestion = (picksSoFar) => {
+    const thisQPicks = picksSoFar.filter(p => p.qIdx === currentQIdx);
+    const freshlyOut = [];
+    const nextScores = { ...scores };
+    for (const pk of thisQPicks) {
+      if (pk.optIdx === currentQ.a) {
+        nextScores[pk.playerId] = (nextScores[pk.playerId] || 0) + 1;
+      } else {
+        freshlyOut.push(pk.playerId);
+      }
     }
+    setScores(nextScores);
+    setNewEliminatedIds(freshlyOut);
+    haptic("heavy");
+    playSound("streak");
+    setPhase("reveal");
   };
 
-  const prog = `Q ${String(questionIdx + 1).padStart(2, "0")} / ${String(Math.min(target, questions.length)).padStart(2, "0")}`;
+  const revealChunk = (picksSoFar) => {
+    const nextScores = { ...scores };
+    for (const pk of picksSoFar) {
+      const q = questions[pk.qIdx];
+      if (q && pk.optIdx === q.a) {
+        nextScores[pk.playerId] = (nextScores[pk.playerId] || 0) + 1;
+      }
+    }
+    setScores(nextScores);
+    haptic("heavy");
+    playSound("streak");
+    setPhase("reveal");
+  };
 
-  // ── Render by phase ────────────────────────────────────────────────────────
+  // reveal (2s) → summary (classic/sprint) OR advance (survival)
+  useEffect(() => {
+    if (phase !== "reveal") return;
+    const t = setTimeout(() => {
+      if (mode === "survival") {
+        const allOut = [...eliminatedIds, ...newEliminatedIds];
+        setEliminatedIds(allOut);
+        setNewEliminatedIds([]);
+        const nextSurvivors = players.filter(p => !allOut.includes(p.id));
+        if (nextSurvivors.length <= 1) return; // game-end effect handles it
+        const nextQ = currentQIdx + 1;
+        if (nextQ >= totalQs) return; // game-end effect
+        setCurrentQIdx(nextQ);
+        setTurnIdx(0);
+        setChunkPicks([]);
+        setPhase("handoff");
+      } else {
+        setPhase("summary");
+      }
+    }, 2000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  // summary (1.2s) → next chunk handoff
+  useEffect(() => {
+    if (phase !== "summary") return;
+    const t = setTimeout(() => {
+      const nextStart = chunkEndQ + 1;
+      if (nextStart >= totalQs) {
+        // Game ends via effect above
+        setCurrentQIdx(nextStart);
+        return;
+      }
+      setCurrentQIdx(nextStart);
+      setChunkPicks([]);
+      setPhase("handoff");
+    }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  const prog = `Q ${String(currentQIdx + 1).padStart(2, "0")} / ${String(Math.min(target, totalQs)).padStart(2, "0")}`;
+
+  // ── Render ─────────────────────────────────────────────────────────────────
 
   if (phase === "handoff") {
+    const classicSprint = mode !== "survival";
+    const headline = classicSprint
+      ? `${currentPlayer?.name}'s ${chunkQSize}-question round`
+      : `${currentPlayer?.name}'s turn`;
+    const sub = classicSprint
+      ? `Pass the phone to ${currentPlayer?.name} — they'll answer the next ${chunkQSize} question${chunkQSize === 1 ? "" : "s"}.`
+      : "Pass the phone. Tap Ready when you've got it.";
     return (
       <div className="local-ready">
         <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
         <div className="local-ready-eyebrow">
-          {questionIdx === 0 && answered.size === 0 ? "Get ready" : "Next up"} · {prog}
+          {classicSprint
+            ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
+            : `Next up · ${prog}`}
         </div>
         <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
-        <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
-        <div className="local-ready-sub">Pass the phone. Tap Ready when you've got it.</div>
+        <div className="local-ready-name">{headline}</div>
+        <div className="local-ready-sub">{sub}</div>
         {mode === "survival" && eliminatedIds.length > 0 && (
           <div className="local-out-list">
             {eliminatedIds.map(id => {
@@ -8471,13 +8569,29 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     );
   }
 
-  if (phase === "question" || phase === "feedback") {
+  // Quick neutral pass-the-phone between players inside a single survival question
+  if (phase === "playerSwap") {
+    return (
+      <div className="local-ready">
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
+        <div className="local-ready-eyebrow">Next up · {prog}</div>
+        <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
+        <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
+        <div className="local-ready-sub">Pass the phone — same question.</div>
+        <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
+          I'm Ready →
+        </button>
+      </div>
+    );
+  }
+
+  if (phase === "question" || phase === "locked") {
     return (
       <div className="quiz-wrap">
         <div className="q-top">
           <button className="back-btn" onClick={onExit}>✕</button>
           <div className="prog-wrap">
-            <div className="prog-bar" style={{ width: `${Math.min(100, ((questionIdx + 1) / Math.max(1, Math.min(target, questions.length))) * 100)}%` }} />
+            <div className="prog-bar" style={{ width: `${Math.min(100, ((currentQIdx + 1) / Math.max(1, Math.min(target, totalQs))) * 100)}%` }} />
           </div>
           <span className="q-ctr">{prog}</span>
         </div>
@@ -8491,22 +8605,80 @@ function LocalGameScreen({ config, onComplete, onExit }) {
         <div className="opts">
           {currentQ.o.map((opt, i) => {
             let cls = "opt";
-            if (phase === "feedback" && picked) {
-              if (i === currentQ.a) cls += " correct";
-              else if (i === picked.pIdx) cls += " wrong";
-              else cls += " neutral-after";
-            }
+            if (phase === "locked" && lastPick && i === lastPick.optIdx) cls += " locked";
+            else if (phase === "locked") cls += " neutral-after";
             return (
-              <button key={i} className={cls} onClick={() => pick(i)} disabled={phase === "feedback"}>
+              <button key={i} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
                 <span className="opt-l">{["A","B","C","D"][i]}</span>{opt}
               </button>
             );
           })}
         </div>
-        {phase === "feedback" && picked && (
-          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color: picked.isCorrect ? "var(--green)" : "var(--red)"}}>
-            {picked.isCorrect ? "✓ Correct!" : (mode === "survival" ? `❌ ${currentPlayer.name} has been eliminated!` : `✗ Correct answer: ${currentQ.o[currentQ.a]}`)}
+        {phase === "locked" && (
+          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, #3B82F6)"}}>
+            ✓ Answer locked in
           </div>
+        )}
+      </div>
+    );
+  }
+
+  if (phase === "reveal") {
+    const isSurvivalQ = mode === "survival";
+    const revealPlayers = isSurvivalQ
+      ? survivors
+      : [currentPlayer]; // classic/sprint chunk — one player, shown per-question
+    return (
+      <div className="local-reveal">
+        <div className="local-reveal-eyebrow">
+          {isSurvivalQ ? `Results · ${prog}` : `${currentPlayer?.name}'s round · Q${chunkStartQ + 1}–${chunkEndQ + 1}`}
+        </div>
+        {isSurvivalQ ? (
+          <>
+            <div className="local-reveal-q">{currentQ.q}</div>
+            <div className="local-reveal-correct">Correct: <strong>{currentQ.o[currentQ.a]}</strong></div>
+            <div className="local-reveal-list">
+              {revealPlayers.map(p => {
+                const pk = chunkPicks.find(x => x.qIdx === currentQIdx && x.playerId === p.id);
+                const chose = pk ? currentQ.o[pk.optIdx] : "—";
+                const ok = pk && pk.optIdx === currentQ.a;
+                const outNow = newEliminatedIds.includes(p.id);
+                return (
+                  <div key={p.id} className={`local-reveal-row ${ok ? "ok" : "no"}${outNow ? " out" : ""}`}>
+                    <span>{p.emoji}</span>
+                    <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
+                    <span className="local-reveal-chose">{chose}</span>
+                    <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            {newEliminatedIds.length > 0 && (
+              <div className="local-reveal-eliminate">
+                ❌ {newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ")} eliminated
+              </div>
+            )}
+          </>
+        ) : (
+          // Classic/Sprint chunk reveal: one player, list of their questions with pick vs correct
+          <>
+            <div className="local-reveal-list">
+              {chunkPicks.filter(p => p.playerId === currentPlayer.id).map(pk => {
+                const q = questions[pk.qIdx];
+                const ok = pk.optIdx === q.a;
+                return (
+                  <div key={pk.qIdx} className={`local-reveal-row ${ok ? "ok" : "no"}`}>
+                    <span className="local-reveal-qn">Q{pk.qIdx + 1}</span>
+                    <span style={{flex:1,color:"var(--t2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{q.q}</span>
+                    <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="local-reveal-tally">
+              {chunkPicks.filter(p => p.playerId === currentPlayer.id && p.optIdx === questions[p.qIdx]?.a).length} / {chunkQSize} correct
+            </div>
+          </>
         )}
       </div>
     );
@@ -8517,7 +8689,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="local-summary-overlay">
         <div className="local-summary-card">
-          <div className="local-summary-title">After Q{questionIdx + 1}</div>
+          <div className="local-summary-title">After Q{currentQIdx + 1}</div>
           {rows.map(p => (
             <div key={p.id} className="local-summary-row">
               <span>{p.emoji}</span>
