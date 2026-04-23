@@ -11323,11 +11323,21 @@ const HOW_TO_PLAY = {
 function AppInner() {
   const { user, profile: authProfile } = useAuth();
   const [screen, setScreen] = useState("home");
-  const [hasOnboarded, setHasOnboarded] = useState(true); // optimistic — corrected on load
+  // A1: Hydrate first-paint state synchronously from localStorage so the Home
+  // tab doesn't flash in a default-empty state before the async effects fire.
+  const [hasOnboarded, setHasOnboarded] = useState(() => {
+    try { return localStorage.getItem("biq_onboarded") === "1"; } catch { return true; }
+  });
   const [tab, setTab] = useState("home");
   const [leagueNudgeSeen, setLeagueNudgeSeen] = useState(true);
   const [showLeagueNudge, setShowLeagueNudge] = useState(false);
-  const [profile, setProfileState] = useState({ name:"", avatar:"⚽" });
+  const [profile, setProfileState] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_profile");
+      if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return p; }
+    } catch {}
+    return { name:"", avatar:"⚽" };
+  });
   const [statsVisible, setStatsVisible] = useState(false);
   const [mode, setMode] = useState(null);
   const [diff, setDiff] = useState("medium");
@@ -11336,23 +11346,78 @@ function AppInner() {
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [onlineConf, setOnlineConf] = useState(null);
-  const [stats, setStats] = useState({ gamesPlayed: 0, bestScore: 0, bestStreak: 0 });
-  const [settings, setSettings] = useState({ textSize:"M", hints:true, timer:true, theme:"dark" });
+  const [stats, setStats] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_stats");
+      if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return p; }
+    } catch {}
+    return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
+  });
+  const [settings, setSettings] = useState(() => {
+    const defaults = { textSize:"M", hints:true, timer:true, theme:"dark" };
+    try {
+      const raw = localStorage.getItem("biq_settings");
+      if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
+    } catch {}
+    return defaults;
+  });
   const [prevScreen, setPrevScreen] = useState("home");
-  const [dailyDone, setDailyDone] = useState(false);
-  const [dailyScore, setDailyScore] = useState(null);
-  const [iqHistory, setIqHistory] = useState([]);
-  const [hotstreakBest, setHotstreakBest] = useState(0);
+  // Read today's daily completion synchronously so the Daily hero doesn't flash
+  // the "Play today's challenge" state before the async check resolves.
+  const [dailyDone, setDailyDone] = useState(() => {
+    try {
+      const d = new Date();
+      const ymd = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      const raw = localStorage.getItem(`biq_daily_${ymd}`);
+      if (raw) return true;
+    } catch {}
+    return false;
+  });
+  const [dailyScore, setDailyScore] = useState(() => {
+    try {
+      const d = new Date();
+      const ymd = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      const raw = localStorage.getItem(`biq_daily_${ymd}`);
+      if (raw) { const p = JSON.parse(raw); if (typeof p?.score === "number") return p.score; }
+    } catch {}
+    return null;
+  });
+  const [iqHistory, setIqHistory] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_iq_history");
+      if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) return p; }
+    } catch {}
+    return [];
+  });
+  const [hotstreakBest, setHotstreakBest] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_hotstreak_best");
+      if (raw) { const n = parseInt(raw, 10); if (!Number.isNaN(n)) return n; }
+    } catch {}
+    return 0;
+  });
   const [showRatePrompt, setShowRatePrompt] = useState(false);
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [firstQuizTipStep, setFirstQuizTipStep] = useState(0);
   const [ratePromptShown, setRatePromptShown] = useState(false);
-  const [xp, setXp] = useState(0);
+  const [xp, setXp] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_xp");
+      if (raw) { const n = parseInt(raw, 10); if (!Number.isNaN(n)) return n; }
+    } catch {}
+    return 0;
+  });
   const [xpToast, setXpToast] = useState(null);
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
   const [howToPlay, setHowToPlay] = useState(null);
-  const [loginStreak, setLoginStreak] = useState(0);
+  const [loginStreak, setLoginStreak] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_login_streak");
+      if (raw) { const p = JSON.parse(raw); if (p && typeof p.streak === "number") return p.streak; }
+    } catch {}
+    return 0;
+  });
   const [streakToast, setStreakToast] = useState(null);
   const [toast, setToast] = useState(null);
 

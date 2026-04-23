@@ -32,6 +32,17 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Apply the saved theme class BEFORE React mounts so light-mode users
+      // don't see a one-frame flash of the dark palette on reload.
+      try {
+        var s = JSON.parse(localStorage.getItem('biq_settings') || '{}');
+        if (s && s.theme === 'light') {
+          document.documentElement.classList.add('light');
+          document.body.classList.add('light');
+        }
+      } catch (e) {}
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
