@@ -6003,8 +6003,22 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d:focus-visible{outline:3px solid rgba(88,204,2,0.4);outline-offset:2px;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;box-shadow:0 5px 0 #D49600;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{box-shadow:0 2px 0 #D49600;}
+.btn-3d.dark{background:#242836;color:var(--t1);box-shadow:0 5px 0 #12141B;-webkit-text-fill-color:var(--t1);}
+.btn-3d.dark:active,.btn-3d.dark.is-pressed{box-shadow:0 2px 0 #12141B;}
+.btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
+.btn-3d.ghost:hover{filter:none;background:var(--s1);}
+.btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
+.btn-3d.ghost:disabled{box-shadow:none;}
+
+/* Pill utility — small uppercase tone-tinted badge. */
+.pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
+.pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
+.pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
+.pill--flame{background:rgba(255,106,0,0.15);color:#FF8C42;}
+.pill--wrong{background:rgba(255,59,48,0.15);color:#FF8080;}
+.pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.st-key,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
+.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:22px 0 4px;}
@@ -6019,32 +6033,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta-stack{display:flex;flex-direction:column;gap:9px;}
 .cta{border-radius:var(--r);padding:15px 16px 15px 18px;cursor:pointer;transition:all 0.2s cubic-bezier(0.22,1,0.36,1);border:1px solid var(--border);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--s1);position:relative;overflow:hidden;color:var(--t1);font-family:inherit;}
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
-/* ── DAILY HERO v2 — Linear-inspired refinement ── */
-/* Principle: neutral elevated card with subtle green accent only on the action. */
-.dhero{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 22px;cursor:pointer;color:var(--t1);text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.25);transition:background 0.18s,border-color 0.15s,transform 0.15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;display:flex;flex-direction:column;gap:14px;width:100%;}
-.dhero::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);opacity:0.8;}
-@media (hover: hover) { .dhero:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.3);} }
-.dhero:active{transform:scale(0.995);}
-.dhero-done{background:var(--s1);}
-.dhero-done::before{background:linear-gradient(90deg,transparent 0%,#fbbf24 50%,transparent 100%);opacity:0.5;}
-.dhero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.dhero-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:var(--accent);}
-.dhero-done .dhero-label{color:#fbbf24;}
-.dhero-label-dot{font-size:8px;animation:dheroPulse 2s ease-in-out infinite;}
-.dhero-done .dhero-label-dot{animation:none;}
-.dhero-countdown{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px;}
-.dhero-body{display:flex;flex-direction:column;gap:4px;}
-.dhero-date{font-size:11px;font-weight:500;color:var(--t3);letter-spacing:0.2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.dhero-streak{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:10px;font-weight:700;background:var(--s2);padding:2px 8px;border-radius:10px;letter-spacing:0.3px;text-transform:none;color:var(--t2);display:inline-flex;align-items:center;gap:3px;}
-.dhero-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;line-height:1.1;color:var(--t1);}
-.dhero-highlight{color:var(--accent);}
-.dhero-done .dhero-highlight{color:#fbbf24;}
-.dhero-cta{margin-top:4px;background:var(--accent);color:#0a1a00;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:space-between;letter-spacing:-0.1px;transition:all 0.15s;}
-.dhero-done .dhero-cta{background:var(--s2);color:var(--t1);}
-.dhero-cta span{font-size:18px;transition:transform 0.2s;}
-@media (hover: hover) { .dhero:hover .dhero-cta span{transform:translateX(3px);} .dhero:hover .dhero-cta{background:#4aad00;} .dhero-done:hover .dhero-cta{background:var(--s3);} }
-@keyframes dheroPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 .home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);}
@@ -6072,7 +6060,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online:active .hero-online-cta{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
 
 /* ── MORE MODES section eyebrow ── */
-.more-modes-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:4px 0 10px;padding-left:2px;}
+/* .more-modes-eyebrow — layout-only wrapper; visual tokens come from .ds-eyebrow. */
+.more-modes-eyebrow{margin:4px 0 10px;padding-left:2px;}
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
@@ -6208,7 +6197,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);} 
 .q-card-correct{background:rgba(34,197,94,0.12)!important;border:1px solid rgba(34,197,94,0.35)!important;}
 .q-card-wrong{background:rgba(248,113,113,0.12)!important;border:1px solid rgba(248,113,113,0.35)!important;}
-.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:0.2px;margin-bottom:14px;background:var(--accent-dim);border:1px solid var(--accent-b);padding:4px 10px;border-radius:20px;}
+/* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
+.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;}
@@ -6337,7 +6327,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .add-player-btn:hover{border-color:var(--accent-b);color:var(--accent);background:var(--accent-dim);}
 
 /* ── LOCAL MULTIPLAYER SETUP ── */
-.local-section-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:12px 0 8px;}
+.local-section-label{margin:12px 0 8px;}
 .local-count-row{display:flex;gap:8px;margin-bottom:4px;}
 .local-count-btn{flex:1;min-height:46px;padding:10px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;color:var(--t1);font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
 .local-count-btn:hover{background:var(--s2);}
@@ -6361,7 +6351,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── LOCAL GAME: READY/HANDOFF SCREEN (must reveal nothing about the question) ── */
 .local-ready{position:relative;min-height:calc(100vh - 120px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:12px;}
-.local-ready-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);}
+/* Visual tokens come from .ds-eyebrow. */
 .local-ready-emoji{font-size:84px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));}
 .local-ready-name{font-size:28px;font-weight:900;color:var(--t1);letter-spacing:-0.5px;}
 .local-ready-sub{font-size:14px;color:var(--t2);max-width:300px;line-height:1.5;margin-bottom:8px;}
@@ -6382,7 +6372,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── LOCAL GAME: REVEAL SCREEN (all picks shown at once) ── */
 .local-reveal{padding:24px 20px 40px;display:flex;flex-direction:column;gap:12px;}
-.local-reveal-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;}
+.local-reveal-eyebrow{text-align:center;}
 .local-reveal-q{font-size:16px;font-weight:700;color:var(--t1);line-height:1.4;text-align:center;margin:4px 8px;}
 .local-reveal-correct{font-size:13px;color:var(--t2);text-align:center;margin-bottom:6px;}
 .local-reveal-correct strong{color:var(--accent);font-weight:800;}
@@ -6415,7 +6405,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pod-score{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--t2);}
 .podium-row.gold .pod-score{color:var(--gold);}
 .settings-section{margin-bottom:20px;}
-.settings-section-title{font-family:'Inter',sans-serif;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:0.2px;margin-bottom:8px;}
+/* .settings-section-title — layout-only; visual tokens from .ds-eyebrow. */
+.settings-section-title{margin-bottom:8px;}
 .settings-card{background:var(--s1);border:none;border-radius:var(--r);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.35);}
 .settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.13s;}
 .settings-row:last-child{border-bottom:none;}
@@ -6557,7 +6548,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-avatar-edit{position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0a1a00;font-weight:800;cursor:pointer;}
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
-.profile-level-badge{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;}
+/* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
+.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);color:var(--t2);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
 .profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
@@ -6578,10 +6570,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .journey-body{flex:1;min-width:0;}
 .journey-name{font-size:14px;font-weight:700;color:var(--t1);line-height:1.2;}
 .journey-sub{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500;}
-.journey-badge{font-size:10px;font-weight:800;letter-spacing:0.3px;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+/* .journey-badge reuses the .pill tokens (tone variants map: current=green solid, next=pill--green, goal=pill--amber). */
+.journey-badge{display:inline-flex;align-items:center;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;}
 .journey-badge.current{background:var(--accent);color:#fff;}
-.journey-badge.next{background:rgba(34,197,94,0.15);color:var(--accent);border:1px solid rgba(34,197,94,0.3);}
-.journey-badge.goal{background:rgba(255,200,0,0.12);color:var(--gold);border:1px solid rgba(255,200,0,0.3);}
+.journey-badge.next{background:rgba(88,204,2,0.15);color:#8AE042;}
+.journey-badge.goal{background:rgba(255,193,7,0.15);color:#FFC107;}
 
 .club-crest svg{width:100%;height:100%;display:block;}
 
@@ -6671,7 +6664,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;}
 .st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
-.st-key{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);margin-top:4px;letter-spacing:0.8px;}
+/* .st-key — layout-only; visual tokens from .ds-eyebrow. */
+.st-key{margin-top:4px;}
 
 /* ── XP BAR ── */
 .xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
@@ -8241,7 +8235,7 @@ function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Player count picker */}
-      <div className="local-section-label">Players</div>
+      <div className="ds-eyebrow local-section-label">Players</div>
       <div className="local-count-row">
         {[2,3,4,5,6].map(n => (
           <button key={n} className={`local-count-btn${count===n?" on":""}`} onClick={() => setCount(n)}>{n}</button>
@@ -8249,7 +8243,7 @@ function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Names */}
-      <div className="local-section-label">Names</div>
+      <div className="ds-eyebrow local-section-label">Names</div>
       <div className="local-names">
         {Array.from({ length: count }, (_, i) => (
           <div key={i} className="player-input-row">
@@ -8266,7 +8260,7 @@ function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Mode */}
-      <div className="local-section-label">Mode</div>
+      <div className="ds-eyebrow local-section-label">Mode</div>
       <div className="local-mode-row">
         {[
           { id:"classic",  icon:"⏱️", name:"Classic",  desc:"10 questions" },
@@ -8282,7 +8276,7 @@ function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Difficulty */}
-      <div className="local-section-label">Difficulty</div>
+      <div className="ds-eyebrow local-section-label">Difficulty</div>
       <div className="local-diff-row">
         {[
           { id:"easy",   icon:"🌱", name:"Easy" },
@@ -8519,7 +8513,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="local-ready">
         <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
-        <div className="local-ready-eyebrow">
+        <div className="ds-eyebrow local-ready-eyebrow">
           {classicSprint
             ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
             : `Next up · ${prog}`}
@@ -8547,7 +8541,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="local-ready">
         <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
-        <div className="local-ready-eyebrow">Next up · {prog}</div>
+        <div className="ds-eyebrow local-ready-eyebrow">Next up · {prog}</div>
         <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
         <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
         <div className="local-ready-sub">Pass the phone — same question.</div>
@@ -8603,7 +8597,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
       : [currentPlayer]; // classic/sprint chunk — one player, shown per-question
     return (
       <div className="local-reveal">
-        <div className="local-reveal-eyebrow">
+        <div className="ds-eyebrow local-reveal-eyebrow">
           {isSurvivalQ ? `Results · ${prog}` : `${currentPlayer?.name}'s round · Q${chunkStartQ + 1}–${chunkEndQ + 1}`}
         </div>
         {isSurvivalQ ? (
@@ -8686,7 +8680,7 @@ function LocalResults({ result, onHome, onRetry }) {
         <div className="rc" style={{marginBottom:16}}>
           <div className="rc-title">No results to show</div>
         </div>
-        <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
     );
   }
@@ -8804,7 +8798,7 @@ function LocalResults({ result, onHome, onRetry }) {
       )}
 
       <button className="btn-3d" style={{marginTop:16}} onClick={onRetry}>Play Again</button>
-      <button className="btn btn-s" style={{marginTop:10}} onClick={onHome}>Back to Home</button>
+      <button className="btn-3d ghost" style={{marginTop:14}} onClick={onHome}>Back to Home</button>
     </div>
   );
 }
@@ -9176,9 +9170,9 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
           </div>
         </div>
       )}
-      <button className="btn btn-p" onClick={onRetry} style={{marginBottom:8}}>Retake Test</button>
-      <button className="btn btn-share" onClick={onShare}>Share Score 📤</button>
-      <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>Retake Test</button>
+      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
     </div>
   );
 }
@@ -9414,9 +9408,9 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
 
       {/* Primary actions FIRST — always visible without scrolling */}
       {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn btn-p" onClick={onRetry} style={{marginBottom:8,fontSize:17,fontWeight:800,letterSpacing:0.3}}>▶ Play Again</button>
-      <button className="btn btn-share" onClick={onShare} style={{marginBottom:8}}>Share Score 📤</button>
-      <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Play Again</button>
+      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
 
       {/* Wrong answers review — below the fold, players scroll if interested */}
       {wrongAnswers && wrongAnswers.length > 0 && (
@@ -9474,15 +9468,15 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn btn-p" onClick={onRetry} style={{marginBottom:8}}>⚡ Run It Back</button>
-      <button className="btn btn-share" onClick={() => {
+      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>⚡ Run It Back</button>
+      <button className="btn-3d amber" onClick={() => {
         const msg = isNewBest && !isFirstRun
           ? `⚡🔥 New Hot Streak best: ${score} correct in 60 seconds on Ball IQ!\nCan you beat that?\n#BallIQ`
           : `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nThink you can beat that?\n#BallIQ`;
         if (navigator.share) navigator.share({title:"Ball IQ",text:msg}).catch(()=>{});
         else navigator.clipboard?.writeText(msg).then(()=>alert("Copied to clipboard!")).catch(()=>{});
-      }} style={{marginBottom:8}}>Share Score 📤</button>
-      <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      }} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
     </div>
   );
 }
@@ -9517,15 +9511,15 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn btn-p" onClick={onRetry} style={{marginBottom:8}}>▶ Another Round</button>
-      <button className="btn btn-share" onClick={() => {
+      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Another Round</button>
+      <button className="btn-3d amber" onClick={() => {
         const msg = isPerfect && total >= 10
           ? `🎯 Perfect ${score}/${total} on Ball IQ True or False — no lies got past me!\n#BallIQ`
           : `✅ ${score}/${total} on Ball IQ True or False!\n${Math.round(score/total*100)}% accuracy — can you do better?\n#BallIQ`;
         if (navigator.share) navigator.share({title:"Ball IQ",text:msg}).catch(()=>{});
         else navigator.clipboard?.writeText(msg).then(()=>alert("Copied to clipboard!")).catch(()=>{});
-      }} style={{marginBottom:8}}>Share Score 📤</button>
-      <button className="btn btn-s" onClick={onHome}>Back to Home</button>
+      }} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
     </div>
   );
 }
@@ -9597,7 +9591,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Account</div>
+        <div className="ds-eyebrow settings-section-title">Account</div>
         <div className="settings-card">
           {user && profile ? (
             <>
@@ -9657,7 +9651,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Appearance</div>
+        <div className="ds-eyebrow settings-section-title">Appearance</div>
         <div className="settings-card">
           <div className="settings-row">
             <div className="sr-left">
@@ -9679,7 +9673,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
       <div className="settings-section">
-        <div className="settings-section-title">Gameplay</div>
+        <div className="ds-eyebrow settings-section-title">Gameplay</div>
         <div className="settings-card">
           <div className="settings-row">
             <div className="sr-left">
@@ -9712,7 +9706,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">About</div>
+        <div className="ds-eyebrow settings-section-title">About</div>
         <div className="settings-card">
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Version</div></div>
@@ -9730,7 +9724,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Data</div>
+        <div className="ds-eyebrow settings-section-title">Data</div>
         <div className="settings-card">
           <div className="settings-row danger" onClick={onClearStats}>
             <div className="sr-left">
@@ -10339,14 +10333,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         <button className="share-profile-btn" style={{marginTop:-4}} onClick={onShowWeekly}>Weekly Summary 📊</button>
       )}
       <div className="stat-grid" style={{marginBottom:16}}>
-        <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="st-key">Games</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="st-key">Day Streak</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="st-key">Correct</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="st-key">Best Score</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="st-key">Best Streak</div></div>
-        {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="st-key">Best IQ</div></div>}
-        {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="st-key">⚡ Hot Streak</div></div>}
-        {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="st-key">✅ T/F Best</div></div>}
+        <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="ds-eyebrow st-key">Games</div></div>
+        <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="ds-eyebrow st-key">Day Streak</div></div>
+        <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
+        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
+        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
+        {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
+        {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
+        {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
       </div>
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
@@ -11765,7 +11759,7 @@ function AppInner() {
             })()}
 
             {/* ── MORE MODES ── */}
-            <div className="more-modes-eyebrow" style={{marginTop:14}}>More modes</div>
+            <div className="ds-eyebrow more-modes-eyebrow" style={{marginTop:14}}>More modes</div>
             <div className="play-grid">
               {[
                 { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
