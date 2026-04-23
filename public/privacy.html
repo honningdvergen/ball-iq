@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#0a0a0a;">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="color-scheme" content="dark" />
   <title>Privacy Policy — Ball IQ</title>
   <style>
+    /* Paint dark before any other CSS parses — kills the white flash on tab open. */
+    html { background-color: #0a0a0a; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      background: #0C0E13;
+      background-color: #0a0a0a;
       color: #F0F1F5;
       line-height: 1.7;
       padding: 40px 24px 80px;
+      min-height: 100vh;
     }
     .wrap { max-width: 680px; margin: 0 auto; }
     .logo { font-size: 22px; font-weight: 900; color: #58CC02; margin-bottom: 8px; }

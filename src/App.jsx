@@ -9735,7 +9735,14 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             href="https://ball-iq-pi.vercel.app/privacy.html"
             target="_blank"
             rel="noopener noreferrer"
-            style={{textDecoration:"none", color:"inherit"}}
+            style={{
+              // .settings-row already sets display:flex, which promotes the anchor
+              // to block-level layout and prevents inline-baseline quirks.
+              // These inline overrides strip the default link underline + color.
+              textDecoration: "none",
+              color: "inherit",
+              WebkitTapHighlightColor: "transparent",
+            }}
           >
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
