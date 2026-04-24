@@ -12523,6 +12523,18 @@ function AppInner() {
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
+  // Belt-and-braces: strip any chaos-tagged item before the TrueFalseEngine
+  // sees the questions list. Both upstream selection paths (getTrueFalseQs +
+  // launchLeagueInMode's T/F branch) already filter chaos, but any future code
+  // path that sets `questions` directly would bypass those filters. Memoized so
+  // the engine's questions prop keeps a stable reference across AppInner renders.
+  const trueFalseQuestions = useMemo(
+    () => (mode === "truefalse" && Array.isArray(questions))
+      ? questions.filter(q => q && q.cat !== "chaos")
+      : questions,
+    [mode, questions]
+  );
+
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
 
@@ -13134,7 +13146,7 @@ function AppInner() {
         {/* ── TRUE OR FALSE ── */}
         {screen === "quiz" && mode === "truefalse" && (
           <TrueFalseEngine
-            questions={questions}
+            questions={trueFalseQuestions}
             onComplete={handleComplete}
             onBack={() => { setScreen("home"); setTab("home"); }}
           />
