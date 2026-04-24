@@ -6097,7 +6097,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 .home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
-.home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);}
+.home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;}
 .home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(88,204,2,0.45);}
 .home-stat-chip.tappable:active{transform:scale(0.98);}
@@ -6108,7 +6108,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .home-stat-val.flame{color:#FF6A00;}
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
-.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
+.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
 .hero-daily-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.7);}
 .hero-daily-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:#1A0F05;}
 .hero-daily-sub{font-family:'Inter',sans-serif;font-size:12.5px;opacity:0.85;margin-top:4px;color:#1A0F05;}
@@ -6117,7 +6117,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
@@ -6131,7 +6131,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
@@ -6165,7 +6165,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact-arrow{font-size:16px;color:var(--t3);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
@@ -6647,7 +6647,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .badges-section{margin-bottom:14px;}
 .badges-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);}
+.badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);contain:layout paint style;}
 .badge-tile.earned{border-color:var(--accent-b);background:var(--accent-dim);}
 .badge-tile.locked{opacity:0.4;}
 .badge-icon{font-size:20px;}
@@ -6728,7 +6728,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── STAT GRID (used in Profile) ── */
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
-.stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;}
+.stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;contain:layout paint style;}
 .st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
 /* .st-key — layout-only; visual tokens from .ds-eyebrow. */
 .st-key{margin-top:4px;}
@@ -7270,13 +7270,16 @@ const CLUB_CRESTS = {
   </svg>`,
 };
 
-function ClubCrest({ clubKey, size = 48 }) {
+const ClubCrest = React.memo(function ClubCrest({ clubKey, size = 48 }) {
   const svg = CLUB_CRESTS[clubKey];
   if (!svg) {
     return (
       <div style={{width:size, height:size, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:Math.round(size*0.5)}}>⚽</div>
     );
   }
+  // dangerouslySetInnerHTML re-parses the SVG string on every render; React.memo
+  // above short-circuits when (clubKey, size) are unchanged so the parse + DOM
+  // write only happens once per (key, size) pair.
   return (
     <div
       className="club-crest"
@@ -7285,7 +7288,7 @@ function ClubCrest({ clubKey, size = 48 }) {
       dangerouslySetInnerHTML={{__html: svg}}
     />
   );
-}
+});
 
 // ─── TYPED INPUT WITH AUTOCOMPLETE ───────────────────────────────────────────
 function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
@@ -9380,7 +9383,7 @@ function DailySocialProof({ score, total }) {
         alignItems: "center",
         gap: 6,
       }}>
-        <span style={{ color: "#dc2626", fontSize: 10, animation: "dheroPulse 2s ease-in-out infinite" }}>●</span>
+        <span style={{ color: "#dc2626", fontSize: 10, animation: "dp 1.2s ease infinite" }}>●</span>
         DAILY CHALLENGE · LIVE
       </div>
       
@@ -10937,7 +10940,7 @@ function getLeagueCohort(userXp, weekSeed) {
   }));
 }
 
-function LeagueScreenImpl({ xp, weeklyXp, profile }) {
+function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
   const myWeeklyXp = weeklyXp || 0;
   const weekSeed = getWeekSeed();
   const baseOpponents = getLeagueCohort(Math.max(myWeeklyXp, 50), weekSeed);
@@ -10949,8 +10952,10 @@ function LeagueScreenImpl({ xp, weeklyXp, profile }) {
       return { ...o, xp: o.xp + Math.floor(minutesSinceMonday * rate) };
     })
   );
-  // Tick one random opponent every 8s to feel alive
+  // Tick one random opponent every 8s to feel alive — paused when the tab is
+  // hidden so it doesn't wake React up while the user is on Home / Daily / Profile.
   useEffect(() => {
+    if (!isActive) return;
     const id = setInterval(() => {
       setLiveXP(prev => {
         const idx = Math.floor(Math.random() * prev.length);
@@ -10958,7 +10963,7 @@ function LeagueScreenImpl({ xp, weeklyXp, profile }) {
       });
     }, 8000);
     return () => clearInterval(id);
-  }, []);
+  }, [isActive]);
 
   const you = { name: profile?.name||"You", avatar: profile?.avatar||"⚽", xp, isYou:true };
   const all = [...liveXP, you].sort((a,b) => b.xp - a.xp);
@@ -11039,6 +11044,9 @@ const HOW_TO_PLAY = {
 };
 
 const TEXT_SIZE_MAP = { S: "15px", M: "18px", L: "21px" };
+// Shared hide style so the home-screen tab wrappers reference the same object
+// each render (no new allocation on every tab change).
+const HIDDEN_STYLE = { display: "none" };
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
@@ -12077,8 +12085,11 @@ function AppInner() {
         )}
 
         {/* ── HOME TAB ── */}
-        {!inGame && screen === "home" && tab === "home" && (
-          <div className="screen tab-content">
+        {/* Home-screen tabs are always mounted together and toggled via display
+            so React doesn't pay the remount cost on each tab switch and per-tab
+            state (calendar viewDate, profile emoji picker etc.) is preserved. */}
+        {!inGame && screen === "home" && (
+          <div className="screen tab-content" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             {/* Greeting row */}
             <div style={{padding:"10px 0 12px", display:"flex", alignItems:"baseline", gap:10}}>
               <div style={{fontSize:13, color:"var(--t3)"}}>
@@ -12202,13 +12213,25 @@ function AppInner() {
         )}
 
         {/* ── LEAGUE TAB ── */}
-        {!inGame && screen === "home" && tab === "league" && <LeagueScreen xp={xp} profile={profile} />}
+        {!inGame && screen === "home" && (
+          <div style={tab === "league" ? undefined : HIDDEN_STYLE}>
+            <LeagueScreen xp={xp} profile={profile} isActive={tab === "league"} />
+          </div>
+        )}
 
         {/* ── DAILY TAB ── */}
-        {!inGame && screen === "home" && tab === "daily" && <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />}
+        {!inGame && screen === "home" && (
+          <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
+            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />
+          </div>
+        )}
 
         {/* ── PROFILE TAB ── */}
-        {!inGame && screen === "home" && tab === "profile" && <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} />}
+        {!inGame && screen === "home" && (
+          <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
+            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} />
+          </div>
+        )}
 
         {/* ── SOCIAL HUB ── */}
         {screen === "social" && (
