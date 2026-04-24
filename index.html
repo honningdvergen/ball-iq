@@ -94,5 +94,15 @@
       } catch (e) {}
     </script>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Register the PWA service worker after first load so static assets
+      // (JS / CSS / fonts / icons) can be served cache-first on subsequent
+      // home-screen launches. Scoped to / so it controls the whole app.
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
+        });
+      }
+    </script>
   </body>
 </html>
