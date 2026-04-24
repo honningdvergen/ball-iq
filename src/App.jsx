@@ -6140,6 +6140,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
+/* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
+.play-card.coming-soon{opacity:0.78;}
+.play-card.coming-soon .play-card-badge{position:absolute;top:8px;right:8px;background:rgba(255,193,7,0.15);color:#FFC107;font-size:9px;letter-spacing:0.12em;padding:3px 8px;text-transform:uppercase;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
 .diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
@@ -11761,6 +11764,7 @@ function AppInner() {
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showLeaguePicker, setShowLeaguePicker] = useState(false);
+  const [showFriendsPicker, setShowFriendsPicker] = useState(false);
   const [leagueMode, setLeagueMode] = useState(null); // { id, name } once a league is picked; null otherwise
 
   const pickLeague = useCallback((leagueId, leagueName) => {
@@ -12084,6 +12088,38 @@ function AppInner() {
           </div>
         )}
 
+        {/* ── PLAY WITH FRIENDS SHEET ── */}
+        {showFriendsPicker && (
+          <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
+            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+              <div className="diff-sheet-title">Play with Friends</div>
+              <div className="diff-sheet-sub">Who's joining?</div>
+              <div className="diff-options">
+                <button
+                  className="diff-option"
+                  onClick={() => { setShowFriendsPicker(false); startMode("online"); }}
+                >
+                  <span className="diff-option-icon">🌐</span>
+                  <div className="diff-option-body">
+                    <div className="diff-option-name">Online 1v1</div>
+                    <div className="diff-option-desc">Play someone anywhere with a room code</div>
+                  </div>
+                </button>
+                <button
+                  className="diff-option"
+                  onClick={() => { setShowFriendsPicker(false); startMode("local"); }}
+                >
+                  <span className="diff-option-icon">🤝</span>
+                  <div className="diff-option-body">
+                    <div className="diff-option-name">Local Multiplayer</div>
+                    <div className="diff-option-desc">Pass the phone, same room</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ── HOME TAB ── */}
         {/* Home-screen tabs are always mounted together and toggled via display
             so React doesn't pay the remount cost on each tab switch and per-tab
@@ -12148,13 +12184,13 @@ function AppInner() {
               </button>
             )}
 
-            {/* ── HERO: ONLINE 1v1 ── */}
-            <button className="hero-online" onClick={() => startMode("online")} aria-label="Play online 1v1">
-              <div className="hero-online-eyebrow">Online 1v1</div>
-              <div className="hero-online-title">Find a match</div>
-              <div className="hero-online-sub">Head-to-head · Room codes to play friends</div>
-              <div className="hero-online-cta">Find</div>
-              <div className="hero-online-emoji">⚽</div>
+            {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
+            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
+              <div className="hero-online-eyebrow">Multiplayer</div>
+              <div className="hero-online-title">Play with Friends</div>
+              <div className="hero-online-sub">Online or local — challenge someone</div>
+              <div className="hero-online-cta">Play</div>
+              <div className="hero-online-emoji">🤝</div>
             </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
@@ -12194,13 +12230,14 @@ function AppInner() {
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
-                { key:"local",     icon:"🤝",  name:"Local Multi",   desc:"Pass the phone" },
-              ].map(({ key, icon, name, desc, onTap }) => (
+                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Coming soon",       comingSoon:true, onTap:() => showToast("🎭 Chaos mode is coming soon — stay tuned!") },
+              ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
                 <button
                   key={key}
-                  className="play-card"
+                  className={`play-card${comingSoon ? " coming-soon" : ""}`}
                   onClick={onTap || (() => startMode(key))}
                 >
+                  {comingSoon && <span className="play-card-badge">Soon</span>}
                   <span className="play-card-icon">{icon}</span>
                   <span className="play-card-body">
                     <span className="play-card-name">{name}</span>
