@@ -12900,6 +12900,8 @@ function AppInner() {
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
+                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned!") },
+                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned!") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
                 <button
                   key={key}
