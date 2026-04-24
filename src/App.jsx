@@ -39,6 +39,13 @@ if (typeof window !== 'undefined' && !window.storage) {
   };
 }
 
+// ─── CHAOS QUESTIONS ──────────────────────────────────────────────────────────
+// Placeholder for Chaos mode content — quotes, weird moments, cult-football trivia.
+// Every item should carry cat:"chaos" (and optionally tag:"chaos") so the mode's
+// filter picks them up. Difficulty is stored as "mixed" because the Chaos pool
+// is ramp-free.
+const CHAOS_QB = [];
+
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
   // WORLD CUP — easy
@@ -4982,6 +4989,8 @@ const QB = [
   { q:"What is the only stadium to have hosted matches in three different World Cups (1970, 1986, 2026)?", o:["Maracanã","Estadio Azteca","Wembley","Lusail"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"What record does the 2022 World Cup final hold regarding viewership?", o:["Most goals","Most-watched single sporting event in history","Longest match","Most penalties"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
 
+  // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
+  ...CHAOS_QB,
 ];
 
 // ─── AUTOCOMPLETE POOL ────────────────────────────────────────────────────────
@@ -7723,7 +7732,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const total = questions?.length || 0;
   const q = questions?.[idx];
-  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && q?.type !== "tf";
+  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && q?.type !== "tf";
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
@@ -11651,7 +11660,7 @@ function AppInner() {
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       // Reset category for special modes that ignore it
-      if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse") setCat("All");
+      if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
         showToast(`Already done today — ${dailyScore}/7. Come back tomorrow! 📅`);
         return;
@@ -11670,6 +11679,13 @@ function AppInner() {
         qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
       else if (m === "truefalse") { qs = getTrueFalseQs(); }
+      else if (m === "chaos") {
+        // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
+        // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.
+        const chaos = QB.filter(q => q.cat === "chaos" || q.tag === "chaos");
+        const fresh = applySeenFilter(chaos, 10, qbHistKey);
+        qs = shuffle([...fresh]).slice(0, 10).map(q => ({ ...q, _histKey: qbHistKey(q) }));
+      }
       else { qs = getQs({ cat, diff, n: 10, ramp: true }); }
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
       qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
@@ -11892,6 +11908,7 @@ function AppInner() {
       legends: `📜 ${score}/${total} on Ball IQ Legends & History!\nballiq.app #BallIQ`,
       wc2026: `🌍 ${score}/${total} on Ball IQ World Cup 2026!\nballiq.app #BallIQ`,
       local: `🤝 Just played Ball IQ Local Multiplayer!\nballiq.app #BallIQ`,
+      chaos: `🎭 ${score}/${total} on Ball IQ Chaos — quotes, moments & madness!\nballiq.app #BallIQ`,
     };
     const text = msgs[mode] || msgs.classic;
 
@@ -11907,6 +11924,7 @@ function AppInner() {
       legends: "Legends & History",
       wc2026: "World Cup 2026",
       local: "Local Multiplayer",
+      chaos: "Chaos Quiz",
     };
     const modeLabel = MODE_LABELS[mode] || "Quiz";
     let mainScore, scoreCaption, percentile = null, cardLabel = null, beatLine = null;
@@ -12530,7 +12548,7 @@ function AppInner() {
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
-                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Coming soon",       comingSoon:true, onTap:() => showToast("🎭 Chaos mode is coming soon — stay tuned!") },
+                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
                 <button
                   key={key}
@@ -12653,6 +12671,12 @@ function AppInner() {
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",borderRadius:12,border:"1px solid rgba(251,191,36,0.15)"}}>
                 <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>📜 Legends & History</div>
                 <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Take your time. These are the stories that made the game.</div>
+              </div>
+            )}
+            {mode === "chaos" && (
+              <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(168,85,247,0.10),rgba(255,106,0,0.06))",borderRadius:12,border:"1px solid rgba(168,85,247,0.22)"}}>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"#c084fc",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
+                <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Quotes, moments &amp; madness — take a beat and think.</div>
               </div>
             )}
             {activeClub && CLUB_PACKS[activeClub] && (
