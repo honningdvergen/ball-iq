@@ -5641,6 +5641,18 @@ const TF_STATEMENTS = [
 
 ];
 
+// Keyword match table used to surface league-relevant TF_STATEMENTS when the
+// user picks "True or False" from the League Quiz mode sheet. Matching is a
+// case-insensitive substring against the statement text. If fewer than 10
+// league-specific statements match, the launcher falls back to the general pool.
+const LEAGUE_TF_KEYWORDS = {
+  PL: ["premier league", "manchester united", "manchester city", "liverpool", "arsenal", "chelsea", "tottenham", "leicester", "newcastle", "everton", "west ham", "aston villa"],
+  LaLiga: ["la liga", "real madrid", "barcelona", "atletico madrid", "atlético madrid", "sevilla", "valencia", "real sociedad", "villarreal"],
+  Bundesliga: ["bundesliga", "bayern munich", "borussia dortmund", "dortmund", "leverkusen", "leipzig", "schalke", "bayer"],
+  SerieA: ["serie a", "juventus", "ac milan", "inter milan", "napoli", " roma", "lazio", " milan"],
+  UCL: ["champions league", "european cup"],
+};
+
 function getTrueFalseQs() {
   const indexed = TF_STATEMENTS.map((s, i) => ({ ...s, _tfIdx: i }));
   const keyFn = (s) => (typeof s._tfIdx === "number" ? `tf:${s._tfIdx}` : null);
@@ -11741,18 +11753,57 @@ function AppInner() {
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showLeaguePicker, setShowLeaguePicker] = useState(false);
-  const startLeagueQuiz = useCallback((leagueCat) => {
-    setShowLeaguePicker(false);
+  const [leagueMode, setLeagueMode] = useState(null); // { id, name } once a league is picked; null otherwise
+
+  const pickLeague = useCallback((leagueId, leagueName) => {
     haptic("soft");
+    setShowLeaguePicker(false);
+    setLeagueMode({ id: leagueId, name: leagueName });
+  }, []);
+
+  const backToLeagues = useCallback(() => {
+    haptic("soft");
+    setLeagueMode(null);
+    setShowLeaguePicker(true);
+  }, []);
+
+  const launchLeagueInMode = useCallback((modeId) => {
+    if (!leagueMode) return;
+    const leagueId = leagueMode.id;
+    haptic("soft");
+    setLeagueMode(null);
     setActiveClub(null);
-    setDiff("medium");
-    setCat(leagueCat);
-    const qs = getQs({ cat: leagueCat, diff: "medium", n: 10, ramp: false });
-    if (!qs || qs.length === 0) { showToast("Not enough questions for this league yet"); return; }
-    setMode("classic");
+    setCat(leagueId);
+
+    let qs = [];
+    if (modeId === "classic") {
+      setDiff("medium");
+      qs = getQs({ cat: leagueId, diff: "medium", n: 10, ramp: false }) || [];
+    } else if (modeId === "survival") {
+      qs = getQs({ cat: leagueId, diff: "medium", n: 300 }) || [];
+    } else if (modeId === "hotstreak") {
+      qs = (getQs({ cat: leagueId, diff: "medium", n: 999 }) || []).filter(q => q.type !== "tf");
+    } else if (modeId === "truefalse") {
+      // Keyword-match league-specific T/F; fall back to the general pool if too few.
+      const keywords = LEAGUE_TF_KEYWORDS[leagueId] || [];
+      const indexed = TF_STATEMENTS.map((s, i) => ({ ...s, _tfIdx: i }));
+      const leagueTF = keywords.length
+        ? indexed.filter(s => keywords.some(kw => s.s.toLowerCase().includes(kw)))
+        : [];
+      if (leagueTF.length >= 10) {
+        qs = shuffle(leagueTF).slice(0, 20).map(s => ({ ...s, _histKey: `tf:${s._tfIdx}` }));
+      } else {
+        qs = getTrueFalseQs();
+      }
+    }
+
+    qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
+    if (qs.length === 0) { showToast("Not enough questions for this league yet"); return; }
+
+    setMode(modeId);
     setQuestions(qs);
     setScreen("quiz");
-  }, [showToast]);
+  }, [leagueMode, showToast]);
 
   const startClassicWithDiff = useCallback((d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
@@ -11950,12 +12001,12 @@ function AppInner() {
           </div>
         )}
 
-        {/* ── LEAGUE QUIZ SHEET ── */}
+        {/* ── LEAGUE QUIZ SHEET (step 1: pick a league) ── */}
         {showLeaguePicker && (
           <div className="diff-overlay" onClick={() => setShowLeaguePicker(false)}>
             <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
               <div className="diff-sheet-title">Pick a League</div>
-              <div className="diff-sheet-sub">10 questions from that competition</div>
+              <div className="diff-sheet-sub">Choose a competition, then a game mode</div>
               <div className="diff-options">
                 {[
                   { id:"PL",         icon:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", name:"Premier League",   desc:"England's top flight" },
@@ -11967,7 +12018,51 @@ function AppInner() {
                   <button
                     key={opt.id}
                     className="diff-option"
-                    onClick={() => startLeagueQuiz(opt.id)}
+                    onClick={() => pickLeague(opt.id, opt.name)}
+                  >
+                    <span className="diff-option-icon">{opt.icon}</span>
+                    <div className="diff-option-body">
+                      <div className="diff-option-name">{opt.name}</div>
+                      <div className="diff-option-desc">{opt.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── LEAGUE QUIZ SHEET (step 2: pick a mode) ── */}
+        {leagueMode && (
+          <div className="diff-overlay" onClick={() => setLeagueMode(null)}>
+            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+              <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:4}}>
+                <button
+                  type="button"
+                  onClick={backToLeagues}
+                  aria-label="Back to league picker"
+                  style={{
+                    width:32, height:32, borderRadius:9,
+                    background:"var(--s2)", border:"1px solid var(--border)",
+                    color:"var(--t1)", fontSize:16, lineHeight:1, cursor:"pointer",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    flexShrink:0,
+                  }}
+                >←</button>
+                <div className="diff-sheet-title" style={{margin:0}}>{leagueMode.name} — Choose mode</div>
+              </div>
+              <div className="diff-sheet-sub">How do you want to play?</div>
+              <div className="diff-options">
+                {[
+                  { id:"classic",   icon:"⏱️",  name:"Classic",      desc:"10 questions, 20 seconds each" },
+                  { id:"survival",  icon:"🔥",  name:"Survival",     desc:"One wrong and it's over" },
+                  { id:"hotstreak", icon:"⚡🔥", name:"Hot Streak",   desc:"60-second sprint" },
+                  { id:"truefalse", icon:"✅",  name:"True or False", desc:"20 quick statements" },
+                ].map(opt => (
+                  <button
+                    key={opt.id}
+                    className="diff-option"
+                    onClick={() => launchLeagueInMode(opt.id)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
                     <div className="diff-option-body">
