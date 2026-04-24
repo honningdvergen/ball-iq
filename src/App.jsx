@@ -5651,13 +5651,20 @@ function getTrueFalseQs() {
 
 function calcBallIQ(score, total, avgResponseMs) {
   // Real-IQ-bell-curve inspired mapping in the 60–160 range.
-  //  - Base accuracy score: pct^1.3 * 75 + 60  →  60% correct ≈ 99, 100% correct = 135.
-  //  - Speed bonus: up to 15 pts for fast answers.  5s avg = full +15, 15s avg = 0,
-  //    linear between. Missing / NaN avg counts as "average" and contributes 0.
-  //  - Clamped to [60, 160]; rounded.
+  //  Calibration targets (from the spec):
+  //    - Perfect 15/15 + fast answers   →  155–160
+  //    - 8/15 correct (roughly average) →  ~100
+  //    - 0/15 correct                    →  60
+  //  Formula: base = 60 + pct^1.5 * 85  (100% → 145)
+  //           speedBonus = 0..15 (≤5s avg = +15, ≥15s = 0, linear)
+  //           clamp [60, 160], round.
+  //  Sanity:
+  //    15/15 @ 5s  → 60 + 85 + 15 = 160 ✓
+  //    8/15  @10s  → 60 + 0.533^1.5*85 + 7.5 ≈ 100 ✓
+  //    0/15        → 60 ✓
   if (!total) return 60;
   const pct = Math.max(0, Math.min(1, score / total));
-  const base = 60 + Math.pow(pct, 1.3) * 75;
+  const base = 60 + Math.pow(pct, 1.5) * 85;
   const speedBonus = (typeof avgResponseMs === "number" && avgResponseMs > 0)
     ? Math.max(0, Math.min(15, ((15000 - avgResponseMs) / 10000) * 15))
     : 0;
@@ -5665,41 +5672,59 @@ function calcBallIQ(score, total, avgResponseMs) {
 }
 
 function iqPercentile(iq) {
-  // Numeric percentile aligned with the label/share buckets below
-  // (150+ → top 1%, 140 → top 5%, …). Used for the BallIQResults ring
-  // and any "Better than X%" rendering.
-  if (iq >= 150) return 99;
-  if (iq >= 140) return 95;
-  if (iq >= 130) return 90;
-  if (iq >= 120) return 80;
-  if (iq >= 110) return 65;
-  if (iq >= 100) return 50;
-  if (iq >= 90)  return 35;
-  return 20;
+  // Numeric percentile aligned with the iqPercentileLabel buckets below
+  // (155+ → top 1%, 145 → top 3%, …). Used for the BallIQResults ring
+  // and any numeric "Better than X%" rendering.
+  if (iq >= 155) return 99;
+  if (iq >= 145) return 97;
+  if (iq >= 135) return 92;
+  if (iq >= 125) return 85;
+  if (iq >= 115) return 75;
+  if (iq >= 105) return 60;
+  if (iq >= 95)  return 45;
+  if (iq >= 85)  return 30;
+  return 15;
 }
 
 function iqPercentileLabel(iq) {
   // Fun "Top X% of football fans" ribbon used in the share text and recap overlay.
-  if (iq >= 150) return "Top 1% of football fans";
-  if (iq >= 140) return "Top 5% of football fans";
-  if (iq >= 130) return "Top 10% of football fans";
-  if (iq >= 120) return "Top 20% of football fans";
-  if (iq >= 110) return "Top 35% of football fans";
-  if (iq >= 100) return "Top 50% of football fans";
-  if (iq >= 90)  return "Top 65% of football fans";
-  return "Top 80% of football fans";
+  if (iq >= 155) return "Top 1% of football fans";
+  if (iq >= 145) return "Top 3% of football fans";
+  if (iq >= 135) return "Top 8% of football fans";
+  if (iq >= 125) return "Top 15% of football fans";
+  if (iq >= 115) return "Top 25% of football fans";
+  if (iq >= 105) return "Top 40% of football fans";
+  if (iq >= 95)  return "Top 55% of football fans";
+  if (iq >= 85)  return "Top 70% of football fans";
+  return "Top 85% of football fans";
 }
 
+const IQ_LABELS = [
+  { min: 155, label: "You are José Mourinho 👑" },
+  { min: 150, label: "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹" },
+  { min: 145, label: "Clearly plays Football Manager ⌨️" },
+  { min: 140, label: "Smarter than most football pundits 📺" },
+  { min: 135, label: "Could manage in the Championship 🧠" },
+  { min: 130, label: "Could manage a League Two side ⚽" },
+  { min: 125, label: "Watches the U21s for fun 🔭" },
+  { min: 120, label: "Knows every Champions League anthem word 🎵" },
+  { min: 115, label: "Has a favourite lesser-known league 🌍" },
+  { min: 110, label: "Argues about the offside rule correctly 📐" },
+  { min: 105, label: "Watches Match of the Day till the end 📺" },
+  { min: 100, label: "Solid pub quiz teammate ⚽" },
+  { min: 95,  label: "Watches El Clasico but skips the League Cup 👀" },
+  { min: 90,  label: "Still know more than my dad 😅" },
+  { min: 85,  label: "Calls it soccer sometimes 😬" },
+  { min: 80,  label: "Still learning the offside rule 😬" },
+  { min: 75,  label: "Thought Zidane was a manager first 😂" },
+  { min: 0,   label: "Asked if Ronaldo plays for Brazil 💀" },
+];
+
 function iqLabel(iq) {
-  if (iq >= 150) return "Elite Football Mind 🏆";
-  if (iq >= 140) return "Football Genius ⭐";
-  if (iq >= 130) return "Transfer Market Ready 📋";
-  if (iq >= 120) return "Football Nerd 🧠";
-  if (iq >= 110) return "Season Ticket Holder 🏟️";
-  if (iq >= 100) return "Solid Football Fan 👏";
-  if (iq >= 90)  return "Casual Viewer 📺";
-  if (iq >= 80)  return "Still Learning ⚽";
-  return "Just Getting Started 🌱";
+  for (const tier of IQ_LABELS) {
+    if (iq >= tier.min) return tier.label;
+  }
+  return IQ_LABELS[IQ_LABELS.length - 1].label;
 }
 
 function levenshtein(a, b) {
