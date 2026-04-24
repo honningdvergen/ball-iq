@@ -6044,13 +6044,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 .home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);}
+.home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(88,204,2,0.45);}
+.home-stat-chip.tappable:active{transform:scale(0.98);}
+.home-stat-hint{font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
 .home-stat-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
 .home-stat-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
 .home-stat-val.green{color:var(--accent);}
 .home-stat-val.flame{color:#FF6A00;}
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
-.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:20px;min-height:130px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
+.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:16px 20px;min-height:104px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
 .hero-daily-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.7);}
 .hero-daily-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:#1A0F05;}
 .hero-daily-sub{font-family:'Inter',sans-serif;font-size:12.5px;opacity:0.85;margin-top:4px;color:#1A0F05;}
@@ -6059,7 +6063,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:20px;min-height:130px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:16px 20px;min-height:104px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
@@ -6080,7 +6084,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;}
 .play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.play-card-desc{font-size:12px;color:var(--t3);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
@@ -9868,6 +9872,66 @@ const privacyH2 = {fontSize: 17, fontWeight: 700, color: "#F0F1F5", margin: "28p
 const privacyP = {fontSize: 15, color: "#9BA0B8", marginBottom: 12};
 const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 
+// ─── IQ RECAP OVERLAY ─────────────────────────────────────────────────────────
+// Lightweight modal shown when the user taps the home-screen IQ chip and
+// already has at least one Ball IQ result. Displays the most recent score,
+// its label/percentile, the date taken, and share / retake actions.
+function IqRecapOverlay({ entry, onClose, onRetake }) {
+  if (!entry) return null;
+  const iq = entry.iq;
+  const pctile = iqPercentile(iq);
+  const label = iqLabel(iq);
+  const when = entry.date
+    ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
+    : null;
+  const doShare = async () => {
+    const msg = `🧠 My Ball IQ: ${iq} — ${label} (Top ${100 - pctile}%). Try it: https://ball-iq-pi.vercel.app/`;
+    try {
+      if (navigator.share) { await navigator.share({ title:"Ball IQ", text: msg }); return; }
+      if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
+    } catch {}
+  };
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position:"fixed", inset:0, zIndex:999,
+        background:"rgba(0,0,0,0.75)",
+        display:"flex", alignItems:"flex-end",
+        animation:"fadeIn 0.2s ease",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width:"100%", background:"var(--bg)",
+          borderRadius:"20px 20px 0 0",
+          padding:"28px 24px 36px",
+          animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)",
+          textAlign:"center",
+        }}
+      >
+        <div className="ds-eyebrow" style={{marginBottom:6}}>Your Ball IQ</div>
+        <div
+          className="numeric"
+          style={{
+            fontSize:72, fontWeight:900, color:"#58CC02",
+            letterSpacing:"-0.03em", lineHeight:1,
+            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
+          }}
+        >{iq}</div>
+        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{label} · Top {100 - pctile}%</div>
+        {when && <div style={{marginTop:4, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
+        <div style={{marginTop:22}}>
+          <button className="btn-3d amber" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
+          <button className="btn-3d" onClick={() => { onClose(); onRetake(); }} style={{marginBottom:14}}>Retake Test</button>
+          <button className="btn-3d ghost" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── XP BAR COMPONENT ─────────────────────────────────────────────────────────
 function XPBar({ xp, streak }) {
   const { level, nextLevel, progress } = getLevelInfo(xp);
@@ -10931,6 +10995,7 @@ function AppInner() {
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [iqRecap, setIqRecap] = useState(null); // { iq, date } or null
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
     try {
@@ -11555,6 +11620,17 @@ function AppInner() {
   const goHome = useCallback(() => { setScreen("home"); setTab("home"); }, []);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
+  const openIqChip = useCallback(() => {
+    // Empty history → send them straight into the Ball IQ Test.
+    // Otherwise show a recap of their most recent score with share options.
+    if (!iqHistory || iqHistory.length === 0) {
+      startMode("balliq");
+      return;
+    }
+    haptic("soft");
+    setIqRecap(iqHistory[iqHistory.length - 1]);
+  }, [iqHistory, startMode]);
+  const closeIqRecap = useCallback(() => setIqRecap(null), []);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
   const useShield = useCallback(() => {
@@ -11821,10 +11897,16 @@ function AppInner() {
 
             {/* Stat chips row */}
             <div className="home-stat-row">
-              <div className="home-stat-chip">
+              <button
+                type="button"
+                className="home-stat-chip tappable"
+                onClick={openIqChip}
+                aria-label={iqHistory.length === 0 ? "Take the Ball IQ test" : "View your Ball IQ score"}
+              >
                 <div className="home-stat-label">IQ Score</div>
                 <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
-              </div>
+                {iqHistory.length === 0 && <div className="home-stat-hint">Tap to test</div>}
+              </button>
               <div className="home-stat-chip">
                 <div className="home-stat-label">Streak</div>
                 <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
@@ -11948,6 +12030,9 @@ function AppInner() {
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
+
+        {/* ── IQ RECAP OVERLAY ── */}
+        {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={() => startMode("balliq")} />}
 
         {/* The separate "Modes" screen has been removed — all mode tiles live on the Home tab. */}
 
