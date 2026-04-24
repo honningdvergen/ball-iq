@@ -5402,7 +5402,6 @@ const QB = [
   { q:"What is the top division of German football called?", o:["Bundesliga","Serie A","La Liga","Ligue 1"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour are Borussia Dortmund's home shirts?", o:["Yellow","Red","Blue","Black"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the name of Bayern Munich's home stadium?", o:["Allianz Arena","Signal Iduna Park","Olympiastadion","Westfalenstadion"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
-  { q:"Which club is Robert Lewandowski most associated with in Germany?", o:["Bayern Munich","Dortmund","Schalke","Hamburg"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour is the Bayern Munich home kit primarily?", o:["Red","Blue","Yellow","Green"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Hamburger SV play in which German city?", o:["Hamburg","Berlin","Munich","Frankfurt"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the capital of Germany?", o:["Berlin","Munich","Hamburg","Frankfurt"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
@@ -8324,7 +8323,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [opponentScore, setOpponentScore] = useState(null);
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
-  const pollRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
   useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
   const [showQuit, setShowQuit] = useState(false);
