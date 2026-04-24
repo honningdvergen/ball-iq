@@ -5649,40 +5649,57 @@ function getTrueFalseQs() {
 }
 
 
-function calcBallIQ(score, total) {
-  // Realistic bell curve: most players score 8-14/20, landing 90-115
-  // Perfect 20/20 → ~142, 50% → ~97, 0/20 → ~62
-  const pct = score / total;
-  // Apply sigmoid-style curve so middle scores cluster realistically
-  const curved = Math.pow(pct, 0.75); // compress top end
-  const iq = Math.round(62 + curved * 83);
-  return Math.min(145, Math.max(62, iq));
+function calcBallIQ(score, total, avgResponseMs) {
+  // Real-IQ-bell-curve inspired mapping in the 60–160 range.
+  //  - Base accuracy score: pct^1.3 * 75 + 60  →  60% correct ≈ 99, 100% correct = 135.
+  //  - Speed bonus: up to 15 pts for fast answers.  5s avg = full +15, 15s avg = 0,
+  //    linear between. Missing / NaN avg counts as "average" and contributes 0.
+  //  - Clamped to [60, 160]; rounded.
+  if (!total) return 60;
+  const pct = Math.max(0, Math.min(1, score / total));
+  const base = 60 + Math.pow(pct, 1.3) * 75;
+  const speedBonus = (typeof avgResponseMs === "number" && avgResponseMs > 0)
+    ? Math.max(0, Math.min(15, ((15000 - avgResponseMs) / 10000) * 15))
+    : 0;
+  return Math.round(Math.max(60, Math.min(160, base + speedBonus)));
 }
 
 function iqPercentile(iq) {
-  // Rough bell curve mapping
-  if (iq >= 140) return 99;
-  if (iq >= 130) return 97;
-  if (iq >= 125) return 95;
-  if (iq >= 120) return 91;
-  if (iq >= 115) return 84;
-  if (iq >= 110) return 75;
-  if (iq >= 105) return 63;
+  // Numeric percentile aligned with the label/share buckets below
+  // (150+ → top 1%, 140 → top 5%, …). Used for the BallIQResults ring
+  // and any "Better than X%" rendering.
+  if (iq >= 150) return 99;
+  if (iq >= 140) return 95;
+  if (iq >= 130) return 90;
+  if (iq >= 120) return 80;
+  if (iq >= 110) return 65;
   if (iq >= 100) return 50;
-  if (iq >= 95) return 37;
-  if (iq >= 90) return 25;
-  if (iq >= 85) return 16;
-  if (iq >= 80) return 9;
-  return 5;
+  if (iq >= 90)  return 35;
+  return 20;
+}
+
+function iqPercentileLabel(iq) {
+  // Fun "Top X% of football fans" ribbon used in the share text and recap overlay.
+  if (iq >= 150) return "Top 1% of football fans";
+  if (iq >= 140) return "Top 5% of football fans";
+  if (iq >= 130) return "Top 10% of football fans";
+  if (iq >= 120) return "Top 20% of football fans";
+  if (iq >= 110) return "Top 35% of football fans";
+  if (iq >= 100) return "Top 50% of football fans";
+  if (iq >= 90)  return "Top 65% of football fans";
+  return "Top 80% of football fans";
 }
 
 function iqLabel(iq) {
-  if (iq >= 135) return "Football Genius";
-  if (iq >= 120) return "Elite Knowledge";
-  if (iq >= 110) return "Above Average";
-  if (iq >= 100) return "Solid Fan";
-  if (iq >= 90) return "Casual Supporter";
-  return "Keep Watching";
+  if (iq >= 150) return "Elite Football Mind 🏆";
+  if (iq >= 140) return "Football Genius ⭐";
+  if (iq >= 130) return "Transfer Market Ready 📋";
+  if (iq >= 120) return "Football Nerd 🧠";
+  if (iq >= 110) return "Season Ticket Holder 🏟️";
+  if (iq >= 100) return "Solid Football Fan 👏";
+  if (iq >= 90)  return "Casual Viewer 📺";
+  if (iq >= 80)  return "Still Learning ⚽";
+  return "Just Getting Started 🌱";
 }
 
 function levenshtein(a, b) {
@@ -7623,6 +7640,17 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
 
+  // Per-question response time tracking (used by calcBallIQ for the speed bonus).
+  // Reset whenever the question index changes; recorded in registerAnswer.
+  const questionStartRef = useRef(Date.now());
+  const responseTimesRef = useRef([]);
+  useEffect(() => { questionStartRef.current = Date.now(); }, [idx]);
+  const computeAvgResponseMs = () => {
+    const arr = responseTimesRef.current;
+    if (!arr.length) return null;
+    return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
+  };
+
   const total = questions?.length || 0;
   const q = questions?.[idx];
   const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && q?.type !== "tf";
@@ -7631,8 +7659,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const answered = selected !== null || typedResult !== null;
 
   const doAdvance = useCallback((ns, nb, correct) => {
-    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers }); return; }
-    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers, speedScore }); return; }
+    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers, avgResponseMs: computeAvgResponseMs() }); return; }
+    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers, speedScore, avgResponseMs: computeAvgResponseMs() }); return; }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
@@ -7646,6 +7674,12 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const registerAnswer = useCallback((correct) => {
     clearInterval(timerRef.current);
+    // Record how long this question took (skip timeouts — they pin to timerDuration
+    // and would poison the average with a hard ceiling value).
+    if (correct !== "timeout") {
+      const elapsed = Date.now() - questionStartRef.current;
+      if (elapsed > 0 && elapsed < 60000) responseTimesRef.current.push(elapsed);
+    }
     const ns = correct ? score + 1 : score;
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
@@ -8869,7 +8903,7 @@ function getXPForResult(score, total, mode) {
 // ─── BRANDED SCORE CARD ──────────────────────────────────────────────────────
 // Renders a 1080×1080 PNG suitable for social share. Dark background, muted
 // green accent, Ball IQ wordmark at top, score in the middle, watermark below.
-function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak, date }) {
+function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak, date, cardLabel, beatLine }) {
   const W = 1080, H = 1080;
   const canvas = document.createElement("canvas");
   canvas.width = W; canvas.height = H;
@@ -8904,24 +8938,67 @@ function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak,
   ctx.font = "600 30px Inter, -apple-system, sans-serif";
   ctx.fillText(modeLabel || "Quiz", W/2, 200);
 
-  // Main score — huge accent green
-  ctx.fillStyle = "#22c55e";
+  // Eyebrow caption above the score ("BALL IQ" etc.)
+  if (scoreCaption) {
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "700 28px Inter, -apple-system, sans-serif";
+    ctx.fillText(scoreCaption, W/2, 360);
+  }
+
+  // Main score — huge accent green (#58CC02)
+  ctx.fillStyle = "#58CC02";
   const scoreFontSize = String(mainScore).length > 4 ? 220 : 280;
   ctx.font = `900 ${scoreFontSize}px Inter, -apple-system, sans-serif`;
   ctx.fillText(String(mainScore), W/2, 580);
 
-  // Score caption
-  if (scoreCaption) {
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = "700 28px Inter, -apple-system, sans-serif";
-    ctx.fillText(scoreCaption, W/2, 650);
+  // Card label — appears beneath the score for balliq (iq label + emoji).
+  if (cardLabel) {
+    ctx.fillStyle = "#F0F1F5";
+    ctx.font = "800 42px Inter, -apple-system, sans-serif";
+    ctx.fillText(cardLabel, W/2, 660);
   }
 
-  // Percentile (optional)
+  // Percentile — rendered as a rounded tinted pill for balliq, plain text otherwise.
   if (percentile) {
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "700 38px Inter, -apple-system, sans-serif";
-    ctx.fillText(percentile, W/2, 750);
+    if (cardLabel) {
+      // Pill background
+      ctx.font = "700 34px Inter, -apple-system, sans-serif";
+      const padX = 28, padY = 16;
+      const tw = ctx.measureText(percentile).width;
+      const pillW = tw + padX * 2;
+      const pillH = 34 + padY * 2;
+      const pillX = (W - pillW) / 2;
+      const pillY = 720;
+      const r = pillH / 2;
+      ctx.fillStyle = "rgba(88,204,2,0.15)";
+      ctx.beginPath();
+      ctx.moveTo(pillX + r, pillY);
+      ctx.lineTo(pillX + pillW - r, pillY);
+      ctx.quadraticCurveTo(pillX + pillW, pillY, pillX + pillW, pillY + r);
+      ctx.lineTo(pillX + pillW, pillY + pillH - r);
+      ctx.quadraticCurveTo(pillX + pillW, pillY + pillH, pillX + pillW - r, pillY + pillH);
+      ctx.lineTo(pillX + r, pillY + pillH);
+      ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - r);
+      ctx.lineTo(pillX, pillY + r);
+      ctx.quadraticCurveTo(pillX, pillY, pillX + r, pillY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#8AE042";
+      ctx.textBaseline = "middle";
+      ctx.fillText(percentile, W/2, pillY + pillH/2);
+      ctx.textBaseline = "alphabetic";
+    } else {
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "700 38px Inter, -apple-system, sans-serif";
+      ctx.fillText(percentile, W/2, 750);
+    }
+  }
+
+  // "Can you beat this?" hook for balliq
+  if (beatLine) {
+    ctx.fillStyle = "#F0F1F5";
+    ctx.font = "800 40px Inter, -apple-system, sans-serif";
+    ctx.fillText(beatLine, W/2, 900);
   }
 
   // Bottom stats row
@@ -8931,13 +9008,13 @@ function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak,
   if (parts.length) {
     ctx.fillStyle = "#9ca3af";
     ctx.font = "500 28px Inter, -apple-system, sans-serif";
-    ctx.fillText(parts.join("   ·   "), W/2, percentile ? 840 : 790);
+    ctx.fillText(parts.join("   ·   "), W/2, beatLine ? 955 : (percentile ? 840 : 790));
   }
 
   // Watermark
   ctx.fillStyle = "#6b7280";
   ctx.font = "600 26px Inter, -apple-system, sans-serif";
-  ctx.fillText("balliq.app", W/2, 1010);
+  ctx.fillText("ball-iq.app", W/2, 1030);
 
   return canvas.toDataURL("image/png");
 }
@@ -9113,10 +9190,11 @@ function HardRightBurst({ onComplete }) {
 // ─── BALL IQ RESULTS ─────────────────────────────────────────────────────────
 // Extracted into its own component so hooks are never called conditionally
 function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
-  const iq = calcBallIQ(result.score, result.total);
+  const iq = calcBallIQ(result.score, result.total, result.avgResponseMs);
   const pctile = iqPercentile(iq);
   const label = iqLabel(iq);
-  const ringPct = Math.min((iq - 60) / 85, 1);
+  const pctileLbl = iqPercentileLabel(iq);
+  const ringPct = Math.min((iq - 60) / 100, 1);
   const showIQConfetti = iq >= 120;
 
   const [displayIQ, setDisplayIQ] = useState(60);
@@ -9157,7 +9235,7 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
           </div>
         </div>
         <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s", lineHeight:1.8}}>
-          Better than <strong>{pctile}%</strong> of football fans
+          <strong>{pctileLbl}</strong>
           {pctile >= 90 && <div style={{fontSize:12,color:"var(--gold)",fontWeight:700,marginTop:4}}>🏆 Elite level knowledge!</div>}
           {pctile >= 75 && pctile < 90 && <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginTop:4}}>⚡ Sharp — you really know your football</div>}
           {pctile >= 50 && pctile < 75 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Keep playing to climb higher!</div>}
@@ -9175,7 +9253,7 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
           <div className="iq-hist-bars">
             {iqHistory.map((h, i) => (
               <div key={i} className="iq-hist-col">
-                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/85)*44)+4}px`, background: h.iq >= 120 ? "var(--accent)" : h.iq >= 100 ? "var(--gold)" : "var(--t3)"}}/>
+                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/100)*44)+4}px`, background: h.iq >= 120 ? "var(--accent)" : h.iq >= 100 ? "var(--gold)" : "var(--t3)"}}/>
                 <div className="iq-hist-n">{h.iq}</div>
               </div>
             ))}
@@ -9879,13 +9957,13 @@ const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 function IqRecapOverlay({ entry, onClose, onRetake }) {
   if (!entry) return null;
   const iq = entry.iq;
-  const pctile = iqPercentile(iq);
   const label = iqLabel(iq);
+  const pctileLbl = iqPercentileLabel(iq);
   const when = entry.date
     ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
     : null;
   const doShare = async () => {
-    const msg = `🧠 My Ball IQ: ${iq} — ${label} (Top ${100 - pctile}%). Try it: https://ball-iq-pi.vercel.app/`;
+    const msg = `🧠 My Ball IQ is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
     try {
       if (navigator.share) { await navigator.share({ title:"Ball IQ", text: msg }); return; }
       if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
@@ -9920,8 +9998,15 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
             textShadow:"0 8px 32px rgba(88,204,2,0.35)",
           }}
         >{iq}</div>
-        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{label} · Top {100 - pctile}%</div>
-        {when && <div style={{marginTop:4, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
+        <div style={{marginTop:10, fontSize:17, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.01em"}}>{label}</div>
+        <div style={{
+          marginTop:10,
+          display:"inline-flex", alignItems:"center",
+          padding:"6px 14px", borderRadius:999,
+          background:"rgba(88,204,2,0.15)", color:"#8AE042",
+          fontSize:12, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase",
+        }}>{pctileLbl}</div>
+        {when && <div style={{marginTop:10, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
         <div style={{marginTop:22}}>
           <button className="btn-3d amber" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
           <button className="btn-3d" onClick={() => { onClose(); onRetake(); }} style={{marginBottom:14}}>Retake Test</button>
@@ -10783,7 +10868,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           <div className="iq-hist-bars" style={{height:52,alignItems:"flex-end"}}>
             {iqHistory.map((h,i) => (
               <div key={i} className="iq-hist-col">
-                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/85)*44)+4}px`,background:h.iq>=120?"var(--accent)":h.iq>=100?"var(--gold)":"var(--t3)"}}/>
+                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/100)*44)+4}px`,background:h.iq>=120?"var(--accent)":h.iq>=100?"var(--gold)":"var(--t3)"}}/>
                 <div className="iq-hist-n">{h.iq}</div>
               </div>
             ))}
@@ -11374,7 +11459,7 @@ function AppInner() {
 
     // Save BallIQ history (last 7 scores) + best IQ in stats
     if (mode === "balliq") {
-      const iq = calcBallIQ(res.score, res.total);
+      const iq = calcBallIQ(res.score, res.total, res.avgResponseMs);
       window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
     window.storage?.get("biq_iq_history").then(r => {
         const hist = (() => { try { return r ? JSON.parse(r.value) : []; } catch { return []; } })();
@@ -11439,7 +11524,7 @@ function AppInner() {
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
-  const shareScore = useCallback(async (score, total, mode) => {
+  const shareScore = useCallback(async (score, total, mode, avgResponseMs) => {
     // Fallback text per mode (used if image share unavailable)
     const msgs = {
       daily: (() => {
@@ -11448,23 +11533,10 @@ function AppInner() {
         return `⚽ Ball IQ Daily Challenge\n${dots}\n${score}/${total} — ${pct}% correct\nCan you beat me?\nballiq.app #BallIQ`;
       })(),
       balliq: (() => {
-        const iq = calcBallIQ(score, total);
-        const pct = 100 - iqPercentile(iq);
+        const iq = calcBallIQ(score, total, avgResponseMs);
         const label = iqLabel(iq);
-        const correct = score;
-        const wrong = total - score;
-        const grid = [];
-        let c = correct, w = wrong;
-        for (let row = 0; row < 4; row++) {
-          let rowStr = '';
-          for (let col = 0; col < 5; col++) {
-            if (c > 0) { rowStr += '🟢'; c--; }
-            else if (w > 0) { rowStr += '🔴'; w--; }
-            else rowStr += '⬜';
-          }
-          grid.push(rowStr);
-        }
-        return `🧠 Ball IQ Test\n${grid.join('\n')}\n\nIQ: ${iq} — ${label}\nTop ${pct}% of football fans\n\nballiq.app #BallIQ`;
+        const pctileLbl = iqPercentileLabel(iq);
+        return `🧠 My Ball IQ is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
       })(),
       classic: (() => {
         const pct = Math.round(score/total*100);
@@ -11496,12 +11568,14 @@ function AppInner() {
       local: "Local Multiplayer",
     };
     const modeLabel = MODE_LABELS[mode] || "Quiz";
-    let mainScore, scoreCaption, percentile = null;
+    let mainScore, scoreCaption, percentile = null, cardLabel = null, beatLine = null;
     if (mode === "balliq") {
-      const iq = calcBallIQ(score, total);
+      const iq = calcBallIQ(score, total, avgResponseMs);
       mainScore = String(iq);
       scoreCaption = "BALL IQ";
-      percentile = `Top ${100 - iqPercentile(iq)}% of football fans`;
+      cardLabel = iqLabel(iq);
+      percentile = iqPercentileLabel(iq);
+      beatLine = "Can you beat this?";
     } else if (mode === "hotstreak") {
       mainScore = String(score);
       scoreCaption = "CORRECT IN 60 SECONDS";
@@ -11516,7 +11590,7 @@ function AppInner() {
     const date = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
     try {
-      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak: loginStreak, date });
+      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak: loginStreak, date, cardLabel, beatLine });
       const blob = await (await fetch(dataURL)).blob();
       const file = new File([blob], "balliq-score.png", { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -12168,7 +12242,7 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
-            onShare={() => shareScore(result?.score, result?.total, mode)}
+            onShare={() => shareScore(result?.score, result?.total, mode, result?.avgResponseMs)}
             onRetry={() => startMode(mode)}
           />
         )}
