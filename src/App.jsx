@@ -6024,8 +6024,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:22px 0 4px;}
-.logo{font-size:19px;font-weight:800;letter-spacing:-0.4px;color:var(--text);}
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
+.logo{font-size:19px;font-weight:800;letter-spacing:-0.4px;color:var(--text);flex-shrink:0;}
+.hdr-xp{flex:1;min-width:80px;display:flex;align-items:center;gap:8px;}
+.hdr-xp-lbl{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.02em;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.hdr-xp-track{flex:1;height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
+.hdr-xp-fill{height:100%;background:#58CC02;border-radius:999px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
+.light .hdr-xp-track{background:#E5E5EA;}
 .logo em{color:var(--accent);font-style:normal;}
 .hdr-actions{display:flex;align-items:center;gap:8px;}
 .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
@@ -11634,6 +11639,21 @@ function AppInner() {
         {!inGame && (
           <div className="hdr">
             <div className="logo">Ball <em>IQ</em></div>
+            {screen === "home" && (() => {
+              const curIdx = LEVELS.indexOf(levelInfo.level);
+              const curN = curIdx + 1;
+              const nextN = levelInfo.nextLevel ? curN + 1 : null;
+              const pct = levelInfo.nextLevel ? Math.max(2, Math.min(100, levelInfo.progress)) : 100;
+              return (
+                <div className="hdr-xp" aria-label={`Level ${curN}, ${levelInfo.progress}% to level ${nextN || "max"}`}>
+                  <span className="hdr-xp-lbl">Lv.{curN}</span>
+                  <div className="hdr-xp-track">
+                    <div className="hdr-xp-fill" style={{width:`${pct}%`}} />
+                  </div>
+                  <span className="hdr-xp-lbl">{nextN ? `Lv.${nextN}` : "MAX"}</span>
+                </div>
+              );
+            })()}
             {screen === "home" && (
               <div className="hdr-actions">
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
@@ -11902,8 +11922,6 @@ function AppInner() {
                 </button>
               ))}
             </div>
-
-            <XPBar xp={xp} streak={loginStreak} />
           </div>
         )}
 
