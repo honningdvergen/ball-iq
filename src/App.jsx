@@ -5404,7 +5404,6 @@ const QB = [
   { q:"What is the name of Bayern Munich's home stadium?", o:["Allianz Arena","Signal Iduna Park","Olympiastadion","Westfalenstadion"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour is the Bayern Munich home kit primarily?", o:["Red","Blue","Yellow","Green"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Hamburger SV play in which German city?", o:["Hamburg","Berlin","Munich","Frankfurt"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
-  { q:"What is the capital of Germany?", o:["Berlin","Munich","Hamburg","Frankfurt"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Thomas Müller has spent his entire career at which club?", o:["Bayern Munich","Dortmund","Schalke","RB Leipzig"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Which German club has won the most Bundesliga titles since 2000?", o:["Bayern Munich","Dortmund","Leverkusen","Schalke"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What nationality is Franz Beckenbauer?", o:["German","Austrian","Swiss","Dutch"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
