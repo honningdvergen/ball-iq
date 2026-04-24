@@ -145,6 +145,36 @@ const CHAOS_QB = [
     hint: "SO l'Emyrne players deliberately scored own goals in protest against a refereeing decision. Still the official world record.",
     v: 1,
   },
+  {
+    q: "Complete Bill Shankly's famous quote: 'Football is not a matter of life and death. It's ___ than that.'",
+    o: ["A thousand times more serious", "Much more important", "Bigger than war", "The only thing that matters"],
+    a: 1,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Attributed to legendary Liverpool manager Bill Shankly.",
+    v: 1,
+  },
+  {
+    q: "Who said 'He's not even that good' about Lionel Messi in 2017?",
+    o: ["Cristiano Ronaldo", "Diego Maradona", "Sergio Ramos", "Joey Barton"],
+    a: 3,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Said on a Norwegian TV show 'Viasat Fotball'.",
+    v: 1,
+  },
+  {
+    q: "What did Chilean goalkeeper Roberto Rojas do during a 1989 World Cup qualifier vs Brazil, resulting in Chile being banned from the 1994 World Cup?",
+    o: ["Bit an opponent", "Faked being hit by a firework using a razor blade hidden in his glove", "Attacked the linesman", "Took a bribe from Brazilian officials"],
+    a: 1,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "He cut himself to fake an injury hoping Chile would be awarded the match. FIFA banned him for life.",
+    v: 1,
+  },
 ];
 
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
