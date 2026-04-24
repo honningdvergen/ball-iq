@@ -6486,11 +6486,11 @@ async function gameRoomSetScore(code, isHost, score) {
   return { error };
 }
 
-// NOTE: game_rooms rows persist after a game finishes. There is no client-side
-// cleanup hook today — if one player closes the app mid-game the row is also
-// abandoned. The right fix is a server-side scheduled job (e.g. a Supabase
-// Edge Function / cron) that deletes rows older than 24h, since deleting from
-// the client is racy (the opponent's realtime channel may still be reading it).
+// NOTE: game_rooms rows persist after a game finishes; the opener's realtime
+// channel may still be reading the row when the other player's game ends, so
+// deleting from the client would race. Instead OnlineLobby's mount effect
+// calls the cleanup_old_game_rooms RPC (server-side, atomic, 24h TTL) on each
+// entry into the lobby.
 
 const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
@@ -8735,6 +8735,16 @@ function OnlineLobby({ onStart, onBack }) {
   useEffect(() => {
     if (!name && authProfile?.username) setName(authProfile.username);
   }, [authProfile?.username, name]);
+
+  // Housekeeping on lobby mount: ask Supabase to sweep any game_rooms rows
+  // older than 24h. Server-side RPC so it's safe + atomic even if the opener
+  // previously crashed. Failures are swallowed — cleanup is best-effort and
+  // must never block entering the lobby.
+  useEffect(() => {
+    (async () => {
+      try { await supabase.rpc('cleanup_old_game_rooms'); } catch {}
+    })();
+  }, []);
 
   // Helper: shape a Supabase game_rooms row into the UI's expected { host, guest, questions } form
   const normaliseRoom = (row) => row && ({
@@ -12203,22 +12213,23 @@ function AppInner() {
     }
 
     // Sync aggregate stats to user profile if logged in.
-    // NOTE: this read-then-write pattern has a race condition when two games
-    // complete in quick succession (both reads see the same currentTotal, the
-    // second write overwrites the first). Only affects the cumulative total.
-    // Proper fix is a Supabase RPC doing an atomic UPDATE ... SET total_score =
-    // total_score + $1 — deferred to a DB-side change, not in this client file.
+    // total_score is updated via the server-side increment_score RPC (atomic
+    // UPDATE ... SET total_score = total_score + $1) so concurrent game finishes
+    // can't clobber each other. games_played / correct_answers are absolute
+    // snapshots from local stats, not deltas, so a plain .update() is fine for
+    // those two.
     if (user?.id) {
       (async () => {
         try {
-          const { data: currentProfile } = await supabase
-            .from('profiles')
-            .select('total_score')
-            .eq('id', user.id)
-            .maybeSingle();
-          const currentTotal = currentProfile?.total_score || 0;
+          const scoreDelta = newResult.score || 0;
+          if (scoreDelta > 0) {
+            const { error: rpcErr } = await supabase.rpc('increment_score', {
+              user_id: user.id,
+              score_delta: scoreDelta,
+            });
+            if (rpcErr) console.error('increment_score RPC failed:', rpcErr);
+          }
           await supabase.from('profiles').update({
-            total_score: currentTotal + (newResult.score || 0),
             games_played: updated.gamesPlayed,
             correct_answers: updated.totalCorrect,
           }).eq('id', user.id);
