@@ -5344,6 +5344,14 @@ const QB = [
   ...CHAOS_QB,
 ];
 
+// Post-QB normalization: give Chaos questions a default diff of "medium" so the
+// standard difficulty filters (easy/medium/hard buckets, ramp, Ball IQ) treat
+// them as first-class citizens. Chaos mode's own cat/tag filter still catches
+// them regardless of diff, so there's no collision.
+for (const q of QB) {
+  if (q && q.cat === "chaos" && !q.diff) q.diff = "medium";
+}
+
 // ─── AUTOCOMPLETE POOL ────────────────────────────────────────────────────────
 // Each entry: display name. Matching uses normalised (accent-stripped) comparison.
 const AC_POOL = [
@@ -5544,7 +5552,10 @@ function clearSeenHistory() {
 function getQs({ cat, diff, n = 10, ramp = false }) {
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
-  if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat);
+  // Category match: primary q.cat OR league-tagged chaos questions (q.league === cat)
+  // so e.g. the Eden Hazard ball-boy chaos question (league:"PL") shows up in a
+  // Premier League quiz alongside regular PL entries.
+  if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat || q.league === cat);
   // Safety: if filter returns too few, fall back to full bank
   if (pool.length < n) pool = [...QB];
   if (diff === "easy") pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
