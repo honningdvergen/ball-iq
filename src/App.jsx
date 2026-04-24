@@ -167,7 +167,7 @@ const CHAOS_QB = [
   },
   {
     q: "What did Chilean goalkeeper Roberto Rojas do during a 1989 World Cup qualifier vs Brazil, resulting in Chile being banned from the 1994 World Cup?",
-    o: ["Bit an opponent", "Faked being hit by a firework using a razor blade hidden in his glove", "Attacked the linesman", "Took a bribe from Brazilian officials"],
+    o: ["Claimed a fan ran onto the pitch and punched him in the face", "Faked being hit by a firework using a razor blade hidden in his glove", "Refused to keep playing after a stray dog invaded the penalty area", "Accused Brazilian officials of poisoning the water he drank at half time"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -207,7 +207,7 @@ const CHAOS_QB = [
   },
   {
     q: "What famous celebration did Bebeto perform at the 1994 World Cup after scoring against the Netherlands?",
-    o: ["Swimming mime", "Robot dance", "Rocking an imaginary baby", "Phone to ear"],
+    o: ["Pretending to swim across the pitch", "Dancing like a robot with Romário", "Rocking an imaginary baby", "Holding his hand to his ear as a phone"],
     a: 2,
     cat: "chaos",
     tag: "chaos",
@@ -277,7 +277,7 @@ const CHAOS_QB = [
   },
   {
     q: "What did Ian Holloway say after a QPR win, comparing ugly victories to something unexpected?",
-    o: ["Like finding money in old trousers", "Like pulling a girl on a night out who's not good looking", "Like a Sunday roast with no gravy", "Like winning the lottery in pennies"],
+    o: ["Like finding a fiver in the pocket of a coat you haven't worn in years", "Like pulling a girl on a night out who's not good looking", "Like winning a raffle you'd completely forgotten you entered", "Like being handed a Sunday roast that's been left in the oven too long"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -377,7 +377,7 @@ const CHAOS_QB = [
   },
   {
     q: "Ronaldinho famously scored a goal for Brazil against England at the 2002 World Cup with what kind of shot?",
-    o: ["A bicycle kick from 40 yards", "A long-range free kick lob over David Seaman", "A scissor kick from the corner", "A header from the halfway line"],
+    o: ["An overhead bicycle kick from outside the penalty area", "A long-range free kick lob over David Seaman", "A diving header from a Rivaldo cross to the back post", "A curling strike from the corner of the eighteen-yard box"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -507,7 +507,7 @@ const CHAOS_QB = [
   },
   {
     q: "In a 2015 Premier League match against Arsenal, Manchester United manager Louis van Gaal made headlines by doing what on the touchline to protest a decision?",
-    o: ["Throwing his coat onto the pitch", "Dramatically throwing himself to the ground", "Sitting down and refusing to move", "Hugging the fourth official"],
+    o: ["Ripping off his overcoat and hurling it onto the pitch", "Dramatically throwing himself to the ground", "Sitting down in the technical area and refusing to stand up", "Walking over and theatrically hugging the fourth official"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -537,7 +537,7 @@ const CHAOS_QB = [
   },
   {
     q: "At the 2018 World Cup, Belgian striker Michy Batshuayi celebrated Adnan Januzaj's goal against England by doing what?",
-    o: ["Running into the corner flag", "Kicking the ball into his own face off the post", "Tripping over the advertising boards", "Accidentally knocking over a ball boy"],
+    o: ["Sprinting straight into the corner flag and snapping it", "Kicking the ball into his own face off the post", "Tripping over the advertising hoarding and falling into the crowd", "Barrelling into a ball boy and knocking him flat on his back"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -547,7 +547,7 @@ const CHAOS_QB = [
   },
   {
     q: "At the 1982 World Cup, Kuwait's players stopped playing during a France match because they claimed they heard what?",
-    o: ["A gun being fired", "Another referee's whistle from a nearby pitch", "Their coach shouting to stop", "The final whistle early"],
+    o: ["A gunshot going off somewhere in the stands behind them", "Another referee's whistle from a nearby pitch", "Their Kuwaiti head coach screaming at them to stop play", "The stadium announcer prematurely calling time on the match"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
