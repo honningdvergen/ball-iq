@@ -402,7 +402,7 @@ const CHAOS_QB = [
     cat: "chaos",
     tag: "chaos",
     type: "mcq",
-    hint: "Zidane headed in two goals from corner kicks in the 27th and 45th minutes. France beat Brazil 3-0 in Paris.",
+    hint: "Zidane's two goals came in the 27th and 45th minutes from Emmanuel Petit set-pieces. France beat Brazil 3-0 in Paris.",
     v: 1,
   },
   {
@@ -512,7 +512,7 @@ const CHAOS_QB = [
     cat: "chaos",
     tag: "chaos",
     type: "mcq",
-    hint: "Van Gaal threw himself to the floor to demonstrate that United's players were being fouled. One of the funniest touchline moments ever.",
+    hint: "He dropped theatrically in the technical area to demonstrate that United's players were being fouled. One of the funniest touchline moments ever.",
     v: 1,
   },
   {
@@ -522,7 +522,7 @@ const CHAOS_QB = [
     cat: "chaos",
     tag: "chaos",
     type: "mcq",
-    hint: "He rounded the keeper with an empty net and somehow missed. Chelsea lost 2-1.",
+    hint: "He rounded the keeper and had the simplest of finishes in front of him — yet somehow failed to convert. Chelsea lost 2-1.",
     v: 1,
   },
   {
@@ -552,7 +552,7 @@ const CHAOS_QB = [
     cat: "chaos",
     tag: "chaos",
     type: "mcq",
-    hint: "The Sheikh of Kuwait ran onto the pitch to protest. Incredibly the referee disallowed France's goal before France scored again to win 4-1.",
+    hint: "The Sheikh of Kuwait stormed onto the field to protest. Incredibly the referee disallowed France's goal before France scored again to win 4-1.",
     v: 1,
   },
   {
@@ -6487,6 +6487,12 @@ async function gameRoomSetScore(code, isHost, score) {
   return { error };
 }
 
+// NOTE: game_rooms rows persist after a game finishes. There is no client-side
+// cleanup hook today — if one player closes the app mid-game the row is also
+// abandoned. The right fix is a server-side scheduled job (e.g. a Supabase
+// Edge Function / cron) that deletes rows older than 24h, since deleting from
+// the client is racy (the opponent's realtime channel may still be reading it).
+
 const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
@@ -12198,9 +12204,13 @@ function AppInner() {
       });
     }
 
-    // Sync aggregate stats to user profile if logged in
+    // Sync aggregate stats to user profile if logged in.
+    // NOTE: this read-then-write pattern has a race condition when two games
+    // complete in quick succession (both reads see the same currentTotal, the
+    // second write overwrites the first). Only affects the cumulative total.
+    // Proper fix is a Supabase RPC doing an atomic UPDATE ... SET total_score =
+    // total_score + $1 — deferred to a DB-side change, not in this client file.
     if (user?.id) {
-      // Use functional update to correctly increment the total score
       (async () => {
         try {
           const { data: currentProfile } = await supabase
