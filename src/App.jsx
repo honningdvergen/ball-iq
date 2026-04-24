@@ -44,7 +44,48 @@ if (typeof window !== 'undefined' && !window.storage) {
 // Every item should carry cat:"chaos" (and optionally tag:"chaos") so the mode's
 // filter picks them up. Difficulty is stored as "mixed" because the Chaos pool
 // is ramp-free.
-const CHAOS_QB = [];
+const CHAOS_QB = [
+  {
+    q: "Complete Sir Alex Ferguson's famous quote after Manchester United's 1999 Champions League final comeback: 'Football, ___!'",
+    o: ["Bloody hell", "What a game", "You beauty", "Unbelievable"],
+    a: 0,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Ferguson said this on the pitch after United scored two injury-time goals to beat Bayern Munich 2-1.",
+    v: 1,
+  },
+  {
+    q: "In the 2009 Premier League match between Sunderland and Liverpool, what unusual object deflected Darren Bent's shot into the goal?",
+    o: ["A seagull", "A beach ball", "A plastic bag", "A scarf"],
+    a: 1,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "October 17, 2009. The goal stood, Sunderland won 1-0.",
+    v: 1,
+  },
+  {
+    q: "In the 2006 World Cup final, who did Zinedine Zidane headbutt in the chest, resulting in his red card in the final game of his career?",
+    o: ["Fabio Cannavaro", "Gennaro Gattuso", "Marco Materazzi", "Andrea Pirlo"],
+    a: 2,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Happened in the 110th minute after an exchange of words. France lost the final on penalties.",
+    v: 1,
+  },
+  {
+    q: "Which Manchester United player famously performed a kung-fu kick at a Crystal Palace fan in 1995?",
+    o: ["Roy Keane", "Eric Cantona", "Paul Ince", "Mark Hughes"],
+    a: 1,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Happened at Selhurst Park. The player received an 8-month ban.",
+    v: 1,
+  },
+];
 
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 const QB = [
