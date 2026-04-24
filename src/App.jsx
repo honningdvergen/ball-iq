@@ -10620,7 +10620,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   // Debounced search
   useEffect(() => {
     const q = search.trim();
-    if (q.length < 2) { setResults([]); return; }
+    if (q.length < 2) { setResults([]); setSearching(false); return; }
     let cancelled = false;
     setSearching(true);
     const t = setTimeout(async () => {
@@ -10688,15 +10688,20 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   };
 
   // Mini-leaderboard: accepted friends + me, sorted by total_score desc.
+  // Depend on `friendships` (stable state ref) not on derived `accepted` which
+  // is a fresh array every render — otherwise the memo never actually hits.
   const leaderboard = useMemo(() => {
-    const rows = accepted.map(f => {
-      const other = f.requester_id === userId ? f.addressee : f.requester;
-      return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
-    }).filter(Boolean);
+    const rows = friendships
+      .filter(f => f.status === "accepted")
+      .map(f => {
+        const other = f.requester_id === userId ? f.addressee : f.requester;
+        return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
+      })
+      .filter(Boolean);
     rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar || "⚽", score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
-  }, [accepted, userId, currentUserScore, currentUserName, currentUserAvatar]);
+  }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar]);
 
   const otherOf = (f) => f.requester_id === userId ? f.addressee : f.requester;
 
@@ -12047,6 +12052,7 @@ function AppInner() {
     setIqRecap(iqHistory[iqHistory.length - 1]);
   }, [iqHistory, startMode]);
   const closeIqRecap = useCallback(() => setIqRecap(null), []);
+  const retakeIqTest = useCallback(() => startMode("balliq"), [startMode]);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
   const useShield = useCallback(() => {
@@ -12580,7 +12586,7 @@ function AppInner() {
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
 
         {/* ── IQ RECAP OVERLAY ── */}
-        {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={() => startMode("balliq")} />}
+        {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={retakeIqTest} />}
 
         {/* The separate "Modes" screen has been removed — all mode tiles live on the Home tab. */}
 
