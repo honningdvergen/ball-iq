@@ -6963,15 +6963,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* New best / category breakdown callouts */
 .new-best{animation:bestPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 1.0s both;text-align:center;margin:10px 0 6px;padding:10px 14px;background:linear-gradient(135deg,rgba(255,204,0,0.15),rgba(255,149,0,0.10));border:1px solid rgba(255,204,0,0.35);border-radius:10px;font-size:14px;font-weight:800;color:var(--gold);letter-spacing:0.2px;}
 @keyframes bestPop{from{opacity:0;transform:scale(0.85);}60%{transform:scale(1.04);}to{opacity:1;transform:scale(1);}}
-.cat-breakdown{animation:sboxIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.9s both;margin:0 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.cat-chip{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:11px;line-height:1.35;}
-.cat-chip-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.8px;margin-bottom:3px;}
-.cat-chip-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--text);}
-.cat-chip-val .cat-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;color:var(--t2);margin-left:4px;}
-.cat-chip.strong{border-color:rgba(52,199,89,0.35);background:linear-gradient(135deg,rgba(52,199,89,0.08),transparent);}
-.cat-chip.strong .cat-chip-label{color:var(--green);}
-.cat-chip.weak{border-color:rgba(255,69,58,0.28);background:linear-gradient(135deg,rgba(255,69,58,0.06),transparent);}
-.cat-chip.weak .cat-chip-label{color:var(--red);}
 .iq-result{text-align:center;padding:26px 0 8px;transition:opacity 0.4s;}
 .iq-revealed .iq-label{animation:sIn 0.5s cubic-bezier(0.22,1,0.36,1);}
 .iq-score-wrap{display:flex;justify-content:center;margin:0 0 4px;}
@@ -9751,32 +9742,6 @@ function CountUp({ value, duration = 900, delay = 150, triggerHaptic = false, su
   }, [value, duration, delay, triggerHaptic]);
   return <span {...rest}>{display}{suffix}</span>;
 }
-
-// Computes category performance from wrongAnswers + total result.
-// Needs the full question list to know total questions per category.
-// Returns [{ cat, correct, total, pct }] sorted by pct desc.
-function getCategoryBreakdown(wrongAnswers, askedQuestions) {
-  if (!askedQuestions || askedQuestions.length === 0) return [];
-  const totals = {};
-  askedQuestions.forEach(q => {
-    const c = q.cat || "Misc";
-    totals[c] = (totals[c] || 0) + 1;
-  });
-  const wrongs = {};
-  (wrongAnswers || []).forEach(w => {
-    const c = w.cat || "Misc";
-    wrongs[c] = (wrongs[c] || 0) + 1;
-  });
-  const breakdown = Object.keys(totals).map(c => {
-    const total = totals[c];
-    const wrong = wrongs[c] || 0;
-    const correct = total - wrong;
-    return { cat: c, correct, total, pct: Math.round(correct / total * 100) };
-  });
-  // Only show categories with >=2 questions
-  return breakdown.filter(b => b.total >= 2).sort((a, b) => b.pct - a.pct);
-}
-
 
 function Confetti() {
   const canvasRef = useRef(null);
