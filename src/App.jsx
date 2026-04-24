@@ -395,6 +395,36 @@ const CHAOS_QB = [
     hint: "His double handball set up William Gallas's goal in the playoff second leg. 'Henrygate' was born.",
     v: 1,
   },
+  {
+    q: "Zinedine Zidane scored twice in the 1998 World Cup final to give France their first World Cup. Both goals came from what type of play?",
+    o: ["Long-range strikes", "Free kicks", "Corner kick headers", "Penalty kicks"],
+    a: 2,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Zidane headed in two goals from corner kicks in the 27th and 45th minutes. France beat Brazil 3-0 in Paris.",
+    v: 1,
+  },
+  {
+    q: "In the infamous 2014 World Cup semi-final, what was the final score when Germany demolished host nation Brazil?",
+    o: ["5-0", "6-1", "7-1", "8-2"],
+    a: 2,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Germany led 5-0 after 29 minutes. The 'Mineirazo' became one of the most shocking results in World Cup history.",
+    v: 1,
+  },
+  {
+    q: "In a 2011 El Clásico, Mourinho famously poked which Barcelona coach in the eye during a touchline brawl?",
+    o: ["Pep Guardiola", "Tito Vilanova", "Xavi Hernandez", "Albert Celades"],
+    a: 1,
+    cat: "chaos",
+    tag: "chaos",
+    type: "mcq",
+    hint: "Spanish Super Cup second leg. One of the ugliest Clásico moments.",
+    v: 1,
+  },
 ];
 
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
@@ -6025,7 +6055,12 @@ const LEAGUE_TF_KEYWORDS = {
 };
 
 function getTrueFalseQs() {
-  const indexed = TF_STATEMENTS.map((s, i) => ({ ...s, _tfIdx: i }));
+  // Chaos questions are MCQ-shaped and don't suit the T/F format — explicitly
+  // exclude any item tagged cat:"chaos" in case a chaos T/F statement ever
+  // lands in TF_STATEMENTS in the future.
+  const indexed = TF_STATEMENTS
+    .map((s, i) => ({ ...s, _tfIdx: i }))
+    .filter(s => s.cat !== "chaos");
   const keyFn = (s) => (typeof s._tfIdx === "number" ? `tf:${s._tfIdx}` : null);
   const filtered = applySeenFilter(indexed, 20, keyFn);
   return shuffle(filtered).slice(0, 20).map(s => ({ ...s, _histKey: keyFn(s) }));
@@ -12477,8 +12512,11 @@ function AppInner() {
       qs = (getQs({ cat: leagueId, diff: "medium", n: 999 }) || []).filter(q => q.type !== "tf");
     } else if (modeId === "truefalse") {
       // Keyword-match league-specific T/F; fall back to the general pool if too few.
+      // Chaos-tagged statements are excluded — they don't suit the T/F format.
       const keywords = LEAGUE_TF_KEYWORDS[leagueId] || [];
-      const indexed = TF_STATEMENTS.map((s, i) => ({ ...s, _tfIdx: i }));
+      const indexed = TF_STATEMENTS
+        .map((s, i) => ({ ...s, _tfIdx: i }))
+        .filter(s => s.cat !== "chaos");
       const leagueTF = keywords.length
         ? indexed.filter(s => keywords.some(kw => s.s.toLowerCase().includes(kw)))
         : [];
