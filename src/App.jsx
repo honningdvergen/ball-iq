@@ -2253,7 +2253,6 @@ const QB = [
   { q:"Riyad Mahrez was born in France but chose to represent which country at full international level?", o:["France","Tunisia","Morocco","Algeria"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Carlos Tevez was born in which South American country?", o:["Uruguay","Bolivia","Argentina","Paraguay"], a:2, cat:"Records", diff:"easy", type:"mcq", v:1 },
   { q:"Mauro Icardi was eligible for two national teams — which one did he eventually choose to represent?", o:["Italy","Spain","Argentina","Brazil"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
-  { q:"Granit Xhaka plays for Switzerland but was born in which city?", o:["Zürich","Geneva","Basel","Bern"], a:2, cat:"Records", diff:"hard", type:"mcq", v:1 },
   { q:"Which country does Son Heung-min represent internationally?", o:["Japan","China","North Korea","South Korea"], a:3, cat:"Records", diff:"easy", type:"mcq", v:1 },
   { q:"Mesut Özil was born in Germany but his parents are from which country?", o:["Turkey","Morocco","Tunisia","Lebanon"], a:0, cat:"Records", diff:"easy", type:"mcq", v:1 },
   { q:"Vincent Kompany was eligible for two national teams through his heritage — which one did he captain?", o:["France","Netherlands","Congo DR","Belgium"], a:3, cat:"Records", diff:"easy", type:"mcq", v:1 },
@@ -3214,7 +3213,6 @@ const QB = [
   { q:"Which legendary Brazilian player refused to cut his hair during the 1970 World Cup as a good luck charm?", o:["Tostão","Pelé","Rivelino","Jairzinho"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"Dennis Bergkamp is famously known for refusing to do what — limiting his ability to play in some tournaments?", o:["Sign autographs","Take drug tests","Fly on aeroplanes","Give post-match interviews"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which player was known as 'The Complete Footballer' — Paul Breitner's description of his own Bayern teammate?", o:["Gerd Müller","Franz Beckenbauer","Sepp Maier","Karl-Heinz Rummenigge"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1 },
-  { q:"Ronaldinho's famous 2002 World Cup free kick that lobbed Seaman — was it a cross or a deliberate shot?", o:["Deliberate shot","It was a cross that deceived everyone","The referee awarded it as a direct shot","He claimed it was a cross"], a:3, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"Which player was sold by Valencia to Lazio in 2001 for €48m — becoming Spain's most expensive export at the time?", o:["Rubén Baraja","Gaizka Mendieta","Pablo Aimar","Kily González"], a:1, cat:"LaLiga", diff:"hard", type:"mcq", hint:"Mendieta was twice voted UEFA Midfielder of the Year at Valencia before his high-profile move.", v:1 },
 
 
@@ -3518,7 +3516,6 @@ const QB = [
 
   // La Liga — Final
   { q:"Which La Liga club won the Champions League in 2004 under José Mourinho — a major shock?", o:["Valencia","Deportivo","Villarreal","Porto"], a:3, cat:"UCL", diff:"easy", type:"mcq", v:1 },
-  { q:"Messi's Barcelona debut came in which type of match — a pre-season friendly or competitive game?", o:["Pre-season friendly","Liga game aged 16","Copa del Rey","UEFA Cup"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Real Madrid's record league victory is 11-1 — against which club?", o:["Elche","Recreativo Huelva","Barcelona B","Getafe"], a:1, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Who scored a hat-trick in the 2014 Copa del Rey final for Real Madrid vs Barcelona?", o:["Benzema","Bale","Ramos","Di María"], a:1, cat:"LaLiga", diff:"hard", type:"mcq", v:1 },
   { q:"Which Spanish club plays their home games at the Estadio de la Cerámica — The Ceramic Stadium?", o:["Getafe","Villarreal","Levante","Elche"], a:1, cat:"LaLiga", diff:"medium", type:"mcq", v:1 },
@@ -4015,7 +4012,6 @@ const QB = [
   { q:"Which Serie A club is nicknamed 'I Neroverdi' (the Black and Greens) and based in Emilia-Romagna — known for developing young Italian talent?", o:["Sassuolo","Chievo","Bologna","Empoli"], a:0, cat:"SerieA", diff:"medium", type:"mcq", v:1, hint:"Sassuolo (US Sassuolo Calcio) — founded 1920, not 1900. Nicknamed Neroverdi for their black-green stripes. Based near Modena, owned by Mapei. Promoted to Serie A in 2013. Produced talents like Berardi, Locatelli." },
 
   // La Liga
-  { q:"Which Spanish city is home to both Deportivo Alaves and CD Vitoria?", o:["Pamplona","San Sebastian","Vitoria-Gasteiz","Bilbao"], a:2, cat:"LaLiga", diff:"hard", type:"mcq", v:1 },
   { q:"Which Polish striker won the La Liga Pichichi (top scorer) in his debut season at Barcelona 2022-23 — with 23 goals?", o:["Lewandowski","Karim Benzema","Vinicius Jr","Antoine Griezmann"], a:0, cat:"LaLiga", diff:"medium", type:"mcq", v:1, hint:"Lewandowski won the 2022-23 Pichichi (23 goals) in his debut La Liga season after moving from Bayern. Benzema was 2nd (19 goals), Vinicius 3rd (10 goals). Griezmann topped the assists chart with 16." },
   { q:"Real Betis won their only La Liga title in which decade?", o:["1930s","1950s","1970s","1980s"], a:0, cat:"LaLiga", diff:"hard", type:"mcq", v:1 },
   { q:"Who is Barcelona's all-time record goalscorer — ahead of Kubala and Ronaldo?", o:["Cruyff","Romario","Suarez","Messi"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
@@ -5403,7 +5399,6 @@ const QB = [
   { q:"What colour are Borussia Dortmund's home shirts?", o:["Yellow","Red","Blue","Black"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the name of Bayern Munich's home stadium?", o:["Allianz Arena","Signal Iduna Park","Olympiastadion","Westfalenstadion"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour is the Bayern Munich home kit primarily?", o:["Red","Blue","Yellow","Green"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
-  { q:"Hamburger SV play in which German city?", o:["Hamburg","Berlin","Munich","Frankfurt"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Thomas Müller has spent his entire career at which club?", o:["Bayern Munich","Dortmund","Schalke","RB Leipzig"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Which German club has won the most Bundesliga titles since 2000?", o:["Bayern Munich","Dortmund","Leverkusen","Schalke"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What nationality is Franz Beckenbauer?", o:["German","Austrian","Swiss","Dutch"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
