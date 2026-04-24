@@ -6649,6 +6649,33 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 .badges-section{margin-bottom:14px;}
 .badges-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
+
+/* ── FRIENDS ── */
+.friends-section{margin:16px 0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,0.28);}
+.friends-search-wrap{margin-bottom:10px;}
+.friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
+.friends-search-inp:focus{border-color:var(--accent);background:var(--s1);}
+.friends-results{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.friends-block{margin-top:14px;}
+.friends-block-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+.friends-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--s2);}
+.friends-avatar{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;}
+.friends-meta{flex:1;min-width:0;}
+.friends-name{font-size:14px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.friends-sub{font-size:11px;color:var(--t3);margin-top:2px;}
+.friends-action{background:var(--s3);border:1px solid var(--border);color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.friends-action:active{transform:scale(0.97);}
+.friends-action.accept{background:var(--accent);color:#0a1a00;border-color:transparent;}
+.friends-action.decline{background:transparent;color:var(--t3);}
+.friends-action.challenge{background:var(--accent);color:#0a1a00;border-color:transparent;}
+.friends-muted{font-size:12px;color:var(--t3);padding:6px 2px;}
+.friends-lb{display:flex;flex-direction:column;gap:4px;}
+.friends-lb-row{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;background:var(--s2);}
+.friends-lb-row.you{background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.3);}
+.friends-lb-rank{font-size:12px;font-weight:800;color:var(--t3);min-width:28px;}
+.friends-lb-row.you .friends-lb-rank{color:#8AE042;}
+.friends-lb-score{font-size:13px;font-weight:800;color:var(--t1);}
+.friends-you-pill{margin-left:6px;font-size:9px;background:var(--accent);color:#0a1a00;padding:1px 5px;border-radius:4px;font-weight:800;letter-spacing:0.04em;vertical-align:middle;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);contain:layout paint style;}
 .badge-tile.earned{border-color:var(--accent-b);background:var(--accent-dim);}
@@ -10542,8 +10569,259 @@ function CropModal({ file, onCancel, onConfirm }) {
   );
 }
 
+// ─── FRIENDS SECTION ──────────────────────────────────────────────────────────
+// Lives inside ProfileScreen. Requires an authenticated user (userId). When
+// isActive is true the section loads friendships on mount and after any action
+// so counts + lists stay fresh when the user returns to the Profile tab.
+function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast }) {
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [friendships, setFriendships] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const toast = onToast || (() => {});
+
+  const loadFriendships = useCallback(async () => {
+    if (!userId) return;
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("friendships")
+        .select("*,requester:profiles!requester_id(id,username,avatar,total_score),addressee:profiles!addressee_id(id,username,avatar,total_score)")
+        .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`);
+      if (error) throw error;
+      setFriendships(data || []);
+    } catch (e) {
+      console.error("[friends] load error", e);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) loadFriendships();
+  }, [userId, loadFriendships]);
+
+  // Derived lists
+  const incoming = friendships.filter(f => f.status === "pending" && f.addressee_id === userId);
+  const outgoing = friendships.filter(f => f.status === "pending" && f.requester_id === userId);
+  const accepted = friendships.filter(f => f.status === "accepted");
+
+  // Set of user ids we shouldn't show in search (already friended or pending)
+  const excludedIds = useMemo(() => {
+    const s = new Set([userId]);
+    friendships.forEach(f => {
+      if (f.status === "declined") return;
+      s.add(f.requester_id); s.add(f.addressee_id);
+    });
+    return s;
+  }, [friendships, userId]);
+
+  // Debounced search
+  useEffect(() => {
+    const q = search.trim();
+    if (q.length < 2) { setResults([]); return; }
+    let cancelled = false;
+    setSearching(true);
+    const t = setTimeout(async () => {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("id,username,avatar,total_score")
+          .ilike("username", `%${q}%`)
+          .limit(10);
+        if (cancelled) return;
+        if (error) throw error;
+        setResults((data || []).filter(p => !excludedIds.has(p.id)));
+      } catch (e) {
+        console.error("[friends] search error", e);
+        if (!cancelled) setResults([]);
+      } finally {
+        if (!cancelled) setSearching(false);
+      }
+    }, 250);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [search, excludedIds]);
+
+  const sendRequest = async (target) => {
+    if (!userId) return;
+    try {
+      const { error } = await supabase
+        .from("friendships")
+        .insert({ requester_id: userId, addressee_id: target.id });
+      if (error) throw error;
+      toast(`Friend request sent to ${target.username} ✉️`);
+      setResults(prev => prev.filter(p => p.id !== target.id));
+      loadFriendships();
+    } catch (e) {
+      console.error("[friends] sendRequest error", e);
+      toast("Couldn't send request — try again");
+    }
+  };
+
+  const setStatus = async (friendshipId, status) => {
+    try {
+      const { error } = await supabase
+        .from("friendships")
+        .update({ status })
+        .eq("id", friendshipId);
+      if (error) throw error;
+      loadFriendships();
+    } catch (e) {
+      console.error("[friends] setStatus error", e);
+      toast("Couldn't update — try again");
+    }
+  };
+
+  const cancelRequest = async (friendshipId) => {
+    try {
+      const { error } = await supabase
+        .from("friendships")
+        .delete()
+        .eq("id", friendshipId);
+      if (error) throw error;
+      loadFriendships();
+    } catch (e) {
+      console.error("[friends] cancel error", e);
+      toast("Couldn't cancel — try again");
+    }
+  };
+
+  // Mini-leaderboard: accepted friends + me, sorted by total_score desc.
+  const leaderboard = useMemo(() => {
+    const rows = accepted.map(f => {
+      const other = f.requester_id === userId ? f.addressee : f.requester;
+      return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
+    }).filter(Boolean);
+    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar || "⚽", score: currentUserScore || 0, isMe: true });
+    rows.sort((a, b) => b.score - a.score);
+    return rows;
+  }, [accepted, userId, currentUserScore, currentUserName, currentUserAvatar]);
+
+  const otherOf = (f) => f.requester_id === userId ? f.addressee : f.requester;
+
+  return (
+    <div className="friends-section">
+      <div className="ds-eyebrow" style={{marginBottom:10}}>Friends</div>
+
+      {/* Search */}
+      <div className="friends-search-wrap">
+        <input
+          className="friends-search-inp"
+          type="search"
+          inputMode="search"
+          autoCorrect="off"
+          autoCapitalize="none"
+          placeholder="Find a friend by username…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+      {search.trim().length >= 2 && (
+        <div className="friends-results">
+          {searching && <div className="friends-muted">Searching…</div>}
+          {!searching && results.length === 0 && <div className="friends-muted">No players found</div>}
+          {results.map(r => (
+            <div key={r.id} className="friends-row">
+              <div className="friends-avatar">{r.avatar || "⚽"}</div>
+              <div className="friends-meta">
+                <div className="friends-name">{r.username}</div>
+                <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
+              </div>
+              <button className="friends-action" onClick={() => sendRequest(r)}>Add</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Incoming pending */}
+      {incoming.length > 0 && (
+        <div className="friends-block">
+          <div className="friends-block-title">Incoming requests</div>
+          {incoming.map(f => {
+            const p = otherOf(f);
+            if (!p) return null;
+            return (
+              <div key={f.id} className="friends-row">
+                <div className="friends-avatar">{p.avatar || "⚽"}</div>
+                <div className="friends-meta">
+                  <div className="friends-name">{p.username}</div>
+                  <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
+                </div>
+                <div style={{display:"flex", gap:6}}>
+                  <button className="friends-action accept" onClick={() => setStatus(f.id, "accepted")}>Accept</button>
+                  <button className="friends-action decline" onClick={() => setStatus(f.id, "declined")}>Decline</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Outgoing pending */}
+      {outgoing.length > 0 && (
+        <div className="friends-block">
+          <div className="friends-block-title">Pending</div>
+          {outgoing.map(f => {
+            const p = otherOf(f);
+            if (!p) return null;
+            return (
+              <div key={f.id} className="friends-row">
+                <div className="friends-avatar">{p.avatar || "⚽"}</div>
+                <div className="friends-meta">
+                  <div className="friends-name">{p.username}</div>
+                  <div className="friends-sub">Pending…</div>
+                </div>
+                <button className="friends-action decline" onClick={() => cancelRequest(f.id)}>Cancel</button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Friends list */}
+      <div className="friends-block">
+        <div className="friends-block-title">Your friends{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
+        {loading && accepted.length === 0 && <div className="friends-muted">Loading…</div>}
+        {!loading && accepted.length === 0 && <div className="friends-muted">No friends yet — search above to add some.</div>}
+        {accepted.map(f => {
+          const p = otherOf(f);
+          if (!p) return null;
+          return (
+            <div key={f.id} className="friends-row">
+              <div className="friends-avatar">{p.avatar || "⚽"}</div>
+              <div className="friends-meta">
+                <div className="friends-name">{p.username}</div>
+                <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
+              </div>
+              <button className="friends-action challenge" onClick={() => onChallenge && onChallenge(p)}>Challenge</button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Leaderboard */}
+      {leaderboard.length > 1 && (
+        <div className="friends-block">
+          <div className="friends-block-title">Friends leaderboard</div>
+          <div className="friends-lb">
+            {leaderboard.map((row, i) => (
+              <div key={row.id} className={`friends-lb-row${row.isMe ? " you" : ""}`}>
+                <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
+                <div className="friends-avatar">{row.avatar || "⚽"}</div>
+                <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill">YOU</span>}</div>
+                <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge }) {
   const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
@@ -10688,6 +10966,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </div>
         );
       })()}
+      {user && !isGuest && (
+        <FriendsSection
+          userId={user.id}
+          currentUserScore={authProfile?.total_score || 0}
+          currentUserName={authProfile?.username || profile?.name || "You"}
+          currentUserAvatar={authProfile?.avatar || profile?.avatar || "⚽"}
+          onChallenge={onChallenge}
+          onToast={onToast}
+        />
+      )}
       <div className="badges-section">
         <div className="badges-title">Badges — {earned.size}/{BADGE_DEFS.length} earned</div>
         {earned.size === 0 && (
@@ -11740,6 +12028,12 @@ function AppInner() {
 
   // Stable callbacks for memoized children
   const goHome = useCallback(() => { setScreen("home"); setTab("home"); }, []);
+  const challengeFriend = useCallback((friend) => {
+    // No native invite flow yet — drop the challenger into the online lobby
+    // with a toast hinting at the friend's name so they can share the code.
+    showToast(friend ? `Share your room code with ${friend.username}` : "Online lobby");
+    startMode("online");
+  }, [showToast, startMode]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openIqChip = useCallback(() => {
@@ -12266,7 +12560,7 @@ function AppInner() {
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
-            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} />
+            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} />
           </div>
         )}
 
