@@ -6108,7 +6108,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .home-stat-val.flame{color:#FF6A00;}
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
-.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:16px 20px;min-height:104px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
+.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;}
 .hero-daily-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.7);}
 .hero-daily-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:#1A0F05;}
 .hero-daily-sub{font-family:'Inter',sans-serif;font-size:12.5px;opacity:0.85;margin-top:4px;color:#1A0F05;}
@@ -6117,7 +6117,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:16px 20px;min-height:104px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
