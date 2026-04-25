@@ -5528,6 +5528,12 @@ const QB = [
   { q:"Which club has lost the most Champions League finals with seven final defeats?", o:["Bayern Munich","Benfica","Atletico Madrid","Juventus"], a:3, cat:"UCL", diff:"hard", type:"mcq", hint:"Despite reaching nine finals they have won it only twice.", v:1 },
   { q:"At the 1994 World Cup, Oleg Salenko scored all 6 of his Golden Boot goals in the group stage. What happened to him after that?", o:["He was injured in the round of 16","He was dropped from the squad after the group stage","He retired from international football immediately after","Russia were eliminated before he could score again"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"He scored 5 in one match and 1 in another, then was dropped. He never played at a World Cup again.", v:1 },
 
+  // ── BATCH ADD: Giggs single-club apps, Bernabéu innovations, Atalanta CL group, Lewandowski 5-in-9 ──
+  { q:"Ryan Giggs holds the record for most Premier League appearances at a single club with 632 games. Which club?", o:["Arsenal","Chelsea","Liverpool","Manchester United"], a:3, cat:"PL", diff:"medium", type:"mcq", hint:"He spent his entire 24-year career at this club.", v:1 },
+  { q:"The renovated Santiago Bernabéu stadium completed in 2023 features two remarkable innovations. What are they?", o:["A retractable pitch that slides outside","A retractable roof that closes in bad weather","A giant LED screen on the exterior","Both a retractable roof and retractable pitch"], a:3, cat:"LaLiga", diff:"hard", type:"mcq", hint:"The pitch slides out of the stadium on rails so the natural grass can grow in sunlight.", v:1 },
+  { q:"Atalanta lost their first three Champions League group stage games in 2019-20 but still qualified. How did they manage it?", o:["They won their next five group games","They came back from 3 points down","They won their final three group games and qualified on goal difference","They were given a wild card entry"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"They went on to beat Valencia 8-4 on aggregate in the round of 16.", v:1 },
+  { q:"Robert Lewandowski came off the bench at half-time for Bayern Munich in September 2015 and scored five goals in nine minutes — a Bundesliga record. Which team were Bayern playing?", o:["Borussia Dortmund","Schalke","Wolfsburg","Hamburg"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"He scored in the 51st, 52nd, 55th, 57th and 60th minutes. Bayern won 5-1.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
