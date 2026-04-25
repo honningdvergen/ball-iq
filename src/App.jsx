@@ -7566,6 +7566,27 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .hero-pair-status strong{color:var(--accent);font-weight:700;}
 .hero-pair-emoji{position:absolute;right:-4px;bottom:-8px;font-size:50px;opacity:0.85;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));}
 .hero-pair-card.wordle .hero-pair-eyebrow{color:#FFC107;}
+
+/* Daily section — Challenge + Wordle paired cards. The Challenge card keeps
+   the flame gradient from the original hero so the Daily Challenge identity
+   stays recognisable; the Wordle half uses the standard surface treatment
+   with a green eyebrow and green emoji. */
+.daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
+.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 14px;min-height:108px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
+.daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
+.daily-pair-card:active{transform:scale(0.98);}
+.daily-pair-card.challenge{background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);border-color:transparent;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
+.daily-pair-card.challenge:hover{background:linear-gradient(135deg,#FF7A14 0%,#FFCD2A 100%);border-color:transparent;}
+.daily-pair-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
+.daily-pair-card.challenge .daily-pair-eyebrow{color:rgba(10,10,10,0.7);}
+.daily-pair-card.wordle .daily-pair-eyebrow{color:#58CC02;}
+.daily-pair-title{font-size:17px;font-weight:900;line-height:1.05;letter-spacing:-0.4px;margin-top:3px;color:inherit;}
+.daily-pair-status{font-size:11.5px;line-height:1.3;margin-top:auto;color:var(--t3);}
+.daily-pair-card.challenge .daily-pair-status{color:rgba(10,10,10,0.78);}
+.daily-pair-status strong{font-weight:800;color:var(--accent);}
+.daily-pair-card.challenge .daily-pair-status strong{color:#1A0F05;}
+.daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
 `;
 
 
@@ -13646,65 +13667,53 @@ function AppInner() {
               </div>
             </div>
 
-            {/* ── HERO: DAILY (flame gradient when not done, compact badge when done) ── */}
-            {!dailyDone ? (
-              <button className="hero-daily" onClick={() => startMode("daily")} aria-label="Play today's daily challenge">
-                <div className="hero-daily-eyebrow">Daily Challenge</div>
-                <div className="hero-daily-title">Today's 7</div>
-                <div className="hero-daily-sub">
-                  Everyone plays the same 7 · Resets in <DailyHeroCountdown />
-                </div>
-                <div className="hero-daily-cta">Play</div>
-                <div className="hero-daily-emoji">🔥</div>
-              </button>
-            ) : (
+            {/* ── DAILY SECTION: Challenge + Wordle paired ── */}
+            <div className="ds-eyebrow daily-section-eyebrow">Daily</div>
+            <div className="daily-pair">
               <button
-                className="dhero-compact"
-                onClick={() => setTab("daily")}
-                aria-label={`Daily challenge complete: ${dailyScore} out of 7. View daily tab.`}
-                style={{marginBottom:12}}
+                className="daily-pair-card challenge"
+                onClick={() => dailyDone ? setTab("daily") : startMode("daily")}
+                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7. View daily tab.` : "Play today's daily challenge"}
               >
-                <span className="dhero-compact-dot">✅</span>
-                <span className="dhero-compact-text">
-                  Daily done · <span className="dhero-compact-score">{dailyScore}/7</span>
-                </span>
-                <span className="dhero-compact-arrow">→</span>
+                <div className="daily-pair-eyebrow">Daily Challenge</div>
+                <div className="daily-pair-title">Today's 7</div>
+                <div className="daily-pair-status">
+                  {dailyDone
+                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
+                    : <>Resets in <DailyHeroCountdown /></>}
+                </div>
+                <div className="daily-pair-emoji">🔥</div>
               </button>
-            )}
-
-            {/* ── MIDDLE ROW: Wordle + Multiplayer side-by-side ── */}
-            {(() => {
-              const ws = readWordleTodayStatus();
-              const wordleStatus =
-                ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-                ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
-                ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · keep going</> :
-                <>Today's puzzle ready</>;
-              return (
-                <div className="hero-pair">
+              {(() => {
+                const ws = readWordleTodayStatus();
+                const wordleStatus =
+                  ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+                  ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
+                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
+                  <>Today's puzzle ready</>;
+                return (
                   <button
-                    className="hero-pair-card wordle"
+                    className="daily-pair-card wordle"
                     onClick={() => setScreen("wordle")}
                     aria-label="Play Football Wordle"
                   >
-                    <div className="hero-pair-eyebrow">Daily Wordle</div>
-                    <div className="hero-pair-title">Football<br/>Wordle</div>
-                    <div className="hero-pair-status">{wordleStatus}</div>
-                    <div className="hero-pair-emoji">🟩</div>
+                    <div className="daily-pair-eyebrow">Football Wordle</div>
+                    <div className="daily-pair-title">Guess the<br/>Surname</div>
+                    <div className="daily-pair-status">{wordleStatus}</div>
+                    <div className="daily-pair-emoji">🟩</div>
                   </button>
-                  <button
-                    className="hero-pair-card multiplayer"
-                    onClick={() => setShowFriendsPicker(true)}
-                    aria-label="Play with friends"
-                  >
-                    <div className="hero-pair-eyebrow">Multiplayer</div>
-                    <div className="hero-pair-title">Play with<br/>Friends</div>
-                    <div className="hero-pair-status">Online or local</div>
-                    <div className="hero-pair-emoji">👥</div>
-                  </button>
-                </div>
-              );
-            })()}
+                );
+              })()}
+            </div>
+
+            {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
+            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
+              <div className="hero-online-eyebrow">Multiplayer</div>
+              <div className="hero-online-title">Play with Friends</div>
+              <div className="hero-online-sub">Online or local — challenge someone</div>
+              <div className="hero-online-cta">Play</div>
+              <div className="hero-online-emoji">🤝</div>
+            </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
             {(() => {
