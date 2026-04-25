@@ -13378,31 +13378,23 @@ function AppGate() {
   const { user, isGuest, loading } = useAuth();
 
   if (loading) {
-    let isLight = false;
-    try {
-      const raw = localStorage.getItem('biq_settings');
-      if (raw) isLight = JSON.parse(raw).theme === 'light';
-    } catch {}
+    // Render the SAME branded splash markup that index.html injects into #root
+    // before React mounts. Reusing the .biq-splash classes (defined inline in
+    // index.html's <style>) means the moment React replaces the pre-mount DOM,
+    // the user sees an identical wordmark + animated bar — no visible swap,
+    // no flash to a different "Loading..." treatment.
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: isLight ? '#F2F2F7' : '#0a0a0a',
-        color: isLight ? '#1C1C1E' : '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'Inter, -apple-system, sans-serif',
-        fontSize: '16px'
-      }}>
-        Loading...
+      <div className="biq-splash" aria-label="Loading Ball IQ">
+        <div className="biq-splash-mark">Ball <em>IQ</em></div>
+        <div className="biq-splash-dot"></div>
       </div>
     );
   }
-  
+
   if (!user && !isGuest) {
     return <Login />;
   }
-  
+
   return <AppInner />;
 }
 

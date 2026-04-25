@@ -1,0 +1,19 @@
+{
+  "name": "Ball IQ",
+  "short_name": "Ball IQ",
+  "description": "Test your football knowledge. 3,900+ questions across 10 game modes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
