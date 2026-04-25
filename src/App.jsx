@@ -782,7 +782,6 @@ const QB = [
   { q:"At Euro 2024, which country knocked out hosts Germany in the quarter-finals?", o:["France","Spain","Portugal","England"], a:1, cat:"Euros", diff:"medium", type:"mcq", v:1 },
   { q:"Which country was the surprise winner of Euro 1992 after being called up as a last-minute replacement?", o:["Sweden","Norway","Denmark","Finland"], a:2, cat:"Euros", diff:"medium", type:"mcq", v:1 },
   { q:"Which player has scored the most goals in European Championship history?", o:["Rooney","Platini","Ronaldo","Shevchenko"], a:2, cat:"Euros", diff:"medium", type:"mcq", v:1 },
-  { q:"Which country did Lamine Yamal represent when he became Euro 2024 youngest ever scorer at age 16?", o:["Portugal","France","Spain","Germany"], a:2, cat:"Euros", diff:"easy", type:"mcq", v:1 },
 
   // ── EXTRA UCL ──
   { q:"Which club won the 2021 Champions League beating Man City in the final?", o:["PSG","Chelsea","Porto","Liverpool"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
@@ -2187,7 +2186,6 @@ const QB = [
   { q:"Which was the first-ever European Championship to be co-hosted by two nations — in 2000?", o:["Belgium & Netherlands","Austria & Switzerland","Portugal & Poland","Ukraine & Poland"], a:0, cat:"Euros", diff:"hard", type:"mcq", v:1, hint:"Euro 2000 was the first co-hosted tournament (Belgium & Netherlands). Followed by Austria-Switzerland (2008), Poland-Ukraine (2012), and the pan-European Euro 2020 (delayed to 2021, hosted across 11 cities)." },
 
   // ── BATCH 2: BUNDESLIGA DEEP CUTS ──
-  { q:"How many times did Bayern Munich win the Bundesliga consecutively between 2013 and 2023?", o:["9","10","11","12"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Which club finished second in the Bundesliga a record 10 times without winning it?", o:["Stuttgart","Schalke","Hamburger SV","Leverkusen"], a:3, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Which German club was founded in 1900 and plays in red and white — nicknamed 'Die Roten'?", o:["Cologne","Stuttgart","Bayern Munich","Kaiserslautern"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Who did RB Leipzig beat to win their first ever DFB-Pokal (German Cup) in 2022?", o:["Bayern Munich","Dortmund","Freiburg","Leverkusen"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
@@ -4004,7 +4002,6 @@ const QB = [
   // Bundesliga - Extra depth
   { q:"Which infamous 1965-66 Bundesliga club (their only top-flight season) went bankrupt and now play in the lower leagues?", o:["Tasmania Berlin","Blau-Weiss Berlin","Hertha Zehlendorf","Preussen Berlin"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"How many clubs competed in the inaugural 1963-64 Bundesliga season?", o:["14","16","18","20"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
-  { q:"Bayern Munich's record consecutive Bundesliga title wins — how many in a row from 2013?", o:["8","9","10","11"], a:3, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Which club's rivalry with Bayern Munich is called 'Der Klassiker'?", o:["Schalke","Leverkusen","Dortmund","Hamburger SV"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Who is the Bundesliga's all-time leading assist provider with 228 assists?", o:["Ribery","Lahm","Muller","Rummenigge"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
 
@@ -5464,6 +5461,23 @@ const QB = [
   { q:"What is the only instance of a player scoring in two different World Cup finals for the same country?", o:["Pelé","Paul Breitner","Ronaldo","Zidane"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which iconic 1958 World Cup moment saw a 17-year-old Pelé score twice in the final?", o:["Against France","Against Sweden","Against West Germany","Against Hungary"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"What is the only stadium to have hosted matches in three different World Cups (1970, 1986, 2026)?", o:["Maracanã","Estadio Azteca","Wembley","Lusail"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
+
+  // ── BATCH ADD: Bundesliga / Serie A / African football / Euro 2024 / Copa America 2024 / Legends ──
+  { q:"Bayern Munich won how many consecutive Bundesliga titles between 2013 and 2023?", o:["8","9","11","13"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"A world record for consecutive top-flight titles in a major league.", v:1 },
+  { q:"Which two clubs share second place with Bayern Munich in terms of most Bundesliga titles won?", o:["Dortmund and Schalke","Borussia Mönchengladbach and Werder Bremen","Hamburg and Bayer Leverkusen","Stuttgart and Dortmund"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"Both clubs have 5 Bundesliga titles each.", v:1 },
+  { q:"Bayer Leverkusen made history in 2023-24 by winning the Bundesliga for the first time. What made their title win even more remarkable?", o:["They won it with 10 men in the final game","They went the entire season unbeaten","They won it on the final day with a last minute goal","They came back from 15 points behind"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"Under Xabi Alonso, they went 51 games unbeaten across all competitions.", v:1 },
+  { q:"Which Serie A club has won the most league titles in Italian football history?", o:["AC Milan","Inter Milan","Juventus","AS Roma"], a:2, cat:"SerieA", diff:"medium", type:"mcq", hint:"They won 9 consecutive titles between 2012 and 2020.", v:1 },
+  { q:"Which manager ended Juventus's run of nine consecutive Serie A titles by guiding Inter Milan to the 2020-21 Scudetto?", o:["Roberto Mancini","Antonio Conte","Simone Inzaghi","Luciano Spalletti"], a:1, cat:"SerieA", diff:"medium", type:"mcq", hint:"He later managed Italy and Chelsea.", v:1 },
+  { q:"Which African nation has won the Africa Cup of Nations the most times?", o:["Nigeria","Ghana","Egypt","Cameroon"], a:2, cat:"Records", diff:"medium", type:"mcq", hint:"They have won it 7 times, including three consecutive titles in the late 2000s.", v:1 },
+  { q:"Despite being one of Africa's greatest ever players, Didier Drogba never won the Africa Cup of Nations. When did Ivory Coast finally win it?", o:["2012","2013","2015","2017"], a:2, cat:"Records", diff:"medium", type:"mcq", hint:"Drogba had retired from international football one year before.", v:1 },
+  { q:"Which South American club has won the most Copa Libertadores titles?", o:["Boca Juniors","River Plate","Santos","Independiente"], a:3, cat:"Records", diff:"hard", type:"mcq", hint:"This Argentine club won it 7 times, mostly in the 1970s and 1980s.", v:1 },
+  { q:"Spain won Euro 2024 in Germany. Who did they beat in the final?", o:["France 2-0","England 2-1","England 3-1","France 1-0"], a:1, cat:"Euros", diff:"medium", type:"mcq", hint:"Mikel Oyarzabal scored the winner in the 86th minute in Berlin.", v:1 },
+  { q:"Which teenage sensation became the youngest goalscorer in European Championship history at Euro 2024?", o:["Lamine Yamal","Pedri","Gavi","Nico Williams"], a:0, cat:"Euros", diff:"medium", type:"mcq", hint:"He scored against France in the semi-final the day before his 17th birthday.", v:1 },
+  { q:"Argentina won the 2024 Copa America. Which country did they beat in the final?", o:["Brazil","Uruguay","Colombia","Chile"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", hint:"Lautaro Martínez scored the winner in extra time on July 14, 2024.", v:1 },
+  { q:"Which German striker holds the record for most Bundesliga goals of all time with 365 goals?", o:["Gerd Müller","Robert Lewandowski","Klaus Fischer","Jupp Heynckes"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"He scored all his Bundesliga goals for Bayern Munich between 1965 and 1979.", v:1 },
+  { q:"Which Swedish striker scored a record 36 Serie A goals in a single season for AC Milan in 1958-59?", o:["Giuseppe Meazza","Gunnar Nordahl","John Charles","Silvio Piola"], a:1, cat:"SerieA", diff:"hard", type:"mcq", hint:"His single-season record still stands today.", v:1 },
+  { q:"Brazil legend Garrincha overcame a remarkable physical condition to become one of football's greatest ever players. What was it?", o:["He was blind in one eye","Both legs were bent in the same direction","He had six toes on one foot","He had no feeling in his right foot"], a:1, cat:"Legends", diff:"hard", type:"mcq", hint:"Doctors told him he would never walk properly. He won two World Cups.", v:1 },
+  { q:"George Weah became the first and only African player to win the FIFA World Player of the Year award. In which year?", o:["1993","1995","1997","1999"], a:1, cat:"Legends", diff:"medium", type:"mcq", hint:"He also won the Ballon d'Or that year — the only African player ever to do so.", v:1 },
 
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
