@@ -663,7 +663,6 @@ const QB = [
   // WORLD CUP — hard
   { q:"Who managed Croatia to the 2018 World Cup final?", o:["Bilic","Dalić","Čačić","Kovač"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Zlatko Dalić took over in late 2017 and guided Croatia through three extra-time knockout games to reach the final — their best-ever World Cup finish.", v:1 },
   { q:"Who scored France's third goal in the 1998 World Cup final — in stoppage time as France beat Brazil 3-0?", o:["Petit","Thuram","Djorkaeff","Guivarc'h"], a:0, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Petit scored a 90+1 minute low finish assisted by Patrick Vieira. Zidane had already scored two headers in the first half.", v:1 },
-  { q:"Which Argentine scored the opening goal in the 2022 World Cup final vs France?", o:["Messi","Álvarez","Di María","Mac Allister"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which player holds the record for most World Cup goals of all time?", typed_a:"Klose", tag:"wc2026", cat:"WorldCup", diff:"hard", type:"typed" },
   { q:"In the 2002 World Cup third-place play-off, Turkey's Hakan Şükür scored after just 11 seconds — who were Turkey playing?", o:["Japan","Senegal","South Korea","USA"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"In what year did Pelé make his World Cup debut and become the youngest WC scorer?", o:["1954","1958","1962","1950"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Pelé was 17 at the 1958 World Cup in Sweden, where Brazil won their first title. He scored a hat-trick in the semi-final.", v:1 },
@@ -730,7 +729,6 @@ const QB = [
   // MANAGERS — easy/medium/hard
   { q:"Who managed Manchester United before Ole Gunnar Solskjær?", o:["Mourinho","Van Gaal","Moyes","Ferguson"], a:0, cat:"Managers", diff:"easy", type:"mcq", v:1 },
   { q:"Sir Alex Ferguson managed Manchester United for how many years?", o:["21","24","26","27"], a:3, cat:"Managers", diff:"easy", type:"mcq", v:1 },
-  { q:"Which manager took Leicester City to Premier League glory in 2016?", typed_a:"Ranieri", cat:"Managers", diff:"medium", type:"typed", aliases:["ranieri","claudio ranieri"] },
   { q:"Sven-Göran Eriksson was the first foreign manager to manage England — which club did he leave to take the job?", o:["Inter","Lazio","Roma","Fiorentina"], a:1, cat:"Managers", diff:"medium", type:"mcq", v:1 },
   { q:"Which manager famously said 'We do not need a striker' while managing Arsenal?", o:["Arteta","Emery","Wenger","Houston"], a:2, cat:"Managers", diff:"hard", type:"mcq", v:1 },
   { q:"Which manager guided Nottingham Forest to back-to-back European Cups (1979 & 1980)?", typed_a:"Clough", cat:"Managers", diff:"hard", type:"typed", aliases:["clough","brian clough"] },
@@ -741,14 +739,11 @@ const QB = [
   { q:"How many Ballon d'Or awards has Lionel Messi won in total?", o:["6","7","8","9"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Who was the first African player to win the Ballon d'Or?", o:["Drogba","Eto'o","Yaya Touré","Weah"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Who holds the record for most international goals in men's football?", o:["Messi","Ali Daei","Ronaldo","Puskas"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
-  { q:"In what year did Ronaldinho win his only Ballon d'Or?", o:["2003","2004","2005","2006"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
   // hard records
   { q:"Who was the first player to win the Ballon d'Or three times in a row?", o:["Cruyff","Platini","Messi","Ronaldo"], a:1, cat:"Records", diff:"hard", type:"mcq", hint:"Michel Platini won it in 1983, 1984 and 1985 while at Juventus — before Messi matched the feat decades later.", v:1 },
   { q:"In which year did Zinedine Zidane win his only Ballon d'Or?", o:["1996","1997","1998","2000"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"1998 — the year he scored twice for France in the World Cup final win over Brazil.", v:1 },
   { q:"In which year did Ronaldo (R9) win his first Ballon d'Or?", o:["1995","1996","1997","1998"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"1997 — aged just 21 and playing for Inter Milan. He won it again in 2002 after leading Brazil to World Cup glory.", v:1 },
   { q:"Which club did Johan Cruyff play for when he won his three Ballon d'Or awards?", typed_a:"Barcelona", cat:"Records", diff:"hard", type:"typed", aliases:["barcelona","barca","fc barcelona"] },
-  { q:"Who won the Ballon d'Or in 2003 — the only Czech player ever to win it?", typed_a:"Pavel Nedved", cat:"Records", diff:"hard", type:"typed", aliases:["nedved","pavel nedved","nedvěd","pavel nedvěd"] },
-  { q:"In which year did George Weah win the Ballon d'Or?", o:["1993","1994","1995","1996"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"1995 — Weah became the first (and only) African player to win it. He later became president of Liberia.", v:1 },
 
   // ── RECENT EVENTS — folded into existing categories ──
   { q:"Who won the 2024 Men's Ballon d'Or?", o:["Vinicius Jr","Jude Bellingham","Yamal","Rodri"], a:3, cat:"Records", diff:"easy", type:"mcq", v:1 },
@@ -944,7 +939,6 @@ const QB = [
   { q:"Johan Cruyff turned down the 1978 World Cup with Netherlands for personal reasons — which country won it?", o:["Brazil","Netherlands","Argentina","West Germany"], a:2, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which Scottish club did Kenny Dalglish leave to join Liverpool in 1977?", o:["Rangers","Hearts","Hibernian","Celtic"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Has any manager ever held both the Brazil and England national team head coach jobs?", o:["Yes — Carlos Alberto Parreira","Yes — Ron Greenwood","No one has","Yes — Bobby Robson"], a:2, cat:"Managers", diff:"hard", type:"mcq", hint:"No manager has ever held both posts. Brazil prefers Brazilian coaches; England has only ever had two non-English managers.", v:1 },
-  { q:"Which club did Ronaldo R9 score his iconic solo goal against for Barcelona in October 1996 — picking up the ball in his own half and beating the entire defence?", o:["Compostela","Valencia","Atlético","Real Zaragoza"], a:0, cat:"LaLiga", diff:"hard", type:"mcq", v:1, hint:"12 October 1996, La Liga away at Compostela. Ronaldo's genius in a 5-1 win caused then-manager Bobby Robson to put his hands to his head in disbelief. His hat-trick that season came vs Valencia on 26 October." },
   { q:"What shirt number did Pelé wear for Brazil throughout his international career?", o:["9","10","11","7"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
 
   // ── WORLD CUP EXTRA ──
@@ -1032,7 +1026,6 @@ const QB = [
   { q:"Which club did Bobby Charlton spend almost his entire career at?", o:["Liverpool","Tottenham","Man Utd","Arsenal"], a:2, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Which country did Lev Yashin — considered the greatest goalkeeper ever — represent?", o:["Romania","Czechoslovakia","Soviet Union","East Germany"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Lev Yashin revolutionised goalkeeping — which aspect of his play was considered groundbreaking at the time?", o:["He played sweeper-keeper","He wore all-black kit","He invented the penalty save","He commanded his area aggressively"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
-  { q:"Which club did Michel Platini win three consecutive Ballon d'Or awards while playing for?", o:["Saint-Étienne","PSG","Monaco","Juventus"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which legendary winger did George Best play alongside at Manchester United?", o:["Charlton and Law","Hurst and Peters","Hunt and St John","Ball and Stiles"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored the decisive goal in the 1960 European Cup final — arguably the greatest final ever played — for Real Madrid vs Eintracht Frankfurt?", o:["Puskas","Di Stéfano","Gento","Kopa"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"In which city was the famous 1960 European Cup final — Real Madrid 7-3 Eintracht Frankfurt — played?", o:["Madrid","London","Paris","Glasgow"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
@@ -1060,7 +1053,6 @@ const QB = [
 
   // ── BATCH 3: CROSSOVERS AND SURPRISES ──
   { q:"Thierry Henry played for which club immediately before joining Arsenal in 1999?", o:["Monaco","Juventus","Barcelona","Lyon"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
-  { q:"Which Brazilian player was Ronaldo R9's strike partner at the 2002 World Cup?", o:["Rivaldo","Ronaldinho","Cafu","R. Carlos"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Carlos Tevez famously crossed a bitter divide in 2009 — which Premier League club did he join after leaving Old Trafford?", o:["Everton","Liverpool","Bolton","Man City"], a:3, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Peter Schmeichel's son Kasper Schmeichel was the goalkeeper for which club's Premier League title win?", o:["Aston Villa","Wolves","Leicester City","Watford"], a:2, cat:"PL", diff:"medium", type:"mcq", v:1 },
   { q:"Which national team did Didier Drogba captain before retirement?", o:["Ghana","Senegal","Nigeria","Ivory Coast"], a:3, cat:"Records", diff:"easy", type:"mcq", v:1 },
@@ -1389,7 +1381,6 @@ const QB = [
   { q:"Which Brazilian attacker joined Real Madrid's Galácticos alongside Ronaldo in 2004 — a World Cup winner known for his defensive work?", o:["Ronaldinho","Rivaldo","R. Carlos","Robinho"], a:2, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Roberto Carlos (not a striker but the iconic left-back) was Ronaldo's long-term team-mate at Real Madrid. Ronaldinho never played for Real Madrid — he spent his European career at PSG, Barcelona, AC Milan." },
   { q:"Dennis Bergkamp scored a legendary first-touch and finish at the 1998 World Cup QF vs Argentina — what was the score when his 90th-minute goal made the Netherlands winners?", o:["1-0","1-1","2-2","0-0"], a:1, cat:"WorldCup", diff:"hard", type:"mcq", v:1, hint:"Kluivert (12') gave Netherlands the lead; López (17') levelled; then late goals by Ortega (88') were cancelled out as Frank de Boer's long pass found Bergkamp to win it 2-1 in Marseille." },
   { q:"Which legendary striker was nicknamed 'The Black Panther' and won the 1966 Golden Boot?", o:["Roger Milla","Pelé","Eusébio","Didier Drogba"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
-  { q:"Which famous winger played alongside Ronaldo R9, Ronaldinho and Rivaldo for Brazil?", o:["Denílson","Juninho","Kaká","Robinho"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   // ── SOURCED FROM REPUTABLE FOOTBALL TRIVIA (SI, Goal.com, FunTrivia, SoccerMastermind) ────
 
   // International
@@ -1417,7 +1408,6 @@ const QB = [
   { q:"Which team broke the Championship record with 106 points in a single season (2005-06)?", o:["Sunderland","Newcastle","Reading","Birmingham"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Aleksandar Mitrović broke the Championship scoring record in 2021-22 — how many goals?", o:["38","41","43","46"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Plymouth Argyle share a distinction with just a handful of clubs — what is it?", o:["One of England's biggest never to reach the top flight","Most FA Cup wins outside the top 10","Only non-league to win the League Cup","Only club to play in all 4 divisions"], a:0, cat:"PL", diff:"hard", type:"mcq", hint:"Plymouth are one of the largest English clubs by historic attendance never to have played top-flight football." },
-  { q:"Kevin Keegan won the Ballon d'Or twice while playing for which German club?", o:["Bayern Munich","Dortmund","Hamburger SV","Schalke"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which three players share the Premier League Player of the Month record, each winning the award 7 times?", o:["Henry, Shearer, Rooney","Kane, Agüero, Salah","Ronaldo, Rooney, Gerrard","Drogba, Lampard, Terry"], a:1, cat:"PL", diff:"hard", type:"mcq", v:1, hint:"Harry Kane (Tottenham), Sergio Agüero (Man City), and Mohamed Salah (Liverpool) are tied at 7 each. Steven Gerrard and Cristiano Ronaldo follow with 6. Bruno Fernandes is on 6 (March 2026). Award introduced August 1994." },
   { q:"Who was the first player to score 100 assists in the Premier League?", o:["David Beckham","Frank Lampard","Dennis Bergkamp","Giggs"], a:3, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Which club has spent the most seasons in the Premier League era without winning the title?", o:["Arsenal","Liverpool","Everton","Tottenham"], a:3, cat:"PL", diff:"medium", type:"mcq", v:1 },
@@ -1455,7 +1445,6 @@ const QB = [
   { q:"Who was the first non-German manager to win the Bundesliga title?", o:["Ottmar Hitzfeld","Louis van Gaal","Giovanni Trapattoni","Jupp Heynckes"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Ottmar Hitzfeld won the Champions League with two different German clubs — Dortmund (1997) and which other?", o:["Schalke","Hamburg","Bayern Munich","Leverkusen"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Which two clubs follow Bayern Munich with five Bundesliga titles each?", o:["Dortmund & Schalke","Werder Bremen & Mönchengladbach","Hamburger SV & Dortmund","Mönchengladbach & Dortmund"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
-  { q:"Jürgen Klopp managed Borussia Dortmund and which other Bundesliga club?", o:["Schalke","Wolfsburg","Mainz","Hamburger SV"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Which team won the Bundesliga title in 1963-64, the first ever Bundesliga season?", o:["Bayern Munich","Dortmund","1. FC Köln","Borussia Mönchengladbach"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Germany have won the World Cup four times — how many times as a unified Germany (post-1990)?", o:["0","1","2","3"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Florian Wirtz set the record as the youngest Bundesliga goalscorer — for which club?", o:["Dortmund","Schalke","Leverkusen","Cologne"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
@@ -1730,7 +1719,6 @@ const QB = [
   { q:"Which Liverpool manager coined the phrase 'This is Anfield' to intimidate opponents?", o:["Bob Paisley","Kenny Dalglish","Bill Shankly","Joe Fagan"], a:2, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Zinedine Zidane scored twice in the 1998 World Cup final — both goals were what type?", o:["Free kicks","Volleys","Headers","Penalties"], a:2, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Roberto Baggio missed the decisive penalty in the 1994 World Cup final — what was the score before that miss?", o:["0-0","1-1","2-2","3-3"], a:0, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", v:1 },
-  { q:"Which Dutch legend was the first player to win the Ballon d'Or three times?", o:["Johan Cruyff","Dennis Bergkamp","Marco van Basten","Ruud Gullit"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1 },
 
   // ── MIX OF CREATIVE / NERD QUESTIONS ─────────────────────────────────────────
   { q:"What shirt number did Bobby Charlton wear for England at the 1966 World Cup — scoring twice against Portugal in the semi-final?", o:["7","9","10","11"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"The Manchester United midfielder wore it throughout England's triumphant campaign, in an era when numbers were still assigned by position rather than by player.", v:1 },
@@ -1819,7 +1807,6 @@ const QB = [
   { q:"Who won the Golden Ball at the 2022 World Cup?", typed_a:"Lionel Messi", aliases:["Messi"], tag:"wc2026", cat:"WorldCup", diff:"easy", type:"typed" },
   { q:"Who holds the Champions League all-time goals record?", typed_a:"Cristiano Ronaldo", aliases:["Ronaldo"], cat:"UCL", diff:"easy", type:"typed" },
   { q:"Which club has won the most Champions League titles?", typed_a:"Real Madrid", aliases:["Real"], cat:"UCL", diff:"easy", type:"typed" },
-  { q:"Who scored the winning penalty in the 2005 Champions League final for Liverpool?", typed_a:"Jerzy Dudek", aliases:["Dudek"], cat:"UCL", diff:"hard", type:"typed" },
   { q:"Which Brazilian legend scored his 1000th career goal against Vasco da Gama in 1969?", typed_a:"Pele", aliases:["Pelé"], cat:"Legends", diff:"easy", type:"typed" },
   { q:"Who managed Liverpool to the 2019 Champions League and 2020 Premier League titles?", typed_a:"Jurgen Klopp", aliases:["Jürgen Klopp","Klopp"], cat:"Managers", diff:"easy", type:"typed" },
   { q:"Who scored the winning goal in the 2010 World Cup final for Spain?", typed_a:"Andres Iniesta", aliases:["Andrés Iniesta","Iniesta"], tag:"wc2026", cat:"WorldCup", diff:"medium", type:"typed" },
@@ -1858,7 +1845,6 @@ const QB = [
   { q:"Which La Liga club is nicknamed 'The White Ballet'?", o:["Atlético","Deportivo La Coruna","Real Madrid","Real Betis"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Real Madrid have worn white since their founding and are famous for their fluid attacking play.", v:1 },
   { q:"Who won La Liga's Pichichi top scorer award the most times?", o:["Raul","Cristiano Ronaldo","Telmo Zarra","Lionel Messi"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Messi won the Pichichi eight times across his Barcelona career.", v:1 },
   { q:"Which La Liga club plays at the Ramon Sanchez-Pizjuan stadium?", o:["Real Betis","Malaga","Sevilla","Granada"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Sevilla have won the Europa League a record seven times.", v:1 },
-  { q:"Which player is known as 'El Fenomeno' and had two spells in La Liga?", o:["Rivaldo","Ronaldinho","Ronaldo Nazario","R. Carlos"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Brazilian Ronaldo played for Barcelona and Real Madrid and was considered the best player in the world.", v:1 },
   { q:"What colour shirts do Atletico Madrid traditionally wear?", o:["All red","All white","Red and white stripes","Red and white halves"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Atletico wear vertical red and white stripes — similar to Southampton and River Plate.", v:1 },
   { q:"How many times did Messi win La Liga with Barcelona?", o:["7","8","9","10"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Messi won La Liga 10 times with Barcelona between 2005 and 2021.", v:1 },
   { q:"Which La Liga club pulled off a famous shock title win in 1999-2000?", o:["Celta Vigo","Villarreal","Deportivo La Coruna","Malaga"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Deportivo's title win under Javier Irureta is considered one of the greatest upsets in Spanish football.", v:1 },
@@ -1867,7 +1853,6 @@ const QB = [
   { q:"Which La Liga club did Pep Guardiola manage before going to Bayern and Man City?", o:["Real Madrid","Atlético","Barcelona","Valencia"], a:2, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Guardiola managed Barcelona from 2008 to 2012, winning 14 trophies including three La Liga titles.", v:1 },
   { q:"Which Spanish club won the Europa League a record seven times?", o:["Real Madrid","Valencia","Villarreal","Sevilla"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Sevilla are the undisputed kings of the Europa League, winning it in 2006, 2007, 2014, 2015, 2016, 2020 and 2023.", v:1 },
   { q:"Who was Real Madrid's top scorer for most of the 2000s and holds the record for appearances?", o:["R. Carlos","Zidane","Iker Casillas","Raul"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Raul scored 323 goals for Real Madrid in 741 appearances before leaving for Schalke in 2010.", v:1 },
-  { q:"Which Barcelona player won the FIFA World Player of the Year in 2004 and 2005 — also winning the Ballon d'Or in 2005?", o:["Samuel Eto'o","Ronaldinho","Xavi","Lionel Messi"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1, hint:"Ronaldinho won FIFA World Player twice (2004, 2005). Messi won the award from 2009 onwards. Zidane won 3x (1998, 2000, 2003) for France but while at Real Madrid." },
   { q:"Which player scored 91 goals in a single calendar year in 2012, a world record?", o:["Cristiano Ronaldo","Neymar","Luis Suarez","Lionel Messi"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", hint:"Messi's 91 goals in 2012 shattered Gerd Muller's record of 85 set in 1972.", v:1 },
 
   // ── EUROS — easy (18 new) ──────────────────────────────────────────────────
@@ -1887,7 +1872,6 @@ const QB = [
   { q:"Who is Bayern Munich's all-time record Bundesliga scorer?", o:["Gerd Muller","Karl-Heinz Rummenigge","Lewandowski","Thomas Muller"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Gerd Muller scored 365 Bundesliga goals for Bayern — the record still stands despite Lewandowski's best efforts.", v:1 },
   { q:"Erling Haaland scored how many Bundesliga goals in 15 appearances during his half-season debut at Borussia Dortmund (Jan-June 2020)?", o:["10","13","17","20"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq", v:1, hint:"He scored 13 goals in 15 Bundesliga appearances at 81.7 minutes/goal. Started with a 23-minute hat-trick off the bench vs Augsburg on debut (18 Jan 2020). Added 11 Champions League goals that season (10 at Salzburg + 2 as substitute totaling 10+2). Total across all comps with BVB+Salzburg: 44 goals in 40 matches." },
   { q:"What is the capacity of the famous Yellow Wall terrace at Dortmund's Signal Iduna Park?", o:["14,000","18,000","24,000","28,000"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"The Sudtribune — Yellow Wall — holds 24,454 standing fans, the largest terrace in European football.", v:1 },
-  { q:"Which club did Jurgen Klopp manage for seven years before taking the Liverpool job?", o:["Mainz","Leverkusen","Schalke","Dortmund"], a:3, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Klopp won two Bundesliga titles with Dortmund and reached the Champions League final in 2013.", v:1 },
   { q:"Which former East German club reached the Bundesliga and European football in the 2010s?", o:["Dynamo Dresden","Energie Cottbus","FC Union Berlin","Hansa Rostock"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Union Berlin's remarkable rise took them from the fourth division to European football in a decade.", v:1 },
   { q:"Which Bundesliga club did Thomas Tuchel manage before PSG, winning the DFB-Pokal in 2017?", o:["Mainz","Frankfurt","Wolfsburg","Dortmund"], a:3, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Tuchel was controversially sacked by Dortmund days after winning the cup despite a successful season.", v:1 },
   { q:"Toni Kroos came through the youth academy of which Bundesliga club?", o:["Schalke","Hamburger SV","Werder Bremen","Bayern Munich"], a:3, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Kroos developed at Bayern before going on loan to Bayer Leverkusen and eventually joining Real Madrid.", v:1 },
@@ -1932,7 +1916,6 @@ const QB = [
   { q:"In which year was the European Cup rebranded as the Champions League?", o:["1990","1991","1992","1993"], a:2, cat:"UCL", diff:"easy", type:"mcq", hint:"The rebranding in 1992 introduced the group stage format and the iconic anthem.", v:1 },
   { q:"Which club has reached the most Champions League finals without winning in the modern era?", o:["Leverkusen","Valencia","AS Monaco","Juventus"], a:3, cat:"UCL", diff:"easy", type:"mcq", hint:"Juventus have been to 9 European Cup/Champions League finals but won only 2 of them.", v:1 },
   { q:"Which year did Manchester United last win the Champions League?", o:["1999","2003","2008","2011"], a:2, cat:"UCL", diff:"easy", type:"mcq", hint:"United beat Chelsea on penalties in Moscow in 2008 with Ronaldo scoring in normal time.", v:1 },
-  { q:"The Miracle of Istanbul in 2005 saw Liverpool beat which team after being 3-0 down?", o:["Chelsea","Juventus","Real Madrid","AC Milan"], a:3, cat:"UCL", diff:"easy", type:"mcq", hint:"Liverpool came back from 3-0 down at half time to level at 3-3, then won on penalties.", v:1 },
   { q:"Chelsea won the 2020-21 Champions League under which manager who joined mid-season?", o:["Frank Lampard","Jose Mourinho","Antonio Conte","Thomas Tuchel"], a:3, cat:"UCL", diff:"easy", type:"mcq", hint:"Tuchel was appointed in January 2021 and transformed Chelsea within months to win the Champions League.", v:1 },
   { q:"Which club did Kylian Mbappe join after leaving PSG in summer 2024?", o:["Man City","Bayern Munich","Real Madrid","Arsenal"], a:2, cat:"UCL", diff:"easy", type:"mcq", hint:"Mbappe fulfilled his long-stated dream of joining Real Madrid on a free transfer.", v:1 },
   { q:"Which goalkeeper was crucial to Real Madrid's three consecutive Champions League wins from 2016-18?", o:["Thibaut Courtois","David De Gea","Keylor Navas","Iker Casillas"], a:2, cat:"UCL", diff:"easy", type:"mcq", hint:"Navas was named UEFA goalkeeper of the year during Real's historic three-peat.", v:1 },
@@ -1958,7 +1941,6 @@ const QB = [
   { q:"What is the largest margin of victory ever recorded in a FIFA World Cup finals match?", o:["7 goals (9-0)","8 goals (9-1)","9 goals (10-1)","10 goals (11-1)"], a:2, cat:"WorldCup", diff:"hard", type:"mcq", v:1, hint:"Hungary 10-1 El Salvador (1982) is the largest margin (9 goals). Other lopsided results: Hungary 9-0 South Korea (1954), Yugoslavia 9-0 Zaire (1974), Uruguay 8-0 Bolivia (1950). László Kiss scored a hat-trick in 7 minutes off the bench for Hungary." },
   { q:"What is the fastest hat-trick in Premier League history?", o:["2 min 56 sec","3 min 45 sec","4 min 12 sec","5 min 20 sec"], a:0, cat:"Records", diff:"medium", type:"mcq", hint:"Sadio Mane scored his hat-trick in 2 minutes 56 seconds for Southampton against Aston Villa in 2015.", v:1 },
   { q:"Which goalkeeper became the most expensive in world football history when Chelsea triggered his release clause in August 2018 for £71.6m (€80m)?", o:["Alisson Becker","Thibaut Courtois","Kepa Arrizabalaga","Ederson"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"Kepa's €80m release clause was paid in full by Chelsea after selling Courtois to Real Madrid. Alisson Becker (Roma→Liverpool £65m weeks earlier) was briefly the record holder." },
-  { q:"Which player has won the most Ballon d'Or awards?", o:["Cristiano Ronaldo","Zidane","Johan Cruyff","Lionel Messi"], a:3, cat:"Records", diff:"easy", type:"mcq", hint:"Messi has won eight Ballon d'Or awards, more than any other player in history.", v:1 },
   { q:"The La Liga record for most goals in a single top-flight match is 13 — achieved when Athletic Bilbao beat Barcelona 12-1 in February 1931. How many of those goals did Bata score?", o:["5","6","7","8"], a:2, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Bata scored 7 in Athletic Bilbao's 12-1 demolition of Barcelona (3 February 1931) — still a La Liga record. It's also the only La Liga match ever won by an 11-goal margin. The infamous 149-0 match in Madagascar 2002 was intentional own goals (SO Emyrne protest)." },
   { q:"Which country has qualified for the most World Cups without winning?", o:["Mexico","Holland","England","Belgium"], a:0, cat:"Records", diff:"medium", type:"mcq", hint:"Mexico have qualified for 17 World Cups but have never progressed past the quarter-finals.", v:1 },
   { q:"What is the record for the most goals scored by one team in a Premier League season?", o:["96","103","106","108"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"Manchester City scored 106 Premier League goals in their 2017-18 title-winning season.", v:1, hint:"Man City set the PL record with 106 goals in 2017-18 — 'The Centurions' under Pep Guardiola. They also set records for most points (100), most wins (32), best goal difference (+79), and largest winning margin (19 points)." },
@@ -1991,7 +1973,6 @@ const QB = [
   { q:"Which legendary Dutch striker scored 24 goals in 58 international matches, including five at Euro 88?", o:["Johan Cruyff","Marco van Basten","Dennis Bergkamp","Ruud van Nistelrooy"], a:1, cat:"Legends", diff:"medium", type:"mcq", hint:"Van Basten won three Ballon d'Ors and lifted Euro 88 with the Netherlands before injury ended his career at 28.", v:1 },
   { q:"Who was the captain of the first World Cup-winning team in 1930?", o:["Jose Andrade","Jose Nasazzi","Pedro Cea","Santos Iriarte"], a:1, tag:"wc2026", cat:"Legends", diff:"hard", type:"mcq", hint:"Jose Nasazzi captained Uruguay in the inaugural World Cup final against Argentina in Montevideo.", v:1 },
   { q:"Which Real Madrid legend is known as 'The Vulture' for his goal-poaching?", o:["Alfredo Di Stefano","Ferenc Puskas","Hugo Sanchez","Emilio Butragueno"], a:3, cat:"Legends", diff:"hard", type:"mcq", hint:"Emilio Butragueno earned the nickname 'The Vulture' for his lethal instinct in front of goal in the 1980s.", v:1 },
-  { q:"Which Spanish midfielder won the 1960 Ballon d'Or and was the creative force of Inter Milan's 'Grande Inter' team of the 1960s, nicknamed 'El Arquitecto' (The Architect)?", o:["Luis Suárez Miramontes","Sandro Mazzola","Giacinto Facchetti","Armando Picchi"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Luis Suárez (1935-2023) remains the only Spanish-born male player to win the Ballon d'Or (1960). He won 3 Serie A titles and 2 European Cups with Inter under Helenio Herrera. Pronounced 'El Arquitecto' — he designed Inter's attacks." },
   { q:"Who was the top scorer at the inaugural World Cup in 1930?", o:["Guillermo Stabile","Bert Patenaude","Pedro Cea","Adolfo Zumelzu"], a:0, tag:"wc2026", cat:"Legends", diff:"hard", type:"mcq", hint:"Guillermo Stabile scored 8 goals for Argentina at the 1930 World Cup, finishing as top scorer despite arriving late to the squad.", v:1 },
   { q:"Which Italian keeper set a still-standing World Cup record by going 517 minutes without conceding at Italia '90, before Caniggia finally beat him in the semi-final?", o:["Dino Zoff","Walter Zenga","Gianluca Pagliuca","Ivano Bordon"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"The Inter Milan goalkeeper won the Golden Glove as the tournament's best — his five-game clean sheet streak against Austria, USA, Czechoslovakia, Uruguay and Ireland remains the longest in World Cup history.", v:1 },
   { q:"Eric Cantona famously kung-fu kicked a fan at which ground?", o:["Old Trafford","Stamford Bridge","Selhurst Park","Highbury"], a:2, cat:"Legends", diff:"easy", type:"mcq", hint:"Cantona leapt into the crowd at Selhurst Park in January 1995 and was banned for 8 months.", v:1 },
@@ -2166,7 +2147,6 @@ const QB = [
   { q:"Which club has been runner-up in the Champions League the most times without winning it?", o:["Juventus","Benfica","Atlético","Bayern Munich"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Who managed Bayern Munich to their 2013 Champions League win?", o:["Heynckes","Guardiola","Ancelotti","Flick"], a:0, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"Which goalkeeper made a crucial penalty save to help Liverpool win the 2005 Champions League final against AC Milan?", o:["Jerzy Dudek","Pepe Reina","Chris Kirkland","Sander Westerveld"], a:0, cat:"UCL", diff:"easy", type:"mcq", v:1 },
-  { q:"What was the score at half-time in the 2005 Champions League final between Liverpool and AC Milan?", o:["0-1","0-2","0-3","1-3"], a:2, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"Which club beat PSG 6-1 in the most dramatic UCL comeback in history in 2017?", o:["Real Madrid","Bayern Munich","Barcelona","Juventus"], a:2, cat:"UCL", diff:"easy", type:"mcq", v:1 },
   { q:"Who managed Borussia Dortmund to their 1997 Champions League victory?", o:["Hitzfeld","Favre","Klopp","Rangnick"], a:0, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"In which city was the famous 1999 Champions League final played?", o:["Madrid","Milan","Barcelona","Munich"], a:2, cat:"UCL", diff:"medium", type:"mcq", v:1 },
@@ -2174,7 +2154,6 @@ const QB = [
   { q:"Which club ended their 26-year wait for a Champions League title by beating Tottenham in 2019?", o:["Liverpool","Ajax","Barcelona","PSG"], a:0, cat:"UCL", diff:"easy", type:"mcq", v:1 },
 
   // ── BATCH 2: RECORDS & ICONS DEEP CUTS ──
-  { q:"Who won more Ballon d'Or awards — Messi or Ronaldo?", o:["They're equal on 5","Messi with 8 vs Ronaldo's 5","Ronaldo with 6 vs Messi's 5","They're equal on 8"], a:1, cat:"Records", diff:"easy", type:"mcq", v:1 },
   { q:"Which Bulgarian striker scored 5 goals in a Premier League match for Manchester United, a 7-1 rout of Blackburn in November 2010?", o:["Hristo Stoichkov","Dimitar Berbatov","Emil Kostadinov","Valeri Bojinov"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"Berbatov was the first non-English player to score 5 in a PL match. Only 5 players ever have: Andy Cole, Alan Shearer, Jermain Defoe, Berbatov, and Sergio Agüero. All matched the record; no one has surpassed it." },
   { q:"Which club has the record for the most consecutive Premier League titles?", o:["Arsenal 3","Chelsea 2","Manchester United 3","Manchester City 4"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Which English defender holds the record for most FA Cup winners' medals with 7?", o:["Ashley Cole","John Terry","Giggs","Petr Čech"], a:0, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"Cole won 7 FA Cups: 3 with Arsenal (2002, 2003, 2005) + 4 with Chelsea (2007, 2009, 2010, 2012). He broke a 132-year-old record (James Forrest and Lord Kinnaird had 5). Only player to win PL & FA Cup Double with 2 clubs (along with Anelka)." },
@@ -2275,7 +2254,6 @@ const QB = [
   { q:"Who scored the only goal in the 2010 World Cup final — Spain vs Netherlands?", o:["Xavi","Torres","Villa","Iniesta"], a:3, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
   { q:"Which player scored the winning goal for Germany in the 2014 World Cup final vs Argentina?", o:["Hummels","Müller","Klose","Götze"], a:3, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Mario Götze scored a 113th-minute left-foot volley from Schürrle's cross to win Germany the 2014 World Cup.", v:1 },
   { q:"Who scored the opening goal in the 2018 World Cup final for France — an own goal — off an Antoine Griezmann free kick?", o:["Lovren","Vida","Mandžukić","Subašić"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
-  { q:"Which player scored twice in normal time of the 2022 World Cup final only for his side to lose on penalties?", o:["Griezmann","Giroud","Dembélé","Mbappé"], a:3, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored the only goal in the 2002 World Cup final — Germany vs Brazil?", o:["Klose","Ronaldo R9","Rivaldo","Ballack"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored for Real Madrid in both the 2014 and 2018 Champions League finals — and has scored in three UCL finals in total?", o:["Sergio Ramos","Karim Benzema","Cristiano Ronaldo","Gareth Bale"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"Ronaldo scored the penalty in extra time vs Atlético in 2014, and the opener vs Juventus in 2017.", v:1 },
   { q:"In the 2019 Champions League final, Liverpool beat Tottenham 2-0 with goals from Mohamed Salah (from the penalty spot in the 2nd minute) and which substitute who struck in the 87th minute?", o:["Roberto Firmino","Divock Origi","Sadio Mané","James Milner"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"The Belgian super-sub delivered yet another crucial Liverpool goal, after his heroics against Barcelona in the semi-final. He became only the second Belgian to score in a UCL final after Yannick Carrasco in 2016.", v:1 },
@@ -2285,7 +2263,6 @@ const QB = [
   { q:"Harry Kane won back-to-back Premier League Golden Boots in 2015-16 and 2016-17 — how many total has he won?", o:["Two","Three","Four","Five"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"Kane has won three Premier League Golden Boots: 2015-16, 2016-17 and 2020-21 — tying Alan Shearer.", v:1 },
   { q:"Which striker won the World Cup Golden Boot in 2002 with 8 goals?", o:["Rivaldo","Ronaldo R9","Klose","Morientes"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Who was named UEFA Champions League Player of the Season in 2021-22?", o:["Benzema","Mbappé","Salah","Vinicius Jr"], a:0, cat:"UCL", diff:"hard", type:"mcq", v:1 },
-  { q:"Which goalkeeper won the Yashin Trophy at the 2022 Ballon d'Or ceremony?", o:["Alisson","Courtois","Ederson","Lloris"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"Who won the Copa América Golden Boot in 2021 with 4 goals for Argentina?", o:["Messi","Lautaro","Di María","Agüero"], a:0, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
 
   // ── BATCH 3: CLUB NICKNAMES & IDENTITY ──
@@ -2413,12 +2390,10 @@ const QB = [
   // ── BATCH 5: CHAMPIONS LEAGUE — RECORDS & RARITIES ──
   { q:"Who scored a hat-trick in the Champions League for Manchester United against Roma in 2007?", o:["Rooney","Ronaldo","Saha","Smith"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Which club knocked out Bayern Munich, Barcelona and Juventus to reach the 2019 UCL semi-finals?", o:["Liverpool","PSG","Ajax","Tottenham"], a:2, cat:"UCL", diff:"medium", type:"mcq", v:1 },
-  { q:"Who managed Liverpool to their famous 2005 Istanbul comeback — their fifth European Cup?", o:["Houllier","Evans","Benitez","Dalglish"], a:2, cat:"UCL", diff:"easy", type:"mcq", v:1 },
 
   // ── BATCH 5: BUNDESLIGA — STORIES & RECORDS ──
   { q:"Which Bundesliga club has been relegated the most times in the league's history?", o:["Kaiserslautern","Cologne","Nuremberg","Schalke"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Bayer Leverkusen went unbeaten in all 34 Bundesliga games in 2023-24 — what was their points total?", o:["88","89","90","91"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
-  { q:"Which Bundesliga club did Jürgen Klopp manage before taking the Dortmund job?", o:["Mainz 05","Kaiserslautern","Hamburger SV","Stuttgart"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored the winning goal for Germany in the 2014 World Cup final — a player from the Bundesliga?", o:["Müller","Klose","Götze","Kroos"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the maximum capacity of Signal Iduna Park — Borussia Dortmund's stadium?", o:["71,000","77,000","81,365","85,000"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
 
@@ -2444,7 +2419,6 @@ const QB = [
 
   // ── BATCH 5: LEGENDS — OBSCURE GREATS ──
   { q:"Which Hungarian striker scored 11 goals at the 1954 World Cup — a tournament record for one player at that time?", o:["Hidegkuti","Puskás","Kocsis","Czibor"], a:2, tag:"wc2026", cat:"Legends", diff:"hard", type:"mcq", v:1 },
-  { q:"Which Rio de Janeiro youth club did Ronaldo R9 play for before Jairzinho recommended him to Cruzeiro aged 16?", o:["São Cristóvão","Sport Recife","Palmeiras","Corinthians"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Ronaldo played in São Cristóvão's youth teams from 14-16. Jairzinho (1970 WC winner) was coaching there and recommended the prodigy to Cruzeiro, who signed him for €50,000. He made his pro debut at 16 for Cruzeiro in 1993." },
   { q:"Which English striker set a Chelsea record by scoring 41 league goals in the 1960-61 season — still the club's single-season best?", o:["Jimmy Greaves","Nat Lofthouse","Bobby Smith","Roger Hunt"], a:0, cat:"Legends", diff:"hard", type:"mcq", hint:"He reached 100 top-flight goals aged 20 — still a record — before briefly joining AC Milan and then starring for Tottenham.", v:1 },
   { q:"Which legendary forward holds the record for scoring in five consecutive European Cup finals (1956-1960) for Real Madrid?", o:["Ferenc Puskás","Alfredo Di Stéfano","Francisco Gento","Raymond Kopa"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Alfredo Di Stéfano scored in each of Real Madrid's first 5 European Cup finals (1956, 57, 58, 59, 60) — all wins. Notably, Di Stéfano never played in a FIFA World Cup finals; he represented Argentina in friendlies/Copa America and Spain after naturalization but their respective WC campaigns didn't align with him." },
   { q:"Which country did Eusébio represent internationally — despite being born in Mozambique?", o:["Angola","Mozambique","Brazil","Portugal"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -2459,7 +2433,6 @@ const QB = [
 
   // ── BATCH 6: PREMIER LEAGUE MANAGERS ──
   { q:"Which manager guided Arsenal to two doubles in 1998 and 2002?", o:["George Graham","Terry Neill","Stewart Houston","Arsène Wenger"], a:3, cat:"PL", diff:"easy", type:"mcq", v:1 },
-  { q:"Which manager was in charge of Leicester City for their miraculous 2015-16 title win?", o:["Nigel Pearson","Craig Shakespeare","Claudio Ranieri","Paulo Sousa"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Who replaced David Moyes as Manchester United manager in 2014?", o:["Van Gaal","Mourinho","Giggs (caretaker)","Blanc"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Which manager won the Premier League three times with Manchester City between 2018 and 2021?", o:["Pellegrini","Mancini","Guardiola","Hughes"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Who was Tottenham's manager when they reached the Champions League final in 2019?", o:["Tim Sherwood","André Villas-Boas","Mauricio Pochettino","José Mourinho"], a:2, cat:"PL", diff:"medium", type:"mcq", v:1 },
@@ -2574,11 +2547,9 @@ const QB = [
   { q:"Which country has won the most Africa Cup of Nations titles?", o:["Nigeria","Ghana","Egypt","Ivory Coast"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Which was the first European team to win a FIFA World Cup hosted outside Europe?", o:["Italy","Germany","France","Spain"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"Spain became the first European team to win a World Cup outside Europe at South Africa 2010, beating the Netherlands 1-0 in the final with Iniesta's extra-time goal. Before this, every non-European-hosted WC was won by a South American team. Argentina later became the first South American team to win in Asia (Qatar 2022)." },
   { q:"How many times has Italy won the FIFA World Cup?", o:["3","4","5","6"], a:1, tag:"wc2026", cat:"Records", diff:"easy", type:"mcq", v:1 },
-  { q:"Which player won the most Ballon d'Or awards in the 2010s decade?", o:["Ronaldo","Messi","Both won equal amounts","Modric"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"What is the record for most goals scored by a player in a single World Cup tournament?", o:["10","11","13","15"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
 
   // ── BATCH 7: LEGENDS — CLUB CAREERS ──
-  { q:"Which Brazilian club did Ronaldo R9 famously score a Brazilian record of 58 goals in 60 matches for aged 16-17?", o:["Flamengo","Cruzeiro","Corinthians","São Paulo"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Ronaldo signed for Cruzeiro aged 16 in 1993 (São Cristóvão sold him). 58 goals in 60 games, breaking into the first team. Won 1993 Copa do Brasil. PSV signed him for $5.5m in 1994 to become a world star." },
   { q:"Diego Maradona's greatest club career was at which Italian club where he won two Serie A titles?", o:["Inter","AC Milan","Roma","Napoli"], a:3, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Which German club did Franz Beckenbauer play for when he captained West Germany to the 1974 World Cup?", o:["Dortmund","Borussia Mönchengladbach","Hamburger SV","Bayern Munich"], a:3, tag:"wc2026", cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Eusébio scored how many goals in total for Benfica across his career?", o:["277","301","317","473"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
@@ -2607,7 +2578,6 @@ const QB = [
   { q:"Who scored the opening goal — a towering 50th-minute header from a corner — as Portugal beat Wales 2-0 in the Euro 2016 semi-final, before setting up Nani for the second three minutes later?", o:["Ronaldo","Nani","João Moutinho","Renato Sanches"], a:0, cat:"WorldCup", diff:"medium", type:"mcq", hint:"This was his 9th European Championship goal, equalling Michel Platini's then-record. Wales, in their first major tournament since 1958, were missing the suspended Aaron Ramsey and Ben Davies.", v:1 },
   { q:"Which Italian club reached their only European Cup final in 1992 — losing 1-0 to Barcelona at Wembley?", o:["Inter","AC Milan","Sampdoria","Juventus"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"The blucerchiati, with Vialli and Mancini, had won Serie A a year earlier but fell to a Koeman free-kick in extra time.", v:1 },
   { q:"Arsenal went a record 49 matches unbeaten in the Premier League — which rival club finally ended the Invincibles' run on 24 October 2004?", o:["Chelsea","Man Utd","Liverpool","Newcastle"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"A controversial Ruud van Nistelrooy penalty and a Wayne Rooney strike in a 2-0 Old Trafford win ended the run in a bad-tempered match that became known as the 'Battle of the Buffet'.", v:1 },
-  { q:"Which Brazilian club did Ronaldo R9 return to at the end of his career in 2011?", o:["Santos","Flamengo","Corinthians","Palmeiras"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored Tottenham's historic away goals winner against Man City in the 2019 UCL quarter-final?", o:["Son","Llorente","Eriksen","Lucas Moura"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Which club did Kevin De Bruyne leave for Manchester City — initially let go by Chelsea without a chance?", o:["Genk","Wolfsburg","Werder Bremen","Ajax"], a:1, cat:"PL", diff:"medium", type:"mcq", v:1 },
   { q:"What was unique about Pelé's 1,000th career goal in 1969?", o:["It was an overhead kick","It was a free kick","It was a penalty","It was at Wembley"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -2709,7 +2679,6 @@ const QB = [
   { q:"Who are the three people to have won the FIFA World Cup as both player AND manager?", o:["Beckenbauer, Zagallo, Deschamps","Pelé, Maradona, Messi","Cruyff, Guardiola, Klopp","Charlton, Moore, Lineker"], a:0, cat:"WorldCup", diff:"hard", type:"mcq", v:1, hint:"Only 3 have won WC as both player and manager: Mário Zagallo (Brazil: 1958, 1962 player; 1970 manager), Franz Beckenbauer (1974 player; 1990 manager), Didier Deschamps (1998 player; 2018 manager)." },
   { q:"In the 1986 World Cup quarter-final, Maradona's two goals came in which half?", o:["First half","Second half","One in each half","Extra time"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which country eliminated England from the 2022 World Cup in the quarter-finals?", o:["USA","Senegal","France","Morocco"], a:2, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
-  { q:"Messi's 2022 World Cup final performance included a hat-trick from Mbappé — how many goals did Messi score in that game?", o:["1","2","3","4"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
 
   // ── BATCH 10: PREMIER LEAGUE OBSCURE ──
   { q:"The fastest Premier League goal was scored in 7.69 seconds — by which player?", o:["Shearer","Defoe","Shane Long","Ledley King"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1 },
@@ -3160,7 +3129,6 @@ const QB = [
 
   // ── BATCH 19: BUNDESLIGA — PLAYERS & ERAS ──
   { q:"Which Bundesliga season saw Bayern Munich score 101 goals — the most in a single season?", o:["2012-13","2014-15","2015-16","2019-20"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
-  { q:"Karl-Heinz Rummenigge won back-to-back Ballon d'Or awards in which years?", o:["1979 and 1980","1980 and 1981","1981 and 1982","1982 and 1983"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Which legendary German manager won the Champions League with Bayern Munich in 2013 — ending 12 years of waiting for them?", o:["Jupp Heynckes","Ottmar Hitzfeld","Pep Guardiola","Jürgen Klinsmann"], a:0, cat:"Managers", diff:"medium", type:"mcq", v:1, hint:"Jupp Heynckes won CL 2013 with Bayern (2-1 vs Dortmund, Wembley). Also won with Real Madrid 1998. As a player he won European Championship with West Germany 1972. Sadly, did NOT win the European Cup/CL as a player — so he's not the first player+manager double." },
   { q:"Borussia Dortmund's famous 2010-11 title-winning side — who was their star Polish striker?", o:["Piszczek","Bender","Lewandowski","Błaszczykowski"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Which Bundesliga club reached the Champions League final in 2013 — losing to Bayern Munich?", o:["Schalke","Leverkusen","Stuttgart","Dortmund"], a:3, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
@@ -3356,7 +3324,6 @@ const QB = [
 
   // Legends & Records — Mixed
   { q:"How many goals did George Best score for Manchester United in all competitions?", o:["149","179","205","231"], a:1, cat:"Legends", diff:"hard", type:"mcq", hint:"'El Beatle' scored his total in 470 appearances over 11 years, topping the club's scoring charts for five seasons in a row.", v:1 },
-  { q:"Which Spanish midfielder won the Euro (2008), Champions League (2009), Ballon d'Or (bronze 3rd 2009) — all within 2 consecutive years of glory with Spain and Barcelona?", o:["Xavi Hernández","Andrés Iniesta","David Silva","Sergio Busquets"], a:0, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Xavi won Euro 2008 (Player of the Tournament), then CL 2009 with Barcelona (treble year). He finished 3rd in Ballon d'Or 2009, 2010, 2011. He followed up with WC 2010 and Euro 2012 — winning every major international trophy possible." },
   { q:"Maradona left Napoli under a cloud in 1991 — why was he banned for 15 months?", o:["Financial irregularities","Failed a drug test for cocaine","Tax evasion","Match fixing"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which French World Cup-winning defender won the Premier League, Champions League, AND World Cup during his career — with Chelsea and France?", o:["Patrice Evra","N'Golo Kanté","Henry","Didier Deschamps"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Kanté won the PL (2016, 2017), Champions League (2021), and FIFA World Cup (2018) — a rare triple. Other multi-competition winners: Grealish WC runner-up, Dembélé won WC 2018 but not yet CL. Benzema won CL but not WC." },
   { q:"Pelé scored his 1,000th career goal from which spot — making it an iconic moment in 1969?", o:["Free kick","Header","Volley","Penalty"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -3456,7 +3423,6 @@ const QB = [
   { q:"How many teams will compete at the 2026 FIFA World Cup — the first under an expanded format co-hosted by the USA, Canada and Mexico?", o:["32","40","48","64"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", hint:"This marks a jump from the 32-team format used since 1998 and will mean 104 matches across 16 host cities, with the knockout stage beginning with a Round of 32.", v:1 },
   { q:"Gerd Müller is the only player to score in a Euro final (1972), a World Cup final (1974) and a European Cup final — how many European Cup finals did he score in?", o:["One","Two","Three","Four"], a:1, cat:"Records", diff:"hard", type:"mcq", hint:"Müller scored in both the 1974 (replay vs Atlético Madrid) and 1975 (vs Leeds) European Cup finals for Bayern.", v:1 },
   { q:"The 2026 World Cup will feature 104 matches across 16 venues — how many match days will there be?", o:["35","38","40","42"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq" },
-  { q:"The 2022 World Cup final saw four goals in extra time plus a penalty shootout — who won?", o:["France","Argentina","Croatia","Brazil"], a:1, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", hint:"Argentina beat France 4-2 on penalties after a 3-3 draw — one of the greatest WC finals ever.", v:1 },
   { q:"Brazil went 24 years between World Cup wins from 1970 to 1994 — which country prevented them winning in 1974?", o:["Netherlands","West Germany","Italy","Argentina"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"Who is the YOUNGEST player ever to appear at a World Cup — making his debut aged 17 years and 41 days for Northern Ireland in 1982?", o:["Michael Owen","Norman Whiteside","Pelé","Giuseppe Bergomi"], a:1, cat:"WorldCup", diff:"hard", type:"mcq", v:1, hint:"Norman Whiteside (Northern Ireland) made his WC debut aged 17y41d at the 1982 WC vs Yugoslavia — record still stands. He beat Pelé's record (17y244d in 1958). Later played for Man United. Career ended early due to injury at 26." },
 
@@ -3486,7 +3452,6 @@ const QB = [
 
   // Legends — Final
   { q:"Which player won the World Cup in 1958 aged 17?", o:["Pele","Garrincha","Didi","Vava"], a:0, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
-  { q:"Ronaldo R9 scored both goals in Brazil's 2-0 win over Germany in the 2002 WC final — what age was he at that final?", o:["22","24","25","26"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1, hint:"R9 was 25 at the 2002 final (born Sept 1976). He also played WC 2006 aged 29, scoring 3 more to become WC all-time top scorer (15) — a record Klose broke in 2014. Won 2 WCs (1994, 2002)." },
   { q:"Johan Cruyff is associated with the phrase 'Every disadvantage has its advantage' — what kind of statement is this?", o:["A general life philosophy he applied everywhere","A tactical note made only at Ajax","A Barcelona-only philosophy","A quote about his first Dutch title"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1 },
 
   // Bundesliga — Final
@@ -3662,13 +3627,11 @@ const QB = [
   { q:"Which player was sold by Real Madrid and later won two Champions Leagues with a different club — haunting them?", o:["Mesut Özil","Xabi Alonso","Sergio Ramos","Fernando Morientes"], a:3, cat:"UCL", diff:"hard", type:"mcq" },
   { q:"Which Italian manager revolutionised defensive football with a flat back four at AC Milan in the late 1980s?", o:["Capello","Lippi","Sacchi","Trapattoni"], a:2, cat:"Managers", diff:"medium", type:"mcq", v:1 },
   { q:"Ferenc Puskás scored 84 international goals for Hungary in 85 appearances — before playing for Spain. What was remarkable about his international scoring rate?", o:["Nearly 1 goal per game","1 goal every 2 games","1 goal every 3 games","Played but rarely scored"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1, hint:"Puskás scored 84 goals in 85 Hungary matches (0.99 goals per game — one of the best ratios ever) and 4 in 4 Spain caps. Total: 88 international goals in 89 matches. Captained Hungary's 'Mighty Magyars' who went 32 games unbeaten and reached 1954 WC final." },
-  { q:"Historically, from which continents have ALL Ballon d'Or winners come?", o:["Europe and South America","Europe only","Any continent is represented","Europe, South America and Africa"], a:0, cat:"Records", diff:"hard", type:"mcq", v:1 },
 
   // Managers — Extra Depth
   { q:"Which manager famously said 'We were the better team — they were just better at scoring goals'?", o:["Mourinho","Wenger","Holloway","Big Sam Allardyce"], a:2, cat:"Managers", diff:"hard", type:"mcq", v:1 },
   { q:"Bobby Robson managed which clubs before taking charge of England in 1982?", o:["Ipswich and West Brom","Ipswich and Fulham","Fulham and West Brom","Only Ipswich"], a:2, cat:"Managers", diff:"hard", type:"mcq", v:1 },
   { q:"Which manager won the World Cup with West Germany as a player in 1974 and then managed them to the 1986 final?", o:["Beckenbauer","Jupp Derwall","Schön","Uli Stielike"], a:0, tag:"wc2026", cat:"Managers", diff:"medium", type:"mcq", v:1 },
-  { q:"Jürgen Klopp left Liverpool in 2024 after nine years — his win percentage in all competitions was the highest in the club's history. Approximately what was it?", o:["51%","56%","61%","66%"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1, hint:"Klopp finished with a 60.7% win rate across all competitions (62.6% in the Premier League alone). He won the Premier League, Champions League, FA Cup, League Cup, Super Cup and Club World Cup during his 9-year tenure." },
   { q:"Which manager holds the record for most matches managed in the Premier League?", o:["Ferguson","Wenger","Pardew","Moyes"], a:0, cat:"Managers", diff:"medium", type:"mcq", v:1 },
 
 
@@ -3747,7 +3710,6 @@ const QB = [
   { q:"Which La Liga stadium is the second largest in Spain after Camp Nou (around 105,000 post-renovation)?", o:["Santiago Bernabéu","Metropolitano","Benito Villamarín","Mestalla"], a:0, cat:"LaLiga", diff:"medium", type:"mcq", hint:"Santiago Bernabéu holds ~81,000 after its 2019-23 renovation — second only to Camp Nou.", v:1 },
   { q:"Cristiano Ronaldo scored how many goals across all his time at Manchester United in both spells?", o:["103","118","123","145"], a:2, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"Who headed England's second goal from a Jack Grealish cross late on in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley — the captain's first goal of the tournament and England's first major knockout win over Germany since 1966?", o:["Kane","Harry Maguire","Raheem Sterling","Luke Shaw"], a:0, cat:"Euros", diff:"medium", type:"mcq", hint:"Sterling opened the scoring in the 75th minute; Kane headed the second four minutes from time. The result sent England to the quarter-finals vs Ukraine, and ultimately to their first Euros final.", v:1 },
-  { q:"Who scored Argentina's third goal in their 3-3 draw vs France in the 2022 World Cup final — a 108th-minute toe-poke from a Lautaro rebound?", o:["Messi","Di María","L. Martínez","Julián Álvarez"], a:0, cat:"WorldCup", diff:"medium", type:"mcq", v:1, hint:"Argentina scored first via Messi's 23rd-minute penalty, then Di María at 36'. Mbappé scored a 97-second brace (80' pen, 81') to equalise. Messi's ET goal seemed to win it before Mbappé's third penalty completed his hat-trick." },
   { q:"Which club did Thomas Tuchel manage immediately before taking charge of Bayern Munich in 2023?", o:["Dortmund","PSG","Chelsea","Nice"], a:2, cat:"Managers", diff:"medium", type:"mcq", v:1 },
   { q:"Arbroath's 36-0 win over Bon Accord in 1885 remains the biggest scoreline in professional football — where did it take place?", o:["England","Scotland","Wales","Ireland"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"What does the AS in AS Roma actually stand for in Italian?", o:["Associazione Sportiva (Sports Association)","Atletico Sportivo","Associazione Sportiva Roma Football","Associazione Sorriso"], a:0, cat:"SerieA", diff:"medium", type:"mcq", v:1, hint:"AS Roma = Associazione Sportiva Roma. Founded 1927 through a merger of 3 Roman clubs. 'Sportiva' means sporting/sports, not 'Football'. The badge features the she-wolf from Roman mythology (nursing Romulus and Remus)." },
@@ -3800,18 +3762,15 @@ const QB = [
 
 
   // ── TRUE / FALSE QUESTIONS IN QB ─────────────────────────────────────────────
-  { q:"Cristiano Ronaldo has won more Ballon d'Or awards than Lionel Messi.", a:false, cat:"Records", diff:"easy", type:"tf", v:1 },
   { q:"Brazil have won the FIFA World Cup six times.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf", v:1 },
   { q:"The Premier League was founded in 1990.", a:false, cat:"PL", diff:"easy", type:"tf", v:1 },
   { q:"Arsenal went the entire 2002-03 Premier League season unbeaten.", a:false, cat:"PL", diff:"easy", type:"tf" },
   { q:"Zinedine Zidane was sent off in the 2002 World Cup final.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf", v:1 },
   { q:"Miroslav Klose is the all-time top scorer in World Cup history with 15 goals.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf", v:1 },
   { q:"Liverpool have won the Champions League seven times.", a:false, cat:"UCL", diff:"easy", type:"tf", v:1 },
-  { q:"Oliver Kahn is the only goalkeeper ever to win the Ballon d'Or.", a:false, cat:"Legends", diff:"medium", type:"tf" },
   { q:"Juventus won ten consecutive Serie A titles from 2011 to 2020.", a:false, cat:"SerieA", diff:"easy", type:"tf" },
   { q:"Bayer Leverkusen went the entire 2022-23 Bundesliga season unbeaten.", a:false, cat:"Bundesliga", diff:"easy", type:"tf", v:1 },
   { q:"Portugal won Euro 2016 without Ronaldo playing in the final.", a:false, cat:"Euros", diff:"medium", type:"tf" },
-  { q:"Argentina beat France 4-2 in normal time in the 2022 World Cup final.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf", v:1 },
   { q:"Gary Lineker received only one yellow card in his entire career.", a:false, cat:"Legends", diff:"medium", type:"tf" },
   { q:"The 2026 World Cup will feature 40 teams for the first time.", a:false, cat:"WorldCup", tag:"wc2026", diff:"easy", type:"tf" },
   { q:"Inter Milan was founded in 1899 as a breakaway from AC Milan.", a:false, cat:"SerieA", diff:"medium", type:"tf" },
@@ -3828,7 +3787,6 @@ const QB = [
   { q:"Roger Milla scored at the 1994 World Cup aged 45.", a:false, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"tf", v:1 },
   { q:"Chelsea won the 2012 Champions League final in extra time.", a:false, cat:"UCL", diff:"easy", type:"tf", v:1 },
   { q:"The first European Championship was held in 1956.", a:false, cat:"Euros", diff:"medium", type:"tf" },
-  { q:"Ronaldo R9 scored one of Brazil's goals in the 2002 World Cup final.", a:false, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"tf" },
   { q:"Manchester City scored 120 Premier League goals in 2017-18.", a:false, cat:"PL", diff:"medium", type:"tf" },
   { q:"Dundee United have a 100% winning record against Real Madrid.", a:false, cat:"Legends", diff:"hard", type:"tf" },
   { q:"Italy failed to qualify for only the 2018 World Cup, not 2022.", a:false, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"tf" },
@@ -3845,10 +3803,8 @@ const QB = [
   { q:"PSG won their first ever Champions League title in 2023-24.", a:false, cat:"UCL", diff:"easy", type:"tf" },
   { q:"Pep Guardiola managed Bayer Leverkusen to their unbeaten 2023-24 title.", a:false, cat:"Bundesliga", diff:"easy", type:"tf" },
   { q:"Gareth Bale scored a free kick in the 2018 Champions League final.", a:false, cat:"UCL", diff:"medium", type:"tf" },
-  { q:"Leicester City won the 2015-16 Premier League at odds of 1000-1.", a:false, cat:"PL", diff:"easy", type:"tf" },
   { q:"Morocco became the first African nation to reach a World Cup final in 2022.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf" },
   { q:"Carlo Ancelotti has won more Champions League titles as a manager than anyone else.", a:true, cat:"Managers", diff:"medium", type:"tf", v:1 },
-  { q:"Johan Cruyff won the Ballon d'Or four times.", a:false, cat:"Legends", diff:"medium", type:"tf" },
   { q:"The 1994 World Cup final between Brazil and Italy ended 1-1 after 120 minutes.", a:false, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"tf", v:1 },
   { q:"Harry Kane was the top scorer at the 2022 World Cup.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf" },
   { q:"Robert Lewandowski scored 36 Bundesliga goals in 2020-21.", a:false, cat:"Bundesliga", diff:"medium", type:"tf" },
@@ -3865,7 +3821,6 @@ const QB = [
   { q:"Chelsea won the 2021 Champions League under Frank Lampard.", a:false, cat:"UCL", diff:"easy", type:"tf" },
   { q:"AC Milan were founded by businessmen from Manchester, England.", a:false, cat:"SerieA", diff:"hard", type:"tf" },
   { q:"Unai Emery has won the Europa League five times — a managerial record.", a:false, cat:"Managers", diff:"medium", type:"tf", v:1 },
-  { q:"Steven Gerrard scored two goals in the 2005 Champions League final for Liverpool.", a:false, cat:"UCL", diff:"medium", type:"tf" },
   { q:"Gianluigi Buffon holds the record for most Champions League appearances as goalkeeper.", a:false, cat:"UCL", diff:"hard", type:"tf" },
 
 
@@ -3896,14 +3851,12 @@ const QB = [
 
   // ── BATCH 30: CHAMPIONS LEAGUE ───────────────────────────────────────────────
   { q:"Which club reached the Champions League final four times between 2014 and 2022?", o:["Bayern Munich","Juventus","Real Madrid","Man City"], a:2, cat:"UCL", diff:"easy", type:"mcq", v:1 },
-  { q:"What was the score at half-time in the 2005 Champions League final?", o:["0-2 to Milan","0-3 to Milan","1-2 to Milan","2-2"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"Which club scored the fastest goal in a Champions League final — in 51 seconds?", o:["Real Madrid","Bayern Munich","AC Milan","Barcelona"], a:2, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"How many times have English clubs won the Champions League in total?", o:["13","14","15","16"], a:2, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Which player scored a hat-trick in a Champions League semi-final for Real Madrid vs Manchester City in 2023?", o:["Benzema","Vinicius","Modric","Rodrygo"], a:0, cat:"UCL", diff:"hard", type:"mcq", v:1 },
 
   // ── BATCH 30: BUNDESLIGA ─────────────────────────────────────────────────────
   { q:"Bayern Munich won the 2012-13 DFB-Pokal to complete the treble — who did they beat in the final 3-2?", o:["VfB Stuttgart","Dortmund","Schalke","Leverkusen"], a:0, cat:"Europe", diff:"hard", type:"mcq", v:1, hint:"Bayern beat Stuttgart 3-2 in the 2013 DFB-Pokal final (1 June 2013), completing the first German treble (Bundesliga + DFB-Pokal + Champions League). Mario Gomez scored a brace." },
-  { q:"Who finished second in the 2021 Ballon d'Or voting after a year that included his record-breaking 41-goal Bundesliga season for Bayern Munich — receiving the inaugural Striker of the Year consolation prize?", o:["Lewandowski","Kevin De Bruyne","Kai Havertz","Haaland"], a:0, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"The Polish striker finished 33 points behind winner Lionel Messi. Messi later suggested Lewandowski should have been retrospectively awarded the 2020 trophy, which had been cancelled due to the COVID-19 pandemic.", v:1 },
   { q:"Bayern Munich's squad that won the 2019-20 treble scored how many goals in the UCL?", o:["37","43","45","51"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Which Bundesliga club plays at the Deutsche Bank Park in Frankfurt?", o:["Darmstadt","Eintracht Frankfurt","Kickers Offenbach","FSV Frankfurt"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Which is the only Bundesliga club to have a fan-owned stadium — the Volksparkstadion?", o:["Cologne","Hamburg","Mainz","Bremen"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
@@ -3912,7 +3865,6 @@ const QB = [
   { q:"Hans-Dieter Flick won the treble with Bayern in 2019-20 — what was his previous role there?", o:["Reserve team coach","Assistant coach","Youth director","Scouting chief"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
 
   // ── BATCH 30: SERIE A ────────────────────────────────────────────────────────
-  { q:"Ronaldo R9 joined Inter Milan in 1997 for a then world record — from which club?", o:["Barcelona","PSG","Santos","Flamengo"], a:0, cat:"SerieA", diff:"medium", type:"mcq", v:1 },
   { q:"Which Serie A club holds the record for the most wins in a single season — 33 from 38?", o:["Juventus","Inter","AC Milan","Napoli"], a:0, cat:"SerieA", diff:"hard", type:"mcq", v:1 },
   { q:"After falling out with Napoli, Nigerian striker Victor Osimhen spent 2024-25 on loan at which club, scoring 37 goals in 41 games?", o:["Al-Hilal","Galatasaray","Fenerbahçe","Al-Nassr"], a:1, cat:"SerieA", diff:"medium", type:"mcq", v:1, hint:"He joined on loan in September 2024 and won the Turkish double with them, before making the move permanent for €75m in July 2025." },
   { q:"Which Italian club has the most European trophy wins across all UEFA competitions?", o:["Juventus","AC Milan","Inter","Fiorentina"], a:1, cat:"SerieA", diff:"hard", type:"mcq", v:1 },
@@ -3939,7 +3891,6 @@ const QB = [
 
   // ── BATCH 30: MANAGERS ───────────────────────────────────────────────────────
   { q:"Which manager took Nottingham Forest to promotion and the Champions League in 2022-23?", o:["Steve Cooper","Steve McClaren","Chris Hughton","Mark Hughes"], a:0, cat:"Managers", diff:"medium", type:"mcq" },
-  { q:"Jurgen Klopp managed two clubs in Germany before Liverpool — Dortmund and which other?", o:["Frankfurt","Stuttgart","Kaiserslautern","Mainz"], a:3, cat:"Managers", diff:"medium", type:"mcq", v:1 },
   { q:"In January 2025, Didier Deschamps announced he would step down as France manager at the end of which tournament cycle — after 13 years in charge?", o:["Euro 2024","2026 World Cup","Euro 2028","2030 World Cup"], a:1, cat:"Managers", diff:"medium", type:"mcq", v:1, hint:"Deschamps won the 2018 World Cup and 2021 Nations League with France, and reached the finals of Euro 2016 and the 2022 World Cup. Zinedine Zidane is the heavy favourite to replace him." },
   { q:"Which manager famously kept a detailed dossier on every opponent before matches?", o:["Clough","Shankly","Revie","Ferguson"], a:2, cat:"Managers", diff:"hard", type:"mcq", v:1 },
   { q:"Zinedine Zidane won how many Champions Leagues as Real Madrid manager?", o:["2","3","4","5"], a:1, cat:"Managers", diff:"easy", type:"mcq", v:1 },
@@ -4054,7 +4005,6 @@ const QB = [
   { q:"Which infamous 1965-66 Bundesliga club (their only top-flight season) went bankrupt and now play in the lower leagues?", o:["Tasmania Berlin","Blau-Weiss Berlin","Hertha Zehlendorf","Preussen Berlin"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"How many clubs competed in the inaugural 1963-64 Bundesliga season?", o:["14","16","18","20"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Bayern Munich's record consecutive Bundesliga title wins — how many in a row from 2013?", o:["8","9","10","11"], a:3, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
-  { q:"Jürgen Klopp's Dortmund won the Bundesliga in 2011 at what age — one of the youngest title-winning managers?", o:["43","44","46","48"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Which club's rivalry with Bayern Munich is called 'Der Klassiker'?", o:["Schalke","Leverkusen","Dortmund","Hamburger SV"], a:2, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Who is the Bundesliga's all-time leading assist provider with 228 assists?", o:["Ribery","Lahm","Muller","Rummenigge"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
 
@@ -4063,7 +4013,6 @@ const QB = [
   { q:"Juventus's famous black and white kit — what year did they adopt it after originally playing in pink?", o:["1897","1903","1907","1915"], a:1, cat:"SerieA", diff:"hard", type:"mcq", v:1 },
   { q:"Which Italian club was the first to win back-to-back Champions Leagues — in 1989 and 1990?", o:["Juventus","Napoli","Inter","AC Milan"], a:3, cat:"SerieA", diff:"medium", type:"mcq", v:1 },
   { q:"Francesco Totti scored a 94th-minute penalty for Italy at the 2006 World Cup R16 to eliminate which opponent 1-0?", o:["Australia","Ukraine","South Korea","Ghana"], a:0, cat:"SerieA", diff:"hard", type:"mcq", v:1, hint:"Totti scored the last-minute PK vs Australia (R16, Kaiserslautern) on 26 June 2006 after Grosso was 'fouled'. It was a regular low penalty to the corner, NOT a Panenka. Italy went on to win the WC. Australia fans still furious." },
-  { q:"Fabio Cannavaro won both the World Cup and Ballon d'Or in 2006 — which club was he at?", o:["Juventus","Real Madrid","Inter","Napoli"], a:1, cat:"SerieA", diff:"medium", type:"mcq", v:1 },
 
   // Euros - Extra
   { q:"How many goals were scored across 51 matches at Euro 2024 in Germany?", o:["98","117","128","142"], a:1, cat:"Euros", diff:"hard", type:"mcq", v:1, hint:"Euro 2020 (142 goals in 51 matches) still holds the record for most goals in a European Championship." },
@@ -4187,7 +4136,6 @@ const QB = [
   { q:"What did Marco Materazzi reportedly say that triggered Zinedine Zidane's infamous 2006 World Cup final headbutt?", o:["A late tackle comment","An insult about his family","A penalty complaint","An elbow accusation"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Materazzi later admitted making comments about Zidane's sister. Zidane was sent off in his final professional match.", v:1 },
   { q:"Which team beat the Netherlands in the 2010 World Cup final with an extra-time winner?", o:["Brazil","Germany","Spain","Argentina"], a:2, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
   { q:"How many World Cup goals did Gerd Müller score — a German record he held for decades?", o:["12","14","16","18"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
-  { q:"Which player scored a hat-trick in the 2022 World Cup final but still ended up on the losing side — losing 4-2 on penalties to Argentina?", o:["Kylian Mbappé","Lionel Messi","Antoine Griezmann","Olivier Giroud"], a:0, cat:"WorldCup", diff:"medium", type:"mcq", hint:"He became only the second player after Geoff Hurst (1966) to score a hat-trick in a World Cup final. Two of his goals were penalties (80', 118') — he also won the Golden Boot with 8 goals at the tournament.", v:1 },
   { q:"England's Geoff Hurst scored the only hat-trick in a World Cup final — was his second goal over the line?", o:["Officially yes","Officially no","It was confirmed over the line by goal-line tech","The referee never officially ruled"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which country lost the World Cup final on home soil in 1950 — known as the Maracanazo?", o:["Argentina","Brazil","Mexico","Chile"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Who was sent off in the 1998 World Cup for England — giving him a famous reputation?", o:["Paul Scholes","David Beckham","Gary Neville","Sol Campbell"], a:1, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
@@ -4247,7 +4195,6 @@ const QB = [
   // Legends
   { q:"Which legendary player had a rivalry with Pele — both claiming to be the better player until death?", o:["Garrincha","Maradona","Di Stefano","Eusebio"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Dennis Bergkamp famously had a fear of flying. Despite this, he DID fly for which World Cup where he scored his famous goal vs Argentina?", o:["1994","1998","2002","2006"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1, hint:"Bergkamp overcame his fear to fly to the 1998 WC in France, scoring the stunning 89th-min winner vs Argentina in QF (famously described by commentator Jack van Gelder). He skipped most flights later in his career (no CL away trips 2000s)." },
-  { q:"Ronaldinho's peak was considered to be which season — when he won the Ballon d'Or?", o:["2003-04","2004-05","2005-06","2006-07"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which legendary forward was banned from the Brazilian national team in 1986 despite being their best player?", o:["Zico","Falcao","Socrates","Romario"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"George Best scored his famous dribbling solo goal against which club in 1970 — often voted greatest ever?", o:["Arsenal","Chelsea","Northampton Town","Liverpool"], a:2, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"Paolo Maldini famously said 'if I have to tackle then I have already made a mistake' — what skill did he pride himself on instead?", o:["Heading","Positioning","Speed","Passing"], a:1, cat:"Legends", diff:"medium", type:"mcq", hint:"Maldini believed great defending came from positioning and reading the game, making tackles rarely necessary.", v:1 },
@@ -4264,7 +4211,6 @@ const QB = [
   // ── BATCH 35: MIXED DEPTH — PUSHING TO 3,600 ────────────────────────────────
 
   // More T/F questions in QB
-  { q:"Jurgen Klopp won the Champions League but never the Premier League with Liverpool.", a:false, cat:"PL", diff:"easy", type:"tf" },
   { q:"AC Milan won the 2021-22 Serie A title — their first in 15 years.", a:false, cat:"SerieA", diff:"easy", type:"tf" },
   { q:"Real Madrid have been relegated from La Liga once, in the 1940s.", a:false, cat:"LaLiga", diff:"easy", type:"tf" },
   { q:"The 2006 World Cup was held in South Africa.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf" },
@@ -4293,7 +4239,6 @@ const QB = [
 
   // World Cup extras
   { q:"Who scored for Saudi Arabia against Argentina in their famous 2022 upset?", o:["Al-Dawsari","Al-Shahrani","Saleh","Alomri"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
-  { q:"Which two players scored in extra time in the 2022 World Cup final for France?", o:["Mbappe and Giroud","Mbappe twice","Mbappe and Thuram","Mbappe and Griezmann"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"Who captained Argentina to the 2022 World Cup — and also played in the 2014 final?", o:["Lionel Messi","Ángel Di María","Nicolás Otamendi","Sergio Agüero"], a:0, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
   { q:"Morocco beat Spain on penalties in 2022 — how did their goalkeeper perform?", o:["Saved one penalty","Saved two penalties","Saved three penalties","Didn't face any — all went wide"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"What was the score when England opened their 2022 World Cup campaign against Iran?", o:["4-1","5-0","6-1","6-2"], a:3, cat:"WorldCup", diff:"medium", type:"mcq", v:1, hint:"England 6-2 Iran on 21 Nov 2022 (Bellingham, Saka 2, Sterling, Rashford, Grealish scored). Iran's 2 goals (Taremi) came late. Bellingham was 19 and gave England the lead with a header." },
@@ -4317,7 +4262,6 @@ const QB = [
 
   // Legends — more
   { q:"Which three legends starred in the famous early-2000s Pepsi 'cowboy' advert?", o:["Ronaldinho, Beckham, Ronaldo R9","Zidane, Figo, Raul","Henry, Kahn, Totti","Nesta, Pirlo, Cannavaro"], a:0, cat:"Legends", diff:"medium", type:"mcq", hint:"The famous 2002 Pepsi advert featured Ronaldinho, David Beckham and Ronaldo R9 in a western-themed commercial.", v:1 },
-  { q:"Johan Cruyff won the Ballon d'Or three times — in which years?", o:["1971, 1973, 1974","1970, 1972, 1974","1971, 1972, 1973","1972, 1973, 1974"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"Which legendary player was banned from football for a year after testing positive for cocaine while at Napoli?", o:["Maradona","Caniggia","Higuita","Valderrama"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Pele's famous shirt swap with which Bobby — after Brazil beat England 1-0 in 1970 — became iconic?", o:["Bobby Charlton","Bobby Moore","Bobby Thomson","Bobby Stiles"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which legendary player's full name includes the middle name Ronaldo — making his son's name entirely fitting?", o:["No — Ronaldo Jr's name derives differently","Yes — Cristiano Ronaldo dos Santos Aveiro","No — his middle name is Fernandes","Yes — his godfather was also called Ronaldo"], a:1, cat:"Legends", diff:"hard", type:"mcq", v:1 },
@@ -4437,7 +4381,6 @@ const QB = [
   // ── BATCH 38: PUSH TOWARD 4,000 ─────────────────────────────────────────────
 
   // More T/F — variety of categories
-  { q:"Kylian Mbappe scored a brace in the 2022 World Cup final.", a:false, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf" },
   { q:"Spain have won the Copa America at least once.", a:false, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"tf" },
   { q:"Real Betis won the Copa del Rey in 2020.", a:false, cat:"LaLiga", diff:"medium", type:"tf" },
   { q:"Thomas Muller spent two seasons at Borussia Dortmund during his career.", a:false, cat:"Bundesliga", diff:"easy", type:"tf" },
@@ -4580,7 +4523,6 @@ const QB = [
 
   // Managers final push
   { q:"Which manager has won the most trophies in his career across all competitions?", o:["Ferguson","Guardiola","Mourinho","Ancelotti"], a:1, cat:"Managers", diff:"hard", type:"mcq" },
-  { q:"Jurgen Klopp's official title when appointed at Liverpool was what — before becoming simply 'manager'?", o:["Head Coach","Director of Football","Team Manager","Technical Director"], a:0, cat:"Managers", diff:"hard", type:"mcq", v:1 },
 
   // Records final push
   { q:"Manchester City's record winning run in the Premier League is how many consecutive wins?", o:["14","15","17","18"], a:3, cat:"Records", diff:"hard", type:"mcq", v:1 },
@@ -4604,7 +4546,6 @@ const QB = [
 
   // Records (was only 1!)
   { q:"Brazil have won the FIFA World Cup more times than any other nation.", a:true, tag:"wc2026", cat:"Records", diff:"easy", type:"tf", v:1 },
-  { q:"Lionel Messi has won the Ballon d'Or more times than Cristiano Ronaldo.", a:true, cat:"Records", diff:"easy", type:"tf", v:1 },
   { q:"The world transfer record has been broken more than 20 times since 1990.", a:true, cat:"Records", diff:"medium", type:"tf" },
   { q:"The fastest red card in football history was shown after just 2 seconds.", a:true, cat:"Records", diff:"medium", type:"tf" },
   { q:"Neymar's £222m transfer from Barcelona to PSG in 2017 remains the world record.", a:true, cat:"Records", diff:"easy", type:"tf" },
@@ -4631,14 +4572,12 @@ const QB = [
   { q:"Diego Maradona's Hand of God goal was scored against England at the 1986 World Cup.", a:true, tag:"wc2026", cat:"Legends", diff:"easy", type:"tf", v:1 },
   { q:"Pele scored more than 1,000 career goals in total.", a:true, cat:"Legends", diff:"easy", type:"tf", v:1 },
   { q:"Johan Cruyff never won the World Cup with the Netherlands.", a:true, tag:"wc2026", cat:"Legends", diff:"medium", type:"tf", v:1 },
-  { q:"Ronaldinho won the Ballon d'Or twice — in 2004 and 2005.", a:false, cat:"Legends", diff:"medium", type:"tf", hint:"Ronaldinho won the Ballon d'Or only ONCE (2005). He did win FIFA World Player of the Year in both 2004 and 2005 — often confused.", v:1 },
   { q:"Marco van Basten retired early due to a serious ankle injury.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
   { q:"George Best won the European Cup with Manchester United in 1968.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
   { q:"Dennis Bergkamp refused to fly — meaning he often missed away European games.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
   { q:"Eric Cantona was banned from football for eight months after his kung-fu kick in 1995.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
   { q:"Gerd Muller scored more than 600 career goals for club and country.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
   { q:"Paolo Maldini spent his entire career at AC Milan.", a:true, cat:"Legends", diff:"easy", type:"tf", v:1 },
-  { q:"Lev Yashin is the only goalkeeper to have won the Ballon d'Or.", a:true, cat:"Legends", diff:"medium", type:"tf", v:1 },
 
   // More WorldCup T/F
   { q:"The 2022 World Cup was the first held in the Middle East.", a:true, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"tf", v:1 },
@@ -4654,7 +4593,6 @@ const QB = [
 
   // More UCL T/F
   { q:"Real Madrid have won the Champions League more times than any other club.", a:true, cat:"UCL", diff:"easy", type:"tf", v:1 },
-  { q:"Liverpool beat AC Milan 3-0 at half time in the 2005 Champions League final.", a:false, cat:"UCL", diff:"medium", type:"tf", v:1 },
   { q:"Man City won their first Champions League in 2022-23.", a:true, cat:"UCL", diff:"easy", type:"tf", v:1 },
   { q:"PSG won the Champions League for the first time in 2024-25.", a:true, cat:"UCL", diff:"easy", type:"tf" },
   { q:"Celtic were the first British club to win the European Cup in 1967.", a:true, cat:"UCL", diff:"medium", type:"tf", v:1 },
@@ -4667,7 +4605,6 @@ const QB = [
   { q:"Manchester City hold the Premier League record for most points in a season with 100.", a:true, cat:"PL", diff:"medium", type:"tf", v:1 },
   { q:"Arsenal's unbeaten Invincibles season was 2003-04.", a:true, cat:"PL", diff:"easy", type:"tf", v:1 },
   { q:"Liverpool went 30 years without winning the English league before 2020.", a:true, cat:"PL", diff:"easy", type:"tf", v:1 },
-  { q:"Leicester City won the Premier League at odds of 5000-1 in 2016.", a:true, cat:"PL", diff:"easy", type:"tf", v:1 },
   { q:"Gareth Barry holds the record for most Premier League appearances.", a:true, cat:"PL", diff:"medium", type:"tf", v:1 },
   { q:"Chelsea won the Premier League five times under Roman Abramovich.", a:true, cat:"PL", diff:"medium", type:"tf", v:1 },
 
@@ -4747,7 +4684,6 @@ const QB = [
   { q:"Who became Tottenham's manager in 2023 after multiple managerial changes?", o:["Frank Lampard","Ange Postecoglou","Brendan Rodgers","Thomas Frank"], a:1, cat:"Managers", diff:"easy", type:"mcq", v:1 },
 
   // Legends
-  { q:"Which Spanish club did Ronaldo R9 join from Inter Milan in 2002 — for £38m — a month before the World Cup?", o:["Barcelona","Real Madrid","Valencia","Atlético"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1, hint:"R9 moved Inter → Real Madrid in Sept 2002 for £38m, winning 2003 La Liga. Career path: Cruzeiro → PSV → Barca → Inter → Real Madrid → Milan → Corinthians (returned to Brazil 2009). Corinthians was his final club." },
   { q:"How many World Cups did Pele play in and win?", o:["2 played, 2 won","3 played, 3 won","3 played, 2 won","4 played, 3 won"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which country was Diego Maradona born in?", o:["Brazil","Uruguay","Argentina","Colombia"], a:2, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Ryan Giggs won how many Premier League titles in his career?", o:["10","11","12","13"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -4815,7 +4751,6 @@ const QB = [
   { q:"Which club did Pep Guardiola manage between Barcelona and Man City?", o:["Juventus","Real Madrid","Bayern Munich","PSG"], a:2, cat:"Managers", diff:"easy", type:"mcq", v:1 },
 
   // Legends
-  { q:"Ronaldo R9 won the 1997 FIFA World Player of the Year while at which club?", o:["PSV","Barcelona","Inter","Real Madrid"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which legendary player returned from exile to play for Napoli in the 1980s and transformed the club?", o:["Platini","Zico","Maradona","Gullit"], a:2, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Paul Scholes was famous for which quality that earned him widespread admiration?", o:["Speed","Tackling","Passing range","Heading"], a:2, cat:"Legends", diff:"easy", type:"mcq", v:1 },
 
@@ -4887,7 +4822,6 @@ const QB = [
   // Legends
   { q:"How many caps did Ryan Giggs win for Wales during his career?", o:["54","60","64","72"], a:3, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"Which player scored the most goals in a single European Championship tournament?", o:["Platini with 9 in 1984","Van Basten with 8 in 1988","Ronaldo with 6 in 2004","Torres with 5 in 2008"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1 },
-  { q:"Ronaldo R9 wore the number 9 shirt for Brazil — who wore it before him?", o:["Bebeto","Romario","Careca","Zico"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Which legendary player said 'I am not a genius — I just work harder than everyone else'?", o:["Cruyff","Platini","Beckenbauer","Zidane"], a:1, cat:"Legends", diff:"hard", type:"mcq" },
 
   // Records
@@ -4907,7 +4841,6 @@ const QB = [
   { q:"Greece won Euro 2004 as rank outsiders.", a:true, cat:"Euros", diff:"easy", type:"tf", v:1 },
   { q:"Pep Guardiola won the Bundesliga with Bayern Munich.", a:true, cat:"Bundesliga", diff:"easy", type:"tf", v:1 },
   { q:"Jose Mourinho has won trophies in Portugal, England, Italy and Spain.", a:true, cat:"Managers", diff:"medium", type:"tf", v:1 },
-  { q:"Luka Modric won the Ballon d'Or in 2018 — ending the Messi and Ronaldo duopoly.", a:true, cat:"Records", diff:"medium", type:"tf", v:1 },
 
 
   // ── BATCH 43 ────────────────────────────────────────────────────────────────
@@ -4931,7 +4864,6 @@ const QB = [
   { q:"The Hand of God goal — in which city was it scored?", o:["Buenos Aires","Madrid","Mexico City","Montevideo"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which country's team bus was stoned after their 1966 World Cup exit at the hands of North Korea?", o:["Argentina","Brazil","Italy","England"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"The 1954 World Cup final — known as the Miracle of Bern — saw West Germany beat Hungary. What was the score?", o:["2-1","3-2","4-2","3-1"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
-  { q:"Which referee officiated the 2022 World Cup final?", o:["Howard Webb","Pierluigi Collina","Szymon Marciniak","Felix Brych"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"France beat Morocco in the 2022 World Cup semi-final — what was the score?", o:["1-0","2-0","2-1","3-0"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which country won the first ever FIFA Women's World Cup in 1991?", o:["Norway","Germany","Sweden","USA"], a:3, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"The 1998 World Cup was held in France — how many teams competed?", o:["24","28","32","36"], a:2, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
@@ -5021,7 +4953,6 @@ const QB = [
   { q:"The 2018 World Cup final between France and Croatia — what was the score at half time?", o:["1-0","1-1","2-1","2-2"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
   { q:"Which country beat Germany 2-0 in the 2018 World Cup group stage — causing a massive upset?", o:["South Korea","Sweden","Mexico","Japan"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"USA hosted the 1994 World Cup — what was the average attendance per game?", o:["52,000","62,000","68,991","71,000"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
-  { q:"Which goalkeeper saved two penalties in the 2022 World Cup final for Argentina?", o:["Emiliano 'Dibu' Martínez","Sergio Romero","Franco Armani","Juan Musso"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
 
   // UCL — more
   { q:"Which club reached the Champions League final four times in five years from 2015 to 2019?", o:["Bayern Munich","Atlético","Juventus","Real Madrid"], a:3, cat:"UCL", diff:"easy", type:"mcq", v:1 },
@@ -5063,7 +4994,6 @@ const QB = [
   { q:"Ronaldinho's nutmeg on which defender became one of the most shared football clips ever?", o:["Carlos Puyol","Cafu","Cannavaro","Sergio Ramos"], a:0, cat:"Legends", diff:"hard", type:"mcq" },
   { q:"Which legendary striker is the all-time top scorer for both Argentina and Barcelona?", o:["Di Stefano","Messi","Maradona","Batistuta"], a:1, cat:"Legends", diff:"easy", type:"mcq", v:1 },
   { q:"Peter Schmeichel joined Man United from which Danish club?", o:["FC Copenhagen","Brondby","Silkeborg","OB Odense"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
-  { q:"Which legendary midfielder won the World Cup, European Cup and Ballon d'Or — all in 1974?", o:["Beckenbauer","Cruyff","Muller","Overath"], a:1, tag:"wc2026", cat:"Legends", diff:"hard", type:"mcq", v:1 },
 
   // Records
   { q:"What is the release clause on Lamine Yamal's Barcelona contract — a record-setting figure?", o:["€500 million","€750 million","€1 billion","€2 billion"], a:2, cat:"LaLiga", diff:"hard", type:"mcq", hint:"Barcelona set Yamal's release clause at €1 billion — matching the figures for Messi and other elite academy graduates.", v:1 },
@@ -5213,7 +5143,6 @@ const QB = [
   { q:"Pelé made his debut for Santos at what age — becoming one of the youngest players in Brazilian football?", o:["14","15","16","17"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which legendary striker is the all-time top scorer in the history of Napoli?", o:["Maradona","Cavani","Hamsik","Mertens"], a:3, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Roberto Carlos's famous free kick against France in 1997 curved so violently it was studied by physicists — what was unusual about its initial trajectory?", o:["It went backwards","It appeared to be heading wide before curling in","It stopped dead before curling","It rose then dipped suddenly"], a:1, cat:"Legends", diff:"easy", type:"mcq", v:1 },
-  { q:"Which legendary Soviet keeper won Olympic gold (1956), the first Euros (1960) and the 1963 Ballon d'Or?", o:["Dino Zoff","Lev Yashin","Sepp Maier","Gordon Banks"], a:1, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", hint:"Yashin never won a World Cup — Russia/USSR have never won one. But he did win Olympic gold, the first European Championship and the Ballon d'Or.", v:1 },
   { q:"Ryan Giggs scored a famous individual goal in the 1999 FA Cup semi-final against Arsenal — which defender did he beat twice?", o:["Lee Dixon","Tony Adams","Martin Keown","Patrick Vieira"], a:2, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"Which legendary Swedish forward played for JUVENTUS, INTER, AND AC MILAN in Serie A — also playing for Ajax, Barcelona, PSG and Man United?", o:["Zlatan Ibrahimović","Dennis Bergkamp","Hernán Crespo","Andriy Shevchenko"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1, hint:"Zlatan played for Ajax, Juve (2004-06, stripped), Inter (2006-09 won 3 Scudetti), Barca (2009-11), Milan (2010-12), PSG (2012-16), Man U (2016-18), LA Galaxy, Milan (2020-23). Never Real Madrid." },
   { q:"Gordon Banks made his famous save against Pelé in the 1970 World Cup — from a downward header, what did Banks do to save it?", o:["He dived left and palmed it over","He scooped it up from near the ground","He blocked it with his feet","He caught it one-handed"], a:1, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -5297,7 +5226,6 @@ const QB = [
   { q:"Diego Forlan won the Pichichi top scorer award in La Liga with Villarreal — in which season?", o:["2003-04","2004-05","2005-06","2006-07"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
   { q:"Which stadium is the second largest in Spain after the Camp Nou?", o:["Bernabeu","Ramon Sanchez Pizjuan","Mestalla","Wanda Metropolitano"], a:0, cat:"LaLiga", diff:"medium", type:"mcq", v:1 },
   { q:"Atletico Madrid went the 2015-16 Champions League campaign all the way to the final — who did they face?", o:["Barcelona","Bayern Munich","Juventus","Real Madrid"], a:3, cat:"LaLiga", diff:"medium", type:"mcq", v:1 },
-  { q:"Which La Liga player was the first ever to win the Ballon d'Or and La Liga title in the same year?", o:["Di Stefano","Puskas","Zidane","Ronaldo"], a:0, cat:"LaLiga", diff:"hard", type:"mcq", v:1 },
   { q:"Osasuna's stadium El Sadar is located in which Spanish city?", o:["Bilbao","Pamplona","San Sebastian","Logrono"], a:1, cat:"LaLiga", diff:"medium", type:"mcq", v:1 },
   { q:"Isco — Real Madrid's gifted but often inconsistent midfielder — earned how many Spain caps across his career?", o:["43","51","65","79"], a:2, cat:"LaLiga", diff:"hard", type:"mcq" },
 
@@ -5368,7 +5296,6 @@ const QB = [
   { q:"Which Serie A club did Diego Maradona lift two league titles with?", o:["Napoli","Roma","Juventus","Inter"], a:0, cat:"SerieA", diff:"easy", type:"mcq", v:1 },
   { q:"Which player is Roma's all-time top scorer?", o:["Francesco Totti","Gabriel Batistuta","Edin Džeko","Daniele De Rossi"], a:0, cat:"SerieA", diff:"easy", type:"mcq", v:1 },
   { q:"What colour are Napoli's home shirts famously?", o:["Sky blue","Red","Green","Black and white"], a:0, cat:"SerieA", diff:"easy", type:"mcq", v:1 },
-  { q:"Which Italian striker won the Ballon d'Or in 1993?", o:["Roberto Baggio","Gianluca Vialli","Giuseppe Signori","Alessandro Del Piero"], a:0, cat:"SerieA", diff:"easy", type:"mcq", v:1 },
   { q:"What is the top division of German football called?", o:["Bundesliga","Serie A","La Liga","Ligue 1"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour are Borussia Dortmund's home shirts?", o:["Yellow","Red","Blue","Black"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the name of Bayern Munich's home stadium?", o:["Allianz Arena","Signal Iduna Park","Olympiastadion","Westfalenstadion"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
@@ -5376,7 +5303,6 @@ const QB = [
   { q:"Which German club has won the most Bundesliga titles since 2000?", o:["Bayern Munich","Dortmund","Leverkusen","Schalke"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"Bayer Leverkusen are most associated with which big German company?", o:["Bayer (pharmaceuticals)","BMW","Volkswagen","Siemens"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What colour are Schalke 04's home shirts?", o:["Royal blue","Red","Yellow","Green"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
-  { q:"Jürgen Klopp managed which Bundesliga club before Liverpool?", o:["Dortmund","Bayern Munich","Mainz","Hoffenheim"], a:0, cat:"Bundesliga", diff:"easy", type:"mcq", v:1 },
   { q:"What is the top division of Spanish football called?", o:["La Liga","Serie A","Bundesliga","Ligue 1"], a:0, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
   { q:"What is Barcelona's iconic stadium called?", o:["Camp Nou","Santiago Bernabéu","Mestalla","La Cartuja"], a:0, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
   { q:"Real Madrid's home stadium is named after which former president?", o:["Santiago Bernabéu","Florentino Pérez","Ramón Calderón","Lorenzo Sanz"], a:0, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
@@ -5409,7 +5335,6 @@ const QB = [
   { q:"Germany won their most recent Euros in which year?", o:["1996","2000","2004","2008"], a:0, cat:"Euros", diff:"medium", type:"mcq", v:1 },
   { q:"The Euro 2020 final was played at which famous London stadium?", o:["Wembley","Old Trafford","Stamford Bridge","Emirates"], a:0, cat:"Euros", diff:"easy", type:"mcq", v:1 },
   { q:"Cristiano Ronaldo captained Portugal to Euro glory in which year?", o:["2016","2012","2020","2008"], a:0, cat:"Euros", diff:"easy", type:"mcq", v:1 },
-  { q:"Jürgen Klopp is from which country?", o:["Germany","Austria","Switzerland","Netherlands"], a:0, cat:"Managers", diff:"easy", type:"mcq" },
   { q:"Carlo Ancelotti is from which country?", o:["Italy","Spain","France","Portugal"], a:0, cat:"Managers", diff:"easy", type:"mcq", v:1 },
   { q:"Sir Alex Ferguson managed which club for over 25 years?", o:["Man Utd","Liverpool","Arsenal","Chelsea"], a:0, cat:"Managers", diff:"easy", type:"mcq", v:1 },
   { q:"Julian Nagelsmann is from which country?", o:["Germany","Austria","Netherlands","Switzerland"], a:0, cat:"Managers", diff:"easy", type:"mcq", v:1 },
@@ -5426,11 +5351,6 @@ const QB = [
   // -- LaLiga (1) --
   { q:"What is the longest unbeaten run in La Liga history?", o:["39 games","43 games","41 games","45 games"], a:1, cat:"LaLiga", diff:"medium", type:"mcq", v:1 },
   // -- Legends (5) --
-  { q:"Who became the first female soccer player to win the Ballon d'Or Féminin award in 2018?", o:["Ada Hegerberg","Lucy Bronze","Megan Rapinoe","Marta"], a:0, cat:"Legends", diff:"medium", type:"mcq", v:1 },
-  { q:"How many times has Cristiano Ronaldo been awarded the prestigious Ballon d'Or?", o:["4","5","6","7"], a:1, cat:"Legends", diff:"easy", type:"mcq" },
-  { q:"How many times has the Ballon d'Or been awarded to a player from a non-European or non-South American club?", o:["0","1","3","2"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
-  { q:"Which country has the most players to have won the Ballon d'Or?", o:["Brazil","Netherlands","Germany","France"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
-  { q:"Who was the first British player to win the Ballon d'Or?", o:["Bobby Charlton","Stanley Matthews","Kevin Keegan","Michael Owen"], a:1, cat:"Legends", diff:"medium", type:"mcq" },
   // -- Managers (5) --
   { q:"What is the name of the style of play associated with Pep Guardiola during his tenure as coach of FC Barcelona?", o:["Positional Play","False Nine","Gegenpressing","Tiki-taka"], a:3, cat:"Managers", diff:"easy", type:"mcq", v:1 },
   { q:"Which legendary Manchester United manager played as a player for both Manchester City and Liverpool?", o:["Alex Ferguson","Matt Busby","Wilf McGuinness","Louis van Gaal"], a:1, cat:"Managers", diff:"medium", type:"mcq", v:1 },
@@ -5485,7 +5405,6 @@ const QB = [
   { q:"Which Portuguese team did Cristiano Ronaldo play for before signing for Manchester United?", o:["Sporting","Porto","Benfica","Braga"], a:0, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
   { q:"Messi began his professional career at Barcelona, but what was his schoolboy team?", o:["Newell's Old Boys","River Plate","Boca Juniors","Independiente"], a:0, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
   { q:"Ronaldo is synonymous with the No.7, but which other number did he wear at Real Madrid?", o:["No.7","No.9","No.11","No.10"], a:1, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
-  { q:"Who is the only African player to have ever won the Ballon d'Or?", o:["Weah","Samuel Eto'o","Didier Drogba","Yaya Touré"], a:0, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
   { q:"How many panels does a traditional FIFA-approved soccer ball have?", o:["24","32","18","42"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
   { q:"Which player was the first to reach 100 goals in UEFA club competitions?", o:["Lionel Messi","Filippo Inzaghi","Raúl González","Cristiano Ronaldo"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
   { q:"Which stadium is famously nicknamed \"The Theatre of Dreams\"?", o:["Camp Nou","Old Trafford","Anfield","Santiago Bernabéu"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
@@ -5520,9 +5439,7 @@ const QB = [
   { q:"Which manager has won the most UEFA Super Cup titles?", o:["Pep Guardiola","Carlo Ancelotti","Alex Ferguson","Zidane"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"What is the record number of goals scored by a single player in one UEFA Champions League knockout tie?", o:["5","6","4","7"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
   { q:"Which manager won the Champions League with clubs from TWO different countries — Porto (Portugal) and Inter Milan (Italy)?", o:["Carlo Ancelotti","José Mourinho","Pep Guardiola","Jupp Heynckes"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1, hint:"José Mourinho won the CL with Porto (2004) and Inter Milan (2010). No manager has ever won the CL with clubs from three different countries. Mourinho also won the Europa League with Man U (2017) and Conference League with Roma (2022)." },
-  { q:"Which moment is widely regarded as the \"Miracle of Istanbul\" in Champions League history?", o:["Manchester United 1999 comeback","Liverpool's 2005 final comeback from 3-0 down","Real Madrid 2002 final","Bayern Munich 2013 final"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
   { q:"Which moment saw Ole Gunnar Solskjær score the stoppage-time winner to complete Manchester United's 1999 treble?", o:["FA Cup final","Champions League final","League Cup final","World Club Cup"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
-  { q:"Who scored the \"Ghost Goal\" that sent Liverpool to the 2005 Champions League final?", o:["Steven Gerrard","Luis García","Xabi Alonso","Jamie Carragher"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
   { q:"Which German club won the first edition of the UEFA Women's Cup in 2001-02 — the competition that would later be rebranded as the Champions League?", o:["Turbine Potsdam","FFC Frankfurt","VfL Wolfsburg","Bayern Munich"], a:1, cat:"Women", diff:"hard", type:"mcq", hint:"They beat Umeå 2-0 at their own Waldstadion on 23 May 2002, with Birgit Prinz among the scorers. They would go on to win the competition four times in total.", v:1 },
   // -- WorldCup (32) --
   { q:"What was the name of the loud plastic horn blown by many spectators during the 2010 FIFA World Cup in South Africa?", o:["Zambezi","Vuvuzela","Kuduzela","Trompette"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
@@ -5547,7 +5464,6 @@ const QB = [
   { q:"What is the only instance of a player scoring in two different World Cup finals for the same country?", o:["Pelé","Paul Breitner","Ronaldo","Zidane"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which iconic 1958 World Cup moment saw a 17-year-old Pelé score twice in the final?", o:["Against France","Against Sweden","Against West Germany","Against Hungary"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"What is the only stadium to have hosted matches in three different World Cups (1970, 1986, 2026)?", o:["Maracanã","Estadio Azteca","Wembley","Lusail"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
-  { q:"What record does the 2022 World Cup final hold regarding viewership?", o:["Most goals","Most-watched single sporting event in history","Longest match","Most penalties"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
 
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
@@ -7509,7 +7425,6 @@ const CLUB_PACKS = {
       { q:"How many times have Liverpool won the European Cup / Champions League?", o:["4","5","6","7"], a:2, diff:"easy" },
       { q:"Who scored Liverpool's famous solo goal against Manchester United in the 1996 FA Cup final?", o:["Collymore","McManaman","Barnes","Fowler"], a:1, diff:"hard" },
       { q:"In which year did Liverpool win their first ever Premier League title?", o:["2018","2019","2020","2021"], a:2, diff:"easy" },
-      { q:"Who managed Liverpool to their 2005 Champions League triumph in Istanbul?", o:["Roy Evans","Gérard Houllier","Rafa Benítez","Kenny Dalglish"], a:2, diff:"medium" },
       { q:"What is the name of Liverpool's famous home end?", o:["The Stretford End","The Kop","The Holte End","The Gwladys Street"], a:1, diff:"easy" },
       { q:"Which Liverpool player scored 32 Premier League goals in the 2013-14 season?", o:["Gerrard","Suárez","Sterling","Sturridge"], a:1, diff:"medium" },
       { q:"Who was Liverpool's top scorer in the 2019-20 title-winning season?", o:["Firmino","Mané","Salah","Henderson"], a:2, diff:"medium" },
@@ -7544,7 +7459,6 @@ const CLUB_PACKS = {
       { q:"Who is Barcelona's all-time top scorer?", o:["Ronaldo","Kubala","César","Messi"], a:3, diff:"easy" },
       { q:"In which year did Johan Cruyff join Barcelona as a player?", o:["1971","1973","1975","1977"], a:1, diff:"hard" },
       { q:"What is the name of Barcelona's stadium?", o:["Bernabéu","Wanda Metropolitano","Camp Nou","Spotify Camp Nou"], a:3, diff:"easy" },
-      { q:"Which Barcelona player won the 2012 Ballon d'Or?", o:["Xavi","Iniesta","Puyol","Messi"], a:3, diff:"easy" },
       { q:"Who managed Barcelona immediately before Pep Guardiola in 2008?", o:["Rijkaard","Van Gaal","Tito Vilanova","Luis Enrique"], a:0, diff:"medium" },
     ]
   },
@@ -7552,7 +7466,6 @@ const CLUB_PACKS = {
     name: "Real Madrid", icon: "⚪", color: "#FEBE10",
     questions: [
       { q:"How many Champions League titles has Real Madrid won in total?", o:["13","14","15","16"], a:2, diff:"easy" },
-      { q:"Which Real Madrid player won the Ballon d'Or five times while at the club?", o:["Zidane","Benzema","Modric","Ronaldo"], a:3, diff:"easy" },
       { q:"Who scored Real Madrid's winning goal in the 2014 Champions League final vs Atletico?", o:["Benzema","Bale","Ramos","Modric"], a:2, diff:"medium" },
       { q:"Which year did Ronaldo join Real Madrid from Manchester United?", o:["2007","2008","2009","2010"], a:2, diff:"easy" },
       { q:"Who managed Real Madrid to three consecutive Champions League titles?", o:["Ancelotti","Mourinho","Benitez","Zidane"], a:3, diff:"easy" },
@@ -7601,7 +7514,6 @@ const CLUB_PACKS = {
       { q:"Bayern Munich won the Champions League in 2020 without losing a single game — who managed them?", o:["Kovač","Guardiola","Heynckes","Flick"], a:3, diff:"easy" },
       { q:"Which legendary striker scored 365 Bundesliga goals — an all-time record?", o:["Müller","Lewandowski","Rummenigge","Gerd Müller"], a:3, diff:"easy" },
       { q:"Bayern's famous treble season of 2012-13 was won under which manager?", o:["Guardiola","Flick","Heynckes","Ancelotti"], a:2, diff:"medium" },
-      { q:"Which Bayern Munich player was the first German to win the Ballon d'Or twice?", o:["Beckenbauer","Müller","Rummenigge","Lahm"], a:2, diff:"hard" },
       { q:"Bayern Munich's Allianz Arena opened in which year?", o:["2004","2005","2006","2007"], a:1, diff:"medium" },
       { q:"Who was Bayern Munich's captain when they won the 2013 Champions League final?", o:["Neuer","Lahm","Schweinsteiger","Robben"], a:1, diff:"medium" },
       { q:"Robert Lewandowski scored 41 Bundesliga goals in 2020-21 — whose record of 40 did he break?", o:["Rummenigge","Gerd Müller","Müller T","Klinsmann"], a:1, diff:"medium" },
@@ -7619,7 +7531,6 @@ const CLUB_PACKS = {
       { q:"Juventus's nickname 'La Vecchia Signora' means what?", o:["The Black and Whites","The Old Lady","The Turin Giants","The Zebras"], a:1, diff:"easy" },
       { q:"Alessandro Del Piero spent how many years at Juventus?", o:["17","18","19","20"], a:0, diff:"hard" },
       { q:"Juventus were stripped of two Serie A titles in 2006 due to which scandal?", o:["Doping","Calciopoli match-fixing","Financial irregularities","Fan violence"], a:1, diff:"medium" },
-      { q:"Which Juventus player won the Ballon d'Or while at the club in 1993?", o:["Baggio","Del Piero","Vialli","Ravanelli"], a:0, diff:"hard" },
       { q:"Gianluigi Buffon made how many appearances for Juventus — a club record?", o:["576","626","676","726"], a:2, diff:"medium" },
       { q:"Juventus reached the Champions League final in 2015 and 2017 — who beat them both times?", o:["Real Madrid","Barcelona","Bayern Munich","Real Madrid in 2015, Madrid in 2017"], a:0, diff:"medium" },
     ]
@@ -7632,7 +7543,6 @@ const CLUB_PACKS = {
       { q:"AC Milan won back-to-back European Cups in which years under Arrigo Sacchi?", o:["1988 and 1989","1989 and 1990","1990 and 1991","1991 and 1992"], a:1, diff:"medium" },
       { q:"Paolo Maldini holds the record for most AC Milan appearances — approximately how many?", o:["802","868","902","952"], a:1, diff:"hard" },
       { q:"AC Milan's famous red and black kit — what do the colours officially represent?", o:["Fire and night","Red hell and black fear of opponents","The city's colours","Historical tradition"], a:1, diff:"hard" },
-      { q:"Which AC Milan player won the Ballon d'Or in 1995?", o:["Maldini","Baresi","Savicevic","Weah"], a:3, diff:"medium" },
       { q:"AC Milan won the Champions League in 2007 — who did they beat in the final?", o:["Arsenal","Barcelona","Man Utd","Liverpool"], a:3, diff:"medium" },
       { q:"What is the name of the stadium shared by AC Milan and Inter Milan?", o:["Olimpico","Meazza / San Siro","Delle Alpi","Tardini"], a:1, diff:"easy" },
       { q:"AC Milan won the Serie A title in 2021-22 — ending an 11-year drought. Who was their standout forward?", o:["Ibrahimović","Giroud","Leão","Rebić"], a:2, diff:"medium" },
@@ -7676,7 +7586,6 @@ const CLUB_PACKS = {
       { q:"Which player became the world's most expensive transfer ever when PSG signed him in 2017?", o:["Neymar","Mbappé","Verratti","Cavani"], a:0, diff:"easy" },
       { q:"PSG won the 2024-25 Champions League — who did they beat in the final?", o:["Arsenal","Inter","Barcelona","Real Madrid"], a:1, diff:"easy" },
       { q:"Kylian Mbappé left PSG to join which club in 2024?", o:["Man City","Arsenal","Bayern Munich","Real Madrid"], a:3, diff:"easy" },
-      { q:"Which PSG player won the 2025 Ballon d'Or?", o:["Vitinha","Dembélé","Marquinhos","Hakimi"], a:1, diff:"medium" },
       { q:"PSG's Parc des Princes stadium is in which area of Paris?", o:["Montmartre","Marais","16th arrondissement","Boulogne"], a:2, diff:"medium" },
       { q:"Edinson Cavani scored how many goals for PSG — a club record?", o:["198","211","220","240"], a:2, diff:"hard" },
       { q:"PSG beat Barcelona 4-0 in the 2016-17 UCL group stage — who scored twice that night?", o:["Cavani","Di María","Verratti","Lucas Moura"], a:0, diff:"hard" },
