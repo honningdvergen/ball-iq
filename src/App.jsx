@@ -7468,6 +7468,60 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .next-btn-primary{position:relative;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;box-shadow:0 5px 0 #46A302;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
+
+/* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
+.wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);}
+.wd-header{display:flex;align-items:center;gap:12px;}
+.wd-back{flex-shrink:0;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+.wd-back:hover{background:var(--s2);}
+.wd-header-text{flex:1;min-width:0;}
+.wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
+.wd-sub{font-size:11px;color:var(--t3);margin-top:2px;letter-spacing:0.02em;}
+.wd-countdown{flex-shrink:0;text-align:right;padding:6px 10px;background:var(--s1);border:1px solid var(--border);border-radius:10px;}
+.wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
+.wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
+
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1;padding:8px 0;}
+.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(380px,calc((100vw - 52px)));}
+.wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
+.wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
+.wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
+.wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
+.wd-tile.wd-grey{background:var(--s2);border-color:var(--s2);color:var(--text);}
+.html.light .wd-tile.wd-grey,.light .wd-tile.wd-grey{background:#9CA0AB;border-color:#9CA0AB;color:#fff;}
+.wd-flip{animation:wdFlip 600ms ease forwards;animation-fill-mode:both;}
+@keyframes wdFlip{
+  0%{transform:rotateX(0deg);}
+  45%{transform:rotateX(90deg);background:transparent;border-color:var(--border);color:var(--text);}
+  55%{transform:rotateX(90deg);}
+  100%{transform:rotateX(0deg);}
+}
+.wd-shake{animation:wdShake 420ms cubic-bezier(.36,.07,.19,.97);}
+@keyframes wdShake{
+  10%,90%{transform:translateX(-2px);}
+  20%,80%{transform:translateX(4px);}
+  30%,50%,70%{transform:translateX(-8px);}
+  40%,60%{transform:translateX(8px);}
+}
+
+.wd-result{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:8px;animation:wdFadeIn 320ms ease;}
+@keyframes wdFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.wd-result-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
+.wd-result-sub{font-size:14px;color:var(--t2);}
+.wd-result-sub strong{color:var(--accent);letter-spacing:0.5px;font-weight:800;}
+.wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
+.wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #46A302;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-text-fill-color:#0A0A0A;}
+.wd-share:active{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:6px 0 4px;}
+.wd-kb-row{display:flex;justify-content:center;gap:5px;}
+.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s2);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.12s,transform 0.05s;padding:0;}
+.wd-key:active{transform:scale(0.96);}
+.wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
+.wd-key-green{background:#58CC02;color:#0A0A0A;}
+.wd-key-yellow{background:#FFC107;color:#0A0A0A;}
+.wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
+.light .wd-key-grey{background:#9CA0AB;color:#fff;}
 `;
 
 
@@ -11888,6 +11942,315 @@ const TEXT_SIZE_MAP = { S: "15px", M: "18px", L: "21px" };
 // each render (no new allocation on every tab change).
 const HIDDEN_STYLE = { display: "none" };
 
+// ─── FOOTBALL WORDLE ──────────────────────────────────────────────────────────
+// Surnames are stored uppercase, ASCII-only, 4–8 letters. Daily seed picks one
+// by index so every player gets the same answer until midnight local time.
+const WORDLE_PLAYERS = [
+  // 4 letters
+  "KANE","COLE","OWEN","MANE","PELE","BEST","INCE","RUSH","CASE","NEAL",
+  "BABB","KAHN","LAHM","OZIL","REUS","TONI","STAM","ZOLA","RAUL","XAVI",
+  "ALBA","JOTA","MATA","NANI","PARK","EVRA","DIAZ","RICE","SAKA","ISCO",
+  // 5 letters
+  "MESSI","SALAH","HENRY","TERRY","GIGGS","VIDIC","TEVEZ","KLOPP","BANKS","MOORE",
+  "HURST","ADAMS","PIRES","DIXON","KEANE","IRWIN","BRUCE","JONES","SMITH","KLOSE",
+  "NEUER","GOTZE","KROOS","TOTTI","NESTA","PIRLO","VIERI","PUYOL","PIQUE","RAMOS",
+  "VILLA","SILVA","PEDRO","ALVES","COSTA","EVANS","JAMES","VARDY","BRADY","KEOWN",
+  "POGBA","MARIA","FODEN","MOUNT","NUNEZ","ONANA","MENDY","DEPAY","TOURE","MIKEL",
+  // 6 letters
+  "NEYMAR","MBAPPE","MODRIC","BUFFON","ZIDANE","ROONEY","AGUERO","SUAREZ","WENGER","CRUYFF",
+  "PUSKAS","YASHIN","PETERS","HODDLE","WADDLE","WRIGHT","VIEIRA","HUGHES","ROBSON","KEEGAN",
+  "HANSEN","FOWLER","BERGER","MULLER","RIBERY","ROBBEN","PERSIE","GULLIT","KOEMAN","DAVIDS",
+  "BARESI","BAGGIO","VIALLI","HIERRO","TORRES","HAZARD","MORATA","DROGBA","MAHREZ","MILNER",
+  "DYBALA","ICARDI","KOUNDE","THIAGO","CHIESA","FOFANA","HALLER","LUKAKU","LLORIS","VARANE",
+  "DAVIES","HAKIMI","CAVANI","FALCAO","GALLAS","CRESPO",
+  // 7 letters
+  "RONALDO","HAALAND","BENZEMA","BECKHAM","GERRARD","LAMPARD","SHEARER","SCHOLES","FIRMINO","SHANKLY",
+  "EUSEBIO","PLATINI","LINEKER","CANTONA","WILKINS","BUTCHER","SHILTON","FLOWERS","TOSHACK","SOUNESS",
+  "KENNEDY","BALLACK","BOATENG","HUMMELS","SNIJDER","SEEDORF","MALDINI","GATTUSO","INZAGHI","MILITAO",
+  "ASENSIO","HERRERA","VERATTI","MERTENS","HIGUAIN","RAFINHA","CARRICK","ALISSON","EDERSON","MAGUIRE",
+  "RUDIGER","KIMMICH","DEMBELE","ENDRICK","WALCOTT",
+  // 8 letters
+  "CASILLAS","MOURINHO","FERGUSON","DALGLISH","MARADONA","CHARLTON","BERGKAMP","CLEMENCE","REDKNAPP","MATTHAUS",
+  "BIERHOFF","PODOLSKI","RIJKAARD","BUSQUETS","FABREGAS","COUTINHO","COURTOIS","JORGINHO","VINICIUS","GREALISH",
+  "GVARDIOL","CASEMIRO","VALVERDE","MARTINEZ","LINDELOF","SMALLING","STERLING","MAKELELE","MAZRAOUI","VLAHOVIC",
+  "HEIGHWAY","CAMPBELL",
+];
+
+// Day index from local-midnight epoch — same value for everyone in the same UTC
+// day. Using getTime() / 86400000 means the puzzle rolls over at UTC midnight,
+// which keeps "everyone gets the same player" simple across timezones.
+function getWordleDayIndex() { return Math.floor(Date.now() / 86400000); }
+function getWordleAnswer() { return WORDLE_PLAYERS[getWordleDayIndex() % WORDLE_PLAYERS.length]; }
+function getWordleDateKey() {
+  const d = new Date();
+  const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+// Standard Wordle two-pass colouring: greens first (locking those answer slots),
+// then yellows that consume remaining-letter counts. This is what stops a guess
+// of "OOOO" against "BOAT" from showing 4 yellows for the single O.
+function gradeWordleGuess(guess, answer) {
+  const n = answer.length;
+  const result = new Array(n).fill("grey");
+  const remaining = [];
+  for (let i = 0; i < n; i++) {
+    if (guess[i] === answer[i]) result[i] = "green";
+    else remaining.push(answer[i]);
+  }
+  for (let i = 0; i < n; i++) {
+    if (result[i] === "green") continue;
+    const idx = remaining.indexOf(guess[i]);
+    if (idx !== -1) {
+      result[i] = "yellow";
+      remaining.splice(idx, 1);
+    }
+  }
+  return result;
+}
+
+// Aggregate per-letter keyboard state across all guesses. Green beats yellow
+// beats grey beats unseen — once green, never downgraded.
+function getWordleKeyState(letter, guesses, answer) {
+  let best = null;
+  for (const g of guesses) {
+    const grades = gradeWordleGuess(g, answer);
+    for (let i = 0; i < g.length; i++) {
+      if (g[i] !== letter) continue;
+      const c = grades[i];
+      if (c === "green") return "green";
+      if (c === "yellow" && best !== "green") best = "yellow";
+      if (c === "grey" && !best) best = "grey";
+    }
+  }
+  return best;
+}
+
+const WORDLE_KB_ROWS = [
+  ["Q","W","E","R","T","Y","U","I","O","P"],
+  ["A","S","D","F","G","H","J","K","L"],
+  ["ENTER","Z","X","C","V","B","N","M","DEL"],
+];
+
+function FootballWordle({ onBack }) {
+  const dateKey = getWordleDateKey();
+  const storageKey = `biq_wordle_${dateKey}`;
+  const answer = useMemo(getWordleAnswer, [dateKey]);
+
+  const [state, setState] = useState(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.guesses)) return parsed;
+      }
+    } catch {}
+    return { guesses: [], status: "playing" };
+  });
+  const [current, setCurrent] = useState("");
+  const [shake, setShake] = useState(false);
+  const [countdown, setCountdown] = useState("");
+  const [revealed, setRevealed] = useState(false);
+
+  // Persist after every change to the game state. We save under a per-day key
+  // (biq_wordle_YYYY-MM-DD) so a stale entry doesn't leak into tomorrow's puzzle
+  // — and so a curious user could in theory see their full daily history.
+  useEffect(() => {
+    try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch {}
+  }, [state, storageKey]);
+
+  // Live "new player tomorrow" countdown. Ticks once per second, which is
+  // also where we detect the day rollover and reload the answer.
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setHours(24, 0, 0, 0);
+      const ms = tomorrow - now;
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setCountdown(`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Detect day rollover while the screen is open — refresh by reloading the
+  // page so all date-derived state (storageKey, answer, dateKey) resyncs.
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (getWordleDateKey() !== dateKey) window.location.reload();
+    }, 5000);
+    return () => clearInterval(id);
+  }, [dateKey]);
+
+  const submitGuess = useCallback(() => {
+    if (state.status !== "playing") return;
+    if (current.length !== answer.length) {
+      setShake(true);
+      setTimeout(() => setShake(false), 450);
+      return;
+    }
+    const newGuesses = [...state.guesses, current];
+    let newStatus = "playing";
+    if (current === answer) newStatus = "won";
+    else if (newGuesses.length >= 6) newStatus = "lost";
+    setState({ guesses: newGuesses, status: newStatus });
+    setCurrent("");
+    if (newStatus !== "playing") {
+      setRevealed(false);
+      setTimeout(() => setRevealed(true), answer.length * 280 + 200);
+    }
+  }, [state, current, answer]);
+
+  const handleKey = useCallback((key) => {
+    if (state.status !== "playing") return;
+    if (key === "ENTER") return submitGuess();
+    if (key === "DEL") { setCurrent((c) => c.slice(0, -1)); return; }
+    if (/^[A-Z]$/.test(key)) {
+      setCurrent((c) => (c.length < answer.length ? c + key : c));
+    }
+  }, [state.status, submitGuess, answer.length]);
+
+  // Physical keyboard support. Ignore when modifier keys are held so we don't
+  // hijack browser shortcuts (cmd-R, etc.).
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "Enter") { e.preventDefault(); handleKey("ENTER"); }
+      else if (e.key === "Backspace") { e.preventDefault(); handleKey("DEL"); }
+      else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toUpperCase());
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [handleKey]);
+
+  const dateLabel = useMemo(() => {
+    const d = new Date();
+    return d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  }, [dateKey]);
+
+  // Build all 6 grid rows: completed guesses get coloured, current row shows
+  // the in-progress entry, future rows are blanks.
+  const rows = [];
+  for (let r = 0; r < 6; r++) {
+    if (r < state.guesses.length) {
+      const g = state.guesses[r];
+      const grades = gradeWordleGuess(g, answer);
+      rows.push(
+        <div className="wd-row" key={r}>
+          {Array.from({ length: answer.length }, (_, i) => (
+            <div
+              key={i}
+              className={`wd-tile wd-${grades[i]} wd-flip`}
+              style={{ animationDelay: `${i * 280}ms` }}
+            >{g[i]}</div>
+          ))}
+        </div>
+      );
+    } else if (r === state.guesses.length && state.status === "playing") {
+      rows.push(
+        <div className={`wd-row${shake ? " wd-shake" : ""}`} key={r}>
+          {Array.from({ length: answer.length }, (_, i) => (
+            <div
+              key={i}
+              className={`wd-tile${current[i] ? " wd-filled" : ""}`}
+            >{current[i] || ""}</div>
+          ))}
+        </div>
+      );
+    } else {
+      rows.push(
+        <div className="wd-row" key={r}>
+          {Array.from({ length: answer.length }, (_, i) => (
+            <div key={i} className="wd-tile" />
+          ))}
+        </div>
+      );
+    }
+  }
+
+  // Build the share text: emoji grid plus the puzzle date and a link. We use
+  // ⬛ for grey to match the spec rather than ⬜ (which the standard NYT Wordle
+  // share uses for light mode) — this app is dark-first.
+  const shareText = useMemo(() => {
+    if (state.status === "playing") return "";
+    const lines = state.guesses.map((g) => {
+      const grades = gradeWordleGuess(g, answer);
+      return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
+    });
+    const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
+    return `⚽ Ball IQ Wordle — ${dateLabel}\n${score}\n\n${lines.join("\n")}\n\nball-iq.app`;
+  }, [state, answer, dateLabel]);
+
+  const onShare = useCallback(async () => {
+    if (!shareText) return;
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: shareText });
+        return;
+      }
+    } catch {}
+    try {
+      await navigator.clipboard.writeText(shareText);
+      alert("Copied to clipboard!");
+    } catch {
+      alert(shareText);
+    }
+  }, [shareText]);
+
+  return (
+    <div className="wd-screen">
+      <div className="wd-header">
+        <button className="wd-back" onClick={onBack} aria-label="Back">←</button>
+        <div className="wd-header-text">
+          <div className="wd-title">⚽ Football Wordle</div>
+          <div className="wd-sub">{dateLabel}</div>
+        </div>
+        <div className="wd-countdown" title="New player tomorrow">
+          <div className="wd-countdown-label">Next</div>
+          <div className="wd-countdown-time">{countdown}</div>
+        </div>
+      </div>
+
+      <div className="wd-grid" style={{ "--wd-cols": answer.length }}>
+        {rows}
+      </div>
+
+      {state.status !== "playing" && revealed && (
+        <div className="wd-result">
+          <div className="wd-result-title">
+            {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
+          </div>
+          <div className="wd-result-sub">
+            The answer was <strong>{answer}</strong>
+          </div>
+          <button className="wd-share" onClick={onShare}>Share result</button>
+          <div className="wd-result-foot">New player in {countdown}</div>
+        </div>
+      )}
+
+      <div className="wd-keyboard">
+        {WORDLE_KB_ROWS.map((row, ri) => (
+          <div className="wd-kb-row" key={ri}>
+            {row.map((k) => {
+              const isAction = k === "ENTER" || k === "DEL";
+              const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
+              return (
+                <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k}>
+                  {k === "DEL" ? "⌫" : k}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   const { user, profile: authProfile } = useAuth();
@@ -13142,6 +13505,7 @@ function AppInner() {
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
+                { key:"wordle",    icon:"🟩",  name:"Football Wordle", desc:"Daily surname guess", onTap:() => setScreen("wordle") },
                 { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned!") },
                 { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned!") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
@@ -13234,6 +13598,9 @@ function AppInner() {
 
         {/* ── ONLINE ── */}
         {screen === "online" && <OnlineLobby onStart={handleOnlineStart} onBack={() => { setScreen("home"); setTab("home"); }} />}
+
+        {/* ── FOOTBALL WORDLE ── */}
+        {screen === "wordle" && <FootballWordle onBack={() => { setScreen("home"); setTab("home"); }} />}
 
         {/* ── HOT STREAK ── */}
         {screen === "quiz" && mode === "hotstreak" && (
