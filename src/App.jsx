@@ -1751,7 +1751,6 @@ const QB = [
   { q:"Which club won back-to-back Premier League titles in 2017-18 and 2018-19?", o:["Chelsea","Liverpool","Man City","Tottenham"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"What is the nickname of Newcastle United?", o:["The Robins","The Magpies","The Owls","The Canaries"], a:1, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Which Premier League club plays at the Etihad Stadium?", o:["Man City","Man United","Everton","Wolves"], a:0, cat:"PL", diff:"easy", type:"mcq", v:1 },
-  { q:"Aston Villa play their home matches at which ground?", o:["Molineux","Villa Park","St Andrew's","Bramall Lane"], a:1, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Which Premier League club is nicknamed 'The Foxes'?", o:["Crystal Palace","Norwich","Leicester City","Watford"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Brighton & Hove Albion play at which stadium?", o:["The Den","The Amex","Carrow Road","Kenilworth Road"], a:1, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"How many points is a Premier League win worth?", o:["1","2","3","4"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
@@ -10265,7 +10264,7 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="rc-icon">{emoji}</div>
         <div className="rc-title">{title}</div>
         <div className="score-big" style={{color:"var(--accent)"}}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}> correct</span></div>
-        <div className="score-pct">in 60 seconds · {answered} answered · {pct}% accuracy</div>
+        <div className="score-pct">in 60 seconds · {answered} answered</div>
       </div>
 
       {/* 🏆 Personal best callout */}
@@ -10280,13 +10279,7 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
       <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>⚡ Run It Back</button>
-      <button className="btn-3d amber" onClick={() => {
-        const msg = isNewBest && !isFirstRun
-          ? `⚡🔥 New Hot Streak best: ${score} correct in 60 seconds on Ball IQ!\nCan you beat that?\n#BallIQ`
-          : `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nThink you can beat that?\n#BallIQ`;
-        if (navigator.share) navigator.share({title:"Ball IQ",text:msg}).catch(()=>{});
-        else navigator.clipboard?.writeText(msg).then(()=>alert("Copied to clipboard!")).catch(()=>{});
-      }} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
       <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
     </div>
   );
@@ -10311,7 +10304,6 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="rc-icon">{emoji}</div>
         <div className="rc-title">{title}</div>
         <div className="score-big"><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:30,color:"var(--t2)"}}>/{total}</span></div>
-        <div className="score-pct">{pct}% correct</div>
       </div>
 
       {isPerfect && total >= 10 && <div className="new-best">🎯 Perfect round — no lies slipped past!</div>}
@@ -10323,13 +10315,7 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
       <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Another Round</button>
-      <button className="btn-3d amber" onClick={() => {
-        const msg = isPerfect && total >= 10
-          ? `🎯 Perfect ${score}/${total} on Ball IQ True or False — no lies got past me!\n#BallIQ`
-          : `✅ ${score}/${total} on Ball IQ True or False!\n${Math.round(score/total*100)}% accuracy — can you do better?\n#BallIQ`;
-        if (navigator.share) navigator.share({title:"Ball IQ",text:msg}).catch(()=>{});
-        else navigator.clipboard?.writeText(msg).then(()=>alert("Copied to clipboard!")).catch(()=>{});
-      }} style={{marginBottom:14}}>Share Score 📤</button>
+      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
       <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
     </div>
   );
@@ -12667,7 +12653,10 @@ function AppInner() {
         try { window.storage?.set("biq_first_tip_shown", "1"); } catch {}
       }
 
-      setMode(m);
+      // "balliq_confirmed" is only used as a transient signal from the
+      // intro modal — store it as plain "balliq" so every downstream check
+      // (results routing, history save, share card, best-IQ toast) works.
+      setMode(m === "balliq_confirmed" ? "balliq" : m);
       if (m === "online") { setScreen("online"); return; }
       if (m === "social") { setScreen("social"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
@@ -12901,33 +12890,36 @@ function AppInner() {
   }, []);
 
   const shareScore = useCallback(async (score, total, mode, avgResponseMs) => {
-    // Fallback text per mode (used if image share unavailable)
+    // Fallback text per mode (used if image share unavailable). Each line
+    // describes the game just played — score, accuracy where it makes sense,
+    // a "Can you beat me?" hook, and the app URL. Profile-y bits like login
+    // streak, league or hashtags don't belong here.
+    const pct = total ? Math.round(score / total * 100) : 0;
+    const beat = "Can you beat me? ⚽";
+    const url = "ball-iq.app";
     const msgs = {
       daily: (() => {
-        const pct = Math.round(score/total*100);
-        const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
-        return `⚽ Ball IQ Daily Challenge\n${dots}\n${score}/${total} — ${pct}% correct\nCan you beat me?\nballiq.app #BallIQ`;
+        const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
+        return `⚽ Ball IQ — Daily Challenge\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       balliq: (() => {
         const iq = calcBallIQ(score, total, avgResponseMs);
         const label = iqLabel(iq);
         const pctileLbl = iqPercentileLabel(iq);
-        return `🧠 My Ball IQ is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
+        return `🧠 Ball IQ Test\nMy Ball IQ: ${iq} — ${pctileLbl}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       classic: (() => {
-        const pct = Math.round(score/total*100);
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
-        const dots = Array.from({length:total}, (_,i) => i < score ? '🟢' : '🔴').join('');
-        return `${medal} Ball IQ\n${dots}\n${score}/${total} — ${pct}%\nThink you can beat me?\nballiq.app #BallIQ`;
+        return `${medal} Ball IQ — Classic Quiz\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
-      speed: `⚡ ${score}/${total} on Ball IQ Speed Round!\nballiq.app #BallIQ`,
-      survival: `🔥 ${score} in a row on Ball IQ Survival!\nballiq.app #BallIQ`,
-      hotstreak: `⚡🔥 ${score} correct in 60 seconds on Ball IQ Hot Streak!\nballiq.app #BallIQ`,
-      truefalse: `✅ ${score}/${total} on Ball IQ True or False!\nballiq.app #BallIQ`,
-      legends: `📜 ${score}/${total} on Ball IQ Legends & History!\nballiq.app #BallIQ`,
-      wc2026: `🌍 ${score}/${total} on Ball IQ World Cup 2026!\nballiq.app #BallIQ`,
-      local: `🤝 Just played Ball IQ Local Multiplayer!\nballiq.app #BallIQ`,
-      chaos: `🎭 ${score}/${total} on Ball IQ Chaos — quotes, moments & madness!\nballiq.app #BallIQ`,
+      speed:     `⚡ Ball IQ — Speed Round\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      survival:  `🔥 Ball IQ — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
+      hotstreak: `⚡🔥 Ball IQ — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
+      truefalse: `✅ Ball IQ — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      legends:   `📜 Ball IQ — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      wc2026:    `🌍 Ball IQ — World Cup 2026\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      local:     `🤝 Ball IQ — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
+      chaos:     `🎭 Ball IQ — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
     };
     const text = msgs[mode] || msgs.classic;
 
@@ -12968,7 +12960,10 @@ function AppInner() {
     const date = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
     try {
-      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak: loginStreak, date, cardLabel, beatLine });
+      // No streak passed — the share card is about the just-played game,
+      // not the user's profile. drawScoreCard's streak block is gated on
+      // `streak > 0` so omitting it just hides the row.
+      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, date, cardLabel, beatLine });
       const blob = await (await fetch(dataURL)).blob();
       const file = new File([blob], "balliq-score.png", { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -12992,7 +12987,7 @@ function AppInner() {
         showToast("Score: " + text.split("\n")[0]);
       }
     }
-  }, [showToast, loginStreak]);
+  }, [showToast]);
 
   const shareProfile = useCallback(() => {
     const { level } = getLevelInfo(xp);
