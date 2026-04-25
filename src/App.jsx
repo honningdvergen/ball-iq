@@ -5494,6 +5494,15 @@ const QB = [
   { q:"Which goalkeeper holds the record for most clean sheets in Champions League history?", o:["Gianluigi Buffon","Peter Schmeichel","Iker Casillas","Manuel Neuer"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He kept 58 clean sheets in 177 Champions League appearances — both records for a goalkeeper.", v:1 },
   { q:"What colour did Brazil originally wear before switching to their iconic yellow kit after a traumatic World Cup defeat?", o:["White","Blue","Green","Red"], a:0, cat:"WorldCup", diff:"hard", type:"mcq", hint:"They changed after the 1950 'Maracanazo' — their shock home defeat to Uruguay in the World Cup final.", v:1 },
 
+  // ── BATCH ADD: Records, World Cup, Champions League, Premier League milestones (Opta / UEFA) ──
+  { q:"How many different clubs have won the Bundesliga since the year 2000?", o:["3","4","5","7"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", hint:"Bayern Munich, Borussia Dortmund, Werder Bremen, Wolfsburg and Bayer Leverkusen.", v:1 },
+  { q:"How many FIFA World Cup goals did Diego Maradona score across the 1982, 1986 and 1990 tournaments?", o:["6","7","8","10"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"His most famous came in 1986 — both the Hand of God and the Goal of the Century.", v:1 },
+  { q:"What is the record number of goals scored by a single team in one Champions League match, set by Bayern Munich against Barcelona in 2020?", o:["6","7","8","9"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"The match was played in Lisbon during the COVID bubble tournament.", v:1 },
+  { q:"Erling Haaland became the fastest player to score 100 Premier League goals in December 2025. How many matches did it take him?", o:["95","100","111","124"], a:2, cat:"PL", diff:"medium", type:"mcq", hint:"He broke Alan Shearer's record of 124 games by 13 matches.", v:1 },
+  { q:"Lionel Messi won back-to-back MLS MVP awards in 2024 and 2025 before leading Inter Miami to their first MLS Cup title. Which club did Miami beat in the 2025 final?", o:["LA Galaxy","NYCFC","Atlanta United","Seattle Sounders"], a:0, cat:"Records", diff:"hard", type:"mcq", hint:"Inter Miami completed a remarkable title win under Gerardo Martino.", v:1 },
+  { q:"Steven Gerrard scored a stunning long-range equaliser in the 2006 FA Cup final to force extra time. Which goalkeeper did he beat?", o:["Roy Carroll","Shaka Hislop","David James","Robert Green"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Liverpool won the final on penalties against West Ham.", v:1 },
+  { q:"Which African player was the first to score 100 Premier League goals, reaching the milestone on March 10, 2012?", o:["Nicolas Anelka","Didier Drogba","Mohamed Salah","Emmanuel Adebayor"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"The Ivory Coast striker scored all his Premier League goals for Chelsea.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
