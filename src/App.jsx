@@ -5546,6 +5546,14 @@ for (const q of QB) {
   if (q && q.cat === "chaos" && !q.diff) q.diff = "medium";
 }
 
+// Pre-bucketed QB slices for the modes that pull a fixed subset on launch.
+// QB is a module-level const that never mutates after this point, so building
+// these once at module load is strictly better than re-filtering 3700+ rows
+// every time the user taps the mode tile (or every render, if anything ever
+// drifts onto the render path).
+const QB_WC2026 = QB.filter(q => q && q.tag === "wc2026");
+const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
+
 // ─── AUTOCOMPLETE POOL ────────────────────────────────────────────────────────
 // Each entry: display name. Matching uses normalised (accent-stripped) comparison.
 const AC_POOL = [
@@ -10587,7 +10595,7 @@ const SettingsScreen = React.memo(SettingsScreenImpl);
 // Full-screen in-app overlay. Content is hardcoded (mirrors public/privacy.html)
 // so there's no network fetch, no CORS/asset-path pitfalls, and no flash of a
 // blank iframe. Rendered above the app when showPrivacy is true.
-function PrivacyScreen({ onClose }) {
+const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{
       position: "fixed",
@@ -10675,7 +10683,7 @@ function PrivacyScreen({ onClose }) {
       </div>
     </div>
   );
-}
+});
 const privacyH2 = {fontSize: 17, fontWeight: 700, color: "#F0F1F5", margin: "28px 0 10px"};
 const privacyP = {fontSize: 15, color: "#9BA0B8", marginBottom: 12};
 const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
@@ -12124,7 +12132,7 @@ const WORDLE_KB_ROWS = [
   ["ENTER","Z","X","C","V","B","N","M","DEL"],
 ];
 
-function FootballWordle({ onBack }) {
+const FootballWordle = React.memo(function FootballWordle({ onBack }) {
   // viewedDateKey tracks which day's puzzle is on screen — defaults to today,
   // can be switched to any past day via the calendar overlay.
   const [viewedDateKey, setViewedDateKey] = useState(() => getWordleDateKey());
@@ -12488,7 +12496,7 @@ function FootballWordle({ onBack }) {
       )}
     </div>
   );
-}
+});
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
@@ -12852,24 +12860,22 @@ function AppInner() {
       else if (m === "speed") { qs = getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = (getQs({ cat: "All", diff, n: 999 }) || []).filter(q => q.type !== "tf"); }
       else if (m === "wc2026") {
-        const wc = QB.filter(q => q.tag === "wc2026");
-        if (wc.length < 5) {
+        if (QB_WC2026.length < 5) {
           showToast("Not enough questions available for this mode");
           return;
         }
-        const fresh = applySeenFilter(wc, 15, qbHistKey);
+        const fresh = applySeenFilter(QB_WC2026, 15, qbHistKey);
         qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
       else if (m === "truefalse") { qs = getTrueFalseQs(); }
       else if (m === "chaos") {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
         // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.
-        const chaos = QB.filter(q => q.cat === "chaos" || q.tag === "chaos");
-        if (chaos.length < 5) {
+        if (QB_CHAOS.length < 5) {
           showToast("Not enough questions available for this mode");
           return;
         }
-        const fresh = applySeenFilter(chaos, 10, qbHistKey);
+        const fresh = applySeenFilter(QB_CHAOS, 10, qbHistKey);
         qs = shuffle([...fresh]).slice(0, 10).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
       else { qs = getQs({ cat, diff, n: 10, ramp: true }); }
@@ -13851,7 +13857,7 @@ function AppInner() {
           <SocialHub
             onOnline={() => startMode("online")}
             onLocal={() => setScreen("local-setup")}
-            onBack={() => { setScreen("home"); setTab("home"); }}
+            onBack={goHome}
           />
         )}
 
@@ -13877,13 +13883,13 @@ function AppInner() {
               setQuestions(qs);
               setScreen("quiz");
             }}
-            onBack={() => { setScreen("home"); setTab("home"); }}
+            onBack={goHome}
           />
         )}
 
         {/* ── LOCAL SETUP ── */}
         {screen === "local-setup" && (
-          <LocalSetup onStart={startLocalGame} onBack={() => { setScreen("home"); setTab("home"); }} />
+          <LocalSetup onStart={startLocalGame} onBack={goHome} />
         )}
 
         {/* ── LOCAL GAME (unified handoff → question → feedback → summary engine) ── */}
@@ -13891,22 +13897,22 @@ function AppInner() {
           <LocalGameScreen
             config={localConfig}
             onComplete={handleLocalComplete}
-            onExit={() => { setScreen("home"); setTab("home"); }}
+            onExit={goHome}
           />
         )}
 
         {/* ── ONLINE ── */}
-        {screen === "online" && <OnlineLobby onStart={handleOnlineStart} onBack={() => { setScreen("home"); setTab("home"); }} />}
+        {screen === "online" && <OnlineLobby onStart={handleOnlineStart} onBack={goHome} />}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle onBack={() => { setScreen("home"); setTab("home"); }} />}
+        {screen === "wordle" && <FootballWordle onBack={goHome} />}
 
         {/* ── HOT STREAK ── */}
         {screen === "quiz" && mode === "hotstreak" && (
           <HotStreakEngine
             questions={questions}
             onComplete={handleComplete}
-            onBack={() => { setScreen("home"); setTab("home"); }}
+            onBack={goHome}
           />
         )}
 
@@ -13915,7 +13921,7 @@ function AppInner() {
           <TrueFalseEngine
             questions={trueFalseQuestions}
             onComplete={handleComplete}
-            onBack={() => { setScreen("home"); setTab("home"); }}
+            onBack={goHome}
           />
         )}
 
@@ -13970,7 +13976,7 @@ function AppInner() {
         {screen === "local-results" && (
           <LocalResults
             result={localResult}
-            onHome={() => { setScreen("home"); setTab("home"); }}
+            onHome={goHome}
             onRetry={() => { if (localConfig) startLocalGame(localConfig); }}
           />
         )}
@@ -13982,7 +13988,7 @@ function AppInner() {
             prevBest={hotstreakBest}
             onRetry={() => startMode("hotstreak")}
             onShare={() => shareScore(result.score, result.total, "hotstreak")}
-            onHome={() => { setScreen("home"); setTab("home"); }}
+            onHome={goHome}
           />
         )}
 
@@ -13992,7 +13998,7 @@ function AppInner() {
             result={result}
             onRetry={() => startMode("truefalse")}
             onShare={() => shareScore(result.score, result.total, "truefalse")}
-            onHome={() => { setScreen("home"); setTab("home"); }}
+            onHome={goHome}
           />
         )}
 
@@ -14001,7 +14007,7 @@ function AppInner() {
           <Results
             result={result}
             mode={mode}
-            onHome={() => { setScreen("home"); setTab("home"); }}
+            onHome={goHome}
             survivalBest={stats.bestStreak}
             iqHistory={iqHistory}
             wrongAnswers={wrongAnswers}
