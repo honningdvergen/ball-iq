@@ -7522,6 +7522,50 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
 .light .wd-key-grey{background:#9CA0AB;color:#fff;}
+
+/* Wordle calendar */
+.wd-cal-btn{flex-shrink:0;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+.wd-cal-btn:hover{background:var(--s2);}
+.wd-cal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:1000;display:flex;align-items:flex-end;justify-content:center;padding:0;animation:wdFadeIn 200ms ease;}
+@media (min-width:520px){.wd-cal-overlay{align-items:center;padding:20px;}}
+.wd-cal-modal{width:100%;max-width:520px;max-height:88vh;background:var(--s1);border:1px solid var(--border);border-top-left-radius:18px;border-top-right-radius:18px;padding:18px 16px 22px;display:flex;flex-direction:column;gap:10px;animation:wdSlideUp 240ms cubic-bezier(.22,1,.36,1);overflow:hidden;}
+@media (min-width:520px){.wd-cal-modal{border-radius:18px;}}
+@keyframes wdSlideUp{from{transform:translateY(28px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.wd-cal-head{display:flex;align-items:center;justify-content:space-between;}
+.wd-cal-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
+.wd-cal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+.wd-cal-close:hover{background:var(--border);}
+.wd-cal-sub{font-size:12px;color:var(--t3);margin-bottom:4px;}
+.wd-cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;overflow-y:auto;padding-right:2px;flex:1;min-height:0;-webkit-overflow-scrolling:touch;}
+.wd-cal-day{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px 9px;border-radius:10px;background:var(--s2);border:1px solid var(--border);cursor:pointer;font-family:inherit;color:var(--text);transition:background 0.12s,border-color 0.12s,transform 0.05s;-webkit-appearance:none;appearance:none;}
+.wd-cal-day:hover{background:var(--border);}
+.wd-cal-day:active{transform:scale(0.97);}
+.wd-cal-day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+.wd-cal-day.selected{background:rgba(88,204,2,0.16);border-color:var(--accent);}
+.wd-cal-day.won{border-color:rgba(88,204,2,0.4);}
+.wd-cal-day.lost{border-color:rgba(255,90,90,0.35);}
+.wd-cal-day-weekday{font-size:9px;font-weight:700;letter-spacing:0.12em;color:var(--t3);text-transform:uppercase;}
+.wd-cal-day-date{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-0.2px;}
+.wd-cal-day-icon{font-size:14px;line-height:1;margin-top:2px;}
+.wd-cal-day-preview{display:flex;flex-direction:column;gap:0;margin-top:4px;font-size:6px;line-height:1;letter-spacing:-0.5px;}
+.wd-cal-day-preview-line{height:7px;}
+.wd-cal-today-btn{margin-top:6px;padding:11px 16px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:0 4px 0 #46A302;-webkit-text-fill-color:#0A0A0A;-webkit-appearance:none;appearance:none;}
+.wd-cal-today-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+.wd-jump-today{margin-top:4px;align-self:center;padding:9px 18px;background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.wd-jump-today:hover{background:rgba(88,204,2,0.1);}
+
+/* Home middle row — Wordle + Multiplayer side by side. Sits between the
+   full-width Daily hero and the WC2026 banner. */
+.hero-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.hero-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 14px 16px;min-height:118px;background:var(--s1);color:var(--text);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.hero-pair-card:hover{background:var(--s2);border-color:var(--border2);}
+.hero-pair-card:active{transform:scale(0.98);}
+.hero-pair-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
+.hero-pair-title{font-size:17px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:var(--text);margin-top:4px;}
+.hero-pair-status{font-size:11.5px;color:var(--t3);margin-top:auto;line-height:1.3;}
+.hero-pair-status strong{color:var(--accent);font-weight:700;}
+.hero-pair-emoji{position:absolute;right:-4px;bottom:-8px;font-size:50px;opacity:0.85;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));}
+.hero-pair-card.wordle .hero-pair-eyebrow{color:#FFC107;}
 `;
 
 
@@ -11981,10 +12025,33 @@ const WORDLE_PLAYERS = [
 // which keeps "everyone gets the same player" simple across timezones.
 function getWordleDayIndex() { return Math.floor(Date.now() / 86400000); }
 function getWordleAnswer() { return WORDLE_PLAYERS[getWordleDayIndex() % WORDLE_PLAYERS.length]; }
-function getWordleDateKey() {
-  const d = new Date();
+function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
+}
+function getWordleDateKey() { return dateToDateKey(new Date()); }
+function dateKeyToDate(dateKey) {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+function getWordleAnswerForKey(dateKey) {
+  const d = dateKeyToDate(dateKey);
+  const dayIdx = Math.floor(d.getTime() / 86400000);
+  return WORDLE_PLAYERS[dayIdx % WORDLE_PLAYERS.length];
+}
+// Read today's puzzle progress for the home-screen card. Returns one of:
+//   { kind: "ready" } | { kind: "in-progress", used: N } | { kind: "won", used: N } | { kind: "lost" }
+function readWordleTodayStatus() {
+  try {
+    const raw = localStorage.getItem(`biq_wordle_${getWordleDateKey()}`);
+    if (!raw) return { kind: "ready" };
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.guesses)) return { kind: "ready" };
+    if (parsed.status === "won") return { kind: "won", used: parsed.guesses.length };
+    if (parsed.status === "lost") return { kind: "lost" };
+    if (parsed.guesses.length > 0) return { kind: "in-progress", used: parsed.guesses.length };
+    return { kind: "ready" };
+  } catch { return { kind: "ready" }; }
 }
 
 // Standard Wordle two-pass colouring: greens first (locking those answer slots),
@@ -12033,34 +12100,67 @@ const WORDLE_KB_ROWS = [
 ];
 
 function FootballWordle({ onBack }) {
-  const dateKey = getWordleDateKey();
-  const storageKey = `biq_wordle_${dateKey}`;
-  const answer = useMemo(getWordleAnswer, [dateKey]);
+  // viewedDateKey tracks which day's puzzle is on screen — defaults to today,
+  // can be switched to any past day via the calendar overlay.
+  const [viewedDateKey, setViewedDateKey] = useState(() => getWordleDateKey());
+  const [showCalendar, setShowCalendar] = useState(false);
 
+  const todayKey = getWordleDateKey();
+  const isToday = viewedDateKey === todayKey;
+  const storageKey = `biq_wordle_${viewedDateKey}`;
+  const answer = useMemo(() => getWordleAnswerForKey(viewedDateKey), [viewedDateKey]);
+
+  // State carries the storageKey it was loaded for. The persist effect checks
+  // state.key === storageKey before writing, which prevents the brief window
+  // when viewedDateKey changes (state still holds the old day's data) from
+  // overwriting another day's saved progress.
   const [state, setState] = useState(() => {
     try {
-      const raw = localStorage.getItem(storageKey);
+      const raw = localStorage.getItem(`biq_wordle_${getWordleDateKey()}`);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.guesses)) return parsed;
+        if (parsed && Array.isArray(parsed.guesses)) return { ...parsed, key: `biq_wordle_${getWordleDateKey()}` };
       }
     } catch {}
-    return { guesses: [], status: "playing" };
+    return { guesses: [], status: "playing", key: `biq_wordle_${getWordleDateKey()}` };
   });
   const [current, setCurrent] = useState("");
   const [shake, setShake] = useState(false);
   const [countdown, setCountdown] = useState("");
   const [revealed, setRevealed] = useState(false);
 
-  // Persist after every change to the game state. We save under a per-day key
-  // (biq_wordle_YYYY-MM-DD) so a stale entry doesn't leak into tomorrow's puzzle
-  // — and so a curious user could in theory see their full daily history.
+  // When the viewed date changes, load that date's stored progress (or reset
+  // to a fresh puzzle if nothing's saved). Setting state.key to the new
+  // storageKey lets the persist effect below safely skip stale writes.
+  // If the loaded puzzle is already won/lost we reveal immediately so the
+  // result card shows on open instead of waiting for the flip-animation timer.
   useEffect(() => {
-    try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch {}
+    let loaded;
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.guesses)) loaded = { ...parsed, key: storageKey };
+      }
+    } catch {}
+    const next = loaded || { guesses: [], status: "playing", key: storageKey };
+    setState(next);
+    setCurrent("");
+    setRevealed(next.status === "won" || next.status === "lost");
+  }, [storageKey]);
+
+  // Persist after every change to the game state — but only if state.key
+  // matches the current storageKey, so we never write last-day's guesses to
+  // today's bucket during the dateKey switch render.
+  useEffect(() => {
+    if (state.key !== storageKey) return;
+    try {
+      const { key, ...payload } = state;
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    } catch {}
   }, [state, storageKey]);
 
-  // Live "new player tomorrow" countdown. Ticks once per second, which is
-  // also where we detect the day rollover and reload the answer.
+  // Live "new player tomorrow" countdown. Ticks once per second.
   useEffect(() => {
     const tick = () => {
       const now = new Date();
@@ -12077,14 +12177,15 @@ function FootballWordle({ onBack }) {
     return () => clearInterval(id);
   }, []);
 
-  // Detect day rollover while the screen is open — refresh by reloading the
-  // page so all date-derived state (storageKey, answer, dateKey) resyncs.
+  // Detect day rollover while viewing today's puzzle — refresh so the new
+  // day's answer + storageKey resync. Skip when viewing a past date.
   useEffect(() => {
+    if (!isToday) return;
     const id = setInterval(() => {
-      if (getWordleDateKey() !== dateKey) window.location.reload();
+      if (getWordleDateKey() !== viewedDateKey) window.location.reload();
     }, 5000);
     return () => clearInterval(id);
-  }, [dateKey]);
+  }, [viewedDateKey, isToday]);
 
   const submitGuess = useCallback(() => {
     if (state.status !== "playing") return;
@@ -12097,13 +12198,13 @@ function FootballWordle({ onBack }) {
     let newStatus = "playing";
     if (current === answer) newStatus = "won";
     else if (newGuesses.length >= 6) newStatus = "lost";
-    setState({ guesses: newGuesses, status: newStatus });
+    setState({ guesses: newGuesses, status: newStatus, key: storageKey });
     setCurrent("");
     if (newStatus !== "playing") {
       setRevealed(false);
       setTimeout(() => setRevealed(true), answer.length * 280 + 200);
     }
-  }, [state, current, answer]);
+  }, [state, current, answer, storageKey]);
 
   const handleKey = useCallback((key) => {
     if (state.status !== "playing") return;
@@ -12115,8 +12216,10 @@ function FootballWordle({ onBack }) {
   }, [state.status, submitGuess, answer.length]);
 
   // Physical keyboard support. Ignore when modifier keys are held so we don't
-  // hijack browser shortcuts (cmd-R, etc.).
+  // hijack browser shortcuts (cmd-R, etc.). Disabled while the calendar is
+  // open so typing doesn't leak into the underlying puzzle.
   useEffect(() => {
+    if (showCalendar) return;
     const onKeyDown = (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === "Enter") { e.preventDefault(); handleKey("ENTER"); }
@@ -12125,12 +12228,51 @@ function FootballWordle({ onBack }) {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [handleKey]);
+  }, [handleKey, showCalendar]);
 
   const dateLabel = useMemo(() => {
-    const d = new Date();
-    return d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  }, [dateKey]);
+    return dateKeyToDate(viewedDateKey).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  }, [viewedDateKey]);
+
+  // Build the list of the last 30 days for the calendar overlay. Each entry
+  // carries the saved status + a tiny emoji preview so completed days show
+  // their result inline. Recomputed when the calendar opens to pick up any
+  // edits since last open.
+  const calDays = useMemo(() => {
+    if (!showCalendar) return [];
+    const out = [];
+    const today = new Date();
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+      const dKey = dateToDateKey(d);
+      const sKey = `biq_wordle_${dKey}`;
+      let status = "notplayed";
+      let preview = null;
+      try {
+        const raw = localStorage.getItem(sKey);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.guesses) && parsed.guesses.length > 0) {
+            status = parsed.status === "won" ? "won" : parsed.status === "lost" ? "lost" : "inprogress";
+            const ans = getWordleAnswerForKey(dKey);
+            preview = parsed.guesses.slice(0, 6).map((g) => {
+              const grades = gradeWordleGuess(g, ans);
+              return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
+            });
+          }
+        }
+      } catch {}
+      out.push({
+        dateKey: dKey,
+        label: d.toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+        weekday: d.toLocaleDateString(undefined, { weekday: "short" }),
+        isToday: i === 0,
+        status,
+        preview,
+      });
+    }
+    return out;
+  }, [showCalendar]);
 
   // Build all 6 grid rows: completed guesses get coloured, current row shows
   // the in-progress entry, future rows are blanks.
@@ -12212,12 +12354,22 @@ function FootballWordle({ onBack }) {
         <button className="wd-back" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">⚽ Football Wordle</div>
-          <div className="wd-sub">{dateLabel}</div>
+          <div className="wd-sub">
+            {isToday ? dateLabel : `${dateLabel} · past puzzle`}
+          </div>
         </div>
-        <div className="wd-countdown" title="New player tomorrow">
-          <div className="wd-countdown-label">Next</div>
-          <div className="wd-countdown-time">{countdown}</div>
-        </div>
+        <button
+          className="wd-cal-btn"
+          onClick={() => setShowCalendar(true)}
+          aria-label="View Wordle history"
+          title="Wordle history"
+        >📅</button>
+        {isToday && (
+          <div className="wd-countdown" title="New player tomorrow">
+            <div className="wd-countdown-label">Next</div>
+            <div className="wd-countdown-time">{countdown}</div>
+          </div>
+        )}
       </div>
 
       <div className="wd-grid" style={{ "--wd-cols": answer.length }}>
@@ -12233,7 +12385,13 @@ function FootballWordle({ onBack }) {
             The answer was <strong>{answer}</strong>
           </div>
           <button className="wd-share" onClick={onShare}>Share result</button>
-          <div className="wd-result-foot">New player in {countdown}</div>
+          {isToday ? (
+            <div className="wd-result-foot">New player in {countdown}</div>
+          ) : (
+            <button className="wd-jump-today" onClick={() => setViewedDateKey(todayKey)}>
+              Back to today's puzzle
+            </button>
+          )}
         </div>
       )}
 
@@ -12252,6 +12410,57 @@ function FootballWordle({ onBack }) {
           </div>
         ))}
       </div>
+
+      {showCalendar && (
+        <div className="wd-cal-overlay" onClick={() => setShowCalendar(false)}>
+          <div className="wd-cal-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="wd-cal-head">
+              <div className="wd-cal-title">Wordle History</div>
+              <button className="wd-cal-close" onClick={() => setShowCalendar(false)} aria-label="Close">✕</button>
+            </div>
+            <div className="wd-cal-sub">Last 30 days · tap any day to play</div>
+            <div className="wd-cal-grid">
+              {calDays.map((day) => {
+                const sel = day.dateKey === viewedDateKey;
+                const cls = [
+                  "wd-cal-day",
+                  day.isToday ? "today" : "",
+                  sel ? "selected" : "",
+                  day.status,
+                ].filter(Boolean).join(" ");
+                return (
+                  <button
+                    key={day.dateKey}
+                    className={cls}
+                    onClick={() => { setViewedDateKey(day.dateKey); setShowCalendar(false); }}
+                  >
+                    <div className="wd-cal-day-weekday">{day.weekday}</div>
+                    <div className="wd-cal-day-date">{day.label}</div>
+                    <div className="wd-cal-day-icon">
+                      {day.status === "won" ? "✅" :
+                       day.status === "lost" ? "❌" :
+                       day.status === "inprogress" ? "⏳" : "🔒"}
+                    </div>
+                    {day.preview && (
+                      <div className="wd-cal-day-preview">
+                        {day.preview.map((line, idx) => (
+                          <div key={idx} className="wd-cal-day-preview-line">{line}</div>
+                        ))}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {!isToday && (
+              <button
+                className="wd-cal-today-btn"
+                onClick={() => { setViewedDateKey(todayKey); setShowCalendar(false); }}
+              >Jump to today</button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -13463,14 +13672,39 @@ function AppInner() {
               </button>
             )}
 
-            {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
-            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
-              <div className="hero-online-eyebrow">Multiplayer</div>
-              <div className="hero-online-title">Play with Friends</div>
-              <div className="hero-online-sub">Online or local — challenge someone</div>
-              <div className="hero-online-cta">Play</div>
-              <div className="hero-online-emoji">🤝</div>
-            </button>
+            {/* ── MIDDLE ROW: Wordle + Multiplayer side-by-side ── */}
+            {(() => {
+              const ws = readWordleTodayStatus();
+              const wordleStatus =
+                ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+                ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
+                ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · keep going</> :
+                <>Today's puzzle ready</>;
+              return (
+                <div className="hero-pair">
+                  <button
+                    className="hero-pair-card wordle"
+                    onClick={() => setScreen("wordle")}
+                    aria-label="Play Football Wordle"
+                  >
+                    <div className="hero-pair-eyebrow">Daily Wordle</div>
+                    <div className="hero-pair-title">Football<br/>Wordle</div>
+                    <div className="hero-pair-status">{wordleStatus}</div>
+                    <div className="hero-pair-emoji">🟩</div>
+                  </button>
+                  <button
+                    className="hero-pair-card multiplayer"
+                    onClick={() => setShowFriendsPicker(true)}
+                    aria-label="Play with friends"
+                  >
+                    <div className="hero-pair-eyebrow">Multiplayer</div>
+                    <div className="hero-pair-title">Play with<br/>Friends</div>
+                    <div className="hero-pair-status">Online or local</div>
+                    <div className="hero-pair-emoji">👥</div>
+                  </button>
+                </div>
+              );
+            })()}
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
             {(() => {
@@ -13510,7 +13744,6 @@ function AppInner() {
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
-                { key:"wordle",    icon:"🟩",  name:"Football Wordle", desc:"Daily surname guess", onTap:() => setScreen("wordle") },
                 { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned!") },
                 { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned!") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
