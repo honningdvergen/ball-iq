@@ -5503,6 +5503,11 @@ const QB = [
   { q:"Steven Gerrard scored a stunning long-range equaliser in the 2006 FA Cup final to force extra time. Which goalkeeper did he beat?", o:["Roy Carroll","Shaka Hislop","David James","Robert Green"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Liverpool won the final on penalties against West Ham.", v:1 },
   { q:"Which African player was the first to score 100 Premier League goals, reaching the milestone on March 10, 2012?", o:["Nicolas Anelka","Didier Drogba","Mohamed Salah","Emmanuel Adebayor"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"The Ivory Coast striker scored all his Premier League goals for Chelsea.", v:1 },
 
+  // ── BATCH ADD: La Liga history, defender record fee, nickname meaning ──
+  { q:"Luka Romero became the youngest player ever to appear in La Liga in 2020. For which club did he debut aged just 15 years and 219 days?", o:["Villarreal","Getafe","Mallorca","Elche"], a:2, cat:"LaLiga", diff:"hard", type:"mcq", hint:"He came on as a substitute against Real Madrid.", v:1 },
+  { q:"Virgil van Dijk became the world record transfer fee for a defender when Liverpool signed him in January 2018. How much did they pay Southampton?", o:["£55 million","£65 million","£75 million","£85 million"], a:2, cat:"PL", diff:"medium", type:"mcq", hint:"A world record fee for a defender at the time.", v:1 },
+  { q:"Atlético Madrid are nicknamed 'Los Colchoneros'. What does this mean in English?", o:["The Red Devils","The Mattress Makers","The Street Warriors","The Iron Men"], a:1, cat:"LaLiga", diff:"hard", type:"mcq", hint:"Their red and white shirts resembled the fabric used in mattresses, and many early fans worked in mattress factories.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
