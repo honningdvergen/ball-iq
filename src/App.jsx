@@ -5513,6 +5513,11 @@ const QB = [
   { q:"Cristiano Ronaldo became the first player to score 100 Champions League goals in April 2017. Against which team did he score the landmark goal?", o:["Atlético Madrid","Juventus","Bayern Munich","Barcelona"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He scored a hat-trick in the quarter-final, with his third being his 100th in the competition.", v:1 },
   { q:"Celtic became the first British club to win the European Cup in 1967. What was unique about their squad that has never been repeated?", o:["They were all under 25 years old","All 11 players were born within 30 miles of Celtic Park","They had never played in Europe before","They won every match without conceding a goal"], a:1, cat:"UCL", diff:"hard", type:"mcq", hint:"The 'Lisbon Lions' beat Inter Milan 2-1 in the final.", v:1 },
 
+  // ── BATCH ADD: Salah CL hat-trick record, Istanbul first goal, inaugural PL title ──
+  { q:"Mohamed Salah scored the fastest hat-trick in Champions League history as a substitute in 2022. How long did it take him?", o:["4 minutes 12 seconds","5 minutes 33 seconds","6 minutes 12 seconds","7 minutes 45 seconds"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He scored the hat-trick against Rangers in the 2022 Champions League group stage.", v:1 },
+  { q:"In 2005, Liverpool famously came back from 3-0 down at half-time against AC Milan in Istanbul. Who scored Liverpool's first goal to begin the comeback?", o:["Steven Gerrard","Vladimir Smicer","Xabi Alonso","Djibril Cissé"], a:0, cat:"UCL", diff:"medium", type:"mcq", hint:"He headed in on the 54th minute. Smicer scored the second, Alonso converted a rebound for 3-3.", v:1 },
+  { q:"Which club won the inaugural Premier League title in the 1992-93 season?", o:["Arsenal","Manchester United","Blackburn Rovers","Aston Villa"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"They finished 10 points ahead of Aston Villa, ending a 26-year wait for a league title.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
