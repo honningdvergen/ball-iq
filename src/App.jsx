@@ -6381,7 +6381,14 @@ function getACSuggestions(val) {
   return deduped.slice(0, 5);
 }
 
-function generateCode() { return Math.random().toString(36).substring(2, 7).toUpperCase(); }
+function generateCode() {
+  // 6-character alphanumeric code, all uppercase. Big enough that collisions
+  // inside the 24h cleanup window are negligible (~2.2bn possibilities).
+  const ALPHA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // I, O, 0, 1 omitted to dodge ambiguity
+  let out = "";
+  for (let i = 0; i < 6; i++) out += ALPHA.charAt(Math.floor(Math.random() * ALPHA.length));
+  return out;
+}
 
 // ─── GAME ROOMS (online multiplayer backend) ─────────────────────────────────
 // Supabase-backed persistence for multiplayer rooms. Before this, rooms lived
@@ -6408,33 +6415,98 @@ function _fullRoomErr(e) {
   return out;
 }
 
-async function gameRoomCreate(code, hostName, questions) {
-  const row = { code, host_name: hostName, guest_name: null, questions, host_score: 0, guest_score: 0 };
+// ─── ONLINE GAME ROOM HELPERS ────────────────────────────────────────────────
+// All writes target a single game_rooms row keyed on `code`. Realtime drives
+// every UI transition: clients subscribe to UPDATE events and react to the
+// fields that changed. The schema is documented in the SQL migration shipped
+// alongside this file.
+
+async function gameRoomCreate({ code, hostId, hostName }) {
+  const row = {
+    code,
+    status: 'waiting',
+    host_id: hostId,
+    host_name: hostName,
+    guest_id: null,
+    guest_name: null,
+    questions: [],
+    host_answers: [],
+    guest_answers: [],
+    host_score: 0,
+    guest_score: 0,
+    current_question: 0,
+    host_finished: false,
+    guest_finished: false,
+    mode: 'classic',
+    difficulty: 'medium',
+  };
   const { data, error } = await supabase.from('game_rooms').insert(row).select().single();
-  if (error) console.error('[gameRoom] create failed (FULL)', _fullRoomErr(error));
+  if (error) console.error('[room] create failed', _fullRoomErr(error));
   return { data, error };
 }
+
 async function gameRoomGet(code) {
   const { data, error } = await supabase.from('game_rooms').select('*').eq('code', code).maybeSingle();
-  if (error) console.error('[gameRoom] get failed (FULL)', _fullRoomErr(error));
+  if (error) console.error('[room] get failed', _fullRoomErr(error));
   return { data, error };
 }
-async function gameRoomJoin(code, guestName) {
-  // Only join if the seat is still empty — prevents race where two people click Join
+
+// Atomic guest-seat claim. Filters on status=waiting AND guest_id IS NULL so
+// two simultaneous joiners can't both win the seat.
+async function gameRoomJoin({ code, guestId, guestName }) {
   const { data, error } = await supabase
     .from('game_rooms')
-    .update({ guest_name: guestName })
+    .update({ guest_id: guestId, guest_name: guestName, status: 'lobby' })
     .eq('code', code)
-    .is('guest_name', null)
+    .eq('status', 'waiting')
+    .is('guest_id', null)
     .select()
     .maybeSingle();
-  if (error) console.error('[gameRoom] join failed (FULL)', _fullRoomErr(error));
+  if (error) console.error('[room] join failed', _fullRoomErr(error));
   return { data, error };
 }
-async function gameRoomSetScore(code, isHost, score) {
-  const field = isHost ? 'host_score' : 'guest_score';
-  const { error } = await supabase.from('game_rooms').update({ [field]: score }).eq('code', code);
-  if (error) console.error('[gameRoom] score update failed', { code, field, message: error.message });
+
+// Host-only: write the chosen mode + question set, flip status to playing.
+async function gameRoomStart({ code, mode, questions }) {
+  const { data, error } = await supabase
+    .from('game_rooms')
+    .update({
+      status: 'playing',
+      mode,
+      questions,
+      current_question: 0,
+      host_answers: [],
+      guest_answers: [],
+      host_score: 0,
+      guest_score: 0,
+      host_finished: false,
+      guest_finished: false,
+    })
+    .eq('code', code)
+    .select()
+    .maybeSingle();
+  if (error) console.error('[room] start failed', _fullRoomErr(error));
+  return { data, error };
+}
+
+// Each player writes their own answers + score with a single update. When
+// the player has answered the last question, finished=true is included so
+// the opposite client sees them transition.
+async function gameRoomSubmitAnswer({ code, isHost, answers, score, finished }) {
+  const patch = isHost
+    ? { host_answers: answers, host_score: score, host_finished: !!finished }
+    : { guest_answers: answers, guest_score: score, guest_finished: !!finished };
+  const { error } = await supabase.from('game_rooms').update(patch).eq('code', code);
+  if (error) console.error('[room] submit failed', _fullRoomErr(error));
+  return { error };
+}
+
+// Move the room into the terminal state — only the host calls this, either
+// when both players have finished or when the 60s grace window expires after
+// the first finisher.
+async function gameRoomMarkFinished(code) {
+  const { error } = await supabase.from('game_rooms').update({ status: 'finished' }).eq('code', code);
+  if (error) console.error('[room] mark finished failed', _fullRoomErr(error));
   return { error };
 }
 
@@ -7478,6 +7550,84 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
 
+/* ── ONLINE 1V1 ────────────────────────────────────────────────────────── */
+.og-code-input{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;letter-spacing:8px;font-size:24px;text-align:center;text-transform:uppercase;}
+.og-code-box{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 16px;text-align:center;cursor:pointer;margin-bottom:18px;transition:background 0.15s,border-color 0.15s;}
+.og-code-box:hover{background:var(--s2);border-color:var(--border2);}
+.og-code-label{font-size:10px;font-weight:800;letter-spacing:0.18em;color:var(--t3);text-transform:uppercase;}
+.og-code-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:42px;font-weight:800;letter-spacing:8px;color:var(--accent);margin-top:8px;}
+.og-code-hint{font-size:11px;color:var(--t3);margin-top:6px;}
+.og-waiting{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 0;}
+.og-waiting-text{font-size:14px;color:var(--t2);font-weight:600;}
+.og-pulse{display:flex;gap:6px;}
+.og-pulse span{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:ogPulse 1.2s ease infinite;}
+.og-pulse span:nth-child(2){animation-delay:0.2s;}
+.og-pulse span:nth-child(3){animation-delay:0.4s;}
+@keyframes ogPulse{0%,100%{opacity:0.3;transform:scale(0.85);}50%{opacity:1;transform:scale(1.1);}}
+
+.og-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:18px 0 4px;}
+.og-player{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px;background:var(--s1);border:1px solid var(--border);border-radius:16px;}
+.og-player-avatar{font-size:36px;line-height:1;}
+.og-player-name{font-size:14px;font-weight:800;color:var(--text);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.og-ready{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:0.04em;}
+.og-you{position:absolute;top:6px;right:6px;background:var(--accent);color:#0A0A0A;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:0.04em;}
+.og-vs-divider{font-size:14px;font-weight:900;color:var(--t3);letter-spacing:0.12em;}
+
+.og-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.og-mode-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px;border-radius:12px;background:var(--s1);border:1px solid var(--border);cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.05s;-webkit-appearance:none;appearance:none;}
+.og-mode-card:hover{background:var(--s2);border-color:var(--border2);}
+.og-mode-card:active{transform:scale(0.97);}
+.og-mode-card.selected{border-color:var(--accent);background:rgba(88,204,2,0.1);}
+.og-mode-icon{font-size:22px;line-height:1;}
+.og-mode-name{font-size:13px;font-weight:800;color:var(--text);margin-top:2px;}
+.og-mode-desc{font-size:11px;color:var(--t3);line-height:1.3;}
+
+.og-progress{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;align-items:center;margin:12px 0 18px;padding:12px;background:var(--s1);border:1px solid var(--border);border-radius:14px;}
+.og-progress-mine{text-align:left;}
+.og-progress-opp{text-align:right;}
+.og-progress-label{font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--t3);text-transform:uppercase;}
+.og-progress-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+.og-progress-bar{height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
+.og-progress-fill{height:100%;background:linear-gradient(90deg,#58CC02,#46A302);border-radius:999px;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);}
+
+.og-q{padding:18px 12px 22px;background:var(--s1);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;text-align:center;}
+.og-q-number{font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
+.og-q-text{font-size:17px;font-weight:700;color:var(--text);line-height:1.4;}
+.og-options{display:flex;flex-direction:column;gap:8px;}
+.og-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;text-align:left;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.05s;-webkit-appearance:none;appearance:none;}
+.og-option:hover:not(:disabled){background:var(--s2);border-color:var(--border2);}
+.og-option:active:not(:disabled){transform:scale(0.98);}
+.og-option.picked{border-color:var(--accent);background:rgba(88,204,2,0.14);}
+.og-option.locked{cursor:not-allowed;opacity:0.7;}
+.og-option-letter{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--t2);}
+.og-option.picked .og-option-letter{background:var(--accent);color:#0A0A0A;}
+.og-option-text{flex:1;font-size:14px;font-weight:600;line-height:1.35;}
+.og-locked{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.4);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);}
+
+.og-finished{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 16px;background:var(--s1);border:1px solid var(--border);border-radius:18px;}
+.og-finished-title{font-size:18px;font-weight:800;color:var(--text);}
+.og-finished-sub{font-size:13px;color:var(--t2);margin-top:6px;}
+.og-finished-sub strong{color:var(--accent);}
+
+.og-results-headline{text-align:center;font-size:22px;font-weight:800;color:var(--text);padding:14px 0 8px;}
+.og-results-headline strong{color:var(--accent);}
+.og-result-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;}
+.og-result-side{position:relative;padding:18px 10px;background:var(--s1);border:1px solid var(--border);border-radius:16px;text-align:center;}
+.og-result-side.winner{border-color:var(--accent);background:rgba(88,204,2,0.08);box-shadow:0 4px 18px rgba(88,204,2,0.15);}
+.og-result-name{font-size:13px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.og-result-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
+.og-result-side.winner .og-result-score{color:var(--accent);}
+.og-result-divider{font-size:22px;font-weight:900;color:var(--t3);}
+
+.og-breakdown{display:flex;flex-direction:column;gap:6px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:8px;}
+.og-breakdown-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;}
+.og-breakdown-row:nth-child(odd){background:rgba(255,255,255,0.02);}
+.light .og-breakdown-row:nth-child(odd){background:rgba(0,0,0,0.02);}
+.og-breakdown-q{flex:1;min-width:0;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.og-breakdown-marks{display:flex;gap:6px;flex-shrink:0;}
+.og-mark{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:rgba(255,90,90,0.16);color:#FF5A5A;}
+.og-mark.ok{background:rgba(88,204,2,0.16);color:var(--accent);}
+
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
 .wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);}
 .wd-header{display:flex;align-items:center;gap:12px;}
@@ -8419,11 +8569,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       const timeBonus = timeLeft * 10;
       setSpeedScore(prev => prev + 100 + timeBonus);
     }
-    if (mode === "online" && roomCode) {
-      gameRoomSetScore(roomCode, !!isHost, ns).catch(() => {});
-    }
     advance(ns, nb, correct);
-  }, [score, streak, bestStreak, mode, roomCode, isHost, advance]);
+  }, [score, streak, bestStreak, advance]);
 
   const handleMCQ = useCallback((i) => {
     if (answered || done) return;
@@ -8473,37 +8620,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     return () => { clearInterval(timerRef.current); clearTimeout(timeoutId); };
   }, [idx, timed, done, isTyped]);
 
-  useEffect(() => {
-    if (mode !== "online" || !roomCode) return;
-    // Prime with a single read so the opponent score appears immediately on entry
-    (async () => {
-      try {
-        const { data: row } = await gameRoomGet(roomCode);
-        if (row) {
-          const os = isHost ? row.guest_score : row.host_score;
-          if (os != null) setOpponentScore(os);
-        }
-      } catch {}
-    })();
-    // Realtime subscription — instant opponent-score updates, no polling
-    const channel = supabase
-      .channel(`room-score:${roomCode}`)
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'game_rooms', filter: `code=eq.${roomCode}` },
-        (payload) => {
-          const row = payload.new;
-          if (!row) return;
-          const os = isHost ? row.guest_score : row.host_score;
-          if (os != null) setOpponentScore(os);
-        }
-      )
-      .subscribe();
-    return () => {
-      try { supabase.removeChannel(channel); } catch {}
-    };
-  }, [mode, roomCode, isHost]);
-
   if (done) return null;
   if (!q) return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:16}}>
@@ -8550,14 +8666,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           <span className="q-ctr">{idx + 1}/{total}</span>
         </div>
       </div>
-
-      {mode === "online" && (
-        <div className="vs-bar">
-          <div className="pc me"><div className="pc-name">{playerName||"You"}</div><div className="pc-score">{score}</div></div>
-          <div className="vs-lbl">VS</div>
-          <div className="pc"><div className="pc-name">Opp.</div><div className="pc-score">{opponentScore??"—"}</div></div>
-        </div>
-      )}
 
       {mode === "survival" && (
         <div className="streak-bar">
@@ -8732,222 +8840,521 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 }
 
 // ─── ONLINE LOBBY ─────────────────────────────────────────────────────────────
-function OnlineLobby({ onStart, onBack }) {
-  const { profile: authProfile } = useAuth();
-  // Prefer the authenticated username, then the locally-stored profile name,
-  // falling back to a reasonable default so the user never has to type it.
-  const defaultName = (() => {
-    if (authProfile?.username) return authProfile.username;
-    try {
-      const raw = localStorage.getItem("biq_profile");
-      if (raw) {
-        const p = JSON.parse(raw);
-        if (p?.name) return p.name;
-      }
-    } catch {}
-    return "";
-  })();
+// ─── ONLINE 1V1 ──────────────────────────────────────────────────────────────
+// Self-contained: handles all four screens (Create/Join → Lobby → Playing →
+// Results) with realtime sync via a single Supabase channel subscribed to the
+// game_rooms row. Both clients drive their own state from the row's status
+// and answer arrays — no polling, no shared QuizEngine.
+
+const ONLINE_MODES = [
+  { id: "classic",   icon: "⏱️",  name: "Classic",     desc: "10 mixed-difficulty questions" },
+  { id: "survival",  icon: "🔥",  name: "Survival",    desc: "10 questions — keep your nerve" },
+  { id: "truefalse", icon: "✅",  name: "True / False", desc: "10 statements — true or false?" },
+  { id: "hotstreak", icon: "⚡🔥", name: "Hot Streak",   desc: "10 questions — pick fast" },
+];
+
+function pickOnlineQuestions(mode) {
+  if (mode === "truefalse") {
+    // Convert TF statements into the same {q, o, a} shape the playing screen
+    // renders, so the UI doesn't need a separate path.
+    const tfRaw = (typeof getTrueFalseQs === "function" ? getTrueFalseQs() : []).slice(0, 10);
+    return tfRaw.map(t => ({
+      q: t.s,
+      o: ["True", "False"],
+      a: (t.a === true || t.a === 1) ? 0 : 1,
+      cat: t.cat || "TF",
+      diff: t.diff || "medium",
+      type: "mcq",
+    }));
+  }
+  // Classic / Survival / Hot Streak all share the mcq pool. The mode tag is
+  // recorded on the room for the results screen but doesn't change play.
+  const pool = (getQs({ cat: "All", diff: "medium", n: 30, ramp: true }) || [])
+    .filter(q => q && q.type !== "tf" && q.type !== "typed" && Array.isArray(q.o));
+  return pool.slice(0, 10);
+}
+
+function OnlineGame({ onBack, userId, defaultName }) {
+  // Top-level view: 'menu' | 'create-input' | 'join-input' | 'create-waiting'
+  //                 | 'lobby' | 'playing' | 'results'
   const [view, setView] = useState("menu");
-  const [name, setName] = useState(defaultName);
+  const [name, setName] = useState(defaultName || "");
   const [code, setCode] = useState("");
   const [joinCode, setJoinCode] = useState("");
-  const [roomData, setRoomData] = useState(null);
+  const [room, setRoom] = useState(null);
+  const [isHost, setIsHost] = useState(false);
+  const [selectedMode, setSelectedMode] = useState("classic");
   const [toast, setToast] = useState(null);
-  const [cdNum, setCdNum] = useState(3);
-  const pollRef = useRef(null);     // legacy — still cleaned up if anything fell through
-  const channelRef = useRef(null);  // Supabase realtime channel
-  const t$ = m => { setToast(m); setTimeout(() => setToast(null), 2200); };
 
-  // Tear down any active realtime channel + poll
-  const tearDownWatch = () => {
-    if (channelRef.current) {
+  // Per-game playing state. Each player drives their own progress; the
+  // opposite player's progress is read from room.host_answers/guest_answers.
+  const [picked, setPicked] = useState(null);
+  const [locked, setLocked] = useState(false);
+
+  const channelRef = useRef(null);
+  const advanceTimerRef = useRef(null);
+  const finishTimeoutRef = useRef(null);
+  const subscribedCodeRef = useRef(null);
+  const t$ = useCallback((m, dur = 2500) => { setToast(m); setTimeout(() => setToast(null), dur); }, []);
+
+  // Pick up the auth profile name if it arrives after mount
+  useEffect(() => { if (!name && defaultName) setName(defaultName); }, [defaultName, name]);
+
+  // Best-effort cleanup of stale rows older than 24h on entry to the lobby.
+  useEffect(() => { (async () => { try { await supabase.rpc("cleanup_old_game_rooms"); } catch {} })(); }, []);
+
+  // Subscribe to the room row. Called after create/join. Tears down any
+  // existing channel first so we never end up with two listeners.
+  const subscribeRoom = useCallback((rc) => {
+    if (channelRef.current && subscribedCodeRef.current !== rc) {
       try { supabase.removeChannel(channelRef.current); } catch {}
       channelRef.current = null;
     }
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
-  };
-
-  // Sync when the auth profile arrives after mount
-  useEffect(() => {
-    if (!name && authProfile?.username) setName(authProfile.username);
-  }, [authProfile?.username, name]);
-
-  // Housekeeping on lobby mount: ask Supabase to sweep any game_rooms rows
-  // older than 24h. Server-side RPC so it's safe + atomic even if the opener
-  // previously crashed. Failures are swallowed — cleanup is best-effort and
-  // must never block entering the lobby.
-  useEffect(() => {
-    (async () => {
-      try { await supabase.rpc('cleanup_old_game_rooms'); } catch {}
-    })();
+    if (channelRef.current) return;
+    const ch = supabase
+      .channel(`room2:${rc}`)
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "game_rooms", filter: `code=eq.${rc}` },
+        (payload) => { if (payload.new) setRoom(payload.new); }
+      )
+      .subscribe();
+    channelRef.current = ch;
+    subscribedCodeRef.current = rc;
   }, []);
 
-  // Helper: shape a Supabase game_rooms row into the UI's expected { host, guest, questions } form
-  const normaliseRoom = (row) => row && ({
-    code: row.code,
-    host: row.host_name,
-    guest: row.guest_name,
-    questions: row.questions,
-    hostScore: row.host_score,
-    guestScore: row.guest_score,
-  });
+  // Unmount cleanup: kill the channel + any pending timers.
+  useEffect(() => () => {
+    if (channelRef.current) { try { supabase.removeChannel(channelRef.current); } catch {} channelRef.current = null; }
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
+  }, []);
 
-  const create = async () => {
-    if (!name.trim()) { t$("Enter your name"); return; }
-    const rc = generateCode();
-    const questions = getQs({ n: 10 });
-    const { data, error } = await gameRoomCreate(rc, name.trim(), questions);
-    if (error || !data) {
-      // Surface the real reason — column mismatches, RLS denials and schema-cache
-      // misses all have useful text we want the user (and the console) to see.
-      const msg = error?.message || error?.details || error?.hint || "try again";
-      t$(`Create failed: ${String(msg).slice(0, 80)}`);
-      return;
-    }
-    const room = normaliseRoom(data);
-    setCode(rc); setRoomData(room); setView("waiting");
-    tearDownWatch();
-    // Realtime: listen for any UPDATE on this specific room row so the host
-    // sees the guest appear instantly instead of after a 2-second poll.
-    const channel = supabase
-      .channel(`room:${rc}`)
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'game_rooms', filter: `code=eq.${rc}` },
-        (payload) => {
-          const r = normaliseRoom(payload.new);
-          if (!r) return;
-          setRoomData(r);
-          if (r.guest) {
-            tearDownWatch();
-            setView("countdown");
-          }
-        }
-      )
-      .subscribe(() => {});
-    channelRef.current = channel;
-  };
-
-  const join = async () => {
-    if (!name.trim()) { t$("Enter your name"); return; }
-    if (!joinCode.trim()) { t$("Enter a room code"); return; }
-    const rc = joinCode.toUpperCase().trim();
-    // 1. Check the room exists at all
-    const { data: existing, error: getErr } = await gameRoomGet(rc);
-    if (getErr) {
-      const msg = getErr.message || getErr.details || getErr.hint || "try again";
-      t$(`Lookup failed: ${String(msg).slice(0, 80)}`);
-      return;
-    }
-    if (!existing) { t$("Room not found"); return; }
-    if (existing.guest_name) { t$("Room is full"); return; }
-    // 2. Atomically claim the guest seat
-    const { data: joined, error: joinErr } = await gameRoomJoin(rc, name.trim());
-    if (joinErr) {
-      const msg = joinErr.message || joinErr.details || joinErr.hint || "try again";
-      t$(`Join failed: ${String(msg).slice(0, 80)}`);
-      return;
-    }
-    if (!joined) { t$("Room is full"); return; }
-    const r = normaliseRoom(joined);
-    setCode(rc); setRoomData(r); setView("countdown");
-  };
-
+  // React to room.status transitions. Drives every screen change after the
+  // first time the user enters a room.
   useEffect(() => {
-    if (view !== "countdown") return;
-    let c = 3; setCdNum(c);
-    const t = setInterval(() => {
-      c--;
-      setCdNum(c);
-      if (c <= 0) {
-        clearInterval(t);
-        // Defensive: roomData could be null if polling failed or user navigated
-        if (!roomData || !roomData.questions) {
-          t$("Connection lost — try again");
-          setView("menu");
+    if (!room) return;
+    if (room.status === "lobby" && (view === "create-waiting" || view === "join-input")) {
+      setView("lobby");
+    } else if (room.status === "playing" && view !== "playing") {
+      setPicked(null);
+      setLocked(false);
+      setView("playing");
+    } else if (room.status === "finished" && view !== "results") {
+      setView("results");
+    }
+  }, [room?.status, view]);
+
+  // Host-only: when one player is finished, give the other a 60s grace
+  // window. Mark the room finished as soon as both are done OR the window
+  // elapses, whichever comes first.
+  useEffect(() => {
+    if (!room || view !== "playing" || !isHost) return;
+    const both = room.host_finished && room.guest_finished;
+    const some = room.host_finished || room.guest_finished;
+    if (both) {
+      gameRoomMarkFinished(room.code);
+      return;
+    }
+    if (some) {
+      if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
+      finishTimeoutRef.current = setTimeout(() => {
+        gameRoomMarkFinished(room.code);
+      }, 60_000);
+      return () => { if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current); };
+    }
+  }, [room?.host_finished, room?.guest_finished, view, isHost, room?.code]);
+
+  // ── Actions ──────────────────────────────────────────────────────────────
+
+  const onCreate = useCallback(async () => {
+    if (!name.trim()) return t$("Enter your name");
+    if (!userId)       return t$("Sign in to play online");
+    const rc = generateCode();
+    const { data, error } = await gameRoomCreate({ code: rc, hostId: userId, hostName: name.trim() });
+    if (error || !data) return t$(`Create failed: ${(error?.message || "try again").slice(0, 60)}`);
+    setRoom(data);
+    setCode(rc);
+    setIsHost(true);
+    subscribeRoom(rc);
+    setView("create-waiting");
+  }, [name, userId, subscribeRoom, t$]);
+
+  const onJoin = useCallback(async () => {
+    if (!name.trim()) return t$("Enter your name");
+    if (!userId)       return t$("Sign in to play online");
+    const rc = joinCode.toUpperCase().trim();
+    if (rc.length < 4) return t$("Enter a valid room code");
+    const { data: existing, error: getErr } = await gameRoomGet(rc);
+    if (getErr) return t$(`Lookup failed: ${(getErr.message || "try again").slice(0, 60)}`);
+    if (!existing) return t$("Room not found — check the code and try again");
+    if (existing.status === "playing" || existing.status === "finished") return t$("This game has already started");
+    if (existing.guest_id && existing.guest_id !== userId) return t$("This room is already full");
+    const { data: joined, error: joinErr } = await gameRoomJoin({ code: rc, guestId: userId, guestName: name.trim() });
+    if (joinErr) return t$(`Join failed: ${(joinErr.message || "try again").slice(0, 60)}`);
+    if (!joined) return t$("This room is already full");
+    setRoom(joined);
+    setCode(rc);
+    setIsHost(false);
+    subscribeRoom(rc);
+    // Status transition effect will swing us to 'lobby' once the row arrives
+    // via realtime; set explicitly here so the UI updates immediately too.
+    setView("lobby");
+  }, [name, userId, joinCode, subscribeRoom, t$]);
+
+  const onStartGame = useCallback(async () => {
+    if (!room || !isHost) return;
+    const qs = pickOnlineQuestions(selectedMode);
+    if (!qs || qs.length < 5) return t$("Not enough questions for this mode");
+    const { error } = await gameRoomStart({ code: room.code, mode: selectedMode, questions: qs });
+    if (error) t$(`Start failed: ${(error.message || "try again").slice(0, 60)}`);
+  }, [room, isHost, selectedMode, t$]);
+
+  const onPickOption = useCallback(async (optIdx) => {
+    if (locked || !room || !room.questions) return;
+    const myAnswers = (isHost ? room.host_answers : room.guest_answers) || [];
+    const currentIdx = myAnswers.length;
+    if (currentIdx >= room.questions.length) return;
+    const q = room.questions[currentIdx];
+    if (!q) return;
+    const correct = optIdx === q.a;
+    const myScore = (isHost ? room.host_score : room.guest_score) || 0;
+    const newAnswers = [...myAnswers, { idx: currentIdx, picked: optIdx, correct }];
+    const newScore = myScore + (correct ? 1 : 0);
+    const finished = newAnswers.length >= room.questions.length;
+    setPicked(optIdx);
+    setLocked(true);
+    await gameRoomSubmitAnswer({ code: room.code, isHost, answers: newAnswers, score: newScore, finished });
+    advanceTimerRef.current = setTimeout(() => {
+      setPicked(null);
+      setLocked(false);
+    }, 1500);
+  }, [locked, room, isHost]);
+
+  const onPlayAgain = useCallback(() => {
+    // Clear local state and return to the create/join menu — both players go
+    // their separate ways and can spin up a new room.
+    if (channelRef.current) { try { supabase.removeChannel(channelRef.current); } catch {} channelRef.current = null; }
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
+    subscribedCodeRef.current = null;
+    setRoom(null);
+    setCode("");
+    setJoinCode("");
+    setIsHost(false);
+    setPicked(null);
+    setLocked(false);
+    setView("menu");
+  }, []);
+
+  const copyCode = useCallback(() => {
+    if (!code) return;
+    navigator.clipboard?.writeText(code).then(() => t$("Code copied 📋")).catch(() => {});
+  }, [code, t$]);
+
+  // ── Renders ──────────────────────────────────────────────────────────────
+
+  // Menu — Create or Join
+  if (view === "menu") {
+    return (
+      <div className="screen">
+        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+        <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:18}}>
+          Challenge a friend in real time. Create a room and share the code, or enter the code your friend sent you.
+        </p>
+        <button className="btn-3d" onClick={() => setView("create-input")} style={{marginBottom:12}}>Create Room</button>
+        <button className="btn-3d ghost" onClick={() => setView("join-input")}>Join Room</button>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  if (view === "create-input") {
+    return (
+      <div className="screen">
+        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Create a Room</div></div>
+        <div className="lcard">
+          <div className="lcard-s">A 6-character code will be generated for your friend.</div>
+          <label className="inp-lbl">Your name</label>
+          <input className="inp" placeholder="e.g. Marcus" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
+          <button className="btn-3d" onClick={onCreate} style={{marginTop:6}}>Create room →</button>
+        </div>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  if (view === "join-input") {
+    return (
+      <div className="screen">
+        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Join a Room</div></div>
+        <div className="lcard">
+          <div className="lcard-s">Enter your name and your friend's room code.</div>
+          <label className="inp-lbl">Your name</label>
+          <input className="inp" placeholder="e.g. Luka" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
+          <label className="inp-lbl">Room code</label>
+          <input
+            className="inp og-code-input"
+            placeholder="XXXXXX"
+            value={joinCode}
+            onChange={e => setJoinCode(e.target.value.toUpperCase())}
+            maxLength={6}
+          />
+          <button className="btn-3d" onClick={onJoin} style={{marginTop:6}}>Join →</button>
+        </div>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  // Host's "waiting for opponent" screen — code prominent, pulsing dot.
+  if (view === "create-waiting") {
+    return (
+      <div className="screen">
+        <div className="page-hdr">
+          <button className="back-btn" onClick={onPlayAgain}>←</button>
+          <div className="page-title">Room created</div>
+        </div>
+        <div className="og-code-box" onClick={copyCode}>
+          <div className="og-code-label">Share this code</div>
+          <div className="og-code-val">{code}</div>
+          <div className="og-code-hint">Tap to copy</div>
+        </div>
+        <div className="og-waiting">
+          <div className="og-pulse"><span/><span/><span/></div>
+          <div className="og-waiting-text">Waiting for opponent…</div>
+        </div>
+        <p style={{fontSize:12, color:"var(--t3)", textAlign:"center", marginTop:20, lineHeight:1.7}}>
+          Ask your friend to open Ball IQ → Online 1v1 → Join Room and enter the code above.
+        </p>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  // Lobby — both players present, host picks a mode and starts.
+  if (view === "lobby") {
+    if (!room) return null;
+    const hostName = room.host_name || "Host";
+    const guestName = room.guest_name || "Guest";
+    return (
+      <div className="screen">
+        <div className="page-hdr">
+          <button className="back-btn" onClick={onPlayAgain}>←</button>
+          <div className="page-title">Lobby</div>
+        </div>
+        <div className="og-vs">
+          <div className="og-player">
+            <div className="og-player-avatar">⚽</div>
+            <div className="og-player-name">{hostName}</div>
+            <div className="og-ready">● Ready</div>
+            {isHost && <div className="og-you">YOU</div>}
+          </div>
+          <div className="og-vs-divider">VS</div>
+          <div className="og-player">
+            <div className="og-player-avatar">🥅</div>
+            <div className="og-player-name">{guestName}</div>
+            <div className="og-ready">● Ready</div>
+            {!isHost && <div className="og-you">YOU</div>}
+          </div>
+        </div>
+
+        {isHost ? (
+          <>
+            <div className="ds-eyebrow" style={{marginTop:14, marginBottom:10}}>Choose a mode</div>
+            <div className="og-mode-grid">
+              {ONLINE_MODES.map(m => (
+                <button
+                  key={m.id}
+                  className={`og-mode-card${selectedMode === m.id ? " selected" : ""}`}
+                  onClick={() => setSelectedMode(m.id)}
+                >
+                  <span className="og-mode-icon">{m.icon}</span>
+                  <span className="og-mode-name">{m.name}</span>
+                  <span className="og-mode-desc">{m.desc}</span>
+                </button>
+              ))}
+            </div>
+            <button className="btn-3d" onClick={onStartGame} style={{marginTop:18}}>Start Game</button>
+          </>
+        ) : (
+          <div className="og-waiting" style={{marginTop:24}}>
+            <div className="og-pulse"><span/><span/><span/></div>
+            <div className="og-waiting-text">Waiting for host to start…</div>
+            <div style={{fontSize:12, color:"var(--t3)", marginTop:6}}>The host is choosing a mode</div>
+          </div>
+        )}
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  // Playing — both players answer simultaneously.
+  if (view === "playing") {
+    if (!room || !Array.isArray(room.questions) || room.questions.length === 0) {
+      return (
+        <div className="screen" style={{textAlign:"center", paddingTop:60}}>
+          <div style={{fontSize:32, marginBottom:12}}>⚽</div>
+          <div style={{fontSize:14, color:"var(--t2)"}}>Loading questions…</div>
+        </div>
+      );
+    }
+    const myAnswers = (isHost ? room.host_answers : room.guest_answers) || [];
+    const oppAnswers = (isHost ? room.guest_answers : room.host_answers) || [];
+    const myFinished = isHost ? room.host_finished : room.guest_finished;
+    const total = room.questions.length;
+    const currentIdx = myAnswers.length;
+    const q = room.questions[currentIdx];
+    const oppName = (isHost ? room.guest_name : room.host_name) || "Opponent";
+
+    if (myFinished || !q) {
+      // Player has answered all questions — wait for opponent (host has 60s
+      // grace timer that flips the room to finished).
+      return (
+        <div className="screen" style={{paddingTop:24}}>
+          <div className="og-finished">
+            <div style={{fontSize:48, marginBottom:6}}>✅</div>
+            <div className="og-finished-title">All answers locked in</div>
+            <div className="og-finished-sub">Waiting for {oppName}… <strong>{oppAnswers.length}/{total}</strong></div>
+            <div className="og-pulse" style={{marginTop:14}}><span/><span/><span/></div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="screen">
+        <div className="og-progress">
+          <div className="og-progress-mine">
+            <div className="og-progress-label">You</div>
+            <div className="og-progress-val">{myAnswers.length}/{total}</div>
+          </div>
+          <div className="og-progress-bar"><div className="og-progress-fill" style={{width:`${(myAnswers.length / total) * 100}%`}}/></div>
+          <div className="og-progress-opp">
+            <div className="og-progress-label">{oppName}</div>
+            <div className="og-progress-val">{oppAnswers.length}/{total}</div>
+          </div>
+        </div>
+
+        <div className="og-q">
+          <div className="og-q-number">Question {currentIdx + 1} of {total}</div>
+          <div className="og-q-text">{q.q}</div>
+        </div>
+
+        <div className="og-options">
+          {(q.o || []).map((opt, i) => {
+            const isPicked = picked === i;
+            return (
+              <button
+                key={i}
+                className={`og-option${isPicked ? " picked" : ""}${locked ? " locked" : ""}`}
+                onClick={() => onPickOption(i)}
+                disabled={locked}
+              >
+                <span className="og-option-letter">{String.fromCharCode(65 + i)}</span>
+                <span className="og-option-text">{opt}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {locked && (
+          <div className="og-locked">
+            <span style={{fontSize:18}}>🔒</span>
+            <span>Answer locked in ✓</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Results — both finished or 60s timeout fired.
+  if (view === "results") {
+    if (!room) return null;
+    const hostName = room.host_name || "Host";
+    const guestName = room.guest_name || "Guest";
+    const hScore = room.host_score || 0;
+    const gScore = room.guest_score || 0;
+    const total = (room.questions || []).length;
+    const tied = hScore === gScore;
+    const hostWon = hScore > gScore;
+    const winnerName = tied ? null : (hostWon ? hostName : guestName);
+    const youWon = !tied && ((isHost && hostWon) || (!isHost && !hostWon));
+    const myScore = isHost ? hScore : gScore;
+    const oppScore = isHost ? gScore : hScore;
+
+    const breakdown = (room.questions || []).map((q, i) => {
+      const ha = (room.host_answers || [])[i];
+      const ga = (room.guest_answers || [])[i];
+      return { q: q?.q, correct: q?.o?.[q?.a], host: ha, guest: ga };
+    });
+
+    const onShare = async () => {
+      const myName = isHost ? hostName : guestName;
+      const result = tied ? "tied" : (youWon ? "won" : "lost");
+      const text = `🎮 Ball IQ — Online 1v1\n${myName} ${myScore}  ${oppScore} ${tied ? "" : (isHost ? guestName : hostName)}\n${tied ? "🤝 Tied game" : youWon ? "🏆 I won!" : "GG — rematch?"}\nCan you beat me? ⚽\nball-iq.app`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ text, url: "https://ball-iq.app" });
           return;
         }
-        onStart({
-          questions: roomData.questions,
-          roomCode: code,
-          playerName: name.trim(),
-          isHost: roomData.host === name.trim()
-        });
-      }
-    }, 1000);
-    return () => clearInterval(t);
-  }, [view, roomData, code, name, onStart]);
+      } catch {}
+      try { await navigator.clipboard?.writeText(text); t$("Result copied 📋"); } catch {}
+    };
 
-  useEffect(() => () => tearDownWatch(), []);
+    return (
+      <div className="screen">
+        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Results</div></div>
 
-  if (view === "countdown") return <div className="cdown"><div className="cdown-n" key={cdNum}>{cdNum}</div><div className="cdown-s">Get ready</div></div>;
-
-  if (view === "waiting") return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={() => { tearDownWatch(); setView("menu"); }}>←</button>
-        <div className="page-title">Room Created 🎉</div>
-      </div>
-      <div className="lcard">
-        <div className="lcard-s" style={{marginBottom:16}}>Share this code with your friend — they enter it on their device to join.</div>
-        <div className="code-box" style={{marginBottom:16}}>
-          <div className="code-val" style={{letterSpacing:10,fontSize:36}}>{code}</div>
-          <div className="code-hint">Tap to copy</div>
-        </div>
-        <div className="wait-row">
-          {roomData?.guest
-            ? <span style={{fontSize:15,color:"var(--green)",fontWeight:700}}>✓ {roomData.guest} joined! Starting…</span>
-            : <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <div style={{display:"flex",gap:5}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:"var(--accent)",animation:"wdot 1.2s ease "+(i*0.3)+"s infinite"}}/>)}</div>
-                <span style={{fontSize:14,color:"var(--t2)"}}>Waiting for your friend to join…</span>
-              </div>
+        <div className="og-results-headline">
+          {tied
+            ? <>🤝 <strong>Tied game</strong></>
+            : <>🏆 <strong>{winnerName}</strong> wins!</>
           }
         </div>
-      </div>
-      <div style={{textAlign:"center",marginTop:12,fontSize:12,color:"var(--t3)",lineHeight:1.7}}>
-        Make sure your friend has Ball IQ open on their device.<br/>Tap "Join with a code" and enter the code above.
-      </div>
-      {toast && <div className="toast">{toast}</div>}
-    </div>
-  );
 
-  if (view === "create") return (
-    <div className="screen">
-      <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Create a Room</div></div>
-      <div className="lcard">
-        <div className="lcard-s">Set your name — a code will be generated for your friend.</div>
-        <label className="inp-lbl">Your name</label>
-        <input className="inp" placeholder="e.g. Marcus" value={name} onChange={e => setName(e.target.value)} />
-        <button className="btn btn-p" onClick={create}>Create room →</button>
-      </div>
-      {toast && <div className="toast">{toast}</div>}
-    </div>
-  );
+        <div className="og-result-vs">
+          <div className={`og-result-side${!tied && hostWon ? " winner" : ""}`}>
+            <div className="og-result-name">{hostName}</div>
+            <div className="og-result-score">{hScore}</div>
+            {isHost && <div className="og-you">YOU</div>}
+          </div>
+          <div className="og-result-divider">—</div>
+          <div className={`og-result-side${!tied && !hostWon ? " winner" : ""}`}>
+            <div className="og-result-name">{guestName}</div>
+            <div className="og-result-score">{gScore}</div>
+            {!isHost && <div className="og-you">YOU</div>}
+          </div>
+        </div>
 
-  if (view === "join") return (
-    <div className="screen">
-      <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Join a Room</div></div>
-      <div className="lcard">
-        <div className="lcard-s">Enter your name and the code your friend shared.</div>
-        <label className="inp-lbl">Your name</label>
-        <input className="inp" placeholder="e.g. Luka" value={name} onChange={e => setName(e.target.value)} />
-        <label className="inp-lbl">Room code</label>
-        <input className="inp" placeholder="XXXXX" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} maxLength={5} style={{fontFamily:"'Inter',sans-serif",letterSpacing:5,fontSize:22,textAlign:"center"}} />
-        <button className="btn btn-p" onClick={join}>Join →</button>
-      </div>
-      {toast && <div className="toast">{toast}</div>}
-    </div>
-  );
+        {breakdown.length > 0 && (
+          <>
+            <div className="ds-eyebrow" style={{marginTop:18, marginBottom:8}}>Question breakdown</div>
+            <div className="og-breakdown">
+              {breakdown.map((b, i) => (
+                <div key={i} className="og-breakdown-row">
+                  <div className="og-breakdown-q">{i + 1}. {b.q}</div>
+                  <div className="og-breakdown-marks">
+                    <span className={`og-mark${b.host?.correct ? " ok" : ""}`} title={hostName}>{b.host?.correct ? "✓" : "✗"}</span>
+                    <span className={`og-mark${b.guest?.correct ? " ok" : ""}`} title={guestName}>{b.guest?.correct ? "✓" : "✗"}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
-  return (
-    <div className="screen">
-      <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
-      <p style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>Create a room and share the code, or enter your friend's code. Works on any phone or browser.</p>
-      <button className="btn btn-p" onClick={() => setView("create")}>Create a room</button>
-      <div className="div-row"><div className="div-line"/><div className="div-lbl">or</div><div className="div-line"/></div>
-      <button className="btn btn-s" onClick={() => setView("join")}>Join with a code</button>
-    </div>
-  );
+        <div style={{marginTop:18}}>
+          <button className="btn-3d" onClick={onShare} style={{marginBottom:12}}>Share Result 📤</button>
+          <button className="btn-3d ghost" onClick={onPlayAgain} style={{marginBottom:12}}>Play Again</button>
+          <button className="btn-3d ghost" onClick={onBack}>Back to Home</button>
+        </div>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── LOCAL MULTIPLAYER SETUP ──────────────────────────────────────────────────
@@ -13724,7 +14131,13 @@ function AppInner() {
         )}
 
         {/* ── ONLINE ── */}
-        {screen === "online" && <OnlineLobby onStart={handleOnlineStart} onBack={goHome} />}
+        {screen === "online" && (
+          <OnlineGame
+            onBack={goHome}
+            userId={user?.id}
+            defaultName={authProfile?.username || profile?.name || ""}
+          />
+        )}
 
         {/* ── FOOTBALL WORDLE ── */}
         {screen === "wordle" && <FootballWordle onBack={goHome} />}
