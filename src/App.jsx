@@ -6403,7 +6403,6 @@ function _fullRoomErr(e) {
 
 async function gameRoomCreate(code, hostName, questions) {
   const row = { code, host_name: hostName, guest_name: null, questions, host_score: 0, guest_score: 0 };
-  console.log('[gameRoom] insert row', { code, host_name: hostName, questions_len: Array.isArray(questions) ? questions.length : 0 });
   const { data, error } = await supabase.from('game_rooms').insert(row).select().single();
   if (error) console.error('[gameRoom] create failed (FULL)', _fullRoomErr(error));
   return { data, error };
@@ -6731,6 +6730,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .diff-option:hover{background:var(--s3);}
 .diff-option:active{transform:scale(0.98);}
 .diff-option.default{border-color:var(--accent);background:var(--accent-dim);}
+.diff-option.coming-soon{opacity:0.55;cursor:not-allowed;}
+.diff-option.coming-soon:hover{background:var(--s2);}
+.diff-option.coming-soon:active{transform:none;}
 .diff-option-icon{font-size:26px;flex-shrink:0;}
 .diff-option-body{flex:1;min-width:0;}
 .diff-option-name{font-size:15px;font-weight:800;color:var(--t1);}
@@ -8818,7 +8820,6 @@ function OnlineLobby({ onStart, onBack }) {
     if (!name.trim()) { t$("Enter your name"); return; }
     const rc = generateCode();
     const questions = getQs({ n: 10 });
-    console.log('[OnlineLobby] creating room', { rc, host: name.trim() });
     const { data, error } = await gameRoomCreate(rc, name.trim(), questions);
     if (error || !data) {
       // Surface the real reason — column mismatches, RLS denials and schema-cache
@@ -8842,15 +8843,12 @@ function OnlineLobby({ onStart, onBack }) {
           if (!r) return;
           setRoomData(r);
           if (r.guest) {
-            console.log('[OnlineLobby] realtime: guest joined', { rc, guest: r.guest });
             tearDownWatch();
             setView("countdown");
           }
         }
       )
-      .subscribe((status) => {
-        console.log('[OnlineLobby] host channel status', status);
-      });
+      .subscribe(() => {});
     channelRef.current = channel;
   };
 
@@ -8858,7 +8856,6 @@ function OnlineLobby({ onStart, onBack }) {
     if (!name.trim()) { t$("Enter your name"); return; }
     if (!joinCode.trim()) { t$("Enter a room code"); return; }
     const rc = joinCode.toUpperCase().trim();
-    console.log('[OnlineLobby] looking up room', { rc });
     // 1. Check the room exists at all
     const { data: existing, error: getErr } = await gameRoomGet(rc);
     if (getErr) {
@@ -9007,7 +9004,7 @@ function SocialHub({ onOnline, onLocal, onBack }) {
         ))}
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        <button className="btn btn-p" onClick={() => onOnline(picked)} style={{background:"var(--accent)",color:"#0a1a00"}}>🌐 Online 1v1</button>
+        <button className="btn btn-p" onClick={() => onOnline(picked)} style={{background:"var(--accent)",color:"#fff"}}>🌐 Online 1v1</button>
         <button className="btn" onClick={() => onLocal(picked)} style={{background:"var(--s2)",border:"1px solid var(--border2)",color:"var(--text)"}}>🤝 Local</button>
       </div>
       <div className="social-tip" style={{marginTop:12}}>Online: create a room code, friend joins on their device. Local: pass the phone between players.</div>
@@ -10629,8 +10626,8 @@ function PrivacyScreen({ onClose }) {
         <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Privacy Policy</div>
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
-        <div style={{fontSize: 22, fontWeight: 900, color: "#58CC02", marginBottom: 8}}>⚽ Ball IQ</div>
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: April 16, 2026</div>
+        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Ball IQ</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: April 25, 2026</div>
 
         <div style={{
           background: "#1A1D27", borderRadius: 16,
@@ -10944,8 +10941,15 @@ function DailyCountdown({ score }) {
       const diff = midnight - now;
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      setTimeStr(score != null ? `${score}/7 · resets in ${h}h ${m}m` : `Resets in ${h}h ${m}m`);
+      // `score` can arrive as undefined (no prop passed → just show the
+      // countdown), or null (the daily was completed but the Supabase score
+      // insert failed). Render "—/7" for null so the user still sees the
+      // completed-state shape rather than the looks-not-yet-played countdown.
+      let prefix;
+      if (score === undefined) prefix = "";
+      else if (score === null) prefix = "—/7 · ";
+      else prefix = `${score}/7 · `;
+      setTimeStr(`${prefix}${prefix ? "resets" : "Resets"} in ${h}h ${m}m`);
     };
     update();
     const id = setInterval(update, 30000);
@@ -11818,7 +11822,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
               <div style={{fontSize:11,color:"var(--t2)"}}>Earned at {Math.floor((xp||0)/200)*200} XP — protects your streak once</div>
             </div>
           </div>
-          <button onClick={onUseShield} style={{background:"var(--accent)",border:"none",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"#0a1a00",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Use 🛡️</button>
+          <button onClick={onUseShield} style={{background:"var(--accent)",border:"none",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"#fff",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Use 🛡️</button>
         </div>
       )}
       {(stats?.gamesThisWeek !== undefined) && (
@@ -12585,6 +12589,39 @@ function AppInner() {
   const [streakToast, setStreakToast] = useState(null);
   const [toast, setToast] = useState(null);
 
+  // Detect day rollover while the app stays open. dailyDone / dailyScore were
+  // hydrated from yesterday's localStorage key on mount; without this effect a
+  // user who leaves the tab open past midnight would still see the "already
+  // done" toast until they reload. Polls once a minute (cheap, well under the
+  // resolution that matters here).
+  useEffect(() => {
+    const dayKey = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    };
+    let lastKey = dayKey();
+    const id = setInterval(() => {
+      const cur = dayKey();
+      if (cur === lastKey) return;
+      lastKey = cur;
+      try {
+        const raw = localStorage.getItem(`biq_daily_${cur}`);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          setDailyDone(true);
+          setDailyScore(typeof parsed?.score === "number" ? parsed.score : null);
+        } else {
+          setDailyDone(false);
+          setDailyScore(null);
+        }
+      } catch {
+        setDailyDone(false);
+        setDailyScore(null);
+      }
+    }, 60_000);
+    return () => clearInterval(id);
+  }, []);
+
 
   const setProfile = useCallback((updater) => {
     setProfileState(prev => {
@@ -12745,7 +12782,10 @@ function AppInner() {
         correct_answers: newResult.score,
         total_questions: newResult.total || 10,
       }).then(({ error }) => {
-        if (error) console.error('Score save failed:', error);
+        if (error) {
+          console.error('Score save failed:', error);
+          showToast("Score couldn't be saved — check your connection");
+        }
       });
     }
 
@@ -12775,7 +12815,7 @@ function AppInner() {
         }
       })();
     }
-  }, [mode, stats, user]);
+  }, [mode, stats, user, showToast]);
 
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
 
@@ -12813,6 +12853,10 @@ function AppInner() {
       else if (m === "hotstreak") { qs = (getQs({ cat: "All", diff, n: 999 }) || []).filter(q => q.type !== "tf"); }
       else if (m === "wc2026") {
         const wc = QB.filter(q => q.tag === "wc2026");
+        if (wc.length < 5) {
+          showToast("Not enough questions available for this mode");
+          return;
+        }
         const fresh = applySeenFilter(wc, 15, qbHistKey);
         qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
@@ -12821,6 +12865,10 @@ function AppInner() {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
         // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.
         const chaos = QB.filter(q => q.cat === "chaos" || q.tag === "chaos");
+        if (chaos.length < 5) {
+          showToast("Not enough questions available for this mode");
+          return;
+        }
         const fresh = applySeenFilter(chaos, 10, qbHistKey);
         qs = shuffle([...fresh]).slice(0, 10).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
@@ -13420,7 +13468,7 @@ function AppInner() {
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to Ball IQ!</div>
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Tap "Play" to start your first quiz. New questions daily!</div>
               </div>
-              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:20,width:28,height:28,fontSize:14,fontWeight:800,color:"#0a1a00",cursor:"pointer",flexShrink:0}}>×</button>
+              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:20,width:28,height:28,fontSize:14,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}}>×</button>
             </div>
           </div>
         )}
@@ -13533,13 +13581,17 @@ function AppInner() {
                   { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
                   { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
                   { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
-                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"PSG's domestic stage" },
+                  // Ligue1 removed from the picker until the question count is
+                  // backfilled — only ~2 questions tagged cat:"Ligue1" today,
+                  // which trips the "not enough questions" toast on launch.
+                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"Coming soon", comingSoon:true },
                   { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
                 ].map(opt => (
                   <button
                     key={opt.id}
-                    className="diff-option"
-                    onClick={() => pickLeague(opt.id, opt.name)}
+                    className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
+                    disabled={opt.comingSoon}
+                    onClick={() => opt.comingSoon ? null : pickLeague(opt.id, opt.name)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
                     <div className="diff-option-body">
