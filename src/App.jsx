@@ -12347,7 +12347,7 @@ function FootballWordle({ onBack }) {
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     });
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ Ball IQ Wordle — ${dateLabel}\n${score}\n\n${lines.join("\n")}`;
+    return `⚽ Ball IQ - Today's Puzzle — ${dateLabel}\n${score}\n\n${lines.join("\n")}`;
   }, [state, answer, dateLabel]);
 
   const onShare = useCallback(async () => {
@@ -12374,7 +12374,7 @@ function FootballWordle({ onBack }) {
       <div className="wd-header">
         <button className="wd-back" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
-          <div className="wd-title">⚽ Football Wordle</div>
+          <div className="wd-title">⚽ Today's Puzzle</div>
           <div className="wd-sub">
             {isToday ? dateLabel : `${dateLabel} · past puzzle`}
           </div>
@@ -12382,8 +12382,8 @@ function FootballWordle({ onBack }) {
         <button
           className="wd-cal-btn"
           onClick={() => setShowCalendar(true)}
-          aria-label="View Wordle history"
-          title="Wordle history"
+          aria-label="View puzzle history"
+          title="Puzzle history"
         >📅</button>
         {isToday && (
           <div className="wd-countdown" title="New player tomorrow">
@@ -12436,7 +12436,7 @@ function FootballWordle({ onBack }) {
         <div className="wd-cal-overlay" onClick={() => setShowCalendar(false)}>
           <div className="wd-cal-modal" onClick={(e) => e.stopPropagation()}>
             <div className="wd-cal-head">
-              <div className="wd-cal-title">Wordle History</div>
+              <div className="wd-cal-title">Puzzle History</div>
               <button className="wd-cal-close" onClick={() => setShowCalendar(false)} aria-label="Close">✕</button>
             </div>
             <div className="wd-cal-sub">Last 30 days · tap any day to play</div>
@@ -13695,10 +13695,10 @@ function AppInner() {
                   <button
                     className="daily-pair-card wordle"
                     onClick={() => setScreen("wordle")}
-                    aria-label="Play Football Wordle"
+                    aria-label="Play today's puzzle"
                   >
-                    <div className="daily-pair-eyebrow">Football Wordle</div>
-                    <div className="daily-pair-title">Guess the<br/>Surname</div>
+                    <div className="daily-pair-eyebrow">Daily Puzzle</div>
+                    <div className="daily-pair-title">Today's<br/>Puzzle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
                     <div className="daily-pair-emoji">🟩</div>
                   </button>
