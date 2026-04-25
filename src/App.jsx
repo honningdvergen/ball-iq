@@ -5479,6 +5479,21 @@ const QB = [
   { q:"Brazil legend Garrincha overcame a remarkable physical condition to become one of football's greatest ever players. What was it?", o:["He was blind in one eye","Both legs were bent in the same direction","He had six toes on one foot","He had no feeling in his right foot"], a:1, cat:"Legends", diff:"hard", type:"mcq", hint:"Doctors told him he would never walk properly. He won two World Cups.", v:1 },
   { q:"George Weah became the first and only African player to win the FIFA World Player of the Year award. In which year?", o:["1993","1995","1997","1999"], a:1, cat:"Legends", diff:"medium", type:"mcq", hint:"He also won the Ballon d'Or that year — the only African player ever to do so.", v:1 },
 
+  // ── BATCH ADD: Ligue 1 / Champions League / Asian football / Stadiums / Women's WC / Brazil heritage ──
+  { q:"Which club has won the most Ligue 1 titles in French football history?", o:["Saint-Étienne","Marseille","Lyon","PSG"], a:3, cat:"Ligue1", diff:"medium", type:"mcq", hint:"They have 13 titles, with Saint-Étienne and Marseille joint second on 10 each.", v:1 },
+  { q:"PSG won the 2025 Champions League — their first ever. Who did they beat in the final and what was the score?", o:["Arsenal 2-0","Inter Milan 5-0","Bayern Munich 3-1","Real Madrid 2-1"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"The largest winning margin in a Champions League final, played in Munich.", v:1 },
+  { q:"Olympique de Marseille were the first French club to win the Champions League in 1993. Which club became the second in 2025?", o:["Lyon","Monaco","PSG","Lille"], a:2, cat:"UCL", diff:"medium", type:"mcq", hint:"They beat Inter Milan 5-0 in the final.", v:1 },
+  { q:"Samuel Eto'o won the Champions League with two different clubs. Which two?", o:["Barcelona and Chelsea","Barcelona and Inter Milan","Chelsea and Real Madrid","Inter Milan and Bayern Munich"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"He won it in 2006 and 2009 with one club, then in 2010 as part of Mourinho's treble-winning side.", v:1 },
+  { q:"Pelé won three FIFA World Cups — a record no other player has matched. In which years?", o:["1954, 1958, 1962","1958, 1962, 1966","1958, 1962, 1970","1962, 1966, 1970"], a:2, cat:"WorldCup", diff:"medium", type:"mcq", hint:"He was 17 at his first tournament and 29 at his last.", v:1 },
+  { q:"Which Asian nation has won the AFC Asian Cup the most times?", o:["South Korea","Japan","Saudi Arabia","Iran"], a:1, cat:"Records", diff:"medium", type:"mcq", hint:"They have won it 4 times: 1992, 2000, 2004, and 2011.", v:1 },
+  { q:"Which Bundesliga club is nicknamed 'Die Werkself' (The Company's Eleven) because they were founded by workers of a pharmaceutical company?", o:["Wolfsburg","Bayer Leverkusen","RB Leipzig","Hoffenheim"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"The club is still owned by the pharmaceutical corporation whose name they carry.", v:1 },
+  { q:"Borussia Dortmund's Signal Iduna Park is famous for its incredible atmosphere. What is the name of its iconic south stand terrace?", o:["The Black Wall","The Yellow Wall","The Thunder End","The Westfalenstadion End"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"It holds over 25,000 standing fans and is the largest terrace in European football.", v:1 },
+  { q:"What is the official name of the stadium shared by AC Milan and Inter Milan?", o:["Stadio Olimpico","San Siro","Stadio delle Alpi","Marassi"], a:1, cat:"SerieA", diff:"medium", type:"mcq", hint:"Also officially known as Stadio Giuseppe Meazza.", v:1 },
+  { q:"Which country has won the FIFA Women's World Cup the most times?", o:["Germany","Norway","USA","Brazil"], a:2, cat:"Records", diff:"medium", type:"mcq", hint:"They have won it 4 times: 1991, 1999, 2015 and 2019.", v:1 },
+  { q:"Which French club did Zinedine Zidane play for before moving to Juventus in 1996?", o:["Lyon","Nice","Marseille","Bordeaux"], a:3, cat:"Ligue1", diff:"hard", type:"mcq", hint:"He previously played for Cannes before this club.", v:1 },
+  { q:"Which goalkeeper holds the record for most clean sheets in Champions League history?", o:["Gianluigi Buffon","Peter Schmeichel","Iker Casillas","Manuel Neuer"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He kept 58 clean sheets in 177 Champions League appearances — both records for a goalkeeper.", v:1 },
+  { q:"What colour did Brazil originally wear before switching to their iconic yellow kit after a traumatic World Cup defeat?", o:["White","Blue","Green","Red"], a:0, cat:"WorldCup", diff:"hard", type:"mcq", hint:"They changed after the 1950 'Maracanazo' — their shock home defeat to Uruguay in the World Cup final.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
@@ -6160,6 +6175,7 @@ const LEAGUE_TF_KEYWORDS = {
   LaLiga: ["la liga", "real madrid", "barcelona", "atletico madrid", "atlético madrid", "sevilla", "valencia", "real sociedad", "villarreal"],
   Bundesliga: ["bundesliga", "bayern munich", "borussia dortmund", "dortmund", "leverkusen", "leipzig", "schalke", "bayer"],
   SerieA: ["serie a", "juventus", "ac milan", "inter milan", "napoli", " roma", "lazio", " milan"],
+  Ligue1: ["ligue 1", "psg", "paris saint-germain", "marseille", "lyon", "saint-étienne", "saint-etienne", "monaco", "lille", "bordeaux", "nice"],
   UCL: ["champions league", "european cup"],
 };
 
@@ -12879,6 +12895,7 @@ function AppInner() {
                   { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
                   { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
                   { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
+                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"PSG's domestic stage" },
                   { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
                 ].map(opt => (
                   <button
