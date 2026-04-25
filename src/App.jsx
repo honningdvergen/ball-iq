@@ -5508,6 +5508,11 @@ const QB = [
   { q:"Virgil van Dijk became the world record transfer fee for a defender when Liverpool signed him in January 2018. How much did they pay Southampton?", o:["£55 million","£65 million","£75 million","£85 million"], a:2, cat:"PL", diff:"medium", type:"mcq", hint:"A world record fee for a defender at the time.", v:1 },
   { q:"Atlético Madrid are nicknamed 'Los Colchoneros'. What does this mean in English?", o:["The Red Devils","The Mattress Makers","The Street Warriors","The Iron Men"], a:1, cat:"LaLiga", diff:"hard", type:"mcq", hint:"Their red and white shirts resembled the fabric used in mattresses, and many early fans worked in mattress factories.", v:1 },
 
+  // ── BATCH ADD: PL assists record, Ronaldo's 100th CL goal, Lisbon Lions 30-mile fact ──
+  { q:"Two players share the record for most assists in a single Premier League season with 20 each. Kevin De Bruyne is one — who is the other?", o:["Mesut Özil","Cesc Fàbregas","Thierry Henry","Ryan Giggs"], a:2, cat:"PL", diff:"medium", type:"mcq", hint:"Henry set the record in 2002-03 for Arsenal. De Bruyne matched it in 2019-20 for Man City.", v:1 },
+  { q:"Cristiano Ronaldo became the first player to score 100 Champions League goals in April 2017. Against which team did he score the landmark goal?", o:["Atlético Madrid","Juventus","Bayern Munich","Barcelona"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He scored a hat-trick in the quarter-final, with his third being his 100th in the competition.", v:1 },
+  { q:"Celtic became the first British club to win the European Cup in 1967. What was unique about their squad that has never been repeated?", o:["They were all under 25 years old","All 11 players were born within 30 miles of Celtic Park","They had never played in Europe before","They won every match without conceding a goal"], a:1, cat:"UCL", diff:"hard", type:"mcq", hint:"The 'Lisbon Lions' beat Inter Milan 2-1 in the final.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
