@@ -5518,6 +5518,12 @@ const QB = [
   { q:"In 2005, Liverpool famously came back from 3-0 down at half-time against AC Milan in Istanbul. Who scored Liverpool's first goal to begin the comeback?", o:["Steven Gerrard","Vladimir Smicer","Xabi Alonso","Djibril Cissé"], a:0, cat:"UCL", diff:"medium", type:"mcq", hint:"He headed in on the 54th minute. Smicer scored the second, Alonso converted a rebound for 3-3.", v:1 },
   { q:"Which club won the inaugural Premier League title in the 1992-93 season?", o:["Arsenal","Manchester United","Blackburn Rovers","Aston Villa"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"They finished 10 points ahead of Aston Villa, ending a 26-year wait for a league title.", v:1 },
 
+  // ── BATCH ADD: Salenko 1994 record, Brazil back-to-back WCs, Maradona Napoli, Spurs vs Ajax 2019 ──
+  { q:"Russia's Oleg Salenko scored five goals in a single World Cup match in 1994 — a record that still stands. Which country did he score them against?", o:["Saudi Arabia","Bolivia","Cameroon","Greece"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Russia won the match 6-1. Salenko shared the Golden Boot with Bulgaria's Hristo Stoichkov.", v:1 },
+  { q:"Only two countries have ever won back-to-back World Cups. Italy did it in 1934 and 1938. Which other country won consecutive World Cups in 1958 and 1962?", o:["Argentina","West Germany","Brazil","Uruguay"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", hint:"No team has ever won three in a row.", v:1 },
+  { q:"Napoli won their first Serie A title in 33 years in 2022-23. Which legendary player had last led them to the title back in 1990?", o:["Roberto Baggio","Marco van Basten","Diego Maradona","Ruud Gullit"], a:2, cat:"SerieA", diff:"medium", type:"mcq", hint:"The Argentine legend played for Napoli from 1984 to 1991, winning two Serie A titles.", v:1 },
+  { q:"In 2019 Tottenham reached their first ever Champions League final. Which club did they beat in a dramatic semi-final comeback, with Lucas Moura scoring a 96th-minute winner?", o:["Manchester City","Ajax","Barcelona","Juventus"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"Spurs trailed 3-0 on aggregate going into the second leg. Moura scored a hat-trick to seal it on away goals.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
