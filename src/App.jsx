@@ -12172,9 +12172,11 @@ function FootballWordle({ onBack }) {
     }
   }
 
-  // Build the share text: emoji grid plus the puzzle date and a link. We use
-  // ⬛ for grey to match the spec rather than ⬜ (which the standard NYT Wordle
-  // share uses for light mode) — this app is dark-first.
+  // Build the share text: emoji grid plus the puzzle date. We use ⬛ for grey
+  // to match the spec rather than ⬜ (which the standard NYT Wordle share uses
+  // for light mode) — this app is dark-first. The URL is passed separately
+  // via navigator.share's `url` field so apps like Snapchat / WhatsApp /
+  // iMessage render it as a tappable hyperlink instead of plain text.
   const shareText = useMemo(() => {
     if (state.status === "playing") return "";
     const lines = state.guesses.map((g) => {
@@ -12182,19 +12184,22 @@ function FootballWordle({ onBack }) {
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     });
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ Ball IQ Wordle — ${dateLabel}\n${score}\n\n${lines.join("\n")}\n\nball-iq.app`;
+    return `⚽ Ball IQ Wordle — ${dateLabel}\n${score}\n\n${lines.join("\n")}`;
   }, [state, answer, dateLabel]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
     try {
       if (navigator.share) {
-        await navigator.share({ text: shareText });
+        await navigator.share({
+          text: shareText.replace('\nball-iq.app', '').replace('\nball-iq.app', ''),
+          url: 'https://ball-iq.app'
+        });
         return;
       }
     } catch {}
     try {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(`${shareText}\n\nhttps://ball-iq.app`);
       alert("Copied to clipboard!");
     } catch {
       alert(shareText);
