@@ -11615,8 +11615,8 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           {dailyDone ? <DailyCountdown score={dailyScore} /> : "Play Today's Challenge"}
         </button>
         {dailyDone && onShare && (
-          <button onClick={onShare} style={{marginTop:10,background:"var(--accent)",border:"none",borderRadius:12,padding:"12px 18px",fontSize:14,fontWeight:700,color:"#0a1a00",cursor:"pointer",width:"100%",fontFamily:"inherit"}}>
-            Share Today's Result 📤
+          <button className="btn-3d amber" onClick={onShare} style={{marginTop:14}}>
+            Share Result 📤
           </button>
         )}
       </div>
@@ -12559,7 +12559,44 @@ function AppInner() {
     setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
     showToast("🛡️ Streak shield activated! Your streak is safe today.");
   }, [showToast]);
-  const shareDaily = useCallback(() => shareScore(dailyScore, 7, "daily"), [shareScore, dailyScore]);
+  const shareDaily = useCallback(async () => {
+    // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
+    // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
+    // canvas→Blob path can silently fail. Plain text works universally.
+    const score = dailyScore || 0;
+    const total = 7;
+    const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    const grid = Array.from({ length: total }, (_, i) => i < score ? "✅" : "❌").join("");
+    const streakLine = loginStreak > 0
+      ? `🔥 ${loginStreak}-day streak`
+      : "";
+    const text = [
+      "⚽ Ball IQ Daily Challenge",
+      `📅 ${dateStr}`,
+      `🎯 ${score}/${total}`,
+      streakLine,
+      "",
+      grid,
+      "",
+      "Think you can beat me?",
+      "ball-iq.app",
+    ].filter(Boolean).join("\n");
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ text });
+        return;
+      }
+    } catch {
+      // User cancelled or share failed — fall through to clipboard
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("Copied to clipboard! 📋");
+    } catch {
+      showToast("Couldn't share — try again");
+    }
+  }, [dailyScore, loginStreak, showToast]);
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
