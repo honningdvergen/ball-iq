@@ -5524,6 +5524,10 @@ const QB = [
   { q:"Napoli won their first Serie A title in 33 years in 2022-23. Which legendary player had last led them to the title back in 1990?", o:["Roberto Baggio","Marco van Basten","Diego Maradona","Ruud Gullit"], a:2, cat:"SerieA", diff:"medium", type:"mcq", hint:"The Argentine legend played for Napoli from 1984 to 1991, winning two Serie A titles.", v:1 },
   { q:"In 2019 Tottenham reached their first ever Champions League final. Which club did they beat in a dramatic semi-final comeback, with Lucas Moura scoring a 96th-minute winner?", o:["Manchester City","Ajax","Barcelona","Juventus"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"Spurs trailed 3-0 on aggregate going into the second leg. Moura scored a hat-trick to seal it on away goals.", v:1 },
 
+  // ── BATCH ADD: Juventus CL final losses, Salenko's group-stage exit ──
+  { q:"Which club has lost the most Champions League finals with seven final defeats?", o:["Bayern Munich","Benfica","Atletico Madrid","Juventus"], a:3, cat:"UCL", diff:"hard", type:"mcq", hint:"Despite reaching nine finals they have won it only twice.", v:1 },
+  { q:"At the 1994 World Cup, Oleg Salenko scored all 6 of his Golden Boot goals in the group stage. What happened to him after that?", o:["He was injured in the round of 16","He was dropped from the squad after the group stage","He retired from international football immediately after","Russia were eliminated before he could score again"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"He scored 5 in one match and 1 in another, then was dropped. He never played at a World Cup again.", v:1 },
+
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
 ];
