@@ -6,7 +6,7 @@
  * version, so stale bundles are evicted as soon as the new SW takes over.
  */
 
-const CACHE_VERSION = 'balliq-v1';
+const CACHE_VERSION = 'balliq-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
@@ -14,7 +14,7 @@ const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const APP_SHELL = [
   '/',
   '/index.html',
-  '/apple-touch-icon.png',
+  '/icon-1024.png',
 ];
 
 // Origins we must NEVER cache — auth, realtime and API calls always go network.

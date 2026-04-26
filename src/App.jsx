@@ -9494,6 +9494,8 @@ const SOCIAL_MODES = [
 
 function SocialHub({ onOnline, onLocal, onBack }) {
   const [picked, setPicked] = useState("classic");
+  const { user, isGuest } = useAuth();
+  const onlineLocked = !user || isGuest;
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -9511,7 +9513,23 @@ function SocialHub({ onOnline, onLocal, onBack }) {
         ))}
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        <button className="btn btn-p" onClick={() => onOnline(picked)} style={{background:"var(--accent)",color:"#fff"}}>🌐 Online 1v1</button>
+        <button
+          className="btn btn-p"
+          onClick={() => onOnline(picked)}
+          aria-disabled={onlineLocked || undefined}
+          style={{
+            background:"var(--accent)",
+            color:"#fff",
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center",
+            gap:2,
+            opacity: onlineLocked ? 0.55 : 1,
+          }}
+        >
+          <span>{onlineLocked ? "🔒 Online 1v1" : "🌐 Online 1v1"}</span>
+          {onlineLocked && <span style={{fontSize:10,fontWeight:600,opacity:0.85}}>Sign in required</span>}
+        </button>
         <button className="btn" onClick={() => onLocal(picked)} style={{background:"var(--s2)",border:"1px solid var(--border2)",color:"var(--text)"}}>🤝 Local</button>
       </div>
       <div className="social-tip" style={{marginTop:12}}>Online: create a room code, friend joins on their device. Local: pass the phone between players.</div>
@@ -11391,9 +11409,13 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <h2 style={privacyH2}>4. Advertising</h2>
         <p style={privacyP}>{APP_NAME} does not display advertisements and does not work with any advertising networks.</p>
 
-        <h2 style={privacyH2}>5. Third-Party Services</h2>
-        <p style={privacyP}>{APP_NAME} uses Google Fonts (Inter and JetBrains Mono) to display text. This means your device makes a request to Google's servers to download these fonts. Please refer to Google's Privacy Policy for information on how they handle font requests.</p>
-        <p style={privacyP}>No other third-party services are used.</p>
+        <h2 style={privacyH2}>5. Third-party services we use</h2>
+        <ul style={{paddingLeft: 20, marginBottom: 12}}>
+          <li style={privacyLi}><strong>Supabase (database and authentication):</strong> When you sign in with email or play Online 1v1 multiplayer, your username, profile data, scores, and game results are stored on Supabase servers. Online multiplayer also uses Supabase Realtime to sync game state between players. Avatar images are uploaded to Supabase Storage.</li>
+          <li style={privacyLi}><strong>Google Fonts:</strong> We load the Inter and JetBrains Mono fonts from fonts.googleapis.com. Google may log your IP address when these fonts are loaded.</li>
+          <li style={privacyLi}><strong>Cropper.js (CDN):</strong> When you upload a profile picture, we load an image cropping library from cdnjs.cloudflare.com. The CDN provider may log your IP address.</li>
+        </ul>
+        <p style={privacyP}>We do not run any analytics, tracking pixels, or advertising. We do not sell or share any user data with third parties for marketing purposes.</p>
 
         <h2 style={privacyH2}>6. Children's Privacy</h2>
         <p style={privacyP}>{APP_NAME} does not knowingly collect any information from children under the age of 13. The app contains no inappropriate content and is suitable for all ages.</p>
@@ -13167,7 +13189,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
-  const { user, profile: authProfile } = useAuth();
+  const { user, profile: authProfile, isGuest } = useAuth();
   const [screen, setScreen] = useState("home");
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
@@ -13550,6 +13572,13 @@ function AppInner() {
       // "balliq_confirmed" is only used as a transient signal from the
       // intro modal — store it as plain "balliq" so every downstream check
       // (results routing, history save, share card, best-IQ toast) works.
+      // Online 1v1 requires a real account — guests have no userId to host
+      // or join rooms. Block before any state transition so the home screen
+      // doesn't briefly flash and the OnlineGame component never mounts.
+      if (m === "online" && (!user || isGuest)) {
+        showToast("🔐 Sign in to play Online 1v1");
+        return;
+      }
       setMode(m === "balliq_confirmed" ? "balliq" : m);
       if (m === "online") { setScreen("online"); return; }
       if (m === "social") { setScreen("social"); return; }
@@ -13601,7 +13630,7 @@ function AppInner() {
       console.error("[startMode]", err?.message || "Unknown error");
       showToast("⚠️ Couldn't start mode");
     }
-  }, [showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
+  }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
   // LocalSetup gives us a fully-formed config — LocalGameScreen owns the rest
   // (questions, turns, scores, eliminations). No legacy state touched here.
@@ -13947,7 +13976,20 @@ function AppInner() {
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
 
   // Stable callbacks for memoized children
-  const goHome = useCallback(() => { setScreen("home"); setTab("home"); }, []);
+  const goHome = useCallback(() => {
+    setScreen("home");
+    setTab("home");
+    // Drop in-game state so we don't keep stale 300/999-question arrays in
+    // memory and so a future render loop can't accidentally show last game's
+    // result data on the home screen.
+    setMode(null);
+    setQuestions([]);
+    setResult(null);
+    setWrongAnswers([]);
+    setLocalResult(null);
+    setActiveClub(null);
+    setLeagueMode(null);
+  }, []);
   const challengeFriend = useCallback((friend) => {
     // No native invite flow yet — drop the challenger into the online lobby
     // with a toast hinting at the friend's name so they can share the code.
