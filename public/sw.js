@@ -6,7 +6,7 @@
  * version, so stale bundles are evicted as soon as the new SW takes over.
  */
 
-const CACHE_VERSION = 'balliq-v2';
+const CACHE_VERSION = 'balliq-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
