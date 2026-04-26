@@ -5735,7 +5735,9 @@ function applySeenFilter(pool, needed, toKey) {
     const k = toKey(q);
     return !k || !seen.has(k);
   });
-  return fresh.length >= needed ? fresh : pool;
+  if (fresh.length >= needed) return fresh;
+  console.log("[seen] pool exhausted for this category — serving full pool");
+  return pool;
 }
 function recordSeenQuestions(questions) {
   if (!questions || !questions.length) return;
@@ -5767,9 +5769,6 @@ function getQs({ cat, diff, n = 10, ramp = false }) {
   // Ligue 1 questions than a 10-pack secretly padded with other leagues.
   if (pool.length < 5) {
     return [];
-  }
-  if (pool.length < n) {
-    return pool.sort(() => Math.random() - 0.5);
   }
   if (diff === "easy") pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
   else if (diff === "medium") pool = pool.filter(q => q.diff !== "hard");
@@ -9071,6 +9070,11 @@ function OnlineGame({ onBack, userId, defaultName }) {
     }
   }, [room?.status, view]);
 
+  useEffect(() => {
+    if (view !== "results") return;
+    try { recordSeenQuestions(room?.questions || []); } catch {}
+  }, [view, room?.questions]);
+
   // Host-only: when one player is finished, give the other a 60s grace
   // window. Mark the room finished as soon as both are done OR the window
   // elapses, whichever comes first.
@@ -9751,6 +9755,11 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQIdx, totalQs, mode, phase, eliminatedIds]);
+
+  useEffect(() => {
+    if (phase !== "done") return;
+    try { recordSeenQuestions(questions); } catch {}
+  }, [phase, questions]);
 
   if (phase === "done" || !currentQ) {
     return (
