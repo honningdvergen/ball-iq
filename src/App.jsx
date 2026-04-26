@@ -6284,16 +6284,29 @@ function iqPercentile(iq) {
 }
 
 function iqPercentileLabel(iq) {
-  // Fun "Top X% of football fans" ribbon used in the share text and recap overlay.
-  if (iq >= 155) return "Top 1% of football fans";
-  if (iq >= 145) return "Top 3% of football fans";
-  if (iq >= 135) return "Top 8% of football fans";
-  if (iq >= 125) return "Top 15% of football fans";
-  if (iq >= 115) return "Top 25% of football fans";
-  if (iq >= 105) return "Top 40% of football fans";
-  if (iq >= 95)  return "Top 55% of football fans";
-  if (iq >= 85)  return "Top 70% of football fans";
-  return "Top 85% of football fans";
+  // Rank-based label used in share text + recap overlay. The previous
+  // "Top X% of football fans" buckets were not derived from real user
+  // data so they were replaced with non-statistical descriptors — App
+  // Store guideline 2.3 (Accurate Metadata) plus the broader anti-
+  // deception rule frowns on uncalibrated percentile claims.
+  if (iq >= 155) return "The Special One 👑";
+  if (iq >= 150) return "World Class 🌟";
+  if (iq >= 145) return "Elite Level ⚡";
+  if (iq >= 140) return "Football Genius 🧠";
+  if (iq >= 135) return "Tactical Master 🎯";
+  if (iq >= 130) return "Football Nerd 📚";
+  if (iq >= 125) return "Sharp Fan 🔍";
+  if (iq >= 120) return "Above Average ⚽";
+  if (iq >= 115) return "Solid Knowledge 💪";
+  if (iq >= 110) return "Getting There 📈";
+  if (iq >= 105) return "Decent Fan 👍";
+  if (iq >= 100) return "Average Fan ⚽";
+  if (iq >= 95)  return "Still Learning 📖";
+  if (iq >= 90)  return "Casual Viewer 📺";
+  if (iq >= 85)  return "New to Football 🌱";
+  if (iq >= 80)  return "Just Starting Out 🏃";
+  if (iq >= 75)  return "Room to Grow 💭";
+  return "Football Beginner 🐣";
 }
 
 const IQ_LABELS = [
@@ -8932,6 +8945,11 @@ function OnlineGame({ onBack, userId, defaultName }) {
   const advanceTimerRef = useRef(null);
   const finishTimeoutRef = useRef(null);
   const subscribedCodeRef = useRef(null);
+  // Watchdog for the channel.subscribe() handshake. If we don't see a
+  // SUBSCRIBED status within 12s we tear the channel down, toast the user
+  // and bail to the menu instead of leaving them staring at a frozen
+  // "Waiting for opponent" screen.
+  const subscribeTimeoutRef = useRef(null);
   const t$ = useCallback((m, dur = 2500) => { setToast(m); setTimeout(() => setToast(null), dur); }, []);
 
   // Pick up the auth profile name if it arrives after mount
@@ -8951,6 +8969,22 @@ function OnlineGame({ onBack, userId, defaultName }) {
       channelRef.current = null;
     }
     if (channelRef.current) return;
+    if (subscribeTimeoutRef.current) clearTimeout(subscribeTimeoutRef.current);
+    // 12s watchdog — if SUBSCRIBED never arrives we assume Supabase
+    // realtime is hung and bail back to the menu.
+    subscribeTimeoutRef.current = setTimeout(() => {
+      if (channelRef.current) {
+        try { supabase.removeChannel(channelRef.current); } catch {}
+        channelRef.current = null;
+      }
+      subscribedCodeRef.current = null;
+      subscribeTimeoutRef.current = null;
+      setRoom(null);
+      setCode("");
+      setIsHost(false);
+      setView("menu");
+      t$("Couldn't connect — please try again");
+    }, 12000);
     const ch = supabase
       .channel(`room2:${rc}`)
       .on(
@@ -8959,13 +8993,22 @@ function OnlineGame({ onBack, userId, defaultName }) {
         (payload) => { if (payload.new) setRoom(payload.new); }
       )
       .subscribe((status) => {
-        if (status === "CLOSED" || status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+        if (status === "SUBSCRIBED") {
+          if (subscribeTimeoutRef.current) {
+            clearTimeout(subscribeTimeoutRef.current);
+            subscribeTimeoutRef.current = null;
+          }
+        } else if (status === "CLOSED" || status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          if (subscribeTimeoutRef.current) {
+            clearTimeout(subscribeTimeoutRef.current);
+            subscribeTimeoutRef.current = null;
+          }
           setConnectionLost(true);
         }
       });
     channelRef.current = ch;
     subscribedCodeRef.current = rc;
-  }, []);
+  }, [t$]);
 
   // Unmount cleanup: kill the channel + any pending timers.
   useEffect(() => () => {
@@ -8973,6 +9016,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
     if (abandonTimerRef.current) clearInterval(abandonTimerRef.current);
+    if (subscribeTimeoutRef.current) clearTimeout(subscribeTimeoutRef.current);
   }, []);
 
   // Abandon timer — when our channel drops while a game is in flight, we
@@ -9135,7 +9179,9 @@ function OnlineGame({ onBack, userId, defaultName }) {
     if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
     if (abandonTimerRef.current) clearInterval(abandonTimerRef.current);
+    if (subscribeTimeoutRef.current) clearTimeout(subscribeTimeoutRef.current);
     abandonTimerRef.current = null;
+    subscribeTimeoutRef.current = null;
     subscribedCodeRef.current = null;
     setRoom(null);
     setCode("");
@@ -9266,7 +9312,26 @@ function OnlineGame({ onBack, userId, defaultName }) {
 
   // Lobby — both players present, host picks a mode and starts.
   if (view === "lobby") {
-    if (!room) return null;
+    // Defensive: if the room row was deleted server-side (cleanup RPC,
+    // host quit, RLS revoked) the realtime channel might leave us in
+    // 'lobby' view with `room` null. Show a friendly error rather than
+    // a blank render, and give the user a way home.
+    if (!room) {
+      return (
+        <div className="screen">
+          <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
+            <div style={{fontSize:42}}>🚪</div>
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Room not found</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,maxWidth:300}}>
+              It may have expired or the host left. Start a new room to play again.
+            </div>
+            <button className="btn-3d" onClick={onBack} style={{marginTop:6,maxWidth:240}}>Back to Home</button>
+            <button className="btn-3d ghost" onClick={onPlayAgain} style={{maxWidth:240}}>Try a new room</button>
+          </div>
+        </div>
+      );
+    }
     const hostName = room.host_name || "Host";
     const guestName = room.guest_name || "Guest";
     return (
@@ -10714,83 +10779,45 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
 // Shows "You beat X% of players today" based on mock score distribution.
 // Uses seeded randomness so the number doesn't change between views.
 // Distribution follows a realistic curve: most players score 5-7, few score 10.
+// Honest daily-completion badge. The previous DailySocialProof showed a
+// fake percentile and fake player count; both were uncalibrated and
+// risked falling foul of App Store guideline 2.3 (Accurate Metadata).
+// This replacement only states facts about the score the user actually
+// got — no fabricated comparisons.
 function DailySocialProof({ score, total }) {
-  const { percentile, playersToday } = useMemo(() => {
-    // Realistic score distribution for 7-question daily:
-    // Score 0-1: 10%, 2: 15%, 3: 20%, 4: 20%, 5: 18%, 6: 12%, 7: 5%
-    const cumulativeBelow = [0, 10, 25, 40, 60, 75, 88, 96];
-    // Percentile = % of players you beat (strictly less than your score)
-    const pct = cumulativeBelow[Math.max(0, Math.min(7, score))];
-    
-    // Seed the "players today" number from the day
-    const now = new Date();
-    const daySeed = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
-    // Pseudo-random range 12,000 - 28,000
-    const base = 12000 + ((daySeed * 9301 + 49297) % 16000);
-    // Add some "hour-based" growth to feel alive
-    const hourMultiplier = 0.3 + (now.getHours() / 24) * 0.7;
-    const players = Math.round(base * hourMultiplier);
-    
-    return { percentile: pct, playersToday: players };
-  }, [score, total]);
-  
-  // Animated count-up for percentile
-  const [displayPct, setDisplayPct] = useState(0);
-  useEffect(() => {
-    let frame = 0;
-    const duration = 1200;
-    const start = performance.now();
-    const animate = (t) => {
-      const elapsed = t - start;
-      const progress = Math.min(1, elapsed / duration);
-      // Ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayPct(Math.round(percentile * eased));
-      if (progress < 1) frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [percentile]);
-  
-  // Emoji + message based on percentile
-  const { emoji, message } = (() => {
-    if (percentile >= 95) return { emoji: "🐐", message: "Elite performance — top 5% today" };
-    if (percentile >= 80) return { emoji: "🏆", message: "World class — top 20%" };
-    if (percentile >= 60) return { emoji: "⚽", message: "Strong showing — above average" };
-    if (percentile >= 40) return { emoji: "📈", message: "Right around average today" };
-    if (percentile >= 20) return { emoji: "📚", message: "Tough day — keep playing to climb" };
-    return { emoji: "💪", message: "Everyone starts somewhere" };
+  const safeTotal = total || 7;
+  const safeScore = Math.max(0, Math.min(safeTotal, score || 0));
+  const { emoji, headline, sub } = (() => {
+    if (safeScore === safeTotal) return { emoji: "🏆", headline: "Perfect run!",        sub: "All seven correct — flawless." };
+    if (safeScore >= 6)          return { emoji: "🌟", headline: "Excellent!",          sub: "One of those days where it just clicks." };
+    if (safeScore >= 4)          return { emoji: "⚽", headline: "Solid challenge.",    sub: "Some tough ones in there today." };
+    if (safeScore >= 2)          return { emoji: "📈", headline: "Keep going.",         sub: "Tomorrow's another chance to climb." };
+    return                              { emoji: "💪", headline: "Everyone starts somewhere.", sub: "Come back tomorrow for a fresh seven." };
   })();
-  
+
   return (
     <div style={{
       background: "var(--s1)",
       border: "1px solid var(--border)",
       borderRadius: 16,
-      padding: "20px 22px",
+      padding: "18px 20px",
       marginBottom: 12,
       position: "relative",
       overflow: "hidden",
     }}>
       <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%)",opacity:0.8}} />
-      {/* Subtle header */}
       <div style={{
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: 700,
         color: "var(--accent)",
-        letterSpacing: 0.2,
+        letterSpacing: 0.16,
         fontFamily: "'Inter',sans-serif",
         marginBottom: 10,
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
+        textTransform: "uppercase",
       }}>
-        <span style={{ color: "#dc2626", fontSize: 10, animation: "dp 1.2s ease infinite" }}>●</span>
-        DAILY CHALLENGE · LIVE
+        Daily Challenge Complete
       </div>
-      
-      {/* Big percentile number */}
-      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 4 }}>
         <div style={{
           fontSize: 48,
           fontWeight: 900,
@@ -10799,56 +10826,15 @@ function DailySocialProof({ score, total }) {
           lineHeight: 1,
           fontFamily: "'Inter',sans-serif",
         }}>
-          {displayPct}<span style={{ fontSize: 28, color: "var(--accent)" }}>%</span>
+          {safeScore}<span style={{ fontSize: 28, color: "var(--t3)" }}>/{safeTotal}</span>
         </div>
         <div style={{ fontSize: 32, lineHeight: 1 }}>{emoji}</div>
       </div>
-      
-      <div style={{
-        fontSize: 14,
-        fontWeight: 700,
-        color: "var(--t1)",
-        marginBottom: 4,
-      }}>
-        You beat <span style={{ color: "var(--accent)" }}>{percentile}%</span> of players today
+      <div style={{ fontSize: 14, fontWeight: 700, color: "var(--t1)", marginBottom: 4 }}>
+        {headline}
       </div>
-      
-      <div style={{
-        fontSize: 12,
-        color: "var(--t2)",
-        marginBottom: 10,
-      }}>
-        {message}
-      </div>
-      
-      {/* Progress bar showing percentile */}
-      <div style={{
-        height: 6,
-        background: "var(--s2)",
-        borderRadius: 3,
-        overflow: "hidden",
-        marginBottom: 10,
-      }}>
-        <div style={{
-          height: "100%",
-          width: `${displayPct}%`,
-          background: "linear-gradient(90deg, #58cc02 0%, #3ba80e 100%)",
-          borderRadius: 3,
-          transition: "width 0.1s linear",
-        }} />
-      </div>
-      
-      {/* Players count footer */}
-      <div style={{
-        fontSize: 11,
-        color: "var(--t3)",
-        display: "flex",
-        alignItems: "center",
-        gap: 5,
-        fontFamily: "'Inter',sans-serif",
-      }}>
-        <span>👥</span>
-        <span>{playersToday.toLocaleString()} played today</span>
+      <div style={{ fontSize: 12, color: "var(--t2)" }}>
+        {sub}
       </div>
     </div>
   );
@@ -11115,8 +11101,43 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onAccountDeleted }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  // Permanent account deletion — required by App Store guideline 5.1.1(v)
+  // for any app that supports account creation. Calls the server-side RPC
+  // (which scopes deletes to auth.uid()), clears every biq_* key from
+  // local storage, lets AppInner reset its in-memory state, and finally
+  // signs the user out so AppGate routes back to the login screen.
+  const performDelete = async () => {
+    if (deleting) return;
+    setDeleting(true);
+    try {
+      const { error } = await supabase.rpc("delete_user_account");
+      if (error) {
+        setDeleting(false);
+        setConfirmDelete(false);
+        if (typeof onAccountDeleted === "function") onAccountDeleted({ error });
+        return;
+      }
+      try {
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith("biq_")) keys.push(k);
+        }
+        for (const k of keys) localStorage.removeItem(k);
+      } catch {}
+      if (typeof onAccountDeleted === "function") onAccountDeleted({ error: null });
+      try { await signOut(); } catch {}
+    } catch (e) {
+      setDeleting(false);
+      setConfirmDelete(false);
+      if (typeof onAccountDeleted === "function") onAccountDeleted({ error: e });
+    }
+  };
 
   return (
     <div className="screen" style={{background:"var(--bg)"}}>
@@ -11146,6 +11167,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </div>
+              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
+                <div className="sr-left">
+                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
+                  <div className="sr-desc">Permanently remove your profile and data</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </button>
             </>
           ) : user ? (
             <>
@@ -11162,6 +11190,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               }}>
                 <div className="sr-left">
                   <div className="sr-label">Sign out</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </button>
+              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
+                <div className="sr-left">
+                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
+                  <div className="sr-desc">Permanently remove your profile and data</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -11279,6 +11314,39 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           )}
         </div>
       </div>
+
+      {confirmDelete && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+          onClick={() => !deleting && setConfirmDelete(false)}
+        >
+          <div
+            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Delete Account</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>
+              This will permanently delete your profile, scores, friends and all game history. This cannot be undone.
+            </div>
+            <button
+              onClick={performDelete}
+              disabled={deleting}
+              style={{width:"100%",padding:14,background:"#FF5A5A",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:deleting?"default":"pointer",marginBottom:8,opacity:deleting?0.7:1,WebkitTextFillColor:"#fff"}}
+            >
+              {deleting ? "Deleting…" : "Delete Forever"}
+            </button>
+            <button
+              onClick={() => setConfirmDelete(false)}
+              disabled={deleting}
+              style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:deleting?"default":"pointer"}}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -13715,7 +13783,7 @@ function AppInner() {
     const lines = [
       (profile.avatar||"⚽") + " " + (profile.name||"Ball IQ Player"),
       level.icon + " " + level.name + " — " + xp + " XP",
-      iq ? "Ball IQ: " + iq + " — Top " + (100-iqPercentile(iq)) + "% of players" : null,
+      iq ? "Ball IQ: " + iq + " — " + iqPercentileLabel(iq) : null,
       "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
       "#BallIQ"
     ].filter(Boolean).join("\n");
@@ -13726,6 +13794,27 @@ function AppInner() {
   const clearSeen = useCallback(() => {
     clearSeenHistory();
     showToast("Question history cleared ✓");
+  }, [showToast]);
+
+  // Called by SettingsScreen after the delete_user_account RPC has finished.
+  // We reset our own in-memory state so the brief moment between the RPC
+  // returning and AppGate routing back to the login screen doesn't show a
+  // stale leaderboard / IQ history. Errors surface as a toast.
+  const onAccountDeleted = useCallback(({ error }) => {
+    if (error) {
+      showToast("Couldn't delete account — please try again");
+      return;
+    }
+    setStats({ gamesPlayed: 0, bestScore: 0, bestStreak: 0 });
+    setDailyDone(false);
+    setDailyScore(null);
+    setDailyHistory({});
+    setIqHistory([]);
+    setHotstreakBest(0);
+    setLoginStreak(0);
+    setXp(0);
+    setProfileState(null);
+    showToast("Your account has been deleted");
   }, [showToast]);
 
   const clearStats = useCallback(() => {
@@ -14416,7 +14505,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onAccountDeleted={onAccountDeleted} />}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
