@@ -6758,7 +6758,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
+.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:var(--ui-font-size,14px);}
 .q-text{font-size:var(--q-font-size,18px) !important;}
 .sbar{height:env(safe-area-inset-top,0);}
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
@@ -6800,8 +6800,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
 .hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
-.hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;box-shadow:0 4px 0 #46A302;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
-.hero-online:active .hero-online-cta{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+.hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.hero-online:active .hero-online-cta{opacity:0.85;}
 
 /* ── MORE MODES section eyebrow ── */
 /* .more-modes-eyebrow — layout-only wrapper; visual tokens come from .ds-eyebrow. */
@@ -6809,14 +6809,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:96px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;max-height:110px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;}
-.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-name{font-size:calc(var(--q-font-size,18px) * 0.83);font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-desc{font-size:calc(var(--q-font-size,18px) * 0.67);color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
 .play-card.coming-soon{opacity:0.78;}
@@ -6824,7 +6824,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
 .diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
-.diff-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
+.diff-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,34px));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .diff-sheet-title{font-size:17px;font-weight:900;color:var(--t1);text-align:center;margin-bottom:6px;letter-spacing:-0.3px;}
 .diff-sheet-sub{font-size:13px;color:var(--t3);text-align:center;margin-bottom:18px;}
 .diff-options{display:flex;flex-direction:column;gap:10px;}
@@ -7153,8 +7153,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   border-top:0.5px solid rgba(255,255,255,0.08);
   display:flex;align-items:stretch;z-index:100;
-  padding-bottom:max(env(safe-area-inset-bottom,0px),0px);
-  height:calc(60px + max(env(safe-area-inset-bottom,0px),0px));
+  padding-bottom:max(env(safe-area-inset-bottom,34px),34px);
+  height:calc(60px + max(env(safe-area-inset-bottom,34px),0px));
 }
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
@@ -7177,7 +7177,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:84px;background:var(--bg);}
+.tab-content{padding-bottom:calc(60px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
@@ -7194,9 +7194,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-hero-title{font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
 .daily-hero-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:18px;}
 .daily-hero-btn{width:100%;padding:14px;border-radius:12px;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s;}
-.daily-hero-btn.available{background:#58CC02;color:#0A0A0A;box-shadow:0 5px 0 #46A302;transform:translateY(0);transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;}
+.daily-hero-btn.available{background:#58CC02;color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;}
 .daily-hero-btn.available:hover{filter:brightness(1.06);}
-.daily-hero-btn.available:active{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
+.daily-hero-btn.available:active{opacity:0.85;}
 .daily-hero-btn.done{background:var(--s2);color:var(--t2);cursor:default;}
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
 .streak-sec-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:14px;}
@@ -7260,7 +7260,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-avatar{width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;transition:all 0.2s;}
 .profile-avatar:active{transform:scale(0.93);}
 .profile-avatar-edit{position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0a1a00;font-weight:800;cursor:pointer;}
-.profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
+.profile-name{font-size:calc(var(--q-font-size,18px) * 1.11);font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
 .profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);color:var(--t2);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
@@ -7355,7 +7355,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .crop-btn.secondary:active:not(:disabled){transform:scale(0.98);}
 
 .emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
-.emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px;animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
+.emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,34px));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .emoji-picker-title{font-size:14px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t2);}
 .emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;}
 .emoji-opt{font-size:24px;padding:6px;border-radius:8px;border:none;background:transparent;cursor:pointer;transition:background 0.1s;}
@@ -7508,9 +7508,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .feedback{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
-.next-btn-primary{position:relative;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;box-shadow:0 5px 0 #46A302;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.next-btn-primary{position:relative;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .next-btn-primary:hover{filter:brightness(1.06);}
-.next-btn-primary:active{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
+.next-btn-primary:active{opacity:0.85;}
 
 /* ── ONLINE 1V1 ────────────────────────────────────────────────────────── */
 .og-code-input{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;letter-spacing:8px;font-size:24px;text-align:center;text-transform:uppercase;}
@@ -9415,7 +9415,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
 
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Results</div></div>
+        <div className="page-hdr"><div className="page-title">Results</div></div>
 
         <div className="og-results-headline">
           {tied
@@ -9813,7 +9813,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
       : "Pass the phone. Tap Ready when you've got it.";
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Close">✕</button>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Go back">←</button>
         <div className="ds-eyebrow local-ready-eyebrow">
           {classicSprint
             ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
@@ -9841,7 +9841,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   if (phase === "playerSwap") {
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Close">✕</button>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Go back">←</button>
         <div className="ds-eyebrow local-ready-eyebrow">Next up · {prog}</div>
         <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
         <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
@@ -9857,7 +9857,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="quiz-wrap">
         <div className="q-top">
-          <button className="back-btn" onClick={onExit} aria-label="Close">✕</button>
+          <button className="back-btn" onClick={onExit} aria-label="Go back">←</button>
           <div className="prog-wrap">
             <div className="prog-bar" style={{ width: `${Math.min(100, ((currentQIdx + 1) / Math.max(1, Math.min(target, totalQs))) * 100)}%` }} />
           </div>
@@ -10999,7 +10999,7 @@ function ClubQuizScreen({ onStart, onBack }) {
       </div>
       {showProModal && (
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
-          <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px"}} onClick={e => e.stopPropagation()}>
+          <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
             <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
             <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs will be available as a free update. Keep playing to stay ready!</div>
@@ -11086,9 +11086,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </div>
+              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
               <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
                 <div className="sr-left">
-                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
+                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
                   <div className="sr-desc">Permanently remove your profile and data</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
@@ -11112,9 +11113,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
+              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
               <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
                 <div className="sr-left">
-                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
+                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
                   <div className="sr-desc">Permanently remove your profile and data</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
@@ -11134,6 +11136,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
+              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
+              <div className="settings-row" style={{cursor:"default",opacity:0.5}}>
+                <div className="sr-left">
+                  <div className="sr-label">🗑️ Delete account</div>
+                  <div className="sr-desc">Sign in to manage your account</div>
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -11415,7 +11424,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
         style={{
           width:"100%", background:"var(--bg)",
           borderRadius:"20px 20px 0 0",
-          padding:"28px 24px 36px",
+          padding:"28px 24px calc(36px + env(safe-area-inset-bottom, 34px))",
           animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)",
           textAlign:"center",
         }}
@@ -13887,21 +13896,15 @@ function AppInner() {
       body.classList.remove("light");
       root.classList.remove("light");
     }
-    // Text size — scale the entire app by adjusting html font-size
-    // All rem-based sizes scale automatically
+    // Text size — single source of truth on <html>. Custom props cascade
+    // through the React tree; rem values rescale via the html font-size.
     const scale = settings.textSize === "S" ? "14px" : settings.textSize === "L" ? "19px" : "16px";
     root.style.fontSize = scale;
-    // Also set custom props for explicit px overrides
-    const qSize = settings.textSize === "S" ? "16px" : settings.textSize === "L" ? "22px" : "18px";
+    const qSize = TEXT_SIZE_MAP[settings.textSize] || "18px";
     const uiSize = settings.textSize === "S" ? "12px" : settings.textSize === "L" ? "16px" : "14px";
     root.style.setProperty("--q-font-size", qSize);
     root.style.setProperty("--ui-font-size", uiSize);
   }, [settings.theme, settings.textSize]);
-
-  const appRootStyle = useMemo(
-    () => ({ "--q-font-size": TEXT_SIZE_MAP[settings.textSize] || "18px" }),
-    [settings.textSize]
-  );
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
@@ -14080,7 +14083,7 @@ function AppInner() {
   return (
     <>
       <style>{css}</style>
-      <div className={`app${settings.theme === "light" ? " light" : ""}`} style={appRootStyle}>
+      <div className={`app${settings.theme === "light" ? " light" : ""}`}>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only ── */}
@@ -14148,7 +14151,7 @@ function AppInner() {
         {/* APP_NAME Intro */}
         {showBallIQIntro && (
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
@@ -14167,7 +14170,7 @@ function AppInner() {
         {/* Rate prompt */}
         {showRatePrompt && (
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
@@ -14196,7 +14199,7 @@ function AppInner() {
 
         {howToPlay && (
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px 40px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{HOW_TO_PLAY[howToPlay]?.title}</div>
               {HOW_TO_PLAY[howToPlay]?.steps.map((step, i) => (
                 <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
@@ -14515,15 +14518,15 @@ function AppInner() {
                 { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
                 { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
-                { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"Your percentile" },
+                { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
-                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
+                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes & chaos" },
                 // True/False, Guess the Player and Tiki Taka Toe sit at the
                 // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
                 // and CSS remain in place — only the entry point is hidden.
                 { key:"truefalse",   icon:"✅",  name:"True or False",    desc:"Coming soon", comingSoon:true, onTap:() => showToast("✅ True or False is coming soon — stay tuned") },
-                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned") },
-                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned") },
+                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Coming soon", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned") },
+                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"Coming soon", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
                 <button
                   key={key}
