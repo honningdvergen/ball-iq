@@ -5410,30 +5410,30 @@ const QB = [
   { q:"What is the longest-ever goal scored in professional football history (96.01 metres)?", o:["Asmir Begovic","Tom King","Tim Howard","Alisson Becker"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1 },
   { q:"Which team scored a staggering 149-0 in a domestic league match, setting the record for the highest-scoring professional game?", o:["Hungary vs El Salvador","AS Adema vs SO l'Emyrne","Australia vs American Samoa","Brazil vs Bolivia"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1 },
   { q:"Which club achieved the only \"treble\" of English top-flight, FA Cup and League Cup in the same season twice?", o:["Man Utd","Man City","Liverpool","Arsenal"], a:1, cat:"Records", diff:"medium", type:"mcq" },
-  // -- Trivia (30) --
-  { q:"What is the name of the competition that is considered the top club competition in South American football?", o:["Copa Sudamericana","Copa del Rey","Recopa Sudamericana","Copa Libertadores"], a:3, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the name of the stadium where FC Barcelona plays its home matches?", o:["Santiago Bernabéu","Camp Nou","Old Trafford","Allianz Arena"], a:1, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
-  { q:"How long is a standard soccer field according to FIFA regulations?", o:["90-100 yards","110-120 yards","120-130 yards","100-110 yards"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"In which year did the first professional football league in the world begin (England)?", o:["1863","1888","1900","1872"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"English rock star Elton John was twice the owner of which football club?", o:["Watford","Tottenham Hotspur","Crystal Palace","Forest"], a:0, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"Which Portuguese team did Cristiano Ronaldo play for before signing for Manchester United?", o:["Sporting","Porto","Benfica","Braga"], a:0, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
-  { q:"Messi began his professional career at Barcelona, but what was his schoolboy team?", o:["Newell's Old Boys","River Plate","Boca Juniors","Independiente"], a:0, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
-  { q:"Ronaldo is synonymous with the No.7, but which other number did he wear at Real Madrid?", o:["No.7","No.9","No.11","No.10"], a:1, cat:"Trivia", diff:"easy", type:"mcq", v:1 },
-  { q:"How many panels does a traditional FIFA-approved soccer ball have?", o:["24","32","18","42"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"Which player was the first to reach 100 goals in UEFA club competitions?", o:["Lionel Messi","Filippo Inzaghi","Raúl González","Cristiano Ronaldo"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"Which stadium is famously nicknamed \"The Theatre of Dreams\"?", o:["Camp Nou","Old Trafford","Anfield","Santiago Bernabéu"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"In what year was the first live television broadcast of a football match in England (Arsenal Reserves vs Arsenal)?", o:["1927","1937","1948","1953"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the official distance from the penalty spot to the goal line?", o:["10 yards","12 yards","11 yards","13 yards"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"Which club won the first Club World Cup under its current format in 2000?", o:["Real Madrid","Corinthians","Boca Juniors","Man Utd"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"In which year was the back-pass rule introduced in football (banning goalkeepers from handling deliberate back-passes)?", o:["1990","1992","1994","1988"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the official FIFA rule number that covers the offside law?", o:["Law 10","Law 11","Law 12","Law 13"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"Which club has retired the number 12 shirt in honour of their fans (the \"12th man\")?", o:["Liverpool","Bayern Munich","Real Madrid","Man Utd"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the nickname of the Welsh national football team?", o:["The Lions","The Dragons","The Red Devils","The Three Lions"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the nickname of the Ivory Coast national football team?", o:["The Lions","The Elephants","The Eagles","The Panthers"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"What is the official FIFA Law number that governs the penalty kick?", o:["Law 12","Law 14","Law 13","Law 15"], a:1, cat:"Trivia", diff:"medium", type:"mcq", v:1 },
-  { q:"How many hat-tricks has Cristiano Ronaldo scored for the Portuguese national team?", o:["8","10","7","12"], a:1, cat:"Trivia", diff:"easy", type:"mcq" },
-  { q:"What is the record attendance for a club World Cup final?", o:["89,000","75,000","68,000","92,000"], a:1, cat:"Trivia", diff:"medium", type:"mcq" },
-  { q:"Which club was the first non-European side to win the Intercontinental Cup?", o:["Peñarol","Santos","Boca Juniors","Nacional"], a:1, cat:"Trivia", diff:"hard", type:"mcq", v:1 },
+  // -- Retagged from former "Trivia" — distributed across existing categories --
+  { q:"What is the name of the competition that is considered the top club competition in South American football?", o:["Copa Sudamericana","Copa del Rey","Recopa Sudamericana","Copa Libertadores"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the name of the stadium where FC Barcelona plays its home matches?", o:["Santiago Bernabéu","Camp Nou","Old Trafford","Allianz Arena"], a:1, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
+  { q:"How long is a standard soccer field according to FIFA regulations?", o:["90-100 yards","110-120 yards","120-130 yards","100-110 yards"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"In which year did the first professional football league in the world begin (England)?", o:["1863","1888","1900","1872"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"English rock star Elton John was twice the owner of which football club?", o:["Watford","Tottenham Hotspur","Crystal Palace","Forest"], a:0, cat:"PL", diff:"medium", type:"mcq", v:1 },
+  { q:"Which Portuguese team did Cristiano Ronaldo play for before signing for Manchester United?", o:["Sporting","Porto","Benfica","Braga"], a:0, cat:"Legends", diff:"easy", type:"mcq", v:1 },
+  { q:"Messi began his professional career at Barcelona, but what was his schoolboy team?", o:["Newell's Old Boys","River Plate","Boca Juniors","Independiente"], a:0, cat:"Legends", diff:"easy", type:"mcq", v:1 },
+  { q:"Ronaldo is synonymous with the No.7, but which other number did he wear at Real Madrid?", o:["No.7","No.9","No.11","No.10"], a:1, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
+  { q:"How many panels does a traditional FIFA-approved soccer ball have?", o:["24","32","18","42"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"Which player was the first to reach 100 goals in UEFA club competitions?", o:["Lionel Messi","Filippo Inzaghi","Raúl González","Cristiano Ronaldo"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1 },
+  { q:"Which stadium is famously nicknamed \"The Theatre of Dreams\"?", o:["Camp Nou","Old Trafford","Anfield","Santiago Bernabéu"], a:1, cat:"PL", diff:"medium", type:"mcq", v:1 },
+  { q:"In what year was the first live television broadcast of a football match in England (Arsenal Reserves vs Arsenal)?", o:["1927","1937","1948","1953"], a:1, cat:"PL", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the official distance from the penalty spot to the goal line?", o:["10 yards","12 yards","11 yards","13 yards"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"Which club won the first Club World Cup under its current format in 2000?", o:["Real Madrid","Corinthians","Boca Juniors","Man Utd"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"In which year was the back-pass rule introduced in football (banning goalkeepers from handling deliberate back-passes)?", o:["1990","1992","1994","1988"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the official FIFA rule number that covers the offside law?", o:["Law 10","Law 11","Law 12","Law 13"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"Which club has retired the number 12 shirt in honour of their fans (the \"12th man\")?", o:["Liverpool","Bayern Munich","Real Madrid","Man Utd"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the nickname of the Welsh national football team?", o:["The Lions","The Dragons","The Red Devils","The Three Lions"], a:1, cat:"Euros", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the nickname of the Ivory Coast national football team?", o:["The Lions","The Elephants","The Eagles","The Panthers"], a:1, cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
+  { q:"What is the official FIFA Law number that governs the penalty kick?", o:["Law 12","Law 14","Law 13","Law 15"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"How many hat-tricks has Cristiano Ronaldo scored for the Portuguese national team?", o:["8","10","7","12"], a:1, cat:"Legends", diff:"easy", type:"mcq" },
+  { q:"What is the record attendance for a club World Cup final?", o:["89,000","75,000","68,000","92,000"], a:1, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"Which club was the first non-European side to win the Intercontinental Cup?", o:["Peñarol","Santos","Boca Juniors","Nacional"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1 },
   // -- UCL (24) --
   { q:"Against which team did Cristiano Ronaldo perform his famous bicycle kick goal in the UEFA Champions League?", o:["Barcelona","Man City","Bayern Munich","Juventus"], a:3, cat:"UCL", diff:"easy", type:"mcq", v:1 },
   { q:"Which club has won the most UEFA Champions League / European Cup titles?", o:["AC Milan","Real Madrid","Bayern Munich","Liverpool"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
@@ -8658,25 +8658,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       )}
 
       <div className="q-card">
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-          <div className="q-tag" style={{marginBottom:0}}>{CAT_LABELS[q.cat]||q.cat}</div>
-          <button onClick={(e) => {
-            e.stopPropagation();
-            try { haptic("select"); } catch {}
-            // Fire-and-forget flag — no await, no crash risk
-            try {
-              const p = window.storage?.get("biq_flagged_qs");
-              if (p && p.then) {
-                p.then(existing => {
-                  const flags = (existing && existing.value) ? JSON.parse(existing.value) : [];
-                  flags.push({ q: q.q, cat: q.cat, diff: q.diff, time: Date.now() });
-                  const p2 = window.storage?.set("biq_flagged_qs", JSON.stringify(flags.slice(-50)));
-                  if (p2 && p2.catch) p2.catch(() => {});
-                }).catch(() => {});
-              }
-            } catch {}
-          }} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,color:"var(--t3)",padding:"10px 12px",lineHeight:1,minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}} title="Flag question" aria-label="Flag this question">🚩</button>
-        </div>
+        <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:"var(--q-font-size, 18px)"}}>{q.q}</div>
       </div>
 
@@ -11079,6 +11061,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [confirmClearStats, setConfirmClearStats] = useState(false);
 
   // Permanent account deletion — required by App Store guideline 5.1.1(v)
   // for any app that supports account creation. Calls the server-side RPC
@@ -11292,13 +11275,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">Data</div>
         <div className="settings-card">
-          <div className="settings-row danger" onClick={onClearStats}>
+          <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmClearStats(true)}>
             <div className="sr-left">
               <div className="sr-label">Clear My Stats</div>
               <div className="sr-desc">Reset games played, best score and streak</div>
             </div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
-          </div>
+          </button>
           {onClearSeen && (
             <div className="settings-row" onClick={onClearSeen}>
               <div className="sr-left">
@@ -11310,6 +11293,43 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           )}
         </div>
       </div>
+
+      {confirmClearStats && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+          onClick={() => setConfirmClearStats(false)}
+        >
+          <div
+            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Clear stats?</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:10}}>This will reset:</div>
+            <ul style={{paddingLeft:20,marginBottom:14,fontSize:14,color:"var(--t2)",lineHeight:1.6}}>
+              <li>Games played</li>
+              <li>Best score</li>
+              <li>Best streak</li>
+              <li>XP and level</li>
+              <li>Login streak</li>
+            </ul>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>This cannot be undone.</div>
+            <button
+              onClick={() => { setConfirmClearStats(false); onClearStats?.(); }}
+              style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
+            >
+              Clear stats
+            </button>
+            <button
+              onClick={() => setConfirmClearStats(false)}
+              style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {confirmDelete && (
         <div
@@ -11890,7 +11910,8 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
       .then(() => { if (!cancelled) setReady(true); })
       .catch((e) => {
         if (cancelled) return;
-        setError(e?.message || "Could not load cropper");
+        const isTimeout = /timed out/i.test(e?.message || "");
+        setError(isTimeout ? "Couldn't load image editor" : "Something went wrong — try again");
         onLoadError?.();
       });
     return () => { cancelled = true; };
@@ -11922,7 +11943,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
           movable: true,
         });
       } catch (e) {
-        setError(e?.message || "Cropper init failed");
+        setError("Something went wrong — try again");
       }
     };
     if (node.complete && node.naturalWidth > 0) init();
@@ -11961,7 +11982,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
       });
       await onConfirm?.(blob);
     } catch (e) {
-      setError(e?.message || "Crop failed");
+      setError("Something went wrong — try again");
       setBusy(false);
     }
   };
@@ -12035,6 +12056,33 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   useEffect(() => {
     if (userId) loadFriendships();
   }, [userId, loadFriendships]);
+
+  // Realtime: surface incoming friend requests as soon as they're inserted on
+  // Supabase, so the user doesn't have to leave and re-enter Friends to see
+  // them. Subscribed only while the section is mounted.
+  useEffect(() => {
+    if (!userId) return;
+    const channel = supabase
+      .channel(`friendships:${userId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "friendships", filter: `addressee_id=eq.${userId}` },
+        async (payload) => {
+          const requesterId = payload?.new?.requester_id;
+          let name = "someone";
+          if (requesterId) {
+            try {
+              const { data } = await supabase.from("profiles").select("username").eq("id", requesterId).maybeSingle();
+              if (data?.username) name = data.username;
+            } catch {}
+          }
+          toast(`📩 New friend request from ${name}`);
+          loadFriendships();
+        }
+      )
+      .subscribe();
+    return () => { try { supabase.removeChannel(channel); } catch {} };
+  }, [userId, loadFriendships, toast]);
 
   // Derived lists
   const incoming = friendships.filter(f => f.status === "pending" && f.addressee_id === userId);
@@ -12283,6 +12331,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     const v = nameDraft.trim();
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
+    // Mirror the change up to Supabase so leaderboards and other devices
+    // see the new username. Guests stay local-only.
+    if (v && user && !isGuest) {
+      supabase.from('profiles').update({ username: v }).eq('id', user.id).then(({ error }) => {
+        if (error) toast("⚠️ Couldn't sync name change — check your connection");
+      }).catch(() => {
+        toast("⚠️ Couldn't sync name change — check your connection");
+      });
+    }
   };
   // Open the inline editor when the home greeting tells us to.
   useEffect(() => {
