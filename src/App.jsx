@@ -12041,7 +12041,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     try {
       const { data, error } = await supabase
         .from("friendships")
-        .select("*,requester:profiles!requester_id(id,username,avatar,total_score),addressee:profiles!addressee_id(id,username,avatar,total_score)")
+        .select("*,requester:profiles!requester_id(id,username,avatar:avatar_id,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,total_score)")
         .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`);
       if (error) throw error;
       setFriendships(data || []);
@@ -12109,7 +12109,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         if (import.meta.env.DEV) console.log("[friends] search query:", q);
         const { data, error } = await supabase
           .from("profiles")
-          .select("id,username,avatar,total_score")
+          .select("id,username,avatar:avatar_id,total_score")
           .ilike("username", `%${q}%`)
           .limit(10);
         if (import.meta.env.DEV) console.log("[friends] search result:", { rows: data?.length, error: error?.message });
@@ -12543,7 +12543,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
-          currentUserAvatar={authProfile?.avatar || profile?.avatar || "⚽"}
+          currentUserAvatar={authProfile?.avatar_id || profile?.avatar || "⚽"}
           onChallenge={onChallenge}
           onToast={onToast}
         />
