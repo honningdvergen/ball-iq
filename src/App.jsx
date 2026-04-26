@@ -227,7 +227,7 @@ const CHAOS_QB = [
   },
   {
     q: "Which Premier League club's fans sing 'Blue is the Colour' as their anthem?",
-    o: ["Manchester City", "Chelsea", "Everton", "Birmingham City"],
+    o: ["Man City", "Chelsea", "Everton", "Birmingham City"],
     a: 1,
     cat: "chaos",
     tag: "chaos",
@@ -527,7 +527,7 @@ const CHAOS_QB = [
   },
   {
     q: "In March 2015, Liverpool's Steven Gerrard was sent off after just 38 seconds of coming on as a substitute against which team?",
-    o: ["Arsenal", "Everton", "Manchester United", "Chelsea"],
+    o: ["Arsenal", "Everton", "Man United", "Chelsea"],
     a: 2,
     cat: "chaos",
     tag: "chaos",
@@ -1138,7 +1138,7 @@ const QB = [
   // ── BATCH 5: DEFENDERS ──
   { q:"Which defender scored the famous 93rd-minute equalising header for Real Madrid in the 2014 Champions League final vs Atlético Madrid?", o:["Pepe","Sergio Ramos","Raphaël Varane","Dani Carvajal"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"Ramos's header from a Modrić corner forced extra time, where Real Madrid won 4-1 to end a 12-year UCL drought.", v:1 },
   { q:"Which Italian defender captained Italy to the 2006 World Cup — at age 38?", o:["Maldini","Cannavaro","Nesta","Buffon"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
-  { q:"Which Italian captain won the 2006 Ballon d'Or after leading the Azzurri to World Cup glory — becoming only the third defender to win the award?", o:["Fabio Cannavaro","Paolo Maldini","Alessandro Nesta","Gianluca Zambrotta"], a:0, cat:"BallonDor", diff:"medium", type:"mcq", hint:"Franz Beckenbauer (1972, 1976) and Matthias Sammer (1996) were the only other defenders to take the prize — and no centre-back has won it since.", v:1 },
+  { q:"Which Italian captain won the 2006 Ballon d'Or after leading the Azzurri to World Cup glory — becoming only the third defender to win the award?", o:["Fabio Cannavaro","Paolo Maldini","Alessandro Nesta","Gianluca Zambrotta"], a:0, cat:"Records", diff:"medium", type:"mcq", hint:"Franz Beckenbauer (1972, 1976) and Matthias Sammer (1996) were the only other defenders to take the prize — and no centre-back has won it since.", v:1 },
   { q:"Franz Beckenbauer pioneered which defensive position, playing with the freedom to attack?", o:["Wing-back","Sweeper (libero)","Defensive midfielder","Centre-back"], a:1, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which full-back is considered the greatest to ever play the position, winning multiple European Cups with Real Madrid in the 1950s-60s?", o:["Cafú","R. Carlos","Nilton Santos","Francisco Gento"], a:2, cat:"Legends", diff:"hard", type:"mcq", v:1 },
 
@@ -1216,7 +1216,7 @@ const QB = [
 
   // ── BATCH 6: SPECIFIC MATCH MOMENTS ──
   { q:"How many minutes into the 1999 UCL final did Sheringham equalise for Man United?", o:["88","90","91","93"], a:2, cat:"UCL", diff:"hard", type:"mcq", v:1 },
-  { q:"In the 2012 FA Cup final Chelsea beat Liverpool 2-1 — who scored Chelsea's second goal that proved the winner, becoming the first player to score in four different FA Cup finals?", o:["Frank Lampard","Didier Drogba","Juan Mata","Ramires"], a:1, cat:"FA_Cup", diff:"hard", type:"mcq", v:1, hint:"Ramires scored first (11'), Drogba added the second (52'). Andy Carroll pulled one back for Liverpool but Cech saved on the line. Drogba had scored in the 2007, 2009, 2010 and 2012 finals — a record." },
+  { q:"In the 2012 FA Cup final Chelsea beat Liverpool 2-1 — who scored Chelsea's second goal that proved the winner, becoming the first player to score in four different FA Cup finals?", o:["Frank Lampard","Didier Drogba","Juan Mata","Ramires"], a:1, cat:"PL", diff:"hard", type:"mcq", v:1, hint:"Ramires scored first (11'), Drogba added the second (52'). Andy Carroll pulled one back for Liverpool but Cech saved on the line. Drogba had scored in the 2007, 2009, 2010 and 2012 finals — a record." },
   { q:"How many seconds did it take Hakan Şükür to score the fastest goal in World Cup history — for Turkey against South Korea in 2002?", o:["8","11","15","22"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", hint:"The exact FIFA-recognised time was 10.89 seconds — it came in the third-place play-off at Daegu on 29 June 2002 and Turkey went on to win 3-2.", v:1 },
   { q:"In which minute did Sergio Ramos head home Real Madrid's famous equaliser in the 2014 UCL final?", o:["88","90","92","93"], a:3, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Geoff Hurst's controversial goal in the 1966 World Cup final — did the ball fully cross the line according to the officials?", o:["Yes","No","It was ruled offside","Referee didn't see it"], a:0, tag:"wc2026", cat:"Legends", diff:"medium", type:"mcq", v:1 },
@@ -2847,7 +2847,7 @@ const QB = [
   { q:"Celtic became the first British club to win the European Cup in 1967 — what was their famous nickname?", o:["The Bhoys","The Invincibles","The Lisbon Lions","The Celtic Tigers"], a:2, cat:"Legends", diff:"medium", type:"mcq", v:1 },
   { q:"Which British club was the first to win a European trophy — taking the Cup Winners' Cup in 1963?", o:["Spurs","Celtic","Rangers","Man Utd"], a:0, cat:"Legends", diff:"hard", type:"mcq", v:1 },
   { q:"The Munich Air Disaster in 1958 devastated which English club — killing 8 players including Duncan Edwards?", o:["Arsenal","Liverpool","Chelsea","Man Utd"], a:3, cat:"Legends", diff:"easy", type:"mcq", v:1 },
-  { q:"Which former Leeds United boss took charge of England's national team in 1974 — only to leave controversially in 1977 for a UAE role?", o:["Alf Ramsey","Don Revie","Ron Greenwood","Bobby Robson"], a:1, cat:"England", diff:"medium", type:"mcq", hint:"Revie won two league titles with Leeds before succeeding Alf Ramsey as England manager.", v:1 },
+  { q:"Which former Leeds United boss took charge of England's national team in 1974 — only to leave controversially in 1977 for a UAE role?", o:["Alf Ramsey","Don Revie","Ron Greenwood","Bobby Robson"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"Revie won two league titles with Leeds before succeeding Alf Ramsey as England manager.", v:1 },
 
   // ── BATCH 13: AFRICAN & ASIAN FOOTBALL ──
   { q:"South Korea's miraculous 2002 World Cup run saw them reach the semi-finals — which country coached them to that success?", o:["Netherlands","Portugal","Germany","France"], a:0, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", v:1 },
@@ -3646,7 +3646,7 @@ const QB = [
 
   // PL — Final Questions
   { q:"Which club was the first to win the Premier League title on goal difference?", o:["Arsenal in 1998","Man United in 1993","Chelsea in 2010","Man City in 2012"], a:3, cat:"PL", diff:"hard", type:"mcq", v:1 },
-  { q:"Who scored the 79th-minute winning header for Arsenal in their 2-1 win over Chelsea in the 2017 FA Cup final — from a Giroud cross just a minute after coming on?", o:["Alexis Sánchez","Aaron Ramsey","Mesut Özil","Olivier Giroud"], a:1, cat:"FA_Cup", diff:"hard", type:"mcq", hint:"Sánchez had earlier opened the scoring with a controversial right-footed finish; Diego Costa levelled for 10-man Chelsea before the winner. Arsenal won a record 13th FA Cup, and Arsène Wenger his record 7th.", v:1 },
+  { q:"Who scored the 79th-minute winning header for Arsenal in their 2-1 win over Chelsea in the 2017 FA Cup final — from a Giroud cross just a minute after coming on?", o:["Alexis Sánchez","Aaron Ramsey","Mesut Özil","Olivier Giroud"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Sánchez had earlier opened the scoring with a controversial right-footed finish; Diego Costa levelled for 10-man Chelsea before the winner. Arsenal won a record 13th FA Cup, and Arsène Wenger his record 7th.", v:1 },
   { q:"Which manager won his final Liverpool trophy — a 1-0 extra-time victory over Chelsea in the 2024 EFL Cup final — in what was his last year at the club?", o:["Rafa Benítez","Brendan Rodgers","Jürgen Klopp","Arne Slot"], a:2, cat:"PL", diff:"medium", type:"mcq", v:1, hint:"Virgil van Dijk scored a 118th-minute header to secure Liverpool's record-extending 10th League Cup title. Klopp had announced in January 2024 that he would leave at the end of the season." },
   { q:"How many times have Chelsea won the FA Cup — making them one of the competition's most successful clubs?", o:["6","7","8","9"], a:2, cat:"PL", diff:"medium", type:"mcq", v:1 },
   { q:"Who scored a hat-trick for Man City vs Arsenal in a 5-0 win in 2023 — one of the most dominant derby performances?", o:["De Bruyne","Haaland","Foden","B. Silva"], a:1, cat:"PL", diff:"medium", type:"mcq", v:1 },
@@ -3853,7 +3853,7 @@ const QB = [
   { q:"Which player scored a hat-trick in a Champions League semi-final for Real Madrid vs Manchester City in 2023?", o:["Benzema","Vinicius","Modric","Rodrygo"], a:0, cat:"UCL", diff:"hard", type:"mcq", v:1 },
 
   // ── BATCH 30: BUNDESLIGA ─────────────────────────────────────────────────────
-  { q:"Bayern Munich won the 2012-13 DFB-Pokal to complete the treble — who did they beat in the final 3-2?", o:["VfB Stuttgart","Dortmund","Schalke","Leverkusen"], a:0, cat:"Europe", diff:"hard", type:"mcq", v:1, hint:"Bayern beat Stuttgart 3-2 in the 2013 DFB-Pokal final (1 June 2013), completing the first German treble (Bundesliga + DFB-Pokal + Champions League). Mario Gomez scored a brace." },
+  { q:"Bayern Munich won the 2012-13 DFB-Pokal to complete the treble — who did they beat in the final 3-2?", o:["VfB Stuttgart","Dortmund","Schalke","Leverkusen"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1, hint:"Bayern beat Stuttgart 3-2 in the 2013 DFB-Pokal final (1 June 2013), completing the first German treble (Bundesliga + DFB-Pokal + Champions League). Mario Gomez scored a brace." },
   { q:"Bayern Munich's squad that won the 2019-20 treble scored how many goals in the UCL?", o:["37","43","45","51"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
   { q:"Which Bundesliga club plays at the Deutsche Bank Park in Frankfurt?", o:["Darmstadt","Eintracht Frankfurt","Kickers Offenbach","FSV Frankfurt"], a:1, cat:"Bundesliga", diff:"medium", type:"mcq", v:1 },
   { q:"Which is the only Bundesliga club to have a fan-owned stadium — the Volksparkstadion?", o:["Cologne","Hamburg","Mainz","Bremen"], a:1, cat:"Bundesliga", diff:"hard", type:"mcq" },
@@ -3996,7 +3996,7 @@ const QB = [
   { q:"Which club did Liverpool beat 4-0 to win the title in 2019-20 — sealing it with a game in hand?", o:["Crystal Palace","Chelsea","Burnley","Brighton"], a:0, cat:"PL", diff:"hard", type:"mcq", v:1 },
   { q:"How many points did Newcastle United accumulate in their famous 1995-96 title challenge that they still lost?", o:["75","77","78","82"], a:1, cat:"PL", diff:"hard", type:"mcq" },
   { q:"Sunderland's Stadium of Light — how many does it hold?", o:["39,000","42,000","45,000","49,000"], a:2, cat:"PL", diff:"hard", type:"mcq" },
-  { q:"Which Welsh club won the 2012-13 League Cup 5-0 over Bradford City at Wembley — their first major English cup and the first time a non-English club had won it?", o:["Cardiff City","Swansea City","Wrexham","Newport County"], a:1, cat:"LeagueCup", diff:"hard", type:"mcq", hint:"Michael Laudrup's side dispatched fourth-tier Bradford with a five-star display featuring a Nathan Dyer brace and goals from Michu and Jonathan de Guzmán — the biggest winning margin in League Cup final history.", v:1 },
+  { q:"Which Welsh club won the 2012-13 League Cup 5-0 over Bradford City at Wembley — their first major English cup and the first time a non-English club had won it?", o:["Cardiff City","Swansea City","Wrexham","Newport County"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Michael Laudrup's side dispatched fourth-tier Bradford with a five-star display featuring a Nathan Dyer brace and goals from Michu and Jonathan de Guzmán — the biggest winning margin in League Cup final history.", v:1 },
 
   // Bundesliga - Extra depth
   { q:"Which infamous 1965-66 Bundesliga club (their only top-flight season) went bankrupt and now play in the lower leagues?", o:["Tasmania Berlin","Blau-Weiss Berlin","Hertha Zehlendorf","Preussen Berlin"], a:0, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
@@ -5339,8 +5339,8 @@ const QB = [
   // ─── USER BATCH 2026-04-17 (153 questions) ───
   // -- Bundesliga (1) --
   // -- Copa (3) --
-  { q:"Which country has appeared in the most Copa América finals without winning?", o:["Chile","Peru","Ecuador","Paraguay"], a:1, cat:"Copa", diff:"medium", type:"mcq" },
-  { q:"How many times has Brazil won the Copa América since 2000?", o:["2","3","1","4"], a:1, cat:"Copa", diff:"easy", type:"mcq", v:1 },
+  { q:"Which country has appeared in the most Copa América finals without winning?", o:["Chile","Peru","Ecuador","Paraguay"], a:1, cat:"Records", diff:"medium", type:"mcq" },
+  { q:"How many times has Brazil won the Copa América since 2000?", o:["2","3","1","4"], a:1, cat:"Records", diff:"easy", type:"mcq", v:1 },
   // -- Euros (2) --
   { q:"Which country won the inaugural UEFA Women's European Championship in 1984?", o:["England","Sweden","Norway","Germany"], a:1, cat:"Euros", diff:"medium", type:"mcq", v:1 },
   { q:"Which country's women's team has won the most UEFA Women's Euro titles (8)?", o:["Norway","Germany","Sweden","England"], a:1, cat:"Euros", diff:"medium", type:"mcq", v:1 },
@@ -5436,7 +5436,7 @@ const QB = [
   { q:"What is the record number of goals scored by a single player in one UEFA Champions League knockout tie?", o:["5","6","4","7"], a:1, cat:"UCL", diff:"easy", type:"mcq" },
   { q:"Which manager won the Champions League with clubs from TWO different countries — Porto (Portugal) and Inter Milan (Italy)?", o:["Carlo Ancelotti","José Mourinho","Pep Guardiola","Jupp Heynckes"], a:1, cat:"UCL", diff:"medium", type:"mcq", v:1, hint:"José Mourinho won the CL with Porto (2004) and Inter Milan (2010). No manager has ever won the CL with clubs from three different countries. Mourinho also won the Europa League with Man U (2017) and Conference League with Roma (2022)." },
   { q:"Which moment saw Ole Gunnar Solskjær score the stoppage-time winner to complete Manchester United's 1999 treble?", o:["FA Cup final","Champions League final","League Cup final","World Club Cup"], a:1, cat:"UCL", diff:"easy", type:"mcq", v:1 },
-  { q:"Which German club won the first edition of the UEFA Women's Cup in 2001-02 — the competition that would later be rebranded as the Champions League?", o:["Turbine Potsdam","FFC Frankfurt","VfL Wolfsburg","Bayern Munich"], a:1, cat:"Women", diff:"hard", type:"mcq", hint:"They beat Umeå 2-0 at their own Waldstadion on 23 May 2002, with Birgit Prinz among the scorers. They would go on to win the competition four times in total.", v:1 },
+  { q:"Which German club won the first edition of the UEFA Women's Cup in 2001-02 — the competition that would later be rebranded as the Champions League?", o:["Turbine Potsdam","FFC Frankfurt","VfL Wolfsburg","Bayern Munich"], a:1, cat:"UCL", diff:"hard", type:"mcq", hint:"They beat Umeå 2-0 at their own Waldstadion on 23 May 2002, with Birgit Prinz among the scorers. They would go on to win the competition four times in total.", v:1 },
   // -- WorldCup (32) --
   { q:"What was the name of the loud plastic horn blown by many spectators during the 2010 FIFA World Cup in South Africa?", o:["Zambezi","Vuvuzela","Kuduzela","Trompette"], a:1,tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Which player famously scored a \"Hand of God\" goal during the 1986 FIFA World Cup quarter-final?", o:["Diego Maradona","Pelé","Lionel Messi","Cristiano Ronaldo"], a:0,tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
@@ -5498,7 +5498,7 @@ const QB = [
   { q:"How many FIFA World Cup goals did Diego Maradona score across the 1982, 1986 and 1990 tournaments?", o:["6","7","8","10"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"His most famous came in 1986 — both the Hand of God and the Goal of the Century.", v:1 },
   { q:"What is the record number of goals scored by a single team in one Champions League match, set by Bayern Munich against Barcelona in 2020?", o:["6","7","8","9"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"The match was played in Lisbon during the COVID bubble tournament.", v:1 },
   { q:"Erling Haaland became the fastest player to score 100 Premier League goals in December 2025. How many matches did it take him?", o:["95","100","111","124"], a:2, cat:"PL", diff:"medium", type:"mcq", hint:"He broke Alan Shearer's record of 124 games by 13 matches.", v:1 },
-  { q:"Lionel Messi won back-to-back MLS MVP awards in 2024 and 2025 before leading Inter Miami to their first MLS Cup title. Which club did Miami beat in the 2025 final?", o:["LA Galaxy","NYCFC","Atlanta United","Seattle Sounders"], a:0, cat:"Records", diff:"hard", type:"mcq", hint:"Inter Miami completed a remarkable title win under Gerardo Martino.", v:1 },
+  { q:"Lionel Messi won back-to-back MLS MVP awards in 2024 and 2025 before leading Inter Miami to their first MLS Cup title. Which club did Miami beat in the 2025 final?", o:["Vancouver Whitecaps","NYCFC","Atlanta United","Seattle Sounders"], a:0, cat:"Records", diff:"hard", type:"mcq", hint:"Inter Miami beat Vancouver Whitecaps 3-1 in the final on December 6, 2025.", v:1 },
   { q:"Steven Gerrard scored a stunning long-range equaliser in the 2006 FA Cup final to force extra time. Which goalkeeper did he beat?", o:["Roy Carroll","Shaka Hislop","David James","Robert Green"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"Liverpool won the final on penalties against West Ham.", v:1 },
   { q:"Which African player was the first to score 100 Premier League goals, reaching the milestone on March 10, 2012?", o:["Nicolas Anelka","Didier Drogba","Mohamed Salah","Emmanuel Adebayor"], a:1, cat:"PL", diff:"hard", type:"mcq", hint:"The Ivory Coast striker scored all his Premier League goals for Chelsea.", v:1 },
 
@@ -5515,23 +5515,23 @@ const QB = [
   // ── BATCH ADD: Salah CL hat-trick record, Istanbul first goal, inaugural PL title ──
   { q:"Mohamed Salah scored the fastest hat-trick in Champions League history as a substitute in 2022. How long did it take him?", o:["4 minutes 12 seconds","5 minutes 33 seconds","6 minutes 12 seconds","7 minutes 45 seconds"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"He scored the hat-trick against Rangers in the 2022 Champions League group stage.", v:1 },
   { q:"In 2005, Liverpool famously came back from 3-0 down at half-time against AC Milan in Istanbul. Who scored Liverpool's first goal to begin the comeback?", o:["Steven Gerrard","Vladimir Smicer","Xabi Alonso","Djibril Cissé"], a:0, cat:"UCL", diff:"medium", type:"mcq", hint:"He headed in on the 54th minute. Smicer scored the second, Alonso converted a rebound for 3-3.", v:1 },
-  { q:"Which club won the inaugural Premier League title in the 1992-93 season?", o:["Arsenal","Manchester United","Blackburn Rovers","Aston Villa"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"They finished 10 points ahead of Aston Villa, ending a 26-year wait for a league title.", v:1 },
+  { q:"Which club won the inaugural Premier League title in the 1992-93 season?", o:["Arsenal","Man United","Blackburn Rovers","Aston Villa"], a:1, cat:"PL", diff:"medium", type:"mcq", hint:"They finished 10 points ahead of Aston Villa, ending a 26-year wait for a league title.", v:1 },
 
   // ── BATCH ADD: Salenko 1994 record, Brazil back-to-back WCs, Maradona Napoli, Spurs vs Ajax 2019 ──
   { q:"Russia's Oleg Salenko scored five goals in a single World Cup match in 1994 — a record that still stands. Which country did he score them against?", o:["Saudi Arabia","Bolivia","Cameroon","Greece"], a:2, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"Russia won the match 6-1. Salenko shared the Golden Boot with Bulgaria's Hristo Stoichkov.", v:1 },
   { q:"Only two countries have ever won back-to-back World Cups. Italy did it in 1934 and 1938. Which other country won consecutive World Cups in 1958 and 1962?", o:["Argentina","West Germany","Brazil","Uruguay"], a:2, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", hint:"No team has ever won three in a row.", v:1 },
   { q:"Napoli won their first Serie A title in 33 years in 2022-23. Which legendary player had last led them to the title back in 1990?", o:["Roberto Baggio","Marco van Basten","Diego Maradona","Ruud Gullit"], a:2, cat:"SerieA", diff:"medium", type:"mcq", hint:"The Argentine legend played for Napoli from 1984 to 1991, winning two Serie A titles.", v:1 },
-  { q:"In 2019 Tottenham reached their first ever Champions League final. Which club did they beat in a dramatic semi-final comeback, with Lucas Moura scoring a 96th-minute winner?", o:["Manchester City","Ajax","Barcelona","Juventus"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"Spurs trailed 3-0 on aggregate going into the second leg. Moura scored a hat-trick to seal it on away goals.", v:1 },
+  { q:"In 2019 Tottenham reached their first ever Champions League final. Which club did they beat in a dramatic semi-final comeback, with Lucas Moura scoring a 96th-minute winner?", o:["Man City","Ajax","Barcelona","Juventus"], a:1, cat:"UCL", diff:"medium", type:"mcq", hint:"Spurs trailed 3-0 on aggregate going into the second leg. Moura scored a hat-trick to seal it on away goals.", v:1 },
 
   // ── BATCH ADD: Juventus CL final losses, Salenko's group-stage exit ──
-  { q:"Which club has lost the most Champions League finals with seven final defeats?", o:["Bayern Munich","Benfica","Atletico Madrid","Juventus"], a:3, cat:"UCL", diff:"hard", type:"mcq", hint:"Despite reaching nine finals they have won it only twice.", v:1 },
+  { q:"Which club has lost the most Champions League finals with seven final defeats?", o:["Bayern Munich","Benfica","Atlético Madrid","Juventus"], a:3, cat:"UCL", diff:"hard", type:"mcq", hint:"Despite reaching nine finals they have won it only twice.", v:1 },
   { q:"At the 1994 World Cup, Oleg Salenko scored all 6 of his Golden Boot goals in the group stage. What happened to him after that?", o:["He was injured in the round of 16","He was dropped from the squad after the group stage","He retired from international football immediately after","Russia were eliminated before he could score again"], a:1, tag:"wc2026", cat:"WorldCup", diff:"hard", type:"mcq", hint:"He scored 5 in one match and 1 in another, then was dropped. He never played at a World Cup again.", v:1 },
 
   // ── BATCH ADD: Giggs single-club apps, Bernabéu innovations, Atalanta CL group, Lewandowski 5-in-9 ──
-  { q:"Ryan Giggs holds the record for most Premier League appearances at a single club with 632 games. Which club?", o:["Arsenal","Chelsea","Liverpool","Manchester United"], a:3, cat:"PL", diff:"medium", type:"mcq", hint:"He spent his entire 24-year career at this club.", v:1 },
+  { q:"Ryan Giggs holds the record for most Premier League appearances at a single club with 632 games. Which club?", o:["Arsenal","Chelsea","Liverpool","Man United"], a:3, cat:"PL", diff:"medium", type:"mcq", hint:"He spent his entire 24-year career at this club.", v:1 },
   { q:"The renovated Santiago Bernabéu stadium completed in 2023 features two remarkable innovations. What are they?", o:["A retractable pitch that slides outside","A retractable roof that closes in bad weather","A giant LED screen on the exterior","Both a retractable roof and retractable pitch"], a:3, cat:"LaLiga", diff:"hard", type:"mcq", hint:"The pitch slides out of the stadium on rails so the natural grass can grow in sunlight.", v:1 },
   { q:"Atalanta lost their first three Champions League group stage games in 2019-20 but still qualified. How did they manage it?", o:["They won their next five group games","They came back from 3 points down","They won their final three group games and qualified on goal difference","They were given a wild card entry"], a:2, cat:"UCL", diff:"hard", type:"mcq", hint:"They went on to beat Valencia 8-4 on aggregate in the round of 16.", v:1 },
-  { q:"Robert Lewandowski came off the bench at half-time for Bayern Munich in September 2015 and scored five goals in nine minutes — a Bundesliga record. Which team were Bayern playing?", o:["Borussia Dortmund","Schalke","Wolfsburg","Hamburg"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"He scored in the 51st, 52nd, 55th, 57th and 60th minutes. Bayern won 5-1.", v:1 },
+  { q:"Robert Lewandowski came off the bench at half-time for Bayern Munich in September 2015 and scored five goals in nine minutes — a Bundesliga record. Which team were Bayern playing?", o:["Dortmund","Schalke","Wolfsburg","Hamburg"], a:2, cat:"Bundesliga", diff:"medium", type:"mcq", hint:"He scored in the 51st, 52nd, 55th, 57th and 60th minutes. Bayern won 5-1.", v:1 },
 
   // CHAOS — quotes, moments, madness (merged from CHAOS_QB at the top of the file)
   ...CHAOS_QB,
@@ -7320,7 +7320,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .friends-search-wrap{margin-bottom:10px;}
 .friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
 .friends-search-inp:focus{border-color:var(--accent);background:var(--s1);}
-.friends-results{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.friends-results{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:320px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .friends-block{margin-top:14px;}
 .friends-block-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
 .friends-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--s2);}
@@ -8511,7 +8511,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
-function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEnabled, playerName, roomCode, isHost, onComplete, onBack, survivalBest }) {
+function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -8522,7 +8522,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [bestStreak, setBestStreak] = useState(0);
   const [timeLeft, setTimeLeft] = useState(timerDuration);
   const [speedScore, setSpeedScore] = useState(0);
-  const [opponentScore, setOpponentScore] = useState(null);
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
@@ -8638,11 +8637,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   if (done) return null;
   if (!q) return (
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:16}}>
-      <div style={{fontSize:32}}>⚽</div>
-      <div style={{fontFamily:"'Inter',sans-serif",fontSize:14,color:"var(--t2)"}}>Loading questions…</div>
-      <div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"var(--t3)"}}>mode:{mode} q:{questions.length}</div>
-      <button onClick={onBack} style={{marginTop:8,padding:"10px 20px",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,cursor:"pointer"}}>← Go Back</button>
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
+      <div style={{fontSize:36}}>⚽</div>
+      <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>Couldn't load questions</div>
+      <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>Please try again in a moment.</div>
+      <button onClick={onBack} className="btn-3d" style={{marginTop:6,maxWidth:240}}>Back to Home</button>
     </div>
   );
 
@@ -8907,6 +8906,10 @@ function OnlineGame({ onBack, userId, defaultName }) {
   // opposite player's progress is read from room.host_answers/guest_answers.
   const [picked, setPicked] = useState(null);
   const [locked, setLocked] = useState(false);
+  // Surfaced when the realtime channel goes CLOSED / CHANNEL_ERROR /
+  // TIMED_OUT — Supabase only reports our own connection state, not the
+  // opponent's, so this is the honest "your link is dead" indicator.
+  const [connectionLost, setConnectionLost] = useState(false);
 
   const channelRef = useRef(null);
   const advanceTimerRef = useRef(null);
@@ -8921,7 +8924,10 @@ function OnlineGame({ onBack, userId, defaultName }) {
   useEffect(() => { (async () => { try { await supabase.rpc("cleanup_old_game_rooms"); } catch {} })(); }, []);
 
   // Subscribe to the room row. Called after create/join. Tears down any
-  // existing channel first so we never end up with two listeners.
+  // existing channel first so we never end up with two listeners. The
+  // .subscribe() callback exposes the channel's lifecycle — if Supabase
+  // closes the channel or it errors out we surface a "connection lost"
+  // overlay so the player isn't left staring at a frozen screen.
   const subscribeRoom = useCallback((rc) => {
     if (channelRef.current && subscribedCodeRef.current !== rc) {
       try { supabase.removeChannel(channelRef.current); } catch {}
@@ -8935,7 +8941,11 @@ function OnlineGame({ onBack, userId, defaultName }) {
         { event: "UPDATE", schema: "public", table: "game_rooms", filter: `code=eq.${rc}` },
         (payload) => { if (payload.new) setRoom(payload.new); }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === "CLOSED" || status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          setConnectionLost(true);
+        }
+      });
     channelRef.current = ch;
     subscribedCodeRef.current = rc;
   }, []);
@@ -9061,6 +9071,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     setIsHost(false);
     setPicked(null);
     setLocked(false);
+    setConnectionLost(false);
     setView("menu");
   }, []);
 
@@ -9070,6 +9081,29 @@ function OnlineGame({ onBack, userId, defaultName }) {
   }, [code, t$]);
 
   // ── Renders ──────────────────────────────────────────────────────────────
+
+  // Connection lost trumps every other view. Supabase only reports our own
+  // socket state, so we can't say definitively whether the opponent left or
+  // we did — surface a single honest message and a way out.
+  if (connectionLost) {
+    const inGame = view === "playing" || view === "lobby" || view === "create-waiting";
+    return (
+      <div className="screen">
+        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
+          <div style={{fontSize:42}}>📡</div>
+          <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Connection lost</div>
+          <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,maxWidth:300}}>
+            {inGame
+              ? "The game has ended. Check your connection and start a new room to play again."
+              : "Couldn't stay connected to the room. Try again in a moment."}
+          </div>
+          <button className="btn-3d" onClick={onBack} style={{marginTop:6,maxWidth:240}}>Back to Home</button>
+          <button className="btn-3d ghost" onClick={onPlayAgain} style={{maxWidth:240}}>Try a new room</button>
+        </div>
+      </div>
+    );
+  }
 
   // Menu — Create or Join
   if (view === "menu") {
@@ -9918,11 +9952,12 @@ function LocalResults({ result, onHome, onRetry }) {
       // questions-out with 2+ survivors — highest score among survivors wins (or draw)
       const byScore = [...survivors].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
       const topScore = scores[byScore[0]?.id] ?? 0;
-      const topCount = byScore.filter(p => (scores[p.id] || 0) === topScore).length;
-      if (topCount > 1) {
+      const tiedAtTop = byScore.filter(p => (scores[p.id] || 0) === topScore);
+      if (tiedAtTop.length > 1) {
         iconTop = "🤝";
-        headline = "It's a draw!";
-        subHeadline = `${topCount} players tied on ${topScore}`;
+        headline = "It's a Tie!";
+        const names = tiedAtTop.map(p => p.name).join(" · ");
+        subHeadline = `${names} — all on ${topScore}`;
       } else {
         const top = byScore[0];
         iconTop = top?.emoji || "🏆";
@@ -9935,12 +9970,13 @@ function LocalResults({ result, onHome, onRetry }) {
     // Classic / Sprint
     ranked = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
     const topScore = scores[ranked[0]?.id] ?? 0;
-    const topCount = ranked.filter(p => (scores[p.id] || 0) === topScore).length;
+    const tiedAtTop = ranked.filter(p => (scores[p.id] || 0) === topScore);
     const top = ranked[0];
-    if (topCount > 1) {
+    if (tiedAtTop.length > 1) {
       iconTop = "🤝";
-      headline = "It's a draw!";
-      subHeadline = `${topCount} players tied on ${topScore}`;
+      headline = "It's a Tie!";
+      const names = tiedAtTop.map(p => p.name).join(" · ");
+      subHeadline = `${names} — all on ${topScore}`;
     } else {
       iconTop = top?.emoji || "🏆";
       headline = top ? `${top.name} wins!` : "Game Over";
@@ -10362,124 +10398,8 @@ async function shareCard(type, data, opts = {}) {
   }
 }
 
-// ─── BRANDED SCORE CARD (LEGACY 1080×1080) ──────────────────────────────────
-// Kept as the text-fallback path for shareScore. New code paths should use
-// generateShareCard() / shareCard() above.
-function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak, date, cardLabel, beatLine }) {
-  const W = 1080, H = 1080;
-  const canvas = document.createElement("canvas");
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext("2d");
-
-  // Background
-  ctx.fillStyle = "#0a0a0a";
-  ctx.fillRect(0, 0, W, H);
-
-  // Soft green glow behind the score number
-  const radial = ctx.createRadialGradient(W/2, 540, 40, W/2, 540, 480);
-  radial.addColorStop(0, "rgba(34,197,94,0.18)");
-  radial.addColorStop(1, "rgba(34,197,94,0)");
-  ctx.fillStyle = radial;
-  ctx.fillRect(0, 0, W, H);
-
-  // Top accent bar
-  const grad = ctx.createLinearGradient(0, 0, W, 0);
-  grad.addColorStop(0, "#16a34a");
-  grad.addColorStop(1, "#22c55e");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, 14);
-
-  // Wordmark
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 64px Inter, -apple-system, sans-serif";
-  ctx.fillText("⚽ Ball IQ", W/2, 145);
-
-  // Mode subtitle
-  ctx.fillStyle = "#22c55e";
-  ctx.font = "600 30px Inter, -apple-system, sans-serif";
-  ctx.fillText(modeLabel || "Quiz", W/2, 200);
-
-  // Eyebrow caption above the score ("BALL IQ" etc.)
-  if (scoreCaption) {
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = "700 28px Inter, -apple-system, sans-serif";
-    ctx.fillText(scoreCaption, W/2, 360);
-  }
-
-  // Main score — huge accent green (#58CC02)
-  ctx.fillStyle = "#58CC02";
-  const scoreFontSize = String(mainScore).length > 4 ? 220 : 280;
-  ctx.font = `900 ${scoreFontSize}px Inter, -apple-system, sans-serif`;
-  ctx.fillText(String(mainScore), W/2, 580);
-
-  // Card label — appears beneath the score for balliq (iq label + emoji).
-  if (cardLabel) {
-    ctx.fillStyle = "#F0F1F5";
-    ctx.font = "800 42px Inter, -apple-system, sans-serif";
-    ctx.fillText(cardLabel, W/2, 660);
-  }
-
-  // Percentile — rendered as a rounded tinted pill for balliq, plain text otherwise.
-  if (percentile) {
-    if (cardLabel) {
-      // Pill background
-      ctx.font = "700 34px Inter, -apple-system, sans-serif";
-      const padX = 28, padY = 16;
-      const tw = ctx.measureText(percentile).width;
-      const pillW = tw + padX * 2;
-      const pillH = 34 + padY * 2;
-      const pillX = (W - pillW) / 2;
-      const pillY = 720;
-      const r = pillH / 2;
-      ctx.fillStyle = "rgba(88,204,2,0.15)";
-      ctx.beginPath();
-      ctx.moveTo(pillX + r, pillY);
-      ctx.lineTo(pillX + pillW - r, pillY);
-      ctx.quadraticCurveTo(pillX + pillW, pillY, pillX + pillW, pillY + r);
-      ctx.lineTo(pillX + pillW, pillY + pillH - r);
-      ctx.quadraticCurveTo(pillX + pillW, pillY + pillH, pillX + pillW - r, pillY + pillH);
-      ctx.lineTo(pillX + r, pillY + pillH);
-      ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - r);
-      ctx.lineTo(pillX, pillY + r);
-      ctx.quadraticCurveTo(pillX, pillY, pillX + r, pillY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "#8AE042";
-      ctx.textBaseline = "middle";
-      ctx.fillText(percentile, W/2, pillY + pillH/2);
-      ctx.textBaseline = "alphabetic";
-    } else {
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "700 38px Inter, -apple-system, sans-serif";
-      ctx.fillText(percentile, W/2, 750);
-    }
-  }
-
-  // "Can you beat this?" hook for balliq
-  if (beatLine) {
-    ctx.fillStyle = "#F0F1F5";
-    ctx.font = "800 40px Inter, -apple-system, sans-serif";
-    ctx.fillText(beatLine, W/2, 900);
-  }
-
-  // Bottom stats row
-  const parts = [];
-  if (streak && streak > 0) parts.push(`🔥 ${streak}-day streak`);
-  if (date) parts.push(date);
-  if (parts.length) {
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = "500 28px Inter, -apple-system, sans-serif";
-    ctx.fillText(parts.join("   ·   "), W/2, beatLine ? 955 : (percentile ? 840 : 790));
-  }
-
-  // Watermark
-  ctx.fillStyle = "#6b7280";
-  ctx.font = "600 26px Inter, -apple-system, sans-serif";
-  ctx.fillText("ball-iq.app", W/2, 1030);
-
-  return canvas.toDataURL("image/png");
-}
+// drawScoreCard removed — generateShareCard / shareCard above is the
+// canonical share-card path. Plaintext fallbacks live inside shareScore.
 
 
 // ─── CONFETTI ─────────────────────────────────────────────────────────────────
@@ -11327,7 +11247,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Ball IQ</div>
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: April 25, 2026</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
 
         <div style={{
           background: "#1A1D27", borderRadius: 16,
@@ -13074,7 +12994,6 @@ function AppInner() {
   const [questions, setQuestions] = useState([]);
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
-  const [onlineConf, setOnlineConf] = useState(null);
   const [stats, setStats] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_stats");
@@ -13154,11 +13073,28 @@ function AppInner() {
   // hydrated from yesterday's localStorage key on mount; without this effect a
   // user who leaves the tab open past midnight would still see the "already
   // done" toast until they reload. Polls once a minute (cheap, well under the
-  // resolution that matters here).
+  // resolution that matters here). After the date flips we also rebuild
+  // dailyHistory from localStorage so the Daily tab calendar surfaces the
+  // freshly-completed previous day immediately.
   useEffect(() => {
     const dayKey = () => {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    };
+    const rebuildHistory = () => {
+      try {
+        const hist = {};
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          const m = k && k.match(/^biq_daily_(\d{4}-\d{2}-\d{2})$/);
+          if (!m) continue;
+          try {
+            const parsed = JSON.parse(localStorage.getItem(k));
+            if (typeof parsed?.score === "number") hist[m[1]] = parsed.score;
+          } catch {}
+        }
+        setDailyHistory(hist);
+      } catch {}
     };
     let lastKey = dayKey();
     const id = setInterval(() => {
@@ -13179,6 +13115,7 @@ function AppInner() {
         setDailyDone(false);
         setDailyScore(null);
       }
+      rebuildHistory();
     }, 60_000);
     return () => clearInterval(id);
   }, []);
@@ -13614,10 +13551,6 @@ function AppInner() {
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
   }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
-
-  const handleOnlineStart = useCallback((conf) => {
-    setOnlineConf(conf); setQuestions(conf.questions); setMode("online"); setScreen("quiz");
-  }, []);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
@@ -14501,9 +14434,6 @@ function AppInner() {
               timerEnabled={settings.timer !== false}
               soundEnabled={settings.sound === true}
               hintsEnabled={settings.hints !== false}
-              playerName={onlineConf?.playerName}
-              roomCode={onlineConf?.roomCode}
-              isHost={onlineConf?.isHost}
               onComplete={handleComplete}
               onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
             />
