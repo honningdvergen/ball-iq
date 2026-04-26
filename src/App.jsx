@@ -39,6 +39,11 @@ if (typeof window !== 'undefined' && !window.storage) {
   };
 }
 
+// ─── APP META ─────────────────────────────────────────────────────────────────
+// Single source of truth for the version string — surfaced in Settings → About.
+// Bump on every shipping release.
+const APP_VERSION = "1.0.0";
+
 // ─── CHAOS QUESTIONS ──────────────────────────────────────────────────────────
 // Placeholder for Chaos mode content — quotes, weird moments, cult-football trivia.
 // Every item should carry cat:"chaos" (and optionally tag:"chaos") so the mode's
@@ -6284,29 +6289,28 @@ function iqPercentile(iq) {
 }
 
 function iqPercentileLabel(iq) {
-  // Rank-based label used in share text + recap overlay. The previous
-  // "Top X% of football fans" buckets were not derived from real user
-  // data so they were replaced with non-statistical descriptors — App
-  // Store guideline 2.3 (Accurate Metadata) plus the broader anti-
-  // deception rule frowns on uncalibrated percentile claims.
-  if (iq >= 155) return "The Special One 👑";
-  if (iq >= 150) return "World Class 🌟";
-  if (iq >= 145) return "Elite Level ⚡";
-  if (iq >= 140) return "Football Genius 🧠";
-  if (iq >= 135) return "Tactical Master 🎯";
-  if (iq >= 130) return "Football Nerd 📚";
-  if (iq >= 125) return "Sharp Fan 🔍";
-  if (iq >= 120) return "Above Average ⚽";
-  if (iq >= 115) return "Solid Knowledge 💪";
-  if (iq >= 110) return "Getting There 📈";
-  if (iq >= 105) return "Decent Fan 👍";
-  if (iq >= 100) return "Average Fan ⚽";
-  if (iq >= 95)  return "Still Learning 📖";
-  if (iq >= 90)  return "Casual Viewer 📺";
-  if (iq >= 85)  return "New to Football 🌱";
-  if (iq >= 80)  return "Just Starting Out 🏃";
-  if (iq >= 75)  return "Room to Grow 💭";
-  return "Football Beginner 🐣";
+  // Football-culture rank labels — fun, descriptive, and crucially they make
+  // no statistical claim. The earlier "Top X% of football fans" version was
+  // pulled because the buckets weren't derived from real user data, which
+  // risked falling foul of App Store guideline 2.3 (Accurate Metadata).
+  if (iq >= 155) return "You are José Mourinho 👑";
+  if (iq >= 150) return "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹";
+  if (iq >= 145) return "Clearly plays Football Manager ⌨️";
+  if (iq >= 140) return "Smarter than most football pundits 📺";
+  if (iq >= 135) return "Could manage in the Championship 🧠";
+  if (iq >= 130) return "Could manage a League Two side ⚽";
+  if (iq >= 125) return "Watches the U21s for fun 🔭";
+  if (iq >= 120) return "Knows every Champions League anthem word 🎵";
+  if (iq >= 115) return "Has a favourite lesser-known league 🌍";
+  if (iq >= 110) return "Argues about the offside rule correctly 📐";
+  if (iq >= 105) return "Watches Match of the Day till the end 📺";
+  if (iq >= 100) return "Solid pub quiz teammate ⚽";
+  if (iq >= 95)  return "Watches El Clasico but skips the League Cup 👀";
+  if (iq >= 90)  return "Still know more than my dad 😅";
+  if (iq >= 85)  return "Calls it soccer sometimes 😬";
+  if (iq >= 80)  return "Still learning the offside rule 😬";
+  if (iq >= 75)  return "Thought Zidane was a manager first 😂";
+  return "Asked if Ronaldo plays for Brazil 💀";
 }
 
 const IQ_LABELS = [
@@ -6461,13 +6465,13 @@ async function gameRoomCreate({ code, hostId, hostName }) {
     difficulty: 'medium',
   };
   const { data, error } = await supabase.from('game_rooms').insert(row).select().single();
-  if (error) console.error('[room] create failed', _fullRoomErr(error));
+  if (error) console.error("[room] create failed", error?.message || "Unknown error");
   return { data, error };
 }
 
 async function gameRoomGet(code) {
   const { data, error } = await supabase.from('game_rooms').select('*').eq('code', code).maybeSingle();
-  if (error) console.error('[room] get failed', _fullRoomErr(error));
+  if (error) console.error("[room] get failed", error?.message || "Unknown error");
   return { data, error };
 }
 
@@ -6482,7 +6486,7 @@ async function gameRoomJoin({ code, guestId, guestName }) {
     .is('guest_id', null)
     .select()
     .maybeSingle();
-  if (error) console.error('[room] join failed', _fullRoomErr(error));
+  if (error) console.error("[room] join failed", error?.message || "Unknown error");
   return { data, error };
 }
 
@@ -6505,7 +6509,7 @@ async function gameRoomStart({ code, mode, questions }) {
     .eq('code', code)
     .select()
     .maybeSingle();
-  if (error) console.error('[room] start failed', _fullRoomErr(error));
+  if (error) console.error("[room] start failed", error?.message || "Unknown error");
   return { data, error };
 }
 
@@ -6517,7 +6521,7 @@ async function gameRoomSubmitAnswer({ code, isHost, answers, score, finished }) 
     ? { host_answers: answers, host_score: score, host_finished: !!finished }
     : { guest_answers: answers, guest_score: score, guest_finished: !!finished };
   const { error } = await supabase.from('game_rooms').update(patch).eq('code', code);
-  if (error) console.error('[room] submit failed', _fullRoomErr(error));
+  if (error) console.error("[room] submit failed", error?.message || "Unknown error");
   return { error };
 }
 
@@ -6526,7 +6530,7 @@ async function gameRoomSubmitAnswer({ code, isHost, answers, score, finished }) 
 // the first finisher.
 async function gameRoomMarkFinished(code) {
   const { error } = await supabase.from('game_rooms').update({ status: 'finished' }).eq('code', code);
-  if (error) console.error('[room] mark finished failed', _fullRoomErr(error));
+  if (error) console.error("[room] mark finished failed", error?.message || "Unknown error");
   return { error };
 }
 
@@ -9103,7 +9107,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     try {
       const rc = generateCode();
       const { data, error } = await gameRoomCreate({ code: rc, hostId: userId, hostName: name.trim() });
-      if (error || !data) { t$(`Create failed: ${(error?.message || "try again").slice(0, 60)}`); return; }
+      if (error || !data) { t$("⚠️ Couldn't create room"); return; }
       setRoom(data);
       setCode(rc);
       setIsHost(true);
@@ -9123,12 +9127,12 @@ function OnlineGame({ onBack, userId, defaultName }) {
     setJoining(true);
     try {
       const { data: existing, error: getErr } = await gameRoomGet(rc);
-      if (getErr) { t$(`Lookup failed: ${(getErr.message || "try again").slice(0, 60)}`); return; }
+      if (getErr) { t$("⚠️ Couldn't look up room"); return; }
       if (!existing) { t$("Room not found — check the code and try again"); return; }
       if (existing.status === "playing" || existing.status === "finished") { t$("This game has already started"); return; }
       if (existing.guest_id && existing.guest_id !== userId) { t$("This room is already full"); return; }
       const { data: joined, error: joinErr } = await gameRoomJoin({ code: rc, guestId: userId, guestName: name.trim() });
-      if (joinErr) { t$(`Join failed: ${(joinErr.message || "try again").slice(0, 60)}`); return; }
+      if (joinErr) { t$("⚠️ Couldn't join room"); return; }
       if (!joined) { t$("This room is already full"); return; }
       setRoom(joined);
       setCode(rc);
@@ -9148,7 +9152,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     const qs = pickOnlineQuestions(selectedMode);
     if (!qs || qs.length < 5) return t$("Not enough questions for this mode");
     const { error } = await gameRoomStart({ code: room.code, mode: selectedMode, questions: qs });
-    if (error) t$(`Start failed: ${(error.message || "try again").slice(0, 60)}`);
+    if (error) t$("⚠️ Couldn't start game");
   }, [room, isHost, selectedMode, t$]);
 
   const onPickOption = useCallback(async (optIdx) => {
@@ -9198,7 +9202,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
 
   const copyCode = useCallback(() => {
     if (!code) return;
-    navigator.clipboard?.writeText(code).then(() => t$("Code copied 📋")).catch(() => {});
+    navigator.clipboard?.writeText(code).then(() => t$("📋 Code copied")).catch(() => {});
   }, [code, t$]);
 
   // ── Renders ──────────────────────────────────────────────────────────────
@@ -9496,7 +9500,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
           return;
         }
       } catch {}
-      try { await navigator.clipboard?.writeText(text); t$("Result copied 📋"); } catch {}
+      try { await navigator.clipboard?.writeText(text); t$("📋 Result copied"); } catch {}
     };
 
     return (
@@ -11280,11 +11284,11 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="settings-card">
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Version</div></div>
-            <div className="sr-right"><div className="sr-value">Ball IQ v1.1.0</div></div>
+            <div className="sr-right"><div className="sr-value">Ball IQ v{APP_VERSION}</div></div>
           </div>
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Questions</div></div>
-            <div className="sr-right"><div className="sr-value">4,300+</div></div>
+            <div className="sr-right"><div className="sr-value">{(QB.length + TF_STATEMENTS.length).toLocaleString()}</div></div>
           </div>
           <div className="settings-row" onClick={onShowPrivacy}>
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
@@ -11759,7 +11763,7 @@ class ErrorBoundary extends React.Component {
     return { hasError: true, error };
   }
   componentDidCatch(error, info) {
-    console.error("Ball IQ error:", error, info);
+    console.error("[boundary]", error?.message || "Unknown error");
   }
   render() {
     if (this.state.hasError) {
@@ -12028,7 +12032,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       if (error) throw error;
       setFriendships(data || []);
     } catch (e) {
-      console.error("[friends] load error", e);
+      console.error("[friends] load", e?.message || "Unknown error");
     } finally {
       setLoading(false);
     }
@@ -12070,7 +12074,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         if (error) throw error;
         setResults((data || []).filter(p => !excludedIds.has(p.id)));
       } catch (e) {
-        console.error("[friends] search error", e);
+        console.error("[friends] search", e?.message || "Unknown error");
         if (!cancelled) setResults([]);
       } finally {
         if (!cancelled) setSearching(false);
@@ -12090,7 +12094,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       setResults(prev => prev.filter(p => p.id !== target.id));
       loadFriendships();
     } catch (e) {
-      console.error("[friends] sendRequest error", e);
+      console.error("[friends] sendRequest", e?.message || "Unknown error");
       toast("Couldn't send request — try again");
     }
   };
@@ -12104,7 +12108,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       if (error) throw error;
       loadFriendships();
     } catch (e) {
-      console.error("[friends] setStatus error", e);
+      console.error("[friends] setStatus", e?.message || "Unknown error");
       toast("Couldn't update — try again");
     }
   };
@@ -12118,7 +12122,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       if (error) throw error;
       loadFriendships();
     } catch (e) {
-      console.error("[friends] cancel error", e);
+      console.error("[friends] cancel", e?.message || "Unknown error");
       toast("Couldn't cancel — try again");
     }
   };
@@ -12161,7 +12165,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {search.trim().length >= 2 && (
         <div className="friends-results">
           {searching && <div className="friends-muted">Searching…</div>}
-          {!searching && results.length === 0 && <div className="friends-muted">No players found</div>}
+          {!searching && results.length === 0 && <div className="friends-muted">No players found — try a different username</div>}
           {results.map(r => (
             <div key={r.id} className="friends-row">
               <div className="friends-avatar">{r.avatar || "⚽"}</div>
@@ -12362,16 +12366,31 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       {onShowWeekly && (
         <button className="share-profile-btn" style={{marginTop:-4}} onClick={onShowWeekly}>Weekly Summary 📊</button>
       )}
-      <div className="stat-grid" style={{marginBottom:16}}>
-        <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="ds-eyebrow st-key">Games</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="ds-eyebrow st-key">Day Streak</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
-        <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
-        {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
-        {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
-        {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
-      </div>
+      {(stats.gamesPlayed || 0) === 0 ? (
+        <div style={{
+          background:"var(--s1)",
+          border:"1px solid var(--border)",
+          borderRadius:14,
+          padding:"22px 16px",
+          marginBottom:16,
+          textAlign:"center",
+        }}>
+          <div style={{fontSize:32, marginBottom:8}}>⚽</div>
+          <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>No stats yet</div>
+          <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>Play your first game to see your stats here</div>
+        </div>
+      ) : (
+        <div className="stat-grid" style={{marginBottom:16}}>
+          <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="ds-eyebrow st-key">Games</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="ds-eyebrow st-key">Day Streak</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
+          {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
+          {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
+          {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
+        </div>
+      )}
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
         const topIdx = LEVELS.length - 1;
@@ -13388,6 +13407,11 @@ function AppInner() {
     }).catch(() => {});
   }, []);
 
+  // Tracks whether we've already toasted the user about a failed score
+  // sync this session — we don't want to nag them after every game when
+  // their connection is flaky.
+  const scoreSyncToastShownRef = useRef(false);
+
   const saveStats = useCallback((newResult) => {
     const newStreak = newResult.bestStreak || 0;
     const isSpecialMode = mode === "hotstreak" || mode === "truefalse";
@@ -13430,8 +13454,8 @@ function AppInner() {
         total_questions: newResult.total || 10,
       }).then(({ error }) => {
         if (error) {
-          console.error('Score save failed:', error);
-          showToast("Score couldn't be saved — check your connection");
+          console.error("[score save]", error?.message || "Unknown error");
+          showToast("⚠️ Score didn't save — check your connection");
         }
       });
     }
@@ -13444,6 +13468,7 @@ function AppInner() {
     // those two.
     if (user?.id) {
       (async () => {
+        let syncFailed = false;
         try {
           const scoreDelta = newResult.score || 0;
           if (scoreDelta > 0) {
@@ -13451,14 +13476,28 @@ function AppInner() {
               user_id: user.id,
               score_delta: scoreDelta,
             });
-            if (rpcErr) console.error('increment_score RPC failed:', rpcErr);
+            if (rpcErr) {
+              console.error("[score sync]", rpcErr?.message || "Unknown error");
+              syncFailed = true;
+            }
           }
-          await supabase.from('profiles').update({
+          const { error: updErr } = await supabase.from('profiles').update({
             games_played: updated.gamesPlayed,
             correct_answers: updated.totalCorrect,
           }).eq('id', user.id);
+          if (updErr) {
+            console.error("[profile sync]", updErr?.message || "Unknown error");
+            syncFailed = true;
+          }
         } catch (e) {
-          console.error('Profile sync failed:', e);
+          console.error("[profile sync]", e?.message || "Unknown error");
+          syncFailed = true;
+        }
+        // Surface a single quiet toast per session — flaky connections
+        // shouldn't nag the user after every game.
+        if (syncFailed && !scoreSyncToastShownRef.current) {
+          scoreSyncToastShownRef.current = true;
+          showToast("⚠️ Score didn't sync — check your connection");
         }
       })();
     }
@@ -13490,7 +13529,7 @@ function AppInner() {
       // Reset category for special modes that ignore it
       if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
-        showToast(`Already done today — ${dailyScore}/7. Come back tomorrow! 📅`);
+        showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
         return;
       }
       let qs = [];
@@ -13530,8 +13569,8 @@ function AppInner() {
       setQuestions(qs);
       setScreen("quiz");
     } catch (err) {
-      console.error("startMode error:", err);
-      showToast(`Error: ${err.message || "Could not start mode"}`);
+      console.error("[startMode]", err?.message || "Unknown error");
+      showToast("⚠️ Couldn't start mode");
     }
   }, [showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
@@ -13556,26 +13595,26 @@ function AppInner() {
 
     // Milestone celebrations
     const newTotal = (stats.gamesPlayed || 0) + 1;
-    if (newTotal === 10) showToast("🎉 10 games played! You're on a roll!");
-    else if (newTotal === 50) showToast("🔥 50 games! Serious Ball IQ energy.");
-    else if (newTotal === 100) showToast("🏆 100 games! You're a Ball IQ legend.");
-    else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played! Keep going!`);
+    if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
+    else if (newTotal === 50) showToast("🔥 50 games — serious Ball IQ energy");
+    else if (newTotal === 100) showToast("🏆 100 games — you're a Ball IQ legend");
+    else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played, keep going`);
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      setTimeout(() => { showToast("🔥 7-day streak! You're building a habit!"); haptic("heavy"); playSound("streak"); }, 1200);
+      setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      setTimeout(() => { showToast("🏆 30-day streak! Incredible dedication!"); haptic("heavy"); playSound("streak"); }, 1200);
+      setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      setTimeout(() => { showToast("💎 100-day streak! You are a legend!"); haptic("heavy"); playSound("streak"); }, 1200);
+      setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); }, 1200);
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
     // 🎉 PERFECT SCORE celebration
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
-      setTimeout(() => showToast("🎉 PERFECT! Every question right!"), 800);
+      setTimeout(() => showToast("🎉 Perfect — every question right"), 800);
       try { navigator.vibrate?.([60, 40, 60, 40, 60]); } catch {}
     }
 
@@ -13595,12 +13634,12 @@ function AppInner() {
 
     // 🔄 COMEBACK celebration — got Q1 wrong, then nailed the rest
     if (mode === "classic" && res.wrongAnswers && res.wrongAnswers.length === 1 && res.score >= 8) {
-      setTimeout(() => showToast("🔄 Great comeback! Only missed one after a slow start!"), 1600);
+      setTimeout(() => showToast("🔄 Great comeback — only missed one after a slow start"), 1600);
     }
 
     // 🎖️ CATEGORY MASTERY — 10+ correct in a row from same category
     if (mode === "hotstreak" && res.score >= 10 && cat && cat !== "All") {
-      setTimeout(() => showToast(`🎖️ ${cat} mastery! ${res.score} in a row!`), 1600);
+      setTimeout(() => showToast(`🎖️ ${cat} mastery — ${res.score} in a row`), 1600);
     }
 
     // 🏆 BALL IQ new high
@@ -13612,7 +13651,7 @@ function AppInner() {
 
     // 💪 SURVIVAL new best (wrong answers = 0 means they only died on one)
     if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0) && res.score >= 10) {
-      setTimeout(() => showToast(`💪 New Survival record: ${res.score} questions!`), 1400);
+      setTimeout(() => showToast(`💪 New Survival record — ${res.score} questions`), 1400);
       setStats(p => ({...p, bestSurvival: res.score}));
     }
 
@@ -13788,12 +13827,12 @@ function AppInner() {
       "#BallIQ"
     ].filter(Boolean).join("\n");
     if (navigator.share) navigator.share({ text: lines }).catch(()=>{});
-    else navigator.clipboard?.writeText(lines).then(()=>showToast("Profile copied!")).catch(()=>{});
+    else navigator.clipboard?.writeText(lines).then(()=>showToast("📋 Profile copied")).catch(()=>{});
   }, [xp, stats, profile, loginStreak]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
-    showToast("Question history cleared ✓");
+    showToast("✓ Question history cleared");
   }, [showToast]);
 
   // Called by SettingsScreen after the delete_user_account RPC has finished.
@@ -13802,7 +13841,7 @@ function AppInner() {
   // stale leaderboard / IQ history. Errors surface as a toast.
   const onAccountDeleted = useCallback(({ error }) => {
     if (error) {
-      showToast("Couldn't delete account — please try again");
+      showToast("⚠️ Couldn't delete account — please try again");
       return;
     }
     setStats({ gamesPlayed: 0, bestScore: 0, bestStreak: 0 });
@@ -13835,7 +13874,7 @@ function AppInner() {
         }
       } catch {}
     })();
-    showToast("Stats cleared ✓");
+    showToast("✓ Stats cleared");
   }, [showToast]);
 
   // Apply theme and font size to document root
@@ -13910,7 +13949,7 @@ function AppInner() {
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
   const useShield = useCallback(() => {
     setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
-    showToast("🛡️ Streak shield activated! Your streak is safe today.");
+    showToast("🛡️ Streak shield activated — your streak is safe today");
   }, [showToast]);
   const shareDaily = useCallback(async () => {
     // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
@@ -13945,7 +13984,7 @@ function AppInner() {
     }
     try {
       await navigator.clipboard.writeText(text);
-      showToast("Copied to clipboard! 📋");
+      showToast("📋 Copied to clipboard");
     } catch {
       showToast("Couldn't share — try again");
     }
@@ -14027,7 +14066,7 @@ function AppInner() {
 
   const playDailyForDate = useCallback((date) => {
     const qs = getDailyQsForDate(date);
-    if (!qs || qs.length === 0) { showToast("No questions available for that day."); return; }
+    if (!qs || qs.length === 0) { showToast("No questions available for that day"); return; }
     haptic("soft");
     setActiveDailyDate(date);
     setMode("daily");
@@ -14038,7 +14077,7 @@ function AppInner() {
 
   const viewDailyScore = useCallback((date, score) => {
     const label = date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
-    showToast(`${label} — you scored ${score}/7 🏅`);
+    showToast(`🏅 ${label} — you scored ${score}/7`);
   }, [showToast]);
 
   return (
@@ -14230,7 +14269,7 @@ function AppInner() {
                     className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
                     aria-disabled={opt.comingSoon || undefined}
                     onClick={() => opt.comingSoon
-                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned!`)
+                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned`)
                       : pickLeague(opt.id, opt.name)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
@@ -14280,7 +14319,7 @@ function AppInner() {
                     className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
                     aria-disabled={opt.comingSoon || undefined}
                     onClick={() => opt.comingSoon
-                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned!`)
+                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned`)
                       : launchLeagueInMode(opt.id)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
@@ -14453,9 +14492,9 @@ function AppInner() {
                 // True/False, Guess the Player and Tiki Taka Toe sit at the
                 // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
                 // and CSS remain in place — only the entry point is hidden.
-                { key:"truefalse",   icon:"✅",  name:"True or False",    desc:"Coming soon", comingSoon:true, onTap:() => showToast("✅ True or False is coming soon — stay tuned!") },
-                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned!") },
-                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned!") },
+                { key:"truefalse",   icon:"✅",  name:"True or False",    desc:"Coming soon", comingSoon:true, onTap:() => showToast("✅ True or False is coming soon — stay tuned") },
+                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned") },
+                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
                 <button
                   key={key}
