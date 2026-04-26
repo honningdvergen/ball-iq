@@ -6765,8 +6765,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:var(--ui-font-size,14px);}
-.q-text{font-size:var(--q-font-size,18px) !important;}
+.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
+.q-text{font-size:18px !important;}
 .sbar{height:env(safe-area-inset-top,0);}
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
 .logo{font-size:19px;font-weight:800;letter-spacing:-0.4px;color:var(--text);flex-shrink:0;}
@@ -6820,8 +6820,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;}
-.play-card-name{font-size:calc(var(--q-font-size,18px) * 0.83);font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.play-card-desc{font-size:calc(var(--q-font-size,18px) * 0.67);color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
+.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
 .play-card.coming-soon{opacity:0.78;}
@@ -6926,7 +6926,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
-.app[data-text-size="L"] .q-card{padding:18px 16px;}
 /* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
 .q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
@@ -7271,7 +7270,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-avatar{width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;transition:all 0.2s;}
 .profile-avatar:active{transform:scale(0.93);}
 .profile-avatar-edit{position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0a1a00;font-weight:800;cursor:pointer;}
-.profile-name{font-size:calc(var(--q-font-size,18px) * 1.11);font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
+.profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
 .profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);color:var(--t2);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
@@ -8437,7 +8436,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
         <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:'var(--accent)',letterSpacing:2}}>✅ True or False</span>
       </div>
       <div className="q-card" style={{minHeight:140,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
-        <div className="q-text" style={{fontSize:'var(--q-font-size, 18px)',lineHeight:1.5}}>{q?.s || q?.q}</div>
+        <div className="q-text" style={{fontSize:18,lineHeight:1.5}}>{q?.s || q?.q}</div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
         <button onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
@@ -8658,7 +8657,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
       <div className="q-card">
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
-        <div className="q-text" style={{fontSize:"var(--q-font-size, 18px)"}}>{q.q}</div>
+        <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>
 
       {isTF ? (
@@ -11123,14 +11122,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </div>
-              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
-              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
-                <div className="sr-left">
-                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
-                  <div className="sr-desc">Permanently remove your profile and data</div>
-                </div>
-                <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </button>
             </>
           ) : user ? (
             <>
@@ -11150,14 +11141,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
-              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
-              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
-                <div className="sr-left">
-                  <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
-                  <div className="sr-desc">Permanently remove your profile and data</div>
-                </div>
-                <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </button>
             </>
           ) : (
             <>
@@ -11173,13 +11156,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
-              <div style={{height:1,background:"var(--border)",margin:"4px 0"}} />
-              <div className="settings-row" style={{cursor:"default",opacity:0.5}}>
-                <div className="sr-left">
-                  <div className="sr-label">🗑️ Delete account</div>
-                  <div className="sr-desc">Sign in to manage your account</div>
-                </div>
-              </div>
             </>
           )}
         </div>
@@ -11198,21 +11174,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 {["dark","light"].map(thm => (
                   <button key={thm} className={`size-btn${settings.theme===thm?" on":""}`} onClick={() => onUpdate({theme:thm})}>
                     {thm === "dark" ? "🌙 Dark" : "☀️ Light"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="settings-row">
-            <div className="sr-left">
-              <div className="sr-label">Text size</div>
-              <div className="sr-desc">Question and UI size</div>
-            </div>
-            <div className="sr-right">
-              <div className="size-btns">
-                {[["S","Small"],["M","Medium"],["L","Large"]].map(([key, label]) => (
-                  <button key={key} className={`size-btn${(settings.textSize||"M")===key?" on":""}`} onClick={() => onUpdate({textSize:key})} aria-label={`${label} text`}>
-                    {label}
                   </button>
                 ))}
               </div>
@@ -11308,6 +11269,31 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-desc">Allow recently-seen questions to reappear now</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Danger zone — bottom of the screen so destructive actions are
+         clearly separated from everyday settings. The same row appears in
+         three states (signed-in, mid-auth, guest) but always at this
+         position so users know where to find it. */}
+      <div className="settings-section" style={{marginTop:24}}>
+        <div className="settings-card">
+          {user ? (
+            <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
+              <div className="sr-left">
+                <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
+                <div className="sr-desc">Permanently remove your profile and data</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </button>
+          ) : (
+            <div className="settings-row" style={{cursor:"default",opacity:0.5}}>
+              <div className="sr-left">
+                <div className="sr-label">🗑️ Delete account</div>
+                <div className="sr-desc">Sign in to manage your account</div>
+              </div>
             </div>
           )}
         </div>
@@ -11697,7 +11683,7 @@ function OnboardingScreen({ onDone }) {
             const raw = localStorage.getItem("biq_settings");
             const s = raw
               ? JSON.parse(raw)
-              : { textSize: "M", defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false };
+              : { defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false };
             s.defaultDiff = diffFor;
             localStorage.setItem("biq_settings", JSON.stringify(s));
           } catch {}
@@ -13074,7 +13060,6 @@ const HOW_TO_PLAY = {
   balliq: { title:`🧠 ${APP_NAME} Test`, steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
 };
 
-const TEXT_SIZE_MAP = { S: "15px", M: "18px", L: "21px" };
 // Shared hide style so the home-screen tab wrappers reference the same object
 // each render (no new allocation on every tab change).
 const HIDDEN_STYLE = { display: "none" };
@@ -13458,7 +13443,7 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { textSize:"M", hints:true, timer:true, theme:"dark", sound:false };
+    const defaults = { hints:true, timer:true, theme:"dark", sound:false };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
@@ -14202,15 +14187,7 @@ function AppInner() {
       body.classList.remove("light");
       root.classList.remove("light");
     }
-    // Text size — single source of truth on <html>. Custom props cascade
-    // through the React tree; rem values rescale via the html font-size.
-    const scale = settings.textSize === "S" ? "14px" : settings.textSize === "L" ? "19px" : "16px";
-    root.style.fontSize = scale;
-    const qSize = TEXT_SIZE_MAP[settings.textSize] || "18px";
-    const uiSize = settings.textSize === "S" ? "12px" : settings.textSize === "L" ? "16px" : "14px";
-    root.style.setProperty("--q-font-size", qSize);
-    root.style.setProperty("--ui-font-size", uiSize);
-  }, [settings.theme, settings.textSize]);
+  }, [settings.theme]);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
@@ -14404,7 +14381,7 @@ function AppInner() {
   return (
     <>
       <style>{css}</style>
-      <div className={`app${settings.theme === "light" ? " light" : ""}`} data-text-size={settings.textSize || "M"}>
+      <div className={`app${settings.theme === "light" ? " light" : ""}`}>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only ── */}
