@@ -43,6 +43,20 @@ if (typeof window !== 'undefined' && !window.storage) {
 // Single source of truth for the version string — surfaced in Settings → About.
 // Bump on every shipping release.
 const APP_VERSION = "1.0.0";
+const APP_NAME = "Ball IQ";
+
+// Centralised durations so we can tune motion/UX feel from one place.
+const TIMINGS = {
+  TOAST_DURATION: 2500,
+  STREAK_TOAST: 3500,
+  ANSWER_REVEAL: 1500,
+  AUTOCOMPLETE_DEBOUNCE: 60,
+  ONLINE_SUBSCRIBE_TIMEOUT: 12000,
+  ONLINE_ABANDON_GRACE: 60000,
+  DAY_MS: 86400000,
+  WORDLE_FLIP_MS: 280,
+  SEEN_WINDOW_MS: 14 * 24 * 60 * 60 * 1000,
+};
 
 // ─── CHAOS QUESTIONS ──────────────────────────────────────────────────────────
 // Placeholder for Chaos mode content — quotes, weird moments, cult-football trivia.
@@ -5542,7 +5556,7 @@ const QB = [
 ];
 
 // Post-QB normalization: give Chaos questions a default diff of "medium" so the
-// standard difficulty filters (easy/medium/hard buckets, ramp, Ball IQ) treat
+// standard difficulty filters (easy/medium/hard buckets, ramp, APP_NAME) treat
 // them as first-class citizens. Chaos mode's own cat/tag filter still catches
 // them regardless of diff, so there's no collision.
 for (const q of QB) {
@@ -5674,7 +5688,7 @@ function getClubTag(q) {
 //   - QB questions       → "q:<QB index>"
 //   - TF_STATEMENTS items → "tf:<TF_STATEMENTS index>"
 const SEEN_HISTORY_KEY = "biq_seen_history";
-const SEEN_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+const SEEN_WINDOW_MS = TIMINGS.SEEN_WINDOW_MS;
 let _seenHistory = null; // { histKey: timestamp }
 
 // Build a fast QB → index lookup once at module load
@@ -5873,7 +5887,7 @@ function seededShuffle(arr, seed) {
 }
 
 function getBallIQQuestions() {
-  const seed = Math.floor(Date.now() / 86400000);
+  const seed = Math.floor(Date.now() / TIMINGS.DAY_MS);
   const mcqOnly = QB.filter(q => q.type === "mcq");
   const shuffled = seededShuffle(mcqOnly, seed * 1013904223);
   const takeFresh = (difficulty, count) => {
@@ -5901,7 +5915,7 @@ function dateToYMD(date) {
 function keyForDate(date) { return `biq_daily_${dateToYMD(date)}`; }
 function dayIndexForDate(date) {
   // Use UTC midnight of the local date so the seed is stable across timezones
-  return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000);
+  return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / TIMINGS.DAY_MS);
 }
 
 function getDailyQsForDate(date) {
@@ -6549,7 +6563,7 @@ const css = `
 
 /* ── DARK THEME (default) ── */
 :root{
-  /* Ball IQ Dark — Option A: True neutral dark, Duolingo-proven accent */
+  /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
   --bg:#0F1117;          /* near-black — neutral, no colour tint */
   --s1:#1A1D27;          /* cards — clean dark navy-grey */
   --s2:#22263A;          /* inset surfaces */
@@ -6742,8 +6756,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
-.pill--flame{background:rgba(255,106,0,0.15);color:#FF8C42;}
-.pill--wrong{background:rgba(255,59,48,0.15);color:#FF8080;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name{font-size:var(--ui-font-size,14px);}
@@ -6763,7 +6775,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .screen{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .tab-content{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 @keyframes sIn{from{transform:translateY(4px);}to{transform:translateY(0);}}
-.cta-stack{display:flex;flex-direction:column;gap:9px;}
 .cta{border-radius:var(--r);padding:15px 16px 15px 18px;cursor:pointer;transition:all 0.2s cubic-bezier(0.22,1,0.36,1);border:1px solid var(--border);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--s1);position:relative;overflow:hidden;color:var(--t1);font-family:inherit;}
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
@@ -6780,10 +6791,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
 .hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
-.hero-daily-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.7);}
-.hero-daily-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:#1A0F05;}
-.hero-daily-sub{font-family:'Inter',sans-serif;font-size:12.5px;opacity:0.85;margin-top:4px;color:#1A0F05;}
-.hero-daily-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.25));pointer-events:none;opacity:0.95;}
 .hero-daily-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;background:#1A1D27;color:#F0F1F5;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.01em;box-shadow:0 4px 0 #0A0A0A;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-text-fill-color:#F0F1F5;}
 .hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
 
@@ -6836,10 +6843,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--s1);border:1px solid rgba(34,197,94,0.25);border-radius:12px;cursor:pointer;font-family:inherit;color:var(--t1);transition:background 0.15s,transform 0.1s,border-color 0.15s;box-shadow:0 1px 6px rgba(0,0,0,0.18);}
 .dhero-compact:hover{background:var(--s2);border-color:rgba(34,197,94,0.4);}
 .dhero-compact:active{transform:scale(0.99);}
-.dhero-compact-dot{font-size:15px;line-height:1;}
-.dhero-compact-text{flex:1;font-size:13px;font-weight:700;color:var(--t1);text-align:left;letter-spacing:-0.1px;}
-.dhero-compact-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
-.dhero-compact-arrow{font-size:16px;color:var(--t3);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
 .wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
@@ -6874,40 +6877,24 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta-daily:hover{border-color:rgba(251,191,36,0.3);}
 .cta-daily-done{opacity:0.65;}
 .cta-daily-done:hover{border-color:var(--border2)!important;}
-.cta-left{display:flex;flex-direction:column;gap:2px;flex:1;}
 .cta-title{font-size:15px;font-weight:700;letter-spacing:-0.2px;color:var(--text);}
 .cta-desc{font-size:12px;color:var(--t2);margin-top:1px;}
-.cta-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .cta-icon{font-size:20px;}
-.cta-arrow{font-size:16px;color:var(--t3);}
 /* ── Quick Play row ── */
 .quick-play{margin-top:14px;}
-.quick-play-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.2px;margin-bottom:10px;padding-left:2px;}
 .quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .quick-play-scroll::-webkit-scrollbar{display:none;}
 .qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:118px;color:var(--t1);font-family:inherit;}
 @media (hover: hover) { .qp-chip:hover{background:var(--s2);border-color:var(--border2);transform:translateY(-1px);} }
 .qp-chip:active{transform:scale(0.97);}
-.qp-icon{font-size:18px;margin-bottom:4px;line-height:1;}
-.qp-name{font-size:13px;font-weight:800;color:var(--t1);letter-spacing:-0.1px;}
-.qp-desc{font-size:10.5px;color:var(--t3);font-weight:500;white-space:nowrap;}
-
-.home-section-label{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-top:2px;margin-bottom:2px;}
-
-.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;}
 .sbar-box{background:var(--s1);border:none;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.sbar-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);}
-.sbar-key{font-size:10px;color:var(--t3);margin-top:3px;font-weight:500;letter-spacing:0.8px;}
 .page-hdr{display:flex;align-items:center;gap:12px;padding:18px 0 22px;}
 .back-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s1);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2);transition:all 0.15s;}
 .back-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
 .page-title{font-size:19px;font-weight:700;letter-spacing:-0.4px;}
 .settings-panel{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:12px;}
-.sp-title{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:14px;}
 .sp-section{margin-bottom:16px;}
 .sp-section:last-child{margin-bottom:0;}
-.sp-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:var(--t3);letter-spacing:0.2px;margin-bottom:8px;}
-.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
 .chip{padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .chip.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
 .chip:hover:not(.on){border-color:var(--border2);color:var(--text);}
@@ -6924,9 +6911,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mi-name{font-size:14px;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;}
 .mi-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 .mi-arrow{font-size:13px;color:var(--t2);}
-.mi-badge{font-size:9px;font-weight:600;padding:3px 7px;border-radius:5px;font-family:'Inter',sans-serif;letter-spacing:0.8px;margin-left:auto;white-space:nowrap;}
-.badge-live{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2);}
-.badge-local{background:rgba(88,153,255,0.1);color:#5899FF;border:1px solid rgba(88,153,255,0.2);}
 .quiz-wrap{padding-top:20px;}
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
@@ -6936,10 +6920,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .q-score-live{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
-.legends-card{border:1px solid rgba(251,191,36,0.2)!important;}
-.q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);} 
-.q-card-correct{background:rgba(34,197,94,0.12)!important;border:1px solid rgba(34,197,94,0.35)!important;}
-.q-card-wrong{background:rgba(248,113,113,0.12)!important;border:1px solid rgba(248,113,113,0.35)!important;}
+.q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
 /* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
 .q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
@@ -6983,13 +6964,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .streak-n{font-size:24px;font-weight:800;color:var(--gold);line-height:1;}
 .streak-info{font-size:12px;color:var(--t2);}
 .streak-info strong{display:block;color:var(--gold);font-size:13px;font-weight:600;}
-.vs-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
 .pc.me{border-color:var(--accent-b);background:var(--accent-dim);}
-.pc-name{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-bottom:3px;}
 .pc-score{font-size:24px;font-weight:800;color:var(--text);}
 .pc.me .pc-score{color:var(--accent);}
-.vs-lbl{font-size:11px;font-weight:600;color:var(--t3);text-align:center;}
 .rc{background:var(--s1);border:none;border-radius:var(--r);padding:26px 20px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
 .rc-icon{font-size:40px;margin-bottom:10px;animation:iconPop 0.5s cubic-bezier(0.34,1.56,0.64,1);}
 @keyframes iconPop{from{transform:scale(0.3);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -7024,7 +7002,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
 .iq-pct strong{color:var(--accent);font-weight:700;}
 
-/* Ball IQ hero variant — larger ring, stronger green glow, bigger number.
+/* APP_NAME hero variant — larger ring, stronger green glow, bigger number.
    Applied via .iq-ring-hero / .iq-num-hero modifier classes so the non-
    results uses of the same .iq-ring (e.g. profile screen) stay intact. */
 .iq-ring-hero{width:200px;height:200px;margin:24px auto 12px;box-shadow:0 0 60px rgba(88,204,2,0.25),0 0 120px rgba(88,204,2,0.18);}
@@ -7056,17 +7034,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .code-box{background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:11px;padding:18px;text-align:center;margin-bottom:13px;}
 .code-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:8px;}
 .code-hint{font-size:12px;color:var(--t2);margin-top:5px;}
-.wait-row{display:flex;align-items:center;gap:10px;padding:9px 0;}
 .wdot{width:6px;height:6px;border-radius:50%;background:var(--s3);}
 .wdot.on{background:var(--green);animation:dp 1.2s ease infinite;}
 @keyframes dp{0%,100%{opacity:1;}50%{opacity:0.2;}}
-.div-row{display:flex;align-items:center;gap:12px;margin:11px 0;}
-.div-line{flex:1;height:1px;background:var(--border);}
-.div-lbl{font-size:12px;color:var(--t3);font-weight:500;}
 .cdown{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;}
-.cdown-n{font-size:110px;font-weight:900;color:var(--accent);line-height:1;animation:cda 0.9s cubic-bezier(0.22,1,0.36,1);letter-spacing:-4px;}
-@keyframes cda{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
-.cdown-s{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);margin-top:10px;letter-spacing:0.2px;}
 .player-input-row{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
 .player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:'Inter',sans-serif;}
 .player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
@@ -7140,11 +7111,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .local-reveal-eliminate{text-align:center;font-size:15px;font-weight:800;color:var(--red);margin-top:4px;padding:10px;border-radius:12px;background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.2);}
 .local-reveal-tally{text-align:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);margin-top:4px;}
 .handoff{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:20px 0;}
-.handoff-avatar{width:68px;height:68px;border-radius:50%;background:var(--accent-dim);border:1.5px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;}
-.handoff-tag{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);font-weight:500;letter-spacing:0.2px;margin-bottom:7px;}
-.handoff-name{font-size:30px;font-weight:800;letter-spacing:-0.8px;margin-bottom:5px;}
-.handoff-sub{font-size:13px;color:var(--t2);margin-bottom:12px;}
-.handoff-scores{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:26px;}
 .handoff-chip{padding:5px 11px;border-radius:7px;background:var(--s1);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--t2);}
 .handoff-chip strong{color:var(--text);}
 .podium{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
@@ -7234,13 +7200,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-hero-btn.done{background:var(--s2);color:var(--t2);cursor:default;}
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
 .streak-sec-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:14px;}
-.streak-cal{display:flex;gap:6px;justify-content:center;}
 .streak-day{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .streak-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
 .streak-dot.done{background:var(--accent);color:#0a1a00;}
 .streak-dot.today{background:var(--accent-dim);border:1.5px solid var(--accent-b);color:var(--accent);}
 .streak-dot.missed{background:var(--s2);color:var(--t3);}
-.streak-day-label{font-size:9px;color:var(--t3);font-weight:500;font-family:'Inter',sans-serif;}
 
 /* ── MONTHLY CALENDAR ── */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
@@ -7457,13 +7421,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .xp-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a1a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(34,197,94,0.35);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);}
 @keyframes xpPop{from{opacity:0;transform:translateX(-50%) scale(0.85);}to{opacity:1;transform:translateX(-50%) scale(1);}}
 .xp-t-icon{font-size:16px;}
-.wrong-review-details{margin-top:14px;}
 .wr-summary{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:0.2px;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
 .wr-summary::before{content:"▶";font-size:8px;transition:transform 0.2s;}
 details[open] .wr-summary::before{transform:rotate(90deg);}
 
 .wrong-review{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
-.wr-title{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
 .wr-item{padding:10px 0;border-bottom:1px solid var(--border);}
 .wr-item:last-child{border-bottom:none;padding-bottom:0;}
 .wr-q{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:5px;}
@@ -7487,39 +7449,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .social-card{background:var(--s1);border-radius:16px;padding:18px 16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;margin-bottom:12px;transition:background 0.18s,transform 0.12s;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .social-card:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
 .social-card:active{transform:scale(0.98);}
-.sc-icon-wrap{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.sc-online{background:rgba(59,130,246,0.15);}
-.sc-local{background:rgba(34,197,94,0.12);}
-.sc-body{flex:1;}
-.sc-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
-.sc-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:10px;}
-.sc-badge{display:inline-block;font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2px;background:rgba(59,130,246,0.12);color:#60A5FA;border:1px solid rgba(59,130,246,0.25);border-radius:4px;padding:2px 7px;}
-.sc-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.sc-tag{font-size:11px;font-weight:600;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-b);border-radius:6px;padding:3px 8px;font-family:'Inter',sans-serif;}
-.sc-arrow{font-size:18px;color:var(--t3);align-self:center;}
 .social-tip{font-size:12px;color:var(--t3);background:var(--s1);border-radius:12px;padding:12px 14px;line-height:1.6;margin-top:4px;box-shadow:0 1px 6px rgba(0,0,0,0.2);}
-
-/* ── LEAGUE DISCOVERY NUDGE ── */
-.league-nudge{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
-  width:calc(100% - 32px);max-width:388px;
-  background:linear-gradient(135deg,#1a2a1a,#1e2e1e);
-  border:1px solid rgba(34,197,94,0.35);
-  border-radius:16px;padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:10px;cursor:pointer;z-index:200;
-  box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(34,197,94,0.15);
-  animation:nudgeIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes nudgeIn{from{transform:translateX(-50%) translateY(20px);opacity:0;}to{transform:translateX(-50%) translateY(0);opacity:1;}}
-.ln-content{display:flex;align-items:center;gap:12px;flex:1;}
-.ln-icon{font-size:26px;flex-shrink:0;}
-.ln-text{flex:1;}
-.ln-title{font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.2px;}
-.ln-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:1px;}
-.ln-cta{background:var(--accent);color:#0a1a00;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
-.ln-close{background:none;border:none;color:rgba(255,255,255,0.35);font-size:14px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;}
-.ln-close:hover{color:rgba(255,255,255,0.7);}
 
 /* ── ONBOARDING ── */
 .onboard-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
@@ -7532,7 +7462,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
 .onboard-track{display:flex;height:100%;width:300%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
 .onboard-step{width:33.3333%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
-.onboard-step-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:360px;margin:0 auto;flex:1;}
 .onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
@@ -7725,10 +7654,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .hero-pair-card:hover{background:var(--s2);border-color:var(--border2);}
 .hero-pair-card:active{transform:scale(0.98);}
 .hero-pair-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
-.hero-pair-title{font-size:17px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:var(--text);margin-top:4px;}
 .hero-pair-status{font-size:11.5px;color:var(--t3);margin-top:auto;line-height:1.3;}
 .hero-pair-status strong{color:var(--accent);font-weight:700;}
-.hero-pair-emoji{position:absolute;right:-4px;bottom:-8px;font-size:50px;opacity:0.85;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));}
 .hero-pair-card.wordle .hero-pair-eyebrow{color:#FFC107;}
 
 /* Daily section — Challenge + Wordle paired cards. The Challenge card keeps
@@ -8190,7 +8117,7 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
     onAnswer(correct);
   }, [val, state, question, onAnswer]);
 
-  const pick = (s) => { setVal(s); setSuggestions([]); setTimeout(() => submit(s), 60); };
+  const pick = (s) => { setVal(s); setSuggestions([]); setTimeout(() => submit(s), TIMINGS.AUTOCOMPLETE_DEBOUNCE); };
 
   const highlight = (s) => {
     const v = norm(val);
@@ -8601,7 +8528,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     if (correct && q.diff === "hard") {
       haptic("hardCorrect");
       setHardRightBurst(true);
-      setTimeout(() => setHardRightBurst(false), 1500);
+      setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
     } else {
       haptic(correct ? "correct" : "wrong");
     }
@@ -8791,7 +8718,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           if (correct && q.diff === "hard") {
             haptic("hardCorrect");
             setHardRightBurst(true);
-            setTimeout(() => setHardRightBurst(false), 1500);
+            setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
           }
           registerAnswer(correct);
         }} />
@@ -8931,7 +8858,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
   // and bail to the menu instead of leaving them staring at a frozen
   // "Waiting for opponent" screen.
   const subscribeTimeoutRef = useRef(null);
-  const t$ = useCallback((m, dur = 2500) => { setToast(m); setTimeout(() => setToast(null), dur); }, []);
+  const t$ = useCallback((m, dur = TIMINGS.TOAST_DURATION) => { setToast(m); setTimeout(() => setToast(null), dur); }, []);
 
   // Pick up the auth profile name if it arrives after mount
   useEffect(() => { if (!name && defaultName) setName(defaultName); }, [defaultName, name]);
@@ -8965,7 +8892,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
       setIsHost(false);
       setView("menu");
       t$("Couldn't connect — please try again");
-    }, 12000);
+    }, TIMINGS.ONLINE_SUBSCRIBE_TIMEOUT);
     const ch = supabase
       .channel(`room2:${rc}`)
       .on(
@@ -9074,7 +9001,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
       if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
       finishTimeoutRef.current = setTimeout(() => {
         gameRoomMarkFinished(room.code);
-      }, 60_000);
+      }, TIMINGS.ONLINE_ABANDON_GRACE);
       return () => { if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current); };
     }
   }, [room?.host_finished, room?.guest_finished, view, isHost, room?.code]);
@@ -9290,7 +9217,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
           <div className="og-waiting-text">Waiting for opponent…</div>
         </div>
         <p style={{fontSize:12, color:"var(--t3)", textAlign:"center", marginTop:20, lineHeight:1.7}}>
-          Ask your friend to open Ball IQ → Online 1v1 → Join Room and enter the code above.
+          Ask your friend to open {APP_NAME} → Online 1v1 → Join Room and enter the code above.
         </p>
         {toast && <div className="toast">{toast}</div>}
       </div>
@@ -9476,7 +9403,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     const onShare = async () => {
       const myName = isHost ? hostName : guestName;
       const result = tied ? "tied" : (youWon ? "won" : "lost");
-      const text = `🎮 Ball IQ — Online 1v1\n${myName} ${myScore}  ${oppScore} ${tied ? "" : (isHost ? guestName : hostName)}\n${tied ? "🤝 Tied game" : youWon ? "🏆 I won!" : "GG — rematch?"}\nCan you beat me? ⚽\nball-iq.app`;
+      const text = `🎮 ${APP_NAME} — Online 1v1\n${myName} ${myScore}  ${oppScore} ${tied ? "" : (isHost ? guestName : hostName)}\n${tied ? "🤝 Tied game" : youWon ? "🏆 I won!" : "GG — rematch?"}\nCan you beat me? ⚽\nball-iq.app`;
       try {
         if (navigator.share) {
           await navigator.share({ text, url: "https://ball-iq.app" });
@@ -10234,7 +10161,7 @@ function getXPForResult(score, total, mode) {
 // Variants:
 //   'wordle'    — Today's Puzzle. Score + emoji-tile grid.
 //   'standard'  — Classic / Survival / Daily / Chaos / Legends / WC2026.
-//   'balliq'    — Ball IQ Test. IQ number, funny label, percentile.
+//   'balliq'    — APP_NAME Test. IQ number, funny label, percentile.
 //   'hotstreak' — Hot Streak. Big streak number with orange accent.
 //
 // Returns a Promise<Blob> of a PNG. The card layout is fixed at 390×600
@@ -10319,7 +10246,7 @@ async function generateShareCard(type, data) {
   ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#FFFFFF";
   ctx.textAlign = "left";
-  ctx.fillText("⚽ Ball IQ", padX, headerY);
+  ctx.fillText(`⚽ ${APP_NAME}`, padX, headerY);
 
   ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
@@ -10718,12 +10645,12 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
     <div className="screen" style={{paddingTop:8}}>
       {showIQConfetti && revealed && <Confetti />}
       <div className={`iq-result${revealed ? " iq-revealed" : ""}`}>
-        <div style={{fontSize:13,color:"var(--t2)",fontWeight:600,marginBottom:4}}>Your Ball IQ</div>
+        <div style={{fontSize:13,color:"var(--t2)",fontWeight:600,marginBottom:4}}>Your {APP_NAME}</div>
         <div className="iq-score-wrap">
           <div className={`iq-ring iq-ring-hero${iq >= 120 ? " great" : ""}`} style={{background:`conic-gradient(var(--accent) ${ringDisplay*360}deg, var(--s3) 0deg)`}}>
             <div className="iq-ring-inner iq-ring-inner-hero">
               <div className="iq-num iq-num-hero">{displayIQ}</div>
-              <div className="iq-sub">Ball IQ</div>
+              <div className="iq-sub">{APP_NAME}</div>
             </div>
           </div>
         </div>
@@ -11150,7 +11077,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
               </div>
               <div className="settings-row danger" onClick={async () => {
-                if (confirm("Sign out of your Ball IQ account?")) {
+                if (confirm(`Sign out of your ${APP_NAME} account?`)) {
                   await signOut();
                 }
               }}>
@@ -11176,7 +11103,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 </div>
               </div>
               <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={async () => {
-                if (confirm("Sign out of your Ball IQ account?")) {
+                if (confirm(`Sign out of your ${APP_NAME} account?`)) {
                   await signOut();
                 }
               }}>
@@ -11230,8 +11157,21 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               </div>
             </div>
           </div>
-
-
+          <div className="settings-row">
+            <div className="sr-left">
+              <div className="sr-label">Text size</div>
+              <div className="sr-desc">Question and UI size</div>
+            </div>
+            <div className="sr-right">
+              <div className="size-btns">
+                {[["S","Small"],["M","Medium"],["L","Large"]].map(([key, label]) => (
+                  <button key={key} className={`size-btn${(settings.textSize||"M")===key?" on":""}`} onClick={() => onUpdate({textSize:key})} aria-label={`${label} text`}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="settings-section">
@@ -11272,7 +11212,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="settings-card">
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Version</div></div>
-            <div className="sr-right"><div className="sr-value">Ball IQ v{APP_VERSION}</div></div>
+            <div className="sr-right"><div className="sr-value">{APP_NAME} v{APP_VERSION}</div></div>
           </div>
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left"><div className="sr-label">Questions</div></div>
@@ -11387,7 +11327,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Privacy Policy</div>
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
-        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Ball IQ</div>
+        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
         <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
 
         <div style={{
@@ -11397,12 +11337,12 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
             <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
-            Ball IQ does not collect, store or share any personal data. All your game progress is stored locally on your device and never leaves it.
+            {APP_NAME} does not collect, store or share any personal data. All your game progress is stored locally on your device and never leaves it.
           </p>
         </div>
 
         <h2 style={privacyH2}>1. Information We Collect</h2>
-        <p style={privacyP}>Ball IQ does not collect any personal information. We do not require you to create an account, provide an email address, or share any identifying information to use the app.</p>
+        <p style={privacyP}>{APP_NAME} does not collect any personal information. We do not require you to create an account, provide an email address, or share any identifying information to use the app.</p>
 
         <h2 style={privacyH2}>2. Data Storage</h2>
         <p style={privacyP}>All app data — including your scores, XP, badges, settings and game history — is stored locally on your device using your browser's local storage. This data:</p>
@@ -11414,17 +11354,17 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         </ul>
 
         <h2 style={privacyH2}>3. Analytics</h2>
-        <p style={privacyP}>Ball IQ does not use any analytics tools, tracking pixels, or third-party SDKs that collect usage data. We do not track how you use the app.</p>
+        <p style={privacyP}>{APP_NAME} does not use any analytics tools, tracking pixels, or third-party SDKs that collect usage data. We do not track how you use the app.</p>
 
         <h2 style={privacyH2}>4. Advertising</h2>
-        <p style={privacyP}>Ball IQ does not display advertisements and does not work with any advertising networks.</p>
+        <p style={privacyP}>{APP_NAME} does not display advertisements and does not work with any advertising networks.</p>
 
         <h2 style={privacyH2}>5. Third-Party Services</h2>
-        <p style={privacyP}>Ball IQ uses Google Fonts (Inter and JetBrains Mono) to display text. This means your device makes a request to Google's servers to download these fonts. Please refer to Google's Privacy Policy for information on how they handle font requests.</p>
+        <p style={privacyP}>{APP_NAME} uses Google Fonts (Inter and JetBrains Mono) to display text. This means your device makes a request to Google's servers to download these fonts. Please refer to Google's Privacy Policy for information on how they handle font requests.</p>
         <p style={privacyP}>No other third-party services are used.</p>
 
         <h2 style={privacyH2}>6. Children's Privacy</h2>
-        <p style={privacyP}>Ball IQ does not knowingly collect any information from children under the age of 13. The app contains no inappropriate content and is suitable for all ages.</p>
+        <p style={privacyP}>{APP_NAME} does not knowingly collect any information from children under the age of 13. The app contains no inappropriate content and is suitable for all ages.</p>
 
         <h2 style={privacyH2}>7. Changes to This Policy</h2>
         <p style={privacyP}>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
@@ -11432,7 +11372,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <h2 style={privacyH2}>8. Contact</h2>
         <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: privacy@ball-iq.app</p>
 
-        <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 Ball IQ. All rights reserved.</p>
+        <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 {APP_NAME}. All rights reserved.</p>
       </div>
     </div>
   );
@@ -11443,7 +11383,7 @@ const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 
 // ─── IQ RECAP OVERLAY ─────────────────────────────────────────────────────────
 // Lightweight modal shown when the user taps the home-screen IQ chip and
-// already has at least one Ball IQ result. Displays the most recent score,
+// already has at least one APP_NAME result. Displays the most recent score,
 // its label/percentile, the date taken, and share / retake actions.
 function IqRecapOverlay({ entry, onClose, onRetake }) {
   if (!entry) return null;
@@ -11454,9 +11394,9 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
     ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
     : null;
   const doShare = async () => {
-    const msg = `🧠 My Ball IQ is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
+    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
     try {
-      if (navigator.share) { await navigator.share({ title:"Ball IQ", text: msg }); return; }
+      if (navigator.share) { await navigator.share({ title: APP_NAME, text: msg }); return; }
       if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
     } catch {}
   };
@@ -11480,7 +11420,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
           textAlign:"center",
         }}
       >
-        <div className="ds-eyebrow" style={{marginBottom:6}}>Your Ball IQ</div>
+        <div className="ds-eyebrow" style={{marginBottom:6}}>Your {APP_NAME}</div>
         <div
           className="numeric"
           style={{
@@ -11604,7 +11544,7 @@ function OnboardingScreen({ onDone }) {
           <div className="onboard-step">
             <div className="onboard-step-top">
               <div className="onboard-icon">⚽</div>
-              <div className="onboard-title">Welcome to Ball IQ</div>
+              <div className="onboard-title">Welcome to {APP_NAME}</div>
               <div className="onboard-body">
                 The ultimate football quiz. Test your knowledge, beat your mates, climb the league.
               </div>
@@ -11775,8 +11715,8 @@ const BADGE_DEFS = [
   ["roll5",       "🔥", "On a Roll",     "5-day streak"],
   ["roll30",      "🔥", "Obsessed",      "30-day streak"],
   ["speed_demon", "⚡", "Speed Demon",   "Score 600+ Speed Round"],
-  ["big_brain",   "🧠", "Big Brain",     "Ball IQ 120+"],
-  ["goat",        "🐐", "The GOAT",      "Ball IQ 140+"],
+  ["big_brain",   "🧠", "Big Brain",     `${APP_NAME} 120+`],
+  ["goat",        "🐐", "The GOAT",      `${APP_NAME} 140+`],
   ["perfect",     "💎", "Perfectionist", "Score 10/10"],
   ["survivor",    "🏆", "Survivor",      "20+ in Survival"],
   ["scholar",     "📚", "Scholar",       "500 correct answers"],
@@ -12406,7 +12346,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </div>
         )}
         <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
-        {iq && <div className="profile-iq-line">Ball IQ: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
+        {iq && <div className="profile-iq-line">{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
       </div>
       <button className="share-profile-btn" onClick={onShareProfile}>Share Profile Card</button>
       {onShowWeekly && (
@@ -12689,7 +12629,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>While you wait for tomorrow…</div>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[
-              {icon:"🧠", label:"Take the Ball IQ Test", action:"balliq"},
+              {icon:"🧠", label:`Take the ${APP_NAME} Test`, action:"balliq"},
               {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
               {icon:"🔥", label:"Try Survival Mode", action:"survival"},
             ].map(({icon, label, action}) => (
@@ -12704,7 +12644,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
       )}
       {iqHistory && iqHistory.length > 0 && (
         <div className="streak-section">
-          <div className="streak-sec-title">Ball IQ History</div>
+          <div className="streak-sec-title">{APP_NAME} History</div>
           <div className="iq-hist-bars" style={{height:52,alignItems:"flex-end"}}>
             {iqHistory.map((h,i) => (
               <div key={i} className="iq-hist-col">
@@ -12770,7 +12710,7 @@ function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
   const yourRank = all.findIndex(p => p.isYou) + 1;
   const now = new Date();
   const monday = new Date(now); monday.setDate(now.getDate() + ((7-now.getDay()+1)%7||7)); monday.setHours(0,0,0,0);
-  const daysLeft = Math.ceil((monday-now)/86400000);
+  const daysLeft = Math.ceil((monday-now)/TIMINGS.DAY_MS);
   const { level } = getLevelInfo(xp);
   if (xp === 0) {
     return (
@@ -12840,7 +12780,7 @@ const HOW_TO_PLAY = {
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   wc2026: { title:"🌍 World Cup 2026", steps:["15 questions about the 2026 World Cup","All 48 competing nations covered","Questions on history, players and format","No timer — test your knowledge","Great prep for the tournament!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
-  balliq: { title:"🧠 Ball IQ Test", steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
+  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
 };
 
 const TEXT_SIZE_MAP = { S: "15px", M: "18px", L: "21px" };
@@ -12883,9 +12823,9 @@ const WORDLE_PLAYERS = [
 ];
 
 // Day index from local-midnight epoch — same value for everyone in the same UTC
-// day. Using getTime() / 86400000 means the puzzle rolls over at UTC midnight,
+// day. Using getTime() / TIMINGS.DAY_MS means the puzzle rolls over at UTC midnight,
 // which keeps "everyone gets the same player" simple across timezones.
-function getWordleDayIndex() { return Math.floor(Date.now() / 86400000); }
+function getWordleDayIndex() { return Math.floor(Date.now() / TIMINGS.DAY_MS); }
 function getWordleAnswer() { return WORDLE_PLAYERS[getWordleDayIndex() % WORDLE_PLAYERS.length]; }
 function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
@@ -13032,7 +12972,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
     setCurrent("");
     if (newStatus !== "playing") {
       setRevealed(false);
-      setTimeout(() => setRevealed(true), answer.length * 280 + 200);
+      setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200);
     }
   }, [state, current, answer]);
 
@@ -13104,7 +13044,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
 
   // Build the share text: emoji grid built from each actual guess. ⬛ for grey
   // matches the in-app dark theme rather than NYT Wordle's ⬜. Layout:
-  //   ⚽ Ball IQ — Today's Puzzle
+  //   ⚽ APP_NAME — Today's Puzzle
   //   {score}/6
   //   <blank line>
   //   <emoji grid, one row per guess>
@@ -13120,7 +13060,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ Ball IQ — Today's Puzzle\n${score}\n\n${grid}\n\nball-iq.app`;
+    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nball-iq.app`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -13425,7 +13365,7 @@ function AppInner() {
     // Login streak — check if we played yesterday, update streak
     (async () => {
       try {
-        const todayNum = Math.floor(Date.now() / 86400000);
+        const todayNum = Math.floor(Date.now() / TIMINGS.DAY_MS);
         const res = await window.storage?.get("biq_login_streak");
         const data = res ? JSON.parse(res.value) : { streak: 0, lastDay: 0 };
         let newStreak = data.streak;
@@ -13440,7 +13380,7 @@ function AppInner() {
             setStreakToast(newStreak);
             haptic("heavy");
             playSound("streak");
-            setTimeout(() => setStreakToast(null), 3500);
+            setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
           }
         } else if (data.lastDay < todayNum - 1) {
           // Streak broken
@@ -13653,8 +13593,8 @@ function AppInner() {
     // Milestone celebrations
     const newTotal = (stats.gamesPlayed || 0) + 1;
     if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
-    else if (newTotal === 50) showToast("🔥 50 games — serious Ball IQ energy");
-    else if (newTotal === 100) showToast("🏆 100 games — you're a Ball IQ legend");
+    else if (newTotal === 50) showToast(`🔥 50 games — serious ${APP_NAME} energy`);
+    else if (newTotal === 100) showToast(`🏆 100 games — you're a ${APP_NAME} legend`);
     else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played, keep going`);
 
     // Streak milestones (independent of game count)
@@ -13702,7 +13642,7 @@ function AppInner() {
     // 🏆 BALL IQ new high
     if (mode === "balliq" && res.iq && res.iq > (stats.bestIQ || 0)) {
       const isFirst = !stats.bestIQ;
-      setTimeout(() => showToast(isFirst ? `🧠 Your Ball IQ: ${res.iq}!` : `🧠 New Ball IQ high: ${res.iq}!`), 1500);
+      setTimeout(() => showToast(isFirst ? `🧠 Your ${APP_NAME}: ${res.iq}!` : `🧠 New ${APP_NAME} high: ${res.iq}!`), TIMINGS.ANSWER_REVEAL);
       try { navigator.vibrate?.([40, 50, 40]); } catch {}
     }
 
@@ -13737,7 +13677,7 @@ function AppInner() {
         if (leveledUp) {
           setTimeout(() => {
             setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
-            setTimeout(() => setLevelUpOverlay(null), 3500);
+            setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
           }, 400);
         }
         return newXp;
@@ -13816,26 +13756,26 @@ function AppInner() {
     const msgs = {
       daily: (() => {
         const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
-        return `⚽ Ball IQ — Daily Challenge\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `⚽ ${APP_NAME} — Daily Challenge\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       balliq: (() => {
         const iq = calcBallIQ(score, total);
         const label = iqLabel(iq);
         const pctileLbl = iqPercentileLabel(iq);
-        return `🧠 Ball IQ Test\nMy Ball IQ: ${iq} — ${pctileLbl}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `🧠 ${APP_NAME} Test\nMy ${APP_NAME}: ${iq} — ${pctileLbl}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       classic: (() => {
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
-        return `${medal} Ball IQ — Classic Quiz\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `${medal} ${APP_NAME} — Classic Quiz\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
-      speed:     `⚡ Ball IQ — Speed Round\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      survival:  `🔥 Ball IQ — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
-      hotstreak: `⚡🔥 Ball IQ — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
-      truefalse: `✅ Ball IQ — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      legends:   `📜 Ball IQ — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      wc2026:    `🌍 Ball IQ — World Cup 2026\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      local:     `🤝 Ball IQ — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
-      chaos:     `🎭 Ball IQ — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      speed:     `⚡ ${APP_NAME} — Speed Round\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      survival:  `🔥 ${APP_NAME} — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
+      hotstreak: `⚡🔥 ${APP_NAME} — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
+      truefalse: `✅ ${APP_NAME} — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      legends:   `📜 ${APP_NAME} — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      wc2026:    `🌍 ${APP_NAME} — World Cup 2026\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      local:     `🤝 ${APP_NAME} — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
+      chaos:     `🎭 ${APP_NAME} — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
     };
     const text = msgs[mode] || msgs.classic;
 
@@ -13846,7 +13786,7 @@ function AppInner() {
       survival: "Survival",
       hotstreak: "Hot Streak",
       truefalse: "True or False",
-      balliq: "Ball IQ Test",
+      balliq: `${APP_NAME} Test`,
       speed: "Speed Round",
       legends: "Legends & History",
       wc2026: "World Cup 2026",
@@ -13877,9 +13817,9 @@ function AppInner() {
     const { level } = getLevelInfo(xp);
     const iq = stats.bestIQ;
     const lines = [
-      (profile.avatar||"⚽") + " " + (profile.name||"Ball IQ Player"),
+      (profile.avatar||"⚽") + " " + (profile.name||`${APP_NAME} Player`),
       level.icon + " " + level.name + " — " + xp + " XP",
-      iq ? "Ball IQ: " + iq + " — " + iqPercentileLabel(iq) : null,
+      iq ? APP_NAME + ": " + iq + " — " + iqPercentileLabel(iq) : null,
       "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
       "#BallIQ"
     ].filter(Boolean).join("\n");
@@ -13991,7 +13931,7 @@ function AppInner() {
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openIqChip = useCallback(() => {
-    // Empty history → send them straight into the Ball IQ Test.
+    // Empty history → send them straight into the APP_NAME Test.
     // Otherwise show a recap of their most recent score with share options.
     if (!iqHistory || iqHistory.length === 0) {
       startMode("balliq");
@@ -14020,7 +13960,7 @@ function AppInner() {
       ? `🔥 ${loginStreak}-day streak`
       : "";
     const text = [
-      "⚽ Ball IQ Daily Challenge",
+      `⚽ ${APP_NAME} Daily Challenge`,
       `📅 ${dateStr}`,
       `🎯 ${score}/${total}`,
       streakLine,
@@ -14198,19 +14138,19 @@ function AppInner() {
             <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(34,197,94,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
               <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to Ball IQ!</div>
+                <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Tap "Play" to start your first quiz. New questions daily!</div>
               </div>
               <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
           </div>
         )}
-        {/* Ball IQ Intro */}
+        {/* APP_NAME Intro */}
         {showBallIQIntro && (
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
-              <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Ball IQ Test</div>
+              <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
                 {[["📋","20 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
                   <div key={label} style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:600,color:"var(--t2)",display:"flex",alignItems:"center",gap:4}}>
@@ -14218,7 +14158,7 @@ function AppInner() {
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 20 questions across all categories. Your score determines your Ball IQ — from 62 (beginner) to 145 (elite). The test is the same for everyone so scores are comparable.</div>
+              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 20 questions across all categories. Your score determines your {APP_NAME} — from 62 (beginner) to 145 (elite). The test is the same for everyone so scores are comparable.</div>
               <button className="btn btn-p" onClick={() => { setShowBallIQIntro(false); startMode("balliq_confirmed"); }}>Start Test 🧠</button>
               <button className="btn btn-s" style={{marginTop:8}} onClick={() => setShowBallIQIntro(false)}>Maybe later</button>
             </div>
@@ -14229,7 +14169,7 @@ function AppInner() {
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px 48px",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
-              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying Ball IQ?</div>
+              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
               <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
                 setShowRatePrompt(false);
@@ -14239,9 +14179,9 @@ function AppInner() {
                 } else if (/Android/i.test(ua)) {
                   window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
                 } else {
-                  showToast("⭐ Search 'Ball IQ' on the App Store or Google Play");
+                  showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
                 }
-              }}>Rate Ball IQ ⭐</button>
+              }}>Rate {APP_NAME} ⭐</button>
               <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
             </div>
           </div>
@@ -14477,7 +14417,7 @@ function AppInner() {
                 type="button"
                 className="home-stat-chip tappable"
                 onClick={openIqChip}
-                aria-label={iqHistory.length === 0 ? "Take the Ball IQ test" : "View your Ball IQ score"}
+                aria-label={iqHistory.length === 0 ? `Take the ${APP_NAME} test` : `View your ${APP_NAME} score`}
               >
                 <div className="home-stat-label">IQ Score</div>
                 <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
@@ -14545,7 +14485,7 @@ function AppInner() {
             {(() => {
               const kickoff = new Date(2026, 5, 11);
               const now = new Date();
-              const msPerDay = 86400000;
+              const msPerDay = TIMINGS.DAY_MS;
               const dayNow = Math.floor(now.getTime() / msPerDay);
               const dayKick = Math.floor(kickoff.getTime() / msPerDay);
               const daysTo = dayKick - dayNow;
@@ -14575,7 +14515,7 @@ function AppInner() {
                 { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
                 { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
-                { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
+                { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
                 // True/False, Guess the Player and Tiki Taka Toe sit at the
@@ -14707,7 +14647,7 @@ function AppInner() {
           <div>
             {mode === "balliq" && (
               <div style={{marginTop:14,marginBottom:4}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",fontWeight:500,letterSpacing:0.2,marginBottom:4}}>Ball IQ Test · 20 Questions</div>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",fontWeight:500,letterSpacing:0.2,marginBottom:4}}>{APP_NAME} Test · 20 Questions</div>
                 <div style={{fontSize:13,color:"var(--t2)"}}>Mixed difficulty — answer as many as you can</div>
               </div>
             )}
@@ -14825,7 +14765,7 @@ function AppGate() {
     // the user sees an identical wordmark + animated bar — no visible swap,
     // no flash to a different "Loading..." treatment.
     return (
-      <div className="biq-splash" aria-label="Loading Ball IQ">
+      <div className="biq-splash" aria-label={`Loading ${APP_NAME}`}>
         <div className="biq-splash-mark">Ball <em>IQ</em></div>
         <div className="biq-splash-dot"></div>
       </div>
