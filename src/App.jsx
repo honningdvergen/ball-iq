@@ -6554,6 +6554,7 @@ const css = `
   --red-l:rgba(255,75,75,0.10);
   --gold:#FFC800;        /* Duolingo gold — warm and celebratory */
   --gold-l:rgba(255,200,0,0.10);
+  --info:#3B82F6;        /* Tailwind blue-500 — info / locked-in indicator */
   --r:14px;
   --sh:0 2px 12px rgba(0,0,0,0.5),0 1px 3px rgba(0,0,0,0.3);
   --sh-lg:0 8px 40px rgba(0,0,0,0.6),0 2px 8px rgba(0,0,0,0.3);
@@ -6577,6 +6578,7 @@ const css = `
   --accent:#34A853;
   --accent-dim:rgba(52,168,83,0.10);
   --accent-b:rgba(52,168,83,0.25);
+  --info:#2563EB;        /* Tailwind blue-600 — slightly darker for contrast on light bg */
   --green:#34C759;
   --green-l:rgba(52,199,89,0.12);
   --red:#FF3B30;
@@ -8910,6 +8912,14 @@ function OnlineGame({ onBack, userId, defaultName }) {
   // TIMED_OUT — Supabase only reports our own connection state, not the
   // opponent's, so this is the honest "your link is dead" indicator.
   const [connectionLost, setConnectionLost] = useState(false);
+  // Countdown shown while we wait to see if the opponent reconnects.
+  // Null when not active. See the abandon-timer effect below.
+  const [abandonCountdown, setAbandonCountdown] = useState(null);
+  const abandonTimerRef = useRef(null);
+  // Per-button busy flags so users don't double-tap during the network call
+  // and end up with two rooms / two failed joins.
+  const [creating, setCreating] = useState(false);
+  const [joining, setJoining] = useState(false);
 
   const channelRef = useRef(null);
   const advanceTimerRef = useRef(null);
@@ -8955,7 +8965,47 @@ function OnlineGame({ onBack, userId, defaultName }) {
     if (channelRef.current) { try { supabase.removeChannel(channelRef.current); } catch {} channelRef.current = null; }
     if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
+    if (abandonTimerRef.current) clearInterval(abandonTimerRef.current);
   }, []);
+
+  // Abandon timer — when our channel drops while a game is in flight, we
+  // can't tell whether *we* lost connection or the opponent did. Either
+  // way the game can't continue, so start a 60s countdown after which we
+  // mark the room finished with whatever scores we have. If the channel
+  // somehow recovers (we toggle connectionLost back to false) or the user
+  // navigates away, the countdown is cancelled.
+  useEffect(() => {
+    if (!connectionLost || view !== "playing") {
+      if (abandonTimerRef.current) {
+        clearInterval(abandonTimerRef.current);
+        abandonTimerRef.current = null;
+      }
+      setAbandonCountdown(null);
+      return;
+    }
+    setAbandonCountdown(60);
+    const id = setInterval(() => {
+      setAbandonCountdown((s) => {
+        if (s == null) return s;
+        if (s <= 1) {
+          clearInterval(id);
+          abandonTimerRef.current = null;
+          // Best-effort write — even if the WebSocket is dead the REST
+          // update may still go through. Either way we transition our
+          // local UI to results so the player isn't stuck.
+          if (room?.code) gameRoomMarkFinished(room.code).catch(() => {});
+          setView("results");
+          return null;
+        }
+        return s - 1;
+      });
+    }, 1000);
+    abandonTimerRef.current = id;
+    return () => {
+      clearInterval(id);
+      abandonTimerRef.current = null;
+    };
+  }, [connectionLost, view, room?.code]);
 
   // React to room.status transitions. Drives every screen change after the
   // first time the user enters a room.
@@ -8995,39 +9045,52 @@ function OnlineGame({ onBack, userId, defaultName }) {
   // ── Actions ──────────────────────────────────────────────────────────────
 
   const onCreate = useCallback(async () => {
+    if (creating) return;
     if (!name.trim()) return t$("Enter your name");
     if (!userId)       return t$("Sign in to play online");
-    const rc = generateCode();
-    const { data, error } = await gameRoomCreate({ code: rc, hostId: userId, hostName: name.trim() });
-    if (error || !data) return t$(`Create failed: ${(error?.message || "try again").slice(0, 60)}`);
-    setRoom(data);
-    setCode(rc);
-    setIsHost(true);
-    subscribeRoom(rc);
-    setView("create-waiting");
-  }, [name, userId, subscribeRoom, t$]);
+    setCreating(true);
+    try {
+      const rc = generateCode();
+      const { data, error } = await gameRoomCreate({ code: rc, hostId: userId, hostName: name.trim() });
+      if (error || !data) { t$(`Create failed: ${(error?.message || "try again").slice(0, 60)}`); return; }
+      setRoom(data);
+      setCode(rc);
+      setIsHost(true);
+      subscribeRoom(rc);
+      setView("create-waiting");
+    } finally {
+      setCreating(false);
+    }
+  }, [name, userId, subscribeRoom, t$, creating]);
 
   const onJoin = useCallback(async () => {
+    if (joining) return;
     if (!name.trim()) return t$("Enter your name");
     if (!userId)       return t$("Sign in to play online");
     const rc = joinCode.toUpperCase().trim();
     if (rc.length < 4) return t$("Enter a valid room code");
-    const { data: existing, error: getErr } = await gameRoomGet(rc);
-    if (getErr) return t$(`Lookup failed: ${(getErr.message || "try again").slice(0, 60)}`);
-    if (!existing) return t$("Room not found — check the code and try again");
-    if (existing.status === "playing" || existing.status === "finished") return t$("This game has already started");
-    if (existing.guest_id && existing.guest_id !== userId) return t$("This room is already full");
-    const { data: joined, error: joinErr } = await gameRoomJoin({ code: rc, guestId: userId, guestName: name.trim() });
-    if (joinErr) return t$(`Join failed: ${(joinErr.message || "try again").slice(0, 60)}`);
-    if (!joined) return t$("This room is already full");
-    setRoom(joined);
-    setCode(rc);
-    setIsHost(false);
-    subscribeRoom(rc);
-    // Status transition effect will swing us to 'lobby' once the row arrives
-    // via realtime; set explicitly here so the UI updates immediately too.
-    setView("lobby");
-  }, [name, userId, joinCode, subscribeRoom, t$]);
+    setJoining(true);
+    try {
+      const { data: existing, error: getErr } = await gameRoomGet(rc);
+      if (getErr) { t$(`Lookup failed: ${(getErr.message || "try again").slice(0, 60)}`); return; }
+      if (!existing) { t$("Room not found — check the code and try again"); return; }
+      if (existing.status === "playing" || existing.status === "finished") { t$("This game has already started"); return; }
+      if (existing.guest_id && existing.guest_id !== userId) { t$("This room is already full"); return; }
+      const { data: joined, error: joinErr } = await gameRoomJoin({ code: rc, guestId: userId, guestName: name.trim() });
+      if (joinErr) { t$(`Join failed: ${(joinErr.message || "try again").slice(0, 60)}`); return; }
+      if (!joined) { t$("This room is already full"); return; }
+      setRoom(joined);
+      setCode(rc);
+      setIsHost(false);
+      subscribeRoom(rc);
+      // Status transition effect will swing us to 'lobby' once the row
+      // arrives via realtime; set explicitly here so the UI updates
+      // immediately too.
+      setView("lobby");
+    } finally {
+      setJoining(false);
+    }
+  }, [name, userId, joinCode, subscribeRoom, t$, joining]);
 
   const onStartGame = useCallback(async () => {
     if (!room || !isHost) return;
@@ -9064,6 +9127,8 @@ function OnlineGame({ onBack, userId, defaultName }) {
     if (channelRef.current) { try { supabase.removeChannel(channelRef.current); } catch {} channelRef.current = null; }
     if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
+    if (abandonTimerRef.current) clearInterval(abandonTimerRef.current);
+    abandonTimerRef.current = null;
     subscribedCodeRef.current = null;
     setRoom(null);
     setCode("");
@@ -9072,6 +9137,9 @@ function OnlineGame({ onBack, userId, defaultName }) {
     setPicked(null);
     setLocked(false);
     setConnectionLost(false);
+    setAbandonCountdown(null);
+    setCreating(false);
+    setJoining(false);
     setView("menu");
   }, []);
 
@@ -9086,20 +9154,22 @@ function OnlineGame({ onBack, userId, defaultName }) {
   // socket state, so we can't say definitively whether the opponent left or
   // we did — surface a single honest message and a way out.
   if (connectionLost) {
-    const inGame = view === "playing" || view === "lobby" || view === "create-waiting";
+    const inPlay = view === "playing";
     return (
       <div className="screen">
         <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
           <div style={{fontSize:42}}>📡</div>
-          <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Connection lost</div>
+          <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>
+            {inPlay ? "Opponent may have disconnected" : "Connection lost"}
+          </div>
           <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,maxWidth:300}}>
-            {inGame
-              ? "The game has ended. Check your connection and start a new room to play again."
+            {inPlay
+              ? <>Game will end in <strong style={{color:"var(--accent)",fontVariantNumeric:"tabular-nums"}}>{abandonCountdown ?? 60}</strong> seconds if they don't come back.</>
               : "Couldn't stay connected to the room. Try again in a moment."}
           </div>
           <button className="btn-3d" onClick={onBack} style={{marginTop:6,maxWidth:240}}>Back to Home</button>
-          <button className="btn-3d ghost" onClick={onPlayAgain} style={{maxWidth:240}}>Try a new room</button>
+          {!inPlay && <button className="btn-3d ghost" onClick={onPlayAgain} style={{maxWidth:240}}>Try a new room</button>}
         </div>
       </div>
     );
@@ -9128,7 +9198,9 @@ function OnlineGame({ onBack, userId, defaultName }) {
           <div className="lcard-s">A 6-character code will be generated for your friend.</div>
           <label className="inp-lbl">Your name</label>
           <input className="inp" placeholder="e.g. Marcus" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
-          <button className="btn-3d" onClick={onCreate} style={{marginTop:6}}>Create room →</button>
+          <button className="btn-3d" onClick={onCreate} disabled={creating} style={{marginTop:6, opacity: creating ? 0.7 : 1}}>
+            {creating ? "Creating…" : "Create room →"}
+          </button>
         </div>
         {toast && <div className="toast">{toast}</div>}
       </div>
@@ -9151,7 +9223,9 @@ function OnlineGame({ onBack, userId, defaultName }) {
             onChange={e => setJoinCode(e.target.value.toUpperCase())}
             maxLength={6}
           />
-          <button className="btn-3d" onClick={onJoin} style={{marginTop:6}}>Join →</button>
+          <button className="btn-3d" onClick={onJoin} disabled={joining} style={{marginTop:6, opacity: joining ? 0.7 : 1}}>
+            {joining ? "Joining…" : "Join →"}
+          </button>
         </div>
         {toast && <div className="toast">{toast}</div>}
       </div>
@@ -11095,7 +11169,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               </div>
               <button className="settings-row" onClick={() => exitGuestMode()} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
                 <div className="sr-left">
-                  <div className="sr-label" style={{color:"#22c55e"}}>Sign in / Create account</div>
+                  <div className="sr-label" style={{color:"var(--accent)"}}>Sign in / Create account</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -14056,9 +14130,15 @@ function AppInner() {
                 ].map(opt => (
                   <button
                     key={opt.id}
+                    // We render this as a regular (non-disabled) button when
+                    // comingSoon is true so the onClick still fires and the
+                    // user gets a toast. The .coming-soon CSS keeps the
+                    // visual "disabled" treatment (opacity + not-allowed).
                     className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
-                    disabled={opt.comingSoon}
-                    onClick={() => opt.comingSoon ? null : pickLeague(opt.id, opt.name)}
+                    aria-disabled={opt.comingSoon || undefined}
+                    onClick={() => opt.comingSoon
+                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned!`)
+                      : pickLeague(opt.id, opt.name)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
                     <div className="diff-option-body">
@@ -14101,9 +14181,14 @@ function AppInner() {
                 ].map(opt => (
                   <button
                     key={opt.id}
+                    // Same pattern as the league picker: keep onClick wired
+                    // when comingSoon so the user gets a toast. The
+                    // .coming-soon CSS handles the visual disabled state.
                     className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
-                    disabled={opt.comingSoon}
-                    onClick={() => opt.comingSoon ? null : launchLeagueInMode(opt.id)}
+                    aria-disabled={opt.comingSoon || undefined}
+                    onClick={() => opt.comingSoon
+                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned!`)
+                      : launchLeagueInMode(opt.id)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
                     <div className="diff-option-body">
