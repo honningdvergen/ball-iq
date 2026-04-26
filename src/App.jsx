@@ -7159,18 +7159,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   border-top:0.5px solid rgba(255,255,255,0.08);
   display:flex;align-items:stretch;z-index:100;
-  padding-top:8px;
+  padding-top:6px;
   padding-bottom:max(env(safe-area-inset-bottom,34px),34px);
   /* Height matches the padding so .tab-item (align-items:stretch) gets a real
-     inner box of ~60px on every device, even when env(safe-area-inset-bottom)
-     resolves to 0 (Android, iPad portrait, desktop browsers). Without this
-     parity the icons get squeezed and clip at the top of the bar. */
-  height:calc(68px + max(env(safe-area-inset-bottom,34px),34px));
+     inner box on every device, even when env(safe-area-inset-bottom) resolves
+     to 0 (Android, iPad portrait, desktop browsers). Without this parity the
+     icons get squeezed and clip at the top of the bar. */
+  height:calc(58px + max(env(safe-area-inset-bottom,34px),34px));
 }
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
-  background:transparent;padding:4px 4px 6px;min-height:0;
+  background:transparent;padding:4px 4px 4px;min-height:0;
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;position:relative;
   transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
@@ -7188,7 +7188,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:calc(76px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
+.tab-content{padding-bottom:calc(66px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
@@ -12106,18 +12106,42 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     setSearching(true);
     const t = setTimeout(async () => {
       try {
-        if (import.meta.env.DEV) console.log("[friends] search query:", q);
+        const filterExpr = `%${q}%`;
+        if (import.meta.env.DEV) {
+          console.log("[friends] ── search start ──");
+          console.log("[friends] raw input:", search);
+          console.log("[friends] trimmed term:", q);
+          console.log("[friends] ilike pattern:", filterExpr);
+          console.log("[friends] my userId:", userId);
+          console.log("[friends] excludedIds (will filter these out):", Array.from(excludedIds));
+        }
         const { data, error } = await supabase
           .from("profiles")
           .select("id,username,avatar:avatar_id,total_score")
-          .ilike("username", `%${q}%`)
+          .ilike("username", filterExpr)
           .limit(10);
-        if (import.meta.env.DEV) console.log("[friends] search result:", { rows: data?.length, error: error?.message });
+        if (import.meta.env.DEV) {
+          console.log("[friends] supabase data:", data);
+          console.log("[friends] supabase error:", error);
+        }
         if (cancelled) return;
         if (error) throw error;
-        setResults((data || []).filter(p => !excludedIds.has(p.id)));
+        // DIAGNOSTIC: temporarily bypass the excludedIds filter so we can see
+        // every row Supabase returns (including the user themselves and
+        // already-friended users). Restore the filter once the empty-results
+        // bug is understood.
+        const rawRows = data || [];
+        const filteredRows = rawRows.filter(p => !excludedIds.has(p.id));
+        if (import.meta.env.DEV) {
+          console.log("[friends] rows from supabase:", rawRows.length);
+          console.log("[friends] rows after excludedIds filter:", filteredRows.length);
+          if (rawRows.length && !filteredRows.length) {
+            console.log("[friends] ⚠️ all rows were filtered out by excludedIds — friend may already be in friendships table");
+          }
+        }
+        setResults(import.meta.env.DEV ? rawRows : filteredRows);
       } catch (e) {
-        console.error("[friends] search", e?.message || "Unknown error");
+        console.error("[friends] search", e?.message || "Unknown error", e);
         if (!cancelled) setResults([]);
       } finally {
         if (!cancelled) setSearching(false);
