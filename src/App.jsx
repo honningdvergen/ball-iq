@@ -12866,7 +12866,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             <div className="emoji-grid">
               {AVATARS.map(em => (
                 <button key={em} className={`emoji-opt${profile?.avatar===em?" selected":""}`}
-                  onClick={() => { setProfile(p => ({...p, avatar:em})); setShowEmojiPicker(false); }}>
+                  onClick={() => {
+                    setProfile(p => ({...p, avatar:em}));
+                    setShowEmojiPicker(false);
+                    // Sync emoji choice to Supabase so friend lists and
+                    // leaderboards see the new avatar across devices.
+                    if (user && !isGuest) {
+                      supabase.from('profiles').update({ avatar_id: em }).eq('id', user.id).then(({ error }) => {
+                        if (error) toast("⚠️ Couldn't sync avatar — check your connection");
+                      }).catch(() => {
+                        toast("⚠️ Couldn't sync avatar — check your connection");
+                      });
+                    }
+                  }}>
                   {em}
                 </button>
               ))}
