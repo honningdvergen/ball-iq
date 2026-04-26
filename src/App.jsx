@@ -5736,7 +5736,9 @@ function applySeenFilter(pool, needed, toKey) {
     return !k || !seen.has(k);
   });
   if (fresh.length >= needed) return fresh;
-  console.log("[seen] pool exhausted for this category — serving full pool");
+  if (import.meta.env.DEV) {
+    console.log("[seen] pool exhausted for this category — serving full pool");
+  }
   return pool;
 }
 function recordSeenQuestions(questions) {
@@ -6543,8 +6545,6 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 
 // ─── CSS ──────────────────────────────────────────────────────────────────────
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
-
 *{box-sizing:border-box;margin:0;padding:0;}
 
 /* ── DARK THEME (default) ── */
@@ -7530,8 +7530,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-bar.done{background:var(--accent);}
 .onboard-bar.active{background:var(--accent);box-shadow:0 0 8px rgba(34,197,94,0.5);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
-.onboard-track{display:flex;height:100%;width:400%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
-.onboard-step{width:25%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-track{display:flex;height:100%;width:300%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
+.onboard-step{width:33.3333%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
 .onboard-step-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:360px;margin:0 auto;flex:1;}
 .onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
@@ -8551,17 +8551,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
 
-  // Per-question response time tracking (used by calcBallIQ for the speed bonus).
-  // Reset whenever the question index changes; recorded in registerAnswer.
-  const questionStartRef = useRef(Date.now());
-  const responseTimesRef = useRef([]);
-  useEffect(() => { questionStartRef.current = Date.now(); }, [idx]);
-  const computeAvgResponseMs = () => {
-    const arr = responseTimesRef.current;
-    if (!arr.length) return null;
-    return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
-  };
-
   const total = questions?.length || 0;
   const q = questions?.[idx];
   const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "balliq" && q?.type !== "tf";
@@ -8570,8 +8559,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const answered = selected !== null || typedResult !== null;
 
   const doAdvance = useCallback((ns, nb, correct) => {
-    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers, avgResponseMs: computeAvgResponseMs() }); return; }
-    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers, speedScore, avgResponseMs: computeAvgResponseMs() }); return; }
+    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers }); return; }
+    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers, speedScore }); return; }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
@@ -8585,12 +8574,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const registerAnswer = useCallback((correct) => {
     clearInterval(timerRef.current);
-    // Record how long this question took (skip timeouts — they pin to timerDuration
-    // and would poison the average with a hard ceiling value).
-    if (correct !== "timeout") {
-      const elapsed = Date.now() - questionStartRef.current;
-      if (elapsed > 0 && elapsed < 60000) responseTimesRef.current.push(elapsed);
-    }
     const ns = correct ? score + 1 : score;
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
@@ -11566,7 +11549,7 @@ function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
   const [favClub, setFavClub] = useState(null);
   const [skillLevel, setSkillLevel] = useState(null);
-  const TOTAL = 4;
+  const TOTAL = 3;
 
   const persistAndFinish = () => {
     try {
@@ -11601,14 +11584,6 @@ function OnboardingScreen({ onDone }) {
     if (step < TOTAL - 1) setStep(s => s + 1);
     else persistAndFinish();
   };
-  const requestNotif = async () => {
-    try {
-      if (typeof Notification !== "undefined" && Notification.requestPermission) {
-        await Notification.requestPermission();
-      }
-    } catch {}
-    persistAndFinish();
-  };
 
   return (
     <div className="onboard-wrap">
@@ -11622,7 +11597,7 @@ function OnboardingScreen({ onDone }) {
       </div>
 
       <div className="onboard-viewport">
-        <div className="onboard-track" style={{ transform: `translateX(-${step * 25}%)` }}>
+        <div className="onboard-track" style={{ transform: `translateX(-${step * (100 / 3)}%)` }}>
           {/* 1. Welcome */}
           <div className="onboard-step">
             <div className="onboard-step-top">
@@ -11684,19 +11659,8 @@ function OnboardingScreen({ onDone }) {
             </div>
             <div className="onboard-actions">
               <button className="onboard-skip" onClick={skip}>Skip</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>Next →</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>Finish</button>
             </div>
-          </div>
-
-          {/* 4. Notifications */}
-          <div className="onboard-step">
-            <div className="onboard-step-top">
-              <div className="onboard-icon">🔔</div>
-              <div className="onboard-title">Never miss your daily challenge</div>
-              <div className="onboard-body">Stay on your streak with a daily reminder.</div>
-            </div>
-            <button className="onboard-btn" onClick={requestNotif}>Enable Notifications</button>
-            <button className="onboard-skip" onClick={persistAndFinish} style={{marginTop:6}}>Maybe Later</button>
           </div>
         </div>
       </div>
@@ -13756,7 +13720,7 @@ function AppInner() {
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
-  const shareScore = useCallback(async (score, total, mode, avgResponseMs, extras = {}) => {
+  const shareScore = useCallback(async (score, total, mode, extras = {}) => {
     // Per-mode plaintext fallback (used only when the image share path
     // fails). Game-result focused — no profile bits.
     const pct = total ? Math.round(score / total * 100) : 0;
@@ -14180,7 +14144,17 @@ function AppInner() {
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying Ball IQ?</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
-              <button className="btn btn-p" style={{marginBottom:10}} onClick={() => { setShowRatePrompt(false); window.open("https://apps.apple.com/app/ball-iq", "_blank"); }}>Rate Ball IQ ⭐</button>
+              <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
+                setShowRatePrompt(false);
+                const ua = navigator.userAgent || "";
+                if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
+                  window.open("https://apps.apple.com/app/ball-iq", "_blank");
+                } else if (/Android/i.test(ua)) {
+                  window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
+                } else {
+                  showToast("⭐ Search 'Ball IQ' on the App Store or Google Play");
+                }
+              }}>Rate Ball IQ ⭐</button>
               <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
             </div>
           </div>
@@ -14263,7 +14237,7 @@ function AppInner() {
                   { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
                   { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
                   { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
-                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"French football" },
+                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"Coming soon", comingSoon:true },
                   { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
                 ].map(opt => (
                   <button
@@ -14704,7 +14678,7 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
-            onShare={() => shareScore(result?.score, result?.total, mode, result?.avgResponseMs, { streak: result?.bestStreak })}
+            onShare={() => shareScore(result?.score, result?.total, mode, { streak: result?.bestStreak })}
             onRetry={() => startMode(mode)}
           />
         )}
