@@ -1960,7 +1960,7 @@ const QB = [
   { q:"Which goalkeeper became the most expensive in world football history when Chelsea triggered his release clause in August 2018 for £71.6m (€80m)?", o:["Alisson Becker","Thibaut Courtois","Kepa Arrizabalaga","Ederson"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"Kepa's €80m release clause was paid in full by Chelsea after selling Courtois to Real Madrid. Alisson Becker (Roma→Liverpool £65m weeks earlier) was briefly the record holder." },
   { q:"The La Liga record for most goals in a single top-flight match is 13 — achieved when Athletic Bilbao beat Barcelona 12-1 in February 1931. How many of those goals did Bata score?", o:["5","6","7","8"], a:2, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Bata scored 7 in Athletic Bilbao's 12-1 demolition of Barcelona (3 February 1931) — still a La Liga record. It's also the only La Liga match ever won by an 11-goal margin. The infamous 149-0 match in Madagascar 2002 was intentional own goals (SO Emyrne protest)." },
   { q:"Which country has qualified for the most World Cups without winning?", o:["Mexico","Holland","England","Belgium"], a:0, cat:"Records", diff:"medium", type:"mcq", hint:"Mexico have qualified for 17 World Cups but have never progressed past the quarter-finals.", v:1 },
-  { q:"What is the record for the most goals scored by one team in a Premier League season?", o:["96","103","106","108"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"Manchester City scored 106 Premier League goals in their 2017-18 title-winning season.", v:1, hint:"Man City set the PL record with 106 goals in 2017-18 — 'The Centurions' under Pep Guardiola. They also set records for most points (100), most wins (32), best goal difference (+79), and largest winning margin (19 points)." },
+  { q:"What is the record for the most goals scored by one team in a Premier League season?", o:["96","103","106","108"], a:2, cat:"Records", diff:"hard", type:"mcq", hint:"Man City set the PL record with 106 goals in 2017-18 — 'The Centurions' under Pep Guardiola. They also set records for most points (100), most wins (32), best goal difference (+79), and largest winning margin (19 points).", v:1 },
   { q:"Who scored the quickest goal in the history of the Champions League?", o:["Paolo Maldini","Roy Makaay","Gilberto Silva","Hakan Sukur"], a:1, cat:"Records", diff:"hard", type:"mcq", hint:"Roy Makaay scored after just 10.2 seconds for Bayern Munich against Real Madrid in 2007.", v:1 },
   { q:"Which player scored in the most consecutive Premier League games?", o:["Jamie Vardy","Ruud van Nistelrooy","Alan Shearer","Henry"], a:0, cat:"Records", diff:"medium", type:"mcq", hint:"Jamie Vardy scored in 11 consecutive Premier League games for Leicester City in 2015.", v:1 },
   { q:"How many goals did Gerd Muller score for Bayern Munich in all competitions?", o:["405","524","563","628"], a:3, cat:"Records", diff:"hard", type:"mcq", hint:"Muller scored an extraordinary 628 goals in 746 games for Bayern Munich between 1964 and 1979.", v:1 },
@@ -7355,7 +7355,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .crop-circle-mask .cropper-view-box,.crop-circle-mask .cropper-face{border-radius:50%;}
 .crop-circle-mask .cropper-view-box{outline:2px solid #fff;outline-color:rgba(255,255,255,0.85);}
 .crop-status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
-.crop-status-err{color:#FF6B6B;}
+.crop-status-err{color:var(--red);}
 .crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0a0a0a;flex-shrink:0;}
 .light .crop-overlay{background:rgba(0,0,0,0.85);}
 .light .crop-stage{background:#1a1a1a;}
@@ -8494,6 +8494,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const advanceRef = useRef(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
+  const hardRightBurstTimerRef = useRef(null);
+  useEffect(() => () => {
+    if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
+  }, []);
+
 
   const total = questions?.length || 0;
   const q = questions?.[idx];
@@ -8544,7 +8549,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     if (correct && q.diff === "hard") {
       haptic("hardCorrect");
       setHardRightBurst(true);
-      setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
+      if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
+      hardRightBurstTimerRef.current = setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
     } else {
       haptic(correct ? "correct" : "wrong");
     }
@@ -8734,7 +8740,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           if (correct && q.diff === "hard") {
             haptic("hardCorrect");
             setHardRightBurst(true);
-            setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
+            if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
+            hardRightBurstTimerRef.current = setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
           }
           registerAnswer(correct);
         }} />
@@ -11322,7 +11329,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <button
               onClick={performDelete}
               disabled={deleting}
-              style={{width:"100%",padding:14,background:"#FF5A5A",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:deleting?"default":"pointer",marginBottom:8,opacity:deleting?0.7:1,WebkitTextFillColor:"#fff"}}
+              style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:deleting?"default":"pointer",marginBottom:8,opacity:deleting?0.7:1,WebkitTextFillColor:"#fff"}}
             >
               {deleting ? "Deleting…" : "Delete Forever"}
             </button>
@@ -11431,7 +11438,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
 
         <h2 style={privacyH2}>8. Contact</h2>
-        <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: privacy@ball-iq.app</p>
+        <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: <a href="mailto:privacy@ball-iq.app" style={{color:"var(--accent)",textDecoration:"none"}}>privacy@ball-iq.app</a></p>
 
         <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 {APP_NAME}. All rights reserved.</p>
       </div>
@@ -13283,7 +13290,9 @@ function AppInner() {
     return 0;
   });
   const [xpToast, setXpToast] = useState(null);
+  const xpToastTimerRef = useRef(null);
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
+  const levelUpTimerRef = useRef(null);
   const [howToPlay, setHowToPlay] = useState(null);
   const [loginStreak, setLoginStreak] = useState(() => {
     try {
@@ -13293,6 +13302,14 @@ function AppInner() {
     return 0;
   });
   const [streakToast, setStreakToast] = useState(null);
+  const streakToastTimerRef = useRef(null);
+  // Single cleanup on unmount: clear any in-flight toast/overlay timers so
+  // tabbing away mid-toast doesn't leave dangling setState callbacks.
+  useEffect(() => () => {
+    if (xpToastTimerRef.current) clearTimeout(xpToastTimerRef.current);
+    if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
+    if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+  }, []);
   const [toast, setToast] = useState(null);
 
   // Detect day rollover while the app stays open. dailyDone / dailyScore were
@@ -13438,10 +13455,11 @@ function AppInner() {
           newStreak = data.streak + 1;
           await window.storage?.set("biq_login_streak", JSON.stringify({ streak: newStreak, lastDay: todayNum }));
           if (newStreak > 1) {
+            if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
             setStreakToast(newStreak);
             haptic("heavy");
             playSound("streak");
-            setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+            streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
           }
         } else if (data.lastDay < todayNum - 1) {
           // Streak broken
@@ -13743,12 +13761,14 @@ function AppInner() {
         const newInfo = getLevelInfo(newXp);
         window.storage?.set("biq_xp", String(newXp)).catch(() => {});
         const leveledUp = newInfo.level.name !== oldInfo.level.name;
+        if (xpToastTimerRef.current) clearTimeout(xpToastTimerRef.current);
         setXpToast({ earned, leveledUp, levelName: newInfo.level.name, icon: newInfo.level.icon });
-        setTimeout(() => setXpToast(null), 3200);
+        xpToastTimerRef.current = setTimeout(() => setXpToast(null), 3200);
         if (leveledUp) {
-          setTimeout(() => {
+          if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
+          levelUpTimerRef.current = setTimeout(() => {
             setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
-            setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
+            levelUpTimerRef.current = setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
           }, 400);
         }
         return newXp;
