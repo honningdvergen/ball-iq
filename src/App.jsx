@@ -6752,6 +6752,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
 .btn-3d.ghost:disabled{box-shadow:none;}
 
+/* Results-screen button stack — lighter than the default .btn-3d, with a
+   shorter rim and tighter spacing so the action column doesn't dominate. */
+.results-actions{display:flex;flex-direction:column;gap:8px;}
+.results-actions .btn-3d{min-height:0;padding:12px 20px;font-size:15px;box-shadow:0 3px 0 #46A302;margin:0!important;}
+.results-actions .btn-3d:active,.results-actions .btn-3d.is-pressed{transform:translateY(2px);box-shadow:0 1px 0 #46A302;}
+.results-actions .btn-3d:disabled{box-shadow:0 3px 0 #46A302;}
+.results-actions .btn-3d.amber{box-shadow:0 3px 0 #D49600;}
+.results-actions .btn-3d.amber:active,.results-actions .btn-3d.amber.is-pressed{box-shadow:0 1px 0 #D49600;}
+.results-actions .btn-3d.dark{box-shadow:0 3px 0 #12141B;}
+.results-actions .btn-3d.dark:active,.results-actions .btn-3d.dark.is-pressed{box-shadow:0 1px 0 #12141B;}
+.results-actions .btn-3d.ghost{box-shadow:none;}
+.results-actions .btn-3d.ghost:active,.results-actions .btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
+
 /* Pill utility — small uppercase tone-tinted badge. */
 .pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
@@ -9455,9 +9468,9 @@ function OnlineGame({ onBack, userId, defaultName }) {
           </>
         )}
 
-        <div style={{marginTop:18}}>
-          <button className="btn-3d" onClick={onShare} style={{marginBottom:12}}>Share Result 📤</button>
-          <button className="btn-3d ghost" onClick={onPlayAgain} style={{marginBottom:12}}>Play Again</button>
+        <div className="results-actions" style={{marginTop:18}}>
+          <button className="btn-3d" onClick={onShare}>Share Result 📤</button>
+          <button className="btn-3d ghost" onClick={onPlayAgain}>Play Again</button>
           <button className="btn-3d ghost" onClick={onBack}>Back to Home</button>
         </div>
         {toast && <div className="toast">{toast}</div>}
@@ -9981,7 +9994,9 @@ function LocalResults({ result, onHome, onRetry }) {
         <div className="rc" style={{marginBottom:16}}>
           <div className="rc-title">No results to show</div>
         </div>
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        <div className="results-actions">
+          <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        </div>
       </div>
     );
   }
@@ -10100,8 +10115,10 @@ function LocalResults({ result, onHome, onRetry }) {
         </div>
       )}
 
-      <button className="btn-3d" style={{marginTop:16}} onClick={onRetry}>Play Again</button>
-      <button className="btn-3d ghost" style={{marginTop:14}} onClick={onHome}>Back to Home</button>
+      <div className="results-actions" style={{marginTop:16}}>
+        <button className="btn-3d" onClick={onRetry}>Play Again</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      </div>
     </div>
   );
 }
@@ -10686,9 +10703,11 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
           </div>
         </div>
       )}
-      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>Retake Test</button>
-      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
-      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      <div className="results-actions">
+        <button className="btn-3d" onClick={onRetry}>Retake Test</button>
+        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      </div>
     </div>
   );
 }
@@ -10842,9 +10861,9 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
       )}
 
       {/* Three stacked full-width actions */}
-      <div style={{marginTop:18}}>
-        <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>Play Again</button>
-        <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score</button>
+      <div className="results-actions" style={{marginTop:18}}>
+        <button className="btn-3d" onClick={onRetry}>Play Again</button>
+        <button className="btn-3d amber" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
 
@@ -10921,9 +10940,11 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>⚡ Run It Back</button>
-      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
-      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      <div className="results-actions">
+        <button className="btn-3d" onClick={onRetry}>⚡ Run It Back</button>
+        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      </div>
     </div>
   );
 }
@@ -10957,9 +10978,11 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
-      <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Another Round</button>
-      <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
-      <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      <div className="results-actions">
+        <button className="btn-3d" onClick={onRetry}>▶ Another Round</button>
+        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+      </div>
     </div>
   );
 }
