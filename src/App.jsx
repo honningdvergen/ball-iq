@@ -6758,7 +6758,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .hdr-xp-track{background:#E5E5EA;}
 .logo em{color:var(--accent);font-style:normal;}
 .hdr-actions{display:flex;align-items:center;gap:8px;}
-.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
+.icon-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
 .icon-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
 .screen{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .tab-content{animation:none;opacity:1;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
@@ -6899,7 +6899,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .sbar-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);}
 .sbar-key{font-size:10px;color:var(--t3);margin-top:3px;font-weight:500;letter-spacing:0.8px;}
 .page-hdr{display:flex;align-items:center;gap:12px;padding:18px 0 22px;}
-.back-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s1);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2);transition:all 0.15s;}
+.back-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s1);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2);transition:all 0.15s;}
 .back-btn:hover{background:var(--s2);border-color:var(--border2);color:var(--text);}
 .page-title{font-size:19px;font-weight:700;letter-spacing:-0.4px;}
 .settings-panel{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:12px;}
@@ -7244,7 +7244,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── MONTHLY CALENDAR ── */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
-.cal-nav{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--t1);cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;}
+.cal-nav{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);cursor:pointer;font-size:16px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;}
 .cal-nav:hover:not(:disabled){background:var(--s3);}
 .cal-nav:disabled{opacity:0.35;cursor:not-allowed;}
 .cal-month{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;text-align:center;flex:1;}
@@ -8369,7 +8369,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
   return (
     <div className="quiz-wrap">
       <div className="q-top">
-        <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }}>←</button>
+        <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${pct}%`, background:barColor, transition:'width 1s linear'}} /></div>
         <span className="q-ctr" style={{color: timeLeft <= 10 ? 'var(--red)' : 'var(--t2)', fontWeight: timeLeft <= 10 ? 800 : 500}}>{timeLeft}s</span>
       </div>
@@ -8486,7 +8486,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
   return (
     <div className="quiz-wrap">
       <div className="q-top">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (picked?1:0)) / total) * 100}%`}} /></div>
         <span className="q-ctr">{idx + 1}/{total}</span>
       </div>
@@ -8676,7 +8676,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         <button className="back-btn" onClick={() => {
           if (idx === 0) { onBack(); return; }
           setShowQuit(true);
-        }}>←</button>
+        }} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{ width: `${((idx + (answered ? 1 : 0)) / total) * 100}%` }} /></div>
         <div className="q-top-right">
           {score > 0 && <span className="q-score-live">{score}<span className="q-score-tick"> ✓</span></span>}
@@ -8725,7 +8725,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
                 }).catch(() => {});
               }
             } catch {}
-          }} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,color:"var(--t3)",padding:"2px 4px",lineHeight:1}} title="Flag question">🚩</button>
+          }} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,color:"var(--t3)",padding:"10px 12px",lineHeight:1,minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}} title="Flag question" aria-label="Flag this question">🚩</button>
         </div>
         <div className="q-text" style={{fontSize:"var(--q-font-size, 18px)"}}>{q.q}</div>
       </div>
@@ -9195,7 +9195,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     const inPlay = view === "playing";
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+        <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Online 1v1</div></div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
           <div style={{fontSize:42}}>📡</div>
           <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>
@@ -9217,7 +9217,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
   if (view === "menu") {
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+        <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Online 1v1</div></div>
         <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:18}}>
           Challenge a friend in real time. Create a room and share the code, or enter the code your friend sent you.
         </p>
@@ -9231,11 +9231,11 @@ function OnlineGame({ onBack, userId, defaultName }) {
   if (view === "create-input") {
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Create a Room</div></div>
+        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")} aria-label="Go back">←</button><div className="page-title">Create a Room</div></div>
         <div className="lcard">
           <div className="lcard-s">A 6-character code will be generated for your friend.</div>
-          <label className="inp-lbl">Your name</label>
-          <input className="inp" placeholder="e.g. Marcus" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
+          <label className="inp-lbl" htmlFor="create-name-input">Your name</label>
+          <input id="create-name-input" className="inp" placeholder="e.g. Marcus" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
           <button className="btn-3d" onClick={onCreate} disabled={creating} style={{marginTop:6, opacity: creating ? 0.7 : 1}}>
             {creating ? "Creating…" : "Create room →"}
           </button>
@@ -9248,13 +9248,14 @@ function OnlineGame({ onBack, userId, defaultName }) {
   if (view === "join-input") {
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")}>←</button><div className="page-title">Join a Room</div></div>
+        <div className="page-hdr"><button className="back-btn" onClick={() => setView("menu")} aria-label="Go back">←</button><div className="page-title">Join a Room</div></div>
         <div className="lcard">
           <div className="lcard-s">Enter your name and your friend's room code.</div>
-          <label className="inp-lbl">Your name</label>
-          <input className="inp" placeholder="e.g. Luka" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
-          <label className="inp-lbl">Room code</label>
+          <label className="inp-lbl" htmlFor="join-name-input">Your name</label>
+          <input id="join-name-input" className="inp" placeholder="e.g. Luka" value={name} onChange={e => setName(e.target.value)} maxLength={20} />
+          <label className="inp-lbl" htmlFor="room-code-input">Room code</label>
           <input
+            id="room-code-input"
             className="inp og-code-input"
             placeholder="XXXXXX"
             value={joinCode}
@@ -9275,7 +9276,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     return (
       <div className="screen">
         <div className="page-hdr">
-          <button className="back-btn" onClick={onPlayAgain}>←</button>
+          <button className="back-btn" onClick={onPlayAgain} aria-label="Go back">←</button>
           <div className="page-title">Room created</div>
         </div>
         <div className="og-code-box" onClick={copyCode}>
@@ -9304,7 +9305,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     if (!room) {
       return (
         <div className="screen">
-          <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Online 1v1</div></div>
+          <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Online 1v1</div></div>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
             <div style={{fontSize:42}}>🚪</div>
             <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Room not found</div>
@@ -9322,7 +9323,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     return (
       <div className="screen">
         <div className="page-hdr">
-          <button className="back-btn" onClick={onPlayAgain}>←</button>
+          <button className="back-btn" onClick={onPlayAgain} aria-label="Go back">←</button>
           <div className="page-title">Lobby</div>
         </div>
         <div className="og-vs">
@@ -9486,7 +9487,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
 
     return (
       <div className="screen">
-        <div className="page-hdr"><button className="back-btn" onClick={onBack}>←</button><div className="page-title">Results</div></div>
+        <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Results</div></div>
 
         <div className="og-results-headline">
           {tied
@@ -9555,7 +9556,7 @@ function SocialHub({ onOnline, onLocal, onBack }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="page-title">Challenge a Friend</div>
       </div>
       <div className="social-intro">Pick a game mode, then choose how to play:</div>
@@ -9597,7 +9598,7 @@ function LocalSetup({ onStart, onBack }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="page-title">Local Multiplayer</div>
       </div>
 
@@ -9884,7 +9885,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
       : "Pass the phone. Tap Ready when you've got it.";
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Close">✕</button>
         <div className="ds-eyebrow local-ready-eyebrow">
           {classicSprint
             ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
@@ -9912,7 +9913,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   if (phase === "playerSwap") {
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}}>✕</button>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Close">✕</button>
         <div className="ds-eyebrow local-ready-eyebrow">Next up · {prog}</div>
         <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
         <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
@@ -9928,7 +9929,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="quiz-wrap">
         <div className="q-top">
-          <button className="back-btn" onClick={onExit}>✕</button>
+          <button className="back-btn" onClick={onExit} aria-label="Close">✕</button>
           <div className="prog-wrap">
             <div className="prog-bar" style={{ width: `${Math.min(100, ((currentQIdx + 1) / Math.max(1, Math.min(target, totalQs))) * 100)}%` }} />
           </div>
@@ -11042,7 +11043,7 @@ function ClubQuizScreen({ onStart, onBack }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="page-title">Club Quizzes</div>
       </div>
       <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
@@ -11132,7 +11133,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   return (
     <div className="screen" style={{background:"var(--bg)"}}>
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="page-title">Settings</div>
       </div>
 
@@ -13095,7 +13096,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
                 const isAction = k === "DEL";
                 const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
                 return (
-                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k}>
+                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : k}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );
@@ -13140,7 +13141,7 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { textSize:"M", hints:true, timer:true, theme:"dark" };
+    const defaults = { textSize:"M", hints:true, timer:true, theme:"dark", sound:false };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
@@ -14114,7 +14115,7 @@ function AppInner() {
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to Ball IQ!</div>
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Tap "Play" to start your first quiz. New questions daily!</div>
               </div>
-              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:20,width:28,height:28,fontSize:14,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}}>×</button>
+              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
           </div>
         )}
