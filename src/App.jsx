@@ -7007,6 +7007,22 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-label{font-size:21px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
 .iq-pct strong{color:var(--accent);font-weight:700;}
+
+/* Ball IQ hero variant — larger ring, stronger green glow, bigger number.
+   Applied via .iq-ring-hero / .iq-num-hero modifier classes so the non-
+   results uses of the same .iq-ring (e.g. profile screen) stay intact. */
+.iq-ring-hero{width:200px;height:200px;margin:24px auto 12px;box-shadow:0 0 60px rgba(88,204,2,0.25),0 0 120px rgba(88,204,2,0.18);}
+.iq-ring-hero.great{box-shadow:0 0 80px rgba(88,204,2,0.45),0 0 160px rgba(88,204,2,0.25);}
+.iq-ring-inner-hero{width:160px;height:160px;}
+.iq-num-hero{font-size:64px;letter-spacing:-3px;}
+
+/* Funny label as a prominent pill below the ring — pops on reveal. */
+.iq-label-pill{display:inline-block;margin:6px auto 12px;padding:10px 22px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.4);border-radius:999px;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--text);max-width:92%;}
+
+/* XP pop — used wherever +XP earned is shown. Brief scale-in on mount so
+   the reward registers visually instead of fading in like a stat row. */
+.xp-earned-pop{animation:xpEarnedPop 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;}
+@keyframes xpEarnedPop{from{opacity:0;transform:scale(0.7);}60%{opacity:1;transform:scale(1.08);}to{opacity:1;transform:scale(1);}}
 .btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;}
 .btn-p{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0a1a00;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
 .btn-p:hover{background:linear-gradient(135deg,#22c55e,#22c55e);transform:translateY(-1px);}
@@ -8846,10 +8862,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 // game_rooms row. Both clients drive their own state from the row's status
 // and answer arrays — no polling, no shared QuizEngine.
 
+// True/False is hidden everywhere it's user-selectable — see the play grid
+// and league mode picker. Reinstate this entry when the mode comes back.
 const ONLINE_MODES = [
   { id: "classic",   icon: "⏱️",  name: "Classic",     desc: "10 mixed-difficulty questions" },
   { id: "survival",  icon: "🔥",  name: "Survival",    desc: "10 questions — keep your nerve" },
-  { id: "truefalse", icon: "✅",  name: "True / False", desc: "10 statements — true or false?" },
   { id: "hotstreak", icon: "⚡🔥", name: "Hot Streak",   desc: "10 questions — pick fast" },
 ];
 
@@ -10338,15 +10355,17 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
       {showIQConfetti && revealed && <Confetti />}
       <div className={`iq-result${revealed ? " iq-revealed" : ""}`}>
         <div style={{fontSize:13,color:"var(--t2)",fontWeight:600,marginBottom:4}}>Your Ball IQ</div>
-        <div className="iq-label" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 0.3s"}}>{label}</div>
         <div className="iq-score-wrap">
-          <div className={`iq-ring${iq >= 120 ? " great" : ""}`} style={{background:`conic-gradient(var(--accent) ${ringDisplay*360}deg, var(--s3) 0deg)`}}>
-            <div className="iq-ring-inner">
-              <div className="iq-num">{displayIQ}</div>
+          <div className={`iq-ring iq-ring-hero${iq >= 120 ? " great" : ""}`} style={{background:`conic-gradient(var(--accent) ${ringDisplay*360}deg, var(--s3) 0deg)`}}>
+            <div className="iq-ring-inner iq-ring-inner-hero">
+              <div className="iq-num iq-num-hero">{displayIQ}</div>
               <div className="iq-sub">Ball IQ</div>
             </div>
           </div>
         </div>
+        {/* Funny label rendered as a prominent pill directly below the hero
+            ring — leans into the IQ score as the headline metric. */}
+        <div className="iq-label-pill" style={{opacity: revealed ? 1 : 0, transform: revealed ? "translateY(0)" : "translateY(6px)", transition:"opacity 0.5s 0.5s,transform 0.5s 0.5s"}}>{label}</div>
         <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s", lineHeight:1.8}}>
           <strong>{pctileLbl}</strong>
           {pctile >= 90 && <div style={{fontSize:12,color:"var(--gold)",fontWeight:700,marginTop:4}}>🏆 Elite level knowledge!</div>}
@@ -10358,7 +10377,10 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
       <div className="s-row">
         <div className="sbox"><div className="sbox-v" style={{color:"var(--green)"}}>{result.score}</div><div className="sbox-k">Correct</div></div>
         <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}>{result.total - result.score}</div><div className="sbox-k">Wrong</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}>{result.bestStreak||0}</div><div className="sbox-k">Streak</div></div>
+        {/* Streak tile only when there's an actual streak to brag about. */}
+        {(result.bestStreak||0) >= 3 && (
+          <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}>{result.bestStreak}</div><div className="sbox-k">Streak</div></div>
+        )}
       </div>
       {iqHistory && iqHistory.length > 1 && (
         <div className="iq-history">
@@ -10593,13 +10615,15 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
       {/* Stat rows */}
       <div style={{display:"flex", flexDirection:"column"}}>
         {!isSurvival && <StatRow label="Accuracy" value={`${pct}%`} />}
-        {result.bestStreak != null && (
+        {/* Streak only surfaces when it's actually notable — anything below 3
+            in a row reads as ambient noise on the results screen. */}
+        {result.bestStreak != null && result.bestStreak >= 3 && (
           <StatRow label="Best streak" value={`${result.bestStreak} in a row`} />
         )}
-        {xpEarned > 0 && (
-          <StatRow label="XP earned" value={`+${xpEarned}`} valueColor="#58CC02" />
-        )}
       </div>
+      {xpEarned > 0 && (
+        <div className="xp-earned-badge xp-earned-pop" style={{marginTop:14}}>+{xpEarned} XP earned ⚡</div>
+      )}
 
       {result.winner && (
         <div style={{textAlign:"center", margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}>🏆 {result.winner} wins!</div>
@@ -10684,7 +10708,7 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--t2)"}}><CountUp value={answered} duration={700} delay={650} /></div><div className="sbox-k">Answered</div></div>
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
-      {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
+      {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
       <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>⚡ Run It Back</button>
       <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
       <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
@@ -10720,7 +10744,7 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}><CountUp value={total - score} duration={700} delay={650} /></div><div className="sbox-k">Wrong</div></div>
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
-      {xpEarned > 0 && <div className="xp-earned-badge">+{xpEarned} XP earned ⚡</div>}
+      {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
       <button className="btn-3d" onClick={onRetry} style={{marginBottom:14}}>▶ Another Round</button>
       <button className="btn-3d amber" onClick={onShare} style={{marginBottom:14}}>Share Score 📤</button>
       <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
@@ -12223,7 +12247,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
             {[
               {icon:"🧠", label:"Take the Ball IQ Test", action:"balliq"},
               {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
-              {icon:"✅", label:"Play True or False", action:"truefalse"},
               {icon:"🔥", label:"Try Survival Mode", action:"survival"},
             ].map(({icon, label, action}) => (
               <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
@@ -12634,34 +12657,37 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
     }
   }
 
-  // Build the share text: emoji grid plus the puzzle date. We use ⬛ for grey
-  // to match the spec rather than ⬜ (which the standard NYT Wordle share uses
-  // for light mode) — this app is dark-first. The URL is passed separately
-  // via navigator.share's `url` field so apps like Snapchat / WhatsApp /
-  // iMessage render it as a tappable hyperlink instead of plain text.
+  // Build the share text: emoji grid built from each actual guess. ⬛ for grey
+  // matches the in-app dark theme rather than NYT Wordle's ⬜. Layout:
+  //   ⚽ Ball IQ — Today's Puzzle
+  //   {score}/6
+  //   <blank line>
+  //   <emoji grid, one row per guess>
+  //   <blank line>
+  //   ball-iq.app
+  // The URL is also passed via navigator.share's `url` field so apps that
+  // recognise it (Snapchat, WhatsApp, iMessage, Twitter) render it as a
+  // tappable link rather than inline text.
   const shareText = useMemo(() => {
     if (state.status === "playing") return "";
-    const lines = state.guesses.map((g) => {
+    const grid = state.guesses.map((g) => {
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
-    });
+    }).join("\n");
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ Ball IQ - Today's Puzzle — ${dateLabel}\n${score}\n\n${lines.join("\n")}`;
-  }, [state, answer, dateLabel]);
+    return `⚽ Ball IQ — Today's Puzzle\n${score}\n\n${grid}\n\nball-iq.app`;
+  }, [state, answer]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
     try {
       if (navigator.share) {
-        await navigator.share({
-          text: shareText.replace('\nball-iq.app', '').replace('\nball-iq.app', ''),
-          url: 'https://ball-iq.app'
-        });
+        await navigator.share({ text: shareText, url: "https://ball-iq.app" });
         return;
       }
     } catch {}
     try {
-      await navigator.clipboard.writeText(`${shareText}\n\nhttps://ball-iq.app`);
+      await navigator.clipboard.writeText(shareText);
       alert("Copied to clipboard!");
     } catch {
       alert(shareText);
@@ -13865,12 +13891,13 @@ function AppInner() {
                   { id:"classic",   icon:"⏱️",  name:"Classic",      desc:"10 questions, 20 seconds each" },
                   { id:"survival",  icon:"🔥",  name:"Survival",     desc:"One wrong and it's over" },
                   { id:"hotstreak", icon:"⚡🔥", name:"Hot Streak",   desc:"60-second sprint" },
-                  { id:"truefalse", icon:"✅",  name:"True or False", desc:"20 quick statements" },
+                  { id:"truefalse", icon:"✅",  name:"True or False", desc:"Coming soon", comingSoon:true },
                 ].map(opt => (
                   <button
                     key={opt.id}
-                    className="diff-option"
-                    onClick={() => launchLeagueInMode(opt.id)}
+                    className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
+                    disabled={opt.comingSoon}
+                    onClick={() => opt.comingSoon ? null : launchLeagueInMode(opt.id)}
                   >
                     <span className="diff-option-icon">{opt.icon}</span>
                     <div className="diff-option-body">
@@ -14035,11 +14062,14 @@ function AppInner() {
                 { key:"league",    icon:"🏆",  name:"League Quiz",   desc:"Pick your league",  onTap:() => setShowLeaguePicker(true) },
                 { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
                 { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
-                { key:"truefalse", icon:"✅",  name:"True/False",    desc:"20 statements" },
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:"Ball IQ Test",  desc:"Your percentile" },
                 { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes, moments & madness" },
+                // True/False, Guess the Player and Tiki Taka Toe sit at the
+                // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
+                // and CSS remain in place — only the entry point is hidden.
+                { key:"truefalse",   icon:"✅",  name:"True or False",    desc:"Coming soon", comingSoon:true, onTap:() => showToast("✅ True or False is coming soon — stay tuned!") },
                 { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Hints reveal as you play", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned!") },
                 { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"3x3 player grid challenge", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned!") },
               ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
