@@ -10056,9 +10056,315 @@ function getXPForResult(score, total, mode) {
 }
 
 
-// ─── BRANDED SCORE CARD ──────────────────────────────────────────────────────
-// Renders a 1080×1080 PNG suitable for social share. Dark background, muted
-// green accent, Ball IQ wordmark at top, score in the middle, watermark below.
+// ─── BRANDED SHARE CARD (NEW, 390×600 PORTRAIT) ─────────────────────────────
+// Variants:
+//   'wordle'    — Today's Puzzle. Score + emoji-tile grid.
+//   'standard'  — Classic / Survival / Daily / Chaos / Legends / WC2026.
+//   'balliq'    — Ball IQ Test. IQ number, funny label, percentile.
+//   'hotstreak' — Hot Streak. Big streak number with orange accent.
+//
+// Returns a Promise<Blob> of a PNG. The card layout is fixed at 390×600
+// portrait so it slots nicely into iOS / Android share sheets.
+
+const SHARE_CARD_W = 390;
+const SHARE_CARD_H = 600;
+
+// Round-rect helper used for the rounded canvas clip and emoji tiles.
+function _roundRectPath(ctx, x, y, w, h, r) {
+  const rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.lineTo(x + w - rr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+  ctx.lineTo(x + w, y + h - rr);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+  ctx.lineTo(x + rr, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+  ctx.lineTo(x, y + rr);
+  ctx.quadraticCurveTo(x, y, x + rr, y);
+  ctx.closePath();
+}
+
+// Word-wrap helper. Draws each line via fillText, returns the next y after
+// the last line. Used for variable-length labels (BallIQ funny label,
+// Hot Streak descriptor) so they don't overflow on long strings.
+function _wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = String(text || "").split(/\s+/);
+  let line = "";
+  let curY = y;
+  for (const w of words) {
+    const test = line ? line + " " + w : w;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line, x, curY);
+      line = w;
+      curY += lineHeight;
+    } else {
+      line = test;
+    }
+  }
+  if (line) ctx.fillText(line, x, curY);
+  return curY;
+}
+
+async function generateShareCard(type, data) {
+  const W = SHARE_CARD_W, H = SHARE_CARD_H;
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d");
+
+  // Wait up to 1s for fonts to load. Without this the first card draw can
+  // fall back to the platform default which looks off.
+  try {
+    if (document.fonts && document.fonts.ready) {
+      await Promise.race([
+        document.fonts.ready,
+        new Promise((res) => setTimeout(res, 1000)),
+      ]);
+    }
+  } catch {}
+
+  // Clip to a 20px rounded rect so the share card has soft corners on
+  // platforms that render the file as-is (iMessage, Slack image previews).
+  ctx.save();
+  _roundRectPath(ctx, 0, 0, W, H, 20);
+  ctx.clip();
+
+  // Background
+  ctx.fillStyle = "#0A0A0A";
+  ctx.fillRect(0, 0, W, H);
+
+  // Top accent bar
+  ctx.fillStyle = "#58CC02";
+  ctx.fillRect(0, 0, W, 6);
+
+  // Header row — wordmark left, URL right
+  const padX = 24;
+  const headerY = 38;
+  ctx.textBaseline = "alphabetic";
+  ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
+  ctx.fillStyle = "#FFFFFF";
+  ctx.textAlign = "left";
+  ctx.fillText("⚽ Ball IQ", padX, headerY);
+
+  ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
+  ctx.fillStyle = "#9BA0B8";
+  ctx.textAlign = "right";
+  ctx.fillText("ball-iq.app", W - padX, headerY);
+
+  // Divider
+  ctx.fillStyle = "#2A2D3A";
+  ctx.fillRect(padX, 56, W - padX * 2, 1);
+
+  // Centered footer URL
+  ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+  ctx.fillStyle = "#9BA0B8";
+  ctx.textAlign = "center";
+  ctx.fillText("ball-iq.app", W / 2, H - 24);
+
+  // Per-variant content. All variants set textAlign = "center" by default.
+  ctx.textAlign = "center";
+  const cx = W / 2;
+
+  if (type === "wordle") {
+    const grades = Array.isArray(data?.grades) ? data.grades : [];
+    const score = data?.score ?? 0;
+    const total = data?.total ?? 6;
+    const dateLabel = data?.dateLabel || "";
+    const scoreLabel = data?.failed ? `X/${total}` : `${score}/${total}`;
+    const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
+
+    // Mode label
+    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("TODAY'S PUZZLE", cx, 110);
+
+    // Date
+    ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(dateLabel, cx, 130);
+
+    // Score — JetBrains Mono for the numeric display
+    ctx.font = '900 72px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = "#58CC02";
+    ctx.fillText(scoreLabel, cx, 218);
+
+    // Emoji-tile grid. 36×36 tiles, 4px gap, rows centered horizontally.
+    const tile = 36;
+    const tileGap = 4;
+    const rowGap = 4;
+    const cols = grades[0]?.length || 5;
+    const rowW = cols * tile + (cols - 1) * tileGap;
+    const startX = cx - rowW / 2;
+    let gy = 250;
+    for (const row of grades) {
+      for (let i = 0; i < row.length; i++) {
+        const color = colorMap[row[i]] || "#3A3F55";
+        const tx = startX + i * (tile + tileGap);
+        ctx.fillStyle = color;
+        _roundRectPath(ctx, tx, gy, tile, tile, 4);
+        ctx.fill();
+      }
+      gy += tile + rowGap;
+    }
+
+    // Subtitle
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me? ⚽", cx, Math.min(gy + 28, H - 60));
+  } else if (type === "balliq") {
+    const iq = data?.iq ?? 0;
+    const label = data?.label || "";
+    const pctileLbl = data?.pctileLbl || "";
+
+    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("BALL IQ TEST", cx, 130);
+
+    ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = "#58CC02";
+    ctx.fillText(String(iq), cx, 260);
+
+    // Funny label — wrapped to 300px
+    ctx.font = '600 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    const labelEnd = _wrapText(ctx, label, cx, 308, 300, 22);
+
+    // Percentile
+    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(pctileLbl, cx, labelEnd + 28);
+
+    // Subtitle
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me? ⚽", cx, 520);
+  } else if (type === "hotstreak") {
+    const score = data?.score ?? 0;
+
+    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("HOT STREAK", cx, 130);
+
+    ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = "#FF6A00";
+    ctx.fillText(String(score), cx, 260);
+
+    // Descriptor — wrapped to 280px
+    ctx.font = '600 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    _wrapText(ctx, "questions answered correctly in a row", cx, 308, 280, 22);
+
+    // Subtitle
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me? ⚽", cx, 520);
+  } else {
+    // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
+    const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
+    const score = data?.score ?? 0;
+    const total = data?.total ?? 0;
+    const accuracy = total > 0 ? Math.round((score / total) * 100) : 0;
+    const streak = data?.streak;
+
+    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(modeLabel, cx, 130);
+
+    ctx.font = '900 80px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = "#58CC02";
+    ctx.fillText(`${score}/${total}`, cx, 250);
+
+    ctx.font = '600 18px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(`${accuracy}% accuracy`, cx, 290);
+
+    if (streak && streak >= 3) {
+      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFC107";
+      ctx.fillText(`🔥 ${streak} in a row`, cx, 326);
+    }
+
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me? ⚽", cx, 520);
+  }
+
+  ctx.restore();
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error("toBlob returned null"));
+    }, "image/png");
+  });
+}
+
+// Share orchestrator. Tries the file share path first; on any failure falls
+// back to a download (with a "Saved!" toast) and finally the text share.
+//
+//   opts.onToast      - (msg) => void  | optional — used for the Saved/copy toast
+//   opts.textFallback - string         | optional — text to share if image flow fails
+async function shareCard(type, data, opts = {}) {
+  const { onToast = () => {}, textFallback = "" } = opts;
+  let blob;
+  try {
+    blob = await generateShareCard(type, data);
+  } catch (err) {
+    // Couldn't even render the card — fall straight to text.
+    if (textFallback) {
+      try {
+        if (navigator.share) await navigator.share({ text: textFallback, url: "https://ball-iq.app" });
+        else if (navigator.clipboard) {
+          await navigator.clipboard.writeText(textFallback);
+          onToast("Copied to clipboard 📋");
+        }
+      } catch {}
+    }
+    return;
+  }
+
+  const file = new File([blob], "balliq-result.png", { type: "image/png" });
+  try {
+    if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+      await navigator.share({ files: [file], url: "https://ball-iq.app" });
+      return;
+    }
+  } catch (err) {
+    // Some platforms reject on user dismiss — bail without falling further.
+    if (err && err.name === "AbortError") return;
+  }
+
+  // Download fallback — works on desktop browsers and mobile platforms that
+  // don't expose file share. The user can then attach the PNG anywhere.
+  try {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "balliq-result.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    onToast("Saved! Share from your photos 📸");
+    return;
+  } catch {}
+
+  // Last-ditch text fallback.
+  if (textFallback) {
+    try {
+      if (navigator.share) await navigator.share({ text: textFallback, url: "https://ball-iq.app" });
+      else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(textFallback);
+        onToast("Copied to clipboard 📋");
+      }
+    } catch {}
+  }
+}
+
+// ─── BRANDED SCORE CARD (LEGACY 1080×1080) ──────────────────────────────────
+// Kept as the text-fallback path for shareScore. New code paths should use
+// generateShareCard() / shareCard() above.
 function drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, streak, date, cardLabel, beatLine }) {
   const W = 1080, H = 1080;
   const canvas = document.createElement("canvas");
@@ -12680,19 +12986,20 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
-    try {
-      if (navigator.share) {
-        await navigator.share({ text: shareText, url: "https://ball-iq.app" });
-        return;
-      }
-    } catch {}
-    try {
-      await navigator.clipboard.writeText(shareText);
-      alert("Copied to clipboard!");
-    } catch {
-      alert(shareText);
-    }
-  }, [shareText]);
+    // Build the per-guess grades grid for the canvas card. Each guess is an
+    // array of "green" | "yellow" | "grey" matching the in-app tile colours.
+    const grades = state.guesses.map((g) => gradeWordleGuess(g, answer));
+    await shareCard("wordle", {
+      score: state.guesses.length,
+      total: 6,
+      grades,
+      dateLabel,
+      failed: state.status === "lost",
+    }, {
+      onToast: (msg) => alert(msg),
+      textFallback: shareText,
+    });
+  }, [shareText, state.guesses, state.status, answer, dateLabel]);
 
   return (
     <div className="wd-screen">
@@ -13322,11 +13629,9 @@ function AppInner() {
     if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
-  const shareScore = useCallback(async (score, total, mode, avgResponseMs) => {
-    // Fallback text per mode (used if image share unavailable). Each line
-    // describes the game just played — score, accuracy where it makes sense,
-    // a "Can you beat me?" hook, and the app URL. Profile-y bits like login
-    // streak, league or hashtags don't belong here.
+  const shareScore = useCallback(async (score, total, mode, avgResponseMs, extras = {}) => {
+    // Per-mode plaintext fallback (used only when the image share path
+    // fails). Game-result focused — no profile bits.
     const pct = total ? Math.round(score / total * 100) : 0;
     const beat = "Can you beat me? ⚽";
     const url = "ball-iq.app";
@@ -13356,7 +13661,7 @@ function AppInner() {
     };
     const text = msgs[mode] || msgs.classic;
 
-    // Build canvas card data
+    // Pick the right card variant + payload for shareCard.
     const MODE_LABELS = {
       classic: "Classic Quiz",
       daily: "Daily Challenge",
@@ -13370,56 +13675,24 @@ function AppInner() {
       local: "Local Multiplayer",
       chaos: "Chaos Quiz",
     };
-    const modeLabel = MODE_LABELS[mode] || "Quiz";
-    let mainScore, scoreCaption, percentile = null, cardLabel = null, beatLine = null;
+    let cardType = "standard";
+    let cardData;
     if (mode === "balliq") {
       const iq = calcBallIQ(score, total, avgResponseMs);
-      mainScore = String(iq);
-      scoreCaption = "BALL IQ";
-      cardLabel = iqLabel(iq);
-      percentile = iqPercentileLabel(iq);
-      beatLine = "Can you beat this?";
+      cardType = "balliq";
+      cardData = { iq, label: iqLabel(iq), pctileLbl: iqPercentileLabel(iq) };
     } else if (mode === "hotstreak") {
-      mainScore = String(score);
-      scoreCaption = "CORRECT IN 60 SECONDS";
-    } else if (mode === "survival") {
-      mainScore = String(score);
-      scoreCaption = "IN A ROW";
+      cardType = "hotstreak";
+      cardData = { score };
     } else {
-      mainScore = `${score}/${total}`;
-      const pct = total ? Math.round(score/total*100) : 0;
-      scoreCaption = `${pct}% CORRECT`;
+      cardData = {
+        modeLabel: MODE_LABELS[mode] || "Quiz",
+        score,
+        total,
+        streak: extras?.streak,
+      };
     }
-    const date = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-
-    try {
-      // No streak passed — the share card is about the just-played game,
-      // not the user's profile. drawScoreCard's streak block is gated on
-      // `streak > 0` so omitting it just hides the row.
-      const dataURL = drawScoreCard({ modeLabel, mainScore, scoreCaption, percentile, date, cardLabel, beatLine });
-      const blob = await (await fetch(dataURL)).blob();
-      const file = new File([blob], "balliq-score.png", { type: "image/png" });
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], text }).catch(() => {});
-        return;
-      }
-      // No file share — try plain text share
-      if (navigator.share) {
-        await navigator.share({ text }).catch(() => {});
-        return;
-      }
-      // Download image as a last-resort fallback, then copy text
-      const a = document.createElement("a");
-      a.href = dataURL; a.download = "balliq-score.png"; a.click();
-      navigator.clipboard?.writeText(text).then(() => showToast("Image saved · text copied 📋")).catch(() => {});
-    } catch {
-      try {
-        await navigator.clipboard?.writeText(text);
-        showToast("Copied to clipboard! 📋");
-      } catch {
-        showToast("Score: " + text.split("\n")[0]);
-      }
-    }
+    await shareCard(cardType, cardData, { onToast: showToast, textFallback: text });
   }, [showToast]);
 
   const shareProfile = useCallback(() => {
@@ -14278,7 +14551,7 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
-            onShare={() => shareScore(result?.score, result?.total, mode, result?.avgResponseMs)}
+            onShare={() => shareScore(result?.score, result?.total, mode, result?.avgResponseMs, { streak: result?.bestStreak })}
             onRetry={() => startMode(mode)}
           />
         )}
