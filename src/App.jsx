@@ -42,7 +42,7 @@ if (typeof window !== 'undefined' && !window.storage) {
 // ─── APP META ─────────────────────────────────────────────────────────────────
 // Single source of truth for the version string — surfaced in Settings → About.
 // Bump on every shipping release.
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.0-beta";
 const APP_NAME = "Ball IQ";
 
 // Centralised durations so we can tune motion/UX feel from one place.
@@ -6741,7 +6741,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:0 5px 0 #46A302;transform:translateY(0);transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .btn-3d:hover{filter:brightness(1.06);}
 .btn-3d:active,.btn-3d.is-pressed{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
-.btn-3d:disabled{opacity:0.55;cursor:not-allowed;filter:none;transform:translateY(0);box-shadow:0 5px 0 #46A302;}
+.btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;transform:none;box-shadow:none;}
 .btn-3d:focus-visible{outline:3px solid rgba(88,204,2,0.4);outline-offset:2px;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;box-shadow:0 5px 0 #D49600;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{box-shadow:0 2px 0 #D49600;}
@@ -6750,7 +6750,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
 .btn-3d.ghost:hover{filter:none;background:var(--s1);}
 .btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
-.btn-3d.ghost:disabled{box-shadow:none;}
+.btn-3d.ghost:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;box-shadow:none;}
 
 /* Results-screen button stack — lighter than the default .btn-3d, with a
    shorter rim and tighter spacing so the action column doesn't dominate. */
@@ -6804,8 +6804,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
 .hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
-.hero-daily-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;background:#1A1D27;color:#F0F1F5;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.01em;box-shadow:0 4px 0 #0A0A0A;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-text-fill-color:#F0F1F5;}
-.hero-daily:active .hero-daily-cta{transform:translateY(2px);box-shadow:0 2px 0 #0A0A0A;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
 .hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
@@ -6934,6 +6932,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
+.app[data-text-size="L"] .q-card{padding:18px 16px;}
 /* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
 .q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
@@ -7084,7 +7083,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .local-diff-chip.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
 
 /* ── LOCAL GAME: READY/HANDOFF SCREEN (must reveal nothing about the question) ── */
-.local-ready{position:relative;min-height:calc(100vh - 120px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:12px;}
+.local-ready{position:relative;min-height:calc(100vh - 120px);min-height:calc(100dvh - 120px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:12px;}
 /* Visual tokens come from .ds-eyebrow. */
 .local-ready-emoji{font-size:84px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));}
 .local-ready-name{font-size:28px;font-weight:900;color:var(--t1);letter-spacing:-0.5px;}
@@ -7357,7 +7356,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .crop-circle-mask .cropper-view-box{outline:2px solid #fff;outline-color:rgba(255,255,255,0.85);}
 .crop-status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
 .crop-status-err{color:#FF6B6B;}
-.crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,0));background:#0a0a0a;flex-shrink:0;}
+.crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0a0a0a;flex-shrink:0;}
+.light .crop-overlay{background:rgba(0,0,0,0.85);}
+.light .crop-stage{background:#1a1a1a;}
+.light .crop-actions{background:#1a1a1a;border-top:1px solid #2a2a2a;}
 .crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;}
 .crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
@@ -7504,7 +7506,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 
 /* ── QUIT MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;animation:fadeIn 0.15s ease;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
 .modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
@@ -7524,6 +7526,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .next-btn-primary{position:relative;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{opacity:0.85;}
+.next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
 
 /* ── ONLINE 1V1 ────────────────────────────────────────────────────────── */
 .og-code-input{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;letter-spacing:8px;font-size:24px;text-align:center;text-transform:uppercase;}
@@ -7604,7 +7607,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-mark.ok{background:rgba(88,204,2,0.16);color:var(--accent);}
 
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
-.wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);}
+.wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
 .wd-header{display:flex;align-items:center;gap:12px;}
 .wd-back{flex-shrink:0;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
 .wd-back:hover{background:var(--s2);}
@@ -9200,7 +9203,11 @@ function OnlineGame({ onBack, userId, defaultName }) {
             className="inp og-code-input"
             placeholder="XXXXXX"
             value={joinCode}
-            onChange={e => setJoinCode(e.target.value.toUpperCase())}
+            onChange={e => setJoinCode(e.target.value.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, ''))}
+            inputMode="text"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            spellCheck={false}
             maxLength={6}
           />
           <button className="btn-3d" onClick={onJoin} disabled={joining} style={{marginTop:6, opacity: joining ? 0.7 : 1}}>
@@ -13561,8 +13568,11 @@ function AppInner() {
       haptic("soft");
       // Club quiz bypasses startMode entirely (it sets activeClub + setMode directly).
       // Any mode reaching this function should clear it so a stale crest banner
-      // doesn't appear on the next quiz.
+      // doesn't appear on the next quiz. Same for League — `launchLeagueInMode`
+      // sets leagueMode and never re-enters startMode, so any stale value here
+      // would leak the league header onto the next mode the user picks.
       setActiveClub(null);
+      setLeagueMode(null);
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
@@ -14148,7 +14158,7 @@ function AppInner() {
   return (
     <>
       <style>{css}</style>
-      <div className={`app${settings.theme === "light" ? " light" : ""}`}>
+      <div className={`app${settings.theme === "light" ? " light" : ""}`} data-text-size={settings.textSize || "M"}>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only ── */}
