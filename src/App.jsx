@@ -13114,22 +13114,24 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         </div>
       )}
 
-      <div className="wd-keyboard">
-        {WORDLE_KB_ROWS.map((row, ri) => (
-          <div className="wd-kb-row" key={ri}>
-            {row.map((k) => {
-              const isAction = k === "DEL";
-              const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
-              return (
-                <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k}>
-                  {k === "DEL" ? "⌫" : k}
-                </button>
-              );
-            })}
-          </div>
-        ))}
-        <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="ENTER">ENTER</button>
-      </div>
+      {state.status === "playing" && (
+        <div className="wd-keyboard">
+          {WORDLE_KB_ROWS.map((row, ri) => (
+            <div className="wd-kb-row" key={ri}>
+              {row.map((k) => {
+                const isAction = k === "DEL";
+                const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
+                return (
+                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k}>
+                    {k === "DEL" ? "⌫" : k}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+          <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="ENTER">ENTER</button>
+        </div>
+      )}
     </div>
   );
 });
