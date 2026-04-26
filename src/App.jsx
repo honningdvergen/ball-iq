@@ -1391,7 +1391,7 @@ const QB = [
   // UCL / European
   { q:"Which club has won the UEFA Europa League the most times — 7 in total?", o:["Inter","Atlético","Juventus","Sevilla"], a:3, cat:"UCL", diff:"medium", type:"mcq", v:1 },
   { q:"Which Scottish club was the first from Britain to win the European Cup in 1967?", o:["Rangers","Hearts","Aberdeen","Celtic"], a:3, cat:"UCL", diff:"medium", type:"mcq", v:1 },
-  { q:"Which club shocked PSG to win Ligue 1 in the 2020-21 season?", o:["Monaco","Lyon","Marseille","Lille"], a:3, cat:"Records", diff:"hard", type:"mcq", v:1 },
+  { q:"Which club shocked PSG to win Ligue 1 in the 2020-21 season?", o:["Monaco","Lyon","Marseille","Lille"], a:3, cat:"Ligue1", diff:"hard", type:"mcq", v:1 },
   { q:"Which club became the first to win all three UEFA club competitions — Champions League, Europa League, and Conference League?", o:["Arsenal","Chelsea","Atlético","Juventus"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Nottingham Forest won the European Cup in 1979 — who scored the only goal in the final vs Malmö?", o:["John Robertson","Trevor Francis","Tony Woodcock","Garry Birtles"], a:1, cat:"UCL", diff:"hard", type:"mcq", v:1 },
   { q:"Nottingham Forest won the European Cup again in 1980 — who scored the winner vs Hamburg?", o:["Trevor Francis","Garry Birtles","John Robertson","Tony Woodcock"], a:2, cat:"UCL", diff:"hard", type:"mcq", v:1 },
@@ -2270,7 +2270,7 @@ const QB = [
   { q:"Which club is nicknamed 'Los Blancos'?", o:["Atlético","Sevilla","Valencia","Real Madrid"], a:3, cat:"LaLiga", diff:"easy", type:"mcq", v:1 },
   { q:"What is Chelsea's stadium called?", o:["Stamford Bridge","Craven Cottage","Loftus Road","Selhurst Park"], a:0, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Which Premier League club plays at Goodison Park?", o:["Burnley","Everton","Crystal Palace","Wolves"], a:1, cat:"PL", diff:"easy", type:"mcq", v:1 },
-  { q:"Which club plays home games at the Parc des Princes?", o:["Lyon","Monaco","PSG","Marseille"], a:2, cat:"Records", diff:"easy", type:"mcq", v:1 },
+  { q:"Which club plays home games at the Parc des Princes?", o:["Lyon","Monaco","PSG","Marseille"], a:2, cat:"Ligue1", diff:"easy", type:"mcq", v:1 },
   { q:"What is Arsenal's home ground called?", o:["Highbury","Wembley","The Emirates","White Hart Lane"], a:2, cat:"PL", diff:"easy", type:"mcq", v:1 },
   { q:"Which club is nicknamed 'The Citizens'?", o:["Coventry","Man Utd","Leicester","Man City"], a:3, cat:"PL", diff:"easy", type:"mcq", v:1 },
 
@@ -2795,16 +2795,16 @@ const QB = [
   { q:"Borussia Mönchengladbach were the first German club to reach the UEFA Cup final — who did they lose to in 1973?", o:["Arsenal","Tottenham","Liverpool","Ipswich"], a:2, cat:"Bundesliga", diff:"hard", type:"mcq", v:1 },
 
   // ── BATCH 12: LIGUE 1 & FRENCH FOOTBALL ──
-  { q:"Which French club has won the most Ligue 1 titles with 13 championships?", o:["AS Saint-Étienne","Marseille","PSG","Lyon"], a:2, cat:"Records", diff:"medium", type:"mcq", v:1, hint:"PSG surpassed Saint-Étienne's 10-title record in 2024 and took their tally to 13 in 2024-25. Saint-Étienne (10) and Marseille (9, one stripped due to match-fixing scandal) round out the top three. Lyon won 7 consecutive (2002-2008, a record)." },
-  { q:"Olympique Lyon won how many consecutive French league titles between 2002 and 2008?", o:["5","6","7","8"], a:2, cat:"Records", diff:"hard", type:"mcq", v:1 },
+  { q:"Which French club has won the most Ligue 1 titles with 13 championships?", o:["AS Saint-Étienne","Marseille","PSG","Lyon"], a:2, cat:"Ligue1", diff:"medium", type:"mcq", v:1, hint:"PSG surpassed Saint-Étienne's 10-title record in 2024 and took their tally to 13 in 2024-25. Saint-Étienne (10) and Marseille (9, one stripped due to match-fixing scandal) round out the top three. Lyon won 7 consecutive (2002-2008, a record)." },
+  { q:"Olympique Lyon won how many consecutive French league titles between 2002 and 2008?", o:["5","6","7","8"], a:2, cat:"Ligue1", diff:"hard", type:"mcq", v:1 },
   { q:"Which French club won the Champions League in 1992-93, 32 years before PSG joined them as the second French winners?", o:["PSG","Monaco","Lyon","Marseille"], a:3, cat:"UCL", diff:"medium", type:"mcq", hint:"Marseille won in 1993 (Raymond Goethals, beat Milan 1-0). PSG won their first in 2024-25.", v:1 },
-  { q:"PSG's Ligue 1 dominance began when which country's ownership took over in 2011?", o:["UAE","Russia","China","Qatar"], a:3, cat:"Records", diff:"easy", type:"mcq", v:1 },
+  { q:"PSG's Ligue 1 dominance began when which country's ownership took over in 2011?", o:["UAE","Russia","China","Qatar"], a:3, cat:"Ligue1", diff:"easy", type:"mcq", v:1 },
   { q:"Which French player won the World Cup in 1998 and the European Championship in 2000?", o:["Barthez","Henry","Desailly","Zidane"], a:3, tag:"wc2026", cat:"WorldCup", diff:"easy", type:"mcq", v:1 },
-  { q:"Which stadium is home to Olympique de Marseille?", o:["Parc des Princes","Stade de France","Vélodrome","Stade Geoffroy-Guichard"], a:2, cat:"Records", diff:"easy", type:"mcq", v:1 },
+  { q:"Which stadium is home to Olympique de Marseille?", o:["Parc des Princes","Stade de France","Vélodrome","Stade Geoffroy-Guichard"], a:2, cat:"Ligue1", diff:"easy", type:"mcq", v:1 },
   { q:"Which French player was banned from international football after the 2010 World Cup mutiny?", o:["Anelka","Ribéry","Evra","Gallas"], a:0, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", v:1 },
   { q:"Monaco famously came close to winning the Champions League in 2004 — who beat them in the final?", o:["Real Madrid","Chelsea","Liverpool","Porto"], a:3, cat:"UCL", diff:"medium", type:"mcq", v:1 },
-  { q:"Which French club sold Kylian Mbappé to PSG as a teenager in 2017?", o:["Nice","Lyon","Monaco","Nantes"], a:2, cat:"Records", diff:"easy", type:"mcq", v:1 },
-  { q:"Which player won four consecutive UNFP Ligue 1 Player of the Year awards from 2019 to 2022?", o:["Depay","Neymar","Ben Yedder","Mbappé"], a:3, cat:"Records", diff:"medium", type:"mcq", v:1 },
+  { q:"Which French club sold Kylian Mbappé to PSG as a teenager in 2017?", o:["Nice","Lyon","Monaco","Nantes"], a:2, cat:"Ligue1", diff:"easy", type:"mcq", v:1 },
+  { q:"Which player won four consecutive UNFP Ligue 1 Player of the Year awards from 2019 to 2022?", o:["Depay","Neymar","Ben Yedder","Mbappé"], a:3, cat:"Ligue1", diff:"medium", type:"mcq", v:1 },
 
 
   // ── BATCH 13: WORLD CUP 2026 PREP & RECENT NEWS ──
@@ -3408,7 +3408,7 @@ const QB = [
   { q:"Carlo Ancelotti became the first manager to win the Champions League five times in 2024 — with which club?", o:["AC Milan","Chelsea","Real Madrid","Bayern Munich"], a:2, cat:"Managers", diff:"easy", type:"mcq", v:1 },
   { q:"Which country has appeared in the most World Cup finals in total across football history — with 8 final appearances?", o:["Italy","Germany","Brazil","Argentina"], a:1, tag:"wc2026", cat:"WorldCup", diff:"medium", type:"mcq", hint:"Germany (including West Germany) reached 8 WC finals: 1954, 1966, 1974, 1982, 1986, 1990, 2002, 2014. Brazil has 7.", v:1 },
   { q:"What is the record transfer fee received by a club outside the top five European leagues?", o:["Benfica receiving €120m for Darwin Nunez","Ajax receiving €85m for De Ligt","Porto receiving €75m for Joao Felix","Celtic receiving £45m for Kieran Tierney"], a:0, cat:"Records", diff:"hard", type:"mcq", v:1 },
-  { q:"In which year did Ligue 1 (French top division) start as a professional league?", o:["1920","1932","1950","1955"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1, hint:"Ligue 1 (then called Division 1) was founded in 1932 as France's first professional football league. Olympique Lillois won the first title. Foreign players have played in French leagues throughout its history." },
+  { q:"In which year did Ligue 1 (French top division) start as a professional league?", o:["1920","1932","1950","1955"], a:1, cat:"Ligue1", diff:"hard", type:"mcq", v:1, hint:"Ligue 1 (then called Division 1) was founded in 1932 as France's first professional football league. Olympique Lillois won the first title. Foreign players have played in French leagues throughout its history." },
   { q:"Which Premier League manager has the best win percentage of any to take charge for more than 100 games?", o:["Ferguson","Mourinho","Guardiola","Wenger"], a:2, cat:"Managers", diff:"medium", type:"mcq", v:1 },
 
 
@@ -5386,7 +5386,6 @@ const QB = [
   { q:"How many different nations have hosted the FIFA Women's World Cup as of 2026?", o:["6","7","5","8"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"How many nations have won the FIFA Women's World Cup as of 2026?", o:["4","5","6","3"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Which women's player scored the most goals in a single Olympic football tournament (6 in 2012)?", o:["Marta","Christine Sinclair","Alex Morgan","Birgit Prinz"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
-  { q:"Which club has the most Ligue 1 titles in French football history?", o:["Marseille","PSG","Lyon","Saint-Étienne"], a:1, cat:"Records", diff:"medium", type:"mcq", v:1 },
   { q:"Who holds the record for the fastest goal in non-league English football history (2.4 seconds)?", o:["Tommy Ross","Nawaf Al-Abed","Shane Long","Alan Shearer"], a:1, cat:"Records", diff:"medium", type:"mcq" },
   { q:"Which player is the only one in history to have scored a goal in every single minute from the 1st to the 90th in international football?", o:["Lionel Messi","Cristiano Ronaldo","Pelé","Lewandowski"], a:1, cat:"Records", diff:"easy", type:"mcq" },
   { q:"What is the longest-ever goal scored in professional football history (96.01 metres)?", o:["Asmir Begovic","Tom King","Tim Howard","Alisson Becker"], a:1, cat:"Records", diff:"hard", type:"mcq", v:1 },
@@ -5757,8 +5756,16 @@ function getQs({ cat, diff, n = 10, ramp = false }) {
   // so e.g. the Eden Hazard ball-boy chaos question (league:"PL") shows up in a
   // Premier League quiz alongside regular PL entries.
   if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat || q.league === cat);
-  // Safety: if filter returns too few, fall back to full bank
-  if (pool.length < n) pool = [...QB];
+  // Honesty over silence: if a category has nothing to offer, return empty
+  // so the caller can show a "not enough questions" toast. If we have some
+  // but fewer than `n`, return the shuffled pool — better to play 7 real
+  // Ligue 1 questions than a 10-pack secretly padded with other leagues.
+  if (pool.length < 5) {
+    return [];
+  }
+  if (pool.length < n) {
+    return pool.sort(() => Math.random() - 0.5);
+  }
   if (diff === "easy") pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
   else if (diff === "medium") pool = pool.filter(q => q.diff !== "hard");
   // Hide questions seen within the last 14 days; fall back to full pool if too few remain
@@ -14122,10 +14129,7 @@ function AppInner() {
                   { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
                   { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
                   { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
-                  // Ligue1 removed from the picker until the question count is
-                  // backfilled — only ~2 questions tagged cat:"Ligue1" today,
-                  // which trips the "not enough questions" toast on launch.
-                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"Coming soon", comingSoon:true },
+                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"French football" },
                   { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
                 ].map(opt => (
                   <button
