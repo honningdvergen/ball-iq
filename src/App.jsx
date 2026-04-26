@@ -11056,7 +11056,7 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onAccountDeleted }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onAccountDeleted }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -11253,17 +11253,37 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
+      {onShowHelp && (
+        <div className="settings-section">
+          <div className="ds-eyebrow settings-section-title">Help</div>
+          <div className="settings-card">
+            <div className="settings-row" onClick={onShowHelp}>
+              <div className="sr-left">
+                <div className="sr-label">Help & FAQ</div>
+                <div className="sr-desc">Common questions and how to reach us</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">About</div>
-        <div className="settings-card">
-          <div className="settings-row" style={{cursor:"default"}}>
-            <div className="sr-left"><div className="sr-label">Version</div></div>
-            <div className="sr-right"><div className="sr-value">{APP_NAME} v{APP_VERSION}</div></div>
-          </div>
-          <div className="settings-row" style={{cursor:"default"}}>
-            <div className="sr-left"><div className="sr-label">Questions</div></div>
-            <div className="sr-right"><div className="sr-value">{(QB.length + TF_STATEMENTS.length).toLocaleString()}</div></div>
-          </div>
+        <div className="settings-card" style={{padding:"24px 18px",textAlign:"center"}}>
+          <div style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
+          <div style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>{APP_NAME}</div>
+          <div style={{fontSize:13,color:"var(--t3)",marginTop:4}}>v{APP_VERSION}</div>
+          <div style={{fontSize:13,color:"var(--t2)",marginTop:14}}>{(QB.length + TF_STATEMENTS.length).toLocaleString()} questions and counting</div>
+          <div style={{fontSize:12,color:"var(--t3)",marginTop:6}}>Made with ⚽ in Norway</div>
+          <a
+            href="mailto:hello@ball-iq.app"
+            style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"var(--accent)",color:"#0a1a00",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none",WebkitTextFillColor:"#0a1a00"}}
+          >
+            Send feedback
+          </a>
+        </div>
+        <div className="settings-card" style={{marginTop:8}}>
           <div className="settings-row" onClick={onShowPrivacy}>
             <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
@@ -11467,6 +11487,92 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
 const privacyH2 = {fontSize: 17, fontWeight: 700, color: "#F0F1F5", margin: "28px 0 10px"};
 const privacyP = {fontSize: 15, color: "#9BA0B8", marginBottom: 12};
 const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
+
+// ─── HELP / FAQ SCREEN ────────────────────────────────────────────────────────
+// Same overlay shape as PrivacyScreen so dark / light backgrounds, scroll
+// behaviour and back-arrow affordance are consistent.
+const FAQ_ENTRIES = [
+  {
+    q: "How do I play Online 1v1?",
+    a: `Sign in to your account first, then tap the "Play with Friends" hero on the home screen and choose "Online 1v1". Create a room and share the 6-character code with your friend, or join their code.`,
+  },
+  {
+    q: "How does the Ball IQ Test work?",
+    a: "The Ball IQ Test asks you 15 carefully calibrated questions across difficulty levels. Your score is mapped to an IQ-like scale from 60 to 160 based on accuracy. There's no time limit — answer at your own pace.",
+  },
+  {
+    q: "What is Today's Puzzle?",
+    a: "Today's Puzzle is a daily word game where you guess a footballer's surname in 6 attempts. The same player is shown to everyone each day and resets at midnight.",
+  },
+  {
+    q: "How do I delete my account?",
+    a: "Go to Settings → Account → Delete Account. This will permanently remove all your data including your profile, scores, friends, and game history.",
+  },
+  {
+    q: "Does Ball IQ work offline?",
+    a: "Most game modes work offline — your scores are saved locally and synced when you're back online. Online 1v1 requires an internet connection.",
+  },
+  {
+    q: "Why can't I find my friend in friend search?",
+    a: "Make sure they have signed up and set a username. Search is case-insensitive but the username must match exactly.",
+  },
+  {
+    q: "How do I report an issue?",
+    a: "Email us at hello@ball-iq.app — we read every message.",
+  },
+];
+const HelpScreen = React.memo(function HelpScreen({ onClose }) {
+  return (
+    <div style={{
+      position: "fixed",
+      inset: 0,
+      background: "#0a0a0a",
+      color: "#F0F1F5",
+      zIndex: 1000,
+      overflowY: "auto",
+      WebkitOverflowScrolling: "touch",
+      fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif",
+    }}>
+      <div style={{
+        position: "sticky", top: 0,
+        background: "rgba(10,10,10,0.95)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid #2A2D3A",
+        padding: "14px 20px",
+        display: "flex", alignItems: "center", gap: 12,
+        zIndex: 1,
+      }}>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close help"
+          style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: "#1A1D27", border: "1px solid #2A2D3A",
+            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            cursor: "pointer", display: "flex",
+            alignItems: "center", justifyContent: "center",
+            WebkitTapHighlightColor: "transparent",
+            outline: "none",
+          }}
+        >←</button>
+        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Help & FAQ</div>
+      </div>
+      <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
+        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Quick answers to common questions.</div>
+        {FAQ_ENTRIES.map((entry, i) => (
+          <div key={i} style={{marginBottom: 24}}>
+            <div style={{fontSize: 16, fontWeight: 800, color: "#58CC02", marginBottom: 8}}>{entry.q}</div>
+            <p style={{fontSize: 15, color: "#9BA0B8", margin: 0, lineHeight: 1.6}}>{entry.a}</p>
+          </div>
+        ))}
+        <p style={{fontSize: 13, color: "#9BA0B8", marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@ball-iq.app" style={{color:"#58CC02",textDecoration:"none"}}>hello@ball-iq.app</a>.</p>
+      </div>
+    </div>
+  );
+});
 
 // ─── IQ RECAP OVERLAY ─────────────────────────────────────────────────────────
 // Lightweight modal shown when the user taps the home-screen IQ chip and
@@ -12232,7 +12338,20 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {search.trim().length >= 2 && (
         <div className="friends-results">
           {searching && <div className="friends-muted">Searching…</div>}
-          {!searching && results.length === 0 && <div className="friends-muted">No players found — try a different username</div>}
+          {!searching && results.length === 0 && (() => {
+            const term = search.trim();
+            const hasSpace = /\s/.test(term);
+            const hasSpecial = /[^A-Za-z0-9_-]/.test(term.replace(/\s/g, ""));
+            return (
+              <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:4}}>
+                <div>No players found — try a different username</div>
+                <div style={{fontSize:12,color:"var(--t3)"}}>Make sure you've typed their username exactly</div>
+                {(hasSpace || hasSpecial) && (
+                  <div style={{fontSize:12,color:"var(--t3)"}}>Tip: usernames don't contain spaces</div>
+                )}
+              </div>
+            );
+          })()}
           {results.map(r => (
             <div key={r.id} className="friends-row">
               <div className="friends-avatar">{r.avatar || "⚽"}</div>
@@ -12334,7 +12453,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, nameEditNonce }) {
-  const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
+  const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -12432,6 +12551,28 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         onChange={handleFileChosen}
         style={{display:"none"}}
       />
+      {isGuest && (stats?.gamesPlayed || 0) > 0 && (
+        <div style={{
+          background:"linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.06))",
+          border:"1px solid var(--accent-b)",
+          borderRadius:16,
+          padding:"18px 18px 16px",
+          marginBottom:14,
+          display:"flex",
+          flexDirection:"column",
+          alignItems:"flex-start",
+          gap:6,
+        }}>
+          <div style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>🌟 Save your progress</div>
+          <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>Sign up to keep your stats, friends and IQ across devices.</div>
+          <button
+            onClick={() => { try { exitGuestMode?.(); } catch {} }}
+            style={{marginTop:8,alignSelf:"stretch",padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
+          >
+            Sign up free
+          </button>
+        </div>
+      )}
       <div className="profile-card">
         <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
           <div
@@ -13362,6 +13503,7 @@ function AppInner() {
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [iqRecap, setIqRecap] = useState(null); // { iq, date } or null
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
@@ -14110,6 +14252,8 @@ function AppInner() {
   }, [showToast, startMode]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
+  const openHelp = useCallback(() => setShowHelp(true), []);
+  const closeHelp = useCallback(() => setShowHelp(false), []);
   const openIqChip = useCallback(() => {
     // Empty history → send them straight into the APP_NAME Test.
     // Otherwise show a recap of their most recent score with share options.
@@ -14753,10 +14897,11 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onAccountDeleted={onAccountDeleted} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onAccountDeleted={onAccountDeleted} />}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
+        {showHelp && <HelpScreen onClose={closeHelp} />}
 
         {/* ── IQ RECAP OVERLAY ── */}
         {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={retakeIqTest} />}
