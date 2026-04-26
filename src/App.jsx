@@ -6251,26 +6251,17 @@ function getTrueFalseQs() {
 }
 
 
-function calcBallIQ(score, total, avgResponseMs) {
-  // Real-IQ-bell-curve inspired mapping in the 60–160 range.
-  //  Calibration targets (from the spec):
-  //    - Perfect 15/15 + fast answers   →  155–160
-  //    - 8/15 correct (roughly average) →  ~100
-  //    - 0/15 correct                    →  60
-  //  Formula: base = 60 + pct^1.5 * 85  (100% → 145)
-  //           speedBonus = 0..15 (≤5s avg = +15, ≥15s = 0, linear)
-  //           clamp [60, 160], round.
-  //  Sanity:
-  //    15/15 @ 5s  → 60 + 85 + 15 = 160 ✓
-  //    8/15  @10s  → 60 + 0.533^1.5*85 + 7.5 ≈ 100 ✓
-  //    0/15        → 60 ✓
+function calcBallIQ(score, total) {
+  // Real-IQ-bell-curve inspired mapping in the 60–160 range, pure accuracy.
+  //  Calibration targets:
+  //    - Perfect 15/15 → 160
+  //    - 8/15 correct  → ~99 (roughly average)
+  //    - 0/15 correct  → 60
+  //  Formula: 60 + pct^1.5 * 100, clamp [60, 160], round.
   if (!total) return 60;
   const pct = Math.max(0, Math.min(1, score / total));
-  const base = 60 + Math.pow(pct, 1.5) * 85;
-  const speedBonus = (typeof avgResponseMs === "number" && avgResponseMs > 0)
-    ? Math.max(0, Math.min(15, ((15000 - avgResponseMs) / 10000) * 15))
-    : 0;
-  return Math.round(Math.max(60, Math.min(160, base + speedBonus)));
+  const iq = 60 + Math.pow(pct, 1.5) * 100;
+  return Math.round(Math.max(60, Math.min(160, iq)));
 }
 
 function iqPercentile(iq) {
@@ -7723,6 +7714,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
 .light .wd-key-grey{background:#9CA0AB;color:#fff;}
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0A0A0A;box-shadow:0 4px 0 #46A302;transform:translateY(0);transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;user-select:none;padding:0;}
+.wd-key-enter:hover{filter:brightness(1.06);}
+.wd-key-enter:active{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
 
 /* Home middle row — Wordle + Multiplayer side by side. Sits between the
    full-width Daily hero and the WC2026 banner. */
@@ -8571,7 +8565,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const total = questions?.length || 0;
   const q = questions?.[idx];
-  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && q?.type !== "tf";
+  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "balliq" && q?.type !== "tf";
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
@@ -10696,7 +10690,7 @@ function HardRightBurst({ onComplete }) {
 // ─── BALL IQ RESULTS ─────────────────────────────────────────────────────────
 // Extracted into its own component so hooks are never called conditionally
 function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
-  const iq = calcBallIQ(result.score, result.total, result.avgResponseMs);
+  const iq = calcBallIQ(result.score, result.total);
   const pctile = iqPercentile(iq);
   const label = iqLabel(iq);
   const pctileLbl = iqPercentileLabel(iq);
@@ -12899,7 +12893,7 @@ function getWordleKeyState(letter, guesses, answer) {
 const WORDLE_KB_ROWS = [
   ["Q","W","E","R","T","Y","U","I","O","P"],
   ["A","S","D","F","G","H","J","K","L"],
-  ["ENTER","Z","X","C","V","B","N","M","DEL"],
+  ["Z","X","C","V","B","N","M","DEL"],
 ];
 
 const FootballWordle = React.memo(function FootballWordle({ onBack }) {
@@ -13124,7 +13118,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         {WORDLE_KB_ROWS.map((row, ri) => (
           <div className="wd-kb-row" key={ri}>
             {row.map((k) => {
-              const isAction = k === "ENTER" || k === "DEL";
+              const isAction = k === "DEL";
               const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
               return (
                 <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k}>
@@ -13134,6 +13128,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
             })}
           </div>
         ))}
+        <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="ENTER">ENTER</button>
       </div>
     </div>
   );
@@ -13689,7 +13684,7 @@ function AppInner() {
 
     // Save BallIQ history (last 7 scores) + best IQ in stats
     if (mode === "balliq") {
-      const iq = calcBallIQ(res.score, res.total, res.avgResponseMs);
+      const iq = calcBallIQ(res.score, res.total);
       window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
     window.storage?.get("biq_iq_history").then(r => {
         const hist = (() => { try { return r ? JSON.parse(r.value) : []; } catch { return []; } })();
@@ -13762,7 +13757,7 @@ function AppInner() {
         return `⚽ Ball IQ — Daily Challenge\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       balliq: (() => {
-        const iq = calcBallIQ(score, total, avgResponseMs);
+        const iq = calcBallIQ(score, total);
         const label = iqLabel(iq);
         const pctileLbl = iqPercentileLabel(iq);
         return `🧠 Ball IQ Test\nMy Ball IQ: ${iq} — ${pctileLbl}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
@@ -13799,7 +13794,7 @@ function AppInner() {
     let cardType = "standard";
     let cardData;
     if (mode === "balliq") {
-      const iq = calcBallIQ(score, total, avgResponseMs);
+      const iq = calcBallIQ(score, total);
       cardType = "balliq";
       cardData = { iq, label: iqLabel(iq), pctileLbl: iqPercentileLabel(iq) };
     } else if (mode === "hotstreak") {
