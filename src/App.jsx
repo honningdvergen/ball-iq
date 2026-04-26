@@ -8823,7 +8823,17 @@ function pickOnlineQuestions(mode) {
   return pool.slice(0, 10);
 }
 
-function OnlineGame({ onBack, userId, defaultName }) {
+// NOTE for future native app build: when wrapping the PWA in a native iOS or
+// Android shell (Capacitor / PWABuilder), configure Universal Links / App
+// Links so that ball-iq.app/?join=CODE opens the installed app directly with
+// the join code intact. The web flow already reads the URL parameter and
+// routes here; the native side just needs the link configuration to dispatch
+// the URL to the WKWebView / Android WebView.
+const INVITE_BASE_URL = "https://ball-iq.app";
+const buildInviteUrl = (code) => `${INVITE_BASE_URL}/?join=${encodeURIComponent(code)}`;
+const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
+
+function OnlineGame({ onBack, userId, defaultName, autoJoinCode }) {
   // Top-level view: 'menu' | 'create-input' | 'join-input' | 'create-waiting'
   //                 | 'lobby' | 'playing' | 'results'
   const [view, setView] = useState("menu");
@@ -8865,6 +8875,24 @@ function OnlineGame({ onBack, userId, defaultName }) {
 
   // Pick up the auth profile name if it arrives after mount
   useEffect(() => { if (!name && defaultName) setName(defaultName); }, [defaultName, name]);
+
+  // Auto-join from a shared invite link (e.g. https://ball-iq.app/?join=ABC234).
+  // Pre-fills the join screen with the code; if we already have a name we
+  // also fire onJoin once so the friend lands straight in the lobby.
+  const autoJoinFiredRef = useRef(false);
+  useEffect(() => {
+    if (!autoJoinCode) return;
+    if (autoJoinFiredRef.current) return;
+    setJoinCode(autoJoinCode);
+    setView("join-input");
+    if (!userId) return; // wait for sign-in; the spec routes guests via AppGate
+    if (!name.trim()) return; // need a name first; user can tap Join manually
+    autoJoinFiredRef.current = true;
+    // Defer one tick so React commits joinCode/name before onJoin reads them.
+    const id = setTimeout(() => { onJoin(); }, 0);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoJoinCode, userId, name]);
 
   // Best-effort cleanup of stale rows older than 24h on entry to the lobby.
   useEffect(() => { (async () => { try { await supabase.rpc("cleanup_old_game_rooms"); } catch {} })(); }, []);
@@ -9030,6 +9058,58 @@ function OnlineGame({ onBack, userId, defaultName }) {
     }
   }, [name, userId, subscribeRoom, t$, creating]);
 
+  // Re-share helper used by both the create-and-share flow and the
+  // "Share invite again" button on the waiting screen. Falls back to the
+  // clipboard when the Web Share API is unavailable (desktop browsers).
+  const shareInvite = useCallback(async (rc) => {
+    if (!rc) return;
+    const text = buildInviteText(rc);
+    const url = buildInviteUrl(rc);
+    try {
+      if (navigator.share) {
+        await navigator.share({ text, url });
+        return;
+      }
+    } catch { /* user cancelled or share failed silently */ }
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        t$("📋 Invite link copied");
+      }
+    } catch {}
+  }, [t$]);
+
+  // Primary "Create & invite a friend" action — creates the room and pops the
+  // share sheet immediately so the host can fire the link off in one tap.
+  // After share resolves (success or cancel) the host stays on the waiting
+  // screen for the friend to join.
+  const onCreateAndShare = useCallback(async () => {
+    if (creating) return;
+    if (!name.trim()) {
+      // Without a name we can't host — drop into the create-input flow so the
+      // user can type one, then tap Create.
+      setView("create-input");
+      return;
+    }
+    if (!userId) return t$("Sign in to play online");
+    setCreating(true);
+    try {
+      const rc = generateCode();
+      const { data, error } = await gameRoomCreate({ code: rc, hostId: userId, hostName: name.trim() });
+      if (error || !data) { t$("⚠️ Couldn't create room"); return; }
+      setRoom(data);
+      setCode(rc);
+      setIsHost(true);
+      subscribeRoom(rc);
+      setView("create-waiting");
+      // Fire and forget — the share sheet runs on top of the waiting screen
+      // so cancellation lands the user exactly where they need to be.
+      shareInvite(rc);
+    } finally {
+      setCreating(false);
+    }
+  }, [name, userId, subscribeRoom, shareInvite, t$, creating]);
+
   const onJoin = useCallback(async () => {
     if (joining) return;
     if (!name.trim()) return t$("Enter your name");
@@ -9144,16 +9224,39 @@ function OnlineGame({ onBack, userId, defaultName }) {
     );
   }
 
-  // Menu — Create or Join
+  // Menu — Create-and-invite is the primary path; manual code entry sits
+  // below as the secondary path for users who already have a code.
   if (view === "menu") {
     return (
       <div className="screen">
         <div className="page-hdr"><button className="back-btn" onClick={onBack} aria-label="Go back">←</button><div className="page-title">Online 1v1</div></div>
         <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:18}}>
-          Challenge a friend in real time. Create a room and share the code, or enter the code your friend sent you.
+          Challenge a friend in real time. Send them a link they can tap to join.
         </p>
-        <button className="btn-3d" onClick={() => setView("create-input")} style={{marginBottom:12}}>Create Room</button>
-        <button className="btn-3d ghost" onClick={() => setView("join-input")}>Join Room</button>
+
+        {/* Primary CTA — create + share in one tap. Tall on purpose. */}
+        <button
+          className="btn-3d"
+          onClick={() => {
+            if (!name.trim()) { setView("create-input"); return; }
+            onCreateAndShare();
+          }}
+          disabled={creating}
+          style={{minHeight:104,padding:"18px 20px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:4,marginBottom:24,opacity:creating?0.7:1}}
+        >
+          <span style={{fontSize:17,fontWeight:800}}>{creating ? "Creating room…" : "📩 Create & invite a friend"}</span>
+          <span style={{fontSize:12,fontWeight:500,opacity:0.85}}>Send a link your friend can tap to join</span>
+        </button>
+
+        <div className="ds-eyebrow" style={{marginBottom:8,color:"var(--t3)"}}>Already have a code?</div>
+        <button
+          className="btn-3d ghost"
+          onClick={() => setView("join-input")}
+          style={{minHeight:48,fontSize:14}}
+        >
+          Join with code
+        </button>
+
         {toast && <div className="toast">{toast}</div>}
       </div>
     );
@@ -9206,7 +9309,7 @@ function OnlineGame({ onBack, userId, defaultName }) {
     );
   }
 
-  // Host's "waiting for opponent" screen — code prominent, pulsing dot.
+  // Host's "waiting for opponent" screen — share-link CTA leads, code below.
   if (view === "create-waiting") {
     return (
       <div className="screen">
@@ -9214,18 +9317,34 @@ function OnlineGame({ onBack, userId, defaultName }) {
           <button className="back-btn" onClick={onPlayAgain} aria-label="Go back">←</button>
           <div className="page-title">Room created</div>
         </div>
+
+        <button
+          className="btn-3d"
+          onClick={() => shareInvite(code)}
+          style={{minHeight:64,marginBottom:18}}
+        >
+          📩 Share invite link
+        </button>
+
         <div className="og-code-box" onClick={copyCode}>
-          <div className="og-code-label">Share this code</div>
+          <div className="og-code-label">Or share this code</div>
           <div className="og-code-val">{code}</div>
           <div className="og-code-hint">Tap to copy</div>
         </div>
+
         <div className="og-waiting">
           <div className="og-pulse"><span/><span/><span/></div>
           <div className="og-waiting-text">Waiting for opponent…</div>
         </div>
-        <p style={{fontSize:12, color:"var(--t3)", textAlign:"center", marginTop:20, lineHeight:1.7}}>
-          Ask your friend to open {APP_NAME} → Online 1v1 → Join Room and enter the code above.
-        </p>
+
+        <button
+          className="btn-3d ghost"
+          onClick={() => { setView("menu"); setRoom(null); setCode(""); setIsHost(false); }}
+          style={{marginTop:18,minHeight:48,fontSize:14}}
+        >
+          Cancel
+        </button>
+
         {toast && <div className="toast">{toast}</div>}
       </div>
     );
@@ -13411,11 +13530,38 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
-  const { user, profile: authProfile, isGuest } = useAuth();
+  const { user, profile: authProfile, isGuest, exitGuestMode } = useAuth();
   const [screen, setScreen] = useState("home");
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
+  // Pending invite code captured from `?join=` on cold start. Persisted to
+  // localStorage so it survives the sign-in detour for guests / unsigned
+  // users. Cleared once consumed (room joined, dismissed, or signed-out
+  // away). The native app wrapper should hand the code in via the same
+  // localStorage key after parsing the Universal / App Link.
+  const [pendingJoinCode, setPendingJoinCode] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fromUrl = params.get("join");
+      if (fromUrl) {
+        try { localStorage.setItem("biq_pending_join", fromUrl); } catch {}
+        // Strip the param so a refresh doesn't re-trigger the auto-join.
+        try {
+          const cleanUrl = `${window.location.pathname}${window.location.hash || ""}`;
+          window.history.replaceState({}, "", cleanUrl);
+        } catch {}
+        return fromUrl.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+      }
+      const stored = localStorage.getItem("biq_pending_join");
+      if (stored) return stored.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+    } catch {}
+    return null;
+  });
+  const clearPendingJoin = useCallback(() => {
+    setPendingJoinCode(null);
+    try { localStorage.removeItem("biq_pending_join"); } catch {}
+  }, []);
   // A1: Hydrate first-paint state synchronously from localStorage so the Home
   // tab doesn't flash in a default-empty state before the async effects fire.
   const [hasOnboarded, setHasOnboarded] = useState(() => {
@@ -13868,6 +14014,20 @@ function AppInner() {
       showToast("⚠️ Couldn't start mode");
     }
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
+
+  // When a shared invite link is opened (?join=CODE), once auth resolves and
+  // the user is signed in (not guest), route them straight into Online 1v1.
+  // Fire-once via the ref so the effect can re-run for state changes without
+  // re-navigating mid-game. Guests/unsigned users are caught by the prompt
+  // rendered below — they sign in, AppInner remounts, and this effect routes.
+  const autoJoinRoutedRef = useRef(false);
+  useEffect(() => {
+    if (!pendingJoinCode) { autoJoinRoutedRef.current = false; return; }
+    if (!user || isGuest) return;
+    if (autoJoinRoutedRef.current) return;
+    autoJoinRoutedRef.current = true;
+    startMode("online");
+  }, [pendingJoinCode, user, isGuest, startMode]);
 
   // LocalSetup gives us a fully-formed config — LocalGameScreen owns the rest
   // (questions, turns, scores, eliminations). No legacy state touched here.
@@ -14880,6 +15040,40 @@ function AppInner() {
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
         {showHelp && <HelpScreen onClose={closeHelp} />}
 
+        {/* Shared-invite gate: someone tapped a ball-iq.app/?join=CODE link
+            but they're either signed-out or browsing as a guest. Prompt them
+            to sign in; pendingJoinCode persists in localStorage so the
+            autoJoinRoutedRef effect picks it up after auth completes. */}
+        {pendingJoinCode && (!user || isGuest) && (
+          <div
+            style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
+            onClick={clearPendingJoin}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              style={{width:"100%",maxWidth:360,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:18,padding:"26px 22px",textAlign:"center"}}
+            >
+              <div style={{fontSize:48,marginBottom:10}} aria-hidden="true">🎮</div>
+              <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Sign in to join the game</div>
+              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
+              <button
+                onClick={() => { try { exitGuestMode?.(); } catch {} }}
+                style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+              >
+                Sign in
+              </button>
+              <button
+                onClick={clearPendingJoin}
+                style={{width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer"}}
+              >
+                Not now
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ── IQ RECAP OVERLAY ── */}
         {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={retakeIqTest} />}
 
@@ -14917,9 +15111,10 @@ function AppInner() {
         {/* ── ONLINE ── */}
         {screen === "online" && (
           <OnlineGame
-            onBack={goHome}
+            onBack={() => { clearPendingJoin(); goHome(); }}
             userId={user?.id}
             defaultName={authProfile?.username || profile?.name || ""}
+            autoJoinCode={pendingJoinCode}
           />
         )}
 
