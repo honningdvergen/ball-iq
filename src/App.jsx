@@ -6738,15 +6738,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* 3D "Duolingo" primary button — bright green face, darker rim, press translates Y.
    Use only for the signature primary CTA of a screen. Applied via the .btn-3d
    class so existing non-CTA greens stay on the toned-down accent (#22c55e). */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:0 5px 0 #46A302;transform:translateY(0);transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .btn-3d:hover{filter:brightness(1.06);}
-.btn-3d:active,.btn-3d.is-pressed{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
-.btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;transform:none;box-shadow:none;}
+.btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
+.btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
 .btn-3d:focus-visible{outline:3px solid rgba(88,204,2,0.4);outline-offset:2px;}
-.btn-3d.amber{background:#FFC800;color:#3D2A00;box-shadow:0 5px 0 #D49600;-webkit-text-fill-color:#3D2A00;}
-.btn-3d.amber:active,.btn-3d.amber.is-pressed{box-shadow:0 2px 0 #D49600;}
-.btn-3d.dark{background:#242836;color:var(--t1);box-shadow:0 5px 0 #12141B;-webkit-text-fill-color:var(--t1);}
-.btn-3d.dark:active,.btn-3d.dark.is-pressed{box-shadow:0 2px 0 #12141B;}
+.btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
+.btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
+.btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.btn-3d.dark:active,.btn-3d.dark.is-pressed{opacity:0.85;}
 .btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
 .btn-3d.ghost:hover{filter:none;background:var(--s1);}
 .btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
@@ -6755,15 +6755,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* Results-screen button stack — lighter than the default .btn-3d, with a
    shorter rim and tighter spacing so the action column doesn't dominate. */
 .results-actions{display:flex;flex-direction:column;gap:8px;}
-.results-actions .btn-3d{min-height:0;padding:12px 20px;font-size:15px;box-shadow:0 3px 0 #46A302;margin:0!important;}
-.results-actions .btn-3d:active,.results-actions .btn-3d.is-pressed{transform:translateY(2px);box-shadow:0 1px 0 #46A302;}
-.results-actions .btn-3d:disabled{box-shadow:0 3px 0 #46A302;}
-.results-actions .btn-3d.amber{box-shadow:0 3px 0 #D49600;}
-.results-actions .btn-3d.amber:active,.results-actions .btn-3d.amber.is-pressed{box-shadow:0 1px 0 #D49600;}
-.results-actions .btn-3d.dark{box-shadow:0 3px 0 #12141B;}
-.results-actions .btn-3d.dark:active,.results-actions .btn-3d.dark.is-pressed{box-shadow:0 1px 0 #12141B;}
-.results-actions .btn-3d.ghost{box-shadow:none;}
-.results-actions .btn-3d.ghost:active,.results-actions .btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
+.results-actions .btn-3d{min-height:0;padding:12px 20px;font-size:15px;margin:0!important;}
+.results-actions .btn-3d:active,.results-actions .btn-3d.is-pressed{opacity:0.85;}
+.results-actions .btn-3d.ghost:active,.results-actions .btn-3d.ghost.is-pressed{opacity:0.85;}
 
 /* Pill utility — small uppercase tone-tinted badge. */
 .pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
@@ -7165,13 +7159,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   border-top:0.5px solid rgba(255,255,255,0.08);
   display:flex;align-items:stretch;z-index:100;
+  padding-top:8px;
   padding-bottom:max(env(safe-area-inset-bottom,34px),34px);
-  height:calc(60px + max(env(safe-area-inset-bottom,34px),0px));
+  /* Height matches the padding so .tab-item (align-items:stretch) gets a real
+     inner box of ~60px on every device, even when env(safe-area-inset-bottom)
+     resolves to 0 (Android, iPad portrait, desktop browsers). Without this
+     parity the icons get squeezed and clip at the top of the bar. */
+  height:calc(68px + max(env(safe-area-inset-bottom,34px),34px));
 }
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
-  background:transparent;padding:6px 4px 10px;
+  background:transparent;padding:4px 4px 6px;min-height:0;
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;position:relative;
   transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
@@ -7189,7 +7188,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:calc(60px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
+.tab-content{padding-bottom:calc(76px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
@@ -7481,9 +7480,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
 .onboard-body{font-size:15px;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:24px;}
-.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;box-shadow:0 5px 0 #46A302;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .onboard-btn:hover{filter:brightness(1.06);}
-.onboard-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #46A302;}
+.onboard-btn:active{opacity:0.85;}
 .onboard-btn-inline{max-width:180px;flex:1;}
 .onboard-skip{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;padding:12px 16px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
 .onboard-skip:hover{color:var(--t2);}
@@ -7647,8 +7646,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-result-sub{font-size:14px;color:var(--t2);}
 .wd-result-sub strong{color:var(--accent);letter-spacing:0.5px;font-weight:800;}
 .wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
-.wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #46A302;transition:transform 80ms ease,box-shadow 80ms ease;-webkit-text-fill-color:#0A0A0A;}
-.wd-share:active{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+.wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
+.wd-share:active{opacity:0.85;}
 
 .wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:6px 0 4px;}
 .wd-kb-row{display:flex;justify-content:center;gap:5px;}
@@ -12107,11 +12106,13 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     setSearching(true);
     const t = setTimeout(async () => {
       try {
+        if (import.meta.env.DEV) console.log("[friends] search query:", q);
         const { data, error } = await supabase
           .from("profiles")
           .select("id,username,avatar,total_score")
           .ilike("username", `%${q}%`)
           .limit(10);
+        if (import.meta.env.DEV) console.log("[friends] search result:", { rows: data?.length, error: error?.message });
         if (cancelled) return;
         if (error) throw error;
         setResults((data || []).filter(p => !excludedIds.has(p.id)));
