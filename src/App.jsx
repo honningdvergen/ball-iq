@@ -7564,6 +7564,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 /* ── QUIT MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
 .modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
 .modal-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin-bottom:8px;}
 .modal-body{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px;}
@@ -11678,7 +11679,8 @@ function DailyCountdown({ score }) {
     const update = () => {
       const now = new Date();
       const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
+      midnight.setDate(midnight.getDate() + 1);
+      midnight.setHours(0, 0, 0, 0);
       const diff = midnight - now;
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
@@ -11708,7 +11710,8 @@ function DailyHeroCountdown() {
     const update = () => {
       const now = new Date();
       const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
+      midnight.setDate(midnight.getDate() + 1);
+      midnight.setHours(0, 0, 0, 0);
       const diff = midnight - now;
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
@@ -11804,7 +11807,7 @@ const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","�
 let _cropperPromise = null;
 function ensureCropperLoaded() {
   if (_cropperPromise) return _cropperPromise;
-  _cropperPromise = new Promise((resolve, reject) => {
+  const loader = new Promise((resolve, reject) => {
     try {
       if (typeof window !== "undefined" && window.Cropper) {
         resolve(window.Cropper);
@@ -11842,10 +11845,21 @@ function ensureCropperLoaded() {
       reject(e);
     }
   });
+  // 10s ceiling on the CDN fetch — if cdnjs is slow or unreachable the user
+  // gets a toast and the modal closes instead of an indefinite spinner.
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("cropper.js load timed out")), 10000)
+  );
+  _cropperPromise = Promise.race([loader, timeout]).catch((err) => {
+    // Allow a retry on the next attempt — leaving the rejected promise cached
+    // would mean the crop modal stays broken until a full reload.
+    _cropperPromise = null;
+    throw err;
+  });
   return _cropperPromise;
 }
 
-function CropModal({ file, onCancel, onConfirm }) {
+function CropModal({ file, onCancel, onConfirm, onLoadError }) {
   const imgRef = useRef(null);
   const cropperRef = useRef(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -11866,9 +11880,13 @@ function CropModal({ file, onCancel, onConfirm }) {
     let cancelled = false;
     ensureCropperLoaded()
       .then(() => { if (!cancelled) setReady(true); })
-      .catch((e) => { if (!cancelled) setError(e?.message || "Could not load cropper"); });
+      .catch((e) => {
+        if (cancelled) return;
+        setError(e?.message || "Could not load cropper");
+        onLoadError?.();
+      });
     return () => { cancelled = true; };
-  }, []);
+  }, [onLoadError]);
 
   // Initialize Cropper once the library is loaded AND the image element is in the DOM
   useEffect(() => {
@@ -12234,13 +12252,35 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 }
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, uploadAvatar } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
+  const [editingName, setEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState("");
   const fileInputRef = useRef(null);
+  // Auth profile is fetched async after `user` resolves — show a skeleton in
+  // that gap so a returning user doesn't briefly see "Player".
+  const authLoading = !!user && !authProfile;
+  const localName = (profile?.name || "").trim();
+  const hasUsername = !!authProfile?.username && authProfile.username !== "Player";
+  const showNameCTA = !authLoading && !hasUsername && (!localName || localName.toLowerCase() === "player");
+  const startNameEdit = () => {
+    setNameDraft(localName);
+    setEditingName(true);
+  };
+  const saveName = () => {
+    const v = nameDraft.trim();
+    setProfile(p => ({ ...p, name: v }));
+    setEditingName(false);
+  };
+  // Open the inline editor when the home greeting tells us to.
+  useEffect(() => {
+    if (nameEditNonce && showNameCTA) startNameEdit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameEditNonce]);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
   const earned = earnedBadges || computeBadges(stats, xp, loginStreak);
@@ -12303,7 +12343,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         style={{display:"none"}}
       />
       <div className="profile-card">
-        <div className="profile-avatar-wrap">
+        <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
           <div
             className="profile-avatar"
             onClick={openAvatarPicker}
@@ -12324,9 +12364,47 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </div>
           <div className="profile-avatar-edit" onClick={openAvatarPicker}>+</div>
         </div>
-        <div className="profile-name" style={{cursor:"default"}}>
-          {authProfile?.username || profile?.name || "Player"}
-        </div>
+        {authLoading ? (
+          <div className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>
+            Loading…
+          </div>
+        ) : editingName ? (
+          <input
+            className="profile-name-input"
+            value={nameDraft}
+            onChange={e => setNameDraft(e.target.value.slice(0, 24))}
+            onKeyDown={e => {
+              if (e.key === "Enter") saveName();
+              else if (e.key === "Escape") setEditingName(false);
+            }}
+            onBlur={saveName}
+            placeholder="Your name"
+            autoFocus
+            aria-label="Your display name"
+          />
+        ) : showNameCTA ? (
+          <>
+            <button
+              className="profile-name"
+              onClick={startNameEdit}
+              style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:"var(--t2)"}}
+              aria-label="Set your name"
+            >
+              Player
+            </button>
+            <button
+              onClick={startNameEdit}
+              style={{background:"none",border:"none",padding:"4px 8px",marginTop:2,fontSize:12,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"inherit"}}
+              aria-label="Set your name"
+            >
+              ✏️ Tap to set your name
+            </button>
+          </>
+        ) : (
+          <div className="profile-name" style={{cursor:"default"}}>
+            {authProfile?.username || profile?.name || "Player"}
+          </div>
+        )}
         <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
         {iq && <div className="profile-iq-line">Ball IQ: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
       </div>
@@ -12465,6 +12543,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           file={pendingCrop}
           onCancel={handleCropCancel}
           onConfirm={handleCropConfirm}
+          onLoadError={() => {
+            onToast?.("⚠️ Couldn't load image editor — check your connection");
+            handleCropCancel();
+          }}
         />
       )}
     </div>
@@ -12913,7 +12995,8 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
     const tick = () => {
       const now = new Date();
       const tomorrow = new Date(now);
-      tomorrow.setHours(24, 0, 0, 0);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
       const ms = tomorrow - now;
       const h = Math.floor(ms / 3600000);
       const m = Math.floor((ms % 3600000) / 60000);
@@ -13114,6 +13197,9 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
 function AppInner() {
   const { user, profile: authProfile } = useAuth();
   const [screen, setScreen] = useState("home");
+  // Bumped when the home greeting is tapped so the profile screen knows to
+  // open the inline name editor.
+  const [nameEditNonce, setNameEditNonce] = useState(0);
   // A1: Hydrate first-paint state synchronously from localStorage so the Home
   // tab doesn't flash in a default-empty state before the async effects fire.
   const [hasOnboarded, setHasOnboarded] = useState(() => {
@@ -14354,14 +14440,36 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <div className="screen tab-content" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             {/* Greeting row */}
-            <div style={{padding:"10px 0 12px", display:"flex", alignItems:"baseline", gap:10}}>
-              <div style={{fontSize:13, color:"var(--t3)"}}>
-                {(() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })()}
-              </div>
-              <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
-                {authProfile?.username || profile?.name || "Guest"}
-              </div>
-            </div>
+            {(() => {
+              const homeAuthLoading = !!user && !authProfile;
+              const homeLocalName = (profile?.name || "").trim();
+              const homeHasUsername = !!authProfile?.username && authProfile.username !== "Player";
+              const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || homeLocalName.toLowerCase() === "player");
+              const greeting = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })();
+              return (
+                <div style={{padding:"10px 0 12px"}}>
+                  <div style={{display:"flex", alignItems:"baseline", gap:10}}>
+                    <div style={{fontSize:13, color:"var(--t3)"}}>{greeting}</div>
+                    {homeAuthLoading ? (
+                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
+                    ) : (
+                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
+                        {authProfile?.username || profile?.name || "Guest"}
+                      </div>
+                    )}
+                  </div>
+                  {homeShowCTA && (
+                    <button
+                      onClick={() => { setTab("profile"); setNameEditNonce(n => n + 1); }}
+                      style={{background:"none",border:"none",padding:"4px 0 0",fontSize:12,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"inherit"}}
+                      aria-label="Set your name"
+                    >
+                      ✏️ Tap to set your name
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Stat chips row */}
             <div className="home-stat-row">
@@ -14511,7 +14619,7 @@ function AppInner() {
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
-            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} />
+            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} nameEditNonce={nameEditNonce} />
           </div>
         )}
 
