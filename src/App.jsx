@@ -2,7 +2,13 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { useAuth } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import Login from './Login.jsx';
+import ReviewScreen from './ReviewScreen.jsx';
 import { QB, TF_STATEMENTS } from './questions.js';
+
+// Gated reviewer email — only this account sees the Settings → Review entry
+// and can reach the review screen. Server-side RLS on question_review is the
+// real security; this is just UI hiding.
+const REVIEWER_EMAIL = "alexbo99@hotmail.no";
 
 // ─── STORAGE SHIM ─────────────────────────────────────────────────────────────
 // Provides window.storage API using localStorage as fallback when deployed.
@@ -5374,7 +5380,7 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onAccountDeleted }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onAccountDeleted, onOpenReview }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -5541,6 +5547,24 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-left">
                 <div className="sr-label">Help & FAQ</div>
                 <div className="sr-desc">Common questions and how to reach us</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden reviewer entry — only rendered for the gated email. The
+          server-side RLS on question_review is the actual security; this
+          UI gate just hides the link from non-reviewers. */}
+      {onOpenReview && user?.email === REVIEWER_EMAIL && (
+        <div className="settings-section">
+          <div className="ds-eyebrow settings-section-title">Reviewer</div>
+          <div className="settings-card">
+            <div className="settings-row" onClick={onOpenReview}>
+              <div className="sr-left">
+                <div className="sr-label">Review questions</div>
+                <div className="sr-desc">Approve, reject, or flag every question in the bank</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </div>
@@ -9218,7 +9242,10 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onAccountDeleted={onAccountDeleted} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} />}
+
+        {/* ── QUESTION-BANK REVIEW (gated) ── */}
+        {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
