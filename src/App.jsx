@@ -2650,7 +2650,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
       </div>
       {picked && (
         <div style={{textAlign:'center',marginTop:14,fontSize:16,fontWeight:700,color: picked.correct ? 'var(--green)' : 'var(--red)'}}>
-          {picked.correct ? '✓ Correct!' : `✗ Correct answer: ${qAsBool ? 'TRUE' : 'FALSE'}`}
+          {picked.correct ? '✓ Correct!' : '✗ Incorrect'}
         </div>
       )}
       {picked && !picked.correct && q.hint && (
@@ -2958,9 +2958,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
             ? "✓ Correct!"
             : isTyped
               ? `✗ ${q.typed_a}`
-              : isTF
-              ? `✗ ${(q?.a === true || q?.a === 1) ? "TRUE" : "FALSE"}`
-              : `✗ ${q.o[q.a]}`
+              : "✗ Incorrect"
           }</span>
         </div>
       )}
