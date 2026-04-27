@@ -7473,8 +7473,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-bar.done{background:var(--accent);}
 .onboard-bar.active{background:var(--accent);box-shadow:0 0 8px rgba(34,197,94,0.5);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
-.onboard-track{display:flex;height:100%;width:300%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
-.onboard-step{width:33.3333%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-track{display:flex;height:100%;width:200%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
+.onboard-step{width:50%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
 .onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
@@ -11775,8 +11775,7 @@ function XPBar({ xp, streak }) {
 
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
-// 4-step welcome flow shown once per device after auth. Persists:
-//   biq_fav_club     — chosen CLUB_PACKS key (or absent if skipped)
+// 2-step welcome flow shown once per device after auth. Persists:
 //   biq_skill_level  — "casual" | "fan" | "expert" (or absent)
 //   biq_onboarded    — "1" once completed (or skipped to end)
 const SKILL_OPTIONS = [
@@ -11787,13 +11786,11 @@ const SKILL_OPTIONS = [
 
 function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
-  const [favClub, setFavClub] = useState(null);
   const [skillLevel, setSkillLevel] = useState(null);
-  const TOTAL = 3;
+  const TOTAL = 2;
 
   const persistAndFinish = () => {
     try {
-      if (favClub) localStorage.setItem("biq_fav_club", favClub);
       if (skillLevel) {
         localStorage.setItem("biq_skill_level", skillLevel);
         const diffFor = SKILL_OPTIONS.find(s => s.id === skillLevel)?.diff;
@@ -11837,7 +11834,7 @@ function OnboardingScreen({ onDone }) {
       </div>
 
       <div className="onboard-viewport">
-        <div className="onboard-track" style={{ transform: `translateX(-${step * (100 / 3)}%)` }}>
+        <div className="onboard-track" style={{ transform: `translateX(-${step * 50}%)` }}>
           {/* 1. Welcome */}
           <div className="onboard-step">
             <div className="onboard-step-top">
@@ -11850,32 +11847,7 @@ function OnboardingScreen({ onDone }) {
             <button className="onboard-btn" onClick={next}>Get Started</button>
           </div>
 
-          {/* 2. Favourite Club */}
-          <div className="onboard-step">
-            <div style={{width:"100%"}}>
-              <div className="onboard-title" style={{marginTop:16}}>Who do you support?</div>
-              <div className="onboard-body">Pick your club — we'll personalise your experience.</div>
-            </div>
-            <div className="onboard-club-grid">
-              {Object.entries(CLUB_PACKS).map(([key, pack]) => (
-                <button
-                  key={key}
-                  className={`onboard-club${favClub === key ? " on" : ""}`}
-                  onClick={() => { haptic("soft"); setFavClub(key); }}
-                  aria-pressed={favClub === key}
-                >
-                  <ClubCrest clubKey={key} size={44} />
-                  <div className="onboard-club-name">{pack.name}</div>
-                </button>
-              ))}
-            </div>
-            <div className="onboard-actions">
-              <button className="onboard-skip" onClick={skip}>Skip</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>Next →</button>
-            </div>
-          </div>
-
-          {/* 3. Skill Level */}
+          {/* 2. Skill Level */}
           <div className="onboard-step">
             <div style={{width:"100%"}}>
               <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
@@ -14989,7 +14961,7 @@ function AppInner() {
                 { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
-                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"15 top clubs" },
+                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"Coming soon", comingSoon:true, onTap:() => showToast("🛡️ Club Quiz is coming soon — stay tuned") },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes & chaos" },
                 // True/False, Guess the Player and Tiki Taka Toe sit at the
                 // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
