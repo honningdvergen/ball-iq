@@ -9144,7 +9144,6 @@ function AppInner() {
                     <div className="daily-pair-eyebrow">Daily Puzzle</div>
                     <div className="daily-pair-title">Today's<br/>Puzzle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
-                    <div className="daily-pair-emoji">🟩</div>
                   </button>
                 );
               })()}
