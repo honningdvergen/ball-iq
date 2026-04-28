@@ -7024,10 +7024,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
         {iq && <div className="profile-iq-line">{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
       </div>
-      <button className="share-profile-btn" onClick={onShareProfile}>Share Profile Card</button>
-      {onShowWeekly && (
-        <button className="share-profile-btn" style={{marginTop:-4}} onClick={onShowWeekly}>Weekly Summary 📊</button>
-      )}
+      {/* Two peer secondary actions. Both are ghost buttons; the gap-based
+          flex container replaces the previous marginTop:-4 hack that was
+          overlapping the .share-profile-btn bottom margins. */}
+      <div style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
+        <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
+        {onShowWeekly && (
+          <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
+        )}
+      </div>
       {(stats.gamesPlayed || 0) === 0 ? (
         <div style={{
           background:"var(--s1)",
@@ -7111,7 +7116,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
               style={earned.has(id) ? {background:"rgba(34,197,94,0.1)",borderColor:"rgba(34,197,94,0.25)"} : {}}>
               <span className="badge-icon" style={{filter:earned.has(id)?"none":"grayscale(1) opacity(0.35)"}}>{icon}</span>
               <span className="badge-name" style={{color:earned.has(id)?"var(--t1)":"var(--t3)"}}>{name}</span>
-              {earned.has(id) && <span style={{fontSize:8,color:"var(--accent)",fontWeight:700,letterSpacing:0.5}}>EARNED</span>}
             </div>
           ))}
         </div>
