@@ -5623,17 +5623,28 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
-      {onShowHelp && (
+      {(onShowHelp || onShowPrivacy) && (
         <div className="settings-section">
           <div className="ds-eyebrow settings-section-title">Help</div>
           <div className="settings-card">
-            <div className="settings-row" onClick={onShowHelp}>
-              <div className="sr-left">
-                <div className="sr-label">Help & FAQ</div>
-                <div className="sr-desc">Common questions and how to reach us</div>
+            {onShowHelp && (
+              <div className="settings-row" onClick={onShowHelp}>
+                <div className="sr-left">
+                  <div className="sr-label">Help & FAQ</div>
+                  <div className="sr-desc">Common questions and how to reach us</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
               </div>
-              <div className="sr-right"><div className="sr-arrow">›</div></div>
-            </div>
+            )}
+            {onShowPrivacy && (
+              <div className="settings-row" onClick={onShowPrivacy}>
+                <div className="sr-left">
+                  <div className="sr-label">Privacy Policy</div>
+                  <div className="sr-desc">How your data is handled</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -5648,7 +5659,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="settings-row" onClick={onOpenReview}>
               <div className="sr-left">
                 <div className="sr-label">Review questions</div>
-                <div className="sr-desc">Approve, reject, or flag every question in the bank</div>
+                <div className="sr-desc">Internal question-bank review</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </div>
@@ -5661,21 +5672,34 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="settings-card" style={{padding:"24px 18px",textAlign:"center"}}>
           <div style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
           <div style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>{APP_NAME}</div>
-          <div style={{fontSize:13,color:"var(--t3)",marginTop:4}}>v{APP_VERSION}</div>
+          {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
+              numeric/muted and "BETA" gets its own amber pill — clear pre-
+              release signal without dominating the card. */}
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:4,fontSize:13,color:"var(--t3)"}}>
+            <span>v{APP_VERSION.replace(/-beta$/i, "")}</span>
+            {/-beta$/i.test(APP_VERSION) && (
+              <span style={{
+                display:"inline-block",
+                padding:"1px 7px",
+                borderRadius:999,
+                background:"rgba(255,200,0,0.15)",
+                color:"var(--gold)",
+                fontSize:10,
+                fontWeight:800,
+                letterSpacing:"0.08em",
+              }}>BETA</span>
+            )}
+          </div>
           <div style={{fontSize:13,color:"var(--t2)",marginTop:14}}>{(QB.length + TF_STATEMENTS.length).toLocaleString()} questions and counting</div>
           <div style={{fontSize:12,color:"var(--t3)",marginTop:6}}>Made with ⚽ in Norway</div>
+          {/* Ghost outlined to match the secondary-action discipline used on
+              result screens — filled green is reserved for primary actions. */}
           <a
             href="mailto:hello@ball-iq.app"
-            style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"var(--accent)",color:"#0a1a00",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none",WebkitTextFillColor:"#0a1a00"}}
+            style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"transparent",color:"var(--accent)",border:"1.5px solid var(--accent-b)",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none"}}
           >
             Send feedback
           </a>
-        </div>
-        <div className="settings-card" style={{marginTop:8}}>
-          <div className="settings-row" onClick={onShowPrivacy}>
-            <div className="sr-left"><div className="sr-label">Privacy Policy</div></div>
-            <div className="sr-right"><div className="sr-arrow">›</div></div>
-          </div>
         </div>
       </div>
 
@@ -8894,7 +8918,11 @@ function AppInner() {
         {hasOnboarded && <>
         {!inGame && (
           <div className="hdr">
-            <div className="logo">Ball <em>IQ</em></div>
+            {/* Settings already has its own page-header (← Settings) so the
+                global wordmark would just stack a second identifier on top.
+                Hide it on that one screen; every other screen still keeps
+                the brand mark. */}
+            {screen !== "settings" && <div className="logo">Ball <em>IQ</em></div>}
             {screen === "home" && (() => {
               const curIdx = LEVELS.indexOf(levelInfo.level);
               const curN = curIdx + 1;
