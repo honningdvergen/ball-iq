@@ -1903,6 +1903,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .daily-pair-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
 .daily-pair-card.challenge .daily-pair-eyebrow{color:rgba(10,10,10,0.7);}
 .daily-pair-card.wordle .daily-pair-eyebrow{color:#58CC02;}
+/* Brighten the wordle tile's status text so it reads at parity with the
+   challenge tile. The accent green also subtly hints at the wordle's own
+   tile colours. */
+.daily-pair-card.wordle .daily-pair-status{color:var(--accent);}
 .daily-pair-title{font-size:17px;font-weight:900;line-height:1.05;letter-spacing:-0.4px;margin-top:3px;color:inherit;}
 .daily-pair-status{font-size:11.5px;line-height:1.3;margin-top:auto;color:var(--t3);}
 .daily-pair-card.challenge .daily-pair-status{color:rgba(10,10,10,0.78);}
@@ -9176,10 +9180,6 @@ function AppInner() {
                 <div className="home-stat-label">Streak</div>
                 <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
               </div>
-              <div className="home-stat-chip">
-                <div className="home-stat-label">Games</div>
-                <div className="home-stat-val">{(stats.gamesPlayed || 0).toLocaleString()}</div>
-              </div>
             </div>
 
             {/* ── DAILY SECTION: Challenge + Wordle paired ── */}
@@ -9256,6 +9256,11 @@ function AppInner() {
 
             {/* ── MORE MODES ── */}
             <div className="ds-eyebrow more-modes-eyebrow" style={{marginTop:14}}>More modes</div>
+            {/* Active modes only — coming-soon entries (Club Quiz, True or
+                False, Guess the Player, Tiki Taka Toe) are summarised as a
+                small footer line below the grid so users know they're on the
+                way without dead tiles taking up real estate. The mode logic,
+                CSS, and toasts for those modes are all still in place. */}
             <div className="play-grid">
               {[
                 { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
@@ -9265,20 +9270,12 @@ function AppInner() {
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes & chaos" },
-                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"Coming soon", comingSoon:true, onTap:() => showToast("🛡️ Club Quiz is coming soon — stay tuned") },
-                // True/False, Guess the Player and Tiki Taka Toe sit at the
-                // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
-                // and CSS remain in place — only the entry point is hidden.
-                { key:"truefalse",   icon:"✅",  name:"True or False",    desc:"Coming soon", comingSoon:true, onTap:() => showToast("✅ True or False is coming soon — stay tuned") },
-                { key:"guessplayer", icon:"🔍", name:"Guess the Player", desc:"Coming soon", comingSoon:true, onTap:() => showToast("🔍 Guess the Player is coming soon — stay tuned") },
-                { key:"tikitakatoe", icon:"🎯", name:"Tiki Taka Toe",   desc:"Coming soon", comingSoon:true, onTap:() => showToast("🎯 Tiki Taka Toe is coming soon — stay tuned") },
-              ].map(({ key, icon, name, desc, onTap, comingSoon }) => (
+              ].map(({ key, icon, name, desc, onTap }) => (
                 <button
                   key={key}
-                  className={`play-card${comingSoon ? " coming-soon" : ""}`}
+                  className="play-card"
                   onClick={onTap || (() => startMode(key))}
                 >
-                  {comingSoon && <span className="play-card-badge">Soon</span>}
                   <span className="play-card-icon">{icon}</span>
                   <span className="play-card-body">
                     <span className="play-card-name">{name}</span>
@@ -9286,6 +9283,17 @@ function AppInner() {
                   </span>
                 </button>
               ))}
+            </div>
+            <div style={{
+              textAlign:"center",
+              fontSize:11,
+              color:"var(--t3)",
+              fontWeight:500,
+              letterSpacing:"0.04em",
+              marginTop:14,
+              padding:"0 8px",
+            }}>
+              + 4 more modes coming soon
             </div>
           </div>
         )}
@@ -9523,7 +9531,7 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <nav className="tab-bar">
             {[
-              { id:"home",     icon:"⚽", label:"Play"    },
+              { id:"home",     icon:"⚽", label:"Home"    },
               { id:"league",   icon:"🏆", label:"League"  },
               { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
               { id:"profile",  icon:"👤", label:"Profile" },
