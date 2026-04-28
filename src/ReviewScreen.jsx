@@ -221,6 +221,46 @@ export default function ReviewScreen({ onBack }) {
         </div>
       )}
 
+      {/* Typed-input questions don't have an `o` array — they're free-text
+          with a canonical typed_a plus optional aliases. Render the answer
+          as a single green card mirroring the MCQ correct-option treatment,
+          with the aliases listed as small pills underneath so the reviewer
+          can see exactly which variants the game accepts. */}
+      {isMcq && q.type === 'typed' && (
+        <div style={{
+          display:'flex', flexDirection:'column', gap:10,
+          padding:'14px 16px',
+          background:'rgba(88,204,2,0.12)',
+          border:'1.5px solid rgba(88,204,2,0.55)',
+          borderRadius:14,
+        }}>
+          <div style={{display:'flex', alignItems:'center', gap:12}}>
+            <span style={{
+              width:30, height:30, borderRadius:9,
+              background:'#58CC02', color:'#0A0A0A',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              fontSize:14, fontWeight:800, flexShrink:0,
+            }}>✓</span>
+            <span style={{
+              fontSize:15, fontWeight:700, color:'#8AE042',
+              fontFamily:"'Inter',sans-serif", wordBreak:'break-word',
+            }}>{q.typed_a || '— no typed_a —'}</span>
+          </div>
+          {Array.isArray(q.aliases) && q.aliases.length > 0 && (
+            <div style={{display:'flex', flexWrap:'wrap', gap:6, paddingLeft:42}}>
+              {q.aliases.map((a, i) => (
+                <span key={i} style={{
+                  fontSize:11, color:'var(--t2)',
+                  background:'var(--s2)', border:'1px solid var(--border)',
+                  padding:'3px 8px', borderRadius:999,
+                  fontFamily:"'JetBrains Mono','SF Mono',monospace",
+                }}>{a}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {isTf && (
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:8}}>
           {[true, false].map(val => {
