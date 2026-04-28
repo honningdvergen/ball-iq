@@ -1481,7 +1481,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
-.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);color:var(--t2);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
+.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:#8AE042;padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
 .profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
@@ -6518,6 +6518,24 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
 // Lives inside ProfileScreen. Requires an authenticated user (userId). When
 // isActive is true the section loads friendships on mount and after any action
 // so counts + lists stay fresh when the user returns to the Profile tab.
+// Map any legacy string IDs (a pre-emoji convention that survives in some
+// older profile rows — see useAuth.jsx fallback) onto their emoji equivalent.
+// Real emojis pass through unchanged. Unknown legacy strings default to ⚽
+// rather than render as plain text "ball" / "lion" / etc.
+const LEGACY_AVATAR_IDS = {
+  ball: "⚽", trophy: "🏆", fire: "🔥", star: "⭐", brain: "🧠",
+  target: "🎯", crown: "👑", world: "🌍", goat: "🐐", diamond: "💎",
+  lion: "🦁", eagle: "🦅", wolf: "🐺", dragon: "🐉", rocket: "🚀",
+};
+function avatarEmoji(v) {
+  if (!v || typeof v !== "string") return "⚽";
+  if (LEGACY_AVATAR_IDS[v]) return LEGACY_AVATAR_IDS[v];
+  // Plain ASCII looks like an unmapped legacy id — fall back rather than
+  // render text. Real emojis are non-ASCII so they sail through.
+  if (/^[a-z_-]+$/i.test(v)) return "⚽";
+  return v;
+}
+
 function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast }) {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
@@ -6696,7 +6714,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
       })
       .filter(Boolean);
-    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar || "⚽", score: currentUserScore || 0, isMe: true });
+    rows.push({ id: userId, username: currentUserName || "You", avatar: avatarEmoji(currentUserAvatar), score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
   }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar]);
@@ -6705,8 +6723,6 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 
   return (
     <div className="friends-section">
-      <div className="ds-eyebrow" style={{marginBottom:10}}>Friends</div>
-
       {/* Search */}
       <div className="friends-search-wrap">
         <input
@@ -6739,7 +6755,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           })()}
           {results.map(r => (
             <div key={r.id} className="friends-row">
-              <div className="friends-avatar">{r.avatar || "⚽"}</div>
+              <div className="friends-avatar">{avatarEmoji(r.avatar)}</div>
               <div className="friends-meta">
                 <div className="friends-name">{r.username}</div>
                 <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
@@ -6759,7 +6775,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar">{p.avatar || "⚽"}</div>
+                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -6783,7 +6799,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar">{p.avatar || "⚽"}</div>
+                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub">Pending…</div>
@@ -6805,7 +6821,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           if (!p) return null;
           return (
             <div key={f.id} className="friends-row">
-              <div className="friends-avatar">{p.avatar || "⚽"}</div>
+              <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
               <div className="friends-meta">
                 <div className="friends-name">{p.username}</div>
                 <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -6824,7 +6840,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             {leaderboard.map((row, i) => (
               <div key={row.id} className={`friends-lb-row${row.isMe ? " you" : ""}`}>
                 <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
-                <div className="friends-avatar">{row.avatar || "⚽"}</div>
+                <div className="friends-avatar">{avatarEmoji(row.avatar)}</div>
                 <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill">YOU</span>}</div>
                 <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
               </div>
@@ -6975,7 +6991,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
                 style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}}
               />
             ) : (
-              profile?.avatar || "⚽"
+              avatarEmoji(profile?.avatar)
             )}
           </div>
           <div className="profile-avatar-edit" onClick={openAvatarPicker}>+</div>
@@ -7053,6 +7069,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalAnswered > 0 ? `${Math.round(100*(stats.totalCorrect||0)/stats.totalAnswered)}%` : "—"}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
           {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
           {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
           {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
@@ -7061,7 +7078,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
         const topIdx = LEVELS.length - 1;
-        const ordered = LEVELS.map((l, i) => ({ ...l, idx: i })).slice().reverse();
+        // Ascending order: current level lands at the top so the user
+        // immediately sees "you are here" without scrolling, with progression
+        // reading top→bottom toward the ultimate-goal tier.
+        const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
         return (
           <div className="journey-section">
             <div className="journey-title">🏆 Your Journey</div>
@@ -7098,7 +7118,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
-          currentUserAvatar={authProfile?.avatar_id || profile?.avatar || "⚽"}
+          currentUserAvatar={avatarEmoji(authProfile?.avatar_id || profile?.avatar)}
           onChallenge={onChallenge}
           onToast={onToast}
         />
@@ -7111,7 +7131,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </div>
         )}
         <div className="badges-grid">
-          {BADGE_DEFS.map(([id,icon,name]) => (
+          {/* Earned badges sort to the front so the user's accomplishments
+              read first. Locked tiles still show, just demoted. Within each
+              group the original BADGE_DEFS order is preserved. */}
+          {[...BADGE_DEFS].sort((a, b) => {
+            const aE = earned.has(a[0]);
+            const bE = earned.has(b[0]);
+            if (aE === bE) return 0;
+            return aE ? -1 : 1;
+          }).map(([id,icon,name]) => (
             <div key={id} className={`badge-tile ${earned.has(id)?"earned":"locked"}`}
               style={earned.has(id) ? {background:"rgba(34,197,94,0.1)",borderColor:"rgba(34,197,94,0.25)"} : {}}>
               <span className="badge-icon" style={{filter:earned.has(id)?"none":"grayscale(1) opacity(0.35)"}}>{icon}</span>
@@ -8164,6 +8192,10 @@ function AppInner() {
       bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
       bestStreak: Math.max(stats.bestStreak || 0, newStreak),
       totalCorrect: (stats.totalCorrect || 0) + newResult.score,
+      // totalAnswered tracks the denominator for the Profile accuracy tile.
+      // Older accounts pre-date this field and will see "—" on accuracy
+      // until their next game tops it up.
+      totalAnswered: (stats.totalAnswered || 0) + (newResult.total || 0),
       bestIQ: stats.bestIQ || null,
       bestHotStreak: mode === "hotstreak" ? Math.max(stats.bestHotStreak || 0, newResult.score) : (stats.bestHotStreak || 0),
       bestTrueFalse: mode === "truefalse" ? Math.max(stats.bestTrueFalse || 0, newResult.score) : (stats.bestTrueFalse || 0),

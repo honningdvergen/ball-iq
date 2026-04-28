@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
     const fallbackProfile = {
       id: userId,
       username: metaUsername || 'Player',
-      avatar_id: 'ball',
+      avatar_id: '⚽',
       total_score: 0,
       games_played: 0,
       correct_answers: 0,
