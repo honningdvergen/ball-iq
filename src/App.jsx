@@ -1825,6 +1825,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
 .wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1;padding:8px 0;}
+/* Once the game has ended the keyboard collapses and a result card slides in
+   below, so the grid no longer needs to fill remaining space. Hug content,
+   tighten internal gaps, and leave a clean 14px breathing zone above the
+   result card. Row max-width drops ~20% so the tile block feels less
+   imposing on wider devices. iPhone SE is unaffected — the 100vw-80px
+   ceiling already constrained it before. */
+.wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
+.wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,calc((100vw - 80px)));}
+.wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
 .wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(380px,calc((100vw - 52px)));}
 .wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
@@ -7697,7 +7706,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         </div>
       </div>
 
-      <div className="wd-grid" style={{ "--wd-cols": answer.length }}>
+      <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
         {rows}
       </div>
 
