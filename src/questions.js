@@ -3836,7 +3836,6 @@ export const QB = [
 export const TF_STATEMENTS = [
   { id:"tf_e09533", s:"Lionel Messi has won more Ballon d'Or awards than Cristiano Ronaldo.", a:true },
   { id:"tf_21f61f", s:"Brazil have won the FIFA World Cup five times.", a:true },
-  { id:"tf_8e3737", s:"The Premier League was founded in 1992.", a:true },
   { id:"tf_2ff98b", s:"Real Madrid have won the Champions League more than any other club.", a:true },
   { id:"tf_1a8e58", s:"Germany beat Brazil 7-1 in the 2014 World Cup semi-final.", a:true },
   { id:"tf_2bb96b", s:"Italy have won the World Cup four times.", a:true },
