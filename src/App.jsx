@@ -9193,8 +9193,8 @@ function AppInner() {
                 { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
                 { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
                 { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
-                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"Coming soon", comingSoon:true, onTap:() => showToast("🛡️ Club Quiz is coming soon — stay tuned") },
                 { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes & chaos" },
+                { key:"clubquiz",  icon:"🏟️",  name:"Club Quiz",     desc:"Coming soon", comingSoon:true, onTap:() => showToast("🛡️ Club Quiz is coming soon — stay tuned") },
                 // True/False, Guess the Player and Tiki Taka Toe sit at the
                 // bottom as coming-soon tiles. T/F game logic, TF_STATEMENTS
                 // and CSS remain in place — only the entry point is hidden.
