@@ -4336,7 +4336,8 @@ function LocalGameScreen({ config, onComplete, onExit }) {
 function LocalResults({ result, onHome, onRetry }) {
   if (!result || !result.players || result.players.length === 0) {
     return (
-      <div className="screen" style={{paddingTop:8}}>
+      <div className="screen" style={{paddingTop:8, position:"relative"}}>
+        <ResultsCloseBtn onClose={onHome} />
         <div className="rc" style={{marginBottom:16}}>
           <div className="rc-title">No results to show</div>
         </div>
@@ -4411,7 +4412,8 @@ function LocalResults({ result, onHome, onRetry }) {
   }
 
   return (
-    <div className="screen" style={{paddingTop:8}}>
+    <div className="screen" style={{paddingTop:8, position:"relative"}}>
+      <ResultsCloseBtn onClose={onHome} />
       <div className="rc" style={{marginBottom:16}}>
         <div className="rc-icon">{iconTop}</div>
         <div className="rc-title">{headline}</div>
@@ -5005,8 +5007,9 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
   }, []);
 
   return (
-    <div className="screen" style={{paddingTop:8}}>
+    <div className="screen" style={{paddingTop:8, position:"relative"}}>
       {showIQConfetti && revealed && <Confetti />}
+      <ResultsCloseBtn onClose={onHome} />
       <div className={`iq-result${revealed ? " iq-revealed" : ""}`}>
         <div style={{fontSize:13,color:"var(--t2)",fontWeight:600,marginBottom:4}}>Your {APP_NAME}</div>
         <div className="iq-score-wrap">
@@ -5051,7 +5054,7 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
       )}
       <div className="results-actions">
         <button className="btn-3d" onClick={onRetry}>Retake Test</button>
-        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
     </div>
@@ -5124,6 +5127,51 @@ function DailySocialProof({ score, total }) {
   );
 }
 
+// Score-tier tagline shown under the score caption on result screens. Maps a
+// percentage (0-100) to a one-line emotional beat. Used by Results today;
+// other result screens already carry their own emoji+title flavour so they
+// don't render this.
+function scoreTagline(pct) {
+  if (pct <= 30) return "Tough round.";
+  if (pct <= 50) return "Solid effort.";
+  if (pct <= 70) return "Strong showing.";
+  if (pct <= 89) return "Excellent.";
+  return "Brilliant!";
+}
+
+// Shared close button for result screens. Absolutely positioned in the screen's
+// top-right so it doesn't compete with the global wordmark on the left. 44×44px
+// touch target. All result screens use this so the affordance is consistent.
+function ResultsCloseBtn({ onClose }) {
+  return (
+    <button
+      onClick={onClose}
+      aria-label="Close results"
+      style={{
+        position: "absolute",
+        top: 8,
+        right: 0,
+        width: 44,
+        height: 44,
+        borderRadius: 12,
+        border: "1px solid var(--border)",
+        background: "var(--s1)",
+        color: "var(--t2)",
+        fontSize: 20,
+        fontWeight: 600,
+        lineHeight: 1,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+      }}
+    >
+      ×
+    </button>
+  );
+}
+
 function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -5154,8 +5202,9 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
     : `${result.score} correct out of ${result.total}`;
 
   return (
-    <div className="screen" style={{paddingTop:8}}>
+    <div className="screen" style={{paddingTop:8, position:"relative"}}>
       {(isPerfect || showConfetti) && <Confetti />}
+      <ResultsCloseBtn onClose={onHome} />
 
       {/* Daily social proof — only Daily Challenge */}
       {isDaily && <DailySocialProof score={result.score} total={result.total} />}
@@ -5178,6 +5227,14 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
         </div>
         <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}</div>
+        {/* Score-tier tagline. Survival is streak-based so percentage doesn't
+            cleanly map; the existing "X in a row" caption + personal-best
+            callout already carry the moment for that mode. */}
+        {!isSurvival && (
+          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
+            {scoreTagline(pct)}
+          </div>
+        )}
         {isNewPersonalBest && (
           <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
             <span>⭐</span>
@@ -5186,32 +5243,36 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
         )}
       </div>
 
-      {/* Divider */}
-      <div style={{height:1, background:"var(--border)", margin:"18px 0 4px"}} />
-
-      {/* Stat rows */}
-      <div style={{display:"flex", flexDirection:"column"}}>
-        {!isSurvival && <StatRow label="Accuracy" value={`${pct}%`} />}
-        {/* Streak only surfaces when it's actually notable — anything below 3
-            in a row reads as ambient noise on the results screen. */}
-        {result.bestStreak != null && result.bestStreak >= 3 && (
+      {/* Best streak still surfaces when it's actually notable — anything below
+          3 in a row reads as ambient noise on the results screen. Accuracy was
+          dropped: the percentage is implicit in "X correct out of Y" already. */}
+      {result.bestStreak != null && result.bestStreak >= 3 && (
+        <>
+          <div style={{height:1, background:"var(--border)", margin:"18px 0 4px"}} />
           <StatRow label="Best streak" value={`${result.bestStreak} in a row`} />
-        )}
-      </div>
-      {xpEarned > 0 && (
-        <div className="xp-earned-badge xp-earned-pop" style={{marginTop:14}}>+{xpEarned} XP earned ⚡</div>
+        </>
       )}
 
       {result.winner && (
         <div style={{textAlign:"center", margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}>🏆 {result.winner} wins!</div>
       )}
 
-      {/* Three stacked full-width actions */}
+      {/* Two-tier action stack: filled green primary, ghost secondaries.
+          Amber Share was dropped for cross-screen consistency — Share is a
+          secondary action everywhere now. */}
       <div className="results-actions" style={{marginTop:18}}>
         <button className="btn-3d" onClick={onRetry}>Play Again</button>
-        <button className="btn-3d amber" onClick={onShare}>Share Score</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
+
+      {/* XP earned moved from a full-width pill to a small footer note — it's
+          a footnote-tier reward, not a primary fact. */}
+      {xpEarned > 0 && (
+        <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
+          +{xpEarned} XP earned ⚡
+        </div>
+      )}
 
       {/* Wrong answers review — below the buttons */}
       {wrongAnswers && wrongAnswers.length > 0 && (
@@ -5263,8 +5324,9 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
   const xpEarned = score * 8;
   useEffect(() => { if (isNewBest && !isFirstRun && score >= 5) haptic("levelup"); }, [isNewBest, isFirstRun, score]);
   return (
-    <div className="screen" style={{paddingTop:8}}>
+    <div className="screen" style={{paddingTop:8, position:"relative"}}>
       {score >= 15 && <Confetti />}
+      <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>
         <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>⚡🔥 Hot Streak</span>
       </div>
@@ -5285,12 +5347,16 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--t2)"}}><CountUp value={answered} duration={700} delay={650} /></div><div className="sbox-k">Answered</div></div>
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
-      {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
-      <div className="results-actions">
+      <div className="results-actions" style={{marginTop:14}}>
         <button className="btn-3d" onClick={onRetry}>⚡ Run It Back</button>
-        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
+      {xpEarned > 0 && (
+        <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
+          +{xpEarned} XP earned ⚡
+        </div>
+      )}
     </div>
   );
 }
@@ -5305,8 +5371,9 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
   const title = pct === 100 ? "Perfect — You Know Your Football!" : pct >= 80 ? "Sharp!" : pct >= 60 ? "Solid!" : pct >= 40 ? "Room to Improve" : "Back to School!";
   const xpEarned = score * 8;
   return (
-    <div className="screen" style={{paddingTop:8}}>
+    <div className="screen" style={{paddingTop:8, position:"relative"}}>
       {pct >= 80 && <Confetti />}
+      <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>
         <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>✅ True or False</span>
       </div>
@@ -5323,12 +5390,16 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}><CountUp value={total - score} duration={700} delay={650} /></div><div className="sbox-k">Wrong</div></div>
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
-      {xpEarned > 0 && <div className="xp-earned-badge xp-earned-pop">+{xpEarned} XP earned ⚡</div>}
-      <div className="results-actions">
+      <div className="results-actions" style={{marginTop:14}}>
         <button className="btn-3d" onClick={onRetry}>▶ Another Round</button>
-        <button className="btn-3d amber" onClick={onShare}>Share Score 📤</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
+      {xpEarned > 0 && (
+        <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
+          +{xpEarned} XP earned ⚡
+        </div>
+      )}
     </div>
   );
 }
@@ -5970,7 +6041,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
         }}>{pctileLbl}</div>
         {when && <div style={{marginTop:10, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
         <div style={{marginTop:22}}>
-          <button className="btn-3d amber" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
+          <button className="btn-3d ghost" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
           <button className="btn-3d" onClick={() => { onClose(); onRetake(); }} style={{marginBottom:14}}>Retake Test</button>
           <button className="btn-3d ghost" onClick={onClose}>Close</button>
         </div>
