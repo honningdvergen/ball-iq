@@ -995,6 +995,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 .home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
+.home-stat-chip-desktop-only{display:none;}
 .home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(88,204,2,0.45);}
 .home-stat-chip.tappable:active{transform:scale(0.98);}
@@ -1991,6 +1992,18 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     top: auto;
     bottom: 4px;
   }
+  .home-stat-chip-desktop-only { display: flex; }
+  .ds-eyebrow {
+    font-size: 12px;
+    color: var(--t2);
+  }
+  /* Hover-only effect — touch devices won't match @media (hover: hover). */
+  @media (hover: hover) {
+    .play-card:hover {
+      border-color: rgba(88,204,2,0.45);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 0 1px rgba(88,204,2,0.35), 0 4px 24px rgba(88,204,2,0.12);
+    }
+  }
 }
 @media (display-mode: standalone) {
   .app {
@@ -2020,6 +2033,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .tab-item.active::before {
     top: 6px !important;
     bottom: auto !important;
+  }
+  .home-stat-chip-desktop-only { display: none !important; }
+  .ds-eyebrow {
+    font-size: 11px !important;
+    color: var(--t3) !important;
+  }
+  .play-card:hover {
+    border-color: var(--border2) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.22) !important;
   }
 }
 `;
@@ -9502,6 +9524,15 @@ function AppInner() {
                   {bestLoginStreak > 0 && (
                     <div className="hsc-meta">Best: {bestLoginStreak} {bestLoginStreak === 1 ? 'day' : 'days'}</div>
                   )}
+                </div>
+              </div>
+              {/* Desktop-only third chip — fills the row at 640px so the
+                  stat band visually rhymes with the 3-col mode grid below.
+                  Hidden on mobile and PWA standalone via CSS class. */}
+              <div className="home-stat-chip home-stat-chip-desktop-only">
+                <div className="hsc-left">
+                  <div className="home-stat-label">Games</div>
+                  <div className="home-stat-val">{(stats.gamesPlayed || 0).toLocaleString()}</div>
                 </div>
               </div>
             </div>

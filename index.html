@@ -149,18 +149,25 @@
       }
 
       /* ── Sticky top bar ────────────────────────────────────────────────
-         Slim 52px bar with wordmark on the left and the iOS CTA on the
-         right. Sticks to the top of the viewport so it stays visible
-         while users scroll through the game and below-fold features. */
+         52px frosted-glass bar that spans the full viewport width (so the
+         backdrop-blur covers edge-to-edge), with an inner content wrapper
+         constrained to 1200px so the wordmark and iOS CTA don't scream
+         from opposite corners on wide displays. Matches the 1200px content
+         rhythm used by .landing-features and .landing-footer. */
       .landing-nav {
         position: sticky; top: 0; z-index: 50;
-        display: flex; align-items: center; justify-content: space-between;
         height: 52px;
-        padding: 0 24px;
         background: rgba(10,10,10,0.85);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border-bottom: 1px solid #1F2230;
+      }
+      .landing-nav-inner {
+        display: flex; align-items: center; justify-content: space-between;
+        height: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
       }
       .landing-nav-logo {
         font-size: 17px; font-weight: 900; letter-spacing: -0.02em;
@@ -185,18 +192,25 @@
         border-color: rgba(88,204,2,0.7);
       }
 
-      /* ── Intro line above the app ──────────────────────────────────────
-         Single line of context above the embedded app on desktop. Helps
-         first-impression clarity and SEO without the marketing overhead
-         of a full hero. Hidden on mobile and PWA via the .landing-top
-         display gating above. */
-      .landing-intro {
-        text-align: center;
-        margin: 28px auto 24px;
-        padding: 0 24px;
-        font-size: 19px; font-weight: 500; line-height: 1.4;
-        color: #9BA0B8;
-        letter-spacing: -0.01em;
+      /* ── Page background gradient ──────────────────────────────────────
+         Soft accent-green glow centered above the column at desktop, so
+         the side rails read as "intentional dark space" rather than empty
+         void. Layered on top of the existing #0a0a0a background-color via
+         background-image (so we don't disturb the base color).
+
+         Mobile (< 1024px): no rules apply — bg stays solid #0a0a0a.
+         PWA standalone (any size): killswitch removes the gradient. */
+      @media (min-width: 1024px) {
+        body {
+          background-image: radial-gradient(
+            ellipse 1200px 800px at 50% -100px,
+            rgba(88,204,2,0.06),
+            transparent 55%
+          );
+        }
+      }
+      @media (display-mode: standalone) {
+        body { background-image: none !important; }
       }
 
       /* ── Ad slot reservations ──────────────────────────────────────────
@@ -334,10 +348,11 @@
          ════════════════════════════════════════════════════════════════ -->
     <div class="landing-top">
       <nav class="landing-nav">
-        <div class="landing-nav-logo">Ball <em>IQ</em></div>
-        <a href="#cta-signup" class="landing-nav-cta">Get on iOS</a>
+        <div class="landing-nav-inner">
+          <div class="landing-nav-logo">Ball <em>IQ</em></div>
+          <a href="#cta-signup" class="landing-nav-cta">Get on iOS</a>
+        </div>
       </nav>
-      <p class="landing-intro">How well do you really know football?</p>
     </div>
 
     <div id="root">
