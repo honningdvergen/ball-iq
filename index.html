@@ -113,57 +113,57 @@
       /* PWA killswitch — wins over viewport rules above thanks to !important */
       @media (display-mode: standalone) {
         .landing-top, .landing-bottom,
-        .ad-slot-hero, .ad-slot-sidebar { display: none !important; }
+        .ad-slot-sidebar-left, .ad-slot-sidebar-right,
+        .ad-slot-banner { display: none !important; }
       }
 
-      /* ── Phone frame on desktop ────────────────────────────────────────
-         Wrap the embedded app in a phone-shaped device mockup at >= 1024px.
-         transform: translateZ(0) creates a new containing block, so
-         position: fixed descendants (tab bar, modals, splash, toasts) get
-         pinned to the frame's bounds instead of the viewport.
+      /* ── Desktop app column ────────────────────────────────────────────
+         At >= 1024px in regular browser mode, constrain #root to a
+         centered 600px column. transform: translateZ(0) creates a new
+         containing block so position: fixed descendants (tab bar, modals,
+         splash, toasts) get pinned to the column instead of viewport edges.
 
-         body > #root selector beats the App.jsx `html,#root` rule on
-         specificity (101 vs 100), so its min-height: 100dvh doesn't
-         override our fixed height here.
+         No frame, border, or shadow — the app feels like the page, the
+         way Wordle / Connections / Sporcle do it.
 
-         Mobile (< 1024px): no rules apply — app renders byte-identical.
-         PWA standalone (any size): killswitch resets everything below. */
+         body > #root selector beats App.jsx's `html, #root` rule on
+         specificity (101 vs 100).
+
+         Mobile (< 1024px): no rules apply — byte-identical to today.
+         PWA standalone (any size): killswitch below resets max-width and
+         transform, so the app fills the viewport like before. */
       @media (min-width: 1024px) {
         body > #root {
-          width: 440px;
-          height: min(880px, 90vh);
-          min-height: 0;
-          margin: 32px auto;
-          border: 8px solid #1A1A1A;
-          border-radius: 48px;
-          overflow: hidden;
-          box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+          max-width: 600px;
+          margin: 0 auto;
           transform: translateZ(0);
           position: relative;
         }
       }
       @media (display-mode: standalone) {
         body > #root {
-          width: auto !important;
-          height: auto !important;
-          min-height: 100dvh !important;
+          max-width: none !important;
           margin: 0 !important;
-          border: none !important;
-          border-radius: 0 !important;
-          overflow: visible !important;
-          box-shadow: none !important;
           transform: none !important;
         }
       }
 
-      /* ── Nav ───────────────────────────────────────────────────────── */
+      /* ── Sticky top bar ────────────────────────────────────────────────
+         Slim 52px bar with wordmark on the left and the iOS CTA on the
+         right. Sticks to the top of the viewport so it stays visible
+         while users scroll through the game and below-fold features. */
       .landing-nav {
+        position: sticky; top: 0; z-index: 50;
         display: flex; align-items: center; justify-content: space-between;
-        max-width: 1200px; margin: 0 auto;
-        padding: 24px 40px;
+        height: 52px;
+        padding: 0 24px;
+        background: rgba(10,10,10,0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-bottom: 1px solid #1F2230;
       }
       .landing-nav-logo {
-        font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
+        font-size: 17px; font-weight: 900; letter-spacing: -0.02em;
         color: #F0F1F5;
       }
       .landing-nav-logo em {
@@ -171,12 +171,12 @@
       }
       .landing-nav-cta {
         display: inline-flex; align-items: center;
-        padding: 10px 18px;
+        padding: 7px 14px;
         border: 1px solid rgba(88,204,2,0.4);
         background: rgba(88,204,2,0.10);
         color: #58CC02;
-        border-radius: 10px;
-        font-weight: 700; font-size: 14px;
+        border-radius: 8px;
+        font-weight: 700; font-size: 13px;
         text-decoration: none;
         transition: background 0.15s, border-color 0.15s;
       }
@@ -185,77 +185,58 @@
         border-color: rgba(88,204,2,0.7);
       }
 
-      /* ── Hero ──────────────────────────────────────────────────────── */
-      .landing-hero {
-        max-width: 1200px; margin: 0 auto;
-        padding: 60px 40px 40px;
+      /* ── Intro line above the app ──────────────────────────────────────
+         Single line of context above the embedded app on desktop. Helps
+         first-impression clarity and SEO without the marketing overhead
+         of a full hero. Hidden on mobile and PWA via the .landing-top
+         display gating above. */
+      .landing-intro {
         text-align: center;
-        position: relative;
-      }
-      .landing-hero::before {
-        content: ''; position: absolute;
-        top: -100px; left: 50%; transform: translateX(-50%);
-        width: 800px; height: 600px;
-        background: radial-gradient(ellipse at center, rgba(88,204,2,0.12), transparent 60%);
-        pointer-events: none; z-index: 0;
-      }
-      .landing-hero-title {
-        position: relative; z-index: 1;
-        margin: 0 auto;
-        font-size: 64px; font-weight: 900;
-        letter-spacing: -0.04em; line-height: 1.05;
-        color: #F0F1F5;
-        max-width: 760px;
-      }
-      .landing-hero-sub {
-        position: relative; z-index: 1;
-        margin: 24px auto 0;
-        font-size: 18px; line-height: 1.6;
-        color: #9BA0B8; max-width: 560px;
-      }
-      .landing-hero-cta {
-        position: relative; z-index: 1;
-        display: inline-flex; align-items: center; gap: 6px;
-        margin-top: 36px;
-        padding: 16px 32px;
-        background: #58CC02; color: #0A0A0A;
-        border-radius: 12px;
-        font-size: 16px; font-weight: 800;
-        text-decoration: none;
-        transition: opacity 0.15s, transform 0.1s;
-      }
-      .landing-hero-cta:hover { opacity: 0.92; }
-      .landing-hero-cta:active { transform: scale(0.98); }
-
-      /* ── Demo eyebrow above the embedded app ──────────────────────── */
-      .landing-demo-eyebrow {
-        text-align: center;
-        margin: 48px auto 16px;
-        font-size: 13px; font-weight: 700; letter-spacing: 0.16em;
-        text-transform: uppercase; color: #6B7280;
-        scroll-margin-top: 40px;
+        margin: 28px auto 24px;
+        padding: 0 24px;
+        font-size: 19px; font-weight: 500; line-height: 1.4;
+        color: #9BA0B8;
+        letter-spacing: -0.01em;
       }
 
-      /* ── Ad slots ─────────────────────────────────────────────────────
-         Reserved space for AdSense once approved. Both stay display:none
-         until the AdSense allowlist comes through; flip them on by
-         changing the display rule below. Already gated against PWA mode
-         by the standalone media query above. */
-      .ad-slot-hero {
-        /* When enabled:
-           display: block; max-width: 728px; height: 90px;
-           margin: 30px auto; background: #161821; border-radius: 8px; */
+      /* ── Ad slot reservations ──────────────────────────────────────────
+         All three slots are display:none until AdSense is approved. To
+         enable, change display:none → display:block in each rule below.
+         Already gated against PWA standalone via the killswitch above.
+
+         Sidebar rails are position:fixed and only visible at >= 1280px so
+         they don't crowd the 600px app column at narrower desktop sizes.
+         The left/right offsets use `calc((100vw - 600px) / 2 - 180px)` so
+         they sit just outside the centered app column, with a 20px floor
+         to keep them on-screen at edge-case viewports. */
+      .ad-slot-sidebar-left,
+      .ad-slot-sidebar-right,
+      .ad-slot-banner {
+        display: none;
       }
-      .ad-slot-sidebar {
-        /* When enabled:
-           display: block; position: fixed; right: 40px; top: 50%;
-           transform: translateY(-50%); width: 160px; height: 600px;
-           background: #161821; border-radius: 8px; */
+      @media (min-width: 1280px) {
+        .ad-slot-sidebar-left,
+        .ad-slot-sidebar-right {
+          /* When enabled: change display:none above to display:block. */
+          position: fixed;
+          top: 50%; transform: translateY(-50%);
+          width: 160px; height: 600px;
+          background: #161821; border-radius: 8px;
+        }
+        .ad-slot-sidebar-left  { left:  max(20px, calc((100vw - 600px) / 2 - 180px)); }
+        .ad-slot-sidebar-right { right: max(20px, calc((100vw - 600px) / 2 - 180px)); }
+      }
+      .ad-slot-banner {
+        /* When enabled: change display:none above to display:block.
+           Sits below the app, above the features grid. */
+        max-width: 728px; height: 90px;
+        margin: 40px auto;
+        background: #161821; border-radius: 8px;
       }
 
       /* ── Features grid ────────────────────────────────────────────── */
       .landing-features {
-        max-width: 1200px; margin: 80px auto 0;
+        max-width: 1200px; margin: 96px auto 0;
         padding: 0 40px;
       }
       .landing-features-title {
@@ -354,15 +335,9 @@
     <div class="landing-top">
       <nav class="landing-nav">
         <div class="landing-nav-logo">Ball <em>IQ</em></div>
-        <a href="#cta-signup" class="landing-nav-cta">Get the iOS app</a>
+        <a href="#cta-signup" class="landing-nav-cta">Get on iOS</a>
       </nav>
-      <section class="landing-hero">
-        <h1 class="landing-hero-title">How well do you really know football?</h1>
-        <p class="landing-hero-sub">4,000+ hand-curated questions across 10 game modes. Free, no signup needed to play.</p>
-        <a href="#try-it" class="landing-hero-cta">Try it now ↓</a>
-      </section>
-      <div class="ad-slot-hero" aria-hidden="true"></div>
-      <p class="landing-demo-eyebrow" id="try-it">Try it right here, no download needed ↓</p>
+      <p class="landing-intro">How well do you really know football?</p>
     </div>
 
     <div id="root">
@@ -372,13 +347,15 @@
       </div>
     </div>
 
-    <aside class="ad-slot-sidebar" aria-hidden="true"></aside>
+    <aside class="ad-slot-sidebar-left" aria-hidden="true"></aside>
+    <aside class="ad-slot-sidebar-right" aria-hidden="true"></aside>
 
     <!-- ════════════════════════════════════════════════════════════════
          LANDING CHROME — BOTTOM HALF
          Same gating rules as landing-top.
          ════════════════════════════════════════════════════════════════ -->
     <div class="landing-bottom">
+      <div class="ad-slot-banner" aria-hidden="true"></div>
       <section class="landing-features">
         <h2 class="landing-features-title">What's inside</h2>
         <div class="features-grid">
