@@ -85,20 +85,27 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // Cross-device sync: takes max(local, remote) for each tracked field, writes
-  // the result back to BOTH localStorage AND Supabase (only fields where local
-  // was higher need a remote write). After resolving, dispatches a custom
-  // 'biq:hydrated' event so AppInner can refresh its in-memory xp/stats state
-  // (its useState initializers ran once at mount with whatever was in
-  // localStorage at the time, so we need to push the new values back through).
+  // Cross-device sync: takes max(local, remote) for each tracked field and
+  // writes the result to localStorage. Read-only with respect to Supabase —
+  // saveStats (App.jsx) is the canonical writer via atomic delta RPCs. After
+  // resolving, dispatches a custom 'biq:hydrated' event so AppInner can
+  // refresh its in-memory xp/stats state (its useState initializers ran once
+  // at mount with whatever was in localStorage at the time, so we need to
+  // push the new values back through).
+  //
+  // Why no back-sync to Supabase: previously this function did
+  // `update(profiles) SET total_score = finalTotalCorrect` etc. when local
+  // was higher than remote. That created a race: if the user reset Supabase
+  // to zero (or another device wrote fresh values) while localStorage still
+  // held an old higher value, hydration would silently restore the old
+  // values, undoing the reset/write. Local-only merge is safe because
+  // genuinely-ahead local values get pushed up by the next saveStats RPC.
   //
   // Failure modes:
   //   - Network error reading remote: hydration is a no-op, local values stay
   //     intact. App continues to work offline.
-  //   - Network error writing remote: local has the merged values; remote
-  //     stays at its previous state. Next sign-in will re-merge.
   //   - Empty remote stats column (existing pre-migration users): treated as
-  //     {} so local values dominate and get pushed up on first sync.
+  //     {} so local values dominate locally; remote catches up via saveStats.
   async function hydrateLocalFromRemote(userId, remoteProfile) {
     if (!remoteProfile) return
 
@@ -112,6 +119,15 @@ export function AuthProvider({ children }) {
     const remoteGamesPlayed = remoteProfile.games_played || 0
     const remoteCorrectAnswers = remoteProfile.correct_answers || 0
     const remoteStats = (remoteProfile.stats && typeof remoteProfile.stats === 'object') ? remoteProfile.stats : {}
+
+    console.log('[hydrate] remote:', {
+      xp: remoteXp,
+      total_score: remoteTotalScore,
+      games_played: remoteGamesPlayed,
+      correct_answers: remoteCorrectAnswers,
+      stats: remoteStats,
+    })
+    console.log('[hydrate] local before:', { xp: localXp, stats: localStats })
 
     // Per-field max
     const finalXp = Math.max(localXp, remoteXp)
@@ -130,36 +146,15 @@ export function AuthProvider({ children }) {
       finalStats[k] = Math.max(localStats[k] || 0, remoteStats[k] || 0)
     }
 
-    // Write to localStorage
+    console.log('[hydrate] merged:', { xp: finalXp, stats: finalStats })
+
+    // Write to localStorage. Hydration is intentionally read-only with respect
+    // to Supabase: saveStats (App.jsx) is the canonical writer for aggregate
+    // stats via atomic delta RPCs. Letting hydration also write back creates
+    // a race where stale localStorage values can overwrite freshly-zeroed or
+    // freshly-incremented Supabase values.
     try { localStorage.setItem('biq_xp', String(finalXp)) } catch {}
     try { localStorage.setItem('biq_stats', JSON.stringify(finalStats)) } catch {}
-
-    // Build the back-sync payload — only fields where local was higher than remote
-    const updates = {}
-    if (finalXp > remoteXp) updates.xp = finalXp
-    if (finalTotalCorrect > remoteTotalScore) updates.total_score = finalTotalCorrect
-    if (finalGamesPlayed > remoteGamesPlayed) updates.games_played = finalGamesPlayed
-    if (finalTotalCorrect > remoteCorrectAnswers) updates.correct_answers = finalTotalCorrect
-
-    // Stats jsonb: build the merged object (preserves remote keys we don't
-    // know about) and only push if any best_* moved upward.
-    const mergedStatsJson = { ...remoteStats }
-    let statsChanged = false
-    for (const k of bestKeys) {
-      const m = finalStats[k] || 0
-      const r = remoteStats[k] || 0
-      if (m > r) { mergedStatsJson[k] = m; statsChanged = true }
-    }
-    if (statsChanged) updates.stats = mergedStatsJson
-
-    if (Object.keys(updates).length > 0) {
-      try {
-        const { error } = await supabase.from('profiles').update(updates).eq('id', userId)
-        if (error) console.error('[hydrate] back-sync failed', error.message)
-      } catch (e) {
-        console.error('[hydrate] back-sync exception', e?.message)
-      }
-    }
 
     // Notify AppInner — its xp/stats useState initializers already ran with the
     // pre-hydration localStorage values, so they need a kick to pick up the
