@@ -116,6 +116,46 @@
         .ad-slot-hero, .ad-slot-sidebar { display: none !important; }
       }
 
+      /* ── Phone frame on desktop ────────────────────────────────────────
+         Wrap the embedded app in a phone-shaped device mockup at >= 1024px.
+         transform: translateZ(0) creates a new containing block, so
+         position: fixed descendants (tab bar, modals, splash, toasts) get
+         pinned to the frame's bounds instead of the viewport.
+
+         body > #root selector beats the App.jsx `html,#root` rule on
+         specificity (101 vs 100), so its min-height: 100dvh doesn't
+         override our fixed height here.
+
+         Mobile (< 1024px): no rules apply — app renders byte-identical.
+         PWA standalone (any size): killswitch resets everything below. */
+      @media (min-width: 1024px) {
+        body > #root {
+          width: 440px;
+          height: min(880px, 90vh);
+          min-height: 0;
+          margin: 32px auto;
+          border: 8px solid #1A1A1A;
+          border-radius: 48px;
+          overflow: hidden;
+          box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+          transform: translateZ(0);
+          position: relative;
+        }
+      }
+      @media (display-mode: standalone) {
+        body > #root {
+          width: auto !important;
+          height: auto !important;
+          min-height: 100dvh !important;
+          margin: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+          transform: none !important;
+        }
+      }
+
       /* ── Nav ───────────────────────────────────────────────────────── */
       .landing-nav {
         display: flex; align-items: center; justify-content: space-between;
