@@ -1252,7 +1252,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .lcard-t{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-0.2px;}
 .lcard-s{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px;}
 .inp-lbl{font-family:'Inter',sans-serif;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:0.2px;display:block;margin-bottom:7px;}
-.inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
+.inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
 .inp:focus{border-color:var(--accent-b);background:var(--s1);}
 .code-box{background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:11px;padding:18px;text-align:center;margin-bottom:13px;}
 .code-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:8px;}
@@ -1365,7 +1365,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .toggle.on .toggle-knob{left:21px;}
 .toggle.off .toggle-knob{left:3px;}
 .size-btns{display:flex;gap:5px;}
-.size-btn{padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;}
+.size-btn{padding:8px 14px;min-height:36px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;}
 .size-btn.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
 /* ── TAB BAR ── */
 /* ── TAB BAR — frosted glass, pill indicator ── */
@@ -1489,7 +1489,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-avatar:active{transform:scale(0.93);}
 .profile-avatar-edit{position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0a1a00;font-weight:800;cursor:pointer;}
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
-.profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:160px;padding:2px 4px;}
+.profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:100%;max-width:220px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
 .profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:#8AE042;padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
@@ -1526,7 +1526,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── FRIENDS ── */
 .friends-section{margin:16px 0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,0.28);}
 .friends-search-wrap{margin-bottom:10px;}
-.friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
+.friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:'Inter',sans-serif;font-size:16px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
 .friends-search-inp:focus{border-color:var(--accent);background:var(--s1);}
 .friends-results{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:320px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .friends-block{margin-top:14px;}
@@ -1536,7 +1536,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .friends-meta{flex:1;min-width:0;}
 .friends-name{font-size:14px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .friends-sub{font-size:11px;color:var(--t3);margin-top:2px;}
-.friends-action{background:var(--s3);border:1px solid var(--border);color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.friends-action{background:var(--s3);border:1px solid var(--border);color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;min-height:36px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .friends-action:active{transform:scale(0.97);}
 .friends-action.accept{background:var(--accent);color:#0a1a00;border-color:transparent;}
 .friends-action.decline{background:transparent;color:var(--t3);}
@@ -1588,8 +1588,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
 .emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,34px));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .emoji-picker-title{font-size:14px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t2);}
-.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;}
-.emoji-opt{font-size:24px;padding:6px;border-radius:8px;border:none;background:transparent;cursor:pointer;transition:background 0.1s;}
+/* Responsive grid: as many 44px+ columns as the sheet width allows. iPhone
+   SE (~280px sheet content) gets 5 columns; standard phones 6-7; large phones
+   up to 8. Tile padding pushes the tappable area to ~44px (Apple HIG). */
+.emoji-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(44px,1fr));gap:6px;}
+.emoji-opt{font-size:24px;padding:10px;border-radius:8px;border:none;background:transparent;cursor:pointer;transition:background 0.1s;display:flex;align-items:center;justify-content:center;}
 .emoji-opt:hover,.emoji-opt.selected{background:var(--accent-dim);}
 
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--s2);color:var(--text);border:1px solid var(--border);padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600;z-index:999;white-space:nowrap;box-shadow:var(--sh-lg);}
@@ -4888,8 +4891,10 @@ function Confetti() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // visualViewport reflects the actual visible area (excludes a collapsed
+    // mobile URL bar). innerWidth/Height fall back for older WebViews.
+    canvas.width = window.visualViewport?.width ?? window.innerWidth;
+    canvas.height = window.visualViewport?.height ?? window.innerHeight;
     const pieces = Array.from({length:80}, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height - canvas.height,
@@ -4930,8 +4935,8 @@ function HardRightBurst({ onComplete }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.visualViewport?.width ?? window.innerWidth;
+    canvas.height = window.visualViewport?.height ?? window.innerHeight;
     // Origin: center of screen, slightly above middle (where the answer would be)
     const ox = canvas.width / 2;
     const oy = canvas.height * 0.55;
