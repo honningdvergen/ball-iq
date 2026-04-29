@@ -1945,6 +1945,83 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .daily-pair-status strong{font-weight:800;color:var(--accent);}
 .daily-pair-card.challenge .daily-pair-status strong{color:#1A0F05;}
 .daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
+
+/* ════════════════════════════════════════════════════════════════════
+   DESKTOP APP REFLOW (Tier 1 + Tier 2)
+   ────────────────────────────────────────────────────────────────────
+   At >= 1024px viewport in regular browser mode:
+     - .app widens 420 -> 640px (Tier 1)
+     - .play-grid (mode grid) goes 2 -> 3 cols (Tier 1)
+     - .tab-bar repositions from bottom-fixed to top-sticky (Tier 2)
+     - .tab-item active-pill flips top -> bottom (Tier 2)
+
+   PWA standalone (any size) and mobile (< 1024px): byte-identical to
+   the original mobile experience. The standalone killswitch at the
+   bottom uses !important to defend against the desktop rules also
+   matching when an installed PWA happens to run at >= 1024 width.
+
+   No React changes — this is pure CSS responding to viewport.
+   ════════════════════════════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .app {
+    max-width: 640px;
+    padding: 0 24px 40px;
+  }
+  .play-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .tab-bar {
+    position: sticky;
+    top: 52px;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    height: 56px;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .tab-item.active::before {
+    top: auto;
+    bottom: 4px;
+  }
+}
+@media (display-mode: standalone) {
+  .app {
+    max-width: 420px !important;
+    padding: 0 20px 100px !important;
+  }
+  .play-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .tab-bar {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    height: calc(58px + max(env(safe-area-inset-bottom,34px),34px)) !important;
+    margin: 0 !important;
+    padding-top: 6px !important;
+    padding-bottom: max(env(safe-area-inset-bottom,34px),34px) !important;
+    border-top: 0.5px solid rgba(255,255,255,0.08) !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .tab-item.active::before {
+    top: 6px !important;
+    bottom: auto !important;
+  }
+}
 `;
 
 
