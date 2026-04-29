@@ -2150,13 +2150,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
 }
 @media (min-width: 1280px) {
-  /* Anchor the main column LEFT at wide viewports so it reads as a
-     focused 2-column layout (sidebar + main) with comfortable right-side
-     breathing room — Linear/Notion pattern. At 1024-1279px, .app keeps
-     its base margin:0 auto and re-centers in the leftover space. */
+  /* Widen the main column at >= 1280px and let it re-center in the
+     available space (viewport - 220px sidebar). Anchor-left was tried
+     in commit 0cfc95c — it works for info-dense apps like Linear/Notion
+     but the card-based home screen here doesn't have the density to
+     justify the right-side void. Centering at 880px reads better.
+
+     Internal card grids (More Modes 3-col, Daily 2-col, stat tiles
+     3-col) auto-fill the wider column via existing grid-template-columns
+     rules — no internal grid changes needed. */
   .app {
-    margin-left: 0;
-    margin-right: auto;
+    max-width: 880px;
   }
 }
 @media (min-width: 1024px) {
