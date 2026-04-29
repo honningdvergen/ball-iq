@@ -62,6 +62,15 @@
         flex-direction: column; gap: 14px;
         background: #0a0a0a; color: #F0F1F5;
         font-weight: 800; letter-spacing: -0.5px;
+        /* Nudge the centred content slightly above geometric centre. Two
+           reasons: (1) iOS standalone status bar (~44pt) is larger than
+           the home indicator (~34pt) at the bottom, so geometric centre
+           sits visually below the midpoint between the two safe areas;
+           (2) optical centre is perceived a few percent above geometric
+           centre regardless of device. The padding shrinks the flex
+           container's effective area at the bottom, so justify-content:
+           center lands the mark + bar at ~47% of viewport height. */
+        padding-bottom: 4vh;
       }
       .biq-splash-mark { font-size: 32px; }
       .biq-splash-mark em { color: #58CC02; font-style: normal; }
