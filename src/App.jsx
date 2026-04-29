@@ -2150,17 +2150,18 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
 }
 @media (min-width: 1280px) {
-  /* Widen the main column at >= 1280px and let it re-center in the
-     available space (viewport - 220px sidebar). Anchor-left was tried
-     in commit 0cfc95c — it works for info-dense apps like Linear/Notion
-     but the card-based home screen here doesn't have the density to
-     justify the right-side void. Centering at 880px reads better.
-
-     Internal card grids (More Modes 3-col, Daily 2-col, stat tiles
-     3-col) auto-fill the wider column via existing grid-template-columns
-     rules — no internal grid changes needed. */
+  /* Widen the main column at >= 1280px and anchor it 40px from the
+     sidebar so the two read as adjacent UI rather than separated by a
+     dead zone. Pure centering (margin: 0 auto) put a ~410px gap between
+     sidebar and column at 1920+ which read as abandoned space. Anchor-
+     left at 640px (commit 0cfc95c) ALSO felt abandoned because the
+     column lacked presence; 880 with a 40px breath has enough weight
+     to feel intentional. All viewport variance gets absorbed by the
+     right-side margin (margin-right: auto). */
   .app {
     max-width: 880px;
+    margin-left: 40px;
+    margin-right: auto;
   }
 }
 @media (min-width: 1024px) {
@@ -2174,6 +2175,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .app {
     max-width: 420px !important;
     padding: 0 20px 100px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   .play-grid {
     grid-template-columns: 1fr 1fr !important;
