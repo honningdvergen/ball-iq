@@ -994,15 +994,34 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 .home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
-.home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;}
+.home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
 .home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(88,204,2,0.45);}
 .home-stat-chip.tappable:active{transform:scale(0.98);}
+.hsc-left{flex-shrink:0;display:flex;flex-direction:column;}
+.hsc-right{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;}
 .home-stat-hint{font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
 .home-stat-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
 .home-stat-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
 .home-stat-val.green{color:var(--accent);}
 .home-stat-val.flame{color:#FF6A00;}
+
+/* ── Streak pulse: 7-day activity dots ────────────────────────────────────── */
+/* Each dot is a flexible square that fills available right-side width; on
+   iPhone SE it shrinks to ~5px, on wide phones it caps at 9px. Active dots
+   take the brand accent; inactive dots get a faint outlined fill. */
+.streak-pulse{display:flex;gap:3px;align-items:center;}
+.streak-pulse-dot{flex:1 1 auto;aspect-ratio:1;min-width:5px;max-width:9px;border-radius:50%;background:var(--s3);border:1px solid var(--border);box-sizing:border-box;}
+.streak-pulse-dot.active{background:var(--accent);border-color:var(--accent);}
+.hsc-meta{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--t3);letter-spacing:0.04em;line-height:1;}
+
+/* ── IQ rank bar: 5-segment tier visual ──────────────────────────────────── */
+/* Segments 1-5 represent 60-80, 80-100, 100-120, 120-140, 140-160. Active
+   segments are filled with the brand accent up to and including the user's
+   tier. Empty bar shown when no IQ score yet. */
+.iq-rank-bar{display:flex;gap:2px;width:100%;}
+.iq-rank-seg{flex:1;height:6px;background:var(--s3);border-radius:2px;transition:background 0.2s;}
+.iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
 .hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
@@ -7589,6 +7608,38 @@ function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }
+
+// Returns an array of 7 booleans representing the past 7 days, oldest-first.
+// Index 6 is today. A day is "active" if the user played at least one
+// quiz/TF question (per biq_seen_history_v2 timestamps) OR completed that
+// day's Wordle (per biq_wordle_<date> key). Wordle is daily-locked so its
+// presence in storage is a reliable per-day signal.
+function computePast7DaysActivity() {
+  try {
+    const histRaw = localStorage.getItem('biq_seen_history_v2');
+    const hist = histRaw ? JSON.parse(histRaw) : {};
+    const timestamps = (hist && typeof hist === 'object')
+      ? Object.values(hist).filter(t => typeof t === 'number')
+      : [];
+    const days = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const day = new Date(now);
+      day.setDate(now.getDate() - i);
+      day.setHours(0, 0, 0, 0);
+      const dayStart = day.getTime();
+      const dayEnd = dayStart + 24 * 3600 * 1000;
+      let active = timestamps.some(t => t >= dayStart && t < dayEnd);
+      if (!active) {
+        if (localStorage.getItem(`biq_wordle_${dateToDateKey(day)}`)) active = true;
+      }
+      days.push(active);
+    }
+    return days;
+  } catch {
+    return Array(7).fill(false);
+  }
+}
 function getWordleDateKey() { return dateToDateKey(new Date()); }
 // Read today's puzzle progress for the home-screen card. Returns one of:
 //   { kind: "ready" } | { kind: "in-progress", used: N } | { kind: "won", used: N } | { kind: "lost" }
@@ -8019,6 +8070,20 @@ function AppInner() {
     } catch {}
     return 0;
   });
+  // bestLoginStreak is persisted alongside the current streak under the same
+  // biq_login_streak key (extended schema: { streak, lastDay, best }). Older
+  // saves without `best` get backfilled from `streak` on first load.
+  const [bestLoginStreak, setBestLoginStreak] = useState(() => {
+    try {
+      const raw = localStorage.getItem("biq_login_streak");
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p.best === "number") return p.best;
+        if (p && typeof p.streak === "number") return p.streak;
+      }
+    } catch {}
+    return 0;
+  });
   const [streakToast, setStreakToast] = useState(null);
   const streakToastTimerRef = useRef(null);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
@@ -8158,12 +8223,14 @@ function AppInner() {
     window.storage?.get("biq_rate_shown").then(res => {
       if (res) setRatePromptShown(true);
     }).catch(() => {});
-    // Login streak — check if we played yesterday, update streak
+    // Login streak — check if we played yesterday, update streak. Also tracks
+    // `best` (all-time best login streak) in the same storage object.
     (async () => {
       try {
         const todayNum = Math.floor(Date.now() / TIMINGS.DAY_MS);
         const res = await window.storage?.get("biq_login_streak");
-        const data = res ? JSON.parse(res.value) : { streak: 0, lastDay: 0 };
+        const data = res ? JSON.parse(res.value) : { streak: 0, lastDay: 0, best: 0 };
+        const prevBest = typeof data.best === "number" ? data.best : (data.streak || 0);
         let newStreak = data.streak;
         if (data.lastDay === todayNum) {
           // Already counted today
@@ -8171,7 +8238,6 @@ function AppInner() {
         } else if (data.lastDay === todayNum - 1) {
           // Consecutive day — increment
           newStreak = data.streak + 1;
-          await window.storage?.set("biq_login_streak", JSON.stringify({ streak: newStreak, lastDay: todayNum }));
           if (newStreak > 1) {
             if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
             setStreakToast(newStreak);
@@ -8182,13 +8248,17 @@ function AppInner() {
         } else if (data.lastDay < todayNum - 1) {
           // Streak broken
           newStreak = 1;
-          await window.storage?.set("biq_login_streak", JSON.stringify({ streak: 1, lastDay: todayNum }));
         } else {
           // First time ever
           newStreak = 1;
-          await window.storage?.set("biq_login_streak", JSON.stringify({ streak: 1, lastDay: todayNum }));
         }
+        const newBest = Math.max(prevBest, newStreak);
+        await window.storage?.set(
+          "biq_login_streak",
+          JSON.stringify({ streak: newStreak, lastDay: todayNum, best: newBest })
+        );
         setLoginStreak(newStreak);
+        setBestLoginStreak(newBest);
       } catch {}
     })();
     // Load persisted settings
@@ -8732,6 +8802,12 @@ function AppInner() {
 
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
+  // Past-7-days activity for the home Streak tile pulse. Recompute when a
+  // game completes (gamesPlayed bumps) or the streak changes (day rollover).
+  const streakPulseDays = useMemo(
+    () => computePast7DaysActivity(),
+    [stats.gamesPlayed, loginStreak]
+  );
 
   // Stable callbacks for memoized children
   const goHome = useCallback(() => {
@@ -9251,13 +9327,41 @@ function AppInner() {
                 onClick={openIqChip}
                 aria-label={iqHistory.length === 0 ? `Take the ${APP_NAME} test` : `View your ${APP_NAME} score`}
               >
-                <div className="home-stat-label">IQ Score</div>
-                <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
-                {iqHistory.length === 0 && <div className="home-stat-hint">Tap to test</div>}
+                <div className="hsc-left">
+                  <div className="home-stat-label">IQ Score</div>
+                  <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
+                  {iqHistory.length === 0 && <div className="home-stat-hint">Tap to test</div>}
+                </div>
+                <div className="hsc-right">
+                  {/* Five-segment IQ tier bar (60-80, 80-100, 100-120,
+                      120-140, 140-160). Active up to and including the
+                      user's tier. Empty bar shown when no test taken yet. */}
+                  <div className="iq-rank-bar" aria-hidden="true">
+                    {[80, 100, 120, 140, 160].map((max, i) => {
+                      const active = stats.bestIQ != null && stats.bestIQ >= [60, 80, 100, 120, 140][i];
+                      return <div key={i} className={`iq-rank-seg${active ? ' active' : ''}`} />;
+                    })}
+                  </div>
+                  {!stats.bestIQ && <div className="hsc-meta">Test to rank</div>}
+                </div>
               </button>
               <div className="home-stat-chip">
-                <div className="home-stat-label">Streak</div>
-                <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
+                <div className="hsc-left">
+                  <div className="home-stat-label">Streak</div>
+                  <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
+                </div>
+                <div className="hsc-right">
+                  {/* Past 7 days — leftmost = 6 days ago, rightmost = today.
+                      Active dot = at least one quiz played OR Wordle done. */}
+                  <div className="streak-pulse" aria-hidden="true">
+                    {streakPulseDays.map((active, i) => (
+                      <div key={i} className={`streak-pulse-dot${active ? ' active' : ''}`} />
+                    ))}
+                  </div>
+                  {bestLoginStreak > 0 && (
+                    <div className="hsc-meta">Best: {bestLoginStreak} {bestLoginStreak === 1 ? 'day' : 'days'}</div>
+                  )}
+                </div>
               </div>
             </div>
 
