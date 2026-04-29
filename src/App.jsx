@@ -3,6 +3,7 @@ import { useAuth } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
+import { DesktopNav } from './DesktopNav.jsx';
 import { QB, TF_STATEMENTS } from './questions.js';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
@@ -1950,6 +1951,118 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
 
 /* ════════════════════════════════════════════════════════════════════
+   DESKTOP NAV (Phase 2/5)
+   ────────────────────────────────────────────────────────────────────
+   Left sidebar navigation, fixed to the viewport at desktop sizes only.
+   Hidden by default; shown at >= 1024px in regular browser mode; reset
+   to hidden in PWA standalone. Phase 3 will hide the existing tab bar
+   at desktop so this becomes the sole navigation.
+   ════════════════════════════════════════════════════════════════════ */
+.desktop-nav { display: none; }
+.dn-brand {
+  font-family: 'Inter', sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--t1);
+  padding: 4px 12px 16px;
+}
+.dn-brand em {
+  color: var(--accent);
+  font-style: normal;
+}
+.dn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dn-list button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px 10px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--t2);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.dn-list button::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: transparent;
+  transition: background 0.12s;
+}
+.dn-list button:hover { background: var(--s1); color: var(--t1); }
+.dn-list button[data-active="true"] {
+  color: var(--t1);
+  background: var(--s1);
+}
+.dn-list button[data-active="true"]::before {
+  background: var(--accent);
+}
+.dn-divider {
+  height: 1px;
+  margin: 10px 16px;
+  background: var(--border);
+}
+.dn-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #FF4B4B;
+  margin-left: 4px;
+}
+.dn-spacer { flex: 1; min-height: 24px; }
+.dn-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 12px;
+  border-top: 1px solid var(--border);
+}
+.dn-cta-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 4px;
+}
+.dn-cta-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--t2);
+  border-radius: 9px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.dn-cta-badge:hover {
+  background: var(--s1);
+  color: var(--t1);
+  border-color: var(--border2);
+}
+
+/* ════════════════════════════════════════════════════════════════════
    DESKTOP APP REFLOW (Tier 1 + Tier 2)
    ────────────────────────────────────────────────────────────────────
    At >= 1024px viewport in regular browser mode:
@@ -2006,6 +2119,20 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      select/copy the visible variant. */
   .hero-online-sub-mobile { display: none; }
   .hero-online-sub-desktop { display: inline; }
+  .desktop-nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 52px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+    padding: 24px 12px 16px;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    z-index: 40;
+  }
   .ds-eyebrow {
     font-size: 12px;
     color: var(--t2);
@@ -2051,6 +2178,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .diff-option-local { display: flex !important; }
   .hero-online-sub-mobile { display: inline !important; }
   .hero-online-sub-desktop { display: none !important; }
+  .desktop-nav { display: none !important; }
   .ds-eyebrow {
     font-size: 11px !important;
     color: var(--t3) !important;
@@ -9186,6 +9314,15 @@ function AppInner() {
         )}
 
         {hasOnboarded && <>
+        {!inGame && (
+          <DesktopNav
+            tab={tab}
+            setTab={setTab}
+            setScreen={setScreen}
+            dailyDone={dailyDone}
+            showToast={showToast}
+          />
+        )}
         {!inGame && (
           <div className="hdr">
             {/* Settings already has its own page-header (← Settings) so the
