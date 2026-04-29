@@ -1966,7 +1966,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--t1);
-  padding: 4px 12px 16px;
+  padding: 0 12px 8px;
 }
 .dn-brand em {
   color: var(--accent);
@@ -2206,6 +2206,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   border-radius: 10px;
   font-family: inherit;
   text-align: left;
+  color: var(--t1);
+  -webkit-text-fill-color: currentColor;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s, transform 0.1s;
 }
@@ -2311,7 +2315,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     width: 220px;
     height: calc(100vh - 52px);
     overflow-y: auto;
-    padding: 24px 12px 16px;
+    padding: 14px 12px 16px;
     background: var(--bg);
     border-right: 1px solid var(--border);
     z-index: 40;
