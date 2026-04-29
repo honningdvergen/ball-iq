@@ -137,17 +137,11 @@
           padding-left: 220px;
         }
       }
-      @media (min-width: 1280px) {
-        body > #root {
-          padding-right: 300px;
-        }
-      }
       @media (display-mode: standalone) {
         body > #root {
           max-width: none !important;
           margin: 0 !important;
           padding-left: 0 !important;
-          padding-right: 0 !important;
         }
       }
 
@@ -321,6 +315,34 @@
         transition: opacity 0.15s;
       }
       .landing-signup-form button:hover:not(:disabled) { opacity: 0.92; }
+      /* TODO: Replace text pills with official "Download on the App Store"
+         and "Get it on Google Play" badge images once App Store Connect
+         and Google Play Console listings are approved. Until then both
+         badges show a "Coming soon" toast on click. */
+      .landing-store-badges {
+        display: flex; gap: 10px; justify-content: center;
+        margin: 0 auto 20px;
+        max-width: 440px;
+      }
+      .landing-store-badge {
+        flex: 1;
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 11px 16px;
+        border: 1px solid #2A2D3A;
+        background: transparent;
+        color: #9BA0B8;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px; font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.12s, color 0.12s, border-color 0.12s;
+      }
+      .landing-store-badge:hover {
+        background: #161821;
+        color: #F0F1F5;
+        border-color: #3A3D4A;
+      }
       .landing-signup-norway {
         margin-top: 32px;
         font-size: 13px; color: #6B7280;
@@ -353,7 +375,7 @@
       <nav class="landing-nav">
         <div class="landing-nav-inner">
           <div class="landing-nav-logo">Ball <em>IQ</em></div>
-          <a href="#cta-signup" class="landing-nav-cta">Get on iOS</a>
+          <a href="#cta-signup" class="landing-nav-cta">Get the app</a>
         </div>
       </nav>
     </div>
@@ -396,9 +418,13 @@
       </section>
 
       <section class="landing-signup" id="cta-signup">
-        <p class="landing-signup-eyebrow">Coming soon to the App Store</p>
-        <h2 class="landing-signup-title">Be the first to play on iOS</h2>
-        <p class="landing-signup-sub">Drop your email and we'll let you know the moment Ball IQ hits the App Store.</p>
+        <p class="landing-signup-eyebrow">Coming soon to iOS &amp; Android</p>
+        <h2 class="landing-signup-title">Be the first to play</h2>
+        <p class="landing-signup-sub">Drop your email and we'll let you know the moment Ball IQ launches on the App Store and Google Play.</p>
+        <div class="landing-store-badges">
+          <a href="#" class="landing-store-badge" data-store="ios">App Store →</a>
+          <a href="#" class="landing-store-badge" data-store="android">Google Play →</a>
+        </div>
         <form class="landing-signup-form" id="notifyForm" novalidate>
           <input type="email" placeholder="your@email.com" required aria-label="Email address">
           <button type="submit">Notify me</button>
@@ -444,6 +470,26 @@
           btn.style.color = '#9BA0B8';
           btn.style.cursor = 'default';
           input.disabled = true;
+        });
+      })();
+
+      // Store-badge "Coming soon" toast. Mirrors the toast shown when
+      // the DesktopNav badges are clicked (showToast in React). Lives
+      // outside the React tree because the landing-signup section is
+      // static HTML. Removed automatically after 2.8s.
+      (function () {
+        function comingSoonToast() {
+          var t = document.createElement('div');
+          t.textContent = 'Coming soon — TestFlight invite available, message me!';
+          t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1A1D27;color:#F0F1F5;border:1px solid #2A2D3A;padding:10px 18px;border-radius:9px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;z-index:1000;box-shadow:0 4px 24px rgba(0,0,0,0.4);animation:fadeIn 0.2s ease;';
+          document.body.appendChild(t);
+          setTimeout(function () { t.remove(); }, 2800);
+        }
+        document.querySelectorAll('.landing-store-badge').forEach(function (el) {
+          el.addEventListener('click', function (e) {
+            e.preventDefault();
+            comingSoonToast();
+          });
         });
       })();
     </script>

@@ -4,7 +4,6 @@ import { supabase } from './supabase.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
-import { ContextRail } from './ContextRail.jsx';
 import { QB, TF_STATEMENTS } from './questions.js';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
@@ -2025,8 +2024,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   background: #FF4B4B;
   margin-left: 4px;
 }
-.dn-spacer { flex: 1; min-height: 24px; }
 .dn-cta {
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -2061,188 +2060,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   background: var(--s1);
   color: var(--t1);
   border-color: var(--border2);
-}
-
-/* ════════════════════════════════════════════════════════════════════
-   CONTEXT RAIL (Phase 4/5)
-   ────────────────────────────────────────────────────────────────────
-   Right sidebar with leaderboard, streak, and mode suggestions.
-   Visible only at >= 1280px in regular browser mode (narrower desktop
-   at 1024-1279px shows just the left DesktopNav). Hidden during
-   gameplay via the in-component inGame check. PWA standalone
-   killswitch resets to display:none.
-   ════════════════════════════════════════════════════════════════════ */
-.context-rail { display: none; }
-.cr-card {
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-}
-.cr-card-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--t3);
-  margin-bottom: 10px;
-}
-.cr-card-cta {
-  margin-top: 10px;
-  width: 100%;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--t2);
-  border-radius: 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 8px 10px;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
-}
-.cr-card-cta:hover {
-  background: var(--s2);
-  color: var(--t1);
-  border-color: var(--border2);
-}
-/* Leaderboard */
-.cr-lb { display: flex; flex-direction: column; gap: 4px; }
-.cr-lb-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  background: var(--s2);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-}
-.cr-lb-row.is-me {
-  background: rgba(88,204,2,0.10);
-  border: 1px solid rgba(88,204,2,0.28);
-  padding: 5px 7px;
-}
-.cr-lb-rank {
-  width: 18px;
-  font-family: 'JetBrains Mono','SF Mono',ui-monospace,monospace;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--t3);
-  text-align: center;
-  flex-shrink: 0;
-}
-.cr-lb-name {
-  flex: 1;
-  font-weight: 700;
-  color: var(--t1);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cr-lb-row.is-me .cr-lb-name { color: var(--accent); }
-.cr-lb-score {
-  font-family: 'JetBrains Mono','SF Mono',ui-monospace,monospace;
-  font-variant-numeric: tabular-nums;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--t2);
-  flex-shrink: 0;
-}
-/* Skeleton row — preserves card height while leaderboard query is in
-   flight, so the whole rail doesn't reflow once data arrives. */
-.cr-lb-row.cr-lb-skeleton { background: var(--s2); }
-.cr-lb-skeleton .cr-lb-name,
-.cr-lb-skeleton .cr-lb-score {
-  background: var(--s3);
-  border-radius: 4px;
-  height: 11px;
-  color: transparent;
-  animation: crSkeletonPulse 1.4s ease-in-out infinite;
-}
-.cr-lb-skeleton .cr-lb-name { width: 60%; }
-.cr-lb-skeleton .cr-lb-score { width: 28px; }
-@keyframes crSkeletonPulse {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 0.85; }
-}
-/* Streak */
-.cr-streak-num {
-  font-family: 'JetBrains Mono','SF Mono',ui-monospace,monospace;
-  font-variant-numeric: tabular-nums;
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--t1);
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
-}
-.cr-streak-dots {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 8px;
-}
-.cr-streak-dot {
-  flex: 1;
-  height: 5px;
-  border-radius: 3px;
-  background: var(--s3);
-}
-.cr-streak-dot.active { background: var(--accent); }
-.cr-streak-best {
-  font-size: 11px;
-  color: var(--t3);
-}
-/* Mode suggestions */
-.cr-modes { display: flex; flex-direction: column; gap: 6px; }
-.cr-mode {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-family: inherit;
-  text-align: left;
-  color: var(--t1);
-  -webkit-text-fill-color: currentColor;
-  -webkit-appearance: none;
-  appearance: none;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, transform 0.1s;
-}
-.cr-mode:hover {
-  background: var(--s3);
-  border-color: var(--border2);
-}
-.cr-mode-icon {
-  font-size: 18px;
-  line-height: 1;
-}
-.cr-mode-body {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  flex: 1;
-  min-width: 0;
-}
-.cr-mode-name {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--t1);
-}
-.cr-mode-desc {
-  font-size: 11px;
-  color: var(--t3);
-}
-/* Ad slot reservation — shown only when AdSense ships. */
-.ad-slot-context {
-  display: none;
-  /* When enabled: change display:none above to display:block.
-     min-height: 250px; background: #161821; border-radius: 12px;
-     margin-top: 14px; */
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -2333,20 +2150,21 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
 }
 @media (min-width: 1280px) {
-  .context-rail {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 52px;
-    right: 0;
-    width: 300px;
-    height: calc(100vh - 52px);
-    overflow-y: auto;
-    padding: 24px 16px;
-    background: var(--bg);
-    border-left: 1px solid var(--border);
-    z-index: 40;
+  /* Anchor the main column LEFT at wide viewports so it reads as a
+     focused 2-column layout (sidebar + main) with comfortable right-side
+     breathing room — Linear/Notion pattern. At 1024-1279px, .app keeps
+     its base margin:0 auto and re-centers in the leftover space. */
+  .app {
+    margin-left: 0;
+    margin-right: auto;
   }
+}
+@media (min-width: 1024px) {
+  /* Drop the in-app wordmark at desktop — DesktopNav owns branding. The
+     level progress bar (.hdr-xp) and settings cog (.hdr-actions) stay,
+     and .hdr's flexbox naturally adjusts to the missing logo. Mobile and
+     PWA standalone keep the wordmark via the killswitch below. */
+  .hdr .logo { display: none; }
 }
 @media (display-mode: standalone) {
   .app {
@@ -2383,7 +2201,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hero-online-sub-mobile { display: inline !important; }
   .hero-online-sub-desktop { display: none !important; }
   .desktop-nav { display: none !important; }
-  .context-rail { display: none !important; }
+  .hdr .logo { display: block !important; }
   .ds-eyebrow {
     font-size: 11px !important;
     color: var(--t3) !important;
@@ -9528,17 +9346,6 @@ function AppInner() {
             showToast={showToast}
           />
         )}
-        <ContextRail
-          inGame={inGame}
-          userId={user?.id}
-          currentUserName={authProfile?.username || profile?.name}
-          currentUserScore={authProfile?.total_score || 0}
-          loginStreak={loginStreak}
-          bestLoginStreak={bestLoginStreak}
-          streakPulseDays={streakPulseDays}
-          setTab={setTab}
-          startMode={startMode}
-        />
         {!inGame && (
           <div className="hdr">
             {/* Settings already has its own page-header (← Settings) so the

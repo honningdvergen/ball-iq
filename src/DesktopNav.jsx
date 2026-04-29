@@ -46,7 +46,6 @@ export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast }) {
         <div className="dn-divider" />
         <button onClick={goSettings}>Settings</button>
       </nav>
-      <div className="dn-spacer" />
       <div className="dn-cta">
         <div className="dn-cta-eyebrow">Coming soon</div>
         <a href="#" onClick={onStoreClick} className="dn-cta-badge">App Store →</a>
