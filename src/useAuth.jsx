@@ -74,9 +74,101 @@ export function AuthProvider({ children }) {
       // Merge: if DB row is missing username, prefer user_metadata.username over blank
       const merged = { ...data, username: data.username || metaUsername || 'Player' }
       setProfile(merged)
+      // Cross-device sync: max-merge local <-> remote so signing in on a fresh
+      // device (or PWA install) restores progress, while never losing newer
+      // local progress that hasn't synced yet.
+      hydrateLocalFromRemote(userId, merged).catch(e => {
+        console.error('[hydrate] failed', e?.message || e)
+      })
     } catch (e) {
       console.error('[loadProfile] exception', { userId, error: e })
     }
+  }
+
+  // Cross-device sync: takes max(local, remote) for each tracked field, writes
+  // the result back to BOTH localStorage AND Supabase (only fields where local
+  // was higher need a remote write). After resolving, dispatches a custom
+  // 'biq:hydrated' event so AppInner can refresh its in-memory xp/stats state
+  // (its useState initializers ran once at mount with whatever was in
+  // localStorage at the time, so we need to push the new values back through).
+  //
+  // Failure modes:
+  //   - Network error reading remote: hydration is a no-op, local values stay
+  //     intact. App continues to work offline.
+  //   - Network error writing remote: local has the merged values; remote
+  //     stays at its previous state. Next sign-in will re-merge.
+  //   - Empty remote stats column (existing pre-migration users): treated as
+  //     {} so local values dominate and get pushed up on first sync.
+  async function hydrateLocalFromRemote(userId, remoteProfile) {
+    if (!remoteProfile) return
+
+    let localXp = 0
+    try { localXp = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0 } catch {}
+    let localStats = {}
+    try { localStats = JSON.parse(localStorage.getItem('biq_stats') || '{}') || {} } catch {}
+
+    const remoteXp = remoteProfile.xp || 0
+    const remoteTotalScore = remoteProfile.total_score || 0
+    const remoteGamesPlayed = remoteProfile.games_played || 0
+    const remoteCorrectAnswers = remoteProfile.correct_answers || 0
+    const remoteStats = (remoteProfile.stats && typeof remoteProfile.stats === 'object') ? remoteProfile.stats : {}
+
+    // Per-field max
+    const finalXp = Math.max(localXp, remoteXp)
+    const finalGamesPlayed = Math.max(localStats.gamesPlayed || 0, remoteGamesPlayed)
+    // totalCorrect tracked locally is the canonical "running correct-answers" count;
+    // remote stores the same number under both total_score (delta-incremented) and
+    // correct_answers (snapshot). Pull max of all three.
+    const finalTotalCorrect = Math.max(
+      localStats.totalCorrect || 0,
+      remoteTotalScore,
+      remoteCorrectAnswers
+    )
+    const bestKeys = ['bestScore', 'bestStreak', 'bestIQ', 'bestHotStreak', 'bestTrueFalse', 'totalAnswered']
+    const finalStats = { ...localStats, gamesPlayed: finalGamesPlayed, totalCorrect: finalTotalCorrect }
+    for (const k of bestKeys) {
+      finalStats[k] = Math.max(localStats[k] || 0, remoteStats[k] || 0)
+    }
+
+    // Write to localStorage
+    try { localStorage.setItem('biq_xp', String(finalXp)) } catch {}
+    try { localStorage.setItem('biq_stats', JSON.stringify(finalStats)) } catch {}
+
+    // Build the back-sync payload — only fields where local was higher than remote
+    const updates = {}
+    if (finalXp > remoteXp) updates.xp = finalXp
+    if (finalTotalCorrect > remoteTotalScore) updates.total_score = finalTotalCorrect
+    if (finalGamesPlayed > remoteGamesPlayed) updates.games_played = finalGamesPlayed
+    if (finalTotalCorrect > remoteCorrectAnswers) updates.correct_answers = finalTotalCorrect
+
+    // Stats jsonb: build the merged object (preserves remote keys we don't
+    // know about) and only push if any best_* moved upward.
+    const mergedStatsJson = { ...remoteStats }
+    let statsChanged = false
+    for (const k of bestKeys) {
+      const m = finalStats[k] || 0
+      const r = remoteStats[k] || 0
+      if (m > r) { mergedStatsJson[k] = m; statsChanged = true }
+    }
+    if (statsChanged) updates.stats = mergedStatsJson
+
+    if (Object.keys(updates).length > 0) {
+      try {
+        const { error } = await supabase.from('profiles').update(updates).eq('id', userId)
+        if (error) console.error('[hydrate] back-sync failed', error.message)
+      } catch (e) {
+        console.error('[hydrate] back-sync exception', e?.message)
+      }
+    }
+
+    // Notify AppInner — its xp/stats useState initializers already ran with the
+    // pre-hydration localStorage values, so they need a kick to pick up the
+    // freshly-merged numbers.
+    try {
+      window.dispatchEvent(new CustomEvent('biq:hydrated', {
+        detail: { xp: finalXp, stats: finalStats },
+      }))
+    } catch {}
   }
 
   async function signUp(email, password, username) {

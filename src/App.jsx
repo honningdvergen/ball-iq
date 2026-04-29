@@ -8329,11 +8329,12 @@ function AppInner() {
     }
 
     // Sync aggregate stats to user profile if logged in.
-    // total_score is updated via the server-side increment_score RPC (atomic
-    // UPDATE ... SET total_score = total_score + $1) so concurrent game finishes
-    // can't clobber each other. games_played / correct_answers are absolute
-    // snapshots from local stats, not deltas, so a plain .update() is fine for
-    // those two.
+    // total_score uses the increment_score RPC (atomic delta) so concurrent
+    // game finishes don't clobber each other. games_played / correct_answers
+    // are absolute snapshots — same goes for the `stats` jsonb of best-of
+    // values. Cross-device max-merge for those happens at sign-in time via
+    // useAuth.hydrateLocalFromRemote; per-game writes here just push the
+    // current local snapshot.
     if (user?.id) {
       (async () => {
         let syncFailed = false;
@@ -8352,6 +8353,14 @@ function AppInner() {
           const { error: updErr } = await supabase.from('profiles').update({
             games_played: updated.gamesPlayed,
             correct_answers: updated.totalCorrect,
+            stats: {
+              bestScore: updated.bestScore || 0,
+              bestStreak: updated.bestStreak || 0,
+              bestIQ: updated.bestIQ || 0,
+              bestHotStreak: updated.bestHotStreak || 0,
+              bestTrueFalse: updated.bestTrueFalse || 0,
+              totalAnswered: updated.totalAnswered || 0,
+            },
           }).eq('id', user.id);
           if (updErr) {
             console.error("[profile sync]", updErr?.message || "Unknown error");
@@ -8579,6 +8588,15 @@ function AppInner() {
         }
         return newXp;
       });
+      // Atomic delta-add to remote xp via RPC. Mirrors increment_score so
+      // concurrent game finishes across devices compose correctly. No-op for
+      // guests / signed-out — xp stays local-only.
+      if (user?.id) {
+        supabase.rpc('increment_xp', { user_id: user.id, xp_delta: earned })
+          .then(({ error }) => {
+            if (error) console.error("[xp sync]", error?.message || "Unknown error");
+          });
+      }
     }
 
     // Save BallIQ history (last 7 scores) + best IQ in stats
@@ -8802,6 +8820,24 @@ function AppInner() {
 
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
   const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
+
+  // Cross-device sync: useAuth.hydrateLocalFromRemote dispatches biq:hydrated
+  // after merging Supabase profile state with localStorage. Refresh in-memory
+  // xp/stats state from the merged values. The xp/stats useState initializers
+  // already ran at mount (with whatever was in localStorage at the time), so
+  // this listener is the bridge between async hydration and React state.
+  useEffect(() => {
+    const onHydrated = (e) => {
+      const detail = e?.detail;
+      if (!detail) return;
+      if (typeof detail.xp === 'number') setXp(detail.xp);
+      if (detail.stats && typeof detail.stats === 'object') {
+        setStats(prev => ({ ...prev, ...detail.stats }));
+      }
+    };
+    window.addEventListener('biq:hydrated', onHydrated);
+    return () => window.removeEventListener('biq:hydrated', onHydrated);
+  }, []);
   // Past-7-days activity for the home Streak tile pulse. Recompute when a
   // game completes (gamesPlayed bumps) or the streak changes (day rollover).
   const streakPulseDays = useMemo(
