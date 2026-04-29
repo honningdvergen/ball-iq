@@ -994,7 +994,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cta{border-radius:var(--r);padding:15px 16px 15px 18px;cursor:pointer;transition:all 0.2s cubic-bezier(0.22,1,0.36,1);border:1px solid var(--border);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--s1);position:relative;overflow:hidden;color:var(--t1);font-family:inherit;}
 .cta:hover{transform:translateY(-1px);border-color:var(--border2);}
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
-.home-stat-row{display:flex;gap:10px;margin-bottom:14px;}
+/* Home section title — sentence-case header for grouped content (Daily,
+   More modes). Different from .ds-eyebrow (which stays UPPERCASE/muted
+   for in-card eyebrows and other screen uses). */
+.home-section-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+.home-stat-row{display:flex;gap:10px;margin-bottom:24px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
 .home-stat-chip-desktop-only{display:none;}
 .home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
@@ -1029,7 +1033,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:24px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
@@ -1091,7 +1095,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.wc-card{position:relative;width:100%;margin:0 0 24px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
@@ -1930,20 +1934,24 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    stays recognisable; the Wordle half uses the standard surface treatment
    with a green eyebrow and green emoji. */
 .daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
-.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 14px;min-height:108px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
+.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 14px;min-height:124px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
 .daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
 .daily-pair-card:active{transform:scale(0.98);}
 .daily-pair-card.challenge{background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);border-color:transparent;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
 .daily-pair-card.challenge:hover{background:linear-gradient(135deg,#FF7A14 0%,#FFCD2A 100%);border-color:transparent;}
-.daily-pair-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
+.daily-pair-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
 .daily-pair-card.challenge .daily-pair-eyebrow{color:rgba(10,10,10,0.7);}
-.daily-pair-card.wordle .daily-pair-eyebrow{color:#58CC02;}
-/* Brighten the wordle tile's status text so it reads at parity with the
-   challenge tile. The accent green also subtly hints at the wordle's own
-   tile colours. */
-.daily-pair-card.wordle .daily-pair-status{color:var(--accent);}
-.daily-pair-title{font-size:17px;font-weight:900;line-height:1.05;letter-spacing:-0.4px;margin-top:3px;color:inherit;}
+/* Today's Puzzle — deep indigo gradient pairs with Today's 7's orange via
+   warm/cool contrast. Cool tones signal puzzle/cognition; orange signals
+   urgency/action. Each card registers as its own thing instead of two
+   warm CTAs competing for the same kind of attention. */
+.daily-pair-card.wordle{background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);border-color:transparent;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
+.daily-pair-card.wordle:hover{background:linear-gradient(135deg,#472999 0%,#8B4FFA 100%);border-color:transparent;}
+.daily-pair-card.wordle .daily-pair-eyebrow{color:rgba(255,255,255,0.78);}
+.daily-pair-card.wordle .daily-pair-status{color:rgba(255,255,255,0.85);}
+.daily-pair-card.wordle .daily-pair-status strong{color:#FFFFFF;font-weight:800;}
+.daily-pair-title{font-size:22px;font-weight:900;line-height:1.05;letter-spacing:-0.6px;margin-top:3px;color:inherit;}
 .daily-pair-status{font-size:11.5px;line-height:1.3;margin-top:auto;color:var(--t3);}
 .daily-pair-card.challenge .daily-pair-status{color:rgba(10,10,10,0.78);}
 .daily-pair-status strong{font-weight:800;color:var(--accent);}
@@ -9665,7 +9673,45 @@ function AppInner() {
               );
             })()}
 
-            {/* Stat chips row */}
+            {/* ── DAILY SECTION: Challenge + Puzzle paired ── */}
+            <div className="home-section-title">Daily</div>
+            <div className="daily-pair">
+              <button
+                className="daily-pair-card challenge"
+                onClick={() => dailyDone ? setTab("daily") : startMode("daily")}
+                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7. View daily tab.` : "Play today's daily challenge"}
+              >
+                <div className="daily-pair-eyebrow">Daily Challenge</div>
+                <div className="daily-pair-title">Today's 7</div>
+                <div className="daily-pair-status">
+                  {dailyDone
+                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
+                    : <>Resets in <DailyHeroCountdown /></>}
+                </div>
+                <div className="daily-pair-emoji">🔥</div>
+              </button>
+              {(() => {
+                const ws = readWordleTodayStatus();
+                const wordleStatus =
+                  ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+                  ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
+                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
+                  <>Today's puzzle ready</>;
+                return (
+                  <button
+                    className="daily-pair-card wordle"
+                    onClick={() => setScreen("wordle")}
+                    aria-label="Play today's puzzle"
+                  >
+                    <div className="daily-pair-eyebrow">Daily Puzzle</div>
+                    <div className="daily-pair-title">Today's Puzzle</div>
+                    <div className="daily-pair-status">{wordleStatus}</div>
+                  </button>
+                );
+              })()}
+            </div>
+
+            {/* Stat chips row — no section header, the chips speak for themselves */}
             <div className="home-stat-row">
               <button
                 type="button"
@@ -9720,44 +9766,6 @@ function AppInner() {
               </div>
             </div>
 
-            {/* ── DAILY SECTION: Challenge + Wordle paired ── */}
-            <div className="ds-eyebrow daily-section-eyebrow">Daily</div>
-            <div className="daily-pair">
-              <button
-                className="daily-pair-card challenge"
-                onClick={() => dailyDone ? setTab("daily") : startMode("daily")}
-                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7. View daily tab.` : "Play today's daily challenge"}
-              >
-                <div className="daily-pair-eyebrow">Daily Challenge</div>
-                <div className="daily-pair-title">Today's 7</div>
-                <div className="daily-pair-status">
-                  {dailyDone
-                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                    : <>Resets in <DailyHeroCountdown /></>}
-                </div>
-                <div className="daily-pair-emoji">🔥</div>
-              </button>
-              {(() => {
-                const ws = readWordleTodayStatus();
-                const wordleStatus =
-                  ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-                  ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
-                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
-                  <>Today's puzzle ready</>;
-                return (
-                  <button
-                    className="daily-pair-card wordle"
-                    onClick={() => setScreen("wordle")}
-                    aria-label="Play today's puzzle"
-                  >
-                    <div className="daily-pair-eyebrow">Daily Puzzle</div>
-                    <div className="daily-pair-title">Today's<br/>Puzzle</div>
-                    <div className="daily-pair-status">{wordleStatus}</div>
-                  </button>
-                );
-              })()}
-            </div>
-
             {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
             <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
               <div className="hero-online-eyebrow">Multiplayer</div>
@@ -9796,7 +9804,7 @@ function AppInner() {
             })()}
 
             {/* ── MORE MODES ── */}
-            <div className="ds-eyebrow more-modes-eyebrow" style={{marginTop:14}}>More modes</div>
+            <div className="home-section-title">More modes</div>
             <div className="play-grid">
               {[
                 { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
