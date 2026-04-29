@@ -3057,11 +3057,11 @@ function pickOnlineQuestions(mode) {
 
 // NOTE for future native app build: when wrapping the PWA in a native iOS or
 // Android shell (Capacitor / PWABuilder), configure Universal Links / App
-// Links so that ball-iq.app/?join=CODE opens the installed app directly with
+// Links so that balliq.app/?join=CODE opens the installed app directly with
 // the join code intact. The web flow already reads the URL parameter and
 // routes here; the native side just needs the link configuration to dispatch
 // the URL to the WKWebView / Android WebView.
-const INVITE_BASE_URL = "https://ball-iq.app";
+const INVITE_BASE_URL = "https://balliq.app";
 const buildInviteUrl = (code) => `${INVITE_BASE_URL}/?join=${encodeURIComponent(code)}`;
 const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
 
@@ -3108,7 +3108,7 @@ function OnlineGame({ onBack, userId, defaultName, autoJoinCode }) {
   // Pick up the auth profile name if it arrives after mount
   useEffect(() => { if (!name && defaultName) setName(defaultName); }, [defaultName, name]);
 
-  // Auto-join from a shared invite link (e.g. https://ball-iq.app/?join=ABC234).
+  // Auto-join from a shared invite link (e.g. https://balliq.app/?join=ABC234).
   // Pre-fills the join screen with the code; if we already have a name we
   // also fire onJoin once so the friend lands straight in the lobby.
   const autoJoinFiredRef = useRef(false);
@@ -3761,10 +3761,10 @@ function OnlineGame({ onBack, userId, defaultName, autoJoinCode }) {
     const onShare = async () => {
       const myName = isHost ? hostName : guestName;
       const result = tied ? "tied" : (youWon ? "won" : "lost");
-      const text = `🎮 ${APP_NAME} — Online 1v1\n${myName} ${myScore}  ${oppScore} ${tied ? "" : (isHost ? guestName : hostName)}\n${tied ? "🤝 Tied game" : youWon ? "🏆 I won!" : "GG — rematch?"}\nCan you beat me? ⚽\nball-iq.app`;
+      const text = `🎮 ${APP_NAME} — Online 1v1\n${myName} ${myScore}  ${oppScore} ${tied ? "" : (isHost ? guestName : hostName)}\n${tied ? "🤝 Tied game" : youWon ? "🏆 I won!" : "GG — rematch?"}\nCan you beat me? ⚽\nballiq.app`;
       try {
         if (navigator.share) {
-          await navigator.share({ text, url: "https://ball-iq.app" });
+          await navigator.share({ text, url: "https://balliq.app" });
           return;
         }
       } catch {}
@@ -4633,7 +4633,7 @@ async function generateShareCard(type, data) {
   ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "right";
-  ctx.fillText("ball-iq.app", W - padX, headerY);
+  ctx.fillText("balliq.app", W - padX, headerY);
 
   // Divider
   ctx.fillStyle = "#2A2D3A";
@@ -4643,7 +4643,7 @@ async function generateShareCard(type, data) {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
-  ctx.fillText("ball-iq.app", W / 2, H - 24);
+  ctx.fillText("balliq.app", W / 2, H - 24);
 
   // Per-variant content. All variants set textAlign = "center" by default.
   ctx.textAlign = "center";
@@ -4797,7 +4797,7 @@ async function shareCard(type, data, opts = {}) {
     // Couldn't even render the card — fall straight to text.
     if (textFallback) {
       try {
-        if (navigator.share) await navigator.share({ text: textFallback, url: "https://ball-iq.app" });
+        if (navigator.share) await navigator.share({ text: textFallback, url: "https://balliq.app" });
         else if (navigator.clipboard) {
           await navigator.clipboard.writeText(textFallback);
           onToast("Copied to clipboard 📋");
@@ -4810,7 +4810,7 @@ async function shareCard(type, data, opts = {}) {
   const file = new File([blob], "balliq-result.png", { type: "image/png" });
   try {
     if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-      await navigator.share({ files: [file], url: "https://ball-iq.app" });
+      await navigator.share({ files: [file], url: "https://balliq.app" });
       return;
     }
   } catch (err) {
@@ -4836,7 +4836,7 @@ async function shareCard(type, data, opts = {}) {
   // Last-ditch text fallback.
   if (textFallback) {
     try {
-      if (navigator.share) await navigator.share({ text: textFallback, url: "https://ball-iq.app" });
+      if (navigator.share) await navigator.share({ text: textFallback, url: "https://balliq.app" });
       else if (navigator.clipboard) {
         await navigator.clipboard.writeText(textFallback);
         onToast("Copied to clipboard 📋");
@@ -5710,7 +5710,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           {/* Ghost outlined to match the secondary-action discipline used on
               result screens — filled green is reserved for primary actions. */}
           <a
-            href="mailto:hello@ball-iq.app"
+            href="mailto:hello@balliq.app"
             style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"transparent",color:"var(--accent)",border:"1.5px solid var(--accent-b)",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none"}}
           >
             Send feedback
@@ -5929,7 +5929,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
 
         <h2 style={privacyH2}>8. Contact</h2>
-        <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: <a href="mailto:privacy@ball-iq.app" style={{color:"var(--accent)",textDecoration:"none"}}>privacy@ball-iq.app</a></p>
+        <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: <a href="mailto:privacy@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>privacy@balliq.app</a></p>
 
         <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 {APP_NAME}. All rights reserved.</p>
       </div>
@@ -5970,7 +5970,7 @@ const FAQ_ENTRIES = [
   },
   {
     q: "How do I report an issue?",
-    a: "Email us at hello@ball-iq.app — we read every message.",
+    a: "Email us at hello@balliq.app — we read every message.",
   },
 ];
 const HelpScreen = React.memo(function HelpScreen({ onClose }) {
@@ -6020,7 +6020,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
             <p style={{fontSize: 15, color: "#9BA0B8", margin: 0, lineHeight: 1.6}}>{entry.a}</p>
           </div>
         ))}
-        <p style={{fontSize: 13, color: "#9BA0B8", marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@ball-iq.app" style={{color:"#58CC02",textDecoration:"none"}}>hello@ball-iq.app</a>.</p>
+        <p style={{fontSize: 13, color: "#9BA0B8", marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@balliq.app" style={{color:"#58CC02",textDecoration:"none"}}>hello@balliq.app</a>.</p>
       </div>
     </div>
   );
@@ -6039,7 +6039,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
     ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
     : null;
   const doShare = async () => {
-    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nball-iq.app`;
+    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nballiq.app`;
     try {
       if (navigator.share) { await navigator.share({ title: APP_NAME, text: msg }); return; }
       if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
@@ -7807,7 +7807,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
   //   <blank line>
   //   <emoji grid, one row per guess>
   //   <blank line>
-  //   ball-iq.app
+  //   balliq.app
   // The URL is also passed via navigator.share's `url` field so apps that
   // recognise it (Snapchat, WhatsApp, iMessage, Twitter) render it as a
   // tappable link rather than inline text.
@@ -7818,7 +7818,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nball-iq.app`;
+    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nballiq.app`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -8579,7 +8579,7 @@ function AppInner() {
     // fails). Game-result focused — no profile bits.
     const pct = total ? Math.round(score / total * 100) : 0;
     const beat = "Can you beat me? ⚽";
-    const url = "ball-iq.app";
+    const url = "balliq.app";
     const msgs = {
       daily: (() => {
         const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
@@ -8796,7 +8796,7 @@ function AppInner() {
       grid,
       "",
       "Think you can beat me?",
-      "ball-iq.app",
+      "balliq.app",
     ].filter(Boolean).join("\n");
 
     try {
@@ -9434,7 +9434,7 @@ function AppInner() {
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
         {showHelp && <HelpScreen onClose={closeHelp} />}
 
-        {/* Shared-invite gate: someone tapped a ball-iq.app/?join=CODE link
+        {/* Shared-invite gate: someone tapped a balliq.app/?join=CODE link
             but they're either signed-out or browsing as a guest. Prompt them
             to sign in; pendingJoinCode persists in localStorage so the
             autoJoinRoutedRef effect picks it up after auth completes. */}
