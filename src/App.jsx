@@ -2087,6 +2087,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     grid-template-columns: 1fr 1fr 1fr;
   }
   .tab-bar {
+    /* Phase 3: tab bar replaced by DesktopNav at desktop sizes. The
+       Tier 2 repositioning rules below are inert when display:none
+       but kept for revert-path clarity. */
+    display: none;
     position: sticky;
     top: 52px;
     bottom: auto;
@@ -2154,6 +2158,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     grid-template-columns: 1fr 1fr !important;
   }
   .tab-bar {
+    display: flex !important;
     position: fixed !important;
     top: auto !important;
     bottom: 0 !important;
