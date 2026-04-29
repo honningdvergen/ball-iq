@@ -1032,6 +1032,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
+.hero-online-sub-mobile{display:inline;}
+.hero-online-sub-desktop{display:none;}
 .hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
 .hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .hero-online:active .hero-online-cta{opacity:0.85;}
@@ -1998,6 +2000,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      desktop sizes; the Multiplayer hero card on Home routes straight to
      Online 1v1 in that case. PWA standalone reset defends below. */
   .diff-option-local { display: none; }
+  /* Multiplayer hero subtitle — swap mobile copy ("Online or local") for
+     the desktop variant ("Challenge someone online") since Local is
+     hidden above. Two spans toggled via display so users can still
+     select/copy the visible variant. */
+  .hero-online-sub-mobile { display: none; }
+  .hero-online-sub-desktop { display: inline; }
   .ds-eyebrow {
     font-size: 12px;
     color: var(--t2);
@@ -2041,6 +2049,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
+  .hero-online-sub-mobile { display: inline !important; }
+  .hero-online-sub-desktop { display: none !important; }
   .ds-eyebrow {
     font-size: 11px !important;
     color: var(--t3) !important;
@@ -9585,7 +9595,10 @@ function AppInner() {
             <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
               <div className="hero-online-eyebrow">Multiplayer</div>
               <div className="hero-online-title">Play with Friends</div>
-              <div className="hero-online-sub">Online or local — challenge someone</div>
+              <div className="hero-online-sub">
+                <span className="hero-online-sub-mobile">Online or local — challenge someone</span>
+                <span className="hero-online-sub-desktop">Challenge someone online</span>
+              </div>
               <div className="hero-online-cta">Play</div>
               <div className="hero-online-emoji">🤝</div>
             </button>
