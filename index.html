@@ -91,14 +91,294 @@
       }
       html.light .biq-splash { background: #F2F2F7; color: #1C1C1E; }
       html.light .biq-splash-dot { background: rgba(0,0,0,0.08); }
+
+      /* ════════════════════════════════════════════════════════════════════
+         DESKTOP LANDING CHROME
+         ────────────────────────────────────────────────────────────────────
+         Hidden by default (mobile sees the app raw, identical to today).
+         Shown only at >= 1024px viewport in regular browser mode.
+         FORCE-HIDDEN in PWA standalone at any size — installed PWA users
+         (iPhone Add to Home Screen, iPad, desktop installed) ALWAYS see
+         the clean app, never the marketing chrome.
+         ════════════════════════════════════════════════════════════════════ */
+
+      .landing-top, .landing-bottom, .ad-slot-hero, .ad-slot-sidebar {
+        display: none;
+      }
+
+      @media (min-width: 1024px) {
+        .landing-top, .landing-bottom { display: block; }
+      }
+
+      /* PWA killswitch — wins over viewport rules above thanks to !important */
+      @media (display-mode: standalone) {
+        .landing-top, .landing-bottom,
+        .ad-slot-hero, .ad-slot-sidebar { display: none !important; }
+      }
+
+      /* ── Nav ───────────────────────────────────────────────────────── */
+      .landing-nav {
+        display: flex; align-items: center; justify-content: space-between;
+        max-width: 1200px; margin: 0 auto;
+        padding: 24px 40px;
+      }
+      .landing-nav-logo {
+        font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
+        color: #F0F1F5;
+      }
+      .landing-nav-logo em {
+        color: #58CC02; font-style: normal;
+      }
+      .landing-nav-cta {
+        display: inline-flex; align-items: center;
+        padding: 10px 18px;
+        border: 1px solid rgba(88,204,2,0.4);
+        background: rgba(88,204,2,0.10);
+        color: #58CC02;
+        border-radius: 10px;
+        font-weight: 700; font-size: 14px;
+        text-decoration: none;
+        transition: background 0.15s, border-color 0.15s;
+      }
+      .landing-nav-cta:hover {
+        background: rgba(88,204,2,0.18);
+        border-color: rgba(88,204,2,0.7);
+      }
+
+      /* ── Hero ──────────────────────────────────────────────────────── */
+      .landing-hero {
+        max-width: 1200px; margin: 0 auto;
+        padding: 60px 40px 40px;
+        text-align: center;
+        position: relative;
+      }
+      .landing-hero::before {
+        content: ''; position: absolute;
+        top: -100px; left: 50%; transform: translateX(-50%);
+        width: 800px; height: 600px;
+        background: radial-gradient(ellipse at center, rgba(88,204,2,0.12), transparent 60%);
+        pointer-events: none; z-index: 0;
+      }
+      .landing-hero-title {
+        position: relative; z-index: 1;
+        margin: 0 auto;
+        font-size: 64px; font-weight: 900;
+        letter-spacing: -0.04em; line-height: 1.05;
+        color: #F0F1F5;
+        max-width: 760px;
+      }
+      .landing-hero-sub {
+        position: relative; z-index: 1;
+        margin: 24px auto 0;
+        font-size: 18px; line-height: 1.6;
+        color: #9BA0B8; max-width: 560px;
+      }
+      .landing-hero-cta {
+        position: relative; z-index: 1;
+        display: inline-flex; align-items: center; gap: 6px;
+        margin-top: 36px;
+        padding: 16px 32px;
+        background: #58CC02; color: #0A0A0A;
+        border-radius: 12px;
+        font-size: 16px; font-weight: 800;
+        text-decoration: none;
+        transition: opacity 0.15s, transform 0.1s;
+      }
+      .landing-hero-cta:hover { opacity: 0.92; }
+      .landing-hero-cta:active { transform: scale(0.98); }
+
+      /* ── Demo eyebrow above the embedded app ──────────────────────── */
+      .landing-demo-eyebrow {
+        text-align: center;
+        margin: 48px auto 16px;
+        font-size: 13px; font-weight: 700; letter-spacing: 0.16em;
+        text-transform: uppercase; color: #6B7280;
+        scroll-margin-top: 40px;
+      }
+
+      /* ── Ad slots ─────────────────────────────────────────────────────
+         Reserved space for AdSense once approved. Both stay display:none
+         until the AdSense allowlist comes through; flip them on by
+         changing the display rule below. Already gated against PWA mode
+         by the standalone media query above. */
+      .ad-slot-hero {
+        /* When enabled:
+           display: block; max-width: 728px; height: 90px;
+           margin: 30px auto; background: #161821; border-radius: 8px; */
+      }
+      .ad-slot-sidebar {
+        /* When enabled:
+           display: block; position: fixed; right: 40px; top: 50%;
+           transform: translateY(-50%); width: 160px; height: 600px;
+           background: #161821; border-radius: 8px; */
+      }
+
+      /* ── Features grid ────────────────────────────────────────────── */
+      .landing-features {
+        max-width: 1200px; margin: 80px auto 0;
+        padding: 0 40px;
+      }
+      .landing-features-title {
+        text-align: center;
+        font-size: 36px; font-weight: 900; letter-spacing: -0.03em;
+        margin: 0 0 48px; color: #F0F1F5;
+      }
+      .features-grid {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+      }
+      .feature-card {
+        background: #161821;
+        border: 1px solid #1F2230;
+        border-radius: 18px;
+        padding: 32px 28px;
+        text-align: left;
+      }
+      .feature-icon {
+        font-size: 36px; line-height: 1; margin-bottom: 16px;
+      }
+      .feature-title {
+        font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
+        color: #F0F1F5; margin: 0 0 10px;
+      }
+      .feature-desc {
+        font-size: 14px; line-height: 1.6; color: #9BA0B8; margin: 0;
+      }
+
+      /* ── Coming-soon signup ───────────────────────────────────────── */
+      .landing-signup {
+        max-width: 600px; margin: 100px auto 0;
+        padding: 48px 40px;
+        text-align: center;
+      }
+      .landing-signup-eyebrow {
+        font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
+        text-transform: uppercase; color: #58CC02; margin: 0 0 12px;
+      }
+      .landing-signup-title {
+        font-size: 32px; font-weight: 900; letter-spacing: -0.03em;
+        color: #F0F1F5; margin: 0 0 12px;
+      }
+      .landing-signup-sub {
+        font-size: 15px; color: #9BA0B8;
+        margin: 0 0 28px; line-height: 1.6;
+      }
+      .landing-signup-form {
+        display: flex; gap: 8px;
+        max-width: 440px; margin: 0 auto;
+      }
+      .landing-signup-form input {
+        flex: 1; padding: 14px 16px;
+        background: #161821; border: 1px solid #1F2230;
+        color: #F0F1F5; border-radius: 10px;
+        font-family: inherit; font-size: 16px; outline: none;
+        transition: border-color 0.15s;
+      }
+      .landing-signup-form input:focus { border-color: #58CC02; }
+      .landing-signup-form button {
+        padding: 14px 24px;
+        background: #58CC02; color: #0A0A0A;
+        border: none; border-radius: 10px;
+        font-family: inherit; font-size: 15px; font-weight: 800;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .landing-signup-form button:hover:not(:disabled) { opacity: 0.92; }
+      .landing-signup-norway {
+        margin-top: 32px;
+        font-size: 13px; color: #6B7280;
+      }
+
+      /* ── Footer ───────────────────────────────────────────────────── */
+      .landing-footer {
+        max-width: 1200px; margin: 80px auto 0;
+        padding: 32px 40px 60px;
+        border-top: 1px solid #1F2230;
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 13px; color: #6B7280;
+      }
+      .landing-footer-links {
+        display: flex; gap: 20px;
+      }
+      .landing-footer-links a {
+        color: #6B7280; text-decoration: none; transition: color 0.15s;
+      }
+      .landing-footer-links a:hover { color: #9BA0B8; }
     </style>
   </head>
   <body>
+    <!-- ════════════════════════════════════════════════════════════════
+         LANDING CHROME — TOP HALF
+         Hidden on mobile (< 1024px) and ALWAYS hidden in PWA standalone.
+         See the .landing-top / display-mode rules in <style> above.
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="landing-top">
+      <nav class="landing-nav">
+        <div class="landing-nav-logo">Ball <em>IQ</em></div>
+        <a href="#cta-signup" class="landing-nav-cta">Get the iOS app</a>
+      </nav>
+      <section class="landing-hero">
+        <h1 class="landing-hero-title">How well do you really know football?</h1>
+        <p class="landing-hero-sub">4,000+ hand-curated questions across 10 game modes. Free, no signup needed to play.</p>
+        <a href="#try-it" class="landing-hero-cta">Try it now ↓</a>
+      </section>
+      <div class="ad-slot-hero" aria-hidden="true"></div>
+      <p class="landing-demo-eyebrow" id="try-it">Try it right here, no download needed ↓</p>
+    </div>
+
     <div id="root">
       <div class="biq-splash" aria-label="Loading Ball IQ">
         <div class="biq-splash-mark">Ball <em>IQ</em></div>
         <div class="biq-splash-dot"></div>
       </div>
+    </div>
+
+    <aside class="ad-slot-sidebar" aria-hidden="true"></aside>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         LANDING CHROME — BOTTOM HALF
+         Same gating rules as landing-top.
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="landing-bottom">
+      <section class="landing-features">
+        <h2 class="landing-features-title">What's inside</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <div class="feature-title">4,000+ Questions</div>
+            <p class="feature-desc">Hand-curated trivia spanning leagues, World Cups, legends, records and the chaos in between.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📅</div>
+            <div class="feature-title">Daily Challenges</div>
+            <p class="feature-desc">A fresh quiz and a one-shot puzzle every day. Keep the streak alive.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤝</div>
+            <div class="feature-title">Online Multiplayer</div>
+            <p class="feature-desc">Challenge a friend in real time, or pass the phone for local rounds with up to six players.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="landing-signup" id="cta-signup">
+        <p class="landing-signup-eyebrow">Coming soon to the App Store</p>
+        <h2 class="landing-signup-title">Be the first to play on iOS</h2>
+        <p class="landing-signup-sub">Drop your email and we'll let you know the moment Ball IQ hits the App Store.</p>
+        <form class="landing-signup-form" id="notifyForm" novalidate>
+          <input type="email" placeholder="your@email.com" required aria-label="Email address">
+          <button type="submit">Notify me</button>
+        </form>
+        <p class="landing-signup-norway">Made with ⚽ in Norway</p>
+      </section>
+
+      <footer class="landing-footer">
+        <div>© 2026 Ball IQ</div>
+        <div class="landing-footer-links">
+          <a href="/privacy.html">Privacy</a>
+          <a href="#cta-signup">Contact</a>
+          <a href="mailto:hello@balliq.app">hello@balliq.app</a>
+        </div>
+      </footer>
     </div>
     <script>
       // Apply the saved theme class BEFORE React mounts so light-mode users
@@ -110,6 +390,27 @@
           document.body.classList.add('light');
         }
       } catch (e) {}
+
+      // Landing-page signup form — placeholder behaviour until a real
+      // backend (e.g. Mailchimp / Resend) is wired up. The form lives only
+      // on desktop (display:none on mobile via media query) so this script
+      // has no effect on the mobile/PWA path.
+      (function () {
+        var form = document.getElementById('notifyForm');
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var btn = form.querySelector('button');
+          var input = form.querySelector('input');
+          if (!btn || !input) return;
+          btn.textContent = '✓ Got it';
+          btn.disabled = true;
+          btn.style.background = '#1F2230';
+          btn.style.color = '#9BA0B8';
+          btn.style.cursor = 'default';
+          input.disabled = true;
+        });
+      })();
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
