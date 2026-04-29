@@ -1993,6 +1993,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     bottom: 4px;
   }
   .home-stat-chip-desktop-only { display: flex; }
+  /* Local multiplayer requires passing a single device — desktop has no
+     equivalent gesture. Hide the option in the friends-picker sheet at
+     desktop sizes; the Multiplayer hero card on Home routes straight to
+     Online 1v1 in that case. PWA standalone reset defends below. */
+  .diff-option-local { display: none; }
   .ds-eyebrow {
     font-size: 12px;
     color: var(--t2);
@@ -2035,6 +2040,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     bottom: auto !important;
   }
   .home-stat-chip-desktop-only { display: none !important; }
+  .diff-option-local { display: flex !important; }
   .ds-eyebrow {
     font-size: 11px !important;
     color: var(--t3) !important;
@@ -9430,7 +9436,7 @@ function AppInner() {
                   </div>
                 </button>
                 <button
-                  className="diff-option"
+                  className="diff-option diff-option-local"
                   onClick={() => { setShowFriendsPicker(false); startMode("local"); }}
                 >
                   <span className="diff-option-icon">🤝</span>
