@@ -5795,21 +5795,22 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             role="dialog"
             aria-modal="true"
           >
-            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Clear stats?</div>
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Reset all stats?</div>
             <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:10}}>This will reset:</div>
             <ul style={{paddingLeft:20,marginBottom:14,fontSize:14,color:"var(--t2)",lineHeight:1.6}}>
-              <li>Games played</li>
-              <li>Best score</li>
-              <li>Best streak</li>
+              <li>Games played, scores, streaks</li>
               <li>XP and level</li>
               <li>Login streak</li>
+              <li>Daily challenge progress</li>
+              <li>Ball IQ history</li>
+              <li>Hot Streak best</li>
             </ul>
-            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>This cannot be undone.</div>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>Your username, avatar, and settings are kept. This cannot be undone.</div>
             <button
               onClick={() => { setConfirmClearStats(false); onClearStats?.(); }}
               style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
             >
-              Clear stats
+              Reset stats
             </button>
             <button
               onClick={() => setConfirmClearStats(false)}
@@ -7127,7 +7128,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalAnswered > 0 ? `${Math.round(100*(stats.totalCorrect||0)/stats.totalAnswered)}%` : "—"}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{(() => {
+            const c = stats.totalCorrect || 0;
+            const t = stats.totalAnswered || 0;
+            // Hide when no data, or when totalCorrect > totalAnswered (legacy
+            // data from before totalAnswered was tracked, or cross-device
+            // hydration drift) — better to show "—" than nonsense like 528%.
+            if (t === 0 || c > t) return "—";
+            return `${Math.round(100 * c / t)}%`;
+          })()}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
           {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
           {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
           {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
@@ -8768,19 +8777,38 @@ function AppInner() {
     showToast("Your account has been deleted");
   }, [showToast]);
 
+  // Full local-stats reset. Wipes every stats-related localStorage key and
+  // resets the matching React state so the UI reflects a clean slate without
+  // requiring a reload. Preserved keys: biq_settings, biq_profile,
+  // biq_seen_history_v2, biq_onboarded, and the various UI flags
+  // (biq_first_tip_shown, biq_rate_shown, biq_pending_join, biq-splash) —
+  // those aren't stats and resetting them would replay onboarding/UI hints.
   const clearStats = useCallback(() => {
     const reset = { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
     setStats(reset);
     setDailyDone(false); setDailyScore(null);
     setDailyHistory({});
-    window.storage?.set("biq_stats", JSON.stringify(reset)).catch(() => {});
-    // Wipe all stored daily completions
+    setXp(0);
+    setLoginStreak(0);
+    setBestLoginStreak(0);
+    setIqHistory([]);
+    setHotstreakBest(0);
     (async () => {
       try {
-        const listRes = await window.storage?.list("biq_daily_");
+        // Single-key wipes — write the empty stats object, delete everything else.
+        await Promise.all([
+          window.storage?.set("biq_stats", JSON.stringify(reset)),
+          window.storage?.delete("biq_xp"),
+          window.storage?.delete("biq_login_streak"),
+          window.storage?.delete("biq_iq_history"),
+          window.storage?.delete("biq_hotstreak_best"),
+          window.storage?.delete("biq_skill_level"),
+        ].map(p => Promise.resolve(p).catch(() => {})));
+        // Prefix wipes — daily completions and wordle state.
+        const listRes = await window.storage?.list();
         const keys = listRes?.keys || [];
         for (const k of keys) {
-          if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k)) {
+          if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k) || /^biq_wordle_/.test(k)) {
             await window.storage?.delete(k).catch(() => {});
           }
         }
