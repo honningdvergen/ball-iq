@@ -1034,6 +1034,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
 .play-card.coming-soon{opacity:0.78;}
 .play-card.coming-soon .play-card-badge{position:absolute;top:8px;right:8px;background:rgba(255,193,7,0.15);color:#FFC107;font-size:9px;letter-spacing:0.12em;padding:3px 8px;text-transform:uppercase;}
+/* Smaller-than-active variant for the dedicated "Coming Soon" section
+   below the play grid. Tiles render at ~72% of an active tile's height,
+   sit at lower opacity, and have hover/active interactions disabled so
+   they read as a teaser shelf rather than an action surface. */
+.play-card.soon-tile{min-height:75px;max-height:85px;padding:11px 12px;opacity:0.7;}
+.play-card.soon-tile:hover{background:var(--s1);border-color:var(--border);opacity:0.85;transform:none;}
+.play-card.soon-tile:active{transform:none;}
+.play-card.soon-tile .play-card-icon{width:30px;height:30px;font-size:17px;margin-bottom:4px;}
+.play-card.soon-tile .play-card-name{font-size:13px;}
+.play-card.soon-tile .play-card-desc{font-size:11px;-webkit-line-clamp:1;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
 .diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
@@ -9320,11 +9330,6 @@ function AppInner() {
 
             {/* ── MORE MODES ── */}
             <div className="ds-eyebrow more-modes-eyebrow" style={{marginTop:14}}>More modes</div>
-            {/* Active modes only — coming-soon entries (Club Quiz, True or
-                False, Guess the Player, Tiki Taka Toe) are summarised as a
-                small footer line below the grid so users know they're on the
-                way without dead tiles taking up real estate. The mode logic,
-                CSS, and toasts for those modes are all still in place. */}
             <div className="play-grid">
               {[
                 { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
@@ -9348,17 +9353,39 @@ function AppInner() {
                 </button>
               ))}
             </div>
-            <div style={{
-              textAlign:"center",
-              fontSize:11,
-              color:"var(--t3)",
-              fontWeight:500,
-              letterSpacing:"0.04em",
-              marginTop:14,
-              padding:"0 8px",
-            }}>
-              + 4 more modes coming soon
-            </div>
+            {/* Coming-Soon shelf — teaser cards for modes that aren't ready
+                yet. True or False is intentionally NOT surfaced here; its
+                runtime logic stays in place but the entry point remains
+                hidden. Section auto-hides if the array is empty. */}
+            {(() => {
+              const COMING_SOON = [
+                { key:"tikitakatoe", icon:"🎯",  name:"Tiki Taka Toe",    desc:"Tic-tac-toe with football connections" },
+                { key:"guessplayer", icon:"🔍",  name:"Guess the Player", desc:"Identify the mystery player from clues" },
+                { key:"clubquiz",    icon:"🏟️", name:"Club Quiz",         desc:"Deep-dive trivia for your favourite club" },
+              ];
+              if (COMING_SOON.length === 0) return null;
+              return (
+                <>
+                  <div className="ds-eyebrow" style={{marginTop:18}}>Coming Soon</div>
+                  <div className="play-grid" style={{marginTop:8}}>
+                    {COMING_SOON.map(({ key, icon, name, desc }) => (
+                      <button
+                        key={key}
+                        className="play-card coming-soon soon-tile"
+                        onClick={() => showToast(`${icon} ${name} is coming soon — stay tuned!`)}
+                      >
+                        <span className="play-card-badge">Soon</span>
+                        <span className="play-card-icon">{icon}</span>
+                        <span className="play-card-body">
+                          <span className="play-card-name">{name}</span>
+                          <span className="play-card-desc">{desc}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
 
