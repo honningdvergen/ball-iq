@@ -73,7 +73,7 @@ export default function Login() {
 
   const styles = {
     container: {
-      minHeight: '100vh',
+      minHeight: '100dvh',
       backgroundColor: palette.bg,
       color: palette.text,
       display: 'flex',

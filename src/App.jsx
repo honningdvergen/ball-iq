@@ -930,8 +930,8 @@ const css = `
 /* Global: kill the grey/white tap flash Safari draws on every tappable element. */
 *{-webkit-tap-highlight-color:transparent;}
 a{-webkit-tap-highlight-color:transparent;}
-html,#root{background:var(--bg);min-height:100vh;scroll-behavior:smooth;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
+html,#root{background:var(--bg);min-height:100vh;min-height:100dvh;scroll-behavior:smooth;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
 /* ── DESIGN-SYSTEM UTILITIES ─────────────────────────────────────────── */
 /* Numeric displays (scores, timers, IQ, streak counters). Tabular-nums prevents
@@ -972,7 +972,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
 .q-text{font-size:18px !important;}
 .sbar{height:env(safe-area-inset-top,0);}
@@ -6297,7 +6297,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div style={{
-          minHeight:"100vh", display:"flex", flexDirection:"column",
+          minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
           background:"#0F1117", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
