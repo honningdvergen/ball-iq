@@ -188,14 +188,32 @@ export function AuthProvider({ children }) {
     )
     const mergedDailyWA = { ...localDailyWA, ...remoteDailyWA }
 
-    // One write per day with both fields. Skip orphan WA entries that
-    // somehow lack a score (shouldn't happen, defensive).
-    const allDailyDays = new Set([...Object.keys(mergedDailyScores), ...Object.keys(mergedDailyWA)])
+    // Phase 5x: full per-question review. allAnswers is the source of
+    // truth for the Daily review screen; wrongAnswers is now derivable
+    // (filter !isCorrect) but kept in parallel for legacy paths.
+    const remoteDailyAA = (remoteProfile.daily_all_answers && typeof remoteProfile.daily_all_answers === 'object')
+      ? remoteProfile.daily_all_answers : {}
+    const localDailyAA = readLocalMap(
+      /^biq_daily_(\d{4}-\d{2}-\d{2})$/,
+      p => (Array.isArray(p?.allAnswers) && p.allAnswers.length > 0 ? p.allAnswers : null)
+    )
+    const mergedDailyAA = { ...localDailyAA, ...remoteDailyAA }
+
+    // One write per day with all three fields. Skip orphan WA/AA entries
+    // that somehow lack a score (shouldn't happen, defensive).
+    const allDailyDays = new Set([
+      ...Object.keys(mergedDailyScores),
+      ...Object.keys(mergedDailyWA),
+      ...Object.keys(mergedDailyAA),
+    ])
     for (const ymd of allDailyDays) {
       const score = mergedDailyScores[ymd]
       if (typeof score !== 'number') continue
       const wrongs = mergedDailyWA[ymd]
-      const record = wrongs ? { score, wrongAnswers: wrongs } : { score }
+      const all = mergedDailyAA[ymd]
+      const record = { score }
+      if (wrongs) record.wrongAnswers = wrongs
+      if (all) record.allAnswers = all
       try { localStorage.setItem(`biq_daily_${ymd}`, JSON.stringify(record)) } catch {}
     }
 
@@ -215,6 +233,13 @@ export function AuthProvider({ children }) {
         supabase.rpc('upsert_daily_wrong_answers', { p_ymd: d, p_wrongs: localDailyWA[d] })
           .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily wa]', d, error.message) })
       )).catch(e => console.warn('[hydrate back-sync daily wa]', e?.message || e))
+    }
+    const localOnlyDailyAADays = Object.keys(localDailyAA).filter(d => !(d in remoteDailyAA))
+    if (localOnlyDailyAADays.length > 0) {
+      Promise.all(localOnlyDailyAADays.map(d =>
+        supabase.rpc('upsert_daily_all_answers', { p_ymd: d, p_answers: localDailyAA[d] })
+          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily aa]', d, error.message) })
+      )).catch(e => console.warn('[hydrate back-sync daily aa]', e?.message || e))
     }
 
     // Wordle state (full {guesses, status} per YMD).

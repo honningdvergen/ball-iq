@@ -1775,6 +1775,35 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wr-tick{width:18px;height:18px;background:var(--green);color:#0a1a00;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
 .wr-user{font-size:13px;font-weight:700;color:var(--red);display:flex;align-items:center;gap:6px;margin-bottom:4px;}
 .wr-x{width:18px;height:18px;background:var(--red);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+
+/* ── DAILY REVIEW: full per-question cards (Phase 5x) ── */
+.dr-list{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;}
+.dr-q{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 14px 12px;}
+.dr-q.dr-q-wrong{border-color:rgba(239,68,68,0.25);}
+.dr-q.dr-q-right{border-color:rgba(34,197,94,0.20);}
+.dr-q-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.dr-q-mark{font-size:14px;font-weight:800;width:20px;text-align:center;}
+.dr-q-right .dr-q-mark{color:var(--accent);}
+.dr-q-wrong .dr-q-mark{color:#FF5A5A;}
+.dr-q-num{font-size:11px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.4px;}
+.dr-q-cat{font-size:10px;font-weight:600;color:var(--t3);background:var(--s2);padding:2px 8px;border-radius:999px;letter-spacing:0.3px;text-transform:uppercase;}
+.dr-q-timeout{font-size:10px;font-weight:600;color:#FF8A65;background:rgba(255,138,101,0.10);padding:2px 8px;border-radius:999px;letter-spacing:0.3px;text-transform:uppercase;}
+.dr-q-text{font-size:14px;font-weight:600;color:var(--t1);line-height:1.4;margin-bottom:10px;}
+.dr-opts{display:flex;flex-direction:column;gap:6px;}
+.dr-opt{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:10px;background:var(--s2);border:1px solid var(--border);font-size:13px;color:var(--t2);}
+.dr-opt-correct{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:var(--t1);}
+.dr-opt-user-wrong{background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.22);color:var(--t1);}
+.dr-opt-text{flex:1;line-height:1.35;}
+.dr-opt-tag{font-size:10px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;padding:2px 7px;border-radius:999px;flex-shrink:0;}
+.dr-opt-correct .dr-opt-tag{background:var(--accent);color:#0a1a00;}
+.dr-opt-user-wrong .dr-opt-tag-user{background:rgba(239,68,68,0.20);color:#FF5A5A;}
+.dr-typed{display:flex;flex-direction:column;gap:6px;}
+.dr-typed-row{padding:10px 12px;border-radius:10px;background:var(--s2);border:1px solid var(--border);font-size:13px;color:var(--t2);display:flex;align-items:center;gap:8px;}
+.dr-typed-correct{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:var(--t1);}
+.dr-typed-user-wrong{background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.22);color:var(--t1);}
+.dr-typed-mark{font-weight:800;width:14px;text-align:center;}
+.dr-typed-correct .dr-typed-mark{color:var(--accent);}
+.dr-typed-user-wrong .dr-typed-mark{color:#FF5A5A;}
 .xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Inter',sans-serif;}
 .streak-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a0a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(251,191,36,0.4);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
 .xp-earned-badge{text-align:center;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:8px;padding:8px 14px;margin-bottom:8px;}
@@ -2750,7 +2779,7 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
     const correct = checkTyped(answer, question);
     setState(correct ? "correct" : "wrong");
     setVal(v || val);
-    onAnswer(correct);
+    onAnswer(correct, answer);
   }, [val, state, question, onAnswer]);
 
   const pick = (s) => { setVal(s); setSuggestions([]); setTimeout(() => submit(s), TIMINGS.AUTOCOMPLETE_DEBOUNCE); };
@@ -3118,7 +3147,12 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   // recent setWrongAnswers had landed; the final-question wrong answer
   // was silently dropped from the array passed up to handleComplete.
   const wrongAnswersRef = useRef([]);
-  useEffect(() => { wrongAnswersRef.current = []; }, [questions]);
+  // allAnswers — Phase 5x. Captures every answer (right or wrong, plus
+  // timeouts) so the Daily review screen can render the user's full
+  // game in order: question, options, what they picked, what was
+  // correct. Same ref pattern as wrongAnswers.
+  const allAnswersRef = useRef([]);
+  useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; }, [questions]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
   const hardRightBurstTimerRef = useRef(null);
   useEffect(() => () => {
@@ -3134,8 +3168,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const answered = selected !== null || typedResult !== null;
 
   const doAdvance = useCallback((ns, nb, correct) => {
-    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current }); return; }
-    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, speedScore }); return; }
+    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return; }
+    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore }); return; }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
@@ -3147,7 +3181,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   }, [mode, doAdvance]);
   useEffect(() => { advanceRef.current = advance; }, [advance]);
 
-  const registerAnswer = useCallback((correct, userAnswerText) => {
+  const registerAnswer = useCallback((correct, userAnswerText, userIndex) => {
     clearInterval(timerRef.current);
     const ns = correct ? score + 1 : score;
     const nst = correct ? streak + 1 : 0;
@@ -3158,6 +3192,29 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       // review on the result screen can show "✗ X · ✓ Y". Typed inputs
       // don't pass it (different code path); those just show "✓ correct".
       wrongAnswersRef.current = [...wrongAnswersRef.current, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat }];
+    }
+    // Phase 5x: capture the full answer record for the Daily review
+    // screen. userIndex is the actual selected index passed from
+    // handleMCQ (avoids fragile indexOf against duplicate option text).
+    // Typed inputs pass userIndex=-1; userAnswerText carries the typed
+    // string. Timeouts have their own capture path in the timer effect.
+    if (q && correct !== "timeout") {
+      const type = q.type === 'tf' ? 'tf' : (q.type === 'typed' ? 'typed' : 'mcq');
+      const options = type === 'tf' ? ['FALSE', 'TRUE'] : (type === 'typed' ? null : q.o);
+      const correctIdx = type === 'typed' ? -1 : (type === 'tf' ? (q.a ? 1 : 0) : q.a);
+      const uIdx = (typeof userIndex === 'number') ? userIndex : -1;
+      allAnswersRef.current = [...allAnswersRef.current, {
+        q: q.q,
+        type,
+        cat: q.cat || null,
+        options,
+        userIdx: uIdx,
+        correctIdx,
+        userText: type === 'typed' ? (userAnswerText || null) : null,
+        correctText: type === 'typed' ? q.typed_a : (type === 'tf' ? (q.a ? 'TRUE' : 'FALSE') : q.o[q.a]),
+        isCorrect: correct === true,
+        timedOut: false,
+      }];
     }
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
     if (isSpeed && correct) {
@@ -3185,7 +3242,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     } else {
       haptic(correct ? "correct" : "wrong");
     }
-    registerAnswer(correct, userAnswerText);
+    registerAnswer(correct, userAnswerText, i);
   }, [answered, done, q, registerAnswer, soundEnabled]);
 
   useEffect(() => {
@@ -3205,6 +3262,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     // Separate effect watches for timeout (avoids stale closure entirely)
     const timeoutMs = (timerDuration * 1000) + 100;
     const timeoutId = setTimeout(() => {
+      // Phase 5x: capture timeout into allAnswers so the Daily review
+      // screen renders this question with a "timed out" tag instead of
+      // dropping it. Same shape as a wrong MCQ answer; userIdx=-1.
+      const tq = questions[idx];
+      if (tq) {
+        const type = tq.type === 'tf' ? 'tf' : (tq.type === 'typed' ? 'typed' : 'mcq');
+        const options = type === 'tf' ? ['FALSE', 'TRUE'] : (type === 'typed' ? null : tq.o);
+        const correctIdx = type === 'typed' ? -1 : (type === 'tf' ? (tq.a ? 1 : 0) : tq.a);
+        allAnswersRef.current = [...allAnswersRef.current, {
+          q: tq.q,
+          type,
+          cat: tq.cat || null,
+          options,
+          userIdx: -1,
+          correctIdx,
+          userText: null,
+          correctText: type === 'typed' ? tq.typed_a : (type === 'tf' ? (tq.a ? 'TRUE' : 'FALSE') : tq.o[tq.a]),
+          isCorrect: false,
+          timedOut: true,
+        }];
+      }
       setScore(s => {
         setStreak(0);
         setBestStreak(b => {
@@ -3352,7 +3430,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           })}
         </div>
       ) : (
-        <TypedInput key={idx} question={q} diff={diff} hintsEnabled={hintsEnabled} onAnswer={(correct) => {
+        <TypedInput key={idx} question={q} diff={diff} hintsEnabled={hintsEnabled} onAnswer={(correct, userText) => {
           setTypedResult(correct ? "correct" : "wrong");
           if (correct && q.diff === "hard") {
             haptic("hardCorrect");
@@ -3360,7 +3438,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
             if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
             hardRightBurstTimerRef.current = setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
           }
-          registerAnswer(correct);
+          registerAnswer(correct, userText, -1);
         }} />
       )}
 
@@ -5798,37 +5876,71 @@ function Mini7Strip({ history, today }) {
   );
 }
 
+// Phase 5x — single question card on the Daily review screen. Renders
+// the question, options (or typed UI), highlighting the user's pick
+// (red if wrong) and the correct answer (green).
+function ReviewQuestionCard({ a, index }) {
+  const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = a;
+  return (
+    <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
+      <div className="dr-q-head">
+        <span className="dr-q-mark">{isCorrect ? '✓' : '✗'}</span>
+        <span className="dr-q-num">Q{index + 1}</span>
+        {cat && <span className="dr-q-cat">{cat}</span>}
+        {timedOut && <span className="dr-q-timeout">timed out</span>}
+      </div>
+      <div className="dr-q-text">{q}</div>
+      {(type === 'mcq' || type === 'tf') && Array.isArray(options) ? (
+        <div className="dr-opts">
+          {options.map((opt, idx) => {
+            let cls = 'dr-opt';
+            if (idx === correctIdx) cls += ' dr-opt-correct';
+            if (idx === userIdx && !isCorrect) cls += ' dr-opt-user-wrong';
+            return (
+              <div key={idx} className={cls}>
+                <span className="dr-opt-text">{opt}</span>
+                {idx === correctIdx && <span className="dr-opt-tag">correct</span>}
+                {idx === userIdx && !isCorrect && <span className="dr-opt-tag dr-opt-tag-user">your pick</span>}
+              </div>
+            );
+          })}
+        </div>
+      ) : type === 'typed' ? (
+        <div className="dr-typed">
+          {userText && (
+            <div className={isCorrect ? 'dr-typed-row dr-typed-correct' : 'dr-typed-row dr-typed-user-wrong'}>
+              <span className="dr-typed-mark">{isCorrect ? '✓' : '✗'}</span>
+              <span>You typed: <strong>{userText}</strong></span>
+            </div>
+          )}
+          {!isCorrect && correctText && (
+            <div className="dr-typed-row dr-typed-correct">
+              <span className="dr-typed-mark">✓</span>
+              <span>Correct: <strong>{correctText}</strong></span>
+            </div>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 // Calm review of a completed Daily 7. Used by:
 // - Today's 7 done card on Home and Daily tab
 // - Calendar past-completed-day tap on Daily tab
-// Deliberately not the full Results screen: no celebration, no Play
-// Again, no Share — just date, score, countdown, streak context,
-// recent rhythm, and missed-answer review (when data is available).
-function DailyReviewScreen({ date, score, wrongAnswers, dailyHistory, loginStreak, onBack }) {
+// Deliberately not the full Results screen: no celebration banner, no
+// Play Again, no Share. Phase 5x renders the FULL ordered review when
+// allAnswers is present; falls back to the wrongAnswers-only block for
+// Phase 5u-5w days, or to score-card-only for pre-Phase-5u days.
+function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory, loginStreak, onBack }) {
   const todayYMD = dateToYMD(new Date());
   const dateYMD = dateToYMD(date);
   const isToday = dateYMD === todayYMD;
   const dayLabel = date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
   const dateLabel = isToday ? `Today · ${dayLabel}` : dayLabel;
+  const hasAll = Array.isArray(allAnswers) && allAnswers.length > 0;
   const hasWrong = Array.isArray(wrongAnswers) && wrongAnswers.length > 0;
-  const isPerfect = score === 7;
   const today = useMemo(() => new Date(), []);
-
-  // Category breakdown — only show when ≥2 distinct categories have
-  // misses. Single-category case adds no info beyond the wrong-review.
-  const catSummary = useMemo(() => {
-    if (!hasWrong) return null;
-    const counts = {};
-    for (const w of wrongAnswers) {
-      if (w?.cat) counts[w.cat] = (counts[w.cat] || 0) + 1;
-    }
-    const cats = Object.keys(counts);
-    if (cats.length < 2) return null;
-    return cats
-      .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
-      .map(c => `${c} (${counts[c]})`)
-      .join(", ");
-  }, [wrongAnswers, hasWrong]);
 
   const streakLine = (() => {
     if (!loginStreak || loginStreak < 1) return null;
@@ -5859,8 +5971,19 @@ function DailyReviewScreen({ date, score, wrongAnswers, dailyHistory, loginStrea
         )}
       </div>
       <Mini7Strip history={dailyHistory} today={today} />
-      {hasWrong ? (
+      {hasAll ? (
         <>
+          <div className="ds-eyebrow settings-section-title" style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
+            <span>Full review</span>
+            <span style={{color:"var(--t3)", fontSize:11, fontWeight:600, letterSpacing:0.4, textTransform:"none"}}>{score}/7 correct</span>
+          </div>
+          <div className="dr-list">
+            {allAnswers.map((a, i) => <ReviewQuestionCard key={i} a={a} index={i} />)}
+          </div>
+        </>
+      ) : hasWrong ? (
+        <>
+          {/* Legacy Phase 5u–5w fallback: missed-answers-only block. */}
           <div className="ds-eyebrow settings-section-title">
             Missed {wrongAnswers.length === 1 ? "answer" : "answers"}
           </div>
@@ -5877,29 +6000,19 @@ function DailyReviewScreen({ date, score, wrongAnswers, dailyHistory, loginStrea
               </div>
             ))}
           </div>
-          {catSummary && (
-            <div style={{fontSize:12, color:"var(--t3)", textAlign:"center", marginTop:12, fontStyle:"italic"}}>
-              Categories tripped: {catSummary}
-            </div>
-          )}
         </>
-      ) : isPerfect ? (
+      ) : (
         <div style={{
-          background:"rgba(34,197,94,0.06)",
-          border:"1px solid rgba(34,197,94,0.20)",
-          borderRadius:14,
-          padding:"20px 18px",
+          fontSize:13,
+          color:"var(--t3)",
+          fontStyle:"italic",
           textAlign:"center",
+          padding:"4px 16px",
+          lineHeight:1.5,
         }}>
-          <div style={{fontSize:32, marginBottom:8}} aria-hidden="true">🎯</div>
-          <div style={{fontSize:14, color:"var(--t1)", fontWeight:700, marginBottom:4}}>
-            Perfect score
-          </div>
-          <div style={{fontSize:13, color:"var(--t2)"}}>
-            All seven correct.
-          </div>
+          Full review wasn't recorded for this day.
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
@@ -9451,13 +9564,17 @@ function AppInner() {
       const targetDate = activeDailyDate || new Date();
       const targetYMD = dateToYMD(targetDate);
       const key = keyForDate(targetDate);
-      window.storage?.set(key, JSON.stringify({ score: res.score, wrongAnswers: res.wrongAnswers || [] })).catch(() => {});
-      // Cross-device sync — push score AND wrongAnswers to profiles via
-      // two atomic JSON-merge RPCs. Phase 5w followup reversed the
-      // earlier "wrongAnswers stays local-only" decision: storage cost
-      // (~500KB/year/user) was acceptable; the UX win (review screens
-      // just work on every device) was real. Skip the WA RPC on perfect
-      // scores — no wrongAnswers to send.
+      window.storage?.set(key, JSON.stringify({
+        score: res.score,
+        wrongAnswers: res.wrongAnswers || [],
+        allAnswers: res.allAnswers || [],
+      })).catch(() => {});
+      // Cross-device sync — push score, wrongAnswers, and allAnswers to
+      // profiles via three atomic JSON-merge RPCs. wrongAnswers is kept
+      // alongside allAnswers (redundant but harmless; Phase 5x followup
+      // can prune later). Skips the WA/AA RPCs when there's nothing to
+      // send (perfect score = no wrongAnswers, but allAnswers always
+      // has 7 entries on a complete game so it always fires).
       if (user?.id) {
         supabase.rpc('upsert_daily_score', { p_ymd: targetYMD, p_score: res.score })
           .then(({ error }) => { if (error) console.warn('[daily sync]', error.message); })
@@ -9466,6 +9583,11 @@ function AppInner() {
           supabase.rpc('upsert_daily_wrong_answers', { p_ymd: targetYMD, p_wrongs: res.wrongAnswers })
             .then(({ error }) => { if (error) console.warn('[daily wa sync]', error.message); })
             .catch(e => console.warn('[daily wa sync]', e?.message || e));
+        }
+        if (res.allAnswers && res.allAnswers.length > 0) {
+          supabase.rpc('upsert_daily_all_answers', { p_ymd: targetYMD, p_answers: res.allAnswers })
+            .then(({ error }) => { if (error) console.warn('[daily aa sync]', error.message); })
+            .catch(e => console.warn('[daily aa sync]', e?.message || e));
         }
       }
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
@@ -9911,14 +10033,16 @@ function AppInner() {
   const viewDailyScore = useCallback((date, score) => {
     const ymd = dateToYMD(date);
     let wrongAnswers = [];
+    let allAnswers = [];
     try {
       const raw = localStorage.getItem(`biq_daily_${ymd}`);
       if (raw) {
         const p = JSON.parse(raw);
         if (Array.isArray(p?.wrongAnswers)) wrongAnswers = p.wrongAnswers;
+        if (Array.isArray(p?.allAnswers)) allAnswers = p.allAnswers;
       }
     } catch {}
-    setDailyReviewState({ date, score, wrongAnswers });
+    setDailyReviewState({ date, score, wrongAnswers, allAnswers });
     setScreen("daily-review");
   }, []);
 
@@ -10423,6 +10547,7 @@ function AppInner() {
             date={dailyReviewState.date}
             score={dailyReviewState.score}
             wrongAnswers={dailyReviewState.wrongAnswers}
+            allAnswers={dailyReviewState.allAnswers}
             dailyHistory={dailyHistory}
             loginStreak={loginStreak}
             onBack={() => setScreen("home")}
