@@ -976,7 +976,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
 .q-text{font-size:18px !important;}
-.sbar{height:env(safe-area-inset-top,0);}
+.sbar{position:sticky;top:0;z-index:10;height:env(safe-area-inset-top,0);background:var(--bg);}
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
 .logo{font-size:19px;font-weight:800;letter-spacing:-0.4px;color:var(--text);flex-shrink:0;}
 .hdr-xp{flex:1;min-width:80px;display:flex;align-items:center;gap:8px;}
@@ -999,24 +999,28 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    for in-card eyebrows and other screen uses). Flex container so the
    Daily header can host a streak chip on the right; "More modes" with
    a single child sits left as expected via justify-content:space-between. */
-.home-section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+.home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
 /* Optional small uppercase eyebrow above .home-section-title — used to
    give a section a touch more presence. Kept declarative ("Game modes",
    not marketing copy). */
 .home-section-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:0 0 4px;}
+/* Coming Soon — demoted to a single muted text line so it doesn't
+   compete visually with available game modes. Was a 3-card grid that
+   looked nearly identical to active modes. */
+.coming-soon-list{margin-top:18px;font-size:12px;line-height:1.5;color:var(--t3);}
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
-.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:linear-gradient(135deg,#FF6B35 0%,#F23131 100%);border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;letter-spacing:0;text-transform:none;box-shadow:0 2px 8px rgba(242,49,49,0.25);will-change:transform;}
+.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:linear-gradient(135deg,#FF6B35 0%,#F23131 100%);border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;letter-spacing:0;text-transform:none;box-shadow:0 1px 4px rgba(242,49,49,0.15);will-change:transform;}
 /* Pulse fires once per session when loginStreak exceeds the value
    captured at AppInner mount (i.e. user just earned today's streak day).
    Subtle by design — celebrating the moment, not demanding attention. */
 .hst-streak.is-pulsing{animation:streakPulse 1.5s cubic-bezier(0.22,1,0.36,1);}
 @keyframes streakPulse{
-  0%   { transform: scale(1);    box-shadow: 0 2px 8px rgba(242,49,49,0.25); }
-  18%  { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(242,49,49,0.22), 0 4px 14px rgba(242,49,49,0.4); }
-  36%  { transform: scale(1.04); box-shadow: 0 0 0 2px rgba(242,49,49,0.12), 0 3px 10px rgba(242,49,49,0.28); }
-  100% { transform: scale(1);    box-shadow: 0 2px 8px rgba(242,49,49,0.25); }
+  0%   { transform: scale(1);    box-shadow: 0 1px 4px rgba(242,49,49,0.15); }
+  18%  { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(242,49,49,0.18), 0 3px 10px rgba(242,49,49,0.28); }
+  36%  { transform: scale(1.04); box-shadow: 0 0 0 2px rgba(242,49,49,0.10), 0 2px 8px rgba(242,49,49,0.18); }
+  100% { transform: scale(1);    box-shadow: 0 1px 4px rgba(242,49,49,0.15); }
 }
 .home-stat-row{display:flex;gap:10px;margin-bottom:24px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
@@ -1155,8 +1159,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .wc-days em{color:#B45309;}
 .wc-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;font-weight:500;}
 .light .wc-sub{color:#48484A;}
-.wc-arrow{font-size:20px;color:#FFC800;flex-shrink:0;margin-left:auto;}
-.light .wc-arrow{color:#B45309;}
+.wc-cta{display:inline-flex;align-items:center;padding:6px 12px;background:#FFC800;color:#1A0F05;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;margin-left:auto;-webkit-text-fill-color:#1A0F05;}
+.light .wc-cta{background:#B45309;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
 /* ── Play button: neutral elevated (accent reserved for Daily action) ── */
 .cta-play{background:var(--s1);border:1px solid var(--border);}
@@ -1982,7 +1986,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    with a green eyebrow and green emoji. */
 .daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
 .daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
-.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 14px;min-height:124px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
+.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 16px;min-height:128px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
 .daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
 .daily-pair-card:active{transform:scale(0.98);}
 .daily-pair-card.challenge{background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);border-color:transparent;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
@@ -8426,6 +8430,18 @@ function AppInner() {
     return 0;
   });
   const [streakToast, setStreakToast] = useState(null);
+  // Rotating product-voice tagline shown under the greeting on home.
+  // Initializer runs once per AppInner mount → stable for the session.
+  const [homeTagline] = useState(() => {
+    const taglines = [
+      "How well do you know the game?",
+      "Today's challenge awaits.",
+      "Pick your battle.",
+      "Think you know your stuff?",
+      "The pitch is calling.",
+    ];
+    return taglines[Math.floor(Math.random() * taglines.length)];
+  });
   // Streak chip pulse — fires once per session when the daily-streak load
   // effect bumps loginStreak past the value persisted at last app close.
   // initialStreakRef captures the synchronous useState value on mount;
@@ -9703,14 +9719,17 @@ function AppInner() {
               return (
                 <div style={{padding:"10px 0 12px"}}>
                   <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-                    <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>{greeting}</div>
+                    <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
                     {homeAuthLoading ? (
                       <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
                     ) : (
-                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
+                      <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>
                         {authProfile?.username || profile?.name || "Guest"}
                       </div>
                     )}
+                  </div>
+                  <div style={{fontSize:13, color:"var(--t3)", marginTop:4}}>
+                    {homeTagline}
                   </div>
                   {homeShowCTA && (
                     <button
@@ -9802,13 +9821,12 @@ function AppInner() {
                     )}
                     <div className="wc-sub">{started ? "Tap to play the tournament quiz" : "North America awaits"}</div>
                   </div>
-                  <div className="wc-arrow">→</div>
+                  <div className="wc-cta">Play →</div>
                 </button>
               );
             })()}
 
             {/* ── MORE MODES ── */}
-            <div className="home-section-eyebrow">Game modes</div>
             <div className="home-section-title">More modes</div>
             <div className="play-grid">
               {[
@@ -9845,25 +9863,9 @@ function AppInner() {
               ];
               if (COMING_SOON.length === 0) return null;
               return (
-                <>
-                  <div className="ds-eyebrow" style={{marginTop:18}}>Coming Soon</div>
-                  <div className="play-grid" style={{marginTop:8}}>
-                    {COMING_SOON.map(({ key, icon, name, desc }) => (
-                      <button
-                        key={key}
-                        className="play-card coming-soon soon-tile"
-                        onClick={() => showToast(`${icon} ${name} is coming soon — stay tuned!`)}
-                      >
-                        <span className="play-card-badge">Soon</span>
-                        <span className="play-card-icon">{icon}</span>
-                        <span className="play-card-body">
-                          <span className="play-card-name">{name}</span>
-                          <span className="play-card-desc">{desc}</span>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </>
+                <div className="coming-soon-list">
+                  Coming soon: {COMING_SOON.map(m => m.name).join(' · ')}
+                </div>
               );
             })()}
           </div>
