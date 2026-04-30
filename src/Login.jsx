@@ -26,23 +26,53 @@ export default function Login() {
     setMessage('')
     setLoading(true)
 
-    if (mode === 'signup') {
-      if (!username.trim() || username.length < 3) {
-        setError('Username must be at least 3 characters')
-        setLoading(false)
-        return
+    try {
+      if (mode === 'signup') {
+        if (!username.trim() || username.length < 3) {
+          setError('Username must be at least 3 characters')
+          setLoading(false)
+          return
+        }
+        if (password.length < 6) {
+          setError('Password must be at least 6 characters')
+          setLoading(false)
+          return
+        }
+        const { data, error } = await signUp(email, password, username.trim())
+        // Diagnostic — surface what the auth call actually returned. If
+        // login regresses again, the next reproduction will have visible
+        // state in the console (Mac Safari → Develop → iPhone for mobile).
+        console.log('[login] signUp returned', {
+          hasError: !!error,
+          errorMessage: error?.message,
+          hasUser: !!data?.user,
+          hasSession: !!data?.session,
+        })
+        if (error) setError(error.message || 'Sign-up failed — please try again.')
+        else setMessage('Check your email to confirm your account, then log in.')
+      } else {
+        const { data, error } = await signIn(email, password)
+        console.log('[login] signIn returned', {
+          hasError: !!error,
+          errorMessage: error?.message,
+          hasUser: !!data?.user,
+          hasSession: !!data?.session,
+        })
+        if (error) {
+          setError(error.message || 'Login failed — please try again.')
+        } else if (!data?.session) {
+          // Auth API returned no error but no session either — defensive
+          // path so the user sees something instead of a silent button reset.
+          setError('Sign-in succeeded but no session was returned. Please try again.')
+        }
+        // On true success, onAuthStateChange in useAuth.jsx will fire and
+        // AppGate will swap to AppInner, unmounting this component.
       }
-      if (password.length < 6) {
-        setError('Password must be at least 6 characters')
-        setLoading(false)
-        return
-      }
-      const { error } = await signUp(email, password, username.trim())
-      if (error) setError(error.message)
-      else setMessage('Check your email to confirm your account, then log in.')
-    } else {
-      const { error } = await signIn(email, password)
-      if (error) setError(error.message)
+    } catch (e) {
+      // Surface any thrown exception (network failure, Supabase client
+      // misconfiguration, etc.) instead of letting the button silently reset.
+      console.error('[login] handleSubmit exception', e)
+      setError(`Unexpected error: ${e?.message || String(e)}`)
     }
     setLoading(false)
   }

@@ -31,7 +31,16 @@ export function AuthProvider({ children }) {
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
+        // Diagnostic — visibility into auth-state propagation. If login
+        // appears to succeed at the API level but the app stays on the
+        // Login screen, the absence of a SIGNED_IN log here narrows the
+        // root cause to the listener (vs the signIn API call itself).
+        console.log('[auth] state change', {
+          event,
+          hasSession: !!session,
+          userId: session?.user?.id,
+        })
         setUser(session?.user ?? null)
         if (session?.user) {
           setIsGuest(false)
