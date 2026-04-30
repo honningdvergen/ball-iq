@@ -1212,7 +1212,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mi-name{font-size:14px;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;}
 .mi-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 .mi-arrow{font-size:13px;color:var(--t2);}
-.quiz-wrap{padding-top:20px;}
+.quiz-wrap{padding-top:20px;padding-bottom:16px;min-height:calc(100vh - 40px);}
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
@@ -1232,12 +1232,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* Correct / wrong feedback — matches design-system quiz-answers spec */
 .opt.correct{border-color:rgba(88,204,2,0.55);background:rgba(88,204,2,0.12);color:#8AE042;}
 .opt.wrong{border-color:rgba(255,59,48,0.55);background:rgba(255,59,48,0.10);color:#FF8080;}
-.opt.neutral-after{opacity:0.42;color:var(--t3);}
+.opt.neutral-after{opacity:0.65;color:var(--t2);}
 /* Letter chip (A/B/C/D) */
 .opt-l{width:30px;height:30px;border-radius:9px;background:var(--s2);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;color:var(--t3);border:1px solid var(--border);transition:background 0.15s,color 0.15s,border-color 0.15s;}
 .opt.correct .opt-l{background:#58CC02;color:#0A0A0A;border-color:#58CC02;}
 .opt.wrong .opt-l{background:#FF3B30;color:#fff;border-color:#FF3B30;}
-.opt.neutral-after .opt-l{background:var(--s2);color:var(--t3);}
+.opt.neutral-after .opt-l{background:var(--s2);color:var(--t2);}
 .feedback{border-radius:9px;padding:10px 14px;margin-top:9px;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
 .feedback.correct{background:rgba(34,197,94,0.08);color:var(--green);border:1px solid rgba(34,197,94,0.18);}
 .feedback.wrong{background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.18);}
@@ -1261,10 +1261,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .timer{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--t2);min-width:28px;text-align:right;}
 .timer.urgent{color:var(--red);animation:tp 0.5s ease infinite alternate;}
 @keyframes tp{from{opacity:1;}to{opacity:0.4;}}
-.streak-bar{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.15);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:11px;margin-bottom:12px;}
-.streak-n{font-size:24px;font-weight:800;color:var(--gold);line-height:1;}
-.streak-info{font-size:12px;color:var(--t2);}
-.streak-info strong{display:block;color:var(--gold);font-size:13px;font-weight:600;}
+/* Slim inline label row for Survival's streak indicator. Demoted from
+   the previous gold-tinted card so it doesn't compete with the question
+   card below. Reads as a quiet status line above the question. */
+.streak-bar{background:transparent;border:none;border-radius:0;padding:0 2px 8px;display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
+.streak-n{font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;}
+.streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
 .pc.me{border-color:var(--accent-b);background:var(--accent-dim);}
 .pc-score{font-size:24px;font-weight:800;color:var(--text);}
@@ -1833,7 +1836,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .feedback{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
-.next-btn-primary{position:relative;z-index:1;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;box-shadow:0 6px 20px rgba(10,10,10,0.4);}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{opacity:0.85;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
@@ -1919,8 +1922,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
 .wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
 .wd-header{display:flex;align-items:center;gap:12px;}
-.wd-back{flex-shrink:0;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
-.wd-back:hover{background:var(--s2);}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
 .wd-sub{font-size:11px;color:var(--t3);margin-top:2px;letter-spacing:0.02em;}
@@ -8416,7 +8417,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
   return (
     <div className="wd-screen">
       <div className="wd-header">
-        <button className="wd-back" onClick={onBack} aria-label="Back">←</button>
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">⚽ Today's Puzzle</div>
           <div className="wd-sub">{dateLabel}</div>
@@ -9821,15 +9822,9 @@ function AppInner() {
               <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:4}}>
                 <button
                   type="button"
+                  className="back-btn"
                   onClick={backToLeagues}
                   aria-label="Back to league picker"
-                  style={{
-                    width:32, height:32, borderRadius:9,
-                    background:"var(--s2)", border:"1px solid var(--border)",
-                    color:"var(--t1)", fontSize:16, lineHeight:1, cursor:"pointer",
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    flexShrink:0,
-                  }}
                 >←</button>
                 <div className="diff-sheet-title" style={{margin:0}}>{leagueMode.name} — Choose mode</div>
               </div>
