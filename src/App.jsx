@@ -2014,6 +2014,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
 .wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
 .wd-share:active{opacity:0.85;}
+.wd-back{padding:10px 22px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:var(--accent);}
+.wd-back:active{opacity:0.85;}
 
 .wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;}
 .wd-kb-row{display:flex;justify-content:center;gap:5px;}
@@ -6040,6 +6042,17 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
     : lost ? "Better luck tomorrow"
     : "";
 
+  // Performance tier on won state. Skip on lost (the "Better luck
+  // tomorrow" already covers tone). Calmly informative — no emoji.
+  const tierLine = !won ? null
+    : guesses.length === 1 ? "Incredible"
+    : guesses.length === 2 ? "Excellent"
+    : guesses.length === 3 ? "Great"
+    : guesses.length === 4 ? "Good"
+    : guesses.length === 5 ? "Phew"
+    : guesses.length === 6 ? "Just made it"
+    : null;
+
   const dateLabel = useMemo(
     () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }),
     [date]
@@ -6066,10 +6079,13 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
     }, { onToast: () => {}, textFallback: shareText });
   }, [shareText, guesses, answer, dateLabel, lost]);
 
-  // Build read-only 6-row grid: completed guesses with grades, empty
-  // rows for unused attempts. No flip animation, no shake, no input.
+  // Read-only grid. Phase 5z polish: drop empty rows on won state —
+  // show only the rows the user actually used. Lost state keeps all 6
+  // rows since the user used them all (guesses.length === 6 by game
+  // logic). No flip animation, no shake, no input.
+  const totalRows = lost ? 6 : (hasData ? guesses.length : 0);
   const rows = [];
-  for (let r = 0; r < 6; r++) {
+  for (let r = 0; r < totalRows; r++) {
     if (hasData && r < guesses.length) {
       const g = guesses[r];
       const grades = gradeWordleGuess(g, answer);
@@ -6091,16 +6107,23 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
 
   return (
     <div className="screen">
+      {/* Phase 5z polish: dropped the top back-btn chevron. Result
+          screens get the bottom "Back to Home" pattern instead.
+          Title stays in the page-hdr; left-aligns by default flex. */}
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="page-title">Today's Puzzle</div>
       </div>
 
       {hasData ? (
         <>
-          <div style={{textAlign:"center", fontSize:15, fontWeight:700, color:"var(--t1)", marginBottom:18, letterSpacing:"-0.2px"}}>
+          <div style={{textAlign:"center", fontSize:15, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.2px", marginBottom: tierLine ? 0 : 18}}>
             {resultLine}
           </div>
+          {tierLine && (
+            <div style={{textAlign:"center", fontSize:13, fontWeight:600, color:"var(--t2)", marginTop:8, marginBottom:18}}>
+              {tierLine}
+            </div>
+          )}
 
           <div className="wd-grid wd-grid--ended" style={{ "--wd-cols": cols }}>
             {rows}
@@ -6113,8 +6136,9 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
           )}
 
           {(won || lost) && (
-            <div style={{display:"flex", justifyContent:"center", marginTop:20}}>
-              <button onClick={onShare} className="wd-share">Share result</button>
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:20}}>
+              <button onClick={onShare} className="wd-share" style={{width:"min(280px, 100%)"}}>Share result</button>
+              <button onClick={onBack} className="wd-back" style={{width:"min(280px, 100%)"}}>Back to Home</button>
             </div>
           )}
 
@@ -6123,9 +6147,14 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
           </div>
         </>
       ) : (
-        <div style={{textAlign:"center", padding:"40px 20px", fontSize:14, color:"var(--t3)", fontStyle:"italic"}}>
-          Puzzle wasn't recorded for this day.
-        </div>
+        <>
+          <div style={{textAlign:"center", padding:"40px 20px", fontSize:14, color:"var(--t3)", fontStyle:"italic"}}>
+            Puzzle wasn't recorded for this day.
+          </div>
+          <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:8}}>
+            <button onClick={onBack} className="wd-back" style={{width:"min(280px, 100%)"}}>Back to Home</button>
+          </div>
+        </>
       )}
     </div>
   );
