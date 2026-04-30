@@ -48,15 +48,39 @@ export default function ReviewScreen({ onBack }) {
   const id = item?.q?.id;
   const currentStatus = decisions.get(id)?.status || STATUS.PENDING;
 
+  // Phase 5y: 1-based rank of the current item among pending items in
+  // the pool. Null when the current item is already decided (rank
+  // undefined) — UI hides the sub-counter in that case.
+  const pendingPosition = useMemo(() => {
+    if (!item) return null;
+    const status = decisions.get(item.q.id)?.status;
+    const isPending = !status || status === STATUS.PENDING;
+    if (!isPending) return null;
+    let countBefore = 0;
+    for (let i = 0; i < idx; i++) {
+      const s = decisions.get(REVIEW_POOL[i].q.id)?.status;
+      if (!s || s === STATUS.PENDING) countBefore++;
+    }
+    return countBefore + 1;
+  }, [decisions, idx, item]);
+
+  // Phase 5y: iterate REVIEW_POOL directly so orphan rows in the
+  // decisions Map (rows for questions that publish-review removed from
+  // QB/TF) don't get counted. Previously the math computed
+  // `pending = TOTAL - decisions.size`, which over-counted reviewed by
+  // the number of rejected/orphaned items, so the pending number was
+  // ~19 too low after the latest publish round.
   const counts = useMemo(() => {
-    let approved = 0, rejected = 0, flagged = 0;
-    for (const d of decisions.values()) {
-      if (d.status === STATUS.APPROVED) approved++;
-      else if (d.status === STATUS.REJECTED) rejected++;
-      else if (d.status === STATUS.FLAGGED) flagged++;
+    let approved = 0, rejected = 0, flagged = 0, pending = 0;
+    for (const it of REVIEW_POOL) {
+      const status = decisions.get(it.q.id)?.status;
+      if      (status === STATUS.APPROVED) approved++;
+      else if (status === STATUS.REJECTED) rejected++;
+      else if (status === STATUS.FLAGGED)  flagged++;
+      else                                  pending++;
     }
     const reviewed = approved + rejected + flagged;
-    return { approved, rejected, flagged, reviewed, pending: TOTAL - reviewed };
+    return { approved, rejected, flagged, reviewed, pending };
   }, [decisions]);
 
   // Initial load
@@ -85,6 +109,23 @@ export default function ReviewScreen({ onBack }) {
       }
       setDecisions(m);
       setLoading(false);
+
+      // Phase 5y: auto-skip on mount. If the saved idx (restored from
+      // localStorage at component-init) points to an already-decided
+      // item, kick forward to the next pending. Mirrors jumpNextPending
+      // but operates against the freshly-loaded Map directly since
+      // setDecisions hasn't propagated through closures yet.
+      const currentStatus = m.get(REVIEW_POOL[idx]?.q?.id)?.status;
+      if (currentStatus && currentStatus !== STATUS.PENDING) {
+        for (let step = 1; step <= TOTAL; step++) {
+          const j = (idx + step) % TOTAL;
+          const s = m.get(REVIEW_POOL[j]?.q?.id)?.status;
+          if (!s || s === STATUS.PENDING) {
+            setIdx(j);
+            break;
+          }
+        }
+      }
     })();
     return () => { cancelled = true; };
   }, [user?.id]);
@@ -124,13 +165,17 @@ export default function ReviewScreen({ onBack }) {
     const nowIso = new Date().toISOString();
 
     // Optimistic local update + advance immediately so the next question is
-    // ready before the network round-trip completes.
+    // ready before the network round-trip completes. Phase 5y: skip past
+    // already-decided items so the next visible question is genuinely
+    // pending, not "already approved last session." jumpNextPending starts
+    // at idx+1, so the just-decided item is naturally skipped regardless
+    // of whether the optimistic decisions update has propagated yet.
     setDecisions(prev => {
       const next = new Map(prev);
       next.set(targetId, { status, source: targetSource, updated_at: nowIso });
       return next;
     });
-    advance();
+    jumpNextPending();
 
     const { error } = await supabase
       .from('question_review')
@@ -150,7 +195,7 @@ export default function ReviewScreen({ onBack }) {
       });
       showToast('Save failed: ' + (error.message || 'unknown'), 'err');
     }
-  }, [item, decisions, user?.id, advance, showToast]);
+  }, [item, decisions, user?.id, jumpNextPending, showToast]);
 
   // Keyboard shortcuts. Skip when focus is inside an editable element so we
   // don't intercept typing — currently no inputs exist on this screen, but
@@ -204,7 +249,7 @@ export default function ReviewScreen({ onBack }) {
 
   return (
     <Frame onBack={onBack}>
-      <ProgressStrip idx={idx} counts={counts} />
+      <ProgressStrip idx={idx} counts={counts} pendingPosition={pendingPosition} />
 
       <div className="q-card">
         {q.cat && <div className="q-tag">{q.cat}</div>}
@@ -325,7 +370,7 @@ function Frame({ onBack, children }) {
   );
 }
 
-function ProgressStrip({ idx, counts }) {
+function ProgressStrip({ idx, counts, pendingPosition }) {
   return (
     <div style={{padding:'2px 0 14px', fontSize:12, color:'var(--t2)', fontFamily:"'Inter',sans-serif"}}>
       <div style={{
@@ -333,6 +378,11 @@ function ProgressStrip({ idx, counts }) {
         fontFamily:"'JetBrains Mono','SF Mono',monospace", fontVariantNumeric:'tabular-nums',
       }}>
         {idx + 1} / {TOTAL}
+        {pendingPosition !== null && counts.pending > 0 && (
+          <span style={{marginLeft:10, color:'var(--t3)', fontWeight:600}}>
+            · pending #{pendingPosition} of {counts.pending}
+          </span>
+        )}
       </div>
       <div style={{display:'flex', flexWrap:'wrap', gap:'4px 14px', fontVariantNumeric:'tabular-nums'}}>
         <span style={{color:'#8AE042'}}>✓ {counts.approved}</span>
