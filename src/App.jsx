@@ -1833,7 +1833,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .feedback{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
-.next-btn-primary{position:relative;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.next-btn-primary{position:relative;z-index:1;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{opacity:0.85;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
@@ -3227,10 +3227,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           if (idx === 0) { onBack(); return; }
           setShowQuit(true);
         }} aria-label="Go back">←</button>
-        <div className="prog-wrap"><div className="prog-bar" style={{ width: `${((idx + (answered ? 1 : 0)) / total) * 100}%` }} /></div>
+        {mode === "survival" ? (
+          <div style={{flex:1}} />
+        ) : (
+          <div className="prog-wrap"><div className="prog-bar" style={{ width: `${((idx + (answered ? 1 : 0)) / total) * 100}%` }} /></div>
+        )}
         <div className="q-top-right">
           {score > 0 && <span className="q-score-live">{score}<span className="q-score-tick"> ✓</span></span>}
-          <span className="q-ctr">{idx + 1}/{total}</span>
+          <span className="q-ctr">{mode === "survival" ? `Q${idx + 1}` : `${idx + 1}/${total}`}</span>
         </div>
       </div>
 
@@ -6073,8 +6077,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               }}>BETA</span>
             )}
           </div>
-          <div style={{fontSize:13,color:"var(--t2)",marginTop:14}}>{(QB.length + TF_STATEMENTS.length).toLocaleString()} questions and counting</div>
-          <div style={{fontSize:12,color:"var(--t3)",marginTop:6}}>Made with ⚽ in Norway</div>
+          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>Made with ⚽ in Norway</div>
           {/* Ghost outlined to match the secondary-action discipline used on
               result screens — filled green is reserved for primary actions. */}
           <a
@@ -9125,9 +9128,10 @@ function AppInner() {
         const newInfo = getLevelInfo(newXp);
         window.storage?.set("biq_xp", String(newXp)).catch(() => {});
         const leveledUp = newInfo.level.name !== oldInfo.level.name;
-        if (xpToastTimerRef.current) clearTimeout(xpToastTimerRef.current);
-        setXpToast({ earned, leveledUp, levelName: newInfo.level.name, icon: newInfo.level.icon });
-        xpToastTimerRef.current = setTimeout(() => setXpToast(null), 3200);
+        // XP toast intentionally not fired here — every result screen
+        // already shows a static "+N XP earned" footer, so the floating
+        // toast was duplicating the same indicator. Level-ups still get
+        // the full-screen levelUpOverlay below for celebration.
         if (leveledUp) {
           if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
           levelUpTimerRef.current = setTimeout(() => {
