@@ -2026,6 +2026,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .daily-pair-card.challenge .daily-pair-status{color:rgba(10,10,10,0.78);}
 .daily-pair-status strong{font-weight:800;color:var(--accent);}
 .daily-pair-card.challenge .daily-pair-status strong{color:#1A0F05;}
+.daily-pair-substatus{font-size:10.5px;line-height:1.3;margin-top:3px;color:var(--t3);}
+.daily-pair-card.challenge .daily-pair-substatus{color:rgba(10,10,10,0.55);}
+.daily-pair-card.wordle .daily-pair-substatus{color:rgba(255,255,255,0.6);}
 .daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
 
 /* ════════════════════════════════════════════════════════════════════
@@ -7969,16 +7972,17 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           <div className="daily-pair-status">
             {isDone
               ? <>✅ Done · <strong>{shownScore}/7</strong></>
-              : <>Resets in <DailyHeroCountdown /></>}
+              : <>Today</>}
           </div>
+          <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
         </button>
         {(() => {
           const ws = readWordleTodayStatus();
           const wordleStatus =
-            ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-            ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
-            ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · Resets in <DailyHeroCountdown /></> :
-            <>Resets in <DailyHeroCountdown /></>;
+            ws.kind === "won"         ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+            ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
+            ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
+            <>Today</>;
           return (
             <button
               className="daily-pair-card wordle"
@@ -7987,6 +7991,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
             >
               <div className="daily-pair-title">Puzzle</div>
               <div className="daily-pair-status">{wordleStatus}</div>
+              <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
             </button>
           );
         })()}
@@ -10039,16 +10044,17 @@ function AppInner() {
                 <div className="daily-pair-status">
                   {dailyDone
                     ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                    : <>Resets in <DailyHeroCountdown /></>}
+                    : <>Today</>}
                 </div>
+                <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
               </button>
               {(() => {
                 const ws = readWordleTodayStatus();
                 const wordleStatus =
-                  ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-                  ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
-                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · Resets in <DailyHeroCountdown /></> :
-                  <>Resets in <DailyHeroCountdown /></>;
+                  ws.kind === "won"         ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+                  ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
+                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
+                  <>Today</>;
                 return (
                   <button
                     className="daily-pair-card wordle"
@@ -10057,6 +10063,7 @@ function AppInner() {
                   >
                     <div className="daily-pair-title">Puzzle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
+                    <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
                   </button>
                 );
               })()}
