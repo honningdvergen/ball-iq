@@ -170,27 +170,51 @@ export function AuthProvider({ children }) {
     // union-merge is safe — there's no "delete a day" operation that
     // a stale local value could undo. Local-only days back-sync up.
 
-    // Daily scores (score per YMD). wrongAnswers detail stays local-only.
+    // Daily scores (score per YMD) AND daily wrongAnswers (array per YMD).
+    // Phase 5w followup added the wrongAnswers sync; folded into the same
+    // merge pass so each per-day localStorage write happens once with
+    // both fields. The two remote columns are independent; the local
+    // representation keeps both in the same biq_daily_<ymd> record.
     const remoteDailyScores = (remoteProfile.daily_scores && typeof remoteProfile.daily_scores === 'object')
       ? remoteProfile.daily_scores : {}
     const localDailyScores = readLocalMap(/^biq_daily_(\d{4}-\d{2}-\d{2})$/, p => (typeof p?.score === 'number' ? p.score : null))
     const mergedDailyScores = { ...localDailyScores, ...remoteDailyScores }
-    for (const [ymd, score] of Object.entries(mergedDailyScores)) {
-      // Preserve existing local wrongAnswers if present.
-      let existing = null
-      try { existing = JSON.parse(localStorage.getItem(`biq_daily_${ymd}`) || 'null') } catch {}
-      const merged = { score, ...(existing?.wrongAnswers ? { wrongAnswers: existing.wrongAnswers } : {}) }
-      try { localStorage.setItem(`biq_daily_${ymd}`, JSON.stringify(merged)) } catch {}
+
+    const remoteDailyWA = (remoteProfile.daily_wrong_answers && typeof remoteProfile.daily_wrong_answers === 'object')
+      ? remoteProfile.daily_wrong_answers : {}
+    const localDailyWA = readLocalMap(
+      /^biq_daily_(\d{4}-\d{2}-\d{2})$/,
+      p => (Array.isArray(p?.wrongAnswers) && p.wrongAnswers.length > 0 ? p.wrongAnswers : null)
+    )
+    const mergedDailyWA = { ...localDailyWA, ...remoteDailyWA }
+
+    // One write per day with both fields. Skip orphan WA entries that
+    // somehow lack a score (shouldn't happen, defensive).
+    const allDailyDays = new Set([...Object.keys(mergedDailyScores), ...Object.keys(mergedDailyWA)])
+    for (const ymd of allDailyDays) {
+      const score = mergedDailyScores[ymd]
+      if (typeof score !== 'number') continue
+      const wrongs = mergedDailyWA[ymd]
+      const record = wrongs ? { score, wrongAnswers: wrongs } : { score }
+      try { localStorage.setItem(`biq_daily_${ymd}`, JSON.stringify(record)) } catch {}
     }
+
+    // Back-sync: one-time per device per user. Pre-launch, no need to
+    // batch — at worst a few dozen rows. Flag for batching (chunks of
+    // 50 with a delay) if/when this becomes load-bearing.
     const localOnlyDailyDays = Object.keys(localDailyScores).filter(d => !(d in remoteDailyScores))
     if (localOnlyDailyDays.length > 0) {
-      // Fire-and-forget; one-time per device per user. Pre-launch, no
-      // need to batch — at worst a few dozen rows. Flag for batching
-      // (chunks of 50 with a delay) if/when this becomes load-bearing.
       Promise.all(localOnlyDailyDays.map(d =>
         supabase.rpc('upsert_daily_score', { p_ymd: d, p_score: localDailyScores[d] })
           .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily]', d, error.message) })
       )).catch(e => console.warn('[hydrate back-sync daily]', e?.message || e))
+    }
+    const localOnlyDailyWADays = Object.keys(localDailyWA).filter(d => !(d in remoteDailyWA))
+    if (localOnlyDailyWADays.length > 0) {
+      Promise.all(localOnlyDailyWADays.map(d =>
+        supabase.rpc('upsert_daily_wrong_answers', { p_ymd: d, p_wrongs: localDailyWA[d] })
+          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily wa]', d, error.message) })
+      )).catch(e => console.warn('[hydrate back-sync daily wa]', e?.message || e))
     }
 
     // Wordle state (full {guesses, status} per YMD).

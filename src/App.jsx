@@ -5899,18 +5899,7 @@ function DailyReviewScreen({ date, score, wrongAnswers, dailyHistory, loginStrea
             All seven correct.
           </div>
         </div>
-      ) : (
-        <div style={{
-          fontSize:13,
-          color:"var(--t3)",
-          fontStyle:"italic",
-          textAlign:"center",
-          padding:"4px 16px",
-          lineHeight:1.5,
-        }}>
-          Detailed answer review for this day isn't on this device.
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -9463,12 +9452,21 @@ function AppInner() {
       const targetYMD = dateToYMD(targetDate);
       const key = keyForDate(targetDate);
       window.storage?.set(key, JSON.stringify({ score: res.score, wrongAnswers: res.wrongAnswers || [] })).catch(() => {});
-      // Cross-device sync — push score (only) to profiles.daily_scores via
-      // an atomic JSON-merge RPC. wrongAnswers stays local-only by design.
+      // Cross-device sync — push score AND wrongAnswers to profiles via
+      // two atomic JSON-merge RPCs. Phase 5w followup reversed the
+      // earlier "wrongAnswers stays local-only" decision: storage cost
+      // (~500KB/year/user) was acceptable; the UX win (review screens
+      // just work on every device) was real. Skip the WA RPC on perfect
+      // scores — no wrongAnswers to send.
       if (user?.id) {
         supabase.rpc('upsert_daily_score', { p_ymd: targetYMD, p_score: res.score })
           .then(({ error }) => { if (error) console.warn('[daily sync]', error.message); })
           .catch(e => console.warn('[daily sync]', e?.message || e));
+        if (res.wrongAnswers && res.wrongAnswers.length > 0) {
+          supabase.rpc('upsert_daily_wrong_answers', { p_ymd: targetYMD, p_wrongs: res.wrongAnswers })
+            .then(({ error }) => { if (error) console.warn('[daily wa sync]', error.message); })
+            .catch(e => console.warn('[daily wa sync]', e?.message || e));
+        }
       }
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
       const todayYMD = dateToYMD(new Date());
