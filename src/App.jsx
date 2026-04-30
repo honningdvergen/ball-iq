@@ -1759,6 +1759,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wr-q{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:5px;}
 .wr-a{font-size:13px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px;}
 .wr-tick{width:18px;height:18px;background:var(--green);color:#0a1a00;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+.wr-user{font-size:13px;font-weight:700;color:var(--red);display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.wr-x{width:18px;height:18px;background:var(--red);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
 .xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Inter',sans-serif;}
 .streak-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a0a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(251,191,36,0.4);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
 .xp-earned-badge{text-align:center;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:8px;padding:8px 14px;margin-bottom:8px;}
@@ -3122,14 +3124,17 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   }, [mode, doAdvance]);
   useEffect(() => { advanceRef.current = advance; }, [advance]);
 
-  const registerAnswer = useCallback((correct) => {
+  const registerAnswer = useCallback((correct, userAnswerText) => {
     clearInterval(timerRef.current);
     const ns = correct ? score + 1 : score;
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
     setScore(ns); setStreak(nst); setBestStreak(nb);
     if (!correct && q && correct !== "timeout") {
-      setWrongAnswers(prev => [...prev, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], cat: q.cat }]);
+      // userAnswerText carries what the user picked so the missed-answers
+      // review on the result screen can show "✗ X · ✓ Y". Typed inputs
+      // don't pass it (different code path); those just show "✓ correct".
+      setWrongAnswers(prev => [...prev, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat }]);
     }
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
     if (isSpeed && correct) {
@@ -3145,6 +3150,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     // T/F questions store answer as boolean OR number; MCQ stores as index
     const qAsBool = q.a === true || q.a === 1;
     const correct = q.type === "tf" ? ((i === 1) === qAsBool) : (i === q.a);
+    // Capture user's chosen text for the missed-answers review.
+    const userAnswerText = q.type === "tf" ? (i === 1 ? "TRUE" : "FALSE") : q.o[i];
     playSound(correct ? "correct" : "wrong");
     // Bigger celebration for HARD questions right
     if (correct && q.diff === "hard") {
@@ -3155,7 +3162,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     } else {
       haptic(correct ? "correct" : "wrong");
     }
-    registerAnswer(correct);
+    registerAnswer(correct, userAnswerText);
   }, [answered, done, q, registerAnswer, soundEnabled]);
 
   useEffect(() => {
@@ -5463,16 +5470,24 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
 // risked falling foul of App Store guideline 2.3 (Accurate Metadata).
 // This replacement only states facts about the score the user actually
 // got — no fabricated comparisons.
-function DailySocialProof({ score, total }) {
+// Daily-specific tier copy. Returns the same shape DailySocialProof used
+// (emoji + headline + sub), but extracted so the Results screen can use
+// the headline/sub as the score-tier tagline without rendering the full
+// duplicate-card UI. Daily personality preserved, single celebration.
+function dailyTierCopy(score, total) {
   const safeTotal = total || 7;
   const safeScore = Math.max(0, Math.min(safeTotal, score || 0));
-  const { emoji, headline, sub } = (() => {
-    if (safeScore === safeTotal) return { emoji: "🏆", headline: "Perfect run!",        sub: "All seven correct — flawless." };
-    if (safeScore >= 6)          return { emoji: "🌟", headline: "Excellent!",          sub: "One of those days where it just clicks." };
-    if (safeScore >= 4)          return { emoji: "⚽", headline: "Solid challenge.",    sub: "Some tough ones in there today." };
-    if (safeScore >= 2)          return { emoji: "📈", headline: "Keep going.",         sub: "Tomorrow's another chance to climb." };
-    return                              { emoji: "💪", headline: "Everyone starts somewhere.", sub: "Come back tomorrow for a fresh seven." };
-  })();
+  if (safeScore === safeTotal) return { emoji: "🏆", headline: "Perfect run!",        sub: "All seven correct — flawless." };
+  if (safeScore >= 6)          return { emoji: "🌟", headline: "Excellent!",          sub: "One of those days where it just clicks." };
+  if (safeScore >= 4)          return { emoji: "⚽", headline: "Solid challenge.",    sub: "Some tough ones in there today." };
+  if (safeScore >= 2)          return { emoji: "📈", headline: "Keep going.",         sub: "Tomorrow's another chance to climb." };
+  return                              { emoji: "💪", headline: "Everyone starts somewhere.", sub: "Come back tomorrow for a fresh seven." };
+}
+
+function DailySocialProof({ score, total }) {
+  const { emoji, headline, sub } = dailyTierCopy(score, total);
+  const safeTotal = total || 7;
+  const safeScore = Math.max(0, Math.min(safeTotal, score || 0));
 
   return (
     <div style={{
@@ -5598,9 +5613,6 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
       {(isPerfect || showConfetti) && <Confetti />}
       <ResultsCloseBtn onClose={onHome} />
 
-      {/* Daily social proof — only Daily Challenge */}
-      {isDaily && <DailySocialProof score={result.score} total={result.total} />}
-
       {/* Final score eyebrow + huge green number + caption */}
       <div style={{textAlign:"center", padding:"20px 0 8px"}}>
         <div className="ds-eyebrow">Final score</div>
@@ -5619,10 +5631,20 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
         </div>
         <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}</div>
-        {/* Score-tier tagline. Survival is streak-based so percentage doesn't
-            cleanly map; the existing "X in a row" caption + personal-best
-            callout already carry the moment for that mode. */}
-        {!isSurvival && (
+        {/* Score-tier tagline. Daily uses the daily-specific tier copy so
+            the personality from the old DailySocialProof callout is kept
+            ("Tomorrow's another chance to climb" etc.) without the
+            duplicate card. Survival skips — its caption + PB callout
+            already carry the moment. */}
+        {isDaily ? (() => {
+          const { headline, sub } = dailyTierCopy(result.score, result.total);
+          return (
+            <>
+              <div style={{marginTop:6, fontSize:15, color:"var(--t1)", fontWeight:700}}>{headline}</div>
+              <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{sub}</div>
+            </>
+          );
+        })() : !isSurvival && (
           <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
             {scoreTagline(pct)}
           </div>
@@ -5633,16 +5655,38 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
             <span>Personal best{isNewBest && classicBest ? ` — was ${classicBest}` : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}</span>
           </div>
         )}
+        {/* XP indicator promoted into the celebration moment — was a muted
+            footer below the buttons; now sits with the score in gold so it
+            reads as a reward rather than a footnote. Gold matches XP
+            theming elsewhere in the app (toasts, level-up overlay). */}
+        {xpEarned > 0 && (
+          <div style={{marginTop:14, fontSize:14, color:"var(--gold)", fontWeight:700}}>
+            +{xpEarned} XP earned ⚡
+          </div>
+        )}
       </div>
 
-      {/* Best streak still surfaces when it's actually notable — anything below
-          3 in a row reads as ambient noise on the results screen. Accuracy was
-          dropped: the percentage is implicit in "X correct out of Y" already. */}
+      {/* Best streak as a small gold pill — reads as an achievement
+          badge rather than a stat row. Hides below 3 in a row (anything
+          smaller would be ambient noise). */}
       {result.bestStreak != null && result.bestStreak >= 3 && (
-        <>
-          <div style={{height:1, background:"var(--border)", margin:"18px 0 4px"}} />
-          <StatRow label="Best streak" value={`${result.bestStreak} in a row`} />
-        </>
+        <div style={{textAlign:"center", marginTop:18}}>
+          <span style={{
+            display:"inline-flex",
+            alignItems:"center",
+            gap:8,
+            padding:"8px 14px",
+            background:"rgba(255,200,0,0.08)",
+            border:"1px solid rgba(255,200,0,0.25)",
+            borderRadius:999,
+            fontSize:13,
+            fontWeight:700,
+            color:"var(--gold)",
+          }}>
+            <span>🔥</span>
+            <span>Best streak: {result.bestStreak} in a row</span>
+          </span>
+        </div>
       )}
 
       {result.winner && (
@@ -5658,14 +5702,6 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
 
-      {/* XP earned moved from a full-width pill to a small footer note — it's
-          a footnote-tier reward, not a primary fact. */}
-      {xpEarned > 0 && (
-        <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
-          +{xpEarned} XP earned ⚡
-        </div>
-      )}
-
       {/* Wrong answers review — below the buttons */}
       {wrongAnswers && wrongAnswers.length > 0 && (
         <div style={{marginTop:24}}>
@@ -5676,6 +5712,11 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
             {wrongAnswers.map((w, i) => (
               <div key={i} className="wr-item">
                 <div className="wr-q">{w.q}</div>
+                {w.user && (
+                  <div className="wr-user">
+                    <span className="wr-x">✗</span>{w.user}
+                  </div>
+                )}
                 <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
               </div>
             ))}
