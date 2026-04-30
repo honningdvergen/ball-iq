@@ -6106,7 +6106,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="ds-eyebrow settings-section-title">About</div>
         <div className="settings-card" style={{padding:"24px 18px",textAlign:"center"}}>
           <div style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
-          <div style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>{APP_NAME}</div>
+          <div style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
           {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
               numeric/muted and "BETA" gets its own amber pill — clear pre-
               release signal without dominating the card. */}
@@ -6168,7 +6168,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           {user ? (
             <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
               <div className="sr-left">
-                <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>🗑️ Delete account</div>
+                <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
                 <div className="sr-desc">Permanently remove your profile and data</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
@@ -6176,7 +6176,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           ) : (
             <div className="settings-row" style={{cursor:"default",opacity:0.5}}>
               <div className="sr-left">
-                <div className="sr-label">🗑️ Delete account</div>
+                <div className="sr-label">Delete account</div>
                 <div className="sr-desc">Sign in to manage your account</div>
               </div>
             </div>
