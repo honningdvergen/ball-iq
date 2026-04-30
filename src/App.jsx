@@ -7896,7 +7896,7 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare, dailyHistory, onPlayDate, onViewScore }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore }) {
   const today = useMemo(() => new Date(), []);
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   // Defensive: derive done-state from BOTH the dailyDone prop AND a fresh
@@ -7917,21 +7917,45 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
   const shownScore = dailyScore != null ? dailyScore : localScore;
   return (
     <div className="tab-content">
-      <div className="daily-hero">
-        <div className="daily-hero-title">{isDone ? "Challenge Complete!" : "Today's Challenge"}</div>
-        <div className="daily-hero-sub">
-          {isDone ? (
-            <>You scored {shownScore}/7 today. <DailyCountdown /></>
-          ) : "7 questions. One chance per day."}
-        </div>
-        <button className={`daily-hero-btn ${isDone?"done":"available"}`} onClick={onPlay} disabled={isDone}>
-          {isDone ? <DailyCountdown score={shownScore} /> : "Play Today's Challenge"}
+      {/* Two-card peer row — Today's 7 + Today's Puzzle. Mirrors the
+          Home Daily section so the Daily tab and Home Daily feel like
+          the same component. Drops the duplicate "Challenge Complete!"
+          callout (the result screen handles celebration); drops the
+          yellow Share button (sharing belongs on the result screen). */}
+      <div className="daily-pair" style={{marginBottom:14}}>
+        <button
+          className="daily-pair-card challenge"
+          onClick={() => isDone ? onViewScore(today, shownScore) : onPlay()}
+          aria-label={isDone ? `Daily challenge complete: ${shownScore} out of 7` : "Play today's daily challenge"}
+        >
+          <div className="daily-pair-eyebrow">Daily Challenge</div>
+          <div className="daily-pair-title">Today's 7</div>
+          <div className="daily-pair-status">
+            {isDone
+              ? <>✅ Done · <strong>{shownScore}/7</strong></>
+              : <>Resets in <DailyHeroCountdown /></>}
+          </div>
+          <div className="daily-pair-emoji">🔥</div>
         </button>
-        {isDone && onShare && (
-          <button className="btn-3d amber" onClick={onShare} style={{marginTop:14}}>
-            Share Result 📤
-          </button>
-        )}
+        {(() => {
+          const ws = readWordleTodayStatus();
+          const wordleStatus =
+            ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
+            ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
+            ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · Resets in <DailyHeroCountdown /></> :
+            <>Resets in <DailyHeroCountdown /></>;
+          return (
+            <button
+              className="daily-pair-card wordle"
+              onClick={() => onPlayWordle && onPlayWordle()}
+              aria-label="Play today's puzzle"
+            >
+              <div className="daily-pair-eyebrow">Daily Puzzle</div>
+              <div className="daily-pair-title">Today's Puzzle</div>
+              <div className="daily-pair-status">{wordleStatus}</div>
+            </button>
+          );
+        })()}
       </div>
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
@@ -10110,7 +10134,7 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
-            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} onShare={shareDaily} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />
+            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />
           </div>
         )}
 
