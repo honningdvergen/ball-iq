@@ -6137,12 +6137,20 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
 
           {(won || lost) && (
             <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:20}}>
-              <button onClick={onShare} className="wd-share" style={{width:"min(280px, 100%)"}}>Share result</button>
-              <button onClick={onBack} className="wd-back" style={{width:"min(280px, 100%)"}}>Back to Home</button>
+              {/* width:min(310px, calc(100vw - 80px)) matches the
+                  .wd-grid--ended .wd-row max-width — buttons edge-align
+                  with the grid above on every viewport. padding:14px 22px
+                  bumps height inline (base .wd-share keeps 10px 22px so
+                  the active puzzle's share button stays unaffected).
+                  marginTop:0 overrides .wd-share's baked-in margin:4px
+                  auto 0 so Share and Back share an identical 10px gap
+                  from the flex parent. */}
+              <button onClick={onShare} className="wd-share" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share result</button>
+              <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
             </div>
           )}
 
-          <div style={{textAlign:"center", marginTop:24, fontSize:13, color:"var(--t3)"}}>
+          <div style={{textAlign:"center", marginTop:14, fontSize:13, color:"var(--t3)"}}>
             Next puzzle in <DailyHeroCountdown />
           </div>
         </>
@@ -6152,7 +6160,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
             Puzzle wasn't recorded for this day.
           </div>
           <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:8}}>
-            <button onClick={onBack} className="wd-back" style={{width:"min(280px, 100%)"}}>Back to Home</button>
+            <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
           </div>
         </>
       )}
