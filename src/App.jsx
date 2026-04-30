@@ -3101,7 +3101,13 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [showQuit, setShowQuit] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const advanceRef = useRef(null);
-  const [wrongAnswers, setWrongAnswers] = useState([]);
+  // wrongAnswers is purely terminal — only emitted to onComplete, never
+  // read for in-flight UI display. Using a ref instead of state avoids a
+  // stale-closure bug where doAdvance captures the array before the most
+  // recent setWrongAnswers had landed; the final-question wrong answer
+  // was silently dropped from the array passed up to handleComplete.
+  const wrongAnswersRef = useRef([]);
+  useEffect(() => { wrongAnswersRef.current = []; }, [questions]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
   const hardRightBurstTimerRef = useRef(null);
   useEffect(() => () => {
@@ -3117,8 +3123,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const answered = selected !== null || typedResult !== null;
 
   const doAdvance = useCallback((ns, nb, correct) => {
-    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers }); return; }
-    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers, speedScore }); return; }
+    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current }); return; }
+    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, speedScore }); return; }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
@@ -3140,7 +3146,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       // userAnswerText carries what the user picked so the missed-answers
       // review on the result screen can show "✗ X · ✓ Y". Typed inputs
       // don't pass it (different code path); those just show "✓ correct".
-      setWrongAnswers(prev => [...prev, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat }]);
+      wrongAnswersRef.current = [...wrongAnswersRef.current, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat }];
     }
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
     if (isSpeed && correct) {
@@ -5745,32 +5751,27 @@ function DailyReviewScreen({ date, score, wrongAnswers, onBack }) {
   const dateLabel = isToday
     ? "Today"
     : date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "short" });
+  const hasWrong = Array.isArray(wrongAnswers) && wrongAnswers.length > 0;
+  const isPerfect = score === 7;
   return (
-    <div className="screen" style={{padding:"16px 16px 32px"}}>
-      <div style={{display:"flex", alignItems:"center", marginBottom:24}}>
-        <button
-          onClick={onBack}
-          style={{background:"none",border:"none",color:"var(--t1)",fontSize:16,fontWeight:600,cursor:"pointer",padding:"6px 0",fontFamily:"inherit"}}
-          aria-label="Back"
-        >
-          ← Back
-        </button>
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Daily review</div>
       </div>
-      <div style={{textAlign:"center", marginBottom:28}}>
-        <div style={{fontSize:13, color:"var(--t3)", fontWeight:600, letterSpacing:"0.04em", textTransform:"uppercase", marginBottom:6}}>
-          {dateLabel}
+      <div className="settings-card" style={{padding:"24px 20px", textAlign:"center", marginBottom:18}}>
+        <div className="ds-eyebrow" style={{marginBottom:8}}>{dateLabel}</div>
+        <div style={{fontSize:32, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.5px", marginBottom:6, fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontVariantNumeric:"tabular-nums"}}>
+          {score}/7
         </div>
-        <div style={{fontSize:24, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:8}}>
-          You scored {score}/7
-        </div>
-        <div style={{fontSize:13, color:"var(--t3)"}}>
+        <div style={{fontSize:13, color:"var(--t2)"}}>
           Next challenge in <DailyHeroCountdown />
         </div>
       </div>
-      {wrongAnswers && wrongAnswers.length > 0 ? (
-        <div>
-          <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
-            Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
+      {hasWrong ? (
+        <>
+          <div className="ds-eyebrow settings-section-title">
+            Missed {wrongAnswers.length === 1 ? "answer" : "answers"}
           </div>
           <div className="wrong-review">
             {wrongAnswers.map((w, i) => (
@@ -5785,12 +5786,34 @@ function DailyReviewScreen({ date, score, wrongAnswers, onBack }) {
               </div>
             ))}
           </div>
+        </>
+      ) : isPerfect ? (
+        <div style={{
+          border:"1.5px dashed var(--border2)",
+          borderRadius:14,
+          padding:"24px 20px",
+          textAlign:"center",
+          background:"var(--s2)",
+        }}>
+          <div style={{fontSize:32, marginBottom:8}} aria-hidden="true">🎯</div>
+          <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.5}}>
+            Perfect score — no answers to review.
+          </div>
         </div>
-      ) : score < 7 ? (
-        <div style={{textAlign:"center", fontSize:13, color:"var(--t3)", padding:"20px 16px", lineHeight:1.5}}>
-          Missed-answer details aren't saved for this day.
+      ) : (
+        <div style={{
+          border:"1.5px dashed var(--border2)",
+          borderRadius:14,
+          padding:"24px 20px",
+          textAlign:"center",
+          background:"var(--s2)",
+        }}>
+          <div style={{fontSize:32, marginBottom:8, opacity:0.5}} aria-hidden="true">📋</div>
+          <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.5}}>
+            Missed-answer details aren't saved for this day.
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
