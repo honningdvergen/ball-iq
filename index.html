@@ -136,11 +136,22 @@
         body > #root {
           padding-left: 220px;
         }
+        /* Marketing chrome below the app needs the same sidebar clearance
+           — otherwise the fixed DesktopNav overlays the leftmost portion
+           of the features grid / signup / footer at viewport widths
+           1024-1640. Has been broken since Phase 5b; .landing-bottom
+           never got the same offset as #root. */
+        body > .landing-bottom {
+          padding-left: 220px;
+        }
       }
       @media (display-mode: standalone) {
         body > #root {
           max-width: none !important;
           margin: 0 !important;
+          padding-left: 0 !important;
+        }
+        body > .landing-bottom {
           padding-left: 0 !important;
         }
       }

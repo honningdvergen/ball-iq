@@ -1924,12 +1924,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-header{display:flex;align-items:center;gap:12px;}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
-.wd-sub{font-size:11px;color:var(--t3);margin-top:2px;letter-spacing:0.02em;}
+.wd-sub{font-size:13px;font-weight:600;color:var(--t2);margin-top:3px;letter-spacing:0;}
 .wd-countdown{flex-shrink:0;text-align:right;padding:6px 10px;background:var(--s1);border:1px solid var(--border);border-radius:10px;}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
-.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:0 0 auto;margin-top:auto;padding:8px 0;}
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:0 0 auto;padding:8px 0;}
 /* Once the game has ended the keyboard collapses and a result card slides in
    below, so the grid no longer needs to fill remaining space. Hug content,
    tighten internal gaps, and leave a clean 14px breathing zone above the
@@ -1979,9 +1979,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
 .light .wd-key-grey{background:#9CA0AB;color:#fff;}
-.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0A0A0A;box-shadow:0 4px 0 #46A302;transform:translateY(0);transition:transform 80ms ease,box-shadow 80ms ease,filter 120ms;user-select:none;padding:0;}
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
-.wd-key-enter:active{transform:translateY(2px);box-shadow:0 2px 0 #46A302;}
+.wd-key-enter:active{opacity:0.85;}
 
 /* Home middle row — Wordle + Multiplayer side by side. Sits between the
    full-width Daily hero and the WC2026 banner. */
@@ -8420,7 +8420,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">⚽ Today's Puzzle</div>
-          <div className="wd-sub">Guess today's footballer</div>
+          <div className="wd-sub">Player or manager — guess the surname</div>
         </div>
         <div className="wd-countdown" title="New player tomorrow">
           <div className="wd-countdown-label">Next</div>
