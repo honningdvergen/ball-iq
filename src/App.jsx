@@ -7936,7 +7936,7 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
   const today = useMemo(() => new Date(), []);
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   // Defensive: derive done-state from BOTH the dailyDone prop AND a fresh
@@ -7983,11 +7983,12 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
             ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
             ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
             <>Today</>;
+          const isPuzzleDone = ws.kind === "won" || ws.kind === "lost";
           return (
             <button
               className="daily-pair-card wordle"
-              onClick={() => onPlayWordle && onPlayWordle()}
-              aria-label="Play today's puzzle"
+              onClick={() => isPuzzleDone ? (onViewPuzzle && onViewPuzzle(ws)) : (onPlayWordle && onPlayWordle())}
+              aria-label={isPuzzleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
             >
               <div className="daily-pair-title">Puzzle</div>
               <div className="daily-pair-status">{wordleStatus}</div>
@@ -9696,6 +9697,11 @@ function AppInner() {
     showToast(`🏅 ${label} — you scored ${score}/7`);
   }, [showToast]);
 
+  const viewPuzzleStatus = useCallback((ws) => {
+    if (ws?.kind === "won") showToast(`🏅 Puzzle solved in ${ws.used}/6`);
+    else if (ws?.kind === "lost") showToast(`Puzzle missed today — better luck tomorrow`);
+  }, [showToast]);
+
   return (
     <>
       <style>{css}</style>
@@ -10037,8 +10043,8 @@ function AppInner() {
             <div className="daily-pair">
               <button
                 className="daily-pair-card challenge"
-                onClick={() => dailyDone ? setTab("daily") : startMode("daily")}
-                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7. View daily tab.` : "Play today's daily challenge"}
+                onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
+                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7` : "Play today's daily challenge"}
               >
                 <div className="daily-pair-title">Today's 7</div>
                 <div className="daily-pair-status">
@@ -10055,11 +10061,12 @@ function AppInner() {
                   ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
                   ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
                   <>Today</>;
+                const isPuzzleDone = ws.kind === "won" || ws.kind === "lost";
                 return (
                   <button
                     className="daily-pair-card wordle"
-                    onClick={() => setScreen("wordle")}
-                    aria-label="Play today's puzzle"
+                    onClick={() => isPuzzleDone ? viewPuzzleStatus(ws) : setScreen("wordle")}
+                    aria-label={isPuzzleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
                   >
                     <div className="daily-pair-title">Puzzle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
@@ -10161,7 +10168,7 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
-            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} />
+            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
           </div>
         )}
 
