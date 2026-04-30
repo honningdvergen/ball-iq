@@ -5733,6 +5733,68 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
   );
 }
 
+// Calm review of a completed Daily 7. Used by:
+// - Today's 7 done card on Home and Daily tab
+// - Calendar past-completed-day tap on Daily tab
+// Deliberately not the full Results screen: no celebration, no Play
+// Again, no Share — just date, score, countdown, missed answers.
+function DailyReviewScreen({ date, score, wrongAnswers, onBack }) {
+  const todayYMD = dateToYMD(new Date());
+  const dateYMD = dateToYMD(date);
+  const isToday = dateYMD === todayYMD;
+  const dateLabel = isToday
+    ? "Today"
+    : date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "short" });
+  return (
+    <div className="screen" style={{padding:"16px 16px 32px"}}>
+      <div style={{display:"flex", alignItems:"center", marginBottom:24}}>
+        <button
+          onClick={onBack}
+          style={{background:"none",border:"none",color:"var(--t1)",fontSize:16,fontWeight:600,cursor:"pointer",padding:"6px 0",fontFamily:"inherit"}}
+          aria-label="Back"
+        >
+          ← Back
+        </button>
+      </div>
+      <div style={{textAlign:"center", marginBottom:28}}>
+        <div style={{fontSize:13, color:"var(--t3)", fontWeight:600, letterSpacing:"0.04em", textTransform:"uppercase", marginBottom:6}}>
+          {dateLabel}
+        </div>
+        <div style={{fontSize:24, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:8}}>
+          You scored {score}/7
+        </div>
+        <div style={{fontSize:13, color:"var(--t3)"}}>
+          Next challenge in <DailyHeroCountdown />
+        </div>
+      </div>
+      {wrongAnswers && wrongAnswers.length > 0 ? (
+        <div>
+          <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
+            Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
+          </div>
+          <div className="wrong-review">
+            {wrongAnswers.map((w, i) => (
+              <div key={i} className="wr-item">
+                <div className="wr-q">{w.q}</div>
+                {w.user && (
+                  <div className="wr-user">
+                    <span className="wr-x">✗</span>{w.user}
+                  </div>
+                )}
+                <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : score < 7 ? (
+        <div style={{textAlign:"center", fontSize:13, color:"var(--t3)", padding:"20px 16px", lineHeight:1.5}}>
+          Missed-answer details aren't saved for this day.
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function StatRow({ label, value, valueColor }) {
   return (
     <div style={{
@@ -8614,6 +8676,7 @@ function AppInner() {
   const [questions, setQuestions] = useState([]);
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [dailyReviewState, setDailyReviewState] = useState(null);
   const [stats, setStats] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_stats");
@@ -9268,7 +9331,7 @@ function AppInner() {
       const targetDate = activeDailyDate || new Date();
       const targetYMD = dateToYMD(targetDate);
       const key = keyForDate(targetDate);
-      window.storage?.set(key, JSON.stringify({ score: res.score })).catch(() => {});
+      window.storage?.set(key, JSON.stringify({ score: res.score, wrongAnswers: res.wrongAnswers || [] })).catch(() => {});
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
       const todayYMD = dateToYMD(new Date());
       if (targetYMD === todayYMD) {
@@ -9693,9 +9756,18 @@ function AppInner() {
   }, [showToast]);
 
   const viewDailyScore = useCallback((date, score) => {
-    const label = date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
-    showToast(`🏅 ${label} — you scored ${score}/7`);
-  }, [showToast]);
+    const ymd = dateToYMD(date);
+    let wrongAnswers = [];
+    try {
+      const raw = localStorage.getItem(`biq_daily_${ymd}`);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (Array.isArray(p?.wrongAnswers)) wrongAnswers = p.wrongAnswers;
+      }
+    } catch {}
+    setDailyReviewState({ date, score, wrongAnswers });
+    setScreen("daily-review");
+  }, []);
 
   const viewPuzzleStatus = useCallback((ws) => {
     if (ws?.kind === "won") showToast(`🏅 Puzzle solved in ${ws.used}/6`);
@@ -10193,6 +10265,14 @@ function AppInner() {
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
+        {!inGame && screen === "daily-review" && dailyReviewState && (
+          <DailyReviewScreen
+            date={dailyReviewState.date}
+            score={dailyReviewState.score}
+            wrongAnswers={dailyReviewState.wrongAnswers}
+            onBack={() => setScreen("home")}
+          />
+        )}
         {!inGame && screen === "friend-profile" && viewingFriendId && (
           <FriendProfileScreen
             friendId={viewingFriendId}
