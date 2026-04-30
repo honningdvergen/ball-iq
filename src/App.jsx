@@ -1929,7 +1929,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
-.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:1;padding:8px 0;}
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:0 0 auto;margin-top:auto;padding:8px 0;}
 /* Once the game has ended the keyboard collapses and a result card slides in
    below, so the grid no longer needs to fill remaining space. Hug content,
    tighten internal gaps, and leave a clean 14px breathing zone above the
@@ -1970,7 +1970,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
 .wd-share:active{opacity:0.85;}
 
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;}
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;}
 .wd-kb-row{display:flex;justify-content:center;gap:5px;}
 .wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
@@ -8420,7 +8420,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">⚽ Today's Puzzle</div>
-          <div className="wd-sub">Guess today's footballer · {dateLabel}</div>
+          <div className="wd-sub">Guess today's footballer</div>
         </div>
         <div className="wd-countdown" title="New player tomorrow">
           <div className="wd-countdown-label">Next</div>
