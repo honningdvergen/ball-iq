@@ -1530,7 +1530,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-today{border-color:var(--accent);border-width:2px;font-weight:800;background:var(--accent-dim);color:var(--accent);}
 .cal-cell.cal-today.cal-done{background:var(--accent);color:#fff;}
 .cal-cell.cal-future{opacity:0.35;cursor:not-allowed;color:var(--t3);background:transparent;border-style:dashed;}
-.cal-cell.cal-missed{background:var(--s2);color:var(--t3);border-color:var(--border);}
+.cal-cell.cal-missed{background:rgba(239,68,68,0.05);color:var(--t3);border-color:rgba(239,68,68,0.18);}
+.cal-cell.cal-missed .cal-num{text-decoration:line-through;text-decoration-color:rgba(239,68,68,0.55);text-decoration-thickness:1.5px;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
 .cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
@@ -1565,7 +1566,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-avatar-wrap{position:relative;}
 .profile-avatar{width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;transition:all 0.2s;}
 .profile-avatar:active{transform:scale(0.93);}
-.profile-avatar-edit{position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0a1a00;font-weight:800;cursor:pointer;}
+.profile-avatar-edit{position:absolute;bottom:-2px;right:-2px;width:28px;height:28px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#0a1a00;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:transform 0.12s;}
+.profile-avatar-edit:hover{transform:scale(1.05);}
+.profile-avatar-edit:active{transform:scale(0.95);}
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:100%;max-width:220px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
@@ -7545,7 +7548,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
               avatarEmoji(profile?.avatar)
             )}
           </div>
-          <div className="profile-avatar-edit" onClick={openAvatarPicker}>+</div>
+          <div className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo">✏️</div>
         </div>
         {authLoading ? (
           <div className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>
@@ -7840,7 +7843,7 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
       <div className="cal-legend">
         <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent)"}} />Done</span>
         <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent-dim)", border:"1.5px solid var(--accent)"}} />Today</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--s2)"}} />Missed</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.25)"}} />Missed</span>
       </div>
     </div>
   );
@@ -7850,7 +7853,6 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
 function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, iqHistory, onSuggest, xp, onUseShield, shieldActive, onShare, dailyHistory, onPlayDate, onViewScore }) {
   const today = useMemo(() => new Date(), []);
-  const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   // Defensive: derive done-state from BOTH the dailyDone prop AND a fresh
   // localStorage read. Catches edge cases where parent state didn't
@@ -7871,7 +7873,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
   return (
     <div className="tab-content">
       <div className="daily-hero">
-        <div className="daily-hero-date">{dateStr}</div>
         <div className="daily-hero-title">{isDone ? "Challenge Complete!" : "Today's Challenge"}</div>
         <div className="daily-hero-sub">
           {isDone ? (
@@ -8048,11 +8049,10 @@ function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
       </div>
       <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:12,padding:"10px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
         <span style={{fontSize:20}}>⚡</span>
-        <span style={{fontSize:12,color:"var(--t2)",lineHeight:1.5}}>Play any game to earn XP and climb the table. <span style={{color:"var(--accent)",fontWeight:700}}>Top 3 promote</span> every Monday.</span>
+        <span style={{fontSize:12,color:"var(--t2)",lineHeight:1.5}}>Play any game to earn XP and climb. <span style={{color:"var(--accent)",fontWeight:700}}>Top 3 promote</span> · <span style={{color:"#FF4B4B",fontWeight:700}}>bottom 3 relegate</span> every Monday.</span>
       </div>
-      <div className="league-info">
-        <div className="li-card"><div className="li-label">Top 3</div><div className="li-val" style={{color:"var(--green)"}}>Promote</div><div className="li-sub" style={{color:"var(--green)",fontSize:11}}>Move up a league</div></div>
-        <div className="li-card"><div className="li-label">Bottom 3</div><div className="li-val" style={{color:"var(--red)"}}>Relegate</div><div className="li-sub" style={{color:"var(--red)",fontSize:11}}>Drop a league</div></div>
+      <div style={{fontSize:11,color:"var(--t3)",textAlign:"center",lineHeight:1.5,marginBottom:10,fontStyle:"italic"}}>
+        Practice league · joining real players soon
       </div>
       <div className="league-table">
         <div className="lt-header"><div className="lt-hcol">#</div><div className="lt-hcol">Player</div><div className="lt-hcol" style={{textAlign:"right"}}>XP</div></div>
