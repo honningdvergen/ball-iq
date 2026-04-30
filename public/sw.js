@@ -1,12 +1,16 @@
 /* Ball IQ service worker — cache-first for static assets, network for Supabase.
  *
- * Bump CACHE_VERSION any time the shape of cached responses needs to change,
- * or when you want every installed client to force-refresh its asset cache.
- * The activate handler deletes any cache whose name doesn't match the current
- * version, so stale bundles are evicted as soon as the new SW takes over.
+ * Bump CACHE_VERSION any time you need to force-evict stale caches on
+ * installed PWA clients. Browsers detect a sw.js content change and install a
+ * new SW; the activate handler then deletes any cache that doesn't match the
+ * current version. The HTTP cache-control headers in vercel.json prevent most
+ * stale-cache failures already (no-cache on /, /index.html, /sw.js;
+ * immutable on /assets/*) — bumping CACHE_VERSION is the belt-and-braces
+ * escape hatch for when those fail (iOS PWA quirks) or when the SW logic
+ * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v3';
+const CACHE_VERSION = 'balliq-v4';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
