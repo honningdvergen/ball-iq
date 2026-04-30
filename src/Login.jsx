@@ -103,7 +103,13 @@ export default function Login() {
 
   const styles = {
     container: {
-      minHeight: '100dvh',
+      // position:fixed + inset:0 escapes #root's desktop padding-left:220px
+      // (which otherwise shifts the login content right of viewport-center).
+      // overflowY:auto keeps the form scrollable on small viewports / when
+      // the iOS keyboard pushes content above the fold.
+      position: 'fixed',
+      inset: 0,
+      overflowY: 'auto',
       backgroundColor: palette.bg,
       color: palette.text,
       display: 'flex',
@@ -223,15 +229,29 @@ export default function Login() {
   return (
     <div style={styles.container}>
       <div style={styles.logo}>⚽</div>
-      <div style={styles.title}>Ball IQ</div>
+      <div style={styles.title}>Ball <em style={{ color: palette.accent, fontStyle: 'normal' }}>IQ</em></div>
       <div style={styles.subtitle}>
         {mode === 'login' ? 'Welcome back' : 'Create your account'}
       </div>
 
-      <div style={styles.form}>
+      {/* Real <form> wrapping so password managers (1Password, iCloud
+          Keychain, Chrome autofill) can detect the field grouping. The
+          submit handler is the same handleSubmit used previously by the
+          button click — the form-submit path lets Enter in any input
+          submit naturally, matching standard web UX. */}
+      <form
+        style={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (loading || !email || !password) return;
+          handleSubmit();
+        }}
+      >
         {mode === 'signup' && (
           <input
             type="text"
+            name="username"
+            autoComplete="username"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -241,6 +261,8 @@ export default function Login() {
         )}
         <input
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -249,6 +271,8 @@ export default function Login() {
         />
         <input
           type="password"
+          name="password"
+          autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -256,7 +280,7 @@ export default function Login() {
         />
 
         <button
-          onClick={handleSubmit}
+          type="submit"
           disabled={loading || !email || !password}
           style={{
             ...styles.button,
@@ -265,7 +289,12 @@ export default function Login() {
         >
           {loading ? 'Loading...' : mode === 'login' ? 'Log in' : 'Sign up'}
         </button>
+      </form>
 
+      {/* Post-form chrome — kept in its own width-matched column so it
+          aligns visually with the form above. Was previously a child of
+          the same .form div; now a sibling so we can host a real <form>. */}
+      <div style={styles.form}>
         {error && <div style={styles.error}>{error}</div>}
         {message && <div style={styles.message}>{message}</div>}
 

@@ -1920,7 +1920,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-mark.ok{background:rgba(88,204,2,0.16);color:var(--accent);}
 
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
-.wd-screen{display:flex;flex-direction:column;gap:18px;padding:14px 0 28px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
+.wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 8px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
 .wd-header{display:flex;align-items:center;gap:12px;}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
@@ -1929,7 +1929,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
-.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1;padding:8px 0;}
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:1;padding:8px 0;}
 /* Once the game has ended the keyboard collapses and a result card slides in
    below, so the grid no longer needs to fill remaining space. Hug content,
    tighten internal gaps, and leave a clean 14px breathing zone above the
@@ -1939,7 +1939,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
 .wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,calc((100vw - 80px)));}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
-.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(380px,calc((100vw - 52px)));}
+.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(440px,calc((100vw - 32px)));}
 .wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
@@ -1970,9 +1970,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
 .wd-share:active{opacity:0.85;}
 
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:6px 0 4px;}
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;}
 .wd-kb-row{display:flex;justify-content:center;gap:5px;}
-.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s2);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.12s,transform 0.05s;padding:0;}
+.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
@@ -8420,7 +8420,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">⚽ Today's Puzzle</div>
-          <div className="wd-sub">{dateLabel}</div>
+          <div className="wd-sub">Guess today's footballer · {dateLabel}</div>
         </div>
         <div className="wd-countdown" title="New player tomorrow">
           <div className="wd-countdown-label">Next</div>
