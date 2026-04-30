@@ -71,7 +71,10 @@ export default function Login() {
     } catch (e) {
       // Surface any thrown exception (network failure, Supabase client
       // misconfiguration, etc.) instead of letting the button silently reset.
-      console.error('[login] handleSubmit exception', e)
+      // Log only name + message explicitly — never the full error object —
+      // so a future code change that throws with password content can't
+      // leak it through this path.
+      console.error('[login] handleSubmit exception', e?.name, e?.message)
       setError(`Unexpected error: ${e?.message || String(e)}`)
     }
     setLoading(false)
