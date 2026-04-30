@@ -1521,6 +1521,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-nav:hover:not(:disabled){background:var(--s3);}
 .cal-nav:disabled{opacity:0.35;cursor:not-allowed;}
 .cal-month{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;text-align:center;flex:1;}
+.cal-month-sub{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.1px;margin-top:2px;font-family:'Inter',sans-serif;}
+.cal-month-sub strong{color:var(--accent);font-weight:700;}
+.cal-month-sub .cal-month-delta{margin-left:6px;font-weight:600;}
 .cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
 .cal-dow-cell{font-size:9px;font-weight:700;color:var(--t3);text-align:center;letter-spacing:0.8px;font-family:'Inter',sans-serif;padding:4px 0;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
@@ -1533,8 +1536,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-today{border-color:var(--accent);border-width:2px;font-weight:800;background:var(--accent-dim);color:var(--accent);}
 .cal-cell.cal-today.cal-done{background:var(--accent);color:#fff;}
 .cal-cell.cal-future{opacity:0.35;cursor:not-allowed;color:var(--t3);background:transparent;border-style:dashed;}
-.cal-cell.cal-missed{background:rgba(239,68,68,0.05);color:var(--t3);border-color:rgba(239,68,68,0.18);}
-.cal-cell.cal-missed .cal-num{text-decoration:line-through;text-decoration-color:rgba(239,68,68,0.55);text-decoration-thickness:1.5px;}
+.cal-cell.cal-missed{background:rgba(239,68,68,0.03);color:var(--t3);border-color:rgba(239,68,68,0.10);}
+.cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
 .cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
@@ -7822,7 +7825,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
 }
 const ProfileScreen = React.memo(ProfileScreenImpl);
 
-function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, onViewScore }) {
+function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, onViewScore, gamesThisWeek, gamesLastWeek }) {
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
   const firstOfMonth = new Date(year, month, 1);
@@ -7837,16 +7840,48 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
   const monthLabel = viewDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
+  // First-play detection — earliest dailyHistory entry. Days before this
+  // are styled as "pre-join" (neutral grey) instead of red "missed", since
+  // the user wasn't here yet to play them.
+  const firstDailyTime = (() => {
+    const keys = history ? Object.keys(history) : [];
+    if (keys.length === 0) return null;
+    let earliest = Infinity;
+    for (const k of keys) {
+      const [Y, M, D] = k.split("-").map(Number);
+      if (!Y || !M || !D) continue;
+      const t = new Date(Y, M - 1, D).getTime();
+      if (t < earliest) earliest = t;
+    }
+    return earliest === Infinity ? null : earliest;
+  })();
+
   // Disable forward nav when the viewed month is the current month or later
   const viewedMonthIdx = year * 12 + month;
   const todayMonthIdx = today.getFullYear() * 12 + today.getMonth();
   const atCurrentMonth = viewedMonthIdx >= todayMonthIdx;
 
+  const showWeekSub = typeof gamesThisWeek === "number";
+  const weekDelta = (showWeekSub && typeof gamesLastWeek === "number" && gamesLastWeek > 0)
+    ? gamesThisWeek - gamesLastWeek : null;
+
   return (
     <div className="streak-section">
       <div className="cal-header">
         <button className="cal-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label="Previous month">←</button>
-        <div className="cal-month">{monthLabel}</div>
+        <div style={{flex:1, display:"flex", flexDirection:"column", alignItems:"center"}}>
+          <div className="cal-month">{monthLabel}</div>
+          {showWeekSub && (
+            <div className="cal-month-sub">
+              <strong>{gamesThisWeek}</strong> played this week
+              {weekDelta !== null && (
+                <span className="cal-month-delta" style={{color: weekDelta >= 0 ? "var(--accent)" : "var(--t3)"}}>
+                  {weekDelta >= 0 ? "↑" : "↓"} {Math.abs(weekDelta)} vs last
+                </span>
+              )}
+            </div>
+          )}
+        </div>
         <button className="cal-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} disabled={atCurrentMonth} aria-label="Next month">→</button>
       </div>
       <div className="cal-dow">
@@ -7863,22 +7898,24 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
           const dTime = d.getTime();
           const isToday = dTime === todayMidnight;
           const isFuture = dTime > todayMidnight;
-          const isPastMissed = dTime < todayMidnight && !isCompleted;
+          const isPreJoin = !isCompleted && firstDailyTime !== null && dTime < firstDailyTime && !isToday;
+          const isPastMissed = dTime < todayMidnight && !isCompleted && !isPreJoin;
 
           let cls = "cal-cell";
           if (isCompleted) cls += " cal-done";
           if (isToday) cls += " cal-today";
           if (isFuture) cls += " cal-future";
+          else if (isPreJoin) cls += " cal-pre-join";
           else if (isPastMissed) cls += " cal-missed";
 
           const handleClick = () => {
-            if (isFuture) return;
+            if (isFuture || isPreJoin) return;
             if (isCompleted) onViewScore(d, score);
             else onPlayDate(d);
           };
 
           return (
-            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture} aria-label={`${ymd}${isCompleted ? ` completed ${score}/7` : isToday ? " today" : isPastMissed ? " missed" : ""}`}>
+            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture || isPreJoin} aria-label={`${ymd}${isCompleted ? ` completed ${score}/7` : isToday ? " today" : isPreJoin ? " before you joined" : isPastMissed ? " missed" : ""}`}>
               <span className="cal-num">{d.getDate()}</span>
               {isCompleted && <span className="cal-check">✓</span>}
             </button>
@@ -7928,14 +7965,12 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           onClick={() => isDone ? onViewScore(today, shownScore) : onPlay()}
           aria-label={isDone ? `Daily challenge complete: ${shownScore} out of 7` : "Play today's daily challenge"}
         >
-          <div className="daily-pair-eyebrow">Daily Challenge</div>
           <div className="daily-pair-title">Today's 7</div>
           <div className="daily-pair-status">
             {isDone
               ? <>✅ Done · <strong>{shownScore}/7</strong></>
               : <>Resets in <DailyHeroCountdown /></>}
           </div>
-          <div className="daily-pair-emoji">🔥</div>
         </button>
         {(() => {
           const ws = readWordleTodayStatus();
@@ -7950,15 +7985,14 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
               onClick={() => onPlayWordle && onPlayWordle()}
               aria-label="Play today's puzzle"
             >
-              <div className="daily-pair-eyebrow">Daily Puzzle</div>
-              <div className="daily-pair-title">Today's Puzzle</div>
+              <div className="daily-pair-title">Puzzle</div>
               <div className="daily-pair-status">{wordleStatus}</div>
             </button>
           );
         })()}
       </div>
       {shieldActive && (
-        <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+        <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:20}}>🛡️</span>
             <div>
@@ -7966,20 +8000,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
               <div style={{fontSize:11,color:"var(--t2)"}}>Earned at {Math.floor((xp||0)/200)*200} XP — protects your streak once</div>
             </div>
           </div>
-          <button onClick={onUseShield} style={{background:"var(--accent)",border:"none",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"#fff",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Use 🛡️</button>
-        </div>
-      )}
-      {(stats?.gamesThisWeek !== undefined) && (
-        <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:12,padding:"12px 14px",marginBottom:12}}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:8}}>This Week</div>
-          <div style={{display:"flex",alignItems:"baseline",gap:12}}>
-            <div style={{fontSize:28,fontWeight:900,color:"var(--t1)",lineHeight:1}}>{stats?.gamesThisWeek || 0}</div>
-            <div style={{fontSize:13,color:"var(--t2)"}}>games played</div>
-            {stats?.gamesLastWeek > 0 && (() => {
-              const diff = (stats?.gamesThisWeek || 0) - stats.gamesLastWeek;
-              return <div style={{marginLeft:"auto",fontSize:12,fontWeight:700,color: diff >= 0 ? "var(--accent)" : "var(--t3)"}}>{diff >= 0 ? "↑" : "↓"} {Math.abs(diff)} vs last week</div>;
-            })()}
-          </div>
+          <button onClick={onUseShield} style={{background:"transparent",border:"1px solid var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"var(--accent)",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,fontFamily:"inherit"}}>Use 🛡️</button>
         </div>
       )}
       <MonthlyCalendar
@@ -7989,6 +8010,8 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
         setViewDate={setViewDate}
         onPlayDate={onPlayDate}
         onViewScore={onViewScore}
+        gamesThisWeek={stats?.gamesThisWeek}
+        gamesLastWeek={stats?.gamesLastWeek}
       />
       {isDone && (
         <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginTop:12,marginBottom:16}}>
@@ -10012,14 +10035,12 @@ function AppInner() {
                 onClick={() => dailyDone ? setTab("daily") : startMode("daily")}
                 aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7. View daily tab.` : "Play today's daily challenge"}
               >
-                <div className="daily-pair-eyebrow">Daily Challenge</div>
                 <div className="daily-pair-title">Today's 7</div>
                 <div className="daily-pair-status">
                   {dailyDone
                     ? <>✅ Done · <strong>{dailyScore}/7</strong></>
                     : <>Resets in <DailyHeroCountdown /></>}
                 </div>
-                <div className="daily-pair-emoji">🔥</div>
               </button>
               {(() => {
                 const ws = readWordleTodayStatus();
@@ -10034,8 +10055,7 @@ function AppInner() {
                     onClick={() => setScreen("wordle")}
                     aria-label="Play today's puzzle"
                   >
-                    <div className="daily-pair-eyebrow">Daily Puzzle</div>
-                    <div className="daily-pair-title">Today's Puzzle</div>
+                    <div className="daily-pair-title">Puzzle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
                   </button>
                 );
