@@ -7473,7 +7473,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             if (t === 0 || c > t) return "—";
             return `${Math.round(100 * c / t)}%`;
           })()}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
-          {stats.bestIQ && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
+          {stats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
           {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
           {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
         </div>
@@ -7695,20 +7695,36 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
   const today = useMemo(() => new Date(), []);
   const dateStr = today.toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
+  // Defensive: derive done-state from BOTH the dailyDone prop AND a fresh
+  // localStorage read. Catches edge cases where parent state didn't
+  // propagate (memo skip, async write race, storage write failure that
+  // resets state on reload but storage is actually present).
+  const todayYMD = dateToYMD(today);
+  let localDone = false;
+  let localScore = dailyScore;
+  try {
+    const raw = localStorage.getItem(`biq_daily_${todayYMD}`);
+    if (raw) {
+      localDone = true;
+      try { const p = JSON.parse(raw); if (typeof p?.score === "number") localScore = p.score; } catch {}
+    }
+  } catch {}
+  const isDone = dailyDone || localDone;
+  const shownScore = dailyScore != null ? dailyScore : localScore;
   return (
     <div className="tab-content">
       <div className="daily-hero">
         <div className="daily-hero-date">{dateStr}</div>
-        <div className="daily-hero-title">{dailyDone ? "Challenge Complete!" : "Today's Challenge"}</div>
+        <div className="daily-hero-title">{isDone ? "Challenge Complete!" : "Today's Challenge"}</div>
         <div className="daily-hero-sub">
-          {dailyDone ? (
-            <>You scored {dailyScore}/7 today. <DailyCountdown /></>
+          {isDone ? (
+            <>You scored {shownScore}/7 today. <DailyCountdown /></>
           ) : "7 questions. One chance per day."}
         </div>
-        <button className={`daily-hero-btn ${dailyDone?"done":"available"}`} onClick={onPlay} disabled={dailyDone}>
-          {dailyDone ? <DailyCountdown score={dailyScore} /> : "Play Today's Challenge"}
+        <button className={`daily-hero-btn ${isDone?"done":"available"}`} onClick={onPlay} disabled={isDone}>
+          {isDone ? <DailyCountdown score={shownScore} /> : "Play Today's Challenge"}
         </button>
-        {dailyDone && onShare && (
+        {isDone && onShare && (
           <button className="btn-3d amber" onClick={onShare} style={{marginTop:14}}>
             Share Result 📤
           </button>
@@ -7747,7 +7763,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
         onPlayDate={onPlayDate}
         onViewScore={onViewScore}
       />
-      {dailyDone && (
+      {isDone && (
         <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginTop:12,marginBottom:16}}>
           <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>While you wait for tomorrow…</div>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -7784,8 +7800,12 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
 const DailyTabScreen = React.memo(DailyTabScreenImpl);
 
 // ─── LEAGUE SCREEN ────────────────────────────────────────────────────────────
-const LEAGUE_NAMES = ["Carlos","Mikkel","Priya","Tomas","Yuki","Fatima","Ollie","Zara","Nnamdi","Bjorn"];
-const LEAGUE_AVATARS = ["🇧🇷","🇩🇰","🇮🇳","🇪🇸","🇯🇵","🇳🇬","🇬🇧","🇩🇪","🇦🇷","🇸🇪"];
+// 9 narrative-placeholder opponents — combined with the user, the league
+// table renders a clean 10. Dropping the last index leaves indices 0–8
+// stable across the PRNG seeded distribution (existing weekly cohort
+// arrangements unaffected; users just won't see Bjorn anymore).
+const LEAGUE_NAMES = ["Carlos","Mikkel","Priya","Tomas","Yuki","Fatima","Ollie","Zara","Nnamdi"];
+const LEAGUE_AVATARS = ["🇧🇷","🇩🇰","🇮🇳","🇪🇸","🇯🇵","🇳🇬","🇬🇧","🇩🇪","🇦🇷"];
 
 function getWeekSeed() {
   const now = new Date();
@@ -7864,8 +7884,8 @@ function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
   return (
     <div className="tab-content">
       <div className="league-header">
-        <div className="league-title">{level.icon} {level.name} League</div>
-        <div className="league-sub">Week {Math.floor(weekSeed%52)+1} — Rank #{yourRank} of 10</div>
+        <div className="league-title">{level.icon} {level.name}</div>
+        <div className="league-sub">Week {Math.floor(weekSeed%52)+1} — Rank #{yourRank} of {all.length}</div>
         <div className="league-sub" style={{color:"var(--accent)",fontWeight:700,marginTop:2}}>{myWeeklyXp} XP this week</div>
         <div className="league-timer">Resets in {daysLeft} day{daysLeft!==1?"s":""}</div>
       </div>
