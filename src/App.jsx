@@ -8405,7 +8405,7 @@ const WORDLE_KB_ROWS = [
   ["Z","X","C","V","B","N","M","DEL"],
 ];
 
-const FootballWordle = React.memo(function FootballWordle({ onBack }) {
+const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
   const dateKey = getWordleDateKey();
@@ -8441,7 +8441,14 @@ const FootballWordle = React.memo(function FootballWordle({ onBack }) {
   // Persist on every change to the game state.
   useEffect(() => {
     try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch {}
-  }, [state, storageKey]);
+    // Cross-device sync — push to profiles.wordle_state via atomic JSON
+    // merge. Skip the empty-grid initial state to avoid a useless write.
+    if (userId && state.guesses.length > 0) {
+      supabase.rpc('upsert_wordle_state', { p_ymd: dateKey, p_state: state })
+        .then(({ error }) => { if (error) console.warn('[wordle sync]', error.message); })
+        .catch(e => console.warn('[wordle sync]', e?.message || e));
+    }
+  }, [state, storageKey, userId, dateKey]);
 
   // Live "new player tomorrow" countdown. Ticks once per second.
   useEffect(() => {
@@ -8986,10 +8993,14 @@ function AppInner() {
           newStreak = 1;
         }
         const newBest = Math.max(prevBest, newStreak);
-        await window.storage?.set(
-          "biq_login_streak",
-          JSON.stringify({ streak: newStreak, lastDay: todayNum, best: newBest })
-        );
+        const streakPayload = { streak: newStreak, lastDay: todayNum, best: newBest };
+        await window.storage?.set("biq_login_streak", JSON.stringify(streakPayload));
+        // Cross-device sync — push the merged streak object to profiles.
+        if (user?.id) {
+          supabase.rpc('upsert_login_streak', { p_streak: streakPayload })
+            .then(({ error }) => { if (error) console.warn('[streak sync]', error.message); })
+            .catch(e => console.warn('[streak sync]', e?.message || e));
+        }
         setLoginStreak(newStreak);
         setBestLoginStreak(newBest);
       } catch {}
@@ -9355,6 +9366,13 @@ function AppInner() {
       const targetYMD = dateToYMD(targetDate);
       const key = keyForDate(targetDate);
       window.storage?.set(key, JSON.stringify({ score: res.score, wrongAnswers: res.wrongAnswers || [] })).catch(() => {});
+      // Cross-device sync — push score (only) to profiles.daily_scores via
+      // an atomic JSON-merge RPC. wrongAnswers stays local-only by design.
+      if (user?.id) {
+        supabase.rpc('upsert_daily_score', { p_ymd: targetYMD, p_score: res.score })
+          .then(({ error }) => { if (error) console.warn('[daily sync]', error.message); })
+          .catch(e => console.warn('[daily sync]', e?.message || e));
+      }
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
       const todayYMD = dateToYMD(new Date());
       if (targetYMD === todayYMD) {
@@ -9587,6 +9605,23 @@ function AppInner() {
       if (detail.stats && typeof detail.stats === 'object') {
         setStats(prev => ({ ...prev, ...detail.stats }));
       }
+      // Phase 5v: cross-device daily/wordle/streak sync. Hydrate has
+      // already written merged values to localStorage; this re-derives
+      // the React state that mounted from pre-hydration localStorage.
+      if (detail.dailyScores && typeof detail.dailyScores === 'object') {
+        setDailyHistory(detail.dailyScores);
+        const todayYMD = dateToYMD(new Date());
+        if (todayYMD in detail.dailyScores) {
+          setDailyDone(true);
+          setDailyScore(detail.dailyScores[todayYMD]);
+        }
+      }
+      if (detail.loginStreak) {
+        if (typeof detail.loginStreak.streak === 'number') setLoginStreak(detail.loginStreak.streak);
+        if (typeof detail.loginStreak.best === 'number') setBestLoginStreak(detail.loginStreak.best);
+      }
+      // wordleState is in the payload for forward-compat; FootballWordle
+      // re-reads localStorage on mount, so no AppInner state to refresh.
     };
     window.addEventListener('biq:hydrated', onHydrated);
     return () => window.removeEventListener('biq:hydrated', onHydrated);
@@ -10387,7 +10422,7 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle onBack={goHome} />}
+        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} />}
 
         {/* ── HOT STREAK ── */}
         {screen === "quiz" && mode === "hotstreak" && (

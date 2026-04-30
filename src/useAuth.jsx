@@ -165,14 +165,120 @@ export function AuthProvider({ children }) {
     try { localStorage.setItem('biq_xp', String(finalXp)) } catch {}
     try { localStorage.setItem('biq_stats', JSON.stringify(finalStats)) } catch {}
 
-    // Notify AppInner — its xp/stats useState initializers already ran with the
-    // pre-hydration localStorage values, so they need a kick to pick up the
-    // freshly-merged numbers.
+    // ── Phase 5v: cross-device sync for daily/wordle/login_streak ──
+    // These three are per-day-keyed (or single-object for streak), so
+    // union-merge is safe — there's no "delete a day" operation that
+    // a stale local value could undo. Local-only days back-sync up.
+
+    // Daily scores (score per YMD). wrongAnswers detail stays local-only.
+    const remoteDailyScores = (remoteProfile.daily_scores && typeof remoteProfile.daily_scores === 'object')
+      ? remoteProfile.daily_scores : {}
+    const localDailyScores = readLocalMap(/^biq_daily_(\d{4}-\d{2}-\d{2})$/, p => (typeof p?.score === 'number' ? p.score : null))
+    const mergedDailyScores = { ...localDailyScores, ...remoteDailyScores }
+    for (const [ymd, score] of Object.entries(mergedDailyScores)) {
+      // Preserve existing local wrongAnswers if present.
+      let existing = null
+      try { existing = JSON.parse(localStorage.getItem(`biq_daily_${ymd}`) || 'null') } catch {}
+      const merged = { score, ...(existing?.wrongAnswers ? { wrongAnswers: existing.wrongAnswers } : {}) }
+      try { localStorage.setItem(`biq_daily_${ymd}`, JSON.stringify(merged)) } catch {}
+    }
+    const localOnlyDailyDays = Object.keys(localDailyScores).filter(d => !(d in remoteDailyScores))
+    if (localOnlyDailyDays.length > 0) {
+      // Fire-and-forget; one-time per device per user. Pre-launch, no
+      // need to batch — at worst a few dozen rows. Flag for batching
+      // (chunks of 50 with a delay) if/when this becomes load-bearing.
+      Promise.all(localOnlyDailyDays.map(d =>
+        supabase.rpc('upsert_daily_score', { p_ymd: d, p_score: localDailyScores[d] })
+          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily]', d, error.message) })
+      )).catch(e => console.warn('[hydrate back-sync daily]', e?.message || e))
+    }
+
+    // Wordle state (full {guesses, status} per YMD).
+    const remoteWordleState = (remoteProfile.wordle_state && typeof remoteProfile.wordle_state === 'object')
+      ? remoteProfile.wordle_state : {}
+    const localWordleState = readLocalMap(/^biq_wordle_(\d{4}-\d{2}-\d{2})$/, p => (
+      p && Array.isArray(p.guesses) && typeof p.status === 'string' ? p : null
+    ))
+    const mergedWordleState = { ...localWordleState, ...remoteWordleState }
+    for (const [ymd, st] of Object.entries(mergedWordleState)) {
+      try { localStorage.setItem(`biq_wordle_${ymd}`, JSON.stringify(st)) } catch {}
+    }
+    const localOnlyWordleDays = Object.keys(localWordleState).filter(d => !(d in remoteWordleState))
+    if (localOnlyWordleDays.length > 0) {
+      Promise.all(localOnlyWordleDays.map(d =>
+        supabase.rpc('upsert_wordle_state', { p_ymd: d, p_state: localWordleState[d] })
+          .then(({ error }) => { if (error) console.warn('[hydrate back-sync wordle]', d, error.message) })
+      )).catch(e => console.warn('[hydrate back-sync wordle]', e?.message || e))
+    }
+
+    // Login streak (single object). Smart-merge: max of each field.
+    const remoteStreak = remoteProfile.login_streak && typeof remoteProfile.login_streak === 'object'
+      ? remoteProfile.login_streak : null
+    let localStreak = null
+    try { localStreak = JSON.parse(localStorage.getItem('biq_login_streak') || 'null') } catch {}
+    let mergedStreak = null
+    if (remoteStreak && localStreak) {
+      mergedStreak = {
+        lastDay: Math.max(remoteStreak.lastDay || 0, localStreak.lastDay || 0),
+        streak: Math.max(remoteStreak.streak || 0, localStreak.streak || 0),
+        best: Math.max(remoteStreak.best || 0, localStreak.best || 0),
+      }
+    } else {
+      mergedStreak = remoteStreak || localStreak || null
+    }
+    if (mergedStreak) {
+      try { localStorage.setItem('biq_login_streak', JSON.stringify(mergedStreak)) } catch {}
+      const remoteAhead = remoteStreak
+        && (remoteStreak.lastDay || 0) >= (mergedStreak.lastDay || 0)
+        && (remoteStreak.best || 0) >= (mergedStreak.best || 0)
+      if (!remoteAhead) {
+        supabase.rpc('upsert_login_streak', { p_streak: mergedStreak })
+          .then(({ error }) => { if (error) console.warn('[hydrate back-sync streak]', error.message) })
+          .catch(e => console.warn('[hydrate back-sync streak]', e?.message || e))
+      }
+    }
+
+    console.log('[hydrate] daily/wordle/streak:', {
+      dailyDays: Object.keys(mergedDailyScores).length,
+      wordleDays: Object.keys(mergedWordleState).length,
+      streak: mergedStreak,
+    })
+
+    // Notify AppInner — its xp/stats/dailyHistory/loginStreak useState
+    // initializers already ran with the pre-hydration localStorage values,
+    // so they need a kick to pick up the freshly-merged numbers.
     try {
       window.dispatchEvent(new CustomEvent('biq:hydrated', {
-        detail: { xp: finalXp, stats: finalStats },
+        detail: {
+          xp: finalXp,
+          stats: finalStats,
+          dailyScores: mergedDailyScores,
+          wordleState: mergedWordleState,
+          loginStreak: mergedStreak,
+        },
       }))
     } catch {}
+  }
+
+  // Scan localStorage for keys matching `pattern`. For each match, parse
+  // the stored JSON and run `extract` to either pluck a value or reject
+  // (return null). Returns a {ymd: value} map. Used by hydrate for
+  // daily_scores / wordle_state local-side reads.
+  function readLocalMap(pattern, extract) {
+    const out = {}
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i)
+        const m = k && k.match(pattern)
+        if (!m) continue
+        try {
+          const p = JSON.parse(localStorage.getItem(k))
+          const v = extract(p)
+          if (v !== null && v !== undefined) out[m[1]] = v
+        } catch {}
+      }
+    } catch {}
+    return out
   }
 
   async function signUp(email, password, username) {
