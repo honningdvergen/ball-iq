@@ -1610,6 +1610,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .friends-block{margin-top:14px;}
 .friends-block-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
 .friends-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--s2);}
+/* Tap-area button inside .friends-row — wraps the avatar + meta and opens
+   the friend's profile when tapped. Sits next to the Challenge button as
+   a sibling so they don't nest (avoids button-inside-button). */
+.friends-row-tap{flex:1;display:flex;align-items:center;gap:10px;background:transparent;border:none;padding:0;cursor:pointer;font-family:inherit;text-align:left;color:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;min-width:0;border-radius:6px;transition:opacity 0.12s;}
+.friends-row-tap:hover{opacity:0.85;}
+.friends-row-tap:active{opacity:0.7;}
+/* Leaderboard row when interactive (i.e. not the user's own row, which
+   stays a div). Same layout as .friends-lb-row, just button styling reset. */
+button.friends-lb-row{width:100%;font-family:inherit;text-align:left;color:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;transition:background 0.12s,border-color 0.12s;}
+button.friends-lb-row:hover{background:var(--s3);}
 .friends-avatar{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;}
 .friends-meta{flex:1;min-width:0;}
 .friends-name{font-size:14px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -6684,7 +6694,7 @@ class ErrorBoundary extends React.Component {
 
 // ─── BADGE SYSTEM ─────────────────────────────────────────────────────────────
 const BADGE_DEFS = [
-  ["first_blood", "🎯", "First Blood",   "Complete your first game"],
+  ["first_blood", "🎯", "First Whistle", "Complete your first game"],
   ["roll5",       "🔥", "On a Roll",     "5-day streak"],
   ["roll30",      "🔥", "Obsessed",      "30-day streak"],
   ["speed_demon", "⚡", "Speed Demon",   "Score 600+ Speed Round"],
@@ -6931,7 +6941,7 @@ function avatarEmoji(v) {
   return v;
 }
 
-function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast }) {
+function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast, onOpenFriend }) {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -7216,11 +7226,13 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           if (!p) return null;
           return (
             <div key={f.id} className="friends-row">
-              <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
-              <div className="friends-meta">
-                <div className="friends-name">{p.username}</div>
-                <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
-              </div>
+              <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={`View ${p.username}'s profile`}>
+                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
+                <div className="friends-meta">
+                  <div className="friends-name">{p.username}</div>
+                  <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
+                </div>
+              </button>
               <button className="friends-action challenge" onClick={() => onChallenge && onChallenge(p)}>Challenge</button>
             </div>
           );
@@ -7232,14 +7244,24 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         <div className="friends-block">
           <div className="friends-block-title">Friends leaderboard</div>
           <div className="friends-lb">
-            {leaderboard.map((row, i) => (
-              <div key={row.id} className={`friends-lb-row${row.isMe ? " you" : ""}`}>
-                <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
-                <div className="friends-avatar">{avatarEmoji(row.avatar)}</div>
-                <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill">YOU</span>}</div>
-                <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
-              </div>
-            ))}
+            {leaderboard.map((row, i) => {
+              const inner = (
+                <>
+                  <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
+                  <div className="friends-avatar">{avatarEmoji(row.avatar)}</div>
+                  <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill">YOU</span>}</div>
+                  <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
+                </>
+              );
+              if (row.isMe) {
+                return <div key={row.id} className="friends-lb-row you">{inner}</div>;
+              }
+              return (
+                <button key={row.id} className="friends-lb-row" onClick={() => onOpenFriend && onOpenFriend(row)}>
+                  {inner}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -7247,8 +7269,142 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   );
 }
 
+// ─── FRIEND PROFILE SCREEN ────────────────────────────────────────────────────
+// Read-only profile screen for viewing another user. Mirrors the user's own
+// Profile layout but: no avatar/name edit affordances, no friends list, no
+// badges grid (those are personal). Day Streak tile is intentionally omitted
+// because login streak is local-only and never persisted to Supabase.
+function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
+  const [data, setData] = useState(null); // null = loading, false = error, object = loaded
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data: row, error } = await supabase
+          .from('profiles')
+          .select('id, username, avatar_id, total_score, games_played, correct_answers, xp, stats')
+          .eq('id', friendId)
+          .maybeSingle();
+        if (cancelled) return;
+        if (error || !row) { setData(false); return; }
+        setData(row);
+      } catch {
+        if (!cancelled) setData(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [friendId]);
+
+  if (data === null) {
+    return (
+      <div className="screen">
+        <div className="page-hdr">
+          <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+          <div className="page-title">Loading…</div>
+        </div>
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Loading profile…</div>
+      </div>
+    );
+  }
+  if (data === false) {
+    return (
+      <div className="screen">
+        <div className="page-hdr">
+          <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+          <div className="page-title">Profile</div>
+        </div>
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Couldn't load this profile.</div>
+      </div>
+    );
+  }
+
+  const friendXp = data.xp || 0;
+  const { level } = getLevelInfo(friendXp);
+  const friendStats = (data.stats && typeof data.stats === 'object') ? data.stats : {};
+  const totalCorrect = data.correct_answers || 0;
+  const totalAnswered = friendStats.totalAnswered || 0;
+  const gamesPlayed = data.games_played || 0;
+  const avatar = avatarEmoji(data.avatar_id);
+  const username = data.username || 'Player';
+  const hasAnyStats = gamesPlayed > 0 || totalCorrect > 0 || (friendStats.bestScore || 0) > 0;
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">{username}</div>
+      </div>
+      <div className="profile-card">
+        <div className="profile-avatar-wrap">
+          <div className="profile-avatar" style={{cursor:'default'}}>{avatar}</div>
+        </div>
+        <div className="profile-name" style={{cursor:'default'}}>{username}</div>
+        <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{friendXp.toLocaleString()} XP</span></div>
+      </div>
+      {hasAnyStats && (
+        <div className="stat-grid" style={{marginBottom:16}}>
+          <div className="stat-tile"><div className="st-val">{gamesPlayed}</div><div className="ds-eyebrow st-key">Games</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{totalCorrect}</div><div className="ds-eyebrow st-key">Correct</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{(() => {
+            if (totalAnswered === 0 || totalCorrect > totalAnswered) return "—";
+            return `${Math.round(100 * totalCorrect / totalAnswered)}%`;
+          })()}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
+          {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
+          {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
+          {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
+        </div>
+      )}
+      {(() => {
+        const currentIdx = LEVELS.indexOf(level);
+        const topIdx = LEVELS.length - 1;
+        const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
+        return (
+          <div className="journey-section">
+            <div className="journey-title">🏆 {username}'s Journey</div>
+            <div className="journey-list">
+              <div className="journey-line" />
+              {ordered.map(tier => {
+                const isCurrent = tier.idx === currentIdx;
+                const isDone = tier.idx < currentIdx;
+                const isNext = tier.idx === currentIdx + 1;
+                const isTop = tier.idx === topIdx;
+                const state = isCurrent ? "current" : isDone ? "done" : "";
+                const xpToGo = Math.max(0, tier.xpNeeded - friendXp);
+                return (
+                  <div key={tier.name} className={`journey-row ${state}`}>
+                    <div className="journey-dot">{isDone ? "✓" : tier.icon}</div>
+                    <div className="journey-body">
+                      <div className="journey-name">{tier.name}</div>
+                      <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
+                    </div>
+                    {isCurrent && <div className="journey-badge current">CURRENT</div>}
+                    {isNext && <div className="journey-badge next">{xpToGo.toLocaleString()} XP to go</div>}
+                    {!isCurrent && !isNext && !isDone && isTop && (
+                      <div className="journey-badge goal">Ultimate goal</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+      <button
+        className="btn-3d"
+        style={{marginTop:16,marginBottom:8}}
+        onClick={() => onChallenge && onChallenge({ id: data.id, username, avatar: data.avatar_id })}
+      >
+        Challenge {username}
+      </button>
+    </div>
+  );
+}
+const FriendProfileScreen = React.memo(FriendProfileScreenImpl);
+
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, nameEditNonce }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
@@ -7524,6 +7680,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           currentUserAvatar={avatarEmoji(authProfile?.avatar_id || profile?.avatar)}
           onChallenge={onChallenge}
           onToast={onToast}
+          onOpenFriend={onOpenFriend}
         />
       )}
       <div className="badges-section">
@@ -7886,7 +8043,7 @@ function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
       <div className="league-header">
         <div className="league-title">{level.icon} {level.name}</div>
         <div className="league-sub">Week {Math.floor(weekSeed%52)+1} — Rank #{yourRank} of {all.length}</div>
-        <div className="league-sub" style={{color:"var(--accent)",fontWeight:700,marginTop:2}}>{myWeeklyXp} XP this week</div>
+        <div className="league-sub" style={{color: myWeeklyXp > 0 ? "var(--accent)" : "var(--t3)", fontWeight: myWeeklyXp > 0 ? 700 : 500, marginTop:2}}>{myWeeklyXp} XP this week</div>
         <div className="league-timer">Resets in {daysLeft} day{daysLeft!==1?"s":""}</div>
       </div>
       <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:12,padding:"10px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
@@ -7911,7 +8068,6 @@ function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
           );
         })}
       </div>
-      <div style={{fontSize:12,color:"var(--t3)",textAlign:"center",lineHeight:1.7,padding:"0 8px"}}>Earn XP by playing any game mode. Top 3 promote each Monday — bottom 3 drop down.</div>
     </div>
   );
 }
@@ -9278,6 +9434,19 @@ function AppInner() {
     showToast(friend ? `Share your room code with ${friend.username}` : "Online lobby");
     startMode("online");
   }, [showToast, startMode]);
+  // Friend profile screen — full-screen overlay, reachable from any tappable
+  // friend row in FriendsSection (Your friends list + Friends leaderboard).
+  const [viewingFriendId, setViewingFriendId] = useState(null);
+  const openFriendProfile = useCallback((friend) => {
+    if (!friend?.id) return;
+    setViewingFriendId(friend.id);
+    setScreen("friend-profile");
+  }, []);
+  const closeFriendProfile = useCallback(() => {
+    setScreen("home");
+    setTab("profile");
+    setViewingFriendId(null);
+  }, []);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
@@ -9908,7 +10077,7 @@ function AppInner() {
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
-            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} nameEditNonce={nameEditNonce} />
+            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
           </div>
         )}
 
@@ -9926,6 +10095,13 @@ function AppInner() {
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
+        {!inGame && screen === "friend-profile" && viewingFriendId && (
+          <FriendProfileScreen
+            friendId={viewingFriendId}
+            onBack={closeFriendProfile}
+            onChallenge={challengeFriend}
+          />
+        )}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
