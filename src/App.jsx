@@ -1540,6 +1540,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
+/* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
+.m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
+.m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.m7-cell{width:100%;aspect-ratio:1;max-width:38px;border-radius:8px;border:1px solid var(--border);background:var(--s2);}
+.m7-cell.m7-done{background:var(--accent);border-color:var(--accent);}
+.m7-cell.m7-miss{background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.10);}
+.m7-cell.m7-pre{background:transparent;border-color:var(--border);opacity:0.45;}
+.m7-cell.m7-today{border-width:2px;border-color:var(--accent);}
+.m7-cell.m7-today.m7-done{box-shadow:inset 0 0 0 2px var(--accent-dim);}
+.m7-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.5px;font-family:'Inter',sans-serif;text-transform:uppercase;}
+
 .cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
 .cal-legend-item{display:flex;align-items:center;gap:5px;}
 .cal-legend-dot{width:10px;height:10px;border-radius:3px;}
@@ -5739,35 +5750,115 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
   );
 }
 
+// Last-7-days mini-strip used inside DailyReviewScreen. Always renders
+// the rolling 7-day window ending on today (universal "your recent
+// rhythm" framing — decoupled from the day being reviewed). Reuses the
+// MonthlyCalendar's color language: green = done, soft red = missed,
+// neutral = before user's first daily, accent ring = today.
+function Mini7Strip({ history, today }) {
+  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  const firstDailyTime = (() => {
+    const keys = history ? Object.keys(history) : [];
+    if (!keys.length) return null;
+    let earliest = Infinity;
+    for (const k of keys) {
+      const [Y, M, D] = k.split("-").map(Number);
+      if (!Y || !M || !D) continue;
+      const t = new Date(Y, M - 1, D).getTime();
+      if (t < earliest) earliest = t;
+    }
+    return earliest === Infinity ? null : earliest;
+  })();
+  const cells = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(todayMid - i * TIMINGS.DAY_MS);
+    const ymd = dateToYMD(d);
+    const score = history?.[ymd];
+    const isCompleted = typeof score === "number";
+    const isToday = d.getTime() === todayMid;
+    const isPreJoin = !isCompleted && firstDailyTime !== null && d.getTime() < firstDailyTime && !isToday;
+    cells.push({ d, isCompleted, isToday, isPreJoin });
+  }
+  return (
+    <div className="m7-strip" aria-label="Last 7 days">
+      {cells.map((c, i) => {
+        let cls = "m7-cell";
+        if (c.isCompleted) cls += " m7-done";
+        else if (c.isPreJoin) cls += " m7-pre";
+        else cls += " m7-miss";
+        if (c.isToday) cls += " m7-today";
+        return (
+          <div key={i} className="m7-col">
+            <div className={cls} />
+            <div className="m7-label">{c.d.toLocaleDateString(undefined, { weekday: "short" })}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // Calm review of a completed Daily 7. Used by:
 // - Today's 7 done card on Home and Daily tab
 // - Calendar past-completed-day tap on Daily tab
 // Deliberately not the full Results screen: no celebration, no Play
-// Again, no Share — just date, score, countdown, missed answers.
-function DailyReviewScreen({ date, score, wrongAnswers, onBack }) {
+// Again, no Share — just date, score, countdown, streak context,
+// recent rhythm, and missed-answer review (when data is available).
+function DailyReviewScreen({ date, score, wrongAnswers, dailyHistory, loginStreak, onBack }) {
   const todayYMD = dateToYMD(new Date());
   const dateYMD = dateToYMD(date);
   const isToday = dateYMD === todayYMD;
-  const dateLabel = isToday
-    ? "Today"
-    : date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "short" });
+  const dayLabel = date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+  const dateLabel = isToday ? `Today · ${dayLabel}` : dayLabel;
   const hasWrong = Array.isArray(wrongAnswers) && wrongAnswers.length > 0;
   const isPerfect = score === 7;
+  const today = useMemo(() => new Date(), []);
+
+  // Category breakdown — only show when ≥2 distinct categories have
+  // misses. Single-category case adds no info beyond the wrong-review.
+  const catSummary = useMemo(() => {
+    if (!hasWrong) return null;
+    const counts = {};
+    for (const w of wrongAnswers) {
+      if (w?.cat) counts[w.cat] = (counts[w.cat] || 0) + 1;
+    }
+    const cats = Object.keys(counts);
+    if (cats.length < 2) return null;
+    return cats
+      .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+      .map(c => `${c} (${counts[c]})`)
+      .join(", ");
+  }, [wrongAnswers, hasWrong]);
+
+  const streakLine = (() => {
+    if (!loginStreak || loginStreak < 1) return null;
+    if (loginStreak === 1) return "🔥 Day 1 of a new streak";
+    return `🔥 Day ${loginStreak} of your daily streak`;
+  })();
+
   return (
     <div className="screen">
       <div className="page-hdr">
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="page-title">Daily review</div>
       </div>
-      <div className="settings-card" style={{padding:"24px 20px", textAlign:"center", marginBottom:18}}>
-        <div className="ds-eyebrow" style={{marginBottom:8}}>{dateLabel}</div>
-        <div style={{fontSize:32, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.5px", marginBottom:6, fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontVariantNumeric:"tabular-nums"}}>
-          {score}/7
+      <div className="settings-card" style={{padding:"22px 20px", textAlign:"center", marginBottom:18}}>
+        <div style={{fontSize:13, fontWeight:600, color:"var(--t2)", marginBottom:14}}>
+          {dateLabel}
         </div>
-        <div style={{fontSize:13, color:"var(--t2)"}}>
+        <div style={{fontSize:22, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:6}}>
+          You scored <span style={{color:"var(--accent)", fontWeight:800}}>{score}/7</span>
+        </div>
+        <div style={{fontSize:13, color:"var(--t3)"}}>
           Next challenge in <DailyHeroCountdown />
         </div>
+        {streakLine && (
+          <div style={{fontSize:13, color:"var(--t2)", marginTop:12, fontWeight:600}}>
+            {streakLine}
+          </div>
+        )}
       </div>
+      <Mini7Strip history={dailyHistory} today={today} />
       {hasWrong ? (
         <>
           <div className="ds-eyebrow settings-section-title">
@@ -5786,32 +5877,38 @@ function DailyReviewScreen({ date, score, wrongAnswers, onBack }) {
               </div>
             ))}
           </div>
+          {catSummary && (
+            <div style={{fontSize:12, color:"var(--t3)", textAlign:"center", marginTop:12, fontStyle:"italic"}}>
+              Categories tripped: {catSummary}
+            </div>
+          )}
         </>
       ) : isPerfect ? (
         <div style={{
-          border:"1.5px dashed var(--border2)",
+          background:"rgba(34,197,94,0.06)",
+          border:"1px solid rgba(34,197,94,0.20)",
           borderRadius:14,
-          padding:"24px 20px",
+          padding:"20px 18px",
           textAlign:"center",
-          background:"var(--s2)",
         }}>
           <div style={{fontSize:32, marginBottom:8}} aria-hidden="true">🎯</div>
-          <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.5}}>
-            Perfect score — no answers to review.
+          <div style={{fontSize:14, color:"var(--t1)", fontWeight:700, marginBottom:4}}>
+            Perfect score
+          </div>
+          <div style={{fontSize:13, color:"var(--t2)"}}>
+            All seven correct.
           </div>
         </div>
       ) : (
         <div style={{
-          border:"1.5px dashed var(--border2)",
-          borderRadius:14,
-          padding:"24px 20px",
+          fontSize:13,
+          color:"var(--t3)",
+          fontStyle:"italic",
           textAlign:"center",
-          background:"var(--s2)",
+          padding:"4px 16px",
+          lineHeight:1.5,
         }}>
-          <div style={{fontSize:32, marginBottom:8, opacity:0.5}} aria-hidden="true">📋</div>
-          <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.5}}>
-            Missed-answer details aren't saved for this day.
-          </div>
+          Detailed answer review for this day isn't on this device.
         </div>
       )}
     </div>
@@ -10328,6 +10425,8 @@ function AppInner() {
             date={dailyReviewState.date}
             score={dailyReviewState.score}
             wrongAnswers={dailyReviewState.wrongAnswers}
+            dailyHistory={dailyHistory}
+            loginStreak={loginStreak}
             onBack={() => setScreen("home")}
           />
         )}
