@@ -1000,10 +1000,24 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    Daily header can host a streak chip on the right; "More modes" with
    a single child sits left as expected via justify-content:space-between. */
 .home-section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+/* Optional small uppercase eyebrow above .home-section-title — used to
+   give a section a touch more presence. Kept declarative ("Game modes",
+   not marketing copy). */
+.home-section-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:0 0 4px;}
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
-.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:transparent;border:1px solid var(--border);border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--t2);letter-spacing:0;text-transform:none;}
+.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:linear-gradient(135deg,#FF6B35 0%,#F23131 100%);border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;letter-spacing:0;text-transform:none;box-shadow:0 2px 8px rgba(242,49,49,0.25);will-change:transform;}
+/* Pulse fires once per session when loginStreak exceeds the value
+   captured at AppInner mount (i.e. user just earned today's streak day).
+   Subtle by design — celebrating the moment, not demanding attention. */
+.hst-streak.is-pulsing{animation:streakPulse 1.5s cubic-bezier(0.22,1,0.36,1);}
+@keyframes streakPulse{
+  0%   { transform: scale(1);    box-shadow: 0 2px 8px rgba(242,49,49,0.25); }
+  18%  { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(242,49,49,0.22), 0 4px 14px rgba(242,49,49,0.4); }
+  36%  { transform: scale(1.04); box-shadow: 0 0 0 2px rgba(242,49,49,0.12), 0 3px 10px rgba(242,49,49,0.28); }
+  100% { transform: scale(1);    box-shadow: 0 2px 8px rgba(242,49,49,0.25); }
+}
 .home-stat-row{display:flex;gap:10px;margin-bottom:24px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
 .home-stat-chip-desktop-only{display:none;}
@@ -1039,25 +1053,38 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:24px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:24px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
 .hero-online-sub-mobile{display:inline;}
 .hero-online-sub-desktop{display:none;}
 .hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
-/* Mobile-only tightening for the Multiplayer hero — desktop padding/
-   emoji stay at base values. Aggressive ~30% reduction in card height +
-   smaller emoji so the hero doesn't dominate the mobile viewport. PWA
-   standalone is included here (always <1024px viewport on phones). */
+/* Mobile-only tightening for the Multiplayer hero + slim hdr chrome.
+   Desktop padding/emoji stay at base values; .hdr is display:none on
+   desktop. PWA standalone is included here (always <1024px viewport
+   on phones). */
 @media (max-width: 1023px) {
+  .hdr { padding: 12px 0 4px; }
+  .logo { font-size: 16px; letter-spacing: -0.3px; }
+  .hdr .icon-btn {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 4px;
+    border: none;
+    background: transparent;
+  }
+  .hdr .icon-btn:hover { background: var(--s1); }
   .hero-online {
     padding: 8px 16px;
     min-height: 64px;
   }
   .hero-online-emoji {
-    font-size: 56px;
-    bottom: -8px;
+    font-size: 48px;
+    bottom: 4px;
+    right: 4px;
   }
 }
 .hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
@@ -1069,13 +1096,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;max-height:110px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
-.play-card-body{display:flex;flex-direction:column;gap:1px;}
-.play-card-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-body{display:flex;flex-direction:column;gap:1px;width:100%;min-width:0;}
+.play-card-name{display:block;font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
@@ -1115,7 +1142,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0 0 24px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.wc-card{position:relative;width:100%;margin:0 0 24px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
@@ -8399,6 +8426,22 @@ function AppInner() {
     return 0;
   });
   const [streakToast, setStreakToast] = useState(null);
+  // Streak chip pulse — fires once per session when the daily-streak load
+  // effect bumps loginStreak past the value persisted at last app close.
+  // initialStreakRef captures the synchronous useState value on mount;
+  // pulsedRef gates against firing more than once per session even if
+  // state churns. Same-day re-visits won't pulse (initial === current).
+  const initialStreakRef = useRef(loginStreak);
+  const pulsedRef = useRef(false);
+  const [streakPulsing, setStreakPulsing] = useState(false);
+  useEffect(() => {
+    if (!pulsedRef.current && loginStreak > initialStreakRef.current && loginStreak > 0) {
+      pulsedRef.current = true;
+      setStreakPulsing(true);
+      const t = setTimeout(() => setStreakPulsing(false), 1500);
+      return () => clearTimeout(t);
+    }
+  }, [loginStreak]);
   const streakToastTimerRef = useRef(null);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
@@ -9660,7 +9703,7 @@ function AppInner() {
               return (
                 <div style={{padding:"10px 0 12px"}}>
                   <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-                    <div style={{fontSize:13, color:"var(--t3)"}}>{greeting}</div>
+                    <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>{greeting}</div>
                     {homeAuthLoading ? (
                       <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
                     ) : (
@@ -9686,7 +9729,7 @@ function AppInner() {
             <div className="home-section-title">
               <span>Daily</span>
               {loginStreak > 0 && (
-                <span className="hst-streak" aria-label={`${loginStreak}-day streak`}>
+                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
                   🔥 {loginStreak}
                 </span>
               )}
@@ -9765,6 +9808,7 @@ function AppInner() {
             })()}
 
             {/* ── MORE MODES ── */}
+            <div className="home-section-eyebrow">Game modes</div>
             <div className="home-section-title">More modes</div>
             <div className="play-grid">
               {[
