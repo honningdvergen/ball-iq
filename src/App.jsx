@@ -996,8 +996,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── HOME STAT CHIPS (top row: IQ / Streak / Games) ── */
 /* Home section title — sentence-case header for grouped content (Daily,
    More modes). Different from .ds-eyebrow (which stays UPPERCASE/muted
-   for in-card eyebrows and other screen uses). */
-.home-section-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+   for in-card eyebrows and other screen uses). Flex container so the
+   Daily header can host a streak chip on the right; "More modes" with
+   a single child sits left as expected via justify-content:space-between. */
+.home-section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+/* Streak chip rendered next to the Daily section title when login streak
+   > 0. Outline-only treatment so it reads as a peer to the title rather
+   than competing for attention. */
+.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:transparent;border:1px solid var(--border);border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--t2);letter-spacing:0;text-transform:none;}
 .home-stat-row{display:flex;gap:10px;margin-bottom:24px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
 .home-stat-chip-desktop-only{display:none;}
@@ -1040,6 +1046,20 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online-sub-mobile{display:inline;}
 .hero-online-sub-desktop{display:none;}
 .hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
+/* Mobile-only tightening for the Multiplayer hero — desktop padding/
+   emoji stay at base values. Aggressive ~30% reduction in card height +
+   smaller emoji so the hero doesn't dominate the mobile viewport. PWA
+   standalone is included here (always <1024px viewport on phones). */
+@media (max-width: 1023px) {
+  .hero-online {
+    padding: 8px 16px;
+    min-height: 64px;
+  }
+  .hero-online-emoji {
+    font-size: 56px;
+    bottom: -8px;
+  }
+}
 .hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .hero-online:active .hero-online-cta{opacity:0.85;}
 
@@ -2173,11 +2193,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
 }
 @media (min-width: 1024px) {
-  /* Drop the in-app wordmark at desktop — DesktopNav owns branding. The
-     level progress bar (.hdr-xp) and settings cog (.hdr-actions) stay,
-     and .hdr's flexbox naturally adjusts to the missing logo. Mobile and
-     PWA standalone keep the wordmark via the killswitch below. */
+  /* Drop the in-app wordmark at desktop — DesktopNav owns branding. */
   .hdr .logo { display: none; }
+  /* Hide the entire .hdr at desktop. Level bar was removed (Profile
+     screen carries level info via .profile-level-badge), and the
+     Settings cog is redundant on desktop because DesktopNav has its
+     own Settings button. With nothing to render, .hdr becomes pure
+     vertical padding — kill it so greeting is the first content. */
+  .hdr { display: none; }
 }
 @media (display-mode: standalone) {
   .app {
@@ -2216,6 +2239,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hero-online-sub-mobile { display: inline !important; }
   .hero-online-sub-desktop { display: none !important; }
   .desktop-nav { display: none !important; }
+  .hdr { display: flex !important; }
   .hdr .logo { display: block !important; }
   .ds-eyebrow {
     font-size: 11px !important;
@@ -9368,21 +9392,6 @@ function AppInner() {
                 Hide it on that one screen; every other screen still keeps
                 the brand mark. */}
             {screen !== "settings" && <div className="logo">Ball <em>IQ</em></div>}
-            {screen === "home" && (() => {
-              const curIdx = LEVELS.indexOf(levelInfo.level);
-              const curN = curIdx + 1;
-              const nextN = levelInfo.nextLevel ? curN + 1 : null;
-              const pct = levelInfo.nextLevel ? Math.max(2, Math.min(100, levelInfo.progress)) : 100;
-              return (
-                <div className="hdr-xp" aria-label={`Level ${curN}, ${levelInfo.progress}% to level ${nextN || "max"}`}>
-                  <span className="hdr-xp-lbl">Lv.{curN}</span>
-                  <div className="hdr-xp-track">
-                    <div className="hdr-xp-fill" style={{width:`${pct}%`}} />
-                  </div>
-                  <span className="hdr-xp-lbl">{nextN ? `Lv.${nextN}` : "MAX"}</span>
-                </div>
-              );
-            })()}
             {screen === "home" && (
               <div className="hdr-actions">
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
@@ -9674,7 +9683,14 @@ function AppInner() {
             })()}
 
             {/* ── DAILY SECTION: Challenge + Puzzle paired ── */}
-            <div className="home-section-title">Daily</div>
+            <div className="home-section-title">
+              <span>Daily</span>
+              {loginStreak > 0 && (
+                <span className="hst-streak" aria-label={`${loginStreak}-day streak`}>
+                  🔥 {loginStreak}
+                </span>
+              )}
+            </div>
             <div className="daily-pair">
               <button
                 className="daily-pair-card challenge"
@@ -9695,8 +9711,8 @@ function AppInner() {
                 const wordleStatus =
                   ws.kind === "won"   ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
                   ws.kind === "lost"  ? <>❌ Better luck tomorrow</> :
-                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
-                  <>Today's puzzle ready</>;
+                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used · Resets in <DailyHeroCountdown /></> :
+                  <>Resets in <DailyHeroCountdown /></>;
                 return (
                   <button
                     className="daily-pair-card wordle"
@@ -9709,61 +9725,6 @@ function AppInner() {
                   </button>
                 );
               })()}
-            </div>
-
-            {/* Stat chips row — no section header, the chips speak for themselves */}
-            <div className="home-stat-row">
-              <button
-                type="button"
-                className="home-stat-chip tappable"
-                onClick={openIqChip}
-                aria-label={iqHistory.length === 0 ? `Take the ${APP_NAME} test` : `View your ${APP_NAME} score`}
-              >
-                <div className="hsc-left">
-                  <div className="home-stat-label">IQ Score</div>
-                  <div className="home-stat-val green">{stats.bestIQ ? stats.bestIQ.toLocaleString() : "—"}</div>
-                  {iqHistory.length === 0 && <div className="home-stat-hint">Tap to test</div>}
-                </div>
-                <div className="hsc-right">
-                  {/* Five-segment IQ tier bar (60-80, 80-100, 100-120,
-                      120-140, 140-160). Active up to and including the
-                      user's tier. Empty bar shown when no test taken yet. */}
-                  <div className="iq-rank-bar" aria-hidden="true">
-                    {[80, 100, 120, 140, 160].map((max, i) => {
-                      const active = stats.bestIQ != null && stats.bestIQ >= [60, 80, 100, 120, 140][i];
-                      return <div key={i} className={`iq-rank-seg${active ? ' active' : ''}`} />;
-                    })}
-                  </div>
-                  {!stats.bestIQ && <div className="hsc-meta">Test to rank</div>}
-                </div>
-              </button>
-              <div className="home-stat-chip">
-                <div className="hsc-left">
-                  <div className="home-stat-label">Streak</div>
-                  <div className="home-stat-val flame">🔥 {loginStreak || 0}</div>
-                </div>
-                <div className="hsc-right">
-                  {/* Past 7 days — leftmost = 6 days ago, rightmost = today.
-                      Active dot = at least one quiz played OR Wordle done. */}
-                  <div className="streak-pulse" aria-hidden="true">
-                    {streakPulseDays.map((active, i) => (
-                      <div key={i} className={`streak-pulse-dot${active ? ' active' : ''}`} />
-                    ))}
-                  </div>
-                  {bestLoginStreak > 0 && (
-                    <div className="hsc-meta">Best: {bestLoginStreak} {bestLoginStreak === 1 ? 'day' : 'days'}</div>
-                  )}
-                </div>
-              </div>
-              {/* Desktop-only third chip — fills the row at 640px so the
-                  stat band visually rhymes with the 3-col mode grid below.
-                  Hidden on mobile and PWA standalone via CSS class. */}
-              <div className="home-stat-chip home-stat-chip-desktop-only">
-                <div className="hsc-left">
-                  <div className="home-stat-label">Games</div>
-                  <div className="home-stat-val">{(stats.gamesPlayed || 0).toLocaleString()}</div>
-                </div>
-              </div>
             </div>
 
             {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
