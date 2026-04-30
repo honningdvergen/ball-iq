@@ -6017,6 +6017,120 @@ function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory
   );
 }
 
+// Phase 5z — calm review of a completed Today's Puzzle (won or lost).
+// Mirrors DailyReviewScreen philosophy: no celebration, no Play Again,
+// just the calm "here's what you did" surface. Reuses the active
+// puzzle's grid CSS (.wd-grid, .wd-row, .wd-tile, .wd-grid--ended) and
+// share path (shareCard + the canonical FootballWordle shareText
+// template). Wordle streak isn't tracked separately yet — no streak
+// line until that's its own state.
+function PuzzleReviewScreen({ date, guesses, status, onBack }) {
+  const answer = useMemo(() => {
+    const dayIndex = Math.floor(date.getTime() / TIMINGS.DAY_MS);
+    return WORDLE_PLAYERS[dayIndex % WORDLE_PLAYERS.length];
+  }, [date]);
+
+  const won = status === "won";
+  const lost = status === "lost";
+  const hasData = Array.isArray(guesses) && guesses.length > 0;
+  const cols = answer.length;
+
+  const resultLine = won
+    ? `Solved in ${guesses.length}/6 attempts`
+    : lost ? "Better luck tomorrow"
+    : "";
+
+  const dateLabel = useMemo(
+    () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }),
+    [date]
+  );
+
+  // Match the active puzzle's share text exactly so users sharing from
+  // FootballWordle's "Share result" button vs this review screen get
+  // identical output. One source of truth.
+  const shareText = useMemo(() => {
+    if (!hasData || (!won && !lost)) return "";
+    const grid = guesses.map(g => {
+      const grades = gradeWordleGuess(g, answer);
+      return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
+    }).join("\n");
+    const score = won ? `${guesses.length}/6` : "X/6";
+    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nballiq.app`;
+  }, [guesses, answer, won, lost, hasData]);
+
+  const onShare = useCallback(async () => {
+    if (!shareText) return;
+    const grades = guesses.map(g => gradeWordleGuess(g, answer));
+    await shareCard("wordle", {
+      score: guesses.length, total: 6, grades, dateLabel, failed: lost,
+    }, { onToast: () => {}, textFallback: shareText });
+  }, [shareText, guesses, answer, dateLabel, lost]);
+
+  // Build read-only 6-row grid: completed guesses with grades, empty
+  // rows for unused attempts. No flip animation, no shake, no input.
+  const rows = [];
+  for (let r = 0; r < 6; r++) {
+    if (hasData && r < guesses.length) {
+      const g = guesses[r];
+      const grades = gradeWordleGuess(g, answer);
+      rows.push(
+        <div className="wd-row" key={r}>
+          {Array.from({ length: cols }, (_, i) => (
+            <div key={i} className={`wd-tile wd-${grades[i]}`}>{g[i]}</div>
+          ))}
+        </div>
+      );
+    } else {
+      rows.push(
+        <div className="wd-row" key={r}>
+          {Array.from({ length: cols }, (_, i) => <div key={i} className="wd-tile" />)}
+        </div>
+      );
+    }
+  }
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Today's Puzzle</div>
+      </div>
+
+      {hasData ? (
+        <>
+          <div style={{textAlign:"center", fontSize:15, fontWeight:700, color:"var(--t1)", marginBottom:18, letterSpacing:"-0.2px"}}>
+            {resultLine}
+          </div>
+
+          <div className="wd-grid wd-grid--ended" style={{ "--wd-cols": cols }}>
+            {rows}
+          </div>
+
+          {lost && (
+            <div style={{textAlign:"center", marginTop:14, fontSize:14, color:"var(--t2)"}}>
+              Today's word: <strong style={{color:"var(--accent)", fontWeight:800, letterSpacing:"0.5px"}}>{answer}</strong>
+            </div>
+          )}
+
+          {(won || lost) && (
+            <div style={{display:"flex", justifyContent:"center", marginTop:20}}>
+              <button onClick={onShare} className="wd-share">Share result</button>
+            </div>
+          )}
+
+          <div style={{textAlign:"center", marginTop:24, fontSize:13, color:"var(--t3)"}}>
+            Next puzzle in <DailyHeroCountdown />
+          </div>
+        </>
+      ) : (
+        <div style={{textAlign:"center", padding:"40px 20px", fontSize:14, color:"var(--t3)", fontStyle:"italic"}}>
+          Puzzle wasn't recorded for this day.
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StatRow({ label, value, valueColor }) {
   return (
     <div style={{
@@ -8906,6 +9020,7 @@ function AppInner() {
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [dailyReviewState, setDailyReviewState] = useState(null);
+  const [puzzleReviewState, setPuzzleReviewState] = useState(null);
   const [stats, setStats] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_stats");
@@ -10047,9 +10162,26 @@ function AppInner() {
   }, []);
 
   const viewPuzzleStatus = useCallback((ws) => {
-    if (ws?.kind === "won") showToast(`🏅 Puzzle solved in ${ws.used}/6`);
-    else if (ws?.kind === "lost") showToast(`Puzzle missed today — better luck tomorrow`);
-  }, [showToast]);
+    // Phase 5z — navigate to PuzzleReviewScreen instead of firing a thin
+    // toast. Read the persisted guesses + status from biq_wordle_<ymd>;
+    // localStorage is the read primary (Phase 5v hydrate writes the
+    // synced value back on cross-device sign-in).
+    if (ws?.kind !== "won" && ws?.kind !== "lost") return;
+    const date = new Date();
+    const ymd = dateToYMD(date);
+    let guesses = [];
+    let status = ws.kind;
+    try {
+      const raw = localStorage.getItem(`biq_wordle_${ymd}`);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (Array.isArray(p?.guesses)) guesses = p.guesses;
+        if (typeof p?.status === "string") status = p.status;
+      }
+    } catch {}
+    setPuzzleReviewState({ date, guesses, status });
+    setScreen("puzzle-review");
+  }, []);
 
   return (
     <>
@@ -10550,6 +10682,14 @@ function AppInner() {
             allAnswers={dailyReviewState.allAnswers}
             dailyHistory={dailyHistory}
             loginStreak={loginStreak}
+            onBack={() => setScreen("home")}
+          />
+        )}
+        {!inGame && screen === "puzzle-review" && puzzleReviewState && (
+          <PuzzleReviewScreen
+            date={puzzleReviewState.date}
+            guesses={puzzleReviewState.guesses}
+            status={puzzleReviewState.status}
             onBack={() => setScreen("home")}
           />
         )}
