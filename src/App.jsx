@@ -973,7 +973,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
-.app{max-width:420px;margin:0 auto;padding:0 20px 100px;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 24px;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
 .q-text{font-size:18px !important;}
 .sbar{position:sticky;top:0;z-index:10;height:env(safe-area-inset-top,0);background:var(--bg);}
@@ -1480,6 +1480,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   width:32px;height:3px;border-radius:2px;
   background:var(--accent);
 }
+.tab-icon{font-size:22px;line-height:1;}
 .tab-svg{width:22px;height:22px;color:var(--t3);transition:color 0.18s,transform 0.18s;}
 .tab-svg svg{width:100%;height:100%;}
 .tab-item.active .tab-svg{color:var(--accent);transform:translateY(1px);}
@@ -1658,9 +1659,18 @@ button.friends-lb-row:hover{background:var(--s3);}
 .friends-lb-score{font-size:13px;font-weight:800;color:var(--t1);}
 .friends-you-pill{margin-left:6px;font-size:9px;background:var(--accent);color:#0a1a00;padding:1px 5px;border-radius:4px;font-weight:800;letter-spacing:0.04em;vertical-align:middle;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);contain:layout paint style;}
+.badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);contain:layout paint style;-webkit-appearance:none;appearance:none;color:inherit;-webkit-tap-highlight-color:transparent;transition:transform 0.12s, box-shadow 0.12s;}
 .badge-tile.earned{border-color:var(--accent-b);background:var(--accent-dim);}
 .badge-tile.locked{opacity:0.4;}
+/* Phase 6a Item 4: inline detail card below the badges grid. */
+.badge-detail-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:12px;}
+.bd-icon{font-size:36px;line-height:1;flex-shrink:0;}
+.bd-body{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.bd-name{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
+.bd-desc{font-size:13px;color:var(--t2);line-height:1.4;}
+.bd-status{font-size:10px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;margin-top:4px;}
+.bd-status-earned{color:var(--accent);}
+.bd-status-locked{color:var(--t3);}
 .badge-icon{font-size:20px;}
 .badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'Inter',sans-serif;}
 .badge-tile.earned .badge-name{color:var(--accent);}
@@ -6716,7 +6726,11 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         borderBottom: "1px solid #2A2D3A",
-        padding: "14px 20px",
+        // Phase 6a Item 1: safe-area-inset-top so the back button isn't
+        // hidden behind the iOS status bar / notch in PWA standalone mode.
+        // The outer position:fixed inset:0 ignores safe area by design;
+        // the sticky header has to push itself down explicitly.
+        padding: "calc(14px + env(safe-area-inset-top, 0px)) 20px 14px",
         display: "flex", alignItems: "center", gap: 12,
         zIndex: 1,
       }}>
@@ -7931,6 +7945,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     if (nameEditNonce && showNameCTA) startNameEdit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nameEditNonce]);
+  // Phase 6a Item 4: tap a badge to expand its detail card below the
+  // grid. Tap the same badge again to close. State is local to this
+  // screen — no persistence across navigations.
+  const [selectedBadgeId, setSelectedBadgeId] = useState(null);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
   const earned = earnedBadges || computeBadges(stats, xp, loginStreak);
@@ -8188,14 +8206,45 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             const bE = earned.has(b[0]);
             if (aE === bE) return 0;
             return aE ? -1 : 1;
-          }).map(([id,icon,name]) => (
-            <div key={id} className={`badge-tile ${earned.has(id)?"earned":"locked"}`}
-              style={earned.has(id) ? {background:"rgba(34,197,94,0.1)",borderColor:"rgba(34,197,94,0.25)"} : {}}>
-              <span className="badge-icon" style={{filter:earned.has(id)?"none":"grayscale(1) opacity(0.35)"}}>{icon}</span>
-              <span className="badge-name" style={{color:earned.has(id)?"var(--t1)":"var(--t3)"}}>{name}</span>
-            </div>
-          ))}
+          }).map(([id,icon,name]) => {
+            const isEarned = earned.has(id);
+            const isSelected = selectedBadgeId === id;
+            const baseStyle = isEarned ? {background:"rgba(34,197,94,0.1)",borderColor:"rgba(34,197,94,0.25)"} : {};
+            const selectedStyle = isSelected ? {boxShadow:"0 0 0 2px var(--accent)", transform:"scale(0.97)"} : {};
+            return (
+              <button
+                key={id}
+                type="button"
+                className={`badge-tile ${isEarned?"earned":"locked"}`}
+                style={{...baseStyle, ...selectedStyle, cursor:"pointer", fontFamily:"inherit"}}
+                onClick={() => setSelectedBadgeId(prev => prev === id ? null : id)}
+                aria-label={`${name} — ${isEarned ? "earned" : "locked"}. Tap for details.`}
+                aria-expanded={isSelected}
+              >
+                <span className="badge-icon" style={{filter:isEarned?"none":"grayscale(1) opacity(0.35)"}}>{icon}</span>
+                <span className="badge-name" style={{color:isEarned?"var(--t1)":"var(--t3)"}}>{name}</span>
+              </button>
+            );
+          })}
         </div>
+        {selectedBadgeId && (() => {
+          const def = BADGE_DEFS.find(b => b[0] === selectedBadgeId);
+          if (!def) return null;
+          const [id, icon, name, desc] = def;
+          const isEarned = earned.has(id);
+          return (
+            <div className="badge-detail-card">
+              <div className="bd-icon" style={{filter:isEarned?"none":"grayscale(1) opacity(0.4)"}}>{icon}</div>
+              <div className="bd-body">
+                <div className="bd-name">{name}</div>
+                <div className="bd-desc">{desc}</div>
+                <div className={`bd-status ${isEarned?"bd-status-earned":"bd-status-locked"}`}>
+                  {isEarned ? "✓ Earned" : "Locked"}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
       {showAvatarMenu && (
         <div className="emoji-picker-overlay" onClick={() => setShowAvatarMenu(false)}>
