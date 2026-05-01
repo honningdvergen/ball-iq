@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
+import { safeSetItem } from './safeStorage.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
@@ -8925,7 +8926,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
 
   // Persist on every change to the game state.
   useEffect(() => {
-    try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch {}
+    safeSetItem(storageKey, JSON.stringify(state));
     // Cross-device sync — push to profiles.wordle_state via atomic JSON
     // merge. Skip the empty-grid initial state to avoid a useless write.
     if (userId && state.guesses.length > 0) {
@@ -9507,6 +9508,17 @@ function AppInner() {
       toastTimerRef.current = null;
     }, duration);
   }, []);
+
+  // Audit 2.4: surface localStorage quota exhaustion. safeSetItem fires this
+  // event once per session on QuotaExceededError; without this, quota loss
+  // is silent and users see "progress not saving" with no explanation.
+  useEffect(() => {
+    const onQuotaExceeded = () => {
+      showToast('⚠️ Storage full — clear browser data to continue saving progress', 5000);
+    };
+    window.addEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
+    return () => window.removeEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
+  }, [showToast]);
 
   // Multi-player local state
   const [localConfig, setLocalConfig] = useState(null); // { players, mode, diff } set by LocalSetup

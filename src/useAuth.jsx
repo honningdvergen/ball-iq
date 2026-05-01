@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import { supabase } from './supabase.js'
+import { safeSetItem } from './safeStorage.js'
 
 const AuthContext = createContext(null)
 
@@ -231,8 +232,8 @@ export function AuthProvider({ children }) {
     // stats via atomic delta RPCs. Letting hydration also write back creates
     // a race where stale localStorage values can overwrite freshly-zeroed or
     // freshly-incremented Supabase values.
-    try { localStorage.setItem('biq_xp', String(finalXp)) } catch {}
-    try { localStorage.setItem('biq_stats', JSON.stringify(finalStats)) } catch {}
+    safeSetItem('biq_xp', String(finalXp))
+    safeSetItem('biq_stats', JSON.stringify(finalStats))
 
     // ── Phase 5v: cross-device sync for daily/wordle ──
     // (login_streak removed from hydrate in Phase G — handled by the
@@ -285,7 +286,7 @@ export function AuthProvider({ children }) {
       const record = { score }
       if (wrongs) record.wrongAnswers = wrongs
       if (all) record.allAnswers = all
-      try { localStorage.setItem(`biq_daily_${ymd}`, JSON.stringify(record)) } catch {}
+      safeSetItem(`biq_daily_${ymd}`, JSON.stringify(record))
     }
 
     // Back-sync: one-time per device per user. Pre-launch, no need to
@@ -321,7 +322,7 @@ export function AuthProvider({ children }) {
     ))
     const mergedWordleState = { ...localWordleState, ...remoteWordleState }
     for (const [ymd, st] of Object.entries(mergedWordleState)) {
-      try { localStorage.setItem(`biq_wordle_${ymd}`, JSON.stringify(st)) } catch {}
+      safeSetItem(`biq_wordle_${ymd}`, JSON.stringify(st))
     }
     const localOnlyWordleDays = Object.keys(localWordleState).filter(d => !(d in remoteWordleState))
     if (localOnlyWordleDays.length > 0) {
