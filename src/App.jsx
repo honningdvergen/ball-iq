@@ -763,12 +763,6 @@ async function gameRoomMarkFinished(code) {
   return { error };
 }
 
-// NOTE: game_rooms rows persist after a game finishes; the opener's realtime
-// channel may still be reading the row when the other player's game ends, so
-// deleting from the client would race. Instead OnlineLobby's mount effect
-// calls the cleanup_old_game_rooms RPC (server-side, atomic, 24h TTL) on each
-// entry into the lobby.
-
 const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
@@ -3704,9 +3698,6 @@ function OnlineGame({ onBack, userId, defaultName, autoJoinCode }) {
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoJoinCode, userId, name]);
-
-  // Best-effort cleanup of stale rows older than 24h on entry to the lobby.
-  useEffect(() => { (async () => { try { await supabase.rpc("cleanup_old_game_rooms"); } catch {} })(); }, []);
 
   // Subscribe to the room row. Called after create/join. Tears down any
   // existing channel first so we never end up with two listeners. The
