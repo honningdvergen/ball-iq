@@ -6728,7 +6728,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <li>Ball IQ history</li>
               <li>Hot Streak best</li>
             </ul>
-            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>Your username, avatar, and settings are kept. This cannot be undone.</div>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>Your username, avatar, and settings are kept. Stats are cleared on all your devices. This cannot be undone.</div>
             <button
               onClick={() => { setConfirmClearStats(false); onClearStats?.(); }}
               style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
@@ -10074,13 +10074,31 @@ function AppInner() {
     showToast("Your account has been deleted");
   }, [showToast]);
 
-  // Full local-stats reset. Wipes every stats-related localStorage key and
-  // resets the matching React state so the UI reflects a clean slate without
-  // requiring a reload. Preserved keys: biq_settings, biq_profile,
-  // biq_seen_history_v2, biq_onboarded, and the various UI flags
+  // Full stats reset. Phase F (audit finding 1.4): server-authoritative —
+  // calls reset_user_stats RPC FIRST, aborts the local clear on failure.
+  // Without the RPC, hydrate's max-merge would silently restore remote
+  // values on next sign-in, undoing the reset.
+  //
+  // Preserved keys: biq_settings, biq_profile, biq_seen_history_v2,
+  // biq_onboarded, biq_skill_level, and the various UI flags
   // (biq_first_tip_shown, biq_rate_shown, biq_pending_join, biq-splash) —
-  // those aren't stats and resetting them would replay onboarding/UI hints.
-  const clearStats = useCallback(() => {
+  // those aren't stats. biq_skill_level in particular is a difficulty
+  // preference, not a stat; clearing it would force the user back through
+  // the onboarding skill-level picker and produce incoherent state
+  // (biq_onboarded=1 with no skill level set).
+  //
+  // Guest users (no user.id) skip the RPC since they have no remote
+  // profile; local-only clear still runs.
+  const clearStats = useCallback(async () => {
+    if (user?.id) {
+      const { error } = await supabase.rpc('reset_user_stats');
+      if (error) {
+        console.warn('[reset_user_stats]', error.message);
+        showToast("Couldn't reset stats — try again when online");
+        return;
+      }
+    }
+
     const reset = { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
     setStats(reset);
     setDailyDone(false); setDailyScore(null);
@@ -10090,29 +10108,26 @@ function AppInner() {
     setBestLoginStreak(0);
     setIqHistory([]);
     setHotstreakBest(0);
-    (async () => {
-      try {
-        // Single-key wipes — write the empty stats object, delete everything else.
-        await Promise.all([
-          window.storage?.set("biq_stats", JSON.stringify(reset)),
-          window.storage?.delete("biq_xp"),
-          window.storage?.delete("biq_login_streak"),
-          window.storage?.delete("biq_iq_history"),
-          window.storage?.delete("biq_hotstreak_best"),
-          window.storage?.delete("biq_skill_level"),
-        ].map(p => Promise.resolve(p).catch(() => {})));
-        // Prefix wipes — daily completions and wordle state.
-        const listRes = await window.storage?.list();
-        const keys = listRes?.keys || [];
-        for (const k of keys) {
-          if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k) || /^biq_wordle_/.test(k)) {
-            await window.storage?.delete(k).catch(() => {});
-          }
+    try {
+      // Single-key wipes — write the empty stats object, delete everything else.
+      await Promise.all([
+        window.storage?.set("biq_stats", JSON.stringify(reset)),
+        window.storage?.delete("biq_xp"),
+        window.storage?.delete("biq_login_streak"),
+        window.storage?.delete("biq_iq_history"),
+        window.storage?.delete("biq_hotstreak_best"),
+      ].map(p => Promise.resolve(p).catch(() => {})));
+      // Prefix wipes — daily completions and wordle state.
+      const listRes = await window.storage?.list();
+      const keys = listRes?.keys || [];
+      for (const k of keys) {
+        if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k) || /^biq_wordle_/.test(k)) {
+          await window.storage?.delete(k).catch(() => {});
         }
-      } catch {}
-    })();
+      }
+    } catch {}
     showToast("✓ Stats cleared");
-  }, [showToast]);
+  }, [showToast, user?.id]);
 
   // Apply theme and font size to document root
   useEffect(() => {
