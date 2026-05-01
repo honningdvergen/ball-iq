@@ -1482,18 +1482,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
-  background:transparent;padding:12px 4px 4px;min-height:0;
+  background:transparent;padding:4px 4px 4px;min-height:0;
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;position:relative;
-  transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
+  opacity:0.6;
+  transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1),opacity 0.18s;
 }
+.tab-item.active{opacity:1;}
 .tab-item:active{transform:scale(0.88);}
-/* Pill indicator above active icon */
-.tab-item.active::before{
-  content:'';position:absolute;top:-4px;
-  width:32px;height:3px;border-radius:2px;
-  background:var(--accent);
-}
+/* Active state signaled via opacity + green text/icon color (see
+   .tab-item.active rules). The horizontal indicator pill was removed
+   in Phase 6e — geometry tuning against the 22px emojis was producing
+   more friction than the indicator's clarity gain warranted. */
 .tab-icon{font-size:22px;line-height:1;}
 .tab-svg{width:22px;height:22px;color:var(--t3);transition:color 0.18s,transform 0.18s;}
 .tab-svg svg{width:100%;height:100%;}
@@ -2324,7 +2324,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 @media (display-mode: standalone) {
   .app {
     max-width: 420px !important;
-    padding: 0 20px 100px !important;
+    /* Phase 6e: padding-bottom 100 → 0 to match the base .app rule that
+       Phase 6a (100→24) and Phase 6d (24→0) progressively reduced. The
+       !important here was authored when .app pb was still 100; never got
+       updated. In PWA standalone, this override was silently keeping
+       padding-bottom at 100, stacking 100 + .tab-content's 100 into a
+       108px surplus over the tab-bar. Heavy-content tabs (Daily, League)
+       hid this; thin-content tabs (Home, Profile) exposed it as visible
+       dead scroll. All four tabs now match the base 8px surplus. */
+    padding: 0 20px 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
