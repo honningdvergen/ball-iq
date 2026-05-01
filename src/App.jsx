@@ -282,9 +282,19 @@ function clearSeenHistory() {
 }
 
 
-function getQs({ cat, diff, n = 10, ramp = false }) {
+function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }) {
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
+  // Phase 6c.1: gate cat:"Legends" by default. Legends-cat is the
+  // "classic football" bucket spanning 1950s-2010s; casual modes
+  // (Classic, Speed, Hot Streak, Daily 7, etc.) should feel modern.
+  // Modes that want vintage allowed (Survival, comprehensive
+  // assessments) opt in via includeLegends:true. Legends mode itself
+  // bypasses the gate by passing cat:"Legends" — the cat-equality
+  // check below the filter still selects only Legends entries.
+  if (!includeLegends && cat !== "Legends") {
+    pool = pool.filter(q => q.cat !== "Legends");
+  }
   // Category match: primary q.cat OR league-tagged chaos questions (q.league === cat)
   // so e.g. the Eden Hazard ball-boy chaos question (league:"PL") shows up in a
   // Premier League quiz alongside regular PL entries.
@@ -429,9 +439,13 @@ function dayIndexForDate(date) {
 }
 
 function getDailyQsForDate(date) {
-  // MCQ only for daily — consistent experience, no typed surprises
+  // MCQ only for daily — consistent experience, no typed surprises.
+  // Phase 6c.1: Daily 7 is a casual experience; gate cat:"Legends"
+  // out for the same reason getQs does. Cross-device determinism on
+  // the same day is preserved (same seed → same filtered pool → same
+  // questions). Cached completions in biq_daily_<ymd> are unaffected.
   const seed = dayIndexForDate(date);
-  const mcqOnly = QB.filter(q => q.type === "mcq");
+  const mcqOnly = QB.filter(q => q.type === "mcq" && q.cat !== "Legends");
   const sorted = [...mcqOnly].sort((a, b) => {
     const sa = Math.sin(seed * 2654435769 + mcqOnly.indexOf(a) * 1013904223) - 0.5;
     const sb = Math.sin(seed * 2654435769 + mcqOnly.indexOf(b) * 1013904223) - 0.5;
@@ -4497,7 +4511,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   const CHUNK_SIZE = mode === "survival" ? 1 : 3;
 
   const [questions] = useState(() => {
-    const raw = getQs({ cat: "All", diff, n: target, ramp: mode === "classic" });
+    const raw = getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
     return (raw || []).filter(q => q && q.type !== "tf" && q.type !== "typed");
   });
   const totalQs = questions.length;
@@ -9587,7 +9601,7 @@ function AppInner() {
       if (m === "balliq") { setShowBallIQIntro(true); return; }
       if (m === "balliq_confirmed") { qs = getBallIQQuestions(); }
       else if (m === "daily") { qs = getDailyQs(); setActiveDailyDate(new Date()); }
-      else if (m === "survival") { qs = getQs({ cat: "All", diff, n: 300 }); }
+      else if (m === "survival") { qs = getQs({ cat: "All", diff, n: 300, includeLegends: true }); }
       else if (m === "legends") { qs = getQs({ cat: "Legends", diff, n: 10 }); }
       else if (m === "speed") { qs = getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = (getQs({ cat: "All", diff, n: 999 }) || []).filter(q => q.type !== "tf"); }

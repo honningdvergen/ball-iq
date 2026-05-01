@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "publish-review": "node scripts/publish-review.mjs",
-    "publish-review:dry": "node scripts/publish-review.mjs --dry-run"
+    "publish-review:dry": "node scripts/publish-review.mjs --dry-run",
+    "find-vintage": "node scripts/find-vintage-candidates.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

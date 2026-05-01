@@ -5,3 +5,5 @@ dist
 .env.local
 .env.*.local
 scripts/.last-publish-summary.json
+scripts/.vintage-candidates.json
+scripts/.vintage-candidates.md
