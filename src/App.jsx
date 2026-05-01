@@ -6860,7 +6860,10 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         borderBottom: "1px solid #2A2D3A",
-        padding: "14px 20px",
+        // Phase 6a Item 1 followup: same safe-area-inset-top fix as
+        // PrivacyScreen — back button hidden behind iOS notch in PWA
+        // standalone without explicit top padding.
+        padding: "calc(14px + env(safe-area-inset-top, 0px)) 20px 14px",
         display: "flex", alignItems: "center", gap: 12,
         zIndex: 1,
       }}>
