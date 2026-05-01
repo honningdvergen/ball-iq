@@ -3150,6 +3150,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const timerRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
   useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
+  // Phase 6b Issue B: track previous timeLeft so the .timer-fill CSS
+  // transition (width 0.9s linear, drain animation) can be suppressed
+  // on reset (post-answer, advancing to next question). Without this,
+  // the bar visibly fills from low → 100% over 0.9s when the question
+  // changes; with this, width snaps instantly while drain animation
+  // remains for the countdown direction.
+  const prevTimeLeftRef = useRef(timerDuration);
+  useEffect(() => { prevTimeLeftRef.current = timeLeft; }, [timeLeft]);
   const [showQuit, setShowQuit] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const advanceRef = useRef(null);
@@ -3174,7 +3182,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const total = questions?.length || 0;
   const q = questions?.[idx];
-  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "balliq" && q?.type !== "tf";
+  // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
+  // auto-fail-after-20s signal was creating frustration on re-entry
+  // (the timer-at-full initial render read as "stale state"). Daily
+  // joins survival/legends/chaos/balliq in skipping the timer.
+  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "balliq" && mode !== "daily" && q?.type !== "tf";
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
@@ -3375,7 +3387,12 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
           <div className="timer-track">
             <div className="timer-fill" style={{
               width:`${(timeLeft/timerDuration)*100}%`,
-              background: (timeLeft/timerDuration) > 0.5 ? "var(--accent)" : (timeLeft/timerDuration) > 0.25 ? "var(--gold)" : "var(--red)"
+              background: (timeLeft/timerDuration) > 0.5 ? "var(--accent)" : (timeLeft/timerDuration) > 0.25 ? "var(--gold)" : "var(--red)",
+              // Phase 6b Issue B: suppress CSS width transition when
+              // timeLeft jumps UP (post-answer reset to timerDuration).
+              // Drain direction (decrement) keeps the .timer-fill class
+              // transition for smooth animation.
+              transition: timeLeft > prevTimeLeftRef.current ? 'none' : undefined,
             }}/>
           </div>
           <span className={`timer${(timeLeft/timerDuration)<=0.25?" urgent":""}`}>{timeLeft}s</span>
