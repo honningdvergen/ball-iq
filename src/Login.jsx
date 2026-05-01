@@ -39,25 +39,10 @@ export default function Login() {
           return
         }
         const { data, error } = await signUp(email, password, username.trim())
-        // Diagnostic — surface what the auth call actually returned. If
-        // login regresses again, the next reproduction will have visible
-        // state in the console (Mac Safari → Develop → iPhone for mobile).
-        console.log('[login] signUp returned', {
-          hasError: !!error,
-          errorMessage: error?.message,
-          hasUser: !!data?.user,
-          hasSession: !!data?.session,
-        })
         if (error) setError(error.message || 'Sign-up failed — please try again.')
         else setMessage('Check your email to confirm your account, then log in.')
       } else {
         const { data, error } = await signIn(email, password)
-        console.log('[login] signIn returned', {
-          hasError: !!error,
-          errorMessage: error?.message,
-          hasUser: !!data?.user,
-          hasSession: !!data?.session,
-        })
         if (error) {
           setError(error.message || 'Login failed — please try again.')
         } else if (!data?.session) {

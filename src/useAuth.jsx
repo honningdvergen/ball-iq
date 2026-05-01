@@ -76,15 +76,6 @@ export function AuthProvider({ children }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         activeUserIdRef.current = session?.user?.id ?? null
-        // Diagnostic — visibility into auth-state propagation. If login
-        // appears to succeed at the API level but the app stays on the
-        // Login screen, the absence of a SIGNED_IN log here narrows the
-        // root cause to the listener (vs the signIn API call itself).
-        console.log('[auth] state change', {
-          event,
-          hasSession: !!session,
-          userId: session?.user?.id,
-        })
         setUser(session?.user ?? null)
         if (session?.user) {
           setIsGuest(false)
@@ -186,15 +177,6 @@ export function AuthProvider({ children }) {
     const remoteCorrectAnswers = remoteProfile.correct_answers || 0
     const remoteStats = (remoteProfile.stats && typeof remoteProfile.stats === 'object') ? remoteProfile.stats : {}
 
-    console.log('[hydrate] remote:', {
-      xp: remoteXp,
-      total_score: remoteTotalScore,
-      games_played: remoteGamesPlayed,
-      correct_answers: remoteCorrectAnswers,
-      stats: remoteStats,
-    })
-    console.log('[hydrate] local before:', { xp: localXp, stats: localStats })
-
     // Per-field max
     const finalXp = Math.max(localXp, remoteXp)
     const finalGamesPlayed = Math.max(localStats.gamesPlayed || 0, remoteGamesPlayed)
@@ -211,8 +193,6 @@ export function AuthProvider({ children }) {
     for (const k of bestKeys) {
       finalStats[k] = Math.max(localStats[k] || 0, remoteStats[k] || 0)
     }
-
-    console.log('[hydrate] merged:', { xp: finalXp, stats: finalStats })
 
     // Write to localStorage. Hydration is intentionally read-only with respect
     // to Supabase: saveStats (App.jsx) is the canonical writer for aggregate
@@ -344,12 +324,6 @@ export function AuthProvider({ children }) {
       }
     }
 
-    console.log('[hydrate] daily/wordle/streak:', {
-      dailyDays: Object.keys(mergedDailyScores).length,
-      wordleDays: Object.keys(mergedWordleState).length,
-      streak: mergedStreak,
-    })
-
     // Notify AppInner — its xp/stats/dailyHistory/loginStreak useState
     // initializers already ran with the pre-hydration localStorage values,
     // so they need a kick to pick up the freshly-merged numbers.
@@ -433,7 +407,6 @@ export function AuthProvider({ children }) {
 
   // Crops centered to a square and resizes to targetW × targetH, then encodes JPEG.
   async function resizeImageToBlob(file, targetW, targetH) {
-    console.log('[uploadAvatar] resize: starting', { fileName: file?.name, fileType: file?.type, fileSize: file?.size })
     let dataURL
     try {
       dataURL = await new Promise((resolve, reject) => {
@@ -442,7 +415,6 @@ export function AuthProvider({ children }) {
         r.onerror = () => reject(new Error('FileReader error: ' + (r.error?.message || 'unknown')))
         r.readAsDataURL(file)
       })
-      console.log('[uploadAvatar] resize: file read', { dataURLBytes: dataURL?.length })
     } catch (e) {
       console.error('[uploadAvatar] resize: FileReader failed', e)
       throw e
@@ -455,7 +427,6 @@ export function AuthProvider({ children }) {
         i.onerror = () => reject(new Error('Image decode failed (format may be unsupported — e.g. HEIC)'))
         i.src = dataURL
       })
-      console.log('[uploadAvatar] resize: image decoded', { w: img.width, h: img.height })
     } catch (e) {
       console.error('[uploadAvatar] resize: image decode failed', e)
       throw e
@@ -479,7 +450,6 @@ export function AuthProvider({ children }) {
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob(b => (b ? resolve(b) : reject(new Error('Canvas toBlob returned null'))), 'image/jpeg', 0.85)
     })
-    console.log('[uploadAvatar] resize: blob ready', { blobSize: blob.size, blobType: blob.type })
     return blob
   }
 
@@ -509,7 +479,6 @@ export function AuthProvider({ children }) {
   // with the current session's Bearer token, so we can see the raw HTTP
   // status + body if anything fails.
   async function uploadAvatar(file) {
-    console.log('[uploadAvatar] called', { hasFile: !!file, userId: user?.id, isGuest })
     if (!file) {
       console.error('[uploadAvatar] aborted: no file')
       return { error: 'No file provided' }
@@ -521,13 +490,6 @@ export function AuthProvider({ children }) {
     if (sessErr) console.error('[uploadAvatar] getSession error', dumpErr(sessErr))
     const token = sessionData?.session?.access_token
     const userId = sessionData?.session?.user?.id
-    console.log('[uploadAvatar] session', {
-      hasToken: !!token,
-      tokenPrefix: token ? token.slice(0, 20) + '…' : null,
-      userId,
-      userMatches: userId === user?.id,
-      expiresAt: sessionData?.session?.expires_at,
-    })
     if (!token || !userId) {
       console.error('[uploadAvatar] aborted: no session token / user id')
       return { error: 'No session' }
@@ -538,7 +500,6 @@ export function AuthProvider({ children }) {
     try {
       blob = await resizeImageToBlob(file, 400, 400)
       if (!blob || blob.size === 0) return { error: 'Empty blob after resize' }
-      console.log('[uploadAvatar] blob ready', { size: blob.size, type: blob.type })
     } catch (e) {
       console.error('[uploadAvatar] resize threw', dumpErr(e))
       return { error: e?.message || 'Resize failed' }
@@ -547,7 +508,6 @@ export function AuthProvider({ children }) {
     // 3. Upload via REST — POST /storage/v1/object/avatars/{path}
     const path = `${userId}.jpg`
     const url = `https://blcisypmngimqkwxrrdm.supabase.co/storage/v1/object/avatars/${path}`
-    console.log('[uploadAvatar] POST', url)
     let response
     try {
       response = await fetch(url, {
@@ -576,11 +536,8 @@ export function AuthProvider({ children }) {
       return { error: bodyText }
     }
 
-    console.log('[uploadAvatar] upload OK', response.status)
-
     // 4. Build a public URL with a cache-busting query string
     const publicUrl = `https://blcisypmngimqkwxrrdm.supabase.co/storage/v1/object/public/avatars/${path}?t=${Date.now()}`
-    console.log('[uploadAvatar] public URL', publicUrl)
 
     // 5. Persist onto the profile row
     try {
@@ -590,8 +547,6 @@ export function AuthProvider({ children }) {
         .eq('id', userId)
       if (updErr) {
         console.error('[uploadAvatar] profile update failed', dumpErr(updErr))
-      } else {
-        console.log('[uploadAvatar] profile row updated')
       }
     } catch (updEx) {
       console.error('[uploadAvatar] profile update threw', dumpErr(updEx))
@@ -599,7 +554,6 @@ export function AuthProvider({ children }) {
 
     // Update in-memory profile so the avatar swaps immediately
     setProfile(prev => (prev ? { ...prev, avatar_url: publicUrl } : prev))
-    console.log('[uploadAvatar] complete', { publicUrl })
     return { url: publicUrl }
   }
 
