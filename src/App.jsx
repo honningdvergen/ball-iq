@@ -6649,7 +6649,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               }}>BETA</span>
             )}
           </div>
-          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>Made with ⚽ in Norway</div>
           {/* Ghost outlined to match the secondary-action discipline used on
               result screens — filled green is reserved for primary actions. */}
           <a
