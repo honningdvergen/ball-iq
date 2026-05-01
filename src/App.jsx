@@ -1482,7 +1482,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
-  background:transparent;padding:10px 4px 4px;min-height:0;
+  background:transparent;padding:12px 4px 4px;min-height:0;
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;position:relative;
   transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
@@ -1490,7 +1490,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-item:active{transform:scale(0.88);}
 /* Pill indicator above active icon */
 .tab-item.active::before{
-  content:'';position:absolute;top:-2px;
+  content:'';position:absolute;top:-4px;
   width:32px;height:3px;border-radius:2px;
   background:var(--accent);
 }
