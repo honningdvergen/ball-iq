@@ -3597,9 +3597,72 @@ const INVITE_BASE_URL = "https://balliq.app";
 const buildInviteUrl = (code) => `${INVITE_BASE_URL}/?join=${encodeURIComponent(code)}`;
 const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
 
+// Phase 7.0: Online multiplayer is being rebuilt for the N-player
+// architecture (Stages 1-4). The existing 1v1 component below is
+// gated behind an unconditional early return — treats every entry
+// path (FriendsPicker → "Online 1v1", URL auto-join via ?join=CODE,
+// any other deep link) as a request to show the Coming Soon screen.
+// State/effects/RPC code below this gate is dead-but-harmless until
+// the Stage 4 cleanup deletes it. Local multiplayer (pass-and-play)
+// is unaffected — it doesn't route through this component.
+function MultiplayerComingSoon({ onBack }) {
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
+        <div className="page-title">Online Multiplayer</div>
+      </div>
+      <div style={{
+        maxWidth:"min(440px, 100%)",
+        margin:"24px auto 0",
+        textAlign:"center",
+        padding:"0 4px",
+      }}>
+        <div style={{fontSize:48, marginBottom:16}} aria-hidden="true">🛠️</div>
+        <div style={{
+          fontSize:20, fontWeight:800, color:"var(--t1)",
+          letterSpacing:"-0.3px", marginBottom:10,
+        }}>
+          Multiplayer is being rebuilt
+        </div>
+        <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.6, marginBottom:20}}>
+          We're upgrading online multiplayer to support up to 10 players, Kahoot-style real-time gameplay, and smoother lobbies. Back soon.
+        </p>
+        <div style={{
+          background:"var(--s1)", border:"1px solid var(--border)",
+          borderRadius:14, padding:"16px 18px", textAlign:"left",
+          marginBottom:24,
+        }}>
+          <div style={{fontSize:12, fontWeight:700, color:"var(--t3)", letterSpacing:0.4, textTransform:"uppercase", marginBottom:8}}>
+            In the meantime
+          </div>
+          <div style={{fontSize:13, color:"var(--t2)", lineHeight:1.5}}>
+            Local multiplayer (pass-and-play) still works. Tap "Play with Friends" on Home and choose Local Multiplayer.
+          </div>
+        </div>
+        <button
+          onClick={onBack}
+          className="wd-back"
+          style={{width:"min(280px, 100%)", padding:"14px 22px"}}
+        >
+          Back to Home
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function OnlineGame({ onBack, userId, defaultName, autoJoinCode }) {
+  // Phase 7.0 gate — every entry path lands on Coming Soon until the
+  // Stage 1-4 rebuild ships. Hooks below this gate never run since
+  // the early return is unconditional (React rules-of-hooks compliant
+  // — same hook count every render: zero).
+  return <MultiplayerComingSoon onBack={onBack} />;
+  // eslint-disable-next-line no-unreachable
+  // ─── BELOW: legacy 1v1 implementation, dead until Stage 4 cleanup ───
   // Top-level view: 'menu' | 'create-input' | 'join-input' | 'create-waiting'
   //                 | 'lobby' | 'playing' | 'results'
+  // eslint-disable-next-line no-unreachable
   const [view, setView] = useState("menu");
   const [name, setName] = useState(defaultName || "");
   const [code, setCode] = useState("");
@@ -10585,8 +10648,8 @@ function AppInner() {
                 >
                   <span className="diff-option-icon">🌐</span>
                   <div className="diff-option-body">
-                    <div className="diff-option-name">Online 1v1</div>
-                    <div className="diff-option-desc">Play someone anywhere with a room code</div>
+                    <div className="diff-option-name">Online Multiplayer</div>
+                    <div className="diff-option-desc">Coming soon — being rebuilt</div>
                   </div>
                 </button>
                 <button
