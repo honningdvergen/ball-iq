@@ -987,7 +987,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
-.app{max-width:420px;margin:0 auto;padding:0 20px 24px;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+.app{max-width:420px;margin:0 auto;padding:0 20px 0;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
 .q-text{font-size:18px !important;}
 .sbar{position:sticky;top:0;z-index:10;height:env(safe-area-inset-top,0);background:var(--bg);}
@@ -1490,7 +1490,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-item:active{transform:scale(0.88);}
 /* Pill indicator above active icon */
 .tab-item.active::before{
-  content:'';position:absolute;top:6px;
+  content:'';position:absolute;top:0;
   width:32px;height:3px;border-radius:2px;
   background:var(--accent);
 }
@@ -6917,13 +6917,18 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
         <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Quick answers to common questions.</div>
+        {/* Phase 6d Issue 3: reuse privacyH2/privacyP from PrivacyScreen so
+            Help and Privacy read as visual siblings (same h2 weight/color,
+            same body color, same vertical rhythm). Was using a bright
+            #58CC02 on questions which was louder than anywhere else in
+            the app. */}
         {FAQ_ENTRIES.map((entry, i) => (
-          <div key={i} style={{marginBottom: 24}}>
-            <div style={{fontSize: 16, fontWeight: 800, color: "#58CC02", marginBottom: 8}}>{entry.q}</div>
-            <p style={{fontSize: 15, color: "#9BA0B8", margin: 0, lineHeight: 1.6}}>{entry.a}</p>
-          </div>
+          <React.Fragment key={i}>
+            <h2 style={privacyH2}>{entry.q}</h2>
+            <p style={privacyP}>{entry.a}</p>
+          </React.Fragment>
         ))}
-        <p style={{fontSize: 13, color: "#9BA0B8", marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@balliq.app" style={{color:"#58CC02",textDecoration:"none"}}>hello@balliq.app</a>.</p>
+        <p style={{...privacyP, marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a>.</p>
       </div>
     </div>
   );
