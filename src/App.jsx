@@ -914,10 +914,6 @@ const css = `
 .light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
 .light .xp-bar-track { background:#E5E5EA; }
 .light .settings-panel { background:#FFFFFF; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
-.light .daily-hero { background:linear-gradient(135deg,#34A853,#2D9247); }
-.light .daily-hero-title { color:#FFFFFF; }
-.light .daily-hero-date { color:rgba(255,255,255,0.82); }
-.light .daily-hero-sub { color:rgba(255,255,255,0.92); }
 .light .badge-tile.locked { background:#F2F2F7; border-color:#E5E5EA; }
 .light .badge-tile.earned { background:rgba(52,168,83,0.08); border-color:rgba(52,168,83,0.2); }
 
@@ -988,7 +984,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 0;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.daily-hero-sub,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
+.mi-name,.sr-label,.sr-desc,.settings-row,.tab-label,.lcard-t,.lcard-s,.rc-title,.score-pct,.sbox-k,.badge-name,.profile-iq-line,.profile-level-badge{font-size:14px;}
 .q-text{font-size:18px !important;}
 .sbar{position:sticky;top:0;z-index:10;height:env(safe-area-inset-top,0);background:var(--bg);}
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
@@ -1066,9 +1062,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-bar{display:flex;gap:2px;width:100%;}
 .iq-rank-seg{flex:1;height:6px;background:var(--s3);border-radius:2px;transition:background 0.2s;}
 .iq-rank-seg.active{background:var(--accent);}
-
-/* ── HOME HERO: DAILY (flame gradient, dark Play pill) ── */
-.hero-daily{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:12px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;cursor:pointer;border:none;width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#1A0F05;contain:layout paint style;}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
 .hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:24px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
@@ -1505,7 +1498,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
 .light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
-.light .daily-hero,.light .badge-tile,.light .settings-card{
+.light .badge-tile,.light .settings-card{
   border:0.5px solid var(--border);box-shadow:var(--sh);
 }
 
@@ -1513,15 +1506,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .tab-badge{border-color:rgba(255,255,255,0.9);}
 
 /* ── DAILY SCREEN ── */
-.daily-hero{background:var(--s1);border:none;border-radius:18px;padding:24px 20px;margin-bottom:14px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.45);}
-.daily-hero-date{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:10px;}
-.daily-hero-title{font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
-.daily-hero-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:18px;}
-.daily-hero-btn{width:100%;padding:14px;border-radius:12px;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s;}
-.daily-hero-btn.available{background:#58CC02;color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;}
-.daily-hero-btn.available:hover{filter:brightness(1.06);}
-.daily-hero-btn.available:active{opacity:0.85;}
-.daily-hero-btn.done{background:var(--s2);color:var(--t2);cursor:default;}
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
 .streak-sec-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:14px;}
 .streak-day{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
@@ -1783,10 +1767,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .xp-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
-/* ── XP TOAST ── */
-.xp-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a1a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(34,197,94,0.35);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);}
 @keyframes xpPop{from{opacity:0;transform:translateX(-50%) scale(0.85);}to{opacity:1;transform:translateX(-50%) scale(1);}}
-.xp-t-icon{font-size:16px;}
 .wr-summary{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:0.2px;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
 .wr-summary::before{content:"▶";font-size:8px;transition:transform 0.2s;}
 details[open] .wr-summary::before{transform:rotate(90deg);}
@@ -9280,8 +9261,6 @@ function AppInner() {
     } catch {}
     return 0;
   });
-  const [xpToast, setXpToast] = useState(null);
-  const xpToastTimerRef = useRef(null);
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
   const levelUpTimerRef = useRef(null);
   const [howToPlay, setHowToPlay] = useState(null);
@@ -9339,7 +9318,6 @@ function AppInner() {
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
   useEffect(() => () => {
-    if (xpToastTimerRef.current) clearTimeout(xpToastTimerRef.current);
     if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
     if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
   }, []);
@@ -10486,14 +10464,6 @@ function AppInner() {
             </div>
           </div>
         )}
-        {xpToast && (
-          <div className="xp-toast" style={xpToast.leveledUp ? {background:"var(--gold)",color:"#0a0a00",padding:"12px 24px",fontSize:14} : {}}>
-            {xpToast.leveledUp
-              ? <><span className="xp-t-icon">{xpToast.icon}</span><span>Level Up! <strong>{xpToast.levelName}</strong></span></>
-              : <><span className="xp-t-icon">⚡</span><span>+{xpToast.earned} XP</span></>}
-          </div>
-        )}
-
         {howToPlay && (
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>

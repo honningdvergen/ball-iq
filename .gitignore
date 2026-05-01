@@ -7,3 +7,4 @@ dist
 scripts/.last-publish-summary.json
 scripts/.vintage-candidates.json
 scripts/.vintage-candidates.md
+scripts/.audit-findings.md
