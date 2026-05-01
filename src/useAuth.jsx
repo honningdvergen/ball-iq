@@ -202,10 +202,12 @@ export function AuthProvider({ children }) {
     try { localStorage.setItem('biq_xp', String(finalXp)) } catch {}
     try { localStorage.setItem('biq_stats', JSON.stringify(finalStats)) } catch {}
 
-    // ── Phase 5v: cross-device sync for daily/wordle/login_streak ──
-    // These three are per-day-keyed (or single-object for streak), so
-    // union-merge is safe — there's no "delete a day" operation that
-    // a stale local value could undo. Local-only days back-sync up.
+    // ── Phase 5v: cross-device sync for daily/wordle ──
+    // (login_streak removed from hydrate in Phase G — handled by the
+    //  tick_login_streak RPC instead.) These two remaining categories are
+    // per-day-keyed, so union-merge is safe — there's no "delete a day"
+    // operation that a stale local value could undo. Local-only days
+    // back-sync up.
 
     // Daily scores (score per YMD) AND daily wrongAnswers (array per YMD).
     // Phase 5w followup added the wrongAnswers sync; folded into the same
@@ -297,36 +299,15 @@ export function AuthProvider({ children }) {
       )).catch(e => console.warn('[hydrate back-sync wordle]', e?.message || e))
     }
 
-    // Login streak (single object). Smart-merge: max of each field.
-    const remoteStreak = remoteProfile.login_streak && typeof remoteProfile.login_streak === 'object'
-      ? remoteProfile.login_streak : null
-    let localStreak = null
-    try { localStreak = JSON.parse(localStorage.getItem('biq_login_streak') || 'null') } catch {}
-    let mergedStreak = null
-    if (remoteStreak && localStreak) {
-      mergedStreak = {
-        lastDay: Math.max(remoteStreak.lastDay || 0, localStreak.lastDay || 0),
-        streak: Math.max(remoteStreak.streak || 0, localStreak.streak || 0),
-        best: Math.max(remoteStreak.best || 0, localStreak.best || 0),
-      }
-    } else {
-      mergedStreak = remoteStreak || localStreak || null
-    }
-    if (mergedStreak) {
-      try { localStorage.setItem('biq_login_streak', JSON.stringify(mergedStreak)) } catch {}
-      const remoteAhead = remoteStreak
-        && (remoteStreak.lastDay || 0) >= (mergedStreak.lastDay || 0)
-        && (remoteStreak.best || 0) >= (mergedStreak.best || 0)
-      if (!remoteAhead) {
-        supabase.rpc('upsert_login_streak', { p_streak: mergedStreak })
-          .then(({ error }) => { if (error) console.warn('[hydrate back-sync streak]', error.message) })
-          .catch(e => console.warn('[hydrate back-sync streak]', e?.message || e))
-      }
-    }
+    // Login streak removed from hydrate in Phase G (audit finding 2.1) —
+    // tick_login_streak RPC is now the single source of truth for the
+    // login_streak jsonb column. AppInner's tickLoginStreak useEffect
+    // calls the RPC after auth settles; hydrate no longer reads, merges,
+    // or writes login_streak.
 
-    // Notify AppInner — its xp/stats/dailyHistory/loginStreak useState
-    // initializers already ran with the pre-hydration localStorage values,
-    // so they need a kick to pick up the freshly-merged numbers.
+    // Notify AppInner — its xp/stats/dailyHistory useState initializers
+    // already ran with the pre-hydration localStorage values, so they need
+    // a kick to pick up the freshly-merged numbers.
     try {
       window.dispatchEvent(new CustomEvent('biq:hydrated', {
         detail: {
@@ -334,7 +315,6 @@ export function AuthProvider({ children }) {
           stats: finalStats,
           dailyScores: mergedDailyScores,
           wordleState: mergedWordleState,
-          loginStreak: mergedStreak,
         },
       }))
     } catch {}

@@ -9371,6 +9371,73 @@ function AppInner() {
   }, []);
   const [toast, setToast] = useState(null);
 
+  // Phase G (audit finding 2.1): server-authoritative login streak.
+  // Replaces the mount-effect-vs-hydrate race that could silently truncate
+  // a multi-device user's streak. Signed-in users call tick_login_streak
+  // RPC which reads + writes profiles.login_streak atomically server-side;
+  // the returned object includes a `ticked` flag (whether server state
+  // changed this call) that gates the streak toast. Multi-device same-day
+  // opens see ticked=false on the second device → no duplicate toast.
+  //
+  // Guest users have no remote profile, so the same lastDay logic runs
+  // client-side as a fallback. Both paths share the post-tick logic:
+  // write local cache, update React state, fire toast on increment.
+  //
+  // Placed BEFORE the day-rollover useEffect below so that effect's dep
+  // array can include tickLoginStreak without hitting a TDZ at render.
+  const tickLoginStreak = useCallback(async () => {
+    let result;
+    if (user?.id) {
+      const { data, error } = await supabase.rpc('tick_login_streak');
+      if (error) { console.warn('[tick_login_streak]', error.message); return; }
+      result = data;
+    } else {
+      // Guest path — same logic as the RPC, executed client-side.
+      const todayNum = Math.floor(Date.now() / TIMINGS.DAY_MS);
+      let prev = null;
+      try {
+        const raw = localStorage.getItem('biq_login_streak');
+        if (raw) prev = JSON.parse(raw);
+      } catch {}
+      const prevStreak  = prev?.streak  ?? 0;
+      const prevLastDay = prev?.lastDay ?? 0;
+      const prevBest    = prev?.best    ?? prev?.streak ?? 0;
+      let newStreak;
+      if (prevLastDay === todayNum) newStreak = prevStreak;
+      else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
+      else newStreak = 1;
+      result = {
+        lastDay: todayNum,
+        streak:  newStreak,
+        best:    Math.max(prevBest, newStreak),
+        ticked:  prevLastDay !== todayNum,
+      };
+    }
+    if (!result) return;
+    try {
+      localStorage.setItem('biq_login_streak', JSON.stringify({
+        lastDay: result.lastDay, streak: result.streak, best: result.best,
+      }));
+    } catch {}
+    setLoginStreak(result.streak);
+    setBestLoginStreak(result.best);
+    if (result.ticked && result.streak > 1) {
+      if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+      setStreakToast(result.streak);
+      haptic("heavy");
+      playSound("streak");
+      streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+    }
+  }, [user?.id]);
+
+  // Phase G: fires once per AppInner mount (or when user.id transitions
+  // for in-flight loading sessions). No race with hydrate because hydrate
+  // no longer reads or writes login_streak — the server-side RPC is the
+  // single source of truth for signed-in users.
+  useEffect(() => {
+    tickLoginStreak();
+  }, [tickLoginStreak]);
+
   // Detect day rollover while the app stays open. dailyDone / dailyScore were
   // hydrated from yesterday's localStorage key on mount; without this effect a
   // user who leaves the tab open past midnight would still see the "already
@@ -9418,9 +9485,13 @@ function AppInner() {
         setDailyScore(null);
       }
       rebuildHistory();
+      // Phase G: re-tick login streak on day rollover so users who keep
+      // the app open across midnight get the streak credit + toast for
+      // the new day, same as if they'd reopened the app.
+      tickLoginStreak();
     }, 60_000);
     return () => clearInterval(id);
-  }, []);
+  }, [tickLoginStreak]);
 
 
   const setProfile = useCallback((updater) => {
@@ -9499,48 +9570,10 @@ function AppInner() {
     window.storage?.get("biq_rate_shown").then(res => {
       if (res) setRatePromptShown(true);
     }).catch(() => {});
-    // Login streak — check if we played yesterday, update streak. Also tracks
-    // `best` (all-time best login streak) in the same storage object.
-    (async () => {
-      try {
-        const todayNum = Math.floor(Date.now() / TIMINGS.DAY_MS);
-        const res = await window.storage?.get("biq_login_streak");
-        const data = res ? JSON.parse(res.value) : { streak: 0, lastDay: 0, best: 0 };
-        const prevBest = typeof data.best === "number" ? data.best : (data.streak || 0);
-        let newStreak = data.streak;
-        if (data.lastDay === todayNum) {
-          // Already counted today
-          newStreak = data.streak;
-        } else if (data.lastDay === todayNum - 1) {
-          // Consecutive day — increment
-          newStreak = data.streak + 1;
-          if (newStreak > 1) {
-            if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
-            setStreakToast(newStreak);
-            haptic("heavy");
-            playSound("streak");
-            streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
-          }
-        } else if (data.lastDay < todayNum - 1) {
-          // Streak broken
-          newStreak = 1;
-        } else {
-          // First time ever
-          newStreak = 1;
-        }
-        const newBest = Math.max(prevBest, newStreak);
-        const streakPayload = { streak: newStreak, lastDay: todayNum, best: newBest };
-        await window.storage?.set("biq_login_streak", JSON.stringify(streakPayload));
-        // Cross-device sync — push the merged streak object to profiles.
-        if (user?.id) {
-          supabase.rpc('upsert_login_streak', { p_streak: streakPayload })
-            .then(({ error }) => { if (error) console.warn('[streak sync]', error.message); })
-            .catch(e => console.warn('[streak sync]', e?.message || e));
-        }
-        setLoginStreak(newStreak);
-        setBestLoginStreak(newBest);
-      } catch {}
-    })();
+    // Login streak handled by Phase G's tickLoginStreak useEffect — server
+    // authoritative for signed-in users via tick_login_streak RPC, local
+    // compute for guests. Removed from this mount-effect to eliminate the
+    // hydrate-vs-mount-effect race (audit finding 2.1).
     // Load persisted settings
     window.storage?.get("biq_settings").then(res => {
       if (res) { try {
@@ -10185,10 +10218,9 @@ function AppInner() {
           setDailyScore(detail.dailyScores[todayYMD]);
         }
       }
-      if (detail.loginStreak) {
-        if (typeof detail.loginStreak.streak === 'number') setLoginStreak(detail.loginStreak.streak);
-        if (typeof detail.loginStreak.best === 'number') setBestLoginStreak(detail.loginStreak.best);
-      }
+      // loginStreak removed from biq:hydrated payload in Phase G —
+      // tick_login_streak RPC is authoritative; AppInner's tickLoginStreak
+      // useEffect updates setLoginStreak / setBestLoginStreak directly.
       // wordleState is in the payload for forward-compat; FootballWordle
       // re-reads localStorage on mount, so no AppInner state to refresh.
     };
