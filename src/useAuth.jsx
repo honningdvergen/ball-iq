@@ -101,22 +101,54 @@ export function AuthProvider({ children }) {
     setProfile(fallbackProfile)
 
     try {
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle()
+      // Phase I cutover: profile metadata + aggregate stats live on `profiles`;
+      // game state (daily_*, wordle_state, login_streak) lives on
+      // `user_game_state`. Fetch both in parallel and merge so the rest of
+      // the app continues to see a unified `profile.*` shape.
+      const [profileResult, gameStateResult] = await Promise.all([
+        supabase.from('profiles').select('*').eq('id', userId).maybeSingle(),
+        supabase.from('user_game_state').select('*').eq('user_id', userId).maybeSingle(),
+      ])
 
-      if (error) {
-        console.error('[loadProfile] supabase error', { userId, status, code: error.code, message: error.message, details: error.details, hint: error.hint })
+      const { data: profileData, error: profileError, status: profileStatus } = profileResult
+      const { data: gameStateData, error: gameStateError, status: gameStateStatus } = gameStateResult
+
+      if (profileError) {
+        console.error('[loadProfile] profiles error', { userId, status: profileStatus, code: profileError.code, message: profileError.message, details: profileError.details, hint: profileError.hint })
         return
       }
-      if (!data) {
+      if (!profileData) {
         console.warn('[loadProfile] no profile row found for user — keeping metadata fallback', { userId, username: metaUsername })
         return
       }
-      // Merge: if DB row is missing username, prefer user_metadata.username over blank
-      const merged = { ...data, username: data.username || metaUsername || 'Player' }
+
+      // user_game_state failure is non-fatal: keep going with profile-only
+      // data. UI shows fallback/empty for daily/wordle/streak; hydrate falls
+      // back to local biq_* cache if present.
+      let gameState = null
+      if (gameStateError) {
+        console.error('[loadProfile] user_game_state error (non-fatal)', { userId, status: gameStateStatus, code: gameStateError.code, message: gameStateError.message })
+      } else if (!gameStateData) {
+        console.warn('[loadProfile] no user_game_state row for user — trigger should have created one', { userId })
+      } else {
+        gameState = gameStateData
+      }
+
+      // Merge: profile fields, then explicitly source the 5 game-state columns
+      // from gameState (or undefined if its fetch failed). We don't fall back
+      // to profileData's stale copies — during the C2-to-C4 window those
+      // columns exist on profiles but are no longer written, so reading them
+      // risks showing yesterday's score as today's. "Show no data" beats
+      // "show stale data"; hydrate's local cache will fill in.
+      const merged = {
+        ...profileData,
+        daily_scores:        gameState?.daily_scores,
+        daily_wrong_answers: gameState?.daily_wrong_answers,
+        daily_all_answers:   gameState?.daily_all_answers,
+        wordle_state:        gameState?.wordle_state,
+        login_streak:        gameState?.login_streak,
+        username: profileData.username || metaUsername || 'Player',
+      }
       setProfile(merged)
       // Cross-device sync: max-merge local <-> remote so signing in on a fresh
       // device (or PWA install) restores progress, while never losing newer
