@@ -1811,6 +1811,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .dr-typed-user-wrong .dr-typed-mark{color:#FF5A5A;}
 .xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Inter',sans-serif;}
 .streak-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a0a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(251,191,36,0.4);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
+/* ── OFFLINE BANNER ── informational, sits above tab-bar, never blocks UI */
+.offline-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(58px + max(env(safe-area-inset-bottom,34px),34px));width:100%;max-width:420px;padding:10px 16px;background:#F97316;color:#1A0F05;font-size:13px;font-weight:600;text-align:center;z-index:150;box-shadow:0 -4px 16px rgba(0,0,0,0.2);animation:fadeIn 0.18s ease;}
+.offline-banner.reconnected{background:var(--accent);color:#0a1a00;}
 .xp-earned-badge{text-align:center;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:8px;padding:8px 14px;margin-bottom:8px;}
 
 /* ── IQ HISTORY ── */
@@ -9145,6 +9148,50 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   );
 });
 
+// ─── OFFLINE BANNER ───────────────────────────────────────────────────────────
+// Informational banner surfaced when the device is offline so users understand
+// failed cross-device syncs are a connection issue, not an app bug. Local-first
+// features (Daily 7, Wordle, etc.) keep working; sync resumes naturally when
+// connection returns. Phase E (audit finding 2.3): banner only — no retry queue,
+// no feature gating, no blocking UI.
+const OfflineBanner = React.memo(function OfflineBannerImpl() {
+  const [online, setOnline] = useState(() => {
+    try { return navigator.onLine !== false; } catch { return true; }
+  });
+  // Briefly show "Back online ✓" for ~2s after reconnect so the user gets a
+  // confirmation that things are working again, then fully hide.
+  const [showBackOnline, setShowBackOnline] = useState(false);
+  const backOnlineTimerRef = useRef(null);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setOnline(true);
+      setShowBackOnline(true);
+      if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+      backOnlineTimerRef.current = setTimeout(() => setShowBackOnline(false), 2000);
+    };
+    const handleOffline = () => {
+      setOnline(false);
+      setShowBackOnline(false);
+      if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+    };
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+      if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+    };
+  }, []);
+
+  if (online && !showBackOnline) return null;
+  return (
+    <div className={`offline-banner${online ? " reconnected" : ""}`} role="status" aria-live="polite">
+      {online ? "✓ Back online" : "You're offline. Your progress will sync when you're back."}
+    </div>
+  );
+});
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   const { user, profile: authProfile, isGuest, exitGuestMode } = useAuth();
@@ -11081,6 +11128,7 @@ function AppInner() {
         )}
         </>}
       </div>
+      <OfflineBanner />
     </>
   );
 }
