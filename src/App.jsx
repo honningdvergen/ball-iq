@@ -1490,7 +1490,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-item:active{transform:scale(0.88);}
 /* Pill indicator above active icon */
 .tab-item.active::before{
-  content:'';position:absolute;top:0;
+  content:'';position:absolute;top:-3px;
   width:32px;height:3px;border-radius:2px;
   background:var(--accent);
 }
