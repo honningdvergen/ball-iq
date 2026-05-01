@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { useAuth } from './useAuth.jsx';
+import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
@@ -6449,14 +6449,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         if (typeof onAccountDeleted === "function") onAccountDeleted({ error });
         return;
       }
-      try {
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k && k.startsWith("biq_")) keys.push(k);
-        }
-        for (const k of keys) localStorage.removeItem(k);
-      } catch {}
+      clearAllUserLocalStorage();
       if (typeof onAccountDeleted === "function") onAccountDeleted({ error: null });
       try { await signOut(); } catch {}
     } catch (e) {

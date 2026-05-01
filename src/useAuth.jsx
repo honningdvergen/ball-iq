@@ -1,13 +1,55 @@
-import { useState, useEffect, createContext, useContext } from 'react'
+import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import { supabase } from './supabase.js'
 
 const AuthContext = createContext(null)
+
+// Per-user localStorage keys cleared on sign-out and account delete to
+// prevent User A's data from leaking into User B's session on shared
+// devices via hydrate's max/union merges. Device-scoped keys (UX
+// preferences and dismiss-flags) are intentionally preserved:
+//   - biq_settings, biq_first_tip_shown, biq_rate_shown, biq-splash
+//   - ballIQ_guestMode (handled separately by signOut)
+const USER_SCOPED_STATIC_KEYS = [
+  'biq_xp',
+  'biq_stats',
+  'biq_login_streak',
+  'biq_iq_history',
+  'biq_hotstreak_best',
+  'biq_skill_level',
+  'biq_profile',
+  'biq_review_idx',
+  'biq_seen_history_v2',
+  'biq_pending_join',
+  'biq_onboarded',
+]
+const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
+
+export function clearAllUserLocalStorage() {
+  try {
+    for (const k of USER_SCOPED_STATIC_KEYS) localStorage.removeItem(k)
+    const matches = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i)
+      if (k && USER_SCOPED_PREFIXES.some(p => k.startsWith(p))) matches.push(k)
+    }
+    for (const k of matches) localStorage.removeItem(k)
+  } catch {}
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isGuest, setIsGuest] = useState(false)
+
+  // Tracks the currently-authenticated userId for hydrate-race protection.
+  // hydrateLocalFromRemote captures userId at start; if this ref no longer
+  // matches when hydrate runs, the user has signed out or switched accounts
+  // mid-flight and hydrate aborts to avoid leaking the previous user's
+  // data into the new session. signOut() invalidates this synchronously
+  // BEFORE its supabase.auth.signOut() await so any in-flight hydrate
+  // resolved during that await window sees the change and bails.
+  const activeUserIdRef = useRef(null)
 
   useEffect(() => {
     if (user?.id) {
@@ -26,12 +68,14 @@ export function AuthProvider({ children }) {
     }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+      activeUserIdRef.current = session?.user?.id ?? null
       setUser(session?.user ?? null)
       setLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        activeUserIdRef.current = session?.user?.id ?? null
         // Diagnostic — visibility into auth-state propagation. If login
         // appears to succeed at the API level but the app stays on the
         // Login screen, the absence of a SIGNED_IN log here narrows the
@@ -117,6 +161,19 @@ export function AuthProvider({ children }) {
   //     {} so local values dominate locally; remote catches up via saveStats.
   async function hydrateLocalFromRemote(userId, remoteProfile) {
     if (!remoteProfile) return
+    // Hydrate-race guard: if the active userId no longer matches the one
+    // this hydrate was started for, bail without writing. Prevents an
+    // in-flight hydrate (started after sign-in's profiles SELECT) from
+    // repopulating biq_* keys after a fast sign-out has already wiped
+    // them. Diagnostic warning kept enabled in production — if this
+    // ever fires we want visibility.
+    if (activeUserIdRef.current !== userId) {
+      console.warn('[hydrate] aborted — userId changed mid-flight', {
+        capturedUserId: userId,
+        currentUserId: activeUserIdRef.current,
+      })
+      return
+    }
 
     let localXp = 0
     try { localXp = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0 } catch {}
@@ -347,6 +404,18 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
+    // Order matters:
+    // 1. Invalidate the userId ref synchronously so any in-flight hydrate
+    //    (resolved during the supabase.auth.signOut await window below)
+    //    sees the mismatch and bails before writing.
+    // 2. Wipe user-scoped localStorage keys synchronously so the next
+    //    user's hydrate doesn't max/union-merge stale data on shared
+    //    devices. Device-scoped keys (settings, UX dismiss-flags) are
+    //    preserved by the helper.
+    // 3. End the auth session.
+    // 4. Clear ballIQ_guestMode + isGuest state.
+    activeUserIdRef.current = null
+    clearAllUserLocalStorage()
     await supabase.auth.signOut()
     localStorage.removeItem('ballIQ_guestMode')
     setIsGuest(false)
