@@ -483,6 +483,13 @@ export function AuthProvider({ children }) {
       console.error('[uploadAvatar] aborted: no file')
       return { error: 'No file provided' }
     }
+    // Defensive guard. The primary gate is in App.jsx handleFileChosen
+    // (rejects before CropModal opens, where the actual decode/canvas
+    // crash happens on low-RAM devices). This catches any future caller
+    // that uploads a blob without going through the cropper path.
+    if (file.size > 10 * 1024 * 1024) {
+      return { error: 'Photo is too large — please pick one under 10MB' }
+    }
 
     // 1. Pull the live session — need the access_token for the Bearer header
     //    and user.id for the object path.

@@ -8059,6 +8059,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     if (e.target) e.target.value = "";
     if (!file) return;
     if (!uploadAvatar) { toast("Photo upload unavailable"); return; }
+    // Primary gate against tab-crashes on low-RAM devices: reject large
+    // files before CropModal opens, since URL.createObjectURL + <img>
+    // decode + cropperjs canvas operate at full source resolution and
+    // can OOM on a 30-50MB iPhone "Original" photo. uploadAvatar has a
+    // matching defensive check for any caller that bypasses cropping.
+    if (file.size > 10 * 1024 * 1024) {
+      toast("Photo is too large — please pick one under 10MB");
+      return;
+    }
     // Defer upload — route through the crop modal first
     setPendingCrop(file);
   };
