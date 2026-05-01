@@ -6854,7 +6854,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
 
         <h2 style={privacyH2}>5. Third-party services we use</h2>
         <ul style={{paddingLeft: 20, marginBottom: 12}}>
-          <li style={privacyLi}><strong>Supabase (database and authentication):</strong> When you sign in with email or play Online 1v1 multiplayer, your username, profile data, scores, and game results are stored on Supabase servers. Online multiplayer also uses Supabase Realtime to sync game state between players. Avatar images are uploaded to Supabase Storage.</li>
+          <li style={privacyLi}><strong>Supabase (database and authentication):</strong> When you sign in with email, your username, profile data, scores, and game results are stored on Supabase servers. Avatar images are uploaded to Supabase Storage.</li>
           <li style={privacyLi}><strong>Google Fonts:</strong> We load the Inter and JetBrains Mono fonts from fonts.googleapis.com. Google may log your IP address when these fonts are loaded.</li>
           <li style={privacyLi}><strong>Cropper.js (CDN):</strong> When you upload a profile picture, we load an image cropping library from cdnjs.cloudflare.com. The CDN provider may log your IP address.</li>
         </ul>
@@ -6883,8 +6883,8 @@ const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 // behaviour and back-arrow affordance are consistent.
 const FAQ_ENTRIES = [
   {
-    q: "How do I play Online 1v1?",
-    a: `Sign in to your account first, then tap the "Play with Friends" hero on the home screen and choose "Online 1v1". Create a room and share the 6-character code with your friend, or join their code.`,
+    q: "Can I play multiplayer with friends online?",
+    a: `Online multiplayer is coming soon — we're rebuilding it to support up to 10 players with real-time lobbies. For now, tap the "Play with Friends" hero on the home screen and choose Local Multiplayer (pass-and-play on one device). You can also add friends in friend search to see their stats on their profile.`,
   },
   {
     q: "How does the Ball IQ Test work?",
@@ -6900,7 +6900,7 @@ const FAQ_ENTRIES = [
   },
   {
     q: "Does Ball IQ work offline?",
-    a: "Most game modes work offline — your scores are saved locally and synced when you're back online. Online 1v1 requires an internet connection.",
+    a: "Most game modes work offline — your scores are saved locally and synced when you're back online.",
   },
   {
     q: "Why can't I find my friend in friend search?",
