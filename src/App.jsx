@@ -3424,35 +3424,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 // game_rooms row. Both clients drive their own state from the row's status
 // and answer arrays — no polling, no shared QuizEngine.
 
-// True/False is hidden everywhere it's user-selectable — see the play grid
-// and league mode picker. Reinstate this entry when the mode comes back.
-const ONLINE_MODES = [
-  { id: "classic",   icon: "⏱️",  name: "Classic",     desc: "10 mixed-difficulty questions" },
-  { id: "survival",  icon: "🔥",  name: "Survival",    desc: "10 questions — keep your nerve" },
-  { id: "hotstreak", icon: "⚡🔥", name: "Hot Streak",   desc: "10 questions — pick fast" },
-];
-
-function pickOnlineQuestions(mode) {
-  if (mode === "truefalse") {
-    // Convert TF statements into the same {q, o, a} shape the playing screen
-    // renders, so the UI doesn't need a separate path.
-    const tfRaw = (typeof getTrueFalseQs === "function" ? getTrueFalseQs() : []).slice(0, 10);
-    return tfRaw.map(t => ({
-      q: t.s,
-      o: ["True", "False"],
-      a: (t.a === true || t.a === 1) ? 0 : 1,
-      cat: t.cat || "TF",
-      diff: t.diff || "medium",
-      type: "mcq",
-    }));
-  }
-  // Classic / Survival / Hot Streak all share the mcq pool. The mode tag is
-  // recorded on the room for the results screen but doesn't change play.
-  const pool = (getQs({ cat: "All", diff: "medium", n: 30, ramp: true }) || [])
-    .filter(q => q && q.type !== "tf" && q.type !== "typed" && Array.isArray(q.o));
-  return pool.slice(0, 10);
-}
-
 // NOTE for future native app build: when wrapping the PWA in a native iOS or
 // Android shell (Capacitor / PWABuilder), configure Universal Links / App
 // Links so that balliq.app/?join=CODE opens the installed app directly with
