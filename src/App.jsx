@@ -7721,6 +7721,18 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
+  // Audit Phase 5 (F1): ref-stabilize onLoadError so the cropper-load
+  // effect doesn't re-fire on every parent render. Caller passes an
+  // inline arrow at the CropModal site, so the prop identity changes
+  // every parent re-render. The effect is a one-shot CDN load — its
+  // re-fire was wasteful (ensureCropperLoaded is module-cached so no
+  // observable network re-load, but the chained promise + cancelled
+  // dance still ran on each render). The ref pattern means the effect
+  // runs once per mount; onLoadErrorRef.current always returns the
+  // freshest callback at fire time.
+  const onLoadErrorRef = useRef(onLoadError);
+  useEffect(() => { onLoadErrorRef.current = onLoadError; });
+
   // Load cropperjs from CDN (cached after first call)
   useEffect(() => {
     let cancelled = false;
@@ -7730,10 +7742,10 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
         if (cancelled) return;
         const isTimeout = /timed out/i.test(e?.message || "");
         setError(isTimeout ? "Couldn't load image editor" : "Something went wrong — try again");
-        onLoadError?.();
+        onLoadErrorRef.current?.();
       });
     return () => { cancelled = true; };
-  }, [onLoadError]);
+  }, []);
 
   // Initialize Cropper once the library is loaded AND the image element is in the DOM
   useEffect(() => {
@@ -9345,18 +9357,28 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     }
   }, [state.status, submitGuess, answer.length]);
 
+  // Audit Phase 5 (C3): ref-stabilize handleKey so the global keydown
+  // listener attaches once per mount instead of once per keystroke.
+  // handleKey's deps cascade through submitGuess → current, so handleKey
+  // identity changes on every letter typed; without the ref the effect
+  // below tore down and re-added the window listener ~6 times per puzzle.
+  // Keypress correctness preserved: handleKeyRef.current always returns
+  // the freshest callback at fire time.
+  const handleKeyRef = useRef(handleKey);
+  useEffect(() => { handleKeyRef.current = handleKey; });
+
   // Physical keyboard support. Ignore when modifier keys are held so we don't
   // hijack browser shortcuts (cmd-R, etc.).
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key === "Enter") { e.preventDefault(); handleKey("ENTER"); }
-      else if (e.key === "Backspace") { e.preventDefault(); handleKey("DEL"); }
-      else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toUpperCase());
+      if (e.key === "Enter") { e.preventDefault(); handleKeyRef.current("ENTER"); }
+      else if (e.key === "Backspace") { e.preventDefault(); handleKeyRef.current("DEL"); }
+      else if (/^[a-zA-Z]$/.test(e.key)) handleKeyRef.current(e.key.toUpperCase());
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [handleKey]);
+  }, []);
 
   const dateLabel = useMemo(() => {
     return new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -10170,7 +10192,11 @@ function AppInner() {
     if (autoJoinRoutedRef.current) return;
     autoJoinRoutedRef.current = true;
     startMode("online");
-  }, [pendingJoinCode, user, isGuest, startMode]);
+    // Audit Phase 5 (H2): user → user?.id. The effect only checks user
+    // for truthiness; `!user` and `!user?.id` are equivalent for Supabase
+    // auth (user is null OR has an id). Narrowing prevents re-fire on
+    // unrelated auth context updates (token refresh, metadata change).
+  }, [pendingJoinCode, user?.id, isGuest, startMode]);
 
   // LocalSetup gives us a fully-formed config — LocalGameScreen owns the rest
   // (questions, turns, scores, eliminations). No legacy state touched here.
