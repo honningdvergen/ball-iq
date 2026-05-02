@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
+import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
@@ -3522,23 +3523,80 @@ function OnlineGame({ onBack }) {
 }
 
 // ─── STAGE 1: ONLINE MULTIPLAYER (gated by ?stage1=1 during 1A-1E) ──────────
-// OnlineEntry: choice screen — "Create Room" or "Join with Code". Stage 1A
-// scaffolding; lobby UI lands in Stage 1B, gameplay in 1C, end in 1D.
-// Polished UX + removal of the ?stage1=1 gate ships in Stage 1F.
-function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
+//
+// PLACEHOLDER_QUESTIONS — hardcoded for Stage 1B's lobby → playing state
+// transition test. Stage 1E replaces this with pickMultiplayerQuestions
+// (QB-backed, difficulty-filtered, biq_seen_history_v2-aware). Server's
+// submit_answer reads `correct` as int index (0-3) per the SQL contract.
+const PLACEHOLDER_QUESTIONS = [
+  { prompt: "Test Q1: Which player won the 2022 Ballon d'Or?", options: ["Mbappé", "Benzema", "Messi", "Haaland"], correct: 1 },
+  { prompt: "Test Q2: How many players on a football team during play?", options: ["10", "11", "12", "9"], correct: 1 },
+  { prompt: "Test Q3: Which country won the 2022 World Cup?", options: ["France", "Brazil", "Argentina", "Croatia"], correct: 2 },
+];
+
+// OnlineEntry: choice screen — "Create Room" or "Join with Code". Calls
+// create_room / join_room RPCs directly; on success, navigates to the
+// MultiplayerLobby via onLobbyEnter callback. Specific error handling for
+// known SQLSTATEs (room full, room not found, room not accepting joins).
+function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
   const [code, setCode] = useState("");
   const [showCodeInput, setShowCodeInput] = useState(false);
-  const [codeError, setCodeError] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [joining, setJoining] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleJoin = () => {
-    const trimmed = code.trim().toUpperCase();
-    if (trimmed.length !== 6) {
-      setCodeError("Enter the 6-character room code");
+  const handleCreate = async () => {
+    if (creating || joining) return;
+    setCreating(true);
+    setError("");
+    const { data, error: rpcErr } = await supabase.rpc("create_room", {
+      p_capacity: 4,
+      p_name: defaultName || "Player",
+      p_avatar: "⚽",
+    });
+    if (rpcErr) {
+      setError(rpcErr.message || "Couldn't create room");
+      setCreating(false);
       return;
     }
-    setCodeError("");
-    onJoinRoom(trimmed);
+    onLobbyEnter(data.code);
+    // No setCreating(false) — component unmounts on navigation.
   };
+
+  const handleJoin = async () => {
+    if (creating || joining) return;
+    const trimmed = code.trim().toUpperCase();
+    if (trimmed.length !== 6) {
+      setError("Enter the 6-character room code");
+      return;
+    }
+    setJoining(true);
+    setError("");
+    const { data, error: rpcErr } = await supabase.rpc("join_room", {
+      p_code: trimmed,
+      p_name: defaultName || "Player",
+      p_avatar: "⚽",
+    });
+    if (rpcErr) {
+      // Specific copy for known SQLSTATEs (raised by the SQL functions
+      // with explicit `using errcode = '...'`). Falls back to generic
+      // RPC message for anything unexpected.
+      if (rpcErr.code === "53300") {
+        setError("This room is full");
+      } else if (rpcErr.code === "P0002") {
+        setError("No room with that code — check with your friend");
+      } else if (rpcErr.code === "42P01") {
+        setError("This room isn't accepting joins right now");
+      } else {
+        setError(rpcErr.message || "Couldn't join room");
+      }
+      setJoining(false);
+      return;
+    }
+    onLobbyEnter(data.code);
+  };
+
+  const busy = creating || joining;
 
   return (
     <div className="screen">
@@ -3548,19 +3606,21 @@ function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
       </div>
       <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
         <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginBottom: 24, letterSpacing: 0.4, textTransform: "uppercase" }}>
-          Stage 1A — early access
+          Stage 1B — early access
         </div>
         <button
           className="btn-3d"
-          onClick={onCreateRoom}
+          onClick={handleCreate}
+          disabled={busy}
           style={{ width: "100%", marginBottom: 12 }}
         >
-          🎮 Create Room
+          {creating ? "Creating…" : "🎮 Create Room"}
         </button>
         {!showCodeInput ? (
           <button
             className="btn"
-            onClick={() => setShowCodeInput(true)}
+            onClick={() => { setError(""); setShowCodeInput(true); }}
+            disabled={busy}
             style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
           >
             🔑 Join with Code
@@ -3577,6 +3637,7 @@ function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
               autoComplete="off"
               spellCheck={false}
               maxLength={6}
+              disabled={busy}
               style={{
                 padding: "14px 16px",
                 fontSize: 22,
@@ -3591,12 +3652,14 @@ function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
                 fontFamily: "inherit",
               }}
             />
-            {codeError && (
-              <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center" }}>{codeError}</div>
-            )}
-            <button className="btn-3d" onClick={handleJoin} style={{ width: "100%" }}>
-              Join
+            <button className="btn-3d" onClick={handleJoin} disabled={busy} style={{ width: "100%" }}>
+              {joining ? "Joining…" : "Join"}
             </button>
+          </div>
+        )}
+        {error && (
+          <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginTop: 12 }}>
+            {error}
           </div>
         )}
       </div>
@@ -3604,105 +3667,282 @@ function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
   );
 }
 
-// CreateRoomPlaceholder: calls create_room RPC, renders raw JSON result.
-// Purposefully ugly — Stage 1A is plumbing verification only; lobby UI
-// (with code display, copy button, player list, start button) is Stage 1B.
-function CreateRoomPlaceholder({ onBack, defaultName }) {
-  const [creating, setCreating] = useState(false);
-  const [result, setResult] = useState(null);
+// MultiplayerLobby: post-entry screen for both host (after create_room) and
+// joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
+// Renders different sub-views based on room.state:
+//   loading | error | lobby | playing (1B placeholder) | ended
+function MultiplayerLobby({ code, onExit, defaultName }) {
+  const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
+  const [starting, setStarting] = useState(false);
+  const [startError, setStartError] = useState("");
+  const [showReconnecting, setShowReconnecting] = useState(false);
+  const [copyToast, setCopyToast] = useState("");
 
-  const handleCreate = async () => {
-    setCreating(true);
-    const { data, error } = await supabase.rpc("create_room", {
-      p_capacity: 4,
-      p_name: defaultName || "Player",
-      p_avatar: "⚽",
-    });
-    if (import.meta.env.DEV) {
-      console.log("[stage1A] create_room result:", { data, error });
+  // "Reconnecting…" indicator only after >2s in a non-subscribed state to
+  // avoid flicker on transient drops.
+  useEffect(() => {
+    if (channelStatus === "closed" || channelStatus === "error") {
+      const t = setTimeout(() => setShowReconnecting(true), 2000);
+      return () => { clearTimeout(t); };
+    } else {
+      setShowReconnecting(false);
     }
-    setResult({ data, error });
-    setCreating(false);
-  };
+  }, [channelStatus]);
+
+  const handleLeave = useCallback(async () => {
+    try { await actions.leave(); } catch {}
+    onExit();
+  }, [actions, onExit]);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopyToast("Code copied");
+    } catch {
+      setCopyToast("Couldn't copy — long-press to copy manually");
+    }
+    setTimeout(() => setCopyToast(""), 1800);
+  }, [code]);
+
+  const handleStart = useCallback(async () => {
+    if (starting) return;
+    setStarting(true);
+    setStartError("");
+    const result = await actions.startGame(PLACEHOLDER_QUESTIONS, players.length);
+    if (result.error) {
+      setStartError(result.error);
+      setStarting(false);
+      return;
+    }
+    if (result.started === false) {
+      if (result.reason === "roster_changed") {
+        setStartError(`Roster changed — now ${result.current_count} players. Tap Start again.`);
+      } else {
+        setStartError(result.reason || "Could not start game");
+      }
+      setStarting(false);
+      return;
+    }
+    // Success: keep starting=true. Realtime UPDATE will switch us to the
+    // PlayingPlaceholder sub-view, which doesn't render the Start button
+    // at all, so the lingering 'starting' state has no UI effect.
+  }, [actions, players.length, starting]);
+
+  const isMe = useCallback((p) => myPlayer && p.user_id === myPlayer.user_id, [myPlayer]);
+
+  if (loading) return <LobbyLoading />;
+  if (error || !room) return <LobbyError error={error} onExit={onExit} />;
+  if (room.state === "ended") return <LobbyEnded onExit={onExit} />;
+  if (room.state === "playing") return <PlayingPlaceholder room={room} players={players} onExit={onExit} />;
 
   return (
+    <LobbyView
+      room={room}
+      players={players}
+      isHost={isHost}
+      isMe={isMe}
+      onCopy={handleCopy}
+      onStart={handleStart}
+      onLeave={handleLeave}
+      starting={starting}
+      startError={startError}
+      copyToast={copyToast}
+      showReconnecting={showReconnecting}
+    />
+  );
+}
+
+function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, starting, startError, copyToast, showReconnecting }) {
+  return (
     <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Create Room (1A placeholder)</div>
-      </div>
-      <div style={{ padding: "20px 4px", maxWidth: 480, margin: "0 auto" }}>
-        <button
-          className="btn-3d"
-          onClick={handleCreate}
-          disabled={creating}
-          style={{ width: "100%" }}
-        >
-          {creating ? "Creating…" : "Call create_room RPC"}
-        </button>
-        {result && (
-          <pre style={{
-            marginTop: 16, padding: 12, background: "var(--s1)",
-            border: "1px solid var(--border)", borderRadius: 8,
-            fontSize: 12, overflow: "auto", color: "var(--text)",
-            whiteSpace: "pre-wrap", wordBreak: "break-all",
-          }}>
-            {JSON.stringify(result, null, 2)}
-          </pre>
+      <div className="page-hdr" style={{ position: "relative" }}>
+        <button className="back-btn" onClick={onLeave} aria-label="Leave room">←</button>
+        <div className="page-title">Lobby</div>
+        {showReconnecting && (
+          <div style={{ position: "absolute", right: 16, top: 18, fontSize: 11, color: "var(--t3)" }}>
+            Reconnecting…
+          </div>
         )}
+      </div>
+      <div style={{ padding: "16px 4px", maxWidth: 480, margin: "0 auto" }}>
+        {/* Code display */}
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div style={{ fontSize: 11, color: "var(--t3)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
+            Room Code
+          </div>
+          <button
+            onClick={onCopy}
+            style={{
+              background: "var(--s1)", border: "1px solid var(--border)",
+              borderRadius: 14, padding: "16px 24px",
+              fontSize: 32, fontWeight: 800, letterSpacing: 8,
+              color: "var(--text)", fontFamily: "monospace",
+              cursor: "pointer", display: "inline-block",
+            }}
+            aria-label={`Copy room code ${room.code}`}
+          >
+            {room.code}
+          </button>
+          <div style={{ fontSize: 12, color: "var(--t3)", marginTop: 6 }}>
+            Tap to copy — share with friends
+          </div>
+          {copyToast && (
+            <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 4 }}>{copyToast}</div>
+          )}
+        </div>
+
+        {/* Player list */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ fontSize: 11, color: "var(--t3)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 8 }}>
+            Players ({players.length}/{room.capacity})
+          </div>
+          {players.length === 0 ? (
+            <div style={{ padding: "20px", textAlign: "center", color: "var(--t3)", fontSize: 13 }}>
+              Waiting for players…
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {players.map(p => (
+                <div key={`${p.room_id}:${p.user_id}`} style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  background: "var(--s1)", border: "1px solid var(--border)",
+                  borderRadius: 12, padding: "10px 14px",
+                }}>
+                  <div style={{ fontSize: 24 }}>{p.avatar || "⚽"}</div>
+                  <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
+                    {p.name}
+                    {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
+                    {p.user_id === room.host_id && <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginLeft: 6 }}>HOST</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Host start button */}
+        {isHost && (
+          <button
+            className="btn-3d"
+            onClick={onStart}
+            disabled={starting || players.length === 0}
+            style={{ width: "100%", marginBottom: 12 }}
+          >
+            {starting ? "Starting…" : "Start Game"}
+          </button>
+        )}
+        {startError && (
+          <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>
+            {startError}
+          </div>
+        )}
+
+        {/* Leave footer */}
+        <button
+          className="btn"
+          onClick={onLeave}
+          style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
+        >
+          Leave Room
+        </button>
       </div>
     </div>
   );
 }
 
-// JoinRoomPlaceholder: calls join_room RPC with the code captured in
-// OnlineEntry, renders raw JSON result. Same ugly-on-purpose treatment.
-function JoinRoomPlaceholder({ onBack, defaultName, code }) {
-  const [joining, setJoining] = useState(false);
-  const [result, setResult] = useState(null);
-
-  const handleJoin = async () => {
-    setJoining(true);
-    const { data, error } = await supabase.rpc("join_room", {
-      p_code: code,
-      p_name: defaultName || "Player",
-      p_avatar: "⚽",
-    });
-    if (import.meta.env.DEV) {
-      console.log("[stage1A] join_room result:", { code, data, error });
-    }
-    setResult({ data, error });
-    setJoining(false);
-  };
-
+function LobbyLoading() {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Join Room (1A placeholder)</div>
+        <div className="page-title">Lobby</div>
       </div>
-      <div style={{ padding: "20px 4px", maxWidth: 480, margin: "0 auto" }}>
-        <div style={{ fontSize: 14, color: "var(--t2)", marginBottom: 12, textAlign: "center" }}>
-          Code: <strong style={{ letterSpacing: 4 }}>{code || "(none)"}</strong>
+      <div style={{ padding: "40px 20px", textAlign: "center", color: "var(--t3)" }}>
+        Connecting to room…
+      </div>
+    </div>
+  );
+}
+
+function LobbyError({ error, onExit }) {
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
+        <div className="page-title">Lobby</div>
+      </div>
+      <div style={{ padding: "40px 20px", textAlign: "center", maxWidth: 360, margin: "0 auto" }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
+          Couldn't load room
         </div>
-        <button
-          className="btn-3d"
-          onClick={handleJoin}
-          disabled={joining || !code}
-          style={{ width: "100%" }}
-        >
-          {joining ? "Joining…" : "Call join_room RPC"}
+        <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 20, lineHeight: 1.5 }}>
+          {error || "Room not found or no longer active"}
+        </div>
+        <button className="btn-3d" onClick={onExit} style={{ padding: "12px 24px" }}>
+          Back to Home
         </button>
-        {result && (
-          <pre style={{
-            marginTop: 16, padding: 12, background: "var(--s1)",
-            border: "1px solid var(--border)", borderRadius: 8,
-            fontSize: 12, overflow: "auto", color: "var(--text)",
-            whiteSpace: "pre-wrap", wordBreak: "break-all",
-          }}>
-            {JSON.stringify(result, null, 2)}
-          </pre>
-        )}
+      </div>
+    </div>
+  );
+}
+
+function LobbyEnded({ onExit }) {
+  // Auto-navigate after 1.5s if user doesn't tap.
+  useEffect(() => {
+    const t = setTimeout(onExit, 1500);
+    return () => clearTimeout(t);
+  }, [onExit]);
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <div className="page-title">Lobby</div>
+      </div>
+      <div style={{ padding: "40px 20px", textAlign: "center" }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>👋</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
+          Room ended
+        </div>
+        <div style={{ fontSize: 13, color: "var(--t2)" }}>
+          Returning to home…
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlayingPlaceholder({ room, players, onExit }) {
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
+        <div className="page-title">Game in Progress</div>
+      </div>
+      <div style={{ padding: "32px 20px", maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>🎮</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 8 }}>
+          Game started!
+        </div>
+        <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 24, lineHeight: 1.6 }}>
+          The realtime state transition worked — room is now in playing state.
+          <br /><br />
+          <strong>Stage 1C is where gameplay arrives.</strong> Question display,
+          answer locking, timer, live scores, and host advance controls all
+          land in 1C. This screen is Stage 1B placeholder scaffolding.
+        </div>
+        <div style={{
+          fontSize: 12, color: "var(--t3)", marginBottom: 20,
+          fontFamily: "monospace", padding: "10px 14px",
+          background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 8,
+          textAlign: "left", overflow: "auto",
+        }}>
+          room.state = "{room.state}"<br />
+          current_question = {room.current_question}<br />
+          questions.length = {room.questions?.length ?? "?"}<br />
+          players = {players.length}
+        </div>
+        <button className="btn-3d" onClick={onExit} style={{ padding: "12px 24px" }}>
+          Back to Home
+        </button>
       </div>
     </div>
   );
@@ -8473,12 +8713,12 @@ function AppInner() {
       return false;
     }
   }, []);
-  // Code captured by OnlineEntry when user taps Join with Code; consumed
-  // by JoinRoomPlaceholder. Separate from pendingJoinCode (which serves
-  // the legacy `?join=CODE` deep link path through OnlineGame) to avoid
-  // coupling the Stage 1 flow with the existing route. Stage 1B may
-  // consolidate.
-  const [stage1JoinCode, setStage1JoinCode] = useState("");
+  // Active Stage 1 room code — set when create_room/join_room succeeds in
+  // OnlineEntry, consumed by MultiplayerLobby. Separate from pendingJoinCode
+  // (which serves the legacy `?join=CODE` deep link path through OnlineGame)
+  // to avoid coupling the Stage 1 flow with the existing route. Stage 1F
+  // can consolidate when the gate + legacy route are removed.
+  const [stage1RoomCode, setStage1RoomCode] = useState("");
 
   // Pending invite code captured from `?join=` on cold start. Persisted to
   // localStorage so it survives the sign-in detour for guests / unsigned
@@ -10343,21 +10583,15 @@ function AppInner() {
         {screen === "online-stage1" && (
           <OnlineEntry
             onBack={goHome}
-            onCreateRoom={() => setScreen("online-stage1-create")}
-            onJoinRoom={(c) => { setStage1JoinCode(c); setScreen("online-stage1-join"); }}
-          />
-        )}
-        {screen === "online-stage1-create" && (
-          <CreateRoomPlaceholder
-            onBack={() => setScreen("online-stage1")}
+            onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
             defaultName={authProfile?.username || profile?.name || ""}
           />
         )}
-        {screen === "online-stage1-join" && (
-          <JoinRoomPlaceholder
-            onBack={() => setScreen("online-stage1")}
+        {screen === "online-stage1-lobby" && stage1RoomCode && (
+          <MultiplayerLobby
+            code={stage1RoomCode}
+            onExit={() => { setStage1RoomCode(""); setScreen("online-stage1"); }}
             defaultName={authProfile?.username || profile?.name || ""}
-            code={stage1JoinCode}
           />
         )}
 

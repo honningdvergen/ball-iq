@@ -1,12 +1,10 @@
 // Stage 1 multiplayer hook. Single source of truth for one room's state.
-// Owns the realtime channel subscription (Stage 1B), exposes derived state,
-// provides RPC action callbacks for the gameplay UI to consume.
+// Owns the realtime channel subscription, exposes derived state, provides
+// RPC action callbacks for the lobby + gameplay UI to consume.
 //
-// Stage 1A status: contract is complete; initial fetch implemented; RPC
-// actions implemented; channel subscription stubbed (TODO marked for
-// Stage 1B). Hook is importable but not yet consumed by any UI in Stage 1A
-// — placeholder screens call RPCs directly to validate plumbing in
-// isolation. Stage 1B's lobby is the first real consumer.
+// Stage 1B status: contract complete; initial fetch + channel subscription
+// + reconnect catch-up implemented; all RPC actions wired (submitAnswer
+// stays a stub-call for Stage 1C consumption — RPC works, no consumer yet).
 //
 // Returns:
 //   {
@@ -18,16 +16,24 @@
 //     error,          // string | null
 //     channelStatus,  // 'idle' | 'connecting' | 'subscribed' | 'closed' | 'error'
 //     actions: {
+//       startGame(questions, capacity),  // host-only
 //       submitAnswer(questionIdx, answerIdx, lockTimeMs),
-//       advance(),                  // host-only; auto-passes current_question
+//       advance(),                        // host-only; auto-passes current_question
 //       leave(),
-//       end(),                      // host-only
+//       end(),                            // host-only
 //     },
 //   }
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { supabase } from './supabase.js'
 import { useAuth } from './useAuth.jsx'
+
+// Module-level helper: stable sort key for the players array.
+function byJoinedAt(a, b) {
+  const ta = a.joined_at || ''
+  const tb = b.joined_at || ''
+  return ta < tb ? -1 : ta > tb ? 1 : 0
+}
 
 export function useMultiplayerRoom(code) {
   const { user } = useAuth()
@@ -39,22 +45,19 @@ export function useMultiplayerRoom(code) {
   const [error, setError] = useState(null)
   const [channelStatus, setChannelStatus] = useState('idle')
 
-  // Stage 1B: holds the live Supabase channel instance so the cleanup
-  // path can supabase.removeChannel(channelRef.current).
+  // Holds the live Supabase channel instance so the cleanup path can
+  // tear it down via supabase.removeChannel.
   const channelRef = useRef(null)
 
-  // Code transition handler. When `code` changes (mount, room switch, or
+  // Code transition handler. When `code` changes (mount, room switch,
   // unmount-style null transition), reset state and re-fetch. Loading is
   // flipped true on every non-null code mount — including the A → B
   // transition — so consumers don't briefly see stale room A data while
-  // room B's fetch is in flight. (Decided 2026-05-04 during Stage 1A
-  // scoping: stale data on a new room is misleading; brief loading
-  // spinner is the lesser evil.)
+  // room B's fetch is in flight.
   useEffect(() => {
     let cancelled = false
 
     if (!code) {
-      // Idle: no active room. Reset to baseline.
       setRoom(null)
       setPlayers([])
       setLoading(false)
@@ -67,10 +70,24 @@ export function useMultiplayerRoom(code) {
     setError(null)
     setChannelStatus('connecting')
 
+    // Re-fetch initial state after a reconnect catch-up. Doesn't toggle
+    // loading=true (that would cause UI flicker on every reconnect).
+    async function refetchInitialState(roomId) {
+      try {
+        const [roomRes, playersRes] = await Promise.all([
+          supabase.from('game_rooms').select('*').eq('id', roomId).maybeSingle(),
+          supabase.from('room_players').select('*').eq('room_id', roomId).order('joined_at', { ascending: true }),
+        ])
+        if (cancelled) return
+        if (roomRes.data) setRoom(roomRes.data)
+        if (playersRes.data) setPlayers(playersRes.data)
+      } catch {}
+    }
+
     ;(async () => {
       try {
-        // Two-step fetch: game_rooms by code first to get room.id, then
-        // room_players by room_id. RLS allows SELECT for room members
+        // Two-step initial fetch: game_rooms by code first to get room.id,
+        // then room_players by room_id. RLS allows SELECT for room members
         // (is_room_member SECURITY DEFINER helper on the SQL side).
         const { data: roomData, error: roomErr } = await supabase
           .from('game_rooms')
@@ -101,21 +118,78 @@ export function useMultiplayerRoom(code) {
         if (cancelled) return
         if (playersErr) {
           // Non-fatal: room state is at least known. Continue with empty
-          // players array; Stage 1B's realtime sync will populate when
-          // events fire.
+          // players array; realtime sync below will populate as events fire.
           setError(playersErr.message)
         }
         setPlayers(playersData || [])
 
         setLoading(false)
 
-        // TODO Stage 1B: subscribe to channel `room:${roomData.id}` with
-        // two postgres_changes filters (game_rooms id-eq, room_players
-        // room_id-eq). Wire event handlers per the Stage 1A scope writeup
-        // §1. Set channelStatus 'subscribed' on subscribe success; on
-        // close/error transitions, re-fetch initial state when reconnect
-        // succeeds (events during dropout would have been missed).
-        setChannelStatus('idle')
+        // Channel subscription: one channel per room, two postgres_changes
+        // filters (Spike 1 validated this fan-out pattern). REPLICA IDENTITY
+        // FULL on both tables (Stage 1 SQL) ensures DELETE payloads carry
+        // full row data so handlers can identify which player left.
+        const channel = supabase
+          .channel(`room:${roomData.id}`)
+          .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'game_rooms', filter: `id=eq.${roomData.id}` },
+            (payload) => {
+              if (cancelled) return
+              if (payload.eventType === 'UPDATE' && payload.new) {
+                setRoom(payload.new)
+              }
+              // INSERT/DELETE shouldn't fire for an existing-and-known
+              // room.id (no cascade — Stage 1 SQL uses state='ended').
+            }
+          )
+          .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'room_players', filter: `room_id=eq.${roomData.id}` },
+            (payload) => {
+              if (cancelled) return
+              if (payload.eventType === 'INSERT' && payload.new) {
+                setPlayers(prev => {
+                  // Idempotency: if a player row already exists (e.g., from
+                  // initial fetch), replace; else append. Realtime can deliver
+                  // an INSERT we already have via SELECT when timing aligns.
+                  const without = prev.filter(p =>
+                    !(p.room_id === payload.new.room_id && p.user_id === payload.new.user_id)
+                  )
+                  return [...without, payload.new].sort(byJoinedAt)
+                })
+              } else if (payload.eventType === 'UPDATE' && payload.new) {
+                setPlayers(prev => prev.map(p =>
+                  (p.room_id === payload.new.room_id && p.user_id === payload.new.user_id)
+                    ? payload.new
+                    : p
+                ))
+              } else if (payload.eventType === 'DELETE' && payload.old) {
+                setPlayers(prev => prev.filter(p =>
+                  !(p.room_id === payload.old.room_id && p.user_id === payload.old.user_id)
+                ))
+              }
+            }
+          )
+
+        channelRef.current = channel
+
+        channel.subscribe((status) => {
+          if (cancelled) return
+          if (status === 'SUBSCRIBED') {
+            // First subscribe → mark ready. Re-subscribe after a 'closed'/
+            // 'error' → re-fetch initial state to catch up on missed events
+            // (events during dropout would have been lost).
+            setChannelStatus(prev => {
+              if (prev === 'closed' || prev === 'error') {
+                refetchInitialState(roomData.id)
+              }
+              return 'subscribed'
+            })
+          } else if (status === 'CLOSED') {
+            setChannelStatus('closed')
+          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            setChannelStatus('error')
+          }
+        })
       } catch (e) {
         if (cancelled) return
         setError(e?.message || String(e))
@@ -126,9 +200,10 @@ export function useMultiplayerRoom(code) {
 
     return () => {
       cancelled = true
-      // TODO Stage 1B: supabase.removeChannel(channelRef.current) here
-      // to tear down the realtime subscription on unmount or code change.
-      channelRef.current = null
+      if (channelRef.current) {
+        try { supabase.removeChannel(channelRef.current) } catch {}
+        channelRef.current = null
+      }
     }
   }, [code])
 
@@ -138,10 +213,23 @@ export function useMultiplayerRoom(code) {
     : null
   const isHost = !!(room && userId && room.host_id === userId)
 
-  // Action callbacks. Wired to SECURITY DEFINER RPCs; no realtime
-  // dependency, so these work in Stage 1A even before channel.subscribe
-  // wiring lands in 1B. Each surfaces error.message via setError so
-  // consumers can render a unified error toast/banner if they want.
+  // Action callbacks. Each surfaces error.message via setError so consumers
+  // can render a unified error toast/banner if they want, AND returns the
+  // raw RPC payload for caller-specific handling.
+  const startGame = useCallback(async (questions, capacity) => {
+    if (!code) return { started: false, error: 'No active room' }
+    const { data, error } = await supabase.rpc('start_game', {
+      p_code: code,
+      p_questions: questions,
+      p_capacity: capacity,
+    })
+    if (error) {
+      setError(error.message)
+      return { started: false, error: error.message }
+    }
+    return data
+  }, [code])
+
   const submitAnswer = useCallback(async (questionIdx, answerIdx, lockTimeMs) => {
     if (!code) return { accepted: false, error: 'No active room' }
     const { data, error } = await supabase.rpc('submit_answer', {
@@ -198,6 +286,6 @@ export function useMultiplayerRoom(code) {
     loading,
     error,
     channelStatus,
-    actions: { submitAnswer, advance, leave, end },
+    actions: { startGame, submitAnswer, advance, leave, end },
   }
 }
