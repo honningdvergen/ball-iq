@@ -4461,7 +4461,54 @@ const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 // "your wrong" path fires → late joiner sees only the green-correct
 // highlight during reveal, no red anywhere. Same for timeout (-1):
 // `idx === -1` is false for all valid idx → no spurious red.
+// [MP-DIAG] Stage 1C.7.3 — QuestionView render counter (module-scope so
+// it persists across mount/unmount). Tracks every QuestionView render
+// across the whole page session. Remove with the rest of the diagnostic
+// logging in 1C.7.4 fix commit.
+let __qvRenderCount = 0;
+
 function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }) {
+  // [MP-DIAG] Stage 1C.7.3 — log INSIDE QuestionView's render. Catches
+  // every actual render of this component (different from the
+  // MultiplayerGameplay log which only sees parent-level renders). If
+  // QuestionView ever renders with a prompt that's NOT in the picked
+  // 10-question set, this catches it — even if some unexpected mount
+  // path is responsible.
+  __qvRenderCount++;
+  if (typeof window !== 'undefined') {
+    console.log(`[MP-DIAG] QuestionView render #${__qvRenderCount} @${performance.now().toFixed(1)} prompt="${question?.prompt?.slice(0, 60)}" lockedIdx=${lockedAnswerIdx} disabled=${disabled} revealing=${revealing}`);
+  }
+
+  // [MP-DIAG] Stage 1C.7.3 — mount/unmount tracking. If we see more
+  // mounts than expected (one per current_question advance, given
+  // key={currentQuestionIdx}), there's an extra render path or a
+  // remount we don't expect.
+  useEffect(() => {
+    const mountTime = performance.now();
+    console.log(`[MP-DIAG] QuestionView MOUNTED @${mountTime.toFixed(1)} prompt="${question?.prompt?.slice(0, 60)}"`);
+    return () => {
+      console.log(`[MP-DIAG] QuestionView UNMOUNTED @${performance.now().toFixed(1)} mountedFor=${(performance.now() - mountTime).toFixed(1)}ms prompt="${question?.prompt?.slice(0, 60)}"`);
+    };
+  }, []);
+
+  // [MP-DIAG] Stage 1C.7.3 — post-paint DOM capture. Effect runs after
+  // React commits + browser paints. If the painted DOM contains a
+  // prompt that's different from the React-prop prompt, that's the
+  // bug source — something's mutating the DOM outside React's control
+  // (rare but possible — browser extension, devtools, etc.) OR the
+  // visual perception is mismatched with the actual render.
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    // requestAnimationFrame fires after the browser paints the new frame
+    requestAnimationFrame(() => {
+      const promptEl = document.querySelector('.mp-question > div:first-child');
+      const paintedPrompt = promptEl?.textContent?.slice(0, 60);
+      const propPrompt = question?.prompt?.slice(0, 60);
+      const match = paintedPrompt === propPrompt ? '✓' : '✗ MISMATCH';
+      console.log(`[MP-DIAG] QuestionView post-paint @${performance.now().toFixed(1)} ${match} prop="${propPrompt}" painted="${paintedPrompt}"`);
+    });
+  });
+
   return (
     <div className="mp-question">
       <div style={{
