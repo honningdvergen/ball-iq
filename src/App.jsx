@@ -6771,16 +6771,21 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                   <div className="sr-desc">{profile.username}</div>
                 </div>
               </div>
-              <div className="settings-row danger" onClick={async () => {
-                if (confirm(`Sign out of your ${APP_NAME} account?`)) {
-                  await signOut();
-                }
-              }}>
+              <button
+                type="button"
+                className="settings-row danger"
+                style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+                onClick={async () => {
+                  if (confirm(`Sign out of your ${APP_NAME} account?`)) {
+                    await signOut();
+                  }
+                }}
+              >
                 <div className="sr-left">
                   <div className="sr-label">Sign out</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </div>
+              </button>
             </>
           ) : user ? (
             <>
@@ -6878,22 +6883,32 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div className="ds-eyebrow settings-section-title">Help</div>
           <div className="settings-card">
             {onShowHelp && (
-              <div className="settings-row" onClick={onShowHelp}>
+              <button
+                type="button"
+                className="settings-row"
+                style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+                onClick={onShowHelp}
+              >
                 <div className="sr-left">
                   <div className="sr-label">Help & FAQ</div>
                   <div className="sr-desc">Common questions and how to reach us</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </div>
+              </button>
             )}
             {onShowPrivacy && (
-              <div className="settings-row" onClick={onShowPrivacy}>
+              <button
+                type="button"
+                className="settings-row"
+                style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+                onClick={onShowPrivacy}
+              >
                 <div className="sr-left">
                   <div className="sr-label">Privacy Policy</div>
                   <div className="sr-desc">How your data is handled</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
-              </div>
+              </button>
             )}
           </div>
         </div>
@@ -6906,13 +6921,18 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         <div className="settings-section">
           <div className="ds-eyebrow settings-section-title">Reviewer</div>
           <div className="settings-card">
-            <div className="settings-row" onClick={onOpenReview}>
+            <button
+              type="button"
+              className="settings-row"
+              style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+              onClick={onOpenReview}
+            >
               <div className="sr-left">
                 <div className="sr-label">Review questions</div>
                 <div className="sr-desc">Internal question-bank review</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
-            </div>
+            </button>
           </div>
         </div>
       )}
@@ -6962,13 +6982,18 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="sr-right"><div className="sr-arrow">›</div></div>
           </button>
           {onClearSeen && (
-            <div className="settings-row" onClick={onClearSeen}>
+            <button
+              type="button"
+              className="settings-row"
+              style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+              onClick={onClearSeen}
+            >
               <div className="sr-left">
                 <div className="sr-label">Clear question history</div>
                 <div className="sr-desc">Allow recently-seen questions to reappear now</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
-            </div>
+            </button>
           )}
         </div>
       </div>
