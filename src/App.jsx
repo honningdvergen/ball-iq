@@ -1243,7 +1243,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* ── LOCAL MULTIPLAYER SETUP ── */
 .local-section-label{margin:12px 0 8px;}
 .local-count-row{display:flex;gap:8px;margin-bottom:4px;}
-.local-count-btn{flex:1;min-height:46px;padding:10px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;color:var(--t1);font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
+.local-count-btn{flex:1;min-height:46px;padding:10px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;color:var(--t1);font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .local-count-btn:hover{background:var(--s2);}
 .local-count-btn.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
 .local-count-btn:active{transform:scale(0.96);}
@@ -3543,13 +3543,18 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState("");
+  // Stage 1F.2: host-chosen room capacity. Default 4 = max for the
+  // current allowed range {2,3,4}; "headroom" wins over "wrong-default
+  // locks out a 3rd friend mid-invite". Joiners don't see this picker —
+  // the host's pick lands on the room row server-side via create_room.
+  const [capacity, setCapacity] = useState(4);
 
   const handleCreate = async () => {
     if (creating || joining) return;
     setCreating(true);
     setError("");
     const { data, error: rpcErr } = await supabase.rpc("create_room", {
-      p_capacity: 4,
+      p_capacity: capacity,
       p_name: defaultName || "Player",
       p_avatar: "⚽",
     });
@@ -3606,6 +3611,25 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
       <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
         <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginBottom: 24, letterSpacing: 0.4, textTransform: "uppercase" }}>
           Stage 1B — early access
+        </div>
+        {/* Stage 1F.2: room-size picker — same .local-count-btn widget
+            that LocalSetup uses for player count, so the muscle memory
+            transfers. Default 4 (max headroom). */}
+        <div className="ds-eyebrow local-section-label">Room size</div>
+        <div className="local-count-row" style={{ marginBottom: 16 }}>
+          {[2, 3, 4].map(n => (
+            <button
+              key={n}
+              type="button"
+              className={`local-count-btn${capacity === n ? " on" : ""}`}
+              onClick={() => setCapacity(n)}
+              disabled={busy}
+              aria-label={`Room size ${n} players`}
+              aria-pressed={capacity === n}
+            >
+              {n}
+            </button>
+          ))}
         </div>
         <button
           className="btn-3d"
