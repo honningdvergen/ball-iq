@@ -4077,21 +4077,45 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     return () => clearTimeout(t);
   }, [revealPhase]);
 
-  // Advance fire: each client in 'advancing' fires advance_question.
-  // First wins; others get expected_mismatch (silent). On success,
-  // realtime UPDATE on game_rooms.current_question re-renders us; the
-  // question-advance useEffect resets phase to 'answering'. On error
-  // (most commonly "only the host can advance" when host has left,
-  // OR network/server failure), settle in 'stuck' to prevent a retry
-  // loop — host-disconnect banner above OR the stuck-error indicator
-  // below explains; user can leave via wordmark or the inline link.
+  // Advance fire: ONLY the host fires advance_question. Joiners stay in
+  // 'advancing' phase silently and wait for realtime UPDATE on
+  // game_rooms.current_question (handled by question-advance useEffect
+  // which resets revealPhase back to 'answering').
+  //
+  // Why host-only (Stage 1C.6.2 fix): the original 1C.6 design had each
+  // client fire advance independently, relying on server's
+  // expected_mismatch gate (Spike 2 validated) to handle the race. But
+  // the SQL function ALSO checks host_id and rejects all non-host
+  // callers with errcode 42501 ("only the host can advance"). So
+  // joiner advance attempts never succeeded — they were guaranteed
+  // failures. Under the per-client model joiners hit the error path
+  // every transition, transitioned to 'stuck', flashed the red
+  // "Couldn't advance" indicator for ~150-400ms (the window between
+  // RPC return and host's realtime UPDATE arriving), then reset on
+  // the UPDATE. The flash was visible on every question transition.
+  //
+  // Fix: only host calls advance. Joiners passively wait. Eliminates
+  // the no-op RPC traffic AND the flashing UI. Per-client trigger was
+  // theoretical resilience that the SQL constraint made impossible to
+  // realize anyway.
+  //
+  // Edge case — host's network drops without leave_room: joiners stay
+  // in 'advancing' indefinitely (UI dimmed, no banner since
+  // hostStillPresent stays true). User can exit via wordmark home
+  // button. Stage 1F may add a "advancing too long" timeout that
+  // transitions to 'stuck' with a clearer explanation. For 1C.6.2,
+  // the dimmed-but-quiet state is acceptable.
   useEffect(() => {
     if (revealPhase !== 'advancing') return;
+    if (!isHost) return;  // joiners wait for realtime UPDATE
     let cancelled = false;
     (async () => {
       const result = await actions.advance();
       if (cancelled || !mountedRef.current) return;
       if (result.error) {
+        // Host-side genuine failure (network, server). No retry —
+        // settle in 'stuck' so the indicator below gives the host
+        // an actionable explanation.
         console.warn('[mp] advance failed (entering stuck state):', result.error);
         setRevealPhase('stuck');
       }
@@ -4100,7 +4124,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       // triggers re-render via parent's MultiplayerLobby render switch.
     })();
     return () => { cancelled = true; };
-  }, [revealPhase, actions]);
+  }, [revealPhase, isHost, actions]);
 
   // Host-tap handlers for the phase-aware advance button.
   // Next/End Game during answering: trigger reveal phase (consistent
