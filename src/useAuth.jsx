@@ -9,6 +9,11 @@ const AuthContext = createContext(null)
 // devices via hydrate's max/union merges. Device-scoped keys (UX
 // preferences and dismiss-flags) are intentionally preserved:
 //   - biq_settings, biq_first_tip_shown, biq_rate_shown, biq-splash
+//   - biq_onboarded (UX dismiss-flag — same-device sign-out followed by
+//     re-sign-in should NOT replay onboarding; the original Phase B
+//     inclusion was an over-zealous catch-all and caused real-user
+//     replay reports. performDelete clears it explicitly since account
+//     deletion is the "nuke everything" path.)
 //   - ballIQ_guestMode (handled separately by signOut)
 const USER_SCOPED_STATIC_KEYS = [
   'biq_xp',
@@ -21,7 +26,6 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_review_idx',
   'biq_seen_history_v2',
   'biq_pending_join',
-  'biq_onboarded',
   'biq_last_email',
 ]
 const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']

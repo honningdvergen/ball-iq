@@ -6452,6 +6452,11 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         return;
       }
       clearAllUserLocalStorage();
+      // biq_onboarded is device-scoped (preserved on signOut so same-device
+      // re-sign-in doesn't replay onboarding), but account deletion is the
+      // user nuking everything — clear it explicitly so a re-signup on this
+      // device gets the onboarding flow again.
+      try { localStorage.removeItem('biq_onboarded') } catch {}
       if (typeof onAccountDeleted === "function") onAccountDeleted({ error: null });
       try { await signOut(); } catch {}
     } catch (e) {
