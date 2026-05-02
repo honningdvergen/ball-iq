@@ -6757,7 +6757,11 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       // device gets the onboarding flow again.
       try { localStorage.removeItem('biq_onboarded') } catch {}
       if (typeof onAccountDeleted === "function") onAccountDeleted({ error: null });
-      try { await signOut(); } catch {}
+      // Audit Phase 5 (B2): surface signOut failures in the console.
+      // Server-side delete already succeeded, so the user's data is
+      // gone; signOut failure here means the local session lingers
+      // until next auto-refresh. Visible debug trail beats silence.
+      try { await signOut(); } catch (e) { console.warn('[performDelete signOut]', e?.message || e); }
     } catch (e) {
       if (mountedRef.current) {
         setDeleting(false);
@@ -8864,22 +8868,41 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
 function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
-  const today = useMemo(() => new Date(), []);
+  // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
+  // refreshes if the user keeps the tab open across midnight. Without
+  // this, today + todayYMD stay frozen at mount time and the calendar /
+  // hero card show the wrong "today" the next morning. Mirrors Wordle's
+  // day-rollover polling pattern (its handler reloads the page; here we
+  // just refresh state since DailyTab doesn't need a full reload).
+  const [today, setToday] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => {
+      const now = new Date();
+      setToday(prev => now.toDateString() !== prev.toDateString() ? now : prev);
+    }, 60_000);
+    return () => clearInterval(id);
+  }, []);
+
   const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
-  // Defensive: derive done-state from BOTH the dailyDone prop AND a fresh
-  // localStorage read. Catches edge cases where parent state didn't
-  // propagate (memo skip, async write race, storage write failure that
-  // resets state on reload but storage is actually present).
+  // Audit Phase 5 (D1): localStorage read promoted from render body to
+  // useMemo([todayYMD, dailyScore]). Was reading on every render (~3-7×
+  // per session × multiple renders per session = wasted reads). Memo
+  // re-evaluates only on day rollover (todayYMD) or score propagation
+  // (dailyScore). Defensive intent preserved — still catches the case
+  // where localStorage has a value the parent state hasn't surfaced yet.
   const todayYMD = dateToYMD(today);
-  let localDone = false;
-  let localScore = dailyScore;
-  try {
-    const raw = localStorage.getItem(`biq_daily_${todayYMD}`);
-    if (raw) {
-      localDone = true;
-      try { const p = JSON.parse(raw); if (typeof p?.score === "number") localScore = p.score; } catch {}
-    }
-  } catch {}
+  const { localDone, localScore } = useMemo(() => {
+    let done = false;
+    let score = dailyScore;
+    try {
+      const raw = localStorage.getItem(`biq_daily_${todayYMD}`);
+      if (raw) {
+        done = true;
+        try { const p = JSON.parse(raw); if (typeof p?.score === "number") score = p.score; } catch {}
+      }
+    } catch {}
+    return { localDone: done, localScore: score };
+  }, [todayYMD, dailyScore]);
   const isDone = dailyDone || localDone;
   const shownScore = dailyScore != null ? dailyScore : localScore;
   return (
