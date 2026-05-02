@@ -13,15 +13,14 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { supabase } from './supabase.js';
 import { useAuth } from './useAuth.jsx';
-import { QB, TF_STATEMENTS } from './questions.js';
+import { loadQuestions } from './questions-loader.js';
 
-// One stable, ordered pool combining both banks. CHAOS_QB items are already
-// inlined into QB at runtime, so they're naturally included here.
-const REVIEW_POOL = [
-  ...QB.map(q => ({ source: 'qb', q })),
-  ...TF_STATEMENTS.map(q => ({ source: 'tf', q })),
-];
-const TOTAL = REVIEW_POOL.length;
+// V1.1 lazy-load: REVIEW_POOL is now built inside the load effect after
+// loadQuestions() resolves, instead of at module evaluation. Importing
+// from questions-loader avoids pulling questions.js into the eager
+// bundle even when ReviewScreen.jsx is itself imported eagerly.
+// CHAOS_QB items are already inlined into QB at runtime, so they're
+// naturally included.
 const IDX_KEY = 'biq_review_idx';
 
 const STATUS = {
@@ -33,12 +32,10 @@ const STATUS = {
 
 export default function ReviewScreen({ onBack }) {
   const { user } = useAuth();
-  const [idx, setIdx] = useState(() => {
-    try {
-      const saved = parseInt(localStorage.getItem(IDX_KEY) || '0', 10);
-      return Number.isFinite(saved) && saved >= 0 && saved < TOTAL ? saved : 0;
-    } catch { return 0; }
-  });
+  // Idx initial state is 0; the load effect restores from localStorage
+  // once REVIEW_POOL is populated (need TOTAL for the < check).
+  const [idx, setIdx] = useState(0);
+  const [reviewPool, setReviewPool] = useState([]);
   const [decisions, setDecisions] = useState(new Map()); // id -> { status, source, updated_at }
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -48,7 +45,8 @@ export default function ReviewScreen({ onBack }) {
   const mountedRef = useRef(true);
   useEffect(() => () => { mountedRef.current = false; }, []);
 
-  const item = REVIEW_POOL[idx];
+  const TOTAL = reviewPool.length;
+  const item = reviewPool[idx];
   const id = item?.q?.id;
   const currentStatus = decisions.get(id)?.status || STATUS.PENDING;
 
@@ -62,11 +60,11 @@ export default function ReviewScreen({ onBack }) {
     if (!isPending) return null;
     let countBefore = 0;
     for (let i = 0; i < idx; i++) {
-      const s = decisions.get(REVIEW_POOL[i].q.id)?.status;
+      const s = decisions.get(reviewPool[i].q.id)?.status;
       if (!s || s === STATUS.PENDING) countBefore++;
     }
     return countBefore + 1;
-  }, [decisions, idx, item]);
+  }, [decisions, idx, item, reviewPool]);
 
   // Phase 5y: iterate REVIEW_POOL directly so orphan rows in the
   // decisions Map (rows for questions that publish-review removed from
@@ -76,7 +74,7 @@ export default function ReviewScreen({ onBack }) {
   // ~19 too low after the latest publish round.
   const counts = useMemo(() => {
     let approved = 0, rejected = 0, flagged = 0, pending = 0;
-    for (const it of REVIEW_POOL) {
+    for (const it of reviewPool) {
       const status = decisions.get(it.q.id)?.status;
       if      (status === STATUS.APPROVED) approved++;
       else if (status === STATUS.REJECTED) rejected++;
@@ -85,50 +83,77 @@ export default function ReviewScreen({ onBack }) {
     }
     const reviewed = approved + rejected + flagged;
     return { approved, rejected, flagged, reviewed, pending };
-  }, [decisions]);
+  }, [decisions, reviewPool]);
 
-  // Initial load
+  // Initial load — fetches the question bank lazily AND the user's
+  // decision history in parallel, then builds REVIEW_POOL and restores
+  // the saved idx from localStorage (auto-skipping past already-decided
+  // items). Both must complete before loading=false.
   useEffect(() => {
     if (!user?.id) { setLoading(false); return; }
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('question_review')
-        .select('question_id, status, source, updated_at')
-        .eq('reviewed_by', user.id);
-      if (cancelled) return;
-      if (error) {
-        setLoadError(error.message || 'Failed to load decisions');
-        setLoading(false);
-        return;
-      }
-      const m = new Map();
-      for (const row of data || []) {
-        m.set(row.question_id, {
-          status: row.status,
-          source: row.source,
-          updated_at: row.updated_at,
-        });
-      }
-      setDecisions(m);
-      setLoading(false);
+      try {
+        const [questionsResult, decisionsResult] = await Promise.all([
+          loadQuestions(),
+          supabase
+            .from('question_review')
+            .select('question_id, status, source, updated_at')
+            .eq('reviewed_by', user.id),
+        ]);
+        if (cancelled) return;
 
-      // Phase 5y: auto-skip on mount. If the saved idx (restored from
-      // localStorage at component-init) points to an already-decided
-      // item, kick forward to the next pending. Mirrors jumpNextPending
-      // but operates against the freshly-loaded Map directly since
-      // setDecisions hasn't propagated through closures yet.
-      const currentStatus = m.get(REVIEW_POOL[idx]?.q?.id)?.status;
-      if (currentStatus && currentStatus !== STATUS.PENDING) {
-        for (let step = 1; step <= TOTAL; step++) {
-          const j = (idx + step) % TOTAL;
-          const s = m.get(REVIEW_POOL[j]?.q?.id)?.status;
-          if (!s || s === STATUS.PENDING) {
-            setIdx(j);
-            break;
+        const { QB, TF_STATEMENTS } = questionsResult;
+        const pool = [
+          ...QB.map(q => ({ source: 'qb', q })),
+          ...TF_STATEMENTS.map(q => ({ source: 'tf', q })),
+        ];
+        const total = pool.length;
+        setReviewPool(pool);
+
+        const { data, error } = decisionsResult;
+        if (error) {
+          setLoadError(error.message || 'Failed to load decisions');
+          setLoading(false);
+          return;
+        }
+        const m = new Map();
+        for (const row of data || []) {
+          m.set(row.question_id, {
+            status: row.status,
+            source: row.source,
+            updated_at: row.updated_at,
+          });
+        }
+        setDecisions(m);
+
+        // Restore idx from localStorage now that we know TOTAL.
+        let startIdx = 0;
+        try {
+          const saved = parseInt(localStorage.getItem(IDX_KEY) || '0', 10);
+          if (Number.isFinite(saved) && saved >= 0 && saved < total) startIdx = saved;
+        } catch {}
+
+        // Phase 5y: auto-skip on mount. If the saved idx points to an
+        // already-decided item, kick forward to the next pending.
+        const currentStatus = m.get(pool[startIdx]?.q?.id)?.status;
+        if (currentStatus && currentStatus !== STATUS.PENDING) {
+          for (let step = 1; step <= total; step++) {
+            const j = (startIdx + step) % total;
+            const s = m.get(pool[j]?.q?.id)?.status;
+            if (!s || s === STATUS.PENDING) {
+              startIdx = j;
+              break;
+            }
           }
         }
+        setIdx(startIdx);
+        setLoading(false);
+      } catch (e) {
+        if (cancelled) return;
+        setLoadError(e?.message || 'Failed to load review pool');
+        setLoading(false);
       }
     })();
     return () => { cancelled = true; };
@@ -145,21 +170,23 @@ export default function ReviewScreen({ onBack }) {
   }, [toast]);
 
   const showToast = useCallback((msg, kind = 'ok') => setToast({ msg, kind }), []);
-  const advance = useCallback(() => setIdx(i => Math.min(i + 1, TOTAL - 1)), []);
+  const advance = useCallback(() => setIdx(i => Math.min(i + 1, Math.max(0, reviewPool.length - 1))), [reviewPool.length]);
   const back = useCallback(() => setIdx(i => Math.max(i - 1, 0)), []);
 
   const jumpNextPending = useCallback(() => {
+    const total = reviewPool.length;
+    if (total === 0) return;
     // Search forward from current position, then wrap.
-    for (let step = 1; step <= TOTAL; step++) {
-      const j = (idx + step) % TOTAL;
-      const status = decisions.get(REVIEW_POOL[j].q.id)?.status;
+    for (let step = 1; step <= total; step++) {
+      const j = (idx + step) % total;
+      const status = decisions.get(reviewPool[j].q.id)?.status;
       if (!status || status === STATUS.PENDING) {
         setIdx(j);
         return;
       }
     }
     showToast('No pending questions left');
-  }, [idx, decisions, showToast]);
+  }, [idx, decisions, showToast, reviewPool]);
 
   const decide = useCallback(async (status) => {
     if (!item || !user?.id) return;

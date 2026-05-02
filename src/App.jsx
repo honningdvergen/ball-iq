@@ -6,7 +6,7 @@ import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
-import { QB, TF_STATEMENTS } from './questions.js';
+import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -70,21 +70,11 @@ const TIMINGS = {
 
 
 
-// Post-QB normalization: give Chaos questions a default diff of "medium" so the
-// standard difficulty filters (easy/medium/hard buckets, ramp, APP_NAME) treat
-// them as first-class citizens. Chaos mode's own cat/tag filter still catches
-// them regardless of diff, so there's no collision.
-for (const q of QB) {
-  if (q && q.cat === "chaos" && !q.diff) q.diff = "medium";
-}
-
-// Pre-bucketed QB slices for the modes that pull a fixed subset on launch.
-// QB is a module-level const that never mutates after this point, so building
-// these once at module load is strictly better than re-filtering 3700+ rows
-// every time the user taps the mode tile (or every render, if anything ever
-// drifts onto the render path).
-const QB_WC2026 = QB.filter(q => q && q.tag === "wc2026");
-const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
+// V1.1: chaos default-difficulty normalization + QB_WC2026 / QB_CHAOS
+// pre-bucketing moved into src/questions-loader.js, which performs them
+// once when its async cache is first populated. The semantics are
+// preserved (compute once, reuse forever) — just deferred to first
+// loadQuestions() resolution. See questions-loader.js for context.
 
 // ─── AUTOCOMPLETE POOL ────────────────────────────────────────────────────────
 // Each entry: display name. Matching uses normalised (accent-stripped) comparison.
@@ -284,7 +274,8 @@ function clearSeenHistory() {
 }
 
 
-function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }) {
+async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }) {
+  const { QB } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
   // Phase 6c.1: gate cat:"Legends" by default. Legends-cat is the
@@ -408,7 +399,8 @@ function seededShuffle(arr, seed) {
   return a;
 }
 
-function getBallIQQuestions() {
+async function getBallIQQuestions() {
+  const { QB } = await loadQuestions();
   const seed = Math.floor(Date.now() / TIMINGS.DAY_MS);
   const mcqOnly = QB.filter(q => q.type === "mcq");
   const shuffled = seededShuffle(mcqOnly, seed * 1013904223);
@@ -440,7 +432,8 @@ function dayIndexForDate(date) {
   return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / TIMINGS.DAY_MS);
 }
 
-function getDailyQsForDate(date) {
+async function getDailyQsForDate(date) {
+  const { QB } = await loadQuestions();
   // MCQ only for daily — consistent experience, no typed surprises.
   // Phase 6c.1: Daily 7 is a casual experience; gate cat:"Legends"
   // out for the same reason getQs does. Cross-device determinism on
@@ -462,7 +455,7 @@ function getDailyQsForDate(date) {
     return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
   });
 }
-function getDailyQs() { return getDailyQsForDate(new Date()); }
+function getDailyQs() { return getDailyQsForDate(new Date()); }  // returns Promise (delegates to async)
 
 
 // Keyword match table used to surface league-relevant TF_STATEMENTS when the
@@ -478,7 +471,8 @@ const LEAGUE_TF_KEYWORDS = {
   UCL: ["champions league", "european cup"],
 };
 
-function getTrueFalseQs() {
+async function getTrueFalseQs() {
+  const { TF_STATEMENTS } = await loadQuestions();
   // Chaos questions are MCQ-shaped and don't suit the T/F format — explicitly
   // exclude any item tagged cat:"chaos" in case a chaos T/F statement ever
   // lands in TF_STATEMENTS in the future.
@@ -3451,7 +3445,8 @@ const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${bu
 // picker on OnlineEntry; pickMultiplayerQuestions can then accept
 // filter args. Stage 1F may also add seen_history integration if friend
 // testing surfaces "we keep seeing the same questions" complaints.
-function pickMultiplayerQuestions(count = 10) {
+async function pickMultiplayerQuestions(count = 10) {
+  const { QB } = await loadQuestions();
   const eligible = QB.filter(q =>
     q.type === "mcq" &&
     Array.isArray(q.o) && q.o.length === 4 &&
@@ -3702,7 +3697,16 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     setStarting(true);
     setStartError("");
     const questionCount = mode === "sprint" ? 5 : 10;
-    const result = await actions.startGame(pickMultiplayerQuestions(questionCount), players.length);
+    let questions;
+    try {
+      questions = await pickMultiplayerQuestions(questionCount);
+    } catch (e) {
+      console.warn('[handleStart]', e?.message || e);
+      setStartError("Couldn't load questions — check your connection");
+      setStarting(false);
+      return;
+    }
+    const result = await actions.startGame(questions, players.length);
     if (result.error) {
       setStartError(result.error);
       setStarting(false);
@@ -9946,6 +9950,15 @@ function AppInner() {
   const [localResult, setLocalResult] = useState(null); // populated by LocalGameScreen onComplete
 
   useEffect(() => {
+    // V1.1: prefetch the questions.js chunk in the background as soon as
+    // AppInner mounts. By the time the user taps Play (typically 5-30s
+    // after first paint), the chunk has already loaded and the lazy
+    // getters (getQs / getDailyQs / pickMultiplayerQuestions / etc.)
+    // resolve effectively-synchronously. Only users who tap Play
+    // within the first ~200ms of paint experience any noticeable wait,
+    // and that wait is invisible (Home stays mounted, no spinner).
+    // See questions-loader.js + docs/BUNDLE_SPLITTING_ANALYSIS.md.
+    prefetchQuestions();
     // Prune expired seen-question history (>14 days old) on mount
     try { loadSeenHistory(); } catch {}
     // Check if first-time user — show onboarding if not seen before
@@ -10119,7 +10132,7 @@ function AppInner() {
 
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
 
-  const startMode = useCallback((m) => {
+  const startMode = useCallback(async (m) => {
     try {
       haptic("soft");
       // Club quiz bypasses startMode entirely (it sets activeClub + setMode directly).
@@ -10157,13 +10170,14 @@ function AppInner() {
       }
       let qs = [];
       if (m === "balliq") { setShowBallIQIntro(true); return; }
-      if (m === "balliq_confirmed") { qs = getBallIQQuestions(); }
-      else if (m === "daily") { qs = getDailyQs(); setActiveDailyDate(new Date()); }
-      else if (m === "survival") { qs = getQs({ cat: "All", diff, n: 300, includeLegends: true }); }
-      else if (m === "legends") { qs = getQs({ cat: "Legends", diff, n: 10 }); }
-      else if (m === "speed") { qs = getQs({ cat: "All", diff: "medium", n: 5 }); }
-      else if (m === "hotstreak") { qs = (getQs({ cat: "All", diff, n: 999 }) || []).filter(q => q.type !== "tf"); }
+      if (m === "balliq_confirmed") { qs = await getBallIQQuestions(); }
+      else if (m === "daily") { qs = await getDailyQs(); setActiveDailyDate(new Date()); }
+      else if (m === "survival") { qs = await getQs({ cat: "All", diff, n: 300, includeLegends: true }); }
+      else if (m === "legends") { qs = await getQs({ cat: "Legends", diff, n: 10 }); }
+      else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
+      else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff, n: 999 })) || []).filter(q => q.type !== "tf"); }
       else if (m === "wc2026") {
+        const { QB_WC2026 } = await loadQuestions();
         if (QB_WC2026.length < 5) {
           showToast("Not enough questions available for this mode");
           return;
@@ -10171,10 +10185,11 @@ function AppInner() {
         const fresh = applySeenFilter(QB_WC2026, 15, qbHistKey);
         qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
-      else if (m === "truefalse") { qs = getTrueFalseQs(); }
+      else if (m === "truefalse") { qs = await getTrueFalseQs(); }
       else if (m === "chaos") {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
         // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.
+        const { QB_CHAOS } = await loadQuestions();
         if (QB_CHAOS.length < 5) {
           showToast("Not enough questions available for this mode");
           return;
@@ -10182,7 +10197,7 @@ function AppInner() {
         const fresh = applySeenFilter(QB_CHAOS, 10, qbHistKey);
         qs = shuffle([...fresh]).slice(0, 10).map(q => ({ ...q, _histKey: qbHistKey(q) }));
       }
-      else { qs = getQs({ cat, diff, n: 10, ramp: true }); }
+      else { qs = await getQs({ cat, diff, n: 10, ramp: true }); }
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
       qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
       if (qs.length === 0) {
@@ -10791,7 +10806,7 @@ function AppInner() {
     setShowLeaguePicker(true);
   }, []);
 
-  const launchLeagueInMode = useCallback((modeId) => {
+  const launchLeagueInMode = useCallback(async (modeId) => {
     if (!leagueMode) return;
     const leagueId = leagueMode.id;
     haptic("soft");
@@ -10800,28 +10815,35 @@ function AppInner() {
     setCat(leagueId);
 
     let qs = [];
-    if (modeId === "classic") {
-      setDiff("medium");
-      qs = getQs({ cat: leagueId, diff: "medium", n: 10, ramp: false }) || [];
-    } else if (modeId === "survival") {
-      qs = getQs({ cat: leagueId, diff: "medium", n: 300 }) || [];
-    } else if (modeId === "hotstreak") {
-      qs = (getQs({ cat: leagueId, diff: "medium", n: 999 }) || []).filter(q => q.type !== "tf");
-    } else if (modeId === "truefalse") {
-      // Keyword-match league-specific T/F; fall back to the general pool if too few.
-      // Chaos-tagged statements are excluded — they don't suit the T/F format.
-      const keywords = LEAGUE_TF_KEYWORDS[leagueId] || [];
-      const indexed = TF_STATEMENTS
-        .map((s, i) => ({ ...s, _tfIdx: i }))
-        .filter(s => s.cat !== "chaos");
-      const leagueTF = keywords.length
-        ? indexed.filter(s => keywords.some(kw => s.s.toLowerCase().includes(kw)))
-        : [];
-      if (leagueTF.length >= 10) {
-        qs = shuffle(leagueTF).slice(0, 20).map(s => ({ ...s, _histKey: `tf:${s.id}` }));
-      } else {
-        qs = getTrueFalseQs();
+    try {
+      if (modeId === "classic") {
+        setDiff("medium");
+        qs = (await getQs({ cat: leagueId, diff: "medium", n: 10, ramp: false })) || [];
+      } else if (modeId === "survival") {
+        qs = (await getQs({ cat: leagueId, diff: "medium", n: 300 })) || [];
+      } else if (modeId === "hotstreak") {
+        qs = ((await getQs({ cat: leagueId, diff: "medium", n: 999 })) || []).filter(q => q.type !== "tf");
+      } else if (modeId === "truefalse") {
+        // Keyword-match league-specific T/F; fall back to the general pool if too few.
+        // Chaos-tagged statements are excluded — they don't suit the T/F format.
+        const { TF_STATEMENTS } = await loadQuestions();
+        const keywords = LEAGUE_TF_KEYWORDS[leagueId] || [];
+        const indexed = TF_STATEMENTS
+          .map((s, i) => ({ ...s, _tfIdx: i }))
+          .filter(s => s.cat !== "chaos");
+        const leagueTF = keywords.length
+          ? indexed.filter(s => keywords.some(kw => s.s.toLowerCase().includes(kw)))
+          : [];
+        if (leagueTF.length >= 10) {
+          qs = shuffle(leagueTF).slice(0, 20).map(s => ({ ...s, _histKey: `tf:${s.id}` }));
+        } else {
+          qs = await getTrueFalseQs();
+        }
       }
+    } catch (e) {
+      console.warn('[launchLeagueInMode]', e?.message || e);
+      showToast("⚠️ Couldn't load questions — check your connection");
+      return;
     }
 
     qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
@@ -10832,14 +10854,21 @@ function AppInner() {
     setScreen("quiz");
   }, [leagueMode, showToast]);
 
-  const startClassicWithDiff = useCallback((d) => {
+  const startClassicWithDiff = useCallback(async (d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
     // on the async setDiff → startMode closure, build the questions inline.
     setShowDiffPicker(false);
     haptic("soft");
     setDiff(d);
     setActiveClub(null);
-    const qs = getQs({ cat: "All", diff: d, n: 10, ramp: true });
+    let qs;
+    try {
+      qs = await getQs({ cat: "All", diff: d, n: 10, ramp: true });
+    } catch (e) {
+      console.warn('[startClassicWithDiff]', e?.message || e);
+      showToast("⚠️ Couldn't load questions — check your connection");
+      return;
+    }
     if (!qs || qs.length === 0) { showToast("No questions — try another difficulty"); return; }
     setMode("classic");
     setCat("All");
@@ -10847,8 +10876,15 @@ function AppInner() {
     setScreen("quiz");
   }, [showToast]);
 
-  const playDailyForDate = useCallback((date) => {
-    const qs = getDailyQsForDate(date);
+  const playDailyForDate = useCallback(async (date) => {
+    let qs;
+    try {
+      qs = await getDailyQsForDate(date);
+    } catch (e) {
+      console.warn('[playDailyForDate]', e?.message || e);
+      showToast("⚠️ Couldn't load questions — check your connection");
+      return;
+    }
     if (!qs || qs.length === 0) { showToast("No questions available for that day"); return; }
     haptic("soft");
     setActiveDailyDate(date);
