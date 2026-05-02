@@ -1574,7 +1574,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .light .crop-overlay{background:rgba(0,0,0,0.85);}
 .light .crop-stage{background:#1a1a1a;}
 .light .crop-actions{background:#1a1a1a;border-top:1px solid #2a2a2a;}
-.crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;}
+.crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
 .crop-btn.primary:hover:not(:disabled){background:#16a34a;}
