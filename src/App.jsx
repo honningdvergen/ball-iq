@@ -839,7 +839,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* 3D "Duolingo" primary button — bright green face, darker rim, press translates Y.
    Use only for the signature primary CTA of a screen. Applied via the .btn-3d
    class so existing non-CTA greens stay on the toned-down accent (#22c55e). */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-3d:hover{filter:brightness(1.06);}
 .btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
@@ -1210,7 +1210,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    the reward registers visually instead of fading in like a stat row. */
 .xp-earned-pop{animation:xpEarnedPop 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;}
 @keyframes xpEarnedPop{from{opacity:0;transform:scale(0.7);}60%{opacity:1;transform:scale(1.08);}to{opacity:1;transform:scale(1);}}
-.btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;}
+.btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-p{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0a1a00;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
 .btn-p:hover{background:linear-gradient(135deg,#22c55e,#22c55e);transform:translateY(-1px);}
 .btn-s{background:var(--s1);color:var(--text);border:1px solid var(--border);}
@@ -4578,6 +4578,12 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }
                 // other element (dim wrapper, prompt opacity, banners)
                 // snaps instantly per the "one source of motion" principle.
                 transition: transitionsEnabled ? "border-color 0.1s ease, background-color 0.1s ease" : "none",
+                // a11y bundle: paired with viewport user-scalable removal.
+                // Disables double-tap-zoom on this element only so rapid
+                // answer-lock taps on iOS don't get hijacked. Pinch-zoom
+                // still works elsewhere.
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
               }}
             >
               <span style={{
@@ -10784,7 +10790,7 @@ function AppInner() {
   return (
     <>
       <style>{css}</style>
-      <div className={`app${settings.theme === "light" ? " light" : ""}`}>
+      <main className={`app${settings.theme === "light" ? " light" : ""}`}>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only ── */}
@@ -11531,7 +11537,7 @@ function AppInner() {
           </nav>
         )}
         </>}
-      </div>
+      </main>
       <OfflineBanner />
     </>
   );
