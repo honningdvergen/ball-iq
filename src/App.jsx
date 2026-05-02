@@ -3954,33 +3954,40 @@ function LobbyEnded({ onExit }) {
 // scaffold only: question + 4 buttons render, but tap is a no-op (handler
 // wires in 1C.2). Timer, optimistic locking, scores, host controls land
 // in 1C.3 / 1C.4 / 1C.5.
+// 2-second reveal pause between answer-locked moment and next-question fire.
+// Hardcoded for Stage 1C.6; tunable via this constant if friend testing
+// surfaces "too fast" / "too slow" feedback. Stage 1F may make per-mode.
+const REVEAL_PAUSE_MS = 2000;
+
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
   const question = room.questions?.[room.current_question];
 
   // mountedRef: gates setState calls inside async paths so post-unmount
-  // resolutions don't trigger React warnings. MultiplayerGameplay unmounts
-  // when room.state goes to 'ended' (parent renders LobbyEnded instead) or
-  // when the user leaves. Pending RPC promises from handleAdvance,
-  // handleAnswerPick, and handleTimeoutAutoSubmit can resolve after that.
+  // resolutions don't trigger React warnings.
   const mountedRef = useRef(true);
   useEffect(() => () => { mountedRef.current = false; }, []);
 
-  // Local optimistic answer lock. Cleared on question advance OR rolled back
-  // on question_idx_mismatch RPC response. The shape mirrors what we'll need
-  // for the timer auto-submit in 1C.3 (questionIdx + answerIdx + lockTimeMs).
+  // Local optimistic answer lock.
   const [myAnswer, setMyAnswer] = useState(null);
 
+  // Reveal phase state machine (Stage 1C.6):
+  //   answering → revealing → advancing → (back to answering on next Q)
+  //                                     → (stuck on advance error)
+  // Each client runs its own machine. Server's expected_mismatch gate
+  // (Spike 2 validated) handles concurrent advance RPCs from multiple
+  // clients — first wins, others no-op silently.
+  const [revealPhase, setRevealPhase] = useState('answering');
+
   // Captures performance.now() at the moment the current question first
-  // rendered. Used to compute lock_time_ms on submit. Reset on every
-  // question advance (useEffect below).
+  // rendered. Used to compute lock_time_ms on submit.
   const questionStartedAtRef = useRef(performance.now());
 
-  // Question-advance reset. Fires on:
-  //   - Initial mount of MultiplayerGameplay (room.current_question = 0)
-  //   - Each subsequent advance (host taps Next / advance_question RPC fires
-  //     game_rooms UPDATE that lifts current_question)
+  // Question-advance reset. Fires on initial mount AND each subsequent
+  // realtime UPDATE that lifts room.current_question. Resets myAnswer,
+  // revealPhase back to 'answering', and the timer ref.
   useEffect(() => {
     setMyAnswer(null);
+    setRevealPhase('answering');
     questionStartedAtRef.current = performance.now();
   }, [room.current_question]);
 
@@ -3991,16 +3998,10 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
   const currentQuestionIdx = room.current_question;
 
-  // Server-confirmed "did I answer this question already" — survives a page
-  // refresh that wipes local myAnswer state, so the buttons stay disabled.
-  // Server doesn't store WHICH answer (room_players schema only has
-  // answered_question marker + score), so refresh loses option-highlight
-  // visibility. Acceptable for Stage 1C; Stage 4+ could add last_answer_idx
-  // for full reload-resilience.
+  // Server-confirmed "did I answer this question already" — survives a
+  // page refresh that wipes local myAnswer state.
   const serverConfirmedAnswered = (myPlayer?.answered_question ?? -1) >= currentQuestionIdx;
 
-  // Source of truth for "have I answered" — either local optimistic OR
-  // server-confirmed. Disables all options once truthy.
   const myAnswerForCurrent = myAnswer && myAnswer.questionIdx === currentQuestionIdx
     ? myAnswer
     : null;
@@ -4008,118 +4009,112 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   const lockedAnswerIdx = myAnswerForCurrent?.answerIdx ?? null;
 
   const handleAnswerPick = useCallback(async (answerIdx) => {
-    // Guard: don't double-submit. The button onClick already short-circuits
-    // when lockedAnswerIdx is set, but server-confirmed-answered (post-
-    // refresh) also blocks here.
     if (myAnswer || serverConfirmedAnswered) return;
 
     const lockTimeMs = Math.round(performance.now() - questionStartedAtRef.current);
     const submittedQuestionIdx = currentQuestionIdx;
 
-    // Optimistic lock: paint immediately, server roundtrip ~150-400ms.
     setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx, lockTimeMs });
 
     const result = await actions.submitAnswer(submittedQuestionIdx, answerIdx, lockTimeMs);
     if (!mountedRef.current) return;
 
     if (result.error) {
-      // Hard RPC failure (network, server 5xx). Don't roll back the
-      // optimistic lock — server is idempotent on retry, and the user
-      // already committed mentally. If they retry by tapping again,
-      // the next call returns already_answered and we silent-no-op.
-      // 1C minimum: log and move on. 1F may add visible retry indicator.
       console.warn('[mp] submit_answer failed:', result.error);
       return;
     }
-
     if (result.accepted === false) {
-      if (result.reason === 'question_idx_mismatch') {
-        // Host advanced while we were tapping. Our submission was for a
-        // stale question. Roll back the lock so the UI doesn't show a
-        // locked state for the new question. The question-advance useEffect
-        // above will already have cleared myAnswer if room.current_question
-        // changed via realtime — but we may be ahead of that update, so
-        // explicitly clear here too.
-        setMyAnswer(null);
-      } else if (result.reason === 'already_answered') {
-        // Idempotent retry (we tapped twice fast, or network blip). Server
-        // already has our answer. Optimistic lock stays — matches server.
-      }
+      if (result.reason === 'question_idx_mismatch') setMyAnswer(null);
+      // already_answered: silent — server has our answer, optimistic stays
       return;
     }
-
-    // result.accepted === true. Optimistic lock matches server. Realtime
-    // UPDATE on myPlayer will arrive shortly (~150-400ms) and bump
-    // answered_question + score. ScoreBar (1C.4) re-renders accordingly.
   }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
-  // Advance state — host-only Next button shows "Advancing…" while RPC
-  // in flight. On success, realtime UPDATE on game_rooms re-renders us
-  // with new current_question (or LobbyEnded if state='ended').
-  const [advancing, setAdvancing] = useState(false);
-
-  // Reset advancing flag whenever current_question changes (advance succeeded
-  // and realtime UPDATE arrived). Defensive — also reset by handleAdvance's
-  // own setAdvancing(false) below, but useEffect catches edge cases where
-  // server-state changed via some other path.
-  useEffect(() => { setAdvancing(false); }, [currentQuestionIdx]);
-
-  const handleAdvance = useCallback(async () => {
-    if (advancing) return;
-    setAdvancing(true);
-    const result = await actions.advance();
-    if (!mountedRef.current) return;
-    if (result.error) {
-      console.warn("[mp] advance failed:", result.error);
-      setAdvancing(false);
-      return;
-    }
-    if (result.advanced === false && result.reason === "expected_mismatch") {
-      // Server-state already moved past p_expected_question. Only host
-      // calls advance, so this is a rare race — perhaps a stale render
-      // captured an old current_question and the realtime UPDATE hadn't
-      // re-rendered yet. Treat as success silently; realtime sync will
-      // catch us up.
-    }
-    setAdvancing(false);
-  }, [actions, advancing]);
-
-  // Host-disconnect detection. When host's row is missing from players
-  // (they called leave_room), advance_question rejects further calls
-  // server-side anyway, so the game effectively pauses. Show a banner so
-  // joiners understand why and can leave.
+  // Host-disconnect detection.
   const hostStillPresent = !!room && players.some(p => p.user_id === room.host_id);
 
-  // Timeout auto-submit. Fires when QuestionTimer hits 0s. Submits
-  // answer_idx = -1 with lock_time = QUESTION_DURATION_MS. Server treats
-  // -1 as wrong (correct is 0..3, so the equality check fails) → score 0,
-  // BUT still sets answered_question — so host's "all answered" check in
-  // 1C.4 unblocks even if some players never tapped. Idempotent guard:
-  // skip if user already answered (manual tap or earlier auto-submit
-  // somehow racing).
+  // Timeout auto-submit. Submits -1 (wrong, score 0, but answered_question
+  // gets set so the all-answered check unblocks). Fired by handleTimerExpire
+  // below alongside the phase transition.
   const handleTimeoutAutoSubmit = useCallback(async () => {
     if (myAnswer || serverConfirmedAnswered) return;
     const submittedQuestionIdx = currentQuestionIdx;
     setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
     const result = await actions.submitAnswer(submittedQuestionIdx, -1, QUESTION_DURATION_MS);
     if (!mountedRef.current) return;
-    // Reconciliation parity with handleAnswerPick: if host advanced just
-    // as the timer fired, our auto-submit lands on a stale question.
-    // Server returns question_idx_mismatch → roll back the optimistic
-    // lock so the new question's UI doesn't show a phantom "answer
-    // locked" state. The question-advance useEffect already clears
-    // myAnswer on currentQuestionIdx change, but we may be ahead of
-    // the realtime UPDATE that triggers it; explicit clear is
-    // defense-in-depth.
     if (result.accepted === false && result.reason === "question_idx_mismatch") {
       setMyAnswer(null);
     }
   }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
+  // ── Phase machine (Stage 1C.6) ──────────────────────────────────────
+  //
+  // Trigger A: all players answered → revealing
+  // Each client computes from its own (realtime-synced) view of players.
+  // Stays sticky once entered (a late-joiner's -1 answered_question
+  // won't bounce us back to 'answering' — we're already past).
+  const allAnswered = players.length > 0 && players.every(p => p.answered_question >= currentQuestionIdx);
+  useEffect(() => {
+    if (revealPhase === 'answering' && allAnswered) {
+      setRevealPhase('revealing');
+    }
+  }, [revealPhase, allAnswered]);
+
+  // Trigger B: local timer expired → revealing (regardless of who answered)
+  // Combined with auto-submit so each client's timer expiry is one event.
+  const handleTimerExpire = useCallback(() => {
+    handleTimeoutAutoSubmit(); // fire-and-forget; its own promise chain handles errors
+    setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
+  }, [handleTimeoutAutoSubmit]);
+
+  // 2s pause: revealing → advancing
+  useEffect(() => {
+    if (revealPhase !== 'revealing') return;
+    const t = setTimeout(() => {
+      if (!mountedRef.current) return;
+      setRevealPhase('advancing');
+    }, REVEAL_PAUSE_MS);
+    return () => clearTimeout(t);
+  }, [revealPhase]);
+
+  // Advance fire: each client in 'advancing' fires advance_question.
+  // First wins; others get expected_mismatch (silent). On success,
+  // realtime UPDATE on game_rooms.current_question re-renders us; the
+  // question-advance useEffect resets phase to 'answering'. On error
+  // (most commonly "only the host can advance" when host has left,
+  // OR network/server failure), settle in 'stuck' to prevent a retry
+  // loop — host-disconnect banner above OR the stuck-error indicator
+  // below explains; user can leave via wordmark or the inline link.
+  useEffect(() => {
+    if (revealPhase !== 'advancing') return;
+    let cancelled = false;
+    (async () => {
+      const result = await actions.advance();
+      if (cancelled || !mountedRef.current) return;
+      if (result.error) {
+        console.warn('[mp] advance failed (entering stuck state):', result.error);
+        setRevealPhase('stuck');
+      }
+      // expected_mismatch / success: silent. Realtime UPDATE on
+      // game_rooms.current_question (or state='ended' for last Q)
+      // triggers re-render via parent's MultiplayerLobby render switch.
+    })();
+    return () => { cancelled = true; };
+  }, [revealPhase, actions]);
+
+  // Host-tap handlers for the phase-aware advance button.
+  // Next/End Game during answering: trigger reveal phase (consistent
+  // rhythm — host's manual advance still has the 2s pause; if they want
+  // instant they can Skip during the pause).
+  const handleTriggerReveal = useCallback(() => {
+    setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
+  }, []);
+  // Skip during reveal: jump straight to advancing (cancels the 2s pause).
+  const handleSkipAhead = useCallback(() => {
+    setRevealPhase(prev => prev === 'revealing' ? 'advancing' : prev);
+  }, []);
+
   if (!question) {
-    // Defensive: questions jsonb missing or current_question out of bounds.
-    // Shouldn't happen in normal flow (start_game validates non-empty array)
-    // but room data could be corrupt or schema-stale.
     return (
       <div className="screen">
         <div className="page-hdr">
@@ -4132,6 +4127,13 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       </div>
     );
   }
+
+  const isLastQuestion = currentQuestionIdx + 1 >= room.questions.length;
+  const showRevealBanner = revealPhase === 'revealing';
+  // Dim question + timer during reveal/advancing/stuck — visual cue that
+  // this round is done. ScoreBar + banners stay full opacity (those are
+  // what the user should focus on).
+  const dimContent = revealPhase !== 'answering';
 
   return (
     <div className="screen">
@@ -4173,23 +4175,55 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           </div>
         )}
 
-        {/* key={currentQuestionIdx} unmounts/remounts on advance so the
-            timer resets cleanly. onExpire fires exactly once per mount
-            (expiredRef inside QuestionTimer). */}
-        <QuestionTimer
-          key={currentQuestionIdx}
-          durationMs={QUESTION_DURATION_MS}
-          onExpire={handleTimeoutAutoSubmit}
-        />
+        {showRevealBanner && (
+          <div style={{
+            padding: "10px 14px",
+            background: "var(--s2)",
+            border: "1px solid var(--accent)",
+            borderRadius: 10,
+            marginBottom: 12,
+            fontSize: 14,
+            fontWeight: 600,
+            color: "var(--text)",
+            textAlign: "center",
+          }}>
+            {isLastQuestion ? "Game ending in 2s" : "Next question in 2s"}
+          </div>
+        )}
 
-        <QuestionView
-          question={question}
-          lockedAnswerIdx={lockedAnswerIdx}
-          disabled={hasAnswered}
-          onPick={handleAnswerPick}
-        />
+        {revealPhase === 'stuck' && hostStillPresent && (
+          <div style={{
+            padding: "10px 14px",
+            background: "rgba(239, 68, 68, 0.1)",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+            borderRadius: 10,
+            marginBottom: 12,
+            fontSize: 13,
+            color: "var(--text)",
+            textAlign: "center",
+          }}>
+            Couldn't advance — leave the room and rejoin to retry.
+          </div>
+        )}
 
-        {hasAnswered && (
+        <div style={{ opacity: dimContent ? 0.6 : 1, transition: "opacity 0.2s" }}>
+          {/* key={currentQuestionIdx} unmounts/remounts on advance so the
+              timer resets cleanly. */}
+          <QuestionTimer
+            key={currentQuestionIdx}
+            durationMs={QUESTION_DURATION_MS}
+            onExpire={handleTimerExpire}
+          />
+
+          <QuestionView
+            question={question}
+            lockedAnswerIdx={lockedAnswerIdx}
+            disabled={hasAnswered || revealPhase !== 'answering'}
+            onPick={handleAnswerPick}
+          />
+        </div>
+
+        {hasAnswered && revealPhase === 'answering' && (
           <div style={{
             marginTop: 16, padding: "10px 14px",
             background: "var(--s1)", border: "1px solid var(--border)",
@@ -4202,11 +4236,12 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
         {isHost && (
           <HostAdvanceControls
+            phase={revealPhase}
             players={players}
             currentQuestion={currentQuestionIdx}
             totalQuestions={room.questions.length}
-            advancing={advancing}
-            onAdvance={handleAdvance}
+            onTriggerReveal={handleTriggerReveal}
+            onSkipAhead={handleSkipAhead}
           />
         )}
       </div>
@@ -4407,17 +4442,49 @@ function ScoreBar({ players, myUserId, hostId }) {
   );
 }
 
-// HostAdvanceControls: visible only when isHost. Shows answered count
-// and the Next/End Game button. Enable rule = "1+ answered" (NOT strict
-// all-answered) — disconnect-resilient. If a player drops mid-question,
-// host can still progress. The answered-count is informational, not a
-// gate. Stage 1C scope §6 documents the rationale.
-function HostAdvanceControls({ players, currentQuestion, totalQuestions, advancing, onAdvance }) {
+// HostAdvanceControls: visible only when isHost. Phase-aware (Stage 1C.6):
+//
+//   answering  → "Next Question →" / "End Game"   tap → onTriggerReveal
+//                (sets revealPhase to 'revealing'; same path as auto-trigger
+//                 when all answered or timer expires; consistent 2s rhythm)
+//                Enabled when 1+ answered (disconnect-resilient).
+//   revealing  → "Skip ahead"                     tap → onSkipAhead
+//                (cancels the 2s pause, jumps to advancing immediately)
+//   advancing  → "Advancing…" / "Ending…" disabled
+//   stuck      → component returns null (banner above explains; user leaves)
+//
+// Status text in the eyebrow is the answered count for situational
+// awareness — informational, not a gate (the 1+ enable rule is the gate).
+function HostAdvanceControls({ phase, players, currentQuestion, totalQuestions, onTriggerReveal, onSkipAhead }) {
+  if (phase === 'stuck') return null;
+
   const answeredCount = players.filter(p => p.answered_question >= currentQuestion).length;
   const total = players.length;
   const allAnswered = answeredCount === total && total > 0;
-  const canAdvance = answeredCount >= 1;
   const isLastQuestion = currentQuestion + 1 >= totalQuestions;
+
+  let buttonLabel;
+  let buttonOnClick;
+  let buttonDisabled;
+  let statusText;
+
+  if (phase === 'answering') {
+    buttonLabel = isLastQuestion ? "End Game" : "Next Question →";
+    buttonOnClick = onTriggerReveal;
+    buttonDisabled = answeredCount < 1;
+    statusText = `${answeredCount}/${total} answered`;
+    if (!allAnswered && answeredCount > 0) statusText += " — waiting for the rest";
+  } else if (phase === 'revealing') {
+    buttonLabel = "Skip ahead";
+    buttonOnClick = onSkipAhead;
+    buttonDisabled = false;
+    statusText = `${answeredCount}/${total} answered`;
+  } else { // 'advancing'
+    buttonLabel = isLastQuestion ? "Ending…" : "Advancing…";
+    buttonOnClick = undefined;
+    buttonDisabled = true;
+    statusText = `${answeredCount}/${total} answered`;
+  }
 
   return (
     <div style={{
@@ -4431,16 +4498,15 @@ function HostAdvanceControls({ players, currentQuestion, totalQuestions, advanci
         fontSize: 11, color: "var(--t3)", textAlign: "center", marginBottom: 10,
         letterSpacing: 0.4, textTransform: "uppercase",
       }}>
-        {answeredCount}/{total} answered
-        {!allAnswered && answeredCount > 0 && " — waiting for the rest"}
+        {statusText}
       </div>
       <button
         className="btn-3d"
-        onClick={onAdvance}
-        disabled={!canAdvance || advancing}
+        onClick={buttonOnClick}
+        disabled={buttonDisabled}
         style={{ width: "100%" }}
       >
-        {advancing ? "Advancing…" : isLastQuestion ? "End Game" : "Next Question →"}
+        {buttonLabel}
       </button>
     </div>
   );
