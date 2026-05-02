@@ -3534,6 +3534,14 @@ const PLACEHOLDER_QUESTIONS = [
   { prompt: "Test Q3: Which country won the 2022 World Cup?", options: ["France", "Brazil", "Argentina", "Croatia"], correct: 2 },
 ];
 
+// QUESTION_DURATION_MS — keep in sync with server submit_answer's
+// v_question_dur (currently 20000ms). See feedback_question_duration_constant.md
+// memory note. If you change this, you MUST update the SQL function body
+// via a CREATE OR REPLACE FUNCTION migration in the same change set —
+// drift between client and server constants causes unfair scoring (client
+// thinks 20s, server scores against 30s, or vice versa).
+const QUESTION_DURATION_MS = 20000;
+
 // OnlineEntry: choice screen — "Create Room" or "Join with Code". Calls
 // create_room / join_room RPCs directly; on success, navigates to the
 // MultiplayerLobby via onLobbyEnter callback. Specific error handling for
@@ -4025,6 +4033,19 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     // answered_question + score. ScoreBar (1C.4) re-renders accordingly.
   }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
+  // Timeout auto-submit. Fires when QuestionTimer hits 0s. Submits
+  // answer_idx = -1 with lock_time = QUESTION_DURATION_MS. Server treats
+  // -1 as wrong (correct is 0..3, so the equality check fails) → score 0,
+  // BUT still sets answered_question — so host's "all answered" check in
+  // 1C.4 unblocks even if some players never tapped. Idempotent guard:
+  // skip if user already answered (manual tap or earlier auto-submit
+  // somehow racing).
+  const handleTimeoutAutoSubmit = useCallback(async () => {
+    if (myAnswer || serverConfirmedAnswered) return;
+    setMyAnswer({ questionIdx: currentQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
+    await actions.submitAnswer(currentQuestionIdx, -1, QUESTION_DURATION_MS);
+  }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
+
   if (!question) {
     // Defensive: questions jsonb missing or current_question out of bounds.
     // Shouldn't happen in normal flow (start_game validates non-empty array)
@@ -4051,6 +4072,15 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         </div>
       </div>
       <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
+        {/* key={currentQuestionIdx} unmounts/remounts on advance so the
+            timer resets cleanly. onExpire fires exactly once per mount
+            (expiredRef inside QuestionTimer). */}
+        <QuestionTimer
+          key={currentQuestionIdx}
+          durationMs={QUESTION_DURATION_MS}
+          onExpire={handleTimeoutAutoSubmit}
+        />
+
         <QuestionView
           question={question}
           lockedAnswerIdx={lockedAnswerIdx}
@@ -4076,6 +4106,87 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         }}>
           {players.length} {players.length === 1 ? "player" : "players"} · {isHost ? "you are host" : "you are joiner"} · {myPlayer?.score ?? 0} pts
         </div>
+      </div>
+    </div>
+  );
+}
+
+// useQuestionTimer: countdown hook. Internal setInterval ticks every 100ms,
+// computing remaining = max(0, durationMs - elapsed). Calls onExpire once
+// when remaining hits 0. The onExpire ref pattern (vs putting onExpire in
+// the useEffect deps) avoids restarting the timer when the parent passes a
+// fresh callback identity each render — common case since handleTimeout-
+// AutoSubmit's useCallback recreates on question advance.
+function useQuestionTimer(durationMs) {
+  const [remainingMs, setRemainingMs] = useState(durationMs);
+
+  useEffect(() => {
+    setRemainingMs(durationMs);
+    const startedAt = performance.now();
+    const id = setInterval(() => {
+      const elapsed = performance.now() - startedAt;
+      const remaining = Math.max(0, durationMs - elapsed);
+      setRemainingMs(remaining);
+      if (remaining === 0) clearInterval(id);
+    }, 100);
+    return () => clearInterval(id);
+  }, [durationMs]);
+
+  return remainingMs;
+}
+
+// QuestionTimer: shrinking-bar countdown + seconds number. Color shifts to
+// red below 5s. Parent must mount with key={currentQuestionIdx} so React
+// unmounts/remounts on each question advance — this is how the timer
+// resets cleanly without internal "did question change" tracking.
+function QuestionTimer({ durationMs, onExpire }) {
+  const remainingMs = useQuestionTimer(durationMs);
+  const expiredRef = useRef(false);
+
+  // Trigger onExpire exactly once when timer hits 0. Using effect (not
+  // direct call inside the hook) so onExpire receives the latest callback
+  // closure from the parent — onExpire identity may change between renders
+  // (e.g., handleTimeoutAutoSubmit's deps change with currentQuestionIdx).
+  useEffect(() => {
+    if (remainingMs === 0 && !expiredRef.current) {
+      expiredRef.current = true;
+      onExpire?.();
+    }
+  }, [remainingMs, onExpire]);
+
+  const seconds = Math.ceil(remainingMs / 1000);
+  const pct = (remainingMs / durationMs) * 100;
+  const isLow = remainingMs > 0 && remainingMs < 5000;
+
+  return (
+    <div style={{
+      position: "relative",
+      height: 28,
+      borderRadius: 8,
+      background: "var(--s1)",
+      border: "1px solid var(--border)",
+      overflow: "hidden",
+      marginBottom: 16,
+    }}>
+      <div style={{
+        position: "absolute",
+        top: 0, left: 0, bottom: 0,
+        width: `${pct}%`,
+        background: isLow ? "#ef4444" : "var(--accent)",
+        transition: "width 0.1s linear",
+      }} />
+      <div style={{
+        position: "absolute",
+        top: 0, left: 0, right: 0, bottom: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 13,
+        fontWeight: 700,
+        color: "var(--text)",
+        letterSpacing: 0.4,
+      }}>
+        {seconds}s
       </div>
     </div>
   );
