@@ -22,6 +22,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_seen_history_v2',
   'biq_pending_join',
   'biq_onboarded',
+  'biq_last_email',
 ]
 const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
 
@@ -83,6 +84,28 @@ export function AuthProvider({ children }) {
           localStorage.removeItem('ballIQ_guestMode')
         }
         setLoading(false)
+
+        // Distinguish intentional signOut from Supabase-driven session
+        // expiry (refresh token TTL, multi-device rotation invalidation,
+        // server-side revocation). signOut() and performDelete() set a
+        // localStorage sentinel with a fresh timestamp right before
+        // calling supabase.auth.signOut(); if the flag is absent or
+        // older than 5s when SIGNED_OUT fires, this was expiry. We
+        // don't clear the flag here — let it age out via TTL so a
+        // multi-tab cross-tab signOut also lets Tab B's handler see
+        // "intentional" before the broadcast arrives.
+        if (event === 'SIGNED_OUT') {
+          let intentional = false
+          try {
+            const flagAt = parseInt(localStorage.getItem('biq_signout_intentional_at') || '0', 10)
+            intentional = flagAt > 0 && (Date.now() - flagAt) < 5000
+          } catch {}
+          if (!intentional) {
+            try {
+              window.dispatchEvent(new CustomEvent('biq:session-expired'))
+            } catch {}
+          }
+        }
       }
     )
 
@@ -387,10 +410,27 @@ export function AuthProvider({ children }) {
   }
 
   async function signIn(email, password) {
-    return await supabase.auth.signInWithPassword({ email, password })
+    const result = await supabase.auth.signInWithPassword({ email, password })
+    if (!result.error && result.data?.session) {
+      // Pre-fill convenience for next visit (post-expiry, re-launch).
+      // Cleared by clearAllUserLocalStorage on explicit signOut so a
+      // shared device's next user starts blank.
+      safeSetItem('biq_last_email', email)
+    }
+    return result
   }
 
   async function signOut() {
+    // Sentinel flag for the auth state listener: marks this SIGNED_OUT
+    // as intentional so it won't dispatch biq:session-expired (which
+    // would surface a confusing "session expired" banner on Login).
+    // Uses localStorage so cross-tab sign-outs propagate the intent;
+    // 5s TTL on the read side means a stale flag from an interrupted
+    // signOut won't bleed into a later genuine expiry event. Set FIRST
+    // so the flag is in place even if anything in the cleanup path
+    // below throws.
+    try { localStorage.setItem('biq_signout_intentional_at', String(Date.now())) } catch {}
+
     // Order matters:
     // 1. Invalidate the userId ref synchronously so any in-flight hydrate
     //    (resolved during the supabase.auth.signOut await window below)

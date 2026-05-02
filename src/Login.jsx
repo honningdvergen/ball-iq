@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth } from './useAuth.jsx'
 
 function readTheme() {
@@ -10,16 +10,32 @@ function readTheme() {
   } catch { return 'dark' }
 }
 
+function readLastEmail() {
+  try { return localStorage.getItem('biq_last_email') || '' } catch { return '' }
+}
+
 export default function Login() {
   const { signUp, signIn, continueAsGuest } = useAuth()
   const [mode, setMode] = useState('login') // 'login' or 'signup'
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(readLastEmail)
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [sessionExpired, setSessionExpired] = useState(false)
   const isLight = readTheme() === 'light'
+
+  // Listen for session-expired events dispatched by useAuth.jsx's
+  // onAuthStateChange handler (fires when SIGNED_OUT happens without
+  // the intentional sentinel — i.e., refresh token expired, rotated
+  // invalid, or server-side revoked). One-shot per Login mount: state
+  // is set once and stays until successful sign-in unmounts Login.
+  useEffect(() => {
+    const onSessionExpired = () => setSessionExpired(true)
+    window.addEventListener('biq:session-expired', onSessionExpired)
+    return () => window.removeEventListener('biq:session-expired', onSessionExpired)
+  }, [])
 
   async function handleSubmit() {
     setError('')
@@ -212,6 +228,18 @@ export default function Login() {
       maxWidth: '280px',
       lineHeight: 1.5,
     },
+    expiredBanner: {
+      padding: '10px 14px',
+      borderRadius: '10px',
+      backgroundColor: palette.inputBg,
+      border: `1px solid ${palette.border}`,
+      color: palette.text,
+      fontSize: '13px',
+      textAlign: 'center',
+      marginBottom: '16px',
+      width: '100%',
+      maxWidth: '360px',
+    },
   }
 
   return (
@@ -221,6 +249,12 @@ export default function Login() {
       <div style={styles.subtitle}>
         {mode === 'login' ? 'Welcome back' : 'Create your account'}
       </div>
+
+      {sessionExpired && (
+        <div style={styles.expiredBanner}>
+          Session expired — please sign in again
+        </div>
+      )}
 
       {/* Real <form> wrapping so password managers (1Password, iCloud
           Keychain, Chrome autofill) can detect the field grouping. The

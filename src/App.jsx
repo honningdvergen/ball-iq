@@ -6437,6 +6437,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
     if (deleting) return;
     setDeleting(true);
     try {
+      // Set sentinel BEFORE the server-side delete RPC. delete_user_account
+      // invalidates the auth.users row server-side; any background refresh
+      // that fires between this RPC and the explicit signOut() below would
+      // get 401 -> SIGNED_OUT fires -> without the sentinel, would surface
+      // a "session expired" banner during account deletion (misleading).
+      try { localStorage.setItem('biq_signout_intentional_at', String(Date.now())) } catch {}
+
       const { error } = await supabase.rpc("delete_user_account");
       if (error) {
         setDeleting(false);
