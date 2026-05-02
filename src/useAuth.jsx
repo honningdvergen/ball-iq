@@ -616,6 +616,17 @@ export function AuthProvider({ children }) {
       console.error('[uploadAvatar] profile update threw', dumpErr(updEx))
     }
 
+    // Auth-boundary guard (Audit Phase 1, Finding 1.1): if the user
+    // signed out + signed in as a different account during the upload
+    // window (resize + REST POST + profile UPDATE — typically 1-3s),
+    // skip the in-memory setProfile so the NEW user doesn't briefly
+    // see the OLD user's avatar URL on their profile. The server-side
+    // writes already landed correctly against the OLD user's id (storage
+    // path + profiles row both used the captured userId), so no server-
+    // side leak. This guards the React state only.
+    if (activeUserIdRef.current !== userId) {
+      return { url: publicUrl }
+    }
     // Update in-memory profile so the avatar swaps immediately
     setProfile(prev => (prev ? { ...prev, avatar_url: publicUrl } : prev))
     return { url: publicUrl }
