@@ -3730,8 +3730,15 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
 
   const isMe = useCallback((p) => myPlayer && p.user_id === myPlayer.user_id, [myPlayer]);
 
-  if (loading) return <LobbyLoading />;
-  if (error || !room) return <LobbyError error={error} onExit={onExit} />;
+  // Dispatch order matters: explicit error first, THEN loading-or-no-room.
+  // The reverse order (1B's bug) caused a one-frame flash of LobbyError on
+  // first render after navigation from OnlineEntry — useEffect hadn't yet
+  // flipped loading=true, so initial state (loading=false, room=null,
+  // error=null) hit `error || !room` → truthy → LobbyError briefly renders
+  // with error=null before the next render shows LobbyLoading. Safari's
+  // paint timing made the flash visible.
+  if (error) return <LobbyError error={error} onExit={onExit} />;
+  if (loading || !room) return <LobbyLoading />;
   if (room.state === "ended") return <LobbyEnded onExit={onExit} />;
   if (room.state === "playing") {
     return (
@@ -3983,7 +3990,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           marginTop: 24, fontSize: 11, color: "var(--t3)",
           textAlign: "center", letterSpacing: 0.4, textTransform: "uppercase",
         }}>
-          {players.length} players · {isHost ? "you are host" : "you are joiner"} · {myPlayer?.score ?? 0} pts
+          {players.length} {players.length === 1 ? "player" : "players"} · {isHost ? "you are host" : "you are joiner"} · {myPlayer?.score ?? 0} pts
         </div>
       </div>
     </div>
@@ -9882,6 +9889,20 @@ function AppInner() {
     setActiveClub(null);
     setLeagueMode(null);
   }, []);
+  // Wordmark "Home" handler — wired to both mobile .logo and DesktopNav's
+  // dn-brand. If the user is currently in a Stage 1 multiplayer room,
+  // confirm before bailing so we don't accidentally orphan their seat.
+  // Calls leave_room directly (bypassing MultiplayerLobby's actions.leave)
+  // since we need to clean up before the screen-state change unmounts the
+  // hook. Other players see the resulting room_players DELETE event.
+  const handleHomeClick = useCallback(async () => {
+    if (screen === "online-stage1-lobby" && stage1RoomCode) {
+      if (!window.confirm("Leave the room and return to home?")) return;
+      try { await supabase.rpc("leave_room", { p_code: stage1RoomCode }); } catch {}
+      setStage1RoomCode("");
+    }
+    goHome();
+  }, [screen, stage1RoomCode, goHome]);
   const challengeFriend = useCallback((friend) => {
     // No native invite flow yet — drop the challenger into the online lobby
     // with a toast hinting at the friend's name so they can share the code.
@@ -10113,6 +10134,7 @@ function AppInner() {
         {hasOnboarded && <>
         {!inGame && (
           <DesktopNav
+            onHomeClick={handleHomeClick}
             tab={tab}
             setTab={setTab}
             setScreen={setScreen}
@@ -10126,7 +10148,16 @@ function AppInner() {
                 global wordmark would just stack a second identifier on top.
                 Hide it on that one screen; every other screen still keeps
                 the brand mark. */}
-            {screen !== "settings" && <div className="logo">Ball <em>IQ</em></div>}
+            {screen !== "settings" && (
+              <button
+                className="logo"
+                onClick={handleHomeClick}
+                style={{ background: "none", border: "none", padding: 0, font: "inherit", color: "inherit", cursor: "pointer" }}
+                aria-label="Home"
+              >
+                Ball <em>IQ</em>
+              </button>
+            )}
             {screen === "home" && (
               <div className="hdr-actions">
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>

@@ -7,7 +7,7 @@
 // routing or persistence. Friends button scrolls to the existing
 // .friends-section inside the Profile tab. Settings opens the existing
 // Settings screen.
-export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast }) {
+export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast, onHomeClick }) {
   const goTab = (id) => () => setTab(id);
 
   const goFriends = () => {
@@ -33,7 +33,14 @@ export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast }) {
 
   return (
     <aside className="desktop-nav" aria-label="Primary">
-      <div className="dn-brand">Ball <em>IQ</em></div>
+      <button
+        className="dn-brand"
+        onClick={onHomeClick}
+        style={{ background: "none", border: "none", padding: 0, font: "inherit", color: "inherit", cursor: "pointer", textAlign: "inherit" }}
+        aria-label="Home"
+      >
+        Ball <em>IQ</em>
+      </button>
       <nav className="dn-list">
         <button data-active={tab === 'home'}    onClick={goTab('home')}>Home</button>
         <button data-active={tab === 'league'}  onClick={goTab('league')}>League</button>
