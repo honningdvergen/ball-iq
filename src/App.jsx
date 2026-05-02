@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
@@ -3538,12 +3538,6 @@ function OnlineGame({ onBack }) {
 // picker on OnlineEntry; pickMultiplayerQuestions can then accept
 // filter args. Stage 1F may also add seen_history integration if friend
 // testing surfaces "we keep seeing the same questions" complaints.
-// [MP-DIAG] Stage 1C.7.2 module-scope counter — remove with the
-// diagnostic logging in 1C.7.3 fix commit. Tracks how many times
-// pickMultiplayerQuestions has been called over the page session,
-// to verify whether multi-call is responsible for the transition flash.
-let __pickMpQCallCount = 0;
-
 function pickMultiplayerQuestions(count = 10) {
   const eligible = QB.filter(q =>
     q.type === "mcq" &&
@@ -3553,15 +3547,11 @@ function pickMultiplayerQuestions(count = 10) {
   // Math.random() - 0.5 sort is biased but undetectable for casual
   // trivia. Upgrade to Fisher-Yates only if a user complaint surfaces.
   const shuffled = eligible.slice().sort(() => Math.random() - 0.5);
-  const result = shuffled.slice(0, count).map(q => ({
+  return shuffled.slice(0, count).map(q => ({
     prompt: q.q,
     options: q.o,
     correct: q.a,
   }));
-  // [MP-DIAG] log call counter + identifying first-prompt
-  __pickMpQCallCount++;
-  console.log(`[MP-DIAG] pickMultiplayerQuestions call #${__pickMpQCallCount} count=${count} q0="${result[0]?.prompt?.slice(0, 60)}"`);
-  return result;
 }
 
 // QUESTION_DURATION_MS — keep in sync with server submit_answer's
@@ -3991,22 +3981,6 @@ const REVEAL_PAUSE_MS = 2000;
 
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
   const question = room.questions?.[room.current_question];
-
-  // [MP-DIAG] Stage 1C.7.2 render log — fires every render including
-  // transition frames. Look for any frame where prompt is unrelated
-  // to the rest of the room.questions[0..N] set we logged earlier.
-  // Remove in 1C.7.3 fix commit.
-  if (typeof window !== 'undefined') {
-    console.log(`[MP-DIAG] MultiplayerGameplay render @${performance.now().toFixed(1)} cur=${room.current_question} q.length=${room.questions?.length} prompt="${question?.prompt?.slice(0, 60)}"`);
-  }
-
-  // [MP-DIAG] Stage 1C.7.2 — fires when room.questions reference changes.
-  // If it fires more than ONCE per game (i.e., more than the initial
-  // start_game UPDATE), that's the bug — questions array is being
-  // replaced mid-game. Remove in 1C.7.3.
-  useEffect(() => {
-    console.log(`[MP-DIAG] room.questions IDENTITY changed @${performance.now().toFixed(1)} length=${room.questions?.length} q0="${room.questions?.[0]?.prompt?.slice(0, 60)}" qN="${room.questions?.[(room.questions?.length || 1) - 1]?.prompt?.slice(0, 60)}"`);
-  }, [room.questions]);
 
   // mountedRef: gates setState calls inside async paths so post-unmount
   // resolutions don't trigger React warnings.
@@ -4492,53 +4466,20 @@ const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 // "your wrong" path fires → late joiner sees only the green-correct
 // highlight during reveal, no red anywhere. Same for timeout (-1):
 // `idx === -1` is false for all valid idx → no spurious red.
-// [MP-DIAG] Stage 1C.7.3 — QuestionView render counter (module-scope so
-// it persists across mount/unmount). Tracks every QuestionView render
-// across the whole page session. Remove with the rest of the diagnostic
-// logging in 1C.7.4 fix commit.
-let __qvRenderCount = 0;
-
 function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }) {
-  // [MP-DIAG] Stage 1C.7.3 — log INSIDE QuestionView's render. Catches
-  // every actual render of this component (different from the
-  // MultiplayerGameplay log which only sees parent-level renders). If
-  // QuestionView ever renders with a prompt that's NOT in the picked
-  // 10-question set, this catches it — even if some unexpected mount
-  // path is responsible.
-  __qvRenderCount++;
-  if (typeof window !== 'undefined') {
-    console.log(`[MP-DIAG] QuestionView render #${__qvRenderCount} @${performance.now().toFixed(1)} prompt="${question?.prompt?.slice(0, 60)}" lockedIdx=${lockedAnswerIdx} disabled=${disabled} revealing=${revealing}`);
-  }
-
-  // [MP-DIAG] Stage 1C.7.3 — mount/unmount tracking. If we see more
-  // mounts than expected (one per current_question advance, given
-  // key={currentQuestionIdx}), there's an extra render path or a
-  // remount we don't expect.
-  useEffect(() => {
-    const mountTime = performance.now();
-    console.log(`[MP-DIAG] QuestionView MOUNTED @${mountTime.toFixed(1)} prompt="${question?.prompt?.slice(0, 60)}"`);
-    return () => {
-      console.log(`[MP-DIAG] QuestionView UNMOUNTED @${performance.now().toFixed(1)} mountedFor=${(performance.now() - mountTime).toFixed(1)}ms prompt="${question?.prompt?.slice(0, 60)}"`);
-    };
+  // Stage 1C.7.5: suppress option-button color transitions on the first
+  // frame after mount (key={currentQuestionIdx} forces a remount on
+  // every question advance — see MultiplayerGameplay's QuestionView
+  // mount). Without this, stale color transitions from the prior
+  // question's reveal state bleed into the new question's first paint,
+  // making transitions feel chaotic. After the first frame (via rAF in
+  // useLayoutEffect), enable the targeted color transitions for
+  // subsequent in-mount state changes.
+  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
+  useLayoutEffect(() => {
+    const id = requestAnimationFrame(() => setTransitionsEnabled(true));
+    return () => cancelAnimationFrame(id);
   }, []);
-
-  // [MP-DIAG] Stage 1C.7.3 — post-paint DOM capture. Effect runs after
-  // React commits + browser paints. If the painted DOM contains a
-  // prompt that's different from the React-prop prompt, that's the
-  // bug source — something's mutating the DOM outside React's control
-  // (rare but possible — browser extension, devtools, etc.) OR the
-  // visual perception is mismatched with the actual render.
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    // requestAnimationFrame fires after the browser paints the new frame
-    requestAnimationFrame(() => {
-      const promptEl = document.querySelector('.mp-question > div:first-child');
-      const paintedPrompt = promptEl?.textContent?.slice(0, 60);
-      const propPrompt = question?.prompt?.slice(0, 60);
-      const match = paintedPrompt === propPrompt ? '✓' : '✗ MISMATCH';
-      console.log(`[MP-DIAG] QuestionView post-paint @${performance.now().toFixed(1)} ${match} prop="${propPrompt}" painted="${paintedPrompt}"`);
-    });
-  });
 
   return (
     <div className="mp-question">
@@ -4621,7 +4562,12 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }
                 cursor: disabled || lockedAnswerIdx !== null ? "default" : "pointer",
                 opacity: isOtherLocked ? 0.5 : 1,
                 fontFamily: "inherit",
-                transition: "all 0.2s ease",
+                // Stage 1C.7.5: explicit color-only transitions (was "all
+                // 0.2s ease"). Limits animation to border + background;
+                // layout/opacity/transform changes snap instantly.
+                // Suppressed entirely on first-frame-after-mount via
+                // transitionsEnabled gate (see useLayoutEffect above).
+                transition: transitionsEnabled ? "border-color 0.15s ease, background-color 0.15s ease" : "none",
               }}
             >
               <span style={{

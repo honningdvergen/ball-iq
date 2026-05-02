@@ -79,11 +79,7 @@ export function useMultiplayerRoom(code) {
           supabase.from('room_players').select('*').eq('room_id', roomId).order('joined_at', { ascending: true }),
         ])
         if (cancelled) return
-        if (roomRes.data) {
-          // [MP-DIAG] Stage 1C.7.2 — remove in 1C.7.3 fix commit
-          console.log(`[MP-DIAG] setRoom REFETCH @${performance.now().toFixed(1)} cur=${roomRes.data.current_question} q.length=${roomRes.data.questions?.length} q0="${roomRes.data.questions?.[0]?.prompt?.slice(0, 60)}"`)
-          setRoom(roomRes.data)
-        }
+        if (roomRes.data) setRoom(roomRes.data)
         if (playersRes.data) setPlayers(playersRes.data)
       } catch {}
     }
@@ -112,8 +108,6 @@ export function useMultiplayerRoom(code) {
           setChannelStatus('error')
           return
         }
-        // [MP-DIAG] Stage 1C.7.2 — remove in 1C.7.3 fix commit
-        console.log(`[MP-DIAG] setRoom INITIAL @${performance.now().toFixed(1)} cur=${roomData.current_question} q.length=${roomData.questions?.length} q0="${roomData.questions?.[0]?.prompt?.slice(0, 60)}"`)
         setRoom(roomData)
 
         const { data: playersData, error: playersErr } = await supabase
@@ -141,11 +135,7 @@ export function useMultiplayerRoom(code) {
             { event: '*', schema: 'public', table: 'game_rooms', filter: `id=eq.${roomData.id}` },
             (payload) => {
               if (cancelled) return
-              // [MP-DIAG] Stage 1C.7.2 — log every realtime event arrival
-              // including the FULL payload.new shape. Remove in 1C.7.3 fix.
-              console.log(`[MP-DIAG] game_rooms event @${performance.now().toFixed(1)} type=${payload.eventType} new.cur=${payload.new?.current_question} new.q.length=${payload.new?.questions?.length} new.q0="${payload.new?.questions?.[0]?.prompt?.slice(0, 60)}"`)
               if (payload.eventType === 'UPDATE' && payload.new) {
-                console.log(`[MP-DIAG] setRoom UPDATE @${performance.now().toFixed(1)} cur=${payload.new.current_question} q.length=${payload.new.questions?.length} q0="${payload.new.questions?.[0]?.prompt?.slice(0, 60)}"`)
                 setRoom(payload.new)
               }
               // INSERT/DELETE shouldn't fire for an existing-and-known
