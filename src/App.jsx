@@ -3524,15 +3524,35 @@ function OnlineGame({ onBack }) {
 
 // ─── STAGE 1: ONLINE MULTIPLAYER (gated by ?stage1=1 during 1A-1E) ──────────
 //
-// PLACEHOLDER_QUESTIONS — hardcoded for Stage 1B's lobby → playing state
-// transition test. Stage 1E replaces this with pickMultiplayerQuestions
-// (QB-backed, difficulty-filtered, biq_seen_history_v2-aware). Server's
-// submit_answer reads `correct` as int index (0-3) per the SQL contract.
-const PLACEHOLDER_QUESTIONS = [
-  { prompt: "Test Q1: Which player won the 2022 Ballon d'Or?", options: ["Mbappé", "Benzema", "Messi", "Haaland"], correct: 1 },
-  { prompt: "Test Q2: How many players on a football team during play?", options: ["10", "11", "12", "9"], correct: 1 },
-  { prompt: "Test Q3: Which country won the 2022 World Cup?", options: ["France", "Brazil", "Argentina", "Croatia"], correct: 2 },
-];
+// pickMultiplayerQuestions(count = 10) — pulls random questions from QB
+// for a multiplayer game and converts them to the SQL contract shape
+// expected by start_game's p_questions param: { prompt, options, correct }.
+//
+// Stage 1E baseline: all categories, all difficulties, no seen_history
+// filter (multiplayer is a shared experience, per-user history would
+// create asymmetry between players seeing different filtered pools).
+// Defensive type filter restricts to `mcq` with exactly 4 options and a
+// numeric correct index — QuestionView assumes this shape.
+//
+// Stage 1F may add mode picker (Classic 10Q / Sprint 5Q) + difficulty
+// picker on OnlineEntry; pickMultiplayerQuestions can then accept
+// filter args. Stage 1F may also add seen_history integration if friend
+// testing surfaces "we keep seeing the same questions" complaints.
+function pickMultiplayerQuestions(count = 10) {
+  const eligible = QB.filter(q =>
+    q.type === "mcq" &&
+    Array.isArray(q.o) && q.o.length === 4 &&
+    typeof q.a === "number"
+  );
+  // Math.random() - 0.5 sort is biased but undetectable for casual
+  // trivia. Upgrade to Fisher-Yates only if a user complaint surfaces.
+  const shuffled = eligible.slice().sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count).map(q => ({
+    prompt: q.q,
+    options: q.o,
+    correct: q.a,
+  }));
+}
 
 // QUESTION_DURATION_MS — keep in sync with server submit_answer's
 // v_question_dur (currently 20000ms). See feedback_question_duration_constant.md
@@ -3716,7 +3736,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     if (starting) return;
     setStarting(true);
     setStartError("");
-    const result = await actions.startGame(PLACEHOLDER_QUESTIONS, players.length);
+    const result = await actions.startGame(pickMultiplayerQuestions(10), players.length);
     if (result.error) {
       setStartError(result.error);
       setStarting(false);
