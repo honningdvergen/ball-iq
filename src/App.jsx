@@ -4174,10 +4174,26 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
   const isLastQuestion = currentQuestionIdx + 1 >= room.questions.length;
   const showRevealBanner = revealPhase === 'revealing';
-  // Dim question + timer during reveal/advancing/stuck — visual cue that
-  // this round is done. ScoreBar + banners stay full opacity (those are
-  // what the user should focus on).
-  const dimContent = revealPhase !== 'answering';
+  // Stage 1C.7.1: derived `revealing` instead of raw `revealPhase !==
+  // 'answering'`. Guards against the brief render between realtime UPDATE
+  // arriving (room.current_question increments) and the question-advance
+  // useEffect resetting revealPhase to 'answering'. In that intermediate
+  // frame, `revealPhase` is stale ('advancing') but `room.current_question`
+  // is the new question — without this gate, QuestionView would briefly
+  // render the new question with its correct answer pre-highlighted in
+  // green, looking to the user like a "different question with the answer
+  // pre-revealed" flash.
+  //
+  // Logic: trust revealPhase only if either (a) myAnswer is null (late
+  // joiner / pre-tap state — no stale tracking concern) OR (b)
+  // myAnswer.questionIdx matches currentQuestionIdx (reveal state is for
+  // the current question, not a stale prior one). After the question-
+  // advance useEffect runs and clears myAnswer + resets revealPhase, the
+  // derived value naturally settles.
+  const revealing = revealPhase !== 'answering' && (
+    myAnswer === null || myAnswer.questionIdx === currentQuestionIdx
+  );
+  const dimContent = revealing;
 
   return (
     <div className="screen">
@@ -4265,12 +4281,17 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           />
         </div>
 
+        {/* key={currentQuestionIdx}: defense-in-depth alongside the derived
+            `revealing` gate above. Forces a clean remount on every question
+            advance so React can't reuse stale DOM — guarantees fresh render
+            of Q2's options without inheriting any visual state from Q1. */}
         <QuestionView
+          key={currentQuestionIdx}
           question={question}
           lockedAnswerIdx={lockedAnswerIdx}
           disabled={hasAnswered || revealPhase !== 'answering'}
           onPick={handleAnswerPick}
-          revealing={dimContent}
+          revealing={revealing}
         />
 
         {hasAnswered && revealPhase === 'answering' && (
