@@ -3837,16 +3837,26 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
           )}
         </div>
 
-        {/* Host start button */}
+        {/* Host start button. Stage 1F.3: gate at 2+ players (1 was a
+            useless solo "multiplayer" game where the host played alone
+            and saw a one-row scoreboard). The gate uses room.code in the
+            wait copy as actionable context — host knows what to share. */}
         {isHost && (
-          <button
-            className="btn-3d"
-            onClick={onStart}
-            disabled={starting || players.length === 0}
-            style={{ width: "100%", marginBottom: 12 }}
-          >
-            {starting ? "Starting…" : "Start Game"}
-          </button>
+          <>
+            <button
+              className="btn-3d"
+              onClick={onStart}
+              disabled={starting || players.length < 2}
+              style={{ width: "100%", marginBottom: 12 }}
+            >
+              {starting ? "Starting…" : "Start Game"}
+            </button>
+            {!starting && players.length < 2 && (
+              <div style={{ color: "var(--t3)", fontSize: 12, textAlign: "center", marginBottom: 12, lineHeight: 1.4 }}>
+                Waiting for at least one more player — share your room code: <strong style={{ color: "var(--t1)", letterSpacing: 1 }}>{room.code}</strong>
+              </div>
+            )}
+          </>
         )}
         {startError && (
           <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>
