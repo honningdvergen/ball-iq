@@ -1335,7 +1335,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .toggle.on .toggle-knob{left:21px;}
 .toggle.off .toggle-knob{left:3px;}
 .size-btns{display:flex;gap:5px;}
-.size-btn{padding:8px 14px;min-height:36px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;}
+.size-btn{padding:8px 14px;min-height:36px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .size-btn.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
 /* ── TAB BAR ── */
 /* ── TAB BAR — frosted glass, pill indicator ── */
@@ -3700,6 +3700,12 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   const [startError, setStartError] = useState("");
   const [showReconnecting, setShowReconnecting] = useState(false);
   const [copyToast, setCopyToast] = useState("");
+  // Stage 1F.4: host-chosen mode. "classic" = 10Q, "sprint" = 5Q.
+  // Lobby-only state (the actual question count lands in startGame's
+  // RPC arg). Joiners don't see this picker — mode is implicit until
+  // gameplay starts; they just play whatever question count the host
+  // sent into start_game. No mode broadcast pre-start needed.
+  const [mode, setMode] = useState("classic");
 
   // "Reconnecting…" indicator only after >2s in a non-subscribed state to
   // avoid flicker on transient drops.
@@ -3731,7 +3737,8 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     if (starting) return;
     setStarting(true);
     setStartError("");
-    const result = await actions.startGame(pickMultiplayerQuestions(10), players.length);
+    const questionCount = mode === "sprint" ? 5 : 10;
+    const result = await actions.startGame(pickMultiplayerQuestions(questionCount), players.length);
     if (result.error) {
       setStartError(result.error);
       setStarting(false);
@@ -3749,7 +3756,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     // Success: keep starting=true. Realtime UPDATE will switch us to the
     // PlayingPlaceholder sub-view, which doesn't render the Start button
     // at all, so the lingering 'starting' state has no UI effect.
-  }, [actions, players.length, starting]);
+  }, [actions, players.length, starting, mode]);
 
   const isMe = useCallback((p) => myPlayer && p.user_id === myPlayer.user_id, [myPlayer]);
 
@@ -3789,11 +3796,13 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
       startError={startError}
       copyToast={copyToast}
       showReconnecting={showReconnecting}
+      mode={mode}
+      setMode={setMode}
     />
   );
 }
 
-function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, starting, startError, copyToast, showReconnecting }) {
+function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode }) {
   return (
     <div className="screen">
       <div className="page-hdr" style={{ position: "relative" }}>
@@ -3860,6 +3869,34 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
             </div>
           )}
         </div>
+
+        {/* Stage 1F.4: host-only mode picker. Compact .size-btns
+            segmented control matching Settings theme picker. Joiners
+            don't see this — mode is implicit; they play whatever
+            question count the host's startGame sent. */}
+        {isHost && (
+          <>
+            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Game length</div>
+            <div className="size-btns" style={{ marginBottom: 16 }}>
+              {[
+                { id: "classic", label: "🎯 Classic · 10Q" },
+                { id: "sprint",  label: "⚡ Sprint · 5Q"  },
+              ].map(opt => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  className={`size-btn${mode === opt.id ? " on" : ""}`}
+                  onClick={() => setMode(opt.id)}
+                  disabled={starting}
+                  aria-pressed={mode === opt.id}
+                  style={{ flex: 1 }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Host start button. Stage 1F.3: gate at 2+ players (1 was a
             useless solo "multiplayer" game where the host played alone
