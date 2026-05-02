@@ -3938,10 +3938,92 @@ function LobbyEnded({ onExit }) {
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
   const question = room.questions?.[room.current_question];
 
+  // Local optimistic answer lock. Cleared on question advance OR rolled back
+  // on question_idx_mismatch RPC response. The shape mirrors what we'll need
+  // for the timer auto-submit in 1C.3 (questionIdx + answerIdx + lockTimeMs).
+  const [myAnswer, setMyAnswer] = useState(null);
+
+  // Captures performance.now() at the moment the current question first
+  // rendered. Used to compute lock_time_ms on submit. Reset on every
+  // question advance (useEffect below).
+  const questionStartedAtRef = useRef(performance.now());
+
+  // Question-advance reset. Fires on:
+  //   - Initial mount of MultiplayerGameplay (room.current_question = 0)
+  //   - Each subsequent advance (host taps Next / advance_question RPC fires
+  //     game_rooms UPDATE that lifts current_question)
+  useEffect(() => {
+    setMyAnswer(null);
+    questionStartedAtRef.current = performance.now();
+  }, [room.current_question]);
+
   const handleLeave = useCallback(async () => {
     try { await actions.leave(); } catch {}
     onExit();
   }, [actions, onExit]);
+
+  const currentQuestionIdx = room.current_question;
+
+  // Server-confirmed "did I answer this question already" — survives a page
+  // refresh that wipes local myAnswer state, so the buttons stay disabled.
+  // Server doesn't store WHICH answer (room_players schema only has
+  // answered_question marker + score), so refresh loses option-highlight
+  // visibility. Acceptable for Stage 1C; Stage 4+ could add last_answer_idx
+  // for full reload-resilience.
+  const serverConfirmedAnswered = (myPlayer?.answered_question ?? -1) >= currentQuestionIdx;
+
+  // Source of truth for "have I answered" — either local optimistic OR
+  // server-confirmed. Disables all options once truthy.
+  const myAnswerForCurrent = myAnswer && myAnswer.questionIdx === currentQuestionIdx
+    ? myAnswer
+    : null;
+  const hasAnswered = !!myAnswerForCurrent || serverConfirmedAnswered;
+  const lockedAnswerIdx = myAnswerForCurrent?.answerIdx ?? null;
+
+  const handleAnswerPick = useCallback(async (answerIdx) => {
+    // Guard: don't double-submit. The button onClick already short-circuits
+    // when lockedAnswerIdx is set, but server-confirmed-answered (post-
+    // refresh) also blocks here.
+    if (myAnswer || serverConfirmedAnswered) return;
+
+    const lockTimeMs = Math.round(performance.now() - questionStartedAtRef.current);
+    const submittedQuestionIdx = currentQuestionIdx;
+
+    // Optimistic lock: paint immediately, server roundtrip ~150-400ms.
+    setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx, lockTimeMs });
+
+    const result = await actions.submitAnswer(submittedQuestionIdx, answerIdx, lockTimeMs);
+
+    if (result.error) {
+      // Hard RPC failure (network, server 5xx). Don't roll back the
+      // optimistic lock — server is idempotent on retry, and the user
+      // already committed mentally. If they retry by tapping again,
+      // the next call returns already_answered and we silent-no-op.
+      // 1C minimum: log and move on. 1F may add visible retry indicator.
+      console.warn('[mp] submit_answer failed:', result.error);
+      return;
+    }
+
+    if (result.accepted === false) {
+      if (result.reason === 'question_idx_mismatch') {
+        // Host advanced while we were tapping. Our submission was for a
+        // stale question. Roll back the lock so the UI doesn't show a
+        // locked state for the new question. The question-advance useEffect
+        // above will already have cleared myAnswer if room.current_question
+        // changed via realtime — but we may be ahead of that update, so
+        // explicitly clear here too.
+        setMyAnswer(null);
+      } else if (result.reason === 'already_answered') {
+        // Idempotent retry (we tapped twice fast, or network blip). Server
+        // already has our answer. Optimistic lock stays — matches server.
+      }
+      return;
+    }
+
+    // result.accepted === true. Optimistic lock matches server. Realtime
+    // UPDATE on myPlayer will arrive shortly (~150-400ms) and bump
+    // answered_question + score. ScoreBar (1C.4) re-renders accordingly.
+  }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
   if (!question) {
     // Defensive: questions jsonb missing or current_question out of bounds.
@@ -3965,25 +4047,27 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       <div className="page-hdr">
         <button className="back-btn" onClick={handleLeave} aria-label="Leave game">←</button>
         <div className="page-title">
-          Question {room.current_question + 1}/{room.questions.length}
+          Question {currentQuestionIdx + 1}/{room.questions.length}
         </div>
       </div>
       <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
-        {/* Stage 1C.1 scaffold notice — removed in 1C.2 once tap handler wires */}
-        <div style={{
-          fontSize: 12, color: "var(--t3)", textAlign: "center",
-          padding: "8px 12px", background: "var(--s1)",
-          border: "1px solid var(--border)", borderRadius: 8, marginBottom: 16,
-        }}>
-          Stage 1C.1 scaffold — interactivity in 1C.2 (taps do nothing yet)
-        </div>
-
         <QuestionView
           question={question}
-          lockedAnswerIdx={null}
-          disabled={false}
-          onPick={() => { /* 1C.2 wires this */ }}
+          lockedAnswerIdx={lockedAnswerIdx}
+          disabled={hasAnswered}
+          onPick={handleAnswerPick}
         />
+
+        {hasAnswered && (
+          <div style={{
+            marginTop: 16, padding: "10px 14px",
+            background: "var(--s1)", border: "1px solid var(--border)",
+            borderRadius: 10, textAlign: "center",
+            fontSize: 13, color: "var(--t2)",
+          }}>
+            ✓ Answer locked — waiting for others
+          </div>
+        )}
 
         {/* 1C.4 placeholder — host controls + score bar arrive then */}
         <div style={{
