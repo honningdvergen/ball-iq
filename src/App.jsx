@@ -4301,8 +4301,12 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             also visually "done" at 0s during reveal). QuestionView moved
             outside so its options can render at full opacity with the new
             correct/wrong reveal coloring (green/red). QuestionView dims
-            its own prompt internally when revealing=true. */}
-        <div style={{ opacity: dimContent ? 0.6 : 1, transition: "opacity 0.2s" }}>
+            its own prompt internally when revealing=true.
+            Stage 1C.7.6: transition removed — opacity snaps. Was animating
+            in parallel with option color reveal during phase changes,
+            contributing to the stuttery feel. Per the "one source of
+            motion at a time" principle. */}
+        <div style={{ opacity: dimContent ? 0.6 : 1 }}>
           {/* key={currentQuestionIdx} unmounts/remounts on advance so the
               timer resets cleanly. */}
           <QuestionTimer
@@ -4487,7 +4491,9 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }
         fontSize: 18, fontWeight: 700, color: "var(--text)",
         textAlign: "center", padding: "16px 8px 24px", lineHeight: 1.4,
         opacity: revealing ? 0.6 : 1,
-        transition: "opacity 0.2s",
+        // Stage 1C.7.6: transition removed — opacity snaps when phase
+        // changes. Was animating in parallel with option color reveal,
+        // contributing to the stuttery feel.
       }}>
         {question.prompt}
       </div>
@@ -4567,7 +4573,11 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }
                 // layout/opacity/transform changes snap instantly.
                 // Suppressed entirely on first-frame-after-mount via
                 // transitionsEnabled gate (see useLayoutEffect above).
-                transition: transitionsEnabled ? "border-color 0.15s ease, background-color 0.15s ease" : "none",
+                // Stage 1C.7.6: 0.15s → 0.1s for snappier feel. Now the
+                // ONLY animated element in the gameplay screen — every
+                // other element (dim wrapper, prompt opacity, banners)
+                // snaps instantly per the "one source of motion" principle.
+                transition: transitionsEnabled ? "border-color 0.1s ease, background-color 0.1s ease" : "none",
               }}
             >
               <span style={{
