@@ -5865,12 +5865,20 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
+    // Audit Phase 5 (E1): cancelled flag matches Confetti/HardRightBurst
+    // pattern in this file. Without it, the rAF chain inside setTimeout
+    // continues running setDisplayIQ/setRingDisplay on the unmounted
+    // component if the user dismisses results within ~1.8s of mount
+    // (400ms delay + 1400ms animation).
+    let cancelled = false;
     const delay = setTimeout(() => {
+      if (cancelled) return;
       setRevealed(true);
       const start = 60;
       const duration = 1400;
       const startTime = Date.now();
       const tick = () => {
+        if (cancelled) return;
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
@@ -5880,7 +5888,7 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
       };
       requestAnimationFrame(tick);
     }, 400);
-    return () => clearTimeout(delay);
+    return () => { cancelled = true; clearTimeout(delay); };
   }, []);
 
   return (
@@ -6714,6 +6722,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
+  // Audit Phase 5 (B3): performDelete catch could fire setState on the
+  // unmounted component if the RPC throws after signOut → AppGate route.
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
 
   // Permanent account deletion — required by App Store guideline 5.1.1(v)
   // for any app that supports account creation. Calls the server-side RPC
@@ -6747,8 +6759,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       if (typeof onAccountDeleted === "function") onAccountDeleted({ error: null });
       try { await signOut(); } catch {}
     } catch (e) {
-      setDeleting(false);
-      setConfirmDelete(false);
+      if (mountedRef.current) {
+        setDeleting(false);
+        setConfirmDelete(false);
+      }
       if (typeof onAccountDeleted === "function") onAccountDeleted({ error: e });
     }
   };
@@ -7694,6 +7708,10 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  // Audit Phase 5 (F2): handleUse catch could fire setError/setBusy on the
+  // unmounted component if onConfirm closes the modal then throws.
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
 
   // Build an object URL for the selected file
   useEffect(() => {
@@ -7782,8 +7800,10 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
       });
       await onConfirm?.(blob);
     } catch (e) {
-      setError("Something went wrong — try again");
-      setBusy(false);
+      if (mountedRef.current) {
+        setError("Something went wrong — try again");
+        setBusy(false);
+      }
     }
   };
 
@@ -9222,6 +9242,16 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   const storageKey = `biq_wordle_${dateKey}`;
   const answer = useMemo(getWordleAnswer, [dateKey]);
 
+  // Audit Phase 5 (C2): track shake (450ms) + reveal (~2-3s) setTimeouts
+  // so we can clear them on unmount. Without this, setShake(false) and
+  // setRevealed(true) could fire on unmounted component if the user backs
+  // out mid-animation.
+  const timeoutsRef = useRef([]);
+  useEffect(() => () => {
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
+  }, []);
+
   const [state, setState] = useState(() => {
     try {
       const raw = localStorage.getItem(storageKey);
@@ -9291,7 +9321,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     if (state.status !== "playing") return;
     if (current.length !== answer.length) {
       setShake(true);
-      setTimeout(() => setShake(false), 450);
+      timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
       return;
     }
     const newGuesses = [...state.guesses, current];
@@ -9302,7 +9332,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     setCurrent("");
     if (newStatus !== "playing") {
       setRevealed(false);
-      setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200);
+      timeoutsRef.current.push(setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200));
     }
   }, [state, current, answer]);
 
@@ -9699,11 +9729,19 @@ function AppInner() {
     }
   }, [loginStreak]);
   const streakToastTimerRef = useRef(null);
+  // Audit Phase 5 (H1): cluster-track the 9 unguarded celebration setTimeouts
+  // in handleComplete (perfect score, personal bests, streak milestones,
+  // comeback, category mastery, IQ best, survival best, rate prompt). Each
+  // setTimeout's id gets pushed; cleanup clears all so AppInner unmounting
+  // mid-celebration doesn't fire setState/showToast on the unmounted tree.
+  const celebrationTimeoutsRef = useRef([]);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
   useEffect(() => () => {
     if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
     if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+    celebrationTimeoutsRef.current.forEach(clearTimeout);
+    celebrationTimeoutsRef.current = [];
   }, []);
   const [toast, setToast] = useState(null);
 
@@ -10162,56 +10200,56 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); }, 1200);
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); }, 1200));
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); }, 1200);
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); }, 1200));
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); }, 1200);
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); }, 1200));
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
     // 🎉 PERFECT SCORE celebration
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
-      setTimeout(() => showToast("🎉 Perfect — every question right"), 800);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🎉 Perfect — every question right"), 800));
       try { navigator.vibrate?.([60, 40, 60, 40, 60]); } catch {}
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily/balliq)
     if (mode === "classic" && res.score && res.total === 10 && res.score > (stats.bestScore || 0)) {
       const isFirst = !stats.bestScore;
-      setTimeout(() => showToast(isFirst ? `🎯 First score: ${res.score}/10!` : `🎯 New personal best: ${res.score}/10!`), 1400);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🎯 First score: ${res.score}/10!` : `🎯 New personal best: ${res.score}/10!`), 1400));
       try { navigator.vibrate?.([40, 50, 40]); } catch {}
     }
 
     // 🔥 HOT STREAK personal best
     if (mode === "hotstreak" && res.score > (stats.bestHotStreak || 0) && res.score >= 5) {
       const isFirst = !stats.bestHotStreak;
-      setTimeout(() => showToast(isFirst ? `⚡ Hot Streak record: ${res.score}!` : `⚡ New Hot Streak best: ${res.score}!`), 1400);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `⚡ Hot Streak record: ${res.score}!` : `⚡ New Hot Streak best: ${res.score}!`), 1400));
       try { navigator.vibrate?.([40, 50, 40]); } catch {}
     }
 
     // 🔄 COMEBACK celebration — got Q1 wrong, then nailed the rest
     if (mode === "classic" && res.wrongAnswers && res.wrongAnswers.length === 1 && res.score >= 8) {
-      setTimeout(() => showToast("🔄 Great comeback — only missed one after a slow start"), 1600);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🔄 Great comeback — only missed one after a slow start"), 1600));
     }
 
     // 🎖️ CATEGORY MASTERY — 10+ correct in a row from same category
     if (mode === "hotstreak" && res.score >= 10 && cat && cat !== "All") {
-      setTimeout(() => showToast(`🎖️ ${cat} mastery — ${res.score} in a row`), 1600);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`🎖️ ${cat} mastery — ${res.score} in a row`), 1600));
     }
 
     // 🏆 BALL IQ new high
     if (mode === "balliq" && res.iq && res.iq > (stats.bestIQ || 0)) {
       const isFirst = !stats.bestIQ;
-      setTimeout(() => showToast(isFirst ? `🧠 Your ${APP_NAME}: ${res.iq}!` : `🧠 New ${APP_NAME} high: ${res.iq}!`), TIMINGS.ANSWER_REVEAL);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🧠 Your ${APP_NAME}: ${res.iq}!` : `🧠 New ${APP_NAME} high: ${res.iq}!`), TIMINGS.ANSWER_REVEAL));
       try { navigator.vibrate?.([40, 50, 40]); } catch {}
     }
 
     // 💪 SURVIVAL new best (wrong answers = 0 means they only died on one)
     if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0) && res.score >= 10) {
-      setTimeout(() => showToast(`💪 New Survival record — ${res.score} questions`), 1400);
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`💪 New Survival record — ${res.score} questions`), 1400));
       setStats(p => ({...p, bestSurvival: res.score}));
     }
 
@@ -10223,7 +10261,7 @@ function AppInner() {
     if (shouldShowRate) {
       setRatePromptShown(true);
       window.storage?.set("biq_rate_shown", "1").catch(() => {});
-      setTimeout(() => setShowRatePrompt(true), 1800);
+      celebrationTimeoutsRef.current.push(setTimeout(() => setShowRatePrompt(true), 1800));
     }
 
     // Award XP

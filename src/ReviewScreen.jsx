@@ -10,7 +10,7 @@
 // MVP only: approve / reject / flag / nav. No inline editing, no filters, no
 // bulk ops — those are V2.
 
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { supabase } from './supabase.js';
 import { useAuth } from './useAuth.jsx';
 import { QB, TF_STATEMENTS } from './questions.js';
@@ -43,6 +43,10 @@ export default function ReviewScreen({ onBack }) {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [toast, setToast] = useState(null); // { msg, kind: 'ok'|'err' }
+  // Audit Phase 5 (G1): decide()'s rollback could fire setDecisions/showToast
+  // on the unmounted component if the user navigates away during the RPC.
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
 
   const item = REVIEW_POOL[idx];
   const id = item?.q?.id;
@@ -187,13 +191,15 @@ export default function ReviewScreen({ onBack }) {
       }, { onConflict: 'question_id,reviewed_by' });
 
     if (error) {
-      setDecisions(prev => {
-        const next = new Map(prev);
-        if (previous) next.set(targetId, previous);
-        else next.delete(targetId);
-        return next;
-      });
-      showToast('Save failed: ' + (error.message || 'unknown'), 'err');
+      if (mountedRef.current) {
+        setDecisions(prev => {
+          const next = new Map(prev);
+          if (previous) next.set(targetId, previous);
+          else next.delete(targetId);
+          return next;
+        });
+        showToast('Save failed: ' + (error.message || 'unknown'), 'err');
+      }
     }
   }, [item, decisions, user?.id, jumpNextPending, showToast]);
 
