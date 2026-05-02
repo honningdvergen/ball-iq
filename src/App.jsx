@@ -941,13 +941,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:24px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:18px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(88,204,2,0.15),0 8px 24px rgba(88,204,2,0.08);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
 .hero-online-sub-mobile{display:inline;}
 .hero-online-sub-desktop{display:none;}
-.hero-online-emoji{position:absolute;right:-6px;bottom:-14px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
+.hero-online-emoji{position:absolute;right:-6px;bottom:-6px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
 /* Mobile-only tightening for the Multiplayer hero + slim hdr chrome.
    Desktop padding/emoji stay at base values; .hdr is display:none on
    desktop. PWA standalone is included here (always <1024px viewport
@@ -1030,7 +1030,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0 0 24px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.wc-card{position:relative;width:100%;margin:0 0 18px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
@@ -1931,7 +1931,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    stays recognisable; the Wordle half uses the standard surface treatment
    with a green eyebrow and green emoji. */
 .daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
-.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
 .daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 16px;min-height:128px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
 .daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
 .daily-pair-card:active{transform:scale(0.98);}
