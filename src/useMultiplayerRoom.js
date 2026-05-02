@@ -213,9 +213,22 @@ export function useMultiplayerRoom(code) {
     : null
   const isHost = !!(room && userId && room.host_id === userId)
 
-  // Action callbacks. Each surfaces error.message via setError so consumers
-  // can render a unified error toast/banner if they want, AND returns the
-  // raw RPC payload for caller-specific handling.
+  // Action callbacks. Each returns the raw RPC payload for caller-specific
+  // handling. They do NOT setError on RPC failure — the hook's `error` state
+  // is reserved for lobby-level fatal concerns (initial fetch failure, room
+  // not found). Per-action errors are local to the caller and should not
+  // pollute the lobby dispatch.
+  //
+  // Why this matters: the original 1B/1C design had setError calls inside
+  // each action. Stage 1C.6 surfaced a real bug from this — joiner clients
+  // also fire advance() in the per-client trigger model. The server returns
+  // "only the host can advance" (errcode 42501); under the old design,
+  // setError set the hook error → MultiplayerLobby's dispatch saw error
+  // truthy → rendered LobbyError → gameplay UI replaced with an error
+  // screen. The same latent bug applied to all actions: submit_answer
+  // failing with "caller not in this room" (post-kick scenario), etc.
+  // Stage 1C.6.1 strips setError from all five actions; consumers handle
+  // errors locally via the returned result object.
   const startGame = useCallback(async (questions, capacity) => {
     if (!code) return { started: false, error: 'No active room' }
     const { data, error } = await supabase.rpc('start_game', {
@@ -223,10 +236,7 @@ export function useMultiplayerRoom(code) {
       p_questions: questions,
       p_capacity: capacity,
     })
-    if (error) {
-      setError(error.message)
-      return { started: false, error: error.message }
-    }
+    if (error) return { started: false, error: error.message }
     return data
   }, [code])
 
@@ -238,10 +248,7 @@ export function useMultiplayerRoom(code) {
       p_answer_idx: answerIdx,
       p_lock_time: lockTimeMs,
     })
-    if (error) {
-      setError(error.message)
-      return { accepted: false, error: error.message }
-    }
+    if (error) return { accepted: false, error: error.message }
     return data
   }, [code])
 
@@ -251,30 +258,21 @@ export function useMultiplayerRoom(code) {
       p_code: code,
       p_expected_question: room.current_question,
     })
-    if (error) {
-      setError(error.message)
-      return { advanced: false, error: error.message }
-    }
+    if (error) return { advanced: false, error: error.message }
     return data
   }, [code, room])
 
   const leave = useCallback(async () => {
     if (!code) return { left: false, error: 'No active room' }
     const { data, error } = await supabase.rpc('leave_room', { p_code: code })
-    if (error) {
-      setError(error.message)
-      return { left: false, error: error.message }
-    }
+    if (error) return { left: false, error: error.message }
     return data
   }, [code])
 
   const end = useCallback(async () => {
     if (!code) return { ended: false, error: 'No active room' }
     const { data, error } = await supabase.rpc('end_game', { p_code: code })
-    if (error) {
-      setError(error.message)
-      return { ended: false, error: error.message }
-    }
+    if (error) return { ended: false, error: error.message }
     return data
   }, [code])
 
