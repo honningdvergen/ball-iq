@@ -7207,8 +7207,16 @@ const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 // behaviour and back-arrow affordance are consistent.
 const FAQ_ENTRIES = [
   {
-    q: "Can I play multiplayer with friends online?",
-    a: `Online multiplayer is coming soon — we're rebuilding it to support up to 10 players with real-time lobbies. For now, tap the "Play with Friends" hero on the home screen and choose Local Multiplayer (pass-and-play on one device). You can also add friends in friend search to see their stats on their profile.`,
+    q: "How do I play with friends online?",
+    a: `Tap "Play with Friends" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to three friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
+  },
+  {
+    q: "How do I share a multiplayer invite?",
+    a: `Easiest: read out the 6-character room code from your lobby — your friend types it into "Join with Code". You can also share an invite link: balliq.app/?join=ABC123 (use your room's code). Anyone tapping the link will land directly in the join flow once they're signed in.`,
+  },
+  {
+    q: "What if my friend joins late or loses connection?",
+    a: `Friends can join the lobby any time before the host starts. If someone loses connection during a game, their existing answers stay in the room and the game continues for everyone else. Reconnecting brings them back to the current question with their score intact.`,
   },
   {
     q: "How does the Ball IQ Test work?",
