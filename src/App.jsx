@@ -646,10 +646,11 @@ function generateCode() {
 }
 
 // V1 game-room helpers + schema doc were here. Removed in Stage 0 cleanup
-// (the V1 game_rooms table was dropped in Phase H; helpers + their sole
-// caller — OnlineGame's dead body — were unreachable). Stage 1 reintroduces
-// online multiplayer via dedicated SECURITY DEFINER RPCs (create_room,
-// join_room, etc.) called directly from a useMultiplayerRoom hook.
+// (the V1 game_rooms table was dropped in Phase H). Online multiplayer is
+// now backed by SECURITY DEFINER RPCs (create_room, join_room, etc.) called
+// directly from a useMultiplayerRoom hook. Stage 1F (1F.6 + 1F.7) deleted
+// the V1 stub components (OnlineGame, MultiplayerComingSoon) that were
+// briefly kept around behind the ?stage1=1 gate.
 
 const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
@@ -2128,7 +2129,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* Local multiplayer requires passing a single device — desktop has no
      equivalent gesture. Hide the option in the friends-picker sheet at
      desktop sizes; the Multiplayer hero card on Home routes straight to
-     Online 1v1 in that case. PWA standalone reset defends below. */
+     Online Multiplayer in that case. PWA standalone reset defends below. */
   .diff-option-local { display: none; }
   /* Multiplayer hero subtitle — swap mobile copy ("Online or local") for
      the desktop variant ("Challenge someone online") since Local is
@@ -3434,66 +3435,7 @@ const INVITE_BASE_URL = "https://balliq.app";
 const buildInviteUrl = (code) => `${INVITE_BASE_URL}/?join=${encodeURIComponent(code)}`;
 const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
 
-// Phase 7.0: Online multiplayer is being rebuilt for the N-player
-// architecture (Stages 1-4). The existing 1v1 component below is
-// gated behind an unconditional early return — treats every entry
-// path (FriendsPicker → "Online 1v1", URL auto-join via ?join=CODE,
-// any other deep link) as a request to show the Coming Soon screen.
-// State/effects/RPC code below this gate is dead-but-harmless until
-// the Stage 4 cleanup deletes it. Local multiplayer (pass-and-play)
-// is unaffected — it doesn't route through this component.
-function MultiplayerComingSoon({ onBack }) {
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Online Multiplayer</div>
-      </div>
-      <div style={{
-        maxWidth:"min(440px, 100%)",
-        margin:"24px auto 0",
-        textAlign:"center",
-        padding:"0 4px",
-      }}>
-        <div style={{fontSize:48, marginBottom:16}} aria-hidden="true">🛠️</div>
-        <div style={{
-          fontSize:20, fontWeight:800, color:"var(--t1)",
-          letterSpacing:"-0.3px", marginBottom:10,
-        }}>
-          Multiplayer is being rebuilt
-        </div>
-        <p style={{fontSize:14, color:"var(--t2)", lineHeight:1.6, marginBottom:20}}>
-          We're upgrading online multiplayer to support up to 10 players, Kahoot-style real-time gameplay, and smoother lobbies. Back soon.
-        </p>
-        <div style={{
-          background:"var(--s1)", border:"1px solid var(--border)",
-          borderRadius:14, padding:"16px 18px", textAlign:"left",
-          marginBottom:24,
-        }}>
-          <div style={{fontSize:12, fontWeight:700, color:"var(--t3)", letterSpacing:0.4, textTransform:"uppercase", marginBottom:8}}>
-            In the meantime
-          </div>
-          <div style={{fontSize:13, color:"var(--t2)", lineHeight:1.5}}>
-            Local multiplayer (pass-and-play) still works. Tap "Play with Friends" on Home and choose Local Multiplayer.
-          </div>
-        </div>
-        <button
-          onClick={onBack}
-          className="wd-back"
-          style={{width:"min(280px, 100%)", padding:"14px 22px"}}
-        >
-          Back to Home
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function OnlineGame({ onBack }) {
-  return <MultiplayerComingSoon onBack={onBack} />;
-}
-
-// ─── STAGE 1: ONLINE MULTIPLAYER (gated by ?stage1=1 during 1A-1E) ──────────
+// ─── STAGE 1: ONLINE MULTIPLAYER ─────────────────────────────────────────────
 //
 // pickMultiplayerQuestions(count = 10) — pulls random questions from QB
 // for a multiplayer game and converts them to the SQL contract shape
@@ -3537,7 +3479,7 @@ const QUESTION_DURATION_MS = 20000;
 // create_room / join_room RPCs directly; on success, navigates to the
 // MultiplayerLobby via onLobbyEnter callback. Specific error handling for
 // known SQLSTATEs (room full, room not found, room not accepting joins).
-function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
+function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJoinConsumed }) {
   const [code, setCode] = useState("");
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -3567,9 +3509,14 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
     // No setCreating(false) — component unmounts on navigation.
   };
 
-  const handleJoin = async () => {
+  // handleJoin accepts an optional explicit code so the auto-join
+  // useEffect (1F.6 launch) can pass in the deep-link code without
+  // first writing it to the input state. Manual taps default to the
+  // input state (existing behavior).
+  const handleJoin = async (explicitCode) => {
     if (creating || joining) return;
-    const trimmed = code.trim().toUpperCase();
+    const candidate = explicitCode ?? code;
+    const trimmed = (candidate || "").trim().toUpperCase();
     if (trimmed.length !== 6) {
       setError("Enter the 6-character room code");
       return;
@@ -3600,6 +3547,26 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
     onLobbyEnter(data.code);
   };
 
+  // Stage 1F.6 — deep-link auto-join. AppInner sets autoJoinCode from
+  // pendingJoinCode (the ?join=ABC123 URL param) and routes to this
+  // screen. We attempt the join immediately on mount, then mark the
+  // code as consumed via onAutoJoinConsumed so re-mounts don't loop.
+  // On success, onLobbyEnter navigates to the lobby. On failure, the
+  // error renders inline so the user can manually try a different code.
+  useEffect(() => {
+    if (!autoJoinCode) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        await handleJoin(autoJoinCode);
+      } finally {
+        if (!cancelled) onAutoJoinConsumed?.();
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoJoinCode]);
+
   const busy = creating || joining;
 
   return (
@@ -3609,9 +3576,6 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName }) {
         <div className="page-title">Online Multiplayer</div>
       </div>
       <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
-        <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginBottom: 24, letterSpacing: 0.4, textTransform: "uppercase" }}>
-          Stage 1B — early access
-        </div>
         {/* Stage 1F.2: room-size picker — same .local-count-btn widget
             that LocalSetup uses for player count, so the muscle memory
             transfers. Default 4 (max headroom). */}
@@ -9632,23 +9596,11 @@ function AppInner() {
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
 
-  // Stage 1 multiplayer rebuild gate. Read once per AppInner mount from the
-  // URL search params. Visit https://balliq.app/?stage1=1 to opt in. Routes
-  // the Play with Friends → Online Multiplayer button to the new entry
-  // screen instead of MultiplayerComingSoon. Removed in Stage 1F when the
-  // new flow is production-ready for everyone.
-  const STAGE_1_ENABLED = useMemo(() => {
-    try {
-      return new URL(window.location.href).searchParams.get("stage1") === "1";
-    } catch {
-      return false;
-    }
-  }, []);
-  // Active Stage 1 room code — set when create_room/join_room succeeds in
-  // OnlineEntry, consumed by MultiplayerLobby. Separate from pendingJoinCode
-  // (which serves the legacy `?join=CODE` deep link path through OnlineGame)
-  // to avoid coupling the Stage 1 flow with the existing route. Stage 1F
-  // can consolidate when the gate + legacy route are removed.
+  // Active multiplayer room code — set when create_room / join_room succeeds
+  // in OnlineEntry, consumed by MultiplayerLobby. Separate from pendingJoinCode
+  // (which holds the deep-link `?join=CODE` value before it's consumed by the
+  // auto-join effect) so the deep-link state and the in-flow state stay
+  // independently trackable.
   const [stage1RoomCode, setStage1RoomCode] = useState("");
 
   // Pending invite code captured from `?join=` on cold start. Persisted to
@@ -10186,15 +10138,15 @@ function AppInner() {
       // "balliq_confirmed" is only used as a transient signal from the
       // intro modal — store it as plain "balliq" so every downstream check
       // (results routing, history save, share card, best-IQ toast) works.
-      // Online 1v1 requires a real account — guests have no userId to host
-      // or join rooms. Block before any state transition so the home screen
-      // doesn't briefly flash and the OnlineGame component never mounts.
+      // Online Multiplayer requires a real account — guests have no userId
+      // to host or join rooms. Block before any state transition so the home
+      // screen doesn't briefly flash and the OnlineEntry never mounts.
       if (m === "online" && (!user || isGuest)) {
-        showToast("🔐 Sign in to play Online 1v1");
+        showToast("🔐 Sign in to play Online Multiplayer");
         return;
       }
       setMode(m === "balliq_confirmed" ? "balliq" : m);
-      if (m === "online") { setScreen("online"); return; }
+      if (m === "online") { setScreen("online-stage1"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       // Reset category for special modes that ignore it
@@ -10246,7 +10198,10 @@ function AppInner() {
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
   // When a shared invite link is opened (?join=CODE), once auth resolves and
-  // the user is signed in (not guest), route them straight into Online 1v1.
+  // the user is signed in (not guest), route them to OnlineEntry with the
+  // pending code. OnlineEntry's autoJoinCode prop triggers an auto-attempt
+  // on mount (handleJoin runs, navigates straight to the lobby on success,
+  // shows the OnlineEntry error inline on failure so the user can recover).
   // Fire-once via the ref so the effect can re-run for state changes without
   // re-navigating mid-game. Guests/unsigned users are caught by the prompt
   // rendered below — they sign in, AppInner remounts, and this effect routes.
@@ -11210,22 +11165,19 @@ function AppInner() {
                   className="diff-option"
                   onClick={() => {
                     setShowFriendsPicker(false);
-                    if (STAGE_1_ENABLED) {
-                      // Stage 1 path. Guest guard matches existing startMode("online") behavior.
-                      if (!user || isGuest) {
-                        showToast("🔐 Sign in to play Online Multiplayer");
-                        return;
-                      }
-                      setScreen("online-stage1");
-                    } else {
-                      startMode("online");
+                    // Multiplayer requires a real account — guests have no
+                    // user.id to host or join rooms.
+                    if (!user || isGuest) {
+                      showToast("🔐 Sign in to play Online Multiplayer");
+                      return;
                     }
+                    setScreen("online-stage1");
                   }}
                 >
                   <span className="diff-option-icon">🌐</span>
                   <div className="diff-option-body">
                     <div className="diff-option-name">Online Multiplayer</div>
-                    <div className="diff-option-desc">{STAGE_1_ENABLED ? "Stage 1 early access" : "Coming soon — being rebuilt"}</div>
+                    <div className="diff-option-desc">Real-time with up to 3 friends</div>
                   </div>
                 </button>
                 <button
@@ -11536,22 +11488,14 @@ function AppInner() {
           />
         )}
 
-        {/* ── ONLINE ── */}
-        {screen === "online" && (
-          <OnlineGame
-            onBack={() => { clearPendingJoin(); goHome(); }}
-            userId={user?.id}
-            defaultName={authProfile?.username || profile?.name || ""}
-            autoJoinCode={pendingJoinCode}
-          />
-        )}
-
-        {/* ── STAGE 1 ONLINE MULTIPLAYER (gated by ?stage1=1) ── */}
+        {/* ── ONLINE MULTIPLAYER ── */}
         {screen === "online-stage1" && (
           <OnlineEntry
-            onBack={goHome}
+            onBack={() => { clearPendingJoin(); goHome(); }}
             onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
             defaultName={authProfile?.username || profile?.name || ""}
+            autoJoinCode={pendingJoinCode}
+            onAutoJoinConsumed={clearPendingJoin}
           />
         )}
         {screen === "online-stage1-lobby" && stage1RoomCode && (
