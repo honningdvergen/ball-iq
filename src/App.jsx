@@ -3521,6 +3521,193 @@ function OnlineGame({ onBack }) {
   return <MultiplayerComingSoon onBack={onBack} />;
 }
 
+// ─── STAGE 1: ONLINE MULTIPLAYER (gated by ?stage1=1 during 1A-1E) ──────────
+// OnlineEntry: choice screen — "Create Room" or "Join with Code". Stage 1A
+// scaffolding; lobby UI lands in Stage 1B, gameplay in 1C, end in 1D.
+// Polished UX + removal of the ?stage1=1 gate ships in Stage 1F.
+function OnlineEntry({ onBack, onCreateRoom, onJoinRoom }) {
+  const [code, setCode] = useState("");
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [codeError, setCodeError] = useState("");
+
+  const handleJoin = () => {
+    const trimmed = code.trim().toUpperCase();
+    if (trimmed.length !== 6) {
+      setCodeError("Enter the 6-character room code");
+      return;
+    }
+    setCodeError("");
+    onJoinRoom(trimmed);
+  };
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Online Multiplayer</div>
+      </div>
+      <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
+        <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginBottom: 24, letterSpacing: 0.4, textTransform: "uppercase" }}>
+          Stage 1A — early access
+        </div>
+        <button
+          className="btn-3d"
+          onClick={onCreateRoom}
+          style={{ width: "100%", marginBottom: 12 }}
+        >
+          🎮 Create Room
+        </button>
+        {!showCodeInput ? (
+          <button
+            className="btn"
+            onClick={() => setShowCodeInput(true)}
+            style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
+          >
+            🔑 Join with Code
+          </button>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6))}
+              placeholder="ABC123"
+              autoCapitalize="characters"
+              autoCorrect="off"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={6}
+              style={{
+                padding: "14px 16px",
+                fontSize: 22,
+                fontWeight: 700,
+                letterSpacing: 6,
+                textAlign: "center",
+                borderRadius: 12,
+                border: "1px solid var(--border)",
+                background: "var(--s1)",
+                color: "var(--text)",
+                outline: "none",
+                fontFamily: "inherit",
+              }}
+            />
+            {codeError && (
+              <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center" }}>{codeError}</div>
+            )}
+            <button className="btn-3d" onClick={handleJoin} style={{ width: "100%" }}>
+              Join
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// CreateRoomPlaceholder: calls create_room RPC, renders raw JSON result.
+// Purposefully ugly — Stage 1A is plumbing verification only; lobby UI
+// (with code display, copy button, player list, start button) is Stage 1B.
+function CreateRoomPlaceholder({ onBack, defaultName }) {
+  const [creating, setCreating] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleCreate = async () => {
+    setCreating(true);
+    const { data, error } = await supabase.rpc("create_room", {
+      p_capacity: 4,
+      p_name: defaultName || "Player",
+      p_avatar: "⚽",
+    });
+    if (import.meta.env.DEV) {
+      console.log("[stage1A] create_room result:", { data, error });
+    }
+    setResult({ data, error });
+    setCreating(false);
+  };
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Create Room (1A placeholder)</div>
+      </div>
+      <div style={{ padding: "20px 4px", maxWidth: 480, margin: "0 auto" }}>
+        <button
+          className="btn-3d"
+          onClick={handleCreate}
+          disabled={creating}
+          style={{ width: "100%" }}
+        >
+          {creating ? "Creating…" : "Call create_room RPC"}
+        </button>
+        {result && (
+          <pre style={{
+            marginTop: 16, padding: 12, background: "var(--s1)",
+            border: "1px solid var(--border)", borderRadius: 8,
+            fontSize: 12, overflow: "auto", color: "var(--text)",
+            whiteSpace: "pre-wrap", wordBreak: "break-all",
+          }}>
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// JoinRoomPlaceholder: calls join_room RPC with the code captured in
+// OnlineEntry, renders raw JSON result. Same ugly-on-purpose treatment.
+function JoinRoomPlaceholder({ onBack, defaultName, code }) {
+  const [joining, setJoining] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleJoin = async () => {
+    setJoining(true);
+    const { data, error } = await supabase.rpc("join_room", {
+      p_code: code,
+      p_name: defaultName || "Player",
+      p_avatar: "⚽",
+    });
+    if (import.meta.env.DEV) {
+      console.log("[stage1A] join_room result:", { code, data, error });
+    }
+    setResult({ data, error });
+    setJoining(false);
+  };
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Join Room (1A placeholder)</div>
+      </div>
+      <div style={{ padding: "20px 4px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ fontSize: 14, color: "var(--t2)", marginBottom: 12, textAlign: "center" }}>
+          Code: <strong style={{ letterSpacing: 4 }}>{code || "(none)"}</strong>
+        </div>
+        <button
+          className="btn-3d"
+          onClick={handleJoin}
+          disabled={joining || !code}
+          style={{ width: "100%" }}
+        >
+          {joining ? "Joining…" : "Call join_room RPC"}
+        </button>
+        {result && (
+          <pre style={{
+            marginTop: 16, padding: 12, background: "var(--s1)",
+            border: "1px solid var(--border)", borderRadius: 8,
+            fontSize: 12, overflow: "auto", color: "var(--text)",
+            whiteSpace: "pre-wrap", wordBreak: "break-all",
+          }}>
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── LOCAL MULTIPLAYER SETUP ──────────────────────────────────────────────────
 const EMOJIS = ["⚽","🏆","🔥","⚡","🎯","🥅","🧤","👑"];
 
@@ -8273,6 +8460,26 @@ function AppInner() {
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
+
+  // Stage 1 multiplayer rebuild gate. Read once per AppInner mount from the
+  // URL search params. Visit https://balliq.app/?stage1=1 to opt in. Routes
+  // the Play with Friends → Online Multiplayer button to the new entry
+  // screen instead of MultiplayerComingSoon. Removed in Stage 1F when the
+  // new flow is production-ready for everyone.
+  const STAGE_1_ENABLED = useMemo(() => {
+    try {
+      return new URL(window.location.href).searchParams.get("stage1") === "1";
+    } catch {
+      return false;
+    }
+  }, []);
+  // Code captured by OnlineEntry when user taps Join with Code; consumed
+  // by JoinRoomPlaceholder. Separate from pendingJoinCode (which serves
+  // the legacy `?join=CODE` deep link path through OnlineGame) to avoid
+  // coupling the Stage 1 flow with the existing route. Stage 1B may
+  // consolidate.
+  const [stage1JoinCode, setStage1JoinCode] = useState("");
+
   // Pending invite code captured from `?join=` on cold start. Persisted to
   // localStorage so it survives the sign-in detour for guests / unsigned
   // users. Cleared once consumed (room joined, dismissed, or signed-out
@@ -9794,12 +10001,24 @@ function AppInner() {
               <div className="diff-options">
                 <button
                   className="diff-option"
-                  onClick={() => { setShowFriendsPicker(false); startMode("online"); }}
+                  onClick={() => {
+                    setShowFriendsPicker(false);
+                    if (STAGE_1_ENABLED) {
+                      // Stage 1 path. Guest guard matches existing startMode("online") behavior.
+                      if (!user || isGuest) {
+                        showToast("🔐 Sign in to play Online Multiplayer");
+                        return;
+                      }
+                      setScreen("online-stage1");
+                    } else {
+                      startMode("online");
+                    }
+                  }}
                 >
                   <span className="diff-option-icon">🌐</span>
                   <div className="diff-option-body">
                     <div className="diff-option-name">Online Multiplayer</div>
-                    <div className="diff-option-desc">Coming soon — being rebuilt</div>
+                    <div className="diff-option-desc">{STAGE_1_ENABLED ? "Stage 1 early access" : "Coming soon — being rebuilt"}</div>
                   </div>
                 </button>
                 <button
@@ -10117,6 +10336,28 @@ function AppInner() {
             userId={user?.id}
             defaultName={authProfile?.username || profile?.name || ""}
             autoJoinCode={pendingJoinCode}
+          />
+        )}
+
+        {/* ── STAGE 1 ONLINE MULTIPLAYER (gated by ?stage1=1) ── */}
+        {screen === "online-stage1" && (
+          <OnlineEntry
+            onBack={goHome}
+            onCreateRoom={() => setScreen("online-stage1-create")}
+            onJoinRoom={(c) => { setStage1JoinCode(c); setScreen("online-stage1-join"); }}
+          />
+        )}
+        {screen === "online-stage1-create" && (
+          <CreateRoomPlaceholder
+            onBack={() => setScreen("online-stage1")}
+            defaultName={authProfile?.username || profile?.name || ""}
+          />
+        )}
+        {screen === "online-stage1-join" && (
+          <JoinRoomPlaceholder
+            onBack={() => setScreen("online-stage1")}
+            defaultName={authProfile?.username || profile?.name || ""}
+            code={stage1JoinCode}
           />
         )}
 
