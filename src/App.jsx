@@ -1909,14 +1909,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 .wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;}
 .wd-kb-row{display:flex;justify-content:center;gap:5px;}
-.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.12s,transform 0.05s;padding:0;}
+.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
 .light .wd-key-grey{background:#9CA0AB;color:#fff;}
-.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
