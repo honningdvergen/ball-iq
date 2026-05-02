@@ -3733,7 +3733,18 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   if (loading) return <LobbyLoading />;
   if (error || !room) return <LobbyError error={error} onExit={onExit} />;
   if (room.state === "ended") return <LobbyEnded onExit={onExit} />;
-  if (room.state === "playing") return <PlayingPlaceholder room={room} players={players} onExit={onExit} />;
+  if (room.state === "playing") {
+    return (
+      <MultiplayerGameplay
+        room={room}
+        players={players}
+        myPlayer={myPlayer}
+        isHost={isHost}
+        actions={actions}
+        onExit={onExit}
+      />
+    );
+  }
 
   return (
     <LobbyView
@@ -3910,39 +3921,129 @@ function LobbyEnded({ onExit }) {
   );
 }
 
-function PlayingPlaceholder({ room, players, onExit }) {
+// MultiplayerGameplay: replaces PlayingPlaceholder once room.state ===
+// 'playing'. Reads question + players from props (passed down from
+// MultiplayerLobby's single useMultiplayerRoom hook instance — no remount,
+// channel preserved across the lobby→playing transition). Stage 1C.1 is
+// scaffold only: question + 4 buttons render, but tap is a no-op (handler
+// wires in 1C.2). Timer, optimistic locking, scores, host controls land
+// in 1C.3 / 1C.4 / 1C.5.
+function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
+  const question = room.questions?.[room.current_question];
+
+  const handleLeave = useCallback(async () => {
+    try { await actions.leave(); } catch {}
+    onExit();
+  }, [actions, onExit]);
+
+  if (!question) {
+    // Defensive: questions jsonb missing or current_question out of bounds.
+    // Shouldn't happen in normal flow (start_game validates non-empty array)
+    // but room data could be corrupt or schema-stale.
+    return (
+      <div className="screen">
+        <div className="page-hdr">
+          <button className="back-btn" onClick={handleLeave} aria-label="Leave">←</button>
+          <div className="page-title">Game</div>
+        </div>
+        <div style={{ padding: 40, textAlign: "center", color: "var(--t2)" }}>
+          Question data missing — leave room and rejoin.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
-        <div className="page-title">Game in Progress</div>
+        <button className="back-btn" onClick={handleLeave} aria-label="Leave game">←</button>
+        <div className="page-title">
+          Question {room.current_question + 1}/{room.questions.length}
+        </div>
       </div>
-      <div style={{ padding: "32px 20px", maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🎮</div>
-        <div style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 8 }}>
-          Game started!
-        </div>
-        <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 24, lineHeight: 1.6 }}>
-          The realtime state transition worked — room is now in playing state.
-          <br /><br />
-          <strong>Stage 1C is where gameplay arrives.</strong> Question display,
-          answer locking, timer, live scores, and host advance controls all
-          land in 1C. This screen is Stage 1B placeholder scaffolding.
-        </div>
+      <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
+        {/* Stage 1C.1 scaffold notice — removed in 1C.2 once tap handler wires */}
         <div style={{
-          fontSize: 12, color: "var(--t3)", marginBottom: 20,
-          fontFamily: "monospace", padding: "10px 14px",
-          background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 8,
-          textAlign: "left", overflow: "auto",
+          fontSize: 12, color: "var(--t3)", textAlign: "center",
+          padding: "8px 12px", background: "var(--s1)",
+          border: "1px solid var(--border)", borderRadius: 8, marginBottom: 16,
         }}>
-          room.state = "{room.state}"<br />
-          current_question = {room.current_question}<br />
-          questions.length = {room.questions?.length ?? "?"}<br />
-          players = {players.length}
+          Stage 1C.1 scaffold — interactivity in 1C.2 (taps do nothing yet)
         </div>
-        <button className="btn-3d" onClick={onExit} style={{ padding: "12px 24px" }}>
-          Back to Home
-        </button>
+
+        <QuestionView
+          question={question}
+          lockedAnswerIdx={null}
+          disabled={false}
+          onPick={() => { /* 1C.2 wires this */ }}
+        />
+
+        {/* 1C.4 placeholder — host controls + score bar arrive then */}
+        <div style={{
+          marginTop: 24, fontSize: 11, color: "var(--t3)",
+          textAlign: "center", letterSpacing: 0.4, textTransform: "uppercase",
+        }}>
+          {players.length} players · {isHost ? "you are host" : "you are joiner"} · {myPlayer?.score ?? 0} pts
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// QuestionView: presentational. prompt + 4 option buttons. lockedAnswerIdx
+// highlights the chosen option (null for 1C.1 since no tap handler is wired).
+// disabled greys out all options (used by 1C.2+ after lock or on timeout).
+// onPick(idx) called when an enabled, non-locked button is tapped.
+function QuestionView({ question, lockedAnswerIdx, disabled, onPick }) {
+  return (
+    <div className="mp-question">
+      <div style={{
+        fontSize: 18, fontWeight: 700, color: "var(--text)",
+        textAlign: "center", padding: "16px 8px 24px", lineHeight: 1.4,
+      }}>
+        {question.prompt}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {question.options.map((opt, idx) => {
+          const isLocked = lockedAnswerIdx === idx;
+          const isOtherLocked = lockedAnswerIdx !== null && !isLocked;
+          return (
+            <button
+              key={idx}
+              onClick={() => { if (!disabled && lockedAnswerIdx === null) onPick(idx); }}
+              disabled={disabled}
+              aria-pressed={isLocked}
+              style={{
+                padding: "14px 16px",
+                fontSize: 16,
+                fontWeight: 600,
+                borderRadius: 12,
+                border: isLocked ? "2px solid var(--accent)" : "1px solid var(--border)",
+                background: isLocked ? "var(--s2)" : "var(--s1)",
+                color: "var(--text)",
+                textAlign: "left",
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                cursor: disabled || lockedAnswerIdx !== null ? "default" : "pointer",
+                opacity: isOtherLocked ? 0.5 : 1,
+                fontFamily: "inherit",
+                transition: "all 0.15s ease",
+              }}
+            >
+              <span style={{
+                width: 32, height: 32, borderRadius: "50%",
+                background: isLocked ? "var(--accent)" : "var(--s2)",
+                color: isLocked ? "#fff" : "var(--text)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 14, fontWeight: 700, flexShrink: 0,
+              }}>
+                {LETTERS[idx]}
+              </span>
+              <span style={{ flex: 1 }}>{opt}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
