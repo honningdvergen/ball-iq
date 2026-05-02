@@ -7950,40 +7950,16 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     setSearching(true);
     const t = setTimeout(async () => {
       try {
-        const filterExpr = `%${q}%`;
-        if (import.meta.env.DEV) {
-          console.log("[friends] ── search start ──");
-          console.log("[friends] raw input:", search);
-          console.log("[friends] trimmed term:", q);
-          console.log("[friends] ilike pattern:", filterExpr);
-          console.log("[friends] my userId:", userId);
-          console.log("[friends] excludedIds (will filter these out):", Array.from(excludedIds));
-        }
         const { data, error } = await supabase
           .from("profiles")
           .select("id,username,avatar:avatar_id,total_score")
-          .ilike("username", filterExpr)
+          .ilike("username", `%${q}%`)
           .limit(10);
-        if (import.meta.env.DEV) {
-          console.log("[friends] supabase data:", data);
-          console.log("[friends] supabase error:", error);
-        }
         if (cancelled) return;
         if (error) throw error;
-        // DIAGNOSTIC: temporarily bypass the excludedIds filter so we can see
-        // every row Supabase returns (including the user themselves and
-        // already-friended users). Restore the filter once the empty-results
-        // bug is understood.
-        const rawRows = data || [];
-        const filteredRows = rawRows.filter(p => !excludedIds.has(p.id));
-        if (import.meta.env.DEV) {
-          console.log("[friends] rows from supabase:", rawRows.length);
-          console.log("[friends] rows after excludedIds filter:", filteredRows.length);
-          if (rawRows.length && !filteredRows.length) {
-            console.log("[friends] ⚠️ all rows were filtered out by excludedIds — friend may already be in friendships table");
-          }
-        }
-        setResults(import.meta.env.DEV ? rawRows : filteredRows);
+        // Filter out self + already-friended/pending users so search
+        // surfaces only addable players.
+        setResults((data || []).filter(p => !excludedIds.has(p.id)));
       } catch (e) {
         console.error("[friends] search", e?.message || "Unknown error", e);
         if (!cancelled) setResults([]);
