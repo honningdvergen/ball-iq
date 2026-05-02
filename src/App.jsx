@@ -3524,59 +3524,6 @@ function OnlineGame({ onBack }) {
 // ─── LOCAL MULTIPLAYER SETUP ──────────────────────────────────────────────────
 const EMOJIS = ["⚽","🏆","🔥","⚡","🎯","🥅","🧤","👑"];
 
-// ─── SOCIAL HUB ───────────────────────────────────────────────────────────────
-const SOCIAL_MODES = [
-  { m:"classic", icon:"⏱️", label:"Standard Quiz",  desc:"10 questions, 20s each" },
-  { m:"speed",   icon:"⚡", label:"Speed Round",    desc:"5 questions, 8s each" },
-  { m:"survival",icon:"🔥", label:"Survival",       desc:"One wrong ends the game" },
-  { m:"legends", icon:"📜", label:"Legends",        desc:"Classic football history" },
-];
-
-function SocialHub({ onOnline, onLocal, onBack }) {
-  const [picked, setPicked] = useState("classic");
-  const { user, isGuest } = useAuth();
-  const onlineLocked = !user || isGuest;
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Challenge a Friend</div>
-      </div>
-      <div className="social-intro">Pick a game mode, then choose how to play:</div>
-      <div className="mode-list" style={{marginBottom:20}}>
-        {SOCIAL_MODES.map(({m,icon,label,desc}) => (
-          <div key={m} className={`mode-item${picked===m?" mode-item-sel":""}`} onClick={() => setPicked(m)}>
-            <div className="mi-icon">{icon}</div>
-            <div className="mi-body"><div className="mi-name">{label}</div><div className="mi-desc">{desc}</div></div>
-            {picked===m && <div style={{color:"var(--accent)",fontSize:18,fontWeight:700}}>✓</div>}
-          </div>
-        ))}
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        <button
-          className="btn btn-p"
-          onClick={() => onOnline(picked)}
-          aria-disabled={onlineLocked || undefined}
-          style={{
-            background:"var(--accent)",
-            color:"#fff",
-            display:"flex",
-            flexDirection:"column",
-            alignItems:"center",
-            gap:2,
-            opacity: onlineLocked ? 0.55 : 1,
-          }}
-        >
-          <span>{onlineLocked ? "🔒 Online 1v1" : "🌐 Online 1v1"}</span>
-          {onlineLocked && <span style={{fontSize:10,fontWeight:600,opacity:0.85}}>Sign in required</span>}
-        </button>
-        <button className="btn" onClick={() => onLocal(picked)} style={{background:"var(--s2)",border:"1px solid var(--border2)",color:"var(--text)"}}>🤝 Local</button>
-      </div>
-      <div className="social-tip" style={{marginTop:12}}>Online: create a room code, friend joins on their device. Local: pass the phone between players.</div>
-    </div>
-  );
-}
-
 function LocalSetup({ onStart, onBack }) {
   const [count, setCount] = useState(2);
   const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
@@ -8862,7 +8809,6 @@ function AppInner() {
       }
       setMode(m === "balliq_confirmed" ? "balliq" : m);
       if (m === "online") { setScreen("online"); return; }
-      if (m === "social") { setScreen("social"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       // Reset category for special modes that ignore it
@@ -10058,15 +10004,6 @@ function AppInner() {
           <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
           </div>
-        )}
-
-        {/* ── SOCIAL HUB ── */}
-        {screen === "social" && (
-          <SocialHub
-            onOnline={() => startMode("online")}
-            onLocal={() => setScreen("local-setup")}
-            onBack={goHome}
-          />
         )}
 
         {/* ── SETTINGS SCREEN ── */}
