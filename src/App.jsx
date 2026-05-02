@@ -8343,6 +8343,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const fileInputRef = useRef(null);
+  // Self-review (K2): handleCropConfirm could fire setUploading on the
+  // unmounted component if upload completes after the user navigates
+  // away from the Profile tab. Same pattern as CropModal F2.
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
   // Auth profile is fetched async after `user` resolves — show a skeleton in
   // that gap so a returning user doesn't briefly see "Player".
   const authLoading = !!user && !authProfile;
@@ -8433,7 +8438,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     } catch {
       toast("Could not upload photo — try again");
     } finally {
-      setUploading(false);
+      // K2: guard setUploading against post-unmount fires.
+      if (mountedRef.current) setUploading(false);
     }
   };
 
@@ -8470,10 +8476,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       )}
       <div className="profile-card">
         <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
-          <div
+          {/* Self-review (K1): div+onClick → button. Both the avatar and
+              the edit-pencil affordance trigger the same picker — keeping
+              both as separate tap targets matches the visual design.
+              Inline reset (appearance/font) overrides UA button defaults
+              while preserving the existing .profile-avatar CSS sizing
+              and border. */}
+          <button
+            type="button"
             className="profile-avatar"
             onClick={openAvatarPicker}
-            style={avatarUrl ? {padding:0, overflow:"hidden", background:"var(--s2)"} : undefined}
+            aria-label="Edit profile photo"
+            style={avatarUrl
+              ? {padding:0, overflow:"hidden", background:"var(--s2)", appearance:"none", WebkitAppearance:"none", font:"inherit"}
+              : {appearance:"none", WebkitAppearance:"none", font:"inherit"}}
           >
             {uploading ? (
               <span className="avatar-spinner" aria-label="Uploading" />
@@ -8487,8 +8503,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             ) : (
               avatarEmoji(profile?.avatar)
             )}
-          </div>
-          <div className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo">✏️</div>
+          </button>
+          <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
         </div>
         {authLoading ? (
           <div className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>
