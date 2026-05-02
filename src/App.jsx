@@ -4033,6 +4033,42 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     // answered_question + score. ScoreBar (1C.4) re-renders accordingly.
   }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
+  // Advance state — host-only Next button shows "Advancing…" while RPC
+  // in flight. On success, realtime UPDATE on game_rooms re-renders us
+  // with new current_question (or LobbyEnded if state='ended').
+  const [advancing, setAdvancing] = useState(false);
+
+  // Reset advancing flag whenever current_question changes (advance succeeded
+  // and realtime UPDATE arrived). Defensive — also reset by handleAdvance's
+  // own setAdvancing(false) below, but useEffect catches edge cases where
+  // server-state changed via some other path.
+  useEffect(() => { setAdvancing(false); }, [currentQuestionIdx]);
+
+  const handleAdvance = useCallback(async () => {
+    if (advancing) return;
+    setAdvancing(true);
+    const result = await actions.advance();
+    if (result.error) {
+      console.warn("[mp] advance failed:", result.error);
+      setAdvancing(false);
+      return;
+    }
+    if (result.advanced === false && result.reason === "expected_mismatch") {
+      // Server-state already moved past p_expected_question. Only host
+      // calls advance, so this is a rare race — perhaps a stale render
+      // captured an old current_question and the realtime UPDATE hadn't
+      // re-rendered yet. Treat as success silently; realtime sync will
+      // catch us up.
+    }
+    setAdvancing(false);
+  }, [actions, advancing]);
+
+  // Host-disconnect detection. When host's row is missing from players
+  // (they called leave_room), advance_question rejects further calls
+  // server-side anyway, so the game effectively pauses. Show a banner so
+  // joiners understand why and can leave.
+  const hostStillPresent = !!room && players.some(p => p.user_id === room.host_id);
+
   // Timeout auto-submit. Fires when QuestionTimer hits 0s. Submits
   // answer_idx = -1 with lock_time = QUESTION_DURATION_MS. Server treats
   // -1 as wrong (correct is 0..3, so the equality check fails) → score 0,
@@ -4072,6 +4108,37 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         </div>
       </div>
       <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
+        <ScoreBar
+          players={players}
+          myUserId={myPlayer?.user_id}
+          hostId={room.host_id}
+        />
+
+        {!hostStillPresent && (
+          <div style={{
+            padding: "10px 14px",
+            background: "rgba(239, 68, 68, 0.1)",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+            borderRadius: 10,
+            marginBottom: 12,
+            fontSize: 13,
+            color: "var(--text)",
+            textAlign: "center",
+          }}>
+            ⚠️ Host disconnected — game can't advance.{" "}
+            <button
+              onClick={handleLeave}
+              style={{
+                background: "none", border: "none", color: "var(--accent)",
+                textDecoration: "underline", cursor: "pointer", fontSize: 13,
+                padding: 0, fontFamily: "inherit",
+              }}
+            >
+              Leave game
+            </button>
+          </div>
+        )}
+
         {/* key={currentQuestionIdx} unmounts/remounts on advance so the
             timer resets cleanly. onExpire fires exactly once per mount
             (expiredRef inside QuestionTimer). */}
@@ -4099,13 +4166,15 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           </div>
         )}
 
-        {/* 1C.4 placeholder — host controls + score bar arrive then */}
-        <div style={{
-          marginTop: 24, fontSize: 11, color: "var(--t3)",
-          textAlign: "center", letterSpacing: 0.4, textTransform: "uppercase",
-        }}>
-          {players.length} {players.length === 1 ? "player" : "players"} · {isHost ? "you are host" : "you are joiner"} · {myPlayer?.score ?? 0} pts
-        </div>
+        {isHost && (
+          <HostAdvanceControls
+            players={players}
+            currentQuestion={currentQuestionIdx}
+            totalQuestions={room.questions.length}
+            advancing={advancing}
+            onAdvance={handleAdvance}
+          />
+        )}
       </div>
     </div>
   );
@@ -4247,6 +4316,98 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick }) {
           );
         })}
       </div>
+    </div>
+  );
+}
+
+// ScoreBar: compact horizontal strip showing all players + scores. Stable
+// order (by joined_at; the hook already sorts) — NOT score-based shuffle,
+// which would be confusing UX as numbers move around. Self-chip highlighted
+// (accent border + slightly brighter background). Host marker = small star.
+// Score updates flow in via realtime room_players UPDATE → useMultiplayerRoom
+// state update → re-render.
+function ScoreBar({ players, myUserId, hostId }) {
+  return (
+    <div style={{
+      display: "flex",
+      gap: 8,
+      overflowX: "auto",
+      padding: "0 0 4px",
+      marginBottom: 12,
+    }}>
+      {players.map(p => {
+        const isMe = p.user_id === myUserId;
+        const isHostPlayer = p.user_id === hostId;
+        return (
+          <div
+            key={p.user_id}
+            style={{
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "8px 12px",
+              borderRadius: 10,
+              background: isMe ? "var(--s2)" : "var(--s1)",
+              border: isMe ? "1px solid var(--accent)" : "1px solid var(--border)",
+            }}
+          >
+            <span style={{ fontSize: 18 }}>{p.avatar || "⚽"}</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0, minWidth: 0 }}>
+              <div style={{
+                fontSize: 11, fontWeight: 600, color: "var(--t2)",
+                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                maxWidth: 90,
+              }}>
+                {p.name}
+                {isHostPlayer && <span style={{ color: "var(--accent)", marginLeft: 4 }}>★</span>}
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
+                {p.score}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// HostAdvanceControls: visible only when isHost. Shows answered count
+// and the Next/End Game button. Enable rule = "1+ answered" (NOT strict
+// all-answered) — disconnect-resilient. If a player drops mid-question,
+// host can still progress. The answered-count is informational, not a
+// gate. Stage 1C scope §6 documents the rationale.
+function HostAdvanceControls({ players, currentQuestion, totalQuestions, advancing, onAdvance }) {
+  const answeredCount = players.filter(p => p.answered_question >= currentQuestion).length;
+  const total = players.length;
+  const allAnswered = answeredCount === total && total > 0;
+  const canAdvance = answeredCount >= 1;
+  const isLastQuestion = currentQuestion + 1 >= totalQuestions;
+
+  return (
+    <div style={{
+      marginTop: 16,
+      padding: "12px 14px",
+      background: "var(--s1)",
+      border: "1px solid var(--border)",
+      borderRadius: 10,
+    }}>
+      <div style={{
+        fontSize: 11, color: "var(--t3)", textAlign: "center", marginBottom: 10,
+        letterSpacing: 0.4, textTransform: "uppercase",
+      }}>
+        {answeredCount}/{total} answered
+        {!allAnswered && answeredCount > 0 && " — waiting for the rest"}
+      </div>
+      <button
+        className="btn-3d"
+        onClick={onAdvance}
+        disabled={!canAdvance || advancing}
+        style={{ width: "100%" }}
+      >
+        {advancing ? "Advancing…" : isLastQuestion ? "End Game" : "Next Question →"}
+      </button>
     </div>
   );
 }
