@@ -4250,6 +4250,11 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           </div>
         )}
 
+        {/* Stage 1C.7: dim wrapper now scopes ONLY the timer (which is
+            also visually "done" at 0s during reveal). QuestionView moved
+            outside so its options can render at full opacity with the new
+            correct/wrong reveal coloring (green/red). QuestionView dims
+            its own prompt internally when revealing=true. */}
         <div style={{ opacity: dimContent ? 0.6 : 1, transition: "opacity 0.2s" }}>
           {/* key={currentQuestionIdx} unmounts/remounts on advance so the
               timer resets cleanly. */}
@@ -4258,14 +4263,15 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             durationMs={QUESTION_DURATION_MS}
             onExpire={handleTimerExpire}
           />
-
-          <QuestionView
-            question={question}
-            lockedAnswerIdx={lockedAnswerIdx}
-            disabled={hasAnswered || revealPhase !== 'answering'}
-            onPick={handleAnswerPick}
-          />
         </div>
+
+        <QuestionView
+          question={question}
+          lockedAnswerIdx={lockedAnswerIdx}
+          disabled={hasAnswered || revealPhase !== 'answering'}
+          onPick={handleAnswerPick}
+          revealing={dimContent}
+        />
 
         {hasAnswered && revealPhase === 'answering' && (
           <div style={{
@@ -4374,23 +4380,101 @@ function QuestionTimer({ durationMs, onExpire }) {
   );
 }
 
-// QuestionView: presentational. prompt + 4 option buttons. lockedAnswerIdx
-// highlights the chosen option (null for 1C.1 since no tap handler is wired).
-// disabled greys out all options (used by 1C.2+ after lock or on timeout).
-// onPick(idx) called when an enabled, non-locked button is tapped.
-function QuestionView({ question, lockedAnswerIdx, disabled, onPick }) {
+// Stage 1C.7 reveal-coloring constants. Hardcoded inline; Stage 1F may
+// promote to CSS theme tokens if more multiplayer-styling work happens.
+const MP_LOCK_COLOR    = "#64748b"; // slate-500 — neutral "this is my pick, not yet judged"
+const MP_CORRECT_COLOR = "#22c55e"; // green-500 — the right answer (and your pick if you got it)
+const MP_WRONG_COLOR   = "#ef4444"; // red-500 — your wrong pick (already used elsewhere for errors)
+const MP_CORRECT_BG    = "rgba(34, 197, 94, 0.15)";
+const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
+
+// QuestionView: presentational. prompt + 4 option buttons.
+//
+// Props:
+//   question         — { prompt, options, correct } from server
+//   lockedAnswerIdx  — int (0-3) for player's pick, -1 for timeout, null
+//                      for late-joiners or pre-tap state
+//   disabled         — boolean: gates the onPick (no tapping post-lock OR
+//                      during reveal/advance/stuck phases)
+//   onPick(idx)      — fires when an enabled, no-lock button is tapped
+//   revealing        — boolean (Stage 1C.7): true during 'revealing',
+//                      'advancing', AND 'stuck' phases. Switches options
+//                      from neutral lock-color to correct/wrong reveal
+//                      coloring; dims the prompt only (NOT the options —
+//                      colors are the visual signal).
+//
+// Reveal coloring per option (when revealing=true):
+//   - The correct option: green border + filled green letter circle + ✓
+//   - Player's wrong pick: red border + filled red letter circle + ✗
+//   - Player's correct pick: same as "correct" row (implicit "you got it")
+//   - Untouched wrong options: default style, full opacity (no judgment)
+//
+// Late-joiner null-safety: when lockedAnswerIdx is null, `idx === null`
+// is false for all valid idx (0,1,2,3), so isLocked stays false → no
+// "your wrong" path fires → late joiner sees only the green-correct
+// highlight during reveal, no red anywhere. Same for timeout (-1):
+// `idx === -1` is false for all valid idx → no spurious red.
+function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }) {
   return (
     <div className="mp-question">
       <div style={{
         fontSize: 18, fontWeight: 700, color: "var(--text)",
         textAlign: "center", padding: "16px 8px 24px", lineHeight: 1.4,
+        opacity: revealing ? 0.6 : 1,
+        transition: "opacity 0.2s",
       }}>
         {question.prompt}
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => {
           const isLocked = lockedAnswerIdx === idx;
-          const isOtherLocked = lockedAnswerIdx !== null && !isLocked;
+          const isCorrect = idx === question.correct;
+          // Reveal-state classifications. Late-joiner (null) and timeout
+          // (-1) cases short-circuit naturally — `null === idx` and
+          // `-1 === idx` are both false for all valid idx.
+          const isRevealCorrect = revealing && isCorrect;
+          const isYourWrong = revealing && isLocked && !isCorrect;
+          // Dim other unselected options ONLY during answering (not during
+          // reveal — colors carry the message instead). Also requires a
+          // valid pick (>=0), excluding null/timeout cases.
+          const isOtherLocked = !revealing && lockedAnswerIdx !== null && lockedAnswerIdx >= 0 && !isLocked;
+
+          // Visual state derivation
+          let borderColor, borderWidth, bgColor, letterBg, letterColor, marker;
+          if (isRevealCorrect) {
+            borderColor = MP_CORRECT_COLOR;
+            borderWidth = 2;
+            bgColor = MP_CORRECT_BG;
+            letterBg = MP_CORRECT_COLOR;
+            letterColor = "#fff";
+            marker = "✓";
+          } else if (isYourWrong) {
+            borderColor = MP_WRONG_COLOR;
+            borderWidth = 2;
+            bgColor = MP_WRONG_BG;
+            letterBg = MP_WRONG_COLOR;
+            letterColor = "#fff";
+            marker = "✗";
+          } else if (!revealing && isLocked) {
+            // Locked during answering — neutral slate (not green) so the
+            // pre-reveal state doesn't suggest correctness.
+            borderColor = MP_LOCK_COLOR;
+            borderWidth = 2;
+            bgColor = "var(--s2)";
+            letterBg = MP_LOCK_COLOR;
+            letterColor = "#fff";
+            marker = null;
+          } else {
+            // Default: untouched (during answering OR untouched-wrong
+            // during reveal).
+            borderColor = "var(--border)";
+            borderWidth = 1;
+            bgColor = "var(--s1)";
+            letterBg = "var(--s2)";
+            letterColor = "var(--text)";
+            marker = null;
+          }
+
           return (
             <button
               key={idx}
@@ -4402,8 +4486,8 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick }) {
                 fontSize: 16,
                 fontWeight: 600,
                 borderRadius: 12,
-                border: isLocked ? "2px solid var(--accent)" : "1px solid var(--border)",
-                background: isLocked ? "var(--s2)" : "var(--s1)",
+                border: `${borderWidth}px solid ${borderColor}`,
+                background: bgColor,
                 color: "var(--text)",
                 textAlign: "left",
                 display: "flex",
@@ -4412,19 +4496,29 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick }) {
                 cursor: disabled || lockedAnswerIdx !== null ? "default" : "pointer",
                 opacity: isOtherLocked ? 0.5 : 1,
                 fontFamily: "inherit",
-                transition: "all 0.15s ease",
+                transition: "all 0.2s ease",
               }}
             >
               <span style={{
                 width: 32, height: 32, borderRadius: "50%",
-                background: isLocked ? "var(--accent)" : "var(--s2)",
-                color: isLocked ? "#fff" : "var(--text)",
+                background: letterBg,
+                color: letterColor,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 14, fontWeight: 700, flexShrink: 0,
               }}>
                 {LETTERS[idx]}
               </span>
               <span style={{ flex: 1 }}>{opt}</span>
+              {marker && (
+                <span style={{
+                  fontSize: 18, fontWeight: 700,
+                  color: borderColor,
+                  flexShrink: 0,
+                  marginLeft: 8,
+                }}>
+                  {marker}
+                </span>
+              )}
             </button>
           );
         })}
