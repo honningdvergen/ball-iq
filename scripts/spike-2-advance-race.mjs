@@ -21,60 +21,25 @@
 // Auth: same admin.generateLink + verifyOtp pattern as Spike 1.
 //
 // Usage: node scripts/spike-2-advance-race.mjs
+//   or:  npm run test:spike-2
 
-import fs from 'node:fs';
-import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
-import { createClient } from '@supabase/supabase-js';
+import {
+  resolveConfig,
+  signInTestUser,
+  emitSummary,
+} from './lib/spike-utils.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..');
-
-function loadDotEnv() {
-  const file = path.join(ROOT, '.env.local');
-  if (!fs.existsSync(file)) return;
-  const txt = fs.readFileSync(file, 'utf8');
-  for (const line of txt.split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const m = trimmed.match(/^([A-Z_][A-Z0-9_]*)\s*=\s*(.*)$/);
-    if (!m) continue;
-    let value = m[2].trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    if (!process.env[m[1]]) process.env[m[1]] = value;
-  }
-}
-loadDotEnv();
-
-const SUPABASE_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
-const ANON_KEY = process.env.VITE_SUPABASE_KEY;
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const USER_EMAIL = 'alexbo99@hotmail.no';
-
-if (!ANON_KEY || !SERVICE_KEY) {
-  console.error('ABORT: missing VITE_SUPABASE_KEY or SUPABASE_SERVICE_ROLE_KEY in .env.local');
-  process.exit(1);
-}
+const config = resolveConfig();
 
 console.log('# Spike 2 — advance_question race (FOR UPDATE + expected_question gate)');
-console.log(`Project:     ${SUPABASE_URL}`);
+console.log(`Project:     ${config.supabaseUrl}`);
+console.log(`Mode:        ${config.isCI ? 'CI' : 'local'}`);
 console.log(`Iterations:  50× 2-way, 10× 3-way, 10× 4-way`);
 console.log('');
 
-// Auth
-const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { autoRefreshToken: false, persistSession: false } });
-const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({ type: 'magiclink', email: USER_EMAIL });
-if (linkErr) { console.error(`generateLink: ${linkErr.message}`); process.exit(1); }
-const otp = linkData?.properties?.email_otp;
-if (!otp) { console.error('no email_otp in generateLink response'); process.exit(1); }
-
-const userClient = createClient(SUPABASE_URL, ANON_KEY, { auth: { autoRefreshToken: false, persistSession: false } });
-const { error: verifyErr } = await userClient.auth.verifyOtp({ email: USER_EMAIL, token: otp, type: 'magiclink' });
-if (verifyErr) { console.error(`verifyOtp: ${verifyErr.message}`); process.exit(1); }
+const { userClient, signOut } = await signInTestUser(config);
 console.log('auth: signed in OK');
 console.log('');
 
@@ -147,7 +112,7 @@ const r2 = await runBatch('50× 2-way concurrent', 2, 50);
 const r3 = await runBatch('10× 3-way concurrent', 3, 10);
 const r4 = await runBatch('10× 4-way concurrent', 4, 10);
 
-await userClient.auth.signOut();
+await signOut();
 
 console.log('## Final summary');
 const totalIter = r2.count + r3.count + r4.count;
@@ -157,10 +122,23 @@ console.log(`Total iterations:  ${totalIter}`);
 console.log(`Passed:            ${totalPass}`);
 console.log(`Flakes:            ${totalFlakes}`);
 console.log('');
-if (totalFlakes === 0) {
+
+const passed = totalFlakes === 0;
+if (passed) {
   console.log('PASS — FOR UPDATE + expected_question gate serializes concurrent advances correctly across all concurrencies.');
-  process.exit(0);
 } else {
   console.log('FAIL — gate failed under concurrency. See per-iteration FLAKE logs above.');
-  process.exit(1);
 }
+
+emitSummary({
+  spike: 2,
+  status: passed ? 'pass' : 'fail',
+  totals: { iterations: totalIter, passed: totalPass, flakes: totalFlakes },
+  perBatch: [
+    { label: r2.label, concurrency: r2.concurrency, passes: r2.passes, flakes: r2.flakes, latencyMs: { p50: Math.round(r2.latencies[Math.floor(r2.latencies.length * 0.5)]), p95: Math.round(r2.latencies[Math.floor(r2.latencies.length * 0.95)]), max: Math.round(r2.latencies[r2.latencies.length - 1]) } },
+    { label: r3.label, concurrency: r3.concurrency, passes: r3.passes, flakes: r3.flakes, latencyMs: { p50: Math.round(r3.latencies[Math.floor(r3.latencies.length * 0.5)]), p95: Math.round(r3.latencies[Math.floor(r3.latencies.length * 0.95)]), max: Math.round(r3.latencies[r3.latencies.length - 1]) } },
+    { label: r4.label, concurrency: r4.concurrency, passes: r4.passes, flakes: r4.flakes, latencyMs: { p50: Math.round(r4.latencies[Math.floor(r4.latencies.length * 0.5)]), p95: Math.round(r4.latencies[Math.floor(r4.latencies.length * 0.95)]), max: Math.round(r4.latencies[r4.latencies.length - 1]) } },
+  ],
+});
+
+process.exit(passed ? 0 : 1);

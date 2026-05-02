@@ -11,90 +11,43 @@
 // Writes flow through the SECURITY DEFINER _spike_write RPC.
 //
 // Auth: admin.generateLink (no email sent) + verifyOtp creates a real
-// user session for fec364dd-...@hotmail.no, so auth.uid() resolves
+// user session for the configured test user, so auth.uid() resolves
 // inside the SECURITY DEFINER functions.
 //
 // Usage: node scripts/spike-1-realtime.mjs
+//   or:  npm run test:spike-1
+//
+// Required env (see scripts/README.md):
+//   SPIKE_SUPABASE_URL, SPIKE_SUPABASE_ANON_KEY,
+//   SPIKE_SUPABASE_SERVICE_ROLE_KEY, SPIKE_TEST_USER_EMAIL
+// Local dev fall back to .env.local + hardcoded production project
+// (see scripts/lib/spike-utils.mjs).
 
-import fs from 'node:fs';
-import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
-import { createClient } from '@supabase/supabase-js';
+import {
+  resolveConfig,
+  signInTestUser,
+  check,
+  makeTimer,
+  sleep,
+  emitSummary,
+} from './lib/spike-utils.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..');
-
-function loadDotEnv() {
-  const file = path.join(ROOT, '.env.local');
-  if (!fs.existsSync(file)) return;
-  const txt = fs.readFileSync(file, 'utf8');
-  for (const line of txt.split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const m = trimmed.match(/^([A-Z_][A-Z0-9_]*)\s*=\s*(.*)$/);
-    if (!m) continue;
-    let value = m[2].trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    if (!process.env[m[1]]) process.env[m[1]] = value;
-  }
-}
-loadDotEnv();
-
-const SUPABASE_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
-const ANON_KEY = process.env.VITE_SUPABASE_KEY;
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const USER_EMAIL = 'alexbo99@hotmail.no';
-
-if (!ANON_KEY || !SERVICE_KEY) {
-  console.error('ABORT: missing VITE_SUPABASE_KEY or SUPABASE_SERVICE_ROLE_KEY in .env.local');
-  process.exit(1);
-}
-
-const startedAt = Date.now();
-const ts = () => `${(Date.now() - startedAt).toString().padStart(5, ' ')}ms`;
+const config = resolveConfig();
+const timer = makeTimer();
+const ts = () => timer.ts();
 
 console.log(`# Spike 1 — Realtime: two postgres_changes filters on one channel`);
-console.log(`Project:     ${SUPABASE_URL}`);
+console.log(`Project:     ${config.supabaseUrl}`);
 console.log(`Tables:      _spike_room, _spike_player`);
+console.log(`Mode:        ${config.isCI ? 'CI' : 'local'}`);
 console.log('');
 
-// Authenticate as the user via admin-generated magiclink OTP
-console.log(`[${ts()}] auth:         generating magiclink OTP via admin API`);
-const admin = createClient(SUPABASE_URL, SERVICE_KEY, {
-  auth: { autoRefreshToken: false, persistSession: false },
-});
-const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
-  type: 'magiclink',
-  email: USER_EMAIL,
-});
-if (linkErr) {
-  console.error(`generateLink failed: ${linkErr.message}`);
-  process.exit(1);
-}
-const otp = linkData?.properties?.email_otp;
-if (!otp) {
-  console.error('generateLink did not return email_otp');
-  process.exit(1);
-}
-
-const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-  auth: { autoRefreshToken: false, persistSession: false },
+console.log(`[${ts()}] auth:         signing in test user`);
+const { userClient, userId, signOut } = await signInTestUser(config, {
   realtime: { params: { eventsPerSecond: 10 } },
 });
-const { data: sessionData, error: verifyErr } = await userClient.auth.verifyOtp({
-  email: USER_EMAIL,
-  token: otp,
-  type: 'magiclink',
-});
-if (verifyErr) {
-  console.error(`verifyOtp failed: ${verifyErr.message}`);
-  process.exit(1);
-}
-const USER_ID = sessionData.user.id;
-console.log(`[${ts()}] auth:         signed in as ${USER_ID.slice(0, 8)}…`);
+console.log(`[${ts()}] auth:         signed in as ${userId.slice(0, 8)}…`);
 
 // Subscribe — one channel, TWO postgres_changes filters
 const events = []; // { t, table, eventType, row }
@@ -106,7 +59,7 @@ const channel = userClient
     { event: '*', schema: 'public', table: '_spike_room' },
     (payload) => {
       events.push({
-        t: Date.now() - startedAt,
+        t: timer.elapsed(),
         table: '_spike_room',
         eventType: payload.eventType,
         row: payload.new || payload.old,
@@ -119,7 +72,7 @@ const channel = userClient
     { event: '*', schema: 'public', table: '_spike_player' },
     (payload) => {
       events.push({
-        t: Date.now() - startedAt,
+        t: timer.elapsed(),
         table: '_spike_player',
         eventType: payload.eventType,
         row: payload.new || payload.old,
@@ -161,7 +114,7 @@ const writes = [
 const writeTimestamps = [];
 for (const [label, op, target, payload] of writes) {
   console.log(`[${ts()}] write:        ${label}`);
-  const tWrite = Date.now() - startedAt;
+  const tWrite = timer.elapsed();
   const { error } = await userClient.rpc('_spike_write', {
     p_op: op,
     p_target: target,
@@ -170,6 +123,7 @@ for (const [label, op, target, payload] of writes) {
   if (error) {
     console.error(`_spike_write failed for "${label}": ${error.message}`);
     await cleanup();
+    emitSummary({ spike: 1, status: 'error', stage: 'write', label, message: error.message });
     process.exit(1);
   }
   writeTimestamps.push({ label, op, target, t: tWrite });
@@ -201,6 +155,7 @@ console.log(`  expected:     ${JSON.stringify(expectPlayerCounts)}`);
 // Per-event latency: time between write and event-received
 console.log('');
 console.log('Per-write latency:');
+const latencies = [];
 for (const w of writeTimestamps) {
   const matched = events.find(e =>
     e.table === `_spike_${w.target}` &&
@@ -208,31 +163,57 @@ for (const w of writeTimestamps) {
     e.t >= w.t
   );
   if (matched) {
-    console.log(`  ${w.label.padEnd(28)} → event in ${matched.t - w.t}ms`);
+    const lat = matched.t - w.t;
+    latencies.push(lat);
+    console.log(`  ${w.label.padEnd(28)} → event in ${lat}ms`);
   } else {
     console.log(`  ${w.label.padEnd(28)} → NO MATCHING EVENT`);
   }
 }
 
 // Pass/fail
-const roomOk = JSON.stringify(roomCounts) === JSON.stringify(expectRoomCounts);
-const playerOk = JSON.stringify(playerCounts) === JSON.stringify(expectPlayerCounts);
 console.log('');
-if (roomOk && playerOk) {
+const roomOk = check(
+  JSON.stringify(roomCounts) === JSON.stringify(expectRoomCounts),
+  '_spike_room event counts match expected',
+  { got: roomCounts, expected: expectRoomCounts },
+);
+const playerOk = check(
+  JSON.stringify(playerCounts) === JSON.stringify(expectPlayerCounts),
+  '_spike_player event counts match expected',
+  { got: playerCounts, expected: expectPlayerCounts },
+);
+
+const passed = roomOk && playerOk;
+const p50 = latencies.length ? Math.round(latencies.sort((a, b) => a - b)[Math.floor(latencies.length / 2)]) : null;
+const max = latencies.length ? Math.max(...latencies) : null;
+
+console.log('');
+if (passed) {
   console.log('PASS — both filters delivered all expected events on a single channel.');
-  process.exit(0);
 } else {
   console.log('FAIL — event count mismatch on at least one filter.');
-  process.exit(1);
 }
+
+emitSummary({
+  spike: 1,
+  status: passed ? 'pass' : 'fail',
+  roomCounts,
+  playerCounts,
+  expectRoomCounts,
+  expectPlayerCounts,
+  latency: { p50, max, count: latencies.length },
+});
+
+process.exit(passed ? 0 : 1);
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 async function cleanup() {
   console.log(`[${ts()}] cleanup:      removing channel + signing out`);
   try { await userClient.removeChannel(channel); } catch {}
-  try { await userClient.auth.signOut(); } catch {}
+  await signOut();
 }
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
 function describeRoom(p) {
   const r = p.new || p.old || {};
   return `q=${r.current_question ?? '?'} state=${r.state ?? '?'}`;

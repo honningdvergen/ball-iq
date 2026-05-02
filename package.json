@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "publish-review": "node scripts/publish-review.mjs",
     "publish-review:dry": "node scripts/publish-review.mjs --dry-run",
-    "find-vintage": "node scripts/find-vintage-candidates.mjs"
+    "find-vintage": "node scripts/find-vintage-candidates.mjs",
+    "test:spike-1": "node scripts/spike-1-realtime.mjs",
+    "test:spike-2": "node scripts/spike-2-advance-race.mjs",
+    "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

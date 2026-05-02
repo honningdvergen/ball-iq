@@ -1,0 +1,100 @@
+name: Stage 1 spike nightly
+
+# Runs the SQL contract regression suite (spike-1 + spike-2) against the
+# staging Supabase project. Triggers:
+#   - cron 09:00 UTC daily (~02:00 PT, 11:00 CET) — lands before working
+#     hours so a failure is visible at start-of-day
+#   - workflow_dispatch — manual re-run from the Actions tab
+#   - push to staging or staging-* branches — gate before promoting to main
+#
+# Required GitHub repo secrets (Settings → Secrets and variables → Actions):
+#   SPIKE_SUPABASE_URL                   — staging project URL
+#   SPIKE_SUPABASE_ANON_KEY              — staging anon key
+#   SPIKE_SUPABASE_SERVICE_ROLE_KEY      — staging service role key (NEVER reuse production)
+#   SPIKE_TEST_USER_EMAIL                — test account email in the staging project
+#
+# See scripts/README.md for full documentation.
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # 09:00 UTC daily
+  workflow_dispatch:
+  push:
+    branches:
+      - staging
+      - 'staging-*'
+
+# One run at a time — the spikes share auth state for the configured
+# test user, so parallel runs would race on session tokens.
+concurrency:
+  group: spike-nightly
+  cancel-in-progress: false
+
+jobs:
+  spikes:
+    name: Stage 1 spikes (realtime + advance race)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10  # spike-2 alone is ~70 iterations; full suite well under 5 min in practice
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run spike-1 — Realtime two-filter delivery
+        id: spike1
+        env:
+          SPIKE_SUPABASE_URL: ${{ secrets.SPIKE_SUPABASE_URL }}
+          SPIKE_SUPABASE_ANON_KEY: ${{ secrets.SPIKE_SUPABASE_ANON_KEY }}
+          SPIKE_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SPIKE_SUPABASE_SERVICE_ROLE_KEY }}
+          SPIKE_TEST_USER_EMAIL: ${{ secrets.SPIKE_TEST_USER_EMAIL }}
+        run: |
+          set -o pipefail
+          npm run test:spike-1 2>&1 | tee spike-1.log
+
+      - name: Run spike-2 — advance_question race
+        # Run even if spike-1 failed so we get full diagnostic coverage in one CI run.
+        if: always() && steps.spike1.conclusion != 'cancelled'
+        id: spike2
+        env:
+          SPIKE_SUPABASE_URL: ${{ secrets.SPIKE_SUPABASE_URL }}
+          SPIKE_SUPABASE_ANON_KEY: ${{ secrets.SPIKE_SUPABASE_ANON_KEY }}
+          SPIKE_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SPIKE_SUPABASE_SERVICE_ROLE_KEY }}
+          SPIKE_TEST_USER_EMAIL: ${{ secrets.SPIKE_TEST_USER_EMAIL }}
+        run: |
+          set -o pipefail
+          npm run test:spike-2 2>&1 | tee spike-2.log
+
+      - name: Surface SPIKE_SUMMARY lines to job summary
+        if: always()
+        run: |
+          {
+            echo "## Stage 1 spike results"
+            echo ""
+            for log in spike-1.log spike-2.log; do
+              if [ -f "$log" ]; then
+                echo "### $log"
+                echo '```'
+                grep '^SPIKE_SUMMARY ' "$log" || echo "(no SPIKE_SUMMARY emitted — script likely crashed before completion)"
+                echo '```'
+                echo ""
+              fi
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload full spike logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spike-logs
+          path: spike-*.log
+          retention-days: 14
+          if-no-files-found: warn
