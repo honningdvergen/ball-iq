@@ -4013,6 +4013,22 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   const mountedRef = useRef(true);
   useEffect(() => () => { mountedRef.current = false; }, []);
 
+  // Stage 1C.7.4 fix: advanceInFlightRef guarantees single-fire of
+  // actions.advance() per 'advancing' phase transition. Without this,
+  // the advance fire effect was re-running on every re-render where
+  // `actions` identity changed (which is EVERY render — actions object
+  // is recreated each useMultiplayerRoom render because `advance`
+  // callback's useCallback deps include `room`, so advance recreates on
+  // every room update). While revealPhase stays 'advancing' in the
+  // stale closure (between realtime UPDATE arriving and the question-
+  // advance useEffect resetting phase to 'answering'), each re-fire
+  // called advance() again — cascading through all remaining questions
+  // in <1s, which is what the user observed as "rocketing through Q2,
+  // Q3, Q5, Q6 with each only mounted ~500ms".
+  //
+  // Reset on transition out of 'advancing' so subsequent advances work.
+  const advanceInFlightRef = useRef(false);
+
   // Local optimistic answer lock.
   const [myAnswer, setMyAnswer] = useState(null);
 
@@ -4128,32 +4144,46 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // game_rooms.current_question (handled by question-advance useEffect
   // which resets revealPhase back to 'answering').
   //
-  // Why host-only (Stage 1C.6.2 fix): the original 1C.6 design had each
-  // client fire advance independently, relying on server's
-  // expected_mismatch gate (Spike 2 validated) to handle the race. But
-  // the SQL function ALSO checks host_id and rejects all non-host
-  // callers with errcode 42501 ("only the host can advance"). So
-  // joiner advance attempts never succeeded — they were guaranteed
-  // failures. Under the per-client model joiners hit the error path
-  // every transition, transitioned to 'stuck', flashed the red
-  // "Couldn't advance" indicator for ~150-400ms (the window between
-  // RPC return and host's realtime UPDATE arriving), then reset on
-  // the UPDATE. The flash was visible on every question transition.
+  // Why host-only (Stage 1C.6.2 fix): the SQL function checks host_id
+  // and rejects non-host callers (errcode 42501). Joiner advance
+  // attempts always failed and used to flash a red "Couldn't advance"
+  // banner every transition. Now joiners passively wait for the host's
+  // advance to ripple via realtime.
   //
-  // Fix: only host calls advance. Joiners passively wait. Eliminates
-  // the no-op RPC traffic AND the flashing UI. Per-client trigger was
-  // theoretical resilience that the SQL constraint made impossible to
-  // realize anyway.
+  // Single-fire guard (Stage 1C.7.4 fix): advanceInFlightRef gates
+  // execution to ONCE per 'advancing' transition. Without this, the
+  // effect re-ran on every render where deps changed — and `actions`
+  // is recreated every useMultiplayerRoom render (because the inner
+  // `advance` callback's useCallback deps include `room`, which
+  // updates on every realtime event). The stale closure had
+  // revealPhase='advancing' for several renders between the realtime
+  // UPDATE arriving and the question-advance useEffect resetting
+  // phase to 'answering'. Each stale-closure run of this effect
+  // called advance() again, cascading through all remaining questions
+  // in <1s.
+  //
+  // Why `actions` is excluded from deps: even with the in-flight guard,
+  // re-running the effect on every actions identity change is wasted
+  // work. The closure's actions reference is stale-but-fine: the
+  // `advance` callback inside it reads room.current_question at CALL
+  // time via its own closure, which is whatever room reference the
+  // callback was created with. Server's expected_question check tolerates
+  // either fresh or one-step-stale current_question (returns
+  // expected_mismatch on stale, silent no-op).
   //
   // Edge case — host's network drops without leave_room: joiners stay
   // in 'advancing' indefinitely (UI dimmed, no banner since
   // hostStillPresent stays true). User can exit via wordmark home
-  // button. Stage 1F may add a "advancing too long" timeout that
-  // transitions to 'stuck' with a clearer explanation. For 1C.6.2,
-  // the dimmed-but-quiet state is acceptable.
+  // button. Stage 1F may add a "advancing too long" timeout fallback.
   useEffect(() => {
-    if (revealPhase !== 'advancing') return;
+    if (revealPhase !== 'advancing') {
+      advanceInFlightRef.current = false;  // reset on phase transition out
+      return;
+    }
     if (!isHost) return;  // joiners wait for realtime UPDATE
+    if (advanceInFlightRef.current) return;  // single-fire guard
+    advanceInFlightRef.current = true;
+
     let cancelled = false;
     (async () => {
       const result = await actions.advance();
@@ -4170,7 +4200,8 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       // triggers re-render via parent's MultiplayerLobby render switch.
     })();
     return () => { cancelled = true; };
-  }, [revealPhase, isHost, actions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealPhase, isHost]);
 
   // Host-tap handlers for the phase-aware advance button.
   // Next/End Game during answering: trigger reveal phase (consistent
