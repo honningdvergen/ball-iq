@@ -3913,11 +3913,22 @@ function LobbyError({ error, onExit }) {
 }
 
 function LobbyEnded({ onExit }) {
-  // Auto-navigate after 1.5s if user doesn't tap.
+  // Auto-navigate after 1.5s if user doesn't tap. Empty deps + ref pattern
+  // (not [onExit]): onExit is recreated each parent render (it's an inline
+  // arrow in AppInner's screen-routing JSX). With [onExit] deps, the
+  // useEffect re-fires on every parent re-render — and AppInner re-renders
+  // for any number of unrelated reasons (online/offline status listener,
+  // day-rollover interval from Phase G, etc.). Each re-fire clears the
+  // pending timeout and schedules a fresh 1500ms one, so under continuous
+  // parent re-rendering the timeout never fires and the user gets stuck on
+  // LobbyEnded. Capturing onExit in a ref keeps the latest closure
+  // available without depending on its identity.
+  const onExitRef = useRef(onExit);
+  onExitRef.current = onExit;
   useEffect(() => {
-    const t = setTimeout(onExit, 1500);
+    const t = setTimeout(() => onExitRef.current?.(), 1500);
     return () => clearTimeout(t);
-  }, [onExit]);
+  }, []);
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -3945,6 +3956,14 @@ function LobbyEnded({ onExit }) {
 // in 1C.3 / 1C.4 / 1C.5.
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
   const question = room.questions?.[room.current_question];
+
+  // mountedRef: gates setState calls inside async paths so post-unmount
+  // resolutions don't trigger React warnings. MultiplayerGameplay unmounts
+  // when room.state goes to 'ended' (parent renders LobbyEnded instead) or
+  // when the user leaves. Pending RPC promises from handleAdvance,
+  // handleAnswerPick, and handleTimeoutAutoSubmit can resolve after that.
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
 
   // Local optimistic answer lock. Cleared on question advance OR rolled back
   // on question_idx_mismatch RPC response. The shape mirrors what we'll need
@@ -4001,6 +4020,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx, lockTimeMs });
 
     const result = await actions.submitAnswer(submittedQuestionIdx, answerIdx, lockTimeMs);
+    if (!mountedRef.current) return;
 
     if (result.error) {
       // Hard RPC failure (network, server 5xx). Don't roll back the
@@ -4048,6 +4068,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     if (advancing) return;
     setAdvancing(true);
     const result = await actions.advance();
+    if (!mountedRef.current) return;
     if (result.error) {
       console.warn("[mp] advance failed:", result.error);
       setAdvancing(false);
@@ -4078,8 +4099,21 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // somehow racing).
   const handleTimeoutAutoSubmit = useCallback(async () => {
     if (myAnswer || serverConfirmedAnswered) return;
-    setMyAnswer({ questionIdx: currentQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
-    await actions.submitAnswer(currentQuestionIdx, -1, QUESTION_DURATION_MS);
+    const submittedQuestionIdx = currentQuestionIdx;
+    setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
+    const result = await actions.submitAnswer(submittedQuestionIdx, -1, QUESTION_DURATION_MS);
+    if (!mountedRef.current) return;
+    // Reconciliation parity with handleAnswerPick: if host advanced just
+    // as the timer fired, our auto-submit lands on a stale question.
+    // Server returns question_idx_mismatch → roll back the optimistic
+    // lock so the new question's UI doesn't show a phantom "answer
+    // locked" state. The question-advance useEffect already clears
+    // myAnswer on currentQuestionIdx change, but we may be ahead of
+    // the realtime UPDATE that triggers it; explicit clear is
+    // defense-in-depth.
+    if (result.accepted === false && result.reason === "question_idx_mismatch") {
+      setMyAnswer(null);
+    }
   }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
 
   if (!question) {
