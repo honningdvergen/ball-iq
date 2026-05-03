@@ -7,6 +7,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
+import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles } from 'lucide-react';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -11355,23 +11356,29 @@ function AppInner() {
             })()}
 
             {/* ── MORE MODES ── */}
+            {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
+                for a slightly bolder line that holds at the 20px size in
+                the 36px rounded-square chip. Color = var(--accent) for a
+                consistent green-on-dark identity across the grid. */}
             <div className="home-section-title">More modes</div>
             <div className="play-grid">
               {[
-                { key:"classic",   icon:"⏱️",  name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
-                { key:"league",    icon:"🏆",  name:"League Quiz",   desc:"Pick your league",  onTap:() => setShowLeaguePicker(true) },
-                { key:"survival",  icon:"🔥",  name:"Survival",      desc:"Die on wrong" },
-                { key:"hotstreak", icon:"⚡🔥", name:"Hot Streak",    desc:"60-second sprint" },
-                { key:"legends",   icon:"📜",  name:"Legends",       desc:"Pre-2000 greats" },
-                { key:"balliq",    icon:"🧠",  name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
-                { key:"chaos",     icon:"🎭",  name:"Chaos",         desc:"Quotes & chaos" },
-              ].map(({ key, icon, name, desc, onTap }) => (
+                { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
+                { key:"league",    Icon: Trophy,     name:"League Quiz",   desc:"Pick your league",  onTap:() => setShowLeaguePicker(true) },
+                { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
+                { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
+                { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
+                { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
+                { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
+              ].map(({ key, Icon, name, desc, onTap }) => (
                 <button
                   key={key}
                   className="play-card"
                   onClick={onTap || (() => startMode(key))}
                 >
-                  <span className="play-card-icon">{icon}</span>
+                  <span className="play-card-icon">
+                    <Icon size={20} strokeWidth={2.25} color="var(--accent)" aria-hidden="true" />
+                  </span>
                   <span className="play-card-body">
                     <span className="play-card-name">{name}</span>
                     <span className="play-card-desc">{desc}</span>
