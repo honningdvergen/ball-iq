@@ -461,6 +461,61 @@ Blocked on: needs N concurrent users with distinct `auth.uid()` values. Three im
 
 ---
 
+## Staging environment limitations
+
+Captured 2026-05-04. The staging Supabase project (`ajkdlutrdhdylzpdjqzb`) runs on the free tier; production (`blcisypmngimqkwxrrdm`) is paid. The two diverge in ways that block the spike test suite from running against staging.
+
+### Symptom
+
+spike-1 against staging reaches: auth succeeds → channel returns `SUBSCRIBED` → all 8 RPC writes complete cleanly → **zero realtime events delivered** on either filter. The same spike against production passes.
+
+### Eliminated as causes (verified clean on staging via MCP read-only queries)
+
+| Probe | Result |
+|---|---|
+| `pg_publication_tables` for `supabase_realtime` | Both `_spike_room` and `_spike_player` listed |
+| `pg_class.relreplident` | Both = `'f'` (FULL) |
+| `pg_policies` on spike tables | Permissive `cmd=SELECT`, `roles={authenticated}`, `qual=true` |
+| `pg_publication` DML flags | `pubinsert/pubupdate/pubdelete/pubtruncate` all true |
+| Filter definitions in `spike-1-realtime.mjs` | Exact match (`schema='public'`, table=`_spike_room` / `_spike_player`, `event='*'`) |
+| `pg_replication_slots` (after dashboard toggle) | Both `wal2json` (legacy postgres_changes) and `pgoutput` (broadcast/messages) slots active with `active_pid` set |
+| Test user state | Exists, confirmed, identity row clean after fixing `provider_id = email` and four `NULL → ''` token fields left over from manual SQL provisioning |
+
+### What worker logs revealed
+
+Realtime worker logs (`mcp__supabase__get_logs service: realtime`) for the spike-1 run window:
+
+- Tenant cold-starts on demand — free-tier idle pattern (`Stop tenant ... because of no connected users` minutes earlier, then `Tenant initializing` on next subscribe).
+- **Every replication-related log entry mentions only the `_messages_publication` / `_messages_replication_slot_` (broadcast/messages model).** The legacy `supabase_realtime` publication and its `wal2json` slot are never mentioned in logs, despite both showing `active=true` in `pg_replication_slots`.
+- Only one "Starting replication for ..." message: `Starting replication for Broadcast Changes`. No equivalent for postgres_changes.
+- Zero entries mention our spike's user, channel, RLS evaluation, `_spike_room`, or `_spike_player` — no errors, no drops, no acknowledgments. Just absence.
+
+### Inferred cause
+
+The free-tier realtime worker on this project runs **only** the broadcast/messages replication pipeline. Legacy `postgres_changes` channels are accepted at the API layer (`SUBSCRIBED` returned to the client) but the worker has no consumer wiring WAL events from the wal2json slot through to subscribers. Production (paid tier) clearly does run the legacy path — `App.jsx`'s `useMultiplayerRoom` postgres_changes subscriptions work there.
+
+Empirical, not contractual — Supabase's published free-tier limits don't explicitly mention this. The pattern is consistent with their broader shift toward broadcast/messages as the primary delivery model.
+
+### Implications
+
+- Spike suite (and `spike-nightly.yml`) is currently incompatible with free-tier staging. spike-1 fails reliably regardless of code state; spike-2 likely passes (SQL row-locking, no realtime dependency) but hasn't been re-validated post free-tier-discovery.
+- Production behavior is unaffected — paid tier runs the legacy postgres_changes path the production multiplayer code depends on.
+
+### Decision deferred
+
+Two paths, choice pending later this week:
+
+1. **Upgrade staging to Supabase Pro tier (~$25/month).** Restores legacy postgres_changes parity with production. Spike suite resumes without code changes.
+2. **Rewrite spikes against the broadcast/messages model.** Triggers on `_spike_room` / `_spike_player` would call `realtime.send(...)` or `realtime.broadcast_changes(...)`; client subscribes to `broadcast` events on a `private: true` channel. Larger scope, forward-compatible if production migrates later.
+
+Choice depends on (a) whether production realtime is expected to stay on legacy postgres_changes for V1's lifecycle, and (b) the cost-vs-engineering-time trade-off.
+
+### Operational status
+
+`scripts/README.md`'s "How to run in CI" section flags `spike-nightly` as currently blocked pending the tier decision.
+
+---
+
 ## Future considerations (parking lot)
 
 Items deliberately deferred during Stage 1. None are blocking V1; each documents what we'd do if a real need materialized.

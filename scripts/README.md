@@ -47,6 +47,8 @@ SPIKE_TEST_USER_EMAIL=spike-tester@balliq.app
 
 ## How to run in CI
 
+> **BLOCKED — staging tier upgrade pending.** As of 2026-05-04, `spike-nightly` is incompatible with the free-tier staging project. Empirical testing shows free-tier doesn't deliver legacy `postgres_changes` events to channel subscribers (only the broadcast/messages model is wired). spike-1 reliably fails regardless of code state. See `docs/MULTIPLAYER.md` "Staging environment limitations" for diagnostic evidence. Decision pending: upgrade staging to Pro tier (~$25/month) vs rewrite spikes against the broadcast/messages model.
+
 `.github/workflows/spike-nightly.yml` runs both spikes:
 
 - **Schedule:** every night at 09:00 UTC (~02:00 PT, 11:00 CET) — chosen to land before working hours so a failed run is visible at start-of-day.
@@ -85,6 +87,7 @@ Failure modes to expect:
 |---|---|---|
 | `subscribe failed: TIMED_OUT` (spike-1) | Realtime cluster degraded or staging project paused due to inactivity | Re-run manually via `workflow_dispatch`. If repeats, check Supabase project status. |
 | `event count mismatch` (spike-1) | REPLICA IDENTITY changed off FULL on one of the spike tables, OR a postgres_changes filter regression in the Supabase image | Investigate — this is a real Stage 1 contract regression. |
+| `event count mismatch` (spike-1) AND realtime worker logs mention only `Broadcast Changes` activity | Free-tier staging not delivering legacy postgres_changes — see `docs/MULTIPLAYER.md` "Staging environment limitations" | Not a production regression. Awaiting tier-upgrade decision. |
 | `flakes > 0` (spike-2) | The `FOR UPDATE + expected_question` gate stopped serializing — a regression in `_spike_advance` (or by extension the production `advance_question` if the migration was modified) | Investigate — this is the bug class that broke production in Stage 1C iterations. |
 | `generateLink: ...` failure | Test user doesn't exist in staging, or service role key is invalid | Check staging project state + secret values. |
 | `missing required env vars` | Secret missing in GitHub repo settings | Add the secret under Settings → Secrets and variables → Actions. |
