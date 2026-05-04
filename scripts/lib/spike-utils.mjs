@@ -9,16 +9,16 @@
 //   1. process.env.<NAME>           (CI secrets / shell exports at startup)
 //   2. .env.spike file at repo root (spike-only staging credentials)
 //   3. .env.local file at repo root (local dev convenience)
-//   4. hardcoded fallback           (preserves pre-CI local behavior)
+//
+// No hardcoded fallbacks. All five SPIKE_* env vars are required in every
+// environment (local + CI) — missing values throw at config-resolve time
+// with the variable name in the error. This refuses to silently fall back
+// to production credentials that happen to live under legacy names in
+// .env.local (VITE_SUPABASE_KEY, SUPABASE_SERVICE_ROLE_KEY).
 //
 // .env.spike is loaded AFTER .env.local so SPIKE_* values there win over
-// any same-named keys in .env.local. This is what keeps spikes pointed at
-// staging even when .env.local contains production app credentials under
-// legacy names (VITE_SUPABASE_KEY, SUPABASE_SERVICE_ROLE_KEY).
-//
-// In CI, env vars are required (no fallback to a hardcoded production
-// URL). Locally, the fallback path keeps the existing dev workflow
-// working without forcing every contributor to set up env vars.
+// any same-named keys in .env.local. Local contributors must populate
+// .env.spike (gitignored, staging-only) before running any spike script.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -60,51 +60,48 @@ function loadEnvFile(filename, protectedKeys) {
 }
 
 // ─── config resolution ───────────────────────────────────────────────
-// Resolves the spike test configuration from env vars + fallbacks.
-// Throws with a clear message when CI mode is detected (CI=true) and
-// a required value is missing — fail-loud beats silent-fall-to-prod.
+// Resolves the spike test configuration. Reads ONLY the five SPIKE_* env
+// vars — no legacy or fallback names — and throws if any are missing.
+// Logs the resolved target URL + project_ref to stdout BEFORE returning
+// so any future misconfig is visible on the first line of script output,
+// ahead of any auth or write operation.
 export function resolveConfig() {
   loadDotEnv();
   const isCI = !!process.env.CI;
 
-  // SUPABASE_URL — staging in CI, production locally (matches current dev flow).
-  // Naming: SPIKE_SUPABASE_URL is preferred (explicit); SUPABASE_URL is legacy.
-  const supabaseUrl =
-    process.env.SPIKE_SUPABASE_URL ||
-    process.env.SUPABASE_URL ||
-    (isCI ? null : 'https://blcisypmngimqkwxrrdm.supabase.co');
-
-  // ANON key — VITE_SUPABASE_KEY is the legacy name from .env.local.
-  const anonKey =
-    process.env.SPIKE_SUPABASE_ANON_KEY ||
-    process.env.VITE_SUPABASE_KEY;
-
-  // SERVICE ROLE — must never be in client code. CI sets via secret.
-  const serviceKey =
-    process.env.SPIKE_SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  // Test user — fixed account on the project that the spikes sign in as.
-  // Local fallback is the project owner's email (existing behavior).
-  const testUserEmail =
-    process.env.SPIKE_TEST_USER_EMAIL ||
-    (isCI ? null : 'alexbo99@hotmail.no');
+  const supabaseUrl = process.env.SPIKE_SUPABASE_URL;
+  const anonKey = process.env.SPIKE_SUPABASE_ANON_KEY;
+  const serviceKey = process.env.SPIKE_SUPABASE_SERVICE_ROLE_KEY;
+  const testUserEmail = process.env.SPIKE_TEST_USER_EMAIL;
+  const testUserPassword = process.env.SPIKE_TEST_USER_PASSWORD;
 
   const missing = [];
   if (!supabaseUrl) missing.push('SPIKE_SUPABASE_URL');
-  if (!anonKey) missing.push('SPIKE_SUPABASE_ANON_KEY (or VITE_SUPABASE_KEY)');
-  if (!serviceKey) missing.push('SPIKE_SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_ROLE_KEY)');
+  if (!anonKey) missing.push('SPIKE_SUPABASE_ANON_KEY');
+  if (!serviceKey) missing.push('SPIKE_SUPABASE_SERVICE_ROLE_KEY');
   if (!testUserEmail) missing.push('SPIKE_TEST_USER_EMAIL');
+  if (!testUserPassword) missing.push('SPIKE_TEST_USER_PASSWORD');
 
   if (missing.length > 0) {
-    const ctx = isCI ? 'CI run (no fallbacks)' : 'local run with no .env.local fallback';
     throw new Error(
-      `[spike-utils] missing required env vars (${ctx}):\n  - ${missing.join('\n  - ')}\n` +
-      `Set these in your env / .env.local / GitHub secrets and re-run.`
+      `[spike-utils] missing required env vars (no fallbacks):\n  - ${missing.join('\n  - ')}\n` +
+      `Set these in .env.spike (local), shell exports, or CI secrets and re-run.`
     );
   }
 
-  return { supabaseUrl, anonKey, serviceKey, testUserEmail, isCI };
+  const projectRef = extractProjectRef(supabaseUrl);
+  console.log(`[spike] Target: ${supabaseUrl} (project_ref=${projectRef})`);
+
+  return { supabaseUrl, anonKey, serviceKey, testUserEmail, testUserPassword, isCI };
+}
+
+function extractProjectRef(url) {
+  try {
+    const hostname = new URL(url).hostname;
+    return hostname.split('.')[0] || 'unknown';
+  } catch {
+    return 'unknown';
+  }
 }
 
 // ─── test user sign-in ───────────────────────────────────────────────
