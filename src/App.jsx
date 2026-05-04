@@ -7,7 +7,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles } from 'lucide-react';
+import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -948,7 +948,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
 .hero-online-sub-mobile{display:inline;}
 .hero-online-sub-desktop{display:none;}
-.hero-online-emoji{position:absolute;right:-6px;bottom:-6px;font-size:92px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
+.hero-online-icon{position:absolute;right:8px;bottom:8px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
 /* Mobile-only tightening for the Multiplayer hero + slim hdr chrome.
    Desktop padding/emoji stay at base values; .hdr is display:none on
    desktop. PWA standalone is included here (always <1024px viewport
@@ -970,8 +970,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
     padding: 8px 16px;
     min-height: 64px;
   }
-  .hero-online-emoji {
-    font-size: 48px;
+  .hero-online-icon {
+    width: 44px;
+    height: 44px;
     bottom: 4px;
     right: 4px;
   }
@@ -11342,7 +11343,7 @@ function AppInner() {
                 <span className="hero-online-sub-desktop">Challenge someone online</span>
               </div>
               <div className="hero-online-cta">Play</div>
-              <div className="hero-online-emoji">🤝</div>
+              <Users size={80} strokeWidth={2.25} color="var(--accent)" aria-hidden="true" className="hero-online-icon" />
             </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
