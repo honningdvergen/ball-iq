@@ -3637,7 +3637,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
                 fontFamily: "inherit",
               }}
             />
-            <button className="btn-3d" onClick={handleJoin} disabled={busy} style={{ width: "100%" }}>
+            <button className="btn-3d" onClick={() => handleJoin()} disabled={busy} style={{ width: "100%" }}>
               {joining ? "Joining…" : "Join"}
             </button>
           </div>
