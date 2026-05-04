@@ -9,6 +9,7 @@ import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -3488,22 +3489,29 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
   // locks out a 3rd friend mid-invite". Joiners don't see this picker —
   // the host's pick lands on the room row server-side via create_room.
   const [capacity, setCapacity] = useState(4);
+  // Show "Reconnecting…" pill while create_room / join_room is in
+  // retry territory (the wrapper layer absorbs transient blips silently
+  // on the first attempt; this indicator fires once the second attempt
+  // is in flight, so a brief blip stays invisible).
+  const { retrying: mpRetrying } = useMpRetryStatus();
 
   const handleCreate = async () => {
     if (creating || joining) return;
     setCreating(true);
     setError("");
-    const { data, error: rpcErr } = await supabase.rpc("create_room", {
+    // create_room is single-attempt by design (not idempotent — retry
+    // could orphan rooms). User manually re-taps Create on failure.
+    const result = await mpCreateRoom({
       p_capacity: capacity,
       p_name: defaultName || "Player",
       p_avatar: "⚽",
     });
-    if (rpcErr) {
-      setError(rpcErr.message || "Couldn't create room");
+    if (result.error) {
+      setError(result.error || "Couldn't create room");
       setCreating(false);
       return;
     }
-    onLobbyEnter(data.code);
+    onLobbyEnter(result.code);
     // No setCreating(false) — component unmounts on navigation.
   };
 
@@ -3521,28 +3529,29 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     }
     setJoining(true);
     setError("");
-    const { data, error: rpcErr } = await supabase.rpc("join_room", {
+    const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: defaultName || "Player",
       p_avatar: "⚽",
     });
-    if (rpcErr) {
+    if (result.error) {
       // Specific copy for known SQLSTATEs (raised by the SQL functions
-      // with explicit `using errcode = '...'`). Falls back to generic
-      // RPC message for anything unexpected.
-      if (rpcErr.code === "53300") {
+      // with explicit `using errcode = '...'`). The wrapper preserves
+      // PostgrestError.code in result.code on error. Falls back to
+      // generic RPC message for anything unexpected.
+      if (result.code === "53300") {
         setError("This room is full");
-      } else if (rpcErr.code === "P0002") {
+      } else if (result.code === "P0002") {
         setError("No room with that code — check with your friend");
-      } else if (rpcErr.code === "42P01") {
+      } else if (result.code === "42P01") {
         setError("This room isn't accepting joins right now");
       } else {
-        setError(rpcErr.message || "Couldn't join room");
+        setError(result.error || "Couldn't join room");
       }
       setJoining(false);
       return;
     }
-    onLobbyEnter(data.code);
+    onLobbyEnter(result.code);
   };
 
   // Stage 1F.6 — deep-link auto-join. AppInner sets autoJoinCode from
@@ -3574,6 +3583,21 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
         <div className="page-title">Online Multiplayer</div>
       </div>
       <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
+        {mpRetrying && (
+          <div style={{
+            padding: "6px 12px",
+            background: "rgba(34, 197, 94, 0.1)",
+            border: "1px solid rgba(34, 197, 94, 0.3)",
+            borderRadius: 8,
+            marginBottom: 12,
+            fontSize: 12,
+            color: "var(--accent)",
+            textAlign: "center",
+          }}>
+            Reconnecting…
+          </div>
+        )}
+
         {/* Stage 1F.2: room-size picker — same .local-count-btn widget
             that LocalSetup uses for player count, so the muscle memory
             transfers. Default 4 (max headroom). */}
@@ -4027,6 +4051,17 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // clients — first wins, others no-op silently.
   const [revealPhase, setRevealPhase] = useState('answering');
 
+  // R2: track whether 'advancing' phase has been active for >15s without
+  // resolving. Likely cause is host session expired or host's network
+  // silently dropped without leave_room firing — joiners would otherwise
+  // sit on a dimmed UI indefinitely. The flag drives an explicit Leave
+  // banner (rendered below) so joiners aren't trapped.
+  const [advancingTooLong, setAdvancingTooLong] = useState(false);
+
+  // Retry-status subscription. Renders a "Reconnecting…" pill at the top
+  // of the gameplay screen while any multiplayer RPC is in retry territory.
+  const { retrying: mpRetrying } = useMpRetryStatus();
+
   // Captures performance.now() at the moment the current question first
   // rendered. Used to compute lock_time_ms on submit.
   const questionStartedAtRef = useRef(performance.now());
@@ -4069,7 +4104,13 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     if (!mountedRef.current) return;
 
     if (result.error) {
+      // Network/server failure (post-retry exhaustion). Rollback the
+      // optimistic state — server doesn't have the answer, so the UI
+      // shouldn't lock the option as "answered". Without rollback, the
+      // user appears stuck on the answered-locked banner while other
+      // players see them as not-yet-answered.
       console.warn('[mp] submit_answer failed:', result.error);
+      setMyAnswer(null);
       return;
     }
     if (result.accepted === false) {
@@ -4091,6 +4132,12 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
     const result = await actions.submitAnswer(submittedQuestionIdx, -1, QUESTION_DURATION_MS);
     if (!mountedRef.current) return;
+    if (result.error) {
+      // Network/server failure on the timeout submit. Rollback so
+      // hasAnswered doesn't show as true when the server doesn't agree.
+      setMyAnswer(null);
+      return;
+    }
     if (result.accepted === false && result.reason === "question_idx_mismatch") {
       setMyAnswer(null);
     }
@@ -4108,6 +4155,20 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       setRevealPhase('revealing');
     }
   }, [revealPhase, allAnswered]);
+
+  // R2: advancing-too-long timer. If we're stuck in 'advancing' for >15s,
+  // surface an explicit Leave banner. 15s is intentionally well past the
+  // RPC retry budget (~5s worst case) so retry-eligible failures resolve
+  // before the banner appears. Resets on any phase change out of
+  // 'advancing'.
+  useEffect(() => {
+    if (revealPhase !== 'advancing') {
+      setAdvancingTooLong(false);
+      return;
+    }
+    const t = setTimeout(() => setAdvancingTooLong(true), 15000);
+    return () => clearTimeout(t);
+  }, [revealPhase]);
 
   // Trigger B: local timer expired → revealing (regardless of who answered)
   // Combined with auto-submit so each client's timer expiry is one event.
@@ -4248,6 +4309,21 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         </div>
       </div>
       <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
+        {mpRetrying && (
+          <div style={{
+            padding: "6px 12px",
+            background: "rgba(34, 197, 94, 0.1)",
+            border: "1px solid rgba(34, 197, 94, 0.3)",
+            borderRadius: 8,
+            marginBottom: 10,
+            fontSize: 12,
+            color: "var(--accent)",
+            textAlign: "center",
+          }}>
+            Reconnecting…
+          </div>
+        )}
+
         <ScoreBar
           players={players}
           myUserId={myPlayer?.user_id}
@@ -4266,6 +4342,31 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             textAlign: "center",
           }}>
             ⚠️ Host disconnected — game can't advance.{" "}
+            <button
+              onClick={handleLeave}
+              style={{
+                background: "none", border: "none", color: "var(--accent)",
+                textDecoration: "underline", cursor: "pointer", fontSize: 13,
+                padding: 0, fontFamily: "inherit",
+              }}
+            >
+              Leave game
+            </button>
+          </div>
+        )}
+
+        {advancingTooLong && hostStillPresent && revealPhase === 'advancing' && (
+          <div style={{
+            padding: "10px 14px",
+            background: "rgba(234, 179, 8, 0.1)",
+            border: "1px solid rgba(234, 179, 8, 0.3)",
+            borderRadius: 10,
+            marginBottom: 12,
+            fontSize: 13,
+            color: "var(--text)",
+            textAlign: "center",
+          }}>
+            Game seems stuck — host may be unresponsive.{" "}
             <button
               onClick={handleLeave}
               style={{
@@ -10721,7 +10822,7 @@ function AppInner() {
   const handleHomeClick = useCallback(async () => {
     if (screen === "online-stage1-lobby" && stage1RoomCode) {
       if (!window.confirm("Leave the room and return to home?")) return;
-      try { await supabase.rpc("leave_room", { p_code: stage1RoomCode }); } catch {}
+      try { await mpLeaveRoom({ p_code: stage1RoomCode }); } catch {}
       setStage1RoomCode("");
     }
     goHome();

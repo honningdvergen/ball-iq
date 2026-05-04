@@ -27,6 +27,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { supabase } from './supabase.js'
 import { useAuth } from './useAuth.jsx'
+import {
+  mpStartGame, mpSubmitAnswer, mpAdvanceQuestion,
+  mpLeaveRoom, mpEndGame,
+} from './multiplayerRpc.js'
 
 // Module-level helper: stable sort key for the players array.
 function byJoinedAt(a, b) {
@@ -72,7 +76,15 @@ export function useMultiplayerRoom(code) {
 
     // Re-fetch initial state after a reconnect catch-up. Doesn't toggle
     // loading=true (that would cause UI flicker on every reconnect).
+    // Debounced: if the channel flaps CLOSED↔SUBSCRIBED rapidly under
+    // poor connectivity, calling refetch on each transition would
+    // hammer the project with redundant SELECTs. 2s debounce catches
+    // the storm without delaying the first legitimate refetch.
+    let lastRefetchAt = 0
     async function refetchInitialState(roomId) {
+      const now = Date.now()
+      if (now - lastRefetchAt < 2000) return
+      lastRefetchAt = now
       try {
         const [roomRes, playersRes] = await Promise.all([
           supabase.from('game_rooms').select('*').eq('id', roomId).maybeSingle(),
@@ -229,51 +241,38 @@ export function useMultiplayerRoom(code) {
   // failing with "caller not in this room" (post-kick scenario), etc.
   // Stage 1C.6.1 strips setError from all five actions; consumers handle
   // errors locally via the returned result object.
+  // RPC actions delegate to the multiplayerRpc.js wrappers, which add
+  // retry-on-transient-network with per-RPC backoff config. Application-
+  // level errors (Postgres errcodes, RLS denials) still surface through
+  // unchanged — retry is for fetch failures and 5xx, not 4xx semantics.
   const startGame = useCallback(async (questions, capacity) => {
     if (!code) return { started: false, error: 'No active room' }
-    const { data, error } = await supabase.rpc('start_game', {
-      p_code: code,
-      p_questions: questions,
-      p_capacity: capacity,
-    })
-    if (error) return { started: false, error: error.message }
-    return data
+    return mpStartGame({ p_code: code, p_questions: questions, p_capacity: capacity })
   }, [code])
 
   const submitAnswer = useCallback(async (questionIdx, answerIdx, lockTimeMs) => {
     if (!code) return { accepted: false, error: 'No active room' }
-    const { data, error } = await supabase.rpc('submit_answer', {
+    return mpSubmitAnswer({
       p_code: code,
       p_question_idx: questionIdx,
       p_answer_idx: answerIdx,
       p_lock_time: lockTimeMs,
     })
-    if (error) return { accepted: false, error: error.message }
-    return data
   }, [code])
 
   const advance = useCallback(async () => {
     if (!code || !room) return { advanced: false, error: 'No room loaded' }
-    const { data, error } = await supabase.rpc('advance_question', {
-      p_code: code,
-      p_expected_question: room.current_question,
-    })
-    if (error) return { advanced: false, error: error.message }
-    return data
+    return mpAdvanceQuestion({ p_code: code, p_expected_question: room.current_question })
   }, [code, room])
 
   const leave = useCallback(async () => {
     if (!code) return { left: false, error: 'No active room' }
-    const { data, error } = await supabase.rpc('leave_room', { p_code: code })
-    if (error) return { left: false, error: error.message }
-    return data
+    return mpLeaveRoom({ p_code: code })
   }, [code])
 
   const end = useCallback(async () => {
     if (!code) return { ended: false, error: 'No active room' }
-    const { data, error } = await supabase.rpc('end_game', { p_code: code })
-    if (error) return { ended: false, error: error.message }
-    return data
+    return mpEndGame({ p_code: code })
   }, [code])
 
   return {
