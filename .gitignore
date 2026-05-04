@@ -4,7 +4,9 @@ dist
 .DS_Store
 .env.local
 .env.*.local
+.env.spike
 scripts/.last-publish-summary.json
 scripts/.vintage-candidates.json
 scripts/.vintage-candidates.md
 scripts/.audit-findings.md
+scripts/.Rhistory
