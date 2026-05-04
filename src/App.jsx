@@ -8,6 +8,7 @@ import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -11724,4 +11725,11 @@ function AppGate() {
   return <AppInner />;
 }
 
-export default function App() { return <ErrorBoundary><AppGate /></ErrorBoundary>; }
+export default function App() {
+  return (
+    <>
+      <ErrorBoundary><AppGate /></ErrorBoundary>
+      <SpeedInsights />
+    </>
+  );
+}
