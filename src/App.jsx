@@ -9183,7 +9183,22 @@ const WORDLE_PLAYERS = [
 // day. Using getTime() / TIMINGS.DAY_MS means the puzzle rolls over at UTC midnight,
 // which keeps "everyone gets the same player" simple across timezones.
 function getWordleDayIndex() { return Math.floor(Date.now() / TIMINGS.DAY_MS); }
-function getWordleAnswer() { return WORDLE_PLAYERS[getWordleDayIndex() % WORDLE_PLAYERS.length]; }
+
+// Stride spreads length groups across the schedule (WORDLE_PLAYERS is sorted
+// by length, so plain `dayIndex % length` clustered ~30+ same-length days in
+// a row). gcd(WORDLE_STRIDE, WORDLE_PLAYERS.length) MUST equal 1 — verify
+// when adding entries.
+const WORDLE_ANCHOR_DAY = 20577;
+const WORDLE_ANCHOR_IDX = 129;
+const WORDLE_STRIDE = 131;
+
+function getWordleAnswer() {
+  const day = getWordleDayIndex();
+  const offset = (day - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
+  const len = WORDLE_PLAYERS.length;
+  const idx = ((WORDLE_ANCHOR_IDX + offset) % len + len) % len;
+  return WORDLE_PLAYERS[idx];
+}
 function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
