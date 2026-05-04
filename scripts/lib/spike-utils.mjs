@@ -5,10 +5,16 @@
 // resolution, test-user sign-in via admin.generateLink + verifyOtp,
 // timestamp formatting). New spikes should import from here.
 //
-// Env-var resolution order for each value:
-//   1. process.env.<NAME>          (set by CI from GitHub secrets)
-//   2. .env.local file at repo root (local dev convenience)
-//   3. hardcoded fallback           (preserves pre-CI local behavior)
+// Env-var resolution order for each value (highest precedence first):
+//   1. process.env.<NAME>           (CI secrets / shell exports at startup)
+//   2. .env.spike file at repo root (spike-only staging credentials)
+//   3. .env.local file at repo root (local dev convenience)
+//   4. hardcoded fallback           (preserves pre-CI local behavior)
+//
+// .env.spike is loaded AFTER .env.local so SPIKE_* values there win over
+// any same-named keys in .env.local. This is what keeps spikes pointed at
+// staging even when .env.local contains production app credentials under
+// legacy names (VITE_SUPABASE_KEY, SUPABASE_SERVICE_ROLE_KEY).
 //
 // In CI, env vars are required (no fallback to a hardcoded production
 // URL). Locally, the fallback path keeps the existing dev workflow
@@ -23,10 +29,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(__dirname, '..', '..');
 
 // ─── env loader ──────────────────────────────────────────────────────
-// Reads .env.local (gitignored) into process.env. Skips lines that are
-// already set via the runtime env (so CI secrets win over file contents).
+// Reads .env.local then .env.spike (both gitignored) into process.env.
+// Files are loaded in increasing precedence: .env.spike overrides
+// .env.local, but neither overrides keys already set in the runtime env
+// at script start (so CI secrets / shell exports always win).
 export function loadDotEnv() {
-  const file = path.join(REPO_ROOT, '.env.local');
+  // Snapshot keys set by CI/shell BEFORE loading any file, so neither
+  // file can override them (CI secrets take precedence over file content).
+  const startupKeys = new Set(Object.keys(process.env));
+  loadEnvFile('.env.local', startupKeys);
+  loadEnvFile('.env.spike', startupKeys);
+}
+
+function loadEnvFile(filename, protectedKeys) {
+  const file = path.join(REPO_ROOT, filename);
   if (!fs.existsSync(file)) return;
   const txt = fs.readFileSync(file, 'utf8');
   for (const line of txt.split('\n')) {
@@ -38,7 +54,8 @@ export function loadDotEnv() {
     if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
       value = value.slice(1, -1);
     }
-    if (!process.env[m[1]]) process.env[m[1]] = value;
+    if (protectedKeys.has(m[1])) continue;
+    process.env[m[1]] = value;
   }
 }
 
