@@ -19,8 +19,9 @@ import { loadQuestions } from './questions-loader.js';
 // loadQuestions() resolves, instead of at module evaluation. Importing
 // from questions-loader avoids pulling questions.js into the eager
 // bundle even when ReviewScreen.jsx is itself imported eagerly.
-// CHAOS_QB items are already inlined into QB at runtime, so they're
-// naturally included.
+// Chaos questions live in QB tagged cat:"chaos" (since the CHAOS_QB
+// dead-export removal in 2026-05-05 audit), so they appear in the pool
+// naturally.
 const IDX_KEY = 'biq_review_idx';
 
 const STATUS = {

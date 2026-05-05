@@ -262,11 +262,8 @@ const currentSrc = fs.readFileSync(QFILE, 'utf8');
 let newSrc = currentSrc;
 newSrc = replaceArrayBody(newSrc, 'QB', newQB, QB_ORDER);
 newSrc = replaceArrayBody(newSrc, 'TF_STATEMENTS', newTF, TF_ORDER);
-// Note: CHAOS_QB is left alone. After Phase 1 it's a historical artifact —
-// chaos questions also live inlined in QB and the app imports only QB +
-// TF_STATEMENTS. Touching CHAOS_QB here would just create drift between
-// the two arrays for chaos items. If you want to clean up CHAOS_QB, do it
-// as a separate manual pass.
+// CHAOS_QB was removed in the 2026-05-05 audit — chaos questions live
+// in QB only, so the QB body replacement above already handles them.
 
 // ─── summary output ──────────────────────────────────────────────────────────
 console.log('## Decisions applied');

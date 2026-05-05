@@ -8,7 +8,7 @@
 // is invisible to users on normal connections.
 //
 // Pattern:
-//   loadQuestions()    → returns { QB, TF_STATEMENTS, CHAOS_QB, QB_WC2026, QB_CHAOS }
+//   loadQuestions()    → returns { QB, TF_STATEMENTS, QB_WC2026, QB_CHAOS }
 //                        async; resolves immediately if already cached
 //   prefetchQuestions() → fire-and-forget alias for AppInner mount
 //
@@ -35,7 +35,6 @@ export function loadQuestions() {
   inFlight = import('./questions.js').then((mod) => {
     const QB = mod.QB;
     const TF_STATEMENTS = mod.TF_STATEMENTS;
-    const CHAOS_QB = mod.CHAOS_QB;
 
     // Chaos default-difficulty normalization. Previously at App.jsx:77.
     // Mutates QB rows in place — same behavior as before, just deferred.
@@ -48,7 +47,7 @@ export function loadQuestions() {
     const QB_WC2026 = QB.filter(q => q && q.tag === "wc2026");
     const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
 
-    cache = { QB, TF_STATEMENTS, CHAOS_QB, QB_WC2026, QB_CHAOS };
+    cache = { QB, TF_STATEMENTS, QB_WC2026, QB_CHAOS };
     inFlight = null;  // free the promise reference once resolved
     return cache;
   }).catch((err) => {
