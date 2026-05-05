@@ -282,7 +282,7 @@ export default function ReviewScreen({ onBack }) {
 
   return (
     <Frame onBack={onBack}>
-      <ProgressStrip idx={idx} counts={counts} pendingPosition={pendingPosition} />
+      <ProgressStrip idx={idx} total={TOTAL} counts={counts} pendingPosition={pendingPosition} />
 
       <div className="q-card">
         {q.cat && <div className="q-tag">{q.cat}</div>}
@@ -403,14 +403,14 @@ function Frame({ onBack, children }) {
   );
 }
 
-function ProgressStrip({ idx, counts, pendingPosition }) {
+function ProgressStrip({ idx, total, counts, pendingPosition }) {
   return (
     <div style={{padding:'2px 0 14px', fontSize:12, color:'var(--t2)', fontFamily:"'Inter',sans-serif"}}>
       <div style={{
         fontSize:13, fontWeight:800, color:'var(--t1)', marginBottom:6,
         fontFamily:"'JetBrains Mono','SF Mono',monospace", fontVariantNumeric:'tabular-nums',
       }}>
-        {idx + 1} / {TOTAL}
+        {idx + 1} / {total}
         {pendingPosition !== null && counts.pending > 0 && (
           <span style={{marginLeft:10, color:'var(--t3)', fontWeight:600}}>
             · pending #{pendingPosition} of {counts.pending}
