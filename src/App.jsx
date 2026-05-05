@@ -1209,7 +1209,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    the reward registers visually instead of fading in like a stat row. */
 .xp-earned-pop{animation:xpEarnedPop 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;}
 @keyframes xpEarnedPop{from{opacity:0;transform:scale(0.7);}60%{opacity:1;transform:scale(1.08);}to{opacity:1;transform:scale(1);}}
-.btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
 .btn-p{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0a1a00;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
 .btn-p:hover{background:linear-gradient(135deg,#22c55e,#22c55e);transform:translateY(-1px);}
 .btn-s{background:var(--s1);color:var(--text);border:1px solid var(--border);}
@@ -1316,7 +1316,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* .settings-section-title — layout-only; visual tokens from .ds-eyebrow. */
 .settings-section-title{margin-bottom:8px;}
 .settings-card{background:var(--s1);border:none;border-radius:var(--r);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.35);}
-.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.13s;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.13s;color:var(--text);}
 .settings-row:last-child{border-bottom:none;}
 .settings-row:hover{background:var(--s2);}
 .settings-row.danger:hover{background:rgba(248,113,113,0.05);}
@@ -1573,7 +1573,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .light .crop-overlay{background:rgba(0,0,0,0.85);}
 .light .crop-stage{background:#1a1a1a;}
 .light .crop-actions{background:#1a1a1a;border-top:1px solid #2a2a2a;}
-.crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
 .crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(34,197,94,0.28);}
 .crop-btn.primary:hover:not(:disabled){background:#16a34a;}
@@ -3600,23 +3600,29 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 
         {/* Stage 1F.2: room-size picker — same .local-count-btn widget
             that LocalSetup uses for player count, so the muscle memory
-            transfers. Default 4 (max headroom). */}
-        <div className="ds-eyebrow local-section-label">Room size</div>
-        <div className="local-count-row" style={{ marginBottom: 16 }}>
-          {[2, 3, 4].map(n => (
-            <button
-              key={n}
-              type="button"
-              className={`local-count-btn${capacity === n ? " on" : ""}`}
-              onClick={() => setCapacity(n)}
-              disabled={busy}
-              aria-label={`Room size ${n} players`}
-              aria-pressed={capacity === n}
-            >
-              {n}
-            </button>
-          ))}
-        </div>
+            transfers. Default 4 (max headroom). Hidden in Join-with-Code
+            mode since the joiner's pick is silently ignored server-side
+            (capacity is host-set at create time). */}
+        {!showCodeInput && (
+          <>
+            <div className="ds-eyebrow local-section-label">Room size</div>
+            <div className="local-count-row" style={{ marginBottom: 16 }}>
+              {[2, 3, 4].map(n => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`local-count-btn${capacity === n ? " on" : ""}`}
+                  onClick={() => setCapacity(n)}
+                  disabled={busy}
+                  aria-label={`Room size ${n} players`}
+                  aria-pressed={capacity === n}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <button
           className="btn-3d"
           onClick={handleCreate}
@@ -3812,7 +3818,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
       <div style={{ padding: "16px 4px", maxWidth: 480, margin: "0 auto" }}>
         {/* Code display */}
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t3)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
+          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
             Room Code
           </div>
           <button
@@ -3828,7 +3834,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
           >
             {room.code}
           </button>
-          <div style={{ fontSize: 12, color: "var(--t3)", marginTop: 6 }}>
+          <div style={{ fontSize: 12, color: "var(--t2)", marginTop: 6 }}>
             Tap to copy — share with friends
           </div>
           {copyToast && (
@@ -3838,11 +3844,11 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
 
         {/* Player list */}
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t3)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 8 }}>
             Players ({players.length}/{room.capacity})
           </div>
           {players.length === 0 ? (
-            <div style={{ padding: "20px", textAlign: "center", color: "var(--t3)", fontSize: 13 }}>
+            <div style={{ padding: "20px", textAlign: "center", color: "var(--t2)", fontSize: 13 }}>
               Waiting for players…
             </div>
           ) : (
