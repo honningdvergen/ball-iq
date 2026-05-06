@@ -4477,79 +4477,81 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           </div>
         )}
 
-        {showRevealBanner && (
-          <div style={{
-            padding: "10px 14px",
-            background: "var(--s2)",
-            border: "1px solid var(--accent)",
-            borderRadius: 10,
-            marginBottom: 12,
-            fontSize: 14,
-            fontWeight: 600,
-            color: "var(--text)",
-            textAlign: "center",
-          }}>
-            {isLastQuestion ? "Game ending in 2s" : "Next question in 2s"}
-          </div>
-        )}
+        {/* Reserved phase-banner slot: reveal / stuck / advancing-too-long
+            are mutually exclusive (driven by revealPhase). Reserving 50px
+            keeps content below stable when these appear/disappear. Empty
+            slot is invisible (no border/background) when no banner shows. */}
+        <div style={{ minHeight: 50, marginBottom: 12 }}>
+          {showRevealBanner && (
+            <div style={{
+              padding: "10px 14px",
+              background: "var(--s2)",
+              border: "1px solid var(--accent)",
+              borderRadius: 10,
+              fontSize: 14,
+              fontWeight: 600,
+              color: "var(--text)",
+              textAlign: "center",
+            }}>
+              {isLastQuestion ? "Game ending in 2s" : "Next question in 2s"}
+            </div>
+          )}
 
-        {revealPhase === 'stuck' && hostStillPresent && (
-          <div style={{
-            padding: "10px 14px",
-            background: "rgba(239, 68, 68, 0.1)",
-            border: "1px solid rgba(239, 68, 68, 0.3)",
-            borderRadius: 10,
-            marginBottom: 12,
-            fontSize: 13,
-            color: "var(--text)",
-            textAlign: "center",
-          }}>
-            Couldn't advance — leave the room and rejoin to retry.
-          </div>
-        )}
+          {revealPhase === 'stuck' && hostStillPresent && (
+            <div style={{
+              padding: "10px 14px",
+              background: "rgba(239, 68, 68, 0.1)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              borderRadius: 10,
+              fontSize: 13,
+              color: "var(--text)",
+              textAlign: "center",
+            }}>
+              Couldn't advance — leave the room and rejoin to retry.
+            </div>
+          )}
+        </div>
 
-        {/* Stage 1C.7: dim wrapper now scopes ONLY the timer (which is
-            also visually "done" at 0s during reveal). QuestionView moved
-            outside so its options can render at full opacity with the new
-            correct/wrong reveal coloring (green/red). QuestionView dims
-            its own prompt internally when revealing=true.
-            Stage 1C.7.6: transition removed — opacity snaps. Was animating
-            in parallel with option color reveal during phase changes,
-            contributing to the stuttery feel. Per the "one source of
-            motion at a time" principle. */}
+        {/* Stage 1C.7: dim wrapper scopes only the timer. QuestionView dims
+            its own prompt internally when revealing=true. */}
         <div style={{ opacity: dimContent ? 0.6 : 1 }}>
-          {/* key={currentQuestionIdx} unmounts/remounts on advance so the
-              timer resets cleanly. */}
           <QuestionTimer
-            key={currentQuestionIdx}
             durationMs={QUESTION_DURATION_MS}
             onExpire={handleTimerExpire}
+            questionIdx={currentQuestionIdx}
           />
         </div>
 
-        {/* key={currentQuestionIdx}: defense-in-depth alongside the derived
-            `revealing` gate above. Forces a clean remount on every question
-            advance so React can't reuse stale DOM — guarantees fresh render
-            of Q2's options without inheriting any visual state from Q1. */}
+        {/* No `key` on QuestionView/QuestionTimer (Stage 1F follow-up):
+            previously remounted via key={currentQuestionIdx} for clean
+            state reset, but the unmount-mount caused visible layout
+            collapse during transitions. Now passes questionIdx as a prop;
+            internal effects reset state in-place. The derived `revealing`
+            gate (above) handles the stale-revealPhase frame. */}
         <QuestionView
-          key={currentQuestionIdx}
           question={question}
           lockedAnswerIdx={lockedAnswerIdx}
           disabled={hasAnswered || revealPhase !== 'answering'}
           onPick={handleAnswerPick}
           revealing={revealing}
+          questionIdx={currentQuestionIdx}
         />
 
-        {hasAnswered && revealPhase === 'answering' && (
-          <div style={{
-            marginTop: 16, padding: "10px 14px",
-            background: "var(--s1)", border: "1px solid var(--border)",
-            borderRadius: 10, textAlign: "center",
-            fontSize: 13, color: "var(--t2)",
-          }}>
-            ✓ Answer locked — waiting for others
-          </div>
-        )}
+        {/* Reserved answer-locked banner slot — reserves space so
+            HostAdvanceControls below stays anchored regardless of whether
+            the banner is showing. */}
+        <div style={{ minHeight: 45, marginTop: 16 }}>
+          {hasAnswered && revealPhase === 'answering' && (
+            <div style={{
+              padding: "10px 14px",
+              background: "var(--s1)", border: "1px solid var(--border)",
+              borderRadius: 10, textAlign: "center",
+              fontSize: 13, color: "var(--t2)",
+            }}>
+              ✓ Answer locked — waiting for others
+            </div>
+          )}
+        </div>
 
         {isHost && (
           <HostAdvanceControls
@@ -4572,7 +4574,11 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 // the useEffect deps) avoids restarting the timer when the parent passes a
 // fresh callback identity each render — common case since handleTimeout-
 // AutoSubmit's useCallback recreates on question advance.
-function useQuestionTimer(durationMs) {
+//
+// resetKey is an opaque value (typically currentQuestionIdx) — when it
+// changes, the timer restarts. Replaces the old key={currentQuestionIdx}
+// remount pattern, which caused visible layout collapse during transitions.
+function useQuestionTimer(durationMs, resetKey) {
   const [remainingMs, setRemainingMs] = useState(durationMs);
 
   useEffect(() => {
@@ -4585,18 +4591,24 @@ function useQuestionTimer(durationMs) {
       if (remaining === 0) clearInterval(id);
     }, 100);
     return () => clearInterval(id);
-  }, [durationMs]);
+  }, [durationMs, resetKey]);
 
   return remainingMs;
 }
 
 // QuestionTimer: shrinking-bar countdown + seconds number. Color shifts to
-// red below 5s. Parent must mount with key={currentQuestionIdx} so React
-// unmounts/remounts on each question advance — this is how the timer
-// resets cleanly without internal "did question change" tracking.
-function QuestionTimer({ durationMs, onExpire }) {
-  const remainingMs = useQuestionTimer(durationMs);
+// red below 5s. Pass questionIdx to reset on question advance — replaces
+// the previous parent-side key={currentQuestionIdx} remount pattern (the
+// remount caused a visible layout collapse during transitions; in-place
+// reset via effect dep eliminates that without losing reset semantics).
+function QuestionTimer({ durationMs, onExpire, questionIdx }) {
+  const remainingMs = useQuestionTimer(durationMs, questionIdx);
   const expiredRef = useRef(false);
+
+  // Reset expired-once guard when question changes.
+  useEffect(() => {
+    expiredRef.current = false;
+  }, [questionIdx]);
 
   // Trigger onExpire exactly once when timer hits 0. Using effect (not
   // direct call inside the hook) so onExpire receives the latest callback
@@ -4681,20 +4693,24 @@ const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 // "your wrong" path fires → late joiner sees only the green-correct
 // highlight during reveal, no red anywhere. Same for timeout (-1):
 // `idx === -1` is false for all valid idx → no spurious red.
-function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing }) {
-  // Stage 1C.7.5: suppress option-button color transitions on the first
-  // frame after mount (key={currentQuestionIdx} forces a remount on
-  // every question advance — see MultiplayerGameplay's QuestionView
-  // mount). Without this, stale color transitions from the prior
-  // question's reveal state bleed into the new question's first paint,
-  // making transitions feel chaotic. After the first frame (via rAF in
-  // useLayoutEffect), enable the targeted color transitions for
-  // subsequent in-mount state changes.
+function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx }) {
+  // Stage 1C.7.5 + Stage 1F follow-up: suppress option-button color
+  // transitions on the first frame after a question change. Stale color
+  // transitions from the prior question's reveal state would bleed into
+  // the new question's first paint, making transitions feel chaotic.
+  // After the first frame (via rAF in useLayoutEffect), enable the
+  // targeted color transitions for subsequent in-mount state changes.
+  //
+  // Previously this was guaranteed by key={currentQuestionIdx} remount
+  // (fresh useState init each question). The remount caused a visible
+  // layout collapse during transitions, so the key was dropped — the
+  // dep on questionIdx now drives the same flag-reset behavior in place.
   const [transitionsEnabled, setTransitionsEnabled] = useState(false);
   useLayoutEffect(() => {
+    setTransitionsEnabled(false);
     const id = requestAnimationFrame(() => setTransitionsEnabled(true));
     return () => cancelAnimationFrame(id);
-  }, []);
+  }, [questionIdx]);
 
   return (
     <div className="mp-question">
