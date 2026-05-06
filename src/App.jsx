@@ -3484,11 +3484,11 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState("");
-  // Stage 1F.2: host-chosen room capacity. Default 4 = max for the
-  // current allowed range {2,3,4}; "headroom" wins over "wrong-default
-  // locks out a 3rd friend mid-invite". Joiners don't see this picker —
-  // the host's pick lands on the room row server-side via create_room.
-  const [capacity, setCapacity] = useState(4);
+  // V1 capacity is hardcoded to 4 (max headroom). The picker UI was
+  // removed (Finding 6.0): users rarely benefit from constraining
+  // capacity, and a wrong default locks out a 3rd/4th friend with no
+  // recovery. Re-introduce the picker if real user feedback demands it.
+  const CAPACITY = 4;
   // Show "Reconnecting…" pill while create_room / join_room is in
   // retry territory (the wrapper layer absorbs transient blips silently
   // on the first attempt; this indicator fires once the second attempt
@@ -3502,7 +3502,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     // create_room is single-attempt by design (not idempotent — retry
     // could orphan rooms). User manually re-taps Create on failure.
     const result = await mpCreateRoom({
-      p_capacity: capacity,
+      p_capacity: CAPACITY,
       p_name: defaultName || "Player",
       p_avatar: "⚽",
     });
@@ -3598,31 +3598,6 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
           </div>
         )}
 
-        {/* Stage 1F.2: room-size picker — same .local-count-btn widget
-            that LocalSetup uses for player count, so the muscle memory
-            transfers. Default 4 (max headroom). Hidden in Join-with-Code
-            mode since the joiner's pick is silently ignored server-side
-            (capacity is host-set at create time). */}
-        {!showCodeInput && (
-          <>
-            <div className="ds-eyebrow local-section-label">Room size</div>
-            <div className="local-count-row" style={{ marginBottom: 16 }}>
-              {[2, 3, 4].map(n => (
-                <button
-                  key={n}
-                  type="button"
-                  className={`local-count-btn${capacity === n ? " on" : ""}`}
-                  onClick={() => setCapacity(n)}
-                  disabled={busy}
-                  aria-label={`Room size ${n} players`}
-                  aria-pressed={capacity === n}
-                >
-                  {n}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
         <button
           className="btn-3d"
           onClick={handleCreate}
