@@ -1035,11 +1035,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
 .wc-card{position:relative;width:100%;margin:0 0 18px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
-.wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#006847 0%,#FFFFFF 50%,#CE1126 100%);opacity:0.9;}
+/* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
+   (red/white/red). Each flag occupies 33% width with hard color stops at
+   tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
+.wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#B22234 0%,#B22234 11%,#FFFFFF 11%,#FFFFFF 22%,#3C3B6E 22%,#3C3B6E 33%,#006847 33%,#006847 44%,#FFFFFF 44%,#FFFFFF 55%,#CE1126 55%,#CE1126 66%,#FF0000 66%,#FF0000 77%,#FFFFFF 77%,#FFFFFF 88%,#FF0000 88%,#FF0000 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
 .light .wc-card{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);color:#1C1C1E;border-color:rgba(234,179,8,0.35);}
 .wc-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#FFC800;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+/* Host-country emoji row — sits between the label and the days countdown.
+   letter-spacing widens the gap between flags so they read as separate hosts
+   rather than a continuous string. font-size 14px keeps the row at ~16px tall
+   without crowding the days countdown directly below. */
+.wc-hosts{font-size:14px;letter-spacing:6px;margin:1px 0 3px;line-height:1;}
 .light .wc-label{color:#B45309;}
 .wc-days{font-size:22px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:#fff;}
 .light .wc-days{color:#1C1C1E;}
@@ -11546,9 +11554,10 @@ function AppInner() {
               const daysTo = dayKick - dayNow;
               const started = daysTo <= 0;
               return (
-                <button className="wc-card" onClick={() => startMode("wc2026")} aria-label="World Cup 2026 quiz">
+                <button className="wc-card" onClick={() => startMode("wc2026")} aria-label="World Cup 2026 quiz, hosted by USA, Mexico, and Canada">
                   <div style={{flex:1, minWidth:0}}>
                     <div className="wc-label">🏆 World Cup 2026</div>
+                    <div className="wc-hosts" aria-hidden="true">🇺🇸  🇲🇽  🇨🇦</div>
                     {started ? (
                       <div className="wc-days"><em>It's here!</em></div>
                     ) : (
