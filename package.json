@@ -15,6 +15,7 @@
     "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs"
   },
   "dependencies": {
+    "@sentry/react": "^8.55.2",
     "@supabase/supabase-js": "^2.105.3",
     "@vercel/speed-insights": "^2.0.0",
     "lucide-react": "^0.383.0",
@@ -22,6 +23,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^2.23.1",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.1.4"
   }
