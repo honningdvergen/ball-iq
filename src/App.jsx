@@ -3770,7 +3770,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded onExit={onExit} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -3975,36 +3975,127 @@ function LobbyError({ error, onExit }) {
   );
 }
 
-function LobbyEnded({ onExit }) {
-  // Auto-navigate after 1.5s if user doesn't tap. Empty deps + ref pattern
-  // (not [onExit]): onExit is recreated each parent render (it's an inline
-  // arrow in AppInner's screen-routing JSX). With [onExit] deps, the
-  // useEffect re-fires on every parent re-render — and AppInner re-renders
-  // for any number of unrelated reasons (online/offline status listener,
-  // day-rollover interval from Phase G, etc.). Each re-fire clears the
-  // pending timeout and schedules a fresh 1500ms one, so under continuous
-  // parent re-rendering the timeout never fires and the user gets stuck on
-  // LobbyEnded. Capturing onExit in a ref keeps the latest closure
-  // available without depending on its identity.
-  const onExitRef = useRef(onExit);
-  onExitRef.current = onExit;
-  useEffect(() => {
-    const t = setTimeout(() => onExitRef.current?.(), 1500);
-    return () => clearTimeout(t);
-  }, []);
+function LobbyEnded({ players, myPlayer, onExit }) {
+  // Sort by score desc, with stable tiebreak by joined_at asc (earliest joiner
+  // wins ties — same approach the live ScoreBar uses).
+  const sorted = (players || []).slice().sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const ta = a.joined_at || '';
+    const tb = b.joined_at || '';
+    return ta < tb ? -1 : ta > tb ? 1 : 0;
+  });
+
+  const myUserId = myPlayer?.user_id || null;
+  const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
+  const winner = sorted[0];
+  const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
+
+  // Medal emoji for podium positions; numeric rank thereafter.
+  function rankBadge(idx) {
+    if (idx === 0) return '🥇';
+    if (idx === 1) return '🥈';
+    if (idx === 2) return '🥉';
+    return String(idx + 1);
+  }
+
+  // Highlight the user's own row with an accent border. Winner row gets a
+  // gold accent regardless of whether the viewer is the winner.
+  function rowStyle(player, idx) {
+    const isMe = !!myUserId && player.user_id === myUserId;
+    const isFirst = idx === 0;
+    let borderColor = 'var(--border)';
+    let background = 'var(--s1)';
+    if (isFirst) {
+      borderColor = 'rgba(234,179,8,0.45)'; // gold
+      background = 'rgba(234,179,8,0.06)';
+    } else if (isMe) {
+      borderColor = 'rgba(34,197,94,0.45)'; // accent green
+      background = 'rgba(34,197,94,0.06)';
+    }
+    return {
+      display: 'flex', alignItems: 'center', gap: 12,
+      padding: '12px 14px',
+      background,
+      border: '1px solid ' + borderColor,
+      borderRadius: 12,
+    };
+  }
+
   return (
     <div className="screen">
       <div className="page-hdr">
-        <div className="page-title">Lobby</div>
+        <div className="page-title">Game over</div>
       </div>
-      <div style={{ padding: "40px 20px", textAlign: "center" }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>👋</div>
-        <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
-          Room ended
+      <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
+        {/* Headline — winner / your-result framing */}
+        <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
+          <div style={{ fontSize: 48, marginBottom: 8 }}>{isWinner ? '🏆' : '👋'}</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
+            {winner ? (isWinner ? 'You won!' : `${winner.name || 'Player'} wins`) : 'Game over'}
+          </div>
+          {myRank > 0 && !isWinner && (
+            <div style={{ fontSize: 13, color: 'var(--t2)' }}>
+              You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
+            </div>
+          )}
         </div>
-        <div style={{ fontSize: 13, color: "var(--t2)" }}>
-          Returning to home…
+
+        {/* Final scores list */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+          <div style={{
+            fontSize: 11, color: 'var(--t2)',
+            letterSpacing: 0.4, textTransform: 'uppercase',
+            marginBottom: 2, paddingLeft: 4,
+          }}>
+            Final scores
+          </div>
+          {sorted.map((p, idx) => {
+            const isMe = !!myUserId && p.user_id === myUserId;
+            return (
+              <div key={`${p.room_id}:${p.user_id}`} style={rowStyle(p, idx)}>
+                <div style={{
+                  fontSize: idx < 3 ? 24 : 14,
+                  fontWeight: 700,
+                  width: 32, textAlign: 'center',
+                  color: 'var(--text)',
+                }}>
+                  {rankBadge(idx)}
+                </div>
+                <div style={{ fontSize: 22 }}>{p.avatar || '⚽'}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    fontSize: 15, fontWeight: 700, color: 'var(--text)',
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  }}>
+                    {p.name || 'Player'}
+                    {isMe && (
+                      <span style={{ fontSize: 11, color: 'var(--t2)', fontWeight: 500, marginLeft: 8 }}>
+                        (you)
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div style={{
+                  fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
+                  fontSize: 18, fontWeight: 800,
+                  color: 'var(--text)',
+                  fontVariantNumeric: 'tabular-nums',
+                }}>
+                  {p.score ?? 0}
+                </div>
+              </div>
+            );
+          })}
+          {sorted.length === 0 && (
+            <div style={{ padding: 16, textAlign: 'center', color: 'var(--t2)', fontSize: 13 }}>
+              No players in room
+            </div>
+          )}
         </div>
+
+        <button className="btn-3d" onClick={onExit} style={{ width: '100%' }}>
+          Back to Home
+        </button>
       </div>
     </div>
   );
