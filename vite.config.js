@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { execSync } from 'node:child_process'
+import { writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 // Capture the short git SHA at build time and inject it as VITE_GIT_SHA so
 // Sentry events carry a release tag matching the actual code on production.
@@ -11,6 +13,22 @@ try {
   gitSha = execSync('git rev-parse --short HEAD').toString().trim()
 } catch {}
 
+// Tiny plugin: emits dist/version.json at build close so the deployed app
+// can poll it from the client and detect when a new build has rolled out.
+// Pairs with src/VersionBanner.jsx which compares the bundled VITE_GIT_SHA
+// against the live /version.json sha. Vercel serves /version.json no-cache
+// (per vercel.json) so polling always sees the freshest deploy state.
+function versionJsonPlugin(sha) {
+  return {
+    name: 'version-json',
+    apply: 'build',
+    closeBundle() {
+      const payload = { sha, builtAt: new Date().toISOString() }
+      writeFileSync(resolve('dist', 'version.json'), JSON.stringify(payload))
+    },
+  }
+}
+
 // Build output tuning. The app is one large App.jsx (~1.4MB raw with the
 // question bank), so splitting vendor dependencies into their own cacheable
 // chunks means a code-only change doesn't invalidate the React/Supabase
@@ -18,6 +36,7 @@ try {
 export default defineConfig({
   plugins: [
     react(),
+    versionJsonPlugin(gitSha),
     // Sentry source-map upload. No-op when SENTRY_AUTH_TOKEN is unset
     // (e.g., dev or PR builds without secrets). Production builds on Vercel
     // set the token via env var. Org/project slugs accept env overrides so

@@ -10,6 +10,7 @@ import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
+import VersionBanner from './VersionBanner.jsx';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -1601,6 +1602,18 @@ button.friends-lb-row:hover{background:var(--s3);}
 .emoji-opt:hover,.emoji-opt.selected{background:var(--accent-dim);}
 
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--s2);color:var(--text);border:1px solid var(--border);padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600;z-index:999;white-space:nowrap;box-shadow:var(--sh-lg);}
+/* Version-mismatch banner — shows at the top of viewport when /version.json
+   sha differs from the bundled VITE_GIT_SHA. Sticky once shown until user
+   clicks Refresh or Later. Pinned to top with high z-index so it overlays
+   route screens without disrupting layout. Uses safe-area-inset-top for
+   notched devices. */
+.version-banner{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 8px;background:var(--s2);color:var(--text);border-bottom:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;}
+.version-banner-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.version-banner-actions{display:flex;gap:8px;flex-shrink:0;}
+.version-banner-refresh{padding:6px 14px;background:var(--accent);color:#0a0a0a;border:none;border-radius:6px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.version-banner-refresh:hover{filter:brightness(1.1);}
+.version-banner-later{padding:6px 12px;background:transparent;color:var(--t3);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.version-banner-later:hover{color:var(--t1);border-color:var(--t3);}
 
 .cat-WorldCup .q-tag{color:#F59E0B;background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);}
 .cat-PL .q-tag{color:#8B5CF6;background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.25);}
@@ -11926,6 +11939,7 @@ function AppGate() {
 export default function App() {
   return (
     <>
+      <VersionBanner />
       <ErrorBoundary><AppGate /></ErrorBoundary>
       <SpeedInsights />
     </>
