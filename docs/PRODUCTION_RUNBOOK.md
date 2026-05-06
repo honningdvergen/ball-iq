@@ -258,6 +258,84 @@ FROM profiles;
 
 ---
 
+## GitHub CLI commands
+
+For investigating GitHub-side state (workflow runs, PR status, recent commits, issues) without context-switching to the browser. Install: `brew install gh && gh auth login`. Authenticate with the same GitHub account that has repo access.
+
+### Workflow runs (CI)
+
+```bash
+# Recent runs of all workflows
+gh run list --limit 20
+
+# Just spike-nightly (currently disabled per `if: false` — runs should show as "skipped")
+gh run list --workflow=spike-nightly.yml --limit 10
+
+# Logs from the most recent run
+gh run view --log
+
+# Logs from a specific run by ID
+gh run view <run-id> --log
+gh run view <run-id> --log-failed   # just the failed steps
+```
+
+### PRs and commits
+
+```bash
+# Open PRs
+gh pr list
+
+# Specific PR
+gh pr view <number>          # summary
+gh pr view <number> --web    # open in browser
+gh pr diff <number>          # show the diff
+
+# Recent commits on main
+gh api repos/honningdvergen/ball-iq/commits?per_page=10 \
+  --jq '.[] | {sha: .sha[0:7], message: .commit.message | split("\n")[0], author: .commit.author.name, date: .commit.author.date}'
+```
+
+### Issues
+
+```bash
+gh issue list                # open issues
+gh issue list --state all    # include closed
+gh issue view <number>
+```
+
+### Deploy verification — Vercel via gh API
+
+Vercel's `--prod` deploy hash isn't directly exposed via `gh`, but the GitHub Deployments API surfaces deployment status:
+
+```bash
+gh api repos/honningdvergen/ball-iq/deployments?per_page=5 \
+  --jq '.[] | {id: .id, ref: .ref, env: .environment, created: .created_at}'
+```
+
+For the actual production bundle hash, the canonical check remains:
+
+```bash
+curl -s https://balliq.app | grep -oE 'index-[A-Za-z0-9_-]+\.js' | head -1
+# Compare against `ls dist/assets/index-*.js` after `npm run build`
+```
+
+### Quick repo health snapshot
+
+```bash
+# Latest commit on main
+gh api repos/honningdvergen/ball-iq/commits/main --jq '{sha: .sha[0:7], message: .commit.message | split("\n")[0], date: .commit.author.date}'
+
+# Open issue + PR counts
+gh issue list --state open --json number --jq 'length'
+gh pr list --state open --json number --jq 'length'
+```
+
+### When `gh` isn't available
+
+If `gh` isn't installed and the situation is urgent, the GitHub web UI provides equivalent data. The CLI is a convenience for ad-hoc terminal queries during incidents — not a hard requirement.
+
+---
+
 ## What this runbook does NOT cover (intentional gaps)
 
 - **Performance triage** — needs Vercel Speed Insights dashboard or future error monitoring (Sentry decision pending in `docs/MONITORING_OPTIONS.md`).
