@@ -97,7 +97,7 @@ export default function Login() {
         bg: '#0a0a0a',
         text: '#fff',
         subtle: '#888',
-        muted: '#666',
+        muted: '#999',
         divider: '#555',
         border: '#2a2a2a',
         inputBg: '#141414',
