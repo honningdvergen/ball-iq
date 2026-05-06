@@ -3507,6 +3507,42 @@ export const QB = [
   { id:"q_8205ff", q:"Senegal's run to which 2002 World Cup stage made them only the second African nation to advance that far?", o:["Round of 16","Quarter-final","Semi-final","Final"], a:1, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
   { id:"q_938385", q:"How did Senegal perform at the 2022 World Cup in Qatar?", o:["Failed to qualify","Group stage exit","Round of 16 (lost to England)","Quarter-final"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
   { id:"q_8ba0e4", q:"Which Senegalese coach led Senegal to the 2021 AFCON title and the 2022 World Cup?", o:["Aliou Cissé","Bruno Metsu","Henryk Kasperczak","Lamine Diatta"], a:0, cat:"Managers", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  // ─── WC2026 host fill: USA (MCQ) ──────────────────────────
+  { id:"q_e268d2", q:"Which Serie A club does USMNT captain Christian Pulisic play for?", o:["Inter Milan","Juventus","AC Milan","Roma"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", hint:"Pulisic joined AC Milan from Chelsea in summer 2023 and is contracted through June 2027.", v:1 },
+  { id:"q_24531f", q:"Who was named USMNT head coach in August 2024 to lead the team into the 2026 World Cup?", o:["Gregg Berhalter","Mauricio Pochettino","Jesse Marsch","Bob Bradley"], a:1, cat:"Managers", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  { id:"q_3395ba", q:"Which Premier League club does USMNT midfielder Tyler Adams play for?", o:["Leeds United","AFC Bournemouth","Brighton","Crystal Palace"], a:1, cat:"PL", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  { id:"q_d9f278", q:"USMNT midfielder Weston McKennie has spent the bulk of his career at which Serie A club?", o:["Roma","Inter Milan","Juventus","AC Milan"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", v:1 },
+  { id:"q_997515", q:"The 2026 World Cup final will be held at which stadium?", o:["SoFi Stadium (Los Angeles)","MetLife Stadium (New York/New Jersey)","AT&T Stadium (Dallas)","Mercedes-Benz Stadium (Atlanta)"], a:1, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", hint:"MetLife Stadium hosts the final on 19 July 2026 — branded 'New York-New Jersey Stadium' for the tournament.", v:1 },
+  // ─── WC2026 host fill: Mexico (MCQ) ──────────────────────────
+  { id:"q_b46f46", q:"Who is Mexico's head coach for the 2026 World Cup?", o:["Gerardo Martino","Jaime Lozano","Javier Aguirre","Ricardo La Volpe"], a:2, cat:"Managers", tag:"wc2026", type:"mcq", diff:"medium", hint:"Aguirre took over in July 2024 — his third stint as Mexico manager.", v:1 },
+  { id:"q_57ec07", q:"Which Mexico legend is confirmed to take over as head coach after the 2026 World Cup?", o:["Rafael Márquez","Hugo Sánchez","Andrés Guardado","Cuauhtémoc Blanco"], a:0, cat:"Managers", tag:"wc2026", type:"mcq", diff:"hard", v:1 },
+  { id:"q_b11d1f", q:"Which Premier League club does Mexico striker Raúl Jiménez play for?", o:["Wolves","Newcastle","Fulham","Brentford"], a:2, cat:"PL", tag:"wc2026", type:"mcq", diff:"easy", v:1 },
+  { id:"q_a22fd9", q:"Who is the captain of the Mexico national team heading into the 2026 World Cup?", o:["Edson Álvarez","Hirving Lozano","Raúl Jiménez","Guillermo Ochoa"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  { id:"q_b6cbaa", q:"Which Italian club does Mexico striker Santiago Giménez play for?", o:["AC Milan","Inter Milan","Napoli","Juventus"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", hint:"Giménez joined AC Milan in early 2025 from Feyenoord for around €37m.", v:1 },
+  { id:"q_a9d226", q:"Which three Mexican cities will host games at the 2026 World Cup?", o:["Mexico City, Guadalajara, Monterrey","Mexico City, Guadalajara, Tijuana","Mexico City, Cancún, Monterrey","Mexico City, Puebla, León"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", hint:"Estadio Azteca (Mexico City), Estadio Akron (Guadalajara), Estadio BBVA (Monterrey) — 13 matches total.", v:1 },
+  // ─── WC2026 host fill: Canada (MCQ) ──────────────────────────
+  { id:"q_78d218", q:"Who is Canada's head coach for the 2026 World Cup?", o:["John Herdman","Jesse Marsch","Octavio Zambrano","Stephen Hart"], a:1, cat:"Managers", tag:"wc2026", type:"mcq", diff:"easy", v:1 },
+  { id:"q_7f18f9", q:"Jesse Marsch became the first what to coach Canada's men's national team when appointed in May 2024?", o:["MLS-trained coach","American to coach Canada","Coach without a player background","Coach hired before a World Cup year"], a:1, cat:"Managers", tag:"wc2026", type:"mcq", diff:"hard", v:1 },
+  { id:"q_77e3af", q:"Which Canadian midfielder's parent club is Portuguese giant FC Porto?", o:["Atiba Hutchinson","Stephen Eustáquio","Ismaël Koné","Mark-Anthony Kaye"], a:1, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"hard", v:1 },
+  { id:"q_27f0dd", q:"Which Canadian winger joined Inter Milan from Club Brugge in 2024 before a 2025 move to Villarreal?", o:["Tajon Buchanan","Junior Hoilett","Liam Millar","Jacob Shaffelburg"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  { id:"q_843d23", q:"Who holds Canada's all-time record for international appearances?", o:["Dwayne De Rosario","Julian de Guzman","Atiba Hutchinson","Paul Stalteri"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", hint:"Hutchinson finished with 104 caps over 20 years, retiring after the 2023 Concacaf Nations League final.", v:1 },
+  { id:"q_ea9ba9", q:"How many goals did Canada score at their first ever World Cup, in Mexico 1986?", o:["0","1","2","3"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", hint:"Canada lost all three group games (to France, Hungary, the Soviet Union) without scoring.", v:1 },
+  { id:"q_7b8bfe", q:"Canada's 1986 World Cup group included France, the Soviet Union, and which other nation?", o:["Hungary","Belgium","Algeria","Bulgaria"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"hard", v:1 },
+  { id:"q_9a9385", q:"Canada's domestic top-flight league, launched in 2019, is called what?", o:["Canadian Premier League","Major League Soccer Canada","North American Soccer League","Canadian Soccer League"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  { id:"q_1ad2bd", q:"CF Montréal plays its home games in which Canadian province?", o:["Ontario","Quebec","British Columbia","Alberta"], a:1, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", v:1 },
+  { id:"q_fba064", q:"What is the name of Vancouver's stadium hosting 2026 World Cup matches?", o:["BMO Field","BC Place","Rogers Centre","Commonwealth Stadium"], a:1, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", v:1 },
+  { id:"q_cca4f4", q:"Which MLS club did Alphonso Davies play for before moving to Bayern Munich in 2019?", o:["Toronto FC","CF Montréal","Vancouver Whitecaps","LA Galaxy"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
+  // ─── WC2026 host fill: USA (T/F) ───────────────────────────
+  { id:"q_a10346", s:"The USA is hosting 11 of the 16 host cities at the 2026 World Cup.", a:true, cat:"WorldCup", tag:"wc2026", diff:"easy" },
+  { id:"q_7dcbea", s:"Mauricio Pochettino managed Tottenham, PSG, and Chelsea before taking the USMNT job in 2024.", a:true, cat:"Managers", tag:"wc2026", diff:"medium" },
+  { id:"q_ad4949", s:"The USA's opening match at the 2026 World Cup will be played at MetLife Stadium in New Jersey.", a:false, cat:"WorldCup", tag:"wc2026", diff:"medium" },
+  // ─── WC2026 host fill: Mexico (T/F) ───────────────────────────
+  { id:"q_8ef03d", s:"Estadio Azteca will become the first stadium to host opening matches at three different World Cups in 2026.", a:true, cat:"WorldCup", tag:"wc2026", diff:"medium" },
+  { id:"q_311585", s:"Javier Aguirre is taking charge of Mexico's national team for the first time as head coach in 2026.", a:false, cat:"Managers", tag:"wc2026", diff:"hard" },
+  // ─── WC2026 host fill: Canada (T/F) ───────────────────────────
+  { id:"q_47870e", s:"Jesse Marsch is the first American to head-coach Canada's men's national team.", a:true, cat:"Managers", tag:"wc2026", diff:"medium" },
+  { id:"q_5b2dae", s:"Canada won at least one match at the 1986 World Cup.", a:false, cat:"WorldCup", tag:"wc2026", diff:"medium" },
+  { id:"q_6d7cbd", s:"Toronto FC plays in the Canadian Premier League.", a:false, cat:"WorldCup", tag:"wc2026", diff:"easy" },
 ];
 
 // ─── TRUE / FALSE STATEMENTS ──────────────────────────────────────────────────
