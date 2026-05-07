@@ -518,33 +518,16 @@ function iqPercentile(iq) {
   return 15;
 }
 
-function iqPercentileLabel(iq) {
-  // Football-culture rank labels — fun, descriptive, and crucially they make
-  // no statistical claim. The earlier "Top X% of football fans" version was
-  // pulled because the buckets weren't derived from real user data, which
-  // risked falling foul of App Store guideline 2.3 (Accurate Metadata).
-  if (iq >= 155) return "You are José Mourinho 👑";
-  if (iq >= 150) return "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹";
-  if (iq >= 145) return "Clearly plays Football Manager ⌨️";
-  if (iq >= 140) return "Smarter than most football pundits 📺";
-  if (iq >= 135) return "Could manage in the Championship 🧠";
-  if (iq >= 130) return "Could manage a League Two side ⚽";
-  if (iq >= 125) return "Watches the U21s for fun 🔭";
-  if (iq >= 120) return "Knows every Champions League anthem word 🎵";
-  if (iq >= 115) return "Has a favourite lesser-known league 🌍";
-  if (iq >= 110) return "Argues about the offside rule correctly 📐";
-  if (iq >= 105) return "Watches Match of the Day till the end 📺";
-  if (iq >= 100) return "Solid pub quiz teammate ⚽";
-  if (iq >= 95)  return "Watches El Clasico but skips the League Cup 👀";
-  if (iq >= 90)  return "Still know more than my dad 😅";
-  if (iq >= 85)  return "Calls it soccer sometimes 😬";
-  if (iq >= 80)  return "Still learning the offside rule 😬";
-  if (iq >= 75)  return "Thought Zidane was a manager first 😂";
-  return "Asked if Ronaldo plays for Brazil 💀";
-}
-
+// Football-culture rank labels — fun, descriptive, and crucially they make
+// no statistical claim. The earlier "Top X% of football fans" version was
+// pulled because the buckets weren't derived from real user data, which
+// risked falling foul of App Store guideline 2.3 (Accurate Metadata).
+//
+// Voice: 3rd-person observational across all tiers (channeling/plays/argues/etc).
+// Single source of truth — both iqLabel() and the back-compat
+// iqPercentileLabel() shim read from this array.
 const IQ_LABELS = [
-  { min: 155, label: "You are José Mourinho 👑" },
+  { min: 155, label: "Channeling José Mourinho 👑" },
   { min: 150, label: "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹" },
   { min: 145, label: "Clearly plays Football Manager ⌨️" },
   { min: 140, label: "Smarter than most football pundits 📺" },
@@ -557,7 +540,7 @@ const IQ_LABELS = [
   { min: 105, label: "Watches Match of the Day till the end 📺" },
   { min: 100, label: "Solid pub quiz teammate ⚽" },
   { min: 95,  label: "Watches El Clasico but skips the League Cup 👀" },
-  { min: 90,  label: "Still know more than my dad 😅" },
+  { min: 90,  label: "Knows more than most fans' dads 😅" },
   { min: 85,  label: "Calls it soccer sometimes 😬" },
   { min: 80,  label: "Still learning the offside rule 😬" },
   { min: 75,  label: "Thought Zidane was a manager first 😂" },
@@ -569,6 +552,13 @@ function iqLabel(iq) {
     if (iq >= tier.min) return tier.label;
   }
   return IQ_LABELS[IQ_LABELS.length - 1].label;
+}
+
+// Back-compat shim — same content as iqLabel(); the two callsites that read
+// `pctileLbl` separately from `label` both currently render the same string
+// (pre-existing rendering quirk, not introduced by this DRY change).
+function iqPercentileLabel(iq) {
+  return iqLabel(iq);
 }
 
 function levenshtein(a, b) {
