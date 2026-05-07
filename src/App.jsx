@@ -3816,7 +3816,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
                   <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                     {p.name}
                     {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
-                    {p.user_id === room.host_id && <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginLeft: 6 }}>HOST</span>}
+                    {p.user_id === room.host_id && <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginLeft: 6 }} aria-label="Host">HOST</span>}
                   </div>
                 </div>
               ))}
@@ -7151,7 +7151,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 fontSize:10,
                 fontWeight:800,
                 letterSpacing:"0.08em",
-              }}>BETA</span>
+              }} aria-label="Beta">BETA</span>
             )}
           </div>
           {/* Ghost outlined to match the secondary-action discipline used on
@@ -7555,7 +7555,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
         <div style={{marginTop:22}}>
           <button className="btn-3d ghost" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
           <button className="btn-3d" onClick={() => { onClose(); onRetake(); }} style={{marginBottom:14}}>Retake Test</button>
-          <button className="btn-3d ghost" onClick={onClose}>Close</button>
+          <button className="btn-3d ghost" onClick={onClose} aria-label="Close IQ recap">Close</button>
         </div>
       </div>
     </div>
@@ -8308,7 +8308,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub">Pending…</div>
                 </div>
-                <button className="friends-action decline" onClick={() => cancelRequest(f.id)}>Cancel</button>
+                <button className="friends-action decline" onClick={() => cancelRequest(f.id)} aria-label="Cancel friend request">Cancel</button>
               </div>
             );
           })}
@@ -8348,7 +8348,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
                 <>
                   <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
                   <div className="friends-avatar">{avatarEmoji(row.avatar)}</div>
-                  <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill">YOU</span>}</div>
+                  <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label="You">YOU</span>}</div>
                   <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
                 </>
               );
@@ -8478,7 +8478,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
                       <div className="journey-name">{tier.name}</div>
                       <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
                     </div>
-                    {isCurrent && <div className="journey-badge current">CURRENT</div>}
+                    {isCurrent && <div className="journey-badge current" aria-label="Current level">CURRENT</div>}
                     {isNext && <div className="journey-badge next">{xpToGo.toLocaleString()} XP to go</div>}
                     {!isCurrent && !isNext && !isDone && isTop && (
                       <div className="journey-badge goal">Ultimate goal</div>
@@ -8661,11 +8661,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
               : {appearance:"none", WebkitAppearance:"none", font:"inherit"}}
           >
             {uploading ? (
-              <span className="avatar-spinner" aria-label="Uploading" />
+              <span className="avatar-spinner" aria-label="Uploading…" />
             ) : avatarUrl ? (
               <img
                 src={avatarUrl}
-                alt="Profile"
+                alt={profile?.username ? `${profile.username}'s avatar` : "Profile avatar"}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
                 style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}}
               />
@@ -9609,7 +9609,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
               })}
             </div>
           ))}
-          <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="ENTER">ENTER</button>
+          <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="Enter key — submit guess">ENTER</button>
         </div>
       )}
     </div>
