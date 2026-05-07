@@ -11,6 +11,7 @@ import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
+import { useModalA11y } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
@@ -6947,6 +6948,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
+  const clearStatsModalRef = useRef(null);
+  const deleteModalRef = useRef(null);
+  useModalA11y({ isOpen: confirmClearStats, onClose: () => setConfirmClearStats(false), ref: clearStatsModalRef });
+  useModalA11y({ isOpen: confirmDelete, onClose: () => !deleting && setConfirmDelete(false), ref: deleteModalRef });
   // Audit Phase 5 (B3): performDelete catch could fire setState on the
   // unmounted component if the RPC throws after signOut → AppGate route.
   const mountedRef = useRef(true);
@@ -7272,6 +7277,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           onClick={() => setConfirmClearStats(false)}
         >
           <div
+            ref={clearStatsModalRef}
+            tabIndex={-1}
             style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -7310,6 +7317,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           onClick={() => !deleting && setConfirmDelete(false)}
         >
           <div
+            ref={deleteModalRef}
+            tabIndex={-1}
             style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -7941,10 +7950,12 @@ function ensureCropperLoaded() {
 function CropModal({ file, onCancel, onConfirm, onLoadError }) {
   const imgRef = useRef(null);
   const cropperRef = useRef(null);
+  const modalRef = useRef(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  useModalA11y({ isOpen: true, onClose: onCancel, ref: modalRef });
   // Audit Phase 5 (F2): handleUse catch could fire setError/setBusy on the
   // unmounted component if onConfirm closes the modal then throws.
   const mountedRef = useRef(true);
@@ -8057,7 +8068,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
   };
 
   return (
-    <div className="crop-overlay" role="dialog" aria-modal="true" aria-label="Crop your photo">
+    <div ref={modalRef} tabIndex={-1} className="crop-overlay" role="dialog" aria-modal="true" aria-label="Crop your photo">
       <div className="crop-header">Crop your photo</div>
       <div className="crop-stage crop-circle-mask">
         {imgUrl && (
@@ -11023,6 +11034,16 @@ function AppInner() {
   const [showLeaguePicker, setShowLeaguePicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
   const [leagueMode, setLeagueMode] = useState(null); // { id, name } once a league is picked; null otherwise
+  const diffPickerRef = useRef(null);
+  const leaguePickerRef = useRef(null);
+  const leagueModeRef = useRef(null);
+  const friendsPickerRef = useRef(null);
+  const joinGateRef = useRef(null);
+  useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
+  useModalA11y({ isOpen: showLeaguePicker,  onClose: () => setShowLeaguePicker(false),  ref: leaguePickerRef });
+  useModalA11y({ isOpen: !!leagueMode,      onClose: () => setLeagueMode(null),         ref: leagueModeRef });
+  useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
+  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
 
   const pickLeague = useCallback((leagueId, leagueName) => {
     haptic("soft");
@@ -11311,7 +11332,7 @@ function AppInner() {
         {/* ── CLASSIC DIFFICULTY SHEET ── */}
         {showDiffPicker && (
           <div className="diff-overlay" onClick={() => setShowDiffPicker(false)}>
-            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+            <div ref={diffPickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
               <div className="diff-sheet-title">Choose Difficulty</div>
               <div className="diff-sheet-sub">10 questions, 20 seconds each</div>
               <div className="diff-options">
@@ -11340,7 +11361,7 @@ function AppInner() {
         {/* ── LEAGUE QUIZ SHEET (step 1: pick a league) ── */}
         {showLeaguePicker && (
           <div className="diff-overlay" onClick={() => setShowLeaguePicker(false)}>
-            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+            <div ref={leaguePickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
               <div className="diff-sheet-title">Pick a League</div>
               <div className="diff-sheet-sub">Choose a competition, then a game mode</div>
               <div className="diff-options">
@@ -11379,7 +11400,7 @@ function AppInner() {
         {/* ── LEAGUE QUIZ SHEET (step 2: pick a mode) ── */}
         {leagueMode && (
           <div className="diff-overlay" onClick={() => setLeagueMode(null)}>
-            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+            <div ref={leagueModeRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
               <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:4}}>
                 <button
                   type="button"
@@ -11423,7 +11444,7 @@ function AppInner() {
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
           <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
-            <div className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+            <div ref={friendsPickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
               <div className="diff-sheet-title">Play with Friends</div>
               <div className="diff-sheet-sub">Who's joining?</div>
               <div className="diff-options">
@@ -11703,6 +11724,8 @@ function AppInner() {
             onClick={clearPendingJoin}
           >
             <div
+              ref={joinGateRef}
+              tabIndex={-1}
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
