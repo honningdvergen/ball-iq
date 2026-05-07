@@ -43,7 +43,6 @@ export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast, onHom
       </button>
       <nav className="dn-list">
         <button data-active={tab === 'home'}    onClick={goTab('home')}>Home</button>
-        <button data-active={tab === 'league'}  onClick={goTab('league')}>League</button>
         <button data-active={tab === 'daily'}   onClick={goTab('daily')}>
           Daily
           {!dailyDone && <span className="dn-dot" aria-label="new" />}

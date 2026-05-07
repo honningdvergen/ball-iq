@@ -8,7 +8,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Trophy, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -294,10 +294,7 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }
   if (!includeLegends && cat !== "Legends") {
     pool = pool.filter(q => q.cat !== "Legends");
   }
-  // Category match: primary q.cat OR league-tagged chaos questions (q.league === cat)
-  // so e.g. the Eden Hazard ball-boy chaos question (league:"PL") shows up in a
-  // Premier League quiz alongside regular PL entries.
-  if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat || q.league === cat);
+  if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat);
   // Honesty over silence: if a category has nothing to offer, return empty
   // so the caller can show a "not enough questions" toast. If we have some
   // but fewer than `n`, return the shuffled pool — better to play 7 real
@@ -464,18 +461,6 @@ async function getDailyQsForDate(date) {
 function getDailyQs() { return getDailyQsForDate(new Date()); }  // returns Promise (delegates to async)
 
 
-// Keyword match table used to surface league-relevant TF_STATEMENTS when the
-// user picks "True or False" from the League Quiz mode sheet. Matching is a
-// case-insensitive substring against the statement text. If fewer than 10
-// league-specific statements match, the launcher falls back to the general pool.
-const LEAGUE_TF_KEYWORDS = {
-  PL: ["premier league", "manchester united", "manchester city", "liverpool", "arsenal", "chelsea", "tottenham", "leicester", "newcastle", "everton", "west ham", "aston villa"],
-  LaLiga: ["la liga", "real madrid", "barcelona", "atletico madrid", "atlético madrid", "sevilla", "valencia", "real sociedad", "villarreal"],
-  Bundesliga: ["bundesliga", "bayern munich", "borussia dortmund", "dortmund", "leverkusen", "leipzig", "schalke", "bayer"],
-  SerieA: ["serie a", "juventus", "ac milan", "inter milan", "napoli", " roma", "lazio", " milan"],
-  Ligue1: ["ligue 1", "psg", "paris saint-germain", "marseille", "lyon", "saint-étienne", "saint-etienne", "monaco", "lille", "bordeaux", "nice"],
-  UCL: ["champions league", "european cup"],
-};
 
 async function getTrueFalseQs() {
   const { TF_STATEMENTS } = await loadQuestions();
@@ -1379,7 +1364,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tab-content{padding-bottom:calc(66px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 .light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
-.light .streak-section,.light .league-table,.light .li-card,.light .profile-card,
+.light .streak-section,.light .li-card,.light .profile-card,
 .light .badge-tile,.light .settings-card{
   border:0.5px solid var(--border);box-shadow:var(--sh);
 }
@@ -1435,29 +1420,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
 .cal-legend-item{display:flex;align-items:center;gap:5px;}
 .cal-legend-dot{width:10px;height:10px;border-radius:3px;}
-
-/* ── LEAGUE SCREEN ── */
-.league-header{text-align:center;padding:8px 0 18px;}
-.league-title{font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
-.league-sub{font-size:13px;color:var(--t2);}
-.league-timer{font-family:'Inter',sans-serif;font-size:11px;color:var(--t3);margin-top:4px;}
-.league-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.li-card{background:var(--s1);border:none;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.li-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-bottom:6px;}
-.li-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:16px;font-weight:700;letter-spacing:-0.3px;}
-.league-table{background:var(--s1);border:none;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
-.lt-header{display:grid;grid-template-columns:32px 1fr 60px;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
-.lt-hcol{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;font-weight:600;}
-.lt-row{display:grid;grid-template-columns:32px 1fr 60px;gap:8px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center;}
-.lt-row:last-child{border-bottom:none;}
-.lt-row.you{background:var(--accent-dim);border-left:3px solid var(--accent);}
-.lt-row.promote{background:rgba(34,197,94,0.04);}
-.lt-row.relegate{background:rgba(248,113,113,0.04);}
-.lt-rank{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;color:var(--t3);text-align:center;}
-.lt-row.you .lt-rank{color:var(--accent);}
-.lt-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.lt-xp{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;color:var(--t2);text-align:right;}
-.lt-row.you .lt-xp{color:var(--accent);}
 
 /* ── PROFILE SCREEN ── */
 .profile-card{background:var(--s1);border:none;border-radius:20px;padding:24px 20px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,0.45);}
@@ -2207,9 +2169,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
        !important here was authored when .app pb was still 100; never got
        updated. In PWA standalone, this override was silently keeping
        padding-bottom at 100, stacking 100 + .tab-content's 100 into a
-       108px surplus over the tab-bar. Heavy-content tabs (Daily, League)
-       hid this; thin-content tabs (Home, Profile) exposed it as visible
-       dead scroll. All four tabs now match the base 8px surplus. */
+       108px surplus over the tab-bar. Heavy-content tabs (Daily) hid this;
+       thin-content tabs (Home, Profile) exposed it as visible dead scroll.
+       All three tabs now match the base 8px surplus. */
     padding: 0 20px 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -9241,122 +9203,11 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
 }
 const DailyTabScreen = React.memo(DailyTabScreenImpl);
 
-// ─── LEAGUE SCREEN ────────────────────────────────────────────────────────────
-// 9 narrative-placeholder opponents — combined with the user, the league
-// table renders a clean 10. Dropping the last index leaves indices 0–8
-// stable across the PRNG seeded distribution (existing weekly cohort
-// arrangements unaffected; users just won't see Bjorn anymore).
-const LEAGUE_NAMES = ["Carlos","Mikkel","Priya","Tomas","Yuki","Fatima","Ollie","Zara","Nnamdi"];
-const LEAGUE_AVATARS = ["🇧🇷","🇩🇰","🇮🇳","🇪🇸","🇯🇵","🇳🇬","🇬🇧","🇩🇪","🇦🇷"];
-
-function getWeekSeed() {
-  const now = new Date();
-  return now.getFullYear() * 100 + Math.floor((now.getMonth()*31 + now.getDate()) / 7);
-}
-
-function getLeagueCohort(userXp, weekSeed) {
-  const s = (weekSeed * 1013904223) >>> 0;
-  const prng = (n) => { let x = (s ^ n*2654435769)>>>0; x^=x>>16; x^=x<<5; x^=x>>8; return (x>>>0)/4294967296; };
-  const base = Math.max(50, userXp);
-  return LEAGUE_NAMES.map((name, i) => ({
-    name, avatar: LEAGUE_AVATARS[i],
-    xp: Math.max(10, Math.round(base + (prng(i*7+1)-0.3)*base*0.8)),
-    isYou: false
-  }));
-}
-
-function LeagueScreenImpl({ xp, weeklyXp, profile, isActive = true }) {
-  const myWeeklyXp = weeklyXp || 0;
-  const weekSeed = getWeekSeed();
-  const baseOpponents = getLeagueCohort(Math.max(myWeeklyXp, 50), weekSeed);
-  // Simulate opponents earning XP since week start — gives a live feel
-  const [liveXP, setLiveXP] = useState(() =>
-    baseOpponents.map((o, i) => {
-      const minutesSinceMonday = ((Date.now() / 60000) % (7*24*60));
-      const rate = 0.3 + (i % 3) * 0.15; // different activity rates per player
-      return { ...o, xp: o.xp + Math.floor(minutesSinceMonday * rate) };
-    })
-  );
-  // Tick one random opponent every 8s to feel alive — paused when the tab is
-  // hidden so it doesn't wake React up while the user is on Home / Daily / Profile.
-  useEffect(() => {
-    if (!isActive) return;
-    const id = setInterval(() => {
-      setLiveXP(prev => {
-        const idx = Math.floor(Math.random() * prev.length);
-        return prev.map((o, i) => i === idx ? { ...o, xp: o.xp + Math.floor(Math.random() * 15 + 5) } : o);
-      });
-    }, 8000);
-    return () => clearInterval(id);
-  }, [isActive]);
-
-  const you = { name: profile?.name||"You", avatar: profile?.avatar||"⚽", xp, isYou:true };
-  const all = [...liveXP, you].sort((a,b) => b.xp - a.xp);
-  const yourRank = all.findIndex(p => p.isYou) + 1;
-  const now = new Date();
-  const monday = new Date(now); monday.setDate(now.getDate() + ((7-now.getDay()+1)%7||7)); monday.setHours(0,0,0,0);
-  const daysLeft = Math.ceil((monday-now)/TIMINGS.DAY_MS);
-  const { level } = getLevelInfo(xp);
-  if (xp === 0) {
-    return (
-      <div className="tab-content">
-        <div style={{textAlign:"center",padding:"40px 20px"}}>
-          <div style={{fontSize:48,marginBottom:16}}>🏆</div>
-          <div style={{fontSize:20,fontWeight:800,color:"var(--t1)",marginBottom:8}}>Join the League</div>
-          <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Play your first game to earn XP and join this week's league. Top 3 players promote every week.</div>
-          <div style={{background:"var(--s1)",borderRadius:16,padding:"16px",marginBottom:16,textAlign:"left"}}>
-            <div style={{fontSize:12,color:"var(--t3)",marginBottom:8,fontWeight:600,letterSpacing:1}}>HOW IT WORKS</div>
-            {[
-              ["⚽","Play any game mode to earn XP"],
-              ["📈","Climb the weekly leaderboard"],
-              ["🥇","Top 3 promote to a higher league"],
-              ["🔄","Resets every Monday"],
-            ].map(([icon, text]) => (
-              <div key={text} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
-                <span style={{fontSize:18}}>{icon}</span>
-                <span style={{fontSize:13,color:"var(--t2)"}}>{text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="tab-content">
-      <div className="league-header">
-        <div className="league-title">{level.icon} {level.name}</div>
-        <div className="league-sub">Week {Math.floor(weekSeed%52)+1} — Rank #{yourRank} of {all.length}</div>
-        <div className="league-sub" style={{color: myWeeklyXp > 0 ? "var(--accent)" : "var(--t3)", fontWeight: myWeeklyXp > 0 ? 700 : 500, marginTop:2}}>{myWeeklyXp} XP this week</div>
-        <div className="league-timer">Resets in {daysLeft} day{daysLeft!==1?"s":""}</div>
-      </div>
-      <div style={{background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:12,padding:"10px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
-        <span style={{fontSize:20}}>⚡</span>
-        <span style={{fontSize:12,color:"var(--t2)",lineHeight:1.5}}>Play any game to earn XP and climb. <span style={{color:"var(--accent)",fontWeight:700}}>Top 3 promote</span> · <span style={{color:"#FF4B4B",fontWeight:700}}>bottom 3 relegate</span> every Monday.</span>
-      </div>
-      <div style={{fontSize:11,color:"var(--t3)",textAlign:"center",lineHeight:1.5,marginBottom:10,fontStyle:"italic"}}>
-        Practice league · joining real players soon
-      </div>
-      <div className="league-table">
-        <div className="lt-header"><div className="lt-hcol">#</div><div className="lt-hcol">Player</div><div className="lt-hcol" style={{textAlign:"right"}}>XP</div></div>
-        {all.map((p,i) => {
-          const rank=i+1; const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null;
-          const rc=p.isYou?"you":rank<=3?"promote":rank>=8?"relegate":"";
-          return (
-            <div key={i} className={`lt-row ${rc}`}>
-              <div className="lt-rank">{medal||rank}</div>
-              <div className="lt-name"><span>{p.avatar}</span>{p.name}{p.isYou&&<span style={{fontSize:10,background:"var(--accent)",color:"#0a1a00",borderRadius:4,padding:"1px 5px",marginLeft:4,fontWeight:700}}>YOU</span>}</div>
-              <div className="lt-xp">{p.xp.toLocaleString()}</div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-const LeagueScreen = React.memo(LeagueScreenImpl);
-
+// League screen (LeagueScreenImpl + getLeagueCohort + getWeekSeed +
+// LEAGUE_NAMES + LEAGUE_AVATARS) was cut for v1.0 launch — the simulated
+// leaderboard didn't meet the polish floor set by Daily/Wordle/Multiplayer.
+// See /tmp/league-v1.1-spec.md for the design that brings League back with
+// real backend leaderboards in v1.1.
 
 const HOW_TO_PLAY = {
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
@@ -10378,11 +10229,8 @@ function AppInner() {
       haptic("soft");
       // Club quiz bypasses startMode entirely (it sets activeClub + setMode directly).
       // Any mode reaching this function should clear it so a stale crest banner
-      // doesn't appear on the next quiz. Same for League — `launchLeagueInMode`
-      // sets leagueMode and never re-enters startMode, so any stale value here
-      // would leak the league header onto the next mode the user picks.
+      // doesn't appear on the next quiz.
       setActiveClub(null);
-      setLeagueMode(null);
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
@@ -10866,10 +10714,10 @@ function AppInner() {
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
   // Belt-and-braces: strip any chaos-tagged item before the TrueFalseEngine
-  // sees the questions list. Both upstream selection paths (getTrueFalseQs +
-  // launchLeagueInMode's T/F branch) already filter chaos, but any future code
-  // path that sets `questions` directly would bypass those filters. Memoized so
-  // the engine's questions prop keeps a stable reference across AppInner renders.
+  // sees the questions list. The upstream selection path (getTrueFalseQs)
+  // already filters chaos, but any future code path that sets `questions`
+  // directly would bypass that filter. Memoized so the engine's questions
+  // prop keeps a stable reference across AppInner renders.
   const trueFalseQuestions = useMemo(
     () => (mode === "truefalse" && Array.isArray(questions))
       ? questions.filter(q => q && q.cat !== "chaos")
@@ -10933,7 +10781,6 @@ function AppInner() {
     setWrongAnswers([]);
     setLocalResult(null);
     setActiveClub(null);
-    setLeagueMode(null);
   }, []);
   // Wordmark "Home" handler — wired to both mobile .logo and DesktopNav's
   // dn-brand. If the user is currently in a Stage 1 multiplayer room,
@@ -11031,79 +10878,13 @@ function AppInner() {
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
-  const [showLeaguePicker, setShowLeaguePicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
-  const [leagueMode, setLeagueMode] = useState(null); // { id, name } once a league is picked; null otherwise
   const diffPickerRef = useRef(null);
-  const leaguePickerRef = useRef(null);
-  const leagueModeRef = useRef(null);
   const friendsPickerRef = useRef(null);
   const joinGateRef = useRef(null);
   useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
-  useModalA11y({ isOpen: showLeaguePicker,  onClose: () => setShowLeaguePicker(false),  ref: leaguePickerRef });
-  useModalA11y({ isOpen: !!leagueMode,      onClose: () => setLeagueMode(null),         ref: leagueModeRef });
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
-
-  const pickLeague = useCallback((leagueId, leagueName) => {
-    haptic("soft");
-    setShowLeaguePicker(false);
-    setLeagueMode({ id: leagueId, name: leagueName });
-  }, []);
-
-  const backToLeagues = useCallback(() => {
-    haptic("soft");
-    setLeagueMode(null);
-    setShowLeaguePicker(true);
-  }, []);
-
-  const launchLeagueInMode = useCallback(async (modeId) => {
-    if (!leagueMode) return;
-    const leagueId = leagueMode.id;
-    haptic("soft");
-    setLeagueMode(null);
-    setActiveClub(null);
-    setCat(leagueId);
-
-    let qs = [];
-    try {
-      if (modeId === "classic") {
-        setDiff("medium");
-        qs = (await getQs({ cat: leagueId, diff: "medium", n: 10, ramp: false })) || [];
-      } else if (modeId === "survival") {
-        qs = (await getQs({ cat: leagueId, diff: "medium", n: 300 })) || [];
-      } else if (modeId === "hotstreak") {
-        qs = ((await getQs({ cat: leagueId, diff: "medium", n: 999 })) || []).filter(q => q.type !== "tf");
-      } else if (modeId === "truefalse") {
-        // Keyword-match league-specific T/F; fall back to the general pool if too few.
-        // Chaos-tagged statements are excluded — they don't suit the T/F format.
-        const { TF_STATEMENTS } = await loadQuestions();
-        const keywords = LEAGUE_TF_KEYWORDS[leagueId] || [];
-        const indexed = TF_STATEMENTS
-          .map((s, i) => ({ ...s, _tfIdx: i }))
-          .filter(s => s.cat !== "chaos");
-        const leagueTF = keywords.length
-          ? indexed.filter(s => keywords.some(kw => s.s.toLowerCase().includes(kw)))
-          : [];
-        if (leagueTF.length >= 10) {
-          qs = shuffle(leagueTF).slice(0, 20).map(s => ({ ...s, _histKey: `tf:${s.id}` }));
-        } else {
-          qs = await getTrueFalseQs();
-        }
-      }
-    } catch (e) {
-      console.warn('[launchLeagueInMode]', e?.message || e);
-      showToast("⚠️ Couldn't load questions — check your connection");
-      return;
-    }
-
-    qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
-    if (qs.length === 0) { showToast("Not enough questions for this league yet"); return; }
-
-    setMode(modeId);
-    setQuestions(qs);
-    setScreen("quiz");
-  }, [leagueMode, showToast]);
 
   const startClassicWithDiff = useCallback(async (d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
@@ -11358,89 +11139,6 @@ function AppInner() {
           </div>
         )}
 
-        {/* ── LEAGUE QUIZ SHEET (step 1: pick a league) ── */}
-        {showLeaguePicker && (
-          <div className="diff-overlay" onClick={() => setShowLeaguePicker(false)}>
-            <div ref={leaguePickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
-              <div className="diff-sheet-title">Pick a League</div>
-              <div className="diff-sheet-sub">Choose a competition, then a game mode</div>
-              <div className="diff-options">
-                {[
-                  { id:"PL",         icon:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", name:"Premier League",   desc:"England's top flight" },
-                  { id:"LaLiga",     icon:"🇪🇸", name:"La Liga",          desc:"Spanish football's finest" },
-                  { id:"Bundesliga", icon:"🇩🇪", name:"Bundesliga",       desc:"German powerhouses" },
-                  { id:"SerieA",     icon:"🇮🇹", name:"Serie A",          desc:"Italian tactical masters" },
-                  { id:"Ligue1",     icon:"🇫🇷", name:"Ligue 1",          desc:"Coming soon", comingSoon:true },
-                  { id:"UCL",        icon:"🏆", name:"Champions League", desc:"Europe's elite" },
-                ].map(opt => (
-                  <button
-                    key={opt.id}
-                    // We render this as a regular (non-disabled) button when
-                    // comingSoon is true so the onClick still fires and the
-                    // user gets a toast. The .coming-soon CSS keeps the
-                    // visual "disabled" treatment (opacity + not-allowed).
-                    className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
-                    aria-disabled={opt.comingSoon || undefined}
-                    onClick={() => opt.comingSoon
-                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned`)
-                      : pickLeague(opt.id, opt.name)}
-                  >
-                    <span className="diff-option-icon">{opt.icon}</span>
-                    <div className="diff-option-body">
-                      <div className="diff-option-name">{opt.name}</div>
-                      <div className="diff-option-desc">{opt.desc}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── LEAGUE QUIZ SHEET (step 2: pick a mode) ── */}
-        {leagueMode && (
-          <div className="diff-overlay" onClick={() => setLeagueMode(null)}>
-            <div ref={leagueModeRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
-              <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:4}}>
-                <button
-                  type="button"
-                  className="back-btn"
-                  onClick={backToLeagues}
-                  aria-label="Back to league picker"
-                >←</button>
-                <div className="diff-sheet-title" style={{margin:0}}>{leagueMode.name} — Choose mode</div>
-              </div>
-              <div className="diff-sheet-sub">How do you want to play?</div>
-              <div className="diff-options">
-                {[
-                  { id:"classic",   icon:"⏱️",  name:"Classic",      desc:"10 questions, 20 seconds each" },
-                  { id:"survival",  icon:"🔥",  name:"Survival",     desc:"One wrong and it's over" },
-                  { id:"hotstreak", icon:"⚡🔥", name:"Hot Streak",   desc:"60-second sprint" },
-                  { id:"truefalse", icon:"✅",  name:"True or False", desc:"Coming soon", comingSoon:true },
-                ].map(opt => (
-                  <button
-                    key={opt.id}
-                    // Same pattern as the league picker: keep onClick wired
-                    // when comingSoon so the user gets a toast. The
-                    // .coming-soon CSS handles the visual disabled state.
-                    className={`diff-option${opt.comingSoon ? " coming-soon" : ""}`}
-                    aria-disabled={opt.comingSoon || undefined}
-                    onClick={() => opt.comingSoon
-                      ? showToast(`${opt.icon} ${opt.name} is coming soon — stay tuned`)
-                      : launchLeagueInMode(opt.id)}
-                  >
-                    <span className="diff-option-icon">{opt.icon}</span>
-                    <div className="diff-option-body">
-                      <div className="diff-option-name">{opt.name}</div>
-                      <div className="diff-option-desc">{opt.desc}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
           <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
@@ -11615,7 +11313,6 @@ function AppInner() {
             <div className="play-grid">
               {[
                 { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
-                { key:"league",    Icon: Trophy,     name:"League Quiz",   desc:"Pick your league",  onTap:() => setShowLeaguePicker(true) },
                 { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
                 { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
                 { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
@@ -11654,13 +11351,6 @@ function AppInner() {
                 </div>
               );
             })()}
-          </div>
-        )}
-
-        {/* ── LEAGUE TAB ── */}
-        {!inGame && screen === "home" && (
-          <div style={tab === "league" ? undefined : HIDDEN_STYLE}>
-            <LeagueScreen xp={xp} profile={profile} isActive={tab === "league"} />
           </div>
         )}
 
@@ -11918,7 +11608,6 @@ function AppInner() {
           <nav className="tab-bar">
             {[
               { id:"home",     icon:"⚽", label:"Home"    },
-              { id:"league",   icon:"🏆", label:"League"  },
               { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
               { id:"profile",  icon:"👤", label:"Profile" },
             ].map(({ id, icon, label, badge }) => (
