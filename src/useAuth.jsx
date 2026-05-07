@@ -417,6 +417,7 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp(email, password, username) {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'sign-up attempted', level: 'info' })
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -429,6 +430,7 @@ export function AuthProvider({ children }) {
   }
 
   async function signIn(email, password) {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'sign-in attempted', level: 'info' })
     const result = await supabase.auth.signInWithPassword({ email, password })
     if (!result.error && result.data?.session) {
       // Pre-fill convenience for next visit (post-expiry, re-launch).
@@ -440,6 +442,7 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'sign-out initiated', level: 'info' })
     // Sentinel flag for the auth state listener: marks this SIGNED_OUT
     // as intentional so it won't dispatch biq:session-expired (which
     // would surface a confusing "session expired" banner on Login).

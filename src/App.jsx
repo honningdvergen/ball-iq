@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
+import * as Sentry from '@sentry/react';
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
@@ -3081,6 +3082,9 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   // correct. Same ref pattern as wrongAnswers.
   const allAnswersRef = useRef([]);
   useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; }, [questions]);
+  useEffect(() => {
+    Sentry.addBreadcrumb({ category: 'game', message: 'quiz started', level: 'info', data: { mode, diff: diff || null, total: questions?.length || 0 } });
+  }, []);
   const [hardRightBurst, setHardRightBurst] = useState(false);
   const hardRightBurstTimerRef = useRef(null);
   useEffect(() => () => {
@@ -3100,8 +3104,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const answered = selected !== null || typedResult !== null;
 
   const doAdvance = useCallback((ns, nb, correct) => {
-    if (mode === "survival" && !correct) { setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return; }
-    if (idx + 1 >= total) { setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore }); return; }
+    if (mode === "survival" && !correct) {
+      Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended (survival fail)', level: 'info', data: { mode, score: ns, answered: idx + 1 } });
+      setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return;
+    }
+    if (idx + 1 >= total) {
+      Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended', level: 'info', data: { mode, score: ns, total } });
+      setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore }); return;
+    }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
@@ -3520,6 +3530,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     if (creating || joining) return;
     setCreating(true);
     setError("");
+    Sentry.addBreadcrumb({ category: 'multiplayer', message: 'create-room initiated', level: 'info', data: { capacity: CAPACITY } });
     // create_room is single-attempt by design (not idempotent — retry
     // could orphan rooms). User manually re-taps Create on failure.
     const result = await mpCreateRoom({
@@ -3550,6 +3561,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     }
     setJoining(true);
     setError("");
+    Sentry.addBreadcrumb({ category: 'multiplayer', message: 'join-room initiated', level: 'info', data: { code_prefix: trimmed.slice(0, 2) } });
     const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: defaultName || "Player",
