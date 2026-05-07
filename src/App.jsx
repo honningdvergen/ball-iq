@@ -881,7 +881,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    for in-card eyebrows and other screen uses). Flex container so the
    Daily header can host a streak chip on the right; "More modes" with
    a single child sits left as expected via justify-content:space-between. */
-.home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 12px;}
+.home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 16px;}
 /* Optional small uppercase eyebrow above .home-section-title — used to
    give a section a touch more presence. Kept declarative ("Game modes",
    not marketing copy). */
@@ -936,7 +936,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:22px;padding:13px 20px;min-height:90px;margin-bottom:18px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1.5px solid rgba(34,197,94,0.45);box-shadow:0 0 0 1.5px rgba(34,197,94,0.25),0 10px 32px rgba(34,197,94,0.18);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online{position:relative;overflow:hidden;border-radius:18px;padding:13px 20px;min-height:90px;margin-bottom:16px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1.5px solid rgba(34,197,94,0.45);box-shadow:0 0 0 1.5px rgba(34,197,94,0.25),0 10px 32px rgba(34,197,94,0.18);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
 .hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
 .hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
 .hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
@@ -979,14 +979,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .more-modes-eyebrow{margin:4px 0 10px;padding-left:2px;}
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
-.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;width:100%;min-width:0;}
-.play-card-name{display:block;font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.play-card-name{display:block;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;letter-spacing:0.4px;padding:2px 6px;border-radius:20px;background:var(--accent);color:#fff;}
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
@@ -1026,7 +1026,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0 0 18px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.wc-card{position:relative;width:100%;margin:0 0 16px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 /* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
    (red/white/red). Each flag occupies 33% width with hard color stops at
    tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
@@ -1948,7 +1948,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    with a green eyebrow and green emoji. */
 .daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
 .daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 16px;min-height:128px;border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
+.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 16px;min-height:128px;border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
 .daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
 .daily-pair-card:active{transform:scale(0.98);}
 .daily-pair-card.challenge{background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);border-color:transparent;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
