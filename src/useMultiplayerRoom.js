@@ -25,6 +25,7 @@
 //   }
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import * as Sentry from '@sentry/react'
 import { supabase } from './supabase.js'
 import { useAuth } from './useAuth.jsx'
 import {
@@ -132,6 +133,16 @@ export function useMultiplayerRoom(code) {
           // Non-fatal: room state is at least known. Continue with empty
           // players array; realtime sync below will populate as events fire.
           setError(playersErr.message)
+        } else if (!playersData || playersData.length === 0) {
+          // Silent-empty signal: room exists but room_players is empty. Every
+          // active room must have ≥1 player (the host); zero rows points at
+          // RLS regression or join-flow data integrity bug. User sees a lobby
+          // with no players and no error.
+          Sentry.captureMessage('Empty result: room_players returned 0 rows for existing room', {
+            level: 'warning',
+            tags: { check: 'empty-room-players' },
+            extra: { room_id: roomData.id, room_code: code, room_state: roomData.state },
+          })
         }
         setPlayers(playersData || [])
 

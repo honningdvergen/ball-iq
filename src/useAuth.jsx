@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
+import * as Sentry from '@sentry/react'
 import { supabase } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
 
@@ -147,6 +148,15 @@ export function AuthProvider({ children }) {
       }
       if (!profileData) {
         console.warn('[loadProfile] no profile row found for user — keeping metadata fallback', { userId, username: metaUsername })
+        // Silent-empty signal: an authenticated user with no profile row means
+        // the on-signup trigger never fired or RLS is blocking SELECT. User
+        // experience degrades silently to "Player" fallback; Sentry alert
+        // routes the regression.
+        Sentry.captureMessage('Empty result: profiles row missing for authenticated user', {
+          level: 'warning',
+          tags: { check: 'empty-profile' },
+          extra: { user_id: userId },
+        })
         return
       }
 
@@ -158,6 +168,11 @@ export function AuthProvider({ children }) {
         console.error('[loadProfile] user_game_state error (non-fatal)', { userId, status: gameStateStatus, code: gameStateError.code, message: gameStateError.message })
       } else if (!gameStateData) {
         console.warn('[loadProfile] no user_game_state row for user — trigger should have created one', { userId })
+        Sentry.captureMessage('Empty result: user_game_state row missing for authenticated user', {
+          level: 'warning',
+          tags: { check: 'empty-user-game-state' },
+          extra: { user_id: userId },
+        })
       } else {
         gameState = gameStateData
       }
