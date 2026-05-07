@@ -10,3 +10,8 @@ scripts/.vintage-candidates.json
 scripts/.vintage-candidates.md
 scripts/.audit-findings.md
 scripts/.Rhistory
+
+# Playwright artifacts
+test-results/
+playwright-report/
+playwright/.cache/

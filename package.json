@@ -12,7 +12,9 @@
     "find-vintage": "node scripts/find-vintage-candidates.mjs",
     "test:spike-1": "node scripts/spike-1-realtime.mjs",
     "test:spike-2": "node scripts/spike-2-advance-race.mjs",
-    "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs"
+    "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@sentry/react": "^8.55.2",
@@ -23,6 +25,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@sentry/vite-plugin": "^2.23.1",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.1.4"
