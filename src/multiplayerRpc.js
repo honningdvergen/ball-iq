@@ -19,6 +19,7 @@
 // is in flight (a brief blip that succeeds first try shouldn't alarm).
 
 import { useState, useEffect } from 'react'
+import * as Sentry from '@sentry/react'
 import { supabase } from './supabase.js'
 
 // ─── Retry config per RPC ────────────────────────────────────────────
@@ -137,7 +138,17 @@ async function withRetry(rpcName, rpcArgs) {
       if (!isRetryable(error)) return { data: null, error }
       // Otherwise loop and retry.
     }
-    // Exhausted attempts. Return the last error.
+    // Exhausted attempts. Surface to Sentry as a retry-layer-exhausted
+    // failure — these are network-class errors the retry policy couldn't
+    // absorb (5xx storms, sustained network outage). Tagged by rpc so
+    // Sentry alert rules can route critical RPCs to mobile push.
+    Sentry.captureException(
+      lastErr instanceof Error ? lastErr : new Error(lastErr?.message ?? String(lastErr)),
+      {
+        tags: { rpc: rpcName },
+        extra: { retry_attempts: config.attempts },
+      },
+    )
     return { data: null, error: lastErr }
   } finally {
     if (inRetryWindow) {
