@@ -490,7 +490,7 @@ function calcBallIQ(score, total) {
 }
 
 function iqPercentile(iq) {
-  // Numeric percentile aligned with the iqPercentileLabel buckets below
+  // Numeric percentile aligned with the IQ_LABELS tier buckets
   // (155+ → top 1%, 145 → top 3%, …). Used for the BallIQResults ring
   // and any numeric "Better than X%" rendering.
   if (iq >= 155) return 99;
@@ -510,8 +510,7 @@ function iqPercentile(iq) {
 // risked falling foul of App Store guideline 2.3 (Accurate Metadata).
 //
 // Voice: 3rd-person observational across all tiers (channeling/plays/argues/etc).
-// Single source of truth — both iqLabel() and the back-compat
-// iqPercentileLabel() shim read from this array.
+// Single source of truth — iqLabel() reads from this array.
 const IQ_LABELS = [
   { min: 155, label: "Channeling José Mourinho 👑" },
   { min: 150, label: "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹" },
@@ -538,13 +537,6 @@ function iqLabel(iq) {
     if (iq >= tier.min) return tier.label;
   }
   return IQ_LABELS[IQ_LABELS.length - 1].label;
-}
-
-// Back-compat shim — same content as iqLabel(); the two callsites that read
-// `pctileLbl` separately from `label` both currently render the same string
-// (pre-existing rendering quirk, not introduced by this DRY change).
-function iqPercentileLabel(iq) {
-  return iqLabel(iq);
 }
 
 function levenshtein(a, b) {
@@ -5744,7 +5736,6 @@ async function generateShareCard(type, data) {
   } else if (type === "balliq") {
     const iq = data?.iq ?? 0;
     const label = data?.label || "";
-    const pctileLbl = data?.pctileLbl || "";
 
     ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
@@ -5757,12 +5748,7 @@ async function generateShareCard(type, data) {
     // Funny label — wrapped to 300px
     ctx.font = '600 16px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    const labelEnd = _wrapText(ctx, label, cx, 308, 300, 22);
-
-    // Percentile
-    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText(pctileLbl, cx, labelEnd + 28);
+    _wrapText(ctx, label, cx, 308, 300, 22);
 
     // Subtitle
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -6044,7 +6030,6 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
   const iq = calcBallIQ(result.score, result.total);
   const pctile = iqPercentile(iq);
   const label = iqLabel(iq);
-  const pctileLbl = iqPercentileLabel(iq);
   const ringPct = Math.min((iq - 60) / 100, 1);
   const showIQConfetti = iq >= 120;
 
@@ -6097,7 +6082,6 @@ function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
             ring — leans into the IQ score as the headline metric. */}
         <div className="iq-label-pill" style={{opacity: revealed ? 1 : 0, transform: revealed ? "translateY(0)" : "translateY(6px)", transition:"opacity 0.5s 0.5s,transform 0.5s 0.5s"}}>{label}</div>
         <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s", lineHeight:1.8}}>
-          <strong>{pctileLbl}</strong>
           {pctile >= 90 && <div style={{fontSize:12,color:"var(--gold)",fontWeight:700,marginTop:4}}>🏆 Elite level knowledge!</div>}
           {pctile >= 75 && pctile < 90 && <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginTop:4}}>⚡ Sharp — you really know your football</div>}
           {pctile >= 50 && pctile < 75 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Keep playing to climb higher!</div>}
@@ -7527,12 +7511,11 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
   if (!entry) return null;
   const iq = entry.iq;
   const label = iqLabel(iq);
-  const pctileLbl = iqPercentileLabel(iq);
   const when = entry.date
     ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
     : null;
   const doShare = async () => {
-    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label} — ${pctileLbl}\n\nCould you beat me?\nballiq.app`;
+    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label}\n\nCould you beat me?\nballiq.app`;
     try {
       if (navigator.share) { await navigator.share({ title: APP_NAME, text: msg }); return; }
       if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
@@ -7568,13 +7551,6 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
           }}
         >{iq}</div>
         <div style={{marginTop:10, fontSize:17, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.01em"}}>{label}</div>
-        <div style={{
-          marginTop:10,
-          display:"inline-flex", alignItems:"center",
-          padding:"6px 14px", borderRadius:999,
-          background:"rgba(88,204,2,0.15)", color:"#8AE042",
-          fontSize:12, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase",
-        }}>{pctileLbl}</div>
         {when && <div style={{marginTop:10, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
         <div style={{marginTop:22}}>
           <button className="btn-3d ghost" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
@@ -10549,8 +10525,7 @@ function AppInner() {
       balliq: (() => {
         const iq = calcBallIQ(score, total);
         const label = iqLabel(iq);
-        const pctileLbl = iqPercentileLabel(iq);
-        return `🧠 ${APP_NAME} Test\nMy ${APP_NAME}: ${iq} — ${pctileLbl}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `🧠 ${APP_NAME} Test\nMy ${APP_NAME}: ${iq}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       classic: (() => {
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
@@ -10586,7 +10561,7 @@ function AppInner() {
     if (mode === "balliq") {
       const iq = calcBallIQ(score, total);
       cardType = "balliq";
-      cardData = { iq, label: iqLabel(iq), pctileLbl: iqPercentileLabel(iq) };
+      cardData = { iq, label: iqLabel(iq) };
     } else if (mode === "hotstreak") {
       cardType = "hotstreak";
       cardData = { score };
@@ -10607,7 +10582,7 @@ function AppInner() {
     const lines = [
       (profile.avatar||"⚽") + " " + (profile.name||`${APP_NAME} Player`),
       level.icon + " " + level.name + " — " + xp + " XP",
-      iq ? APP_NAME + ": " + iq + " — " + iqPercentileLabel(iq) : null,
+      iq ? APP_NAME + ": " + iq + " — " + iqLabel(iq) : null,
       "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
       "#BallIQ"
     ].filter(Boolean).join("\n");
