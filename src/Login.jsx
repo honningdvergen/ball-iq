@@ -56,11 +56,11 @@ export default function Login() {
         }
         const { data, error } = await signUp(email, password, username.trim())
         if (error) setError(error.message || 'Sign-up failed — please try again.')
-        else setMessage('Check your email to confirm your account, then log in.')
+        else setMessage('Check your email to confirm your account, then sign in.')
       } else {
         const { data, error } = await signIn(email, password)
         if (error) {
-          setError(error.message || 'Login failed — please try again.')
+          setError(error.message || 'Sign-in failed — please try again.')
         } else if (!data?.session) {
           // Auth API returned no error but no session either — defensive
           // path so the user sees something instead of a silent button reset.
@@ -309,7 +309,7 @@ export default function Login() {
             ...(loading || !email || !password ? styles.buttonDisabled : {}),
           }}
         >
-          {loading ? 'Loading...' : mode === 'login' ? 'Log in' : 'Sign up'}
+          {loading ? 'Loading…' : mode === 'login' ? 'Sign in' : 'Sign up'}
         </button>
       </form>
 
@@ -330,7 +330,7 @@ export default function Login() {
               setMessage('')
             }}
           >
-            {mode === 'login' ? 'Sign up' : 'Log in'}
+            {mode === 'login' ? 'Sign up' : 'Sign in'}
           </span>
         </div>
 
