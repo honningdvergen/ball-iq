@@ -1398,17 +1398,20 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
-/* ── HABIT TRACKER (Daily-tab streak strip + 4-week heatmap) ── */
-.habit-tracker{margin:0 0 14px;}
-.habit-strip{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:14px;}
-.habit-strip-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.habit-flame{font-size:22px;line-height:1;}
-.habit-streak-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
-.habit-streak-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:900;color:var(--t1);line-height:1;}
-.habit-streak-label{font-size:10px;font-weight:700;letter-spacing:0.08em;color:var(--t2);text-transform:uppercase;}
-.habit-best{font-size:11px;font-weight:600;color:var(--t3);padding-left:10px;border-left:1px solid var(--border);}
-.habit-nudge{font-size:11.5px;color:var(--t2);font-weight:600;text-align:right;flex-shrink:0;line-height:1.2;}
-.light .habit-strip{background:var(--accent-dim);border-color:rgba(52,168,83,0.30);}
+/* ── STREAK HERO (Daily-tab vertical hero, big number anchor) ── */
+.streak-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 16px 18px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:14px;margin:0 0 12px;}
+.streak-hero-flame{font-size:32px;line-height:1;margin-bottom:4px;}
+.streak-hero-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:64px;font-weight:900;color:var(--t1);line-height:1;letter-spacing:-0.02em;}
+.streak-hero-label{font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--t2);text-transform:uppercase;margin-top:8px;}
+.streak-hero-sub{font-size:12px;color:var(--t3);font-weight:600;margin-top:8px;line-height:1.3;}
+.streak-hero-best{color:var(--t2);}
+.light .streak-hero{border-color:rgba(52,168,83,0.30);}
+/* ── WEEKLY SUMMARY CHIP (X of N days this week) ── */
+.week-chip{padding:10px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;font-size:12px;color:var(--t2);font-weight:600;margin:0 0 14px;text-align:center;letter-spacing:0.01em;}
+.week-chip strong{color:var(--t1);font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;}
+.week-chip.is-perfect{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);color:var(--accent);}
+.week-chip.is-perfect strong{color:var(--accent);}
+.light .week-chip.is-perfect{border-color:rgba(52,168,83,0.40);}
 /* ── DAILY-TAB COMPACT ACTION ROW (Today's 7 + Puzzle pills) ── */
 .today-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px;}
 .today-action{display:flex;flex-direction:column;align-items:flex-start;padding:12px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
@@ -9062,36 +9065,39 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-// StreakHero — Daily tab visual anchor. Strip with current login streak,
-// best chip, and contextual nudge framed around today's Daily challenge.
-// Pure presentational: reads loginStreak / bestStreak / dailyHistory props
-// already on DailyTabScreen; no new fetches or schema.
+// StreakHero — Daily tab visual anchor. Centered hero block with the
+// login-streak number as the dominant element (64px tabular-nums), a
+// "DAY STREAK" eyebrow label below, and a sub-line carrying the
+// best-streak chip + nudge framed around today's Daily challenge.
+// Pure presentational: reads loginStreak / bestStreak / dailyHistory
+// props already on DailyTabScreen; no new fetches or schema.
 function StreakHero({ loginStreak, bestStreak, history, today }) {
   const todayYMD = dateToYMD(today);
   const playedToday = typeof history?.[todayYMD] === "number";
 
-  // Login streak (left of strip) ticks on app-open; the daily challenge
+  // Login streak (the hero number) ticks on app-open; the daily challenge
   // is a separate engagement. Phrase the nudge in terms of the Daily
-  // challenge — what the calendar below the hero is reflecting — to
-  // avoid implying that opening the app extends "this" streak.
+  // challenge — what the calendar below reflects — so the sub-line tells
+  // the user something they can act on, not just restating the hero.
   const nudge = playedToday
-    ? "✓ Daily complete"
+    ? "✓ Daily complete today"
     : "Play today's Daily";
 
   const showBest = typeof bestStreak === "number" && bestStreak > loginStreak && bestStreak > 0;
+  const streakCount = loginStreak || 0;
 
   return (
-    <div className="habit-tracker">
-      <div className="habit-strip" role="status" aria-label={`${loginStreak} day login streak${showBest ? `, best ${bestStreak} days` : ""}. ${nudge}`}>
-        <div className="habit-strip-main">
-          <span className="habit-flame" aria-hidden="true">🔥</span>
-          <div className="habit-streak-text">
-            <div className="habit-streak-num">{loginStreak || 0}</div>
-            <div className="habit-streak-label">Day Streak</div>
-          </div>
-          {showBest && <div className="habit-best">Best: {bestStreak}</div>}
-        </div>
-        <div className="habit-nudge">{nudge}</div>
+    <div
+      className="streak-hero"
+      role="status"
+      aria-label={`${streakCount} day login streak${showBest ? `, best ${bestStreak} days` : ""}. ${nudge}.`}
+    >
+      <div className="streak-hero-flame" aria-hidden="true">🔥</div>
+      <div className="streak-hero-num">{streakCount}</div>
+      <div className="streak-hero-label">Day Streak</div>
+      <div className="streak-hero-sub">
+        {showBest && <><span className="streak-hero-best">Best: {bestStreak}</span> · </>}
+        <span>{nudge}</span>
       </div>
     </div>
   );
@@ -9181,6 +9187,31 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
         history={dailyHistory}
         today={today}
       />
+      {(() => {
+        // Weekly summary chip — "X of N days this week" where N counts
+        // calendar days from local Monday through today (inclusive). Anchors
+        // to the locked decision (league spec C2): week-start = local
+        // Monday. Renders as a compact chip directly under the hero —
+        // bridges streak-emotion → calendar-data narratively.
+        const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const dow = todayDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+        const daysSinceMon = (dow + 6) % 7;
+        const possibleDays = daysSinceMon + 1;
+        let played = 0;
+        for (let i = 0; i <= daysSinceMon; i++) {
+          const d = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - daysSinceMon + i);
+          const ymd = dateToYMD(d);
+          if (typeof dailyHistory?.[ymd] === "number") played++;
+        }
+        const isPerfect = played === 7;
+        return (
+          <div className={`week-chip${isPerfect ? " is-perfect" : ""}`} aria-label={`Played ${played} of ${possibleDays} possible days this week`}>
+            {isPerfect
+              ? <><strong>7 / 7</strong> · perfect week</>
+              : <><strong>{played}</strong> of {possibleDays} day{possibleDays === 1 ? "" : "s"} this week</>}
+          </div>
+        );
+      })()}
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
