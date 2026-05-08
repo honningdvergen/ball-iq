@@ -9103,7 +9103,7 @@ function StreakHero({ loginStreak, bestStreak, history, today }) {
   );
 }
 
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
   // this, today + todayYMD stay frozen at mount time and the calendar /
@@ -9234,37 +9234,24 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
         gamesThisWeek={stats?.gamesThisWeek}
         gamesLastWeek={stats?.gamesLastWeek}
       />
-      {isDone && (
-        <div style={{background:"var(--s1)",borderRadius:16,padding:"16px 18px",marginTop:12,marginBottom:16}}>
-          <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>While you wait for tomorrow…</div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {[
-              {icon:"🧠", label:`Take the ${APP_NAME} Test`, action:"balliq"},
-              {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
-              {icon:"🔥", label:"Try Survival Mode", action:"survival"},
-            ].map(({icon, label, action}) => (
-              <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
-                <div className="mi-icon" style={{fontSize:18}}>{icon}</div>
-                <div className="mi-body"><div className="mi-name" style={{fontSize:14}}>{label}</div></div>
-                <div className="mi-arrow">→</div>
-              </button>
-            ))}
-          </div>
+      <div style={{background:"var(--s1)",borderRadius:14,padding:"16px 18px",marginTop:12,marginBottom:16}}>
+        <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>
+          {isDone ? "While you wait for tomorrow…" : "Other modes to try"}
         </div>
-      )}
-      {iqHistory && iqHistory.length > 0 && (
-        <div className="streak-section">
-          <div className="streak-sec-title">{APP_NAME} History</div>
-          <div className="iq-hist-bars" style={{height:52,alignItems:"flex-end"}}>
-            {iqHistory.map((h,i) => (
-              <div key={i} className="iq-hist-col">
-                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/100)*44)+4}px`,background:h.iq>=120?"var(--accent)":h.iq>=100?"var(--gold)":"var(--t3)"}}/>
-                <div className="iq-hist-n">{h.iq}</div>
-              </div>
-            ))}
-          </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {[
+            {icon:"🧠", label:`Take the ${APP_NAME} Test`, action:"balliq"},
+            {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
+            {icon:"🔥", label:"Try Survival Mode", action:"survival"},
+          ].map(({icon, label, action}) => (
+            <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
+              <div className="mi-icon" style={{fontSize:18}}>{icon}</div>
+              <div className="mi-body"><div className="mi-name" style={{fontSize:14}}>{label}</div></div>
+              <div className="mi-arrow">→</div>
+            </button>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -11426,7 +11413,7 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
-            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
+            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
           </div>
         )}
 
