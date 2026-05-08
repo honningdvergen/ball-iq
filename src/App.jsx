@@ -1409,6 +1409,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .habit-best{font-size:11px;font-weight:600;color:var(--t3);padding-left:10px;border-left:1px solid var(--border);}
 .habit-nudge{font-size:11.5px;color:var(--t2);font-weight:600;text-align:right;flex-shrink:0;line-height:1.2;}
 .light .habit-strip{background:var(--accent-dim);border-color:rgba(52,168,83,0.30);}
+/* ── DAILY-TAB COMPACT ACTION ROW (Today's 7 + Puzzle pills) ── */
+.today-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px;}
+.today-action{display:flex;flex-direction:column;align-items:flex-start;padding:12px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.today-action:hover{background:var(--s2);border-color:var(--border2);}
+.today-action:active{transform:scale(0.98);}
+.today-action.is-done{border-color:rgba(34,197,94,0.30);background:linear-gradient(180deg,rgba(34,197,94,0.04) 0%,var(--s1) 100%);}
+.ta-title{font-size:10px;font-weight:800;letter-spacing:0.10em;color:var(--t3);text-transform:uppercase;}
+.ta-status{font-size:14px;font-weight:700;color:var(--t1);margin-top:6px;line-height:1.1;}
+.today-action.is-done .ta-status{color:var(--accent);}
+.light .today-action.is-done{background:linear-gradient(180deg,rgba(52,168,83,0.06) 0%,var(--s1) 100%);}
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
@@ -9127,46 +9137,44 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   const shownScore = dailyScore != null ? dailyScore : localScore;
   return (
     <div className="tab-content">
-      {/* Two-card peer row — Today's 7 + Today's Puzzle. Mirrors the
-          Home Daily section so the Daily tab and Home Daily feel like
-          the same component. Drops the duplicate "Challenge Complete!"
-          callout (the result screen handles celebration); drops the
-          yellow Share button (sharing belongs on the result screen). */}
-      <div className="daily-pair" style={{marginBottom:14}}>
-        <button
-          className="daily-pair-card challenge"
-          onClick={() => isDone ? onViewScore(today, shownScore) : onPlay()}
-          aria-label={isDone ? `Daily challenge complete: ${shownScore} out of 7` : "Play today's daily challenge"}
-        >
-          <div className="daily-pair-title">Today's 7</div>
-          <div className="daily-pair-status">
-            {isDone
-              ? <>✅ Done · <strong>{shownScore}/7</strong></>
-              : <>Today</>}
-          </div>
-          <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
-        </button>
-        {(() => {
-          const ws = readWordleTodayStatus();
-          const wordleStatus =
-            ws.kind === "won"         ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-            ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
-            ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
-            <>Today</>;
-          const isPuzzleDone = ws.kind === "won" || ws.kind === "lost";
-          return (
+      {/* Compact "Today" action row — Daily-tab specific. Replaces the
+          home-style daily-pair cards (which still live on Home). Each pill
+          is a tap-target with title + compact status; played → review,
+          unplayed → play. No "Resets in…" sub-line — that lives on Home;
+          on Daily, the calendar below is the time signal. */}
+      {(() => {
+        const ws = readWordleTodayStatus();
+        const wordleDone = ws.kind === "won" || ws.kind === "lost";
+        const wordleStatus =
+          ws.kind === "won"         ? <>✅ <strong>{ws.used}/6</strong></> :
+          ws.kind === "lost"        ? <>❌ Missed</> :
+          ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
+          <>Play</>;
+        const dailyClass  = "today-action ta-daily" + (isDone ? " is-done" : " is-pending");
+        const puzzleClass = "today-action ta-puzzle" + (wordleDone ? " is-done" : " is-pending");
+        return (
+          <div className="today-actions">
             <button
-              className="daily-pair-card wordle"
-              onClick={() => isPuzzleDone ? (onViewPuzzle && onViewPuzzle(ws)) : (onPlayWordle && onPlayWordle())}
-              aria-label={isPuzzleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
+              className={dailyClass}
+              onClick={() => isDone ? onViewScore(today, shownScore) : onPlay()}
+              aria-label={isDone ? `Daily challenge complete: ${shownScore} out of 7` : "Play today's daily challenge"}
             >
-              <div className="daily-pair-title">Puzzle</div>
-              <div className="daily-pair-status">{wordleStatus}</div>
-              <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
+              <div className="ta-title">Today's 7</div>
+              <div className="ta-status">
+                {isDone ? <>✅ <strong>{shownScore}/7</strong></> : <>Play</>}
+              </div>
             </button>
-          );
-        })()}
-      </div>
+            <button
+              className={puzzleClass}
+              onClick={() => wordleDone ? (onViewPuzzle && onViewPuzzle(ws)) : (onPlayWordle && onPlayWordle())}
+              aria-label={wordleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
+            >
+              <div className="ta-title">Puzzle</div>
+              <div className="ta-status">{wordleStatus}</div>
+            </button>
+          </div>
+        );
+      })()}
       <StreakHero
         loginStreak={loginStreak}
         bestStreak={bestLoginStreak}
