@@ -9110,9 +9110,13 @@ function HabitTracker({ loginStreak, bestStreak, history, today, onViewScore }) 
     cells.push({ d, ymd, score, isCompleted, isToday, isFuture, isPreJoin, isMissed });
   }
 
+  // Login streak (left side of strip) ticks on app-open; the daily challenge
+  // is a separate engagement. Phrase the right-side nudge in terms of the
+  // Daily challenge — what the heatmap is actually showing — to avoid
+  // implying that opening the app extends "this" streak.
   const nudge = playedToday
-    ? "✓ Played today"
-    : (loginStreak > 0 ? "Play today to extend" : "Play today to start");
+    ? "✓ Daily complete"
+    : "Play today's Daily";
 
   const showBest = typeof bestStreak === "number" && bestStreak > loginStreak && bestStreak > 0;
 
