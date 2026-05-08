@@ -1398,6 +1398,35 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
+/* ── HABIT TRACKER (Daily-tab streak strip + 4-week heatmap) ── */
+.habit-tracker{margin:0 0 14px;}
+.habit-strip{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:14px;}
+.habit-strip-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.habit-flame{font-size:22px;line-height:1;}
+.habit-streak-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.habit-streak-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:900;color:var(--t1);line-height:1;}
+.habit-streak-label{font-size:10px;font-weight:700;letter-spacing:0.08em;color:var(--t2);text-transform:uppercase;}
+.habit-best{font-size:11px;font-weight:600;color:var(--t3);padding-left:10px;border-left:1px solid var(--border);}
+.habit-nudge{font-size:11.5px;color:var(--t2);font-weight:600;text-align:right;flex-shrink:0;line-height:1.2;}
+.habit-heatmap{padding:12px;background:var(--s1);border:1px solid var(--border);border-radius:14px;}
+.habit-heatmap-title{font-size:10px;font-weight:700;letter-spacing:0.08em;color:var(--t3);text-transform:uppercase;margin:0 0 8px;}
+.habit-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.habit-cell{aspect-ratio:1;border-radius:4px;border:1px solid transparent;padding:0;background:transparent;cursor:default;-webkit-appearance:none;appearance:none;transition:transform 0.1s,filter 0.15s;min-width:0;font-family:inherit;}
+.habit-cell.is-done{background:var(--accent);border-color:var(--accent);cursor:pointer;}
+.habit-cell.is-done:hover{filter:brightness(1.08);}
+.habit-cell.is-done:active{transform:scale(0.92);}
+.habit-cell.is-today{background:var(--accent-dim);border:2px solid var(--accent);}
+.habit-cell.is-today.is-done{background:var(--accent);}
+.habit-cell.is-missed{background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.30);}
+.habit-cell.is-prejoin{background:transparent;border:1px dashed var(--border);opacity:0.5;}
+.habit-cell.is-future{background:transparent;border:1px dashed var(--border);opacity:0.30;}
+.habit-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;padding:0 2px;font-size:10.5px;color:var(--t3);font-weight:600;letter-spacing:0.02em;}
+.habit-legend-item{display:inline-flex;align-items:center;gap:5px;line-height:1;}
+.habit-legend-swatch{display:inline-block;width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.habit-legend-swatch.is-done{background:var(--accent);}
+.habit-legend-swatch.is-today{background:var(--accent-dim);border:2px solid var(--accent);width:8px;height:8px;}
+.habit-legend-swatch.is-missed{background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.30);}
+.light .habit-strip{background:var(--accent-dim);border-color:rgba(52,168,83,0.30);}
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
@@ -9041,7 +9070,106 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
 
 // ─── DAILY TAB SCREEN ─────────────────────────────────────────────────────────
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
+// HabitTracker — Daily tab differentiator. Streak strip (current + best +
+// contextual nudge) above a 4-week × 7-day heatmap of past daily scores.
+// Pure presentational: reads existing loginStreak / bestStreak / dailyHistory
+// already on DailyTabScreen; no new fetches or schema. Done cells are
+// clickable → onViewScore(date, score) → DailyReviewScreen for that day.
+function HabitTracker({ loginStreak, bestStreak, history, today, onViewScore }) {
+  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  const todayYMD = dateToYMD(today);
+  const playedToday = typeof history?.[todayYMD] === "number";
+
+  const firstDailyTime = (() => {
+    const keys = history ? Object.keys(history) : [];
+    if (keys.length === 0) return null;
+    let earliest = Infinity;
+    for (const k of keys) {
+      const [Y, M, D] = k.split("-").map(Number);
+      if (!Y || !M || !D) continue;
+      const t = new Date(Y, M - 1, D).getTime();
+      if (t < earliest) earliest = t;
+    }
+    return earliest === Infinity ? null : earliest;
+  })();
+
+  // 28 cells, oldest first → today last. Same Mon-first arrangement as
+  // MonthlyCalendar. Dates anchor to local midnight via date arithmetic
+  // off `today`, which DailyTabScreen polls for day-rollover.
+  const cells = [];
+  for (let i = 27; i >= 0; i--) {
+    const d = new Date(todayMid - i * TIMINGS.DAY_MS);
+    const ymd = dateToYMD(d);
+    const score = history ? history[ymd] : undefined;
+    const t = d.getTime();
+    const isCompleted = typeof score === "number";
+    const isToday = t === todayMid;
+    const isFuture = t > todayMid;
+    const isPreJoin = !isCompleted && firstDailyTime !== null && t < firstDailyTime && !isToday;
+    const isMissed = t < todayMid && !isCompleted && !isPreJoin;
+    cells.push({ d, ymd, score, isCompleted, isToday, isFuture, isPreJoin, isMissed });
+  }
+
+  const nudge = playedToday
+    ? "✓ Played today"
+    : (loginStreak > 0 ? "Play today to extend" : "Play today to start");
+
+  const showBest = typeof bestStreak === "number" && bestStreak > loginStreak && bestStreak > 0;
+
+  return (
+    <div className="habit-tracker">
+      <div className="habit-strip" role="status" aria-label={`${loginStreak} day login streak${showBest ? `, best ${bestStreak} days` : ""}. ${nudge}`}>
+        <div className="habit-strip-main">
+          <span className="habit-flame" aria-hidden="true">🔥</span>
+          <div className="habit-streak-text">
+            <div className="habit-streak-num">{loginStreak || 0}</div>
+            <div className="habit-streak-label">{(loginStreak === 1) ? "Day Streak" : "Day Streak"}</div>
+          </div>
+          {showBest && <div className="habit-best">Best: {bestStreak}</div>}
+        </div>
+        <div className="habit-nudge">{nudge}</div>
+      </div>
+      <div className="habit-heatmap" style={{marginTop:10}}>
+        <div className="habit-heatmap-title">Last 4 weeks</div>
+        <div className="habit-grid" role="grid" aria-label="Last 28 days of daily challenge results">
+          {cells.map(c => {
+            let cls = "habit-cell";
+            if (c.isCompleted) cls += " is-done";
+            if (c.isToday) cls += " is-today";
+            if (c.isPreJoin) cls += " is-prejoin";
+            if (c.isMissed) cls += " is-missed";
+            if (c.isFuture) cls += " is-future";
+            const dateLabel = c.d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+            const aria = c.isCompleted
+              ? `${dateLabel}: ${c.score} of 7${c.isToday ? " (today)" : ""}`
+              : c.isToday ? `${dateLabel}: today, not played yet`
+              : c.isPreJoin ? `${dateLabel}: before you joined`
+              : c.isMissed ? `${dateLabel}: missed`
+              : `${dateLabel}`;
+            return (
+              <button
+                key={c.ymd}
+                type="button"
+                className={cls}
+                role="gridcell"
+                aria-label={aria}
+                disabled={!c.isCompleted}
+                onClick={c.isCompleted ? () => onViewScore(c.d, c.score) : undefined}
+              />
+            );
+          })}
+        </div>
+        <div className="habit-legend" aria-hidden="true">
+          <span className="habit-legend-item"><i className="habit-legend-swatch is-done" /> Played</span>
+          <span className="habit-legend-item"><i className="habit-legend-swatch is-today" /> Today</span>
+          <span className="habit-legend-item"><i className="habit-legend-swatch is-missed" /> Missed</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, iqHistory, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
   // this, today + todayYMD stay frozen at mount time and the calendar /
@@ -9121,6 +9249,13 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, onPlay,
           );
         })()}
       </div>
+      <HabitTracker
+        loginStreak={loginStreak}
+        bestStreak={bestLoginStreak}
+        history={dailyHistory}
+        today={today}
+        onViewScore={onViewScore}
+      />
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -11335,7 +11470,7 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
-            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
+            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} iqHistory={iqHistory} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
           </div>
         )}
 
