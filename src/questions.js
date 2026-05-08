@@ -2779,7 +2779,7 @@ export const QB = [
   { id:"q_a26717", q:"Which club did Eric Cantona join before his famous move to Manchester United in 1992?", o:["PSG","Marseille","Nimes","Leeds United"], a:3, cat:"PL", type:"mcq", diff:"medium", v:1 },
   { id:"q_6de450", q:"Which club won the treble of PL, FA Cup and League Cup in 2022-23?", o:["Chelsea","Arsenal","Tottenham","Man City"], a:3, cat:"PL", type:"mcq", diff:"easy" },
   { id:"q_889f84", q:"Which club played their first Premier League season at the Boleyn Ground in 2015-16?", o:["Fulham","Crystal Palace","West Ham","QPR"], a:2, cat:"PL", type:"mcq", diff:"easy", v:1 },
-  { id:"q_002ea8", q:"How many managers did Sunderland have in the 2017-18 Championship season?", o:["3","4","5","6"], a:1, cat:"PL", type:"mcq", diff:"hard", hint:"Counting Simon Grayson, Chris Coleman, plus two caretaker spells (Robbie Stockdale and Billy McKinlay) between them.", v:1 },
+  { id:"q_002ea8", q:"How many managers (including caretakers) did Sunderland have in the 2017-18 Championship season?", o:["3","4","5","6"], a:1, cat:"PL", type:"mcq", diff:"hard", hint:"Counting Simon Grayson, Chris Coleman, plus two caretaker spells (Robbie Stockdale and Billy McKinlay) between them.", v:1 },
   { id:"q_7ea6f8", q:"Which player scored both goals in the 2012 League Cup final for Liverpool vs Cardiff?", o:["Gerrard","Suarez","Carroll","Kuyt"], a:2, cat:"PL", type:"mcq", diff:"hard" },
   { id:"q_2db81e", q:"What shirt number did Thierry Henry famously wear at Arsenal?", o:["7","9","10","14"], a:3, cat:"PL", type:"mcq", diff:"easy", v:1 },
   { id:"q_00b965", q:"Which Premier League club's kit features a Robin on it?", o:["Forest","Bristol City","Norwich","Crystal Palace"], a:0, cat:"PL", type:"mcq", diff:"medium", v:1 },
