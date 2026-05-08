@@ -11255,10 +11255,13 @@ function AppInner() {
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
             {(() => {
-              const kickoff = new Date(2026, 5, 11);
-              const now = new Date();
+              // Pin both sides to the UTC frame so Math.floor(t/86400000)
+              // gives consistent days-to-go in any timezone. Previous
+              // mixed-frame version (local-midnight kickoff vs UTC-frame
+              // floor) produced 33-vs-34 off-by-one in TZs east of UTC.
+              const kickoff = new Date(Date.UTC(2026, 5, 11));
               const msPerDay = TIMINGS.DAY_MS;
-              const dayNow = Math.floor(now.getTime() / msPerDay);
+              const dayNow = Math.floor(Date.now() / msPerDay);
               const dayKick = Math.floor(kickoff.getTime() / msPerDay);
               const daysTo = dayKick - dayNow;
               const started = daysTo <= 0;
