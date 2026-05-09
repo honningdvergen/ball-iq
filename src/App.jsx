@@ -6647,7 +6647,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
       return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
     }).join("\n");
     const score = won ? `${guesses.length}/6` : "X/6";
-    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nballiq.app`;
+    return `⚽ ${APP_NAME} — Footle\n${score}\n\n${grid}\n\nballiq.app`;
   }, [guesses, answer, won, lost, hasData]);
 
   const onShare = useCallback(async () => {
@@ -6690,7 +6690,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
           screens get the bottom "Back to Home" pattern instead.
           Title stays in the page-hdr; left-aligns by default flex. */}
       <div className="page-hdr">
-        <div className="page-title">Today's Puzzle</div>
+        <div className="page-title">Footle</div>
       </div>
 
       {hasData ? (
@@ -7446,8 +7446,8 @@ const FAQ_ENTRIES = [
     a: "The Ball IQ Test asks you 15 carefully calibrated questions across difficulty levels. Your score is mapped to an IQ-like scale from 60 to 160 based on accuracy. There's no time limit — answer at your own pace.",
   },
   {
-    q: "What is Today's Puzzle?",
-    a: "Today's Puzzle is a daily word game where you guess a footballer's surname in 6 attempts. The same player is shown to everyone each day and resets at midnight.",
+    q: "What is Footle?",
+    a: "Footle is our daily football word game — guess a footballer's surname in 6 attempts. The same player is shown to everyone each day and resets at midnight.",
   },
   {
     q: "How do I delete my account?",
@@ -9173,9 +9173,9 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
             <button
               className={puzzleClass}
               onClick={() => wordleDone ? (onViewPuzzle && onViewPuzzle(ws)) : (onPlayWordle && onPlayWordle())}
-              aria-label={wordleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
+              aria-label={wordleDone ? (ws.kind === "won" ? `Footle solved in ${ws.used} of 6` : "Footle missed today") : "Play today's Footle"}
             >
-              <div className="ta-title">Puzzle</div>
+              <div className="ta-title">Footle</div>
               <div className="ta-status">{wordleStatus}</div>
             </button>
           </div>
@@ -9621,7 +9621,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
     const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ ${APP_NAME} — Today's Puzzle\n${score}\n\n${grid}\n\nballiq.app`;
+    return `⚽ ${APP_NAME} — Footle\n${score}\n\n${grid}\n\nballiq.app`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -9646,7 +9646,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       <div className="wd-header">
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
-          <div className="wd-title">⚽ Today's Puzzle</div>
+          <div className="wd-title">⚽ Footle</div>
           <div className="wd-sub">Player or manager — guess the surname</div>
         </div>
         <div className="wd-countdown" title="New player tomorrow">
@@ -11309,9 +11309,9 @@ function AppInner() {
                   <button
                     className="daily-pair-card wordle"
                     onClick={() => isPuzzleDone ? viewPuzzleStatus(ws) : setScreen("wordle")}
-                    aria-label={isPuzzleDone ? (ws.kind === "won" ? `Puzzle solved in ${ws.used} of 6` : "Puzzle missed today") : "Play today's puzzle"}
+                    aria-label={isPuzzleDone ? (ws.kind === "won" ? `Footle solved in ${ws.used} of 6` : "Footle missed today") : "Play today's Footle"}
                   >
-                    <div className="daily-pair-title">Puzzle</div>
+                    <div className="daily-pair-title">Footle</div>
                     <div className="daily-pair-status">{wordleStatus}</div>
                     <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
                   </button>
