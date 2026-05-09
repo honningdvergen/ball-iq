@@ -1983,6 +1983,21 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .fh-tile-grey{background:rgba(255,255,255,0.16);border-color:transparent;}
 .fh-grid-empty .fh-row{grid-template-columns:repeat(5,12px);}
 
+/* ── TODAY'S 7 SECONDARY ── (Sprint #11 Stage 2) ──
+   Calmer companion below the Footle hero. One-line layout: icon chip,
+   title + sub stacked, CTA pill on the right. Reuses the production
+   orange→amber gradient so the Today's 7 identity stays recognisable
+   despite the reduced footprint. ~58px tall — about 45% of the
+   Footle hero's vertical weight. */
+.todays-seven-secondary{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;-webkit-text-fill-color:#1A0F05;border:1px solid transparent;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 2px 10px rgba(0,0,0,0.18);overflow:hidden;margin-bottom:14px;transition:transform 0.1s,box-shadow 0.15s;contain:layout paint style;}
+.todays-seven-secondary:active{transform:scale(0.99);}
+.t7s-icon{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(0,0,0,0.10);font-size:16px;flex-shrink:0;}
+.t7s-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+.t7s-title{font-size:14px;font-weight:900;line-height:1.1;letter-spacing:-0.2px;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
+.t7s-sub{font-size:11.5px;line-height:1.3;color:rgba(10,10,10,0.7);font-weight:600;}
+.t7s-sub strong{font-weight:800;color:#1A0F05;}
+.t7s-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 13px;background:rgba(0,0,0,0.12);color:#1A0F05;-webkit-text-fill-color:#1A0F05;border-radius:999px;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:0.01em;}
+
 /* ════════════════════════════════════════════════════════════════════
    DESKTOP NAV (Phase 2/5)
    ────────────────────────────────────────────────────────────────────
@@ -11441,6 +11456,24 @@ function AppInner() {
               onPlay={() => setScreen("wordle")}
               onReview={(ws) => viewPuzzleStatus(ws)}
             />
+
+            {/* ── TODAY'S 7 SECONDARY ── (Sprint #11 Stage 2) ── */}
+            <button
+              className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
+              onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
+              aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
+            >
+              <span className="t7s-icon" aria-hidden="true">📋</span>
+              <span className="t7s-body">
+                <span className="t7s-title">Today's 7</span>
+                <span className="t7s-sub">
+                  {dailyDone
+                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
+                    : <>7 questions · ~3 min</>}
+                </span>
+              </span>
+              <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
+            </button>
 
             {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
             <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
