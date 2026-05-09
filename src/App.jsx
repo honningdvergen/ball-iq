@@ -10066,18 +10066,9 @@ function AppInner() {
     return 0;
   });
   const [streakToast, setStreakToast] = useState(null);
-  // Rotating product-voice tagline shown under the greeting on home.
-  // Initializer runs once per AppInner mount → stable for the session.
-  const [homeTagline] = useState(() => {
-    const taglines = [
-      "How well do you know the game?",
-      "Today's challenge awaits.",
-      "Pick your battle.",
-      "Think you know your stuff?",
-      "The pitch is calling.",
-    ];
-    return taglines[Math.floor(Math.random() * taglines.length)];
-  });
+  // Sprint #11 Stage 3: replaced session-stable random taglines with
+  // context-aware sub-text computed inline in the greeting block (reflects
+  // today's actionable state — Footle done, Today's 7 done, both, neither).
   // Streak chip pulse — fires once per session when the daily-streak load
   // effect bumps loginStreak past the value persisted at last app close.
   // initialStreakRef captures the synchronous useState value on mount;
@@ -11416,13 +11407,21 @@ function AppInner() {
             state (calendar viewDate, profile emoji picker etc.) is preserved. */}
         {!inGame && screen === "home" && (
           <div className="screen tab-content" style={tab === "home" ? undefined : HIDDEN_STYLE}>
-            {/* Greeting row */}
+            {/* Greeting row — Sprint #11 Stage 3: streak chip relocated here
+                (top-right of greeting), sub-text replaced with context-aware
+                nudges keyed on what's still actionable today. */}
             {(() => {
               const homeAuthLoading = !!user && !authProfile;
               const homeLocalName = (profile?.name || "").trim();
               const homeHasUsername = !!authProfile?.username && authProfile.username !== "Player";
               const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || homeLocalName.toLowerCase() === "player");
               const greeting = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })();
+              const ws = readWordleTodayStatus();
+              const footleDone = ws.kind === "won" || ws.kind === "lost";
+              const subtext = footleDone && dailyDone ? "All done for today."
+                : footleDone                          ? "Today's 7 is still open."
+                : dailyDone                           ? "Today's Footle is still open."
+                :                                       "Daily puzzle is up.";
               return (
                 <div style={{padding:"10px 0 12px"}}>
                   <div style={{display:"flex", alignItems:"baseline", gap:10}}>
@@ -11430,13 +11429,18 @@ function AppInner() {
                     {homeAuthLoading ? (
                       <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
                     ) : (
-                      <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>
+                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
                         {authProfile?.username || profile?.name || "Guest"}
                       </div>
                     )}
+                    {loginStreak > 0 && (
+                      <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} style={{marginLeft:"auto"}} aria-label={`${loginStreak}-day streak`}>
+                        🔥 {loginStreak}
+                      </span>
+                    )}
                   </div>
                   <div style={{fontSize:13, color:"var(--t3)", marginTop:4}}>
-                    {homeTagline}
+                    {subtext}
                   </div>
                   {homeShowCTA && (
                     <button
