@@ -925,13 +925,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .util-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
 .util-title{font-size:14px;font-weight:800;letter-spacing:-0.2px;line-height:1.2;}
 .util-sub{font-size:11.5px;line-height:1.3;font-weight:600;}
-.util-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;-webkit-appearance:none;appearance:none;}
+/* Sprint #11 I1: MP + WC use a subtle arrow indicator (D1 mockup pattern)
+   instead of a Play pill — the whole card is tappable, so the right-edge
+   arrow just signals "tap to enter" without competing with the Footle and
+   Today's 7 Play buttons above. */
+.util-arrow{flex-shrink:0;font-size:18px;line-height:1;color:var(--t3);font-weight:600;padding:0 4px;}
 .hero-online{background:var(--s1);color:var(--t1);border:1px solid var(--border);box-shadow:var(--sh);}
 .hero-online:hover{background:var(--s2);border-color:var(--border2);}
 .hero-online .util-icon{background:rgba(34,197,94,0.10);color:#58CC02;border:1px solid rgba(34,197,94,0.4);box-shadow:0 0 8px rgba(88,204,2,0.18);}
 .hero-online .util-title{color:var(--t1);}
 .hero-online .util-sub{color:var(--t2);}
-.hero-online .util-cta{background:#58CC02;color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
 /* Sprint #11 G2: .hero-online-sub* dropped — MP card is now 2-line. */
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
@@ -1021,11 +1024,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .wc-card .util-title{color:#fff;}
 .wc-card .util-sub{color:rgba(255,255,255,0.70);}
 .wc-card .util-sub strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:#FFC800;}
-.wc-card .util-cta{background:#FFC800;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
+.wc-card .util-arrow{color:rgba(255,255,255,0.45);}
 .light .wc-card .util-title{color:#1C1C1E;}
 .light .wc-card .util-sub{color:#48484A;}
 .light .wc-card .util-sub strong{color:#B45309;}
-.light .wc-card .util-cta{background:#B45309;color:#fff;-webkit-text-fill-color:#fff;}
+.light .wc-card .util-arrow{color:rgba(0,0,0,0.35);}
 /* Host-country emoji row — sits between the label and the days countdown.
    letter-spacing widens the gap between flags so they read as separate hosts
    rather than a continuous string. font-size 14px keeps the row at ~16px tall
@@ -1940,12 +1943,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .fh-cta:active{transform:scale(0.97);opacity:0.92;}
 .fh-cta-secondary{background:rgba(255,255,255,0.16);color:#fff;-webkit-text-fill-color:#fff;border:1px solid rgba(255,255,255,0.22);}
 .fh-cta-secondary:hover{background:rgba(255,255,255,0.22);}
-/* G1: 6-row grid (matches Footle's 6 guesses) at today's actual answer
-   length. Tile size shrunk 12→10 so the taller 6-row stack still fits the
-   reduced card height. */
+/* I2: 6-row grid. Morning is fixed 5×6 (Wordle-style teaser regardless of
+   today's answer length); evening grid columns track today's actual answer
+   length (4-8). Tile size matched D1 mockup proportions — 13×13 with 3px
+   gaps — so the squares carry the visual weight the smaller tiles lacked. */
 .fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:3px;align-self:flex-start;padding-top:2px;}
-.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),10px);gap:3px;}
-.fh-tile{width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
+.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),13px);gap:3px;}
+.fh-tile{width:13px;height:13px;border-radius:3px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
 .fh-tile-empty{background:rgba(255,255,255,0.10);}
 .fh-tile-green{background:#22c55e;border-color:transparent;}
 .fh-tile-yellow{background:#FFC107;border-color:transparent;}
@@ -9779,8 +9783,10 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
     }, { onToast: () => {}, textFallback });
   }, [isDone, isWon, isLost, guesses, grades, streak, today]);
 
-  // Both states render a 6-row grid (matches Footle's 6 guesses) at today's
-  // actual answer length. Eyebrow dropped (G3a) — wordmark + score line carry
+  // I2: morning grid is fixed 5×6 (Wordle-style teaser, identity over
+  // accuracy — the actual answer length leaks in the subtitle anyway).
+  // Evening grid uses today's actual answer length (4-8 cols) with 6 rows
+  // padded as needed. Eyebrow dropped (G3a) — wordmark + score line carry
   // the identity; "daily" stays in the morning subtitle.
   const cols = answer.length || 5;
   if (!isDone) {
@@ -9797,10 +9803,10 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
           </div>
         </div>
-        <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
+        <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
           {Array.from({ length: 6 }).map((_, r) => (
             <div className="fh-row" key={r}>
-              {Array.from({ length: cols }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
+              {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
             </div>
           ))}
         </div>
@@ -11453,14 +11459,14 @@ function AppInner() {
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
 
-            {/* ── PLAY WITH FRIENDS (Sprint #11 H2: D1 rail pattern) ── */}
+            {/* ── PLAY WITH FRIENDS (D1 rail pattern, I1: arrow not pill) ── */}
             <button className="util-rail hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends — online or local">
               <span className="util-icon" aria-hidden="true">👥</span>
               <span className="util-body">
                 <span className="util-title">Play with Friends</span>
                 <span className="util-sub">Online or local</span>
               </span>
-              <span className="util-cta">Play</span>
+              <span className="util-arrow" aria-hidden="true">→</span>
             </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
@@ -11484,7 +11490,7 @@ function AppInner() {
                       {started ? <>It's here — tap to play</> : <><strong>{daysTo}</strong> day{daysTo === 1 ? "" : "s"} to go</>}
                     </span>
                   </span>
-                  <span className="util-cta">Play</span>
+                  <span className="util-arrow" aria-hidden="true">→</span>
                 </button>
               );
             })()}
