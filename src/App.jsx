@@ -1905,48 +1905,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
-/* Home middle row — Wordle + Multiplayer side by side. Sits between the
-   full-width Daily hero and the WC2026 banner. */
-.hero-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.hero-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 14px 16px;min-height:118px;background:var(--s1);color:var(--text);border:1px solid var(--border);border-radius:16px;cursor:pointer;font-family:inherit;text-align:left;transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
-.hero-pair-card:hover{background:var(--s2);border-color:var(--border2);}
-.hero-pair-card:active{transform:scale(0.98);}
-.hero-pair-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
-.hero-pair-status{font-size:11.5px;color:var(--t3);margin-top:auto;line-height:1.3;}
-.hero-pair-status strong{color:var(--accent);font-weight:700;}
-.hero-pair-card.wordle .hero-pair-eyebrow{color:#FFC107;}
-
-/* Daily section — Challenge + Wordle paired cards. The Challenge card keeps
-   the flame gradient from the original hero so the Daily Challenge identity
-   stays recognisable; the Wordle half uses the standard surface treatment
-   with a green eyebrow and green emoji. */
-.daily-section-eyebrow{margin-top:4px;margin-bottom:8px;}
-.daily-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.daily-pair-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 14px 16px;min-height:128px;border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;overflow:hidden;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:1px solid var(--border);background:var(--s1);color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);contain:layout paint style;}
-.daily-pair-card:hover{background:var(--s2);border-color:var(--border2);}
-.daily-pair-card:active{transform:scale(0.98);}
-.daily-pair-card.challenge{background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);border-color:transparent;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
-.daily-pair-card.challenge:hover{background:linear-gradient(135deg,#FF7A14 0%,#FFCD2A 100%);border-color:transparent;}
-.daily-pair-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);}
-.daily-pair-card.challenge .daily-pair-eyebrow{color:rgba(10,10,10,0.7);}
-/* Today's Puzzle — deep indigo gradient pairs with Today's 7's orange via
-   warm/cool contrast. Cool tones signal puzzle/cognition; orange signals
-   urgency/action. Each card registers as its own thing instead of two
-   warm CTAs competing for the same kind of attention. */
-.daily-pair-card.wordle{background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);border-color:transparent;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
-.daily-pair-card.wordle:hover{background:linear-gradient(135deg,#472999 0%,#8B4FFA 100%);border-color:transparent;}
-.daily-pair-card.wordle .daily-pair-eyebrow{color:rgba(255,255,255,0.78);}
-.daily-pair-card.wordle .daily-pair-status{color:rgba(255,255,255,0.85);}
-.daily-pair-card.wordle .daily-pair-status strong{color:#FFFFFF;font-weight:800;}
-.daily-pair-title{font-size:22px;font-weight:900;line-height:1.05;letter-spacing:-0.6px;margin-top:3px;color:inherit;}
-.daily-pair-status{font-size:11.5px;line-height:1.3;margin-top:auto;color:var(--t3);}
-.daily-pair-card.challenge .daily-pair-status{color:rgba(10,10,10,0.78);}
-.daily-pair-status strong{font-weight:800;color:var(--accent);}
-.daily-pair-card.challenge .daily-pair-status strong{color:#1A0F05;}
-.daily-pair-substatus{font-size:10.5px;line-height:1.3;margin-top:3px;color:var(--t3);}
-.daily-pair-card.challenge .daily-pair-substatus{color:rgba(10,10,10,0.55);}
-.daily-pair-card.wordle .daily-pair-substatus{color:rgba(255,255,255,0.6);}
-.daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
+/* Sprint #11 Stage 5 cleanup: removed orphaned home-tab CSS.
+   .hero-pair* — orphaned from an earlier redesign, no JSX usage.
+   .daily-section-eyebrow + .daily-pair* — replaced by .footle-hero
+   and .todays-seven-secondary in this sprint. */
 
 /* ── FOOTLE HERO (D1 home layout) ────────────────────────────────────
    Reuses the existing puzzle gradient (3B1F8A → 7C3AED). Two-column
