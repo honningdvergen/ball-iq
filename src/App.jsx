@@ -1953,6 +1953,36 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .daily-pair-card.wordle .daily-pair-substatus{color:rgba(255,255,255,0.6);}
 .daily-pair-emoji{position:absolute;right:-6px;bottom:-10px;font-size:54px;opacity:0.9;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));}
 
+/* ── FOOTLE HERO (D1 home layout) ────────────────────────────────────
+   Reuses the existing puzzle gradient (3B1F8A → 7C3AED). Two-column
+   inner layout: text body on the left, tile-preview grid on the right.
+   Morning state is one big <button>; evening state is a <div> hosting
+   discrete Review + Share buttons. CTAs share .fh-cta styling — primary
+   (white pill) and secondary (translucent pill). */
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px 16px 16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
+.footle-hero-morning:active{transform:scale(0.99);}
+.footle-hero-evening{cursor:default;}
+.fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.fh-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.78);}
+.fh-title{font-size:30px;font-weight:900;line-height:1;letter-spacing:-0.8px;margin-top:6px;}
+.fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
+.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
+.fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
+.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;background:#fff;color:#3B1F8A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#3B1F8A;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;}
+.fh-cta:active{transform:scale(0.97);opacity:0.92;}
+.fh-cta-secondary{background:rgba(255,255,255,0.16);color:#fff;-webkit-text-fill-color:#fff;border:1px solid rgba(255,255,255,0.22);}
+.fh-cta-secondary:hover{background:rgba(255,255,255,0.22);}
+.fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:3px;align-self:flex-start;padding-top:2px;}
+.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),12px);gap:3px;}
+.fh-tile{width:12px;height:12px;border-radius:2px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
+.fh-tile-empty{background:rgba(255,255,255,0.10);}
+.fh-tile-green{background:#22c55e;border-color:transparent;}
+.fh-tile-yellow{background:#FFC107;border-color:transparent;}
+.fh-tile-grey{background:rgba(255,255,255,0.16);border-color:transparent;}
+.fh-grid-empty .fh-row{grid-template-columns:repeat(5,12px);}
+
 /* ════════════════════════════════════════════════════════════════════
    DESKTOP NAV (Phase 2/5)
    ────────────────────────────────────────────────────────────────────
@@ -6647,8 +6677,10 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
       return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
     }).join("\n");
     const score = won ? `${guesses.length}/6` : "X/6";
-    return `⚽ ${APP_NAME} — Footle\n${score}\n\n${grid}\n\nballiq.app`;
-  }, [guesses, answer, won, lost, hasData]);
+    const streak = won ? computeFootleStreak(date) : 0;
+    const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
+    return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
+  }, [guesses, answer, won, lost, hasData, date]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
@@ -9381,6 +9413,27 @@ function readWordleTodayStatus() {
   } catch { return { kind: "ready" }; }
 }
 
+// Footle solve-streak: walk biq_wordle_<ymd> backward from `today` and count
+// consecutive 'won' days. Stops at the first non-won day (loss / unplayed).
+// Bounds the walk at 366 days as a defensive cap. Cross-device note: relies
+// on the localStorage cache populated by useAuth.jsx's wordleState merge at
+// login; first-load on a fresh device may briefly under-count until sync.
+function computeFootleStreak(today) {
+  let streak = 0;
+  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  for (let i = 0; i < 366; i++) {
+    try {
+      const raw = localStorage.getItem(`biq_wordle_${dateToYMD(cursor)}`);
+      if (!raw) break;
+      const p = JSON.parse(raw);
+      if (p?.status !== "won") break;
+    } catch { break; }
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
 // Standard Wordle two-pass colouring: greens first (locking those answer slots),
 // then yellows that consume remaining-letter counts. This is what stops a guess
 // of "OOOO" against "BOAT" from showing 4 yellows for the single O.
@@ -9616,12 +9669,15 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   // tappable link rather than inline text.
   const shareText = useMemo(() => {
     if (state.status === "playing") return "";
+    const won = state.status === "won";
     const grid = state.guesses.map((g) => {
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
-    const score = state.status === "won" ? `${state.guesses.length}/6` : `X/6`;
-    return `⚽ ${APP_NAME} — Footle\n${score}\n\n${grid}\n\nballiq.app`;
+    const score = won ? `${state.guesses.length}/6` : `X/6`;
+    const streak = won ? computeFootleStreak(new Date()) : 0;
+    const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
+    return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -9690,6 +9746,112 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
           <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="Enter key — submit guess">ENTER</button>
         </div>
       )}
+    </div>
+  );
+});
+
+// ─── FOOTLE HERO ──────────────────────────────────────────────────────────────
+// Home-tab daily-puzzle visual centerpiece (D1 layout). Morning state shows an
+// empty tile preview + Play CTA; evening state (won/lost) shows the user's
+// actual guess pattern as a colored mini-grid + score + streak (Path A: no
+// solve-time in v1.0) + Review/Share CTAs. State is read fresh from
+// localStorage on every render so the hero updates immediately after the
+// user completes the puzzle and navigates home (parent re-renders on screen
+// change, hero re-reads). Memoizes on ws.kind so the heavier grade/share
+// computation only runs when the status changes.
+const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
+  const ws = readWordleTodayStatus();
+  const isWon = ws.kind === "won";
+  const isLost = ws.kind === "lost";
+  const isDone = isWon || isLost;
+
+  const dateKey = getWordleDateKey();
+  const today = useMemo(() => new Date(), [dateKey]);
+  const streak = useMemo(() => isWon ? computeFootleStreak(today) : 0, [isWon, today, dateKey]);
+
+  // Read raw guesses + answer for the tile preview (evening) and share text.
+  // Done lazily — only when status is terminal — to skip cost in morning state.
+  const { guesses, answer, grades } = useMemo(() => {
+    if (!isDone) return { guesses: [], answer: "", grades: [] };
+    let gs = [];
+    try {
+      const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (Array.isArray(p?.guesses)) gs = p.guesses;
+      }
+    } catch {}
+    const ans = getWordleAnswer();
+    const gr = gs.map(g => gradeWordleGuess(g, ans));
+    return { guesses: gs, answer: ans, grades: gr };
+  }, [isDone, dateKey]);
+
+  const onShare = useCallback(async () => {
+    if (!isDone) return;
+    const grid = grades.map(row =>
+      row.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")
+    ).join("\n");
+    const score = isWon ? `${guesses.length}/6` : "X/6";
+    const scoreLine = isWon && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
+    const textFallback = `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
+    const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+    await shareCard("wordle", {
+      score: guesses.length, total: 6, grades, dateLabel, failed: isLost,
+    }, { onToast: () => {}, textFallback });
+  }, [isDone, isWon, isLost, guesses, grades, streak, today]);
+
+  if (!isDone) {
+    // Morning / in-progress state. Whole card is one big Play button.
+    const inProgress = ws.kind === "in-progress";
+    return (
+      <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
+        <div className="fh-body">
+          <div className="fh-eyebrow">Today's Footle</div>
+          <div className="fh-title">Footle</div>
+          <div className="fh-sub">4–8 letters · 6 guesses · daily</div>
+          <div className="fh-cta-row">
+            <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
+          </div>
+        </div>
+        <div className="fh-grid fh-grid-empty" aria-hidden="true">
+          {Array.from({ length: 4 }).map((_, r) => (
+            <div className="fh-row" key={r}>
+              {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
+            </div>
+          ))}
+        </div>
+      </button>
+    );
+  }
+
+  // Evening state — solved or lost.
+  const cols = answer.length || 5;
+  return (
+    <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} of 6` : "Footle — missed today"}>
+      <div className="fh-body">
+        <div className="fh-eyebrow">Today's Footle</div>
+        <div className="fh-title">{isWon ? "Solved" : "Missed"}</div>
+        <div className="fh-score">
+          {isWon ? <>in <strong>{guesses.length}</strong>/6</> : <><strong>X</strong>/6</>}
+        </div>
+        {isWon && streak > 0 && (
+          <div className="fh-sub">🔥 {streak}-day streak</div>
+        )}
+        {isLost && (
+          <div className="fh-sub">Better luck tomorrow.</div>
+        )}
+        <div className="fh-cta-row">
+          <button className="fh-cta" onClick={() => onReview && onReview(ws)} aria-label="Review today's Footle">Review</button>
+          <button className="fh-cta fh-cta-secondary" onClick={onShare} aria-label="Share today's Footle">↗︎ Share</button>
+        </div>
+      </div>
+      <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
+        {grades.map((row, r) => (
+          <div className="fh-row" key={r}>
+            {row.map((c, i) => <div key={i} className={`fh-tile fh-tile-${c}`} />)}
+          </div>
+        ))}
+      </div>
     </div>
   );
 });
@@ -11274,50 +11436,11 @@ function AppInner() {
               );
             })()}
 
-            {/* ── DAILY SECTION: Challenge + Puzzle paired ── */}
-            <div className="home-section-title">
-              <span>Daily</span>
-              {loginStreak > 0 && (
-                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
-                  🔥 {loginStreak}
-                </span>
-              )}
-            </div>
-            <div className="daily-pair">
-              <button
-                className="daily-pair-card challenge"
-                onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
-                aria-label={dailyDone ? `Daily challenge complete: ${dailyScore} out of 7` : "Play today's daily challenge"}
-              >
-                <div className="daily-pair-title">Today's 7</div>
-                <div className="daily-pair-status">
-                  {dailyDone
-                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                    : <>Today</>}
-                </div>
-                <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
-              </button>
-              {(() => {
-                const ws = readWordleTodayStatus();
-                const wordleStatus =
-                  ws.kind === "won"         ? <>✅ Solved in <strong>{ws.used}/6</strong></> :
-                  ws.kind === "lost"        ? <>❌ Better luck tomorrow</> :
-                  ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
-                  <>Today</>;
-                const isPuzzleDone = ws.kind === "won" || ws.kind === "lost";
-                return (
-                  <button
-                    className="daily-pair-card wordle"
-                    onClick={() => isPuzzleDone ? viewPuzzleStatus(ws) : setScreen("wordle")}
-                    aria-label={isPuzzleDone ? (ws.kind === "won" ? `Footle solved in ${ws.used} of 6` : "Footle missed today") : "Play today's Footle"}
-                  >
-                    <div className="daily-pair-title">Footle</div>
-                    <div className="daily-pair-status">{wordleStatus}</div>
-                    <div className="daily-pair-substatus">Resets in <DailyHeroCountdown /></div>
-                  </button>
-                );
-              })()}
-            </div>
+            {/* ── FOOTLE HERO ── (Sprint #11 D1 home redesign — Stage 1) ── */}
+            <FootleHero
+              onPlay={() => setScreen("wordle")}
+              onReview={(ws) => viewPuzzleStatus(ws)}
+            />
 
             {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
             <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
