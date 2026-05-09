@@ -914,16 +914,24 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-/* Sprint #11 G2 refinement: green glow dropped (was competing with the
-   active-tab green indicator). Identity now carried by a small green dot
-   ::before the eyebrow + the green Play CTA. Border + shadow are neutral.
-   Height reduced ~25% from the previous shrink. */
-.hero-online{position:relative;overflow:hidden;border-radius:14px;padding:8px 14px;min-height:50px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:var(--sh);width:100%;text-align:left;font-family:inherit;display:flex;align-items:center;gap:12px;-webkit-appearance:none;appearance:none;contain:layout paint style;}
-.hero-online:hover{border-color:var(--border2);background:var(--s2);}
-.hero-online-body{flex:1;min-width:0;}
-.hero-online-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
-.hero-online-eyebrow::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#58CC02;box-shadow:0 0 6px rgba(88,204,2,0.55);}
-.hero-online-title{font-size:14px;font-weight:800;line-height:1.15;margin-top:1px;letter-spacing:-0.2px;color:var(--t1);}
+/* Sprint #11 H2: MP + WC switched to the D1 mockup "rail" pattern —
+   icon chip on left, title + sub stacked in the middle, Play pill on
+   the right. Both cards share .util-rail base styling for paired calm
+   utility weight; identity (green for MP, gold for WC) lives in the
+   icon-chip tint and CTA pill color. */
+.util-rail{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border-radius:14px;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;margin-bottom:12px;transition:transform 0.1s,border-color 0.15s,background 0.15s,box-shadow 0.15s;contain:layout paint style;}
+.util-rail:active{transform:scale(0.99);}
+.util-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;font-size:16px;line-height:1;flex-shrink:0;}
+.util-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+.util-title{font-size:14px;font-weight:800;letter-spacing:-0.2px;line-height:1.2;}
+.util-sub{font-size:11.5px;line-height:1.3;font-weight:600;}
+.util-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;-webkit-appearance:none;appearance:none;}
+.hero-online{background:var(--s1);color:var(--t1);border:1px solid var(--border);box-shadow:var(--sh);}
+.hero-online:hover{background:var(--s2);border-color:var(--border2);}
+.hero-online .util-icon{background:rgba(34,197,94,0.10);color:#58CC02;border:1px solid rgba(34,197,94,0.4);box-shadow:0 0 8px rgba(88,204,2,0.18);}
+.hero-online .util-title{color:var(--t1);}
+.hero-online .util-sub{color:var(--t2);}
+.hero-online .util-cta{background:#58CC02;color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
 /* Sprint #11 G2: .hero-online-sub* dropped — MP card is now 2-line. */
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
@@ -941,8 +949,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
   }
   .hdr .icon-btn:hover { background: var(--s1); }
 }
-.hero-online-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;cursor:pointer;flex-shrink:0;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
-.hero-online:active .hero-online-cta{opacity:0.85;}
+/* Sprint #11 H2: .hero-online-cta dropped — replaced by .util-cta inside
+   the new rail pattern. */
 
 /* ── MORE MODES section eyebrow ── */
 /* .more-modes-eyebrow — layout-only wrapper; visual tokens come from .ds-eyebrow. */
@@ -950,7 +958,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* ── HOME MODE GRID (icon-top vertical tiles) ── */
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0;}
-.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+/* Sprint #11 H3 (exploratory): More modes tile content centered.
+   Was align-items:flex-start + text-align:left. If centered reads
+   worse than left-aligned in review, revert by flipping these two
+   properties back. */
+.play-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:center;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
@@ -996,32 +1008,30 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-/* Sprint #11 G2 refinement: redundant emoji host row + "North America
-   awaits" subtitle dropped (carried no info beyond what the title and
-   countdown already convey). 3-flag stripe (::before) is the distinctive
-   visual; trophy + days countdown carry the rest. Pads matched to
-   .hero-online for paired calm-utility weight. */
-.wc-card{position:relative;width:100%;margin:0 0 12px;padding:8px 14px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+/* Sprint #11 H2: WC switched to the .util-rail pattern paired with MP.
+   3-flag stripe (::before) DROPPED per brief — the trophy icon + gold
+   eyebrow accents carry the World Cup identity. Dark gradient bg kept. */
+.wc-card{background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;border:1px solid rgba(234,179,8,0.25);}
 /* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
    (red/white/red). Each flag occupies 33% width with hard color stops at
    tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
-.wc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#B22234 0%,#B22234 11%,#FFFFFF 11%,#FFFFFF 22%,#3C3B6E 22%,#3C3B6E 33%,#006847 33%,#006847 44%,#FFFFFF 44%,#FFFFFF 55%,#CE1126 55%,#CE1126 66%,#FF0000 66%,#FF0000 77%,#FFFFFF 77%,#FFFFFF 88%,#FF0000 88%,#FF0000 100%);opacity:0.9;}
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
-.wc-card:active{transform:scale(0.99);}
 .light .wc-card{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);color:#1C1C1E;border-color:rgba(234,179,8,0.35);}
-.wc-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#FFC800;margin-bottom:1px;display:flex;align-items:center;gap:5px;}
+.wc-card .util-icon{background:rgba(255,200,0,0.12);color:#FFC800;border:1px solid rgba(255,200,0,0.35);box-shadow:0 0 8px rgba(255,200,0,0.20);}
+.wc-card .util-title{color:#fff;}
+.wc-card .util-sub{color:rgba(255,255,255,0.70);}
+.wc-card .util-sub strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:#FFC800;}
+.wc-card .util-cta{background:#FFC800;color:#1A0F05;-webkit-text-fill-color:#1A0F05;}
+.light .wc-card .util-title{color:#1C1C1E;}
+.light .wc-card .util-sub{color:#48484A;}
+.light .wc-card .util-sub strong{color:#B45309;}
+.light .wc-card .util-cta{background:#B45309;color:#fff;-webkit-text-fill-color:#fff;}
 /* Host-country emoji row — sits between the label and the days countdown.
    letter-spacing widens the gap between flags so they read as separate hosts
    rather than a continuous string. font-size 14px keeps the row at ~16px tall
    without crowding the days countdown directly below. */
-.light .wc-label{color:#B45309;}
-.wc-days{font-size:15px;font-weight:900;line-height:1.1;letter-spacing:-0.3px;color:#fff;margin-top:1px;}
-.light .wc-days{color:#1C1C1E;}
-.wc-days em{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-style:normal;color:#FFC800;}
-.light .wc-days em{color:#B45309;}
-/* G2 cleanup: .wc-hosts + .wc-sub CSS dropped along with their JSX. */
-.wc-cta{display:inline-flex;align-items:center;padding:6px 12px;background:#FFC800;color:#1A0F05;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;margin-left:auto;-webkit-text-fill-color:#1A0F05;}
-.light .wc-cta{background:#B45309;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
+/* H2 cleanup: .wc-label / .wc-days / .wc-cta replaced by the .util-rail
+   pattern + .wc-card .util-* variants above. */
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
 /* ── Play button: neutral elevated (accent reserved for Daily action) ── */
 .cta-play{background:var(--s1);border:1px solid var(--border);}
@@ -1916,17 +1926,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:13px 14px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
 .footle-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
 .fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
-.fh-title{font-size:24px;font-weight:900;line-height:1;letter-spacing:-0.5px;}
-.fh-score{font-size:16px;font-weight:700;line-height:1.1;margin-top:4px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
-.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:20px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
-.fh-sub{font-size:12px;line-height:1.4;margin-top:6px;color:rgba(255,255,255,0.78);font-weight:600;}
-.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:10px;}
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;background:#fff;color:#3B1F8A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#3B1F8A;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;}
+.fh-title{font-size:30px;font-weight:900;line-height:1;letter-spacing:-0.8px;}
+.fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
+.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
+.fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
+.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;background:#fff;color:#3B1F8A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#3B1F8A;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;}
 .fh-cta:active{transform:scale(0.97);opacity:0.92;}
 .fh-cta-secondary{background:rgba(255,255,255,0.16);color:#fff;-webkit-text-fill-color:#fff;border:1px solid rgba(255,255,255,0.22);}
 .fh-cta-secondary:hover{background:rgba(255,255,255,0.22);}
@@ -9779,7 +9789,10 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
           <div className="fh-title">Footle</div>
-          <div className="fh-sub">{cols} letters · 6 guesses · daily</div>
+          <div className="fh-sub">
+            {cols} letters · 6 guesses · daily<br />
+            Surname of a footballer or manager
+          </div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
           </div>
@@ -11440,13 +11453,14 @@ function AppInner() {
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
 
-            {/* ── PLAY WITH FRIENDS (Sprint #11 G2: 2-line for ~30% shrink) ── */}
-            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends — online or local">
-              <div className="hero-online-body">
-                <div className="hero-online-eyebrow">Multiplayer</div>
-                <div className="hero-online-title">Play with Friends</div>
-              </div>
-              <span className="hero-online-cta">Play</span>
+            {/* ── PLAY WITH FRIENDS (Sprint #11 H2: D1 rail pattern) ── */}
+            <button className="util-rail hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends — online or local">
+              <span className="util-icon" aria-hidden="true">👥</span>
+              <span className="util-body">
+                <span className="util-title">Play with Friends</span>
+                <span className="util-sub">Online or local</span>
+              </span>
+              <span className="util-cta">Play</span>
             </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
@@ -11462,16 +11476,15 @@ function AppInner() {
               const daysTo = dayKick - dayNow;
               const started = daysTo <= 0;
               return (
-                <button className="wc-card" onClick={() => startMode("wc2026")} aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}>
-                  <div style={{flex:1, minWidth:0}}>
-                    <div className="wc-label">🏆 World Cup 2026</div>
-                    {started ? (
-                      <div className="wc-days"><em>It's here!</em></div>
-                    ) : (
-                      <div className="wc-days"><em>{daysTo}</em> day{daysTo === 1 ? "" : "s"} to go</div>
-                    )}
-                  </div>
-                  <div className="wc-cta">Play →</div>
+                <button className="util-rail wc-card" onClick={() => startMode("wc2026")} aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}>
+                  <span className="util-icon" aria-hidden="true">🏆</span>
+                  <span className="util-body">
+                    <span className="util-title">World Cup 2026</span>
+                    <span className="util-sub">
+                      {started ? <>It's here — tap to play</> : <><strong>{daysTo}</strong> day{daysTo === 1 ? "" : "s"} to go</>}
+                    </span>
+                  </span>
+                  <span className="util-cta">Play</span>
                 </button>
               );
             })()}
