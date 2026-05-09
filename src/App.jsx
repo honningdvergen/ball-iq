@@ -914,17 +914,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-/* Sprint #11 Stage 4: shrunk to ~30% reduced vertical weight. Chrome
-   preserved (green-glow border + box-shadow) so the Multiplayer identity
-   stays recognisable; the 26px title and 80px Users icon are gone. */
-.hero-online{position:relative;overflow:hidden;border-radius:14px;padding:10px 16px;min-height:64px;margin-bottom:10px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1.5px solid rgba(34,197,94,0.45);box-shadow:0 0 0 1.5px rgba(34,197,94,0.25),0 6px 22px rgba(34,197,94,0.14);width:100%;text-align:left;font-family:inherit;display:flex;align-items:center;gap:12px;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+/* Sprint #11 G2 refinement: green glow dropped (was competing with the
+   active-tab green indicator). Identity now carried by a small green dot
+   ::before the eyebrow + the green Play CTA. Border + shadow are neutral.
+   Height reduced ~25% from the previous shrink. */
+.hero-online{position:relative;overflow:hidden;border-radius:14px;padding:8px 14px;min-height:50px;margin-bottom:12px;background:var(--s1);color:var(--t1);cursor:pointer;border:1px solid var(--border);box-shadow:var(--sh);width:100%;text-align:left;font-family:inherit;display:flex;align-items:center;gap:12px;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online:hover{border-color:var(--border2);background:var(--s2);}
 .hero-online-body{flex:1;min-width:0;}
-.hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
-.hero-online-title{font-size:15px;font-weight:800;line-height:1.15;margin-top:2px;letter-spacing:-0.2px;color:var(--t1);}
-.hero-online-sub{font-family:'Inter',sans-serif;font-size:11.5px;color:var(--t3);margin-top:1px;}
-.hero-online-sub-mobile{display:inline;}
-.hero-online-sub-desktop{display:none;}
-.hero-online-icon{flex-shrink:0;opacity:0.9;}
+.hero-online-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
+.hero-online-eyebrow::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#58CC02;box-shadow:0 0 6px rgba(88,204,2,0.55);}
+.hero-online-title{font-size:14px;font-weight:800;line-height:1.15;margin-top:1px;letter-spacing:-0.2px;color:var(--t1);}
+/* Sprint #11 G2: .hero-online-sub* dropped — MP card is now 2-line. */
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
 @media (max-width: 1023px) {
@@ -996,10 +996,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-/* Sprint #11 Stage 4: ~30% shorter vertical. 3-flag stripe (::before),
-   emoji host row, dark gradient — all preserved. Days/sub sizes shrunk
-   so the card pairs visually with the compact .hero-online above it. */
-.wc-card{position:relative;width:100%;margin:0 0 10px;padding:10px 14px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+/* Sprint #11 G2 refinement: redundant emoji host row + "North America
+   awaits" subtitle dropped (carried no info beyond what the title and
+   countdown already convey). 3-flag stripe (::before) is the distinctive
+   visual; trophy + days countdown carry the rest. Pads matched to
+   .hero-online for paired calm-utility weight. */
+.wc-card{position:relative;width:100%;margin:0 0 12px;padding:8px 14px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 /* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
    (red/white/red). Each flag occupies 33% width with hard color stops at
    tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
@@ -1012,14 +1014,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    letter-spacing widens the gap between flags so they read as separate hosts
    rather than a continuous string. font-size 14px keeps the row at ~16px tall
    without crowding the days countdown directly below. */
-.wc-hosts{font-size:13px;letter-spacing:5px;margin:0 0 2px;line-height:1;}
 .light .wc-label{color:#B45309;}
-.wc-days{font-size:16px;font-weight:900;line-height:1.1;letter-spacing:-0.3px;color:#fff;}
+.wc-days{font-size:15px;font-weight:900;line-height:1.1;letter-spacing:-0.3px;color:#fff;margin-top:1px;}
 .light .wc-days{color:#1C1C1E;}
 .wc-days em{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-style:normal;color:#FFC800;}
 .light .wc-days em{color:#B45309;}
-.wc-sub{font-size:11.5px;color:rgba(255,255,255,0.7);margin-top:1px;font-weight:500;}
-.light .wc-sub{color:#48484A;}
+/* G2 cleanup: .wc-hosts + .wc-sub CSS dropped along with their JSX. */
 .wc-cta{display:inline-flex;align-items:center;padding:6px 12px;background:#FFC800;color:#1A0F05;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;margin-left:auto;-webkit-text-fill-color:#1A0F05;}
 .light .wc-cta{background:#B45309;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
@@ -1916,29 +1916,30 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px 16px 16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:13px 14px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
 .footle-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
 .fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
-.fh-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.78);}
-.fh-title{font-size:30px;font-weight:900;line-height:1;letter-spacing:-0.8px;margin-top:6px;}
-.fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
-.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
-.fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
-.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;background:#fff;color:#3B1F8A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#3B1F8A;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;}
+.fh-title{font-size:24px;font-weight:900;line-height:1;letter-spacing:-0.5px;}
+.fh-score{font-size:16px;font-weight:700;line-height:1.1;margin-top:4px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
+.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:20px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
+.fh-sub{font-size:12px;line-height:1.4;margin-top:6px;color:rgba(255,255,255,0.78);font-weight:600;}
+.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:10px;}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;background:#fff;color:#3B1F8A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#3B1F8A;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;}
 .fh-cta:active{transform:scale(0.97);opacity:0.92;}
 .fh-cta-secondary{background:rgba(255,255,255,0.16);color:#fff;-webkit-text-fill-color:#fff;border:1px solid rgba(255,255,255,0.22);}
 .fh-cta-secondary:hover{background:rgba(255,255,255,0.22);}
+/* G1: 6-row grid (matches Footle's 6 guesses) at today's actual answer
+   length. Tile size shrunk 12→10 so the taller 6-row stack still fits the
+   reduced card height. */
 .fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:3px;align-self:flex-start;padding-top:2px;}
-.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),12px);gap:3px;}
-.fh-tile{width:12px;height:12px;border-radius:2px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
+.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),10px);gap:3px;}
+.fh-tile{width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
 .fh-tile-empty{background:rgba(255,255,255,0.10);}
 .fh-tile-green{background:#22c55e;border-color:transparent;}
 .fh-tile-yellow{background:#FFC107;border-color:transparent;}
 .fh-tile-grey{background:rgba(255,255,255,0.16);border-color:transparent;}
-.fh-grid-empty .fh-row{grid-template-columns:repeat(5,12px);}
 
 /* ── TODAY'S 7 SECONDARY ── (Sprint #11 Stage 2) ──
    Calmer companion below the Footle hero. One-line layout: icon chip,
@@ -1946,7 +1947,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    orange→amber gradient so the Today's 7 identity stays recognisable
    despite the reduced footprint. ~58px tall — about 45% of the
    Footle hero's vertical weight. */
-.todays-seven-secondary{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;-webkit-text-fill-color:#1A0F05;border:1px solid transparent;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 2px 10px rgba(0,0,0,0.18);overflow:hidden;margin-bottom:14px;transition:transform 0.1s,box-shadow 0.15s;contain:layout paint style;}
+.todays-seven-secondary{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);color:#1A0F05;-webkit-text-fill-color:#1A0F05;border:1px solid transparent;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 2px 10px rgba(0,0,0,0.18);overflow:hidden;margin-bottom:12px;transition:transform 0.1s,box-shadow 0.15s;contain:layout paint style;}
 .todays-seven-secondary:active{transform:scale(0.99);}
 .t7s-icon{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(0,0,0,0.10);font-size:16px;flex-shrink:0;}
 .t7s-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
@@ -2122,12 +2123,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      desktop sizes; the Multiplayer hero card on Home routes straight to
      Online Multiplayer in that case. PWA standalone reset defends below. */
   .diff-option-local { display: none; }
-  /* Multiplayer hero subtitle — swap mobile copy ("Online or local") for
-     the desktop variant ("Challenge someone online") since Local is
-     hidden above. Two spans toggled via display so users can still
-     select/copy the visible variant. */
-  .hero-online-sub-mobile { display: none; }
-  .hero-online-sub-desktop { display: inline; }
+  /* MP subtitle desktop/mobile swap dropped in Sprint #11 G2 along with
+     the .hero-online-sub element itself. */
   .desktop-nav {
     display: flex;
     flex-direction: column;
@@ -2221,8 +2218,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
-  .hero-online-sub-mobile { display: inline !important; }
-  .hero-online-sub-desktop { display: none !important; }
   .desktop-nav { display: none !important; }
   .hdr { display: flex !important; }
   .hdr .logo { display: block !important; }
@@ -9741,10 +9736,13 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
   const today = useMemo(() => new Date(), [dateKey]);
   const streak = useMemo(() => isWon ? computeFootleStreak(today) : 0, [isWon, today, dateKey]);
 
-  // Read raw guesses + answer for the tile preview (evening) and share text.
-  // Done lazily — only when status is terminal — to skip cost in morning state.
-  const { guesses, answer, grades } = useMemo(() => {
-    if (!isDone) return { guesses: [], answer: "", grades: [] };
+  // Today's answer length is needed for the morning grid preview's column
+  // count (G1 refinement) — getWordleAnswer is pure/deterministic so calling
+  // it in both states is cheap. Guesses + grades only computed in terminal
+  // states since they require the localStorage read + grading pass.
+  const answer = useMemo(() => getWordleAnswer(), [dateKey]);
+  const { guesses, grades } = useMemo(() => {
+    if (!isDone) return { guesses: [], grades: [] };
     let gs = [];
     try {
       const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
@@ -9753,10 +9751,9 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
         if (Array.isArray(p?.guesses)) gs = p.guesses;
       }
     } catch {}
-    const ans = getWordleAnswer();
-    const gr = gs.map(g => gradeWordleGuess(g, ans));
-    return { guesses: gs, answer: ans, grades: gr };
-  }, [isDone, dateKey]);
+    const gr = gs.map(g => gradeWordleGuess(g, answer));
+    return { guesses: gs, grades: gr };
+  }, [isDone, dateKey, answer]);
 
   const onShare = useCallback(async () => {
     if (!isDone) return;
@@ -9772,23 +9769,25 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
     }, { onToast: () => {}, textFallback });
   }, [isDone, isWon, isLost, guesses, grades, streak, today]);
 
+  // Both states render a 6-row grid (matches Footle's 6 guesses) at today's
+  // actual answer length. Eyebrow dropped (G3a) — wordmark + score line carry
+  // the identity; "daily" stays in the morning subtitle.
+  const cols = answer.length || 5;
   if (!isDone) {
-    // Morning / in-progress state. Whole card is one big Play button.
     const inProgress = ws.kind === "in-progress";
     return (
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
-          <div className="fh-eyebrow">Today's Footle</div>
           <div className="fh-title">Footle</div>
-          <div className="fh-sub">4–8 letters · 6 guesses · daily</div>
+          <div className="fh-sub">{cols} letters · 6 guesses · daily</div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
           </div>
         </div>
-        <div className="fh-grid fh-grid-empty" aria-hidden="true">
-          {Array.from({ length: 4 }).map((_, r) => (
+        <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
+          {Array.from({ length: 6 }).map((_, r) => (
             <div className="fh-row" key={r}>
-              {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
+              {Array.from({ length: cols }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
             </div>
           ))}
         </div>
@@ -9796,12 +9795,12 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
     );
   }
 
-  // Evening state — solved or lost.
-  const cols = answer.length || 5;
+  // Evening state — solved or lost. Grid pads to 6 rows so the proportion
+  // matches morning regardless of how many guesses the user actually used.
+  const padRows = Math.max(0, 6 - grades.length);
   return (
     <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} of 6` : "Footle — missed today"}>
       <div className="fh-body">
-        <div className="fh-eyebrow">Today's Footle</div>
         <div className="fh-title">{isWon ? "Solved" : "Missed"}</div>
         <div className="fh-score">
           {isWon ? <>in <strong>{guesses.length}</strong>/6</> : <><strong>X</strong>/6</>}
@@ -9821,6 +9820,11 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
         {grades.map((row, r) => (
           <div className="fh-row" key={r}>
             {row.map((c, i) => <div key={i} className={`fh-tile fh-tile-${c}`} />)}
+          </div>
+        ))}
+        {Array.from({ length: padRows }).map((_, r) => (
+          <div className="fh-row" key={`pad-${r}`}>
+            {Array.from({ length: cols }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
           </div>
         ))}
       </div>
@@ -11436,15 +11440,11 @@ function AppInner() {
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
 
-            {/* ── PLAY WITH FRIENDS (Sprint #11 Stage 4: shrunk, no big icon) ── */}
-            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
+            {/* ── PLAY WITH FRIENDS (Sprint #11 G2: 2-line for ~30% shrink) ── */}
+            <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends — online or local">
               <div className="hero-online-body">
                 <div className="hero-online-eyebrow">Multiplayer</div>
                 <div className="hero-online-title">Play with Friends</div>
-                <div className="hero-online-sub">
-                  <span className="hero-online-sub-mobile">Online or local — challenge someone</span>
-                  <span className="hero-online-sub-desktop">Challenge someone online</span>
-                </div>
               </div>
               <span className="hero-online-cta">Play</span>
             </button>
@@ -11462,16 +11462,14 @@ function AppInner() {
               const daysTo = dayKick - dayNow;
               const started = daysTo <= 0;
               return (
-                <button className="wc-card" onClick={() => startMode("wc2026")} aria-label="World Cup 2026 quiz, hosted by USA, Mexico, and Canada">
+                <button className="wc-card" onClick={() => startMode("wc2026")} aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}>
                   <div style={{flex:1, minWidth:0}}>
                     <div className="wc-label">🏆 World Cup 2026</div>
-                    <div className="wc-hosts" aria-hidden="true">🇺🇸  🇲🇽  🇨🇦</div>
                     {started ? (
                       <div className="wc-days"><em>It's here!</em></div>
                     ) : (
                       <div className="wc-days"><em>{daysTo}</em> day{daysTo === 1 ? "" : "s"} to go</div>
                     )}
-                    <div className="wc-sub">{started ? "Tap to play the tournament quiz" : "North America awaits"}</div>
                   </div>
                   <div className="wc-cta">Play →</div>
                 </button>
