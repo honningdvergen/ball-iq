@@ -8,7 +8,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Users } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -914,17 +914,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .iq-rank-seg.active{background:var(--accent);}
 
 /* ── HOME HERO: ONLINE 1V1 (dark card with green glow) ── */
-.hero-online{position:relative;overflow:hidden;border-radius:18px;padding:13px 20px;min-height:90px;margin-bottom:16px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1.5px solid rgba(34,197,94,0.45);box-shadow:0 0 0 1.5px rgba(34,197,94,0.25),0 10px 32px rgba(34,197,94,0.18);width:100%;text-align:left;font-family:inherit;-webkit-appearance:none;appearance:none;contain:layout paint style;}
-.hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
-.hero-online-title{font-size:26px;font-weight:900;line-height:1.05;margin-top:6px;letter-spacing:-0.02em;color:var(--t1);}
-.hero-online-sub{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--t3);margin-top:4px;}
+/* Sprint #11 Stage 4: shrunk to ~30% reduced vertical weight. Chrome
+   preserved (green-glow border + box-shadow) so the Multiplayer identity
+   stays recognisable; the 26px title and 80px Users icon are gone. */
+.hero-online{position:relative;overflow:hidden;border-radius:14px;padding:10px 16px;min-height:64px;margin-bottom:10px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,var(--s1) 60%);color:var(--t1);cursor:pointer;border:1.5px solid rgba(34,197,94,0.45);box-shadow:0 0 0 1.5px rgba(34,197,94,0.25),0 6px 22px rgba(34,197,94,0.14);width:100%;text-align:left;font-family:inherit;display:flex;align-items:center;gap:12px;-webkit-appearance:none;appearance:none;contain:layout paint style;}
+.hero-online-body{flex:1;min-width:0;}
+.hero-online-eyebrow{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#58CC02;}
+.hero-online-title{font-size:15px;font-weight:800;line-height:1.15;margin-top:2px;letter-spacing:-0.2px;color:var(--t1);}
+.hero-online-sub{font-family:'Inter',sans-serif;font-size:11.5px;color:var(--t3);margin-top:1px;}
 .hero-online-sub-mobile{display:inline;}
 .hero-online-sub-desktop{display:none;}
-.hero-online-icon{position:absolute;right:8px;bottom:8px;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));pointer-events:none;opacity:0.95;}
-/* Mobile-only tightening for the Multiplayer hero + slim hdr chrome.
-   Desktop padding/emoji stay at base values; .hdr is display:none on
-   desktop. PWA standalone is included here (always <1024px viewport
-   on phones). */
+.hero-online-icon{flex-shrink:0;opacity:0.9;}
+/* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
+   the .hero-online mobile override — base styles are already compact. */
 @media (max-width: 1023px) {
   .hdr { padding: 12px 0 4px; }
   .logo { font-size: 16px; letter-spacing: -0.3px; }
@@ -938,18 +940,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
     background: transparent;
   }
   .hdr .icon-btn:hover { background: var(--s1); }
-  .hero-online {
-    padding: 8px 16px;
-    min-height: 64px;
-  }
-  .hero-online-icon {
-    width: 44px;
-    height: 44px;
-    bottom: 4px;
-    right: 4px;
-  }
 }
-.hero-online-cta{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.hero-online-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;cursor:pointer;flex-shrink:0;transition:opacity 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .hero-online:active .hero-online-cta{opacity:0.85;}
 
 /* ── MORE MODES section eyebrow ── */
@@ -1004,7 +996,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:active{transform:scale(0.99);}
 
 /* ── WORLD CUP 2026 COUNTDOWN ── */
-.wc-card{position:relative;width:100%;margin:0 0 16px;padding:14px 16px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+/* Sprint #11 Stage 4: ~30% shorter vertical. 3-flag stripe (::before),
+   emoji host row, dark gradient — all preserved. Days/sub sizes shrunk
+   so the card pairs visually with the compact .hero-online above it. */
+.wc-card{position:relative;width:100%;margin:0 0 10px;padding:10px 14px;border:1px solid rgba(234,179,8,0.25);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;gap:12px;transition:transform 0.1s,border-color 0.15s;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 /* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
    (red/white/red). Each flag occupies 33% width with hard color stops at
    tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
@@ -1012,18 +1007,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
 .wc-card:active{transform:scale(0.99);}
 .light .wc-card{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);color:#1C1C1E;border-color:rgba(234,179,8,0.35);}
-.wc-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#FFC800;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.wc-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#FFC800;margin-bottom:1px;display:flex;align-items:center;gap:5px;}
 /* Host-country emoji row — sits between the label and the days countdown.
    letter-spacing widens the gap between flags so they read as separate hosts
    rather than a continuous string. font-size 14px keeps the row at ~16px tall
    without crowding the days countdown directly below. */
-.wc-hosts{font-size:14px;letter-spacing:6px;margin:1px 0 3px;line-height:1;}
+.wc-hosts{font-size:13px;letter-spacing:5px;margin:0 0 2px;line-height:1;}
 .light .wc-label{color:#B45309;}
-.wc-days{font-size:22px;font-weight:900;line-height:1.1;letter-spacing:-0.4px;color:#fff;}
+.wc-days{font-size:16px;font-weight:900;line-height:1.1;letter-spacing:-0.3px;color:#fff;}
 .light .wc-days{color:#1C1C1E;}
 .wc-days em{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-style:normal;color:#FFC800;}
 .light .wc-days em{color:#B45309;}
-.wc-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;font-weight:500;}
+.wc-sub{font-size:11.5px;color:rgba(255,255,255,0.7);margin-top:1px;font-weight:500;}
 .light .wc-sub{color:#48484A;}
 .wc-cta{display:inline-flex;align-items:center;padding:6px 12px;background:#FFC800;color:#1A0F05;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.01em;flex-shrink:0;margin-left:auto;-webkit-text-fill-color:#1A0F05;}
 .light .wc-cta{background:#B45309;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;}
@@ -11479,16 +11474,17 @@ function AppInner() {
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
 
-            {/* ── HERO: PLAY WITH FRIENDS (online or local) ── */}
+            {/* ── PLAY WITH FRIENDS (Sprint #11 Stage 4: shrunk, no big icon) ── */}
             <button className="hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends">
-              <div className="hero-online-eyebrow">Multiplayer</div>
-              <div className="hero-online-title">Play with Friends</div>
-              <div className="hero-online-sub">
-                <span className="hero-online-sub-mobile">Online or local — challenge someone</span>
-                <span className="hero-online-sub-desktop">Challenge someone online</span>
+              <div className="hero-online-body">
+                <div className="hero-online-eyebrow">Multiplayer</div>
+                <div className="hero-online-title">Play with Friends</div>
+                <div className="hero-online-sub">
+                  <span className="hero-online-sub-mobile">Online or local — challenge someone</span>
+                  <span className="hero-online-sub-desktop">Challenge someone online</span>
+                </div>
               </div>
-              <div className="hero-online-cta">Play</div>
-              <Users size={80} strokeWidth={2.25} color="var(--accent)" aria-hidden="true" className="hero-online-icon" />
+              <span className="hero-online-cta">Play</span>
             </button>
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
