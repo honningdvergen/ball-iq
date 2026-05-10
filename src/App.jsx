@@ -8,7 +8,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -936,6 +936,35 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hero-online .util-title{color:var(--t1);}
 .hero-online .util-sub{color:var(--t2);}
 /* Sprint #11 G2: .hero-online-sub* dropped — MP card is now 2-line. */
+
+/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
+   Replaces the .util-rail.hero-online rail with a richer card carrying two
+   primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
+   the strategic priority: friends-inviting-friends is the launch acquisition
+   channel, so MP needs visible-not-utility weight on home. */
+.mp-card{position:relative;padding:14px 16px;border-radius:18px;margin-bottom:12px;background:radial-gradient(circle at 90% -10%,rgba(88,204,2,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(88,204,2,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
+.light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
+.mp-card-row{display:flex;align-items:flex-start;gap:12px;}
+.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(88,204,2,0.18);border:1px solid rgba(88,204,2,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#58CC02;flex-shrink:0;box-shadow:0 0 12px rgba(88,204,2,0.25);line-height:1;}
+.light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
+.mp-card-titles{flex:1;min-width:0;padding-right:78px;}
+.mp-card-title{font-size:16px;font-weight:900;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
+.light .mp-card-title{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
+.mp-card-sub{font-size:12px;color:rgba(255,255,255,0.78);margin-top:5px;font-weight:600;line-height:1.4;}
+.light .mp-card-sub{color:#48484A;}
+.mp-card-invite{position:absolute;top:14px;right:14px;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#fff;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
+.mp-card-invite:active{transform:scale(0.96);}
+.light .mp-card-invite{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.10);color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
+.light .mp-card-invite:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.16);}
+.mp-card-ctas{display:flex;gap:8px;margin-top:14px;align-items:stretch;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:11px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#58CC02;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(88,204,2,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-cta:active{transform:scale(0.97);}
+.mp-card-cta:hover{filter:brightness(1.06);}
+.mp-card-cta.ghost{background:transparent;color:#fff;border:1.5px solid rgba(88,204,2,0.45);box-shadow:none;-webkit-text-fill-color:#fff;}
+.mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
+.light .mp-card-cta.ghost{color:#34A853;border-color:rgba(52,168,83,0.50);-webkit-text-fill-color:#34A853;}
+.light .mp-card-cta.ghost:hover{background:rgba(52,168,83,0.06);}
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
 @media (max-width: 1023px) {
@@ -2135,8 +2164,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* Local multiplayer requires passing a single device — desktop has no
      equivalent gesture. Hide the option in the friends-picker sheet at
      desktop sizes; the Multiplayer hero card on Home routes straight to
-     Online Multiplayer in that case. PWA standalone reset defends below. */
-  .diff-option-local { display: none; }
+     Online Multiplayer in that case. PWA standalone reset defends below.
+     Sprint #12: the new MP featured card's Local CTA hides via the same rule
+     so the card collapses to a single Online button on desktop. */
+  .diff-option-local,
+  .mp-card-cta.local { display: none; }
+  .mp-card-cta:only-of-type { flex: 1; }
   /* MP subtitle desktop/mobile swap dropped in Sprint #11 G2 along with
      the .hero-online-sub element itself. */
   .desktop-nav {
@@ -9846,6 +9879,68 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
             {Array.from({ length: cols }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
           </div>
         ))}
+      </div>
+    </div>
+  );
+});
+
+// ─── MULTIPLAYER FEATURED CARD (Sprint #12) ─────────────────────────────────
+// Replaces the old .util-rail.hero-online rail. Two primary CTAs (Online +
+// Local) and a corner Invite pill. Online checks guest state (sign-in toast
+// fallback). Local jumps straight into pass-and-play. Invite uses Web Share
+// API where available, otherwise copies the URL to clipboard with a toast.
+//
+// Local CTA hides at desktop sizes via the existing .diff-option-local rule
+// in the @media (min-width: 1024px) block (extended in Sprint #12 to also
+// hit .mp-card-cta.local) — desktop has no equivalent pass-and-play gesture.
+const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnline, onLocal, showToast }) {
+  const onInvite = useCallback(async (e) => {
+    // Stop the click from reaching the card-level handlers (none here, but
+    // future-proof against being wrapped in a tappable parent).
+    e?.stopPropagation();
+    const url = (typeof window !== 'undefined' && window.location?.origin) || 'https://balliq.app';
+    const shareData = {
+      title: APP_NAME,
+      text: `Play ${APP_NAME} with me — daily football trivia + multiplayer.`,
+      url,
+    };
+    try {
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        await navigator.share(shareData);
+        return;
+      }
+    } catch (err) {
+      // User-cancelled share is reported as AbortError on iOS Safari — silent.
+      if (err && err.name === 'AbortError') return;
+      // Otherwise fall through to clipboard fallback.
+    }
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        showToast?.('🔗 Link copied — paste it to a friend');
+        return;
+      }
+    } catch {}
+    // Last-resort fallback: announce that we couldn't share. Should be very rare.
+    showToast?.(`Share ${url}`);
+  }, [showToast]);
+
+  return (
+    <div className="mp-card" role="group" aria-label="Multiplayer">
+      <button type="button" className="mp-card-invite" onClick={onInvite} aria-label="Invite a friend">
+        <Share size={13} strokeWidth={2.25} aria-hidden="true" />
+        <span>Invite</span>
+      </button>
+      <div className="mp-card-row">
+        <span className="mp-card-icon" aria-hidden="true">👥</span>
+        <div className="mp-card-titles">
+          <div className="mp-card-title">Play with Friends</div>
+          <div className="mp-card-sub">Race friends online or play locally.</div>
+        </div>
+      </div>
+      <div className="mp-card-ctas">
+        <button type="button" className="mp-card-cta" onClick={onOnline} aria-label="Play online multiplayer">Online</button>
+        <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play local multiplayer">Local</button>
       </div>
     </div>
   );
