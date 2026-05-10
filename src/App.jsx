@@ -930,12 +930,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    arrow just signals "tap to enter" without competing with the Footle and
    Today's 7 Play buttons above. */
 .util-arrow{flex-shrink:0;font-size:18px;line-height:1;color:var(--t3);font-weight:600;padding:0 4px;}
-.hero-online{background:var(--s1);color:var(--t1);border:1px solid var(--border);box-shadow:var(--sh);}
-.hero-online:hover{background:var(--s2);border-color:var(--border2);}
-.hero-online .util-icon{background:rgba(34,197,94,0.10);color:#58CC02;border:1px solid rgba(34,197,94,0.4);box-shadow:0 0 8px rgba(88,204,2,0.18);}
-.hero-online .util-title{color:var(--t1);}
-.hero-online .util-sub{color:var(--t2);}
-/* Sprint #11 G2: .hero-online-sub* dropped — MP card is now 2-line. */
+/* Sprint #12: .hero-online rail removed, replaced by .mp-card below. */
 
 /* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
    Replaces the .util-rail.hero-online rail with a richer card carrying two
@@ -11554,15 +11549,22 @@ function AppInner() {
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
 
-            {/* ── PLAY WITH FRIENDS (D1 rail pattern, I1: arrow not pill) ── */}
-            <button className="util-rail hero-online" onClick={() => setShowFriendsPicker(true)} aria-label="Play with friends — online or local">
-              <span className="util-icon" aria-hidden="true">👥</span>
-              <span className="util-body">
-                <span className="util-title">Play with Friends</span>
-                <span className="util-sub">Online or local</span>
-              </span>
-              <span className="util-arrow" aria-hidden="true">→</span>
-            </button>
+            {/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
+                Two primary CTAs route directly: Online checks guest state
+                and either toasts a sign-in prompt or jumps to the online
+                stage; Local enters pass-and-play immediately. Invite pill
+                handles its own Share/clipboard flow. */}
+            <MultiplayerCard
+              onOnline={() => {
+                if (!user || isGuest) {
+                  showToast("🔐 Sign in to play Online Multiplayer");
+                  return;
+                }
+                setScreen("online-stage1");
+              }}
+              onLocal={() => startMode("local")}
+              showToast={showToast}
+            />
 
             {/* ── WORLD CUP 2026 COUNTDOWN ── */}
             {(() => {
