@@ -1034,31 +1034,30 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .dhero-compact:hover{background:var(--s2);border-color:rgba(34,197,94,0.4);}
 .dhero-compact:active{transform:scale(0.99);}
 
-/* ── WORLD CUP 2026 COUNTDOWN ── */
-/* Sprint #11 H2: WC switched to the .util-rail pattern paired with MP.
-   3-flag stripe (::before) DROPPED per brief — the trophy icon + gold
-   eyebrow accents carry the World Cup identity. Dark gradient bg kept. */
-.wc-card{background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);color:#fff;border:1px solid rgba(234,179,8,0.25);}
-/* Three-flag stripe: USA (blue/white/red) | Mexico (green/white/red) | Canada
-   (red/white/red). Each flag occupies 33% width with hard color stops at
-   tricolor boundaries. 2px tall — reads as a thin host-acknowledgement bar. */
-.wc-card:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);}
-.light .wc-card{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);color:#1C1C1E;border-color:rgba(234,179,8,0.35);}
-.wc-card .util-icon{background:rgba(255,200,0,0.12);color:#FFC800;border:1px solid rgba(255,200,0,0.35);box-shadow:0 0 8px rgba(255,200,0,0.20);}
-.wc-card .util-title{color:#fff;}
-.wc-card .util-sub{color:rgba(255,255,255,0.70);}
-.wc-card .util-sub strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:#FFC800;}
-.wc-card .util-arrow{color:rgba(255,255,255,0.45);}
-.light .wc-card .util-title{color:#1C1C1E;}
-.light .wc-card .util-sub{color:#48484A;}
-.light .wc-card .util-sub strong{color:#B45309;}
-.light .wc-card .util-arrow{color:rgba(0,0,0,0.35);}
-/* Host-country emoji row — sits between the label and the days countdown.
-   letter-spacing widens the gap between flags so they read as separate hosts
-   rather than a continuous string. font-size 14px keeps the row at ~16px tall
-   without crowding the days countdown directly below. */
-/* H2 cleanup: .wc-label / .wc-days / .wc-cta replaced by the .util-rail
-   pattern + .wc-card .util-* variants above. */
+/* ── WORLD CUP 2026 TILE (Sprint #12) ──
+   Previously a standalone .util-rail.wc-card; now a full-row tile inside the
+   More modes grid. The wc-tile palette mirrors the old card's dark-gold
+   gradient so the visual identity travels cleanly through the demotion. */
+.play-card.wc-tile{
+  grid-column:span 2;flex-direction:row;justify-content:flex-start;
+  align-items:center;min-height:0;padding:12px 14px;gap:10px;text-align:left;
+  background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);
+  border:1px solid rgba(234,179,8,0.28);
+}
+.play-card.wc-tile:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);}
+.light .play-card.wc-tile{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);border-color:rgba(234,179,8,0.35);}
+.play-card.wc-tile .wc-tile-icon{margin-bottom:0;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);box-shadow:0 0 8px rgba(255,200,0,0.20);}
+.play-card.wc-tile .wc-tile-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;align-items:flex-start;}
+.play-card.wc-tile .play-card-name{color:#fff;font-size:14px;font-weight:800;line-height:1.2;}
+.play-card.wc-tile .play-card-desc{color:rgba(255,255,255,0.65);font-size:11px;-webkit-line-clamp:1;}
+.light .play-card.wc-tile .play-card-name{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
+.light .play-card.wc-tile .play-card-desc{color:#48484A;}
+.wc-tile-badge{position:absolute;top:8px;right:10px;display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);color:#FFC800;font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;-webkit-text-fill-color:#FFC800;}
+.light .wc-tile-badge{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
+.wc-tile-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:999px;background:rgba(255,200,0,0.14);border:1px solid rgba(255,200,0,0.30);color:#FFC800;font-size:11px;font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;-webkit-text-fill-color:#FFC800;}
+.wc-tile-chip-live{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.45);color:#22c55e;-webkit-text-fill-color:#22c55e;letter-spacing:0.04em;}
+.light .wc-tile-chip{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
+.light .wc-tile-chip-live{background:rgba(52,168,83,0.12);border-color:rgba(52,168,83,0.35);color:#34A853;-webkit-text-fill-color:#34A853;}
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
 /* ── Play button: neutral elevated (accent reserved for Daily action) ── */
 .cta-play{background:var(--s1);border:1px solid var(--border);}
@@ -11566,37 +11565,15 @@ function AppInner() {
               showToast={showToast}
             />
 
-            {/* ── WORLD CUP 2026 COUNTDOWN ── */}
-            {(() => {
-              // Pin both sides to the UTC frame so Math.floor(t/86400000)
-              // gives consistent days-to-go in any timezone. Previous
-              // mixed-frame version (local-midnight kickoff vs UTC-frame
-              // floor) produced 33-vs-34 off-by-one in TZs east of UTC.
-              const kickoff = new Date(Date.UTC(2026, 5, 11));
-              const msPerDay = TIMINGS.DAY_MS;
-              const dayNow = Math.floor(Date.now() / msPerDay);
-              const dayKick = Math.floor(kickoff.getTime() / msPerDay);
-              const daysTo = dayKick - dayNow;
-              const started = daysTo <= 0;
-              return (
-                <button className="util-rail wc-card" onClick={() => startMode("wc2026")} aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}>
-                  <span className="util-icon" aria-hidden="true">🏆</span>
-                  <span className="util-body">
-                    <span className="util-title">World Cup 2026</span>
-                    <span className="util-sub">
-                      {started ? <>It's here — tap to play</> : <><strong>{daysTo}</strong> day{daysTo === 1 ? "" : "s"} to go</>}
-                    </span>
-                  </span>
-                  <span className="util-arrow" aria-hidden="true">→</span>
-                </button>
-              );
-            })()}
-
             {/* ── MORE MODES ── */}
             {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
                 for a slightly bolder line that holds at the 20px size in
                 the 36px rounded-square chip. Color = var(--accent) for a
-                consistent green-on-dark identity across the grid. */}
+                consistent green-on-dark identity across the grid.
+
+                Sprint #12: the standalone WC2026 rail card is gone — World
+                Cup now appears as the 7th tile in this grid with full-row
+                span + EVENT badge + gold "Nd" countdown chip. */}
             <div className="home-section-title">More modes</div>
             <div className="play-grid">
               {[
@@ -11621,6 +11598,37 @@ function AppInner() {
                   </span>
                 </button>
               ))}
+              {/* World Cup 2026 — 7th tile, full-row event variant */}
+              {(() => {
+                // Pin both sides to the UTC frame so Math.floor(t/86400000)
+                // gives consistent days-to-go in any timezone. Previous
+                // mixed-frame version (local-midnight kickoff vs UTC-frame
+                // floor) produced 33-vs-34 off-by-one in TZs east of UTC.
+                const kickoff = new Date(Date.UTC(2026, 5, 11));
+                const msPerDay = TIMINGS.DAY_MS;
+                const dayNow = Math.floor(Date.now() / msPerDay);
+                const dayKick = Math.floor(kickoff.getTime() / msPerDay);
+                const daysTo = dayKick - dayNow;
+                const started = daysTo <= 0;
+                return (
+                  <button
+                    className="play-card wc-tile"
+                    onClick={() => startMode("wc2026")}
+                    aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}
+                  >
+                    <span className="wc-tile-badge" aria-hidden="true">★ Event</span>
+                    <span className="play-card-icon wc-tile-icon">
+                      <Trophy size={20} strokeWidth={2.25} color="#FFC800" aria-hidden="true" />
+                    </span>
+                    <span className="play-card-body wc-tile-body">
+                      <span className="play-card-name">World Cup 2026</span>
+                      <span className="play-card-desc">Tournament quiz</span>
+                    </span>
+                    {!started && <span className="wc-tile-chip" aria-hidden="true">{daysTo}d</span>}
+                    {started && <span className="wc-tile-chip wc-tile-chip-live" aria-hidden="true">LIVE</span>}
+                  </button>
+                );
+              })()}
             </div>
             {/* Coming-Soon shelf — teaser cards for modes that aren't ready
                 yet. True or False is intentionally NOT surfaced here; its
