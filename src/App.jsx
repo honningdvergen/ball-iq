@@ -960,6 +960,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
 .light .mp-card-cta.ghost{color:#34A853;border-color:rgba(52,168,83,0.50);-webkit-text-fill-color:#34A853;}
 .light .mp-card-cta.ghost:hover{background:rgba(52,168,83,0.06);}
+
+/* ── DAILY ZONE (Sprint #12) ──
+   Tinted purple-to-orange gradient container framing Footle + Today's 7 as
+   one daily-ritual unit. Container padding is tight so the two nested cards
+   read as the focal-point of the home screen. Inside cards keep their
+   shipped styling (FootleHero gradient, T7 orange secondary). */
+.daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,0.06) 0%,rgba(255,106,0,0.04) 100%);border-radius:18px;padding:12px 12px 12px;margin-bottom:12px;contain:layout paint style;}
+.light .daily-zone{background:linear-gradient(180deg,rgba(124,58,237,0.05) 0%,rgba(255,106,0,0.04) 100%);border-color:#E5E5EA;}
+.daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 4px;}
+.daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:'Inter',sans-serif;}
+.daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
+.daily-zone-status.is-done{color:var(--accent);}
+/* Nested cards inherit their own bottom margin from the shipped components,
+   which now serves as the gap between Footle hero and T7 inside the zone.
+   Remove the bottom margin on the final child so the zone bottom-padding
+   isn't doubled. */
+.daily-zone > .todays-seven-secondary{margin-bottom:0;}
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
 @media (max-width: 1023px) {
@@ -11524,29 +11541,48 @@ function AppInner() {
               );
             })()}
 
-            {/* ── FOOTLE HERO ── (Sprint #11 D1 home redesign — Stage 1) ── */}
-            <FootleHero
-              onPlay={() => setScreen("wordle")}
-              onReview={(ws) => viewPuzzleStatus(ws)}
-            />
-
-            {/* ── TODAY'S 7 SECONDARY ── (Sprint #11 Stage 2) ── */}
-            <button
-              className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
-              onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
-              aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
-            >
-              <span className="t7s-icon" aria-hidden="true">📋</span>
-              <span className="t7s-body">
-                <span className="t7s-title">Today's 7</span>
-                <span className="t7s-sub">
-                  {dailyDone
-                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                    : <>7 questions · ~3 min</>}
-                </span>
-              </span>
-              <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
-            </button>
+            {/* ── DAILY ZONE (Sprint #12) ──
+                Wraps Footle hero + Today's 7 in a tinted container with a
+                shared "DAILY" eyebrow + X/2 progress indicator. The cards
+                inside keep their distinct identities; the zone just frames
+                them as a coupled unit so they don't read as two unrelated
+                rails. */}
+            {(() => {
+              const ws = readWordleTodayStatus();
+              const footleDone = ws.kind === "won" || ws.kind === "lost";
+              const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0);
+              const allDone = doneCount === 2;
+              return (
+                <div className="daily-zone" role="group" aria-label="Daily">
+                  <div className="daily-zone-head">
+                    <span className="daily-zone-eyebrow">Daily</span>
+                    <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
+                      {allDone ? "2/2 done" : `${doneCount}/2 today`}
+                    </span>
+                  </div>
+                  <FootleHero
+                    onPlay={() => setScreen("wordle")}
+                    onReview={(wsArg) => viewPuzzleStatus(wsArg)}
+                  />
+                  <button
+                    className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
+                    onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
+                    aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
+                  >
+                    <span className="t7s-icon" aria-hidden="true">📋</span>
+                    <span className="t7s-body">
+                      <span className="t7s-title">Today's 7</span>
+                      <span className="t7s-sub">
+                        {dailyDone
+                          ? <>✅ Done · <strong>{dailyScore}/7</strong></>
+                          : <>7 questions · ~3 min</>}
+                      </span>
+                    </span>
+                    <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
+                  </button>
+                </div>
+              );
+            })()}
 
             {/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
                 Two primary CTAs route directly: Online checks guest state
