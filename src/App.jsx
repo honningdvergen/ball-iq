@@ -6663,9 +6663,15 @@ function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory
 // template). Wordle streak isn't tracked separately yet — no streak
 // line until that's its own state.
 function PuzzleReviewScreen({ date, guesses, status, onBack }) {
+  // J1/J2 fix: was using `WORDLE_PLAYERS[dayIndex % length]` here, which
+  // disagrees with the stride formula used by the active game and the home
+  // FootleHero. Result: Review re-graded the user's guesses against the
+  // wrong answer — wrong colors AND, when the wrong answer was longer than
+  // the user's guesses, an extra empty rightmost column from a too-wide
+  // grades array. Now shares getWordleAnswerForDayIndex with the active game.
   const answer = useMemo(() => {
     const dayIndex = Math.floor(date.getTime() / TIMINGS.DAY_MS);
-    return WORDLE_PLAYERS[dayIndex % WORDLE_PLAYERS.length];
+    return getWordleAnswerForDayIndex(dayIndex);
   }, [date]);
 
   const won = status === "won";
@@ -9381,12 +9387,19 @@ const WORDLE_ANCHOR_DAY = 20577;
 const WORDLE_ANCHOR_IDX = 129;
 const WORDLE_STRIDE = 131;
 
-function getWordleAnswer() {
-  const day = getWordleDayIndex();
-  const offset = (day - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
+// Stride-formula lookup for a specific day index. Pulled out of
+// getWordleAnswer() so anywhere that needs the puzzle for a non-today date
+// (e.g. PuzzleReviewScreen reviewing an arbitrary date) shares one source
+// of truth. The plain `dayIndex % len` formula MUST NOT be used — it
+// computes a different answer than the active game uses for the same day.
+function getWordleAnswerForDayIndex(dayIndex) {
+  const offset = (dayIndex - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
   const len = WORDLE_PLAYERS.length;
   const idx = ((WORDLE_ANCHOR_IDX + offset) % len + len) % len;
   return WORDLE_PLAYERS[idx];
+}
+function getWordleAnswer() {
+  return getWordleAnswerForDayIndex(getWordleDayIndex());
 }
 function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
