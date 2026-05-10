@@ -937,7 +937,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:14px 16px;border-radius:18px;margin-bottom:12px;background:radial-gradient(circle at 90% -10%,rgba(88,204,2,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(88,204,2,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(88,204,2,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(88,204,2,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
 .light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
 .mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(88,204,2,0.18);border:1px solid rgba(88,204,2,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#58CC02;flex-shrink:0;box-shadow:0 0 12px rgba(88,204,2,0.25);line-height:1;}
@@ -947,13 +947,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .mp-card-title{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .mp-card-sub{font-size:12px;color:rgba(255,255,255,0.78);margin-top:5px;font-weight:600;line-height:1.4;}
 .light .mp-card-sub{color:#48484A;}
-.mp-card-invite{position:absolute;top:14px;right:14px;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#fff;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.mp-card-invite{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#fff;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
 .light .mp-card-invite{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.10);color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .light .mp-card-invite:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.16);}
-.mp-card-ctas{display:flex;gap:8px;margin-top:14px;align-items:stretch;}
-.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:11px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#58CC02;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(88,204,2,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-ctas{display:flex;gap:8px;margin-top:10px;align-items:stretch;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#58CC02;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(88,204,2,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
 .mp-card-cta.ghost{background:transparent;color:#fff;border:1.5px solid rgba(88,204,2,0.45);box-shadow:none;-webkit-text-fill-color:#fff;}
@@ -966,9 +966,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    one daily-ritual unit. Container padding is tight so the two nested cards
    read as the focal-point of the home screen. Inside cards keep their
    shipped styling (FootleHero gradient, T7 orange secondary). */
-.daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,0.06) 0%,rgba(255,106,0,0.04) 100%);border-radius:18px;padding:12px 12px 12px;margin-bottom:12px;contain:layout paint style;}
+.daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,0.06) 0%,rgba(255,106,0,0.04) 100%);border-radius:18px;padding:10px 10px 10px;margin-bottom:10px;contain:layout paint style;}
 .light .daily-zone{background:linear-gradient(180deg,rgba(124,58,237,0.05) 0%,rgba(255,106,0,0.04) 100%);border-color:#E5E5EA;}
-.daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 4px;}
+.daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 4px;}
 .daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:'Inter',sans-serif;}
 .daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
 .daily-zone-status.is-done{color:var(--accent);}
@@ -1056,7 +1056,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    More modes grid. The wc-tile palette mirrors the old card's dark-gold
    gradient so the visual identity travels cleanly through the demotion. */
 .play-card.wc-tile{
-  grid-column:span 2;flex-direction:row;justify-content:flex-start;
+  /* 1 / -1 spans whatever column count the grid has (2 on mobile, 3 on
+     desktop) — keeps the WC event row full-width across viewports. */
+  grid-column:1 / -1;flex-direction:row;justify-content:flex-start;
   align-items:center;min-height:0;padding:12px 14px;gap:10px;text-align:left;
   background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);
   border:1px solid rgba(234,179,8,0.28);
@@ -11512,7 +11514,7 @@ function AppInner() {
                 : dailyDone                           ? "Today's Footle is still open."
                 :                                       "Daily puzzle is up.";
               return (
-                <div style={{padding:"10px 0 12px"}}>
+                <div style={{padding:"6px 0 8px"}}>
                   <div style={{display:"flex", alignItems:"baseline", gap:10}}>
                     <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
                     {homeAuthLoading ? (
@@ -11529,7 +11531,7 @@ function AppInner() {
                     )}
                   </div>
                   {subtext && (
-                    <div style={{fontSize:13, color:"var(--t3)", marginTop:4}}>
+                    <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
                       {subtext}
                     </div>
                   )}
