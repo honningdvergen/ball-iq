@@ -11504,7 +11504,10 @@ function AppInner() {
               const greeting = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })();
               const ws = readWordleTodayStatus();
               const footleDone = ws.kind === "won" || ws.kind === "lost";
-              const subtext = footleDone && dailyDone ? "All done for today."
+              // Sprint #12: when both daily rituals are complete, omit the
+              // subtext entirely — the Daily zone's "2/2 done" status carries
+              // the celebration, the greeting line stays calm.
+              const subtext = footleDone && dailyDone ? null
                 : footleDone                          ? "Today's 7 is still open."
                 : dailyDone                           ? "Today's Footle is still open."
                 :                                       "Daily puzzle is up.";
@@ -11525,9 +11528,11 @@ function AppInner() {
                       </span>
                     )}
                   </div>
-                  <div style={{fontSize:13, color:"var(--t3)", marginTop:4}}>
-                    {subtext}
-                  </div>
+                  {subtext && (
+                    <div style={{fontSize:13, color:"var(--t3)", marginTop:4}}>
+                      {subtext}
+                    </div>
+                  )}
                   {homeShowCTA && (
                     <button
                       onClick={() => { setTab("profile"); setNameEditNonce(n => n + 1); }}
