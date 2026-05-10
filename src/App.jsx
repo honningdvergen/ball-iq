@@ -1071,9 +1071,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .play-card.wc-tile .play-card-desc{color:rgba(255,255,255,0.65);font-size:11px;-webkit-line-clamp:1;}
 .light .play-card.wc-tile .play-card-name{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .light .play-card.wc-tile .play-card-desc{color:#48484A;}
-.wc-tile-badge{position:absolute;top:8px;right:10px;display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);color:#FFC800;font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;-webkit-text-fill-color:#FFC800;}
+/* J3 fix: badge was absolute-positioned at top:8/right:10 and overlapped the
+   inline countdown chip. Now both live inside a right-aligned vertical stack
+   (.wc-tile-meta) so they share space cleanly without collision. */
+.wc-tile-meta{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.wc-tile-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);color:#FFC800;font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;-webkit-text-fill-color:#FFC800;line-height:1.3;}
 .light .wc-tile-badge{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
-.wc-tile-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:999px;background:rgba(255,200,0,0.14);border:1px solid rgba(255,200,0,0.30);color:#FFC800;font-size:11px;font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;-webkit-text-fill-color:#FFC800;}
+.wc-tile-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:rgba(255,200,0,0.14);border:1px solid rgba(255,200,0,0.30);color:#FFC800;font-size:11px;font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;-webkit-text-fill-color:#FFC800;line-height:1.3;}
 .wc-tile-chip-live{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.45);color:#22c55e;-webkit-text-fill-color:#22c55e;letter-spacing:0.04em;}
 .light .wc-tile-chip{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
 .light .wc-tile-chip-live{background:rgba(52,168,83,0.12);border-color:rgba(52,168,83,0.35);color:#34A853;-webkit-text-fill-color:#34A853;}
@@ -11672,7 +11676,6 @@ function AppInner() {
                     onClick={() => startMode("wc2026")}
                     aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}
                   >
-                    <span className="wc-tile-badge" aria-hidden="true">★ Event</span>
                     <span className="play-card-icon wc-tile-icon">
                       <Trophy size={20} strokeWidth={2.25} color="#FFC800" aria-hidden="true" />
                     </span>
@@ -11680,8 +11683,11 @@ function AppInner() {
                       <span className="play-card-name">World Cup 2026</span>
                       <span className="play-card-desc">Tournament quiz</span>
                     </span>
-                    {!started && <span className="wc-tile-chip" aria-hidden="true">{daysTo}d</span>}
-                    {started && <span className="wc-tile-chip wc-tile-chip-live" aria-hidden="true">LIVE</span>}
+                    <span className="wc-tile-meta" aria-hidden="true">
+                      <span className="wc-tile-badge">★ Event</span>
+                      {!started && <span className="wc-tile-chip">{daysTo}d</span>}
+                      {started && <span className="wc-tile-chip wc-tile-chip-live">LIVE</span>}
+                    </span>
                   </button>
                 );
               })()}
