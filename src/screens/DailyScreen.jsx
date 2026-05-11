@@ -432,6 +432,20 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
         t7Run={runStats.t7Run}
         form14={form14}
       />
+
+      {/* Sprint #16 Stage 3: Up next anticipation card. Always points at
+          tomorrow — today's call-to-action lives on Home, Daily is a
+          history-first surface. The KO countdown re-renders with `now`. */}
+      <div className="up-next" role="status" aria-label={`Tomorrow's Daily — kickoff in ${formatKO(msToNextUTCMidnight(now))}`}>
+        <div className="up-next-left">
+          <div className="up-next-eyebrow">Up next</div>
+          <div className="up-next-title">Tomorrow's Daily</div>
+        </div>
+        <div className="up-next-right">
+          <div className="up-next-ko-lab">Kicks off in</div>
+          <div className="up-next-ko-val mono">{formatKO(msToNextUTCMidnight(now))}</div>
+        </div>
+      </div>
       {/* 4-stat row (Sprint #15 Stage 4) */}
       <div className="daily-stats-row" role="group" aria-label="Daily stats">
         <div className="stat-tile">

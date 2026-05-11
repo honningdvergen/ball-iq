@@ -1460,6 +1460,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
 .daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
+/* ── UP NEXT CARD (Sprint #16 Stage 3) ── */
+.up-next{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,197,94,0.10) 0%,rgba(34,197,94,0.02) 100%);border:1px solid rgba(34,197,94,0.24);border-radius:12px;margin:0 0 12px;}
+.up-next-left{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.up-next-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
+.up-next-title{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
+.up-next-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.up-next-ko-lab{font-size:9px;font-weight:800;letter-spacing:0.14em;color:var(--t3);text-transform:uppercase;}
+.up-next-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-0.02em;}
+
 /* ── FORM HERO (Daily v3 centerpiece, Sprint #16) ── */
 .form-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 18px 18px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:16px;margin:0 0 12px;}
 .light .form-hero{border-color:rgba(52,168,83,0.30);}
