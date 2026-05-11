@@ -31,12 +31,15 @@ test('home renders without console errors after extraction', async ({ page }) =>
   expect(errors, `JS errors: ${errors.join('\n')}\nNetwork fails (info): ${networkFails.join('\n')}`).toEqual([]);
 });
 
-test('K3 greeting — no "Guest" placeholder visible on fresh load', async ({ page, context }) => {
+test('K3 greeting — no "Guest" / undefined / object placeholders during load', async ({ page, context }) => {
   // Fresh storage state: brand-new install — no auth, no name set.
   await context.clearCookies();
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  // Capture greeting frame-by-frame for the first 4 seconds.
+  // Capture greeting frame-by-frame for the first 4 seconds, covering both
+  // the no-name guest path and the signed-in-but-authProfile-still-loading
+  // intermediate state (Sprint #14 M3 — same render path; the K3 fix's
+  // `homeDisplayName || null` makes both cases fall through safely).
   const seen = new Set();
   for (let i = 0; i < 20; i++) {
     const text = await page.evaluate(() => document.body.innerText);
@@ -44,10 +47,11 @@ test('K3 greeting — no "Guest" placeholder visible on fresh load', async ({ pa
     await page.waitForTimeout(200);
   }
   const combined = Array.from(seen).join('\n----\n');
-  // Either we never reach the home screen (Login takes over) OR the home
-  // greeting reads "Good morning" / "Good afternoon" / "Good evening" with
-  // no trailing "Guest".
-  expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*Guest/);
+  // None of these placeholder/leak strings should ever render in the greeting.
+  expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*Guest\b/);
+  expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*undefined\b/);
+  expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*null\b/);
+  expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*\[object/);
 });
 
 test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page, context }) => {
