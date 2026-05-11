@@ -422,7 +422,7 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
           {/* Sprint #16 Stage 5: quiet stats footer. Single muted line —
               supporting context, not centerpieces. Replaces the 4-stat row. */}
           <div className="stats-footer">
-            <span className="sf-pair"><strong>{dailyStats.perfectDays}</strong> perfect day{dailyStats.perfectDays === 1 ? "" : "s"}</span>
+            <span className="sf-pair"><strong>{dailyStats.perfectDays}</strong> clean sheet{dailyStats.perfectDays === 1 ? "" : "s"}</span>
             <span className="sf-sep">·</span>
             <span className="sf-pair">solve rate <strong>{dailyStats.winRate == null ? "—" : `${dailyStats.winRate}%`}</strong></span>
           </div>
@@ -442,7 +442,7 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       )}
       <div style={{background:"var(--s1)",borderRadius:14,padding:"16px 18px",marginTop:12,marginBottom:16}}>
         <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>
-          {isDone ? "While you wait for tomorrow…" : "Other modes to try"}
+          {isDone ? "Between fixtures…" : "Friendlies"}
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[
