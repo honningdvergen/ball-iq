@@ -10348,7 +10348,14 @@ function AppInner() {
               const homeLocalName = (profile?.name || "").trim();
               const homeHasUsername = !!authProfile?.username && authProfile.username !== "Player";
               const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || homeLocalName.toLowerCase() === "player");
-              const greeting = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning," : h < 18 ? "Good afternoon," : "Good evening,"; })();
+              // Brand-new guest installs (no signed-in user, no local name)
+              // used to flash "Good morning, Guest" before auth resolved. Drop
+              // the placeholder and the trailing comma when no real name is
+              // available — leaves "Good morning" alone until the user sets
+              // a name (CTA below offers the affordance).
+              const homeDisplayName = authProfile?.username || profile?.name || null;
+              const homeGreetingBase = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; })();
+              const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
               const ws = readWordleTodayStatus();
               const footleDone = ws.kind === "won" || ws.kind === "lost";
               // Sprint #12: when both daily rituals are complete, omit the
@@ -10364,11 +10371,11 @@ function AppInner() {
                     <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
                     {homeAuthLoading ? (
                       <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
-                    ) : (
+                    ) : homeDisplayName ? (
                       <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
-                        {authProfile?.username || profile?.name || "Guest"}
+                        {homeDisplayName}
                       </div>
-                    )}
+                    ) : null}
                     {loginStreak > 0 && (
                       <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} style={{marginLeft:"auto"}} aria-label={`${loginStreak}-day streak`}>
                         🔥 {loginStreak}
