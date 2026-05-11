@@ -355,6 +355,73 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
     return { unbeaten, bestUnbeaten, footleRun, t7Run };
   }, [today, dailyHistory, footleHistory]);
 
+  // Sprint #16 Stage 4: per-matchday rows for the history list. Walks
+  // backward from today to either 30 days or first-played, whichever
+  // comes sooner. Each row holds the parsed Footle + T7 results plus
+  // a derived W/D/L badge.
+  const matchdays = useMemo(() => {
+    const t7Set = new Set(Object.keys(dailyHistory || {}));
+    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    // First played day across both stores — anchors matchday numbering.
+    let firstTime = todayMid;
+    for (const ymd of t7Set) {
+      const [y, m, d] = ymd.split("-").map(Number);
+      const t = new Date(y, m - 1, d).getTime();
+      if (t < firstTime) firstTime = t;
+    }
+    for (const [ymd, status] of footleHistory) {
+      if (status === "in-progress") continue;
+      const [y, m, d] = ymd.split("-").map(Number);
+      const t = new Date(y, m - 1, d).getTime();
+      if (t < firstTime) firstTime = t;
+    }
+    const totalMatchdays = Math.floor((todayMid - firstTime) / 86400000) + 1;
+    const showCount = Math.min(30, totalMatchdays);
+    const rows = [];
+    for (let i = 0; i < showCount; i++) {
+      const t = todayMid - i * 86400000;
+      const d = new Date(t);
+      const ymd = dateToYMD(d);
+      const md = Math.floor((t - firstTime) / 86400000) + 1;
+      const t7Score = dailyHistory?.[ymd];
+      const t7Done = typeof t7Score === "number";
+      const fStatus = footleHistory.get(ymd);
+      const fWon = fStatus === "won";
+      const fAttempt = fWon || fStatus === "lost";
+      // Footle guesses count for the "{N}/6 solved" line — read straight
+      // from localStorage so we don't hold the entire guesses payload in
+      // memory just for the display number.
+      let fGuesses = 0;
+      if (fAttempt) {
+        try {
+          const raw = localStorage.getItem(`biq_wordle_${ymd}`);
+          if (raw) {
+            const p = JSON.parse(raw);
+            if (Array.isArray(p?.guesses)) fGuesses = p.guesses.length;
+          }
+        } catch {}
+      }
+      const isToday = i === 0;
+      let wdl;
+      if (isToday && !t7Done && !fAttempt) wdl = null; // pending
+      else if (t7Done && fAttempt) wdl = "W";
+      else if (t7Done || fAttempt) wdl = "D";
+      else wdl = "L";
+      // Date label — Today / Yesterday / weekday + date
+      let dateLabel;
+      if (isToday) dateLabel = "Today";
+      else if (i === 1) dateLabel = "Yesterday";
+      else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
+      const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      rows.push({
+        ymd, md, dateLabel, dateSub, isToday, wdl,
+        t7Done, t7Score: t7Done ? t7Score : null,
+        fAttempt, fWon, fGuesses,
+      });
+    }
+    return rows;
+  }, [today, dailyHistory, footleHistory]);
+
   const form14 = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
@@ -446,6 +513,48 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
           <div className="up-next-ko-val mono">{formatKO(msToNextUTCMidnight(now))}</div>
         </div>
       </div>
+
+      {/* Sprint #16 Stage 4: matchday list. Per-row Footle + T7 results
+          with W/D/L badge. ~6-8 most recent visible, scroll for older. */}
+      {matchdays.length > 0 && (
+        <>
+          <div className="md-eyebrow">Recent matchdays</div>
+          <div className="md-list">
+            {matchdays.map(m => (
+              <div key={m.ymd} className={`md-row${m.isToday ? " is-today" : ""}`}>
+                <div className="md-meta">
+                  <div className="md-num mono">MD {m.md}</div>
+                  <div className="md-day">{m.dateLabel}</div>
+                  <div className="md-date">{m.dateSub}</div>
+                </div>
+                <div className="md-modes">
+                  <div className={`md-mode f${m.fAttempt ? "" : " miss"}`}>
+                    <span className="md-mode-dot" />
+                    <span className="md-mode-name">Footle</span>
+                    <span className="md-mode-res mono">
+                      {m.fAttempt
+                        ? <>{m.fGuesses}/6 {m.fWon ? "✓" : "✗"}</>
+                        : (m.isToday ? "—" : "missed")}
+                    </span>
+                  </div>
+                  <div className={`md-mode t${m.t7Done ? "" : " miss"}`}>
+                    <span className="md-mode-dot" />
+                    <span className="md-mode-name">Today's 7</span>
+                    <span className="md-mode-res mono">
+                      {m.t7Done
+                        ? <>{m.t7Score}/7 ✓</>
+                        : (m.isToday ? "—" : "missed")}
+                    </span>
+                  </div>
+                </div>
+                <div className={`md-wdl ${m.wdl || "pending"}`} aria-label={m.wdl || "pending"}>
+                  {m.wdl || "·"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
       {/* 4-stat row (Sprint #15 Stage 4) */}
       <div className="daily-stats-row" role="group" aria-label="Daily stats">
         <div className="stat-tile">

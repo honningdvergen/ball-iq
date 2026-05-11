@@ -1460,6 +1460,34 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
 .daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
+/* ── MATCHDAY LIST (Sprint #16 Stage 4) ── */
+.md-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.18em;color:var(--t3);text-transform:uppercase;margin:4px 2px 8px;}
+.md-list{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.md-row{display:grid;grid-template-columns:64px 1fr 30px;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid var(--border);}
+.md-row:last-child{border-bottom:0;}
+.md-row.is-today{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,transparent 100%);}
+.md-meta{display:flex;flex-direction:column;gap:1px;min-width:0;}
+.md-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:10px;font-weight:800;color:var(--t3);letter-spacing:0.04em;}
+.md-row.is-today .md-num{color:var(--accent);}
+.md-day{font-size:12px;font-weight:700;color:var(--t1);line-height:1.1;}
+.md-row.is-today .md-day{color:var(--accent);}
+.md-date{font-size:9.5px;color:var(--t3);font-weight:600;}
+.md-modes{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.md-mode{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:6px;font-size:11px;}
+.md-mode-dot{width:7px;height:7px;border-radius:50%;}
+.md-mode.f .md-mode-dot{background:#7C3AED;}
+.md-mode.t .md-mode-dot{background:#FF6A00;}
+.md-mode.miss .md-mode-dot{background:var(--s3);}
+.md-mode-name{font-size:10.5px;font-weight:700;color:var(--t2);}
+.md-mode.miss .md-mode-name{color:var(--t3);}
+.md-mode-res{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:800;color:var(--t1);}
+.md-mode.miss .md-mode-res{color:var(--t3);font-weight:600;}
+.md-wdl{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;justify-self:end;}
+.md-wdl.W{background:var(--accent);color:#0a1a00;}
+.md-wdl.D{background:var(--gold);color:#2a1d00;}
+.md-wdl.L{background:var(--red);color:#fff;}
+.md-wdl.pending{background:rgba(255,255,255,0.04);color:var(--t3);font-size:14px;font-weight:700;}
+
 /* ── UP NEXT CARD (Sprint #16 Stage 3) ── */
 .up-next{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,197,94,0.10) 0%,rgba(34,197,94,0.02) 100%);border:1px solid rgba(34,197,94,0.24);border-radius:12px;margin:0 0 12px;}
 .up-next-left{display:flex;flex-direction:column;gap:3px;min-width:0;}
