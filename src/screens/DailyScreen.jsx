@@ -191,6 +191,49 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   }, [todayYMD, dailyScore]);
   const isDone = dailyDone || localDone;
   const shownScore = dailyScore != null ? dailyScore : localScore;
+
+  // 4-stat row data (Sprint #15 Stage 4). Walks dailyHistory + biq_wordle_*
+  // keys in localStorage to derive THIS MONTH / PERFECT DAYS / LIFETIME /
+  // WIN RATE. No new schema; reads what each surface already writes.
+  // Memoized on todayYMD + dailyHistory + localDone so it re-runs at most
+  // once per day rollover or completion event.
+  const dailyStats = useMemo(() => {
+    const currentYM = todayYMD.slice(0, 7); // "YYYY-MM"
+    // Footle status per ymd from localStorage
+    const footle = new Map(); // ymd → 'won' | 'lost' | 'in-progress'
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith("biq_wordle_")) continue;
+        const ymd = k.slice("biq_wordle_".length);
+        try {
+          const parsed = JSON.parse(localStorage.getItem(k));
+          if (parsed?.status === "won") footle.set(ymd, "won");
+          else if (parsed?.status === "lost") footle.set(ymd, "lost");
+          else if (Array.isArray(parsed?.guesses) && parsed.guesses.length > 0) footle.set(ymd, "in-progress");
+        } catch {}
+      }
+    } catch {}
+    const dailyDoneSet = new Set(Object.keys(dailyHistory || {}));
+
+    let monthFootleWins = 0, monthDaily = 0, perfectDays = 0;
+    let lifetimeFootleWins = 0, footleAttempts = 0;
+    for (const [ymd, status] of footle) {
+      footleAttempts++;
+      if (status === "won") {
+        lifetimeFootleWins++;
+        if (ymd.startsWith(currentYM)) monthFootleWins++;
+        if (dailyDoneSet.has(ymd)) perfectDays++;
+      }
+    }
+    for (const ymd of dailyDoneSet) {
+      if (ymd.startsWith(currentYM)) monthDaily++;
+    }
+    const thisMonth = monthFootleWins + monthDaily;
+    const lifetime = lifetimeFootleWins + dailyDoneSet.size;
+    const winRate = footleAttempts === 0 ? null : Math.round((lifetimeFootleWins / footleAttempts) * 100);
+    return { thisMonth, perfectDays, lifetime, winRate };
+  }, [todayYMD, dailyHistory, localDone]);
   return (
     <div className="tab-content">
       {/* Compact "Today" action row — Daily-tab specific. Replaces the
@@ -235,6 +278,25 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
         loginStreak={loginStreak}
         bestStreak={bestLoginStreak}
       />
+      {/* 4-stat row (Sprint #15 Stage 4) */}
+      <div className="daily-stats-row" role="group" aria-label="Daily stats">
+        <div className="stat-tile">
+          <div className="st-val">{dailyStats.thisMonth}</div>
+          <div className="ds-eyebrow st-key">This Month</div>
+        </div>
+        <div className="stat-tile">
+          <div className="st-val" style={{color:"var(--gold)"}}>{dailyStats.perfectDays}</div>
+          <div className="ds-eyebrow st-key">Perfect Days</div>
+        </div>
+        <div className="stat-tile">
+          <div className="st-val">{dailyStats.lifetime}</div>
+          <div className="ds-eyebrow st-key">Lifetime</div>
+        </div>
+        <div className="stat-tile">
+          <div className="st-val" style={{color:"var(--accent)"}}>{dailyStats.winRate == null ? "—" : `${dailyStats.winRate}%`}</div>
+          <div className="ds-eyebrow st-key">Win Rate</div>
+        </div>
+      </div>
       {(() => {
         // Weekly summary chip — "X of N days this week" where N counts
         // calendar days from local Monday through today (inclusive). Anchors

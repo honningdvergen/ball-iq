@@ -50,6 +50,13 @@ test('Daily tab — Today actions + Streak hero + Calendar + Other modes all ren
   await expect(page.locator('.today-actions .ta-title').filter({ hasText: 'Footle' })).toBeVisible();
   // Streak hero
   await expect(page.locator('.streak-hero-label')).toHaveText(/Day Streak/i);
+  // 4-stat row (Sprint #15 Stage 4)
+  await expect(page.locator('.daily-stats-row')).toBeVisible();
+  await expect(page.locator('.daily-stats-row .stat-tile')).toHaveCount(4);
+  await expect(page.getByText('This Month', { exact: true })).toBeVisible();
+  await expect(page.getByText('Perfect Days', { exact: true })).toBeVisible();
+  await expect(page.getByText('Lifetime', { exact: true })).toBeVisible();
+  await expect(page.getByText('Win Rate', { exact: true })).toBeVisible();
   // Week chip exists
   await expect(page.locator('.week-chip')).toBeVisible();
   // Calendar headers visible

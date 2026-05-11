@@ -1670,6 +1670,13 @@ button.friends-lb-row:hover{background:var(--s3);}
 .st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
 /* .st-key — layout-only; visual tokens from .ds-eyebrow. */
 .st-key{margin-top:4px;}
+/* ── DAILY 4-STAT ROW (Sprint #15) ── */
+/* Narrower padding + smaller number scale than .stat-grid so 4 tiles
+   fit on a 360px viewport without crowding. Reuses .stat-tile and
+   .ds-eyebrow tokens for visual consistency. */
+.daily-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:0 0 14px;}
+.daily-stats-row .stat-tile{padding:10px 6px;}
+.daily-stats-row .st-val{font-size:20px;}
 
 /* ── XP BAR ── */
 .xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
