@@ -61,8 +61,7 @@ test('Daily tab — Today actions + Streak hero + Calendar + Other modes all ren
   await expect(page.getByText('Perfect Days', { exact: true })).toBeVisible();
   await expect(page.getByText('Lifetime', { exact: true })).toBeVisible();
   await expect(page.getByText('Win Rate', { exact: true })).toBeVisible();
-  // Week chip exists
-  await expect(page.locator('.week-chip')).toBeVisible();
+  // Week chip removed in Sprint #15 follow-up (redundant with THIS MONTH stat).
   // Calendar headers visible
   await expect(page.locator('.cal-month')).toBeVisible();
   // Other modes / While you wait

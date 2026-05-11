@@ -1434,15 +1434,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
 /* ── DIAGONAL-SPLIT CELLS (Sprint #15 Stage 6) ── */
-/* Per Sprint #14 spec: Footle = top-left orange triangle; Today's 7 =
-   bottom-right purple triangle; both = full diagonal split. Colors are
-   intentionally specced (not inverted to match the card design) so the
-   small cells remain visually distinct from the cards above. The cal-done
-   green styling is overridden when any diagonal class applies. */
+/* Footle = top-left purple (#7C3AED, mirrors FootleHero card); Today's 7
+   = bottom-right orange (#FF6A00, mirrors T7 secondary card); both =
+   full 135deg diagonal split. Calendar cells share their identity with
+   the cards above so users can visually map "purple slice = Footle" at
+   a glance. */
 .cal-cell.cal-split{background:var(--s2);}
-.cal-cell.cal-footle{background:linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,var(--s2) 50.5%,var(--s2) 100%);border-color:transparent;color:#fff;}
-.cal-cell.cal-t7{background:linear-gradient(135deg,var(--s2) 0%,var(--s2) 49.5%,#7C3AED 50.5%,#7C3AED 100%);border-color:transparent;color:#fff;}
-.cal-cell.cal-both{background:linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,#7C3AED 50.5%,#7C3AED 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-footle{background:linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,var(--s2) 50.5%,var(--s2) 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-t7{background:linear-gradient(135deg,var(--s2) 0%,var(--s2) 49.5%,#FF6A00 50.5%,#FF6A00 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-both{background:linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,#FF6A00 50.5%,#FF6A00 100%);border-color:transparent;color:#fff;}
 .cal-cell.cal-footle .cal-num,
 .cal-cell.cal-t7 .cal-num,
 .cal-cell.cal-both .cal-num{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.35);}
@@ -1464,12 +1464,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .streak-hero-sub.is-pb{color:var(--gold);font-weight:800;letter-spacing:0.02em;}
 .streak-hero-best{color:var(--t2);}
 .light .streak-hero{border-color:rgba(52,168,83,0.30);}
-/* ── WEEKLY SUMMARY CHIP (X of N days this week) ── */
-.week-chip{padding:10px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;font-size:12px;color:var(--t2);font-weight:600;margin:0 0 14px;text-align:center;letter-spacing:0.01em;}
-.week-chip strong{color:var(--t1);font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;}
-.week-chip.is-perfect{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);color:var(--accent);}
-.week-chip.is-perfect strong{color:var(--accent);}
-.light .week-chip.is-perfect{border-color:rgba(52,168,83,0.40);}
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}

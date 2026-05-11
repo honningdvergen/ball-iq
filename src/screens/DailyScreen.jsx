@@ -129,9 +129,9 @@ function MonthlyCalendar({ history, footleHistory, today, viewDate, setViewDate,
         })}
       </div>
       <div className="cal-legend">
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#FF6A00"}} />Footle</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#7C3AED"}} />Today's 7</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,#7C3AED 50.5%,#7C3AED 100%)"}} />Both</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#7C3AED"}} />Footle</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#FF6A00"}} />Today's 7</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,#FF6A00 50.5%,#FF6A00 100%)"}} />Both</span>
         <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent-dim)", border:"1.5px solid var(--accent)"}} />Today</span>
       </div>
     </div>
@@ -309,31 +309,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
             </div>
             {footleCard}
             {sevenCard}
-          </div>
-        );
-      })()}
-      {(() => {
-        // Weekly summary chip — "X of N days this week" where N counts
-        // calendar days from local Monday through today (inclusive). Anchors
-        // to the locked decision (league spec C2): week-start = local
-        // Monday. Renders as a compact chip directly under the hero —
-        // bridges streak-emotion → calendar-data narratively.
-        const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const dow = todayDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-        const daysSinceMon = (dow + 6) % 7;
-        const possibleDays = daysSinceMon + 1;
-        let played = 0;
-        for (let i = 0; i <= daysSinceMon; i++) {
-          const d = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - daysSinceMon + i);
-          const ymd = dateToYMD(d);
-          if (typeof dailyHistory?.[ymd] === "number") played++;
-        }
-        const isPerfect = played === 7;
-        return (
-          <div className={`week-chip${isPerfect ? " is-perfect" : ""}`} aria-label={`Played ${played} of ${possibleDays} possible days this week`}>
-            {isPerfect
-              ? <><strong>7 / 7</strong> · perfect week</>
-              : <><strong>{played}</strong> of {possibleDays} day{possibleDays === 1 ? "" : "s"} this week</>}
           </div>
         );
       })()}
