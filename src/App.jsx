@@ -5090,11 +5090,30 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   const target = TARGETS[mode] || 10;
   const CHUNK_SIZE = mode === "survival" ? 1 : 3;
 
-  const [questions] = useState(() => {
-    const raw = getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
-    return (raw || []).filter(q => q && q.type !== "tf" && q.type !== "typed");
-  });
-  const totalQs = questions.length;
+  // getQs was made async by commit fc6e7aa (V1.1 lazy-load). useState
+  // initializers can't await — so the previous `useState(() => getQs(...))`
+  // stored a Promise and `(Promise || []).filter` crashed with a TypeError.
+  // Load via useEffect; null = still loading, [] = loaded (possibly empty).
+  const [questions, setQuestions] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const raw = await getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
+        if (cancelled) return;
+        const filtered = (Array.isArray(raw) ? raw : []).filter(q => q && q.type !== "tf" && q.type !== "typed");
+        setQuestions(filtered);
+      } catch {
+        if (!cancelled) setQuestions([]);
+      }
+    })();
+    return () => { cancelled = true; };
+    // config is captured at mount (LocalGameScreen unmounts on exit); no
+    // need to re-fetch on prop change since LocalSetup creates a fresh
+    // instance for each game.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const totalQs = questions?.length ?? 0;
 
   const [currentQIdx, setCurrentQIdx] = useState(0);  // index of question currently on screen
   const [turnIdx, setTurnIdx] = useState(0);           // survival: which surviving player is answering
@@ -5115,7 +5134,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   const currentPlayer = mode === "survival"
     ? survivors[turnIdx]
     : players[chunkIdx % players.length];
-  const currentQ = questions[currentQIdx];
+  const currentQ = questions ? questions[currentQIdx] : null;
 
   // End-of-game:
   // - Classic/Sprint: ran off the end of the question list → rank by score.
@@ -5125,6 +5144,9 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   //     questions-out : pool exhausted with 2+ survivors still alive (rank by score among them)
   useEffect(() => {
     if (phase === "done") return;
+    // Skip while questions are still async-loading — totalQs would otherwise
+    // read 0 and immediately fire onComplete with "questions-out".
+    if (questions === null) return;
     if (mode !== "survival") {
       if (currentQIdx >= totalQs) {
         setPhase("done");
@@ -5153,11 +5175,57 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     try { recordSeenQuestions(questions); } catch {}
   }, [phase, questions]);
 
+  // reveal (2s) → summary (classic/sprint) OR advance (survival).
+  // Hoisted above the early-return so the hook count is stable across the
+  // initial async-loading render (where !currentQ short-circuits below).
+  useEffect(() => {
+    if (phase !== "reveal") return;
+    const t = setTimeout(() => {
+      if (mode === "survival") {
+        const allOut = [...eliminatedIds, ...newEliminatedIds];
+        setEliminatedIds(allOut);
+        setNewEliminatedIds([]);
+        const nextSurvivors = players.filter(p => !allOut.includes(p.id));
+        if (nextSurvivors.length <= 1) return;
+        const nextQ = currentQIdx + 1;
+        if (nextQ >= totalQs) {
+          setCurrentQIdx(nextQ);
+          return;
+        }
+        setCurrentQIdx(nextQ);
+        setTurnIdx(0);
+        setChunkPicks([]);
+        setPhase("handoff");
+      } else {
+        setPhase("summary");
+      }
+    }, 2000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  // summary (1.2s) → next chunk handoff. Same hoist as reveal effect above.
+  useEffect(() => {
+    if (phase !== "summary") return;
+    const t = setTimeout(() => {
+      const nextStart = chunkEndQ + 1;
+      if (nextStart >= totalQs) {
+        setCurrentQIdx(nextStart);
+        return;
+      }
+      setCurrentQIdx(nextStart);
+      setChunkPicks([]);
+      setPhase("handoff");
+    }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
   if (phase === "done" || !currentQ) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14}}>
         <div style={{fontSize:36}}>⚽</div>
-        <div style={{fontSize:14,color:"var(--t2)"}}>Finishing up…</div>
+        <div style={{fontSize:14,color:"var(--t2)"}}>{questions === null ? "Loading questions…" : "Finishing up…"}</div>
       </div>
     );
   }
@@ -5230,54 +5298,6 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     playSound("streak");
     setPhase("reveal");
   };
-
-  // reveal (2s) → summary (classic/sprint) OR advance (survival)
-  useEffect(() => {
-    if (phase !== "reveal") return;
-    const t = setTimeout(() => {
-      if (mode === "survival") {
-        const allOut = [...eliminatedIds, ...newEliminatedIds];
-        setEliminatedIds(allOut);
-        setNewEliminatedIds([]);
-        const nextSurvivors = players.filter(p => !allOut.includes(p.id));
-        // Total wipe or sole survivor → end-game effect fires (sees survivors.length <= 1).
-        if (nextSurvivors.length <= 1) return;
-        const nextQ = currentQIdx + 1;
-        // Questions-out with 2+ alive → bump currentQIdx past the pool so the end-game
-        // effect catches it and fires with endReason = 'questions-out'.
-        if (nextQ >= totalQs) {
-          setCurrentQIdx(nextQ);
-          return;
-        }
-        setCurrentQIdx(nextQ);
-        setTurnIdx(0);
-        setChunkPicks([]);
-        setPhase("handoff");
-      } else {
-        setPhase("summary");
-      }
-    }, 2000);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-
-  // summary (1.2s) → next chunk handoff
-  useEffect(() => {
-    if (phase !== "summary") return;
-    const t = setTimeout(() => {
-      const nextStart = chunkEndQ + 1;
-      if (nextStart >= totalQs) {
-        // Game ends via effect above
-        setCurrentQIdx(nextStart);
-        return;
-      }
-      setCurrentQIdx(nextStart);
-      setChunkPicks([]);
-      setPhase("handoff");
-    }, 1200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
 
   const prog = `Q ${String(currentQIdx + 1).padStart(2, "0")} / ${String(Math.min(target, totalQs)).padStart(2, "0")}`;
 
