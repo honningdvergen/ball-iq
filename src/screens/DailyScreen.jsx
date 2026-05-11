@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { dateToYMD } from "../lib/date.js";
-import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 
 // Sprint #16 helper — milliseconds until next UTC midnight. Used by the
 // greeting strip's "KO in Xh Ym" chip and the Up next card. UTC midnight
@@ -25,141 +24,6 @@ function timeOfDayGreeting(d = new Date()) {
   if (h < 12) return "Good morning";
   if (h < 18) return "Good afternoon";
   return "Good evening";
-}
-
-function MonthlyCalendar({ history, footleHistory, today, viewDate, setViewDate, onPlayDate, onViewScore }) {
-  const year = viewDate.getFullYear();
-  const month = viewDate.getMonth();
-  const firstOfMonth = new Date(year, month, 1);
-  const startOffset = (firstOfMonth.getDay() + 6) % 7; // Monday-first
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const cells = [];
-  for (let i = 0; i < startOffset; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
-  while (cells.length % 7 !== 0) cells.push(null);
-
-  const monthLabel = viewDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
-  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-
-  // First-play detection — earliest dailyHistory OR footleHistory entry.
-  // Days before this are styled as "pre-join" instead of red "missed".
-  const firstDailyTime = (() => {
-    const keys = [
-      ...(history ? Object.keys(history) : []),
-      ...(footleHistory ? Array.from(footleHistory.keys()) : []),
-    ];
-    if (keys.length === 0) return null;
-    let earliest = Infinity;
-    for (const k of keys) {
-      const [Y, M, D] = k.split("-").map(Number);
-      if (!Y || !M || !D) continue;
-      const t = new Date(Y, M - 1, D).getTime();
-      if (t < earliest) earliest = t;
-    }
-    return earliest === Infinity ? null : earliest;
-  })();
-
-  // Disable forward nav when the viewed month is the current month or later
-  const viewedMonthIdx = year * 12 + month;
-  const todayMonthIdx = today.getFullYear() * 12 + today.getMonth();
-  const atCurrentMonth = viewedMonthIdx >= todayMonthIdx;
-
-  // Header sub-line (Sprint #15 Stage 6): "{N} days played · {M} perfect (both)"
-  // counted within the currently-viewed month.
-  const viewedYM = `${year}-${String(month + 1).padStart(2, "0")}`;
-  let monthPlayed = 0, monthPerfect = 0;
-  {
-    const seen = new Set();
-    for (const ymd of Object.keys(history || {})) {
-      if (ymd.startsWith(viewedYM)) seen.add(ymd);
-    }
-    for (const [ymd, status] of (footleHistory || new Map())) {
-      if (status === "won" && ymd.startsWith(viewedYM)) seen.add(ymd);
-    }
-    monthPlayed = seen.size;
-    for (const ymd of seen) {
-      const t7 = history && typeof history[ymd] === "number";
-      const f = footleHistory && footleHistory.get(ymd) === "won";
-      if (t7 && f) monthPerfect++;
-    }
-  }
-
-  return (
-    <div className="streak-section">
-      <div className="cal-header">
-        <button className="cal-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label="Previous month">←</button>
-        <div style={{flex:1, display:"flex", flexDirection:"column", alignItems:"center"}}>
-          <div className="cal-month">{monthLabel}</div>
-          <div className="cal-month-sub">
-            <strong>{monthPlayed}</strong> day{monthPlayed === 1 ? "" : "s"} played · <strong>{monthPerfect}</strong> perfect <span style={{color:"var(--t3)",fontWeight:600}}>(both)</span>
-          </div>
-        </div>
-        <button className="cal-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} disabled={atCurrentMonth} aria-label="Next month">→</button>
-      </div>
-      <div className="cal-dow">
-        {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => (
-          <div key={d} className="cal-dow-cell">{d}</div>
-        ))}
-      </div>
-      <div className="cal-grid">
-        {cells.map((d, i) => {
-          if (!d) return <div key={`e-${i}`} className="cal-cell cal-empty" />;
-          const ymd = dateToYMD(d);
-          const score = history?.[ymd];
-          const t7Done = typeof score === "number";
-          const footleDone = footleHistory?.get(ymd) === "won";
-          const anyDone = t7Done || footleDone;
-          const dTime = d.getTime();
-          const isToday = dTime === todayMidnight;
-          const isFuture = dTime > todayMidnight;
-          const isPreJoin = !anyDone && firstDailyTime !== null && dTime < firstDailyTime && !isToday;
-          const isPastMissed = dTime < todayMidnight && !anyDone && !isPreJoin;
-
-          let cls = "cal-cell";
-          // Diagonal-split (Sprint #15 Stage 6): Footle = top-left orange,
-          // T7 = bottom-right purple. Both = full split. Replaces the old
-          // solid-green cal-done styling.
-          if (t7Done && footleDone) cls += " cal-both";
-          else if (footleDone) cls += " cal-footle";
-          else if (t7Done) cls += " cal-t7";
-          if (isToday) cls += " cal-today";
-          if (isFuture) cls += " cal-future";
-          else if (isPreJoin) cls += " cal-pre-join";
-          else if (isPastMissed) cls += " cal-missed";
-
-          const handleClick = () => {
-            if (isFuture || isPreJoin) return;
-            if (t7Done) onViewScore(d, score);
-            else if (!footleDone) onPlayDate(d); // unplayed (or Footle-only): route to T7 play-on-date
-            // Footle-only days: no T7 score to view; tap is a no-op (parent
-            // could route to Footle review in a future iteration).
-          };
-
-          const aria = `${ymd}${
-            t7Done && footleDone ? " — Footle solved and Today's 7 completed (perfect day)" :
-            footleDone ? " — Footle solved" :
-            t7Done ? ` — Today's 7 completed ${score}/7` :
-            isToday ? " today" :
-            isPreJoin ? " before you joined" :
-            isPastMissed ? " missed" : ""
-          }`;
-
-          return (
-            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture || isPreJoin || (footleDone && !t7Done)} aria-label={aria}>
-              <span className="cal-num">{d.getDate()}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="cal-legend">
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#7C3AED"}} />Footle</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#FF6A00"}} />Today's 7</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,#FF6A00 50.5%,#FF6A00 100%)"}} />Both</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent-dim)", border:"1.5px solid var(--accent)"}} />Today</span>
-      </div>
-    </div>
-  );
 }
 
 // FormHero — Sprint #16 Daily v3 centerpiece. Replaces StreakHero v2.
@@ -220,7 +84,7 @@ function FormHero({ unbeaten, bestUnbeaten, footleRun, t7Run, form14 }) {
   );
 }
 
-function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle, footleCard, sevenCard }) {
+function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, xp, onUseShield, shieldActive, dailyHistory }) {
   const { user, profile: authProfile, isGuest } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -243,7 +107,6 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
     return () => clearInterval(id);
   }, []);
 
-  const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   // Audit Phase 5 (D1): localStorage read promoted from render body to
   // useMemo([todayYMD, dailyScore]). Was reading on every render (~3-7×
   // per session × multiple renders per session = wasted reads). Memo
@@ -565,46 +428,6 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
           </div>
         </>
       )}
-      {/* 4-stat row (Sprint #15 Stage 4) */}
-      <div className="daily-stats-row" role="group" aria-label="Daily stats">
-        <div className="stat-tile">
-          <div className="st-val">{dailyStats.thisMonth}</div>
-          <div className="ds-eyebrow st-key">This Month</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--gold)"}}>{dailyStats.perfectDays}</div>
-          <div className="ds-eyebrow st-key">Perfect Days</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val">{dailyStats.lifetime}</div>
-          <div className="ds-eyebrow st-key">Lifetime</div>
-        </div>
-        <div className="stat-tile">
-          <div className="st-val" style={{color:"var(--accent)"}}>{dailyStats.winRate == null ? "—" : `${dailyStats.winRate}%`}</div>
-          <div className="ds-eyebrow st-key">Win Rate</div>
-        </div>
-      </div>
-      {/* Today container (Sprint #15 Stage 5) — reuses Home's FootleHero +
-          Today's 7 cards passed in as props so the two surfaces read
-          visually identical. X/2 status mirrors the home zone's indicator. */}
-      {(footleCard || sevenCard) && (() => {
-        const ws = readWordleTodayStatus();
-        const footleDone = ws.kind === "won" || ws.kind === "lost";
-        const doneCount = (footleDone ? 1 : 0) + (isDone ? 1 : 0);
-        const allDone = doneCount === 2;
-        return (
-          <div className="daily-zone" role="group" aria-label="Today">
-            <div className="daily-zone-head">
-              <span className="daily-zone-eyebrow">Today</span>
-              <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
-                {allDone ? "2/2 done" : `${doneCount}/2 today`}
-              </span>
-            </div>
-            {footleCard}
-            {sevenCard}
-          </div>
-        );
-      })()}
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -617,15 +440,6 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
           <button onClick={onUseShield} style={{background:"transparent",border:"1px solid var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"var(--accent)",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,fontFamily:"inherit"}}>Use 🛡️</button>
         </div>
       )}
-      <MonthlyCalendar
-        history={dailyHistory}
-        footleHistory={footleHistory}
-        today={today}
-        viewDate={viewDate}
-        setViewDate={setViewDate}
-        onPlayDate={onPlayDate}
-        onViewScore={onViewScore}
-      />
       <div style={{background:"var(--s1)",borderRadius:14,padding:"16px 18px",marginTop:12,marginBottom:16}}>
         <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>
           {isDone ? "While you wait for tomorrow…" : "Other modes to try"}

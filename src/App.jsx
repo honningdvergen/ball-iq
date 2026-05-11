@@ -1408,48 +1408,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .streak-dot.today{background:var(--accent-dim);border:1.5px solid var(--accent-b);color:var(--accent);}
 .streak-dot.missed{background:var(--s2);color:var(--t3);}
 
-/* ── MONTHLY CALENDAR ── */
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
-.cal-nav{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);cursor:pointer;font-size:16px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;}
-.cal-nav:hover:not(:disabled){background:var(--s3);}
-.cal-nav:disabled{opacity:0.35;cursor:not-allowed;}
-.cal-month{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;text-align:center;flex:1;}
-.cal-month-sub{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.1px;margin-top:2px;font-family:'Inter',sans-serif;}
-.cal-month-sub strong{color:var(--accent);font-weight:700;}
-.cal-month-sub .cal-month-delta{margin-left:6px;font-weight:600;}
-.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
-.cal-dow-cell{font-size:9px;font-weight:700;color:var(--t3);text-align:center;letter-spacing:0.8px;font-family:'Inter',sans-serif;padding:4px 0;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cal-cell{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--t1);font-size:13px;font-weight:600;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;padding:0;transition:background 0.15s,border-color 0.15s,transform 0.1s;gap:1px;min-height:36px;}
-.cal-cell:hover:not(:disabled):not(.cal-future):not(.cal-empty){background:var(--s3);}
-.cal-cell:active:not(:disabled):not(.cal-future):not(.cal-empty){transform:scale(0.94);}
-.cal-cell.cal-empty{background:transparent;border-color:transparent;pointer-events:none;visibility:hidden;}
-.cal-cell.cal-done{background:var(--accent);border-color:var(--accent);color:#fff;}
-.cal-cell.cal-done .cal-num{color:#fff;}
-.cal-cell.cal-today{border-color:var(--accent);border-width:2px;font-weight:800;background:var(--accent-dim);color:var(--accent);}
-.cal-cell.cal-today.cal-done{background:var(--accent);color:#fff;}
-.cal-cell.cal-future{opacity:0.35;cursor:not-allowed;color:var(--t3);background:transparent;border-style:dashed;}
-.cal-cell.cal-missed{background:rgba(239,68,68,0.03);color:var(--t3);border-color:rgba(239,68,68,0.10);}
-.cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
-.cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
-.cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
-/* ── DIAGONAL-SPLIT CELLS (Sprint #15 Stage 6) ── */
-/* Footle = top-left purple (#7C3AED, mirrors FootleHero card); Today's 7
-   = bottom-right orange (#FF6A00, mirrors T7 secondary card); both =
-   full 135deg diagonal split. Calendar cells share their identity with
-   the cards above so users can visually map "purple slice = Footle" at
-   a glance. */
-.cal-cell.cal-split{background:var(--s2);}
-.cal-cell.cal-footle{background:linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,var(--s2) 50.5%,var(--s2) 100%);border-color:transparent;color:#fff;}
-.cal-cell.cal-t7{background:linear-gradient(135deg,var(--s2) 0%,var(--s2) 49.5%,#FF6A00 50.5%,#FF6A00 100%);border-color:transparent;color:#fff;}
-.cal-cell.cal-both{background:linear-gradient(135deg,#7C3AED 0%,#7C3AED 49.5%,#FF6A00 50.5%,#FF6A00 100%);border-color:transparent;color:#fff;}
-.cal-cell.cal-footle .cal-num,
-.cal-cell.cal-t7 .cal-num,
-.cal-cell.cal-both .cal-num{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.35);}
-/* Today outline still wins over diagonals — green ring framing the gradient. */
-.cal-cell.cal-today.cal-footle,
-.cal-cell.cal-today.cal-t7,
-.cal-cell.cal-today.cal-both{border-color:var(--accent);border-width:2px;}
+/* MonthlyCalendar (.cal-*) + diagonal-split cells removed Sprint #16
+   Stage 6 — Daily v3 dropped the calendar entirely in favour of the
+   matchday list. The .cal-legend rule on .light theme below is also
+   gone; legend lived inside MonthlyCalendar. */
 /* ── DAILY GREETING STRIP (Sprint #16 Stage 2) ── */
 .daily-greet{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px 12px;margin-bottom:2px;border-bottom:1px solid var(--border);}
 .daily-greet-text{display:flex;align-items:baseline;gap:6px;min-width:0;flex:1;}
@@ -1539,9 +1501,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .m7-cell.m7-today.m7-done{box-shadow:inset 0 0 0 2px var(--accent-dim);}
 .m7-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.5px;font-family:'Inter',sans-serif;text-transform:uppercase;}
 
-.cal-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.5px;}
-.cal-legend-item{display:flex;align-items:center;gap:5px;}
-.cal-legend-dot{width:10px;height:10px;border-radius:3px;}
 
 /* ── PROFILE SCREEN ── */
 .profile-card{background:var(--s1);border:none;border-radius:20px;padding:24px 20px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,0.45);}
@@ -1735,13 +1694,8 @@ button.friends-lb-row:hover{background:var(--s3);}
 .st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
 /* .st-key — layout-only; visual tokens from .ds-eyebrow. */
 .st-key{margin-top:4px;}
-/* ── DAILY 4-STAT ROW (Sprint #15) ── */
-/* Narrower padding + smaller number scale than .stat-grid so 4 tiles
-   fit on a 360px viewport without crowding. Reuses .stat-tile and
-   .ds-eyebrow tokens for visual consistency. */
-.daily-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:0 0 14px;}
-.daily-stats-row .stat-tile{padding:10px 6px;}
-.daily-stats-row .st-val{font-size:20px;}
+/* DAILY 4-STAT ROW removed Sprint #16 Stage 6 — replaced by the
+   single-line stats footer beneath the matchday list. */
 
 /* ── XP BAR ── */
 .xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
@@ -10338,42 +10292,11 @@ function AppInner() {
               stats={stats}
               dailyDone={dailyDone}
               dailyScore={dailyScore}
-              loginStreak={loginStreak}
-              bestLoginStreak={bestLoginStreak}
-              onPlay={playDaily}
-              onPlayWordle={() => setScreen("wordle")}
               onSuggest={suggestMode}
               xp={xp}
               shieldActive={shieldActive}
               onUseShield={useShield}
               dailyHistory={dailyHistory}
-              onPlayDate={playDailyForDate}
-              onViewScore={viewDailyScore}
-              onViewPuzzle={viewPuzzleStatus}
-              footleCard={
-                <FootleHero
-                  onPlay={() => setScreen("wordle")}
-                  onReview={(wsArg) => viewPuzzleStatus(wsArg)}
-                />
-              }
-              sevenCard={
-                <button
-                  className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
-                  onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : playDaily()}
-                  aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
-                >
-                  <span className="t7s-icon" aria-hidden="true">📋</span>
-                  <span className="t7s-body">
-                    <span className="t7s-title">Today's 7</span>
-                    <span className="t7s-sub">
-                      {dailyDone
-                        ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                        : <>7 questions · ~3 min</>}
-                    </span>
-                  </span>
-                  <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
-                </button>
-              }
             />
           </div>
         )}
