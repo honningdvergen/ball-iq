@@ -45,11 +45,15 @@ test('Daily tab — Today actions + Streak hero + Calendar + Other modes all ren
   await page.locator('.tab-item').filter({ hasText: 'Daily' }).first().click();
   await page.waitForTimeout(400);
 
-  // Today's 7 + Footle pills (top of Daily tab)
-  await expect(page.locator('.today-actions .ta-title').filter({ hasText: "Today's 7" })).toBeVisible();
-  await expect(page.locator('.today-actions .ta-title').filter({ hasText: 'Footle' })).toBeVisible();
-  // Streak hero
+  // Streak hero (Sprint #15 Stage 3 — v2 bigger hero)
   await expect(page.locator('.streak-hero-label')).toHaveText(/Day Streak/i);
+  // Today zone (Sprint #15 Stage 5) — FootleHero + Today's 7 cards inside
+  // a .daily-zone container; same components as Home, intentional. Home's
+  // version uses aria-label="Daily", Daily-tab's uses aria-label="Today".
+  const dailyTabZone = page.locator('.daily-zone[aria-label="Today"]');
+  await expect(dailyTabZone).toBeVisible();
+  await expect(dailyTabZone.locator('.footle-hero')).toBeVisible();
+  await expect(dailyTabZone.locator('.todays-seven-secondary')).toBeVisible();
   // 4-stat row (Sprint #15 Stage 4)
   await expect(page.locator('.daily-stats-row')).toBeVisible();
   await expect(page.locator('.daily-stats-row .stat-tile')).toHaveCount(4);

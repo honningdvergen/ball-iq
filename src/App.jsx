@@ -10268,7 +10268,47 @@ function AppInner() {
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
-            <DailyTabScreen stats={stats} dailyDone={dailyDone} dailyScore={dailyScore} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} onPlay={playDaily} onPlayWordle={() => setScreen("wordle")} onSuggest={suggestMode} xp={xp} shieldActive={shieldActive} onUseShield={useShield} dailyHistory={dailyHistory} onPlayDate={playDailyForDate} onViewScore={viewDailyScore} onViewPuzzle={viewPuzzleStatus} />
+            <DailyTabScreen
+              stats={stats}
+              dailyDone={dailyDone}
+              dailyScore={dailyScore}
+              loginStreak={loginStreak}
+              bestLoginStreak={bestLoginStreak}
+              onPlay={playDaily}
+              onPlayWordle={() => setScreen("wordle")}
+              onSuggest={suggestMode}
+              xp={xp}
+              shieldActive={shieldActive}
+              onUseShield={useShield}
+              dailyHistory={dailyHistory}
+              onPlayDate={playDailyForDate}
+              onViewScore={viewDailyScore}
+              onViewPuzzle={viewPuzzleStatus}
+              footleCard={
+                <FootleHero
+                  onPlay={() => setScreen("wordle")}
+                  onReview={(wsArg) => viewPuzzleStatus(wsArg)}
+                />
+              }
+              sevenCard={
+                <button
+                  className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
+                  onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : playDaily()}
+                  aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
+                >
+                  <span className="t7s-icon" aria-hidden="true">📋</span>
+                  <span className="t7s-body">
+                    <span className="t7s-title">Today's 7</span>
+                    <span className="t7s-sub">
+                      {dailyDone
+                        ? <>✅ Done · <strong>{dailyScore}/7</strong></>
+                        : <>7 questions · ~3 min</>}
+                    </span>
+                  </span>
+                  <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
+                </button>
+              }
+            />
           </div>
         )}
 

@@ -153,7 +153,7 @@ function StreakHero({ loginStreak, bestStreak }) {
   );
 }
 
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle }) {
+function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle, footleCard, sevenCard }) {
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
   // this, today + todayYMD stay frozen at mount time and the calendar /
@@ -236,44 +236,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   }, [todayYMD, dailyHistory, localDone]);
   return (
     <div className="tab-content">
-      {/* Compact "Today" action row — Daily-tab specific. Replaces the
-          home-style daily-pair cards (which still live on Home). Each pill
-          is a tap-target with title + compact status; played → review,
-          unplayed → play. No "Resets in…" sub-line — that lives on Home;
-          on Daily, the calendar below is the time signal. */}
-      {(() => {
-        const ws = readWordleTodayStatus();
-        const wordleDone = ws.kind === "won" || ws.kind === "lost";
-        const wordleStatus =
-          ws.kind === "won"         ? <>✅ <strong>{ws.used}/6</strong></> :
-          ws.kind === "lost"        ? <>❌ Missed</> :
-          ws.kind === "in-progress" ? <><strong>{ws.used}/6</strong> used</> :
-          <>Play</>;
-        const dailyClass  = "today-action ta-daily" + (isDone ? " is-done" : " is-pending");
-        const puzzleClass = "today-action ta-puzzle" + (wordleDone ? " is-done" : " is-pending");
-        return (
-          <div className="today-actions">
-            <button
-              className={dailyClass}
-              onClick={() => isDone ? onViewScore(today, shownScore) : onPlay()}
-              aria-label={isDone ? `Daily challenge complete: ${shownScore} out of 7` : "Play today's daily challenge"}
-            >
-              <div className="ta-title">Today's 7</div>
-              <div className="ta-status">
-                {isDone ? <>✅ <strong>{shownScore}/7</strong></> : <>Play</>}
-              </div>
-            </button>
-            <button
-              className={puzzleClass}
-              onClick={() => wordleDone ? (onViewPuzzle && onViewPuzzle(ws)) : (onPlayWordle && onPlayWordle())}
-              aria-label={wordleDone ? (ws.kind === "won" ? `Footle solved in ${ws.used} of 6` : "Footle missed today") : "Play today's Footle"}
-            >
-              <div className="ta-title">Footle</div>
-              <div className="ta-status">{wordleStatus}</div>
-            </button>
-          </div>
-        );
-      })()}
       <StreakHero
         loginStreak={loginStreak}
         bestStreak={bestLoginStreak}
@@ -297,6 +259,27 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
           <div className="ds-eyebrow st-key">Win Rate</div>
         </div>
       </div>
+      {/* Today container (Sprint #15 Stage 5) — reuses Home's FootleHero +
+          Today's 7 cards passed in as props so the two surfaces read
+          visually identical. X/2 status mirrors the home zone's indicator. */}
+      {(footleCard || sevenCard) && (() => {
+        const ws = readWordleTodayStatus();
+        const footleDone = ws.kind === "won" || ws.kind === "lost";
+        const doneCount = (footleDone ? 1 : 0) + (isDone ? 1 : 0);
+        const allDone = doneCount === 2;
+        return (
+          <div className="daily-zone" role="group" aria-label="Today">
+            <div className="daily-zone-head">
+              <span className="daily-zone-eyebrow">Today</span>
+              <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
+                {allDone ? "2/2 done" : `${doneCount}/2 today`}
+              </span>
+            </div>
+            {footleCard}
+            {sevenCard}
+          </div>
+        );
+      })()}
       {(() => {
         // Weekly summary chip — "X of N days this week" where N counts
         // calendar days from local Monday through today (inclusive). Anchors
