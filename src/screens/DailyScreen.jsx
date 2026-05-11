@@ -516,6 +516,9 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
 
       {/* Sprint #16 Stage 4: matchday list. Per-row Footle + T7 results
           with W/D/L badge. ~6-8 most recent visible, scroll for older. */}
+      {/* Stage 5's footer is rendered below the list. Holding here in JSX
+          order so the source reads top-to-bottom: greet → form hero →
+          up next → matchday list → stats footer → other modes. */}
       {matchdays.length > 0 && (
         <>
           <div className="md-eyebrow">Recent matchdays</div>
@@ -552,6 +555,13 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak
                 </div>
               </div>
             ))}
+          </div>
+          {/* Sprint #16 Stage 5: quiet stats footer. Single muted line —
+              supporting context, not centerpieces. Replaces the 4-stat row. */}
+          <div className="stats-footer">
+            <span className="sf-pair"><strong>{dailyStats.perfectDays}</strong> perfect day{dailyStats.perfectDays === 1 ? "" : "s"}</span>
+            <span className="sf-sep">·</span>
+            <span className="sf-pair">solve rate <strong>{dailyStats.winRate == null ? "—" : `${dailyStats.winRate}%`}</strong></span>
           </div>
         </>
       )}

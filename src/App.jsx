@@ -1460,6 +1460,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
 .daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
+/* ── STATS FOOTER (Sprint #16 Stage 5) ── */
+.stats-footer{text-align:center;font-size:11px;color:var(--t3);font-weight:600;letter-spacing:0.02em;padding:6px 0 14px;margin-top:-4px;}
+.stats-footer strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--t1);font-weight:800;}
+.stats-footer .sf-sep{margin:0 8px;color:var(--t3);opacity:0.6;}
+
 /* ── MATCHDAY LIST (Sprint #16 Stage 4) ── */
 .md-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.18em;color:var(--t3);text-transform:uppercase;margin:4px 2px 8px;}
 .md-list{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
