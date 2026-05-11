@@ -138,46 +138,60 @@ function MonthlyCalendar({ history, footleHistory, today, viewDate, setViewDate,
   );
 }
 
-// StreakHero — Daily tab visual anchor. v2: flame + big streak number on
-// the same row, "DAY STREAK" eyebrow underneath, then a personal-best
-// progress bar with "{N} days from {best} personal best" subtext (or
-// "Personal best!" when at-or-above). Daily-completion nudge moved to
-// the Today container below — this hero focuses purely on streak state.
-function StreakHero({ loginStreak, bestStreak }) {
-  const streakCount = loginStreak || 0;
-  const best = typeof bestStreak === "number" ? bestStreak : 0;
-  // "At PB" includes current === best (counts as tying); we only call it
-  // PB when there's a non-zero streak to celebrate.
-  const isPB = streakCount > 0 && streakCount >= best;
-  const distance = Math.max(0, best - streakCount);
-  // Progress fills against the local target = max(current, best) so the
-  // bar reads sensibly when the user is *at* PB (full bar).
-  const target = Math.max(best, streakCount, 1);
-  const progressPct = Math.min(100, Math.round((streakCount / target) * 100));
-  const showPB = best > 0 || streakCount > 0;
-  const subLine = !showPB ? null
-    : isPB ? "Personal best!"
-    : `${distance} day${distance === 1 ? "" : "s"} from ${best} personal best`;
-
+// FormHero — Sprint #16 Daily v3 centerpiece. Replaces StreakHero v2.
+// Reads three derived quantities from the parent and renders:
+//   1. Overall unbeaten run + best run sub-line (combined, any mode played)
+//   2. Two per-mode streak chips (Footle solve run · T7 done run)
+//   3. Form strip — last 14 days W/D/L with mode-mirroring colors:
+//        W (both played) = accent green
+//        D (Footle only) = purple
+//        D (T7 only)     = orange
+//        L (neither)     = neutral
+function FormHero({ unbeaten, bestUnbeaten, footleRun, t7Run, form14 }) {
+  const distance = Math.max(0, bestUnbeaten - unbeaten);
+  const atPB = unbeaten > 0 && unbeaten >= bestUnbeaten;
+  const subLine = bestUnbeaten === 0
+    ? null
+    : atPB
+      ? `Best run: ${bestUnbeaten} — personal best!`
+      : `Best run: ${bestUnbeaten} — ${distance} to go`;
   return (
-    <div
-      className="streak-hero"
-      role="status"
-      aria-label={`${streakCount} day login streak${best > 0 ? `, personal best ${best} days` : ""}.`}
-    >
-      <div className="streak-hero-row">
-        <div className="streak-hero-flame" aria-hidden="true">🔥</div>
-        <div className="streak-hero-num">{streakCount}</div>
+    <div className="form-hero" role="status" aria-label={`${unbeaten}-match unbeaten run`}>
+      <div className="form-hero-num">
+        <span className="num mono">{unbeaten}</span>
+        <span className="lab">match unbeaten run</span>
       </div>
-      <div className="streak-hero-label">Day Streak</div>
-      {showPB && (
-        <>
-          <div className="streak-hero-pb-bar">
-            <div className={`streak-hero-pb-fill${isPB ? " is-pb" : ""}`} style={{width: `${progressPct}%`}} />
-          </div>
-          <div className={`streak-hero-sub${isPB ? " is-pb" : ""}`}>{subLine}</div>
-        </>
+      {subLine && (
+        <div className={`form-hero-sub${atPB ? " is-pb" : ""}`}>{subLine}</div>
       )}
+      <div className="form-hero-chips">
+        <div className="run-chip f">
+          <span className="run-chip-dot" />
+          <span className="run-chip-lab">Footle solve run</span>
+          <span className="run-chip-val mono">{footleRun}</span>
+        </div>
+        <div className="run-chip t">
+          <span className="run-chip-dot" />
+          <span className="run-chip-lab">T7 done run</span>
+          <span className="run-chip-val mono">{t7Run}</span>
+        </div>
+      </div>
+      <div className="form-strip-wrap">
+        <div className="form-strip" role="group" aria-label="Form — last 14 matches">
+          {form14.map((d, i) => (
+            <div
+              key={d.ymd}
+              className={`form-cell ${d.cls}${d.isToday ? " is-today" : ""}`}
+              aria-label={d.aria}
+              title={d.aria}
+            />
+          ))}
+        </div>
+        <div className="form-strip-axis">
+          <span>2 weeks ago</span>
+          <span>Today</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -244,6 +258,93 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
     return map;
   }, [todayYMD, localDone]);
 
+  // Sprint #16 Stage 1: run + form derivations for the new FormHero.
+  // - unbeaten: consecutive days backward from today where AT LEAST ONE
+  //   mode was attempted (Footle 'won' or 'lost' counts as attempt;
+  //   'in-progress' does not — the day isn't decided yet)
+  // - bestUnbeaten: max historical run of the same shape, walking forward
+  //   from the earliest played day
+  // - footleRun: consecutive Footle 'won' days backward from today
+  // - t7Run: consecutive dailyHistory entries backward from today
+  // - form14: last 14 days each tagged W/D/L plus mode-mirroring color
+  //   class (D-footle = purple, D-t7 = orange, W = green, L = neutral)
+  const runStats = useMemo(() => {
+    const t7Set = new Set(Object.keys(dailyHistory || {}));
+    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    const playedOn = (ymd) => {
+      const f = footleHistory.get(ymd);
+      const footleAttempt = f === "won" || f === "lost";
+      return t7Set.has(ymd) || footleAttempt;
+    };
+
+    // Current unbeaten run
+    let unbeaten = 0;
+    for (let i = 0; i < 366; i++) {
+      const d = new Date(todayMid - i * 86400000);
+      if (!playedOn(dateToYMD(d))) break;
+      unbeaten++;
+    }
+    // Current Footle solve run
+    let footleRun = 0;
+    for (let i = 0; i < 366; i++) {
+      const d = new Date(todayMid - i * 86400000);
+      if (footleHistory.get(dateToYMD(d)) !== "won") break;
+      footleRun++;
+    }
+    // Current T7 done run
+    let t7Run = 0;
+    for (let i = 0; i < 366; i++) {
+      const d = new Date(todayMid - i * 86400000);
+      if (!t7Set.has(dateToYMD(d))) break;
+      t7Run++;
+    }
+
+    // Historical best unbeaten — walk from first-played forward to today.
+    let bestUnbeaten = 0;
+    {
+      const dates = new Set(t7Set);
+      for (const [ymd, status] of footleHistory) {
+        if (status === "won" || status === "lost") dates.add(ymd);
+      }
+      const sorted = Array.from(dates).sort();
+      if (sorted.length > 0) {
+        const first = sorted[0].split("-").map(Number);
+        const firstTime = new Date(first[0], first[1] - 1, first[2]).getTime();
+        let cur = 0;
+        for (let t = firstTime; t <= todayMid; t += 86400000) {
+          const d = new Date(t);
+          if (playedOn(dateToYMD(d))) {
+            cur++;
+            if (cur > bestUnbeaten) bestUnbeaten = cur;
+          } else cur = 0;
+        }
+      }
+    }
+    bestUnbeaten = Math.max(bestUnbeaten, unbeaten);
+    return { unbeaten, bestUnbeaten, footleRun, t7Run };
+  }, [today, dailyHistory, footleHistory]);
+
+  const form14 = useMemo(() => {
+    const t7Set = new Set(Object.keys(dailyHistory || {}));
+    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    const out = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(todayMid - i * 86400000);
+      const ymd = dateToYMD(d);
+      const isToday = i === 0;
+      const t7 = t7Set.has(ymd);
+      const fStatus = footleHistory.get(ymd);
+      const fAttempt = fStatus === "won" || fStatus === "lost";
+      let cls, label;
+      if (t7 && fAttempt) { cls = "W"; label = "Win"; }
+      else if (t7) { cls = "D-t7"; label = "Today's 7 only"; }
+      else if (fAttempt) { cls = "D-f"; label = "Footle only"; }
+      else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
+      out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
+    }
+    return out;
+  }, [today, dailyHistory, footleHistory]);
+
   const dailyStats = useMemo(() => {
     const currentYM = todayYMD.slice(0, 7); // "YYYY-MM"
     const dailyDoneSet = new Set(Object.keys(dailyHistory || {}));
@@ -268,9 +369,12 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   }, [todayYMD, dailyHistory, footleHistory]);
   return (
     <div className="tab-content">
-      <StreakHero
-        loginStreak={loginStreak}
-        bestStreak={bestLoginStreak}
+      <FormHero
+        unbeaten={runStats.unbeaten}
+        bestUnbeaten={runStats.bestUnbeaten}
+        footleRun={runStats.footleRun}
+        t7Run={runStats.t7Run}
+        form14={form14}
       />
       {/* 4-stat row (Sprint #15 Stage 4) */}
       <div className="daily-stats-row" role="group" aria-label="Daily stats">
