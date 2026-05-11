@@ -1433,6 +1433,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-pre-join{background:transparent;color:var(--t3);border-color:var(--border);opacity:0.55;cursor:not-allowed;}
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
+/* ── DIAGONAL-SPLIT CELLS (Sprint #15 Stage 6) ── */
+/* Per Sprint #14 spec: Footle = top-left orange triangle; Today's 7 =
+   bottom-right purple triangle; both = full diagonal split. Colors are
+   intentionally specced (not inverted to match the card design) so the
+   small cells remain visually distinct from the cards above. The cal-done
+   green styling is overridden when any diagonal class applies. */
+.cal-cell.cal-split{background:var(--s2);}
+.cal-cell.cal-footle{background:linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,var(--s2) 50.5%,var(--s2) 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-t7{background:linear-gradient(135deg,var(--s2) 0%,var(--s2) 49.5%,#7C3AED 50.5%,#7C3AED 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-both{background:linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,#7C3AED 50.5%,#7C3AED 100%);border-color:transparent;color:#fff;}
+.cal-cell.cal-footle .cal-num,
+.cal-cell.cal-t7 .cal-num,
+.cal-cell.cal-both .cal-num{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.35);}
+/* Today outline still wins over diagonals — green ring framing the gradient. */
+.cal-cell.cal-today.cal-footle,
+.cal-cell.cal-today.cal-t7,
+.cal-cell.cal-today.cal-both{border-color:var(--accent);border-width:2px;}
 /* ── STREAK HERO (Daily-tab vertical hero, big number anchor) ── */
 .streak-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 18px 20px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:16px;margin:0 0 14px;}
 .streak-hero-row{display:flex;align-items:baseline;justify-content:center;gap:14px;}

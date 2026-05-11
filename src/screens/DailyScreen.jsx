@@ -3,7 +3,7 @@ import { APP_NAME } from "../lib/scoring.js";
 import { dateToYMD } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 
-function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, onViewScore, gamesThisWeek, gamesLastWeek }) {
+function MonthlyCalendar({ history, footleHistory, today, viewDate, setViewDate, onPlayDate, onViewScore }) {
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
   const firstOfMonth = new Date(year, month, 1);
@@ -18,11 +18,13 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
   const monthLabel = viewDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
-  // First-play detection — earliest dailyHistory entry. Days before this
-  // are styled as "pre-join" (neutral grey) instead of red "missed", since
-  // the user wasn't here yet to play them.
+  // First-play detection — earliest dailyHistory OR footleHistory entry.
+  // Days before this are styled as "pre-join" instead of red "missed".
   const firstDailyTime = (() => {
-    const keys = history ? Object.keys(history) : [];
+    const keys = [
+      ...(history ? Object.keys(history) : []),
+      ...(footleHistory ? Array.from(footleHistory.keys()) : []),
+    ];
     if (keys.length === 0) return null;
     let earliest = Infinity;
     for (const k of keys) {
@@ -39,9 +41,25 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
   const todayMonthIdx = today.getFullYear() * 12 + today.getMonth();
   const atCurrentMonth = viewedMonthIdx >= todayMonthIdx;
 
-  const showWeekSub = typeof gamesThisWeek === "number";
-  const weekDelta = (showWeekSub && typeof gamesLastWeek === "number" && gamesLastWeek > 0)
-    ? gamesThisWeek - gamesLastWeek : null;
+  // Header sub-line (Sprint #15 Stage 6): "{N} days played · {M} perfect (both)"
+  // counted within the currently-viewed month.
+  const viewedYM = `${year}-${String(month + 1).padStart(2, "0")}`;
+  let monthPlayed = 0, monthPerfect = 0;
+  {
+    const seen = new Set();
+    for (const ymd of Object.keys(history || {})) {
+      if (ymd.startsWith(viewedYM)) seen.add(ymd);
+    }
+    for (const [ymd, status] of (footleHistory || new Map())) {
+      if (status === "won" && ymd.startsWith(viewedYM)) seen.add(ymd);
+    }
+    monthPlayed = seen.size;
+    for (const ymd of seen) {
+      const t7 = history && typeof history[ymd] === "number";
+      const f = footleHistory && footleHistory.get(ymd) === "won";
+      if (t7 && f) monthPerfect++;
+    }
+  }
 
   return (
     <div className="streak-section">
@@ -49,16 +67,9 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
         <button className="cal-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label="Previous month">←</button>
         <div style={{flex:1, display:"flex", flexDirection:"column", alignItems:"center"}}>
           <div className="cal-month">{monthLabel}</div>
-          {showWeekSub && (
-            <div className="cal-month-sub">
-              <strong>{gamesThisWeek}</strong> played this week
-              {weekDelta !== null && (
-                <span className="cal-month-delta" style={{color: weekDelta >= 0 ? "var(--accent)" : "var(--t3)"}}>
-                  {weekDelta >= 0 ? "↑" : "↓"} {Math.abs(weekDelta)} vs last
-                </span>
-              )}
-            </div>
-          )}
+          <div className="cal-month-sub">
+            <strong>{monthPlayed}</strong> day{monthPlayed === 1 ? "" : "s"} played · <strong>{monthPerfect}</strong> perfect <span style={{color:"var(--t3)",fontWeight:600}}>(both)</span>
+          </div>
         </div>
         <button className="cal-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} disabled={atCurrentMonth} aria-label="Next month">→</button>
       </div>
@@ -71,16 +82,23 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
         {cells.map((d, i) => {
           if (!d) return <div key={`e-${i}`} className="cal-cell cal-empty" />;
           const ymd = dateToYMD(d);
-          const score = history[ymd];
-          const isCompleted = typeof score === "number";
+          const score = history?.[ymd];
+          const t7Done = typeof score === "number";
+          const footleDone = footleHistory?.get(ymd) === "won";
+          const anyDone = t7Done || footleDone;
           const dTime = d.getTime();
           const isToday = dTime === todayMidnight;
           const isFuture = dTime > todayMidnight;
-          const isPreJoin = !isCompleted && firstDailyTime !== null && dTime < firstDailyTime && !isToday;
-          const isPastMissed = dTime < todayMidnight && !isCompleted && !isPreJoin;
+          const isPreJoin = !anyDone && firstDailyTime !== null && dTime < firstDailyTime && !isToday;
+          const isPastMissed = dTime < todayMidnight && !anyDone && !isPreJoin;
 
           let cls = "cal-cell";
-          if (isCompleted) cls += " cal-done";
+          // Diagonal-split (Sprint #15 Stage 6): Footle = top-left orange,
+          // T7 = bottom-right purple. Both = full split. Replaces the old
+          // solid-green cal-done styling.
+          if (t7Done && footleDone) cls += " cal-both";
+          else if (footleDone) cls += " cal-footle";
+          else if (t7Done) cls += " cal-t7";
           if (isToday) cls += " cal-today";
           if (isFuture) cls += " cal-future";
           else if (isPreJoin) cls += " cal-pre-join";
@@ -88,22 +106,33 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
 
           const handleClick = () => {
             if (isFuture || isPreJoin) return;
-            if (isCompleted) onViewScore(d, score);
-            else onPlayDate(d);
+            if (t7Done) onViewScore(d, score);
+            else if (!footleDone) onPlayDate(d); // unplayed (or Footle-only): route to T7 play-on-date
+            // Footle-only days: no T7 score to view; tap is a no-op (parent
+            // could route to Footle review in a future iteration).
           };
 
+          const aria = `${ymd}${
+            t7Done && footleDone ? " — Footle solved and Today's 7 completed (perfect day)" :
+            footleDone ? " — Footle solved" :
+            t7Done ? ` — Today's 7 completed ${score}/7` :
+            isToday ? " today" :
+            isPreJoin ? " before you joined" :
+            isPastMissed ? " missed" : ""
+          }`;
+
           return (
-            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture || isPreJoin} aria-label={`${ymd}${isCompleted ? ` completed ${score}/7` : isToday ? " today" : isPreJoin ? " before you joined" : isPastMissed ? " missed" : ""}`}>
+            <button key={ymd} className={cls} onClick={handleClick} disabled={isFuture || isPreJoin || (footleDone && !t7Done)} aria-label={aria}>
               <span className="cal-num">{d.getDate()}</span>
-              {isCompleted && <span className="cal-check">✓</span>}
             </button>
           );
         })}
       </div>
       <div className="cal-legend">
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent)"}} />Done</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#FF6A00"}} />Footle</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"#7C3AED"}} />Today's 7</span>
+        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"linear-gradient(135deg,#FF6A00 0%,#FF6A00 49.5%,#7C3AED 50.5%,#7C3AED 100%)"}} />Both</span>
         <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"var(--accent-dim)", border:"1.5px solid var(--accent)"}} />Today</span>
-        <span className="cal-legend-item"><span className="cal-legend-dot" style={{background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.25)"}} />Missed</span>
       </div>
     </div>
   );
@@ -192,15 +221,13 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   const isDone = dailyDone || localDone;
   const shownScore = dailyScore != null ? dailyScore : localScore;
 
-  // 4-stat row data (Sprint #15 Stage 4). Walks dailyHistory + biq_wordle_*
-  // keys in localStorage to derive THIS MONTH / PERFECT DAYS / LIFETIME /
-  // WIN RATE. No new schema; reads what each surface already writes.
-  // Memoized on todayYMD + dailyHistory + localDone so it re-runs at most
-  // once per day rollover or completion event.
-  const dailyStats = useMemo(() => {
-    const currentYM = todayYMD.slice(0, 7); // "YYYY-MM"
-    // Footle status per ymd from localStorage
-    const footle = new Map(); // ymd → 'won' | 'lost' | 'in-progress'
+  // Footle history map (Sprint #15 Stage 4+6): walks biq_wordle_* keys in
+  // localStorage once and exposes the per-day status (won/lost/in-progress)
+  // for both the 4-stat row reduction and the diagonal-split calendar
+  // cells. Memoised on todayYMD + localDone so it re-runs at most once per
+  // day rollover or daily-completion event. ~365 keys/year — trivial.
+  const footleHistory = useMemo(() => {
+    const map = new Map();
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
@@ -208,17 +235,22 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
         const ymd = k.slice("biq_wordle_".length);
         try {
           const parsed = JSON.parse(localStorage.getItem(k));
-          if (parsed?.status === "won") footle.set(ymd, "won");
-          else if (parsed?.status === "lost") footle.set(ymd, "lost");
-          else if (Array.isArray(parsed?.guesses) && parsed.guesses.length > 0) footle.set(ymd, "in-progress");
+          if (parsed?.status === "won") map.set(ymd, "won");
+          else if (parsed?.status === "lost") map.set(ymd, "lost");
+          else if (Array.isArray(parsed?.guesses) && parsed.guesses.length > 0) map.set(ymd, "in-progress");
         } catch {}
       }
     } catch {}
+    return map;
+  }, [todayYMD, localDone]);
+
+  const dailyStats = useMemo(() => {
+    const currentYM = todayYMD.slice(0, 7); // "YYYY-MM"
     const dailyDoneSet = new Set(Object.keys(dailyHistory || {}));
 
     let monthFootleWins = 0, monthDaily = 0, perfectDays = 0;
     let lifetimeFootleWins = 0, footleAttempts = 0;
-    for (const [ymd, status] of footle) {
+    for (const [ymd, status] of footleHistory) {
       footleAttempts++;
       if (status === "won") {
         lifetimeFootleWins++;
@@ -233,7 +265,7 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
     const lifetime = lifetimeFootleWins + dailyDoneSet.size;
     const winRate = footleAttempts === 0 ? null : Math.round((lifetimeFootleWins / footleAttempts) * 100);
     return { thisMonth, perfectDays, lifetime, winRate };
-  }, [todayYMD, dailyHistory, localDone]);
+  }, [todayYMD, dailyHistory, footleHistory]);
   return (
     <div className="tab-content">
       <StreakHero
@@ -319,13 +351,12 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
       )}
       <MonthlyCalendar
         history={dailyHistory}
+        footleHistory={footleHistory}
         today={today}
         viewDate={viewDate}
         setViewDate={setViewDate}
         onPlayDate={onPlayDate}
         onViewScore={onViewScore}
-        gamesThisWeek={stats?.gamesThisWeek}
-        gamesLastWeek={stats?.gamesLastWeek}
       />
       <div style={{background:"var(--s1)",borderRadius:14,padding:"16px 18px",marginTop:12,marginBottom:16}}>
         <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>
