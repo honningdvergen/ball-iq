@@ -109,40 +109,46 @@ function MonthlyCalendar({ history, today, viewDate, setViewDate, onPlayDate, on
   );
 }
 
-// StreakHero — Daily tab visual anchor. Centered hero block with the
-// login-streak number as the dominant element (64px tabular-nums), a
-// "DAY STREAK" eyebrow label below, and a sub-line carrying the
-// best-streak chip + nudge framed around today's Daily challenge.
-// Pure presentational: reads loginStreak / bestStreak / dailyHistory
-// props already on DailyTabScreen; no new fetches or schema.
-function StreakHero({ loginStreak, bestStreak, history, today }) {
-  const todayYMD = dateToYMD(today);
-  const playedToday = typeof history?.[todayYMD] === "number";
-
-  // Login streak (the hero number) ticks on app-open; the daily challenge
-  // is a separate engagement. Phrase the nudge in terms of the Daily
-  // challenge — what the calendar below reflects — so the sub-line tells
-  // the user something they can act on, not just restating the hero.
-  const nudge = playedToday
-    ? "✓ Daily complete today"
-    : "Play today's Daily";
-
-  const showBest = typeof bestStreak === "number" && bestStreak > loginStreak && bestStreak > 0;
+// StreakHero — Daily tab visual anchor. v2: flame + big streak number on
+// the same row, "DAY STREAK" eyebrow underneath, then a personal-best
+// progress bar with "{N} days from {best} personal best" subtext (or
+// "Personal best!" when at-or-above). Daily-completion nudge moved to
+// the Today container below — this hero focuses purely on streak state.
+function StreakHero({ loginStreak, bestStreak }) {
   const streakCount = loginStreak || 0;
+  const best = typeof bestStreak === "number" ? bestStreak : 0;
+  // "At PB" includes current === best (counts as tying); we only call it
+  // PB when there's a non-zero streak to celebrate.
+  const isPB = streakCount > 0 && streakCount >= best;
+  const distance = Math.max(0, best - streakCount);
+  // Progress fills against the local target = max(current, best) so the
+  // bar reads sensibly when the user is *at* PB (full bar).
+  const target = Math.max(best, streakCount, 1);
+  const progressPct = Math.min(100, Math.round((streakCount / target) * 100));
+  const showPB = best > 0 || streakCount > 0;
+  const subLine = !showPB ? null
+    : isPB ? "Personal best!"
+    : `${distance} day${distance === 1 ? "" : "s"} from ${best} personal best`;
 
   return (
     <div
       className="streak-hero"
       role="status"
-      aria-label={`${streakCount} day login streak${showBest ? `, best ${bestStreak} days` : ""}. ${nudge}.`}
+      aria-label={`${streakCount} day login streak${best > 0 ? `, personal best ${best} days` : ""}.`}
     >
-      <div className="streak-hero-flame" aria-hidden="true">🔥</div>
-      <div className="streak-hero-num">{streakCount}</div>
-      <div className="streak-hero-label">Day Streak</div>
-      <div className="streak-hero-sub">
-        {showBest && <><span className="streak-hero-best">Best: {bestStreak}</span> · </>}
-        <span>{nudge}</span>
+      <div className="streak-hero-row">
+        <div className="streak-hero-flame" aria-hidden="true">🔥</div>
+        <div className="streak-hero-num">{streakCount}</div>
       </div>
+      <div className="streak-hero-label">Day Streak</div>
+      {showPB && (
+        <>
+          <div className="streak-hero-pb-bar">
+            <div className={`streak-hero-pb-fill${isPB ? " is-pb" : ""}`} style={{width: `${progressPct}%`}} />
+          </div>
+          <div className={`streak-hero-sub${isPB ? " is-pb" : ""}`}>{subLine}</div>
+        </>
+      )}
     </div>
   );
 }
@@ -228,8 +234,6 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
       <StreakHero
         loginStreak={loginStreak}
         bestStreak={bestLoginStreak}
-        history={dailyHistory}
-        today={today}
       />
       {(() => {
         // Weekly summary chip — "X of N days this week" where N counts

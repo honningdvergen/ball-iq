@@ -1434,11 +1434,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:1;font-size:13px;}
 .cal-check{position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;}
 /* ── STREAK HERO (Daily-tab vertical hero, big number anchor) ── */
-.streak-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 16px 18px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:14px;margin:0 0 12px;}
-.streak-hero-flame{font-size:32px;line-height:1;margin-bottom:4px;}
-.streak-hero-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:64px;font-weight:900;color:var(--t1);line-height:1;letter-spacing:-0.02em;}
-.streak-hero-label{font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--t2);text-transform:uppercase;margin-top:8px;}
+.streak-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 18px 20px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:16px;margin:0 0 14px;}
+.streak-hero-row{display:flex;align-items:baseline;justify-content:center;gap:14px;}
+.streak-hero-flame{font-size:44px;line-height:1;}
+.streak-hero-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:80px;font-weight:900;color:var(--t1);line-height:1;letter-spacing:-0.02em;}
+.streak-hero-label{font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--t2);text-transform:uppercase;margin-top:10px;}
+.streak-hero-pb-bar{width:100%;max-width:240px;height:6px;background:rgba(0,0,0,0.18);border-radius:99px;overflow:hidden;margin-top:14px;}
+.light .streak-hero-pb-bar{background:rgba(0,0,0,0.08);}
+.streak-hero-pb-fill{height:100%;background:linear-gradient(90deg,var(--accent),#FFC107);transition:width 0.3s ease;border-radius:99px;}
+.streak-hero-pb-fill.is-pb{background:var(--gold);}
 .streak-hero-sub{font-size:12px;color:var(--t3);font-weight:600;margin-top:8px;line-height:1.3;}
+.streak-hero-sub.is-pb{color:var(--gold);font-weight:800;letter-spacing:0.02em;}
 .streak-hero-best{color:var(--t2);}
 .light .streak-hero{border-color:rgba(52,168,83,0.30);}
 /* ── WEEKLY SUMMARY CHIP (X of N days this week) ── */
