@@ -1450,6 +1450,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .cal-cell.cal-today.cal-footle,
 .cal-cell.cal-today.cal-t7,
 .cal-cell.cal-today.cal-both{border-color:var(--accent);border-width:2px;}
+/* ── DAILY GREETING STRIP (Sprint #16 Stage 2) ── */
+.daily-greet{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px 12px;margin-bottom:2px;border-bottom:1px solid var(--border);}
+.daily-greet-text{display:flex;align-items:baseline;gap:6px;min-width:0;flex:1;}
+.daily-greet-when{font-size:13px;color:var(--t2);font-weight:600;}
+.daily-greet-name{font-size:14px;color:var(--t1);font-weight:700;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.daily-greet-name.is-loading{opacity:0.4;animation:profileSkeletonPulse 1.4s ease-in-out infinite;font-weight:600;color:var(--t2);}
+.daily-greet-ko{display:inline-flex;align-items:baseline;gap:5px;padding:4px 8px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.30);border-radius:6px;flex-shrink:0;}
+.daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
+.daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
+
 /* ── FORM HERO (Daily v3 centerpiece, Sprint #16) ── */
 .form-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 18px 18px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:16px;margin:0 0 12px;}
 .light .form-hero{border-color:rgba(52,168,83,0.30);}
@@ -10282,6 +10292,7 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
             <DailyTabScreen
+              profile={profile}
               stats={stats}
               dailyDone={dailyDone}
               dailyScore={dailyScore}

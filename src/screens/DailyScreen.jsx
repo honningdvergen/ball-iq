@@ -1,7 +1,31 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { dateToYMD } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
+
+// Sprint #16 helper — milliseconds until next UTC midnight. Used by the
+// greeting strip's "KO in Xh Ym" chip and the Up next card. UTC midnight
+// is when daily puzzles roll over server-side; deriving from the same
+// frame keeps client + server in agreement across timezones.
+function msToNextUTCMidnight(now = new Date()) {
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0));
+  return next.getTime() - now.getTime();
+}
+function formatKO(ms) {
+  if (ms <= 0) return "soon";
+  const totalMin = Math.floor(ms / 60000);
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h === 0) return `${m}m`;
+  return `${h}h ${m}m`;
+}
+function timeOfDayGreeting(d = new Date()) {
+  const h = d.getHours();
+  if (h < 12) return "Good morning";
+  if (h < 18) return "Good afternoon";
+  return "Good evening";
+}
 
 function MonthlyCalendar({ history, footleHistory, today, viewDate, setViewDate, onPlayDate, onViewScore }) {
   const year = viewDate.getFullYear();
@@ -196,7 +220,8 @@ function FormHero({ unbeaten, bestUnbeaten, footleRun, t7Run, form14 }) {
   );
 }
 
-function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle, footleCard, sevenCard }) {
+function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, loginStreak, bestLoginStreak, onPlay, onPlayWordle, onSuggest, xp, onUseShield, shieldActive, dailyHistory, onPlayDate, onViewScore, onViewPuzzle, footleCard, sevenCard }) {
+  const { user, profile: authProfile, isGuest } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
   // this, today + todayYMD stay frozen at mount time and the calendar /
@@ -204,10 +229,16 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   // day-rollover polling pattern (its handler reloads the page; here we
   // just refresh state since DailyTab doesn't need a full reload).
   const [today, setToday] = useState(() => new Date());
+  // Sprint #16: per-minute tick drives the KO countdown chip + Up next
+  // card. `today` still only updates on day rollover (downstream memos
+  // depend on todayYMD identity), but `now` ticks every minute so the
+  // countdown stays current.
+  const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => {
-      const now = new Date();
-      setToday(prev => now.toDateString() !== prev.toDateString() ? now : prev);
+      const n = new Date();
+      setNow(n);
+      setToday(prev => n.toDateString() !== prev.toDateString() ? n : prev);
     }, 60_000);
     return () => clearInterval(id);
   }, []);
@@ -369,6 +400,31 @@ function DailyTabScreenImpl({ stats, dailyDone, dailyScore, loginStreak, bestLog
   }, [todayYMD, dailyHistory, footleHistory]);
   return (
     <div className="tab-content">
+      {/* Sprint #16 Stage 2: greeting strip + KO countdown chip. Same
+          K3-style fallback logic as Home — drop the name slot rather
+          than show "Guest" when no name is available, and don't render
+          a misleading default while authProfile is mid-fetch. */}
+      {(() => {
+        const authLoading = !!user && !authProfile;
+        const name = authProfile?.username || profile?.name || null;
+        const ko = formatKO(msToNextUTCMidnight(now));
+        return (
+          <div className="daily-greet" role="status">
+            <div className="daily-greet-text">
+              <span className="daily-greet-when">{timeOfDayGreeting(now)}{(name || authLoading) ? "," : ""}</span>
+              {authLoading ? (
+                <span className="daily-greet-name is-loading">Loading…</span>
+              ) : name ? (
+                <span className="daily-greet-name">{name}</span>
+              ) : null}
+            </div>
+            <div className="daily-greet-ko" aria-label={`Next puzzle kicks off in ${ko}`}>
+              <span className="daily-greet-ko-lab">KO in</span>
+              <span className="daily-greet-ko-val mono">{ko}</span>
+            </div>
+          </div>
+        );
+      })()}
       <FormHero
         unbeaten={runStats.unbeaten}
         bestUnbeaten={runStats.bestUnbeaten}
