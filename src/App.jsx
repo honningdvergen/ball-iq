@@ -16,8 +16,16 @@ import VersionBanner from './VersionBanner.jsx';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
+import {
+  WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
+  getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
+  gradeWordleGuess, computeFootleStreak,
+} from './lib/wordle.js';
+import { FootleHero } from './components/FootleHero.jsx';
+import { MultiplayerCard } from './components/MultiplayerCard.jsx';
 import { ProfileScreen, FriendProfileScreen } from './screens/ProfileScreen.jsx';
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
+import { HomeScreen } from './screens/HomeScreen.jsx';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -7924,64 +7932,8 @@ const HIDDEN_STYLE = { display: "none" };
 // ─── FOOTBALL WORDLE ──────────────────────────────────────────────────────────
 // Surnames are stored uppercase, ASCII-only, 4–8 letters. Daily seed picks one
 // by index so every player gets the same answer until midnight local time.
-const WORDLE_PLAYERS = [
-  // 4 letters
-  "KANE","COLE","OWEN","MANE","PELE","BEST","INCE","RUSH","CASE","NEAL",
-  "BABB","KAHN","LAHM","OZIL","REUS","TONI","STAM","ZOLA","RAUL","XAVI",
-  "ALBA","JOTA","MATA","NANI","PARK","EVRA","DIAZ","RICE","SAKA","ISCO",
-  // 5 letters
-  "MESSI","SALAH","HENRY","TERRY","GIGGS","VIDIC","TEVEZ","KLOPP","BANKS","MOORE",
-  "HURST","ADAMS","PIRES","DIXON","KEANE","IRWIN","BRUCE","JONES","SMITH","KLOSE",
-  "NEUER","GOTZE","KROOS","TOTTI","NESTA","PIRLO","VIERI","PUYOL","PIQUE","RAMOS",
-  "VILLA","SILVA","PEDRO","ALVES","COSTA","EVANS","JAMES","VARDY","BRADY","KEOWN",
-  "POGBA","MARIA","FODEN","MOUNT","NUNEZ","ONANA","MENDY","DEPAY","TOURE","MIKEL",
-  // 6 letters
-  "NEYMAR","MBAPPE","MODRIC","BUFFON","ZIDANE","ROONEY","AGUERO","SUAREZ","WENGER","CRUYFF",
-  "PUSKAS","YASHIN","PETERS","HODDLE","WADDLE","WRIGHT","VIEIRA","HUGHES","ROBSON","KEEGAN",
-  "HANSEN","FOWLER","BERGER","MULLER","RIBERY","ROBBEN","PERSIE","GULLIT","KOEMAN","DAVIDS",
-  "BARESI","BAGGIO","VIALLI","HIERRO","TORRES","HAZARD","MORATA","DROGBA","MAHREZ","MILNER",
-  "DYBALA","ICARDI","KOUNDE","THIAGO","CHIESA","FOFANA","HALLER","LUKAKU","LLORIS","VARANE",
-  "DAVIES","HAKIMI","CAVANI","FALCAO","GALLAS","CRESPO",
-  // 7 letters
-  "RONALDO","HAALAND","BENZEMA","BECKHAM","GERRARD","LAMPARD","SHEARER","SCHOLES","FIRMINO","SHANKLY",
-  "EUSEBIO","PLATINI","LINEKER","CANTONA","WILKINS","BUTCHER","SHILTON","FLOWERS","TOSHACK","SOUNESS",
-  "KENNEDY","BALLACK","BOATENG","HUMMELS","SNIJDER","SEEDORF","MALDINI","GATTUSO","INZAGHI","MILITAO",
-  "ASENSIO","HERRERA","VERATTI","MERTENS","HIGUAIN","RAFINHA","CARRICK","ALISSON","EDERSON","MAGUIRE",
-  "RUDIGER","KIMMICH","DEMBELE","ENDRICK","WALCOTT",
-  // 8 letters
-  "CASILLAS","MOURINHO","FERGUSON","DALGLISH","MARADONA","CHARLTON","BERGKAMP","CLEMENCE","REDKNAPP","MATTHAUS",
-  "BIERHOFF","PODOLSKI","RIJKAARD","BUSQUETS","FABREGAS","COUTINHO","COURTOIS","JORGINHO","VINICIUS","GREALISH",
-  "GVARDIOL","CASEMIRO","VALVERDE","MARTINEZ","LINDELOF","SMALLING","STERLING","MAKELELE","MAZRAOUI","VLAHOVIC",
-  "HEIGHWAY","CAMPBELL",
-];
-
-// Day index from local-midnight epoch — same value for everyone in the same UTC
-// day. Using getTime() / TIMINGS.DAY_MS means the puzzle rolls over at UTC midnight,
-// which keeps "everyone gets the same player" simple across timezones.
-function getWordleDayIndex() { return Math.floor(Date.now() / TIMINGS.DAY_MS); }
-
-// Stride spreads length groups across the schedule (WORDLE_PLAYERS is sorted
-// by length, so plain `dayIndex % length` clustered ~30+ same-length days in
-// a row). gcd(WORDLE_STRIDE, WORDLE_PLAYERS.length) MUST equal 1 — verify
-// when adding entries.
-const WORDLE_ANCHOR_DAY = 20577;
-const WORDLE_ANCHOR_IDX = 129;
-const WORDLE_STRIDE = 131;
-
-// Stride-formula lookup for a specific day index. Pulled out of
-// getWordleAnswer() so anywhere that needs the puzzle for a non-today date
-// (e.g. PuzzleReviewScreen reviewing an arbitrary date) shares one source
-// of truth. The plain `dayIndex % len` formula MUST NOT be used — it
-// computes a different answer than the active game uses for the same day.
-function getWordleAnswerForDayIndex(dayIndex) {
-  const offset = (dayIndex - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
-  const len = WORDLE_PLAYERS.length;
-  const idx = ((WORDLE_ANCHOR_IDX + offset) % len + len) % len;
-  return WORDLE_PLAYERS[idx];
-}
-function getWordleAnswer() {
-  return getWordleAnswerForDayIndex(getWordleDayIndex());
-}
+// WORDLE_PLAYERS + anchor constants + getWordleDayIndex/AnswerForDayIndex/
+// Answer extracted to ./lib/wordle.js (Sprint #17 Stage 3).
 function dateToDateKey(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
@@ -8027,43 +7979,8 @@ function computePast7DaysActivity() {
 // Bounds the walk at 366 days as a defensive cap. Cross-device note: relies
 // on the localStorage cache populated by useAuth.jsx's wordleState merge at
 // login; first-load on a fresh device may briefly under-count until sync.
-function computeFootleStreak(today) {
-  let streak = 0;
-  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  for (let i = 0; i < 366; i++) {
-    try {
-      const raw = localStorage.getItem(`biq_wordle_${dateToYMD(cursor)}`);
-      if (!raw) break;
-      const p = JSON.parse(raw);
-      if (p?.status !== "won") break;
-    } catch { break; }
-    streak++;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  return streak;
-}
-
-// Standard Wordle two-pass colouring: greens first (locking those answer slots),
-// then yellows that consume remaining-letter counts. This is what stops a guess
-// of "OOOO" against "BOAT" from showing 4 yellows for the single O.
-function gradeWordleGuess(guess, answer) {
-  const n = answer.length;
-  const result = new Array(n).fill("grey");
-  const remaining = [];
-  for (let i = 0; i < n; i++) {
-    if (guess[i] === answer[i]) result[i] = "green";
-    else remaining.push(answer[i]);
-  }
-  for (let i = 0; i < n; i++) {
-    if (result[i] === "green") continue;
-    const idx = remaining.indexOf(guess[i]);
-    if (idx !== -1) {
-      result[i] = "yellow";
-      remaining.splice(idx, 1);
-    }
-  }
-  return result;
-}
+// computeFootleStreak + gradeWordleGuess extracted to ./lib/wordle.js
+// (Sprint #17 Stage 3).
 
 // Aggregate per-letter keyboard state across all guesses. Green beats yellow
 // beats grey beats unseen — once green, never downgraded.
@@ -8359,126 +8276,6 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   );
 });
 
-// ─── FOOTLE HERO ──────────────────────────────────────────────────────────────
-// Home-tab daily-puzzle visual centerpiece (D1 layout). Morning state shows an
-// empty tile preview + Play CTA; evening state (won/lost) shows the user's
-// actual guess pattern as a colored mini-grid + score + streak (Path A: no
-// solve-time in v1.0) + Review/Share CTAs. State is read fresh from
-// localStorage on every render so the hero updates immediately after the
-// user completes the puzzle and navigates home (parent re-renders on screen
-// change, hero re-reads). Memoizes on ws.kind so the heavier grade/share
-// computation only runs when the status changes.
-const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
-  const ws = readWordleTodayStatus();
-  const isWon = ws.kind === "won";
-  const isLost = ws.kind === "lost";
-  const isDone = isWon || isLost;
-
-  const dateKey = getWordleDateKey();
-  const today = useMemo(() => new Date(), [dateKey]);
-  const streak = useMemo(() => isWon ? computeFootleStreak(today) : 0, [isWon, today, dateKey]);
-
-  // Today's answer length is needed for the morning grid preview's column
-  // count (G1 refinement) — getWordleAnswer is pure/deterministic so calling
-  // it in both states is cheap. Guesses + grades only computed in terminal
-  // states since they require the localStorage read + grading pass.
-  const answer = useMemo(() => getWordleAnswer(), [dateKey]);
-  const { guesses, grades } = useMemo(() => {
-    if (!isDone) return { guesses: [], grades: [] };
-    let gs = [];
-    try {
-      const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
-      if (raw) {
-        const p = JSON.parse(raw);
-        if (Array.isArray(p?.guesses)) gs = p.guesses;
-      }
-    } catch {}
-    const gr = gs.map(g => gradeWordleGuess(g, answer));
-    return { guesses: gs, grades: gr };
-  }, [isDone, dateKey, answer]);
-
-  const onShare = useCallback(async () => {
-    if (!isDone) return;
-    const grid = grades.map(row =>
-      row.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")
-    ).join("\n");
-    const score = isWon ? `${guesses.length}/6` : "X/6";
-    const scoreLine = isWon && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
-    const textFallback = `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
-    const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
-    await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: isLost,
-    }, { onToast: () => {}, textFallback });
-  }, [isDone, isWon, isLost, guesses, grades, streak, today]);
-
-  // I2: morning grid is fixed 5×6 (Wordle-style teaser, identity over
-  // accuracy — the actual answer length leaks in the subtitle anyway).
-  // Evening grid uses today's actual answer length (4-8 cols) with 6 rows
-  // padded as needed. Eyebrow dropped (G3a) — wordmark + score line carry
-  // the identity; "daily" stays in the morning subtitle.
-  const cols = answer.length || 5;
-  if (!isDone) {
-    const inProgress = ws.kind === "in-progress";
-    return (
-      <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
-        <div className="fh-body">
-          <div className="fh-title">Footle</div>
-          <div className="fh-sub">
-            {cols} letters · 6 guesses · daily<br />
-            Surname of a footballer or manager
-          </div>
-          <div className="fh-cta-row">
-            <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
-          </div>
-        </div>
-        <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {Array.from({ length: 6 }).map((_, r) => (
-            <div className="fh-row" key={r}>
-              {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
-            </div>
-          ))}
-        </div>
-      </button>
-    );
-  }
-
-  // Evening state — solved or lost. Grid pads to 6 rows so the proportion
-  // matches morning regardless of how many guesses the user actually used.
-  const padRows = Math.max(0, 6 - grades.length);
-  return (
-    <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} of 6` : "Footle — missed today"}>
-      <div className="fh-body">
-        <div className="fh-title">{isWon ? "Solved" : "Missed"}</div>
-        <div className="fh-score">
-          {isWon ? <>in <strong>{guesses.length}</strong>/6</> : <><strong>X</strong>/6</>}
-        </div>
-        {isWon && streak > 0 && (
-          <div className="fh-sub">🔥 {streak}-day streak</div>
-        )}
-        {isLost && (
-          <div className="fh-sub">Better luck tomorrow.</div>
-        )}
-        <div className="fh-cta-row">
-          <button className="fh-cta" onClick={() => onReview && onReview(ws)} aria-label="Review today's Footle">Review</button>
-          <button className="fh-cta fh-cta-secondary" onClick={onShare} aria-label="Share today's Footle">↗︎ Share</button>
-        </div>
-      </div>
-      <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
-        {grades.map((row, r) => (
-          <div className="fh-row" key={r}>
-            {row.map((c, i) => <div key={i} className={`fh-tile fh-tile-${c}`} />)}
-          </div>
-        ))}
-        {Array.from({ length: padRows }).map((_, r) => (
-          <div className="fh-row" key={`pad-${r}`}>
-            {Array.from({ length: cols }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-});
-
 // ─── MULTIPLAYER FEATURED CARD (Sprint #12) ─────────────────────────────────
 // Replaces the old .util-rail.hero-online rail. Two primary CTAs (Online +
 // Local) and a corner Invite pill. Online checks guest state (sign-in toast
@@ -8488,58 +8285,8 @@ const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview }) {
 // Local CTA hides at desktop sizes via the existing .diff-option-local rule
 // in the @media (min-width: 1024px) block (extended in Sprint #12 to also
 // hit .mp-card-cta.local) — desktop has no equivalent pass-and-play gesture.
-const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnline, onLocal, showToast }) {
-  const onInvite = useCallback(async (e) => {
-    // Stop the click from reaching the card-level handlers (none here, but
-    // future-proof against being wrapped in a tappable parent).
-    e?.stopPropagation();
-    const url = (typeof window !== 'undefined' && window.location?.origin) || 'https://balliq.app';
-    const shareData = {
-      title: APP_NAME,
-      text: `Play ${APP_NAME} with me — daily football trivia + multiplayer.`,
-      url,
-    };
-    try {
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share(shareData);
-        return;
-      }
-    } catch (err) {
-      // User-cancelled share is reported as AbortError on iOS Safari — silent.
-      if (err && err.name === 'AbortError') return;
-      // Otherwise fall through to clipboard fallback.
-    }
-    try {
-      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
-        showToast?.('🔗 Link copied — paste it to a friend');
-        return;
-      }
-    } catch {}
-    // Last-resort fallback: announce that we couldn't share. Should be very rare.
-    showToast?.(`Share ${url}`);
-  }, [showToast]);
-
-  return (
-    <div className="mp-card" role="group" aria-label="Multiplayer">
-      <button type="button" className="mp-card-invite" onClick={onInvite} aria-label="Invite a friend">
-        <Share size={13} strokeWidth={2.25} aria-hidden="true" />
-        <span>Invite</span>
-      </button>
-      <div className="mp-card-row">
-        <span className="mp-card-icon" aria-hidden="true">👥</span>
-        <div className="mp-card-titles">
-          <div className="mp-card-title">Play with Friends</div>
-          <div className="mp-card-sub">Race friends online or play locally.</div>
-        </div>
-      </div>
-      <div className="mp-card-ctas">
-        <button type="button" className="mp-card-cta" onClick={onOnline} aria-label="Play online multiplayer">Online</button>
-        <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play local multiplayer">Local</button>
-      </div>
-    </div>
-  );
-});
+//
+// FootleHero + MultiplayerCard extracted to ./components/ (Sprint #17 Stage 3).
 
 // ─── OFFLINE BANNER ───────────────────────────────────────────────────────────
 // Informational banner surfaced when the device is offline so users understand
@@ -10074,213 +9821,27 @@ function AppInner() {
         {/* ── HOME TAB ── */}
         {/* Home-screen tabs are always mounted together and toggled via display
             so React doesn't pay the remount cost on each tab switch and per-tab
-            state (calendar viewDate, profile emoji picker etc.) is preserved. */}
+            state (calendar viewDate, profile emoji picker etc.) is preserved.
+            Sprint #17 Stage 3 extracted Home into ./screens/HomeScreen.jsx. */}
         {!inGame && screen === "home" && (
-          <div className="screen tab-content" style={tab === "home" ? undefined : HIDDEN_STYLE}>
-            {/* Greeting row — Sprint #11 Stage 3: streak chip relocated here
-                (top-right of greeting), sub-text replaced with context-aware
-                nudges keyed on what's still actionable today. */}
-            {(() => {
-              const homeAuthLoading = !!user && !authProfile;
-              const homeLocalName = (profile?.name || "").trim();
-              const homeHasUsername = !!authProfile?.username && authProfile.username !== "Player";
-              const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || homeLocalName.toLowerCase() === "player");
-              // Brand-new guest installs (no signed-in user, no local name)
-              // used to flash "Good morning, Guest" before auth resolved. Drop
-              // the placeholder and the trailing comma when no real name is
-              // available — leaves "Good morning" alone until the user sets
-              // a name (CTA below offers the affordance).
-              const homeDisplayName = authProfile?.username || profile?.name || null;
-              const homeGreetingBase = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; })();
-              const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
-              const ws = readWordleTodayStatus();
-              const footleDone = ws.kind === "won" || ws.kind === "lost";
-              // Sprint #12: when both daily rituals are complete, omit the
-              // subtext entirely — the Daily zone's "2/2 done" status carries
-              // the celebration, the greeting line stays calm.
-              const subtext = footleDone && dailyDone ? null
-                : footleDone                          ? "Today's 7 is still open."
-                : dailyDone                           ? "Today's Footle is still open."
-                :                                       "Daily puzzle is up.";
-              return (
-                <div style={{padding:"6px 0 8px"}}>
-                  <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-                    <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
-                    {homeAuthLoading ? (
-                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</div>
-                    ) : homeDisplayName ? (
-                      <div style={{fontSize:15, color:"var(--t1)", fontWeight:700}}>
-                        {homeDisplayName}
-                      </div>
-                    ) : null}
-                    {loginStreak > 0 && (
-                      <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} style={{marginLeft:"auto"}} aria-label={`${loginStreak}-day streak`}>
-                        🔥 {loginStreak}
-                      </span>
-                    )}
-                  </div>
-                  {subtext && (
-                    <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
-                      {subtext}
-                    </div>
-                  )}
-                  {homeShowCTA && (
-                    <button
-                      onClick={() => { setTab("profile"); setNameEditNonce(n => n + 1); }}
-                      style={{background:"none",border:"none",padding:"4px 0 0",fontSize:12,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"inherit"}}
-                      aria-label="Set your name"
-                    >
-                      ✏️ Tap to set your name
-                    </button>
-                  )}
-                </div>
-              );
-            })()}
-
-            {/* ── DAILY ZONE (Sprint #12) ──
-                Wraps Footle hero + Today's 7 in a tinted container with a
-                shared "DAILY" eyebrow + X/2 progress indicator. The cards
-                inside keep their distinct identities; the zone just frames
-                them as a coupled unit so they don't read as two unrelated
-                rails. */}
-            {(() => {
-              const ws = readWordleTodayStatus();
-              const footleDone = ws.kind === "won" || ws.kind === "lost";
-              const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0);
-              const allDone = doneCount === 2;
-              return (
-                <div className="daily-zone" role="group" aria-label="Daily">
-                  <div className="daily-zone-head">
-                    <span className="daily-zone-eyebrow">Daily</span>
-                    <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
-                      {allDone ? "2/2 done" : `${doneCount}/2 today`}
-                    </span>
-                  </div>
-                  <FootleHero
-                    onPlay={() => setScreen("wordle")}
-                    onReview={(wsArg) => viewPuzzleStatus(wsArg)}
-                  />
-                  <button
-                    className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
-                    onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
-                    aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
-                  >
-                    <span className="t7s-icon" aria-hidden="true">📋</span>
-                    <span className="t7s-body">
-                      <span className="t7s-title">Today's 7</span>
-                      <span className="t7s-sub">
-                        {dailyDone
-                          ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                          : <>7 questions · ~3 min</>}
-                      </span>
-                    </span>
-                    <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
-                  </button>
-                </div>
-              );
-            })()}
-
-            {/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
-                Two primary CTAs route directly: Online checks guest state
-                and either toasts a sign-in prompt or jumps to the online
-                stage; Local enters pass-and-play immediately. Invite pill
-                handles its own Share/clipboard flow. */}
-            <MultiplayerCard
-              onOnline={() => {
-                if (!user || isGuest) {
-                  showToast("🔐 Sign in to play Online Multiplayer");
-                  return;
-                }
-                setScreen("online-stage1");
-              }}
-              onLocal={() => startMode("local")}
+          <div style={tab === "home" ? undefined : HIDDEN_STYLE}>
+            <HomeScreen
+              profile={profile}
+              loginStreak={loginStreak}
+              streakPulsing={streakPulsing}
+              dailyDone={dailyDone}
+              dailyScore={dailyScore}
+              nameEditNonce={nameEditNonce}
+              setTab={setTab}
+              setNameEditNonce={setNameEditNonce}
+              setScreen={setScreen}
               showToast={showToast}
+              viewPuzzleStatus={viewPuzzleStatus}
+              viewDailyScore={viewDailyScore}
+              startMode={startMode}
+              setShowDiffPicker={setShowDiffPicker}
+              shareCard={shareCard}
             />
-
-            {/* ── MORE MODES ── */}
-            {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
-                for a slightly bolder line that holds at the 20px size in
-                the 36px rounded-square chip. Color = var(--accent) for a
-                consistent green-on-dark identity across the grid.
-
-                Sprint #12: the standalone WC2026 rail card is gone — World
-                Cup now appears as the 7th tile in this grid with full-row
-                span + EVENT badge + gold "Nd" countdown chip. */}
-            <div className="home-section-title">More modes</div>
-            <div className="play-grid">
-              {[
-                { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
-                { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
-                { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
-                { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
-                { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
-                { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
-              ].map(({ key, Icon, name, desc, onTap }) => (
-                <button
-                  key={key}
-                  className="play-card"
-                  onClick={onTap || (() => startMode(key))}
-                >
-                  <span className="play-card-icon">
-                    <Icon size={20} strokeWidth={2.25} color="var(--accent)" aria-hidden="true" />
-                  </span>
-                  <span className="play-card-body">
-                    <span className="play-card-name">{name}</span>
-                    <span className="play-card-desc">{desc}</span>
-                  </span>
-                </button>
-              ))}
-              {/* World Cup 2026 — 7th tile, full-row event variant */}
-              {(() => {
-                // Pin both sides to the UTC frame so Math.floor(t/86400000)
-                // gives consistent days-to-go in any timezone. Previous
-                // mixed-frame version (local-midnight kickoff vs UTC-frame
-                // floor) produced 33-vs-34 off-by-one in TZs east of UTC.
-                const kickoff = new Date(Date.UTC(2026, 5, 11));
-                const msPerDay = TIMINGS.DAY_MS;
-                const dayNow = Math.floor(Date.now() / msPerDay);
-                const dayKick = Math.floor(kickoff.getTime() / msPerDay);
-                const daysTo = dayKick - dayNow;
-                const started = daysTo <= 0;
-                return (
-                  <button
-                    className="play-card wc-tile"
-                    onClick={() => startMode("wc2026")}
-                    aria-label={started ? "World Cup 2026 — tap to play the tournament quiz" : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}
-                  >
-                    <span className="play-card-icon wc-tile-icon">
-                      <Trophy size={20} strokeWidth={2.25} color="#FFC800" aria-hidden="true" />
-                    </span>
-                    <span className="play-card-body wc-tile-body">
-                      <span className="play-card-name">World Cup 2026</span>
-                      <span className="play-card-desc">Tournament quiz</span>
-                    </span>
-                    <span className="wc-tile-meta" aria-hidden="true">
-                      <span className="wc-tile-badge">★ Event</span>
-                      {!started && <span className="wc-tile-chip">{daysTo}d</span>}
-                      {started && <span className="wc-tile-chip wc-tile-chip-live">LIVE</span>}
-                    </span>
-                  </button>
-                );
-              })()}
-            </div>
-            {/* Coming-Soon shelf — teaser cards for modes that aren't ready
-                yet. True or False is intentionally NOT surfaced here; its
-                runtime logic stays in place but the entry point remains
-                hidden. Section auto-hides if the array is empty. */}
-            {(() => {
-              const COMING_SOON = [
-                { key:"tikitakatoe", icon:"🎯",  name:"Tiki Taka Toe",    desc:"Tic-tac-toe with football connections" },
-                { key:"guessplayer", icon:"🔍",  name:"Guess the Player", desc:"Identify the mystery player from clues" },
-                { key:"clubquiz",    icon:"🏟️", name:"Club Quiz",         desc:"Deep-dive trivia for your favourite club" },
-              ];
-              if (COMING_SOON.length === 0) return null;
-              return (
-                <div className="coming-soon-list">
-                  Coming soon: {COMING_SOON.map(m => m.name).join(' · ')}
-                </div>
-              );
-            })()}
           </div>
         )}
 
