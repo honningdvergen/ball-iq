@@ -1470,16 +1470,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .week-chip.is-perfect{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);color:var(--accent);}
 .week-chip.is-perfect strong{color:var(--accent);}
 .light .week-chip.is-perfect{border-color:rgba(52,168,83,0.40);}
-/* ── DAILY-TAB COMPACT ACTION ROW (Today's 7 + Puzzle pills) ── */
-.today-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px;}
-.today-action{display:flex;flex-direction:column;align-items:flex-start;padding:12px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-.today-action:hover{background:var(--s2);border-color:var(--border2);}
-.today-action:active{transform:scale(0.98);}
-.today-action.is-done{border-color:rgba(34,197,94,0.30);background:linear-gradient(180deg,rgba(34,197,94,0.04) 0%,var(--s1) 100%);}
-.ta-title{font-size:10px;font-weight:800;letter-spacing:0.10em;color:var(--t3);text-transform:uppercase;}
-.ta-status{font-size:14px;font-weight:700;color:var(--t1);margin-top:6px;line-height:1.1;}
-.today-action.is-done .ta-status{color:var(--accent);}
-.light .today-action.is-done{background:linear-gradient(180deg,rgba(52,168,83,0.06) 0%,var(--s1) 100%);}
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
