@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v4';
+const CACHE_VERSION = 'balliq-v5';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
