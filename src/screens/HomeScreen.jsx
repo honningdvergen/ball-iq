@@ -21,7 +21,6 @@ export function HomeScreen({
   streakPulsing,
   dailyDone,
   dailyScore,
-  nameEditNonce: _nameEditNonce, // unused but reserved for future re-renders if needed
   setTab,
   setNameEditNonce,
   setScreen,

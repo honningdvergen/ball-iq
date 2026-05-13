@@ -9831,7 +9831,6 @@ function AppInner() {
               streakPulsing={streakPulsing}
               dailyDone={dailyDone}
               dailyScore={dailyScore}
-              nameEditNonce={nameEditNonce}
               setTab={setTab}
               setNameEditNonce={setNameEditNonce}
               setScreen={setScreen}
