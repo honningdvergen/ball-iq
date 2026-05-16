@@ -2235,6 +2235,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
       box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 0 1px rgba(88,204,2,0.35), 0 4px 24px rgba(88,204,2,0.12);
     }
   }
+  /* Sprint #23 U1: modal-box scales up at desktop. 320px reads as a
+     postage stamp on 1920px viewports — overlay is fixed:inset:0 so the
+     modal centers against the full viewport, not the .app container. */
+  .modal-box { max-width: 440px; }
+  /* Sprint #23 U1: streak-pulse dots relax at desktop. 9px cap reads
+     as microscopic in a 880px container — bumping to 14px keeps the
+     7-day strip legible without changing mobile (max-width is upper
+     bound, dots stay flex:1 1 auto so they still shrink on narrow
+     parents). */
+  .streak-pulse-dot { max-width: 14px; }
 }
 @media (min-width: 1280px) {
   /* Widen the main column at >= 1280px and anchor it 40px from the
