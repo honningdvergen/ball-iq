@@ -1424,7 +1424,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px 12px;margin-bottom:2px;border-bottom:1px solid var(--border);}
 .daily-greet-text{display:flex;align-items:baseline;gap:6px;min-width:0;flex:1;}
 .daily-greet-when{font-size:13px;color:var(--t2);font-weight:600;}
-.daily-greet-name{font-size:14px;color:var(--t1);font-weight:700;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.daily-greet-name{font-size:14px;color:var(--t1);font-weight:700;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:70px;}
 .daily-greet-name.is-loading{opacity:0.4;animation:profileSkeletonPulse 1.4s ease-in-out infinite;font-weight:600;color:var(--t2);}
 .daily-greet-ko{display:inline-flex;align-items:baseline;gap:5px;padding:4px 8px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.30);border-radius:6px;flex-shrink:0;}
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
@@ -10138,26 +10138,43 @@ function AppInner() {
 
 function AppGate() {
   const { user, isGuest, loading } = useAuth();
+  // Sprint #23 U2: splash stays mounted for one 220ms beat after
+  // loading→false, fading out while AppInner mounts behind it (the
+  // splash is position:fixed inset:0 so AppInner renders underneath).
+  // Hides the instant splash→app swap that read as a stutter, and
+  // the many on-mount useEffects of AppInner settle while the user
+  // is still looking at the fading splash. prefers-reduced-motion
+  // collapses this to an instant unmount.
+  const [splashMounted, setSplashMounted] = useState(true);
+  useEffect(() => {
+    if (loading) { setSplashMounted(true); return; }
+    const reduced = typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+    if (reduced) { setSplashMounted(false); return; }
+    const id = setTimeout(() => setSplashMounted(false), 240);
+    return () => clearTimeout(id);
+  }, [loading]);
 
-  if (loading) {
-    // Render the SAME branded splash markup that index.html injects into #root
-    // before React mounts. Reusing the .biq-splash classes (defined inline in
-    // index.html's <style>) means the moment React replaces the pre-mount DOM,
-    // the user sees an identical wordmark + animated bar — no visible swap,
-    // no flash to a different "Loading..." treatment.
-    return (
-      <div className="biq-splash" aria-label={`Loading ${APP_NAME}`}>
-        <div className="biq-splash-mark">Ball <em>IQ</em></div>
-        <div className="biq-splash-dot"></div>
-      </div>
-    );
-  }
+  // Render the SAME branded splash markup that index.html injects into #root
+  // before React mounts. Reusing the .biq-splash classes (defined inline in
+  // index.html's <style>) means the moment React replaces the pre-mount DOM,
+  // the user sees an identical wordmark + animated bar — no visible swap.
+  const splash = splashMounted ? (
+    <div className={`biq-splash${!loading ? ' is-leaving' : ''}`} aria-label={`Loading ${APP_NAME}`}>
+      <div className="biq-splash-mark">Ball <em>IQ</em></div>
+      <div className="biq-splash-dot"></div>
+    </div>
+  ) : null;
 
-  if (!user && !isGuest) {
-    return <Login />;
-  }
+  if (loading) return splash;
 
-  return <AppInner />;
+  return (
+    <>
+      {splash}
+      {(!user && !isGuest) ? <Login /> : <AppInner />}
+    </>
+  );
 }
 
 export default function App() {
