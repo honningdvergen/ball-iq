@@ -25,6 +25,24 @@ function timeOfDayGreeting(d = new Date()) {
   return "Good evening";
 }
 
+// Sprint #24 V2 helpers — the tactics card subtitle + form-row right
+// label encode 5 edge cases the brief calls out: zero history, mid-
+// streak, at PB, beyond PB, plus the single-day bootstrap. Keep them
+// pure functions so the JSX stays readable and these are unit-testable
+// in isolation if/when needed.
+function tacticsSubtitle(unbeaten, bestUnbeaten) {
+  if (unbeaten === 0) return "Start your run today";
+  if (unbeaten > bestUnbeaten) return "Unbeaten · new PB";
+  if (unbeaten === bestUnbeaten) return "Unbeaten · at PB";
+  return `Unbeaten · PB ${bestUnbeaten}`;
+}
+function tacticsPbDistance(unbeaten, bestUnbeaten) {
+  if (unbeaten === 0 || bestUnbeaten === 0) return "";
+  if (unbeaten > bestUnbeaten) return `+${unbeaten - bestUnbeaten} over PB`;
+  if (unbeaten === bestUnbeaten) return "at PB";
+  return `${bestUnbeaten - unbeaten} to PB`;
+}
+
 function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHistory }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
@@ -217,9 +235,42 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
         );
       })()}
 
-      {/* Sprint #24 v4 — tactics card hero + restructured fixtures list
-          land in stages V2 + V3. Render shells are stubbed in Stage 1
-          so the screen isn't blank between commits. */}
+      {/* Sprint #24 V2: Tactics card hero. Chalkboard navy panel with
+          MATCHDAY tag (top-left, green dot), vibrant orange streak
+          number (top-right, proportional Inter), and the 14-day form
+          strip running across the bottom of the same card. All hero
+          content lives inside this single container — one unified zone,
+          not a stack of co-equal elements like v3's FormHero. */}
+      <div className="tactics-card" role="status" aria-label={`${runStats.unbeaten}-match unbeaten run, personal best ${runStats.bestUnbeaten}`}>
+        <div className="tactics-head">
+          <div className="tactics-tag">
+            {runStats.unbeaten > 0 ? `Matchday ${runStats.unbeaten}` : "Daily"}
+          </div>
+          <div className="tactics-num-wrap">
+            <div className="tactics-num">{runStats.unbeaten}</div>
+            <div className="tactics-num-l">{tacticsSubtitle(runStats.unbeaten, runStats.bestUnbeaten)}</div>
+          </div>
+        </div>
+        <div className="tactics-divider" />
+        <div className="tactics-form-row">
+          <span>Form &nbsp;<b>last 14</b></span>
+          <span>{tacticsPbDistance(runStats.unbeaten, runStats.bestUnbeaten)}</span>
+        </div>
+        <div className="tactics-strip" role="group" aria-label="Form — last 14 matches">
+          {form14.map((d) => (
+            <div
+              key={d.ymd}
+              className={`tactics-cell ${d.cls}${d.isToday ? " is-today" : ""}`}
+              aria-label={d.aria}
+              title={d.aria}
+            />
+          ))}
+        </div>
+        <div className="tactics-strip-l">
+          <span>2 wk ago</span>
+          <span>today</span>
+        </div>
+      </div>
 
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>

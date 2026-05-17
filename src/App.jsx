@@ -1452,7 +1452,32 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
 .daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
-/* ── DAILY v4 TACTICS CARD + FIXTURES (Sprint #24) — added in V2/V3 ── */
+/* ── DAILY v4 TACTICS CARD (Sprint #24 Stage 2) ──
+   Chalkboard navy panel with subtle dotted grid texture overlay.
+   MATCHDAY tag top-left, vibrant orange streak top-right (proportional
+   Inter — explicitly NOT mono / tabular-nums, that was the v3->v4
+   diagnosis). Form strip lives INSIDE the card as one unified hero. */
+.tactics-card{position:relative;background:repeating-linear-gradient(0deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),linear-gradient(180deg,#102836 0%,#0B1F2C 100%);border:1px solid rgba(52,211,153,0.16);border-radius:16px;padding:14px 16px 16px;margin:4px 0 14px;}
+.tactics-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(52,211,153,0.30);border-radius:999px;background:rgba(52,211,153,0.07);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:#34D399;flex-shrink:0;}
+.tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 6px #34D399;}
+.tactics-num-wrap{text-align:right;min-width:0;}
+/* CRITICAL: proportional Inter, NOT JetBrains Mono, NOT tabular-nums.
+   Round 5 diagnosis identified the mono/tabular treatment as the
+   "techy" feel Alex reacted against — do not regress to mono here. */
+.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:#FB923C;font-feature-settings:'lnum';}
+.tactics-num-l{font-size:9.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t2);margin-top:4px;white-space:nowrap;}
+.tactics-divider{height:1px;background:rgba(52,211,153,0.18);margin:4px 0 12px;}
+.tactics-form-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:0.04em;}
+.tactics-form-row b{color:var(--text);font-weight:800;}
+.tactics-strip{display:flex;gap:3px;}
+.tactics-cell{flex:1 1 0;aspect-ratio:1/1;min-width:5px;max-width:22px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);box-sizing:border-box;}
+.tactics-cell.W{background:var(--accent);border-color:var(--accent);}
+.tactics-cell.D{background:var(--gold);border-color:var(--gold);}
+.tactics-cell.L{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06);}
+.tactics-cell.is-today{box-shadow:0 0 0 2px rgba(255,255,255,0.22);}
+.tactics-cell.is-today.L{background:#FB923C;border-color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,0.45);}
+.tactics-strip-l{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-top:10px;}
 
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
