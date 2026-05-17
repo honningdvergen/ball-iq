@@ -1452,74 +1452,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
 .daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
-/* ── STATS FOOTER (Sprint #16 Stage 5) ── */
-.stats-footer{text-align:center;font-size:11px;color:var(--t3);font-weight:600;letter-spacing:0.02em;padding:6px 0 14px;margin-top:-4px;}
-.stats-footer strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--t1);font-weight:800;}
-.stats-footer .sf-sep{margin:0 8px;color:var(--t3);opacity:0.6;}
+/* ── DAILY v4 TACTICS CARD + FIXTURES (Sprint #24) — added in V2/V3 ── */
 
-/* ── MATCHDAY LIST (Sprint #16 Stage 4) ── */
-.md-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.18em;color:var(--t3);text-transform:uppercase;margin:4px 2px 8px;}
-.md-list{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
-.md-row{display:grid;grid-template-columns:64px 1fr 30px;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid var(--border);}
-.md-row:last-child{border-bottom:0;}
-.md-row.is-today{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,transparent 100%);}
-.md-meta{display:flex;flex-direction:column;gap:1px;min-width:0;}
-.md-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:10px;font-weight:800;color:var(--t3);letter-spacing:0.04em;}
-.md-row.is-today .md-num{color:var(--accent);}
-.md-day{font-size:12px;font-weight:700;color:var(--t1);line-height:1.1;}
-.md-row.is-today .md-day{color:var(--accent);}
-.md-date{font-size:9.5px;color:var(--t3);font-weight:600;}
-.md-modes{display:flex;flex-direction:column;gap:3px;min-width:0;}
-.md-mode{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:6px;font-size:11px;}
-.md-mode-dot{width:7px;height:7px;border-radius:50%;}
-.md-mode.f .md-mode-dot{background:#7C3AED;}
-.md-mode.t .md-mode-dot{background:#FF6A00;}
-.md-mode.miss .md-mode-dot{background:var(--s3);}
-.md-mode-name{font-size:10.5px;font-weight:700;color:var(--t2);}
-.md-mode.miss .md-mode-name{color:var(--t3);}
-.md-mode-res{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:800;color:var(--t1);}
-.md-mode.miss .md-mode-res{color:var(--t3);font-weight:600;}
-.md-wdl{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;justify-self:end;}
-.md-wdl.W{background:var(--accent);color:#0a1a00;}
-.md-wdl.D{background:var(--gold);color:#2a1d00;}
-.md-wdl.L{background:var(--red);color:#fff;}
-.md-wdl.pending{background:rgba(255,255,255,0.04);color:var(--t3);font-size:14px;font-weight:700;}
-
-/* ── UP NEXT CARD (Sprint #16 Stage 3) ── */
-.up-next{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,197,94,0.10) 0%,rgba(34,197,94,0.02) 100%);border:1px solid rgba(34,197,94,0.24);border-radius:12px;margin:0 0 12px;}
-.up-next-left{display:flex;flex-direction:column;gap:3px;min-width:0;}
-.up-next-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
-.up-next-title{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
-.up-next-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
-.up-next-ko-lab{font-size:9px;font-weight:800;letter-spacing:0.14em;color:var(--t3);text-transform:uppercase;}
-.up-next-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-0.02em;}
-
-/* ── FORM HERO (Daily v3 centerpiece, Sprint #16) ── */
-.form-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 18px 18px;background:var(--accent-dim);border:1px solid rgba(34,197,94,0.22);border-radius:16px;margin:0 0 12px;}
-.light .form-hero{border-color:rgba(52,168,83,0.30);}
-.form-hero-num{display:flex;align-items:baseline;gap:10px;}
-.form-hero-num .num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:64px;font-weight:900;color:var(--t1);line-height:1;letter-spacing:-0.03em;}
-.form-hero-num .lab{font-size:12px;font-weight:800;letter-spacing:0.12em;color:var(--t2);text-transform:uppercase;}
-.form-hero-sub{font-size:12px;color:var(--t3);font-weight:600;margin-top:6px;line-height:1.3;}
-.form-hero-sub.is-pb{color:var(--gold);font-weight:800;letter-spacing:0.02em;}
-.form-hero-chips{display:flex;gap:8px;margin-top:14px;width:100%;}
-.run-chip{flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--s1);border:1px solid var(--border);border-radius:10px;}
-.run-chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.run-chip.f .run-chip-dot{background:#7C3AED;}
-.run-chip.t .run-chip-dot{background:#FF6A00;}
-.run-chip-lab{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:0.04em;line-height:1.1;flex:1;text-align:left;}
-.run-chip-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-0.02em;}
-.run-chip.f .run-chip-val{color:#c4a8ff;}
-.run-chip.t .run-chip-val{color:#ffb675;}
-.form-strip-wrap{width:100%;margin-top:14px;}
-.form-strip{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;}
-.form-cell{aspect-ratio:1/1;border-radius:4px;background:var(--s2);}
-.form-cell.W{background:var(--accent);}
-.form-cell.D-f{background:#7C3AED;}
-.form-cell.D-t{background:#FF6A00;}
-.form-cell.L{background:var(--s2);border:1px solid var(--border);}
-.form-cell.is-today{box-shadow:0 0 0 2px rgba(255,255,255,0.18);}
-.form-strip-axis{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--t3);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0 2px;}
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
@@ -9887,10 +9821,6 @@ function AppInner() {
           <div className="tab-pane" style={tab === "daily" ? undefined : HIDDEN_STYLE}>
             <DailyTabScreen
               profile={profile}
-              stats={stats}
-              dailyDone={dailyDone}
-              dailyScore={dailyScore}
-              onSuggest={suggestMode}
               xp={xp}
               shieldActive={shieldActive}
               onUseShield={useShield}

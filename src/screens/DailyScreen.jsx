@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../useAuth.jsx";
-import { APP_NAME } from "../lib/scoring.js";
 import { dateToYMD } from "../lib/date.js";
 
 // Sprint #16 helper — milliseconds until next UTC midnight. Used by the
-// greeting strip's "KO in Xh Ym" chip and the Up next card. UTC midnight
-// is when daily puzzles roll over server-side; deriving from the same
-// frame keeps client + server in agreement across timezones.
+// greeting strip's "KO in Xh Ym" chip. UTC midnight is when daily puzzles
+// roll over server-side; deriving from the same frame keeps client +
+// server in agreement across timezones.
 function msToNextUTCMidnight(now = new Date()) {
   const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0));
   return next.getTime() - now.getTime();
@@ -26,77 +25,17 @@ function timeOfDayGreeting(d = new Date()) {
   return "Good evening";
 }
 
-// FormHero — Sprint #16 Daily v3 centerpiece. Replaces StreakHero v2.
-// Reads three derived quantities from the parent and renders:
-//   1. Overall unbeaten run + best run sub-line (combined, any mode played)
-//   2. Two per-mode streak chips (Footle solve run · T7 done run)
-//   3. Form strip — last 14 days W/D/L with mode-mirroring colors:
-//        W (both played) = accent green
-//        D (Footle only) = purple
-//        D (T7 only)     = orange
-//        L (neither)     = neutral
-function FormHero({ unbeaten, bestUnbeaten, footleRun, t7Run, form14 }) {
-  const distance = Math.max(0, bestUnbeaten - unbeaten);
-  const atPB = unbeaten > 0 && unbeaten >= bestUnbeaten;
-  const subLine = bestUnbeaten === 0
-    ? null
-    : atPB
-      ? `Best run: ${bestUnbeaten} — personal best!`
-      : `Best run: ${bestUnbeaten} — ${distance} to go`;
-  return (
-    <div className="form-hero" role="status" aria-label={`${unbeaten}-match unbeaten run`}>
-      <div className="form-hero-num">
-        <span className="num mono">{unbeaten}</span>
-        <span className="lab">match unbeaten run</span>
-      </div>
-      {subLine && (
-        <div className={`form-hero-sub${atPB ? " is-pb" : ""}`}>{subLine}</div>
-      )}
-      <div className="form-hero-chips">
-        <div className="run-chip f">
-          <span className="run-chip-dot" />
-          <span className="run-chip-lab">Footle solve run</span>
-          <span className="run-chip-val mono">{footleRun}</span>
-        </div>
-        <div className="run-chip t">
-          <span className="run-chip-dot" />
-          <span className="run-chip-lab">T7 done run</span>
-          <span className="run-chip-val mono">{t7Run}</span>
-        </div>
-      </div>
-      <div className="form-strip-wrap">
-        <div className="form-strip" role="group" aria-label="Form — last 14 matches">
-          {form14.map((d, i) => (
-            <div
-              key={d.ymd}
-              className={`form-cell ${d.cls}${d.isToday ? " is-today" : ""}`}
-              aria-label={d.aria}
-              title={d.aria}
-            />
-          ))}
-        </div>
-        <div className="form-strip-axis">
-          <span>2 weeks ago</span>
-          <span>Today</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, xp, onUseShield, shieldActive, dailyHistory }) {
-  const { user, profile: authProfile, isGuest } = useAuth();
+function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHistory }) {
+  const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
-  // this, today + todayYMD stay frozen at mount time and the calendar /
-  // hero card show the wrong "today" the next morning. Mirrors Wordle's
-  // day-rollover polling pattern (its handler reloads the page; here we
-  // just refresh state since DailyTab doesn't need a full reload).
+  // this, today + todayYMD stay frozen at mount time and downstream
+  // memos show the wrong "today" the next morning.
   const [today, setToday] = useState(() => new Date());
-  // Sprint #16: per-minute tick drives the KO countdown chip + Up next
-  // card. `today` still only updates on day rollover (downstream memos
-  // depend on todayYMD identity), but `now` ticks every minute so the
-  // countdown stays current.
+  // Sprint #16: per-minute tick drives the KO countdown chip. `today`
+  // still only updates on day rollover (downstream memos depend on
+  // todayYMD identity), but `now` ticks every minute so the countdown
+  // stays current.
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => {
@@ -107,33 +46,12 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
     return () => clearInterval(id);
   }, []);
 
-  // Audit Phase 5 (D1): localStorage read promoted from render body to
-  // useMemo([todayYMD, dailyScore]). Was reading on every render (~3-7×
-  // per session × multiple renders per session = wasted reads). Memo
-  // re-evaluates only on day rollover (todayYMD) or score propagation
-  // (dailyScore). Defensive intent preserved — still catches the case
-  // where localStorage has a value the parent state hasn't surfaced yet.
   const todayYMD = dateToYMD(today);
-  const { localDone, localScore } = useMemo(() => {
-    let done = false;
-    let score = dailyScore;
-    try {
-      const raw = localStorage.getItem(`biq_daily_${todayYMD}`);
-      if (raw) {
-        done = true;
-        try { const p = JSON.parse(raw); if (typeof p?.score === "number") score = p.score; } catch {}
-      }
-    } catch {}
-    return { localDone: done, localScore: score };
-  }, [todayYMD, dailyScore]);
-  const isDone = dailyDone || localDone;
-  const shownScore = dailyScore != null ? dailyScore : localScore;
 
   // Footle history map (Sprint #15 Stage 4+6): walks biq_wordle_* keys in
   // localStorage once and exposes the per-day status (won/lost/in-progress)
-  // for both the 4-stat row reduction and the diagonal-split calendar
-  // cells. Memoised on todayYMD + localDone so it re-runs at most once per
-  // day rollover or daily-completion event. ~365 keys/year — trivial.
+  // for downstream run + form derivations. Memoised on todayYMD so it
+  // re-runs at most once per day rollover.
   const footleHistory = useMemo(() => {
     const map = new Map();
     try {
@@ -150,18 +68,16 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       }
     } catch {}
     return map;
-  }, [todayYMD, localDone]);
+  }, [todayYMD]);
 
-  // Sprint #16 Stage 1: run + form derivations for the new FormHero.
+  // Sprint #16 Stage 1: run + form derivations. Trimmed in Sprint #24
+  // (v4 tactics card no longer uses per-mode streak chips, so footleRun
+  // and t7Run dropped).
   // - unbeaten: consecutive days backward from today where AT LEAST ONE
   //   mode was attempted (Footle 'won' or 'lost' counts as attempt;
   //   'in-progress' does not — the day isn't decided yet)
   // - bestUnbeaten: max historical run of the same shape, walking forward
   //   from the earliest played day
-  // - footleRun: consecutive Footle 'won' days backward from today
-  // - t7Run: consecutive dailyHistory entries backward from today
-  // - form14: last 14 days each tagged W/D/L plus mode-mirroring color
-  //   class (D-footle = purple, D-t7 = orange, W = green, L = neutral)
   const runStats = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
@@ -171,29 +87,13 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       return t7Set.has(ymd) || footleAttempt;
     };
 
-    // Current unbeaten run
     let unbeaten = 0;
     for (let i = 0; i < 366; i++) {
       const d = new Date(todayMid - i * 86400000);
       if (!playedOn(dateToYMD(d))) break;
       unbeaten++;
     }
-    // Current Footle solve run
-    let footleRun = 0;
-    for (let i = 0; i < 366; i++) {
-      const d = new Date(todayMid - i * 86400000);
-      if (footleHistory.get(dateToYMD(d)) !== "won") break;
-      footleRun++;
-    }
-    // Current T7 done run
-    let t7Run = 0;
-    for (let i = 0; i < 366; i++) {
-      const d = new Date(todayMid - i * 86400000);
-      if (!t7Set.has(dateToYMD(d))) break;
-      t7Run++;
-    }
 
-    // Historical best unbeaten — walk from first-played forward to today.
     let bestUnbeaten = 0;
     {
       const dates = new Set(t7Set);
@@ -215,7 +115,7 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       }
     }
     bestUnbeaten = Math.max(bestUnbeaten, unbeaten);
-    return { unbeaten, bestUnbeaten, footleRun, t7Run };
+    return { unbeaten, bestUnbeaten };
   }, [today, dailyHistory, footleHistory]);
 
   // Sprint #16 Stage 4: per-matchday rows for the history list. Walks
@@ -225,7 +125,6 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
   const matchdays = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-    // First played day across both stores — anchors matchday numbering.
     let firstTime = todayMid;
     for (const ymd of t7Set) {
       const [y, m, d] = ymd.split("-").map(Number);
@@ -251,26 +150,12 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       const fStatus = footleHistory.get(ymd);
       const fWon = fStatus === "won";
       const fAttempt = fWon || fStatus === "lost";
-      // Footle guesses count for the "{N}/6 solved" line — read straight
-      // from localStorage so we don't hold the entire guesses payload in
-      // memory just for the display number.
-      let fGuesses = 0;
-      if (fAttempt) {
-        try {
-          const raw = localStorage.getItem(`biq_wordle_${ymd}`);
-          if (raw) {
-            const p = JSON.parse(raw);
-            if (Array.isArray(p?.guesses)) fGuesses = p.guesses.length;
-          }
-        } catch {}
-      }
       const isToday = i === 0;
       let wdl;
       if (isToday && !t7Done && !fAttempt) wdl = null; // pending
       else if (t7Done && fAttempt) wdl = "W";
       else if (t7Done || fAttempt) wdl = "D";
       else wdl = "L";
-      // Date label — Today / Yesterday / weekday + date
       let dateLabel;
       if (isToday) dateLabel = "Today";
       else if (i === 1) dateLabel = "Yesterday";
@@ -278,8 +163,7 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
         ymd, md, dateLabel, dateSub, isToday, wdl,
-        t7Done, t7Score: t7Done ? t7Score : null,
-        fAttempt, fWon, fGuesses,
+        t7Done, fAttempt,
       });
     }
     return rows;
@@ -298,36 +182,13 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
       const fAttempt = fStatus === "won" || fStatus === "lost";
       let cls, label;
       if (t7 && fAttempt) { cls = "W"; label = "Win"; }
-      else if (t7) { cls = "D-t7"; label = "Today's 7 only"; }
-      else if (fAttempt) { cls = "D-f"; label = "Footle only"; }
+      else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Today's 7 only" : "Footle only"; }
       else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
       out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
     }
     return out;
   }, [today, dailyHistory, footleHistory]);
 
-  const dailyStats = useMemo(() => {
-    const currentYM = todayYMD.slice(0, 7); // "YYYY-MM"
-    const dailyDoneSet = new Set(Object.keys(dailyHistory || {}));
-
-    let monthFootleWins = 0, monthDaily = 0, perfectDays = 0;
-    let lifetimeFootleWins = 0, footleAttempts = 0;
-    for (const [ymd, status] of footleHistory) {
-      footleAttempts++;
-      if (status === "won") {
-        lifetimeFootleWins++;
-        if (ymd.startsWith(currentYM)) monthFootleWins++;
-        if (dailyDoneSet.has(ymd)) perfectDays++;
-      }
-    }
-    for (const ymd of dailyDoneSet) {
-      if (ymd.startsWith(currentYM)) monthDaily++;
-    }
-    const thisMonth = monthFootleWins + monthDaily;
-    const lifetime = lifetimeFootleWins + dailyDoneSet.size;
-    const winRate = footleAttempts === 0 ? null : Math.round((lifetimeFootleWins / footleAttempts) * 100);
-    return { thisMonth, perfectDays, lifetime, winRate };
-  }, [todayYMD, dailyHistory, footleHistory]);
   return (
     <div className="tab-content">
       {/* Sprint #16 Stage 2: greeting strip + KO countdown chip. Same
@@ -355,79 +216,11 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
           </div>
         );
       })()}
-      <FormHero
-        unbeaten={runStats.unbeaten}
-        bestUnbeaten={runStats.bestUnbeaten}
-        footleRun={runStats.footleRun}
-        t7Run={runStats.t7Run}
-        form14={form14}
-      />
 
-      {/* Sprint #16 Stage 3: Up next anticipation card. Always points at
-          tomorrow — today's call-to-action lives on Home, Daily is a
-          history-first surface. The KO countdown re-renders with `now`. */}
-      <div className="up-next" role="status" aria-label={`Tomorrow's Daily — kickoff in ${formatKO(msToNextUTCMidnight(now))}`}>
-        <div className="up-next-left">
-          <div className="up-next-eyebrow">Up next</div>
-          <div className="up-next-title">Tomorrow's Daily</div>
-        </div>
-        <div className="up-next-right">
-          <div className="up-next-ko-lab">Kicks off in</div>
-          <div className="up-next-ko-val mono">{formatKO(msToNextUTCMidnight(now))}</div>
-        </div>
-      </div>
+      {/* Sprint #24 v4 — tactics card hero + restructured fixtures list
+          land in stages V2 + V3. Render shells are stubbed in Stage 1
+          so the screen isn't blank between commits. */}
 
-      {/* Sprint #16 Stage 4: matchday list. Per-row Footle + T7 results
-          with W/D/L badge. ~6-8 most recent visible, scroll for older. */}
-      {/* Stage 5's footer is rendered below the list. Holding here in JSX
-          order so the source reads top-to-bottom: greet → form hero →
-          up next → matchday list → stats footer → other modes. */}
-      {matchdays.length > 0 && (
-        <>
-          <div className="md-eyebrow">Recent matchdays</div>
-          <div className="md-list">
-            {matchdays.map(m => (
-              <div key={m.ymd} className={`md-row${m.isToday ? " is-today" : ""}`}>
-                <div className="md-meta">
-                  <div className="md-num mono">MD {m.md}</div>
-                  <div className="md-day">{m.dateLabel}</div>
-                  <div className="md-date">{m.dateSub}</div>
-                </div>
-                <div className="md-modes">
-                  <div className={`md-mode f${m.fAttempt ? "" : " miss"}`}>
-                    <span className="md-mode-dot" />
-                    <span className="md-mode-name">Footle</span>
-                    <span className="md-mode-res mono">
-                      {m.fAttempt
-                        ? <>{m.fGuesses}/6 {m.fWon ? "✓" : "✗"}</>
-                        : (m.isToday ? "—" : "missed")}
-                    </span>
-                  </div>
-                  <div className={`md-mode t${m.t7Done ? "" : " miss"}`}>
-                    <span className="md-mode-dot" />
-                    <span className="md-mode-name">Today's 7</span>
-                    <span className="md-mode-res mono">
-                      {m.t7Done
-                        ? <>{m.t7Score}/7 ✓</>
-                        : (m.isToday ? "—" : "missed")}
-                    </span>
-                  </div>
-                </div>
-                <div className={`md-wdl ${m.wdl || "pending"}`} aria-label={m.wdl || "pending"}>
-                  {m.wdl || "·"}
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Sprint #16 Stage 5: quiet stats footer. Single muted line —
-              supporting context, not centerpieces. Replaces the 4-stat row. */}
-          <div className="stats-footer">
-            <span className="sf-pair"><strong>{dailyStats.perfectDays}</strong> clean sheet{dailyStats.perfectDays === 1 ? "" : "s"}</span>
-            <span className="sf-sep">·</span>
-            <span className="sf-pair">solve rate <strong>{dailyStats.winRate == null ? "—" : `${dailyStats.winRate}%`}</strong></span>
-          </div>
-        </>
-      )}
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -440,24 +233,6 @@ function DailyTabScreenImpl({ profile, stats, dailyDone, dailyScore, onSuggest, 
           <button onClick={onUseShield} style={{background:"transparent",border:"1px solid var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"var(--accent)",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,fontFamily:"inherit"}}>Use 🛡️</button>
         </div>
       )}
-      <div style={{background:"var(--s1)",borderRadius:14,padding:"16px 18px",marginTop:12,marginBottom:16}}>
-        <div style={{fontSize:13,fontWeight:700,color:"var(--t1)",marginBottom:10}}>
-          {isDone ? "Between fixtures…" : "Friendlies"}
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {[
-            {icon:"🧠", label:`Take the ${APP_NAME} Test`, action:"balliq"},
-            {icon:"⚡🔥", label:"Try Hot Streak", action:"hotstreak"},
-            {icon:"🔥", label:"Try Survival Mode", action:"survival"},
-          ].map(({icon, label, action}) => (
-            <button key={action} className="mode-item" onClick={() => onSuggest(action)} style={{padding:"12px 14px"}}>
-              <div className="mi-icon" style={{fontSize:18}}>{icon}</div>
-              <div className="mi-body"><div className="mi-name" style={{fontSize:14}}>{label}</div></div>
-              <div className="mi-arrow">→</div>
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
