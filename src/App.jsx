@@ -7762,6 +7762,19 @@ function OnboardingScreen({ onDone }) {
       localStorage.setItem("biq_onboarded", "1");
     } catch {}
     try { window.storage?.set("biq_onboarded", "1").catch(() => {}); } catch {}
+    // Sprint #26 X2: persist to profile so the flag survives across devices.
+    // Guest users (no signed-in session) stay local-only; the migration on
+    // first sign-in propagates the local flag to their profile.
+    try {
+      supabase.auth.getUser().then(({ data }) => {
+        if (data?.user?.id) {
+          supabase.from('profiles')
+            .update({ onboarded_at: new Date().toISOString() })
+            .eq('id', data.user.id)
+            .then(() => {});
+        }
+      });
+    } catch {}
     onDone?.();
   };
 
@@ -8719,7 +8732,11 @@ function AppInner() {
     prefetchQuestions();
     // Prune expired seen-question history (>14 days old) on mount
     try { loadSeenHistory(); } catch {}
-    // Check if first-time user — show onboarding if not seen before
+    // Check if first-time user — show onboarding if not seen before.
+    // Sprint #26 X2: this local-only check still drives the FAST path
+    // (cold start before authProfile lands). The cross-device sync
+    // effect below reconciles against profile.onboarded_at once auth
+    // resolves.
     window.storage?.get("biq_onboarded").then(r => {
       if (!r) setHasOnboarded(false);
     }).catch(() => setHasOnboarded(false));
@@ -8778,6 +8795,36 @@ function AppInner() {
       } catch {} }
     }).catch(() => {});
   }, []);
+
+  // Sprint #26 X2: cross-device onboarding sync. Runs whenever authProfile
+  // is (re-)loaded for the signed-in user. Two directions:
+  //   - profile says onboarded, local doesn't → propagate to local (the
+  //     cross-device case: completed on Device A, signing in on Device B)
+  //   - local says onboarded, profile doesn't → write timestamp to profile
+  //     (one-time migration for pre-X2 users)
+  // Guests (no user.id) are unaffected — they stay local-only until they
+  // create an account, at which point this effect fires.
+  // Shared-device edge case (User A pre-X2 leaves local flag, User B signs
+  // in): User B's profile gets marked from User A's local flag. This is a
+  // PRE-EXISTING limitation of biq_onboarded being device-scoped, not
+  // worsened by X2. Real fix is per-user-keyed local storage, out of scope.
+  useEffect(() => {
+    if (!authProfile || !user?.id) return;
+    const localOnboarded = (() => {
+      try { return localStorage.getItem("biq_onboarded") === "1"; } catch { return false; }
+    })();
+    const profileOnboarded = !!authProfile.onboarded_at;
+    if (profileOnboarded && !localOnboarded) {
+      setHasOnboarded(true);
+      try { localStorage.setItem("biq_onboarded", "1"); } catch {}
+      try { window.storage?.set("biq_onboarded", "1").catch(() => {}); } catch {}
+    } else if (localOnboarded && !profileOnboarded) {
+      supabase.from('profiles')
+        .update({ onboarded_at: new Date().toISOString() })
+        .eq('id', user.id)
+        .then(() => {});
+    }
+  }, [authProfile, user?.id]);
 
   // Tracks whether we've already toasted the user about a failed score
   // sync this session — we don't want to nag them after every game when
