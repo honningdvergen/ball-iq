@@ -272,6 +272,37 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
         </div>
       </div>
 
+      {/* Sprint #24 V3: Recent fixtures list. Per-row format:
+          MD badge + date (left) | Footle/T7 mode dots (middle) |
+          W/D/L badge (right). Dots show per-mode contribution —
+          saturated when that mode was done, outlined-muted when not.
+          Display-only for v1.0 (no tap-through). */}
+      {matchdays.length > 0 && (
+        <>
+          <div className="fix-eyebrow">Recent fixtures</div>
+          {matchdays.map(m => (
+            <div
+              key={m.ymd}
+              className={`fix-row${m.isToday ? " is-today" : ""}`}
+              aria-label={`${m.dateLabel} ${m.dateSub} — ${m.wdl || "pending"}`}
+            >
+              <div className="fix-md-wrap">
+                <div className="fix-md">MD {m.md}</div>
+                <div className="fix-date">{m.dateLabel}</div>
+                <div className="fix-date-sub">{m.dateSub}</div>
+              </div>
+              <div className="fix-dots" aria-hidden="true">
+                <span className={`fix-dot f ${m.fAttempt ? "on" : "miss"}`} title={m.fAttempt ? "Footle played" : "Footle skipped"} />
+                <span className={`fix-dot t ${m.t7Done ? "on" : "miss"}`} title={m.t7Done ? "Today's 7 done" : "Today's 7 skipped"} />
+              </div>
+              <div className={`fix-badge ${m.wdl || "pending"}`} aria-label={m.wdl || "pending"}>
+                {m.wdl || "·"}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+
       {shieldActive && (
         <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>

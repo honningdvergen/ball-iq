@@ -1479,6 +1479,30 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tactics-cell.is-today.L{background:#FB923C;border-color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,0.45);}
 .tactics-strip-l{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-top:10px;}
 
+/* ── DAILY v4 FIXTURES LIST (Sprint #24 Stage 3) ──
+   Recent matchdays as compact rows: MD badge + date | Footle/T7 mode
+   dots showing per-mode contribution | W/D/L badge in semantic color.
+   Replaces the v3 .md-row format which packed dual mode-text lines
+   per row. Stage 4 adds the chalkboard tint to lightly link these
+   rows back to the tactics card hero. */
+.fix-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:0.22em;color:var(--t2);text-transform:uppercase;padding:2px 4px 10px;}
+.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);}
+.fix-md-wrap{display:flex;flex-direction:column;gap:1px;min-width:60px;}
+.fix-md{font-size:9.5px;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);}
+.fix-row.is-today .fix-md{color:#FB923C;}
+.fix-date{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.1;}
+.fix-date-sub{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.01em;}
+.fix-dots{display:flex;gap:7px;justify-content:center;}
+.fix-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1px solid transparent;box-sizing:border-box;}
+.fix-dot.f.on{background:#7C3AED;box-shadow:0 0 5px rgba(124,58,237,0.40);}
+.fix-dot.t.on{background:#FB923C;box-shadow:0 0 5px rgba(251,146,60,0.40);}
+.fix-dot.miss{background:transparent;border-color:var(--border2);}
+.fix-badge{width:28px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.fix-badge.W{background:rgba(34,197,94,0.18);color:#4ADE80;border:1px solid rgba(34,197,94,0.36);}
+.fix-badge.D{background:rgba(245,158,11,0.18);color:#FBBF24;border:1px solid rgba(245,158,11,0.36);}
+.fix-badge.L{background:rgba(239,68,68,0.14);color:#F87171;border:1px solid rgba(239,68,68,0.32);}
+.fix-badge.pending{background:rgba(251,146,60,0.16);color:#FB923C;border:1px solid rgba(251,146,60,0.36);font-size:14px;}
+
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
