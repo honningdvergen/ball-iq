@@ -1656,6 +1656,19 @@ button.friends-lb-row:hover{background:var(--s3);}
 .emoji-opt:hover,.emoji-opt.selected{background:var(--accent-dim);}
 
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--s2);color:var(--text);border:1px solid var(--border);padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600;z-index:999;white-space:nowrap;box-shadow:var(--sh-lg);}
+/* Sprint #27 Y3 F1: at desktop, recenter the toast against the .app column
+   instead of the full viewport. Sidebar (220px) + .app left margin (40px)
+   + half of .app max-width (440px) = 700px from viewport left. The base
+   transform: translateX(-50%) keeps the toast centered on that anchor.
+   Standalone PWA (clamped to 420px mobile shell) is unaffected — the
+   1024px breakpoint doesn't apply there since the .app shell pretends
+   it's mobile width. */
+@media (min-width: 1024px) {
+  .toast { left: calc(220px + 40px + 440px); }
+}
+@media (display-mode: standalone) {
+  .toast { left: 50% !important; }
+}
 /* Version-mismatch banner — shows at the top of viewport when /version.json
    sha differs from the bundled VITE_GIT_SHA. Sticky once shown until user
    clicks Refresh or Later. Pinned to top with high z-index so it overlays
@@ -2181,8 +2194,43 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     max-width: 640px;
     padding: 0 24px 40px;
   }
+  /* Sprint #27 Y3 F4: previously 3-col at desktop. Audit showed cards
+     were mobile-sized floating in an 880px container — visually small
+     and lonely. Compressing to 2-col gives each card ~430px width,
+     filling the desktop column properly. Mobile stays 2-col via the
+     base rule, so this is a no-op below 1024px. */
   .play-grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Sprint #27 Y3 F7: fixture-row mode dots are 9px on mobile. At
+     desktop reading distance + the wider container, bump to 12px so
+     they're scannable at a glance without squinting. */
+  .fix-dot { width: 12px; height: 12px; }
+  /* Sprint #27 Y4 E1: fixture row hover on desktop. Mirrors the play-
+     card hover from Sprint #23 U3: subtle lift + left-accent rail.
+     Touch devices won't match @media (hover: hover). */
+  @media (hover: hover) {
+    .fix-row {
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .fix-row:hover {
+      transform: translateY(-1px);
+      border-color: rgba(52,211,153,0.30);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    .fix-row.is-today:hover {
+      border-color: rgba(251,146,60,0.50);
+    }
+  }
+  /* Sprint #27 Y3 F1: first-quiz-tip welcome banner — constrain to the
+     .app column at desktop. Mobile keeps the inline 16/16 anchoring;
+     desktop snaps to sidebar(220) + app left margin(40) and matches the
+     880px column width. */
+  .first-quiz-tip {
+    left: calc(220px + 40px) !important;
+    right: auto !important;
+    width: 880px;
+    max-width: calc(100vw - 220px - 80px);
   }
   .tab-bar {
     /* Phase 3: tab bar replaced by DesktopNav at desktop sizes. The
@@ -2303,6 +2351,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     margin-left: auto !important;
     margin-right: auto !important;
   }
+  /* Sprint #27 Y3: PWA installed on desktop hardware would otherwise
+     match the >=1024px Y3 rules. Revert the desktop-only constraints
+     so the installed-PWA shell stays byte-identical to mobile. */
+  .first-quiz-tip {
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+  .fix-dot { width: 9px !important; height: 9px !important; }
   .play-grid {
     grid-template-columns: 1fr 1fr !important;
   }
@@ -9739,9 +9797,11 @@ function AppInner() {
         {/* Global toasts */}
         {toast && <div className="toast">{toast}</div>}
 
-        {/* First quiz tip */}
+        {/* First quiz tip — Sprint #27 Y3 F1: className lets a desktop
+            media query constrain the left/right anchoring to the .app
+            column. Mobile keeps the inline 16px padding via base CSS. */}
         {showFirstQuizTip && !inGame && screen === "home" && (
-          <div style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
+          <div className="first-quiz-tip" style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
             <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(34,197,94,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
               <div style={{flex:1}}>
