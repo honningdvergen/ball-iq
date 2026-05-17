@@ -623,6 +623,28 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 const css = `
 *{box-sizing:border-box;margin:0;padding:0;}
 
+/* Sprint #23 U3 P1: accessibility — global respect for the OS
+   "Reduce motion" preference. Neutralises every CSS animation
+   and transition in the app for users who've opted out, without
+   needing to retrofit each individual @keyframes rule. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Sprint #23 U3 P2: tab swap micro-fade. Three home tabs (Home /
+   Daily / Profile) stay mounted via display:none toggling so per-tab
+   state survives switches; this 120ms opacity fade plays each time
+   a pane returns from display:none to visible. Sub-perception for
+   "lag" but smooths the instant swap. Neutralised automatically by
+   the reduced-motion rule above. */
+.tab-pane{animation:tabPaneFadeIn 120ms ease;}
+@keyframes tabPaneFadeIn{from{opacity:0;}to{opacity:1;}}
+
 /* ── DARK THEME (default) ── */
 :root{
   /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
@@ -2233,6 +2255,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     .play-card:hover {
       border-color: rgba(88,204,2,0.45);
       box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 0 1px rgba(88,204,2,0.35), 0 4px 24px rgba(88,204,2,0.12);
+      /* Sprint #23 U3 P3: subtle lift on desktop hover so the card
+         feels "liftable" alongside the border/shadow cue. The play-card
+         base transition already covers transform at 0.1s — fast enough
+         that the press-down (:active scale 0.99) still feels snappy.
+         prefers-reduced-motion neutralises both via the global rule. */
+      transform: translateY(-2px);
     }
   }
   /* Sprint #23 U1: modal-box scales up at desktop. 320px reads as a
@@ -9834,7 +9862,7 @@ function AppInner() {
             state (calendar viewDate, profile emoji picker etc.) is preserved.
             Sprint #17 Stage 3 extracted Home into ./screens/HomeScreen.jsx. */}
         {!inGame && screen === "home" && (
-          <div style={tab === "home" ? undefined : HIDDEN_STYLE}>
+          <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             <HomeScreen
               profile={profile}
               loginStreak={loginStreak}
@@ -9856,7 +9884,7 @@ function AppInner() {
 
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
-          <div style={tab === "daily" ? undefined : HIDDEN_STYLE}>
+          <div className="tab-pane" style={tab === "daily" ? undefined : HIDDEN_STYLE}>
             <DailyTabScreen
               profile={profile}
               stats={stats}
@@ -9873,7 +9901,7 @@ function AppInner() {
 
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
-          <div style={tab === "profile" ? undefined : HIDDEN_STYLE}>
+          <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
           </div>
         )}
