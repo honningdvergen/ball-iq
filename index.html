@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#0F1117">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -40,7 +40,11 @@
       html, body {
         margin: 0;
         padding: 0;
-        background-color: #0a0a0a;
+        /* Sprint #25 W4: unified to #0F1117 (was #0a0a0a) so the splash,
+           body, #root, and AppInner --bg all match exactly. Eliminates
+           the dark-to-darker chroma shift that was visible during the
+           splash cross-fade on calibrated displays. */
+        background-color: #0F1117;
         min-height: 100vh;
         min-height: 100dvh;
         overscroll-behavior: none;
@@ -49,7 +53,7 @@
       #root {
         min-height: 100vh;
         min-height: 100dvh;
-        background-color: #0a0a0a;
+        background-color: #0F1117;
       }
       html.light, html.light body, html.light #root,
       body.light, body.light #root {
@@ -62,7 +66,7 @@
         position: fixed; inset: 0;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 14px;
-        background: #0a0a0a; color: #F0F1F5;
+        background: #0F1117; color: #F0F1F5;
         font-weight: 800; letter-spacing: -0.5px;
         /* Nudge the centred content slightly above geometric centre. Two
            reasons: (1) iOS standalone status bar (~44pt) is larger than
@@ -389,7 +393,7 @@
       .landing-footer-links a:hover { color: #9BA0B8; }
     </style>
   </head>
-  <body>
+  <body style="background-color:#0F1117">
     <!-- ════════════════════════════════════════════════════════════════
          LANDING CHROME — TOP HALF
          Hidden on mobile (< 1024px) and ALWAYS hidden in PWA standalone.
@@ -468,9 +472,17 @@
     <script>
       // Apply the saved theme class BEFORE React mounts so light-mode users
       // don't see a one-frame flash of the dark palette on reload.
+      // Sprint #25 W4: the <html> and <body> tags now ship with an inline
+      // style="background-color:#0F1117" attribute as a defensive measure
+      // against WKWebView painting body before head CSS is parsed. Inline
+      // style has higher CSS specificity than the .light class rule, so
+      // we must clear the inline bg here for light-theme users — otherwise
+      // they'd see the dark inline colour beating the light CSS rule.
       try {
         var s = JSON.parse(localStorage.getItem('biq_settings') || '{}');
         if (s && s.theme === 'light') {
+          document.documentElement.style.backgroundColor = '';
+          document.body.style.backgroundColor = '';
           document.documentElement.classList.add('light');
           document.body.classList.add('light');
         }
