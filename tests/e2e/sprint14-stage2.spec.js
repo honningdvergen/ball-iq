@@ -1,8 +1,10 @@
-// Sprint #14 Stage 2 — DailyScreen extraction verification (revised
-// Sprint #16). Originally asserted on the Sprint #15 calendar / 4-stat
-// row / Today container. Sprint #16's v3 redesign replaced those with
-// FormHero + Up next + matchday list — the extraction itself (Daily
-// tab lives in src/screens/DailyScreen.jsx) is still what this spec
+// Sprint #14 Stage 2 — DailyScreen extraction verification.
+//
+// Originally asserted on the Sprint #15 calendar / 4-stat row / Today
+// container. Sprint #16's v3 redesign replaced those with FormHero +
+// Up next + matchday list. Sprint #24 ships v4 — the tactics card
+// hero + restructured fixtures list. The extraction itself (Daily tab
+// lives in src/screens/DailyScreen.jsx) is still what this spec
 // verifies; the rendered elements just changed.
 
 import { test, expect } from '@playwright/test';
@@ -40,7 +42,7 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   expect(errors, `JS errors: ${errors.join('\n')}`).toEqual([]);
 });
 
-test('Daily tab — Sprint #16 v3 layout renders', async ({ page, context }) => {
+test('Daily tab — Sprint #24 v4 layout renders', async ({ page, context }) => {
   await seedGuestMode(context);
 
   await page.goto('/');
@@ -49,25 +51,35 @@ test('Daily tab — Sprint #16 v3 layout renders', async ({ page, context }) => 
   await page.locator('.tab-item').filter({ hasText: 'Daily' }).first().click();
   await page.waitForTimeout(400);
 
-  // Greeting strip with KO countdown chip (Stage 2)
+  // Greeting strip with KO countdown chip — unchanged from v3
   await expect(page.locator('.daily-greet')).toBeVisible();
   await expect(page.locator('.daily-greet-ko-val')).toBeVisible();
 
-  // Form hero (Stage 1): unbeaten run + per-mode chips + form strip
-  await expect(page.locator('.form-hero')).toBeVisible();
-  await expect(page.getByText('match unbeaten run')).toBeVisible();
-  await expect(page.locator('.run-chip.f')).toBeVisible();
-  await expect(page.locator('.run-chip.t')).toBeVisible();
-  await expect(page.locator('.form-strip .form-cell')).toHaveCount(14);
+  // Tactics card hero (Sprint #24 Stage 2): MATCHDAY tag, orange
+  // streak number, divider, form strip with 14 cells, axis labels.
+  await expect(page.locator('.tactics-card')).toBeVisible();
+  await expect(page.locator('.tactics-tag')).toBeVisible();
+  await expect(page.locator('.tactics-num')).toBeVisible();
+  await expect(page.locator('.tactics-strip .tactics-cell')).toHaveCount(14);
+  await expect(page.locator('.tactics-strip-l')).toContainText(/today/i);
 
-  // Up next card (Stage 3)
-  await expect(page.locator('.up-next')).toBeVisible();
-  await expect(page.getByText("Tomorrow's Daily")).toBeVisible();
+  // CRITICAL: streak number must NOT be rendered in JetBrains Mono.
+  // Round 5 diagnosis identified the mono/tabular treatment as the
+  // "techy" feel the v3 -> v4 redesign was specifically replacing.
+  // Spec the font-family explicitly so future regressions break here.
+  const numFont = await page.locator('.tactics-num').evaluate(el => getComputedStyle(el).fontFamily);
+  expect(numFont, 'tactics-num must NOT render in JetBrains Mono').not.toMatch(/JetBrains Mono|SF Mono|Menlo|monospace/i);
+  expect(numFont, 'tactics-num must use Inter (proportional)').toMatch(/Inter/i);
 
-  // Other modes panel (now "Friendlies" per Stage 7 vocab)
-  await expect(page.getByText(/Friendlies|Between fixtures/i)).toBeVisible();
+  // v3 elements that MUST be gone — guard against accidental revival.
+  await expect(page.locator('.form-hero')).toHaveCount(0);
+  await expect(page.locator('.run-chip')).toHaveCount(0);
+  await expect(page.locator('.up-next')).toHaveCount(0);
+  await expect(page.locator('.stats-footer')).toHaveCount(0);
+  await expect(page.locator('.md-row')).toHaveCount(0);
+  await expect(page.getByText(/Friendlies|Between fixtures|Tomorrow's Daily/i)).toHaveCount(0);
 
-  // Removed in Sprint #16 Stage 6 — these must NOT exist anymore
+  // Older artefacts that were removed in earlier sprints
   await expect(page.locator('.daily-stats-row')).toHaveCount(0);
   await expect(page.locator('.cal-grid')).toHaveCount(0);
   await expect(page.locator('.streak-hero')).toHaveCount(0);
