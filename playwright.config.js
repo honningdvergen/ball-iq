@@ -54,5 +54,22 @@ export default defineConfig({
       name: 'ipad-mini',
       use: { ...devices['iPad Mini'] },
     },
+    {
+      // Sprint #27 Y2: 1280 × 800 — mainstream laptop. Triggers the
+      // >=1024px desktop CSS branch (left DesktopNav sidebar, .app at
+      // 640px width). Caps the centered-column layout before the 1280
+      // anchor-left rule (880px). Every desktop change must regression-
+      // test here from this sprint forward.
+      name: 'desktop-1280',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
+    },
+    {
+      // Sprint #27 Y2: 1920 × 1080 — large desktop. Triggers the
+      // >=1280px rules (.app widens to 880px, anchored 40px from
+      // sidebar). The right-side void at this width is the deliberate
+      // architectural trade-off documented in App.jsx (Phase 5b notes).
+      name: 'desktop-1920',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1920, height: 1080 } },
+    },
   ],
 })

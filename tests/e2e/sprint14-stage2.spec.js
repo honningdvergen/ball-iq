@@ -34,7 +34,12 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  await page.locator('.tab-item').filter({ hasText: 'Daily' }).first().click();
+  // Sprint #27 Y2: at desktop viewports the mobile tab bar is replaced
+  // by .desktop-nav. Both targets exist in the DOM at all viewports —
+  // the inactive one is display:none. Filter for the visible one.
+  const dailyNav = page.locator('.tab-item, .desktop-nav .dn-list button')
+    .filter({ hasText: 'Daily', visible: true }).first();
+  await dailyNav.click();
   await page.waitForTimeout(500);
 
   const body = await page.evaluate(() => document.body.innerText);
@@ -48,7 +53,12 @@ test('Daily tab — Sprint #24 v4 layout renders', async ({ page, context }) => 
   await page.goto('/');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  await page.locator('.tab-item').filter({ hasText: 'Daily' }).first().click();
+  // Sprint #27 Y2: at desktop viewports the mobile tab bar is replaced
+  // by .desktop-nav. Both targets exist in the DOM at all viewports —
+  // the inactive one is display:none. Filter for the visible one.
+  const dailyNav = page.locator('.tab-item, .desktop-nav .dn-list button')
+    .filter({ hasText: 'Daily', visible: true }).first();
+  await dailyNav.click();
   await page.waitForTimeout(400);
 
   // Greeting strip with KO countdown chip — unchanged from v3
