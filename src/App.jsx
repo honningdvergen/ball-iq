@@ -1486,7 +1486,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    per row. Stage 4 adds the chalkboard tint to lightly link these
    rows back to the tactics card hero. */
 .fix-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:0.22em;color:var(--t2);text-transform:uppercase;padding:2px 4px 10px;}
-.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);}
+/* Sprint #24 Stage 4: subtle navy tint + faint green border carry
+   the chalkboard identity from the tactics card down into the fixture
+   list. Light not heavy — the navy is layered as a low-alpha gradient
+   over the base surface, the border is the same green tint as the
+   tactics card at ~half the alpha. */
+.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:linear-gradient(180deg,rgba(16,40,54,0.45) 0%,rgba(26,29,39,0.85) 100%);border:1px solid rgba(52,211,153,0.10);}
+.fix-row.is-today{background:linear-gradient(180deg,rgba(251,146,60,0.10) 0%,rgba(16,40,54,0.40) 100%);border-color:rgba(251,146,60,0.26);}
 .fix-md-wrap{display:flex;flex-direction:column;gap:1px;min-width:60px;}
 .fix-md{font-size:9.5px;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);}
 .fix-row.is-today .fix-md{color:#FB923C;}
