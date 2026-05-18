@@ -90,7 +90,15 @@ test('Multiplayer Online entry (guest → toast, no crash)', async ({ page, cont
   await expectNoCrash(page, errs, 'Multiplayer Online');
 });
 
-test('Multiplayer Local entry', async ({ page, context }) => {
+test('Multiplayer Local entry', async ({ page, context }, testInfo) => {
+  // Sprint #28: skip on desktop profiles. The Local MP CTA is hidden at
+  // >=1024px by design (Sprint #11/12 — no pass-and-play on desktop), so
+  // the button doesn't exist for getByRole to find and the test times out.
+  // Local MP at mobile/tablet sizes is still smoke-covered.
+  test.skip(
+    testInfo.project.name.startsWith('desktop-'),
+    'Local multiplayer is mobile/tablet only — CTA is display:none at >=1024px'
+  );
   await seedGuestMode(context);
   const errs = await captureErrors(page);
   await page.goto('/');

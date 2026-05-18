@@ -7085,7 +7085,7 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onAccountDeleted, onOpenReview }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -7268,7 +7268,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
-      {(onShowHelp || onShowPrivacy) && (
+      {(onShowHelp || onShowPrivacy || onShowKnownIssues) && (
         <div className="settings-section">
           <div className="ds-eyebrow settings-section-title">Help</div>
           <div className="settings-card">
@@ -7282,6 +7282,20 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-left">
                   <div className="sr-label">Help & FAQ</div>
                   <div className="sr-desc">Common questions and how to reach us</div>
+                </div>
+                <div className="sr-right"><div className="sr-arrow">›</div></div>
+              </button>
+            )}
+            {onShowKnownIssues && (
+              <button
+                type="button"
+                className="settings-row"
+                style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
+                onClick={onShowKnownIssues}
+              >
+                <div className="sr-left">
+                  <div className="sr-label">Known issues</div>
+                  <div className="sr-desc">Honest list of things to expect</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -7694,6 +7708,90 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
           </React.Fragment>
         ))}
         <p style={{...privacyP, marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a>.</p>
+      </div>
+    </div>
+  );
+});
+
+// Sprint #28 Z2: Known Issues — a public-facing surface that documents
+// expected limitations honestly so users don't have to guess. Reduces
+// week-1 support volume (per CC's strategic assessment). Same overlay
+// shape as HelpScreen / PrivacyScreen — reuses privacyH2 + privacyP
+// so the trio reads as visual siblings.
+const KNOWN_ISSUES = [
+  {
+    q: "I had to sign in again after a week — is that normal?",
+    a: "Yes. For security, sign-in sessions expire roughly every 7 days. This is intentional, not a bug. Tap the email button on the login screen and you're back in seconds — your scores, streak, and history are tied to your account, not the device.",
+  },
+  {
+    q: "I installed Ball IQ on a second device and it asked me to onboard again",
+    a: "If you're signed in to an account on both devices, onboarding only runs once and the choice syncs across devices. If you're using guest mode (no email), each new install is treated as a fresh visitor and replays the short intro. Sign up to skip this on future devices.",
+  },
+  {
+    q: "A question seems factually wrong",
+    a: "Email hello@balliq.app with the question text and what you think the correct answer is. We hand-review every report — most fixes ship within a few days. Football trivia changes (records broken, players retire, clubs relegated) so even careful research goes stale; reports are how we keep up.",
+  },
+  {
+    q: "My streak / progress didn't sync to my other device",
+    a: "If you're signed in, everything except onboarding state (covered above) syncs through your profile. If you played as a guest first and signed in later, only future progress syncs — past guest sessions stay on the device they were played on. Sign up earlier on new devices to avoid this gap.",
+  },
+  {
+    q: "The app launched as a white flash before settling",
+    a: "Working on it. iOS PWAs show a brief white frame between launch and first paint that's hard to fully suppress. Recent versions have shortened this window considerably; the remaining flash is an iOS quirk rather than an app bug.",
+  },
+];
+
+const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
+  return (
+    <div style={{
+      position: "fixed",
+      inset: 0,
+      background: "#0F1117",
+      color: "#F0F1F5",
+      zIndex: 1000,
+      overflowY: "auto",
+      WebkitOverflowScrolling: "touch",
+      fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif",
+    }}>
+      <div style={{
+        position: "sticky", top: 0,
+        background: "rgba(15,17,23,0.95)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid #2A2D3A",
+        padding: "calc(14px + env(safe-area-inset-top, 0px)) 20px 14px",
+        display: "flex", alignItems: "center", gap: 12,
+        zIndex: 1,
+      }}>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close known issues"
+          style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: "#1A1D27", border: "1px solid #2A2D3A",
+            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            cursor: "pointer", display: "flex",
+            alignItems: "center", justifyContent: "center",
+            WebkitTapHighlightColor: "transparent",
+            outline: "none",
+          }}
+        >←</button>
+        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Known issues</div>
+      </div>
+      <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
+        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Known issues</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>
+          We're a small team and we know about these. Honest about what's a bug,
+          what's a deliberate trade-off, and what's just hard.
+        </div>
+        {KNOWN_ISSUES.map((entry, i) => (
+          <React.Fragment key={i}>
+            <h2 style={privacyH2}>{entry.q}</h2>
+            <p style={privacyP}>{entry.a}</p>
+          </React.Fragment>
+        ))}
+        <p style={{...privacyP, marginTop: 32}}>Anything else feels off? Email <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a>.</p>
       </div>
     </div>
   );
@@ -8547,6 +8645,7 @@ function AppInner() {
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showKnownIssues, setShowKnownIssues] = useState(false);
   const [iqRecap, setIqRecap] = useState(null); // { iq, date } or null
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
@@ -9589,6 +9688,8 @@ function AppInner() {
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
   const closeHelp = useCallback(() => setShowHelp(false), []);
+  const openKnownIssues = useCallback(() => setShowKnownIssues(true), []);
+  const closeKnownIssues = useCallback(() => setShowKnownIssues(false), []);
   const openIqChip = useCallback(() => {
     // Empty history → send them straight into the APP_NAME Test.
     // Otherwise show a recap of their most recent score with share options.
@@ -9999,7 +10100,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} />}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
@@ -10033,6 +10134,7 @@ function AppInner() {
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
         {showHelp && <HelpScreen onClose={closeHelp} />}
+        {showKnownIssues && <KnownIssuesScreen onClose={closeKnownIssues} />}
 
         {/* Shared-invite gate: someone tapped a balliq.app/?join=CODE link
             but they're either signed-out or browsing as a guest. Prompt them
