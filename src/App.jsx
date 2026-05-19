@@ -13,6 +13,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
+import { useInstallPrompt } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
@@ -1379,6 +1380,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .size-btns{display:flex;gap:5px;}
 .size-btn{padding:8px 14px;min-height:36px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .size-btn.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
+/* ── INSTALL CARD (Sprint #34 BB2) ── */
+.install-card-header{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);}
+.install-card-icon{font-size:30px;line-height:1;flex-shrink:0;}
+.install-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.install-card-title{font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.1px;}
+.install-card-desc{font-size:12px;color:var(--t2);line-height:1.4;}
+.install-card-dismiss{background:transparent;border:none;color:var(--t3);font-size:22px;line-height:1;padding:0 6px;cursor:pointer;flex-shrink:0;-webkit-appearance:none;appearance:none;font-family:inherit;}
+.install-card-dismiss:hover{color:var(--t1);}
+.install-card-action{padding:12px 16px 14px;display:flex;align-items:center;justify-content:center;}
+.install-card-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;min-height:40px;background:var(--accent);color:#0a1a00;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;letter-spacing:-0.1px;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:filter 0.15s ease,transform 0.1s ease;-webkit-text-fill-color:#0a1a00;}
+.install-card-btn:hover{filter:brightness(1.05);}
+.install-card-btn:active{transform:scale(0.98);}
+.install-card-ios{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--t2);}
+.install-card-step{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:var(--s2);}
+.install-card-step-icon{font-size:13px;}
+.install-card-step-label{font-weight:600;color:var(--t1);}
+.install-card-arrow{color:var(--t3);font-weight:600;}
 /* ── TAB BAR ── */
 /* ── TAB BAR — frosted glass, pill indicator ── */
 .tab-bar{
@@ -2310,6 +2328,92 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      bound, dots stay flex:1 1 auto so they still shrink on narrow
      parents). */
   .streak-pulse-dot { max-width: 14px; }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SPRINT #34 BB1 — Profile + Settings desktop polish
+     User-confirmed picks: F-P1, F-P2, F-P3 (keep avatar centered vertical,
+     just bigger), F-P4, F-P6, F-P7 (enlarge dots/badges, NO max-width
+     constraint), F-S1 (max-width 560 left-aligned NOT 2-col grouping),
+     F-S2, F-S3 (horizontal compact About card), F-S4.
+     Skipped: F-P5 (Profile 2-col restructure).
+     ═════════════════════════════════════════════════════════════════════ */
+
+  /* F-P1: stat tiles read as letterbox-shallow with mobile-sized 24px
+     values in a 290px-wide desktop cell. Bump padding + value size so
+     the numbers carry the tile properly. Stays 3-col per user call. */
+  .stat-tile { padding: 22px 14px; }
+  .st-val { font-size: 30px; }
+
+  /* F-P2: badges grid 6-col at desktop (12 badges → 2 dense rows of 6
+     instead of 3 sparse rows of 4). Icons + labels bumped so they're
+     readable in the wider tile. Mobile stays 4-col via the base rule. */
+  .badges-grid { grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .badge-icon { font-size: 26px; }
+  .badge-name { font-size: 11px; }
+
+  /* F-P3: profile card avatar + name + level badge enlarged. Centered
+     vertical layout preserved per Alex's call (no horizontal pivot). */
+  .profile-avatar { width: 104px; height: 104px; font-size: 44px; }
+  .profile-avatar-edit { width: 32px; height: 32px; font-size: 14px; bottom: -3px; right: -3px; }
+  .profile-name { font-size: 26px; }
+  .profile-level-badge { font-size: 13px; padding: 6px 14px; }
+
+  /* F-P4: share + weekly-summary pair were two stacked full-width ghost
+     buttons — read as oversized primary actions. Flip to side-by-side
+     centered pair capped at 280px each. */
+  .profile-secondary-actions { flex-direction: row !important; justify-content: center; }
+  .profile-secondary-actions .share-profile-btn { max-width: 280px; width: 100%; }
+
+  /* F-P6: friends-results + friends-block rows to 2-col grid at desktop.
+     Title rows + empty-state messages span both columns. Only renders
+     for signed-in non-guest users. */
+  .friends-results,
+  .friends-block { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .friends-results { max-height: none; }
+  .friends-block > .friends-block-title,
+  .friends-results > .friends-muted,
+  .friends-block > .friends-muted { grid-column: 1 / -1; }
+  .friends-lb { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+  /* F-P7: enlarge journey dots + badges (no max-width constraint per
+     Alex). Full-width rows preserved. */
+  .journey-dot { width: 44px; height: 44px; font-size: 20px; }
+  .journey-line { left: 29px; top: 26px; bottom: 26px; }
+  .journey-name { font-size: 16px; }
+  .journey-sub { font-size: 12px; }
+  .journey-badge { font-size: 11px; padding: 5px 12px; }
+
+  /* F-S1: settings sections constrained to 560px left-aligned at desktop.
+     Avoids the lonely-control-in-880px-row look without the risk of
+     arbitrary 2-col grouping that the original F-S1 proposed. */
+  .settings-section { max-width: 560px; }
+
+  /* F-S2: settings rows bumped to desktop reading distance. */
+  .sr-label { font-size: 15px; }
+  .sr-desc { font-size: 13px; }
+
+  /* F-S3: About card horizontal compact at desktop. The .about-card-card
+     class is on the .settings-card wrapper; .about-card-brand wraps the
+     ball + meta column. Inline styles on the ball (marginBottom:10) and
+     feedback link (marginTop:18) need !important to override. */
+  .about-card-card {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+    padding: 18px 22px !important;
+    text-align: left !important;
+  }
+  .about-card-brand { display: flex; align-items: center; gap: 14px; }
+  .about-card-ball { font-size: 36px !important; margin-bottom: 0 !important; }
+  .about-card-meta-wrap { display: flex; flex-direction: column; gap: 4px; }
+  .about-card-name { font-size: 22px !important; }
+  .about-card-version { margin-top: 0 !important; }
+  .about-card-feedback { margin-top: 0 !important; flex-shrink: 0; }
+
+  /* F-S4: settings page-title bumped. Also applies to other .page-title
+     screens (Review, etc) at desktop — consistent desktop heading sizing. */
+  .page-title { font-size: 24px; }
 }
 @media (min-width: 1280px) {
   /* Widen the main column at >= 1280px and anchor it 40px from the
@@ -7085,6 +7189,61 @@ function SettingsToggle({ val, onChange }) {
   );
 }
 
+// Sprint #34 BB2: PWA install affordance. Renders nothing when the app is
+// already installed, the user has dismissed (within the 30-day TTL window),
+// or the platform has no install path (iOS Chrome/Firefox/Edge, etc).
+// Android/Chrome shows a single Install button driven by the pre-React
+// stashed `beforeinstallprompt` event; iOS Safari shows a Share → Add to
+// Home Screen → Add visual sequence since there's no install API on iOS.
+function InstallCard() {
+  const { canPromptNative, platform, showCard, promptInstall, dismiss } = useInstallPrompt();
+  if (!showCard) return null;
+  return (
+    <div className="settings-section">
+      <div className="ds-eyebrow settings-section-title">Install</div>
+      <div className="settings-card install-card">
+        <div className="install-card-header">
+          <div className="install-card-icon" aria-hidden="true">⚽</div>
+          <div className="install-card-body">
+            <div className="install-card-title">Install Ball IQ</div>
+            <div className="install-card-desc">Full-screen, offline-ready, one tap from your home screen.</div>
+          </div>
+          <button
+            type="button"
+            className="install-card-dismiss"
+            onClick={dismiss}
+            aria-label="Dismiss install prompt"
+          >×</button>
+        </div>
+        <div className="install-card-action">
+          {canPromptNative ? (
+            <button
+              type="button"
+              className="install-card-btn"
+              onClick={promptInstall}
+            >Install</button>
+          ) : platform.isIOSSafari ? (
+            <div className="install-card-ios" aria-label="iOS install instructions">
+              <span className="install-card-step">
+                <span className="install-card-step-icon" aria-hidden="true">⤴</span>
+                <span className="install-card-step-label">Share</span>
+              </span>
+              <span className="install-card-arrow" aria-hidden="true">→</span>
+              <span className="install-card-step">
+                <span className="install-card-step-label">Add to Home Screen</span>
+              </span>
+              <span className="install-card-arrow" aria-hidden="true">→</span>
+              <span className="install-card-step">
+                <span className="install-card-step-label">Add</span>
+              </span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -7235,6 +7394,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           </div>
         </div>
       </div>
+      <InstallCard />
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">Gameplay</div>
         <div className="settings-card">
@@ -7343,30 +7503,39 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">About</div>
-        <div className="settings-card" style={{padding:"24px 18px",textAlign:"center"}}>
-          <div style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
-          <div style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
-          {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
-              numeric/muted and "BETA" gets its own amber pill — clear pre-
-              release signal without dominating the card. */}
-          <div style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:4,fontSize:13,color:"var(--t3)"}}>
-            <span>v{APP_VERSION.replace(/-beta$/i, "")}</span>
-            {/-beta$/i.test(APP_VERSION) && (
-              <span style={{
-                display:"inline-block",
-                padding:"1px 7px",
-                borderRadius:999,
-                background:"rgba(255,200,0,0.15)",
-                color:"var(--gold)",
-                fontSize:10,
-                fontWeight:800,
-                letterSpacing:"0.08em",
-              }} aria-label="Beta">BETA</span>
-            )}
+        {/* Sprint #34 BB1 F-S3: about-card-card + about-card-brand wrappers
+            let desktop CSS flip this to a horizontal "ball+name+version |
+            feedback" row. At mobile (no desktop CSS rule), the wrappers are
+            plain divs and the centered-vertical layout is preserved. */}
+        <div className="settings-card about-card-card" style={{padding:"24px 18px",textAlign:"center"}}>
+          <div className="about-card-brand">
+            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
+            <div className="about-card-meta-wrap">
+              <div className="about-card-name" style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
+              {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
+                  numeric/muted and "BETA" gets its own amber pill — clear pre-
+                  release signal without dominating the card. */}
+              <div className="about-card-version" style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:4,fontSize:13,color:"var(--t3)"}}>
+                <span>v{APP_VERSION.replace(/-beta$/i, "")}</span>
+                {/-beta$/i.test(APP_VERSION) && (
+                  <span style={{
+                    display:"inline-block",
+                    padding:"1px 7px",
+                    borderRadius:999,
+                    background:"rgba(255,200,0,0.15)",
+                    color:"var(--gold)",
+                    fontSize:10,
+                    fontWeight:800,
+                    letterSpacing:"0.08em",
+                  }} aria-label="Beta">BETA</span>
+                )}
+              </div>
+            </div>
           </div>
           {/* Ghost outlined to match the secondary-action discipline used on
               result screens — filled green is reserved for primary actions. */}
           <a
+            className="about-card-feedback"
             href="mailto:hello@balliq.app"
             style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"transparent",color:"var(--accent)",border:"1.5px solid var(--accent-b)",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none"}}
           >

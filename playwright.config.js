@@ -64,6 +64,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
     },
     {
+      // Sprint #34 BB1: 1440 × 900 — mid-laptop / smaller external monitor.
+      // Sits between desktop-1280 and desktop-1920 in the >=1280px rule
+      // branch. Same 880px .app column as 1920; only the right-side void
+      // differs. Added so the three-viewport desktop audit cycle is native
+      // instead of inferred from the 1280/1920 endpoints.
+      name: 'desktop-1440',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+    },
+    {
       // Sprint #27 Y2: 1920 × 1080 — large desktop. Triggers the
       // >=1280px rules (.app widens to 880px, anchored 40px from
       // sidebar). The right-side void at this width is the deliberate

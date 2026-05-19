@@ -913,8 +913,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       </div>
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based
           flex container replaces the previous marginTop:-4 hack that was
-          overlapping the .share-profile-btn bottom margins. */}
-      <div style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
+          overlapping the .share-profile-btn bottom margins. Sprint #34
+          BB1 F-P4: `.profile-secondary-actions` class lets desktop CSS
+          flip to side-by-side and cap each button to 280px so the pair
+          reads as secondary, not as two competing primary actions. */}
+      <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
         <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
         {onShowWeekly && (
           <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>

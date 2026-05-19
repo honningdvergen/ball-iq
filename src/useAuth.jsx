@@ -15,6 +15,9 @@ const AuthContext = createContext(null)
 //     inclusion was an over-zealous catch-all and caused real-user
 //     replay reports. performDelete clears it explicitly since account
 //     deletion is the "nuke everything" path.)
+//   - biq_install_dismissed (Sprint #34 BB2: 30-day TTL flag set when
+//     the user dismisses the "Install Ball IQ" card in Settings. Install
+//     state is per-device — preserving on sign-out matches user intent.)
 //   - ballIQ_guestMode (handled separately by signOut)
 const USER_SCOPED_STATIC_KEYS = [
   'biq_xp',

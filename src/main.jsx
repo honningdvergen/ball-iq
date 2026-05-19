@@ -1,3 +1,8 @@
+// Side-effect import: registers `beforeinstallprompt` + `appinstalled`
+// listeners at module-load (pre-React) so we capture Chrome's early-firing
+// install event before the React tree mounts. Missing this event leaves the
+// install button inert for the rest of the session.
+import './installPrompt.js'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
