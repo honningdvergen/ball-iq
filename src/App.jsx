@@ -3324,7 +3324,20 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; }, [questions]);
   useEffect(() => {
     Sentry.addBreadcrumb({ category: 'game', message: 'quiz started', level: 'info', data: { mode, diff: diff || null, total: questions?.length || 0 } });
+    // Sprint #61 DD3: tag the mode for the duration of the quiz. On unmount
+    // (back-out or quiz end) clear it so post-quiz errors don't keep stale
+    // mode context. Question id is tagged per-question in the effect below.
+    try { Sentry.setTag('mode', mode); } catch {}
+    return () => { try { Sentry.setTag('mode', undefined); } catch {} };
   }, []);
+  // Sprint #61 DD3: tag the current question id so any error during a quiz
+  // (render crash, RPC fail, timer glitch) carries the exact question that
+  // was on screen. Cleared on unmount.
+  useEffect(() => {
+    const qid = questions?.[idx]?.id;
+    try { Sentry.setTag('question_id', qid || undefined); } catch {}
+    return () => { try { Sentry.setTag('question_id', undefined); } catch {} };
+  }, [idx, questions]);
   const [hardRightBurst, setHardRightBurst] = useState(false);
   const hardRightBurstTimerRef = useRef(null);
   useEffect(() => () => {
@@ -3369,6 +3382,23 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
     setScore(ns); setStreak(nst); setBestStreak(nb);
+    // Sprint #61 DD3: breadcrumb every answer with question id + outcome
+    // (no PII — id is a 6-char hash, no question text). Gives the launch-day
+    // debugger a precise reconstruction of the user's session up to a crash.
+    try {
+      Sentry.addBreadcrumb({
+        category: 'game',
+        message: 'answer submitted',
+        level: 'info',
+        data: {
+          qid: q?.id || null,
+          idx,
+          correct: correct === true,
+          timeout: correct === 'timeout',
+          type: q?.type || 'mcq',
+        },
+      });
+    } catch {}
     if (!correct && q && correct !== "timeout") {
       // userAnswerText carries what the user picked so the missed-answers
       // review on the result screen can show "✗ X · ✓ Y". Typed inputs
@@ -8704,6 +8734,18 @@ function AppInner() {
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
+
+  // Sprint #61 DD3: push the current screen as a Sentry tag whenever it
+  // changes, plus a breadcrumb. Now an error fired from any nested component
+  // will carry `screen=home|daily|profile|...` so the launch-day debugger
+  // can answer "which surface did this fire on?" without spelunking the
+  // breadcrumb log.
+  useEffect(() => {
+    try {
+      Sentry.setTag('screen', screen);
+      Sentry.addBreadcrumb({ category: 'nav', message: `screen → ${screen}`, level: 'info' });
+    } catch {}
+  }, [screen]);
 
   // Active multiplayer room code — set when create_room / join_room succeeds
   // in OnlineEntry, consumed by MultiplayerLobby. Separate from pendingJoinCode

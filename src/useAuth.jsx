@@ -80,6 +80,11 @@ export function AuthProvider({ children }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       activeUserIdRef.current = session?.user?.id ?? null
       setUser(session?.user ?? null)
+      // Sprint #61 DD3: tag initial-session user. onAuthStateChange handles
+      // subsequent sign-ins / sign-outs.
+      if (session?.user) {
+        try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+      }
       setLoading(false)
     })
 
@@ -90,6 +95,13 @@ export function AuthProvider({ children }) {
         if (session?.user) {
           setIsGuest(false)
           localStorage.removeItem('ballIQ_guestMode')
+          // Sprint #61 DD3: attach user id to every Sentry event so the 2am
+          // launch-day debugger can answer "who hit this?". main.jsx's
+          // beforeSend already strips email + username so this stays
+          // PII-safe — id only.
+          try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+        } else {
+          try { Sentry.setUser(null) } catch {}
         }
         setLoading(false)
 

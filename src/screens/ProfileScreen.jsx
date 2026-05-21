@@ -267,13 +267,26 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   const loadFriendships = useCallback(async () => {
     if (!userId) return;
     setLoading(true);
+    // Sprint #61 DD1: paginate. PostgREST caps single-request rows at 1000.
+    // Same class of silent-truncation bug fixed in ReviewScreen (Sprint #37):
+    // popular users could exceed 1000 friendship rows (accepted + pending +
+    // declined combined), and the unpaged SELECT would drop the overflow.
     try {
-      const { data, error } = await supabase
-        .from("friendships")
-        .select("*,requester:profiles!requester_id(id,username,avatar:avatar_id,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,total_score)")
-        .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`);
-      if (error) throw error;
-      setFriendships(data || []);
+      const PAGE = 1000;
+      const rows = [];
+      const cols = "*,requester:profiles!requester_id(id,username,avatar:avatar_id,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,total_score)";
+      for (let from = 0; ; from += PAGE) {
+        const { data, error } = await supabase
+          .from("friendships")
+          .select(cols)
+          .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`)
+          .range(from, from + PAGE - 1);
+        if (error) throw error;
+        if (!data || data.length === 0) break;
+        rows.push(...data);
+        if (data.length < PAGE) break;
+      }
+      setFriendships(rows);
     } catch (e) {
       console.error("[friends] load", e?.message || "Unknown error");
     } finally {
