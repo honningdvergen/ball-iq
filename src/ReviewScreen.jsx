@@ -93,15 +93,32 @@ export default function ReviewScreen({ onBack }) {
   useEffect(() => {
     if (!user?.id) { setLoading(false); return; }
     let cancelled = false;
+    // Sprint #37: page through decisions. PostgREST caps single-request rows
+    // at 1000 by default. Reviewer counts already exceed that, so an unpaged
+    // SELECT silently drops decided rows — those question IDs reappear as
+    // "pending" every session and get re-decided into PK-collision upserts.
+    async function fetchAllDecisions(userId) {
+      const PAGE = 1000;
+      const rows = [];
+      for (let from = 0; ; from += PAGE) {
+        const { data, error } = await supabase
+          .from('question_review')
+          .select('question_id, status, source, updated_at')
+          .eq('reviewed_by', userId)
+          .range(from, from + PAGE - 1);
+        if (error) return { data: null, error };
+        if (!data || data.length === 0) break;
+        rows.push(...data);
+        if (data.length < PAGE) break;
+      }
+      return { data: rows, error: null };
+    }
     (async () => {
       setLoading(true);
       try {
         const [questionsResult, decisionsResult] = await Promise.all([
           loadQuestions(),
-          supabase
-            .from('question_review')
-            .select('question_id, status, source, updated_at')
-            .eq('reviewed_by', user.id),
+          fetchAllDecisions(user.id),
         ]);
         if (cancelled) return;
 
