@@ -42,6 +42,25 @@ if (import.meta.env.VITE_SENTRY_DSN) {
   })
 }
 
+// Sprint #62 fix 4: request persistent storage so the browser (and
+// especially iOS PWAs) won't evict our localStorage / IndexedDB under
+// quota pressure or after long inactivity. Supabase refresh tokens
+// live in localStorage; eviction = forced re-login.
+//   - Installed PWAs on Chrome/Edge/Android auto-grant without a
+//     prompt.
+//   - Standalone iOS PWAs prompt the user once; if granted, iOS stops
+//     evicting after the ~7-day inactivity threshold.
+//   - Browsers without the Storage API (older Safari, etc.) just
+//     no-op — the try/catch absorbs any throw.
+// Fire-and-forget: we don't block app mount or read the result; the
+// promise resolves asynchronously and the next session has persistent
+// storage if granted.
+try {
+  if (typeof navigator !== 'undefined' && navigator.storage?.persist) {
+    navigator.storage.persist().catch(() => {})
+  }
+} catch {}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>

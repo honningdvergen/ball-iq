@@ -190,6 +190,23 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
   const form14 = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    // Sprint #62 fix 1: compute the user's first-played day. Days before
+    // it are rendered as "pre" (neutral, no aria-label of "Missed") so a
+    // brand-new user doesn't see a 13-cell graveyard accusing them of
+    // missing days that didn't exist for them yet. Mirrors the firstTime
+    // logic in the matchdays memo below.
+    let firstTime = todayMid;
+    for (const ymd of t7Set) {
+      const [y, m, d] = ymd.split("-").map(Number);
+      const t = new Date(y, m - 1, d).getTime();
+      if (t < firstTime) firstTime = t;
+    }
+    for (const [ymd, status] of footleHistory) {
+      if (status === "in-progress") continue;
+      const [y, m, d] = ymd.split("-").map(Number);
+      const t = new Date(y, m - 1, d).getTime();
+      if (t < firstTime) firstTime = t;
+    }
     const out = [];
     for (let i = 13; i >= 0; i--) {
       const d = new Date(todayMid - i * 86400000);
@@ -201,6 +218,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       let cls, label;
       if (t7 && fAttempt) { cls = "W"; label = "Win"; }
       else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Today's 7 only" : "Footle only"; }
+      else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = "Before your first puzzle"; }
       else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
       out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
     }

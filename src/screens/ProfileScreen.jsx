@@ -262,11 +262,18 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   const [searching, setSearching] = useState(false);
   const [friendships, setFriendships] = useState([]);
   const [loading, setLoading] = useState(false);
+  // Sprint #62 fix 2: track load error separately. Previously a network
+  // failure during loadFriendships() was logged but not surfaced — the UI
+  // fell through to the empty-state "No friends yet" copy, telling users
+  // with real friends that they had none. Now we render an error message
+  // with a retry instead.
+  const [loadError, setLoadError] = useState(false);
   const toast = onToast || (() => {});
 
   const loadFriendships = useCallback(async () => {
     if (!userId) return;
     setLoading(true);
+    setLoadError(false);
     // Sprint #61 DD1: paginate. PostgREST caps single-request rows at 1000.
     // Same class of silent-truncation bug fixed in ReviewScreen (Sprint #37):
     // popular users could exceed 1000 friendship rows (accepted + pending +
@@ -289,6 +296,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       setFriendships(rows);
     } catch (e) {
       console.error("[friends] load", e?.message || "Unknown error");
+      setLoadError(true);
     } finally {
       setLoading(false);
     }
@@ -524,7 +532,22 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       <div className="friends-block">
         <div className="friends-block-title">Your friends{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
         {loading && accepted.length === 0 && <div className="friends-muted">Loading…</div>}
-        {!loading && accepted.length === 0 && <div className="friends-muted">No friends yet — search above to add some.</div>}
+        {/* Sprint #62 fix 2: error state takes precedence over the empty
+            state. A failed network load is otherwise indistinguishable
+            from "no friends" — users with real friends were being told
+            they had none on a flaky connection. */}
+        {!loading && loadError && (
+          <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:6}}>
+            <div>Couldn't load your friends.</div>
+            <button
+              onClick={loadFriendships}
+              style={{background:"transparent",border:"1px solid var(--accent)",color:"var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",alignSelf:"flex-start",fontFamily:"inherit"}}
+            >
+              Try again
+            </button>
+          </div>
+        )}
+        {!loading && !loadError && accepted.length === 0 && <div className="friends-muted">No friends yet — search above to add some.</div>}
         {accepted.map(f => {
           const p = otherOf(f);
           if (!p) return null;

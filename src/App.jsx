@@ -1493,6 +1493,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tactics-cell.W{background:var(--accent);border-color:var(--accent);}
 .tactics-cell.D{background:var(--gold);border-color:var(--gold);}
 .tactics-cell.L{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06);}
+.tactics-cell.pre{background:transparent;border:1px dashed rgba(255,255,255,0.10);}
 .tactics-cell.is-today{box-shadow:0 0 0 2px rgba(255,255,255,0.22);}
 .tactics-cell.is-today.L{background:#FB923C;border-color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,0.45);}
 .tactics-strip-l{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-top:10px;}
@@ -10570,7 +10571,28 @@ function AppInner() {
 }
 
 function AppGate() {
-  const { user, isGuest, loading } = useAuth();
+  const { user, isGuest, loading, profile } = useAuth();
+  // Sprint #62 fix 3: keep the splash up until authProfile has loaded
+  // (or a safety timeout elapses), so AppInner mounts with profile
+  // already in hand and the Sprint #26 X2 cross-device onboarding
+  // reconciliation runs on the first render. Without this, fresh-device
+  // sign-in for an existing user flashes OnboardingScreen for the
+  // 500-2000ms window between AppInner mount and authProfile arrival.
+  // Guests skip the wait (no profile to load); brand-new sign-ups still
+  // see Onboarding correctly because their profile arrives WITHOUT
+  // onboarded_at set and the X2 effect leaves hasOnboarded=false.
+  const profileNotReady = !!user && !isGuest && !profile;
+  const [profileWaitElapsed, setProfileWaitElapsed] = useState(false);
+  useEffect(() => {
+    if (!profileNotReady) { setProfileWaitElapsed(false); return; }
+    // Safety: cap the wait at 2s. If profile load is slow or fails, mount
+    // AppInner anyway — the legacy onboarding flash is preferable to
+    // hanging on the splash indefinitely.
+    const id = setTimeout(() => setProfileWaitElapsed(true), 2000);
+    return () => clearTimeout(id);
+  }, [profileNotReady]);
+  const effectiveLoading = loading || (profileNotReady && !profileWaitElapsed);
+
   // Sprint #23 U2: splash stays mounted for one 220ms beat after
   // loading→false, fading out while AppInner mounts behind it (the
   // splash is position:fixed inset:0 so AppInner renders underneath).
@@ -10580,27 +10602,27 @@ function AppGate() {
   // collapses this to an instant unmount.
   const [splashMounted, setSplashMounted] = useState(true);
   useEffect(() => {
-    if (loading) { setSplashMounted(true); return; }
+    if (effectiveLoading) { setSplashMounted(true); return; }
     const reduced = typeof window !== 'undefined' && window.matchMedia
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
     if (reduced) { setSplashMounted(false); return; }
     const id = setTimeout(() => setSplashMounted(false), 240);
     return () => clearTimeout(id);
-  }, [loading]);
+  }, [effectiveLoading]);
 
   // Render the SAME branded splash markup that index.html injects into #root
   // before React mounts. Reusing the .biq-splash classes (defined inline in
   // index.html's <style>) means the moment React replaces the pre-mount DOM,
   // the user sees an identical wordmark + animated bar — no visible swap.
   const splash = splashMounted ? (
-    <div className={`biq-splash${!loading ? ' is-leaving' : ''}`} aria-label={`Loading ${APP_NAME}`}>
+    <div className={`biq-splash${!effectiveLoading ? ' is-leaving' : ''}`} aria-label={`Loading ${APP_NAME}`}>
       <div className="biq-splash-mark">Ball <em>IQ</em></div>
       <div className="biq-splash-dot"></div>
     </div>
   ) : null;
 
-  if (loading) return splash;
+  if (effectiveLoading) return splash;
 
   return (
     <>
