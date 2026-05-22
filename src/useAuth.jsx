@@ -192,12 +192,11 @@ export function AuthProvider({ children }) {
         gameState = gameStateData
       }
 
-      // Merge: profile fields, then explicitly source the 5 game-state columns
-      // from gameState (or undefined if its fetch failed). We don't fall back
-      // to profileData's stale copies — during the C2-to-C4 window those
-      // columns exist on profiles but are no longer written, so reading them
-      // risks showing yesterday's score as today's. "Show no data" beats
-      // "show stale data"; hydrate's local cache will fill in.
+      // Merge: profile fields, then explicitly source the 5 game-state
+      // columns from gameState. Sprint #69 KK2 dropped these columns from
+      // profiles, so the spread no longer carries them — but keep the
+      // explicit assignment for shape stability and so a user_game_state
+      // fetch failure leaves the keys as undefined (not stale).
       const merged = {
         ...profileData,
         daily_scores:        gameState?.daily_scores,
