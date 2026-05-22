@@ -47,6 +47,14 @@ export default defineConfig({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       release: { name: gitSha },
       disable: !process.env.SENTRY_AUTH_TOKEN,
+      // Sprint #73 OO5: delete .map files after upload so they don't ship
+      // to Vercel and become publicly fetchable at /assets/<hash>.js.map.
+      // The plugin strips the inline sourceMappingURL comment regardless,
+      // but the files themselves used to remain in dist/ — guessable
+      // filename = source code leak. Now Sentry holds the only copy.
+      sourcemaps: {
+        filesToDeleteAfterUpload: ['./dist/assets/*.map'],
+      },
     }),
   ],
   define: {

@@ -53,11 +53,19 @@ function ensureCropperLoaded() {
         reject(new Error("No document"));
         return;
       }
-      // Inject CSS once
+      // Inject CSS once. Sprint #73 OO6: SRI hashes harden against
+      // CDN compromise — if cdnjs is hijacked, the browser refuses to
+      // execute mismatched content. Computed from the actual 1.6.2
+      // payload at cdnjs (sha384, base64). When bumping cropper.js
+      // versions, recompute both hashes — they're build-pinned to the
+      // version above.
       if (!document.querySelector('link[data-cropperjs]')) {
         const link = document.createElement("link");
         link.rel = "stylesheet";
         link.href = "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css";
+        link.integrity = "sha384-6LFfkTKLRlzFtgx8xsWyBdKGpcMMQTkv+dB7rAbugeJAu1Ym2q1Aji1cjHBG12Xh";
+        link.crossOrigin = "anonymous";
+        link.referrerPolicy = "no-referrer";
         link.setAttribute("data-cropperjs", "1");
         document.head.appendChild(link);
       }
@@ -66,6 +74,9 @@ function ensureCropperLoaded() {
       if (!script) {
         script = document.createElement("script");
         script.src = "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js";
+        script.integrity = "sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir";
+        script.crossOrigin = "anonymous";
+        script.referrerPolicy = "no-referrer";
         script.async = true;
         script.setAttribute("data-cropperjs", "1");
         document.head.appendChild(script);
