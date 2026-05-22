@@ -83,7 +83,10 @@
          contents. Avoids the blank-screen gap during the cold-start Supabase
          auth round-trip on iOS home-screen launches. */
       .biq-splash {
-        position: fixed; inset: 0;
+        /* Sprint #67 II1: top/right/bottom/left longhand for iOS 14.0-14.4
+           which don't recognise inset: shorthand. Modern browsers apply
+           inset: 0 last, same effective result. */
+        position: fixed; top: 0; right: 0; bottom: 0; left: 0; inset: 0;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 14px;
         background: #0F1117; color: #F0F1F5;

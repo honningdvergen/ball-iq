@@ -123,5 +123,7 @@ Internal project. PRs land via direct push to `main` after smoke-test. Conventio
 - `CLAUDE.md` — deploy policy, cache invalidation rules, repo conventions
 - `docs/MULTIPLAYER.md` — Stage 1 multiplayer architecture, SQL contracts, bug class catalog
 - `docs/PRODUCTION_RUNBOOK.md` — incident triage SQL
+- `docs/PLATFORM_SUPPORT.md` — supported browsers + minimum versions, PWA install paths, known limitations
+- `docs/SENTRY_RULES.md` — alert rule definitions (mirrors the Sentry dashboard)
 - `scripts/README.md` — spike test suite operations
 - Memory notes (`~/.claude/projects/.../memory/`) — failure-mode patterns and project-specific gotchas

@@ -914,6 +914,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    take the brand accent; inactive dots get a faint outlined fill. */
 .streak-pulse{display:flex;gap:3px;align-items:center;}
 .streak-pulse-dot{flex:1 1 auto;aspect-ratio:1;min-width:5px;max-width:9px;border-radius:50%;background:var(--s3);border:1px solid var(--border);box-sizing:border-box;}
+/* Sprint #67 II1: iOS 14.0-14.4 fallback for aspect-ratio — the ::before
+   padding-top trick forces a 1:1 box without aspect-ratio support. Modern
+   browsers compute aspect-ratio first; the ::before block just adds a
+   trailing zero-content child that's invisible in either case. */
+.streak-pulse-dot::before{content:"";display:block;padding-top:100%;}
 .streak-pulse-dot.active{background:var(--accent);border-color:var(--accent);}
 .hsc-meta{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--t3);letter-spacing:0.04em;line-height:1;}
 
@@ -1042,7 +1047,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .play-card.soon-tile .play-card-desc{font-size:11px;-webkit-line-clamp:1;}
 
 /* ── CLASSIC DIFFICULTY SHEET ── */
-.diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
+.diff-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.55);z-index:410;display:flex;align-items:flex-end;animation:fadeIn 0.18s ease;}
 .diff-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,34px));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .diff-sheet-title{font-size:17px;font-weight:900;color:var(--t1);text-align:center;margin-bottom:6px;letter-spacing:-0.3px;}
 .diff-sheet-sub{font-size:13px;color:var(--t3);text-align:center;margin-bottom:18px;}
@@ -1316,7 +1321,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .local-out-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--border);font-size:11px;color:var(--t3);opacity:0.65;}
 
 /* ── LOCAL GAME: ROUND SUMMARY (between-question flash) ── */
-.local-summary-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.85);z-index:450;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.18s ease;}
+.local-summary-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(10,10,10,0.85);z-index:450;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.18s ease;}
 .local-summary-card{width:100%;max-width:340px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:var(--sh-lg);animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .local-summary-title{font-size:13px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;margin-bottom:12px;}
 .local-summary-row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:0.5px solid var(--border);font-size:14px;}
@@ -1504,6 +1509,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .tactics-form-row b{color:var(--text);font-weight:800;}
 .tactics-strip{display:flex;gap:3px;}
 .tactics-cell{flex:1 1 0;aspect-ratio:1/1;min-width:5px;max-width:22px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);box-sizing:border-box;}
+.tactics-cell::before{content:"";display:block;padding-top:100%;}  /* Sprint #67 II1 aspect-ratio fallback */
 .tactics-cell.W{background:var(--accent);border-color:var(--accent);}
 .tactics-cell.D{background:var(--gold);border-color:var(--gold);}
 .tactics-cell.L{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06);}
@@ -1546,6 +1552,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}
 .m7-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
 .m7-cell{width:100%;aspect-ratio:1;max-width:38px;border-radius:8px;border:1px solid var(--border);background:var(--s2);}
+.m7-cell::before{content:"";display:block;padding-top:100%;}  /* Sprint #67 II1 aspect-ratio fallback */
 .m7-cell.m7-done{background:var(--accent);border-color:var(--accent);}
 .m7-cell.m7-miss{background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.10);}
 .m7-cell.m7-pre{background:transparent;border-color:var(--border);opacity:0.45;}
@@ -1657,13 +1664,13 @@ button.friends-lb-row:hover{background:var(--s3);}
 .avatar-menu-row:active{transform:scale(0.98);}
 
 /* ── IMAGE CROP MODAL ── */
-.crop-overlay{position:fixed;inset:0;background:#0a0a0a;z-index:600;display:flex;flex-direction:column;color:#fff;animation:fadeIn 0.18s ease;}
+.crop-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:#0a0a0a;z-index:600;display:flex;flex-direction:column;color:#fff;animation:fadeIn 0.18s ease;}
 .crop-header{padding:calc(18px + env(safe-area-inset-top,0)) 20px 12px;text-align:center;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:#fff;flex-shrink:0;}
 .crop-stage{flex:1;position:relative;overflow:hidden;background:#0a0a0a;min-height:0;display:flex;align-items:center;justify-content:center;}
 .crop-stage img{display:block;max-width:100%;max-height:100%;}
 .crop-circle-mask .cropper-view-box,.crop-circle-mask .cropper-face{border-radius:50%;}
 .crop-circle-mask .cropper-view-box{outline:2px solid #fff;outline-color:rgba(255,255,255,0.85);}
-.crop-status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
+.crop-status{position:absolute;top:0;right:0;bottom:0;left:0;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
 .crop-status-err{color:var(--red);}
 .crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0a0a0a;flex-shrink:0;}
 .light .crop-overlay{background:rgba(0,0,0,0.85);}
@@ -1678,7 +1685,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .crop-btn.secondary:hover:not(:disabled){background:rgba(255,255,255,0.18);}
 .crop-btn.secondary:active:not(:disabled){transform:scale(0.98);}
 
-.emoji-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
+.emoji-picker-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;}
 .emoji-picker-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,34px));animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .emoji-picker-title{font-size:14px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t2);}
 /* Responsive grid: as many 44px+ columns as the sheet width allows. iPhone
@@ -1837,7 +1844,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .social-tip{font-size:12px;color:var(--t3);background:var(--s1);border-radius:12px;padding:12px 14px;line-height:1.6;margin-top:4px;box-shadow:0 1px 6px rgba(0,0,0,0.2);}
 
 /* ── ONBOARDING ── */
-.onboard-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
+.onboard-wrap{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(ellipse at 50% 0%, #1a1d27 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
 .light .onboard-wrap{background:radial-gradient(ellipse at 50% 0%, #FFFFFF 0%, #F2F2F7 65%);}
 .onboard-progress{display:flex;gap:6px;padding:0 24px;margin-bottom:24px;}
 .onboard-bar{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,0.12);transition:background 0.25s;}
@@ -1876,7 +1883,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 
 /* ── QUIT MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
+.modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
 .modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
@@ -1997,7 +2004,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,calc((100vw - 80px)));}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
 .wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(440px,calc((100vw - 32px)));}
-.wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
+.wd-tile{aspect-ratio:1/1;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
+/* Sprint #67 II1: min-height floor for iOS 14.0-14.4 (no aspect-ratio).
+   wd-tile is display:flex so the ::before padding-top trick used on
+   other aspect-ratio sites would fight with letter centering; min-height
+   keeps the cell tall enough to be legible (slightly flat rather than
+   perfectly square on the unsupported audience). */
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
@@ -2054,7 +2066,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
 .footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
-.footle-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
+.footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
 .fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
@@ -6357,7 +6369,7 @@ function HardRightBurst({ onComplete }) {
     requestAnimationFrame(draw);
     return () => { alive = false; };
   }, [onComplete]);
-  return <canvas ref={canvasRef} style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:500}} />;
+  return <canvas ref={canvasRef} style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,pointerEvents:"none",zIndex:500}} />;
 }
 
 
@@ -7212,7 +7224,7 @@ function ClubQuizScreen({ onStart, onBack }) {
         <div style={{fontSize:11,color:"var(--t3)",letterSpacing:1,fontWeight:600}}>Free update · No purchase needed</div>
       </div>
       {showProModal && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
+        <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
           <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
             <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
@@ -7685,7 +7697,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 
       {confirmClearStats && (
         <div
-          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+          style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
           onClick={() => setConfirmClearStats(false)}
         >
           <div
@@ -7725,7 +7737,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 
       {confirmDelete && (
         <div
-          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+          style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
           onClick={() => !deleting && setConfirmDelete(false)}
         >
           <div
@@ -7770,6 +7782,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{
       position: "fixed",
+      top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
       background: "#0a0a0a",
       color: "#F0F1F5",
@@ -7912,6 +7925,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
   return (
     <div style={{
       position: "fixed",
+      top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
       background: "#0a0a0a",
       color: "#F0F1F5",
@@ -8001,6 +8015,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
   return (
     <div style={{
       position: "fixed",
+      top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
       background: "#0F1117",
       color: "#F0F1F5",
@@ -8075,7 +8090,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
     <div
       onClick={onClose}
       style={{
-        position:"fixed", inset:0, zIndex:999,
+        position:"fixed", top:0, right:0, bottom:0, left:0, inset:0, zIndex:999,
         background:"rgba(0,0,0,0.75)",
         display:"flex", alignItems:"flex-end",
         animation:"fadeIn 0.2s ease",
@@ -10205,7 +10220,7 @@ function AppInner() {
         )}
         {/* APP_NAME Intro */}
         {showBallIQIntro && (
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
@@ -10224,7 +10239,7 @@ function AppInner() {
         )}
         {/* Rate prompt */}
         {showRatePrompt && (
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
@@ -10245,7 +10260,7 @@ function AppInner() {
           </div>
         )}
         {howToPlay && (
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
             <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{HOW_TO_PLAY[howToPlay]?.title}</div>
               {HOW_TO_PLAY[howToPlay]?.steps.map((step, i) => (
@@ -10260,7 +10275,7 @@ function AppInner() {
         )}
 
         {levelUpOverlay && (
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
             <Confetti />
             <div style={{textAlign:"center",padding:"0 32px"}}>
               <div style={{fontSize:80,marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)"}}>{levelUpOverlay.icon}</div>
@@ -10432,7 +10447,7 @@ function AppInner() {
             autoJoinRoutedRef effect picks it up after auth completes. */}
         {pendingJoinCode && (!user || isGuest) && (
           <div
-            style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
+            style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
             onClick={clearPendingJoin}
           >
             <div
