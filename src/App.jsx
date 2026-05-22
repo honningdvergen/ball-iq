@@ -7351,10 +7351,16 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
+  // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
+  // modal matching the existing Reset-stats / Delete-account design. Native
+  // Apple-system dialog was off-brand.
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const clearStatsModalRef = useRef(null);
   const deleteModalRef = useRef(null);
+  const signOutModalRef = useRef(null);
   useModalA11y({ isOpen: confirmClearStats, onClose: () => setConfirmClearStats(false), ref: clearStatsModalRef });
   useModalA11y({ isOpen: confirmDelete, onClose: () => !deleting && setConfirmDelete(false), ref: deleteModalRef });
+  useModalA11y({ isOpen: confirmSignOut, onClose: () => setConfirmSignOut(false), ref: signOutModalRef });
   // Audit Phase 5 (B3): performDelete catch could fire setState on the
   // unmounted component if the RPC throws after signOut → AppGate route.
   const mountedRef = useRef(true);
@@ -7426,11 +7432,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 type="button"
                 className="settings-row danger"
                 style={{width:"100%",background:"none",border:"none",textAlign:"left"}}
-                onClick={async () => {
-                  if (confirm(`Sign out of your ${APP_NAME} account?`)) {
-                    await signOut();
-                  }
-                }}
+                onClick={() => setConfirmSignOut(true)}
               >
                 <div className="sr-left">
                   <div className="sr-label">Sign out</div>
@@ -7446,11 +7448,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                   <div className="sr-desc">{user.email} — profile loading…</div>
                 </div>
               </div>
-              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={async () => {
-                if (confirm(`Sign out of your ${APP_NAME} account?`)) {
-                  await signOut();
-                }
-              }}>
+              <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmSignOut(true)}>
                 <div className="sr-left">
                   <div className="sr-label">Sign out</div>
                 </div>
@@ -7730,6 +7728,38 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             </button>
             <button
               onClick={() => setConfirmClearStats(false)}
+              style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {confirmSignOut && (
+        <div
+          style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+          onClick={() => setConfirmSignOut(false)}
+        >
+          <div
+            ref={signOutModalRef}
+            tabIndex={-1}
+            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Sign out confirmation"
+          >
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Sign out?</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Sign out of your {APP_NAME} account on this device? Your progress stays synced — sign back in any time to pick up where you left off.</div>
+            <button
+              onClick={async () => { setConfirmSignOut(false); await signOut(); }}
+              style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
+            >
+              Sign out
+            </button>
+            <button
+              onClick={() => setConfirmSignOut(false)}
               style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
             >
               Cancel
@@ -8086,7 +8116,7 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
     const msg = `🧠 My ${APP_NAME} is ${iq}\n${label}\n\nCould you beat me?\nballiq.app`;
     try {
       if (navigator.share) { await navigator.share({ title: APP_NAME, text: msg }); return; }
-      if (navigator.clipboard) { await navigator.clipboard.writeText(msg); alert("Copied to clipboard!"); return; }
+      if (navigator.clipboard) { await navigator.clipboard.writeText(msg); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Copied to clipboard' })); } catch {} return; }
     } catch {}
   };
   return (
@@ -8688,7 +8718,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       dateLabel,
       failed: state.status === "lost",
     }, {
-      onToast: (msg) => alert(msg),
+      onToast: (msg) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(msg) })); } catch {} },
       textFallback: shareText,
     });
   }, [shareText, state.guesses, state.status, answer, dateLabel]);
@@ -9165,6 +9195,22 @@ function AppInner() {
     };
     window.addEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
     return () => window.removeEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
+  }, [showToast]);
+
+  // Sprint #71 MM1: shared "biq:show-toast" channel so deeply-nested
+  // components (IqRecapOverlay, FootleScreen share fallback) can surface
+  // a toast without prop-drilling showToast. Mirrors the storage-quota
+  // event pattern above. Detail: string message; optional duration via
+  // detail object { msg, duration }.
+  useEffect(() => {
+    const onShowToast = (e) => {
+      const d = e?.detail;
+      if (!d) return;
+      if (typeof d === 'string') { showToast(d); return; }
+      if (d.msg) showToast(String(d.msg), d.duration);
+    };
+    window.addEventListener('biq:show-toast', onShowToast);
+    return () => window.removeEventListener('biq:show-toast', onShowToast);
   }, [showToast]);
 
   // Multi-player local state
@@ -9967,9 +10013,17 @@ function AppInner() {
   // hook. Other players see the resulting room_players DELETE event.
   const handleHomeClick = useCallback(async () => {
     if (screen === "online-stage1-lobby" && stage1RoomCode) {
-      if (!window.confirm("Leave the room and return to home?")) return;
-      try { await mpLeaveRoom({ p_code: stage1RoomCode }); } catch {}
-      setStage1RoomCode("");
+      // Sprint #71 MM1: in-app modal instead of window.confirm. The async
+      // leave-room + navigate work is the modal's confirm callback.
+      const code = stage1RoomCode;
+      setPendingLeaveRoom({
+        onConfirm: async () => {
+          try { await mpLeaveRoom({ p_code: code }); } catch {}
+          setStage1RoomCode("");
+          goHome();
+        },
+      });
+      return;
     }
     goHome();
   }, [screen, stage1RoomCode, goHome]);
@@ -10065,6 +10119,11 @@ function AppInner() {
   // bottom-sheet modals that previously had no a11y wiring.
   const ballIQIntroRef = useRef(null);
   const ratePromptRef = useRef(null);
+  // Sprint #71 MM1: in-app confirm modal for "leave the multiplayer room?"
+  // replaces a window.confirm() that rendered as the iOS native dialog.
+  // pendingLeaveRoomRef carries the cleanup callback; null = closed.
+  const [pendingLeaveRoom, setPendingLeaveRoom] = useState(null);
+  const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
@@ -10072,6 +10131,7 @@ function AppInner() {
   useModalA11y({ isOpen: !!showBallIQIntro, onClose: () => setShowBallIQIntro(false), ref: ballIQIntroRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   useModalA11y({ isOpen: !!howToPlay, onClose: () => setHowToPlay(null), ref: howToPlayRef });
+  useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
 
   const startClassicWithDiff = useCallback(async (d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
@@ -10281,6 +10341,38 @@ function AppInner() {
                 </div>
               ))}
               <button onClick={() => setHowToPlay(null)} style={{width:"100%",padding:"14px",background:"var(--s2)",border:"none",borderRadius:14,fontSize:15,fontWeight:700,color:"var(--t1)",marginTop:8,cursor:"pointer"}}>Got it ✓</button>
+            </div>
+          </div>
+        )}
+
+        {pendingLeaveRoom && (
+          <div
+            style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+            onClick={() => setPendingLeaveRoom(null)}
+          >
+            <div
+              ref={leaveRoomModalRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Leave room confirmation"
+              style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Leave the room?</div>
+              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>You'll exit the multiplayer lobby and return to home. Other players will see you leave.</div>
+              <button
+                onClick={() => { const cb = pendingLeaveRoom?.onConfirm; setPendingLeaveRoom(null); cb?.(); }}
+                style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
+              >
+                Leave room
+              </button>
+              <button
+                onClick={() => setPendingLeaveRoom(null)}
+                style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
+              >
+                Stay
+              </button>
             </div>
           </div>
         )}

@@ -805,7 +805,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const iq = stats.bestIQ || null;
   const pctile = iq ? iqPercentile(iq) : null;
   const avatarUrl = authProfile?.avatar_url || null;
-  const toast = onToast || ((m) => { try { window.alert(m); } catch {} });
+  // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
+  // native window.alert dialog if no onToast prop was provided. In
+  // practice every caller passes onToast — this is defensive.
+  const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
 
   const openAvatarPicker = () => {
     if (uploading) return;
