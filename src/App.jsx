@@ -1542,11 +1542,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .fix-dot.f.on{background:#7C3AED;box-shadow:0 0 5px rgba(124,58,237,0.40);}
 .fix-dot.t.on{background:#FB923C;box-shadow:0 0 5px rgba(251,146,60,0.40);}
 .fix-dot.miss{background:transparent;border-color:var(--border2);}
-.fix-badge{width:28px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
-.fix-badge.W{background:rgba(34,197,94,0.18);color:#4ADE80;border:1px solid rgba(34,197,94,0.36);}
-.fix-badge.D{background:rgba(245,158,11,0.18);color:#FBBF24;border:1px solid rgba(245,158,11,0.36);}
-.fix-badge.L{background:rgba(239,68,68,0.14);color:#F87171;border:1px solid rgba(239,68,68,0.32);}
-.fix-badge.pending{background:rgba(251,146,60,0.16);color:#FB923C;border:1px solid rgba(251,146,60,0.36);font-size:14px;}
+/* Sprint #71 MM2: .fix-score replaced the .fix-badge W/D/L letter. Same
+   28x24 footprint preserves row rhythm. Mono font for numeric clarity.
+   is-empty dims the "—/7" placeholder so attempted-T7 days stand out. */
+.fix-score{min-width:28px;height:24px;display:grid;place-items:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:12px;font-weight:700;letter-spacing:0.02em;color:var(--t1);flex-shrink:0;padding:0 4px;}
+.fix-score.is-empty{color:var(--t3);font-weight:500;}
 
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */
 .m7-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px;}

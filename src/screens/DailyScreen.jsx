@@ -173,19 +173,13 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       const fWon = fStatus === "won";
       const fAttempt = fWon || fStatus === "lost";
       const isToday = i === 0;
-      let wdl;
-      if (isToday && !t7Done && !fAttempt) wdl = null; // pending
-      else if (t7Done && fAttempt) wdl = "W";
-      else if (t7Done || fAttempt) wdl = "D";
-      else wdl = "L";
       let dateLabel;
       if (isToday) dateLabel = "Today";
       else if (i === 1) dateLabel = "Yesterday";
       else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
-        ymd, md, dateLabel, dateSub, isToday, wdl,
-        t7Done, fAttempt,
+        ymd, md, dateLabel, dateSub, isToday, t7Score, t7Done, fAttempt,
       });
     }
     return rows;
@@ -294,34 +288,41 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
         </div>
       </div>
 
-      {/* Sprint #24 V3: Recent fixtures list. Per-row format:
+      {/* Sprint #24 V3 / Sprint #71 MM2: Recent fixtures list. Per-row:
           MD badge + date (left) | Footle/T7 mode dots (middle) |
-          W/D/L badge (right). Dots show per-mode contribution —
-          saturated when that mode was done, outlined-muted when not.
-          Display-only for v1.0 (no tap-through). */}
+          Today's 7 score (right). MM2 removed the W/D/L letter badge —
+          it didn't carry semantic weight that the per-mode dots don't
+          already convey. The right-side cell now shows the user's
+          actual T7 score for that day (5/7, 7/7) or "—/7" for days
+          they didn't attempt T7. Numeric form, mono font, consistent
+          shape across rows. Display-only for v1.0 (no tap-through). */}
       {matchdays.length > 0 && (
         <>
           <div className="fix-eyebrow">Recent fixtures</div>
-          {matchdays.map(m => (
-            <div
-              key={m.ymd}
-              className={`fix-row${m.isToday ? " is-today" : ""}`}
-              aria-label={`${m.dateLabel} ${m.dateSub} — ${m.wdl || "pending"}`}
-            >
-              <div className="fix-md-wrap">
-                <div className="fix-md">MD {m.md}</div>
-                <div className="fix-date">{m.dateLabel}</div>
-                <div className="fix-date-sub">{m.dateSub}</div>
+          {matchdays.map(m => {
+            const scoreStr = m.t7Done ? `${m.t7Score}/7` : "—/7";
+            const scoreAria = m.t7Done ? `Today's 7 score ${m.t7Score} of 7` : "Today's 7 not played";
+            return (
+              <div
+                key={m.ymd}
+                className={`fix-row${m.isToday ? " is-today" : ""}`}
+                aria-label={`${m.dateLabel} ${m.dateSub} — ${scoreAria}`}
+              >
+                <div className="fix-md-wrap">
+                  <div className="fix-md">MD {m.md}</div>
+                  <div className="fix-date">{m.dateLabel}</div>
+                  <div className="fix-date-sub">{m.dateSub}</div>
+                </div>
+                <div className="fix-dots" aria-hidden="true">
+                  <span className={`fix-dot f ${m.fAttempt ? "on" : "miss"}`} title={m.fAttempt ? "Footle played" : "Footle skipped"} />
+                  <span className={`fix-dot t ${m.t7Done ? "on" : "miss"}`} title={m.t7Done ? "Today's 7 done" : "Today's 7 skipped"} />
+                </div>
+                <div className={`fix-score${m.t7Done ? "" : " is-empty"}`} aria-hidden="true">
+                  {scoreStr}
+                </div>
               </div>
-              <div className="fix-dots" aria-hidden="true">
-                <span className={`fix-dot f ${m.fAttempt ? "on" : "miss"}`} title={m.fAttempt ? "Footle played" : "Footle skipped"} />
-                <span className={`fix-dot t ${m.t7Done ? "on" : "miss"}`} title={m.t7Done ? "Today's 7 done" : "Today's 7 skipped"} />
-              </div>
-              <div className={`fix-badge ${m.wdl || "pending"}`} aria-label={m.wdl || "pending"}>
-                {m.wdl || "·"}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </>
       )}
 
