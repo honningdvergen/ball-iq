@@ -1489,7 +1489,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    MATCHDAY tag top-left, vibrant orange streak top-right (proportional
    Inter — explicitly NOT mono / tabular-nums, that was the v3->v4
    diagnosis). Form strip lives INSIDE the card as one unified hero. */
-.tactics-card{position:relative;background:repeating-linear-gradient(0deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),linear-gradient(180deg,#102836 0%,#0B1F2C 100%);border:1px solid rgba(52,211,153,0.16);border-radius:16px;padding:14px 16px 16px;margin:4px 0 14px;}
+.tactics-card{position:relative;background:repeating-linear-gradient(0deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),linear-gradient(180deg,#102836 0%,#0B1F2C 100%);border:1px solid rgba(52,211,153,0.10);border-radius:18px;padding:14px 16px 16px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(0,0,0,0.22);}
 .tactics-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
 .tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(52,211,153,0.30);border-radius:999px;background:rgba(52,211,153,0.07);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:#34D399;flex-shrink:0;}
 .tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 6px #34D399;}
@@ -1524,7 +1524,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    list. Light not heavy — the navy is layered as a low-alpha gradient
    over the base surface, the border is the same green tint as the
    tactics card at ~half the alpha. */
-.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:linear-gradient(180deg,rgba(16,40,54,0.45) 0%,rgba(26,29,39,0.85) 100%);border:1px solid rgba(52,211,153,0.10);}
+.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:14px;margin-bottom:6px;background:linear-gradient(180deg,rgba(16,40,54,0.45) 0%,rgba(26,29,39,0.85) 100%);border:1px solid rgba(52,211,153,0.06);box-shadow:0 1px 4px rgba(0,0,0,0.14);}
 .fix-row.is-today{background:linear-gradient(180deg,rgba(251,146,60,0.10) 0%,rgba(16,40,54,0.40) 100%);border-color:rgba(251,146,60,0.26);}
 .fix-md-wrap{display:flex;flex-direction:column;gap:1px;min-width:60px;}
 .fix-md{font-size:9.5px;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);}
@@ -1536,7 +1536,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .fix-dot.f.on{background:#7C3AED;box-shadow:0 0 5px rgba(124,58,237,0.40);}
 .fix-dot.t.on{background:#FB923C;box-shadow:0 0 5px rgba(251,146,60,0.40);}
 .fix-dot.miss{background:transparent;border-color:var(--border2);}
-.fix-badge{width:28px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.fix-badge{width:28px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
 .fix-badge.W{background:rgba(34,197,94,0.18);color:#4ADE80;border:1px solid rgba(34,197,94,0.36);}
 .fix-badge.D{background:rgba(245,158,11,0.18);color:#FBBF24;border:1px solid rgba(245,158,11,0.36);}
 .fix-badge.L{background:rgba(239,68,68,0.14);color:#F87171;border:1px solid rgba(239,68,68,0.32);}

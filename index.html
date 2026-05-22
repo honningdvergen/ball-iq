@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#0F1117" />
     <meta name="description" content="Ball IQ — The Ultimate Football Quiz" />
     <meta property="og:title" content="Ball IQ" />
     <meta property="og:description" content="Test your football knowledge. 3,900+ questions across 10 game modes." />
@@ -36,6 +36,26 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Ball IQ" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <!-- Sprint #65 GG1: apple-touch-startup-image per device. iOS shows
+         this image during WebView cold-boot in place of its default white
+         screen. Without these, fresh-day cold launches (iOS evicted the
+         WebView entirely overnight) flash white for ~500-1500ms before
+         the page paints. Each PNG is 'icon centered on #0F1117'; the
+         system shows it briefly until the page's own splash markup
+         renders. Media queries follow Apple's device-width/height/scale
+         + orientation pattern. -->
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro-max.png"
+          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro.png"
+          media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-plus.png"
+          media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone.png"
+          media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-x.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-se.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
     <style>
       html, body {
         margin: 0;
