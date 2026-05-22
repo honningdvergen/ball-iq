@@ -7194,6 +7194,9 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
 // ─── CLUB QUIZ SCREEN ────────────────────────────────────────────────────────
 function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);
+  // Sprint #68 JJ4: ESC + focus-trap on the upsell modal.
+  const proModalRef = useRef(null);
+  useModalA11y({ isOpen: showProModal, onClose: () => setShowProModal(false), ref: proModalRef });
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -7225,7 +7228,7 @@ function ClubQuizScreen({ onStart, onBack }) {
       </div>
       {showProModal && (
         <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
-          <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
+          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
             <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
             <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs will be available as a free update. Keep playing to stay ready!</div>
@@ -10058,9 +10061,17 @@ function AppInner() {
   const diffPickerRef = useRef(null);
   const friendsPickerRef = useRef(null);
   const joinGateRef = useRef(null);
+  // Sprint #68 JJ4: trap focus + ESC-to-close on the three pre-launch
+  // bottom-sheet modals that previously had no a11y wiring.
+  const ballIQIntroRef = useRef(null);
+  const ratePromptRef = useRef(null);
+  const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
+  useModalA11y({ isOpen: !!showBallIQIntro, onClose: () => setShowBallIQIntro(false), ref: ballIQIntroRef });
+  useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
+  useModalA11y({ isOpen: !!howToPlay, onClose: () => setHowToPlay(null), ref: howToPlayRef });
 
   const startClassicWithDiff = useCallback(async (d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
@@ -10221,7 +10232,7 @@ function AppInner() {
         {/* APP_NAME Intro */}
         {showBallIQIntro && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div ref={ballIQIntroRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={`About the ${APP_NAME} Test`} style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
@@ -10240,7 +10251,7 @@ function AppInner() {
         {/* Rate prompt */}
         {showRatePrompt && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
@@ -10261,7 +10272,7 @@ function AppInner() {
         )}
         {howToPlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
-            <div style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+            <div ref={howToPlayRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={HOW_TO_PLAY[howToPlay]?.title || "How to play"} style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{HOW_TO_PLAY[howToPlay]?.title}</div>
               {HOW_TO_PLAY[howToPlay]?.steps.map((step, i) => (
                 <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
