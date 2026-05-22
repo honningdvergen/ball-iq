@@ -10,6 +10,7 @@ scripts/.vintage-candidates.json
 scripts/.vintage-candidates.md
 scripts/.audit-findings.md
 scripts/.Rhistory
+scripts/_tmp-*
 
 # Playwright artifacts
 test-results/
