@@ -49,6 +49,28 @@ export default defineConfig({
       use: { ...devices['Galaxy S9+'], viewport: { width: 360, height: 800 } },
     },
     {
+      // Sprint #66 HH2: 320 × 568 — iPhone SE 1st gen / iPhone 5s floor.
+      // True minimum viewport in the wild. Anything that overflows or
+      // text-clips here breaks for the ~1% of users still on the smallest
+      // reachable iOS PWA viewport.
+      name: 'iphone-5s',
+      use: { ...devices['iPhone SE'], viewport: { width: 320, height: 568 } },
+    },
+    {
+      // Sprint #66 HH2: 430 × 932 — iPhone 15 / 16 Pro Max. Largest current
+      // iOS phone. Audits the .app 420px cap and tall-form safe-area math.
+      name: 'iphone-15-pro-max',
+      use: { ...devices['iPhone 14 Pro Max'], viewport: { width: 430, height: 932 } },
+    },
+    {
+      // Sprint #66 HH2: 412 × 915 — Galaxy S24 Ultra (and S23 Ultra / S22+
+      // / Note 10+). Largest contemporary flagship Android phone. Sits
+      // between galaxy-s22 (360w) and ipad-mini (768w) so any
+      // tablet-vs-phone breakpoint regression here is caught.
+      name: 'galaxy-s24-ultra',
+      use: { ...devices['Galaxy S9+'], viewport: { width: 412, height: 915 } },
+    },
+    {
       // 768 × 1024 portrait — iPad Mini. Verifies the centered-mobile-in-tablet
       // layout the app falls into above 420px max-width.
       name: 'ipad-mini',
