@@ -100,6 +100,30 @@ export function AuthProvider({ children }) {
           // beforeSend already strips email + username so this stays
           // PII-safe — id only.
           try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+          // Sprint #76 RR1: consume the post-signup clear sentinel on the
+          // first sign-in after a fresh signup. Wipes guest-progress
+          // local-storage so the new account starts clean (matches
+          // server which is 0/0 for the freshly-created profile) and
+          // hydrate's max-merge can't push guest stats into the new
+          // account on the next saveStats call. One-shot via the
+          // removeItem below; subsequent SIGNED_IN events on the same
+          // device just no-op.
+          //
+          // biq_pending_join is preserved across the wipe: the user may
+          // have followed an invite link as guest, then signed up to
+          // accept — clearing pending_join here would lose the room
+          // they were trying to join.
+          try {
+            if (localStorage.getItem('biq_signup_pending_clear') === '1') {
+              let preservedJoin = null
+              try { preservedJoin = localStorage.getItem('biq_pending_join') } catch {}
+              clearAllUserLocalStorage()
+              if (preservedJoin) {
+                try { localStorage.setItem('biq_pending_join', preservedJoin) } catch {}
+              }
+              localStorage.removeItem('biq_signup_pending_clear')
+            }
+          } catch {}
         } else {
           try { Sentry.setUser(null) } catch {}
         }
@@ -440,6 +464,20 @@ export function AuthProvider({ children }) {
       }
     })
     if (error) return { error }
+    // Sprint #76 RR1: schedule a clear of guest-progress local-storage on
+    // the next sign-in. Done at first-signin (not now) because the user
+    // is still in guest mode between this signUp and email confirmation —
+    // wiping immediately would clear their session state mid-browse.
+    //
+    // Only set on REAL new signups. Supabase's enumeration-protection
+    // returns success with data.user.identities=[] when the email is
+    // already registered; that path is handled in Login.jsx with a
+    // clarifying message and shouldn't trigger a guest-progress wipe.
+    try {
+      if (Array.isArray(data?.user?.identities) && data.user.identities.length > 0) {
+        localStorage.setItem('biq_signup_pending_clear', '1')
+      }
+    } catch {}
     return { data }
   }
 

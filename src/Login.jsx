@@ -67,7 +67,16 @@ export default function Login() {
           setError(isDupUsername
             ? `Username "${username.trim()}" is already taken — try another.`
             : (raw || 'Sign-up failed — please try again.'))
-        } else setMessage('Check your email to confirm your account, then sign in.')
+        } else if (Array.isArray(data?.user?.identities) && data.user.identities.length === 0) {
+          // Sprint #76 RR2: Supabase's enumeration-protection returns success
+          // with data.user.identities=[] when the email is already registered
+          // (no confirmation email sent). Without this branch the user would
+          // see "Check your email" and wait forever for a message that never
+          // arrives. Now they get an actionable nudge instead.
+          setMessage('Looks like you already have an account. Try signing in instead.')
+        } else {
+          setMessage('Check your email to confirm your account, then sign in.')
+        }
       } else {
         const { data, error } = await signIn(email, password)
         if (error) {
