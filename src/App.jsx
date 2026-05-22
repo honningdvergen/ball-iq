@@ -3114,6 +3114,12 @@ function playSound(type) {
       [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
         note(freq, i * 0.12, 0.20, 0.13);
       });
+    } else if (type === "soft") {
+      // Sprint #78 UU1: short UI-tap tick. Used by local multiplayer's
+      // option-pick handler. Was previously falling through to the silent
+      // path because no "soft" case existed — soft taps had no audio
+      // feedback even with sound enabled. ~60ms 700Hz, low volume.
+      note(700, 0, 0.06, 0.08, "triangle");
     }
   } catch {}
 }
