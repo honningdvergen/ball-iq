@@ -55,8 +55,19 @@ export default function Login() {
           return
         }
         const { data, error } = await signUp(email, password, username.trim())
-        if (error) setError(error.message || 'Sign-up failed — please try again.')
-        else setMessage('Check your email to confirm your account, then sign in.')
+        if (error) {
+          // Sprint #75 QQ2: handle_new_user trigger fails the whole signup
+          // when username collides with profiles.username UNIQUE constraint.
+          // Supabase surfaces the raw Postgres error ("duplicate key value
+          // violates unique constraint 'profiles_username_key'") or the
+          // gotrue wrapper ("Database error saving new user"). Map both
+          // back to a sentence the user can act on.
+          const raw = error.message || ''
+          const isDupUsername = /profiles_username_key|duplicate key|already (?:registered|taken)|database error saving new user/i.test(raw)
+          setError(isDupUsername
+            ? `Username "${username.trim()}" is already taken — try another.`
+            : (raw || 'Sign-up failed — please try again.'))
+        } else setMessage('Check your email to confirm your account, then sign in.')
       } else {
         const { data, error } = await signIn(email, password)
         if (error) {

@@ -1175,7 +1175,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
-.opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;}
+.opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .opt:hover:not(:disabled){border-color:var(--border2);background:var(--s2);transform:translateX(2px);}
 .opt:disabled{cursor:default;}
 /* Correct / wrong feedback — matches design-system quiz-answers spec */
@@ -8388,6 +8388,16 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(error, info) {
     console.error("[boundary]", error?.message || "Unknown error");
+    // Sprint #75 QQ7: forward to Sentry so launch-day monitoring sees
+    // render crashes. Without this, any crash that triggers the fallback
+    // UI is invisible — users see "Something went wrong" but ops never
+    // knows. info.componentStack pinpoints where in the React tree.
+    try {
+      Sentry.captureException(error, {
+        tags: { boundary: 'app-root' },
+        contexts: { react: { componentStack: info?.componentStack } },
+      });
+    } catch {}
   }
   render() {
     if (this.state.hasError) {
