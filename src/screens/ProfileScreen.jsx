@@ -269,6 +269,12 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   // with a retry instead.
   const [loadError, setLoadError] = useState(false);
   const toast = onToast || (() => {});
+  // Sprint #70 LL1: per-key in-flight guard on friend actions. Without it,
+  // a double-tap on Add fires two INSERTs; the second hits the unique
+  // constraint and surfaces a misleading "Couldn't send request" toast
+  // immediately after a successful send. Same race surface on Cancel/
+  // Accept/Decline. Key shape: `${verb}:${id}`.
+  const inFlightRef = useRef(new Set());
 
   const loadFriendships = useCallback(async () => {
     if (!userId) return;
@@ -378,6 +384,9 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 
   const sendRequest = async (target) => {
     if (!userId) return;
+    const key = `send:${target.id}`;
+    if (inFlightRef.current.has(key)) return;
+    inFlightRef.current.add(key);
     try {
       const { error } = await supabase
         .from("friendships")
@@ -389,10 +398,15 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     } catch (e) {
       console.error("[friends] sendRequest", e?.message || "Unknown error");
       toast("Couldn't send request — try again");
+    } finally {
+      inFlightRef.current.delete(key);
     }
   };
 
   const setStatus = async (friendshipId, status) => {
+    const key = `status:${friendshipId}`;
+    if (inFlightRef.current.has(key)) return;
+    inFlightRef.current.add(key);
     try {
       const { error } = await supabase
         .from("friendships")
@@ -403,10 +417,15 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     } catch (e) {
       console.error("[friends] setStatus", e?.message || "Unknown error");
       toast("Couldn't update — try again");
+    } finally {
+      inFlightRef.current.delete(key);
     }
   };
 
   const cancelRequest = async (friendshipId) => {
+    const key = `cancel:${friendshipId}`;
+    if (inFlightRef.current.has(key)) return;
+    inFlightRef.current.add(key);
     try {
       const { error } = await supabase
         .from("friendships")
@@ -417,6 +436,8 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     } catch (e) {
       console.error("[friends] cancel", e?.message || "Unknown error");
       toast("Couldn't cancel — try again");
+    } finally {
+      inFlightRef.current.delete(key);
     }
   };
 

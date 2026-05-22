@@ -2,12 +2,16 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../useAuth.jsx";
 import { dateToYMD } from "../lib/date.js";
 
-// Sprint #16 helper — milliseconds until next UTC midnight. Used by the
-// greeting strip's "KO in Xh Ym" chip. UTC midnight is when daily puzzles
-// roll over server-side; deriving from the same frame keeps client +
-// server in agreement across timezones.
-function msToNextUTCMidnight(now = new Date()) {
-  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0));
+// Milliseconds until the next LOCAL midnight. The "KO in Xh Ym" chip
+// previewed when the next Daily set unlocks for THIS user. Sprint #70
+// LL6 fix: originally computed against UTC midnight on the assumption
+// that server-side rollover was UTC-anchored. It isn't — dayIndexForDate
+// + dateToYMD both key off the user's LOCAL date, so each user's Daily
+// rolls at their LOCAL midnight. A UTC anchor would mislead UTC-negative
+// users (NYC at 19:00 saw "24h" when actual rollover was 5h) and UTC-
+// positive users (Tokyo at 23:30 saw "9h 30m" when actual was 30m).
+function msToNextLocalMidnight(now = new Date()) {
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
   return next.getTime() - now.getTime();
 }
 function formatKO(ms) {
@@ -234,7 +238,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       {(() => {
         const authLoading = !!user && !authProfile;
         const name = authProfile?.username || profile?.name || null;
-        const ko = formatKO(msToNextUTCMidnight(now));
+        const ko = formatKO(msToNextLocalMidnight(now));
         return (
           <div className="daily-greet" role="status">
             <div className="daily-greet-text">
