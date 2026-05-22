@@ -13,7 +13,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
-import { useInstallPrompt } from './installPrompt.js';
+import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
@@ -1397,6 +1397,20 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .install-card-step-icon{font-size:13px;}
 .install-card-step-label{font-weight:600;color:var(--t1);}
 .install-card-arrow{color:var(--t3);font-weight:600;}
+/* ── INSTALL BANNER (Sprint #64 FF1) — post-Footle solve ── */
+.install-banner{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:linear-gradient(180deg,rgba(34,197,94,0.08),rgba(34,197,94,0.02));border:1px solid rgba(34,197,94,0.20);display:flex;gap:12px;align-items:center;}
+.install-banner-icon{font-size:22px;line-height:1;flex-shrink:0;}
+.install-banner-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.install-banner-title{font-size:13px;font-weight:700;color:var(--t1);letter-spacing:-0.05px;}
+.install-banner-desc{font-size:11.5px;color:var(--t2);line-height:1.35;}
+.install-banner-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.install-banner-btn{padding:7px 14px;min-height:34px;background:var(--accent);color:#0a1a00;border:none;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1a00;}
+.install-banner-btn:hover{filter:brightness(1.05);}
+.install-banner-btn:active{transform:scale(0.98);}
+.install-banner-dismiss{background:transparent;border:none;color:var(--t3);font-size:18px;line-height:1;padding:4px 6px;cursor:pointer;-webkit-appearance:none;appearance:none;font-family:inherit;}
+.install-banner-dismiss:hover{color:var(--t1);}
+.install-banner-ios{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--t2);flex-wrap:wrap;justify-content:flex-end;max-width:200px;}
+.install-banner-ios-step{padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--s2);color:var(--t1);font-weight:600;font-size:10.5px;}
 /* ── TAB BAR ── */
 /* ── TAB BAR — frosted glass, pill indicator ── */
 .tab-bar{
@@ -7226,6 +7240,48 @@ function SettingsToggle({ val, onChange }) {
 // Android/Chrome shows a single Install button driven by the pre-React
 // stashed `beforeinstallprompt` event; iOS Safari shows a Share → Add to
 // Home Screen → Add visual sequence since there's no install API on iOS.
+// Sprint #64 FF1: install banner shown inside the Footle won-result block
+// on solve. Discoverability companion to InstallCard — fresh users who
+// never visit Settings still see an install nudge at a moment they've
+// just succeeded. Hidden when already installed (incl. "installed ever"
+// to catch the EE3 iOS Safari reopen case), when display-mode is
+// standalone, and for 30 days after dismiss.
+function InstallBanner() {
+  const { canPromptNative, platform, showBanner, promptInstall, dismiss } = useInstallBanner();
+  if (!showBanner) return null;
+  return (
+    <div className="install-banner" role="region" aria-label="Install Ball IQ">
+      <span className="install-banner-icon" aria-hidden="true">⚽</span>
+      <div className="install-banner-body">
+        <div className="install-banner-title">Add Ball IQ to your home screen</div>
+        <div className="install-banner-desc">
+          {canPromptNative
+            ? "One tap — full-screen, offline-ready."
+            : platform.isIOSSafari
+              ? "Tap Share → Add to Home Screen."
+              : "Quick access from your home screen."}
+        </div>
+      </div>
+      <div className="install-banner-actions">
+        {canPromptNative ? (
+          <button type="button" className="install-banner-btn" onClick={promptInstall}>Install</button>
+        ) : platform.isIOSSafari ? (
+          <span className="install-banner-ios" aria-label="iOS install steps">
+            <span className="install-banner-ios-step">⤴ Share</span>
+            <span className="install-banner-ios-step">Add</span>
+          </span>
+        ) : null}
+        <button
+          type="button"
+          className="install-banner-dismiss"
+          onClick={dismiss}
+          aria-label="Dismiss install prompt"
+        >×</button>
+      </div>
+    </div>
+  );
+}
+
 function InstallCard() {
   const { canPromptNative, platform, showCard, promptInstall, dismiss } = useInstallPrompt();
   if (!showCard) return null;
@@ -8647,6 +8703,14 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
           </div>
           <button className="wd-share" onClick={onShare}>Share result</button>
           <div className="wd-result-foot">New player in {countdown}</div>
+          {/* Sprint #64 FF1: post-solve install nudge. Won-only so the
+              banner lands on a positive moment. Internal hook gates on
+              already-installed, installed-ever (iOS Safari reopen edge
+              case from EE3), display-mode standalone, install-affordance
+              available, and a 30-day dismiss cooldown — first solve
+              triggers; dismiss silences for 30d; next post-expiry solve
+              re-eligible. */}
+          {state.status === "won" && <InstallBanner />}
         </div>
       )}
 
@@ -9793,6 +9857,20 @@ function AppInner() {
   }, [settings.theme]);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
+
+  // Sprint #64 FF2: toggle body.in-focused-play during quiz / Footle so the
+  // desktop-browser landing chrome (top nav + bottom features/signup grid
+  // from index.html) hides while the user is mid-game. Empty deps on
+  // unmount cleanup so navigating away always strips the class. The
+  // matching CSS rule lives in the AppInner css string further down.
+  useEffect(() => {
+    const playing = inGame || screen === "wordle";
+    try {
+      if (playing) document.body.classList.add("in-focused-play");
+      else document.body.classList.remove("in-focused-play");
+    } catch {}
+    return () => { try { document.body.classList.remove("in-focused-play"); } catch {} };
+  }, [inGame, screen]);
 
   // Belt-and-braces: strip any chaos-tagged item before the TrueFalseEngine
   // sees the questions list. The upstream selection path (getTrueFalseQs)

@@ -45,6 +45,7 @@ if (typeof window !== 'undefined') {
   window.addEventListener('appinstalled', () => {
     stashedPrompt = null;
     installed = true;
+    writeInstalledEver();
     notify();
   });
   try {
@@ -69,6 +70,18 @@ function detectPlatform() {
 }
 
 const DISMISS_KEY = 'biq_install_dismissed';
+// Sprint #64 FF1: post-Footle banner uses its own dismiss flag so the
+// Settings card and the post-solve banner can be dismissed independently.
+const BANNER_DISMISS_KEY = 'biq_install_banner_dismissed';
+// Sprint #64 FF1 + EE3 edge case: once we observe an install completion
+// (either the native `appinstalled` event or the user accepting the
+// `beforeinstallprompt` outcome), record it permanently. iOS Safari users
+// who installed once but reopen via Safari rather than the home-screen
+// icon will have navigator.standalone=false, so isStandaloneNow() returns
+// false — without this flag the banner would pester them every time. We
+// can't observe uninstall, so once set this flag stays; if the user
+// genuinely reinstalls they can clear localStorage.
+const INSTALLED_EVER_KEY = 'biq_install_completed';
 const DISMISS_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 function readDismiss() {
@@ -83,6 +96,28 @@ function readDismiss() {
 
 function writeDismiss() {
   try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch {}
+}
+
+function readBannerDismiss() {
+  try {
+    const raw = localStorage.getItem(BANNER_DISMISS_KEY);
+    if (!raw) return false;
+    const at = parseInt(raw, 10);
+    if (!at || Number.isNaN(at)) return false;
+    return (Date.now() - at) < DISMISS_TTL_MS;
+  } catch { return false; }
+}
+
+function writeBannerDismiss() {
+  try { localStorage.setItem(BANNER_DISMISS_KEY, String(Date.now())); } catch {}
+}
+
+function readInstalledEver() {
+  try { return localStorage.getItem(INSTALLED_EVER_KEY) === '1'; } catch { return false; }
+}
+
+function writeInstalledEver() {
+  try { localStorage.setItem(INSTALLED_EVER_KEY, '1'); } catch {}
 }
 
 export function useInstallPrompt() {
@@ -101,28 +136,62 @@ export function useInstallPrompt() {
   // (Chrome, Firefox, Edge) can't install at all — hide entirely.
   const showCard = !isInstalled && !dismissed && (canPromptNative || platform.isIOSSafari);
 
-  async function promptInstall() {
-    if (!stashedPrompt) return { outcome: 'no-prompt' };
-    let outcome = 'dismissed';
-    try {
-      const ev = stashedPrompt;
-      // `prompt()` returns a Promise that resolves immediately; userChoice
-      // resolves after the user accepts/dismisses the system dialog.
-      await ev.prompt();
-      const choice = await ev.userChoice;
-      outcome = choice?.outcome || 'dismissed';
-    } catch {}
-    // The event is single-use; clear regardless of outcome so the card
-    // unmounts (success) or stays dismissable (cancel).
-    stashedPrompt = null;
-    notify();
-    return { outcome };
-  }
+  return {
+    isInstalled,
+    canPromptNative,
+    platform,
+    showCard,
+    promptInstall: runNativePrompt,
+    dismiss: () => { writeDismiss(); notify(); },
+  };
+}
 
-  function dismiss() {
-    writeDismiss();
-    notify();
-  }
+// Shared native-prompt runner. Both useInstallPrompt (Settings card) and
+// useInstallBanner (Sprint #64 FF1 post-Footle banner) call the same
+// underlying beforeinstallprompt flow. Records "installed ever" on accept
+// so the EE3 iOS Safari edge case is handled.
+async function runNativePrompt() {
+  if (!stashedPrompt) return { outcome: 'no-prompt' };
+  let outcome = 'dismissed';
+  try {
+    const ev = stashedPrompt;
+    await ev.prompt();
+    const choice = await ev.userChoice;
+    outcome = choice?.outcome || 'dismissed';
+    if (outcome === 'accepted') writeInstalledEver();
+  } catch {}
+  stashedPrompt = null;
+  notify();
+  return { outcome };
+}
 
-  return { isInstalled, canPromptNative, platform, showCard, promptInstall, dismiss };
+// Sprint #64 FF1: post-Footle solve install banner. Same install detection
+// as useInstallPrompt, but with its own dismiss flag and an "installed
+// ever" suppression that catches the iOS Safari edge case (user installed
+// once, reopens in Safari rather than from the home-screen icon).
+export function useInstallBanner() {
+  const [, force] = useReducer((x) => x + 1, 0);
+  useEffect(() => {
+    subscribers.add(force);
+    return () => { subscribers.delete(force); };
+  }, []);
+
+  const platform = detectPlatform();
+  const isInstalled = installed;
+  const installedEver = readInstalledEver();
+  const canPromptNative = !!stashedPrompt;
+  const dismissed = readBannerDismiss();
+  // Same iOS-Safari-only gate as useInstallPrompt: iOS in other browsers
+  // can't install at all, so showing the banner there is wasted real estate.
+  const showBanner = !isInstalled && !installedEver && !dismissed
+    && (canPromptNative || platform.isIOSSafari);
+
+  return {
+    isInstalled,
+    canPromptNative,
+    platform,
+    showBanner,
+    promptInstall: runNativePrompt,
+    dismiss: () => { writeBannerDismiss(); notify(); },
+  };
 }

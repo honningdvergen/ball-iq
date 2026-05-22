@@ -134,6 +134,18 @@
         .ad-slot-banner { display: none !important; }
       }
 
+      /* Sprint #64 FF2 killswitch — hide landing chrome while the user is
+         actively mid-game (quiz / Footle / local pass-and-play). Body class
+         is toggled by AppInner's "in-focused-play" effect. Mid-quiz, marketing
+         content scrolling below the active board is distracting; FF1's
+         post-solve install banner replaces the install-funnel touchpoint
+         that landing-bottom otherwise served. */
+      body.in-focused-play .landing-top,
+      body.in-focused-play .landing-bottom,
+      body.in-focused-play .ad-slot-sidebar-left,
+      body.in-focused-play .ad-slot-sidebar-right,
+      body.in-focused-play .ad-slot-banner { display: none !important; }
+
       /* ── Desktop app column ────────────────────────────────────────────
          At >= 1024px in regular browser mode, constrain #root to a
          centered 600px column. transform: translateZ(0) creates a new
