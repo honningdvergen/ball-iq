@@ -656,6 +656,7 @@ const css = `
   --border:#2E3147;      /* subtle separator */
   --border2:#3A3F60;     /* stronger border */
   --text:#FFFFFF;        /* pure white — max contrast */
+  --t1:#FFFFFF;          /* alias for --text; Sprint #72 NN1 added — many .light overrides set --t1 but :root was relying on the cascade fallback, which worked by accident */
   --t2:#8B8FA8;          /* neutral muted */
   --t3:#4A4E68;          /* very muted */
   --accent:#22c55e;      /* Muted green — easier on the eyes than bright Duolingo */
@@ -772,6 +773,17 @@ const css = `
 .light .feedback.wrong { background:rgba(255,59,48,0.08); border-color:rgba(255,59,48,0.2); }
 .light .opt { border:1px solid #E5E5EA; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
 .light .opt:hover:not(:disabled) { background:#F9F9F9; box-shadow:0 2px 8px rgba(0,0,0,0.10); border-color:#D1D1D6; }
+
+/* Sprint #72 NN1: .fix-row was missing a light-theme override. The dark
+   gradient (rgba(16,40,54,0.45) → rgba(26,29,39,0.85)) is opaque enough
+   to dominate over the light theme's white body background, leaving
+   matchday rows reading as dark teal-on-light-page — sore-thumb in
+   the otherwise iOS-styled light theme. Replace with the standard
+   light card pattern: white surface, hairline border, soft shadow. */
+.light .fix-row { background: var(--s1); border: 0.5px solid #E5E5EA; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.light .fix-row.is-today { background: rgba(255,149,0,0.10); border-color: rgba(255,149,0,0.36); }
+.light .fix-row.is-today .fix-md { color: #FF9500; }
+.light .fix-dot.miss { border-color: #D1D1D6; }
 .light .logo { color:#1C1C1E; }
 .light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
 .light .xp-bar-track { background:#E5E5EA; }
