@@ -43,7 +43,9 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
     </noscript>
 
-    <link rel="icon" type="image/png" href="/icon-192.png" sizes="32x32">
+    <!-- Sprint #79 WW1: sizes attribute matches the actual file. The
+         previously-declared 32x32 was a hint inaccuracy — file is 192x192. -->
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192">
     <link rel="apple-touch-icon" href="/icon-192.png">
     <link rel="manifest" href="/manifest.json">
     <!-- iOS Safari PWA hints — make 'Add to Home Screen' launch standalone instead of as a bookmark, with a dark status bar to match the splash. -->

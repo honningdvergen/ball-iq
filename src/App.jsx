@@ -7258,7 +7258,7 @@ function ClubQuizScreen({ onStart, onBack }) {
       </div>
       {showProModal && (
         <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
-          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
+          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
             <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
             <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs will be available as a free update. Keep playing to stay ready!</div>
@@ -7734,7 +7734,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div
             ref={clearStatsModalRef}
             tabIndex={-1}
-            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -7774,7 +7774,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div
             ref={signOutModalRef}
             tabIndex={-1}
-            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -7806,7 +7806,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div
             ref={deleteModalRef}
             tabIndex={-1}
-            style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+            style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -7910,7 +7910,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <h2 style={privacyH2}>2. What we store when you sign in</h2>
         <p style={privacyP}>When you have an account, the following lives on our servers (hosted by Supabase, see §5):</p>
         <ul style={{paddingLeft: 20, marginBottom: 12}}>
-          <li style={privacyLi}><strong>Email address</strong> — used only for sign-in (one-time-code or magic link). Never used for marketing.</li>
+          <li style={privacyLi}><strong>Email address</strong> — used only for sign-in (password authentication) and account-confirmation email at signup. Never used for marketing.</li>
           <li style={privacyLi}><strong>Username + avatar</strong> — visible to other signed-in players in friend search and friend profiles.</li>
           <li style={privacyLi}><strong>Game results</strong> — Daily 7 scores, Footle history, total games played, total XP, best streaks, and the questions you got wrong (for the review screen).</li>
           <li style={privacyLi}><strong>Friendships</strong> — friend requests sent + accepted, so your friends list works across devices.</li>
@@ -10349,7 +10349,7 @@ function AppInner() {
         {/* APP_NAME Intro */}
         {showBallIQIntro && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
-            <div ref={ballIQIntroRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={`About the ${APP_NAME} Test`} style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div ref={ballIQIntroRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={`About the ${APP_NAME} Test`} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
@@ -10368,7 +10368,7 @@ function AppInner() {
         {/* Rate prompt */}
         {showRatePrompt && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
-            <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:48,marginBottom:12}}>⭐</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
@@ -10389,7 +10389,7 @@ function AppInner() {
         )}
         {howToPlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
-            <div ref={howToPlayRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={HOW_TO_PLAY[howToPlay]?.title || "How to play"} style={{width:"100%",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+            <div ref={howToPlayRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={HOW_TO_PLAY[howToPlay]?.title || "How to play"} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{HOW_TO_PLAY[howToPlay]?.title}</div>
               {HOW_TO_PLAY[howToPlay]?.steps.map((step, i) => (
                 <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
@@ -10413,7 +10413,7 @@ function AppInner() {
               role="dialog"
               aria-modal="true"
               aria-label="Leave room confirmation"
-              style={{width:"100%",maxWidth:480,background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+              style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
               onClick={(e) => e.stopPropagation()}
             >
               <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Leave the room?</div>
