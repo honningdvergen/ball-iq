@@ -65,11 +65,27 @@ export const WORDLE_PLAYERS = [
   "GUNDOGAN","RIQUELME","RANGNICK","BROOKING","BARDSLEY","DENILSON","BENAYOUN","ROBINSON","IAQUINTA",
 ];
 
-// Day index from local-midnight epoch — same value for everyone in the
-// same UTC day. Using Date.now() / DAY_MS means the puzzle rolls over at
-// UTC midnight, which keeps "everyone gets the same player" simple across
-// timezones.
-export function getWordleDayIndex() { return Math.floor(Date.now() / DAY_MS); }
+// Day index keyed by the user's LOCAL calendar date. Sprint #74 PP2 fix:
+// previously this was `Math.floor(Date.now() / DAY_MS)` which gave the UTC
+// day index and rolled the puzzle over at UTC midnight — but the storage
+// key (src/lib/wordleStatus.js getWordleDateKey) uses the user's LOCAL
+// date. The mismatch produced two real bugs:
+//   - Tokyo at 23:30 JST: local key = "2026-05-22", UTC index = N. Tokyo
+//     at 00:30 JST next day: local key = "2026-05-23" (fresh, empty), but
+//     UTC index STILL N — same player as last night, fresh slate. Streak
+//     walker counted it as two consecutive days for ONE global puzzle.
+//   - NYC at 19:00 EST (= 00:00 UTC next day): local key = "today", UTC
+//     index = TOMORROW. User got tomorrow's player stored under today's
+//     local date.
+// Now both KEY and ANSWER derive from the user's local calendar date via
+// Date.UTC(localY, localM, localD) — every user in their own timezone
+// sees one puzzle per local day, and worldwide users on their respective
+// "May 22" all get WORDLE_PLAYERS[same idx]. Anchor constants below are
+// preserved (June 4, 2026 maps to the same Date.UTC value as before).
+export function getWordleDayIndex() {
+  const now = new Date();
+  return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / DAY_MS);
+}
 
 // Stride spreads length groups across the schedule (WORDLE_PLAYERS is
 // sorted by length, so plain `dayIndex % length` clustered ~30+ same-

@@ -336,6 +336,57 @@ If `gh` isn't installed and the situation is urgent, the GitHub web UI provides 
 
 ---
 
+## Incident: launch-day rollback / kill switch
+
+**Symptoms:** a deploy ships a real regression and the recovery window is "right now, not after a triage session."
+
+### Option A — Vercel: promote the previous good deploy
+
+Web UI (fastest, ~30s):
+1. https://vercel.com/honningdvergen/ball-iq/deployments
+2. Find the last deploy with the green ✓ that was healthy in production
+3. Click `…` → `Promote to Production`
+4. Vercel reroutes the apex hostname to the older build immediately. No git revert required.
+
+CLI alternative:
+```bash
+vercel rollback                          # interactive picker against the production alias
+vercel rollback https://<deployment-url> # promote a specific previous deployment
+```
+
+The bundled commit on `main` is unchanged — fix forward in a follow-up PR. Vercel keeps prior deploys indefinitely on the Hobby plan.
+
+### Option B — Service worker emergency: force eviction across installed PWAs
+
+If a deploy ships a broken `sw.js` or the cache is serving stale assets that the HTTP-layer cache-control doesn't catch (rare; iOS PWA quirk):
+
+1. Bump `CACHE_VERSION` in `public/sw.js` (e.g. `'balliq-v5'` → `'balliq-v6'`).
+2. Ship a tiny commit. Browsers see the new `sw.js` content, install the new SW, the activate handler deletes any cache that doesn't match `'balliq-v6'`.
+3. Existing PWA installs will pick this up on next page load. PWAs already-open at install time get the new SW after the next reload — `VersionBanner.jsx` surfaces the "new version available — refresh" UI within 5min of the deploy.
+
+### Option C — Migration revert (manual DDL)
+
+We don't have automated migration reverts. Each migration in `supabase_migrations.schema_migrations` is small and the reverse DDL is straightforward to compose on demand. Examples for recent migrations:
+
+| Forward (already applied) | Reverse DDL if needed |
+|---|---|
+| `sprint69_kk1_friendships_delete_policy` | `drop policy "Users can delete their own friendships" on public.friendships;` |
+| `sprint69_kk2_drop_legacy_profiles_columns` | `alter table public.profiles add column daily_scores jsonb default '{}'::jsonb, add column daily_wrong_answers jsonb default '{}'::jsonb, add column daily_all_answers jsonb default '{}'::jsonb, add column wordle_state jsonb default '{}'::jsonb, add column login_streak jsonb;` (then backfill from `user_game_state` if needed; current code never reads from profiles so data isn't load-bearing) |
+| `sprint69_kk3_drop_redundant_profiles_select_policy` | `create policy "Authenticated users can read public profile fields" on public.profiles for select to authenticated using (true);` |
+
+When applying a revert, use the Supabase dashboard SQL editor (already authenticated as service-role). After applying, run the same verification SELECT the original migration used to confirm the rollback landed.
+
+### Option D — Sentry alert delivery verification (do this BEFORE launch)
+
+The Sentry rules at `docs/SENTRY_RULES.md` were configured 2026-05-07 but Alex's "dashboard cross-check" was deferred. Confirm BEFORE launch day that:
+- A test event fired in Sentry → alert → email lands on Alex's phone
+- The "10 events in 5min" rate-spike rule actually triggers with a forced batch
+- Notification destination email is current
+
+Without verified alert delivery, the first 30min of any launch-day incident is invisible.
+
+---
+
 ## What this runbook does NOT cover (intentional gaps)
 
 - **Performance triage** — needs Vercel Speed Insights dashboard or future error monitoring (Sentry decision pending in `docs/MONITORING_OPTIONS.md`).
