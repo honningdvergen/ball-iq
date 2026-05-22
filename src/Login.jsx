@@ -299,6 +299,11 @@ export default function Login() {
             onChange={(e) => setUsername(e.target.value)}
             style={styles.input}
             autoCapitalize="none"
+            /* Sprint #77 SS1: usernames are handles, not dictionary
+               words. iOS autocorrect on "MessiFan99" → "Massive" is a
+               real footgun on the signup flow. */
+            autoCorrect="off"
+            spellCheck={false}
           />
         )}
         <input
@@ -310,6 +315,8 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
           autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
         />
         <input
           type="password"

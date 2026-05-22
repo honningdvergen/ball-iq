@@ -3003,6 +3003,18 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
           onKeyDown={e => e.key === "Enter" && submit()}
           disabled={!!state}
           autoFocus
+          /* Sprint #77 SS1: kill iOS autocorrect / spell-suggest on
+             typed answers. Without these, iOS would helpfully replace
+             "Mbappé" / "Sterling" / "Eusébio" with common-word
+             substitutions (or auto-accept a suggestion on Enter),
+             actively breaking gameplay. Capitalize="words" preserves
+             the natural casing of name entries (the autocomplete
+             below shows them title-cased) but the autocorrect engine
+             stays off. */
+          autoCorrect="off"
+          autoCapitalize="words"
+          spellCheck={false}
+          autoComplete="off"
         />
         {suggestions.length > 0 && (
           <div className="ac-list">
@@ -7868,7 +7880,11 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+        {/* Sprint #77 SS5: hard-coded revision date. Previously rendered
+            `new Date().toLocaleDateString()` which falsely claimed the
+            policy was updated every day the user viewed it. Bump this
+            string whenever the policy content materially changes. */}
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 22 May 2026</div>
 
         <div style={{
           background: "#1A1D27", borderRadius: 16,
@@ -9534,6 +9550,15 @@ function AppInner() {
     } catch (err) {
       console.error("[startMode]", err?.message || "Unknown error");
       showToast("⚠️ Couldn't start mode");
+      // Sprint #77 SS6: forward to Sentry. This is the entry point for
+      // every game mode — chunk-fetch failures on the lazy questions
+      // bundle, malformed QB rows, getDailyQs throws, etc., all funnel
+      // through here. Without this capture, launch-day "user couldn't
+      // start a game" reports have no signal in Sentry. Mode tag lets
+      // us filter by which entry failed.
+      try {
+        Sentry.captureException(err, { tags: { area: 'startMode', mode: m } });
+      } catch {}
     }
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
 
