@@ -17,6 +17,17 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/app": "^6.0.3",
+    "@capacitor/cli": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/haptics": "^6.0.3",
+    "@capacitor/ios": "^6.2.1",
+    "@capacitor/keyboard": "^6.0.4",
+    "@capacitor/preferences": "^6.0.4",
+    "@capacitor/share": "^6.0.4",
+    "@capacitor/splash-screen": "^6.0.4",
+    "@capacitor/status-bar": "^6.0.3",
     "@sentry/react": "^8.55.2",
     "@supabase/supabase-js": "^2.105.3",
     "@vercel/speed-insights": "^2.0.0",
@@ -25,6 +36,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@playwright/test": "^1.59.1",
     "@sentry/vite-plugin": "^2.23.1",
     "@vitejs/plugin-react": "^4.2.1",

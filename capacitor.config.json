@@ -1,0 +1,37 @@
+{
+  "appId": "app.balliq",
+  "appName": "Ball IQ",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "always",
+    "limitsNavigationsToAppBoundDomains": true
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": false,
+      "backgroundColor": "#0F1117",
+      "androidScaleType": "CENTER_CROP",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#58CC02",
+      "splashImmersive": true,
+      "splashFullScreen": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0F1117",
+      "overlaysWebView": false
+    },
+    "Keyboard": {
+      "resize": "native",
+      "resizeOnFullScreen": true
+    }
+  }
+}
