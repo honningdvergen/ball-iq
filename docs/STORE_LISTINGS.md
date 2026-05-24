@@ -27,9 +27,9 @@ before submission.
 ### Promotional text (170 chars; can change without app review)
 
 ```
-Hand-curated football trivia. 3,500+ questions, daily challenges, online multiplayer, streak tracking. Built for fans who want depth.
+Football trivia for real fans. Daily puzzles, multiplayer matches, a streak worth defending. Built by football lovers.
 ```
-(154 chars)
+(118 chars)
 
 ### App description (4,000 chars max)
 
@@ -60,24 +60,25 @@ BUILT DIFFERENTLY
 • Hand-curated questions, not AI-generated noise
 • Daily updates and fact-checking — when a record falls, the questions get refreshed
 • Works offline — your scores sync when you're back online
-• No ads, ever
+• No ads at launch
 • No tracking, no analytics, no data sold or shared
 
-We're a small team in Norway, building Ball IQ because we love football and we wanted a trivia app that respects how much real fans actually know. Have feedback? Email hello@balliq.app — every message goes to a human.
+Built solo from Norway by someone who loves football and wanted a trivia app that respects how much real fans actually know. Have feedback? Email hello@balliq.app — every message goes to me.
 ```
-(1,816 chars — well under the 4,000 cap)
+(1,808 chars — well under the 4,000 cap)
 
 ### Keywords (100 chars total, comma-separated)
 
 ```
-football,trivia,quiz,soccer,worldcup,premier league,laliga,bundesliga,fifa,wordle
+football,trivia,quiz,soccer,worldcup,premier league,laliga,bundesliga,daily,puzzle
 ```
-(81 chars)
+(82 chars)
 
 **Strategy:** prioritized broad sport terms first (`football`, `soccer`),
-then mode-affinity terms (`trivia`, `quiz`, `wordle`), then competition
-names (`worldcup`, `premier league`, `laliga`, `bundesliga`, `fifa`). Apple
-doesn't show keywords to users; they only affect search ranking.
+then mode-affinity terms (`trivia`, `quiz`, `daily`, `puzzle`), then
+competition names (`worldcup`, `premier league`, `laliga`, `bundesliga`).
+Apple doesn't show keywords to users; they only affect search ranking.
+Trademark-risk terms (`fifa`, `wordle`) deliberately omitted.
 
 ### What's New (for v1.0)
 
@@ -167,7 +168,7 @@ Per-screenshot proposal (capture via Playwright in Phase 5 once Capacitor build 
 
 1. **Home tab** showing the mode grid with WC2026 tile and active Daily/Footle pills. Caption overlay: "10 game modes. One football quiz."
 2. **Mid-quiz** screen with a Premier League question, 4 options, streak counter at 5. Caption: "3,500+ hand-curated questions."
-3. **Footle** mid-game: 3 guesses in showing greens/yellows/greys, virtual keyboard below. Caption: "Daily football word puzzle."
+3. **Footle** mid-game: 3 guesses in showing greens/yellows/greys, virtual keyboard below. Caption: "One player, six guesses, every day."
 4. **Daily tab** Recent Fixtures list with the matchday rows + T7 scores (post Sprint #71 MM2). Caption: "Build a streak. Track every day."
 5. **Profile tab** with XP bar / level / Friends leaderboard. Caption: "Climb the league with your group chat."
 
@@ -277,23 +278,22 @@ Tablet screenshots (7" + 10") optional — skip for v1.0 unless we want to posit
 
 ---
 
-## Open items for Alex's review
+## Resolved decisions (locked from Alex's Sprint #81 review)
 
-1. **Description copy** — paragraph-by-paragraph, mark anything that overclaims or sounds AI-generated. Particular spots to scrutinize:
-   - "Built differently" section — does the "no ads ever" promise hold for v1.1+?
-   - "Daily updates and fact-checking" — we DO ship fact updates (cf Bruno earlier today). Honest claim, good.
-   - "We're a small team in Norway" — singular "we" or "small team" — keep as "small team" for the friendly framing?
-   - Mode names: confirm canonical naming (e.g., "Daily 7" vs "Today's 7" — code calls it both in different places; the App Store listing should pick ONE).
-2. **Promotional text (App Store only — 170 chars, updatable without re-review)** — currently 154 chars; room to make sharper if there's a punchier angle.
-3. **Keywords** — review the 10 I picked. Drop or swap any. Apple allows 100 chars total; I'm at 81 so there's room.
-4. **App Review demo account** — Alex needs to create `appreview@balliq.app` (or whatever address) and set a known password before submission. The reviewer instructions reference it.
-5. **Screenshot captions** — overlay text on each store screenshot. Drafts above; Alex may have stronger lines.
-6. **Feature graphic for Play** — confirm we should derive from og-image template, or design separately?
-7. **Country availability** — confirmed "all countries" per Sprint #81 brief, but Apple has a list of countries we can't ship to (Cuba, Iran, North Korea, Syria, Crimea). Default selection excludes those; confirm we accept the default.
-8. **Pricing tier** — Free (Tier 0) confirmed. For v1.1 if we add an optional "remove ads" tier, that's IAP and triggers Apple's 15% fee structure.
+1. ✅ **Description copy** — "no ads, ever" softened to "no ads at launch" (preserves IAP optionality for v1.1). Closing paragraph rewritten to solo-founder voice ("Built solo from Norway by someone who loves football…"). Mode-naming locked to **"Daily 7"** across the listing. *(In-app code uses both "Daily 7" and "Today's 7" inconsistently — tracked as v1.1 follow-up sprint, see below.)*
+2. ✅ **Promotional text** — replaced with "Football trivia for real fans. Daily puzzles, multiplayer matches, a streak worth defending. Built by football lovers." (118 chars)
+3. ✅ **Keywords** — `fifa` and `wordle` removed (trademark risk); replaced with `daily` and `puzzle`. Final string at 82 chars.
+4. ✅ **App Review demo account** — Alex creates `appreview@balliq.app` credentials before submission. **Reminder added to MOBILE_TESTING.md pre-submission gate.**
+5. ✅ **Screenshot captions** — caption #3 updated to "One player, six guesses, every day." Others unchanged.
+6. ✅ **Feature graphic for Play** — derived from existing og-image template. Single 1024×500 asset.
+7. ✅ **Country availability** — accept Apple's default (auto-excludes embargoed countries: Cuba, Iran, North Korea, Syria, Crimea).
+8. ✅ **Pricing tier** — Free (Tier 0) confirmed for v1.0. v1.1 IAP path left open via #1.
+
+## v1.1 follow-up sprint items surfaced by this review
+
+- **Mode-name unification:** in-app code uses both "Daily 7" and "Today's 7" in different surfaces (showToast strings, mode labels, HOW_TO_PLAY entries). Listing copy uses "Daily 7" exclusively per Alex's call. Small sprint post-launch to unify all in-app references to "Daily 7". Low risk, mechanical search/replace + verification.
 
 ---
 
-This draft is locked unless Alex requests changes. Final version
-attached to App Store Connect / Play Console listings during Phase 6
-submission window.
+This draft is locked. Final version attached to App Store Connect /
+Play Console listings during Phase 6 submission window.

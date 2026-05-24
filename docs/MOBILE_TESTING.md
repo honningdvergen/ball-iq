@@ -158,7 +158,7 @@ Before tapping "Submit for Review" in App Store Connect / "Send to production" i
 4. ☐ Sentry shows no new critical-tier errors from beta testing
 5. ☐ Store listing screenshots captured at correct sizes (5 per device class)
 6. ☐ Privacy nutrition label / Data Safety form matches actual Sentry + Supabase data flow
-7. ☐ Demo account credentials in App Review notes are working
+7. ☐ Demo account `appreview@balliq.app` CREATED and password set; credentials pasted into App Review notes field on App Store Connect (Sprint #81 Item 4 — Alex's pre-submission action item)
 8. ☐ Latest commit on `main` matches the Capacitor build (no diverged state)
 9. ☐ Production build numbers incremented (iOS build, Android versionCode)
 10. ☐ Sentry release tag uploaded (Sprint #73 OO5 sourcemap pipeline)
