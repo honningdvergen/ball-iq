@@ -19,6 +19,7 @@ import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
+  WORDLE_FULL_NAMES,
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
   gradeWordleGuess, computeFootleStreak,
 } from './lib/wordle.js';
@@ -8794,9 +8795,21 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
           <div className="wd-result-title">
             {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
           </div>
-          <div className="wd-result-sub">
-            The answer was <strong>{answer}</strong>
-          </div>
+          {/* Sprint #81 YY2: reveal renders proper-cased full name from
+              WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
+              First name (if present) inherits the muted .wd-result-sub
+              color; surname stays accent via <strong>. Empty prefix →
+              single-name brand (Pelé, Neymar) renders just the surname
+              with no leading whitespace. Falls back to raw uppercase
+              answer if a pool entry is unmapped (defensive). */}
+          {(() => {
+            const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
+            return (
+              <div className="wd-result-sub">
+                The answer was {prefix && <>{prefix} </>}<strong>{surname}</strong>
+              </div>
+            );
+          })()}
           <button className="wd-share" onClick={onShare}>Share result</button>
           <div className="wd-result-foot">New player in {countdown}</div>
           {/* Sprint #64 FF1: post-solve install nudge. Won-only so the
