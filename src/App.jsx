@@ -8479,7 +8479,7 @@ const HOW_TO_PLAY = {
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   wc2026: { title:"🌍 World Cup 2026", steps:["15 questions about the 2026 World Cup","All 48 competing nations covered","Questions on history, players and format","No timer — test your knowledge","Great prep for the tournament!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
-  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
+  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["15 questions across all categories","Difficulty ramps up as you go","Your score maps to a 60–160 scale","Earn a football-culture rank label","Your history is saved for tracking"] },
 };
 
 // Shared hide style so the home-screen tab wrappers reference the same object
@@ -10374,13 +10374,13 @@ function AppInner() {
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
-                {[["📋","20 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
+                {[["📋","15 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
                   <div key={label} style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:600,color:"var(--t2)",display:"flex",alignItems:"center",gap:4}}>
                     <span>{icon}</span><span>{label}</span>
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 20 questions across all categories. Your score determines your {APP_NAME} — from 62 (beginner) to 145 (elite). The test is the same for everyone so scores are comparable.</div>
+              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 15 questions across all categories. Your score determines your {APP_NAME} — from 60 (beginner) to 160 (elite). The test is the same for everyone so scores are comparable.</div>
               <button className="btn btn-p" onClick={() => { setShowBallIQIntro(false); startMode("balliq_confirmed"); }}>Start Test 🧠</button>
               <button className="btn btn-s" style={{marginTop:8}} onClick={() => setShowBallIQIntro(false)}>Maybe later</button>
             </div>
