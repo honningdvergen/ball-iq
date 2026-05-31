@@ -60,8 +60,11 @@ begin
   end if;
   -- Normalize: lowercase, leet→letter, strip non-letters
   n := lower(p_name);
-  -- translate(): position-aligned char map. Source: @4310!$57. Target: aaeeiosst.
-  n := translate(n, '@4310!$57', 'aaeeiosst');
+  -- translate(): position-aligned char map.
+  --   source pos: 1 2 3 4 5 6 7 8 9
+  --   source chr: @ 4 3 1 0 ! $ 5 7
+  --   target chr: a a e i o i s s t
+  n := translate(n, '@4310!$57', 'aaeioisst');
   n := regexp_replace(n, '[^a-zà-ÿ]', '', 'g');
   -- Mask whitelist first so legit football names whose substrings overlap
   -- a slur (Scunthorpe / Arsenal) don't trigger false positives.
