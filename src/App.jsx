@@ -25,7 +25,7 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
-import { ProfileScreen, FriendProfileScreen } from './screens/ProfileScreen.jsx';
+import { ProfileScreen, FriendProfileScreen, BlockedUsersScreen } from './screens/ProfileScreen.jsx';
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
 
@@ -7385,7 +7385,7 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -7709,6 +7709,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           )}
         </div>
       </div>
+
+      {/* Sprint #84 AAA3 — Account moderation section. Signed-in only;
+         hidden for guests since they have no friend graph. Sits above the
+         danger zone so destructive Delete-account stays the visual floor. */}
+      {user && onShowBlocked && (
+        <div className="settings-section" style={{marginTop:24}}>
+          <div className="settings-card">
+            <button className="settings-row" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={onShowBlocked}>
+              <div className="sr-left">
+                <div className="sr-label">Blocked users</div>
+                <div className="sr-desc">Manage who you've blocked from friend search</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Danger zone — bottom of the screen so destructive actions are
          clearly separated from everyday settings. The same row appears in
@@ -10592,7 +10609,8 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} />}
+        {!inGame && screen === "blocked-users" && <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
@@ -10620,6 +10638,7 @@ function AppInner() {
             friendId={viewingFriendId}
             onBack={closeFriendProfile}
             onChallenge={challengeFriend}
+            onToast={showToast}
           />
         )}
 
