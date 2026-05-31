@@ -3,6 +3,7 @@ import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
 import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../lib/scoring.js";
+import { isProfaneUsername } from "../lib/profanity.js";
 
 export const BADGE_DEFS = [
   ["first_blood", "🎯", "First Whistle", "Complete your first game"],
@@ -789,6 +790,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   };
   const saveName = () => {
     const v = nameDraft.trim();
+    // Sprint #84 AAA2: username profanity gate. SQL trigger
+    // profiles_profanity_check is the bypass-proof backstop; the client
+    // check just gives a fast inline error without a Supabase round-trip
+    // (the local profile name update is skipped too so the bad value
+    // doesn't appear in the UI for a frame before the toast fires).
+    if (v && isProfaneUsername(v)) {
+      toast("⚠️ That username isn't allowed — please choose another");
+      return;
+    }
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
     // Mirror the change up to Supabase so leaderboards and other devices
