@@ -7847,9 +7847,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 const SettingsScreen = React.memo(SettingsScreenImpl);
 
 // ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
-// Full-screen in-app overlay. Content is hardcoded (mirrors public/privacy.html)
-// so there's no network fetch, no CORS/asset-path pitfalls, and no flash of a
-// blank iframe. Rendered above the app when showPrivacy is true.
+// Full-screen in-app overlay. Content is hardcoded (no network fetch, no
+// CORS/asset-path pitfalls, no flash of a blank iframe). Rendered above the
+// app when showPrivacy is true.
+//
+// IMPORTANT — KEEP IN SYNC WITH public/privacy.html. The standalone HTML is
+// linked from index.html footer + sitemap.xml so external visitors must see
+// the same policy as in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84
+// AAA1 re-synced them. Edit both files in the same commit and bump
+// "Last updated" in both when the policy materially changes.
 const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{

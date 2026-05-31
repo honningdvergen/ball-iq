@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!--
+  IMPORTANT — KEEP IN SYNC WITH IN-APP VERSION
+
+  The in-app PrivacyScreen at src/App.jsx (search: "PRIVACY POLICY SCREEN")
+  renders the SAME content via React. Both files MUST say the same thing or
+  external visitors (sitemap.xml, index.html footer link) see a different
+  policy from in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84 AAA1
+  re-synced them. If you edit one, edit the other in the same commit and
+  bump "Last updated" in both.
+-->
 <html lang="en" style="background-color:#0a0a0a;">
 <head>
   <meta charset="UTF-8" />
@@ -41,40 +51,44 @@
   <div class="wrap">
     <div class="logo">⚽ Ball IQ</div>
     <h1>Privacy Policy</h1>
-    <div class="updated">Last updated: 26 April 2026</div>
+    <div class="updated">Last updated: 22 May 2026</div>
 
     <div class="card">
-      <p><span class="highlight">The short version:</span> Ball IQ does not collect, store or share any personal data. All your game progress is stored locally on your device and never leaves it.</p>
+      <p><span class="highlight">The short version:</span> Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. We don't run analytics, ads, or tracking, and we don't sell or share your data.</p>
     </div>
 
-    <h2>1. Information We Collect</h2>
-    <p>Ball IQ does not collect any personal information. We do not require you to create an account, provide an email address, or share any identifying information to use the app.</p>
+    <h2>1. Two ways to play</h2>
+    <p><strong>Guest mode</strong> — open Ball IQ without signing in. Your scores, streaks, settings and game history are stored only in your device's local storage. Nothing is sent to our servers. If you clear your browser data or uninstall the app, that progress is gone.</p>
+    <p><strong>Signed-in mode</strong> — sign in with email to back up your progress and play online multiplayer. We store the minimum needed to deliver those features (detail in §2 below). You can delete your account at any time from Settings → Account → Delete Account, which removes everything we hold about you.</p>
 
-    <h2>2. Data Storage</h2>
-    <p>All app data — including your scores, XP, badges, settings and game history — is stored locally on your device using your browser's local storage. This data:</p>
+    <h2>2. What we store when you sign in</h2>
+    <p>When you have an account, the following lives on our servers (hosted by Supabase, see §5):</p>
     <ul>
-      <li>Never leaves your device</li>
-      <li>Is never transmitted to our servers</li>
-      <li>Is never shared with third parties</li>
-      <li>Can be cleared at any time by clearing your browser or app data</li>
+      <li><strong>Email address</strong> — used only for sign-in (password authentication) and account-confirmation email at signup. Never used for marketing.</li>
+      <li><strong>Username + avatar</strong> — visible to other signed-in players in friend search and friend profiles.</li>
+      <li><strong>Game results</strong> — Daily 7 scores, Footle history, total games played, total XP, best streaks, and the questions you got wrong (for the review screen).</li>
+      <li><strong>Friendships</strong> — friend requests sent + accepted, so your friends list works across devices.</li>
+      <li><strong>Onboarded flag</strong> — a single timestamp so we don't replay onboarding on every device.</li>
     </ul>
+    <p>That's the full list. We do not collect your real name, location, device fingerprint, or any contact list. We never sell or share this data with third parties for marketing.</p>
 
-    <h2>3. Analytics</h2>
-    <p>Ball IQ does not use any analytics tools, tracking pixels, or third-party SDKs that collect usage data. We do not track how you use the app.</p>
+    <h2>3. Error monitoring</h2>
+    <p>We use Sentry to catch crashes and bugs. When something goes wrong in the app, Sentry receives a stack trace, the browser version, and a short trail of recent actions ("breadcrumbs") — no question text, no personal data. We strip your email and auth tokens from every event before it leaves your device. We use this only to fix bugs, never for tracking.</p>
 
-    <h2>4. Advertising</h2>
-    <p>Ball IQ does not display advertisements and does not work with any advertising networks.</p>
+    <h2>4. No analytics, no ads</h2>
+    <p>Ball IQ does not use any analytics tools, tracking pixels, or third-party SDKs that collect usage data. We don't measure how you use the app. We don't display ads and don't work with advertising networks.</p>
 
     <h2>5. Third-party services we use</h2>
     <ul>
-      <li><strong>Supabase (database and authentication):</strong> When you sign in with email or play Online 1v1 multiplayer, your username, profile data, scores, and game results are stored on Supabase servers. Online multiplayer also uses Supabase Realtime to sync game state between players. Avatar images are uploaded to Supabase Storage.</li>
-      <li><strong>Google Fonts:</strong> We load the Inter and JetBrains Mono fonts from fonts.googleapis.com. Google may log your IP address when these fonts are loaded.</li>
-      <li><strong>Cropper.js (CDN):</strong> When you upload a profile picture, we load an image cropping library from cdnjs.cloudflare.com. The CDN provider may log your IP address.</li>
+      <li><strong>Supabase (database, auth, storage):</strong> When you sign in, your email, username, profile data, game results and avatar image are stored on Supabase servers (EU region). Supabase is our data processor.</li>
+      <li><strong>Sentry (error monitoring):</strong> Crash reports are sent to Sentry with email and tokens scrubbed before transmission.</li>
+      <li><strong>Vercel (hosting):</strong> Serves the app over HTTPS. Vercel may log standard request data (IP, timestamp, URL) for operational purposes.</li>
+      <li><strong>Google Fonts:</strong> We load the Inter and JetBrains Mono fonts from fonts.googleapis.com. Google may log your IP address when fonts are fetched.</li>
+      <li><strong>Cropper.js (CDN):</strong> When you upload a profile picture, we load an image-cropping library from cdnjs.cloudflare.com. The CDN provider may log your IP address.</li>
     </ul>
-    <p>We do not run any analytics, tracking pixels, or advertising. We do not sell or share any user data with third parties for marketing purposes.</p>
 
     <h2>6. Children's Privacy</h2>
-    <p>Ball IQ does not knowingly collect any information from children under the age of 13. The app contains no inappropriate content and is suitable for all ages.</p>
+    <p>Ball IQ is not directed at children under 13. Guest mode requires no account or personal data. To sign in you must provide an email address — please don't sign in if you are under 13. The app's content is suitable for all ages.</p>
 
     <h2>7. Changes to This Policy</h2>
     <p>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
