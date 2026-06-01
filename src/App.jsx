@@ -650,7 +650,7 @@ const css = `
 /* ── DARK THEME (default) ── */
 :root{
   /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
-  --bg:#0F1117;          /* near-black — neutral, no colour tint */
+  --bg:#09131C;          /* near-black, matches icon-1024 corner color so splash → app cross-fade has zero chroma shift (Sprint #85) */
   --s1:#1A1D27;          /* cards — clean dark navy-grey */
   --s2:#22263A;          /* inset surfaces */
   --s3:#2C3050;          /* tertiary / pressed */
@@ -8120,7 +8120,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0F1117",
+      background: "#09131C",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -8459,7 +8459,7 @@ class ErrorBoundary extends React.Component {
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#0F1117", fontFamily:"Inter,sans-serif", textAlign:"center"
+          background:"#09131C", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
           <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>
