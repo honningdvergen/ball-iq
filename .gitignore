@@ -16,3 +16,13 @@ scripts/_tmp-*
 test-results/
 playwright-report/
 playwright/.cache/
+
+# iOS native (Sprint #86 — Capacitor Phase 1)
+# Pods/ is regenerated on every `pod install`; Podfile + Podfile.lock are the
+# source of truth for native dependencies. xcuser* is per-developer Xcode
+# state (window layouts, breakpoints) that shouldn't follow the project.
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
+**/*.xcuserdata/
+**/*.xcuserstate

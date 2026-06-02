@@ -2,6 +2,8 @@
   "appId": "app.balliq",
   "appName": "Ball IQ",
   "webDir": "dist",
+  "_developmentTeam": "A99W5L256P",
+  "_developmentTeamNote": "Apple Developer Team ID. Capacitor 6.x has no first-class teamId field; this entry is source-of-truth documentation. The actual value is applied to ios/App/App.xcodeproj/project.pbxproj (DEVELOPMENT_TEAM and CODE_SIGN_STYLE = Automatic) after `cap add ios`. If you regenerate the iOS project, re-apply.",
   "server": {
     "androidScheme": "https"
   },
@@ -17,7 +19,7 @@
     "SplashScreen": {
       "launchShowDuration": 1200,
       "launchAutoHide": false,
-      "backgroundColor": "#0F1117",
+      "backgroundColor": "#09131C",
       "androidScaleType": "CENTER_CROP",
       "iosSpinnerStyle": "small",
       "spinnerColor": "#58CC02",
@@ -26,7 +28,7 @@
     },
     "StatusBar": {
       "style": "DARK",
-      "backgroundColor": "#0F1117",
+      "backgroundColor": "#09131C",
       "overlaysWebView": false
     },
     "Keyboard": {
