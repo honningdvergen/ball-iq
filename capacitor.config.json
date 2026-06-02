@@ -9,7 +9,7 @@
   },
   "ios": {
     "contentInset": "always",
-    "limitsNavigationsToAppBoundDomains": true
+    "limitsNavigationsToAppBoundDomains": false
   },
   "android": {
     "allowMixedContent": false,
@@ -18,7 +18,7 @@
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 1200,
-      "launchAutoHide": false,
+      "launchAutoHide": true,
       "backgroundColor": "#09131C",
       "androidScaleType": "CENTER_CROP",
       "iosSpinnerStyle": "small",

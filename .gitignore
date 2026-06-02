@@ -23,6 +23,7 @@ playwright/.cache/
 # state (window layouts, breakpoints) that shouldn't follow the project.
 ios/App/Pods/
 ios/App/build/
+ios/build/
 ios/DerivedData/
 **/*.xcuserdata/
 **/*.xcuserstate
