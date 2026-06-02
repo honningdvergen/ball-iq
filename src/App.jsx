@@ -2014,7 +2014,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    imposing on wider devices. iPhone SE is unaffected — the 100vw-80px
    ceiling already constrained it before. */
 .wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
-.wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,calc((100vw - 80px)));}
+.wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,100%);}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
 /* Sprint #82: row max-width is letter-count-aware so 4- and 5-letter
    words don't balloon. Original flat min(440, 100vw-32) let HART/KAKA
@@ -2023,8 +2023,19 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    formula caps tile WIDTH at 64px (× cols + (cols-1) × 6px gap);
    shorter words get horizontal padding around the centered row (the
    parent .wd-grid has align-items:center). For 6+ letters the
-   viewport-width cap wins as before. */
-.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(calc(var(--wd-cols) * 64px + (var(--wd-cols) - 1) * 6px),calc((100vw - 32px)));}
+   viewport-width cap wins as before.
+
+   Sprint #86 follow-up: reverted my earlier 100% experiment — it
+   was circular (parent .wd-grid is a flex column with no explicit
+   width that auto-grows to fit the row's intrinsic max-width, so
+   "100%" resolves to whatever the row wants and never caps). The
+   Footle screen is rendered OUTSIDE the .app wrapper (FootballWordle
+   is a sibling of .app, not a child), so the original Sprint #82
+   calc(100vw - 32px) IS the right anchor for it — Footle has 0
+   horizontal padding from any ancestor, so 100vw - 32 gives the
+   row a 32px viewport breathing room split as 16+16 around the
+   centered grid. */
+.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(calc(var(--wd-cols) * 64px + (var(--wd-cols) - 1) * 6px),calc(100vw - 32px));}
 .wd-tile{aspect-ratio:1/1;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
 /* Sprint #67 II1: min-height floor for iOS 14.0-14.4 (no aspect-ratio).
    wd-tile is display:flex so the ::before padding-top trick used on

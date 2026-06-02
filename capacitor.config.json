@@ -8,7 +8,7 @@
     "androidScheme": "https"
   },
   "ios": {
-    "contentInset": "always",
+    "contentInset": "automatic",
     "limitsNavigationsToAppBoundDomains": false
   },
   "android": {
@@ -29,7 +29,7 @@
     "StatusBar": {
       "style": "DARK",
       "backgroundColor": "#09131C",
-      "overlaysWebView": false
+      "overlaysWebView": true
     },
     "Keyboard": {
       "resize": "native",
