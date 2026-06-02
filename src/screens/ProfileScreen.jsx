@@ -3,6 +3,8 @@ import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
 import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../lib/scoring.js";
+import { isProfaneUsername } from "../lib/profanity.js";
+import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 
 export const BADGE_DEFS = [
   ["first_blood", "🎯", "First Whistle", "Complete your first game"],
@@ -279,6 +281,11 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   // with real friends that they had none. Now we render an error message
   // with a retry instead.
   const [loadError, setLoadError] = useState(false);
+  // Sprint #84 AAA3: symmetric block mask — user_ids that should be hidden
+  // from search + friend list because either side blocked. Pulled via
+  // SECURITY DEFINER RPC (get_block_mask) since the table's SELECT RLS
+  // only exposes outgoing blocks.
+  const [blockMask, setBlockMask] = useState(() => new Set());
   const toast = onToast || (() => {});
   // Sprint #70 LL1: per-key in-flight guard on friend actions. Without it,
   // a double-tap on Add fires two INSERTs; the second hits the unique
@@ -323,6 +330,22 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     if (userId) loadFriendships();
   }, [userId, loadFriendships]);
 
+  // Sprint #84 AAA3: refresh block mask whenever the user changes or the
+  // friend section mounts. Refreshed again from FriendProfileScreen via
+  // window event after a block/unblock so the list updates without a
+  // full reload.
+  const refreshBlockMask = useCallback(async () => {
+    if (!userId) { setBlockMask(new Set()); return; }
+    const mask = await listBlockMaskIds();
+    setBlockMask(mask);
+  }, [userId]);
+  useEffect(() => { refreshBlockMask(); }, [refreshBlockMask]);
+  useEffect(() => {
+    const onChange = () => refreshBlockMask();
+    window.addEventListener('biq:blocks-changed', onChange);
+    return () => window.removeEventListener('biq:blocks-changed', onChange);
+  }, [refreshBlockMask]);
+
   // Realtime: surface incoming friend requests as soon as they're inserted on
   // Supabase, so the user doesn't have to leave and re-enter Friends to see
   // them. Subscribed only while the section is mounted.
@@ -350,20 +373,26 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     return () => { try { supabase.removeChannel(channel); } catch {} };
   }, [userId, loadFriendships, toast]);
 
-  // Derived lists
-  const incoming = friendships.filter(f => f.status === "pending" && f.addressee_id === userId);
-  const outgoing = friendships.filter(f => f.status === "pending" && f.requester_id === userId);
-  const accepted = friendships.filter(f => f.status === "accepted");
+  // Derived lists — Sprint #84 AAA3: filter by symmetric block mask so
+  // blocked users disappear from incoming requests, outgoing requests,
+  // and accepted-friends list. Block ≠ unfriend at the data layer; the
+  // friendship row stays so unblock restores the relationship.
+  const blockedOther = (f) => blockMask.has(f.requester_id) || blockMask.has(f.addressee_id);
+  const incoming = friendships.filter(f => f.status === "pending" && f.addressee_id === userId && !blockedOther(f));
+  const outgoing = friendships.filter(f => f.status === "pending" && f.requester_id === userId && !blockedOther(f));
+  const accepted = friendships.filter(f => f.status === "accepted" && !blockedOther(f));
 
-  // Set of user ids we shouldn't show in search (already friended or pending)
+  // Set of user ids we shouldn't show in search (already friended or pending,
+  // OR symmetrically blocked).
   const excludedIds = useMemo(() => {
     const s = new Set([userId]);
+    blockMask.forEach(id => s.add(id));
     friendships.forEach(f => {
       if (f.status === "declined") return;
       s.add(f.requester_id); s.add(f.addressee_id);
     });
     return s;
-  }, [friendships, userId]);
+  }, [friendships, userId, blockMask]);
 
   // Debounced search
   useEffect(() => {
@@ -462,11 +491,13 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         const other = f.requester_id === userId ? f.addressee : f.requester;
         return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
       })
-      .filter(Boolean);
+      .filter(Boolean)
+      // Sprint #84 AAA3: blocked users disappear from the leaderboard too.
+      .filter(r => !blockMask.has(r.id));
     rows.push({ id: userId, username: currentUserName || "You", avatar: avatarEmoji(currentUserAvatar), score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
-  }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar]);
+  }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar, blockMask]);
 
   const otherOf = (f) => f.requester_id === userId ? f.addressee : f.requester;
 
@@ -633,8 +664,16 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 // Profile layout but: no avatar/name edit affordances, no friends list, no
 // badges grid (those are personal). Day Streak tile is intentionally omitted
 // because login streak is local-only and never persisted to Supabase.
-function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
+function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const [data, setData] = useState(null); // null = loading, false = error, object = loaded
+  // Sprint #84 AAA3: 3-dot menu + Report + Block surfaces.
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [blockConfirmOpen, setBlockConfirmOpen] = useState(false);
+  const [reportReason, setReportReason] = useState(REPORT_REASONS[0].value);
+  const [reportMessage, setReportMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const toast = onToast || (() => {});
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -653,6 +692,35 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
     })();
     return () => { cancelled = true; };
   }, [friendId]);
+
+  const handleReportSubmit = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    const { error } = await submitReport({ reportedId: friendId, reason: reportReason, message: reportMessage });
+    setSubmitting(false);
+    if (error) {
+      toast(`⚠️ ${error.message || "Couldn't submit report — try again"}`);
+      return;
+    }
+    setReportOpen(false);
+    setReportMessage("");
+    toast("Report received. We review these within 24 hours.");
+  };
+  const handleBlock = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    const { error } = await blockUser(friendId);
+    setSubmitting(false);
+    if (error) {
+      toast(`⚠️ ${error.message || "Couldn't block — try again"}`);
+      return;
+    }
+    setBlockConfirmOpen(false);
+    window.dispatchEvent(new Event('biq:blocks-changed'));
+    toast("Blocked.");
+    // Bounce out of this profile — viewer no longer has reason to be here.
+    if (typeof onBack === 'function') onBack();
+  };
 
   if (data === null) {
     return (
@@ -689,9 +757,25 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
 
   return (
     <div className="screen">
-      <div className="page-hdr">
+      <div className="page-hdr" style={{position:"relative"}}>
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="page-title">{username}</div>
+        {/* Sprint #84 AAA3: 3-dot menu opens an action sheet with
+            Report + Block. Absolute-positioned to the header's right
+            edge so it doesn't disturb the centered title layout. */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen(true)}
+          aria-label={`More options for ${username}`}
+          style={{
+            position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
+            width:36, height:36, borderRadius:10,
+            background:"transparent", border:"1px solid var(--border)",
+            color:"var(--t1)", fontSize:20, lineHeight:1, cursor:"pointer",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            WebkitTapHighlightColor:"transparent",
+          }}
+        >⋮</button>
       </div>
       <div className="profile-card">
         <div className="profile-avatar-wrap">
@@ -757,10 +841,198 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge }) {
       >
         Challenge {username}
       </button>
+
+      {/* Sprint #84 AAA3 — 3-dot action sheet */}
+      {menuOpen && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"flex-end"}}
+          onClick={() => setMenuOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Actions for ${username}`}
+            style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"12px 12px calc(20px + env(safe-area-inset-bottom, 20px))"}}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => { setMenuOpen(false); setReportOpen(true); }}
+              style={{display:"block",width:"100%",padding:"16px",background:"transparent",border:"none",color:"var(--t1)",fontSize:16,fontWeight:600,textAlign:"left",cursor:"pointer",borderRadius:10}}
+            >🚩 Report</button>
+            <button
+              type="button"
+              onClick={() => { setMenuOpen(false); setBlockConfirmOpen(true); }}
+              style={{display:"block",width:"100%",padding:"16px",background:"transparent",border:"none",color:"#ff6b6b",fontSize:16,fontWeight:600,textAlign:"left",cursor:"pointer",borderRadius:10}}
+            >⛔ Block</button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              style={{display:"block",width:"100%",padding:"14px",marginTop:6,background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:"pointer",borderRadius:12}}
+            >Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Sprint #84 AAA3 — Report modal */}
+      {reportOpen && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"flex-end"}}
+          onClick={() => !submitting && setReportOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Report ${username}`}
+            style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"20px 20px calc(28px + env(safe-area-inset-bottom, 20px))"}}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{fontSize:18,fontWeight:800,marginBottom:6,color:"var(--t1)"}}>Report {username}</div>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:16}}>Reports go to the Ball IQ team. We review within 24 hours.</div>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>Reason</label>
+            <select
+              value={reportReason}
+              onChange={e => setReportReason(e.target.value)}
+              style={{width:"100%",padding:"12px 14px",fontSize:15,borderRadius:10,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",marginBottom:14,WebkitAppearance:"none"}}
+            >
+              {REPORT_REASONS.map(r => (
+                <option key={r.value} value={r.value}>{r.label}</option>
+              ))}
+            </select>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>Details <span style={{fontWeight:400,textTransform:"none",color:"var(--t3)"}}>(optional, max 500 chars)</span></label>
+            <textarea
+              value={reportMessage}
+              onChange={e => setReportMessage(e.target.value.slice(0, 500))}
+              rows={3}
+              style={{width:"100%",padding:"12px 14px",fontSize:14,borderRadius:10,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",resize:"vertical",fontFamily:"inherit",marginBottom:16}}
+            />
+            <div style={{display:"flex",gap:8}}>
+              <button
+                type="button"
+                onClick={() => setReportOpen(false)}
+                disabled={submitting}
+                style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.5:1}}
+              >Cancel</button>
+              <button
+                type="button"
+                onClick={handleReportSubmit}
+                disabled={submitting}
+                style={{flex:1,padding:"14px",background:"var(--accent)",border:"none",color:"#000",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
+              >{submitting ? "Submitting…" : "Submit report"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sprint #84 AAA3 — Block confirm modal */}
+      {blockConfirmOpen && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"flex-end"}}
+          onClick={() => !submitting && setBlockConfirmOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Confirm blocking ${username}`}
+            style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"24px 20px calc(28px + env(safe-area-inset-bottom, 20px))"}}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{fontSize:18,fontWeight:800,marginBottom:8,color:"var(--t1)"}}>Block {username}?</div>
+            <div style={{fontSize:14,color:"var(--t3)",marginBottom:20,lineHeight:1.5}}>They won't see you in search or leaderboards. You won't see them either. You can unblock from Settings → Account → Blocked users.</div>
+            <div style={{display:"flex",gap:8}}>
+              <button
+                type="button"
+                onClick={() => setBlockConfirmOpen(false)}
+                disabled={submitting}
+                style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.5:1}}
+              >Cancel</button>
+              <button
+                type="button"
+                onClick={handleBlock}
+                disabled={submitting}
+                style={{flex:1,padding:"14px",background:"#ff6b6b",border:"none",color:"#fff",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
+              >{submitting ? "Blocking…" : "Block"}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 export const FriendProfileScreen = React.memo(FriendProfileScreenImpl);
+
+// ─── BLOCKED USERS SCREEN ─────────────────────────────────────────────────────
+// Sprint #84 AAA3. Settings → Account → Blocked users. Lists everyone the
+// current user has blocked, with an Unblock button per row. Empty state
+// shows "No blocked users." The RLS on user_blocks already restricts the
+// SELECT to blocker_id = auth.uid(), so the raw query is safe.
+function BlockedUsersScreenImpl({ onBack, onToast }) {
+  const [rows, setRows] = useState(null); // null = loading, [] = empty, [...] = list
+  const toast = onToast || (() => {});
+  const load = useCallback(async () => {
+    setRows(null);
+    const { data: blocks, error: bErr } = await supabase
+      .from('user_blocks')
+      .select('blocked_id, created_at')
+      .order('created_at', { ascending: false });
+    if (bErr || !Array.isArray(blocks) || blocks.length === 0) {
+      setRows([]);
+      return;
+    }
+    const ids = blocks.map(b => b.blocked_id);
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, username, avatar_id')
+      .in('id', ids);
+    const map = new Map((profiles || []).map(p => [p.id, p]));
+    setRows(blocks.map(b => ({
+      id: b.blocked_id,
+      username: map.get(b.blocked_id)?.username || 'Unknown',
+      avatar: map.get(b.blocked_id)?.avatar_id,
+    })));
+  }, []);
+  useEffect(() => { load(); }, [load]);
+
+  const handleUnblock = async (id) => {
+    const { error } = await unblockUser(id);
+    if (error) { toast("⚠️ Couldn't unblock — try again"); return; }
+    window.dispatchEvent(new Event('biq:blocks-changed'));
+    toast("Unblocked.");
+    load();
+  };
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <div className="page-title">Blocked users</div>
+      </div>
+      {rows === null ? (
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Loading…</div>
+      ) : rows.length === 0 ? (
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>No blocked users.</div>
+      ) : (
+        <div style={{padding:"4px 16px 24px"}}>
+          {rows.map(row => (
+            <div
+              key={row.id}
+              style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0",borderBottom:"1px solid var(--border)"}}
+            >
+              <div style={{fontSize:28,lineHeight:1}}>{avatarEmoji(row.avatar)}</div>
+              <div style={{flex:1,fontSize:15,fontWeight:600,color:"var(--t1)"}}>{row.username}</div>
+              <button
+                type="button"
+                onClick={() => handleUnblock(row.id)}
+                style={{padding:"8px 14px",fontSize:13,fontWeight:600,borderRadius:8,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",cursor:"pointer"}}
+              >Unblock</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
@@ -789,6 +1061,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   };
   const saveName = () => {
     const v = nameDraft.trim();
+    // Sprint #84 AAA2: username profanity gate. SQL trigger
+    // profiles_profanity_check is the bypass-proof backstop; the client
+    // check just gives a fast inline error without a Supabase round-trip
+    // (the local profile name update is skipped too so the bad value
+    // doesn't appear in the UI for a frame before the toast fires).
+    if (v && isProfaneUsername(v)) {
+      toast("⚠️ That username isn't allowed — please choose another");
+      return;
+    }
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
     // Mirror the change up to Supabase so leaderboards and other devices

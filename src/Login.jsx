@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from './useAuth.jsx'
+import { isProfaneUsername } from './lib/profanity.js'
 
 function readTheme() {
   try {
@@ -46,6 +47,14 @@ export default function Login() {
       if (mode === 'signup') {
         if (!username.trim() || username.length < 3) {
           setError('Username must be at least 3 characters')
+          setLoading(false)
+          return
+        }
+        if (isProfaneUsername(username.trim())) {
+          // Sprint #84 AAA2: client-side gate before hitting Supabase. The
+          // SQL trigger profiles_profanity_check is the bypass-proof backstop;
+          // this just gives a faster error without a round-trip.
+          setError("This username isn't allowed. Please choose another.")
           setLoading(false)
           return
         }

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" style="background-color:#0F1117">
+<html lang="en" style="background-color:#09131C">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0F1117" />
+    <meta name="theme-color" content="#09131C" />
     <meta name="description" content="The ultimate football quiz. 3,900+ questions across 10 game modes — Daily 7, Footle, online multiplayer and more." />
     <!-- Open Graph (iMessage / Slack / Discord / Facebook share previews). -->
     <meta property="og:type" content="website" />
@@ -57,35 +57,35 @@
          this image during WebView cold-boot in place of its default white
          screen. Without these, fresh-day cold launches (iOS evicted the
          WebView entirely overnight) flash white for ~500-1500ms before
-         the page paints. Each PNG is 'icon centered on #0F1117'; the
+         the page paints. Each PNG is 'icon centered on #09131C'; the
          system shows it briefly until the page's own splash markup
          renders. Media queries follow Apple's device-width/height/scale
          + orientation pattern. -->
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-16-pro-max.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-16-pro-max-v2.png"
           media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro-max.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro-max-v2.png"
           media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-16-pro.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-16-pro-v2.png"
           media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-pro-v2.png"
           media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-plus.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-plus-v2.png"
           media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-v2.png"
           media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-x.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-x-v2.png"
           media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-se.png"
+    <link rel="apple-touch-startup-image" href="/apple-splash-iphone-se-v2.png"
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
     <style>
       html, body {
         margin: 0;
         padding: 0;
-        /* Sprint #25 W4: unified to #0F1117 (was #0a0a0a) so the splash,
+        /* Sprint #25 W4: unified to #09131C (was #0a0a0a) so the splash,
            body, #root, and AppInner --bg all match exactly. Eliminates
            the dark-to-darker chroma shift that was visible during the
            splash cross-fade on calibrated displays. */
-        background-color: #0F1117;
+        background-color: #09131C;
         min-height: 100vh;
         min-height: 100dvh;
         overscroll-behavior: none;
@@ -94,7 +94,7 @@
       #root {
         min-height: 100vh;
         min-height: 100dvh;
-        background-color: #0F1117;
+        background-color: #09131C;
       }
       html.light, html.light body, html.light #root,
       body.light, body.light #root {
@@ -110,7 +110,7 @@
         position: fixed; top: 0; right: 0; bottom: 0; left: 0; inset: 0;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 14px;
-        background: #0F1117; color: #F0F1F5;
+        background: #09131C; color: #F0F1F5;
         font-weight: 800; letter-spacing: -0.5px;
         /* Nudge the centred content slightly above geometric centre. Two
            reasons: (1) iOS standalone status bar (~44pt) is larger than
@@ -449,7 +449,7 @@
       .landing-footer-links a:hover { color: #9BA0B8; }
     </style>
   </head>
-  <body style="background-color:#0F1117">
+  <body style="background-color:#09131C">
     <!-- ════════════════════════════════════════════════════════════════
          LANDING CHROME — TOP HALF
          Hidden on mobile (< 1024px) and ALWAYS hidden in PWA standalone.
@@ -529,7 +529,7 @@
       // Apply the saved theme class BEFORE React mounts so light-mode users
       // don't see a one-frame flash of the dark palette on reload.
       // Sprint #25 W4: the <html> and <body> tags now ship with an inline
-      // style="background-color:#0F1117" attribute as a defensive measure
+      // style="background-color:#09131C" attribute as a defensive measure
       // against WKWebView painting body before head CSS is parsed. Inline
       // style has higher CSS specificity than the .light class rule, so
       // we must clear the inline bg here for light-theme users — otherwise

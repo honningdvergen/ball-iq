@@ -19,12 +19,13 @@ import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
+  WORDLE_FULL_NAMES,
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
   gradeWordleGuess, computeFootleStreak,
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
-import { ProfileScreen, FriendProfileScreen } from './screens/ProfileScreen.jsx';
+import { ProfileScreen, FriendProfileScreen, BlockedUsersScreen } from './screens/ProfileScreen.jsx';
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
 
@@ -649,7 +650,7 @@ const css = `
 /* ── DARK THEME (default) ── */
 :root{
   /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
-  --bg:#0F1117;          /* near-black — neutral, no colour tint */
+  --bg:#09131C;          /* near-black, matches icon-1024 corner color so splash → app cross-fade has zero chroma shift (Sprint #85) */
   --s1:#1A1D27;          /* cards — clean dark navy-grey */
   --s2:#22263A;          /* inset surfaces */
   --s3:#2C3050;          /* tertiary / pressed */
@@ -2015,7 +2016,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
 .wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,calc((100vw - 80px)));}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
-.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(440px,calc((100vw - 32px)));}
+/* Sprint #82: row max-width is letter-count-aware so 4- and 5-letter
+   words don't balloon. Original flat min(440, 100vw-32) let HART/KAKA
+   rows fill the viewport → 84px-square tiles → 6 rows × 90px = 540px
+   grid that pushed the keyboard off-screen on iPhone 14 Pro. New
+   formula caps tile WIDTH at 64px (× cols + (cols-1) × 6px gap);
+   shorter words get horizontal padding around the centered row (the
+   parent .wd-grid has align-items:center). For 6+ letters the
+   viewport-width cap wins as before. */
+.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(calc(var(--wd-cols) * 64px + (var(--wd-cols) - 1) * 6px),calc((100vw - 32px)));}
 .wd-tile{aspect-ratio:1/1;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
 /* Sprint #67 II1: min-height floor for iOS 14.0-14.4 (no aspect-ratio).
    wd-tile is display:flex so the ::before padding-top trick used on
@@ -7376,7 +7385,7 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -7701,6 +7710,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
+      {/* Sprint #84 AAA3 — Account moderation section. Signed-in only;
+         hidden for guests since they have no friend graph. Sits above the
+         danger zone so destructive Delete-account stays the visual floor. */}
+      {user && onShowBlocked && (
+        <div className="settings-section" style={{marginTop:24}}>
+          <div className="settings-card">
+            <button className="settings-row" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={onShowBlocked}>
+              <div className="sr-left">
+                <div className="sr-label">Blocked users</div>
+                <div className="sr-desc">Manage who you've blocked from friend search</div>
+              </div>
+              <div className="sr-right"><div className="sr-arrow">›</div></div>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Danger zone — bottom of the screen so destructive actions are
          clearly separated from everyday settings. The same row appears in
          three states (signed-in, mid-auth, guest) but always at this
@@ -7838,9 +7864,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 const SettingsScreen = React.memo(SettingsScreenImpl);
 
 // ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
-// Full-screen in-app overlay. Content is hardcoded (mirrors public/privacy.html)
-// so there's no network fetch, no CORS/asset-path pitfalls, and no flash of a
-// blank iframe. Rendered above the app when showPrivacy is true.
+// Full-screen in-app overlay. Content is hardcoded (no network fetch, no
+// CORS/asset-path pitfalls, no flash of a blank iframe). Rendered above the
+// app when showPrivacy is true.
+//
+// IMPORTANT — KEEP IN SYNC WITH public/privacy.html. The standalone HTML is
+// linked from index.html footer + sitemap.xml so external visitors must see
+// the same policy as in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84
+// AAA1 re-synced them. Edit both files in the same commit and bump
+// "Last updated" in both when the policy materially changes.
 const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{
@@ -8088,7 +8120,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0F1117",
+      background: "#09131C",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -8427,7 +8459,7 @@ class ErrorBoundary extends React.Component {
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#0F1117", fontFamily:"Inter,sans-serif", textAlign:"center"
+          background:"#09131C", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
           <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>
@@ -8470,7 +8502,7 @@ const HOW_TO_PLAY = {
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   wc2026: { title:"🌍 World Cup 2026", steps:["15 questions about the 2026 World Cup","All 48 competing nations covered","Questions on history, players and format","No timer — test your knowledge","Great prep for the tournament!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
-  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["20 questions across all categories","Difficulty ramps up as you go","Your score maps to an IQ number","Compare your percentile with others","Your history is saved for tracking"] },
+  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["15 questions across all categories","Difficulty ramps up as you go","Your score maps to a 60–160 scale","Earn a football-culture rank label","Your history is saved for tracking"] },
 };
 
 // Shared hide style so the home-screen tab wrappers reference the same object
@@ -8794,9 +8826,21 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
           <div className="wd-result-title">
             {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
           </div>
-          <div className="wd-result-sub">
-            The answer was <strong>{answer}</strong>
-          </div>
+          {/* Sprint #81 YY2: reveal renders proper-cased full name from
+              WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
+              First name (if present) inherits the muted .wd-result-sub
+              color; surname stays accent via <strong>. Empty prefix →
+              single-name brand (Pelé, Neymar) renders just the surname
+              with no leading whitespace. Falls back to raw uppercase
+              answer if a pool entry is unmapped (defensive). */}
+          {(() => {
+            const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
+            return (
+              <div className="wd-result-sub">
+                The answer was {prefix && <>{prefix} </>}<strong>{surname}</strong>
+              </div>
+            );
+          })()}
           <button className="wd-share" onClick={onShare}>Share result</button>
           <div className="wd-result-foot">New player in {countdown}</div>
           {/* Sprint #64 FF1: post-solve install nudge. Won-only so the
@@ -10353,13 +10397,13 @@ function AppInner() {
               <div style={{fontSize:48,marginBottom:12}}>🧠</div>
               <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
-                {[["📋","20 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
+                {[["📋","15 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
                   <div key={label} style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:600,color:"var(--t2)",display:"flex",alignItems:"center",gap:4}}>
                     <span>{icon}</span><span>{label}</span>
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 20 questions across all categories. Your score determines your {APP_NAME} — from 62 (beginner) to 145 (elite). The test is the same for everyone so scores are comparable.</div>
+              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 15 questions across all categories. Your score determines your {APP_NAME} — from 60 (beginner) to 160 (elite). The test is the same for everyone so scores are comparable.</div>
               <button className="btn btn-p" onClick={() => { setShowBallIQIntro(false); startMode("balliq_confirmed"); }}>Start Test 🧠</button>
               <button className="btn btn-s" style={{marginTop:8}} onClick={() => setShowBallIQIntro(false)}>Maybe later</button>
             </div>
@@ -10565,7 +10609,8 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} />}
+        {!inGame && screen === "blocked-users" && <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
@@ -10593,6 +10638,7 @@ function AppInner() {
             friendId={viewingFriendId}
             onBack={closeFriendProfile}
             onChallenge={challengeFriend}
+            onToast={showToast}
           />
         )}
 
