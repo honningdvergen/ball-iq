@@ -25,9 +25,21 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
-import { ProfileScreen, FriendProfileScreen, BlockedUsersScreen } from './screens/ProfileScreen.jsx';
+// Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
+// for the first-paint critical path — none of the three screens are reachable
+// without tab/screen navigation that happens AFTER cold launch. React.lazy
+// pulls them into a separate chunk; the Suspense boundaries at their render
+// sites fall back to an empty tab-pane (no visible flash because Profile is
+// hidden via HIDDEN_STYLE on non-profile tabs, and the other two are only
+// rendered post-navigation).
+const ProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.ProfileScreen })));
+const FriendProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.FriendProfileScreen })));
+const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.BlockedUsersScreen })));
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
+import { Capacitor } from '@capacitor/core';
+import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -3145,14 +3157,32 @@ function playSound(type) {
   } catch {}
 }
 
+// Sprint #87: native iOS haptics via @capacitor/haptics. navigator.vibrate is a
+// silent no-op on iOS WKWebView so the web-only path produced zero feedback on
+// the installed app. On native (Capacitor.isNativePlatform()) we dispatch to the
+// system Taptic engine; on the web we keep the navigator.vibrate fallback so
+// Android Chrome / installed Android PWAs still buzz.
+const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 function haptic(type) {
   try {
+    if (IS_NATIVE) {
+      if (type === "correct") Haptics.impact({ style: ImpactStyle.Medium });
+      else if (type === "wrong") Haptics.notification({ type: NotificationType.Error });
+      else if (type === "soft" || type === "select") Haptics.impact({ style: ImpactStyle.Light });
+      else if (type === "heavy") Haptics.impact({ style: ImpactStyle.Heavy });
+      else if (type === "hardCorrect") Haptics.notification({ type: NotificationType.Success });
+      else if (type === "levelup") {
+        Haptics.notification({ type: NotificationType.Success });
+        setTimeout(() => { try { Haptics.impact({ style: ImpactStyle.Heavy }); } catch {} }, 220);
+      }
+      return;
+    }
     if (typeof navigator === "undefined" || !navigator.vibrate) return;
     if (type === "correct") navigator.vibrate(40);
     else if (type === "wrong") navigator.vibrate([30, 20, 30]);
     else if (type === "soft" || type === "select") navigator.vibrate(15);
     else if (type === "heavy") navigator.vibrate(100);
-    else if (type === "hardCorrect") navigator.vibrate([30, 40, 30, 40, 60]);  // Triumphant triple-buzz for hard questions
+    else if (type === "hardCorrect") navigator.vibrate([30, 40, 30, 40, 60]);
     else if (type === "levelup") navigator.vibrate([50, 30, 50, 30, 100]);
   } catch {}
 }
@@ -9686,21 +9716,21 @@ function AppInner() {
     // 🎉 PERFECT SCORE celebration
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🎉 Perfect — every question right"), 800));
-      try { navigator.vibrate?.([60, 40, 60, 40, 60]); } catch {}
+      haptic("levelup");
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily/balliq)
     if (mode === "classic" && res.score && res.total === 10 && res.score > (stats.bestScore || 0)) {
       const isFirst = !stats.bestScore;
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🎯 First score: ${res.score}/10!` : `🎯 New personal best: ${res.score}/10!`), 1400));
-      try { navigator.vibrate?.([40, 50, 40]); } catch {}
+      haptic("hardCorrect");
     }
 
     // 🔥 HOT STREAK personal best
     if (mode === "hotstreak" && res.score > (stats.bestHotStreak || 0) && res.score >= 5) {
       const isFirst = !stats.bestHotStreak;
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `⚡ Hot Streak record: ${res.score}!` : `⚡ New Hot Streak best: ${res.score}!`), 1400));
-      try { navigator.vibrate?.([40, 50, 40]); } catch {}
+      haptic("hardCorrect");
     }
 
     // 🔄 COMEBACK celebration — got Q1 wrong, then nailed the rest
@@ -9717,7 +9747,7 @@ function AppInner() {
     if (mode === "balliq" && res.iq && res.iq > (stats.bestIQ || 0)) {
       const isFirst = !stats.bestIQ;
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🧠 Your ${APP_NAME}: ${res.iq}!` : `🧠 New ${APP_NAME} high: ${res.iq}!`), TIMINGS.ANSWER_REVEAL));
-      try { navigator.vibrate?.([40, 50, 40]); } catch {}
+      haptic("hardCorrect");
     }
 
     // 💪 SURVIVAL new best (wrong answers = 0 means they only died on one)
@@ -10616,13 +10646,19 @@ function AppInner() {
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
-            <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
+            <React.Suspense fallback={<div className="tab-pane" />}>
+              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
+            </React.Suspense>
           </div>
         )}
 
         {/* ── SETTINGS SCREEN ── */}
         {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} />}
-        {!inGame && screen === "blocked-users" && <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />}
+        {!inGame && screen === "blocked-users" && (
+          <React.Suspense fallback={<div className="tab-pane" />}>
+            <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />
+          </React.Suspense>
+        )}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
@@ -10646,12 +10682,14 @@ function AppInner() {
           />
         )}
         {!inGame && screen === "friend-profile" && viewingFriendId && (
-          <FriendProfileScreen
-            friendId={viewingFriendId}
-            onBack={closeFriendProfile}
-            onChallenge={challengeFriend}
-            onToast={showToast}
-          />
+          <React.Suspense fallback={<div className="tab-pane" />}>
+            <FriendProfileScreen
+              friendId={viewingFriendId}
+              onBack={closeFriendProfile}
+              onChallenge={challengeFriend}
+              onToast={showToast}
+            />
+          </React.Suspense>
         )}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
@@ -10903,6 +10941,26 @@ function AppGate() {
     return () => clearTimeout(id);
   }, [profileNotReady]);
   const effectiveLoading = loading || (profileNotReady && !profileWaitElapsed);
+
+  // Sprint #88 DDD1: coordinated native-splash dismissal. capacitor.config has
+  // launchAutoHide:false so the native iOS splash stays up until we explicitly
+  // call SplashScreen.hide() — fired the first time effectiveLoading flips
+  // false (auth check complete + profile ready / wait elapsed). Hiding the
+  // native splash AFTER React is ready means the 1-2s of post-mount jank
+  // (React tree settling, useEffects firing, listener attachment) happens
+  // behind the splash instead of in the user's face — the "first 2s of
+  // laggy scroll after launch" goes away because the user can't scroll the
+  // WebView until SplashScreen.hide() resolves. Idempotent via ref.
+  const splashHiddenRef = useRef(false);
+  useEffect(() => {
+    if (effectiveLoading || splashHiddenRef.current) return;
+    splashHiddenRef.current = true;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        SplashScreen.hide({ fadeOutDuration: 220 }).catch(() => {});
+      });
+    });
+  }, [effectiveLoading]);
 
   // Sprint #23 U2: splash stays mounted for one 220ms beat after
   // loading→false, fading out while AppInner mounts behind it (the

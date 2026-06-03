@@ -8,7 +8,8 @@
     "androidScheme": "https"
   },
   "ios": {
-    "contentInset": "automatic",
+    "contentInset": "never",
+    "backgroundColor": "#09131C",
     "limitsNavigationsToAppBoundDomains": false
   },
   "android": {
@@ -17,8 +18,8 @@
   },
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 1200,
-      "launchAutoHide": true,
+      "launchShowDuration": 3000,
+      "launchAutoHide": false,
       "backgroundColor": "#09131C",
       "androidScaleType": "CENTER_CROP",
       "iosSpinnerStyle": "small",

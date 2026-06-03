@@ -590,7 +590,11 @@
       // Register the PWA service worker after first load so static assets
       // (JS / CSS / fonts / icons) can be served cache-first on subsequent
       // home-screen launches. Scoped to / so it controls the whole app.
-      if ('serviceWorker' in navigator) {
+      // Sprint #88 DDD5: skip on Capacitor native — assets are bundled in the
+      // .app and Supabase already bypasses cache, so the SW adds main-thread
+      // negotiation cost during cold start for no payoff. window.Capacitor is
+      // injected by the native bridge before any user JS runs.
+      if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
         window.addEventListener('load', function () {
           navigator.serviceWorker.register('/sw.js').catch(function () {});
         });

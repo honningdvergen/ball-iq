@@ -7,7 +7,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Sprint #87: paint the native UIWindow + rootViewController.view to the app's
+        // #09131C so the safe-area bands above the status bar and below the home indicator
+        // don't show iOS's default-black .systemBackground bleeding through the WebView.
+        let bg = UIColor(red: 9.0/255.0, green: 19.0/255.0, blue: 28.0/255.0, alpha: 1.0)
+        self.window?.backgroundColor = bg
+        self.window?.rootViewController?.view.backgroundColor = bg
         return true
     }
 
