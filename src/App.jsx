@@ -2025,23 +2025,24 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    parent .wd-grid has align-items:center). For 6+ letters the
    viewport-width cap wins as before.
 
-   Sprint #86 follow-up: reverted my earlier 100% experiment — it
-   was circular (parent .wd-grid is a flex column with no explicit
-   width that auto-grows to fit the row's intrinsic max-width, so
-   "100%" resolves to whatever the row wants and never caps). The
-   Footle screen is rendered OUTSIDE the .app wrapper (FootballWordle
-   is a sibling of .app, not a child), so the original Sprint #82
-   calc(100vw - 32px) IS the right anchor for it — Footle has 0
-   horizontal padding from any ancestor, so 100vw - 32 gives the
-   row a 32px viewport breathing room split as 16+16 around the
-   centered grid. */
-.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),1fr);gap:6px;width:100%;max-width:min(calc(var(--wd-cols) * 64px + (var(--wd-cols) - 1) * 6px),calc(100vw - 32px));}
-.wd-tile{aspect-ratio:1/1;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
-/* Sprint #67 II1: min-height floor for iOS 14.0-14.4 (no aspect-ratio).
-   wd-tile is display:flex so the ::before padding-top trick used on
-   other aspect-ratio sites would fight with letter centering; min-height
-   keeps the cell tall enough to be legible (slightly flat rather than
-   perfectly square on the unsupported audience). */
+   Sprint #86 follow-up #4: dropped the 320 hardcap + viewport math
+   entirely. The cleanest pattern is to let width:100% fill the
+   parent (.app content area = same width as the keyboard below the
+   grid), with max-width as ONLY the per-letter cap so short words
+   don't balloon. Result: long words (5-8 letters) fill the keyboard
+   width exactly; short words (4 letters) cap at 274px and center.
+   minmax(0, 1fr) is required so tile intrinsic min-width doesn't
+   blow past max-width on small viewports. Per-letter 64px tile width
+   from Sprint #82 is the cap that drives the formula. */
+.wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),minmax(0,1fr));gap:6px;width:100%;max-width:calc(var(--wd-cols) * 64px + (var(--wd-cols) - 1) * 6px);margin-left:auto;margin-right:auto;}
+.wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
+/* Sprint #67 II1's min-height: 50px iOS 14 fallback was dropped in
+   Sprint #86 — combined with Sprint #86's minmax(0,1fr) grid columns,
+   the 50px floor forced tile height ≥ 50 even when width shrank below
+   that, producing rectangular tiles that overlapped on small viewports
+   (visible in the Capacitor iPhone 17 Pro simulator with 8-letter
+   answers). Capacitor 6 targets iOS 13+ which has full aspect-ratio
+   support; the fallback is no longer reachable. */
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
