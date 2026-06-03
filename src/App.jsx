@@ -3162,9 +3162,22 @@ function playSound(type) {
 // the installed app. On native (Capacitor.isNativePlatform()) we dispatch to the
 // system Taptic engine; on the web we keep the navigator.vibrate fallback so
 // Android Chrome / installed Android PWAs still buzz.
+// Sprint #89 #2: gated on settings.haptics (defaults true). Read synchronously
+// from localStorage so the helper can be called from anywhere (matches the
+// playSound pattern at line 3082). OS-level haptics disabled silently no-ops
+// inside the plugin itself, so no extra guard needed for that case.
 const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 function haptic(type) {
   try {
+    let enabled = true;
+    try {
+      const raw = localStorage.getItem("biq_settings");
+      if (raw) {
+        const v = JSON.parse(raw)?.haptics;
+        enabled = v !== false; // default-on: missing/undefined => true
+      }
+    } catch {}
+    if (!enabled) return;
     if (IS_NATIVE) {
       if (type === "correct") Haptics.impact({ style: ImpactStyle.Medium });
       else if (type === "wrong") Haptics.notification({ type: NotificationType.Error });
@@ -7606,6 +7619,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsToggle val={settings.sound} onChange={v => onUpdate({sound:v})} />
             </div>
           </div>
+          <div className="settings-row">
+            <div className="sr-left">
+              <div className="sr-label">Haptics</div>
+              <div className="sr-desc">Taps and vibrations on answers, streaks, and button presses</div>
+            </div>
+            <div className="sr-right">
+              <SettingsToggle val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -8325,7 +8347,7 @@ function OnboardingScreen({ onDone }) {
             const raw = localStorage.getItem("biq_settings");
             const s = raw
               ? JSON.parse(raw)
-              : { defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false };
+              : { defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false, haptics: true };
             s.defaultDiff = diffFor;
             localStorage.setItem("biq_settings", JSON.stringify(s));
           } catch {}
@@ -9057,7 +9079,7 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { hints:true, timer:true, theme:"dark", sound:false };
+    const defaults = { hints:true, timer:true, theme:"dark", sound:false, haptics:true };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }

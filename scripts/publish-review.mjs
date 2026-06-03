@@ -132,14 +132,24 @@ if (!reviewer) {
 }
 console.log(`Reviewer uid:  ${reviewer.id.slice(0, 8)}…`);
 
-const { data: decisions, error: decErr } = await supabase
-  .from('question_review')
-  .select('question_id, source, status, edits, notes, updated_at')
-  .eq('reviewed_by', reviewer.id);
-
-if (decErr) {
-  console.error('Could not fetch question_review:', decErr.message);
-  process.exit(1);
+// Sprint #89: paginate. Supabase REST defaults to 1000-row cap, so a single
+// fetch silently truncated and earlier publish runs missed 142 rejected rows.
+// Loop in 1000-row pages until a short page tells us we've drained the table.
+const PAGE_SIZE = 1000;
+const decisions = [];
+for (let from = 0; ; from += PAGE_SIZE) {
+  const { data: page, error: decErr } = await supabase
+    .from('question_review')
+    .select('question_id, source, status, edits, notes, updated_at')
+    .eq('reviewed_by', reviewer.id)
+    .order('updated_at', { ascending: true })
+    .range(from, from + PAGE_SIZE - 1);
+  if (decErr) {
+    console.error('Could not fetch question_review:', decErr.message);
+    process.exit(1);
+  }
+  decisions.push(...page);
+  if (page.length < PAGE_SIZE) break;
 }
 console.log(`Fetched ${decisions.length} decisions from question_review`);
 console.log('');
