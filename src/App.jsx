@@ -677,7 +677,7 @@ const css = `
   --text:#FFFFFF;        /* pure white — max contrast */
   --t1:#FFFFFF;          /* alias for --text; Sprint #72 NN1 added — many .light overrides set --t1 but :root was relying on the cascade fallback, which worked by accident */
   --t2:#8B8FA8;          /* neutral muted */
-  --t3:#4A4E68;          /* very muted */
+  --t3:#767B98;          /* muted-but-readable (Sprint #91 FFF4: lifted from #4A4E68 / 2.30:1 → 4.51:1, just clearing WCAG AA 4.5:1 for normal text on #09131C bg) */
   --accent:#22c55e;      /* Muted green — easier on the eyes than bright Duolingo */
   --accent-dim:rgba(34,197,94,0.10);
   --accent-b:rgba(34,197,94,0.28);
@@ -4564,9 +4564,14 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // of the gameplay screen while any multiplayer RPC is in retry territory.
   const { retrying: mpRetrying } = useMpRetryStatus();
 
-  // Captures performance.now() at the moment the current question first
-  // rendered. Used to compute lock_time_ms on submit.
-  const questionStartedAtRef = useRef(performance.now());
+  // Sprint #91 FFF2: captures Date.now() (wall-clock) at the moment the
+  // current question first rendered. performance.now() pauses on iOS
+  // WKWebView background-suspend — a player who backgrounds mid-question
+  // would resume with a stale offset, letting them submit "fast" answers
+  // long after the wall-clock window closed. Date.now() advances during
+  // background so the server-side lock_time validation reflects real
+  // elapsed time. Used to compute lock_time_ms on submit.
+  const questionStartedAtRef = useRef(Date.now());
 
   // Question-advance reset. Fires on initial mount AND each subsequent
   // realtime UPDATE that lifts room.current_question. Resets myAnswer,
@@ -4574,7 +4579,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   useEffect(() => {
     setMyAnswer(null);
     setRevealPhase('answering');
-    questionStartedAtRef.current = performance.now();
+    questionStartedAtRef.current = Date.now();
   }, [room.current_question]);
 
   const handleLeave = useCallback(async () => {
@@ -4597,7 +4602,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   const handleAnswerPick = useCallback(async (answerIdx) => {
     if (myAnswer || serverConfirmedAnswered) return;
 
-    const lockTimeMs = Math.round(performance.now() - questionStartedAtRef.current);
+    const lockTimeMs = Date.now() - questionStartedAtRef.current;
     const submittedQuestionIdx = currentQuestionIdx;
 
     setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx, lockTimeMs });
@@ -4613,6 +4618,17 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       // players see them as not-yet-answered.
       console.warn('[mp] submit_answer failed:', result.error);
       setMyAnswer(null);
+      // Sprint #91 FFF3: surface the failure so the user knows to re-tap.
+      // Without this the rollback was silent — option tiles re-clickable,
+      // but no signal that something went wrong, so users assumed their
+      // first tap registered and didn't realise they needed to act again.
+      // 4200ms duration since they need time to read + re-decide before
+      // the question advances.
+      try {
+        window.dispatchEvent(new CustomEvent('biq:show-toast', {
+          detail: { msg: "⚠️ Answer didn't go through — pick again", duration: 4200 },
+        }));
+      } catch {}
       return;
     }
     if (result.accepted === false) {
@@ -4988,9 +5004,17 @@ function useQuestionTimer(durationMs, resetKey) {
 
   useEffect(() => {
     setRemainingMs(durationMs);
-    const startedAt = performance.now();
+    // Sprint #91 FFF2: Date.now() (wall-clock) instead of performance.now().
+    // On iOS WKWebView the perf clock freezes during background-suspend;
+    // a player who backgrounds for 10s of a 20s question would return with
+    // a timer that hadn't ticked, gifting them free seconds. Date.now()
+    // keeps advancing, so on resume the next setInterval tick computes a
+    // truthful elapsed value (collapses to 0 / fires onExpire if the
+    // background window outlasted the question — fair behaviour for a
+    // timed trivia app).
+    const startedAt = Date.now();
     const id = setInterval(() => {
-      const elapsed = performance.now() - startedAt;
+      const elapsed = Date.now() - startedAt;
       const remaining = Math.max(0, durationMs - elapsed);
       setRemainingMs(remaining);
       if (remaining === 0) clearInterval(id);
@@ -11048,11 +11072,16 @@ function AppGate() {
 }
 
 export default function App() {
+  // Sprint #91 FFF1: skip SpeedInsights on Capacitor native — the Vercel
+  // analytics endpoint isn't reachable from the bundled capacitor:// scheme
+  // and the script fails to load on every launch, producing a console
+  // error + a wasted network attempt. Web/PWA path unchanged.
+  const isNative = Capacitor.isNativePlatform?.();
   return (
     <>
       <VersionBanner />
       <ErrorBoundary><AppGate /></ErrorBoundary>
-      <SpeedInsights />
+      {!isNative && <SpeedInsights />}
     </>
   );
 }

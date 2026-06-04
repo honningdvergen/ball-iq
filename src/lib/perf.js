@@ -6,7 +6,11 @@
 // and remove. Single shared T0 across all consumers so cross-module deltas
 // are accurate.
 
-export const BIQ_PERF_TRACE = true;
+// Sprint #91 FFF1: traces collected — cold-start path verified at 160ms total
+// (App.jsx parse → SplashScreen.hide() resolved). Flipped back to false to
+// suppress prod console spam. Flip to true if a future regression suspects
+// the same area; helper + marks remain in place ready to fire.
+export const BIQ_PERF_TRACE = false;
 
 const T0 = typeof performance !== 'undefined' ? performance.now() : 0;
 const seen = new Set();
