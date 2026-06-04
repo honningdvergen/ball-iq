@@ -140,6 +140,14 @@ export default function Login() {
       // (which otherwise shifts the login content right of viewport-center).
       // overflowY:auto keeps the form scrollable on small viewports / when
       // the iOS keyboard pushes content above the fold.
+      //
+      // Sprint #91 followup #2: justifyContent flex-start (was 'center'). The
+      // centered layout combined with iOS WKWebView's input-focus auto-scroll
+      // caused the whole form to jolt upward when the keyboard rose, because
+      // the centering math used the full viewport height (including the
+      // keyboard-occluded region). Top-anchored layout puts the form's email
+      // field naturally above where the keyboard appears (no auto-scroll
+      // needed). paddingTop = safe area + comfortable visual breathing room.
       position: 'fixed',
       inset: 0,
       overflowY: 'auto',
@@ -148,8 +156,9 @@ export default function Login() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px',
+      justifyContent: 'flex-start',
+      padding: 'max(env(safe-area-inset-top,0px),24px) 24px 24px',
+      paddingTop: 'calc(max(env(safe-area-inset-top,0px),24px) + 60px)',
       fontFamily: 'Inter, -apple-system, sans-serif',
     },
     logo: {
