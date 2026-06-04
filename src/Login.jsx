@@ -359,11 +359,26 @@ export default function Login() {
         <div style={styles.toggleText}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
           {/* Sprint #90 EEE2: button instead of span so it is keyboard-reachable
-              (Tab focus + Enter activate). Inherits styles.toggleLink to keep
-              the visual identical to the prior text-only treatment. */}
+              (Tab focus + Enter activate). Sprint #91 follow-up: negative-margin
+              trick enlarges the tap target to ~74×34 without shifting the visual
+              text — Alex reported the previous padding:0 sizing felt laggy on
+              iPhone because the hit area matched the glyph bounds. touchAction +
+              webkitTapHighlightColor kill the iOS 300ms tap recognition delay
+              and the gray flash respectively. Inherits styles.toggleLink color
+              + weight to keep the link appearance identical. */}
           <button
             type="button"
-            style={{ ...styles.toggleLink, background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit' }}
+            style={{
+              ...styles.toggleLink,
+              background: 'transparent',
+              border: 'none',
+              padding: '8px 12px',
+              margin: '-8px -12px',
+              cursor: 'pointer',
+              font: 'inherit',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+            }}
             onClick={() => {
               setMode(mode === 'login' ? 'signup' : 'login')
               setError('')
