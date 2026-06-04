@@ -42,6 +42,7 @@ import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { App as CapApp } from '@capacitor/app';
+import { Share as CapShare } from '@capacitor/share';
 
 // Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
 import { perfMark } from './lib/perf.js';
@@ -3851,14 +3852,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 // game_rooms row. Both clients drive their own state from the row's status
 // and answer arrays — no polling, no shared QuizEngine.
 
-// NOTE for future native app build: when wrapping the PWA in a native iOS or
-// Android shell (Capacitor / PWABuilder), configure Universal Links / App
-// Links so that balliq.app/?join=CODE opens the installed app directly with
-// the join code intact. The web flow already reads the URL parameter and
-// routes here; the native side just needs the link configuration to dispatch
-// the URL to the WKWebView / Android WebView.
+// Sprint #92 GGG3: invite URLs are now path-based (balliq.app/join/CODE)
+// so iOS Universal Links can match against the /join/* component declared in
+// public/.well-known/apple-app-site-association. The legacy ?join=CODE
+// query form still parses on the web (the pendingJoinCode init at AppInner
+// reads BOTH path and query) so previously-shared invite links keep working.
+// Android App Links wiring is queued for a dedicated Android sprint.
 const INVITE_BASE_URL = "https://balliq.app";
-const buildInviteUrl = (code) => `${INVITE_BASE_URL}/?join=${encodeURIComponent(code)}`;
+const buildInviteUrl = (code) => `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
 const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
 
 // ─── STAGE 1: ONLINE MULTIPLAYER ─────────────────────────────────────────────
@@ -4130,6 +4131,38 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     setTimeout(() => setCopyToast(""), 1800);
   }, [code]);
 
+  // Sprint #92 GGG4: share the path-based invite URL via the native iOS
+  // share sheet (@capacitor/share) on native, navigator.share on web,
+  // clipboard fallback everywhere. The URL is the canonical /join/CODE
+  // form so a recipient on iOS with the app installed triggers the
+  // Universal Link (Sprint #92 GGG3) and lands directly in the join flow.
+  // Recipients without the app open the SPA which path-captures /join/CODE
+  // into the same pendingJoinCode flow.
+  const handleShareInvite = useCallback(async () => {
+    const url = `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
+    const text = `⚽ Play me at ${APP_NAME}! Tap to join:`;
+    try {
+      if (Capacitor.isNativePlatform?.()) {
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: 'Share invite' });
+        return;
+      }
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        await navigator.share({ title: APP_NAME, text, url });
+        return;
+      }
+    } catch (err) {
+      if (err && err.name === 'AbortError') return; // user cancelled — silent
+    }
+    try {
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      setCopyToast("Invite copied — paste it to a friend");
+      setTimeout(() => setCopyToast(""), 2200);
+    } catch {
+      setCopyToast("Couldn't share — copy the code instead");
+      setTimeout(() => setCopyToast(""), 2200);
+    }
+  }, [code]);
+
   const handleStart = useCallback(async () => {
     if (starting) return;
     setStarting(true);
@@ -4173,7 +4206,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   // error=null) hit `error || !room` → truthy → LobbyError briefly renders
   // with error=null before the next render shows LobbyLoading. Safari's
   // paint timing made the flash visible.
-  if (error) return <LobbyError error={error} onExit={onExit} />;
+  if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
   if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} />;
   if (room.state === "playing") {
@@ -4196,6 +4229,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
       isHost={isHost}
       isMe={isMe}
       onCopy={handleCopy}
+      onShareInvite={handleShareInvite}
       onStart={handleStart}
       onLeave={handleLeave}
       starting={starting}
@@ -4208,7 +4242,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   );
 }
 
-function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode }) {
+function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode }) {
   return (
     <div className="screen">
       <div className="page-hdr" style={{ position: "relative" }}>
@@ -4240,10 +4274,35 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onStart, onLeave, star
             {room.code}
           </button>
           <div style={{ fontSize: 12, color: "var(--t2)", marginTop: 6 }}>
-            Tap to copy — share with friends
+            Tap to copy — or share the invite link
           </div>
+          {/* Sprint #92 GGG4: native share sheet for the canonical /join/CODE
+              URL. Recipient with the app installed triggers the Universal
+              Link and lands in the join flow; without the app, the SPA
+              path-captures /join/CODE into the same pendingJoinCode flow. */}
+          <button
+            type="button"
+            onClick={onShareInvite}
+            style={{
+              marginTop: 10,
+              padding: "8px 16px",
+              background: "transparent",
+              border: "1px solid var(--accent-b)",
+              borderRadius: 10,
+              color: "var(--accent)",
+              fontFamily: "inherit",
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: "pointer",
+              touchAction: "manipulation",
+              WebkitTapHighlightColor: "transparent",
+            }}
+            aria-label="Share invite link"
+          >
+            🔗 Share invite link
+          </button>
           {copyToast && (
-            <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 4 }}>{copyToast}</div>
+            <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 6 }}>{copyToast}</div>
           )}
         </div>
 
@@ -4357,7 +4416,13 @@ function LobbyLoading() {
   );
 }
 
-function LobbyError({ error, onExit }) {
+function LobbyError({ error, onExit, onRetry }) {
+  // Sprint #92 GGG1-#2: previously this screen was a dead end — "Back to Home"
+  // discarded the joiner's intent + the user had to navigate back through
+  // OnlineEntry to reattempt. Adds an explicit Retry that re-runs the initial
+  // fetch in-place. Retry is the primary action (green); Back is the secondary
+  // escape hatch. Common case (flaky network) resolves on tap.
+  const retryable = !!onRetry;
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -4372,9 +4437,25 @@ function LobbyError({ error, onExit }) {
         <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 20, lineHeight: 1.5 }}>
           {error || "Room not found or no longer active"}
         </div>
-        <button className="btn-3d" onClick={onExit} style={{ padding: "12px 24px" }}>
-          Back to Home
-        </button>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+          {retryable && (
+            <button className="btn-3d" onClick={onRetry} style={{ padding: "12px 24px", minWidth: 180 }}>
+              Try again
+            </button>
+          )}
+          <button
+            onClick={onExit}
+            style={{
+              padding: "10px 24px", minWidth: 180,
+              background: "none", border: "1px solid var(--border)",
+              borderRadius: 10, color: "var(--t2)",
+              fontFamily: "inherit", fontSize: 14, fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -8087,7 +8168,7 @@ const FAQ_ENTRIES = [
   },
   {
     q: "How do I share a multiplayer invite?",
-    a: `Easiest: read out the 6-character room code from your lobby — your friend types it into "Join with Code". You can also share an invite link: balliq.app/?join=ABC123 (use your room's code). Anyone tapping the link will land directly in the join flow once they're signed in.`,
+    a: `Easiest: read out the 6-character room code from your lobby — your friend types it into "Join with Code". You can also share an invite link: balliq.app/join/ABC123 (use your room's code). Anyone tapping the link will land directly in the join flow once they're signed in.`,
   },
   {
     q: "What if my friend joins late or loses connection?",
@@ -9062,25 +9143,61 @@ function AppInner() {
   // localStorage key after parsing the Universal / App Link.
   const [pendingJoinCode, setPendingJoinCode] = useState(() => {
     try {
+      // Sprint #92 GGG3: parse BOTH /join/CODE (new path-based, matches
+      // Universal Links) and ?join=CODE (legacy query-based) so previously-
+      // shared invite URLs keep routing correctly. Path form takes priority.
+      const normalize = s => s.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+      const pathMatch = window.location.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
+      const fromPath = pathMatch ? pathMatch[1] : null;
       const params = new URLSearchParams(window.location.search);
-      const fromUrl = params.get("join");
+      const fromQuery = params.get("join");
+      const fromUrl = fromPath || fromQuery;
       if (fromUrl) {
         try { localStorage.setItem("biq_pending_join", fromUrl); } catch {}
-        // Strip the param so a refresh doesn't re-trigger the auto-join.
+        // Strip the path/query so a refresh doesn't re-trigger the auto-join.
         try {
-          const cleanUrl = `${window.location.pathname}${window.location.hash || ""}`;
-          window.history.replaceState({}, "", cleanUrl);
+          window.history.replaceState({}, "", `/${window.location.hash || ""}`);
         } catch {}
-        return fromUrl.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+        return normalize(fromUrl);
       }
       const stored = localStorage.getItem("biq_pending_join");
-      if (stored) return stored.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+      if (stored) return normalize(stored);
     } catch {}
     return null;
   });
   const clearPendingJoin = useCallback(() => {
     setPendingJoinCode(null);
     try { localStorage.removeItem("biq_pending_join"); } catch {}
+  }, []);
+
+  // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
+  // Web users hit /?join=CODE via the original capture above; native users
+  // arrive via Universal Link (balliq.app/join/CODE) which Capacitor's
+  // @capacitor/app plugin surfaces as appUrlOpen (warm) or getLaunchUrl()
+  // (cold). Same normalization as the web capture: uppercase, strip
+  // confusing chars (I, O, 0, 1), cap at 6. Persists to localStorage on
+  // the same key + sets state, so the existing pendingJoinCode-driven
+  // autoJoin routing fires identically to the web flow.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform?.()) return;
+    const tryCapture = (url) => {
+      if (!url) return;
+      try {
+        const u = new URL(url);
+        if (u.hostname !== 'balliq.app') return;
+        const m = u.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
+        if (!m) return;
+        const code = m[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
+        if (!code) return;
+        try { localStorage.setItem('biq_pending_join', code); } catch {}
+        setPendingJoinCode(code);
+      } catch {}
+    };
+    CapApp.getLaunchUrl().then(r => tryCapture(r?.url)).catch(() => {});
+    let handlePromise = CapApp.addListener('appUrlOpen', e => tryCapture(e?.url));
+    return () => {
+      Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {});
+    };
   }, []);
   // A1: Hydrate first-paint state synchronously from localStorage so the Home
   // tab doesn't flash in a default-empty state before the async effects fire.

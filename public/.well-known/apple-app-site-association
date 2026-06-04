@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["A99W5L256P.app.balliq"],
+        "components": [
+          {
+            "/": "/join/*",
+            "comment": "Multiplayer room invite links open in the Ball IQ app"
+          }
+        ]
+      }
+    ]
+  }
+}

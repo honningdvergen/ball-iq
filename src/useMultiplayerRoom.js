@@ -49,6 +49,11 @@ export function useMultiplayerRoom(code) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [channelStatus, setChannelStatus] = useState('idle')
+  // Sprint #92 GGG1-#2: retryNonce drives a manual re-run of the initial
+  // fetch effect after the user taps Retry on LobbyError. Incrementing it
+  // is the cheapest way to invalidate the effect; the existing code path
+  // resets state (loading → true, error → null) and re-fetches.
+  const [retryNonce, setRetryNonce] = useState(0)
 
   // Holds the live Supabase channel instance so the cleanup path can
   // tear it down via supabase.removeChannel.
@@ -228,7 +233,9 @@ export function useMultiplayerRoom(code) {
         channelRef.current = null
       }
     }
-  }, [code])
+    // retryNonce in deps lets actions.retry() re-run this effect end-to-end.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, retryNonce])
 
   // Derived shortcuts — recomputed each render, no useMemo (cheap).
   const myPlayer = userId
@@ -286,6 +293,13 @@ export function useMultiplayerRoom(code) {
     return mpEndGame({ p_code: code })
   }, [code])
 
+  // Sprint #92 GGG1-#2: retry the initial fetch after a LobbyError exit
+  // hatch. setRetryNonce(n => n + 1) invalidates the effect; the existing
+  // code path resets loading/error and re-fetches. Safe to call repeatedly.
+  const retry = useCallback(() => {
+    setRetryNonce(n => n + 1)
+  }, [])
+
   return {
     room,
     players,
@@ -294,6 +308,6 @@ export function useMultiplayerRoom(code) {
     loading,
     error,
     channelStatus,
-    actions: { startGame, submitAnswer, advance, leave, end },
+    actions: { startGame, submitAnswer, advance, leave, end, retry },
   }
 }
