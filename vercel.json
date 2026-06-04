@@ -43,7 +43,6 @@
       ]
     },
     {
-      "_comment": "Sprint #92 GGG3: Universal Links AASA file. Apple's iOS swcd will refuse the file unless it's served as application/json with no redirects + no auth gate. The path is intentionally extensionless (Apple's spec); without an explicit Content-Type header Vercel may serve it as application/octet-stream and Apple ignores it. no-cache so AASA edits propagate to all device caches within a day instead of after a 7-day TTL.",
       "source": "/.well-known/apple-app-site-association",
       "headers": [
         { "key": "Content-Type", "value": "application/json" },
