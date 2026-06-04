@@ -40,6 +40,12 @@ import { HomeScreen } from './screens/HomeScreen.jsx';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
+import { App as CapApp } from '@capacitor/app';
+
+// Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
+import { perfMark } from './lib/perf.js';
+perfMark('module-load: App.jsx parsed');
 
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
@@ -1408,7 +1414,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .toggle.on .toggle-knob{left:21px;}
 .toggle.off .toggle-knob{left:3px;}
 .size-btns{display:flex;gap:5px;}
-.size-btn{padding:8px 14px;min-height:36px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.size-btn{padding:11px 14px;min-height:44px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 0.13s;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .size-btn.on{background:var(--accent-dim);border-color:var(--accent-b);color:var(--accent);}
 /* ── INSTALL CARD (Sprint #34 BB2) ── */
 .install-card-header{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);}
@@ -8998,6 +9004,8 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
+  perfMark('AppInner render (first)');
+  useEffect(() => { perfMark('AppInner mounted'); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode } = useAuth();
   const [screen, setScreen] = useState("home");
   // Bumped when the home greeting is tapped so the profile screen knows to
@@ -10083,6 +10091,16 @@ function AppInner() {
       body.classList.remove("light");
       root.classList.remove("light");
     }
+    // Sprint #90 EEE5: keep the native iOS status bar in sync with theme.
+    // Without this, switching to light theme renders the dark status-bar
+    // glyphs over the light WebView, making time/battery unreadable. Style
+    // semantics: "Dark" = dark glyphs (for light bg), "Light" = light
+    // glyphs (for dark bg). Safe to call on web (no-op fallback).
+    try {
+      if (Capacitor.isNativePlatform?.()) {
+        StatusBar.setStyle({ style: settings.theme === "light" ? StatusBarStyle.Dark : StatusBarStyle.Light }).catch(() => {});
+      }
+    } catch {}
   }, [settings.theme]);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
@@ -10974,12 +10992,18 @@ function AppGate() {
   // laggy scroll after launch" goes away because the user can't scroll the
   // WebView until SplashScreen.hide() resolves. Idempotent via ref.
   const splashHiddenRef = useRef(false);
+  perfMark('AppGate render');
+  useEffect(() => { perfMark('AppGate mounted'); }, []);
   useEffect(() => {
     if (effectiveLoading || splashHiddenRef.current) return;
     splashHiddenRef.current = true;
+    perfMark('AppGate effectiveLoading→false');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        SplashScreen.hide({ fadeOutDuration: 220 }).catch(() => {});
+        perfMark('SplashScreen.hide() called');
+        SplashScreen.hide({ fadeOutDuration: 220 })
+          .then(() => perfMark('SplashScreen.hide() resolved'))
+          .catch(() => {});
       });
     });
   }, [effectiveLoading]);

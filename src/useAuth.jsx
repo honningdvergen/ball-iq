@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import * as Sentry from '@sentry/react'
 import { supabase } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
+import { perfMark } from './lib/perf.js'
 
 const AuthContext = createContext(null)
 
@@ -77,7 +78,9 @@ export function AuthProvider({ children }) {
       return
     }
 
+    perfMark('useAuth: getSession() called');
     supabase.auth.getSession().then(({ data: { session } }) => {
+      perfMark(`useAuth: getSession() resolved (user=${!!session?.user})`);
       activeUserIdRef.current = session?.user?.id ?? null
       setUser(session?.user ?? null)
       // Sprint #61 DD3: tag initial-session user. onAuthStateChange handles

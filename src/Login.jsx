@@ -358,8 +358,12 @@ export default function Login() {
 
         <div style={styles.toggleText}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <span
-            style={styles.toggleLink}
+          {/* Sprint #90 EEE2: button instead of span so it is keyboard-reachable
+              (Tab focus + Enter activate). Inherits styles.toggleLink to keep
+              the visual identical to the prior text-only treatment. */}
+          <button
+            type="button"
+            style={{ ...styles.toggleLink, background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit' }}
             onClick={() => {
               setMode(mode === 'login' ? 'signup' : 'login')
               setError('')
@@ -367,7 +371,7 @@ export default function Login() {
             }}
           >
             {mode === 'login' ? 'Sign up' : 'Sign in'}
-          </span>
+          </button>
         </div>
 
         {/* APPLE/GOOGLE SLOT — uncomment when OAuth is set up

@@ -296,6 +296,14 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
           actual T7 score for that day (5/7, 7/7) or "—/7" for days
           they didn't attempt T7. Numeric form, mono font, consistent
           shape across rows. Display-only for v1.0 (no tap-through). */}
+      {matchdays.length === 0 && (
+        <>
+          <div className="fix-eyebrow">Recent fixtures</div>
+          <div style={{padding:"24px 16px",color:"var(--t2)",textAlign:"center",fontSize:14,lineHeight:1.5}}>
+            Your past Daily results will show here once you've played a few.
+          </div>
+        </>
+      )}
       {matchdays.length > 0 && (
         <>
           <div className="fix-eyebrow">Recent fixtures</div>
