@@ -9089,6 +9089,23 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
   const [showBackOnline, setShowBackOnline] = useState(false);
   const backOnlineTimerRef = useRef(null);
 
+  // Sprint #95: navigator.onLine has well-known false-positives (browser
+  // adapter handovers, VPN reconnects, macOS wake-from-sleep). When it
+  // reports offline we cross-check by HEAD-ing /version.json with a 3s
+  // timeout — a 2xx response means the network IS reachable and we override
+  // the false-positive. While the banner stays up, we re-verify every 12s
+  // so a transient navigator.onLine flip clears itself without a manual
+  // page reload.
+  const verifyOnline = useCallback(async () => {
+    try {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 3000);
+      const res = await fetch(`/version.json?_=${Date.now()}`, { method: "HEAD", cache: "no-store", signal: ac.signal });
+      clearTimeout(t);
+      return res.ok || (res.status >= 200 && res.status < 500);
+    } catch { return false; }
+  }, []);
+
   useEffect(() => {
     const handleOnline = () => {
       setOnline(true);
@@ -9097,18 +9114,44 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
       backOnlineTimerRef.current = setTimeout(() => setShowBackOnline(false), 2000);
     };
     const handleOffline = () => {
-      setOnline(false);
-      setShowBackOnline(false);
-      if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+      // Cross-check before trusting offline — false positives are common.
+      verifyOnline().then(reallyOnline => {
+        if (reallyOnline) return;  // false alarm; keep online=true
+        setOnline(false);
+        setShowBackOnline(false);
+        if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+      });
     };
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
+    // On mount, if navigator.onLine reported false but we can actually reach
+    // /version.json (Alex's tab-open false-positive case), correct it now.
+    if (!navigator.onLine) {
+      verifyOnline().then(reallyOnline => { if (reallyOnline) setOnline(true); });
+    }
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
       if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
     };
-  }, []);
+  }, [verifyOnline]);
+
+  // While the banner is showing, re-verify every 12s so a missed "online"
+  // event (visibility change while tab backgrounded, etc.) clears itself.
+  useEffect(() => {
+    if (online) return;
+    const id = setInterval(() => {
+      verifyOnline().then(reallyOnline => {
+        if (reallyOnline) {
+          setOnline(true);
+          setShowBackOnline(true);
+          if (backOnlineTimerRef.current) clearTimeout(backOnlineTimerRef.current);
+          backOnlineTimerRef.current = setTimeout(() => setShowBackOnline(false), 2000);
+        }
+      });
+    }, 12000);
+    return () => clearInterval(id);
+  }, [online, verifyOnline]);
 
   if (online && !showBackOnline) return null;
   return (
