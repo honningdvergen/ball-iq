@@ -17,6 +17,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "^6.0.0",
     "@capacitor/android": "^6.2.1",
     "@capacitor/app": "^6.0.3",
     "@capacitor/browser": "^6.0.6",
