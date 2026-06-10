@@ -2,6 +2,31 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from './useAuth.jsx'
 import { isProfaneUsername } from './lib/profanity.js'
 
+// Sprint #94 III3: Apple HIG-compliant Sign in with Apple button. Apple's
+// guidelines (https://developer.apple.com/design/human-interface-guidelines/
+// sign-in-with-apple#Button-design) require the official wordmark + Apple
+// logo, 44pt min height, 5-12pt corner radius, and forbid custom text. On
+// dark backgrounds: white button + black Apple logo + black text. On light
+// backgrounds: black button + white Apple logo + white text. Inline SVG so
+// the logo renders identically across iOS, Android, and desktop browsers.
+const APPLE_LOGO_SVG = (color) => (
+  <svg width="14" height="17" viewBox="0 0 170 200" aria-hidden="true" focusable="false" style={{ flexShrink: 0 }}>
+    <path fill={color} d="M139.3 105.7c-.3-29.3 23.9-43.4 25-44.1-13.6-19.9-34.8-22.6-42.4-22.9-18.1-1.8-35.3 10.7-44.5 10.7-9.2 0-23.4-10.5-38.5-10.2C20 39.5 2.4 50.7-7.2 67.9c-22.7 39.5-5.8 97.8 16.2 129.8 10.7 15.7 23.5 33.3 40.3 32.7 16.2-.7 22.4-10.5 41.9-10.5 19.6 0 25 10.5 42.1 10.2 17.4-.3 28.4-15.9 39-31.8 12.4-18.2 17.5-35.9 17.7-36.8-.4-.2-33.9-13-34.2-51.8zM110.4 21c8.9-10.8 14.9-25.8 13.3-40.7-12.8.5-28.2 8.5-37.4 19.3-8.3 9.5-15.5 24.7-13.5 39.3 14.3 1.1 28.7-7.2 37.6-17.9z" transform="translate(0 -39)"/>
+  </svg>
+)
+// Sprint #94 III3: Google brand-mark SVG. Google's "G" logomark in 4-color
+// brand palette. Per Google's branding guidelines, on the white-button
+// variant this exact logo + black text + neutral border is the canonical
+// rendering across the web.
+const GOOGLE_LOGO_SVG = (
+  <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style={{ flexShrink: 0 }}>
+    <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+    <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+    <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+    <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+  </svg>
+)
+
 function readTheme() {
   try {
     const raw = localStorage.getItem('biq_settings')
@@ -16,7 +41,7 @@ function readLastEmail() {
 }
 
 export default function Login() {
-  const { signUp, signIn, continueAsGuest } = useAuth()
+  const { signUp, signIn, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
   const [mode, setMode] = useState('login') // 'login' or 'signup'
   const [email, setEmail] = useState(readLastEmail)
   const [password, setPassword] = useState('')
@@ -398,17 +423,94 @@ export default function Login() {
           </button>
         </div>
 
-        {/* APPLE/GOOGLE SLOT — uncomment when OAuth is set up
+        {/* Sprint #94 III3 — Social sign-in. Both buttons live above the
+            "Continue as guest" path. Apple appears first per Apple HIG
+            guideline 4.8 (must be at least as prominent as competing
+            providers). On native, taps open @capacitor/browser; the OAuth
+            callback hits app.balliq://auth/callback (registered in
+            ios/App/App/Info.plist) → appUrlOpen handler exchanges code
+            for session. On web, signInWithOAuth full-page redirects to
+            Supabase + back. Errors render in the same setError slot the
+            email/password flow uses. */}
         <div style={styles.divider}>
           <div style={styles.dividerLine} />
           <span>or</span>
           <div style={styles.dividerLine} />
         </div>
-        <button style={styles.guestButton}> Continue with Apple</button>
-        <button style={styles.guestButton}>G Continue with Google</button>
-        */}
 
-        <div style={styles.divider}>
+        <button
+          type="button"
+          onClick={async () => {
+            setError('')
+            setMessage('')
+            setLoading(true)
+            const { error } = await signInWithApple()
+            if (error) setError(error.message || 'Apple sign-in failed')
+            setLoading(false)
+          }}
+          disabled={loading}
+          aria-label="Sign in with Apple"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            padding: '14px 16px',
+            minHeight: 44,
+            fontSize: 15,
+            fontWeight: 600,
+            fontFamily: 'inherit',
+            borderRadius: 12,
+            border: 'none',
+            background: isLight ? '#000' : '#fff',
+            color: isLight ? '#fff' : '#000',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+          }}
+        >
+          {APPLE_LOGO_SVG(isLight ? '#fff' : '#000')}
+          <span>Sign in with Apple</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            setError('')
+            setMessage('')
+            setLoading(true)
+            const { error } = await signInWithGoogle()
+            if (error) setError(error.message || 'Google sign-in failed')
+            setLoading(false)
+          }}
+          disabled={loading}
+          aria-label="Continue with Google"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            padding: '13px 16px',
+            minHeight: 44,
+            fontSize: 15,
+            fontWeight: 500,
+            fontFamily: 'inherit',
+            borderRadius: 12,
+            border: `1px solid ${isLight ? '#dadce0' : '#3c4043'}`,
+            background: isLight ? '#fff' : '#1f1f1f',
+            color: isLight ? '#1f1f1f' : '#e8eaed',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+          }}
+        >
+          {GOOGLE_LOGO_SVG}
+          <span>Continue with Google</span>
+        </button>
+
+        <div style={{...styles.divider, marginTop: 16}}>
           <div style={styles.dividerLine} />
           <span>or</span>
           <div style={styles.dividerLine} />

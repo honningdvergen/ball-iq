@@ -1,8 +1,17 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import * as Sentry from '@sentry/react'
+import { Capacitor } from '@capacitor/core'
+import { Browser } from '@capacitor/browser'
+import { App as CapApp } from '@capacitor/app'
 import { supabase } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
+
+// Sprint #94 III3: native OAuth uses a custom URL scheme registered in
+// ios/App/App/Info.plist (CFBundleURLTypes). Supabase redirects the auth
+// flow to this URI after consent; Capacitor's appUrlOpen handler catches
+// it and exchanges the code for a session.
+const NATIVE_OAUTH_REDIRECT = 'app.balliq://auth/callback'
 
 const AuthContext = createContext(null)
 
@@ -496,6 +505,110 @@ export function AuthProvider({ children }) {
     return result
   }
 
+  // Sprint #94 III3: social-auth shared helper. Web: standard
+  // signInWithOAuth redirect (Supabase handles the browser hop + auto-
+  // detects tokens on return). Native: skipBrowserRedirect so we get
+  // the consent URL back, then open it via @capacitor/browser; the
+  // Supabase auth callback redirects to app.balliq://auth/callback,
+  // which Capacitor's appUrlOpen handler catches (App.jsx) and
+  // exchanges for a session via exchangeOAuthCallback below.
+  //
+  // Email collision: Supabase's default for an existing email signed
+  // up email/password and then re-attempting via OAuth is to BLOCK with
+  // a "User already registered" error. We surface the error verbatim
+  // so the user can sign in with their original method and link the
+  // OAuth identity from Settings (post-launch task — not blocking V1).
+  async function signInWithOAuth(provider) {
+    Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
+    const isNative = Capacitor.isNativePlatform?.()
+    if (isNative) {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: NATIVE_OAUTH_REDIRECT,
+          skipBrowserRedirect: true,
+        },
+      })
+      if (error) return { error }
+      if (data?.url) {
+        try {
+          await Browser.open({ url: data.url, presentationStyle: 'popover' })
+        } catch (e) {
+          return { error: { message: e?.message || 'Could not open sign-in browser' } }
+        }
+      }
+      // Session arrives asynchronously when the callback URL fires.
+      // Caller should not navigate — onAuthStateChange + AppGate will.
+      return { data, pending: true }
+    }
+    // Web / PWA: full-page redirect. After consent, Supabase returns to
+    // location.origin with tokens in the URL; the supabase-js client
+    // auto-detects + calls onAuthStateChange.
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
+      },
+    })
+    return { data, error }
+  }
+
+  async function signInWithGoogle() { return signInWithOAuth('google') }
+  async function signInWithApple()  { return signInWithOAuth('apple') }
+
+  // Sprint #94 III3: called from App.jsx's appUrlOpen handler when a
+  // app.balliq://auth/callback URL arrives after OAuth consent. Extracts
+  // the PKCE auth code from the URL and exchanges it for a session.
+  // Browser.close() drops the in-app browser sheet on success or error
+  // (otherwise it hangs around in front of the app on iOS).
+  // Sprint #94 III3: native-only listener for the OAuth callback URL
+  // (app.balliq://auth/callback?code=...). MUST live in AuthProvider
+  // because the user is on the Login screen during sign-in — AppInner
+  // is not yet mounted, so its appUrlOpen listener (for /join/ Universal
+  // Links) cannot catch the callback. AuthProvider stays mounted across
+  // auth states, so this listener fires whenever the URL arrives.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform?.()) return
+    let handlePromise = CapApp.addListener('appUrlOpen', e => {
+      const url = e?.url
+      if (!url) return
+      try {
+        const u = new URL(url)
+        if (u.protocol === 'app.balliq:' && (u.host === 'auth' || u.pathname.startsWith('/auth'))) {
+          // Fire-and-forget — onAuthStateChange fires AppGate routing on success
+          exchangeOAuthCallback(url)
+        }
+      } catch {}
+    })
+    return () => {
+      Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {})
+    }
+  }, [])
+
+  async function exchangeOAuthCallback(url) {
+    try {
+      const parsed = new URL(url)
+      // Supabase PKCE returns ?code=... on success. ?error_description on failure.
+      const code = parsed.searchParams.get('code')
+      const errDesc = parsed.searchParams.get('error_description')
+      if (errDesc) {
+        try { await Browser.close() } catch {}
+        return { error: { message: decodeURIComponent(errDesc) } }
+      }
+      if (!code) {
+        try { await Browser.close() } catch {}
+        return { error: { message: 'Auth callback missing code' } }
+      }
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+      try { await Browser.close() } catch {}
+      if (error) return { error }
+      return { data }
+    } catch (e) {
+      try { await Browser.close() } catch {}
+      return { error: { message: e?.message || 'Auth callback parse failed' } }
+    }
+  }
+
   async function signOut() {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-out initiated', level: 'info' })
     // Sentinel flag for the auth state listener: marks this SIGNED_OUT
@@ -713,6 +826,9 @@ export function AuthProvider({ children }) {
       isGuest,
       signUp,
       signIn,
+      signInWithGoogle,
+      signInWithApple,
+      exchangeOAuthCallback,
       signOut,
       continueAsGuest,
       exitGuestMode,

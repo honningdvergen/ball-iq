@@ -3986,13 +3986,24 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
   };
 
   // Stage 1F.6 — deep-link auto-join. AppInner sets autoJoinCode from
-  // pendingJoinCode (the ?join=ABC123 URL param) and routes to this
-  // screen. We attempt the join immediately on mount, then mark the
-  // code as consumed via onAutoJoinConsumed so re-mounts don't loop.
-  // On success, onLobbyEnter navigates to the lobby. On failure, the
-  // error renders inline so the user can manually try a different code.
+  // pendingJoinCode (the ?join=ABC123 URL param or balliq.app/join/CODE
+  // Universal Link) and routes to this screen. We attempt the join
+  // immediately on mount, then mark the code as consumed via
+  // onAutoJoinConsumed so re-mounts don't loop. On success, onLobbyEnter
+  // navigates to the lobby. On failure, the error renders inline so the
+  // user can manually try a different code.
+  //
+  // Sprint #94 III1: pre-flip showCodeInput + setCode so the user actually
+  // SEES the code we're attempting to join. Pre-fix, the auto-attempt
+  // fired but the input stayed hidden + empty — when the join failed
+  // (bad code, room full, etc.) the user landed back on the two-button
+  // screen with an error and had to tap "Join with Code" + retype the
+  // whole code from memory. With this prefill, a failed Universal Link
+  // attempt leaves the code visible in the input ready to re-tap Join.
   useEffect(() => {
     if (!autoJoinCode) return;
+    setCode(autoJoinCode);
+    setShowCodeInput(true);
     let cancelled = false;
     (async () => {
       try {
@@ -9223,6 +9234,10 @@ function AppInner() {
   // autoJoin routing fires identically to the web flow.
   useEffect(() => {
     if (!Capacitor.isNativePlatform?.()) return;
+    // OAuth callback (app.balliq://auth/*) is handled by AuthProvider's
+    // listener — AppInner doesn't compete because it isn't mounted while
+    // the user is on Login. This effect handles only the Universal Link
+    // multiplayer invite path (balliq.app/join/CODE).
     const tryCapture = (url) => {
       if (!url) return;
       try {
