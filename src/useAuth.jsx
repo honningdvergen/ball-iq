@@ -522,6 +522,7 @@ export function AuthProvider({ children }) {
     Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
     const isNative = Capacitor.isNativePlatform?.()
     if (isNative) {
+      console.log('[OAuth] start', { provider, redirectTo: NATIVE_OAUTH_REDIRECT })
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -529,11 +530,35 @@ export function AuthProvider({ children }) {
           skipBrowserRedirect: true,
         },
       })
-      if (error) return { error }
+      if (error) {
+        console.log('[OAuth] supabase.signInWithOAuth error', error.message)
+        return { error }
+      }
+      // Surface the redirect_to Supabase embedded in the consent URL so we
+      // can tell from logs whether the dashboard allow-list accepted our
+      // app.balliq:// scheme. If logs show redirect_to=https%3A%2F%2Fballiq.app
+      // (the Site URL), the dashboard hasn't been updated to allow the custom
+      // scheme — Supabase silently falls back, the redirect goes to web,
+      // and the appUrlOpen listener below never fires.
+      try {
+        const u = new URL(data?.url || '')
+        console.log('[OAuth] supabase returned URL', {
+          host: u.host,
+          path: u.pathname,
+          redirect_to: u.searchParams.get('redirect_to'),
+          provider: u.searchParams.get('provider'),
+          hasCodeChallenge: !!u.searchParams.get('code_challenge'),
+        })
+      } catch (e) {
+        console.log('[OAuth] could not parse supabase URL', { url: data?.url, err: e?.message })
+      }
       if (data?.url) {
         try {
+          console.log('[OAuth] opening browser sheet')
           await Browser.open({ url: data.url, presentationStyle: 'popover' })
+          console.log('[OAuth] Browser.open resolved — sheet presented')
         } catch (e) {
+          console.log('[OAuth] Browser.open threw', e?.message)
           return { error: { message: e?.message || 'Could not open sign-in browser' } }
         }
       }
@@ -569,16 +594,38 @@ export function AuthProvider({ children }) {
   // auth states, so this listener fires whenever the URL arrives.
   useEffect(() => {
     if (!Capacitor.isNativePlatform?.()) return
+    // Diagnostic: also report the launch URL if the app was cold-started
+    // by a deep-link tap (some Supabase + iOS combinations route the
+    // callback as a launch rather than appUrlOpen, especially if the app
+    // wasn't running when Apple sign-in started).
+    CapApp.getLaunchUrl().then(r => {
+      if (r?.url) console.log('[OAuth] CapApp.getLaunchUrl on mount', { url: r.url })
+    }).catch(e => console.log('[OAuth] getLaunchUrl failed', e?.message))
     let handlePromise = CapApp.addListener('appUrlOpen', e => {
       const url = e?.url
-      if (!url) return
+      console.log('[OAuth] appUrlOpen fired', { url })
+      if (!url) {
+        console.log('[OAuth] appUrlOpen: empty url, ignoring')
+        return
+      }
       try {
         const u = new URL(url)
+        console.log('[OAuth] appUrlOpen parsed', {
+          protocol: u.protocol,
+          host: u.host,
+          pathname: u.pathname,
+          paramKeys: Array.from(u.searchParams.keys()),
+        })
         if (u.protocol === 'app.balliq:' && (u.host === 'auth' || u.pathname.startsWith('/auth'))) {
+          console.log('[OAuth] URL matched auth pattern, calling exchangeOAuthCallback')
           // Fire-and-forget — onAuthStateChange fires AppGate routing on success
           exchangeOAuthCallback(url)
+        } else {
+          console.log('[OAuth] URL did NOT match auth pattern (protocol+host check failed)')
         }
-      } catch {}
+      } catch (err) {
+        console.log('[OAuth] URL parse failed in appUrlOpen', err?.message)
+      }
     })
     return () => {
       Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {})
@@ -586,24 +633,35 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function exchangeOAuthCallback(url) {
+    console.log('[OAuth] exchangeOAuthCallback start')
     try {
       const parsed = new URL(url)
       // Supabase PKCE returns ?code=... on success. ?error_description on failure.
       const code = parsed.searchParams.get('code')
       const errDesc = parsed.searchParams.get('error_description')
+      console.log('[OAuth] callback parsed', { hasCode: !!code, codeLen: code?.length, errDesc })
       if (errDesc) {
+        console.log('[OAuth] supabase returned error_description', errDesc)
         try { await Browser.close() } catch {}
         return { error: { message: decodeURIComponent(errDesc) } }
       }
       if (!code) {
+        console.log('[OAuth] callback missing code param')
         try { await Browser.close() } catch {}
         return { error: { message: 'Auth callback missing code' } }
       }
+      console.log('[OAuth] calling exchangeCodeForSession')
       const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+      console.log('[OAuth] exchangeCodeForSession returned', {
+        hasSession: !!data?.session,
+        userId: data?.session?.user?.id,
+        error: error?.message,
+      })
       try { await Browser.close() } catch {}
       if (error) return { error }
       return { data }
     } catch (e) {
+      console.log('[OAuth] exchangeOAuthCallback threw', e?.message)
       try { await Browser.close() } catch {}
       return { error: { message: e?.message || 'Auth callback parse failed' } }
     }
