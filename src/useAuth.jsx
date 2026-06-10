@@ -3,15 +3,26 @@ import * as Sentry from '@sentry/react'
 import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
 import { App as CapApp } from '@capacitor/app'
+import { SignInWithApple } from '@capacitor-community/apple-sign-in'
 import { supabase } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
+import { isProfaneUsername } from './lib/profanity.js'
 
 // Sprint #94 III3: native OAuth uses a custom URL scheme registered in
 // ios/App/App/Info.plist (CFBundleURLTypes). Supabase redirects the auth
 // flow to this URI after consent; Capacitor's appUrlOpen handler catches
 // it and exchanges the code for a session.
 const NATIVE_OAUTH_REDIRECT = 'app.balliq://auth/callback'
+
+// Sprint #96 Track 1: native Apple sign-in uses ASAuthorizationController
+// via @capacitor-community/apple-sign-in. The JWT issued by Apple has
+// aud = bundle ID (not the Services ID used for the web/browser flow).
+// Supabase Auth → Providers → Apple → "Client IDs" must include BOTH
+// "app.balliq.signin" (web Services ID) AND "app.balliq" (native bundle
+// ID) — comma-separated — or signInWithIdToken rejects the JWT with an
+// audience-mismatch error. Verified configured 2026-06-10.
+const NATIVE_APPLE_BUNDLE_ID = 'app.balliq'
 
 const AuthContext = createContext(null)
 
@@ -522,6 +533,7 @@ export function AuthProvider({ children }) {
     Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
     const isNative = Capacitor.isNativePlatform?.()
     if (isNative) {
+      console.log('[OAuth] start', { provider, redirectTo: NATIVE_OAUTH_REDIRECT })
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -529,11 +541,35 @@ export function AuthProvider({ children }) {
           skipBrowserRedirect: true,
         },
       })
-      if (error) return { error }
+      if (error) {
+        console.log('[OAuth] supabase.signInWithOAuth error', error.message)
+        return { error }
+      }
+      // Surface the redirect_to Supabase embedded in the consent URL so we
+      // can tell from logs whether the dashboard allow-list accepted our
+      // app.balliq:// scheme. If logs show redirect_to=https%3A%2F%2Fballiq.app
+      // (the Site URL), the dashboard hasn't been updated to allow the custom
+      // scheme — Supabase silently falls back, the redirect goes to web,
+      // and the appUrlOpen listener below never fires.
+      try {
+        const u = new URL(data?.url || '')
+        console.log('[OAuth] supabase returned URL', {
+          host: u.host,
+          path: u.pathname,
+          redirect_to: u.searchParams.get('redirect_to'),
+          provider: u.searchParams.get('provider'),
+          hasCodeChallenge: !!u.searchParams.get('code_challenge'),
+        })
+      } catch (e) {
+        console.log('[OAuth] could not parse supabase URL', { url: data?.url, err: e?.message })
+      }
       if (data?.url) {
         try {
+          console.log('[OAuth] opening browser sheet')
           await Browser.open({ url: data.url, presentationStyle: 'popover' })
+          console.log('[OAuth] Browser.open resolved — sheet presented')
         } catch (e) {
+          console.log('[OAuth] Browser.open threw', e?.message)
           return { error: { message: e?.message || 'Could not open sign-in browser' } }
         }
       }
@@ -554,7 +590,231 @@ export function AuthProvider({ children }) {
   }
 
   async function signInWithGoogle() { return signInWithOAuth('google') }
-  async function signInWithApple()  { return signInWithOAuth('apple') }
+
+  // Sprint #96 Track 1: Apple sign-in. On native iOS, use the system
+  // ASAuthorizationController sheet (Face ID, no Safari, in-app) via
+  // @capacitor-community/apple-sign-in. On web, full-page redirect
+  // through Supabase OAuth (unchanged). If the native path throws
+  // anywhere (plugin missing, capability not enabled, audience
+  // mismatch, network error mid-flow), we fall back SILENTLY to the
+  // browser-based flow (the Sprint #94 path that's known to work) so
+  // a single misconfiguration can't brick auth for users — and log a
+  // Sentry warning so we still see the failure rate.
+  // User cancellations are NOT bubbled through Sentry (they're noise);
+  // they return cleanly so Login can clear its loading state.
+  async function signInWithApple() {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'apple sign-in attempted', level: 'info' })
+    const isNative = Capacitor.isNativePlatform?.()
+    if (!isNative) return signInWithOAuth('apple')
+    try {
+      return await signInWithAppleNative()
+    } catch (e) {
+      const msg = e?.message || ''
+      const code = e?.code || e?.errorCode || ''
+      // User-cancellation codes vary by error origin: native cancel = 1001
+      // (ASAuthorizationErrorCanceled); plugin wraps that as a JS Error
+      // with message containing 'canceled' / 'cancelled' / '1001'.
+      const isUserCancel =
+        /1001|cancell?ed|cancel/i.test(msg) ||
+        String(code).includes('1001') ||
+        msg.toLowerCase().includes('user canceled')
+      if (isUserCancel) {
+        console.log('[OAuth] native Apple: user cancelled, no fallback')
+        return { error: { message: 'Sign-in cancelled' }, cancelled: true }
+      }
+      console.log('[OAuth] native Apple failed, falling back to browser', { msg, code })
+      try {
+        Sentry.captureMessage('Native Apple sign-in fallback to browser', {
+          level: 'warning',
+          tags: { feature: 'auth-apple-fallback' },
+          extra: { error: msg, code },
+        })
+      } catch {}
+      return signInWithOAuth('apple')
+    }
+  }
+
+  // Sprint #96 Track 1: native Apple via ASAuthorizationController.
+  // Generates a raw nonce, SHA-256-hashes it, passes the hash to Apple
+  // (Apple embeds it in the issued JWT), then passes the RAW nonce to
+  // Supabase's signInWithIdToken which re-hashes and compares. This
+  // closes a replay window where a stolen JWT could be re-presented.
+  async function signInWithAppleNative() {
+    console.log('[OAuth] native Apple sheet — start')
+    const rawNonce = (typeof crypto?.randomUUID === 'function')
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+    const hashedNonce = await sha256Hex(rawNonce)
+
+    // clientId is required by the plugin type but is only used as a
+    // fallback for web/Android paths. On iOS native, ASAuthorization
+    // derives the audience from the bundle ID automatically. Passing
+    // the bundle ID here keeps types happy and matches the Supabase
+    // Client IDs allowlist.
+    const result = await SignInWithApple.authorize({
+      clientId: NATIVE_APPLE_BUNDLE_ID,
+      redirectURI: NATIVE_OAUTH_REDIRECT,
+      scopes: 'email name',
+      state: 'native',
+      nonce: hashedNonce,
+    })
+    console.log('[OAuth] native Apple sheet returned', {
+      hasIdentityToken: !!result?.response?.identityToken,
+      hasAuthCode: !!result?.response?.authorizationCode,
+      hasGivenName: !!result?.response?.givenName,
+      hasFamilyName: !!result?.response?.familyName,
+      hasEmail: !!result?.response?.email,
+      userIdLen: result?.response?.user?.length,
+    })
+
+    const idToken = result?.response?.identityToken
+    if (!idToken) {
+      const err = new Error('Apple sign-in returned no identity token')
+      throw err
+    }
+
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: 'apple',
+      token: idToken,
+      nonce: rawNonce,
+    })
+    console.log('[OAuth] signInWithIdToken returned', {
+      hasSession: !!data?.session,
+      userId: data?.session?.user?.id || data?.user?.id,
+      error: error?.message,
+    })
+    if (error) throw error
+
+    // Sprint #96 Track 2: derive username from Apple's first-sign-in
+    // name fields. Apple ONLY sends givenName/familyName on the FIRST
+    // sign-in for a given (clientId, Apple ID) pair — including across
+    // app uninstalls. Subsequent sign-ins return them as null. Capture
+    // here while available; loadProfile + handle_new_user have already
+    // created the profile row with the default username by this point.
+    const derivedName = [result.response.givenName, result.response.familyName]
+      .filter(Boolean).join(' ').trim()
+    const user = data?.user || data?.session?.user
+    if (derivedName && user) {
+      // Fire-and-forget — failure here doesn't fail the sign-in.
+      deriveUsernameFromIdentity(user.id, derivedName, 'apple-native').catch(e => {
+        console.log('[OAuth] deriveUsernameFromIdentity (apple-native) failed', e?.message)
+        try {
+          Sentry.captureException(e, { tags: { feature: 'username-derive' }, extra: { source: 'apple-native' } })
+        } catch {}
+      })
+    }
+
+    return { data }
+  }
+
+  // Sprint #96 Track 2: SHA-256 → lowercase hex. Used to hash the
+  // sign-in-with-Apple nonce per Apple + Supabase spec.
+  async function sha256Hex(s) {
+    const buf = new TextEncoder().encode(s)
+    const digest = await crypto.subtle.digest('SHA-256', buf)
+    return Array.from(new Uint8Array(digest))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('')
+  }
+
+  // Sprint #96 Track 2: rename the auto-generated profile username to
+  // something derived from the provider's full name on first social
+  // sign-up. Safe to call multiple times — early-returns if the user
+  // has already customised their username (i.e. it doesn't match the
+  // server-assigned default shape).
+  //
+  // Default shapes treated as "needs-override":
+  //   - 'Player'                  (client-side fallback in loadProfile)
+  //   - /^player_/i              (server-side handle_new_user trigger)
+  //   - 'Player_<short-id>'      (some legacy paths)
+  //
+  // Collision strategy: try base, then "Base 2", "Base 3"... up to 50
+  // suffixes. If all collide or the candidate fails the profanity
+  // check, silently leave the default in place — user can change it
+  // manually in Profile.
+  async function deriveUsernameFromIdentity(userId, fullName, source) {
+    if (!userId || !fullName) return
+    console.log('[OAuth] deriveUsername start', { userId, source, name: fullName })
+    const { data: current, error: fetchError } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', userId)
+      .maybeSingle()
+    if (fetchError) {
+      console.log('[OAuth] deriveUsername: fetch failed', fetchError.message)
+      return
+    }
+    const existing = current?.username || ''
+    const isDefault = /^player(_|$)/i.test(existing) || existing === 'Player'
+    if (!isDefault) {
+      console.log('[OAuth] deriveUsername: existing username is user-set, skipping', existing)
+      return
+    }
+    const cleaned = fullName.trim().replace(/\s+/g, ' ').slice(0, 24)
+    if (cleaned.length < 3) {
+      console.log('[OAuth] deriveUsername: cleaned name too short, skipping')
+      return
+    }
+    if (isProfaneUsername(cleaned)) {
+      console.log('[OAuth] deriveUsername: profanity-filtered, keeping default')
+      return
+    }
+    for (let suffix = 0; suffix < 50; suffix++) {
+      const candidate = suffix === 0 ? cleaned : `${cleaned} ${suffix + 1}`
+      if (candidate.length > 30) break
+      const { data: clash } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', candidate)
+        .maybeSingle()
+      if (!clash) {
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ username: candidate })
+          .eq('id', userId)
+        if (updateError) {
+          // Most common: the SQL profanity trigger blocked it (extra
+          // belt-and-braces — we already client-checked) or a race-
+          // condition concurrent update from another session. Either
+          // way, leave the default in place.
+          console.log('[OAuth] deriveUsername: update failed', updateError.message)
+          return
+        }
+        console.log('[OAuth] deriveUsername: set to', candidate)
+        return
+      }
+    }
+    console.log('[OAuth] deriveUsername: too many collisions, keeping default')
+  }
+
+  // Sprint #96 Track 2: wrapper that extracts a usable display name from
+  // a Supabase user (post-browser-flow sign-in) and dispatches to
+  // deriveUsernameFromIdentity if present. Fire-and-forget — failure
+  // never blocks sign-in. Identity providers expose name under several
+  // metadata keys depending on the provider + version of supabase-js,
+  // so we check the union.
+  function tryDeriveUsernameFromUser(user, source) {
+    if (!user) return
+    const m = user.user_metadata || {}
+    const nameCandidates = [
+      m.full_name,
+      m.name,
+      m.preferred_username,
+      [m.given_name, m.family_name].filter(Boolean).join(' '),
+      m.display_name,
+    ].filter(s => typeof s === 'string' && s.trim().length > 0)
+    const name = nameCandidates[0]
+    if (!name) {
+      console.log('[OAuth] tryDeriveUsernameFromUser: no name in user_metadata', { source, keys: Object.keys(m) })
+      return
+    }
+    deriveUsernameFromIdentity(user.id, name, source).catch(e => {
+      console.log('[OAuth] tryDeriveUsernameFromUser failed', e?.message)
+      try {
+        Sentry.captureException(e, { tags: { feature: 'username-derive' }, extra: { source } })
+      } catch {}
+    })
+  }
 
   // Sprint #94 III3: called from App.jsx's appUrlOpen handler when a
   // app.balliq://auth/callback URL arrives after OAuth consent. Extracts
@@ -569,16 +829,41 @@ export function AuthProvider({ children }) {
   // auth states, so this listener fires whenever the URL arrives.
   useEffect(() => {
     if (!Capacitor.isNativePlatform?.()) return
+    // Diagnostic: also report the launch URL if the app was cold-started
+    // by a deep-link tap (some Supabase + iOS combinations route the
+    // callback as a launch rather than appUrlOpen, especially if the app
+    // wasn't running when Apple sign-in started).
+    CapApp.getLaunchUrl().then(r => {
+      if (r?.url) console.log('[OAuth] CapApp.getLaunchUrl on mount', { url: r.url })
+    }).catch(e => console.log('[OAuth] getLaunchUrl failed', e?.message))
     let handlePromise = CapApp.addListener('appUrlOpen', e => {
       const url = e?.url
-      if (!url) return
+      console.log('[OAuth] appUrlOpen fired', { url })
+      if (!url) {
+        console.log('[OAuth] appUrlOpen: empty url, ignoring')
+        return
+      }
       try {
         const u = new URL(url)
+        const hashStr = u.hash?.startsWith('#') ? u.hash.slice(1) : (u.hash || '')
+        const hashKeys = hashStr ? Array.from(new URLSearchParams(hashStr).keys()) : []
+        console.log('[OAuth] appUrlOpen parsed', {
+          protocol: u.protocol,
+          host: u.host,
+          pathname: u.pathname,
+          paramKeys: Array.from(u.searchParams.keys()),
+          hashKeys,
+        })
         if (u.protocol === 'app.balliq:' && (u.host === 'auth' || u.pathname.startsWith('/auth'))) {
+          console.log('[OAuth] URL matched auth pattern, calling exchangeOAuthCallback')
           // Fire-and-forget — onAuthStateChange fires AppGate routing on success
           exchangeOAuthCallback(url)
+        } else {
+          console.log('[OAuth] URL did NOT match auth pattern (protocol+host check failed)')
         }
-      } catch {}
+      } catch (err) {
+        console.log('[OAuth] URL parse failed in appUrlOpen', err?.message)
+      }
     })
     return () => {
       Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {})
@@ -586,24 +871,80 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function exchangeOAuthCallback(url) {
+    console.log('[OAuth] exchangeOAuthCallback start')
     try {
       const parsed = new URL(url)
-      // Supabase PKCE returns ?code=... on success. ?error_description on failure.
-      const code = parsed.searchParams.get('code')
-      const errDesc = parsed.searchParams.get('error_description')
+      // Supabase returns the OAuth result in one of two shapes:
+      //   - Implicit flow: tokens in the URL HASH fragment
+      //       app.balliq://auth/callback#access_token=...&refresh_token=...
+      //     Handler: supabase.auth.setSession({ access_token, refresh_token }).
+      //   - PKCE flow: code in the query string
+      //       app.balliq://auth/callback?code=...
+      //     Handler: supabase.auth.exchangeCodeForSession(code).
+      // Native Supabase OAuth currently returns the implicit-flow shape (the
+      // earlier 'hasCodeChallenge: false' log on the consent URL confirmed
+      // PKCE wasn't engaged). We accept BOTH so future flow changes / web
+      // re-use don't break this path.
+      const queryParams = parsed.searchParams
+      const hashStr = parsed.hash?.startsWith('#') ? parsed.hash.slice(1) : (parsed.hash || '')
+      const hashParams = new URLSearchParams(hashStr)
+
+      const code = queryParams.get('code')
+      const accessToken = hashParams.get('access_token')
+      const refreshToken = hashParams.get('refresh_token')
+      const errDesc = queryParams.get('error_description') || hashParams.get('error_description')
+
+      console.log('[OAuth] callback parsed', {
+        hasCode: !!code,
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+        errDesc,
+      })
+
       if (errDesc) {
+        console.log('[OAuth] supabase returned error_description', errDesc)
         try { await Browser.close() } catch {}
         return { error: { message: decodeURIComponent(errDesc) } }
       }
-      if (!code) {
+
+      // Implicit flow: hash fragment carries the session directly.
+      if (accessToken && refreshToken) {
+        console.log('[OAuth] implicit flow detected — calling setSession')
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        })
+        console.log('[OAuth] setSession returned', {
+          hasSession: !!data?.session,
+          userId: data?.session?.user?.id,
+          error: error?.message,
+        })
         try { await Browser.close() } catch {}
-        return { error: { message: 'Auth callback missing code' } }
+        if (error) return { error }
+        tryDeriveUsernameFromUser(data?.user || data?.session?.user, 'browser-implicit')
+        return { data }
       }
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+
+      // PKCE flow: query string carries the auth code.
+      if (code) {
+        console.log('[OAuth] PKCE flow detected — calling exchangeCodeForSession')
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+        console.log('[OAuth] exchangeCodeForSession returned', {
+          hasSession: !!data?.session,
+          userId: data?.session?.user?.id,
+          error: error?.message,
+        })
+        try { await Browser.close() } catch {}
+        if (error) return { error }
+        tryDeriveUsernameFromUser(data?.user || data?.session?.user, 'browser-pkce')
+        return { data }
+      }
+
+      console.log('[OAuth] callback had neither code nor tokens')
       try { await Browser.close() } catch {}
-      if (error) return { error }
-      return { data }
+      return { error: { message: 'Auth callback missing code and tokens' } }
     } catch (e) {
+      console.log('[OAuth] exchangeOAuthCallback threw', e?.message)
       try { await Browser.close() } catch {}
       return { error: { message: e?.message || 'Auth callback parse failed' } }
     }
