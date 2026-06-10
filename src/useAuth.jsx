@@ -610,11 +610,14 @@ export function AuthProvider({ children }) {
       }
       try {
         const u = new URL(url)
+        const hashStr = u.hash?.startsWith('#') ? u.hash.slice(1) : (u.hash || '')
+        const hashKeys = hashStr ? Array.from(new URLSearchParams(hashStr).keys()) : []
         console.log('[OAuth] appUrlOpen parsed', {
           protocol: u.protocol,
           host: u.host,
           pathname: u.pathname,
           paramKeys: Array.from(u.searchParams.keys()),
+          hashKeys,
         })
         if (u.protocol === 'app.balliq:' && (u.host === 'auth' || u.pathname.startsWith('/auth'))) {
           console.log('[OAuth] URL matched auth pattern, calling exchangeOAuthCallback')
@@ -636,30 +639,73 @@ export function AuthProvider({ children }) {
     console.log('[OAuth] exchangeOAuthCallback start')
     try {
       const parsed = new URL(url)
-      // Supabase PKCE returns ?code=... on success. ?error_description on failure.
-      const code = parsed.searchParams.get('code')
-      const errDesc = parsed.searchParams.get('error_description')
-      console.log('[OAuth] callback parsed', { hasCode: !!code, codeLen: code?.length, errDesc })
+      // Supabase returns the OAuth result in one of two shapes:
+      //   - Implicit flow: tokens in the URL HASH fragment
+      //       app.balliq://auth/callback#access_token=...&refresh_token=...
+      //     Handler: supabase.auth.setSession({ access_token, refresh_token }).
+      //   - PKCE flow: code in the query string
+      //       app.balliq://auth/callback?code=...
+      //     Handler: supabase.auth.exchangeCodeForSession(code).
+      // Native Supabase OAuth currently returns the implicit-flow shape (the
+      // earlier 'hasCodeChallenge: false' log on the consent URL confirmed
+      // PKCE wasn't engaged). We accept BOTH so future flow changes / web
+      // re-use don't break this path.
+      const queryParams = parsed.searchParams
+      const hashStr = parsed.hash?.startsWith('#') ? parsed.hash.slice(1) : (parsed.hash || '')
+      const hashParams = new URLSearchParams(hashStr)
+
+      const code = queryParams.get('code')
+      const accessToken = hashParams.get('access_token')
+      const refreshToken = hashParams.get('refresh_token')
+      const errDesc = queryParams.get('error_description') || hashParams.get('error_description')
+
+      console.log('[OAuth] callback parsed', {
+        hasCode: !!code,
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+        errDesc,
+      })
+
       if (errDesc) {
         console.log('[OAuth] supabase returned error_description', errDesc)
         try { await Browser.close() } catch {}
         return { error: { message: decodeURIComponent(errDesc) } }
       }
-      if (!code) {
-        console.log('[OAuth] callback missing code param')
+
+      // Implicit flow: hash fragment carries the session directly.
+      if (accessToken && refreshToken) {
+        console.log('[OAuth] implicit flow detected — calling setSession')
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        })
+        console.log('[OAuth] setSession returned', {
+          hasSession: !!data?.session,
+          userId: data?.session?.user?.id,
+          error: error?.message,
+        })
         try { await Browser.close() } catch {}
-        return { error: { message: 'Auth callback missing code' } }
+        if (error) return { error }
+        return { data }
       }
-      console.log('[OAuth] calling exchangeCodeForSession')
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-      console.log('[OAuth] exchangeCodeForSession returned', {
-        hasSession: !!data?.session,
-        userId: data?.session?.user?.id,
-        error: error?.message,
-      })
+
+      // PKCE flow: query string carries the auth code.
+      if (code) {
+        console.log('[OAuth] PKCE flow detected — calling exchangeCodeForSession')
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+        console.log('[OAuth] exchangeCodeForSession returned', {
+          hasSession: !!data?.session,
+          userId: data?.session?.user?.id,
+          error: error?.message,
+        })
+        try { await Browser.close() } catch {}
+        if (error) return { error }
+        return { data }
+      }
+
+      console.log('[OAuth] callback had neither code nor tokens')
       try { await Browser.close() } catch {}
-      if (error) return { error }
-      return { data }
+      return { error: { message: 'Auth callback missing code and tokens' } }
     } catch (e) {
       console.log('[OAuth] exchangeOAuthCallback threw', e?.message)
       try { await Browser.close() } catch {}
