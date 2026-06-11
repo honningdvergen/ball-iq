@@ -6418,6 +6418,32 @@ async function shareCard(type, data, opts = {}) {
   // cache dir and sharing the file URI through @capacitor/share hands every
   // image-capable target the actual card. Failure falls through to the
   // existing web chain, so worst case is the old behavior.
+  // Companion line under the card — contextual per card type ("Got today's
+  // Footle in 3/6 — can you beat me?"). Deliberately a plain-TEXT item with
+  // the link inline — NOT a url field. URL items are what share extensions
+  // latch onto (a url field is exactly what made Snapchat drop the card and
+  // show a bare link). A text item rides along as low priority: iMessage
+  // renders card + tappable text bubble; image-first extensions take the
+  // PNG and ignore the text.
+  const SHARE_LINE = (() => {
+    const link = "⚽ https://balliq.app";
+    try {
+      if (type === "wordle") {
+        // "3/6" reads as "half right" to non-players — say attempts instead.
+        // The PNG card keeps the emoji grid, which carries that context.
+        if (data.failed) return `Today's Footle got me — can you do better? ${link}`;
+        if (data.score === 1) return `Got today's Footle on my FIRST guess 🎯 ${link}`;
+        return `Got today's Footle in ${data.score} guesses — can you beat me? ${link}`;
+      }
+      if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
+      if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
+      if (data?.modeLabel && data?.score != null && data?.total != null) {
+        return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
+      }
+    } catch {}
+    return `Can you beat it? ${link}`;
+  })();
+
   if (IS_NATIVE) {
     const fname = `balliq-share-${Date.now()}.png`;
     try {
@@ -6429,7 +6455,7 @@ async function shareCard(type, data, opts = {}) {
       });
       await Filesystem.writeFile({ path: fname, data: b64, directory: Directory.Cache });
       const { uri } = await Filesystem.getUri({ path: fname, directory: Directory.Cache });
-      await CapShare.share({ files: [uri] });
+      await CapShare.share({ files: [uri], text: SHARE_LINE });
       Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
       return;
     } catch (err) {
@@ -6444,10 +6470,8 @@ async function shareCard(type, data, opts = {}) {
   const file = new File([blob], "balliq-result.png", { type: "image/png" });
   try {
     if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-      // Image only — no url field. When both were present, each share
-      // extension chose which to ingest (Snapchat took the URL and dropped
-      // the card). The card art already carries balliq.app top and bottom.
-      await navigator.share({ files: [file] });
+      // files + text (link inline), still no url field — see SHARE_LINE note.
+      await navigator.share({ files: [file], text: SHARE_LINE });
       return;
     }
   } catch (err) {
