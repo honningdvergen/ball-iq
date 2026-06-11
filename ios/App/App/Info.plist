@@ -30,18 +30,17 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<!-- Portrait-locked for v1.0 (pre-submission): the layout was never
+	     QA'd in landscape and a reviewer rotating mid-quiz is an avoidable
+	     risk. Standard for quiz apps. Revisit if landscape ever gets a
+	     proper design pass. -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
