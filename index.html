@@ -77,6 +77,22 @@
           media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
     <link rel="apple-touch-startup-image" href="/apple-splash-iphone-se-v2.png"
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
+    <!-- NATIVE-APP detection — must run before first paint. The Capacitor
+         WKWebView does NOT match @media (display-mode: standalone), so the
+         PWA killswitches in the <style> below never fire inside the iOS /
+         Android app. Without this, any native viewport >= 1024px (iPad
+         landscape, iPad Pro portrait) renders the desktop marketing chrome
+         — including a "Get the app" button — INSIDE the app. iOS is caught
+         by the capacitor: protocol; Android (androidScheme https) by the
+         Capacitor bridge object, which is injected at document-start ahead
+         of inline scripts. App.jsx re-applies the class at module load as
+         belt-and-braces. -->
+    <script>
+      if (location.protocol === 'capacitor:' ||
+          (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
+        document.documentElement.classList.add('native-app');
+      }
+    </script>
     <style>
       html, body {
         margin: 0;
@@ -177,6 +193,25 @@
         .ad-slot-sidebar-left, .ad-slot-sidebar-right,
         .ad-slot-banner { display: none !important; }
       }
+
+      /* NATIVE killswitch — Capacitor WKWebView is NOT display-mode:
+         standalone, so the PWA rules above never fire in the iOS/Android
+         app. html.native-app is set by the inline head script above.
+         Mirrors every standalone killswitch in this file plus App.jsx's
+         .desktop-nav (higher specificity wins over its display:flex). */
+      html.native-app .landing-top,
+      html.native-app .landing-bottom,
+      html.native-app .ad-slot-sidebar-left,
+      html.native-app .ad-slot-sidebar-right,
+      html.native-app .ad-slot-banner,
+      html.native-app .desktop-nav { display: none !important; }
+      html.native-app body > #root {
+        max-width: none !important;
+        margin: 0 !important;
+        padding-left: 0 !important;
+      }
+      html.native-app body > .landing-bottom { padding-left: 0 !important; }
+      html.native-app body { background-image: none !important; }
 
       /* Sprint #64 FF2 killswitch — hide landing chrome while the user is
          actively mid-game (quiz / Footle / local pass-and-play). Body class

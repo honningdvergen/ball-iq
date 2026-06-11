@@ -58,5 +58,11 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Ball IQ uses the camera so you can take a photo for your profile avatar.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ball IQ accesses your photo library so you can choose a profile avatar.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Ball IQ can save your edited avatar photo to your library.</string>
 </dict>
 </plist>
