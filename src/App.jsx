@@ -3174,6 +3174,10 @@ function playSound(type) {
 // playSound pattern at line 3082). OS-level haptics disabled silently no-ops
 // inside the plugin itself, so no extra guard needed for that case.
 const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
+// Belt-and-braces for index.html's head script: re-apply the native-app class
+// that hides desktop landing chrome (.landing-top / .desktop-nav / etc.).
+// Covers any case where the bridge wasn't injected before the head script ran.
+if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
 function haptic(type) {
   try {
     let enabled = true;
@@ -11254,7 +11258,11 @@ export default function App() {
   const isNative = Capacitor.isNativePlatform?.();
   return (
     <>
-      <VersionBanner />
+      {/* Pre-review audit: VersionBanner compares BUILT_SHA against a
+          /version.json fetch that can't succeed from the capacitor://
+          bundle — the failure path is silent today, but gate it anyway
+          so no update-nag UI can ever render inside the native app. */}
+      {!isNative && <VersionBanner />}
       <ErrorBoundary><AppGate /></ErrorBoundary>
       {!isNative && <SpeedInsights />}
     </>
