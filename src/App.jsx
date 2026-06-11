@@ -37,13 +37,21 @@ const FriendProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx
 const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.BlockedUsersScreen })));
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { App as CapApp } from '@capacitor/app';
 import { Share as CapShare } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+
+// Sprint #98: local iOS plugin (ios/App/App/ShareCardPlugin.swift). Presents
+// the share sheet with the card file + a per-target text item: the text is
+// withheld from share extensions that reject text+image multi-item payloads
+// (Snapchat fails to LAUNCH on those), and provided everywhere else
+// (iMessage renders card + tappable challenge line). JS falls back to plain
+// @capacitor/share file-only if this plugin is unavailable or throws.
+const NativeShareCard = registerPlugin('ShareCard');
 
 // Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
 import { perfMark } from './lib/perf.js';
@@ -6446,6 +6454,7 @@ async function shareCard(type, data, opts = {}) {
 
   if (IS_NATIVE) {
     const fname = `balliq-share-${Date.now()}.png`;
+    let uri = null;
     try {
       const b64 = await new Promise((resolve, reject) => {
         const r = new FileReader();
@@ -6454,16 +6463,33 @@ async function shareCard(type, data, opts = {}) {
         r.readAsDataURL(blob);
       });
       await Filesystem.writeFile({ path: fname, data: b64, directory: Directory.Cache });
-      const { uri } = await Filesystem.getUri({ path: fname, directory: Directory.Cache });
-      await CapShare.share({ files: [uri], text: SHARE_LINE });
-      Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
-      return;
-    } catch (err) {
-      Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
-      // iOS reports a dismissed sheet as an error ("Share canceled") —
-      // user intent, not a failure. Don't fall through to lesser shares.
-      if (/cancel/i.test(err?.message || "")) return;
-      // Anything else: fall through to the web chain below.
+      uri = (await Filesystem.getUri({ path: fname, directory: Directory.Cache })).uri;
+    } catch {
+      // Couldn't even materialise the file — fall through to the web chain.
+      uri = null;
+    }
+    if (uri) {
+      // Preferred: local ShareCardPlugin — card + per-target text item
+      // (text withheld from Snapchat-class extensions; see plugin header).
+      try {
+        await NativeShareCard.share({ fileUrl: uri, text: SHARE_LINE });
+        Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
+        return; // resolves on share AND on sheet-dismiss — both are final
+      } catch (err) {
+        // Plugin missing ('not implemented') or failed — fall back to the
+        // proven file-only sheet via @capacitor/share. No text: text+image
+        // is exactly the payload that breaks Snapchat-class extensions.
+        try {
+          await CapShare.share({ files: [uri] });
+          Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
+          return;
+        } catch (err2) {
+          Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
+          // Dismissed sheet surfaces as "Share canceled" — user intent.
+          if (/cancel/i.test(err2?.message || "")) return;
+          // Anything else: fall through to the web chain below.
+        }
+      }
     }
   }
 
