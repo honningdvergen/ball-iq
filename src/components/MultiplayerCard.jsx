@@ -13,7 +13,9 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnlin
     // Stop the click from reaching the card-level handlers (none here, but
     // future-proof against being wrapped in a tappable parent).
     e?.stopPropagation();
-    const url = (typeof window !== 'undefined' && window.location?.origin) || 'https://balliq.app';
+    // Hardcoded — window.location.origin is capacitor://localhost inside the
+    // native app, which shared a dead link to whoever received the invite.
+    const url = 'https://balliq.app';
     const shareData = {
       title: APP_NAME,
       text: `Play ${APP_NAME} with me — daily football trivia + multiplayer.`,

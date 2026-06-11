@@ -43,6 +43,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { App as CapApp } from '@capacitor/app';
 import { Share as CapShare } from '@capacitor/share';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 // Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
 import { perfMark } from './lib/perf.js';
@@ -6408,10 +6409,45 @@ async function shareCard(type, data, opts = {}) {
     return;
   }
 
+  // Native iOS/Android: the Web Share API's file path is unreliable in the
+  // Capacitor WebView (canShare({files}) often returns false, and the
+  // <a download> fallback below is a no-op there) — so every share quietly
+  // degraded to the plain {text, url} fallback. Targets then diverged:
+  // iMessage rendered text + a generic link preview, Snapchat (whose share
+  // extension only ingests URLs) showed a bare link. Writing the PNG to the
+  // cache dir and sharing the file URI through @capacitor/share hands every
+  // image-capable target the actual card. Failure falls through to the
+  // existing web chain, so worst case is the old behavior.
+  if (IS_NATIVE) {
+    const fname = `balliq-share-${Date.now()}.png`;
+    try {
+      const b64 = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result).split(",")[1]);
+        r.onerror = () => reject(new Error("FileReader failed"));
+        r.readAsDataURL(blob);
+      });
+      await Filesystem.writeFile({ path: fname, data: b64, directory: Directory.Cache });
+      const { uri } = await Filesystem.getUri({ path: fname, directory: Directory.Cache });
+      await CapShare.share({ files: [uri] });
+      Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
+      return;
+    } catch (err) {
+      Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
+      // iOS reports a dismissed sheet as an error ("Share canceled") —
+      // user intent, not a failure. Don't fall through to lesser shares.
+      if (/cancel/i.test(err?.message || "")) return;
+      // Anything else: fall through to the web chain below.
+    }
+  }
+
   const file = new File([blob], "balliq-result.png", { type: "image/png" });
   try {
     if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-      await navigator.share({ files: [file], url: "https://balliq.app" });
+      // Image only — no url field. When both were present, each share
+      // extension chose which to ingest (Snapchat took the URL and dropped
+      // the card). The card art already carries balliq.app top and bottom.
+      await navigator.share({ files: [file] });
       return;
     }
   } catch (err) {
