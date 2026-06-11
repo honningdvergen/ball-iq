@@ -138,21 +138,51 @@ Per Sprint #73 OO2 Privacy Policy rewrite — what we actually collect:
 ```
 Ball IQ is a football trivia app. Reviewer testing tips:
 
-1. The app supports both guest mode and signed-in mode. Guest mode requires no account and exercises every single-player game mode. To test multiplayer:
-   - Email: appreview@balliq.app
-   - Password: [REDACTED — Alex to set before submission]
+Most of Ball IQ — all solo game modes, local pass-and-play multiplayer,
+profile, and settings — is accessible without an account via "Continue
+as guest" on the launch screen.
 
-2. To test the online multiplayer flow:
-   - Sign in with the above account
-   - Tap "Play with Friends" → "Online Multiplayer"
-   - Tap "Create Room" — a 6-character code appears
-   - On a second device (or the iPhone simulator), sign in with a different account or use guest mode and tap "Join with Code"
+Online 1v1 multiplayer and the social features (friends, online
+leaderboards) require an account. Two demo accounts are provided so the
+full online flow can be tested:
 
-3. Differentiated functionality beyond the website:
-   - Native haptic feedback on every quiz answer and streak tick
-   - Offline gameplay — full game modes work without network; results sync when reconnected
-   - Native iOS share sheet for Footle / Daily results
-   - Universal Links: tapping a balliq.app/join/CODE link from Messages opens this app directly into the join flow
+  Account A — username balliqdev1
+    Email: balliq.app.dev@gmail.com
+    Password: [shared password — entered in ASC at submission]
+
+  Account B — username balliqdev2
+    Email: balliq.app.dev+rev@gmail.com
+    Password: [same shared password]
+
+To test online multiplayer end-to-end (two devices, or sign out and
+back in between):
+
+  1. On device 1, sign in as Account A. Tap Multiplayer → Online.
+     The app creates a room and shows a 6-character code.
+  2. On device 2, sign in as Account B. Tap Multiplayer → Online →
+     Join with code. Enter the code from step 1.
+  3. Both players answer 10 quiz questions in real time. Highest
+     score wins.
+
+Note: online multiplayer requires sign-in on BOTH devices — guests
+tapping Online are prompted to sign in. This is intentional (rooms
+are keyed to account identity).
+
+"Sign in with Apple" and "Continue with Google" are also available on
+the launch screen and work identically to email sign-in.
+
+Differentiated functionality beyond the website:
+  - Native Sign in with Apple (ASAuthorizationController system sheet)
+  - Native haptic feedback on every quiz answer and streak tick
+  - Offline gameplay — full game modes work without network; results
+    sync when reconnected
+  - Native iOS share sheet with rendered result cards for Footle /
+    Daily results
+  - Universal Links: tapping a balliq.app/join/CODE link from Messages
+    opens this app directly into the join flow
+
+Account deletion: Settings → Danger zone → Delete account (removes the
+account and all server-side data).
 
 Any questions: hello@balliq.app — Alexander Bryn Olsen (developer).
 ```
@@ -283,7 +313,7 @@ Tablet screenshots (7" + 10") optional — skip for v1.0 unless we want to posit
 1. ✅ **Description copy** — "no ads, ever" softened to "no ads at launch" (preserves IAP optionality for v1.1). Closing paragraph rewritten to solo-founder voice ("Built solo from Norway by someone who loves football…"). Mode-naming locked to **"Daily 7"** across the listing. *(In-app code uses both "Daily 7" and "Today's 7" inconsistently — tracked as v1.1 follow-up sprint, see below.)*
 2. ✅ **Promotional text** — replaced with "Football trivia for real fans. Daily puzzles, multiplayer matches, a streak worth defending. Built by football lovers." (118 chars)
 3. ✅ **Keywords** — `fifa` and `wordle` removed (trademark risk); replaced with `daily` and `puzzle`. Final string at 82 chars.
-4. ✅ **App Review demo account** — Alex creates `appreview@balliq.app` credentials before submission. **Reminder added to MOBILE_TESTING.md pre-submission gate.**
+4. ✅ **App Review demo accounts** — superseded 2026-06-11: two accounts created for the two-device online-MP flow — `balliqdev1` (balliq.app.dev@gmail.com) and `balliqdev2` (balliq.app.dev+rev@gmail.com), shared password entered directly in ASC (never committed to git).
 5. ✅ **Screenshot captions** — caption #3 updated to "One player, six guesses, every day." Others unchanged.
 6. ✅ **Feature graphic for Play** — derived from existing og-image template. Single 1024×500 asset.
 7. ✅ **Country availability** — accept Apple's default (auto-excludes embargoed countries: Cuba, Iran, North Korea, Syria, Crimea).
