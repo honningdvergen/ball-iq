@@ -8284,7 +8284,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
 const KNOWN_ISSUES = [
   {
     q: "I had to sign in again after a week — is that normal?",
-    a: "Yes. For security, sign-in sessions expire roughly every 7 days. This is intentional, not a bug. Tap the email button on the login screen and you're back in seconds — your scores, streak, and history are tied to your account, not the device.",
+    a: "Yes. For security, sign-in sessions expire roughly every 7 days. This is intentional, not a bug. Sign back in with Apple, Google, or your email and you're back in seconds — your scores, streak, and history are tied to your account, not the device.",
   },
   {
     q: "I installed Ball IQ on a second device and it asked me to onboard again",
@@ -8298,10 +8298,8 @@ const KNOWN_ISSUES = [
     q: "My streak / progress didn't sync to my other device",
     a: "If you're signed in, everything except onboarding state (covered above) syncs through your profile. If you played as a guest first and signed in later, only future progress syncs — past guest sessions stay on the device they were played on. Sign up earlier on new devices to avoid this gap.",
   },
-  {
-    q: "The app launched as a white flash before settling",
-    a: "Working on it. iOS PWAs show a brief white frame between launch and first paint that's hard to fully suppress. Recent versions have shortened this window considerably; the remaining flash is an iOS quirk rather than an app bug.",
-  },
+  // "White flash at launch" entry removed 2026-06-11 — fixed (and its copy
+  // described PWA behavior that doesn't apply to the native app).
 ];
 
 const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
