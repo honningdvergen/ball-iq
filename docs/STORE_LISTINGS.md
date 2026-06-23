@@ -138,13 +138,16 @@ Per Sprint #73 OO2 Privacy Policy rewrite — what we actually collect:
 ```
 Ball IQ is a football trivia app. Reviewer testing tips:
 
-Most of Ball IQ — all solo game modes, local pass-and-play multiplayer,
-profile, and settings — is accessible without an account via "Continue
-as guest" on the launch screen.
+The app opens directly into play — NO account or login is required to
+start. All solo game modes, local pass-and-play multiplayer, profile,
+and settings work immediately. There is no login wall on launch.
 
 Online 1v1 multiplayer and the social features (friends, online
-leaderboards) require an account. Two demo accounts are provided so the
-full online flow can be tested:
+leaderboards) are the only account-gated parts. Tapping any of them
+(e.g. Multiplayer → Online, or Profile → "Sign in / Create account")
+brings up a sign-in sheet offering email, Sign in with Apple, and
+Continue with Google. Two demo accounts are provided so the full
+online flow can be tested:
 
   Account A — username balliqdev1
     Email: balliq.app.dev@gmail.com
@@ -157,19 +160,19 @@ full online flow can be tested:
 To test online multiplayer end-to-end (two devices, or sign out and
 back in between):
 
-  1. On device 1, sign in as Account A. Tap Multiplayer → Online.
-     The app creates a room and shows a 6-character code.
-  2. On device 2, sign in as Account B. Tap Multiplayer → Online →
-     Join with code. Enter the code from step 1.
+  1. On device 1, tap Multiplayer → Online. A sign-in sheet appears
+     (the feature is account-gated). Sign in as Account A. The app
+     then creates a room and shows a 6-character code.
+  2. On device 2, tap Multiplayer → Online, sign in as Account B,
+     then choose Join with code and enter the code from step 1.
   3. Both players answer 10 quiz questions in real time. Highest
      score wins.
 
-Note: online multiplayer requires sign-in on BOTH devices — guests
-tapping Online are prompted to sign in. This is intentional (rooms
-are keyed to account identity).
-
-"Sign in with Apple" and "Continue with Google" are also available on
-the launch screen and work identically to email sign-in.
+Note: online multiplayer requires sign-in on BOTH devices — tapping
+Online as a guest brings up the sign-in sheet first. This is
+intentional (rooms are keyed to account identity). Guest progress
+(XP, stats, streak) carries over automatically when a guest creates
+an account.
 
 Differentiated functionality beyond the website:
   - Native Sign in with Apple (ASAuthorizationController system sheet)
