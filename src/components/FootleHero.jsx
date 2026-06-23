@@ -51,7 +51,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     const grid = grades.map(row =>
       row.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")
     ).join("\n");
-    const score = isWon ? `${guesses.length}/6` : "X/6";
+    const score = isWon ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
     const scoreLine = isWon && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
     const textFallback = `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
@@ -95,11 +95,11 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   // matches morning regardless of how many guesses the user actually used.
   const padRows = Math.max(0, 6 - grades.length);
   return (
-    <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} of 6` : "Footle — missed today"}>
+    <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Footle — missed today"}>
       <div className="fh-body">
         <div className="fh-title">{isWon ? "Solved" : "Missed"}</div>
         <div className="fh-score">
-          {isWon ? <>in <strong>{guesses.length}</strong>/6</> : <><strong>X</strong>/6</>}
+          {isWon ? <>in <strong>{guesses.length}</strong> {guesses.length === 1 ? "guess" : "guesses"}</> : <>today</>}
         </div>
         {isWon && streak > 0 && (
           <div className="fh-sub">🔥 {streak}-day streak</div>

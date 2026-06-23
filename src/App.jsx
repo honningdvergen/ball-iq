@@ -6270,7 +6270,7 @@ async function generateShareCard(type, data) {
     const score = data?.score ?? 0;
     const total = data?.total ?? 6;
     const dateLabel = data?.dateLabel || "";
-    const scoreLabel = data?.failed ? `X/${total}` : `${score}/${total}`;
+    const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
     const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
 
     // Mode label
@@ -6283,10 +6283,12 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText(dateLabel, cx, 130);
 
-    // Score — JetBrains Mono for the numeric display
-    ctx.font = '900 72px "JetBrains Mono", "Courier New", monospace';
+    // Result headline — explicit "guesses" framing rather than a "N/6"
+    // fraction. In Footle fewer guesses is better, so "3/6" read like a
+    // quiz score (3-of-6 correct) and undersold a good result. Sprint #99.
+    ctx.font = '800 34px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#58CC02";
-    ctx.fillText(scoreLabel, cx, 218);
+    ctx.fillText(headline, cx, 212);
 
     // Emoji-tile grid. 36×36 tiles, 4px gap, rows centered horizontally.
     const tile = 36;
@@ -6822,7 +6824,7 @@ function DailySocialProof({ score, total }) {
         marginBottom: 10,
         textTransform: "uppercase",
       }}>
-        Daily Challenge Complete
+        Daily 7 Complete
       </div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 4 }}>
         <div style={{
@@ -7254,7 +7256,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
   const cols = answer.length;
 
   const resultLine = won
-    ? `Solved in ${guesses.length}/6 attempts`
+    ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}`
     : lost ? "Better luck tomorrow"
     : "";
 
@@ -7283,7 +7285,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
       const grades = gradeWordleGuess(g, answer);
       return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
     }).join("\n");
-    const score = won ? `${guesses.length}/6` : "X/6";
+    const score = won ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
     const streak = won ? computeFootleStreak(date) : 0;
     const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
     return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
@@ -9054,7 +9056,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
-    const score = won ? `${state.guesses.length}/6` : `X/6`;
+    const score = won ? `Solved in ${state.guesses.length} ${state.guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
     const streak = won ? computeFootleStreak(new Date()) : 0;
     const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
     return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
@@ -10214,7 +10216,7 @@ function AppInner() {
     const msgs = {
       daily: (() => {
         const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
-        return `⚽ ${APP_NAME} — Daily Challenge\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `⚽ ${APP_NAME} — Daily 7\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       balliq: (() => {
         const iq = calcBallIQ(score, total);
@@ -10239,7 +10241,7 @@ function AppInner() {
     // Pick the right card variant + payload for shareCard.
     const MODE_LABELS = {
       classic: "Classic Quiz",
-      daily: "Daily Challenge",
+      daily: "Daily 7",
       survival: "Survival",
       hotstreak: "Hot Streak",
       truefalse: "True or False",
@@ -10552,7 +10554,7 @@ function AppInner() {
       ? `🔥 ${loginStreak}-day streak`
       : "";
     const text = [
-      `⚽ ${APP_NAME} Daily Challenge`,
+      `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
       `🎯 ${score}/${total}`,
       streakLine,

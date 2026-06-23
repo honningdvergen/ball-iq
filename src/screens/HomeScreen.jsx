@@ -57,7 +57,7 @@ export function HomeScreen({
         // subtext entirely — the Daily zone's "2/2 done" status carries
         // the celebration, the greeting line stays calm.
         const subtext = footleDone && dailyDone ? null
-          : footleDone                          ? "Today's 7 is still open."
+          : footleDone                          ? "Daily 7 is still open."
           : dailyDone                           ? "Today's Footle is still open."
           :                                       "Daily puzzle is up.";
         return (
@@ -126,11 +126,11 @@ export function HomeScreen({
             <button
               className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
               onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
-              aria-label={dailyDone ? `Today's 7 complete: ${dailyScore} out of 7` : "Play today's 7"}
+              aria-label={dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7"}
             >
               <span className="t7s-icon" aria-hidden="true">📋</span>
               <span className="t7s-body">
-                <span className="t7s-title">Today's 7</span>
+                <span className="t7s-title">Daily 7</span>
                 <span className="t7s-sub">
                   {dailyDone
                     ? <>✅ Done · <strong>{dailyScore}/7</strong></>

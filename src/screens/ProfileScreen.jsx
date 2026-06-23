@@ -601,7 +601,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             they had none on a flaky connection. */}
         {!loading && loadError && (
           <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:6}}>
-            <div>Couldn't load your friends.</div>
+            <div>Couldn't load your friends — check your connection.</div>
             <button
               onClick={loadFriendships}
               style={{background:"transparent",border:"1px solid var(--accent)",color:"var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",alignSelf:"flex-start",fontFamily:"inherit"}}
@@ -1444,6 +1444,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             <div className="emoji-grid">
               {AVATARS.map(em => (
                 <button key={em} className={`emoji-opt${profile?.avatar===em?" selected":""}`}
+                  aria-label={`Choose ${em} avatar`}
                   onClick={() => {
                     setProfile(p => ({...p, avatar:em}));
                     setShowEmojiPicker(false);
