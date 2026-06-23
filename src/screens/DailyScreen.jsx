@@ -215,7 +215,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       const fAttempt = fStatus === "won" || fStatus === "lost";
       let cls, label;
       if (t7 && fAttempt) { cls = "W"; label = "Win"; }
-      else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Today's 7 only" : "Footle only"; }
+      else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Daily 7 only" : "Footle only"; }
       else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = "Before your first puzzle"; }
       else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
       out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
@@ -309,7 +309,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
           <div className="fix-eyebrow">Recent fixtures</div>
           {matchdays.map(m => {
             const scoreStr = m.t7Done ? `${m.t7Score}/7` : "—/7";
-            const scoreAria = m.t7Done ? `Today's 7 score ${m.t7Score} of 7` : "Today's 7 not played";
+            const scoreAria = m.t7Done ? `Daily 7 score ${m.t7Score} of 7` : "Daily 7 not played";
             return (
               <div
                 key={m.ymd}
