@@ -40,7 +40,17 @@ function readLastEmail() {
   try { return localStorage.getItem('biq_last_email') || '' } catch { return '' }
 }
 
-export default function Login() {
+// Sprint #100 guest-first: reward-framed headers shown above the form when
+// the Login overlay is opened from a specific gated feature. Keeps the
+// "what's in it for me" reason front and centre instead of a bare wall.
+const PROMPT_COPY = {
+  online:      { title: 'Sign up to play online', sub: 'Create a free account to challenge friends in real-time 1v1 — and keep your stats and streak.' },
+  friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.' },
+  leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
+  save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device.' },
+}
+
+export default function Login({ asOverlay = false, onClose, promptReason = null }) {
   const { signUp, signIn, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
   const [mode, setMode] = useState('login') // 'login' or 'signup'
   const [email, setEmail] = useState(readLastEmail)
@@ -49,8 +59,10 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [sessionExpired, setSessionExpired] = useState(false)
+  // 'expired' reason pre-arms the expired banner without waiting for the event.
+  const [sessionExpired, setSessionExpired] = useState(promptReason === 'expired')
   const isLight = readTheme() === 'light'
+  const prompt = promptReason && PROMPT_COPY[promptReason] ? PROMPT_COPY[promptReason] : null
 
   // Listen for session-expired events dispatched by useAuth.jsx's
   // onAuthStateChange handler (fires when SIGNED_OUT happens without
@@ -175,6 +187,9 @@ export default function Login() {
       // needed). paddingTop = safe area + comfortable visual breathing room.
       position: 'fixed',
       inset: 0,
+      // Sprint #100: sits above AppInner (tab bar, sheets) when rendered as
+      // the on-demand auth overlay. Harmless as the root login screen too.
+      zIndex: 1000,
       overflowY: 'auto',
       backgroundColor: palette.bg,
       color: palette.text,
@@ -307,10 +322,29 @@ export default function Login() {
 
   return (
     <div style={styles.container}>
+      {asOverlay && (
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: 'absolute',
+            top: 'max(env(safe-area-inset-top,0px), 16px)',
+            right: 16,
+            width: 36, height: 36, borderRadius: 10,
+            background: isLight ? '#E5E5EA' : '#1A1D27',
+            border: `1px solid ${palette.border}`,
+            color: palette.text, fontSize: 18, lineHeight: 1,
+            cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            WebkitTapHighlightColor: 'transparent', zIndex: 2,
+          }}
+        >✕</button>
+      )}
       <div style={styles.logo}>⚽</div>
       <div style={styles.title}>Ball <em style={{ color: palette.accent, fontStyle: 'normal' }}>IQ</em></div>
       <div style={styles.subtitle}>
-        {mode === 'login' ? 'Welcome back' : 'Create your account'}
+        {prompt ? prompt.sub : (mode === 'login' ? 'Welcome back' : 'Create your account')}
       </div>
 
       {sessionExpired && (
@@ -516,8 +550,11 @@ export default function Login() {
           <div style={styles.dividerLine} />
         </div>
 
-        <button onClick={continueAsGuest} style={styles.guestButton}>
-          Continue as guest
+        {/* Sprint #100 guest-first: as the front-door screen this is the
+            "skip sign-up, just play" path; as an overlay the user is ALREADY
+            a guest, so it's just "dismiss and keep browsing". */}
+        <button onClick={asOverlay ? onClose : continueAsGuest} style={styles.guestButton}>
+          {asOverlay ? 'Maybe later' : 'Continue as guest'}
         </button>
         <div style={styles.guestNote}>
           Guests can play solo & local multiplayer. Sign up for online 1v1 and leaderboards.

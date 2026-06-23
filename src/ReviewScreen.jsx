@@ -326,19 +326,19 @@ export default function ReviewScreen({ onBack }) {
         <div style={{
           display:'flex', flexDirection:'column', gap:10,
           padding:'14px 16px',
-          background:'rgba(88,204,2,0.12)',
-          border:'1.5px solid rgba(88,204,2,0.55)',
+          background:'rgba(34,197,94,0.12)',
+          border:'1.5px solid rgba(34,197,94,0.55)',
           borderRadius:14,
         }}>
           <div style={{display:'flex', alignItems:'center', gap:12}}>
             <span style={{
               width:30, height:30, borderRadius:9,
-              background:'#58CC02', color:'#0A0A0A',
+              background:'#22c55e', color:'#0A0A0A',
               display:'flex', alignItems:'center', justifyContent:'center',
               fontSize:14, fontWeight:800, flexShrink:0,
             }}>✓</span>
             <span style={{
-              fontSize:15, fontWeight:700, color:'#8AE042',
+              fontSize:15, fontWeight:700, color:'#4ade80',
               fontFamily:"'Inter',sans-serif", wordBreak:'break-word',
             }}>{q.typed_a || '— no typed_a —'}</span>
           </div>
@@ -436,7 +436,7 @@ function ProgressStrip({ idx, total, counts, pendingPosition }) {
         )}
       </div>
       <div style={{display:'flex', flexWrap:'wrap', gap:'4px 14px', fontVariantNumeric:'tabular-nums'}}>
-        <span style={{color:'#8AE042'}}>✓ {counts.approved}</span>
+        <span style={{color:'#4ade80'}}>✓ {counts.approved}</span>
         <span style={{color:'#FF8080'}}>✗ {counts.rejected}</span>
         <span style={{color:'#FFD24A'}}>⚑ {counts.flagged}</span>
         <span>· {counts.pending} pending</span>
@@ -484,7 +484,7 @@ function StatusBadge({ status }) {
   const style = {
     marginTop: 12, padding: '10px 14px', borderRadius: 12, textAlign: 'center',
     fontSize: 13, fontWeight: 700, fontFamily: "'Inter',sans-serif",
-    ...(status === STATUS.APPROVED ? { background: 'rgba(88,204,2,0.15)',  color: '#8AE042', border: '1px solid rgba(88,204,2,0.4)' }
+    ...(status === STATUS.APPROVED ? { background: 'rgba(34,197,94,0.15)',  color: '#4ade80', border: '1px solid rgba(34,197,94,0.4)' }
       : status === STATUS.REJECTED ? { background: 'rgba(255,59,48,0.15)', color: '#FF8080', border: '1px solid rgba(255,59,48,0.4)' }
       : status === STATUS.FLAGGED  ? { background: 'rgba(255,193,7,0.15)', color: '#FFD24A', border: '1px solid rgba(255,193,7,0.4)' }
       :                              { background: 'var(--s1)',            color: 'var(--t3)', border: '1px solid var(--border)' }),
@@ -499,7 +499,7 @@ function StatusBadge({ status }) {
 
 function ActionBtn({ kind, kbd, onClick, children }) {
   const palette = {
-    green:   { bg: 'rgba(88,204,2,0.15)',  color: '#8AE042', border: 'rgba(88,204,2,0.4)' },
+    green:   { bg: 'rgba(34,197,94,0.15)',  color: '#4ade80', border: 'rgba(34,197,94,0.4)' },
     red:     { bg: 'rgba(255,59,48,0.15)', color: '#FF8080', border: 'rgba(255,59,48,0.4)' },
     gold:    { bg: 'rgba(255,193,7,0.15)', color: '#FFD24A', border: 'rgba(255,193,7,0.4)' },
     accent:  { bg: 'var(--accent)',        color: '#0a1a00', border: 'var(--accent)' },

@@ -31,7 +31,7 @@ export function HomeScreen({
   setShowDiffPicker,
   shareCard,
 }) {
-  const { user, profile: authProfile, isGuest } = useAuth();
+  const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
   return (
     <div className="screen tab-content">
@@ -41,14 +41,20 @@ export function HomeScreen({
       {(() => {
         const homeAuthLoading = !!user && !authProfile;
         const homeLocalName = (profile?.name || "").trim();
-        const homeHasUsername = !!authProfile?.username && authProfile.username !== "Player";
-        const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || homeLocalName.toLowerCase() === "player");
+        // Sprint #100: treat the server default usernames as "no real name"
+        // so social sign-ups that landed on player_xxxxx (Apple Hide-My-Email
+        // repeat / missing-name) get the set-your-name nudge instead of being
+        // greeted as "player_13418". Real usernames suppress the CTA.
+        const isDefaultName = (n) => !n || n === "Player" || /^player_/i.test(n);
+        const homeRealUsername = authProfile?.username && !isDefaultName(authProfile.username) ? authProfile.username : null;
+        const homeHasUsername = !!homeRealUsername;
+        const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || isDefaultName(homeLocalName));
         // Brand-new guest installs (no signed-in user, no local name)
         // used to flash "Good morning, Guest" before auth resolved. Drop
         // the placeholder and the trailing comma when no real name is
         // available — leaves "Good morning" alone until the user sets
         // a name (CTA below offers the affordance).
-        const homeDisplayName = authProfile?.username || profile?.name || null;
+        const homeDisplayName = homeRealUsername || (profile?.name && !isDefaultName(profile.name) ? profile.name : null);
         const homeGreetingBase = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; })();
         const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
         const ws = readWordleTodayStatus();
@@ -151,7 +157,7 @@ export function HomeScreen({
       <MultiplayerCard
         onOnline={() => {
           if (!user || isGuest) {
-            showToast("🔐 Sign in to play Online Multiplayer");
+            openAuthPrompt("online");
             return;
           }
           setScreen("online-stage1");
