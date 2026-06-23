@@ -1036,7 +1036,7 @@ export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
-  const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode } = useAuth();
+  const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1165,7 +1165,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         onChange={handleFileChosen}
         style={{display:"none"}}
       />
-      {isGuest && (stats?.gamesPlayed || 0) > 0 && (
+      {/* Sprint #100 guest-first: persistent sign-in entry for guests. Shown
+          for ALL guests (not just those who've played) so there's always a
+          path to an account from Profile. Copy leans on the carry-over —
+          signing up now keeps everything you've done as a guest. */}
+      {isGuest && (
         <div style={{
           background:"linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.06))",
           border:"1px solid var(--accent-b)",
@@ -1178,12 +1182,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           gap:6,
         }}>
           <div style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>🌟 Save your progress</div>
-          <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>Sign up to keep your stats, friends and IQ across devices.</div>
+          <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>
+            {(stats?.gamesPlayed || 0) > 0
+              ? "Create a free account to keep your stats, streak and IQ — and play friends online."
+              : "Create a free account to play online 1v1, add friends, and save your progress across devices."}
+          </div>
           <button
-            onClick={() => { try { exitGuestMode?.(); } catch {} }}
+            onClick={() => { try { openAuthPrompt?.('save'); } catch {} }}
             style={{marginTop:8,alignSelf:"stretch",padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
           >
-            Sign up free
+            Sign in / Create account
           </button>
         </div>
       )}

@@ -72,6 +72,12 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isGuest, setIsGuest] = useState(false)
+  // Sprint #100 guest-first: the Login screen is an on-demand overlay, not
+  // the app's front door. authPromptOpen drives it; authPromptReason lets a
+  // trigger pass context ('online' / 'friends' / 'leaderboard' / 'save' /
+  // 'expired') so the overlay can show a reward-framed header.
+  const [authPromptOpen, setAuthPromptOpen] = useState(false)
+  const [authPromptReason, setAuthPromptReason] = useState(null)
 
   // Tracks the currently-authenticated userId for hydrate-race protection.
   // hydrateLocalFromRemote captures userId at start; if this ref no longer
@@ -91,12 +97,11 @@ export function AuthProvider({ children }) {
   }, [user?.id])
 
   useEffect(() => {
-    const guestMode = localStorage.getItem('ballIQ_guestMode')
-    if (guestMode === 'true') {
-      setIsGuest(true)
-      setLoading(false)
-      return
-    }
+    // Sprint #100 guest-first: pre-set guest for instant UI if the user
+    // previously chose guest explicitly. We no longer early-return here —
+    // getSession + the auth listener ALWAYS run so a guest can convert to
+    // an account on demand (via the auth overlay) and be caught below.
+    if (localStorage.getItem('ballIQ_guestMode') === 'true') setIsGuest(true)
 
     perfMark('useAuth: getSession() called');
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -107,6 +112,13 @@ export function AuthProvider({ children }) {
       // subsequent sign-ins / sign-outs.
       if (session?.user) {
         try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+      } else {
+        // Sprint #100 guest-first: no stored session → land in the app as a
+        // guest instead of showing a login wall. The Login screen is now an
+        // on-demand overlay (openAuthPrompt), not the front door. Guests can
+        // play everything except online MP / friends / leaderboards, and are
+        // prompted to sign up only when they reach for those.
+        setIsGuest(true)
       }
       setLoading(false)
     })
@@ -117,38 +129,60 @@ export function AuthProvider({ children }) {
         setUser(session?.user ?? null)
         if (session?.user) {
           setIsGuest(false)
+          setAuthPromptOpen(false)   // close the auth overlay on success
           localStorage.removeItem('ballIQ_guestMode')
           // Sprint #61 DD3: attach user id to every Sentry event so the 2am
           // launch-day debugger can answer "who hit this?". main.jsx's
           // beforeSend already strips email + username so this stays
           // PII-safe — id only.
           try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
-          // Sprint #76 RR1: consume the post-signup clear sentinel on the
-          // first sign-in after a fresh signup. Wipes guest-progress
-          // local-storage so the new account starts clean (matches
-          // server which is 0/0 for the freshly-created profile) and
-          // hydrate's max-merge can't push guest stats into the new
-          // account on the next saveStats call. One-shot via the
-          // removeItem below; subsequent SIGNED_IN events on the same
-          // device just no-op.
+          // Sprint #100 guest→account convergence. Guarded by the
+          // biq_auth_attempt sentinel (set at the start of every USER-
+          // INITIATED sign-in/up) so this runs exactly once per real
+          // conversion — NEVER on a silent session restore at launch or a
+          // background token refresh (either of which would otherwise wipe
+          // a returning user's local stats on every app open).
           //
-          // biq_pending_join is preserved across the wipe: the user may
-          // have followed an invite link as guest, then signed up to
-          // accept — clearing pending_join here would lose the room
-          // they were trying to join.
+          //   • New / fresh account  → ABSORB. We do NOT clear the user-
+          //     scoped localStorage; hydrate's max-merge carries the guest's
+          //     XP / stats / streak up into the 0/0 server account and
+          //     pushes it on the next sync. The try-before-signup payoff,
+          //     identical for email and social.
+          //   • Existing account     → WIPE the guest-scoped localStorage so
+          //     the real account's remote data is authoritative and a
+          //     throwaway guest session can't pollute it. (Also fixes a
+          //     latent bug where guest→signin merged into real stats.)
+          //
+          // Discriminator: account age. created_at is the auth.users
+          // creation time, fixed at signup — a brand-new account is < 2 min
+          // old; a returning user's is older. The legacy email-signup
+          // sentinel also forces "new". biq_pending_join is preserved across
+          // a wipe so a guest who followed an invite link, then signed in,
+          // still lands in the room.
           try {
-            if (localStorage.getItem('biq_signup_pending_clear') === '1') {
-              let preservedJoin = null
-              try { preservedJoin = localStorage.getItem('biq_pending_join') } catch {}
-              clearAllUserLocalStorage()
-              if (preservedJoin) {
-                try { localStorage.setItem('biq_pending_join', preservedJoin) } catch {}
+            if (localStorage.getItem('biq_auth_attempt') === '1') {
+              localStorage.removeItem('biq_auth_attempt')
+              const createdAtMs = Date.parse(session.user.created_at || '') || 0
+              const isFreshAccount = createdAtMs > 0 && (Date.now() - createdAtMs) < 120000
+              const explicitSignup = localStorage.getItem('biq_signup_pending_clear') === '1'
+              const isNewSignup = explicitSignup || isFreshAccount
+              if (!isNewSignup) {
+                let preservedJoin = null
+                try { preservedJoin = localStorage.getItem('biq_pending_join') } catch {}
+                clearAllUserLocalStorage()
+                if (preservedJoin) {
+                  try { localStorage.setItem('biq_pending_join', preservedJoin) } catch {}
+                }
               }
+              // else: new account → keep guest-local; hydrate absorbs it.
               localStorage.removeItem('biq_signup_pending_clear')
             }
           } catch {}
         } else {
           try { Sentry.setUser(null) } catch {}
+          // Sprint #100 guest-first: after sign-out or session expiry, drop
+          // the user back into the app as a guest (not a login wall).
+          setIsGuest(true)
         }
         setLoading(false)
 
@@ -157,10 +191,9 @@ export function AuthProvider({ children }) {
         // server-side revocation). signOut() and performDelete() set a
         // localStorage sentinel with a fresh timestamp right before
         // calling supabase.auth.signOut(); if the flag is absent or
-        // older than 5s when SIGNED_OUT fires, this was expiry. We
-        // don't clear the flag here — let it age out via TTL so a
-        // multi-tab cross-tab signOut also lets Tab B's handler see
-        // "intentional" before the broadcast arrives.
+        // older than 5s when SIGNED_OUT fires, this was expiry. On expiry
+        // we open the auth overlay with an "expired" reason so the user can
+        // re-authenticate without losing their place (they're now a guest).
         if (event === 'SIGNED_OUT') {
           let intentional = false
           try {
@@ -168,9 +201,9 @@ export function AuthProvider({ children }) {
             intentional = flagAt > 0 && (Date.now() - flagAt) < 5000
           } catch {}
           if (!intentional) {
-            try {
-              window.dispatchEvent(new CustomEvent('biq:session-expired'))
-            } catch {}
+            try { window.dispatchEvent(new CustomEvent('biq:session-expired')) } catch {}
+            setAuthPromptReason('expired')
+            setAuthPromptOpen(true)
           }
         }
       }
@@ -479,6 +512,9 @@ export function AuthProvider({ children }) {
 
   async function signUp(email, password, username) {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-up attempted', level: 'info' })
+    // Sprint #100: mark a user-initiated auth so the SIGNED_IN handler runs
+    // the guest→account migration exactly once (and not on session restore).
+    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -506,6 +542,7 @@ export function AuthProvider({ children }) {
 
   async function signIn(email, password) {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-in attempted', level: 'info' })
+    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
     const result = await supabase.auth.signInWithPassword({ email, password })
     if (!result.error && result.data?.session) {
       // Pre-fill convenience for next visit (post-expiry, re-launch).
@@ -531,6 +568,7 @@ export function AuthProvider({ children }) {
   // OAuth identity from Settings (post-launch task — not blocking V1).
   async function signInWithOAuth(provider) {
     Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
+    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
     const isNative = Capacitor.isNativePlatform?.()
     if (isNative) {
       console.log('[OAuth] start', { provider, redirectTo: NATIVE_OAUTH_REDIRECT })
@@ -604,6 +642,7 @@ export function AuthProvider({ children }) {
   // they return cleanly so Login can clear its loading state.
   async function signInWithApple() {
     Sentry.addBreadcrumb({ category: 'auth', message: 'apple sign-in attempted', level: 'info' })
+    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
     const isNative = Capacitor.isNativePlatform?.()
     if (!isNative) return signInWithOAuth('apple')
     try {
@@ -989,6 +1028,16 @@ export function AuthProvider({ children }) {
     setIsGuest(false)
   }
 
+  // Sprint #100 guest-first: open / close the Login overlay on demand.
+  // reason is a short tag a trigger can pass for a contextual header.
+  function openAuthPrompt(reason = null) {
+    setAuthPromptReason(reason)
+    setAuthPromptOpen(true)
+  }
+  function closeAuthPrompt() {
+    setAuthPromptOpen(false)
+  }
+
   // Crops centered to a square and resizes to targetW × targetH, then encodes JPEG.
   async function resizeImageToBlob(file, targetW, targetH) {
     let dataURL
@@ -1174,6 +1223,10 @@ export function AuthProvider({ children }) {
       continueAsGuest,
       exitGuestMode,
       uploadAvatar,
+      authPromptOpen,
+      authPromptReason,
+      openAuthPrompt,
+      closeAuthPrompt,
     }}>
       {children}
     </AuthContext.Provider>

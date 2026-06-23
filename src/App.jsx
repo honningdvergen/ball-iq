@@ -7655,7 +7655,7 @@ function InstallCard() {
 }
 
 function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked }) {
-  const { user, profile, isGuest, signOut, exitGuestMode } = useAuth();
+  const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
@@ -7771,7 +7771,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                   <div className="sr-desc">Sign up to unlock leaderboards and online play</div>
                 </div>
               </div>
-              <button className="settings-row" onClick={() => exitGuestMode()} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
+              <button className="settings-row" onClick={() => openAuthPrompt?.('save')} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
                 <div className="sr-left">
                   <div className="sr-label" style={{color:"var(--accent)"}}>Sign in / Create account</div>
                 </div>
@@ -9255,7 +9255,7 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
 function AppInner() {
   perfMark('AppInner render (first)');
   useEffect(() => { perfMark('AppInner mounted'); }, []);
-  const { user, profile: authProfile, isGuest, exitGuestMode } = useAuth();
+  const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
@@ -9907,7 +9907,7 @@ function AppInner() {
       // to host or join rooms. Block before any state transition so the home
       // screen doesn't briefly flash and the OnlineEntry never mounts.
       if (m === "online" && (!user || isGuest)) {
-        showToast("🔐 Sign in to play Online Multiplayer");
+        openAuthPrompt("online");
         return;
       }
       setMode(m === "balliq_confirmed" ? "balliq" : m);
@@ -10906,7 +10906,7 @@ function AppInner() {
                     // Multiplayer requires a real account — guests have no
                     // user.id to host or join rooms.
                     if (!user || isGuest) {
-                      showToast("🔐 Sign in to play Online Multiplayer");
+                      openAuthPrompt("online");
                       return;
                     }
                     setScreen("online-stage1");
@@ -11047,7 +11047,7 @@ function AppInner() {
               <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Sign in to join the game</div>
               <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
               <button
-                onClick={() => { try { exitGuestMode?.(); } catch {} }}
+                onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}
                 style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
               >
                 Sign in
@@ -11249,7 +11249,7 @@ function AppInner() {
 }
 
 function AppGate() {
-  const { user, isGuest, loading, profile } = useAuth();
+  const { user, isGuest, loading, profile, authPromptOpen, authPromptReason, closeAuthPrompt } = useAuth();
   // Sprint #62 fix 3: keep the splash up until authProfile has loaded
   // (or a safety timeout elapses), so AppInner mounts with profile
   // already in hand and the Sprint #26 X2 cross-device onboarding
@@ -11328,10 +11328,19 @@ function AppGate() {
 
   if (effectiveLoading) return splash;
 
+  // Sprint #100 guest-first: the app is always the front door. By the time
+  // effectiveLoading is false, getSession() has resolved and useAuth has
+  // either set `user` (returning session) or auto-entered guest mode, so
+  // AppInner always renders with a valid user||guest context. The Login
+  // screen is an on-demand overlay (authPromptOpen) reached via the in-app
+  // "Sign in" affordances and the reward-framed gated-feature prompts.
   return (
     <>
       {splash}
-      {(!user && !isGuest) ? <Login /> : <AppInner />}
+      <AppInner />
+      {authPromptOpen && (
+        <Login asOverlay promptReason={authPromptReason} onClose={closeAuthPrompt} />
+      )}
     </>
   );
 }
