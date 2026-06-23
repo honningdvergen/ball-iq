@@ -860,11 +860,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* 3D "Duolingo" primary button — bright green face, darker rim, press translates Y.
    Use only for the signature primary CTA of a screen. Applied via the .btn-3d
    class so existing non-CTA greens stay on the toned-down accent (#22c55e). */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#22c55e;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-3d:hover{filter:brightness(1.06);}
 .btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
-.btn-3d:focus-visible{outline:3px solid rgba(88,204,2,0.4);outline-offset:2px;}
+.btn-3d:focus-visible{outline:3px solid rgba(34,197,94,0.4);outline-offset:2px;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
 .btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
@@ -883,7 +883,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 
 /* Pill utility — small uppercase tone-tinted badge. */
 .pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
-.pill--green{background:rgba(88,204,2,0.15);color:#8AE042;}
+.pill--green{background:rgba(34,197,94,0.15);color:#4ade80;}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
 .app{max-width:420px;margin:0 auto;padding:0 20px 0;min-height:100vh;min-height:100dvh;background:var(--bg);transition:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
@@ -895,7 +895,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .hdr-xp{flex:1;min-width:80px;display:flex;align-items:center;gap:8px;}
 .hdr-xp-lbl{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.02em;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .hdr-xp-track{flex:1;height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
-.hdr-xp-fill{height:100%;background:#58CC02;border-radius:999px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
+.hdr-xp-fill{height:100%;background:#22c55e;border-radius:999px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .light .hdr-xp-track{background:#E5E5EA;}
 .logo em{color:var(--accent);font-style:normal;}
 .hdr-actions{display:flex;align-items:center;gap:8px;}
@@ -938,8 +938,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .home-stat-row{display:flex;gap:10px;margin-bottom:24px;}
 .home-stat-chip{flex:1;padding:10px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--border);contain:layout paint style;display:flex;align-items:center;gap:10px;}
 .home-stat-chip-desktop-only{display:none;}
-.home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(88,204,2,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
-.home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(88,204,2,0.45);}
+.home-stat-chip.tappable{background:var(--s2);border:1px solid rgba(34,197,94,0.28);cursor:pointer;font-family:inherit;text-align:left;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.home-stat-chip.tappable:hover{background:var(--s3);border-color:rgba(34,197,94,0.45);}
 .home-stat-chip.tappable:active{transform:scale(0.98);}
 .hsc-left{flex-shrink:0;display:flex;flex-direction:column;}
 .hsc-right{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;}
@@ -995,10 +995,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(88,204,2,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(88,204,2,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(34,197,94,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(34,197,94,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
 .light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
-.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(88,204,2,0.18);border:1px solid rgba(88,204,2,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#58CC02;flex-shrink:0;box-shadow:0 0 12px rgba(88,204,2,0.25);line-height:1;}
+.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(34,197,94,0.18);border:1px solid rgba(34,197,94,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#22c55e;flex-shrink:0;box-shadow:0 0 12px rgba(34,197,94,0.25);line-height:1;}
 .light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:900;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
@@ -1011,11 +1011,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .light .mp-card-invite{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.10);color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .light .mp-card-invite:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.16);}
 .mp-card-ctas{display:flex;gap:8px;margin-top:10px;align-items:stretch;}
-.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#58CC02;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(88,204,2,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#22c55e;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(34,197,94,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
-.mp-card-cta.ghost{background:transparent;color:#fff;border:1.5px solid rgba(88,204,2,0.45);box-shadow:none;-webkit-text-fill-color:#fff;}
-.mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
+.mp-card-cta.ghost{background:transparent;color:#fff;border:1.5px solid rgba(34,197,94,0.45);box-shadow:none;-webkit-text-fill-color:#fff;}
+.mp-card-cta.ghost:hover{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.6);filter:none;}
 .light .mp-card-cta.ghost{color:#34A853;border-color:rgba(52,168,83,0.50);-webkit-text-fill-color:#34A853;}
 .light .mp-card-cta.ghost:hover{background:rgba(52,168,83,0.06);}
 
@@ -1201,19 +1201,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
 /* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
-.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#8AE042;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
+.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#4ade80;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(34,197,94,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .opt:hover:not(:disabled){border-color:var(--border2);background:var(--s2);transform:translateX(2px);}
 .opt:disabled{cursor:default;}
 /* Correct / wrong feedback — matches design-system quiz-answers spec */
-.opt.correct{border-color:rgba(88,204,2,0.55);background:rgba(88,204,2,0.12);color:#8AE042;}
+.opt.correct{border-color:rgba(34,197,94,0.55);background:rgba(34,197,94,0.12);color:#4ade80;}
 .opt.wrong{border-color:rgba(255,59,48,0.55);background:rgba(255,59,48,0.10);color:#FF8080;}
 .opt.neutral-after{opacity:0.65;color:var(--t2);}
 /* Letter chip (A/B/C/D) */
 .opt-l{width:30px;height:30px;border-radius:9px;background:var(--s2);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;color:var(--t3);border:1px solid var(--border);transition:background 0.15s,color 0.15s,border-color 0.15s;}
-.opt.correct .opt-l{background:#58CC02;color:#0A0A0A;border-color:#58CC02;}
+.opt.correct .opt-l{background:#22c55e;color:#0A0A0A;border-color:#22c55e;}
 .opt.wrong .opt-l{background:#FF3B30;color:#fff;border-color:#FF3B30;}
 .opt.neutral-after .opt-l{background:var(--s2);color:var(--t2);}
 .feedback{border-radius:9px;padding:10px 14px;margin-top:9px;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
@@ -1287,13 +1287,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* APP_NAME hero variant — larger ring, stronger green glow, bigger number.
    Applied via .iq-ring-hero / .iq-num-hero modifier classes so the non-
    results uses of the same .iq-ring (e.g. profile screen) stay intact. */
-.iq-ring-hero{width:200px;height:200px;margin:24px auto 12px;box-shadow:0 0 60px rgba(88,204,2,0.25),0 0 120px rgba(88,204,2,0.18);}
-.iq-ring-hero.great{box-shadow:0 0 80px rgba(88,204,2,0.45),0 0 160px rgba(88,204,2,0.25);}
+.iq-ring-hero{width:200px;height:200px;margin:24px auto 12px;box-shadow:0 0 60px rgba(34,197,94,0.25),0 0 120px rgba(34,197,94,0.18);}
+.iq-ring-hero.great{box-shadow:0 0 80px rgba(34,197,94,0.45),0 0 160px rgba(34,197,94,0.25);}
 .iq-ring-inner-hero{width:160px;height:160px;}
 .iq-num-hero{font-size:64px;letter-spacing:-3px;}
 
 /* Funny label as a prominent pill below the ring — pops on reveal. */
-.iq-label-pill{display:inline-block;margin:6px auto 12px;padding:10px 22px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.4);border-radius:999px;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--text);max-width:92%;}
+.iq-label-pill{display:inline-block;margin:6px auto 12px;padding:10px 22px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);border-radius:999px;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--text);max-width:92%;}
 
 /* XP pop — used wherever +XP earned is shown. Brief scale-in on mount so
    the reward registers visually instead of fading in like a stat row. */
@@ -1382,7 +1382,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .local-reveal-list{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .local-reveal-row{display:flex;align-items:center;gap:10px;padding:11px 14px;font-size:14px;border-bottom:0.5px solid var(--border);}
 .local-reveal-row:last-child{border-bottom:none;}
-.local-reveal-row.ok{background:rgba(88,204,2,0.06);}
+.local-reveal-row.ok{background:rgba(34,197,94,0.06);}
 .local-reveal-row.no{background:rgba(255,59,48,0.05);}
 .local-reveal-row.out{opacity:0.7;}
 .local-reveal-chose{font-size:12px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -1613,7 +1613,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
 .profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:100%;max-width:220px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
-.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:#8AE042;padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
+.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,0.10);color:#4ade80;padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
 .profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
@@ -1637,7 +1637,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* .journey-badge reuses the .pill tokens (tone variants map: current=green solid, next=pill--green, goal=pill--amber). */
 .journey-badge{display:inline-flex;align-items:center;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;}
 .journey-badge.current{background:var(--accent);color:#fff;}
-.journey-badge.next{background:rgba(88,204,2,0.15);color:#8AE042;}
+.journey-badge.next{background:rgba(34,197,94,0.15);color:#4ade80;}
 .journey-badge.goal{background:rgba(255,193,7,0.15);color:#FFC107;}
 
 .club-crest svg{width:100%;height:100%;display:block;}
@@ -1676,9 +1676,9 @@ button.friends-lb-row:hover{background:var(--s3);}
 .friends-muted{font-size:12px;color:var(--t3);padding:6px 2px;}
 .friends-lb{display:flex;flex-direction:column;gap:4px;}
 .friends-lb-row{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;background:var(--s2);}
-.friends-lb-row.you{background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.3);}
+.friends-lb-row.you{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);}
 .friends-lb-rank{font-size:12px;font-weight:800;color:var(--t3);min-width:28px;}
-.friends-lb-row.you .friends-lb-rank{color:#8AE042;}
+.friends-lb-row.you .friends-lb-rank{color:#4ade80;}
 .friends-lb-score{font-size:13px;font-weight:800;color:var(--t1);}
 .friends-you-pill{margin-left:6px;font-size:9px;background:var(--accent);color:#0a1a00;padding:1px 5px;border-radius:4px;font-weight:800;letter-spacing:0.04em;vertical-align:middle;}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
@@ -1899,7 +1899,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
 .onboard-body{font-size:15px;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:24px;}
-.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#22c55e;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .onboard-btn:hover{filter:brightness(1.06);}
 .onboard-btn:active{opacity:0.85;}
 .onboard-btn-inline{max-width:180px;flex:1;}
@@ -1941,7 +1941,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .feedback{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
-.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;box-shadow:0 6px 20px rgba(10,10,10,0.4);}
+.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#22c55e;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;box-shadow:0 6px 20px rgba(10,10,10,0.4);}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{opacity:0.85;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
@@ -1973,7 +1973,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-mode-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px;border-radius:12px;background:var(--s1);border:1px solid var(--border);cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:background 0.15s,border-color 0.15s,transform 0.05s;-webkit-appearance:none;appearance:none;}
 .og-mode-card:hover{background:var(--s2);border-color:var(--border2);}
 .og-mode-card:active{transform:scale(0.97);}
-.og-mode-card.selected{border-color:var(--accent);background:rgba(88,204,2,0.1);}
+.og-mode-card.selected{border-color:var(--accent);background:rgba(34,197,94,0.1);}
 .og-mode-icon{font-size:22px;line-height:1;}
 .og-mode-name{font-size:13px;font-weight:800;color:var(--text);margin-top:2px;}
 .og-mode-desc{font-size:11px;color:var(--t3);line-height:1.3;}
@@ -1984,7 +1984,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-progress-label{font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--t3);text-transform:uppercase;}
 .og-progress-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
 .og-progress-bar{height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
-.og-progress-fill{height:100%;background:linear-gradient(90deg,#58CC02,#46A302);border-radius:999px;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);}
+.og-progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#46A302);border-radius:999px;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);}
 
 .og-q{padding:18px 12px 22px;background:var(--s1);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;text-align:center;}
 .og-q-number{font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
@@ -1993,12 +1993,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;text-align:left;cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.05s;-webkit-appearance:none;appearance:none;}
 .og-option:hover:not(:disabled){background:var(--s2);border-color:var(--border2);}
 .og-option:active:not(:disabled){transform:scale(0.98);}
-.og-option.picked{border-color:var(--accent);background:rgba(88,204,2,0.14);}
+.og-option.picked{border-color:var(--accent);background:rgba(34,197,94,0.14);}
 .og-option.locked{cursor:not-allowed;opacity:0.7;}
 .og-option-letter{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--t2);}
 .og-option.picked .og-option-letter{background:var(--accent);color:#0A0A0A;}
 .og-option-text{flex:1;font-size:14px;font-weight:600;line-height:1.35;}
-.og-locked{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.4);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);}
+.og-locked{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);}
 
 .og-finished{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 16px;background:var(--s1);border:1px solid var(--border);border-radius:18px;}
 .og-finished-title{font-size:18px;font-weight:800;color:var(--text);}
@@ -2009,7 +2009,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-results-headline strong{color:var(--accent);}
 .og-result-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;}
 .og-result-side{position:relative;padding:18px 10px;background:var(--s1);border:1px solid var(--border);border-radius:16px;text-align:center;}
-.og-result-side.winner{border-color:var(--accent);background:rgba(88,204,2,0.08);box-shadow:0 4px 18px rgba(88,204,2,0.15);}
+.og-result-side.winner{border-color:var(--accent);background:rgba(34,197,94,0.08);box-shadow:0 4px 18px rgba(34,197,94,0.15);}
 .og-result-name{font-size:13px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .og-result-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
 .og-result-side.winner .og-result-score{color:var(--accent);}
@@ -2022,7 +2022,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-breakdown-q{flex:1;min-width:0;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .og-breakdown-marks{display:flex;gap:6px;flex-shrink:0;}
 .og-mark{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:rgba(255,90,90,0.16);color:#FF5A5A;}
-.og-mark.ok{background:rgba(88,204,2,0.16);color:var(--accent);}
+.og-mark.ok{background:rgba(34,197,94,0.16);color:var(--accent);}
 
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
 .wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 8px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
@@ -2072,7 +2072,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    answers). Capacitor 6 targets iOS 13+ which has full aspect-ratio
    support; the fallback is no longer reachable. */
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
-.wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
+.wd-tile.wd-green{background:#22c55e;border-color:#22c55e;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
 .wd-tile.wd-grey{background:var(--s2);border-color:var(--s2);color:var(--text);}
 .html.light .wd-tile.wd-grey,.light .wd-tile.wd-grey{background:#9CA0AB;border-color:#9CA0AB;color:#fff;}
@@ -2097,7 +2097,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-result-sub{font-size:14px;color:var(--t2);}
 .wd-result-sub strong{color:var(--accent);letter-spacing:0.5px;font-weight:800;}
 .wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
-.wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
+.wd-share{margin:4px auto 0;padding:10px 22px;background:#22c55e;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
 .wd-share:active{opacity:0.85;}
 .wd-back{padding:10px 22px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:var(--accent);}
 .wd-back:active{opacity:0.85;}
@@ -2107,11 +2107,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
-.wd-key-green{background:#58CC02;color:#0A0A0A;}
+.wd-key-green{background:#22c55e;color:#0A0A0A;}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
 .light .wd-key-grey{background:#9CA0AB;color:#fff;}
-.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#22c55e;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
@@ -2396,8 +2396,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* Hover-only effect — touch devices won't match @media (hover: hover). */
   @media (hover: hover) {
     .play-card:hover {
-      border-color: rgba(88,204,2,0.45);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 0 1px rgba(88,204,2,0.35), 0 4px 24px rgba(88,204,2,0.12);
+      border-color: rgba(34,197,94,0.45);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 0 1px rgba(34,197,94,0.35), 0 4px 24px rgba(34,197,94,0.12);
       /* Sprint #23 U3 P3: subtle lift on desktop hover so the card
          feels "liftable" alongside the border/shadow cue. The play-card
          base transition already covers transform at 0.1s — fast enough
@@ -6234,7 +6234,7 @@ async function generateShareCard(type, data) {
   ctx.fillRect(0, 0, W, H);
 
   // Top accent bar
-  ctx.fillStyle = "#58CC02";
+  ctx.fillStyle = "#22c55e";
   ctx.fillRect(0, 0, W, 6);
 
   // Header row — wordmark left, URL right
@@ -6271,7 +6271,7 @@ async function generateShareCard(type, data) {
     const total = data?.total ?? 6;
     const dateLabel = data?.dateLabel || "";
     const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
-    const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
+    const colorMap = { green: "#22c55e", yellow: "#FFC107", grey: "#3A3F55" };
 
     // Mode label
     ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -6287,7 +6287,7 @@ async function generateShareCard(type, data) {
     // fraction. In Footle fewer guesses is better, so "3/6" read like a
     // quiz score (3-of-6 correct) and undersold a good result. Sprint #99.
     ctx.font = '800 34px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#58CC02";
+    ctx.fillStyle = "#22c55e";
     ctx.fillText(headline, cx, 212);
 
     // Emoji-tile grid. 36×36 tiles, 4px gap, rows centered horizontally.
@@ -6322,7 +6322,7 @@ async function generateShareCard(type, data) {
     ctx.fillText("BALL IQ TEST", cx, 130);
 
     ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
-    ctx.fillStyle = "#58CC02";
+    ctx.fillStyle = "#22c55e";
     ctx.fillText(String(iq), cx, 260);
 
     // Funny label — wrapped to 300px
@@ -6367,7 +6367,7 @@ async function generateShareCard(type, data) {
     ctx.fillText(modeLabel, cx, 130);
 
     ctx.font = '900 80px "JetBrains Mono", "Courier New", monospace';
-    ctx.fillStyle = "#58CC02";
+    ctx.fillStyle = "#22c55e";
     ctx.fillText(`${score}/${total}`, cx, 250);
 
     ctx.font = '600 18px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -6937,10 +6937,10 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
             marginTop:8,
             fontSize:88,
             fontWeight:900,
-            color:"#58CC02",
+            color:"#22c55e",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
+            textShadow:"0 8px 32px rgba(34,197,94,0.35)",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
@@ -8208,7 +8208,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           border: "1px solid #2A2D3A",
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
-            <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
+            <span style={{color: "#22c55e", fontWeight: 600}}>The short version:</span>{" "}
             Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. We don't run analytics, ads, or tracking, and we don't sell or share your data.
           </p>
         </div>
@@ -8350,7 +8350,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
         {/* Phase 6d Issue 3: reuse privacyH2/privacyP from PrivacyScreen so
             Help and Privacy read as visual siblings (same h2 weight/color,
             same body color, same vertical rhythm). Was using a bright
-            #58CC02 on questions which was louder than anywhere else in
+            #22c55e on questions which was louder than anywhere else in
             the app. */}
         {FAQ_ENTRIES.map((entry, i) => (
           <React.Fragment key={i}>
@@ -8489,9 +8489,9 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
         <div
           className="numeric"
           style={{
-            fontSize:72, fontWeight:900, color:"#58CC02",
+            fontSize:72, fontWeight:900, color:"#22c55e",
             letterSpacing:"-0.03em", lineHeight:1,
-            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
+            textShadow:"0 8px 32px rgba(34,197,94,0.35)",
           }}
         >{iq}</div>
         <div style={{marginTop:10, fontSize:17, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.01em"}}>{label}</div>

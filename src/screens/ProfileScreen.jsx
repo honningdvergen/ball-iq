@@ -1184,12 +1184,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           <div style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>🌟 Save your progress</div>
           <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>
             {(stats?.gamesPlayed || 0) > 0
-              ? "Create a free account to keep your stats, streak and IQ — and play friends online."
+              ? "Create a free account to keep your stats, streak and IQ — and challenge friends online 1v1."
               : "Create a free account to play online 1v1, add friends, and save your progress across devices."}
           </div>
           <button
             onClick={() => { try { openAuthPrompt?.('save'); } catch {} }}
-            style={{marginTop:8,alignSelf:"stretch",padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
+            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
           >
             Sign in / Create account
           </button>
