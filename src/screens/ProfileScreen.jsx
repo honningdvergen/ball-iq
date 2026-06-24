@@ -1041,6 +1041,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
+  // 1.0.2: when a user picks an emoji avatar while a previously-uploaded photo
+  // (avatar_url) still exists on authProfile, the photo would keep winning the
+  // display and the emoji "wouldn't change". This flag flips the card to show
+  // the freshly-picked emoji immediately; we also clear avatar_url server-side
+  // so it stays consistent after the next authProfile refetch. Reset to false
+  // when a new photo upload succeeds.
+  const [emojiOverridesPhoto, setEmojiOverridesPhoto] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const fileInputRef = useRef(null);
@@ -1053,10 +1060,26 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   // that gap so a returning user doesn't briefly see "Player".
   const authLoading = !!user && !authProfile;
   const localName = (profile?.name || "").trim();
-  const hasUsername = !!authProfile?.username && authProfile.username !== "Player";
-  const showNameCTA = !authLoading && !hasUsername && (!localName || localName.toLowerCase() === "player");
+  // Sprint #100 follow-up (1.0.2): mirror HomeScreen's isDefaultName so the two
+  // screens agree on what counts as a "real" name. The server's default
+  // usernames (Player, player_xxxxx from Apple Hide-My-Email / missing-name
+  // sign-ups) are NOT real names — they must still trigger the set-your-name
+  // CTA and open the editor pre-filled blank. Before this, ProfileScreen
+  // treated player_xxxxx as a valid username, so the home "Tap to set your
+  // name" CTA navigated here but the editor never opened (the nonce effect's
+  // showNameCTA gate saw hasUsername=true and bailed).
+  const isDefaultName = (n) => { const t = (n || "").trim(); return !t || t === "Player" || /^player_/i.test(t); };
+  const realUsername = !isDefaultName(authProfile?.username) ? authProfile.username : null;
+  const realLocalName = !isDefaultName(localName) ? localName : null;
+  // What we show on the card + pre-fill into the editor. Server name wins over
+  // a local one; both fall back to "" so a default-named user edits from blank.
+  const currentName = realUsername || realLocalName || "";
+  const hasUsername = !!realUsername;
+  const showNameCTA = !authLoading && !hasUsername && !realLocalName;
   const startNameEdit = () => {
-    setNameDraft(localName);
+    // Pre-fill with the current real name so a signed-in user *edits* their
+    // username instead of retyping from scratch; default names start blank.
+    setNameDraft(currentName);
     setEditingName(true);
   };
   const saveName = () => {
@@ -1097,6 +1120,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const iq = stats.bestIQ || null;
   const pctile = iq ? iqPercentile(iq) : null;
   const avatarUrl = authProfile?.avatar_url || null;
+  // Show the uploaded photo only when it hasn't been overridden by a fresh
+  // emoji pick this session. Emoji itself is local-first (the just-picked value
+  // in `profile.avatar`) with the server's avatar_id as the fallback.
+  const showPhoto = !!avatarUrl && !emojiOverridesPhoto;
+  const displayEmoji = avatarEmoji(profile?.avatar || authProfile?.avatar_id);
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
   // practice every caller passes onToast — this is defensive.
@@ -1146,6 +1174,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       if (result?.error) {
         toast("Could not upload photo — try again");
       } else {
+        // A fresh photo replaces any emoji override.
+        setEmojiOverridesPhoto(false);
         toast("Profile photo updated ✓");
       }
     } catch {
@@ -1208,21 +1238,21 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             className="profile-avatar"
             onClick={openAvatarPicker}
             aria-label="Edit profile photo"
-            style={avatarUrl
+            style={showPhoto
               ? {padding:0, overflow:"hidden", background:"var(--s2)", appearance:"none", WebkitAppearance:"none", font:"inherit"}
               : {appearance:"none", WebkitAppearance:"none", font:"inherit"}}
           >
             {uploading ? (
               <span className="avatar-spinner" aria-label="Uploading…" />
-            ) : avatarUrl ? (
+            ) : showPhoto ? (
               <img
                 src={avatarUrl}
-                alt={profile?.username ? `${profile.username}'s avatar` : "Profile avatar"}
+                alt={currentName ? `${currentName}'s avatar` : "Profile avatar"}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
                 style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}}
               />
             ) : (
-              avatarEmoji(profile?.avatar)
+              displayEmoji
             )}
           </button>
           <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
@@ -1264,9 +1294,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             </button>
           </>
         ) : (
-          <div className="profile-name" style={{cursor:"default"}}>
-            {authProfile?.username || profile?.name || "Player"}
-          </div>
+          // 1.0.2: the name is always tappable to edit. Previously this was a
+          // static, non-tappable div, so a signed-in user with a real username
+          // had no way to change it (the home CTA only appears when there's no
+          // real name). Tap the name → inline editor, pre-filled.
+          <button
+            className="profile-name"
+            onClick={startNameEdit}
+            style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:"var(--t1)",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}}
+            aria-label="Edit your name"
+          >
+            {currentName || authProfile?.username || profile?.name || "Player"}
+            <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
+          </button>
         )}
         <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
         {iq && <div className="profile-iq-line">{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
@@ -1360,7 +1400,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
-          currentUserAvatar={avatarEmoji(authProfile?.avatar_id || profile?.avatar)}
+          currentUserAvatar={avatarEmoji(profile?.avatar || authProfile?.avatar_id)}
           onChallenge={onChallenge}
           onToast={onToast}
           onOpenFriend={onOpenFriend}
@@ -1456,10 +1496,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
                   onClick={() => {
                     setProfile(p => ({...p, avatar:em}));
                     setShowEmojiPicker(false);
+                    // Make the emoji win over any existing uploaded photo,
+                    // immediately (local) and after refetch (server clear).
+                    setEmojiOverridesPhoto(true);
                     // Sync emoji choice to Supabase so friend lists and
-                    // leaderboards see the new avatar across devices.
+                    // leaderboards see the new avatar across devices. Clear
+                    // avatar_url too so the photo doesn't re-win on next load.
                     if (user && !isGuest) {
-                      supabase.from('profiles').update({ avatar_id: em }).eq('id', user.id).then(({ error }) => {
+                      supabase.from('profiles').update({ avatar_id: em, avatar_url: null }).eq('id', user.id).then(({ error }) => {
                         if (error) toast("⚠️ Couldn't sync avatar — check your connection");
                       }).catch(() => {
                         toast("⚠️ Couldn't sync avatar — check your connection");

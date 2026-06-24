@@ -55,7 +55,17 @@ export function HomeScreen({
         // available — leaves "Good morning" alone until the user sets
         // a name (CTA below offers the affordance).
         const homeDisplayName = homeRealUsername || (profile?.name && !isDefaultName(profile.name) ? profile.name : null);
-        const homeGreetingBase = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; })();
+        const homeGreetingBase = (() => {
+          const now = new Date();
+          const h = now.getHours();
+          if (h < 12) return "Good morning";
+          if (h < 18) return "Good afternoon";
+          // Easter egg: ~1 in 5 evenings, swap in the "Good ebening" football-
+          // commentary pun. Seeded on the calendar date so it stays put through
+          // the whole evening (no flicker between renders) but varies day to day.
+          const daySeed = now.getFullYear() * 372 + (now.getMonth() + 1) * 31 + now.getDate();
+          return (daySeed % 5 === 0) ? "Good ebening" : "Good evening";
+        })();
         const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";

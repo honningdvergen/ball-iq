@@ -25,6 +25,7 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
+import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 // Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
 // for the first-paint critical path — none of the three screens are reachable
 // without tab/screen navigation that happens AFTER cold launch. React.lazy
@@ -9257,6 +9258,18 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // 1.0.2 Feature E: one-time "pick your username" step after a NEW social
+  // sign-up. useAuth sets biq_needs_username='1' for fresh Apple/Google
+  // accounts (email sign-ups already chose a username). We surface the modal
+  // once the signed-in profile has resolved; the flag persists in localStorage
+  // until the user commits a name, so a mid-flow quit just re-shows it.
+  const [needsUsername, setNeedsUsername] = useState(false);
+  useEffect(() => {
+    if (!user || isGuest || !authProfile) return;
+    try {
+      if (localStorage.getItem('biq_needs_username') === '1') setNeedsUsername(true);
+    } catch {}
+  }, [user?.id, isGuest, authProfile]);
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
@@ -10709,6 +10722,21 @@ function AppInner() {
         )}
 
         {hasOnboarded && <>
+        {/* Feature E: one-time username confirmation after a new social
+            sign-up. Overlays the app (z-index 500) until the user commits a
+            name; shown only once onboarding is complete so the two full-screen
+            steps don't stack. */}
+        {needsUsername && authProfile && (
+          <UsernameSetupModal
+            user={user}
+            authProfile={authProfile}
+            onSaved={(name) => {
+              setProfile(p => ({ ...(p || {}), name }));
+              try { localStorage.removeItem('biq_needs_username'); } catch {}
+              setNeedsUsername(false);
+            }}
+          />
+        )}
         {!inGame && (
           <DesktopNav
             onHomeClick={handleHomeClick}
