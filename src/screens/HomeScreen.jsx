@@ -30,6 +30,9 @@ export function HomeScreen({
   startMode,
   setShowDiffPicker,
   shareCard,
+  challenge,
+  onPlayChallenge,
+  onDismissChallenge,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -114,6 +117,37 @@ export function HomeScreen({
           </div>
         );
       })()}
+
+      {/* 1.1 async challenge: a friend's "beat my Daily 7" link landed here.
+          Shown only when the challenge is for today and the user hasn't played
+          yet (gated by the parent). Play routes into today's Daily 7; the
+          head-to-head result toasts on completion. */}
+      {challenge && (
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:10,background:"linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.05))",border:"1px solid rgba(34,197,94,0.30)",borderRadius:14}}>
+          <span style={{fontSize:22}} aria-hidden="true">🏆</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:13.5,fontWeight:800,color:"var(--t1)",lineHeight:1.25}}>
+              {challenge.name ? `${challenge.name} challenged you` : "You've been challenged"}
+            </div>
+            <div style={{fontSize:12,color:"var(--t2)",marginTop:1}}>
+              Beat {challenge.score}/7 on today's Daily 7
+            </div>
+          </div>
+          <button
+            onClick={onPlayChallenge}
+            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:10,fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+          >
+            Play
+          </button>
+          <button
+            onClick={onDismissChallenge}
+            aria-label="Dismiss challenge"
+            style={{flexShrink:0,background:"none",border:"none",color:"var(--t3)",fontSize:18,cursor:"pointer",padding:"4px 2px",lineHeight:1}}
+          >
+            ×
+          </button>
+        </div>
+      )}
 
       {/* ── DAILY ZONE (Sprint #12) ──
           Wraps Footle hero + Today's 7 in a tinted container with a

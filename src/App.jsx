@@ -9359,6 +9359,35 @@ function AppInner() {
     try { localStorage.removeItem("biq_pending_join"); } catch {}
   }, []);
 
+  // 1.1 async "beat my Daily 7" challenge. A friend's link is balliq.app/?c=
+  // SCORE.YYYYMMDD[.Name]. We capture it on launch (web/SPA), persist it, and
+  // strip the query so a refresh doesn't re-trigger. Only USED if it's for
+  // today (Daily 7 is deterministic per day) and the user hasn't played yet;
+  // the head-to-head compare fires when they finish. (Native deep-linking into
+  // the installed app needs an AASA path entry — follow-up; web handles it now.)
+  const [pendingChallenge, setPendingChallenge] = useState(() => {
+    try {
+      const c = new URLSearchParams(window.location.search).get("c");
+      if (c) {
+        const [scoreStr, dateStr, nameEnc] = c.split(".");
+        const score = parseInt(scoreStr, 10);
+        try { window.history.replaceState({}, "", `/${window.location.hash || ""}`); } catch {}
+        if (!isNaN(score) && /^\d{8}$/.test(dateStr || "")) {
+          const challenge = { score: Math.max(0, Math.min(7, score)), date: dateStr, name: nameEnc ? decodeURIComponent(nameEnc) : "" };
+          try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
+          return challenge;
+        }
+      }
+      const stored = localStorage.getItem("biq_pending_challenge");
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return null;
+  });
+  const clearChallenge = useCallback(() => {
+    setPendingChallenge(null);
+    try { localStorage.removeItem("biq_pending_challenge"); } catch {}
+  }, []);
+
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
   // arrive via Universal Link (balliq.app/join/CODE) which Capacitor's
@@ -10301,6 +10330,17 @@ function AppInner() {
         // 1.1: completing today's Daily 7 cancels tonight's reminder and is a
         // positive moment to surface the notification pre-prompt.
         try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: true } })); } catch {}
+        // 1.1 async challenge: head-to-head compare if a friend's challenge for
+        // today was pending. Consumed once shown.
+        if (pendingChallenge && pendingChallenge.date === todayYMD.replace(/-/g, "")) {
+          const mine = res.score, theirs = pendingChallenge.score;
+          const who = pendingChallenge.name || "your friend";
+          const msg = mine > theirs ? `🏆 You beat ${who}! ${mine}/7 vs ${theirs}/7`
+                    : mine === theirs ? `🤝 Tied with ${who} — ${mine}/7 each`
+                    : `${who} takes this one — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`;
+          celebrationTimeoutsRef.current.push(setTimeout(() => showToast(msg), 1800));
+          clearChallenge();
+        }
       }
       setActiveDailyDate(null);
       haptic("heavy");
@@ -10325,7 +10365,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge]);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
@@ -10683,6 +10723,15 @@ function AppInner() {
     const streakLine = loginStreak > 0
       ? `🔥 ${loginStreak}-day streak`
       : "";
+    // 1.1 async challenge: encode score + date (+ challenger name) into the
+    // link so a friend who opens it sees "beat my X/7" on today's deterministic
+    // Daily 7 and gets a head-to-head compare after they finish. Format:
+    // balliq.app/?c=SCORE.YYYYMMDD[.Name]
+    const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
+    const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
+      ? authProfile.username
+      : ((profile?.name && profile.name !== "Player") ? profile.name : "");
+    const challengeUrl = `balliq.app/?c=${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName) : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
@@ -10692,7 +10741,7 @@ function AppInner() {
       grid,
       "",
       "Think you can beat me?",
-      "balliq.app",
+      challengeUrl,
     ].filter(Boolean).join("\n");
 
     try {
@@ -10709,7 +10758,7 @@ function AppInner() {
     } catch {
       showToast("Couldn't share — try again");
     }
-  }, [dailyScore, loginStreak, showToast]);
+  }, [dailyScore, loginStreak, showToast, authProfile, profile]);
   const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
@@ -11138,6 +11187,9 @@ function AppInner() {
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
               shareCard={shareCard}
+              challenge={(pendingChallenge && pendingChallenge.date === todayKey.replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
+              onPlayChallenge={() => startMode("daily")}
+              onDismissChallenge={clearChallenge}
             />
           </div>
         )}
