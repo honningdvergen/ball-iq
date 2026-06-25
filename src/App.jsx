@@ -8905,6 +8905,11 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     return false;
   });
 
+  // 1.1: whether today's puzzle was ALREADY finished when this screen
+  // mounted. Distinguishes a fresh solve (fire confetti once) from re-opening
+  // a solved puzzle later in the day (no confetti on every revisit).
+  const wasFinishedAtMount = useRef(state.status !== "playing");
+
   // Persist on every change to the game state.
   useEffect(() => {
     safeSetItem(storageKey, JSON.stringify(state));
@@ -9100,6 +9105,9 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
 
       {state.status !== "playing" && revealed && (
         <div className="wd-result">
+          {/* 1.1: celebrate a fresh solve. Gated on !wasFinishedAtMount so
+              re-opening today's solved puzzle doesn't re-fire the confetti. */}
+          {state.status === "won" && !wasFinishedAtMount.current && <Confetti />}
           <div className="wd-result-title">
             {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
           </div>
@@ -9520,6 +9528,16 @@ function AppInner() {
   //
   // Placed BEFORE the day-rollover useEffect below so that effect's dep
   // array can include tickLoginStreak without hitting a TDZ at render.
+  // 1.1: brief confetti on the big habit milestones (7/30/100-day streaks),
+  // layered on the existing toast + haptic + sound. Auto-clears after a few
+  // seconds so it re-fires cleanly on the next milestone.
+  const [milestoneConfetti, setMilestoneConfetti] = useState(false);
+  useEffect(() => {
+    if (!milestoneConfetti) return;
+    const t = setTimeout(() => setMilestoneConfetti(false), 5000);
+    return () => clearTimeout(t);
+  }, [milestoneConfetti]);
+
   const tickLoginStreak = useCallback(async () => {
     let result;
     if (user?.id) {
@@ -10035,13 +10053,13 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
@@ -10876,6 +10894,10 @@ function AppInner() {
             </div>
           </div>
         )}
+
+        {/* 1.1: streak-milestone confetti (7/30/100-day). Top-level so it
+            layers over Home where the milestone toast appears. */}
+        {milestoneConfetti && <Confetti />}
 
         {levelUpOverlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
