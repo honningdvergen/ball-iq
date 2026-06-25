@@ -7,6 +7,10 @@
           {
             "/": "/join/*",
             "comment": "Multiplayer room invite links open in the Ball IQ app"
+          },
+          {
+            "/": "/c/*",
+            "comment": "Daily 7 challenge links open in the Ball IQ app"
           }
         ]
       }

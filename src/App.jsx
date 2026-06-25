@@ -9284,6 +9284,19 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
   );
 });
 
+// 1.1 async challenge: parse a challenge token "SCORE.YYYYMMDD[.Name]" into a
+// {score,date,name} object. Shared by the web launch capture and the native
+// appUrlOpen handler. Returns null on a malformed token.
+function parseChallengeStr(c) {
+  if (!c) return null;
+  const [scoreStr, dateStr, nameEnc] = String(c).split(".");
+  const score = parseInt(scoreStr, 10);
+  if (isNaN(score) || !/^\d{8}$/.test(dateStr || "")) return null;
+  let name = "";
+  try { name = nameEnc ? decodeURIComponent(nameEnc) : ""; } catch { name = nameEnc || ""; }
+  return { score: Math.max(0, Math.min(7, score)), date: dateStr, name: name.slice(0, 24) };
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   perfMark('AppInner render (first)');
@@ -9367,13 +9380,14 @@ function AppInner() {
   // the installed app needs an AASA path entry — follow-up; web handles it now.)
   const [pendingChallenge, setPendingChallenge] = useState(() => {
     try {
-      const c = new URLSearchParams(window.location.search).get("c");
-      if (c) {
-        const [scoreStr, dateStr, nameEnc] = c.split(".");
-        const score = parseInt(scoreStr, 10);
+      // Path form /c/TOKEN (Universal-Link-friendly) takes priority; ?c=TOKEN
+      // is kept as a fallback for any query-style links.
+      const pathMatch = window.location.pathname.match(/^\/c\/([^/?#]+)/);
+      const raw = (pathMatch ? pathMatch[1] : null) || new URLSearchParams(window.location.search).get("c");
+      if (raw) {
         try { window.history.replaceState({}, "", `/${window.location.hash || ""}`); } catch {}
-        if (!isNaN(score) && /^\d{8}$/.test(dateStr || "")) {
-          const challenge = { score: Math.max(0, Math.min(7, score)), date: dateStr, name: nameEnc ? decodeURIComponent(nameEnc) : "" };
+        const challenge = parseChallengeStr(raw);
+        if (challenge) {
           try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
           return challenge;
         }
@@ -9407,12 +9421,24 @@ function AppInner() {
       try {
         const u = new URL(url);
         if (u.hostname !== 'balliq.app') return;
-        const m = u.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
-        if (!m) return;
-        const code = m[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
-        if (!code) return;
-        try { localStorage.setItem('biq_pending_join', code); } catch {}
-        setPendingJoinCode(code);
+        const jm = u.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
+        if (jm) {
+          const code = jm[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
+          if (code) {
+            try { localStorage.setItem('biq_pending_join', code); } catch {}
+            setPendingJoinCode(code);
+          }
+          return;
+        }
+        // 1.1: async challenge deep link — balliq.app/c/SCORE.YYYYMMDD[.Name]
+        const cm = u.pathname.match(/^\/c\/([^/?#]+)/);
+        if (cm) {
+          const ch = parseChallengeStr(cm[1]);
+          if (ch) {
+            try { localStorage.setItem('biq_pending_challenge', JSON.stringify(ch)); } catch {}
+            setPendingChallenge(ch);
+          }
+        }
       } catch {}
     };
     CapApp.getLaunchUrl().then(r => tryCapture(r?.url)).catch(() => {});
@@ -10731,7 +10757,7 @@ function AppInner() {
     const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
       ? authProfile.username
       : ((profile?.name && profile.name !== "Player") ? profile.name : "");
-    const challengeUrl = `balliq.app/?c=${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName) : ""}`;
+    const challengeUrl = `balliq.app/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName) : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
