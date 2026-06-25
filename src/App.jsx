@@ -17,6 +17,7 @@ import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
+import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders } from './lib/notifications.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -7655,7 +7656,7 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -7845,6 +7846,26 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           </div>
         </div>
       </div>
+
+      {/* 1.1: notifications. Native-only (the daily reminder is meaningless on
+          web, which can't fire while closed). Toggling on requests the OS
+          permission; toggling off cancels all scheduled reminders. */}
+      {notifSupported && (
+        <div className="settings-section">
+          <div className="ds-eyebrow settings-section-title">Notifications</div>
+          <div className="settings-card">
+            <div className="settings-row">
+              <div className="sr-left">
+                <div className="sr-label">Daily reminders</div>
+                <div className="sr-desc">An evening nudge if you haven't played yet — keeps your streak alive</div>
+              </div>
+              <div className="sr-right">
+                <SettingsToggle val={notifEnabled} onChange={onToggleNotif} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {(onShowHelp || onShowPrivacy || onShowKnownIssues) && (
         <div className="settings-section">
@@ -8965,6 +8986,9 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     if (newStatus !== "playing") {
       setRevealed(false);
       timeoutsRef.current.push(setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200));
+      // 1.1: completing today's Footle cancels tonight's reminder; a solve is
+      // also a positive moment to surface the notification pre-prompt.
+      try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won" } })); } catch {}
     }
   }, [state, current, answer]);
 
@@ -10040,6 +10064,78 @@ function AppInner() {
     setScreen("local-results");
   }, []);
 
+  // ─── 1.1 Local notifications (evening daily reminder) ──────────────────────
+  const [notifEnabled, setNotifEnabled] = useState(() => {
+    try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
+  });
+  const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+
+  // Enable/disable the daily reminder. Enabling fires the OS permission prompt;
+  // a denial leaves it off and points the user at iOS Settings.
+  const handleToggleNotif = useCallback(async (on) => {
+    if (on) {
+      const granted = await requestNotifPermission();
+      if (!granted) {
+        setNotifEnabled(false);
+        try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+        showToast('Turn on notifications for Ball IQ in iOS Settings to get reminders');
+        return;
+      }
+      try { localStorage.setItem('biq_notif_enabled', '1'); } catch {}
+      setNotifEnabled(true);
+      const ws = readWordleTodayStatus();
+      const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
+      scheduleReminderWindow({ skipToday: playedToday });
+      showToast('Daily reminders on 🔔');
+    } else {
+      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+      setNotifEnabled(false);
+      cancelAllReminders();
+      showToast('Daily reminders off');
+    }
+  }, [dailyDone, showToast]);
+
+  // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
+  // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
+  // user declined). Only shows while the OS permission is still undecided.
+  const maybePromptNotif = useCallback(async () => {
+    if (!notificationsSupported()) return;
+    try {
+      if (localStorage.getItem('biq_notif_enabled') === '1') return;
+      const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
+      if (asks >= 2) return;
+      const perm = await getNotifPermission();
+      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return;
+      localStorage.setItem('biq_notif_asks', String(asks + 1));
+      setNotifPromptOpen(true);
+    } catch { /* noop */ }
+  }, []);
+
+  // (Re)schedule the rolling window on open + whenever today's play state
+  // changes (finishing Daily 7 flips dailyDone → reschedule with skipToday).
+  useEffect(() => {
+    if (!notifEnabled) return;
+    const ws = readWordleTodayStatus();
+    const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
+    scheduleReminderWindow({ skipToday: playedToday });
+  }, [notifEnabled, dailyDone]);
+
+  // A completed daily (Daily 7 or Footle) cancels tonight's reminder and, on a
+  // positive completion, is the trigger for the first soft pre-prompt.
+  useEffect(() => {
+    const onDailyDone = (e) => {
+      cancelTodayReminder();
+      if (e?.detail?.positive !== false) maybePromptNotif();
+    };
+    window.addEventListener('biq:daily-completed', onDailyDone);
+    return () => window.removeEventListener('biq:daily-completed', onDailyDone);
+  }, [maybePromptNotif]);
+
+  // Re-ask at the first 3-day streak if they passed the first time.
+  useEffect(() => {
+    if (loginStreak >= 3) maybePromptNotif();
+  }, [loginStreak, maybePromptNotif]);
+
   const handleComplete = useCallback((res) => {
     // Don't pollute stats with BallIQ (different total) or daily (counted separately)
     if (mode !== "balliq") saveStats(res);
@@ -10202,6 +10298,9 @@ function AppInner() {
       if (targetYMD === todayYMD) {
         setDailyDone(true);
         setDailyScore(res.score);
+        // 1.1: completing today's Daily 7 cancels tonight's reminder and is a
+        // positive moment to surface the notification pre-prompt.
+        try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: true } })); } catch {}
       }
       setActiveDailyDate(null);
       haptic("heavy");
@@ -10899,6 +10998,40 @@ function AppInner() {
             layers over Home where the milestone toast appears. */}
         {milestoneConfetti && <Confetti />}
 
+        {/* 1.1: soft notification pre-prompt — shown after a positive daily
+            completion (or first 3-day streak) before spending the one-shot iOS
+            permission prompt. "Yes" routes through the same enable path as the
+            Settings toggle. */}
+        {notifPromptOpen && (
+          <div
+            style={{position:"fixed",inset:0,top:0,right:0,bottom:0,left:0,background:"rgba(0,0,0,0.6)",zIndex:1100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}
+            onClick={() => setNotifPromptOpen(false)}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{width:"100%",maxWidth:440,background:"var(--s1)",borderTopLeftRadius:20,borderTopRightRadius:20,border:"1px solid var(--border)",borderBottom:"none",padding:"24px 22px calc(24px + env(safe-area-inset-bottom))",boxShadow:"0 -8px 40px rgba(0,0,0,0.5)"}}
+            >
+              <div style={{fontSize:40,textAlign:"center",marginBottom:8}} aria-hidden="true">🔔</div>
+              <div style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>Keep your streak alive</div>
+              <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.5,marginBottom:20}}>
+                Get one friendly reminder each evening if you haven't played yet — never spammy, and you can turn it off anytime in Settings.
+              </div>
+              <button
+                onClick={async () => { setNotifPromptOpen(false); await handleToggleNotif(true); }}
+                style={{width:"100%",minHeight:48,padding:"14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:14,fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+              >
+                Yes, remind me
+              </button>
+              <button
+                onClick={() => setNotifPromptOpen(false)}
+                style={{width:"100%",minHeight:44,padding:"12px",background:"none",color:"var(--t3)",border:"none",fontFamily:"inherit",fontSize:15,fontWeight:600,cursor:"pointer"}}
+              >
+                Not now
+              </button>
+            </div>
+          </div>
+        )}
+
         {levelUpOverlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
             <Confetti />
@@ -11032,7 +11165,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} />}
         {!inGame && screen === "blocked-users" && (
           <React.Suspense fallback={<div className="tab-pane" />}>
             <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />
