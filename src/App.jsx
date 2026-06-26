@@ -9819,15 +9819,28 @@ function AppInner() {
       const prevStreak  = prev?.streak  ?? 0;
       const prevLastDay = prev?.lastDay ?? 0;
       const prevBest    = prev?.best    ?? prev?.streak ?? 0;
-      let newStreak;
+      // 1.1 streak freeze: a SINGLE missed day with an available shield freezes
+      // the streak — it survives, and today still continues it. xp + shieldsUsed
+      // are read from localStorage (not state) so this stays out of
+      // tickLoginStreak's deps; it fires on mount, and depending on xp/stats
+      // values would make it re-tick on every XP/stats change.
+      let xpVal = 0, shieldsUsed = 0;
+      try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch {}
+      try { const s = JSON.parse(localStorage.getItem('biq_stats') || '{}'); shieldsUsed = s.shieldsUsed || 0; } catch {}
+      const shieldsAvail = Math.max(0, Math.floor(xpVal / 200) - shieldsUsed);
+      let newStreak, shieldSaved = false;
       if (prevLastDay === todayNum) newStreak = prevStreak;
       else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
-      else newStreak = 1;
+      else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
+        newStreak = prevStreak + 1;
+        shieldSaved = true;
+      } else newStreak = 1;
       result = {
         lastDay: todayNum,
         streak:  newStreak,
         best:    Math.max(prevBest, newStreak),
         ticked:  prevLastDay !== todayNum,
+        shieldSaved,
       };
     }
     if (!result) return;
@@ -9838,7 +9851,21 @@ function AppInner() {
     } catch {}
     setLoginStreak(result.streak);
     setBestLoginStreak(result.best);
-    if (result.ticked && result.streak > 1) {
+    // Keep the UI's shield count in sync. Signed-in: the RPC owns shieldsUsed
+    // (in login_streak) and returns it — mirror it into local stats so the
+    // Daily-tab banner shows the right number. Guests own it locally.
+    if (typeof result.shieldsUsed === "number") {
+      setStats(p => ({ ...p, shieldsUsed: result.shieldsUsed }));
+    }
+    if (result.shieldSaved) {
+      // A shield froze the missed day. Guests consume locally; signed-in users
+      // were already debited server-side (synced above). Clearer message than
+      // the regular streak toast, which is suppressed here.
+      if (!user?.id) setStats(p => ({ ...p, shieldsUsed: (p.shieldsUsed || 0) + 1 }));
+      showToast(`🛡️ Streak shield used — your ${result.streak}-day streak is safe!`);
+      haptic("heavy");
+      playSound("streak");
+    } else if (result.ticked && result.streak > 1) {
       if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
       setStreakToast(result.streak);
       haptic("heavy");
@@ -10922,10 +10949,10 @@ function AppInner() {
   const retakeIqTest = useCallback(() => startMode("balliq"), [startMode]);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
-  const useShield = useCallback(() => {
-    setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
-    showToast("🛡️ Streak shield activated — your streak is safe today");
-  }, [showToast]);
+  // 1.1 streak freeze: shields now AUTO-protect a missed day (consumed in
+  // tickLoginStreak for guests / the tick_login_streak RPC for signed-in users),
+  // so the old manual "Use Shield" action is gone — spending one by hand would
+  // just waste it. The Daily-tab banner is now informational (shieldCount).
   const shareDaily = useCallback(async () => {
     // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
     // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
@@ -10973,7 +11000,7 @@ function AppInner() {
       showToast("Couldn't share — try again");
     }
   }, [dailyScore, loginStreak, showToast, authProfile, profile]);
-  const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
+  const shieldCount = useMemo(() => Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0)), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
@@ -11418,8 +11445,7 @@ function AppInner() {
             <DailyTabScreen
               profile={profile}
               xp={xp}
-              shieldActive={shieldActive}
-              onUseShield={useShield}
+              shieldCount={shieldCount}
               dailyHistory={dailyHistory}
             />
           </div>

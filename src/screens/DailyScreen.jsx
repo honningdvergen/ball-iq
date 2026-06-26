@@ -47,7 +47,7 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
   return `${bestUnbeaten - unbeaten} to your best`;
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHistory }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -346,16 +346,13 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
         </>
       )}
 
-      {shieldActive && (
-        <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <span style={{fontSize:20}}>🛡️</span>
-            <div>
-              <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>Streak Shield available</div>
-              <div style={{fontSize:11,color:"var(--t2)"}}>Earned at {Math.floor((xp||0)/200)*200} XP — protects your streak once</div>
-            </div>
+      {shieldCount > 0 && (
+        <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
+          <span style={{fontSize:20}}>🛡️</span>
+          <div>
+            <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>{shieldCount} streak shield{shieldCount === 1 ? "" : "s"} ready</div>
+            <div style={{fontSize:11,color:"var(--t2)"}}>Auto-protects your streak if you miss a day — earn one every 200 XP</div>
           </div>
-          <button onClick={onUseShield} style={{background:"transparent",border:"1px solid var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,color:"var(--accent)",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,fontFamily:"inherit"}}>Use 🛡️</button>
         </div>
       )}
     </div>
