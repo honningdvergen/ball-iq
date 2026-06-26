@@ -321,8 +321,9 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
             <span className="fix-head-daily7">Daily 7</span>
           </div>
           {matchdays.map(m => {
-            // Footle: solved → guesses used (3/6), lost → ✗, not played → —
-            const footleCell = m.fWon ? `${m.fUsed}/6` : m.fAttempt ? "✗" : "—";
+            // Footle: solved → "in N" guesses (lower is better, so NOT an
+            // "N/6" score like Daily 7), lost → ✗, not played → —
+            const footleCell = m.fWon ? `in ${m.fUsed}` : m.fAttempt ? "✗" : "—";
             const daily7Cell = m.t7Done ? `${m.t7Score}/7` : "—";
             const footleAria = m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played";
             const daily7Aria = m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played";

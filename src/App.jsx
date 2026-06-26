@@ -1588,14 +1588,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    list. Light not heavy — the navy is layered as a low-alpha gradient
    over the base surface, the border is the same green tint as the
    tactics card at ~half the alpha. */
-.fix-row{display:grid;grid-template-columns:1fr 54px 54px;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.10);}
+.fix-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.10);}
 /* 1.1 Daily v2: color-coded result columns. Green stays the app/streak accent;
    purple = Footle, orange = Daily 7 (consistent with the Home daily zone). */
-.fix-head{display:grid;grid-template-columns:1fr 54px 54px;gap:10px;padding:0 14px 8px;}
+.fix-head{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;padding:0 14px 8px;}
 .fix-head-footle,.fix-head-daily7{text-align:center;font-size:9.5px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;}
 .fix-head-footle{color:#a78bfa;}
 .fix-head-daily7{color:#fb923c;}
-.fix-cell{text-align:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:13px;font-weight:800;letter-spacing:0.01em;color:var(--t3);font-variant-numeric:tabular-nums;}
+.fix-cell{text-align:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:14px;font-weight:800;letter-spacing:0.01em;color:var(--t3);font-variant-numeric:tabular-nums;}
 .fix-cell.fix-footle.on{color:#a78bfa;}
 .fix-cell.fix-daily7.on{color:#fb923c;}
 .fix-row.is-today{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);}
