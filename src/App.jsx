@@ -3946,7 +3946,7 @@ const QUESTION_DURATION_MS = 20000;
 // create_room / join_room RPCs directly; on success, navigates to the
 // MultiplayerLobby via onLobbyEnter callback. Specific error handling for
 // known SQLSTATEs (room full, room not found, room not accepting joins).
-function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJoinConsumed }) {
+function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJoinConsumed, autoCreate, onAutoCreateConsumed }) {
   const [code, setCode] = useState("");
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -4054,6 +4054,26 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoJoinCode]);
+
+  // 1.1: deep-create. The Home "Invite" button routes here with autoCreate so a
+  // room is made immediately and the user lands in the lobby ready to share the
+  // working /join/CODE link (you can't invite to a lobby that doesn't exist).
+  // Mirrors the autoJoinCode effect: fire once on mount, mark consumed so a
+  // re-mount doesn't spawn a second room. handleCreate navigates to the lobby
+  // on success or shows an inline error on failure.
+  useEffect(() => {
+    if (!autoCreate) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        await handleCreate();
+      } finally {
+        if (!cancelled) onAutoCreateConsumed?.();
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoCreate]);
 
   const busy = creating || joining;
 
@@ -6380,6 +6400,66 @@ async function generateShareCard(type, data) {
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
+  } else if (type === "profile") {
+    // 1.1: profile card. Avatar + name + league/XP + (Ball IQ) + a Games ·
+    // Streak · Accuracy stat row. Accuracy formula mirrors ProfileScreen
+    // (totalCorrect / totalAnswered, guarded against legacy >100% data).
+    const lvl = data?.level || {};
+    const xpVal = data?.xp ?? 0;
+    const iq = data?.iq || 0;
+    const st = data?.stats || {};
+    const streak = data?.loginStreak ?? 0;
+    const games = st.gamesPlayed || 0;
+    const correct = st.totalCorrect || 0;
+    const answered = st.totalAnswered || 0;
+    const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
+    const name = (data?.profile?.name) || `${APP_NAME} Player`;
+    const avatar = data?.profile?.avatar || "⚽";
+
+    // Avatar emoji
+    ctx.font = '64px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(avatar, cx, 158);
+
+    // Name
+    ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(name, cx, 202);
+
+    // League badge + XP
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#22c55e";
+    ctx.fillText(`${lvl.icon || "⚽"} ${lvl.name || ""} · ${xpVal.toLocaleString()} XP`, cx, 230);
+
+    // Ball IQ (optional)
+    if (iq) {
+      ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#9BA0B8";
+      ctx.fillText(`${APP_NAME}: ${iq}`, cx, 256);
+    }
+
+    // Stats row — Games · Streak · Accuracy
+    const statY = iq ? 348 : 326;
+    const stat3 = [
+      { v: String(games), l: "GAMES" },
+      { v: `🔥 ${streak}`, l: "STREAK" },
+      { v: accuracy, l: "ACCURACY" },
+    ];
+    const colW = (W - padX * 2) / 3;
+    stat3.forEach((s, i) => {
+      const colCx = padX + colW * i + colW / 2;
+      ctx.font = '800 23px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(s.v, colCx, statY);
+      ctx.font = '700 10px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#9BA0B8";
+      ctx.fillText(s.l, colCx, statY + 20);
+    });
+
+    // Subtitle
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -6473,6 +6553,7 @@ async function shareCard(type, data, opts = {}) {
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
+      if (type === "profile")   return `My ${APP_NAME} profile — ${data?.level?.name || "Player"}, ${(data?.xp || 0).toLocaleString()} XP. Can you beat me? ${link}`;
       if (data?.modeLabel && data?.score != null && data?.total != null) {
         return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
       }
@@ -9381,6 +9462,9 @@ function AppInner() {
   // auto-join effect) so the deep-link state and the in-flow state stay
   // independently trackable.
   const [stage1RoomCode, setStage1RoomCode] = useState("");
+  // 1.1: set by the Home "Invite" button so OnlineEntry auto-creates a room and
+  // drops the user in the lobby (where the real /join/CODE invite lives).
+  const [onlineAutoCreate, setOnlineAutoCreate] = useState(false);
 
   // Pending invite code captured from `?join=` on cold start. Persisted to
   // localStorage so it survives the sign-in detour for guests / unsigned
@@ -10515,16 +10599,19 @@ function AppInner() {
   const shareProfile = useCallback(() => {
     const { level } = getLevelInfo(xp);
     const iq = stats.bestIQ;
-    const lines = [
+    // 1.1: share the branded PNG card (was 4 lines of plain text — the "Share
+    // Profile Card" label promised an image that never rendered). Routes
+    // through the proven shareCard pipeline (canvas → Filesystem → native
+    // ShareCard/CapShare files); the old text becomes the graceful fallback.
+    const textFallback = [
       (profile.avatar||"⚽") + " " + (profile.name||`${APP_NAME} Player`),
       level.icon + " " + level.name + " — " + xp + " XP",
       iq ? APP_NAME + ": " + iq + " — " + iqLabel(iq) : null,
       "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
       "#BallIQ"
     ].filter(Boolean).join("\n");
-    if (navigator.share) navigator.share({ text: lines }).catch(()=>{});
-    else navigator.clipboard?.writeText(lines).then(()=>showToast("📋 Profile copied")).catch(()=>{});
-  }, [xp, stats, profile, loginStreak]);
+    shareCard("profile", { profile, xp, stats, loginStreak, level, iq }, { onToast: showToast, textFallback });
+  }, [xp, stats, profile, loginStreak, showToast]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
@@ -11260,6 +11347,7 @@ function AppInner() {
               challenge={(pendingChallenge && pendingChallenge.date === todayKey.replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
               onPlayChallenge={() => startMode("daily")}
               onDismissChallenge={clearChallenge}
+              setOnlineAutoCreate={setOnlineAutoCreate}
             />
           </div>
         )}
@@ -11409,6 +11497,8 @@ function AppInner() {
             defaultName={authProfile?.username || profile?.name || ""}
             autoJoinCode={pendingJoinCode}
             onAutoJoinConsumed={clearPendingJoin}
+            autoCreate={onlineAutoCreate}
+            onAutoCreateConsumed={() => setOnlineAutoCreate(false)}
           />
         )}
         {screen === "online-stage1-lobby" && stage1RoomCode && (

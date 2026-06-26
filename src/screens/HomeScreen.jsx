@@ -33,6 +33,7 @@ export function HomeScreen({
   challenge,
   onPlayChallenge,
   onDismissChallenge,
+  setOnlineAutoCreate,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -207,6 +208,16 @@ export function HomeScreen({
             openAuthPrompt("online");
             return;
           }
+          setScreen("online-stage1");
+        }}
+        onInvite={() => {
+          // 1.1: "Invite" now creates a room and drops you in the lobby (where
+          // the real /join/CODE link lives) instead of sharing a dead link.
+          if (!user || isGuest) {
+            openAuthPrompt("online");
+            return;
+          }
+          setOnlineAutoCreate?.(true);
           setScreen("online-stage1");
         }}
         onLocal={() => startMode("local")}
