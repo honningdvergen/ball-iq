@@ -7769,6 +7769,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-left">
                   <div className="sr-label">Signed in as</div>
                   <div className="sr-desc">{profile.username}</div>
+                  {/* 1.1: also show the account email so users can recognise
+                      WHICH account they're on (and which they used). For Apple
+                      Hide-My-Email this is the private relay address. */}
+                  {user.email && <div className="sr-desc" style={{marginTop:2,opacity:0.7}}>{user.email}</div>}
                 </div>
               </div>
               <button
@@ -10967,11 +10971,11 @@ function AppInner() {
         )}
         {!inGame && (
           <div className="hdr">
-            {/* Settings already has its own page-header (← Settings) so the
-                global wordmark would just stack a second identifier on top.
-                Hide it on that one screen; every other screen still keeps
-                the brand mark. */}
-            {screen !== "settings" && (
+            {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
+                — on a tab-bar app the app name on its own home is redundant, and
+                the personalised greeting now owns the top. Settings has its own
+                header; other sub-screens keep the brand mark as a home anchor. */}
+            {screen !== "settings" && screen !== "home" && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -10982,7 +10986,7 @@ function AppInner() {
               </button>
             )}
             {screen === "home" && (
-              <div className="hdr-actions">
+              <div className="hdr-actions" style={{marginLeft:"auto"}}>
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
               </div>
             )}

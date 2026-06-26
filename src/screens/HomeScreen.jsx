@@ -82,15 +82,15 @@ export function HomeScreen({
         return (
           <div style={{padding:"6px 0 8px"}}>
             <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-              <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
+              <div style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
               {homeAuthLoading ? (
                 // Sprint #23 U2: min-width lock prevents the name-box
                 // width from popping when "Loading…" (~58px) is replaced
                 // by the actual username. Both states share the same
                 // minWidth so the row geometry is stable across the swap.
-                <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
+                <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
               ) : homeDisplayName ? (
-                <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, minWidth:70}}>
+                <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
                   {homeDisplayName}
                 </div>
               ) : null}
