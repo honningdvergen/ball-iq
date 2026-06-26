@@ -35,10 +35,10 @@ function timeOfDayGreeting(d = new Date()) {
 // pure functions so the JSX stays readable and these are unit-testable
 // in isolation if/when needed.
 function tacticsSubtitle(unbeaten, bestUnbeaten) {
-  if (unbeaten === 0) return "Start your run today";
-  if (unbeaten > bestUnbeaten) return "Unbeaten · new best!";
-  if (unbeaten === bestUnbeaten) return "Unbeaten · your best";
-  return `Unbeaten · best ${bestUnbeaten}`;
+  if (unbeaten === 0) return "Start your streak today";
+  const unit = unbeaten === 1 ? "day in a row" : "days in a row";
+  if (unbeaten > bestUnbeaten) return `${unit} · new best!`;
+  return unit;
 }
 function tacticsPbDistance(unbeaten, bestUnbeaten) {
   if (unbeaten === 0 || bestUnbeaten === 0) return "";
@@ -83,9 +83,12 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
         const ymd = k.slice("biq_wordle_".length);
         try {
           const parsed = JSON.parse(localStorage.getItem(k));
-          if (parsed?.status === "won") map.set(ymd, "won");
-          else if (parsed?.status === "lost") map.set(ymd, "lost");
-          else if (Array.isArray(parsed?.guesses) && parsed.guesses.length > 0) map.set(ymd, "in-progress");
+          // 1.1 Daily v2: store guess count too so the fixtures Footle column
+          // can show "solved in N/6", not just played/not.
+          const used = Array.isArray(parsed?.guesses) ? parsed.guesses.length : 0;
+          if (parsed?.status === "won") map.set(ymd, { status: "won", used });
+          else if (parsed?.status === "lost") map.set(ymd, { status: "lost", used });
+          else if (used > 0) map.set(ymd, { status: "in-progress", used });
         } catch {}
       }
     } catch {}
@@ -105,7 +108,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
     const playedOn = (ymd) => {
       const f = footleHistory.get(ymd);
-      const footleAttempt = f === "won" || f === "lost";
+      const footleAttempt = f?.status === "won" || f?.status === "lost";
       return t7Set.has(ymd) || footleAttempt;
     };
 
@@ -119,8 +122,8 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
     let bestUnbeaten = 0;
     {
       const dates = new Set(t7Set);
-      for (const [ymd, status] of footleHistory) {
-        if (status === "won" || status === "lost") dates.add(ymd);
+      for (const [ymd, info] of footleHistory) {
+        if (info?.status === "won" || info?.status === "lost") dates.add(ymd);
       }
       const sorted = Array.from(dates).sort();
       if (sorted.length > 0) {
@@ -169,9 +172,11 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       const md = Math.floor((t - firstTime) / 86400000) + 1;
       const t7Score = dailyHistory?.[ymd];
       const t7Done = typeof t7Score === "number";
-      const fStatus = footleHistory.get(ymd);
+      const fInfo = footleHistory.get(ymd);
+      const fStatus = fInfo?.status || null;
       const fWon = fStatus === "won";
       const fAttempt = fWon || fStatus === "lost";
+      const fUsed = fInfo?.used || 0;
       const isToday = i === 0;
       let dateLabel;
       if (isToday) dateLabel = "Today";
@@ -179,7 +184,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
-        ymd, md, dateLabel, dateSub, isToday, t7Score, t7Done, fAttempt,
+        ymd, md, dateLabel, dateSub, isToday, t7Score, t7Done, fAttempt, fWon, fUsed,
       });
     }
     return rows;
@@ -211,8 +216,8 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       const ymd = dateToYMD(d);
       const isToday = i === 0;
       const t7 = t7Set.has(ymd);
-      const fStatus = footleHistory.get(ymd);
-      const fAttempt = fStatus === "won" || fStatus === "lost";
+      const fInfo = footleHistory.get(ymd);
+      const fAttempt = fInfo?.status === "won" || fInfo?.status === "lost";
       let cls, label;
       if (t7 && fAttempt) { cls = "W"; label = "Win"; }
       else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Daily 7 only" : "Footle only"; }
@@ -257,7 +262,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
           strip running across the bottom of the same card. All hero
           content lives inside this single container — one unified zone,
           not a stack of co-equal elements like v3's FormHero. */}
-      <div className="tactics-card" role="status" aria-label={`${runStats.unbeaten}-match unbeaten run, personal best ${runStats.bestUnbeaten}`}>
+      <div className="tactics-card" role="status" aria-label={`${runStats.unbeaten}-day daily streak, best ${runStats.bestUnbeaten}`}>
         <div className="tactics-head">
           <div className="tactics-tag">
             {runStats.unbeaten > 0 ? "Daily streak" : "Daily"}
@@ -307,31 +312,32 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       {matchdays.length > 0 && (
         <>
           <div className="fix-eyebrow">Recent fixtures</div>
-          {/* 1.1: one dot = Footle played; the score column already conveys
-              Daily 7, so a second dot was redundant. Legend makes it plain. */}
-          <div style={{display:"flex",gap:7,padding:"0 4px 10px",alignItems:"center",fontSize:11,fontWeight:600,color:"var(--t3)"}} aria-hidden="true">
-            <span style={{width:9,height:9,borderRadius:"50%",background:"var(--accent)",display:"inline-block",flexShrink:0}} />
-            <span>= Footle played · the number is your Daily 7 score</span>
+          {/* 1.1 Daily v2: two color-coded result columns matching the Home
+              zones — purple Footle, orange Daily 7 — so each day reads as a
+              tidy two-game results row. */}
+          <div className="fix-head" aria-hidden="true">
+            <span />
+            <span className="fix-head-footle">Footle</span>
+            <span className="fix-head-daily7">Daily 7</span>
           </div>
           {matchdays.map(m => {
-            const scoreStr = m.t7Done ? `${m.t7Score}/7` : "—/7";
-            const scoreAria = m.t7Done ? `Daily 7 score ${m.t7Score} of 7` : "Daily 7 not played";
+            // Footle: solved → guesses used (3/6), lost → ✗, not played → —
+            const footleCell = m.fWon ? `${m.fUsed}/6` : m.fAttempt ? "✗" : "—";
+            const daily7Cell = m.t7Done ? `${m.t7Score}/7` : "—";
+            const footleAria = m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played";
+            const daily7Aria = m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played";
             return (
               <div
                 key={m.ymd}
                 className={`fix-row${m.isToday ? " is-today" : ""}`}
-                aria-label={`${m.dateLabel} ${m.dateSub} — ${scoreAria}`}
+                aria-label={`${m.dateLabel} ${m.dateSub} — ${footleAria}, ${daily7Aria}`}
               >
                 <div className="fix-md-wrap">
                   <div className="fix-date">{m.dateLabel}</div>
                   <div className="fix-date-sub">{m.dateSub}</div>
                 </div>
-                <div className="fix-dots" aria-hidden="true">
-                  <span className={`fix-dot f ${m.fAttempt ? "on" : "miss"}`} title={m.fAttempt ? "Footle played" : "Footle skipped"} />
-                </div>
-                <div className={`fix-score${m.t7Done ? "" : " is-empty"}`} aria-hidden="true">
-                  {scoreStr}
-                </div>
+                <div className={`fix-cell fix-footle${m.fAttempt ? " on" : ""}`} aria-hidden="true">{footleCell}</div>
+                <div className={`fix-cell fix-daily7${m.t7Done ? " on" : ""}`} aria-hidden="true">{daily7Cell}</div>
               </div>
             );
           })}
