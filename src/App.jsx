@@ -1012,10 +1012,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(34,197,94,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(34,197,94,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(34,197,94,0.12),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(34,197,94,0.22);box-shadow:0 2px 10px rgba(0,0,0,0.35);overflow:hidden;contain:layout paint style;}
 .light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
-.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(34,197,94,0.18);border:1px solid rgba(34,197,94,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#22c55e;flex-shrink:0;box-shadow:0 0 12px rgba(34,197,94,0.25);line-height:1;}
+.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(34,197,94,0.16);border:1px solid rgba(34,197,94,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#22c55e;flex-shrink:0;line-height:1;}
 .light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:900;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
@@ -2143,7 +2143,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#34206E 0%,#5E3BC4 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
 .footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
