@@ -109,8 +109,8 @@ if (typeof window !== 'undefined' && !window.storage) {
 // current for the web build.
 const APP_VERSION = "1.1.0";
 // Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
-// Empty until provided — the About "Rate" button degrades gracefully to a toast.
-const APP_STORE_ID = "";
+// Drives the About "Rate" + "Share" deep links.
+const APP_STORE_ID = "6775975961";
 // Shared style for the three About-card actions (Rate / Share / Feedback).
 const ABOUT_ACTION_STYLE = {
   flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
