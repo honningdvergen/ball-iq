@@ -103,7 +103,22 @@ if (typeof window !== 'undefined' && !window.storage) {
 // ─── APP META ─────────────────────────────────────────────────────────────────
 // Single source of truth for the version string — surfaced in Settings → About.
 // Bump on every shipping release.
-const APP_VERSION = "1.0.0-beta";
+// Web fallback only — on native the About card shows the REAL installed build
+// version via CapApp.getInfo(), so this no longer drifts on each release (the
+// bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
+// current for the web build.
+const APP_VERSION = "1.1.0";
+// Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
+// Empty until provided — the About "Rate" button degrades gracefully to a toast.
+const APP_STORE_ID = "";
+// Shared style for the three About-card actions (Rate / Share / Feedback).
+const ABOUT_ACTION_STYLE = {
+  flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+  padding: "12px 6px", background: "transparent", color: "var(--accent)",
+  border: "1.5px solid var(--accent-b)", borderRadius: 12, fontFamily: "inherit",
+  fontSize: 12.5, fontWeight: 800, cursor: "pointer", WebkitAppearance: "none",
+  appearance: "none", textDecoration: "none",
+};
 
 // Centralised durations so we can tune motion/UX feel from one place.
 const TIMINGS = {
@@ -7661,6 +7676,24 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
+  // 1.1: surface the REAL installed build version (native) instead of the
+  // hardcoded constant that drifted. Falls back to APP_VERSION on web.
+  const [appVer, setAppVer] = useState(APP_VERSION);
+  useEffect(() => {
+    let alive = true;
+    try { CapApp.getInfo?.().then(i => { if (alive && i?.version) setAppVer(i.version); }).catch(() => {}); } catch {}
+    return () => { alive = false; };
+  }, []);
+  const shareApp = async () => {
+    const url = APP_STORE_ID ? `https://apps.apple.com/app/id${APP_STORE_ID}` : "balliq.app";
+    const text = `⚽ Ball IQ — the football quiz for real fans. ${url}`;
+    try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
+    try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
+  };
+  const rateApp = () => {
+    if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'App Store rating opens once we’re live 🙌' })); return; }
+    try { window.open(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`, '_blank'); } catch {}
+  };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native
   // Apple-system dialog was off-brand.
@@ -7946,40 +7979,33 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             let desktop CSS flip this to a horizontal "ball+name+version |
             feedback" row. At mobile (no desktop CSS rule), the wrappers are
             plain divs and the centered-vertical layout is preserved. */}
-        <div className="settings-card about-card-card" style={{padding:"24px 18px",textAlign:"center"}}>
+        <div className="settings-card about-card-card" style={{padding:"24px 18px 18px",textAlign:"center"}}>
           <div className="about-card-brand">
-            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
+            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:8}} aria-hidden="true">⚽</div>
             <div className="about-card-meta-wrap">
               <div className="about-card-name" style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
-              {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
-                  numeric/muted and "BETA" gets its own amber pill — clear pre-
-                  release signal without dominating the card. */}
-              <div className="about-card-version" style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:4,fontSize:13,color:"var(--t3)"}}>
-                <span>v{APP_VERSION.replace(/-beta$/i, "")}</span>
-                {/-beta$/i.test(APP_VERSION) && (
-                  <span style={{
-                    display:"inline-block",
-                    padding:"1px 7px",
-                    borderRadius:999,
-                    background:"rgba(255,200,0,0.15)",
-                    color:"var(--gold)",
-                    fontSize:10,
-                    fontWeight:800,
-                    letterSpacing:"0.08em",
-                  }} aria-label="Beta">BETA</span>
-                )}
-              </div>
+              <div style={{fontSize:13,color:"var(--t2)",marginTop:4}}>The football quiz for real fans</div>
+              {/* 1.1: real installed build version (no more stale "1.0.0 BETA"). */}
+              <div style={{fontSize:12,color:"var(--t3)",marginTop:3}}>v{appVer}</div>
             </div>
           </div>
-          {/* Ghost outlined to match the secondary-action discipline used on
-              result screens — filled green is reserved for primary actions. */}
-          <a
-            className="about-card-feedback"
-            href="mailto:hello@balliq.app"
-            style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"transparent",color:"var(--accent)",border:"1.5px solid var(--accent-b)",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none"}}
-          >
-            Send feedback
-          </a>
+          {/* 1.1: three high-value actions — Rate (reviews drive ranking),
+              Share (referral growth), Feedback. Equal ghost buttons. */}
+          <div style={{display:"flex",gap:8,marginTop:18}}>
+            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label="Rate Ball IQ on the App Store">
+              <span style={{fontSize:18}} aria-hidden="true">⭐</span>
+              <span>Rate</span>
+            </button>
+            <button onClick={shareApp} style={ABOUT_ACTION_STYLE} aria-label="Share Ball IQ">
+              <span style={{fontSize:18}} aria-hidden="true">↗</span>
+              <span>Share</span>
+            </button>
+            <a href="mailto:hello@balliq.app" style={ABOUT_ACTION_STYLE} aria-label="Send feedback">
+              <span style={{fontSize:18}} aria-hidden="true">✉️</span>
+              <span>Feedback</span>
+            </a>
+          </div>
+          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>Built solo in Norway 🇳🇴</div>
         </div>
       </div>
 
