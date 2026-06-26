@@ -7769,10 +7769,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-left">
                   <div className="sr-label">Signed in as</div>
                   <div className="sr-desc">{profile.username}</div>
-                  {/* 1.1: also show the account email so users can recognise
-                      WHICH account they're on (and which they used). For Apple
-                      Hide-My-Email this is the private relay address. */}
-                  {user.email && <div className="sr-desc" style={{marginTop:2,opacity:0.7}}>{user.email}</div>}
+                  {/* 1.1: show the account email so users recognise which
+                      account they're on. Apple's Hide-My-Email gives a cryptic
+                      @privaterelay.appleid.com address — show a friendly label
+                      instead of the raw relay. */}
+                  {user.email && (
+                    <div className="sr-desc" style={{marginTop:2,opacity:0.7}}>
+                      {/@privaterelay\.appleid\.com$/i.test(user.email) ? "Apple · Hide My Email" : user.email}
+                    </div>
+                  )}
                 </div>
               </div>
               <button
