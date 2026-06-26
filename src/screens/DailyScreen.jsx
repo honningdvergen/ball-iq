@@ -36,15 +36,15 @@ function timeOfDayGreeting(d = new Date()) {
 // in isolation if/when needed.
 function tacticsSubtitle(unbeaten, bestUnbeaten) {
   if (unbeaten === 0) return "Start your run today";
-  if (unbeaten > bestUnbeaten) return "Unbeaten · new PB";
-  if (unbeaten === bestUnbeaten) return "Unbeaten · at PB";
-  return `Unbeaten · PB ${bestUnbeaten}`;
+  if (unbeaten > bestUnbeaten) return "Unbeaten · new best!";
+  if (unbeaten === bestUnbeaten) return "Unbeaten · your best";
+  return `Unbeaten · best ${bestUnbeaten}`;
 }
 function tacticsPbDistance(unbeaten, bestUnbeaten) {
   if (unbeaten === 0 || bestUnbeaten === 0) return "";
-  if (unbeaten > bestUnbeaten) return `+${unbeaten - bestUnbeaten} over PB`;
-  if (unbeaten === bestUnbeaten) return "at PB";
-  return `${bestUnbeaten - unbeaten} to PB`;
+  if (unbeaten > bestUnbeaten) return `+${unbeaten - bestUnbeaten} over best`;
+  if (unbeaten === bestUnbeaten) return "at your best";
+  return `${bestUnbeaten - unbeaten} to your best`;
 }
 
 function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHistory }) {
@@ -307,6 +307,15 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       {matchdays.length > 0 && (
         <>
           <div className="fix-eyebrow">Recent fixtures</div>
+          {/* 1.1: legend so the two per-row dots aren't cryptic. */}
+          <div style={{display:"flex",gap:14,padding:"0 4px 10px",alignItems:"center"}} aria-hidden="true">
+            <span style={{display:"inline-flex",alignItems:"center",gap:6,fontSize:11,fontWeight:600,color:"var(--t3)"}}>
+              <span style={{width:9,height:9,borderRadius:"50%",background:"var(--accent)",display:"inline-block"}} />Footle
+            </span>
+            <span style={{display:"inline-flex",alignItems:"center",gap:6,fontSize:11,fontWeight:600,color:"var(--t3)"}}>
+              <span style={{width:9,height:9,borderRadius:"50%",background:"#4ade80",display:"inline-block"}} />Daily 7
+            </span>
+          </div>
           {matchdays.map(m => {
             const scoreStr = m.t7Done ? `${m.t7Score}/7` : "—/7";
             const scoreAria = m.t7Done ? `Daily 7 score ${m.t7Score} of 7` : "Daily 7 not played";

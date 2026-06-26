@@ -827,8 +827,8 @@ const css = `
    the otherwise iOS-styled light theme. Replace with the standard
    light card pattern: white surface, hairline border, soft shadow. */
 .light .fix-row { background: var(--s1); border: 0.5px solid #E5E5EA; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-.light .fix-row.is-today { background: rgba(255,149,0,0.10); border-color: rgba(255,149,0,0.36); }
-.light .fix-row.is-today .fix-md { color: #FF9500; }
+.light .fix-row.is-today { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.30); }
+.light .fix-row.is-today .fix-md { color: var(--accent); }
 .light .fix-dot.miss { border-color: #D1D1D6; }
 .light .logo { color:#1C1C1E; }
 .light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -1552,28 +1552,28 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    MATCHDAY tag top-left, vibrant orange streak top-right (proportional
    Inter — explicitly NOT mono / tabular-nums, that was the v3->v4
    diagnosis). Form strip lives INSIDE the card as one unified hero. */
-.tactics-card{position:relative;background:repeating-linear-gradient(0deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),linear-gradient(180deg,#102836 0%,#0B1F2C 100%);border:1px solid rgba(52,211,153,0.10);border-radius:18px;padding:14px 16px 16px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(0,0,0,0.22);}
+.tactics-card{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:14px 16px 16px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(0,0,0,0.18);}
 .tactics-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
-.tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(52,211,153,0.30);border-radius:999px;background:rgba(52,211,153,0.07);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:#34D399;flex-shrink:0;}
-.tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 6px #34D399;}
+.tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(34,197,94,0.30);border-radius:999px;background:var(--accent-dim);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);flex-shrink:0;}
+.tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px rgba(34,197,94,0.7);}
 .tactics-num-wrap{text-align:right;min-width:0;}
 /* CRITICAL: proportional Inter, NOT JetBrains Mono, NOT tabular-nums.
    Round 5 diagnosis identified the mono/tabular treatment as the
    "techy" feel Alex reacted against — do not regress to mono here. */
-.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:#FB923C;font-feature-settings:'lnum';}
+.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:var(--accent);font-feature-settings:'lnum';}
 .tactics-num-l{font-size:9.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t2);margin-top:4px;white-space:nowrap;}
-.tactics-divider{height:1px;background:rgba(52,211,153,0.18);margin:4px 0 12px;}
+.tactics-divider{height:1px;background:var(--border);margin:4px 0 12px;}
 .tactics-form-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:0.04em;}
 .tactics-form-row b{color:var(--text);font-weight:800;}
 .tactics-strip{display:flex;gap:3px;}
 .tactics-cell{flex:1 1 0;aspect-ratio:1/1;min-width:5px;max-width:22px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);box-sizing:border-box;}
 .tactics-cell::before{content:"";display:block;padding-top:100%;}  /* Sprint #67 II1 aspect-ratio fallback */
 .tactics-cell.W{background:var(--accent);border-color:var(--accent);}
-.tactics-cell.D{background:var(--gold);border-color:var(--gold);}
+.tactics-cell.D{background:rgba(34,197,94,0.45);border-color:rgba(34,197,94,0.45);}
 .tactics-cell.L{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06);}
 .tactics-cell.pre{background:transparent;border:1px dashed rgba(255,255,255,0.10);}
 .tactics-cell.is-today{box-shadow:0 0 0 2px rgba(255,255,255,0.22);}
-.tactics-cell.is-today.L{background:#FB923C;border-color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,0.45);}
+.tactics-cell.is-today.L{background:var(--accent-dim);border-color:rgba(34,197,94,0.45);}
 .tactics-strip-l{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-top:10px;}
 
 /* ── DAILY v4 FIXTURES LIST (Sprint #24 Stage 3) ──
@@ -1588,17 +1588,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    list. Light not heavy — the navy is layered as a low-alpha gradient
    over the base surface, the border is the same green tint as the
    tactics card at ~half the alpha. */
-.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:14px;margin-bottom:6px;background:linear-gradient(180deg,rgba(16,40,54,0.45) 0%,rgba(26,29,39,0.85) 100%);border:1px solid rgba(52,211,153,0.06);box-shadow:0 1px 4px rgba(0,0,0,0.14);}
-.fix-row.is-today{background:linear-gradient(180deg,rgba(251,146,60,0.10) 0%,rgba(16,40,54,0.40) 100%);border-color:rgba(251,146,60,0.26);}
+.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:14px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.10);}
+.fix-row.is-today{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);}
 .fix-md-wrap{display:flex;flex-direction:column;gap:1px;min-width:60px;}
 .fix-md{font-size:9.5px;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);}
-.fix-row.is-today .fix-md{color:#FB923C;}
+.fix-row.is-today .fix-md{color:var(--accent);}
 .fix-date{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.1;}
 .fix-date-sub{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.01em;}
 .fix-dots{display:flex;gap:7px;justify-content:center;}
 .fix-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1px solid transparent;box-sizing:border-box;}
-.fix-dot.f.on{background:#7C3AED;box-shadow:0 0 5px rgba(124,58,237,0.40);}
-.fix-dot.t.on{background:#FB923C;box-shadow:0 0 5px rgba(251,146,60,0.40);}
+.fix-dot.f.on{background:var(--accent);box-shadow:0 0 5px rgba(34,197,94,0.35);}
+.fix-dot.t.on{background:#4ade80;box-shadow:0 0 5px rgba(74,222,128,0.35);}
 .fix-dot.miss{background:transparent;border-color:var(--border2);}
 /* Sprint #71 MM2: .fix-score replaced the .fix-badge W/D/L letter. Same
    28x24 footprint preserves row rhythm. Mono font for numeric clarity.
