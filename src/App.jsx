@@ -6251,6 +6251,21 @@ function _wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   return curY;
 }
 
+// Load an image for canvas compositing (profile-card photo avatar). crossOrigin
+// 'anonymous' keeps the canvas untainted so toBlob() works (Supabase public
+// storage sends CORS headers). Times out / rejects so a slow or blocked image
+// falls back to the emoji avatar rather than hanging the share.
+function _loadImage(url, timeoutMs = 3000) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    const t = setTimeout(() => reject(new Error("img timeout")), timeoutMs);
+    img.onload = () => { clearTimeout(t); resolve(img); };
+    img.onerror = () => { clearTimeout(t); reject(new Error("img error")); };
+    img.src = url;
+  });
+}
+
 async function generateShareCard(type, data) {
   const W = SHARE_CARD_W, H = SHARE_CARD_H;
   const canvas = document.createElement("canvas");
@@ -6401,9 +6416,10 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else if (type === "profile") {
-    // 1.1: profile card. Avatar + name + league/XP + (Ball IQ) + a Games ·
-    // Streak · Accuracy stat row. Accuracy formula mirrors ProfileScreen
-    // (totalCorrect / totalAnswered, guarded against legacy >100% data).
+    // 1.1: profile card — circular photo avatar (or emoji) with a green ring,
+    // name, league pill, optional Ball IQ, divider, and a Games · Streak ·
+    // Accuracy row. Accuracy mirrors ProfileScreen (totalCorrect / totalAnswered,
+    // guarded against legacy >100% data).
     const lvl = data?.level || {};
     const xpVal = data?.xp ?? 0;
     const iq = data?.iq || 0;
@@ -6414,32 +6430,73 @@ async function generateShareCard(type, data) {
     const answered = st.totalAnswered || 0;
     const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
     const name = (data?.profile?.name) || `${APP_NAME} Player`;
-    const avatar = data?.profile?.avatar || "⚽";
+    const emoji = data?.profile?.avatar || "⚽";
+    const avatarUrl = data?.avatarUrl || null;
 
-    // Avatar emoji
-    ctx.font = '64px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(avatar, cx, 158);
+    // Avatar — circular photo if available, else emoji on a disc. Green ring.
+    const ar = 46, ax = cx, ay = 150;
+    let drewPhoto = false;
+    if (avatarUrl) {
+      try {
+        const img = await _loadImage(avatarUrl);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(ax, ay, ar, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(img, ax - ar, ay - ar, ar * 2, ar * 2);
+        ctx.restore();
+        drewPhoto = true;
+      } catch { /* fall through to emoji */ }
+    }
+    if (!drewPhoto) {
+      ctx.beginPath();
+      ctx.arc(ax, ay, ar, 0, Math.PI * 2);
+      ctx.fillStyle = "#16181F";
+      ctx.fill();
+      ctx.textBaseline = "middle";
+      ctx.font = '54px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(emoji, ax, ay + 2);
+      ctx.textBaseline = "alphabetic";
+    }
+    ctx.strokeStyle = "#22c55e";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(ax, ay, ar + 2, 0, Math.PI * 2);
+    ctx.stroke();
 
     // Name
-    ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '800 28px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(name, cx, 202);
+    ctx.fillText(name, cx, 240);
 
-    // League badge + XP
+    // League pill (icon + name + XP)
+    const pillText = `${lvl.icon || "⚽"} ${lvl.name || ""} · ${xpVal.toLocaleString()} XP`;
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    const pillW = ctx.measureText(pillText).width + 30;
+    const pillH = 30, pillY = 258;
+    ctx.fillStyle = "rgba(34,197,94,0.14)";
+    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, 15);
+    ctx.fill();
+    ctx.textBaseline = "middle";
     ctx.fillStyle = "#22c55e";
-    ctx.fillText(`${lvl.icon || "⚽"} ${lvl.name || ""} · ${xpVal.toLocaleString()} XP`, cx, 230);
+    ctx.fillText(pillText, cx, pillY + pillH / 2 + 1);
+    ctx.textBaseline = "alphabetic";
 
     // Ball IQ (optional)
     if (iq) {
-      ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#9BA0B8";
-      ctx.fillText(`${APP_NAME}: ${iq}`, cx, 256);
+      ctx.fillText(`${APP_NAME}: ${iq}`, cx, 322);
     }
 
+    // Divider anchoring the stats row
+    ctx.fillStyle = "#2A2D3A";
+    ctx.fillRect(padX + 40, 360, W - (padX + 40) * 2, 1);
+
     // Stats row — Games · Streak · Accuracy
-    const statY = iq ? 348 : 326;
+    const statY = 416;
     const stat3 = [
       { v: String(games), l: "GAMES" },
       { v: `🔥 ${streak}`, l: "STREAK" },
@@ -6448,18 +6505,18 @@ async function generateShareCard(type, data) {
     const colW = (W - padX * 2) / 3;
     stat3.forEach((s, i) => {
       const colCx = padX + colW * i + colW / 2;
-      ctx.font = '800 23px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#FFFFFF";
       ctx.fillText(s.v, colCx, statY);
-      ctx.font = '700 10px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '700 11px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#9BA0B8";
-      ctx.fillText(s.l, colCx, statY + 20);
+      ctx.fillText(s.l, colCx, statY + 22);
     });
 
     // Subtitle
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '700 16px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, 520);
+    ctx.fillText("Can you beat me? ⚽", cx, 506);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -10610,8 +10667,8 @@ function AppInner() {
       "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
       "#BallIQ"
     ].filter(Boolean).join("\n");
-    shareCard("profile", { profile, xp, stats, loginStreak, level, iq }, { onToast: showToast, textFallback });
-  }, [xp, stats, profile, loginStreak, showToast]);
+    shareCard("profile", { profile, xp, stats, loginStreak, level, iq, avatarUrl: authProfile?.avatar_url || null }, { onToast: showToast, textFallback });
+  }, [xp, stats, profile, loginStreak, showToast, authProfile]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
@@ -11076,7 +11133,10 @@ function AppInner() {
                 — on a tab-bar app the app name on its own home is redundant, and
                 the personalised greeting now owns the top. Settings has its own
                 header; other sub-screens keep the brand mark as a home anchor. */}
-            {screen !== "settings" && screen !== "home" && (
+            {/* 1.1: hide the global wordmark on screens that already have their
+                own page-header (Settings, the online MP setup + lobby) — it just
+                stacks a second identifier. (Broader sub-screen audit deferred.) */}
+            {!["settings", "home", "online-stage1", "online-stage1-lobby"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
