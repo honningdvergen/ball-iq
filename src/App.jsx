@@ -10969,7 +10969,7 @@ function AppInner() {
             showToast={showToast}
           />
         )}
-        {!inGame && (
+        {!inGame && !(screen === "home" && tab === "home") && (
           <div className="hdr">
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and

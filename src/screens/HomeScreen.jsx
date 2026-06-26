@@ -81,24 +81,27 @@ export function HomeScreen({
           :                                       "Daily puzzle is up.";
         return (
           <div style={{padding:"6px 0 8px"}}>
-            <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-              <div style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
-              {homeAuthLoading ? (
-                // Sprint #23 U2: min-width lock prevents the name-box
-                // width from popping when "Loading…" (~58px) is replaced
-                // by the actual username. Both states share the same
-                // minWidth so the row geometry is stable across the swap.
-                <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
-              ) : homeDisplayName ? (
-                <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
-                  {homeDisplayName}
-                </div>
-              ) : null}
+            <div style={{display:"flex", alignItems:"center", gap:10}}>
+              <div style={{display:"flex", alignItems:"baseline", gap:8, flex:1, minWidth:0, flexWrap:"wrap"}}>
+                <div style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
+                {homeAuthLoading ? (
+                  // Sprint #23 U2: min-width lock keeps the name-box width stable
+                  // across the Loading…→username swap.
+                  <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
+                ) : homeDisplayName ? (
+                  <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
+                    {homeDisplayName}
+                  </div>
+                ) : null}
+              </div>
               {loginStreak > 0 && (
-                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} style={{marginLeft:"auto"}} aria-label={`${loginStreak}-day streak`}>
+                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
                   🔥 {loginStreak}
                 </span>
               )}
+              {/* 1.1: settings gear inline with the greeting (the shared header
+                  row is hidden on Home) — one tidy top row, no dead space. */}
+              <button onClick={() => setScreen("settings")} className="icon-btn" aria-label="Settings" style={{flexShrink:0}}>⚙️</button>
             </div>
             {subtext && (
               <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>

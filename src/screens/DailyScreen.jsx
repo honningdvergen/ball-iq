@@ -260,7 +260,7 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       <div className="tactics-card" role="status" aria-label={`${runStats.unbeaten}-match unbeaten run, personal best ${runStats.bestUnbeaten}`}>
         <div className="tactics-head">
           <div className="tactics-tag">
-            {runStats.unbeaten > 0 ? `Matchday ${runStats.unbeaten}` : "Daily"}
+            {runStats.unbeaten > 0 ? "Daily streak" : "Daily"}
           </div>
           <div className="tactics-num-wrap">
             <div className="tactics-num">{runStats.unbeaten}</div>
@@ -307,14 +307,11 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
       {matchdays.length > 0 && (
         <>
           <div className="fix-eyebrow">Recent fixtures</div>
-          {/* 1.1: legend so the two per-row dots aren't cryptic. */}
-          <div style={{display:"flex",gap:14,padding:"0 4px 10px",alignItems:"center"}} aria-hidden="true">
-            <span style={{display:"inline-flex",alignItems:"center",gap:6,fontSize:11,fontWeight:600,color:"var(--t3)"}}>
-              <span style={{width:9,height:9,borderRadius:"50%",background:"var(--accent)",display:"inline-block"}} />Footle
-            </span>
-            <span style={{display:"inline-flex",alignItems:"center",gap:6,fontSize:11,fontWeight:600,color:"var(--t3)"}}>
-              <span style={{width:9,height:9,borderRadius:"50%",background:"#4ade80",display:"inline-block"}} />Daily 7
-            </span>
+          {/* 1.1: one dot = Footle played; the score column already conveys
+              Daily 7, so a second dot was redundant. Legend makes it plain. */}
+          <div style={{display:"flex",gap:7,padding:"0 4px 10px",alignItems:"center",fontSize:11,fontWeight:600,color:"var(--t3)"}} aria-hidden="true">
+            <span style={{width:9,height:9,borderRadius:"50%",background:"var(--accent)",display:"inline-block",flexShrink:0}} />
+            <span>= Footle played · the number is your Daily 7 score</span>
           </div>
           {matchdays.map(m => {
             const scoreStr = m.t7Done ? `${m.t7Score}/7` : "—/7";
@@ -326,13 +323,11 @@ function DailyTabScreenImpl({ profile, xp, shieldActive, onUseShield, dailyHisto
                 aria-label={`${m.dateLabel} ${m.dateSub} — ${scoreAria}`}
               >
                 <div className="fix-md-wrap">
-                  <div className="fix-md">MD {m.md}</div>
                   <div className="fix-date">{m.dateLabel}</div>
                   <div className="fix-date-sub">{m.dateSub}</div>
                 </div>
                 <div className="fix-dots" aria-hidden="true">
                   <span className={`fix-dot f ${m.fAttempt ? "on" : "miss"}`} title={m.fAttempt ? "Footle played" : "Footle skipped"} />
-                  <span className={`fix-dot t ${m.t7Done ? "on" : "miss"}`} title={m.t7Done ? "Today's 7 done" : "Today's 7 skipped"} />
                 </div>
                 <div className={`fix-score${m.t7Done ? "" : " is-empty"}`} aria-hidden="true">
                   {scoreStr}
