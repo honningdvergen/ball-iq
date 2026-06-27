@@ -1,0 +1,85 @@
+import { ImageResponse } from '@vercel/og';
+
+// Dynamic Open Graph image — renders the player's FIFA-style Ball IQ card so a
+// shared balliq.app/p?... link previews as their card (overall + tier + six
+// competition ratings + photo). Edge runtime; no JSX (plain element trees).
+
+export const config = { runtime: 'edge' };
+
+const h = (type, props, ...children) => ({
+  type,
+  props: { ...(props || {}), children: children.length === 0 ? undefined : (children.length === 1 ? children[0] : children) },
+});
+
+const TIERS = {
+  gold:   { bg: 'linear-gradient(135deg,#2c2510 0%,#0e0c05 100%)', accent: '#F0C24B', text: '#FDF6E3', label: 'GOLD' },
+  silver: { bg: 'linear-gradient(135deg,#1d1f26 0%,#0b0c0f 100%)', accent: '#C7CED8', text: '#F2F4F8', label: 'SILVER' },
+  bronze: { bg: 'linear-gradient(135deg,#241a12 0%,#0e0a06 100%)', accent: '#CE8B36', text: '#F5ECE2', label: 'BRONZE' },
+};
+
+// Competitions in the same order as the `r` (ratings) param. Country flags are
+// license-safe (unlike the trademarked competition logos).
+const COMPS = [
+  { abbr: 'PRL', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  { abbr: 'UCL', icon: '⭐' },
+  { abbr: 'WCP', icon: '🌍' },
+  { abbr: 'LAL', icon: '🇪🇸' },
+  { abbr: 'BUN', icon: '🇩🇪' },
+  { abbr: 'SEA', icon: '🇮🇹' },
+];
+
+export default function handler(req) {
+  const sp = new URL(req.url).searchParams;
+  const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
+  const img = sp.get('img') || '';
+  const emoji = sp.get('e') || '⚽';
+  const overall = sp.get('ov') || '—';
+  const t = TIERS[sp.get('ti')] || TIERS.bronze;
+  const ratings = (sp.get('r') || '').split(',');
+
+  const avatarInner = img
+    ? h('img', { src: img, width: 190, height: 190, style: { width: 190, height: 190, borderRadius: 95, objectFit: 'cover' } })
+    : h('div', { style: { width: 190, height: 190, borderRadius: 95, background: '#16181F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 100 } }, emoji);
+  const avatar = h('div', { style: { display: 'flex', padding: 5, borderRadius: 102, background: t.accent } }, avatarInner);
+
+  const cell = (comp, val) => h('div', { style: { display: 'flex', alignItems: 'center', gap: 12, width: 228 } },
+    h('div', { style: { fontSize: 34, display: 'flex' } }, comp.icon),
+    h('div', { style: { fontSize: 48, fontWeight: 900, color: t.accent, display: 'flex' } }, val || '—'),
+    h('div', { style: { fontSize: 23, fontWeight: 700, color: t.text, opacity: 0.85, display: 'flex' } }, comp.abbr),
+  );
+  const rows = [];
+  for (let i = 0; i < 6; i += 2) {
+    rows.push(h('div', { style: { display: 'flex', gap: 26 } }, cell(COMPS[i], ratings[i]), cell(COMPS[i + 1], ratings[i + 1])));
+  }
+
+  const tree = h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: t.bg, borderTop: `9px solid ${t.accent}`, fontFamily: 'sans-serif', position: 'relative',
+      padding: '0 64px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 38%)' } }),
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: t.text, display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: t.text, opacity: 0.6, display: 'flex' } }, 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 56 } },
+      // Overall block
+      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' } },
+        h('div', { style: { fontSize: 150, fontWeight: 900, color: t.accent, lineHeight: 1, display: 'flex' } }, overall),
+        h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: t.text, opacity: 0.65, marginTop: 6, display: 'flex' } }, 'OVERALL'),
+        h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 2, color: t.accent, marginTop: 10, display: 'flex' } }, t.label),
+      ),
+      // Avatar + name
+      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center' } },
+        avatar,
+        h('div', { style: { fontSize: 44, fontWeight: 800, color: t.text, marginTop: 18, display: 'flex' } }, name),
+      ),
+      // Ratings
+      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 24 } }, ...rows),
+    ),
+  );
+
+  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+}
