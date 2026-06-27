@@ -10956,24 +10956,47 @@ function AppInner() {
   }, [showToast]);
 
   const shareProfile = useCallback(async () => {
-    // 1.1: share a REAL PNG of the FIFA-style Ball IQ card via the canvas
-    // pipeline (shareCard → NativeShareCard). The actual card image lands in
-    // iMessage / WhatsApp / Snapchat, with a tappable balliq.app link riding
-    // along as the companion text item. No balliq.app deploy needed (unlike
-    // the OG-link approach) — the card renders fully client-side.
+    // 1.1: share a balliq.app/p?... LINK that renders the player's FIFA card as
+    // its Open Graph preview (server-rendered via /api/og). On iMessage a single
+    // image FILE attaches but iOS strips the caption/link off it — a URL instead
+    // gives a tappable link AND a rich card preview across iMessage/WhatsApp/
+    // Twitter/Slack. Requires balliq.app to be deployed with api/og + api/p.
+    const { level } = getLevelInfo(xp);
+    const iq = stats.bestIQ || 0;
     const correct = stats.totalCorrect || 0;
     const answered = stats.totalAnswered || 0;
+    const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
     const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
-    await shareCard("profile", {
-      card,
-      name: profile.name || `${APP_NAME} Player`,
-      emoji: profile.avatar || "⚽",
-      avatarUrl: authProfile?.avatar_url || null,
-    }, {
-      onToast: showToast,
-      textFallback: `Can you beat me at ${APP_NAME}? ⚽ https://balliq.app`,
+    const params = new URLSearchParams({
+      n: profile.name || `${APP_NAME} Player`,
+      l: level.name || "",
+      li: level.icon || "⚽",
+      x: String(xp || 0),
+      g: String(stats.gamesPlayed || 0),
+      s: String(loginStreak || 0),
+      a: accuracy,
+      e: profile.avatar || "⚽",
+      iq: String(iq || 0),
+      ov: String(card.overall),
+      ti: card.tier,
+      r: card.ratings.map(x => x.rating).join(","),
     });
-  }, [stats, profile, showToast, authProfile]);
+    const avatarUrl = authProfile?.avatar_url;
+    if (avatarUrl) params.set("img", avatarUrl);
+    const url = `https://balliq.app/p?${params.toString()}`;
+    const text = `Can you beat me at ${APP_NAME}? ⚽`;
+    try {
+      if (IS_NATIVE) {
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share your profile" });
+        return;
+      }
+      if (navigator.share) { await navigator.share({ title: APP_NAME, text, url }); return; }
+      if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); return; }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // user dismissed the sheet
+      try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); } } catch {}
+    }
+  }, [xp, stats, profile, loginStreak, showToast, authProfile]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
