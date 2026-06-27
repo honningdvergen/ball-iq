@@ -9727,7 +9727,7 @@ function AppInner() {
                 setShowRatePrompt(false);
                 const ua = navigator.userAgent || "";
                 if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
-                  window.open("https://apps.apple.com/app/ball-iq", "_blank");
+                  window.open("https://apps.apple.com/app/id6775975961", "_blank");
                 } else if (/Android/i.test(ua)) {
                   window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
                 } else {

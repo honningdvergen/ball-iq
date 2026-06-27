@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NOTE: This is the static fallback. The REAL deployed sitemap is regenerated
+  at build time by scripts/gen-seo-pages.mjs, which overwrites dist/sitemap.xml
+  with the live /quiz/* pages. The generator is the source of truth; keep this
+  roughly in sync for anyone reading public/ directly.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://balliq.app/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://balliq.app/quiz/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://balliq.app/quiz/world-cup/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://balliq.app/quiz/premier-league/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://balliq.app/quiz/champions-league/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://balliq.app/privacy.html</loc>

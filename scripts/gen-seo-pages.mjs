@@ -91,6 +91,9 @@ function head({ title, description, canonical, ld }) {
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(description)}" />
 <meta property="og:image" content="${SITE.ogImage}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Ball IQ football quiz" />
 <meta property="og:site_name" content="${SITE.name}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${esc(title)}" />
@@ -311,6 +314,7 @@ function buildHubPage(livePages) {
         '@type': 'CollectionPage',
         '@id': `${canonical}#hub`,
         name: HUB.title,
+        description: HUB.description,
         url: canonical,
         about: { '@type': 'Thing', name: 'Association football trivia' },
       },

@@ -54,7 +54,7 @@ export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast, onHom
       </nav>
       <div className="dn-cta">
         <div className="dn-cta-eyebrow">Get the app</div>
-        <a href="https://apps.apple.com/app/ball-iq" target="_blank" rel="noopener" className="dn-cta-badge">App Store →</a>
+        <a href="https://apps.apple.com/app/id6775975961" target="_blank" rel="noopener" className="dn-cta-badge">App Store →</a>
         <a href="#" onClick={onStoreClick} className="dn-cta-badge">Google Play →</a>
       </div>
     </aside>

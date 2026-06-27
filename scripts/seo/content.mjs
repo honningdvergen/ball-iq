@@ -27,7 +27,7 @@ export const SITE = {
   name: 'Ball IQ',
   tagline: 'The ultimate football quiz',
   ogImage: 'https://balliq.app/og-image.png',
-  appStore: 'https://apps.apple.com/app/ball-iq',
+  appStore: 'https://apps.apple.com/app/id6775975961',
   playUrl: 'https://balliq.app/',
 };
 
