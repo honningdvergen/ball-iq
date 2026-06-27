@@ -1110,6 +1110,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   };
   const saveName = () => {
     const v = nameDraft.trim();
+    // Empty draft = cancel, never blank-save the name. Protects against a
+    // stray tap-away/blur (onBlur fires saveName) wiping an existing username.
+    if (!v) { setEditingName(false); return; }
     // Sprint #84 AAA2: username profanity gate. SQL trigger
     // profiles_profanity_check is the bypass-proof backstop; the client
     // check just gives a fast inline error without a Supabase round-trip
@@ -1157,7 +1160,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
 
   const openAvatarPicker = () => {
-    if (uploading) return;
+    if (uploading || authLoading) return;
     // Guests can only use emoji — logged-in users get the full menu
     if (user && !isGuest) setShowAvatarMenu(true);
     else setShowEmojiPicker(true);
@@ -1291,14 +1294,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
               {authLoading ? (
                 <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
               ) : editingName ? (
-                <span style={{display:"inline-flex", alignItems:"center", gap:8, maxWidth:"100%"}}>
+                <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
                   <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
                   {/* iOS keyboard "return" doesn't reliably fire keydown Enter on a
-                      bare input, so give an explicit tap target. onMouseDown
-                      preventDefault keeps the input focused so this click saves
-                      (rather than the input blurring + saving first). */}
+                      bare input, so give explicit tap targets. onMouseDown
+                      preventDefault keeps focus so the click handles it (rather
+                      than the input blurring + committing first). */}
                   <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
                     style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
+                    style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                 </span>
               ) : showNameCTA ? (
                 <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
@@ -1380,8 +1385,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
           if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" });
           else rows.push({ icon: "🧭", label: "Next up", value: "Play more leagues", color: "var(--t2)" });
-          rows.push({ icon: "🎯", label: "Accuracy", value: accPct, sub: pctile ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
-          rows.push({ icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
+          // Only show "Top X%" when it's actually a flex — iqPercentile floors
+          // at 15, so a weak player would otherwise read "Top 85%" (sounds great,
+          // means bottom-ish). Show it only for genuine top-half players.
+          rows.push({ icon: "🎯", label: "Accuracy", value: accPct, sub: (pctile && pctile >= 50) ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
+          // Suppress a 0 day-streak (gold flame next to 0 reads as broken, and
+          // the rest of the app hides a zero streak).
+          if (loginStreak >= 1) rows.push({ icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
           rows.push({ icon: "🏅", label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
           if (stats.bestScore > 0) rows.push({ icon: "🎮", label: "Best score", value: `${stats.bestScore}/10`, color: "var(--text)" });
           if (stats.bestHotStreak > 0) rows.push({ icon: "⚡", label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });

@@ -4696,6 +4696,11 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
           }}>
             {isSurvival ? 'Last standing' : isHotStreak ? 'Best streaks' : 'Final scores'}
           </div>
+          {(isSurvival || isHotStreak) && (
+            <div style={{ fontSize: 11, color: 'var(--t3)', paddingLeft: 4, marginBottom: 6 }}>
+              {isSurvival ? 'Knocked out later = ranked higher' : 'Longest correct streak wins'}
+            </div>
+          )}
           {sorted.map((p, idx) => {
             const isMe = !!myUserId && p.user_id === myUserId;
             return (
@@ -5048,6 +5053,10 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
   const isLastQuestion = currentQuestionIdx + 1 >= room.questions.length;
   const showRevealBanner = revealPhase === 'revealing';
+  // Survival spectator state — once eliminated, the player watches the round
+  // resolve (no answer-timer pressure, no answering).
+  const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
+  const aliveCount = room.mode === 'survival' ? players.filter(p => p.eliminated_at_q == null).length : 0;
   // Stage 1C.7.1: derived `revealing` instead of raw `revealPhase !==
   // 'answering'`. Guards against the brief render between realtime UPDATE
   // arriving (room.current_question increments) and the question-advance
@@ -5186,14 +5195,18 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         </div>
 
         {/* Stage 1C.7: dim wrapper scopes only the timer. QuestionView dims
-            its own prompt internally when revealing=true. */}
-        <div style={{ opacity: dimContent ? 0.6 : 1 }}>
-          <QuestionTimer
-            durationMs={QUESTION_DURATION_MS}
-            onExpire={handleTimerExpire}
-            questionIdx={currentQuestionIdx}
-          />
-        </div>
+            its own prompt internally when revealing=true. Hidden for eliminated
+            survival spectators — a ticking answer timer over dead buttons reads
+            like answer pressure on a question they can't touch. */}
+        {!iAmEliminated && (
+          <div style={{ opacity: dimContent ? 0.6 : 1 }}>
+            <QuestionTimer
+              durationMs={QUESTION_DURATION_MS}
+              onExpire={handleTimerExpire}
+              questionIdx={currentQuestionIdx}
+            />
+          </div>
+        )}
 
         {/* No `key` on QuestionView/QuestionTimer (Stage 1F follow-up):
             previously remounted via key={currentQuestionIdx} for clean
@@ -5204,7 +5217,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         <QuestionView
           question={question}
           lockedAnswerIdx={lockedAnswerIdx}
-          disabled={hasAnswered || revealPhase !== 'answering' || (room.mode === 'survival' && myPlayer?.eliminated_at_q != null)}
+          disabled={hasAnswered || revealPhase !== 'answering' || iAmEliminated}
           onPick={handleAnswerPick}
           revealing={revealing}
           questionIdx={currentQuestionIdx}
@@ -5214,14 +5227,17 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             HostAdvanceControls below stays anchored regardless of whether
             the banner is showing. */}
         <div style={{ minHeight: 45, marginTop: 16 }}>
-          {room.mode === 'survival' && myPlayer?.eliminated_at_q != null ? (
+          {iAmEliminated ? (
             <div style={{
               padding: "10px 14px",
               background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)",
               borderRadius: 10, textAlign: "center",
               fontSize: 13, fontWeight: 600, color: "var(--text)",
             }}>
-              💀 You're out — watching who survives
+              💀 You're out — {aliveCount === 1 ? "1 player still alive" : `${aliveCount} players still alive`}.{" "}
+              <button onClick={handleLeave} style={{ background: "none", border: "none", color: "var(--accent)", textDecoration: "underline", cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "inherit", fontWeight: 600 }}>
+                Leave game
+              </button>
             </div>
           ) : hasAnswered && revealPhase === 'answering' && (
             <div style={{
@@ -5575,7 +5591,7 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
               </div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
                 {mode === "hotstreak" ? `🔥 ${p.streak ?? 0}`
-                  : mode === "survival" ? (p.eliminated_at_q != null ? "💀" : "❤️")
+                  : mode === "survival" ? <span role="img" aria-label={p.eliminated_at_q != null ? "eliminated" : "still alive"}>{p.eliminated_at_q != null ? "💀" : "❤️"}</span>
                   : p.score}
               </div>
             </div>
