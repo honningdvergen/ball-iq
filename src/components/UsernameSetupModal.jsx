@@ -51,6 +51,10 @@ export function UsernameSetupModal({ user, authProfile, onSaved }) {
       setError("Username must be at least 3 characters");
       return;
     }
+    if (/\s/.test(v)) {
+      setError("Usernames can't contain spaces");
+      return;
+    }
     if (isProfaneUsername(v)) {
       setError("This username isn't allowed. Please choose another.");
       return;

@@ -1122,6 +1122,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
     // Empty draft = cancel, never blank-save the name. Protects against a
     // stray tap-away/blur (onBlur fires saveName) wiping an existing username.
     if (!v) { setEditingName(false); return; }
+    if (/\s/.test(v)) { toast("Usernames can't contain spaces"); return; }
     // Sprint #84 AAA2: username profanity gate. SQL trigger
     // profiles_profanity_check is the bypass-proof backstop; the client
     // check just gives a fast inline error without a Supabase round-trip
@@ -1301,7 +1302,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
 
             {/* Editable name */}
             <div style={{ marginTop: 12 }}>
-              {authLoading ? (
+              {(authLoading && !currentName) ? (
+                // Only skeleton when there's no cached name yet — otherwise the
+                // name shows (and stays editable) instantly without waiting for
+                // the server profile (which can be slow, e.g. on web).
                 <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
               ) : editingName ? (
                 <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>

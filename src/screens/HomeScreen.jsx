@@ -85,9 +85,11 @@ function HomeScreenImpl({
             <div style={{display:"flex", alignItems:"center", gap:10}}>
               <div style={{display:"flex", alignItems:"baseline", gap:8, flex:1, minWidth:0, flexWrap:"wrap"}}>
                 <div style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
-                {homeAuthLoading ? (
+                {(homeAuthLoading && !homeDisplayName) ? (
                   // Sprint #23 U2: min-width lock keeps the name-box width stable
-                  // across the Loading…→username swap.
+                  // across the Loading…→username swap. Only show the skeleton when
+                  // we have NO cached name to show — otherwise the local name
+                  // appears instantly instead of waiting for the server profile.
                   <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
                 ) : homeDisplayName ? (
                   <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
