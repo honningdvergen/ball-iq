@@ -1291,7 +1291,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
               {authLoading ? (
                 <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
               ) : editingName ? (
-                <input className="profile-name-input" style={{textAlign:"left", maxWidth:"100%", color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                <span style={{display:"inline-flex", alignItems:"center", gap:8, maxWidth:"100%"}}>
+                  <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                  {/* iOS keyboard "return" doesn't reliably fire keydown Enter on a
+                      bare input, so give an explicit tap target. onMouseDown
+                      preventDefault keeps the input focused so this click saves
+                      (rather than the input blurring + saving first). */}
+                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
+                    style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                </span>
               ) : showNameCTA ? (
                 <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
                   Set your name <span style={{fontSize:13,opacity:0.6}} aria-hidden="true">✏️</span>
