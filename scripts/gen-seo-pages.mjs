@@ -147,6 +147,7 @@ function head({ title, description, canonical, ld }) {
   footer a{color:#8aa0b4}
   footer .disc{margin-top:10px;color:#5f7387;font-size:11.5px;line-height:1.6}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">${ld}</script>
 </head>`;
 }

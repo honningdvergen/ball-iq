@@ -102,3 +102,18 @@ if (typeof window !== 'undefined') {
   if ('requestIdleCallback' in window) window.requestIdleCallback(startAds, { timeout: 3000 })
   else window.addEventListener('load', () => setTimeout(startAds, 1200))
 }
+
+// Web-only, privacy-friendly analytics (cookieless Vercel Web Analytics).
+// NEVER runs in the native app: the bundled capacitor:// scheme has no
+// /_vercel endpoint, and the privacy policy promises the app collects no
+// usage analytics — only the website (balliq.app) does. No cookies, no
+// cross-site tracking, no personal identification. No-ops until Web Analytics
+// is enabled for the project in the Vercel dashboard.
+if (typeof window !== 'undefined' && !(window.Capacitor?.isNativePlatform?.())) {
+  try {
+    const s = document.createElement('script')
+    s.defer = true
+    s.src = '/_vercel/insights/script.js'
+    document.head.appendChild(s)
+  } catch {}
+}
