@@ -4634,6 +4634,10 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
   // Survival: if everyone got eliminated, the "winner" is whoever lasted
   // longest — frame it as that rather than "You won!" beside their own 💀 row.
   const survivalLastStanding = isSurvival && !!winner && winner.eliminated_at_q != null;
+  // A survival draw: everyone was eliminated on the SAME question — no one
+  // lasted longer, so it's a tie, not a win. (Only a full draw, so a clear
+  // last-place player in a 3-way isn't told "it's a draw".)
+  const survivalDraw = survivalLastStanding && sorted.length > 1 && sorted.every(p => p.eliminated_at_q === winner.eliminated_at_q);
 
   // Medal emoji for podium positions; numeric rank thereafter.
   function rankBadge(idx) {
@@ -4647,7 +4651,7 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
   // gold accent regardless of whether the viewer is the winner.
   function rowStyle(player, idx) {
     const isMe = !!myUserId && player.user_id === myUserId;
-    const isFirst = idx === 0;
+    const isFirst = idx === 0 && !survivalDraw;
     let borderColor = 'var(--border)';
     let background = 'var(--s1)';
     if (isFirst) {
@@ -4668,19 +4672,24 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
 
   return (
     <div className="screen">
-      {/* Multiplayer winners deserve the same celebration solo wins get. */}
-      {isWinner && <Confetti />}
+      {/* Multiplayer winners deserve the same celebration solo wins get.
+          (Not for a draw — nobody outlasted anybody.) */}
+      {isWinner && !survivalDraw && <Confetti />}
       <div className="page-hdr">
         <div className="page-title">Game over</div>
       </div>
       <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
         {/* Headline — winner / your-result framing */}
         <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>{isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
+          <div style={{ fontSize: 48, marginBottom: 8 }}>{survivalDraw ? '🤝' : isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
-            {winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
+            {survivalDraw ? "It's a draw!" : winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
           </div>
-          {myRank > 0 && !isWinner && (
+          {survivalDraw ? (
+            <div style={{ fontSize: 13, color: 'var(--t2)' }}>
+              Everyone knocked out on Q{(winner.eliminated_at_q ?? 0) + 1}
+            </div>
+          ) : myRank > 0 && !isWinner && (
             <div style={{ fontSize: 13, color: 'var(--t2)' }}>
               You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
             </div>
@@ -4696,7 +4705,7 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
           }}>
             {isSurvival ? 'Last standing' : isHotStreak ? 'Best streaks' : 'Final scores'}
           </div>
-          {(isSurvival || isHotStreak) && (
+          {(isSurvival || isHotStreak) && !survivalDraw && (
             <div style={{ fontSize: 11, color: 'var(--t3)', paddingLeft: 4, marginBottom: 6 }}>
               {isSurvival ? 'Knocked out later = ranked higher' : 'Longest correct streak wins'}
             </div>
@@ -5008,6 +5017,14 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
     let cancelled = false;
     (async () => {
+      // Survival: once everyone is eliminated, end the game now rather than
+      // auto-advancing through the remaining questions (nothing left to play for).
+      if (room.mode === 'survival' && players.length > 0 && players.every(p => p.eliminated_at_q != null)) {
+        const endRes = await actions.end();
+        if (cancelled || !mountedRef.current) return;
+        if (endRes.error) { console.warn('[mp] end failed (all eliminated):', endRes.error); setRevealPhase('stuck'); }
+        return;
+      }
       const result = await actions.advance();
       if (cancelled || !mountedRef.current) return;
       if (result.error) {
