@@ -46,6 +46,37 @@ export const HUB = {
   ],
 };
 
+// ── ABOUT PAGE ──────────────────────────────────────────────────────────────
+export const ABOUT = {
+  slug: 'about',
+  h1: 'About Ball IQ',
+  title: 'About Ball IQ — The Football Quiz That Explains Every Answer',
+  description:
+    'Ball IQ is an independent football quiz game with thousands of hand-curated questions and an explanation behind every answer. Learn what it is and who makes it.',
+  lede: 'An independent football trivia game, made for fans who love the details.',
+  body: [
+    `Ball IQ is a football quiz game for people who love the details — the moments, records, managers and matches that define the sport. It began with a simple frustration: almost every football quiz online is shallow, and when you get one wrong it just says "wrong" and moves on. Ball IQ explains every answer, so playing feels less like a test and more like learning something each round.`,
+    `The game is built on thousands of hand-curated questions spanning the FIFA World Cup, the Premier League, the UEFA Champions League, La Liga, Serie A, the Bundesliga and the European Championship, plus dedicated sets on football's great managers, its legends, and the all-time records that settle arguments. Difficulty runs from gentle warm-ups to genuinely hard deep cuts, so a casual fan and a die-hard both get a real test. Beyond the quizzes there's a daily challenge, a Wordle-style guessing game called Footle, an IQ test that scores your football knowledge, and live online multiplayer where you go head-to-head with friends in real time.`,
+    `Ball IQ is an independent project, built and maintained in Norway. It's available as a free app on the App Store and as a web app you can play in any browser — no sign-up required to start. New questions are added regularly, and the whole thing is made by someone who genuinely cares about getting the football right.`,
+    `That accuracy matters to us. Questions are researched, every answer carries a short factual explanation, and the bank is reviewed continuously. If you ever spot a mistake or a question that reads wrong, we want to know — corrections get fixed fast. Football history is detailed and occasionally contested, and we'd rather get it right than get it quickly.`,
+  ],
+};
+
+// ── CONTACT PAGE ────────────────────────────────────────────────────────────
+export const CONTACT = {
+  slug: 'contact',
+  h1: 'Contact Ball IQ',
+  title: 'Contact Ball IQ — Feedback, Bug Reports & Enquiries',
+  description:
+    'Get in touch with Ball IQ — feedback, bug reports, question corrections, press and partnership enquiries. Email hello@balliq.app.',
+  lede: 'Questions, feedback, or spotted a wrong answer? We read everything.',
+  body: [
+    `The best way to reach Ball IQ is by email: <a href="mailto:hello@balliq.app">hello@balliq.app</a>. It goes straight to the person who makes the game, and we read every message.`,
+    `For bug reports, it helps to tell us your device and what you were doing when it happened. For question corrections, include the question and what's wrong with it — we review and fix the bank quickly, and we genuinely appreciate the catch. For press, partnership or anything else, the same address works.`,
+    `We're a small independent operation, so replies may take a day or two — but they do come. Thanks for playing, and for helping make Ball IQ better.`,
+  ],
+};
+
 // ── CATEGORY PAGES ──────────────────────────────────────────────────────────
 // `cat` matches the `cat` field in src/questions.js. `sample` = number of
 // hint-bearing Q&A the generator renders. `about` feeds the JSON-LD Quiz.about.

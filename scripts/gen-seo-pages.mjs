@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
-import { SITE, HUB, CATEGORIES } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, ABOUT, CONTACT } from './seo/content.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -167,7 +167,7 @@ function header(crumbs) {
 function footer() {
   const year = 2026;
   return `<footer>
-<p><a href="${SITE.base}/quiz/">All football quizzes</a> · <a href="${SITE.base}/">Play Ball IQ</a> · <a href="${SITE.base}/privacy.html">Privacy</a></p>
+<p><a href="${SITE.base}/quiz/">All football quizzes</a> · <a href="${SITE.base}/">Play Ball IQ</a> · <a href="${SITE.base}/about/">About</a> · <a href="${SITE.base}/contact/">Contact</a> · <a href="${SITE.base}/privacy.html">Privacy</a></p>
 <p>© ${year} ${esc(SITE.name)} — ${esc(SITE.tagline)}.</p>
 <p class="disc">Ball IQ is an independent football trivia game and is not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club or competition. All team and competition names are used for identification and editorial reference only.</p>
 </footer>
@@ -350,6 +350,53 @@ ${footer()}`;
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
 }
 
+// ── simple content page (About / Contact) ─────────────────────────────────────
+// `cfg.body` paragraphs may contain trusted inline HTML (e.g. a mailto link),
+// so they're rendered raw — these are hand-authored, never user input.
+function buildSimplePage(cfg) {
+  const canonical = `${SITE.base}/${cfg.slug}/`;
+  const crumb = cfg.slug.charAt(0).toUpperCase() + cfg.slug.slice(1);
+  const pageType = cfg.slug === 'contact' ? 'ContactPage' : 'AboutPage';
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': pageType,
+        '@id': `${canonical}#page`,
+        name: cfg.title,
+        description: cfg.description,
+        url: canonical,
+        isPartOf: { '@type': 'WebSite', name: SITE.name, url: `${SITE.base}/` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: crumb, item: canonical },
+        ],
+      },
+    ],
+  });
+
+  const bodyHtml = cfg.body.map((p) => `<p>${p}</p>`).join('\n');
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+${header([
+    { name: 'Home', url: `${SITE.base}/` },
+    { name: crumb, url: canonical },
+  ])}
+<h1>${esc(cfg.h1)}</h1>
+<p class="lede">${esc(cfg.lede)}</p>
+<div class="intro">
+${bodyHtml}
+</div>
+${footer()}`;
+
+  const dir = resolve(DIST, cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+}
+
 // ── sitemap ───────────────────────────────────────────────────────────────────
 function buildSitemap(livePages) {
   const urls = [
@@ -358,6 +405,8 @@ function buildSitemap(livePages) {
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
+    { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
+    { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
   ];
   const body = urls
@@ -385,11 +434,14 @@ function main() {
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages));
   buildHubPage(livePages);
+  buildSimplePage(ABOUT);
+  buildSimplePage(CONTACT);
   buildSitemap(livePages);
 
-  console.log(`[gen-seo] wrote ${built.length} category pages + hub + sitemap into dist/`);
+  console.log(`[gen-seo] wrote ${built.length} category pages + hub + about + contact + sitemap into dist/`);
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
+  console.log(`  ✓ /about/  ✓ /contact/`);
   console.log(`  ✓ /sitemap.xml`);
 }
 
