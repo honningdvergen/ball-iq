@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import App from './App.jsx'
 import { AuthProvider } from './useAuth.jsx'
+import { initAds } from './lib/ads.js'
 
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
@@ -93,3 +94,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </React.StrictMode>,
 )
+
+// Ads (web only, dormant until an AdSense client ID is set in lib/ads.js) —
+// initialise off the critical path so it never competes with first paint.
+if (typeof window !== 'undefined') {
+  const startAds = () => { try { initAds() } catch {} }
+  if ('requestIdleCallback' in window) window.requestIdleCallback(startAds, { timeout: 3000 })
+  else window.addEventListener('load', () => setTimeout(startAds, 1200))
+}
