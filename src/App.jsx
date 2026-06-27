@@ -4631,6 +4631,9 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
   const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
   const winner = sorted[0];
   const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
+  // Survival: if everyone got eliminated, the "winner" is whoever lasted
+  // longest — frame it as that rather than "You won!" beside their own 💀 row.
+  const survivalLastStanding = isSurvival && !!winner && winner.eliminated_at_q != null;
 
   // Medal emoji for podium positions; numeric rank thereafter.
   function rankBadge(idx) {
@@ -4673,9 +4676,9 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
       <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
         {/* Headline — winner / your-result framing */}
         <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>{isWinner ? '🏆' : '👋'}</div>
+          <div style={{ fontSize: 48, marginBottom: 8 }}>{isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
-            {winner ? (isWinner ? 'You won!' : `${winner.name || 'Player'} wins`) : 'Game over'}
+            {winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
           </div>
           {myRank > 0 && !isWinner && (
             <div style={{ fontSize: 13, color: 'var(--t2)' }}>
@@ -6527,143 +6530,6 @@ async function generateShareCard(type, data) {
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
-  } else if (type === "profile") {
-    // 1.1: FIFA-style Ball IQ card as a real PNG — tier-tinted background,
-    // overall + tier, photo/emoji avatar with a tier ring, name, and the six
-    // competition ratings with flags. Mirrors the in-app card + the OG render.
-    const TIER_CV = {
-      gold:   { c1: "#2c2510", c2: "#0e0c05", accent: "#F0C24B", text: "#FDF6E3", label: "GOLD" },
-      silver: { c1: "#1d1f26", c2: "#0b0c0f", accent: "#C7CED8", text: "#F2F4F8", label: "SILVER" },
-      bronze: { c1: "#241a12", c2: "#0e0a06", accent: "#CE8B36", text: "#F5ECE2", label: "BRONZE" },
-    };
-    const _card = data?.card || { overall: 0, tier: "bronze", ratings: [] };
-    const tp = TIER_CV[_card.tier] || TIER_CV.bronze;
-    const name = data?.name || `${APP_NAME} Player`;
-    const emoji = data?.emoji || "⚽";
-    const avatarUrl = data?.avatarUrl || null;
-
-    // Tier-tinted background (covers the base dark fill + green accent bar).
-    const _bg = ctx.createLinearGradient(0, 0, W, H);
-    _bg.addColorStop(0, tp.c1);
-    _bg.addColorStop(1, tp.c2);
-    ctx.fillStyle = _bg;
-    ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = tp.accent;
-    ctx.fillRect(0, 0, W, 6);
-
-    // Re-draw the header (the bg fill covered the base one).
-    ctx.textAlign = "left";
-    ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = tp.text;
-    ctx.fillText(`⚽ ${APP_NAME}`, padX, headerY);
-    ctx.textAlign = "right";
-    ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.globalAlpha = 0.6;
-    ctx.fillText("balliq.app", W - padX, headerY);
-    ctx.globalAlpha = 1;
-    ctx.textAlign = "center";
-
-    // Avatar — circular photo or emoji, with a tier ring.
-    const ar = 48, ax = cx, ay = 130;
-    let drewPhoto = false;
-    if (avatarUrl) {
-      try {
-        const img = await _loadImage(avatarUrl);
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(ax, ay, ar, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(img, ax - ar, ay - ar, ar * 2, ar * 2);
-        ctx.restore();
-        drewPhoto = true;
-      } catch { /* fall through to emoji */ }
-    }
-    if (!drewPhoto) {
-      ctx.beginPath();
-      ctx.arc(ax, ay, ar, 0, Math.PI * 2);
-      ctx.fillStyle = "#16181F";
-      ctx.fill();
-      ctx.textBaseline = "middle";
-      ctx.font = '60px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillText(emoji, ax, ay + 2);
-      ctx.textBaseline = "alphabetic";
-    }
-    ctx.save();
-    ctx.strokeStyle = tp.accent;
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(ax, ay, ar + 4, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
-
-    // Name.
-    ctx.font = '800 27px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = tp.text;
-    ctx.fillText(name, cx, 224);
-
-    // Overall + tier label.
-    ctx.font = '900 60px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = tp.accent;
-    ctx.fillText(String(_card.overall), cx, 308);
-    ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = tp.text;
-    ctx.globalAlpha = 0.7;
-    ctx.fillText(`OVERALL · ${tp.label}`, cx, 332);
-    ctx.globalAlpha = 1;
-
-    // Divider.
-    ctx.fillStyle = tp.accent;
-    ctx.globalAlpha = 0.25;
-    ctx.fillRect(padX + 18, 352, W - (padX + 18) * 2, 1);
-    ctx.globalAlpha = 1;
-
-    // Six competition ratings — 2 columns x 3 rows: flag, rating, abbr.
-    const _ratings = _card.ratings || [];
-    const _gx = [65, 229];
-    const _rowY = [390, 436, 482];
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "left";
-    for (let i = 0; i < _ratings.length && i < 6; i++) {
-      const r = _ratings[i];
-      const gx = _gx[i % 2];
-      const gy = _rowY[Math.floor(i / 2)];
-      ctx.font = '24px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = tp.text;
-      ctx.fillText(r.icon || "⚽", gx, gy);
-      ctx.font = '900 30px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = tp.accent;
-      ctx.fillText(String(r.rating), gx + 34, gy);
-      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = tp.text;
-      ctx.globalAlpha = 0.85;
-      ctx.fillText(r.abbr, gx + 80, gy);
-      ctx.globalAlpha = 1;
-    }
-    ctx.textBaseline = "alphabetic";
-    ctx.textAlign = "center";
-
-    // CTA — filled tier-accent pill.
-    const ctaText = "Can you beat me? ⚽";
-    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
-    const ctaW = ctx.measureText(ctaText).width + 46;
-    const ctaH = 42, ctaY = 514;
-    ctx.fillStyle = tp.accent;
-    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
-    ctx.fill();
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#0A0A0A";
-    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
-    ctx.textBaseline = "alphabetic";
-
-    // Footer URL (re-draw; the bg fill covered the base one).
-    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = tp.text;
-    ctx.globalAlpha = 0.6;
-    ctx.fillText("balliq.app", cx, H - 24);
-    ctx.globalAlpha = 1;
-
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -6782,7 +6648,6 @@ async function shareCard(type, data, opts = {}) {
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
-      if (type === "profile")   return `My ${APP_NAME} card: ${data?.card?.overall ?? "?"} overall, ${(data?.card?.tier || "bronze").toUpperCase()} tier. Can you beat me? ${link}`;
       if (data?.modeLabel && data?.score != null && data?.total != null) {
         return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
       }
