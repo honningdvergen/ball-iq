@@ -4443,6 +4443,8 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         <div style={{ textAlign: "center", fontSize: 13, color: "var(--t2)", marginBottom: 16 }}>
           {activeMode === "hotstreak"
             ? "🔥 Hot Streak — longest correct streak wins"
+            : activeMode === "survival"
+            ? "💀 Survival — one wrong answer and you're out"
             : "🏁 Race — fastest correct answers win"}
         </div>
 
@@ -4455,6 +4457,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               {[
                 { id: "race",      label: "🏁 Race" },
                 { id: "hotstreak", label: "🔥 Hot Streak" },
+                { id: "survival",  label: "💀 Survival" },
               ].map(opt => (
                 <button
                   key={opt.id}
@@ -4600,9 +4603,16 @@ function LobbyError({ error, onExit, onRetry }) {
 
 function LobbyEnded({ players, myPlayer, onExit, room }) {
   const isHotStreak = room?.mode === 'hotstreak';
-  // Hot Streak ranks by best streak (tiebreak by points); Race ranks by points.
-  // Both fall back to joined_at asc so ties stay stable (earliest joiner wins).
+  const isSurvival = room?.mode === 'survival';
+  // Survival ranks by who lasted longest (alive > later elimination); Hot Streak
+  // ranks by best streak; Race ranks by points. All fall back to joined_at asc
+  // so ties stay stable (earliest joiner wins).
   const sorted = (players || []).slice().sort((a, b) => {
+    if (isSurvival) {
+      const ae = a.eliminated_at_q == null ? Infinity : a.eliminated_at_q;
+      const be = b.eliminated_at_q == null ? Infinity : b.eliminated_at_q;
+      if (ae !== be) return be - ae;
+    }
     if (isHotStreak) {
       const bs = (b.best_streak || 0) - (a.best_streak || 0);
       if (bs !== 0) return bs;
@@ -4677,7 +4687,7 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
             letterSpacing: 0.4, textTransform: 'uppercase',
             marginBottom: 2, paddingLeft: 4,
           }}>
-            {isHotStreak ? 'Best streaks' : 'Final scores'}
+            {isSurvival ? 'Last standing' : isHotStreak ? 'Best streaks' : 'Final scores'}
           </div>
           {sorted.map((p, idx) => {
             const isMe = !!myUserId && p.user_id === myUserId;
@@ -4711,7 +4721,9 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
                   color: 'var(--text)',
                   fontVariantNumeric: 'tabular-nums',
                 }}>
-                  {isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
+                  {isSurvival
+                    ? (p.eliminated_at_q == null ? '❤️' : `💀 Q${p.eliminated_at_q + 1}`)
+                    : isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
                 </div>
               </div>
             );
@@ -5178,7 +5190,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         <QuestionView
           question={question}
           lockedAnswerIdx={lockedAnswerIdx}
-          disabled={hasAnswered || revealPhase !== 'answering'}
+          disabled={hasAnswered || revealPhase !== 'answering' || (room.mode === 'survival' && myPlayer?.eliminated_at_q != null)}
           onPick={handleAnswerPick}
           revealing={revealing}
           questionIdx={currentQuestionIdx}
@@ -5188,7 +5200,16 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             HostAdvanceControls below stays anchored regardless of whether
             the banner is showing. */}
         <div style={{ minHeight: 45, marginTop: 16 }}>
-          {hasAnswered && revealPhase === 'answering' && (
+          {room.mode === 'survival' && myPlayer?.eliminated_at_q != null ? (
+            <div style={{
+              padding: "10px 14px",
+              background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)",
+              borderRadius: 10, textAlign: "center",
+              fontSize: 13, fontWeight: 600, color: "var(--text)",
+            }}>
+              💀 You're out — watching who survives
+            </div>
+          ) : hasAnswered && revealPhase === 'answering' && (
             <div style={{
               padding: "10px 14px",
               background: "var(--s1)", border: "1px solid var(--border)",
@@ -5539,7 +5560,9 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
                 {isHostPlayer && <span style={{ color: "var(--accent)", marginLeft: 4 }}>★</span>}
               </div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
-                {mode === "hotstreak" ? `🔥 ${p.streak ?? 0}` : p.score}
+                {mode === "hotstreak" ? `🔥 ${p.streak ?? 0}`
+                  : mode === "survival" ? (p.eliminated_at_q != null ? "💀" : "❤️")
+                  : p.score}
               </div>
             </div>
           </div>
