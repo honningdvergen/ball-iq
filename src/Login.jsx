@@ -413,7 +413,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
             ...(loading || !email || !password ? styles.buttonDisabled : {}),
           }}
         >
-          {loading ? <span className="btn-spin" role="status" aria-label="Signing in" /> : mode === 'login' ? 'Sign in' : 'Sign up'}
+          {loading ? <span className="btn-spin" role="status" aria-label={mode === 'login' ? 'Signing in' : 'Creating account'} /> : mode === 'login' ? 'Sign in' : 'Sign up'}
         </button>
       </form>
 

@@ -4908,7 +4908,14 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // Each client computes from its own (realtime-synced) view of players.
   // Stays sticky once entered (a late-joiner's -1 answered_question
   // won't bounce us back to 'answering' — we're already past).
-  const allAnswered = players.length > 0 && players.every(p => p.answered_question >= currentQuestionIdx);
+  // In Survival, eliminated players are spectators — their QuestionView is
+  // disabled so they never tap, and their answered_question only advances when
+  // their own 20s timer fires. Gating the reveal on them would force the living
+  // to wait the full timer every post-elimination question. So only living
+  // players gate the reveal in survival (all players in race/hotstreak).
+  const allAnswered = players.length > 0 && players
+    .filter(p => room?.mode !== 'survival' || p.eliminated_at_q == null)
+    .every(p => p.answered_question >= currentQuestionIdx);
   useEffect(() => {
     if (revealPhase === 'answering' && allAnswered) {
       setRevealPhase('revealing');

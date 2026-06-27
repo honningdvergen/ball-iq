@@ -1355,22 +1355,27 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           // skill comparison (percentile), records, and a specialist title.
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const sorted = [...card.ratings].sort((a, b) => b.rating - a.rating);
-          const strongest = sorted[0];
-          const weakest = sorted[sorted.length - 1];
-          const spread = strongest.rating - weakest.rating;
-          // A title needs a clear standout; otherwise they're a versatile all-rounder.
-          const title = spread >= 5 ? `${strongest.name} Specialist` : "Versatile All-Rounder";
+          // Base the verdict only on competitions the player has actually
+          // answered — computeCard prior-seeds unplayed comps from overall
+          // accuracy, so ranking the raw six would name "Strongest"/"Needs work"
+          // for leagues with zero data.
+          const played = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating);
+          const strongest = played[0] || null;
+          const weakest = played.length >= 2 ? played[played.length - 1] : null;
+          const spread = strongest && weakest ? strongest.rating - weakest.rating : 0;
+          const title = strongest && spread >= 5 ? `${strongest.name} Specialist`
+            : played.length >= 3 ? "Versatile All-Rounder"
+            : "Rising Talent";
           const accPct = (stats.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
             ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
-          const rows = [
-            { icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" },
-            { icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" },
-            { icon: "🎯", label: "Accuracy", value: accPct, sub: pctile ? `Top ${100 - pctile}%` : null, color: "var(--accent)" },
-            { icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" },
-            { icon: "🏅", label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" },
-            { icon: "🎮", label: "Best score", value: `${stats.bestScore || 0}/10`, color: "var(--text)" },
-          ];
+          const rows = [];
+          if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
+          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" });
+          else rows.push({ icon: "🧭", label: "Next up", value: "Play more leagues", color: "var(--t2)" });
+          rows.push({ icon: "🎯", label: "Accuracy", value: accPct, sub: pctile ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
+          rows.push({ icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
+          rows.push({ icon: "🏅", label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
+          if (stats.bestScore > 0) rows.push({ icon: "🎮", label: "Best score", value: `${stats.bestScore}/10`, color: "var(--text)" });
           if (stats.bestHotStreak > 0) rows.push({ icon: "⚡", label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
           if (stats.bestTrueFalse > 0) rows.push({ icon: "✅", label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
           return (
