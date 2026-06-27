@@ -1961,6 +1961,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
+.skeleton{background:var(--s2);border-radius:8px;animation:profileSkeletonPulse 1.4s ease-in-out infinite;display:block;}
+.btn-spin{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;opacity:0.85;vertical-align:-3px;}
+@keyframes qFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.q-fade{animation:qFadeIn 0.26s cubic-bezier(0.22,1,0.36,1);}
 .modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
 .modal-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin-bottom:8px;}
 .modal-body{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px;}
@@ -3758,7 +3762,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         </div>
       )}
 
-      <div className="q-card">
+      <div key={idx} className="q-card q-fade">
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>

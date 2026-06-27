@@ -595,7 +595,19 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {/* Friends list */}
       <div className="friends-block">
         <div className="friends-block-title">Your friends{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
-        {loading && accepted.length === 0 && <div className="friends-muted">Loading…</div>}
+        {loading && accepted.length === 0 && (
+          <div style={{display:"flex",flexDirection:"column",gap:8}} aria-busy="true" aria-label="Loading friends">
+            {[0,1,2].map(i => (
+              <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 12px"}}>
+                <div className="skeleton" style={{width:38,height:38,borderRadius:"50%",flexShrink:0}} />
+                <div style={{flex:1,display:"flex",flexDirection:"column",gap:6}}>
+                  <div className="skeleton" style={{height:12,width:`${55-i*10}%`,borderRadius:6}} />
+                  <div className="skeleton" style={{height:9,width:`${35-i*5}%`,borderRadius:6}} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         {/* Sprint #62 fix 2: error state takes precedence over the empty
             state. A failed network load is otherwise indistinguishable
             from "no friends" — users with real friends were being told
