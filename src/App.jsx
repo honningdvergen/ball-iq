@@ -5,7 +5,9 @@ import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
-import ReviewScreen from './ReviewScreen.jsx';
+// Lazy: the 523-line review screen is settings-only, never on the cold/first
+// paint — React.lazy keeps it out of the initial bundle (Suspense at render).
+const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User } from 'lucide-react';
@@ -11694,7 +11696,11 @@ function AppInner() {
         )}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
-        {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
+        {!inGame && screen === "review" && (
+          <React.Suspense fallback={<div className="tab-pane" />}>
+            <ReviewScreen onBack={() => setScreen("settings")} />
+          </React.Suspense>
+        )}
         {!inGame && screen === "daily-review" && dailyReviewState && (
           <DailyReviewScreen
             date={dailyReviewState.date}
