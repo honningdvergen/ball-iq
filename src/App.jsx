@@ -884,6 +884,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
 .btn-3d:focus-visible{outline:3px solid rgba(34,197,94,0.4);outline-offset:2px;}
+/* 1.2 web a11y: a visible keyboard-focus ring across all interactive elements —
+   previously only .btn-3d had one, so desktop Tab navigation was invisible. */
+button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play-card:focus-visible,.mode-item:focus-visible,.tab-item:focus-visible,.icon-btn:focus-visible,input:focus-visible,.typed-inp:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
 .btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
@@ -1202,6 +1205,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mode-list{display:flex;flex-direction:column;gap:8px;}
 .mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:background 0.18s,transform 0.12s;display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
 @media (hover: hover) { .mode-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(2px);} }
+/* 1.2 web: desktop hover feedback on the large card CTAs (mobile-first, so they
+   only animated on :active before — felt dead under a mouse). */
+@media (hover: hover) {
+  .footle-hero:hover,.todays-seven-secondary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.32);}
+  .mp-card:hover{border-color:rgba(34,197,94,0.42);}
+}
 .mode-item:active{background:var(--s2);transform:scale(0.98);}
 .mi-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;background:var(--s2);border-radius:9px;display:flex;align-items:center;justify-content:center;}
 .mode-item:hover .mi-icon{background:var(--s3);}
@@ -2338,6 +2347,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     max-width: 640px;
     padding: 0 24px 40px;
   }
+  /* 1.2 web: cap the quiz reading column so the question + answer options don't
+     stretch to the full column width on desktop (the most-used screen). */
+  .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
   /* Sprint #27 Y3 F4: previously 3-col at desktop. Audit showed cards
      were mobile-sized floating in an 880px container — visually small
      and lonely. Compressing to 2-col gives each card ~430px width,
