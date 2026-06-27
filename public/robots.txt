@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /p
 
 Sitemap: https://balliq.app/sitemap.xml

@@ -5,10 +5,12 @@ import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
-import ReviewScreen from './ReviewScreen.jsx';
+// Lazy: the 523-line review screen is settings-only, never on the cold/first
+// paint — React.lazy keeps it out of the initial bundle (Suspense at render).
+const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -17,6 +19,9 @@ import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
+import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders } from './lib/notifications.js';
+import { maybeRequestReview } from './lib/review.js';
+import { computeCard } from './lib/ballIqCard.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -25,6 +30,7 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
+import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 // Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
 // for the first-paint critical path — none of the three screens are reachable
 // without tab/screen navigation that happens AFTER cold launch. React.lazy
@@ -35,6 +41,10 @@ import { MultiplayerCard } from './components/MultiplayerCard.jsx';
 const ProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.ProfileScreen })));
 const FriendProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.FriendProfileScreen })));
 const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.BlockedUsersScreen })));
+// Online multiplayer (~1700 lines) — only loads when a user goes online, never
+// on the cold/first paint. Both entry points share the one chunk.
+const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
+const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
@@ -101,7 +111,22 @@ if (typeof window !== 'undefined' && !window.storage) {
 // ─── APP META ─────────────────────────────────────────────────────────────────
 // Single source of truth for the version string — surfaced in Settings → About.
 // Bump on every shipping release.
-const APP_VERSION = "1.0.0-beta";
+// Web fallback only — on native the About card shows the REAL installed build
+// version via CapApp.getInfo(), so this no longer drifts on each release (the
+// bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
+// current for the web build.
+const APP_VERSION = "1.1.0";
+// Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
+// Drives the About "Rate" + "Share" deep links.
+const APP_STORE_ID = "6775975961";
+// Shared style for the three About-card actions (Rate / Share / Feedback).
+const ABOUT_ACTION_STYLE = {
+  flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+  padding: "12px 6px", background: "transparent", color: "var(--accent)",
+  border: "1.5px solid var(--accent-b)", borderRadius: 12, fontFamily: "inherit",
+  fontSize: 12.5, fontWeight: 800, cursor: "pointer", WebkitAppearance: "none",
+  appearance: "none", textDecoration: "none",
+};
 
 // Centralised durations so we can tune motion/UX feel from one place.
 const TIMINGS = {
@@ -638,7 +663,7 @@ function generateCode() {
 // the V1 stub components (OnlineGame, MultiplayerComingSoon) that were
 // briefly kept around behind the ?stage1=1 gate.
 
-const LETTERS = ["A","B","C","D"];
+export const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
@@ -810,8 +835,8 @@ const css = `
    the otherwise iOS-styled light theme. Replace with the standard
    light card pattern: white surface, hairline border, soft shadow. */
 .light .fix-row { background: var(--s1); border: 0.5px solid #E5E5EA; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-.light .fix-row.is-today { background: rgba(255,149,0,0.10); border-color: rgba(255,149,0,0.36); }
-.light .fix-row.is-today .fix-md { color: #FF9500; }
+.light .fix-row.is-today { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.30); }
+.light .fix-row.is-today .fix-md { color: var(--accent); }
 .light .fix-dot.miss { border-color: #D1D1D6; }
 .light .logo { color:#1C1C1E; }
 .light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -865,6 +890,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
 .btn-3d:focus-visible{outline:3px solid rgba(34,197,94,0.4);outline-offset:2px;}
+/* 1.2 web a11y: a visible keyboard-focus ring across all interactive elements —
+   previously only .btn-3d had one, so desktop Tab navigation was invisible. */
+button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play-card:focus-visible,.mode-item:focus-visible,.tab-item:focus-visible,.icon-btn:focus-visible,input:focus-visible,.typed-inp:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
 .btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
@@ -995,10 +1023,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(34,197,94,0.22),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(34,197,94,0.35);box-shadow:0 4px 18px rgba(34,197,94,0.18),0 1px 3px rgba(0,0,0,0.4);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(34,197,94,0.12),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(34,197,94,0.22);box-shadow:0 2px 10px rgba(0,0,0,0.35);overflow:hidden;contain:layout paint style;}
 .light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
-.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(34,197,94,0.18);border:1px solid rgba(34,197,94,0.45);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#22c55e;flex-shrink:0;box-shadow:0 0 12px rgba(34,197,94,0.25);line-height:1;}
+.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(34,197,94,0.16);border:1px solid rgba(34,197,94,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#22c55e;flex-shrink:0;line-height:1;}
 .light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:900;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
@@ -1183,6 +1211,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .mode-list{display:flex;flex-direction:column;gap:8px;}
 .mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:background 0.18s,transform 0.12s;display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
 @media (hover: hover) { .mode-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(2px);} }
+/* 1.2 web: desktop hover feedback on the large card CTAs (mobile-first, so they
+   only animated on :active before — felt dead under a mouse). */
+@media (hover: hover) {
+  .footle-hero:hover,.todays-seven-secondary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.32);}
+  .mp-card:hover{border-color:rgba(34,197,94,0.42);}
+}
 .mode-item:active{background:var(--s2);transform:scale(0.98);}
 .mi-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;background:var(--s2);border-radius:9px;display:flex;align-items:center;justify-content:center;}
 .mode-item:hover .mi-icon{background:var(--s3);}
@@ -1535,28 +1569,28 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    MATCHDAY tag top-left, vibrant orange streak top-right (proportional
    Inter — explicitly NOT mono / tabular-nums, that was the v3->v4
    diagnosis). Form strip lives INSIDE the card as one unified hero. */
-.tactics-card{position:relative;background:repeating-linear-gradient(0deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(52,211,153,0.05) 0 1px,transparent 1px 28px),linear-gradient(180deg,#102836 0%,#0B1F2C 100%);border:1px solid rgba(52,211,153,0.10);border-radius:18px;padding:14px 16px 16px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(0,0,0,0.22);}
+.tactics-card{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:14px 16px 16px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(0,0,0,0.18);}
 .tactics-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
-.tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(52,211,153,0.30);border-radius:999px;background:rgba(52,211,153,0.07);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:#34D399;flex-shrink:0;}
-.tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 6px #34D399;}
+.tactics-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid rgba(34,197,94,0.30);border-radius:999px;background:var(--accent-dim);font-size:9.5px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);flex-shrink:0;}
+.tactics-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px rgba(34,197,94,0.7);}
 .tactics-num-wrap{text-align:right;min-width:0;}
 /* CRITICAL: proportional Inter, NOT JetBrains Mono, NOT tabular-nums.
    Round 5 diagnosis identified the mono/tabular treatment as the
    "techy" feel Alex reacted against — do not regress to mono here. */
-.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:#FB923C;font-feature-settings:'lnum';}
+.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:var(--accent);font-feature-settings:'lnum';}
 .tactics-num-l{font-size:9.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t2);margin-top:4px;white-space:nowrap;}
-.tactics-divider{height:1px;background:rgba(52,211,153,0.18);margin:4px 0 12px;}
+.tactics-divider{height:1px;background:var(--border);margin:4px 0 12px;}
 .tactics-form-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:0.04em;}
 .tactics-form-row b{color:var(--text);font-weight:800;}
 .tactics-strip{display:flex;gap:3px;}
 .tactics-cell{flex:1 1 0;aspect-ratio:1/1;min-width:5px;max-width:22px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);box-sizing:border-box;}
 .tactics-cell::before{content:"";display:block;padding-top:100%;}  /* Sprint #67 II1 aspect-ratio fallback */
 .tactics-cell.W{background:var(--accent);border-color:var(--accent);}
-.tactics-cell.D{background:var(--gold);border-color:var(--gold);}
+.tactics-cell.D{background:rgba(34,197,94,0.45);border-color:rgba(34,197,94,0.45);}
 .tactics-cell.L{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06);}
 .tactics-cell.pre{background:transparent;border:1px dashed rgba(255,255,255,0.10);}
 .tactics-cell.is-today{box-shadow:0 0 0 2px rgba(255,255,255,0.22);}
-.tactics-cell.is-today.L{background:#FB923C;border-color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,0.45);}
+.tactics-cell.is-today.L{background:var(--accent-dim);border-color:rgba(34,197,94,0.45);}
 .tactics-strip-l{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-top:10px;}
 
 /* ── DAILY v4 FIXTURES LIST (Sprint #24 Stage 3) ──
@@ -1571,17 +1605,26 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    list. Light not heavy — the navy is layered as a low-alpha gradient
    over the base surface, the border is the same green tint as the
    tactics card at ~half the alpha. */
-.fix-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-radius:14px;margin-bottom:6px;background:linear-gradient(180deg,rgba(16,40,54,0.45) 0%,rgba(26,29,39,0.85) 100%);border:1px solid rgba(52,211,153,0.06);box-shadow:0 1px 4px rgba(0,0,0,0.14);}
-.fix-row.is-today{background:linear-gradient(180deg,rgba(251,146,60,0.10) 0%,rgba(16,40,54,0.40) 100%);border-color:rgba(251,146,60,0.26);}
+.fix-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;margin-bottom:6px;background:var(--s1);border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.10);}
+/* 1.1 Daily v2: color-coded result columns. Green stays the app/streak accent;
+   purple = Footle, orange = Daily 7 (consistent with the Home daily zone). */
+.fix-head{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;padding:0 14px 8px;}
+.fix-head-footle,.fix-head-daily7{text-align:center;font-size:9.5px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;}
+.fix-head-footle{color:#a78bfa;}
+.fix-head-daily7{color:#fb923c;}
+.fix-cell{text-align:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:14px;font-weight:800;letter-spacing:0.01em;color:var(--t3);font-variant-numeric:tabular-nums;}
+.fix-cell.fix-footle.on{color:#a78bfa;}
+.fix-cell.fix-daily7.on{color:#fb923c;}
+.fix-row.is-today{background:var(--accent-dim);border-color:rgba(34,197,94,0.30);}
 .fix-md-wrap{display:flex;flex-direction:column;gap:1px;min-width:60px;}
 .fix-md{font-size:9.5px;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);}
-.fix-row.is-today .fix-md{color:#FB923C;}
+.fix-row.is-today .fix-md{color:var(--accent);}
 .fix-date{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.1;}
 .fix-date-sub{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.01em;}
 .fix-dots{display:flex;gap:7px;justify-content:center;}
 .fix-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1px solid transparent;box-sizing:border-box;}
-.fix-dot.f.on{background:#7C3AED;box-shadow:0 0 5px rgba(124,58,237,0.40);}
-.fix-dot.t.on{background:#FB923C;box-shadow:0 0 5px rgba(251,146,60,0.40);}
+.fix-dot.f.on{background:var(--accent);box-shadow:0 0 5px rgba(34,197,94,0.35);}
+.fix-dot.t.on{background:#4ade80;box-shadow:0 0 5px rgba(74,222,128,0.35);}
 .fix-dot.miss{background:transparent;border-color:var(--border2);}
 /* Sprint #71 MM2: .fix-score replaced the .fix-badge W/D/L letter. Same
    28x24 footprint preserves row rhythm. Mono font for numeric clarity.
@@ -1895,6 +1938,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
 .onboard-track{display:flex;height:100%;width:200%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
 .onboard-step{width:50%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-sample-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;}
+.onboard-sample-opt{width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:transform 120ms ease,background 150ms ease,border-color 150ms ease;-webkit-appearance:none;appearance:none;}
+.onboard-sample-opt:active{transform:scale(0.99);}
+.onboard-sample-opt.correct{background:rgba(34,197,94,0.16);border-color:#22c55e;color:#22c55e;}
+.onboard-sample-opt.wrong{background:rgba(239,68,68,0.14);border-color:#ef4444;color:#fca5a5;}
+.onboard-sample-fb{margin:14px 0 2px;font-size:15px;font-weight:700;color:var(--text);min-height:22px;}
 .onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
@@ -1927,6 +1976,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
+.skeleton{background:var(--s2);border-radius:8px;animation:profileSkeletonPulse 1.4s ease-in-out infinite;display:block;}
+.btn-spin{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;opacity:0.85;vertical-align:-3px;}
+@keyframes qFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.q-fade{animation:qFadeIn 0.26s cubic-bezier(0.22,1,0.36,1);}
 .modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
 .modal-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin-bottom:8px;}
 .modal-body{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px;}
@@ -2126,7 +2179,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#3B1F8A 0%,#7C3AED 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 6px 24px rgba(59,31,138,0.28),0 2px 6px rgba(0,0,0,0.25);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#34206E 0%,#5E3BC4 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid transparent;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
 .footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(255,255,255,0.18), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
@@ -2300,6 +2353,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     max-width: 640px;
     padding: 0 24px 40px;
   }
+  /* 1.2 web: cap the quiz reading column so the question + answer options don't
+     stretch to the full column width on desktop (the most-used screen). */
+  .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
+  /* Scouting Report: match the profile's 560-left desktop pattern (Sprint #34
+     F-S1) so the thin stat rows don't stretch wide. */
+  .scouting-report { max-width: 560px; }
   /* Sprint #27 Y3 F4: previously 3-col at desktop. Audit showed cards
      were mobile-sized floating in an 880px container — visually small
      and lonely. Compressing to 2-col gives each card ~430px width,
@@ -3570,10 +3629,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       }];
     }
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
-    if (isSpeed && correct) {
-      const timeBonus = timeLeft * 10;
-      setSpeedScore(prev => prev + 100 + timeBonus);
-    }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, advance]);
 
@@ -3728,7 +3783,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         </div>
       )}
 
-      <div className="q-card">
+      <div key={idx} className="q-card q-fade">
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>
@@ -3871,7 +3926,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 // query form still parses on the web (the pendingJoinCode init at AppInner
 // reads BOTH path and query) so previously-shared invite links keep working.
 // Android App Links wiring is queued for a dedicated Android sprint.
-const INVITE_BASE_URL = "https://balliq.app";
+export const INVITE_BASE_URL = "https://balliq.app";
 const buildInviteUrl = (code) => `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
 const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
 
@@ -3891,7 +3946,7 @@ const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${bu
 // picker on OnlineEntry; pickMultiplayerQuestions can then accept
 // filter args. Stage 1F may also add seen_history integration if friend
 // testing surfaces "we keep seeing the same questions" complaints.
-async function pickMultiplayerQuestions(count = 10) {
+export async function pickMultiplayerQuestions(count = 10) {
   const { QB } = await loadQuestions();
   const eligible = QB.filter(q =>
     q.type === "mcq" &&
@@ -3914,1591 +3969,15 @@ async function pickMultiplayerQuestions(count = 10) {
 // via a CREATE OR REPLACE FUNCTION migration in the same change set —
 // drift between client and server constants causes unfair scoring (client
 // thinks 20s, server scores against 30s, or vice versa).
-const QUESTION_DURATION_MS = 20000;
+export const QUESTION_DURATION_MS = 20000;
 
 // OnlineEntry: choice screen — "Create Room" or "Join with Code". Calls
 // create_room / join_room RPCs directly; on success, navigates to the
 // MultiplayerLobby via onLobbyEnter callback. Specific error handling for
 // known SQLSTATEs (room full, room not found, room not accepting joins).
-function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJoinConsumed }) {
-  const [code, setCode] = useState("");
-  const [showCodeInput, setShowCodeInput] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [joining, setJoining] = useState(false);
-  const [error, setError] = useState("");
-  // V1 capacity is hardcoded to 4 (max headroom). The picker UI was
-  // removed (Finding 6.0): users rarely benefit from constraining
-  // capacity, and a wrong default locks out a 3rd/4th friend with no
-  // recovery. Re-introduce the picker if real user feedback demands it.
-  const CAPACITY = 4;
-  // Show "Reconnecting…" pill while create_room / join_room is in
-  // retry territory (the wrapper layer absorbs transient blips silently
-  // on the first attempt; this indicator fires once the second attempt
-  // is in flight, so a brief blip stays invisible).
-  const { retrying: mpRetrying } = useMpRetryStatus();
+/* Online-multiplayer components live in ./screens/OnlineMultiplayer.jsx —
+   lazy-loaded via the React.lazy imports near the top of this file. */
 
-  const handleCreate = async () => {
-    if (creating || joining) return;
-    setCreating(true);
-    setError("");
-    Sentry.addBreadcrumb({ category: 'multiplayer', message: 'create-room initiated', level: 'info', data: { capacity: CAPACITY } });
-    // create_room is single-attempt by design (not idempotent — retry
-    // could orphan rooms). User manually re-taps Create on failure.
-    const result = await mpCreateRoom({
-      p_capacity: CAPACITY,
-      p_name: defaultName || "Player",
-      p_avatar: "⚽",
-    });
-    if (result.error) {
-      setError(result.error || "Couldn't create room");
-      setCreating(false);
-      return;
-    }
-    onLobbyEnter(result.code);
-    // No setCreating(false) — component unmounts on navigation.
-  };
-
-  // handleJoin accepts an optional explicit code so the auto-join
-  // useEffect (1F.6 launch) can pass in the deep-link code without
-  // first writing it to the input state. Manual taps default to the
-  // input state (existing behavior).
-  const handleJoin = async (explicitCode) => {
-    if (creating || joining) return;
-    const candidate = explicitCode ?? code;
-    const trimmed = (candidate || "").trim().toUpperCase();
-    if (trimmed.length !== 6) {
-      setError("Enter the 6-character room code");
-      return;
-    }
-    setJoining(true);
-    setError("");
-    Sentry.addBreadcrumb({ category: 'multiplayer', message: 'join-room initiated', level: 'info', data: { code_prefix: trimmed.slice(0, 2) } });
-    const result = await mpJoinRoom({
-      p_code: trimmed,
-      p_name: defaultName || "Player",
-      p_avatar: "⚽",
-    });
-    if (result.error) {
-      // Specific copy for known SQLSTATEs (raised by the SQL functions
-      // with explicit `using errcode = '...'`). The wrapper preserves
-      // PostgrestError.code in result.code on error. Falls back to
-      // generic RPC message for anything unexpected.
-      if (result.code === "53300") {
-        setError("This room is full");
-      } else if (result.code === "P0002") {
-        setError("No room with that code — check with your friend");
-      } else if (result.code === "42P01") {
-        setError("This room isn't accepting joins right now");
-      } else {
-        setError(result.error || "Couldn't join room");
-      }
-      setJoining(false);
-      return;
-    }
-    onLobbyEnter(result.code);
-  };
-
-  // Stage 1F.6 — deep-link auto-join. AppInner sets autoJoinCode from
-  // pendingJoinCode (the ?join=ABC123 URL param or balliq.app/join/CODE
-  // Universal Link) and routes to this screen. We attempt the join
-  // immediately on mount, then mark the code as consumed via
-  // onAutoJoinConsumed so re-mounts don't loop. On success, onLobbyEnter
-  // navigates to the lobby. On failure, the error renders inline so the
-  // user can manually try a different code.
-  //
-  // Sprint #94 III1: pre-flip showCodeInput + setCode so the user actually
-  // SEES the code we're attempting to join. Pre-fix, the auto-attempt
-  // fired but the input stayed hidden + empty — when the join failed
-  // (bad code, room full, etc.) the user landed back on the two-button
-  // screen with an error and had to tap "Join with Code" + retype the
-  // whole code from memory. With this prefill, a failed Universal Link
-  // attempt leaves the code visible in the input ready to re-tap Join.
-  useEffect(() => {
-    if (!autoJoinCode) return;
-    setCode(autoJoinCode);
-    setShowCodeInput(true);
-    let cancelled = false;
-    (async () => {
-      try {
-        await handleJoin(autoJoinCode);
-      } finally {
-        if (!cancelled) onAutoJoinConsumed?.();
-      }
-    })();
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoJoinCode]);
-
-  const busy = creating || joining;
-
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Online Multiplayer</div>
-      </div>
-      <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
-        {mpRetrying && (
-          <div style={{
-            padding: "6px 12px",
-            background: "rgba(34, 197, 94, 0.1)",
-            border: "1px solid rgba(34, 197, 94, 0.3)",
-            borderRadius: 8,
-            marginBottom: 12,
-            fontSize: 12,
-            color: "var(--accent)",
-            textAlign: "center",
-          }}>
-            Reconnecting…
-          </div>
-        )}
-
-        <button
-          className="btn-3d"
-          onClick={handleCreate}
-          disabled={busy}
-          style={{ width: "100%", marginBottom: 12 }}
-        >
-          {creating ? "Creating…" : "🎮 Create Room"}
-        </button>
-        {!showCodeInput ? (
-          <button
-            className="btn"
-            onClick={() => { setError(""); setShowCodeInput(true); }}
-            disabled={busy}
-            style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
-          >
-            🔑 Join with Code
-          </button>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6))}
-              placeholder="ABC123"
-              autoCapitalize="characters"
-              autoCorrect="off"
-              autoComplete="off"
-              spellCheck={false}
-              maxLength={6}
-              disabled={busy}
-              style={{
-                padding: "14px 16px",
-                fontSize: 22,
-                fontWeight: 700,
-                letterSpacing: 6,
-                textAlign: "center",
-                borderRadius: 12,
-                border: "1px solid var(--border)",
-                background: "var(--s1)",
-                color: "var(--text)",
-                outline: "none",
-                fontFamily: "inherit",
-              }}
-            />
-            <button className="btn-3d" onClick={() => handleJoin()} disabled={busy} style={{ width: "100%" }}>
-              {joining ? "Joining…" : "Join"}
-            </button>
-          </div>
-        )}
-        {error && (
-          <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginTop: 12 }}>
-            {error}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// MultiplayerLobby: post-entry screen for both host (after create_room) and
-// joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
-// Renders different sub-views based on room.state:
-//   loading | error | lobby | playing (1B placeholder) | ended
-function MultiplayerLobby({ code, onExit, defaultName }) {
-  const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
-  const [starting, setStarting] = useState(false);
-  const [startError, setStartError] = useState("");
-  const [showReconnecting, setShowReconnecting] = useState(false);
-  const [copyToast, setCopyToast] = useState("");
-  // Stage 1F.4: host-chosen mode. "classic" = 10Q, "sprint" = 5Q.
-  // Lobby-only state (the actual question count lands in startGame's
-  // RPC arg). Joiners don't see this picker — mode is implicit until
-  // gameplay starts; they just play whatever question count the host
-  // sent into start_game. No mode broadcast pre-start needed.
-  const [mode, setMode] = useState("classic");
-
-  // "Reconnecting…" indicator only after >2s in a non-subscribed state to
-  // avoid flicker on transient drops.
-  useEffect(() => {
-    if (channelStatus === "closed" || channelStatus === "error") {
-      const t = setTimeout(() => setShowReconnecting(true), 2000);
-      return () => { clearTimeout(t); };
-    } else {
-      setShowReconnecting(false);
-    }
-  }, [channelStatus]);
-
-  const handleLeave = useCallback(async () => {
-    try { await actions.leave(); } catch {}
-    onExit();
-  }, [actions, onExit]);
-
-  const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopyToast("Code copied");
-    } catch {
-      setCopyToast("Couldn't copy — long-press to copy manually");
-    }
-    setTimeout(() => setCopyToast(""), 1800);
-  }, [code]);
-
-  // Sprint #92 GGG4: share the path-based invite URL via the native iOS
-  // share sheet (@capacitor/share) on native, navigator.share on web,
-  // clipboard fallback everywhere. The URL is the canonical /join/CODE
-  // form so a recipient on iOS with the app installed triggers the
-  // Universal Link (Sprint #92 GGG3) and lands directly in the join flow.
-  // Recipients without the app open the SPA which path-captures /join/CODE
-  // into the same pendingJoinCode flow.
-  const handleShareInvite = useCallback(async () => {
-    const url = `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
-    const text = `⚽ Play me at ${APP_NAME}! Tap to join:`;
-    try {
-      if (Capacitor.isNativePlatform?.()) {
-        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: 'Share invite' });
-        return;
-      }
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share({ title: APP_NAME, text, url });
-        return;
-      }
-    } catch (err) {
-      if (err && err.name === 'AbortError') return; // user cancelled — silent
-    }
-    try {
-      await navigator.clipboard.writeText(`${text} ${url}`);
-      setCopyToast("Invite copied — paste it to a friend");
-      setTimeout(() => setCopyToast(""), 2200);
-    } catch {
-      setCopyToast("Couldn't share — copy the code instead");
-      setTimeout(() => setCopyToast(""), 2200);
-    }
-  }, [code]);
-
-  const handleStart = useCallback(async () => {
-    if (starting) return;
-    setStarting(true);
-    setStartError("");
-    const questionCount = mode === "sprint" ? 5 : 10;
-    let questions;
-    try {
-      questions = await pickMultiplayerQuestions(questionCount);
-    } catch (e) {
-      console.warn('[handleStart]', e?.message || e);
-      setStartError("Couldn't load questions — check your connection");
-      setStarting(false);
-      return;
-    }
-    const result = await actions.startGame(questions, players.length);
-    if (result.error) {
-      setStartError(result.error);
-      setStarting(false);
-      return;
-    }
-    if (result.started === false) {
-      if (result.reason === "roster_changed") {
-        setStartError(`Roster changed — now ${result.current_count} players. Tap Start again.`);
-      } else {
-        setStartError(result.reason || "Could not start game");
-      }
-      setStarting(false);
-      return;
-    }
-    // Success: keep starting=true. Realtime UPDATE will switch us to the
-    // PlayingPlaceholder sub-view, which doesn't render the Start button
-    // at all, so the lingering 'starting' state has no UI effect.
-  }, [actions, players.length, starting, mode]);
-
-  const isMe = useCallback((p) => myPlayer && p.user_id === myPlayer.user_id, [myPlayer]);
-
-  // Dispatch order matters: explicit error first, THEN loading-or-no-room.
-  // The reverse order (1B's bug) caused a one-frame flash of LobbyError on
-  // first render after navigation from OnlineEntry — useEffect hadn't yet
-  // flipped loading=true, so initial state (loading=false, room=null,
-  // error=null) hit `error || !room` → truthy → LobbyError briefly renders
-  // with error=null before the next render shows LobbyLoading. Safari's
-  // paint timing made the flash visible.
-  if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
-  if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} />;
-  if (room.state === "playing") {
-    return (
-      <MultiplayerGameplay
-        room={room}
-        players={players}
-        myPlayer={myPlayer}
-        isHost={isHost}
-        actions={actions}
-        onExit={onExit}
-      />
-    );
-  }
-
-  return (
-    <LobbyView
-      room={room}
-      players={players}
-      isHost={isHost}
-      isMe={isMe}
-      onCopy={handleCopy}
-      onShareInvite={handleShareInvite}
-      onStart={handleStart}
-      onLeave={handleLeave}
-      starting={starting}
-      startError={startError}
-      copyToast={copyToast}
-      showReconnecting={showReconnecting}
-      mode={mode}
-      setMode={setMode}
-    />
-  );
-}
-
-function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode }) {
-  return (
-    <div className="screen">
-      <div className="page-hdr" style={{ position: "relative" }}>
-        <button className="back-btn" onClick={onLeave} aria-label="Leave room">←</button>
-        <div className="page-title">Lobby</div>
-        {showReconnecting && (
-          <div style={{ position: "absolute", right: 16, top: 18, fontSize: 11, color: "var(--t3)" }}>
-            Reconnecting…
-          </div>
-        )}
-      </div>
-      <div style={{ padding: "16px 4px", maxWidth: 480, margin: "0 auto" }}>
-        {/* Code display */}
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
-            Room Code
-          </div>
-          <button
-            onClick={onCopy}
-            style={{
-              background: "var(--s1)", border: "1px solid var(--border)",
-              borderRadius: 14, padding: "16px 24px",
-              fontSize: 32, fontWeight: 800, letterSpacing: 8,
-              color: "var(--text)", fontFamily: "monospace",
-              cursor: "pointer", display: "inline-block",
-            }}
-            aria-label={`Copy room code ${room.code}`}
-          >
-            {room.code}
-          </button>
-          <div style={{ fontSize: 12, color: "var(--t2)", marginTop: 6 }}>
-            Tap to copy — or share the invite link
-          </div>
-          {/* Sprint #92 GGG4: native share sheet for the canonical /join/CODE
-              URL. Recipient with the app installed triggers the Universal
-              Link and lands in the join flow; without the app, the SPA
-              path-captures /join/CODE into the same pendingJoinCode flow. */}
-          <button
-            type="button"
-            onClick={onShareInvite}
-            style={{
-              marginTop: 10,
-              padding: "8px 16px",
-              background: "transparent",
-              border: "1px solid var(--accent-b)",
-              borderRadius: 10,
-              color: "var(--accent)",
-              fontFamily: "inherit",
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: "pointer",
-              touchAction: "manipulation",
-              WebkitTapHighlightColor: "transparent",
-            }}
-            aria-label="Share invite link"
-          >
-            🔗 Share invite link
-          </button>
-          {copyToast && (
-            <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 6 }}>{copyToast}</div>
-          )}
-        </div>
-
-        {/* Player list */}
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 8 }}>
-            Players ({players.length}/{room.capacity})
-          </div>
-          {players.length === 0 ? (
-            <div style={{ padding: "20px", textAlign: "center", color: "var(--t2)", fontSize: 13 }}>
-              Waiting for players…
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {players.map(p => (
-                <div key={`${p.room_id}:${p.user_id}`} style={{
-                  display: "flex", alignItems: "center", gap: 12,
-                  background: "var(--s1)", border: "1px solid var(--border)",
-                  borderRadius: 12, padding: "10px 14px",
-                }}>
-                  <div style={{ fontSize: 24 }}>{p.avatar || "⚽"}</div>
-                  <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
-                    {p.name}
-                    {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
-                    {p.user_id === room.host_id && <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginLeft: 6 }} aria-label="Host">HOST</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Stage 1F.4: host-only mode picker. Compact .size-btns
-            segmented control matching Settings theme picker. Joiners
-            don't see this — mode is implicit; they play whatever
-            question count the host's startGame sent. */}
-        {isHost && (
-          <>
-            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Game length</div>
-            <div className="size-btns" style={{ marginBottom: 16 }}>
-              {[
-                { id: "classic", label: "🎯 Classic · 10Q" },
-                { id: "sprint",  label: "⚡ Sprint · 5Q"  },
-              ].map(opt => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  className={`size-btn${mode === opt.id ? " on" : ""}`}
-                  onClick={() => setMode(opt.id)}
-                  disabled={starting}
-                  aria-pressed={mode === opt.id}
-                  style={{ flex: 1 }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Host start button. Stage 1F.3: gate at 2+ players (1 was a
-            useless solo "multiplayer" game where the host played alone
-            and saw a one-row scoreboard). The gate uses room.code in the
-            wait copy as actionable context — host knows what to share. */}
-        {isHost && (
-          <>
-            <button
-              className="btn-3d"
-              onClick={onStart}
-              disabled={starting || players.length < 2}
-              style={{ width: "100%", marginBottom: 12 }}
-            >
-              {starting ? "Starting…" : "Start Game"}
-            </button>
-            {!starting && players.length < 2 && (
-              <div style={{ color: "var(--t3)", fontSize: 12, textAlign: "center", marginBottom: 12, lineHeight: 1.4 }}>
-                Waiting for at least one more player — share your room code: <strong style={{ color: "var(--t1)", letterSpacing: 1 }}>{room.code}</strong>
-              </div>
-            )}
-          </>
-        )}
-        {startError && (
-          <div style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>
-            {startError}
-          </div>
-        )}
-
-        {/* Leave footer */}
-        <button
-          className="btn"
-          onClick={onLeave}
-          style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
-        >
-          Leave Room
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function LobbyLoading() {
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <div className="page-title">Lobby</div>
-      </div>
-      <div style={{ padding: "40px 20px", textAlign: "center", color: "var(--t3)" }}>
-        Connecting to room…
-      </div>
-    </div>
-  );
-}
-
-function LobbyError({ error, onExit, onRetry }) {
-  // Sprint #92 GGG1-#2: previously this screen was a dead end — "Back to Home"
-  // discarded the joiner's intent + the user had to navigate back through
-  // OnlineEntry to reattempt. Adds an explicit Retry that re-runs the initial
-  // fetch in-place. Retry is the primary action (green); Back is the secondary
-  // escape hatch. Common case (flaky network) resolves on tap.
-  const retryable = !!onRetry;
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
-        <div className="page-title">Lobby</div>
-      </div>
-      <div style={{ padding: "40px 20px", textAlign: "center", maxWidth: 360, margin: "0 auto" }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
-        <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
-          Couldn't load room
-        </div>
-        <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 20, lineHeight: 1.5 }}>
-          {error || "Room not found or no longer active"}
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-          {retryable && (
-            <button className="btn-3d" onClick={onRetry} style={{ padding: "12px 24px", minWidth: 180 }}>
-              Try again
-            </button>
-          )}
-          <button
-            onClick={onExit}
-            style={{
-              padding: "10px 24px", minWidth: 180,
-              background: "none", border: "1px solid var(--border)",
-              borderRadius: 10, color: "var(--t2)",
-              fontFamily: "inherit", fontSize: 14, fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LobbyEnded({ players, myPlayer, onExit }) {
-  // Sort by score desc, with stable tiebreak by joined_at asc (earliest joiner
-  // wins ties — same approach the live ScoreBar uses).
-  const sorted = (players || []).slice().sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    const ta = a.joined_at || '';
-    const tb = b.joined_at || '';
-    return ta < tb ? -1 : ta > tb ? 1 : 0;
-  });
-
-  const myUserId = myPlayer?.user_id || null;
-  const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
-  const winner = sorted[0];
-  const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
-
-  // Medal emoji for podium positions; numeric rank thereafter.
-  function rankBadge(idx) {
-    if (idx === 0) return '🥇';
-    if (idx === 1) return '🥈';
-    if (idx === 2) return '🥉';
-    return String(idx + 1);
-  }
-
-  // Highlight the user's own row with an accent border. Winner row gets a
-  // gold accent regardless of whether the viewer is the winner.
-  function rowStyle(player, idx) {
-    const isMe = !!myUserId && player.user_id === myUserId;
-    const isFirst = idx === 0;
-    let borderColor = 'var(--border)';
-    let background = 'var(--s1)';
-    if (isFirst) {
-      borderColor = 'rgba(234,179,8,0.45)'; // gold
-      background = 'rgba(234,179,8,0.06)';
-    } else if (isMe) {
-      borderColor = 'rgba(34,197,94,0.45)'; // accent green
-      background = 'rgba(34,197,94,0.06)';
-    }
-    return {
-      display: 'flex', alignItems: 'center', gap: 12,
-      padding: '12px 14px',
-      background,
-      border: '1px solid ' + borderColor,
-      borderRadius: 12,
-    };
-  }
-
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <div className="page-title">Game over</div>
-      </div>
-      <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
-        {/* Headline — winner / your-result framing */}
-        <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>{isWinner ? '🏆' : '👋'}</div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
-            {winner ? (isWinner ? 'You won!' : `${winner.name || 'Player'} wins`) : 'Game over'}
-          </div>
-          {myRank > 0 && !isWinner && (
-            <div style={{ fontSize: 13, color: 'var(--t2)' }}>
-              You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
-            </div>
-          )}
-        </div>
-
-        {/* Final scores list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
-          <div style={{
-            fontSize: 11, color: 'var(--t2)',
-            letterSpacing: 0.4, textTransform: 'uppercase',
-            marginBottom: 2, paddingLeft: 4,
-          }}>
-            Final scores
-          </div>
-          {sorted.map((p, idx) => {
-            const isMe = !!myUserId && p.user_id === myUserId;
-            return (
-              <div key={`${p.room_id}:${p.user_id}`} style={rowStyle(p, idx)}>
-                <div style={{
-                  fontSize: idx < 3 ? 24 : 14,
-                  fontWeight: 700,
-                  width: 32, textAlign: 'center',
-                  color: 'var(--text)',
-                }}>
-                  {rankBadge(idx)}
-                </div>
-                <div style={{ fontSize: 22 }}>{p.avatar || '⚽'}</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontSize: 15, fontWeight: 700, color: 'var(--text)',
-                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                  }}>
-                    {p.name || 'Player'}
-                    {isMe && (
-                      <span style={{ fontSize: 11, color: 'var(--t2)', fontWeight: 500, marginLeft: 8 }}>
-                        (you)
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div style={{
-                  fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
-                  fontSize: 18, fontWeight: 800,
-                  color: 'var(--text)',
-                  fontVariantNumeric: 'tabular-nums',
-                }}>
-                  {p.score ?? 0}
-                </div>
-              </div>
-            );
-          })}
-          {sorted.length === 0 && (
-            <div style={{ padding: 16, textAlign: 'center', color: 'var(--t2)', fontSize: 13 }}>
-              No players in room
-            </div>
-          )}
-        </div>
-
-        <button className="btn-3d" onClick={onExit} style={{ width: '100%' }}>
-          Back to Home
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// MultiplayerGameplay: replaces PlayingPlaceholder once room.state ===
-// 'playing'. Reads question + players from props (passed down from
-// MultiplayerLobby's single useMultiplayerRoom hook instance — no remount,
-// channel preserved across the lobby→playing transition). Stage 1C.1 is
-// scaffold only: question + 4 buttons render, but tap is a no-op (handler
-// wires in 1C.2). Timer, optimistic locking, scores, host controls land
-// in 1C.3 / 1C.4 / 1C.5.
-// 2-second reveal pause between answer-locked moment and next-question fire.
-// Hardcoded for Stage 1C.6; tunable via this constant if friend testing
-// surfaces "too fast" / "too slow" feedback. Stage 1F may make per-mode.
-const REVEAL_PAUSE_MS = 2000;
-
-function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
-  const question = room.questions?.[room.current_question];
-
-  // mountedRef: gates setState calls inside async paths so post-unmount
-  // resolutions don't trigger React warnings.
-  const mountedRef = useRef(true);
-  useEffect(() => () => { mountedRef.current = false; }, []);
-
-  // Stage 1C.7.4 fix: advanceInFlightRef guarantees single-fire of
-  // actions.advance() per 'advancing' phase transition. Without this,
-  // the advance fire effect was re-running on every re-render where
-  // `actions` identity changed (which is EVERY render — actions object
-  // is recreated each useMultiplayerRoom render because `advance`
-  // callback's useCallback deps include `room`, so advance recreates on
-  // every room update). While revealPhase stays 'advancing' in the
-  // stale closure (between realtime UPDATE arriving and the question-
-  // advance useEffect resetting phase to 'answering'), each re-fire
-  // called advance() again — cascading through all remaining questions
-  // in <1s, which is what the user observed as "rocketing through Q2,
-  // Q3, Q5, Q6 with each only mounted ~500ms".
-  //
-  // Reset on transition out of 'advancing' so subsequent advances work.
-  const advanceInFlightRef = useRef(false);
-
-  // Local optimistic answer lock.
-  const [myAnswer, setMyAnswer] = useState(null);
-
-  // Reveal phase state machine (Stage 1C.6):
-  //   answering → revealing → advancing → (back to answering on next Q)
-  //                                     → (stuck on advance error)
-  // Each client runs its own machine. Server's expected_mismatch gate
-  // (Spike 2 validated) handles concurrent advance RPCs from multiple
-  // clients — first wins, others no-op silently.
-  const [revealPhase, setRevealPhase] = useState('answering');
-
-  // R2: track whether 'advancing' phase has been active for >15s without
-  // resolving. Likely cause is host session expired or host's network
-  // silently dropped without leave_room firing — joiners would otherwise
-  // sit on a dimmed UI indefinitely. The flag drives an explicit Leave
-  // banner (rendered below) so joiners aren't trapped.
-  const [advancingTooLong, setAdvancingTooLong] = useState(false);
-
-  // Retry-status subscription. Renders a "Reconnecting…" pill at the top
-  // of the gameplay screen while any multiplayer RPC is in retry territory.
-  const { retrying: mpRetrying } = useMpRetryStatus();
-
-  // Sprint #91 FFF2: captures Date.now() (wall-clock) at the moment the
-  // current question first rendered. performance.now() pauses on iOS
-  // WKWebView background-suspend — a player who backgrounds mid-question
-  // would resume with a stale offset, letting them submit "fast" answers
-  // long after the wall-clock window closed. Date.now() advances during
-  // background so the server-side lock_time validation reflects real
-  // elapsed time. Used to compute lock_time_ms on submit.
-  const questionStartedAtRef = useRef(Date.now());
-
-  // Question-advance reset. Fires on initial mount AND each subsequent
-  // realtime UPDATE that lifts room.current_question. Resets myAnswer,
-  // revealPhase back to 'answering', and the timer ref.
-  useEffect(() => {
-    setMyAnswer(null);
-    setRevealPhase('answering');
-    questionStartedAtRef.current = Date.now();
-  }, [room.current_question]);
-
-  const handleLeave = useCallback(async () => {
-    try { await actions.leave(); } catch {}
-    onExit();
-  }, [actions, onExit]);
-
-  const currentQuestionIdx = room.current_question;
-
-  // Server-confirmed "did I answer this question already" — survives a
-  // page refresh that wipes local myAnswer state.
-  const serverConfirmedAnswered = (myPlayer?.answered_question ?? -1) >= currentQuestionIdx;
-
-  const myAnswerForCurrent = myAnswer && myAnswer.questionIdx === currentQuestionIdx
-    ? myAnswer
-    : null;
-  const hasAnswered = !!myAnswerForCurrent || serverConfirmedAnswered;
-  const lockedAnswerIdx = myAnswerForCurrent?.answerIdx ?? null;
-
-  const handleAnswerPick = useCallback(async (answerIdx) => {
-    if (myAnswer || serverConfirmedAnswered) return;
-
-    const lockTimeMs = Date.now() - questionStartedAtRef.current;
-    const submittedQuestionIdx = currentQuestionIdx;
-
-    setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx, lockTimeMs });
-
-    const result = await actions.submitAnswer(submittedQuestionIdx, answerIdx, lockTimeMs);
-    if (!mountedRef.current) return;
-
-    if (result.error) {
-      // Network/server failure (post-retry exhaustion). Rollback the
-      // optimistic state — server doesn't have the answer, so the UI
-      // shouldn't lock the option as "answered". Without rollback, the
-      // user appears stuck on the answered-locked banner while other
-      // players see them as not-yet-answered.
-      console.warn('[mp] submit_answer failed:', result.error);
-      setMyAnswer(null);
-      // Sprint #91 FFF3: surface the failure so the user knows to re-tap.
-      // Without this the rollback was silent — option tiles re-clickable,
-      // but no signal that something went wrong, so users assumed their
-      // first tap registered and didn't realise they needed to act again.
-      // 4200ms duration since they need time to read + re-decide before
-      // the question advances.
-      try {
-        window.dispatchEvent(new CustomEvent('biq:show-toast', {
-          detail: { msg: "⚠️ Answer didn't go through — pick again", duration: 4200 },
-        }));
-      } catch {}
-      return;
-    }
-    if (result.accepted === false) {
-      if (result.reason === 'question_idx_mismatch') setMyAnswer(null);
-      // already_answered: silent — server has our answer, optimistic stays
-      return;
-    }
-  }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
-
-  // Host-disconnect detection.
-  const hostStillPresent = !!room && players.some(p => p.user_id === room.host_id);
-
-  // Timeout auto-submit. Submits -1 (wrong, score 0, but answered_question
-  // gets set so the all-answered check unblocks). Fired by handleTimerExpire
-  // below alongside the phase transition.
-  const handleTimeoutAutoSubmit = useCallback(async () => {
-    if (myAnswer || serverConfirmedAnswered) return;
-    const submittedQuestionIdx = currentQuestionIdx;
-    setMyAnswer({ questionIdx: submittedQuestionIdx, answerIdx: -1, lockTimeMs: QUESTION_DURATION_MS });
-    const result = await actions.submitAnswer(submittedQuestionIdx, -1, QUESTION_DURATION_MS);
-    if (!mountedRef.current) return;
-    if (result.error) {
-      // Network/server failure on the timeout submit. Rollback so
-      // hasAnswered doesn't show as true when the server doesn't agree.
-      setMyAnswer(null);
-      return;
-    }
-    if (result.accepted === false && result.reason === "question_idx_mismatch") {
-      setMyAnswer(null);
-    }
-  }, [myAnswer, serverConfirmedAnswered, currentQuestionIdx, actions]);
-
-  // ── Phase machine (Stage 1C.6) ──────────────────────────────────────
-  //
-  // Trigger A: all players answered → revealing
-  // Each client computes from its own (realtime-synced) view of players.
-  // Stays sticky once entered (a late-joiner's -1 answered_question
-  // won't bounce us back to 'answering' — we're already past).
-  const allAnswered = players.length > 0 && players.every(p => p.answered_question >= currentQuestionIdx);
-  useEffect(() => {
-    if (revealPhase === 'answering' && allAnswered) {
-      setRevealPhase('revealing');
-    }
-  }, [revealPhase, allAnswered]);
-
-  // R2: advancing-too-long timer. If we're stuck in 'advancing' for >15s,
-  // surface an explicit Leave banner. 15s is intentionally well past the
-  // RPC retry budget (~5s worst case) so retry-eligible failures resolve
-  // before the banner appears. Resets on any phase change out of
-  // 'advancing'.
-  useEffect(() => {
-    if (revealPhase !== 'advancing') {
-      setAdvancingTooLong(false);
-      return;
-    }
-    const t = setTimeout(() => setAdvancingTooLong(true), 15000);
-    return () => clearTimeout(t);
-  }, [revealPhase]);
-
-  // Trigger B: local timer expired → revealing (regardless of who answered)
-  // Combined with auto-submit so each client's timer expiry is one event.
-  const handleTimerExpire = useCallback(() => {
-    handleTimeoutAutoSubmit(); // fire-and-forget; its own promise chain handles errors
-    setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
-  }, [handleTimeoutAutoSubmit]);
-
-  // 2s pause: revealing → advancing
-  useEffect(() => {
-    if (revealPhase !== 'revealing') return;
-    const t = setTimeout(() => {
-      if (!mountedRef.current) return;
-      setRevealPhase('advancing');
-    }, REVEAL_PAUSE_MS);
-    return () => clearTimeout(t);
-  }, [revealPhase]);
-
-  // Advance fire: ONLY the host fires advance_question. Joiners stay in
-  // 'advancing' phase silently and wait for realtime UPDATE on
-  // game_rooms.current_question (handled by question-advance useEffect
-  // which resets revealPhase back to 'answering').
-  //
-  // Why host-only (Stage 1C.6.2 fix): the SQL function checks host_id
-  // and rejects non-host callers (errcode 42501). Joiner advance
-  // attempts always failed and used to flash a red "Couldn't advance"
-  // banner every transition. Now joiners passively wait for the host's
-  // advance to ripple via realtime.
-  //
-  // Single-fire guard (Stage 1C.7.4 fix): advanceInFlightRef gates
-  // execution to ONCE per 'advancing' transition. Without this, the
-  // effect re-ran on every render where deps changed — and `actions`
-  // is recreated every useMultiplayerRoom render (because the inner
-  // `advance` callback's useCallback deps include `room`, which
-  // updates on every realtime event). The stale closure had
-  // revealPhase='advancing' for several renders between the realtime
-  // UPDATE arriving and the question-advance useEffect resetting
-  // phase to 'answering'. Each stale-closure run of this effect
-  // called advance() again, cascading through all remaining questions
-  // in <1s.
-  //
-  // Why `actions` is excluded from deps: even with the in-flight guard,
-  // re-running the effect on every actions identity change is wasted
-  // work. The closure's actions reference is stale-but-fine: the
-  // `advance` callback inside it reads room.current_question at CALL
-  // time via its own closure, which is whatever room reference the
-  // callback was created with. Server's expected_question check tolerates
-  // either fresh or one-step-stale current_question (returns
-  // expected_mismatch on stale, silent no-op).
-  //
-  // Edge case — host's network drops without leave_room: joiners stay
-  // in 'advancing' indefinitely (UI dimmed, no banner since
-  // hostStillPresent stays true). User can exit via wordmark home
-  // button. Stage 1F may add a "advancing too long" timeout fallback.
-  useEffect(() => {
-    if (revealPhase !== 'advancing') {
-      advanceInFlightRef.current = false;  // reset on phase transition out
-      return;
-    }
-    if (!isHost) return;  // joiners wait for realtime UPDATE
-    if (advanceInFlightRef.current) return;  // single-fire guard
-    advanceInFlightRef.current = true;
-
-    let cancelled = false;
-    (async () => {
-      const result = await actions.advance();
-      if (cancelled || !mountedRef.current) return;
-      if (result.error) {
-        // Host-side genuine failure (network, server). No retry —
-        // settle in 'stuck' so the indicator below gives the host
-        // an actionable explanation.
-        console.warn('[mp] advance failed (entering stuck state):', result.error);
-        setRevealPhase('stuck');
-      }
-      // expected_mismatch / success: silent. Realtime UPDATE on
-      // game_rooms.current_question (or state='ended' for last Q)
-      // triggers re-render via parent's MultiplayerLobby render switch.
-    })();
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [revealPhase, isHost]);
-
-  // Host-tap handlers for the phase-aware advance button.
-  // Next/End Game during answering: trigger reveal phase (consistent
-  // rhythm — host's manual advance still has the 2s pause; if they want
-  // instant they can Skip during the pause).
-  const handleTriggerReveal = useCallback(() => {
-    setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
-  }, []);
-  // Skip during reveal: jump straight to advancing (cancels the 2s pause).
-  const handleSkipAhead = useCallback(() => {
-    setRevealPhase(prev => prev === 'revealing' ? 'advancing' : prev);
-  }, []);
-
-  if (!question) {
-    return (
-      <div className="screen">
-        <div className="page-hdr">
-          <button className="back-btn" onClick={handleLeave} aria-label="Leave">←</button>
-          <div className="page-title">Game</div>
-        </div>
-        <div style={{ padding: 40, textAlign: "center", color: "var(--t2)" }}>
-          Question data missing — leave room and rejoin.
-        </div>
-      </div>
-    );
-  }
-
-  const isLastQuestion = currentQuestionIdx + 1 >= room.questions.length;
-  const showRevealBanner = revealPhase === 'revealing';
-  // Stage 1C.7.1: derived `revealing` instead of raw `revealPhase !==
-  // 'answering'`. Guards against the brief render between realtime UPDATE
-  // arriving (room.current_question increments) and the question-advance
-  // useEffect resetting revealPhase to 'answering'. In that intermediate
-  // frame, `revealPhase` is stale ('advancing') but `room.current_question`
-  // is the new question — without this gate, QuestionView would briefly
-  // render the new question with its correct answer pre-highlighted in
-  // green, looking to the user like a "different question with the answer
-  // pre-revealed" flash.
-  //
-  // Logic: trust revealPhase only if either (a) myAnswer is null (late
-  // joiner / pre-tap state — no stale tracking concern) OR (b)
-  // myAnswer.questionIdx matches currentQuestionIdx (reveal state is for
-  // the current question, not a stale prior one). After the question-
-  // advance useEffect runs and clears myAnswer + resets revealPhase, the
-  // derived value naturally settles.
-  const revealing = revealPhase !== 'answering' && (
-    myAnswer === null || myAnswer.questionIdx === currentQuestionIdx
-  );
-  const dimContent = revealing;
-
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={handleLeave} aria-label="Leave game">←</button>
-        <div className="page-title">
-          Question {currentQuestionIdx + 1}/{room.questions.length}
-        </div>
-      </div>
-      <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
-        {mpRetrying && (
-          <div style={{
-            padding: "6px 12px",
-            background: "rgba(34, 197, 94, 0.1)",
-            border: "1px solid rgba(34, 197, 94, 0.3)",
-            borderRadius: 8,
-            marginBottom: 10,
-            fontSize: 12,
-            color: "var(--accent)",
-            textAlign: "center",
-          }}>
-            Reconnecting…
-          </div>
-        )}
-
-        <ScoreBar
-          players={players}
-          myUserId={myPlayer?.user_id}
-          hostId={room.host_id}
-        />
-
-        {!hostStillPresent && (
-          <div style={{
-            padding: "10px 14px",
-            background: "rgba(239, 68, 68, 0.1)",
-            border: "1px solid rgba(239, 68, 68, 0.3)",
-            borderRadius: 10,
-            marginBottom: 12,
-            fontSize: 13,
-            color: "var(--text)",
-            textAlign: "center",
-          }}>
-            ⚠️ Host disconnected — game can't advance.{" "}
-            <button
-              onClick={handleLeave}
-              style={{
-                background: "none", border: "none", color: "var(--accent)",
-                textDecoration: "underline", cursor: "pointer", fontSize: 13,
-                padding: 0, fontFamily: "inherit",
-              }}
-            >
-              Leave game
-            </button>
-          </div>
-        )}
-
-        {advancingTooLong && hostStillPresent && revealPhase === 'advancing' && (
-          <div style={{
-            padding: "10px 14px",
-            background: "rgba(234, 179, 8, 0.1)",
-            border: "1px solid rgba(234, 179, 8, 0.3)",
-            borderRadius: 10,
-            marginBottom: 12,
-            fontSize: 13,
-            color: "var(--text)",
-            textAlign: "center",
-          }}>
-            Game seems stuck — host may be unresponsive.{" "}
-            <button
-              onClick={handleLeave}
-              style={{
-                background: "none", border: "none", color: "var(--accent)",
-                textDecoration: "underline", cursor: "pointer", fontSize: 13,
-                padding: 0, fontFamily: "inherit",
-              }}
-            >
-              Leave game
-            </button>
-          </div>
-        )}
-
-        {/* Reserved phase-banner slot: reveal / stuck / advancing-too-long
-            are mutually exclusive (driven by revealPhase). Reserving 50px
-            keeps content below stable when these appear/disappear. Empty
-            slot is invisible (no border/background) when no banner shows. */}
-        <div style={{ minHeight: 50, marginBottom: 12 }}>
-          {showRevealBanner && (
-            <div style={{
-              padding: "10px 14px",
-              background: "var(--s2)",
-              border: "1px solid var(--accent)",
-              borderRadius: 10,
-              fontSize: 14,
-              fontWeight: 600,
-              color: "var(--text)",
-              textAlign: "center",
-            }}>
-              {isLastQuestion ? "Game ending in 2s" : "Next question in 2s"}
-            </div>
-          )}
-
-          {revealPhase === 'stuck' && hostStillPresent && (
-            <div style={{
-              padding: "10px 14px",
-              background: "rgba(239, 68, 68, 0.1)",
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-              borderRadius: 10,
-              fontSize: 13,
-              color: "var(--text)",
-              textAlign: "center",
-            }}>
-              Couldn't advance — leave the room and rejoin to retry.
-            </div>
-          )}
-        </div>
-
-        {/* Stage 1C.7: dim wrapper scopes only the timer. QuestionView dims
-            its own prompt internally when revealing=true. */}
-        <div style={{ opacity: dimContent ? 0.6 : 1 }}>
-          <QuestionTimer
-            durationMs={QUESTION_DURATION_MS}
-            onExpire={handleTimerExpire}
-            questionIdx={currentQuestionIdx}
-          />
-        </div>
-
-        {/* No `key` on QuestionView/QuestionTimer (Stage 1F follow-up):
-            previously remounted via key={currentQuestionIdx} for clean
-            state reset, but the unmount-mount caused visible layout
-            collapse during transitions. Now passes questionIdx as a prop;
-            internal effects reset state in-place. The derived `revealing`
-            gate (above) handles the stale-revealPhase frame. */}
-        <QuestionView
-          question={question}
-          lockedAnswerIdx={lockedAnswerIdx}
-          disabled={hasAnswered || revealPhase !== 'answering'}
-          onPick={handleAnswerPick}
-          revealing={revealing}
-          questionIdx={currentQuestionIdx}
-        />
-
-        {/* Reserved answer-locked banner slot — reserves space so
-            HostAdvanceControls below stays anchored regardless of whether
-            the banner is showing. */}
-        <div style={{ minHeight: 45, marginTop: 16 }}>
-          {hasAnswered && revealPhase === 'answering' && (
-            <div style={{
-              padding: "10px 14px",
-              background: "var(--s1)", border: "1px solid var(--border)",
-              borderRadius: 10, textAlign: "center",
-              fontSize: 13, color: "var(--t2)",
-            }}>
-              ✓ Answer locked — waiting for others
-            </div>
-          )}
-        </div>
-
-        {isHost && (
-          <HostAdvanceControls
-            phase={revealPhase}
-            players={players}
-            currentQuestion={currentQuestionIdx}
-            totalQuestions={room.questions.length}
-            onTriggerReveal={handleTriggerReveal}
-            onSkipAhead={handleSkipAhead}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-// useQuestionTimer: countdown hook. Internal setInterval ticks every 100ms,
-// computing remaining = max(0, durationMs - elapsed). Calls onExpire once
-// when remaining hits 0. The onExpire ref pattern (vs putting onExpire in
-// the useEffect deps) avoids restarting the timer when the parent passes a
-// fresh callback identity each render — common case since handleTimeout-
-// AutoSubmit's useCallback recreates on question advance.
-//
-// resetKey is an opaque value (typically currentQuestionIdx) — when it
-// changes, the timer restarts. Replaces the old key={currentQuestionIdx}
-// remount pattern, which caused visible layout collapse during transitions.
-function useQuestionTimer(durationMs, resetKey) {
-  const [remainingMs, setRemainingMs] = useState(durationMs);
-
-  useEffect(() => {
-    setRemainingMs(durationMs);
-    // Sprint #91 FFF2: Date.now() (wall-clock) instead of performance.now().
-    // On iOS WKWebView the perf clock freezes during background-suspend;
-    // a player who backgrounds for 10s of a 20s question would return with
-    // a timer that hadn't ticked, gifting them free seconds. Date.now()
-    // keeps advancing, so on resume the next setInterval tick computes a
-    // truthful elapsed value (collapses to 0 / fires onExpire if the
-    // background window outlasted the question — fair behaviour for a
-    // timed trivia app).
-    const startedAt = Date.now();
-    const id = setInterval(() => {
-      const elapsed = Date.now() - startedAt;
-      const remaining = Math.max(0, durationMs - elapsed);
-      setRemainingMs(remaining);
-      if (remaining === 0) clearInterval(id);
-    }, 100);
-    return () => clearInterval(id);
-  }, [durationMs, resetKey]);
-
-  return remainingMs;
-}
-
-// QuestionTimer: shrinking-bar countdown + seconds number. Color shifts to
-// red below 5s. Pass questionIdx to reset on question advance — replaces
-// the previous parent-side key={currentQuestionIdx} remount pattern (the
-// remount caused a visible layout collapse during transitions; in-place
-// reset via effect dep eliminates that without losing reset semantics).
-function QuestionTimer({ durationMs, onExpire, questionIdx }) {
-  const remainingMs = useQuestionTimer(durationMs, questionIdx);
-  const expiredRef = useRef(false);
-
-  // Reset expired-once guard when question changes.
-  useEffect(() => {
-    expiredRef.current = false;
-  }, [questionIdx]);
-
-  // Trigger onExpire exactly once when timer hits 0. Using effect (not
-  // direct call inside the hook) so onExpire receives the latest callback
-  // closure from the parent — onExpire identity may change between renders
-  // (e.g., handleTimeoutAutoSubmit's deps change with currentQuestionIdx).
-  useEffect(() => {
-    if (remainingMs === 0 && !expiredRef.current) {
-      expiredRef.current = true;
-      onExpire?.();
-    }
-  }, [remainingMs, onExpire]);
-
-  const seconds = Math.ceil(remainingMs / 1000);
-  const pct = (remainingMs / durationMs) * 100;
-  const isLow = remainingMs > 0 && remainingMs < 5000;
-
-  return (
-    <div style={{
-      position: "relative",
-      height: 28,
-      borderRadius: 8,
-      background: "var(--s1)",
-      border: "1px solid var(--border)",
-      overflow: "hidden",
-      marginBottom: 16,
-    }}>
-      <div style={{
-        position: "absolute",
-        top: 0, left: 0, bottom: 0,
-        width: `${pct}%`,
-        background: isLow ? "#ef4444" : "var(--accent)",
-        transition: "width 0.1s linear",
-      }} />
-      <div style={{
-        position: "absolute",
-        top: 0, left: 0, right: 0, bottom: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 13,
-        fontWeight: 700,
-        color: "var(--text)",
-        letterSpacing: 0.4,
-      }}>
-        {seconds}s
-      </div>
-    </div>
-  );
-}
-
-// Stage 1C.7 reveal-coloring constants. Hardcoded inline; Stage 1F may
-// promote to CSS theme tokens if more multiplayer-styling work happens.
-const MP_LOCK_COLOR    = "#64748b"; // slate-500 — neutral "this is my pick, not yet judged"
-const MP_CORRECT_COLOR = "#22c55e"; // green-500 — the right answer (and your pick if you got it)
-const MP_WRONG_COLOR   = "#ef4444"; // red-500 — your wrong pick (already used elsewhere for errors)
-const MP_CORRECT_BG    = "rgba(34, 197, 94, 0.15)";
-const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
-
-// QuestionView: presentational. prompt + 4 option buttons.
-//
-// Props:
-//   question         — { prompt, options, correct } from server
-//   lockedAnswerIdx  — int (0-3) for player's pick, -1 for timeout, null
-//                      for late-joiners or pre-tap state
-//   disabled         — boolean: gates the onPick (no tapping post-lock OR
-//                      during reveal/advance/stuck phases)
-//   onPick(idx)      — fires when an enabled, no-lock button is tapped
-//   revealing        — boolean (Stage 1C.7): true during 'revealing',
-//                      'advancing', AND 'stuck' phases. Switches options
-//                      from neutral lock-color to correct/wrong reveal
-//                      coloring; dims the prompt only (NOT the options —
-//                      colors are the visual signal).
-//
-// Reveal coloring per option (when revealing=true):
-//   - The correct option: green border + filled green letter circle + ✓
-//   - Player's wrong pick: red border + filled red letter circle + ✗
-//   - Player's correct pick: same as "correct" row (implicit "you got it")
-//   - Untouched wrong options: default style, full opacity (no judgment)
-//
-// Late-joiner null-safety: when lockedAnswerIdx is null, `idx === null`
-// is false for all valid idx (0,1,2,3), so isLocked stays false → no
-// "your wrong" path fires → late joiner sees only the green-correct
-// highlight during reveal, no red anywhere. Same for timeout (-1):
-// `idx === -1` is false for all valid idx → no spurious red.
-function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx }) {
-  // Stage 1C.7.5 + Stage 1F follow-up: suppress option-button color
-  // transitions on the first frame after a question change. Stale color
-  // transitions from the prior question's reveal state would bleed into
-  // the new question's first paint, making transitions feel chaotic.
-  // After the first frame (via rAF in useLayoutEffect), enable the
-  // targeted color transitions for subsequent in-mount state changes.
-  //
-  // Previously this was guaranteed by key={currentQuestionIdx} remount
-  // (fresh useState init each question). The remount caused a visible
-  // layout collapse during transitions, so the key was dropped — the
-  // dep on questionIdx now drives the same flag-reset behavior in place.
-  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
-  useLayoutEffect(() => {
-    setTransitionsEnabled(false);
-    const id = requestAnimationFrame(() => setTransitionsEnabled(true));
-    return () => cancelAnimationFrame(id);
-  }, [questionIdx]);
-
-  return (
-    <div className="mp-question">
-      <div style={{
-        fontSize: 18, fontWeight: 700, color: "var(--text)",
-        textAlign: "center", padding: "16px 8px 24px", lineHeight: 1.4,
-        opacity: revealing ? 0.6 : 1,
-        // Stage 1C.7.6: transition removed — opacity snaps when phase
-        // changes. Was animating in parallel with option color reveal,
-        // contributing to the stuttery feel.
-      }}>
-        {question.prompt}
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {question.options.map((opt, idx) => {
-          const isLocked = lockedAnswerIdx === idx;
-          const isCorrect = idx === question.correct;
-          // Reveal-state classifications. Late-joiner (null) and timeout
-          // (-1) cases short-circuit naturally — `null === idx` and
-          // `-1 === idx` are both false for all valid idx.
-          const isRevealCorrect = revealing && isCorrect;
-          const isYourWrong = revealing && isLocked && !isCorrect;
-          // Dim other unselected options ONLY during answering (not during
-          // reveal — colors carry the message instead). Also requires a
-          // valid pick (>=0), excluding null/timeout cases.
-          const isOtherLocked = !revealing && lockedAnswerIdx !== null && lockedAnswerIdx >= 0 && !isLocked;
-
-          // Visual state derivation
-          let borderColor, borderWidth, bgColor, letterBg, letterColor, marker;
-          if (isRevealCorrect) {
-            borderColor = MP_CORRECT_COLOR;
-            borderWidth = 2;
-            bgColor = MP_CORRECT_BG;
-            letterBg = MP_CORRECT_COLOR;
-            letterColor = "#fff";
-            marker = "✓";
-          } else if (isYourWrong) {
-            borderColor = MP_WRONG_COLOR;
-            borderWidth = 2;
-            bgColor = MP_WRONG_BG;
-            letterBg = MP_WRONG_COLOR;
-            letterColor = "#fff";
-            marker = "✗";
-          } else if (!revealing && isLocked) {
-            // Locked during answering — neutral slate (not green) so the
-            // pre-reveal state doesn't suggest correctness.
-            borderColor = MP_LOCK_COLOR;
-            borderWidth = 2;
-            bgColor = "var(--s2)";
-            letterBg = MP_LOCK_COLOR;
-            letterColor = "#fff";
-            marker = null;
-          } else {
-            // Default: untouched (during answering OR untouched-wrong
-            // during reveal).
-            borderColor = "var(--border)";
-            borderWidth = 1;
-            bgColor = "var(--s1)";
-            letterBg = "var(--s2)";
-            letterColor = "var(--text)";
-            marker = null;
-          }
-
-          return (
-            <button
-              key={idx}
-              onClick={() => { if (!disabled && lockedAnswerIdx === null) onPick(idx); }}
-              disabled={disabled}
-              aria-pressed={isLocked}
-              style={{
-                padding: "14px 16px",
-                fontSize: 16,
-                fontWeight: 600,
-                borderRadius: 12,
-                border: `${borderWidth}px solid ${borderColor}`,
-                background: bgColor,
-                color: "var(--text)",
-                textAlign: "left",
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                cursor: disabled || lockedAnswerIdx !== null ? "default" : "pointer",
-                opacity: isOtherLocked ? 0.5 : 1,
-                fontFamily: "inherit",
-                // Stage 1C.7.5: explicit color-only transitions (was "all
-                // 0.2s ease"). Limits animation to border + background;
-                // layout/opacity/transform changes snap instantly.
-                // Suppressed entirely on first-frame-after-mount via
-                // transitionsEnabled gate (see useLayoutEffect above).
-                // Stage 1C.7.6: 0.15s → 0.1s for snappier feel. Now the
-                // ONLY animated element in the gameplay screen — every
-                // other element (dim wrapper, prompt opacity, banners)
-                // snaps instantly per the "one source of motion" principle.
-                transition: transitionsEnabled ? "border-color 0.1s ease, background-color 0.1s ease" : "none",
-                // a11y bundle: paired with viewport user-scalable removal.
-                // Disables double-tap-zoom on this element only so rapid
-                // answer-lock taps on iOS don't get hijacked. Pinch-zoom
-                // still works elsewhere.
-                touchAction: "manipulation",
-                WebkitTapHighlightColor: "transparent",
-              }}
-            >
-              <span style={{
-                width: 32, height: 32, borderRadius: "50%",
-                background: letterBg,
-                color: letterColor,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 14, fontWeight: 700, flexShrink: 0,
-              }}>
-                {LETTERS[idx]}
-              </span>
-              <span style={{ flex: 1 }}>{opt}</span>
-              {marker && (
-                <span style={{
-                  fontSize: 18, fontWeight: 700,
-                  color: borderColor,
-                  flexShrink: 0,
-                  marginLeft: 8,
-                }}>
-                  {marker}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// ScoreBar: compact horizontal strip showing all players + scores. Stable
-// order (by joined_at; the hook already sorts) — NOT score-based shuffle,
-// which would be confusing UX as numbers move around. Self-chip highlighted
-// (accent border + slightly brighter background). Host marker = small star.
-// Score updates flow in via realtime room_players UPDATE → useMultiplayerRoom
-// state update → re-render.
-function ScoreBar({ players, myUserId, hostId }) {
-  return (
-    <div style={{
-      display: "flex",
-      gap: 8,
-      overflowX: "auto",
-      padding: "0 0 4px",
-      marginBottom: 12,
-    }}>
-      {players.map(p => {
-        const isMe = p.user_id === myUserId;
-        const isHostPlayer = p.user_id === hostId;
-        return (
-          <div
-            key={p.user_id}
-            style={{
-              flexShrink: 0,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "8px 12px",
-              borderRadius: 10,
-              background: isMe ? "var(--s2)" : "var(--s1)",
-              border: isMe ? "1px solid var(--accent)" : "1px solid var(--border)",
-            }}
-          >
-            <span style={{ fontSize: 18 }}>{p.avatar || "⚽"}</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: 0, minWidth: 0 }}>
-              <div style={{
-                fontSize: 11, fontWeight: 600, color: "var(--t2)",
-                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                maxWidth: 90,
-              }}>
-                {p.name}
-                {isHostPlayer && <span style={{ color: "var(--accent)", marginLeft: 4 }}>★</span>}
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
-                {p.score}
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// HostAdvanceControls: visible only when isHost. Phase-aware (Stage 1C.6):
-//
-//   answering  → "Next Question →" / "End Game"   tap → onTriggerReveal
-//                (sets revealPhase to 'revealing'; same path as auto-trigger
-//                 when all answered or timer expires; consistent 2s rhythm)
-//                Enabled when 1+ answered (disconnect-resilient).
-//   revealing  → "Skip ahead"                     tap → onSkipAhead
-//                (cancels the 2s pause, jumps to advancing immediately)
-//   advancing  → "Advancing…" / "Ending…" disabled
-//   stuck      → component returns null (banner above explains; user leaves)
-//
-// Status text in the eyebrow is the answered count for situational
-// awareness — informational, not a gate (the 1+ enable rule is the gate).
-function HostAdvanceControls({ phase, players, currentQuestion, totalQuestions, onTriggerReveal, onSkipAhead }) {
-  if (phase === 'stuck') return null;
-
-  const answeredCount = players.filter(p => p.answered_question >= currentQuestion).length;
-  const total = players.length;
-  const allAnswered = answeredCount === total && total > 0;
-  const isLastQuestion = currentQuestion + 1 >= totalQuestions;
-
-  let buttonLabel;
-  let buttonOnClick;
-  let buttonDisabled;
-  let statusText;
-
-  if (phase === 'answering') {
-    buttonLabel = isLastQuestion ? "End Game" : "Next Question →";
-    buttonOnClick = onTriggerReveal;
-    buttonDisabled = answeredCount < 1;
-    statusText = `${answeredCount}/${total} answered`;
-    if (!allAnswered && answeredCount > 0) statusText += " — waiting for the rest";
-  } else if (phase === 'revealing') {
-    buttonLabel = "Skip ahead";
-    buttonOnClick = onSkipAhead;
-    buttonDisabled = false;
-    statusText = `${answeredCount}/${total} answered`;
-  } else { // 'advancing'
-    buttonLabel = isLastQuestion ? "Ending…" : "Advancing…";
-    buttonOnClick = undefined;
-    buttonDisabled = true;
-    statusText = `${answeredCount}/${total} answered`;
-  }
-
-  return (
-    <div style={{
-      marginTop: 16,
-      padding: "12px 14px",
-      background: "var(--s1)",
-      border: "1px solid var(--border)",
-      borderRadius: 10,
-    }}>
-      <div style={{
-        fontSize: 11, color: "var(--t3)", textAlign: "center", marginBottom: 10,
-        letterSpacing: 0.4, textTransform: "uppercase",
-      }}>
-        {statusText}
-      </div>
-      <button
-        className="btn-3d"
-        onClick={buttonOnClick}
-        disabled={buttonDisabled}
-        style={{ width: "100%" }}
-      >
-        {buttonLabel}
-      </button>
-    </div>
-  );
-}
-
-// ─── LOCAL MULTIPLAYER SETUP ──────────────────────────────────────────────────
 const EMOJIS = ["⚽","🏆","🔥","⚡","🎯","🥅","🧤","👑"];
 
 function LocalSetup({ onStart, onBack }) {
@@ -6205,6 +4684,24 @@ function _wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   return curY;
 }
 
+// Load an image for canvas compositing (profile-card photo avatar). crossOrigin
+// 'anonymous' keeps the canvas untainted so toBlob() works (Supabase public
+// storage sends CORS headers). Times out / rejects so a slow or blocked image
+// falls back to the emoji avatar rather than hanging the share.
+function _loadImage(url, timeoutMs = 3000) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    const t = setTimeout(() => reject(new Error("img timeout")), timeoutMs);
+    img.onload = () => { clearTimeout(t); resolve(img); };
+    img.onerror = () => { clearTimeout(t); reject(new Error("img error")); };
+    // Unique per-load query so the CORS request never reuses a no-CORS cached
+    // entry — on WKWebView that opaque cached response would taint the canvas
+    // and silently degrade the photo card to text at toBlob().
+    img.src = url + (url.includes("?") ? "&" : "?") + "_cb=" + Date.now();
+  });
+}
+
 async function generateShareCard(type, data) {
   const W = SHARE_CARD_W, H = SHARE_CARD_H;
   const canvas = document.createElement("canvas");
@@ -6370,19 +4867,44 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#22c55e";
     ctx.fillText(`${score}/${total}`, cx, 250);
 
-    ctx.font = '600 18px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '700 18px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(`${accuracy}% accuracy`, cx, 290);
+    ctx.fillText(`${accuracy}% accuracy`, cx, 292);
+
+    // Accuracy bar — fills the band with a real visual instead of dead space.
+    const barW = W - padX * 2 - 40, barX = cx - barW / 2, barY = 318, barH = 14;
+    _roundRectPath(ctx, barX, barY, barW, barH, 7);
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    ctx.fill();
+    const fillW = Math.max(barH, Math.round(barW * Math.min(100, Math.max(0, accuracy)) / 100));
+    _roundRectPath(ctx, barX, barY, fillW, barH, 7);
+    ctx.fillStyle = "#22c55e";
+    ctx.fill();
+
+    // Tier tagline keyed to accuracy.
+    const tier = accuracy >= 90 ? "Elite ⚽" : accuracy >= 70 ? "Sharp!" : accuracy >= 50 ? "Solid effort" : "Room to grow";
+    ctx.font = '800 24px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(tier, cx, 382);
 
     if (streak && streak >= 3) {
       ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#FFC107";
-      ctx.fillText(`🔥 ${streak} in a row`, cx, 326);
+      ctx.fillStyle = "#FF6A00";
+      ctx.fillText(`🔥 ${streak} in a row`, cx, 416);
     }
 
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, 520);
+    // CTA — filled green pill (matches the profile card).
+    const ctaText = "Can you beat me? ⚽";
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    const ctaW = ctx.measureText(ctaText).width + 46;
+    const ctaH = 42, ctaY = 470;
+    ctx.fillStyle = "#22c55e";
+    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
+    ctx.fill();
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#06250F";
+    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
+    ctx.textBaseline = "alphabetic";
   }
 
   ctx.restore();
@@ -6574,7 +5096,7 @@ function CountUp({ value, duration = 900, delay = 150, triggerHaptic = false, su
   return <span {...rest}>{display}{suffix}</span>;
 }
 
-function Confetti() {
+export function Confetti() {
   const canvasRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -7654,11 +6176,29 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
+  // 1.1: surface the REAL installed build version (native) instead of the
+  // hardcoded constant that drifted. Falls back to APP_VERSION on web.
+  const [appVer, setAppVer] = useState(APP_VERSION);
+  useEffect(() => {
+    let alive = true;
+    try { CapApp.getInfo?.().then(i => { if (alive && i?.version) setAppVer(i.version); }).catch(() => {}); } catch {}
+    return () => { alive = false; };
+  }, []);
+  const shareApp = async () => {
+    const url = APP_STORE_ID ? `https://apps.apple.com/app/id${APP_STORE_ID}` : "balliq.app";
+    const text = `⚽ Ball IQ — the football quiz for real fans. ${url}`;
+    try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
+    try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
+  };
+  const rateApp = () => {
+    if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'App Store rating opens once we’re live 🙌' })); return; }
+    try { window.open(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`, '_blank'); } catch {}
+  };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native
   // Apple-system dialog was off-brand.
@@ -7734,6 +6274,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-left">
                   <div className="sr-label">Signed in as</div>
                   <div className="sr-desc">{profile.username}</div>
+                  {/* 1.1: show the account email so users recognise which
+                      account they're on. Apple's Hide-My-Email gives a cryptic
+                      @privaterelay.appleid.com address — show a friendly label
+                      instead of the raw relay. */}
+                  {user.email && (
+                    <div className="sr-desc" style={{marginTop:2,opacity:0.7}}>
+                      {/@privaterelay\.appleid\.com$/i.test(user.email) ? "Apple · Hide My Email" : user.email}
+                    </div>
+                  )}
                 </div>
               </div>
               <button
@@ -7845,6 +6394,26 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
+      {/* 1.1: notifications. Native-only (the daily reminder is meaningless on
+          web, which can't fire while closed). Toggling on requests the OS
+          permission; toggling off cancels all scheduled reminders. */}
+      {notifSupported && (
+        <div className="settings-section">
+          <div className="ds-eyebrow settings-section-title">Notifications</div>
+          <div className="settings-card">
+            <div className="settings-row">
+              <div className="sr-left">
+                <div className="sr-label">Daily reminders</div>
+                <div className="sr-desc">An evening nudge if you haven't played yet — keeps your streak alive</div>
+              </div>
+              <div className="sr-right">
+                <SettingsToggle val={notifEnabled} onChange={onToggleNotif} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {(onShowHelp || onShowPrivacy || onShowKnownIssues) && (
         <div className="settings-section">
           <div className="ds-eyebrow settings-section-title">Help</div>
@@ -7924,40 +6493,33 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             let desktop CSS flip this to a horizontal "ball+name+version |
             feedback" row. At mobile (no desktop CSS rule), the wrappers are
             plain divs and the centered-vertical layout is preserved. */}
-        <div className="settings-card about-card-card" style={{padding:"24px 18px",textAlign:"center"}}>
+        <div className="settings-card about-card-card" style={{padding:"24px 18px 18px",textAlign:"center"}}>
           <div className="about-card-brand">
-            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:10}} aria-hidden="true">⚽</div>
+            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:8}} aria-hidden="true">⚽</div>
             <div className="about-card-meta-wrap">
               <div className="about-card-name" style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
-              {/* Version + beta pill. Splitting "1.0.0-beta" so the version stays
-                  numeric/muted and "BETA" gets its own amber pill — clear pre-
-                  release signal without dominating the card. */}
-              <div className="about-card-version" style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:4,fontSize:13,color:"var(--t3)"}}>
-                <span>v{APP_VERSION.replace(/-beta$/i, "")}</span>
-                {/-beta$/i.test(APP_VERSION) && (
-                  <span style={{
-                    display:"inline-block",
-                    padding:"1px 7px",
-                    borderRadius:999,
-                    background:"rgba(255,200,0,0.15)",
-                    color:"var(--gold)",
-                    fontSize:10,
-                    fontWeight:800,
-                    letterSpacing:"0.08em",
-                  }} aria-label="Beta">BETA</span>
-                )}
-              </div>
+              <div style={{fontSize:13,color:"var(--t2)",marginTop:4}}>The football quiz for real fans</div>
+              {/* 1.1: real installed build version (no more stale "1.0.0 BETA"). */}
+              <div style={{fontSize:12,color:"var(--t3)",marginTop:3}}>v{appVer}</div>
             </div>
           </div>
-          {/* Ghost outlined to match the secondary-action discipline used on
-              result screens — filled green is reserved for primary actions. */}
-          <a
-            className="about-card-feedback"
-            href="mailto:hello@balliq.app"
-            style={{display:"inline-flex",alignItems:"center",justifyContent:"center",marginTop:18,padding:"10px 18px",background:"transparent",color:"var(--accent)",border:"1.5px solid var(--accent-b)",borderRadius:10,fontSize:14,fontWeight:800,textDecoration:"none"}}
-          >
-            Send feedback
-          </a>
+          {/* 1.1: three high-value actions — Rate (reviews drive ranking),
+              Share (referral growth), Feedback. Equal ghost buttons. */}
+          <div style={{display:"flex",gap:8,marginTop:18}}>
+            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label="Rate Ball IQ on the App Store">
+              <span style={{fontSize:18}} aria-hidden="true">⭐</span>
+              <span>Rate</span>
+            </button>
+            <button onClick={shareApp} style={ABOUT_ACTION_STYLE} aria-label="Share Ball IQ">
+              <span style={{fontSize:18}} aria-hidden="true">↗</span>
+              <span>Share</span>
+            </button>
+            <a href="mailto:hello@balliq.app" style={ABOUT_ACTION_STYLE} aria-label="Send feedback">
+              <span style={{fontSize:18}} aria-hidden="true">✉️</span>
+              <span>Feedback</span>
+            </a>
+          </div>
+          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>Built solo in Norway 🇳🇴</div>
         </div>
       </div>
 
@@ -8544,10 +7106,16 @@ const SKILL_OPTIONS = [
   { id: "expert", icon: "🧠", name: "Expert",      desc: "I know obscure facts and follow football history.",      diff: "hard"   },
 ];
 
+// One easy, universally-fun taster so a brand-new player tastes the trivia
+// within seconds — kept deliberately light (still fully skippable, no login).
+const ONBOARD_SAMPLE = { q: "Which country has won the most FIFA World Cups?", o: ["Germany", "Brazil", "Italy", "Argentina"], a: 1 };
+
 function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
   const [skillLevel, setSkillLevel] = useState(null);
-  const TOTAL = 2;
+  const [sampleAnswered, setSampleAnswered] = useState(null);
+  const TOTAL = 3;
+  const stepW = `${100 / TOTAL}%`;
 
   const persistAndFinish = () => {
     try {
@@ -8607,9 +7175,9 @@ function OnboardingScreen({ onDone }) {
       </div>
 
       <div className="onboard-viewport">
-        <div className="onboard-track" style={{ transform: `translateX(-${step * 50}%)` }}>
+        <div className="onboard-track" style={{ width: `${TOTAL * 100}%`, transform: `translateX(-${step * (100 / TOTAL)}%)` }}>
           {/* 1. Welcome */}
-          <div className="onboard-step">
+          <div className="onboard-step" style={{ width: stepW }}>
             <div className="onboard-step-top">
               <div className="onboard-icon">⚽</div>
               <div className="onboard-title">Welcome to {APP_NAME}</div>
@@ -8620,8 +7188,44 @@ function OnboardingScreen({ onDone }) {
             <button className="onboard-btn" onClick={next}>Get Started</button>
           </div>
 
-          {/* 2. Skill Level */}
-          <div className="onboard-step">
+          {/* 2. Taste it — one quick question (the casual hook) */}
+          <div className="onboard-step" style={{ width: stepW }}>
+            <div className="onboard-step-top">
+              <div className="onboard-title" style={{ marginTop: 16 }}>Quick one — give it a go ⚽</div>
+              <div className="onboard-body" style={{ marginBottom: 14 }}>{ONBOARD_SAMPLE.q}</div>
+              <div className="onboard-sample-opts">
+                {ONBOARD_SAMPLE.o.map((opt, i) => {
+                  const answered = sampleAnswered !== null;
+                  const isCorrect = i === ONBOARD_SAMPLE.a;
+                  let cls = "onboard-sample-opt";
+                  if (answered && isCorrect) cls += " correct";
+                  else if (answered && sampleAnswered === i) cls += " wrong";
+                  return (
+                    <button
+                      key={i}
+                      className={cls}
+                      disabled={answered}
+                      onClick={() => { haptic(isCorrect ? "heavy" : "soft"); setSampleAnswered(i); }}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="onboard-sample-fb">
+                {sampleAnswered === null ? "" : (sampleAnswered === ONBOARD_SAMPLE.a
+                  ? "Nice — you're a natural ⚽"
+                  : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} (5 titles) — you'll pick these up fast!`)}
+              </div>
+            </div>
+            <div className="onboard-actions">
+              <button className="onboard-skip" onClick={skip}>Skip</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Next" : "Continue"}</button>
+            </div>
+          </div>
+
+          {/* 3. Skill Level */}
+          <div className="onboard-step" style={{ width: stepW }}>
             <div style={{width:"100%"}}>
               <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
               <div className="onboard-body">We'll tune the default difficulty to match.</div>
@@ -8904,6 +7508,11 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     return false;
   });
 
+  // 1.1: whether today's puzzle was ALREADY finished when this screen
+  // mounted. Distinguishes a fresh solve (fire confetti once) from re-opening
+  // a solved puzzle later in the day (no confetti on every revisit).
+  const wasFinishedAtMount = useRef(state.status !== "playing");
+
   // Persist on every change to the game state.
   useEffect(() => {
     safeSetItem(storageKey, JSON.stringify(state));
@@ -8959,6 +7568,9 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     if (newStatus !== "playing") {
       setRevealed(false);
       timeoutsRef.current.push(setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200));
+      // 1.1: completing today's Footle cancels tonight's reminder; a solve is
+      // also a positive moment to surface the notification pre-prompt.
+      try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won" } })); } catch {}
     }
   }, [state, current, answer]);
 
@@ -9099,6 +7711,9 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
 
       {state.status !== "playing" && revealed && (
         <div className="wd-result">
+          {/* 1.1: celebrate a fresh solve. Gated on !wasFinishedAtMount so
+              re-opening today's solved puzzle doesn't re-fire the confetti. */}
+          {state.status === "won" && !wasFinishedAtMount.current && <Confetti />}
           <div className="wd-result-title">
             {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
           </div>
@@ -9251,12 +7866,37 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
   );
 });
 
+// 1.1 async challenge: parse a challenge token "SCORE.YYYYMMDD[.Name]" into a
+// {score,date,name} object. Shared by the web launch capture and the native
+// appUrlOpen handler. Returns null on a malformed token.
+function parseChallengeStr(c) {
+  if (!c) return null;
+  const [scoreStr, dateStr, nameEnc] = String(c).split(".");
+  const score = parseInt(scoreStr, 10);
+  if (isNaN(score) || !/^\d{8}$/.test(dateStr || "")) return null;
+  let name = "";
+  try { name = nameEnc ? decodeURIComponent(nameEnc) : ""; } catch { name = nameEnc || ""; }
+  return { score: Math.max(0, Math.min(7, score)), date: dateStr, name: name.slice(0, 24) };
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   perfMark('AppInner render (first)');
   useEffect(() => { perfMark('AppInner mounted'); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // 1.0.2 Feature E: one-time "pick your username" step after a NEW social
+  // sign-up. useAuth sets biq_needs_username='1' for fresh Apple/Google
+  // accounts (email sign-ups already chose a username). We surface the modal
+  // once the signed-in profile has resolved; the flag persists in localStorage
+  // until the user commits a name, so a mid-flow quit just re-shows it.
+  const [needsUsername, setNeedsUsername] = useState(false);
+  useEffect(() => {
+    if (!user || isGuest || !authProfile) return;
+    try {
+      if (localStorage.getItem('biq_needs_username') === '1') setNeedsUsername(true);
+    } catch {}
+  }, [user?.id, isGuest, authProfile]);
   // Bumped when the home greeting is tapped so the profile screen knows to
   // open the inline name editor.
   const [nameEditNonce, setNameEditNonce] = useState(0);
@@ -9279,6 +7919,9 @@ function AppInner() {
   // auto-join effect) so the deep-link state and the in-flow state stay
   // independently trackable.
   const [stage1RoomCode, setStage1RoomCode] = useState("");
+  // 1.1: set by the Home "Invite" button so OnlineEntry auto-creates a room and
+  // drops the user in the lobby (where the real /join/CODE invite lives).
+  const [onlineAutoCreate, setOnlineAutoCreate] = useState(false);
 
   // Pending invite code captured from `?join=` on cold start. Persisted to
   // localStorage so it survives the sign-in detour for guests / unsigned
@@ -9314,6 +7957,36 @@ function AppInner() {
     try { localStorage.removeItem("biq_pending_join"); } catch {}
   }, []);
 
+  // 1.1 async "beat my Daily 7" challenge. A friend's link is balliq.app/?c=
+  // SCORE.YYYYMMDD[.Name]. We capture it on launch (web/SPA), persist it, and
+  // strip the query so a refresh doesn't re-trigger. Only USED if it's for
+  // today (Daily 7 is deterministic per day) and the user hasn't played yet;
+  // the head-to-head compare fires when they finish. (Native deep-linking into
+  // the installed app needs an AASA path entry — follow-up; web handles it now.)
+  const [pendingChallenge, setPendingChallenge] = useState(() => {
+    try {
+      // Path form /c/TOKEN (Universal-Link-friendly) takes priority; ?c=TOKEN
+      // is kept as a fallback for any query-style links.
+      const pathMatch = window.location.pathname.match(/^\/c\/([^/?#]+)/);
+      const raw = (pathMatch ? pathMatch[1] : null) || new URLSearchParams(window.location.search).get("c");
+      if (raw) {
+        try { window.history.replaceState({}, "", `/${window.location.hash || ""}`); } catch {}
+        const challenge = parseChallengeStr(raw);
+        if (challenge) {
+          try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
+          return challenge;
+        }
+      }
+      const stored = localStorage.getItem("biq_pending_challenge");
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return null;
+  });
+  const clearChallenge = useCallback(() => {
+    setPendingChallenge(null);
+    try { localStorage.removeItem("biq_pending_challenge"); } catch {}
+  }, []);
+
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
   // arrive via Universal Link (balliq.app/join/CODE) which Capacitor's
@@ -9333,12 +8006,24 @@ function AppInner() {
       try {
         const u = new URL(url);
         if (u.hostname !== 'balliq.app') return;
-        const m = u.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
-        if (!m) return;
-        const code = m[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
-        if (!code) return;
-        try { localStorage.setItem('biq_pending_join', code); } catch {}
-        setPendingJoinCode(code);
+        const jm = u.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
+        if (jm) {
+          const code = jm[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
+          if (code) {
+            try { localStorage.setItem('biq_pending_join', code); } catch {}
+            setPendingJoinCode(code);
+          }
+          return;
+        }
+        // 1.1: async challenge deep link — balliq.app/c/SCORE.YYYYMMDD[.Name]
+        const cm = u.pathname.match(/^\/c\/([^/?#]+)/);
+        if (cm) {
+          const ch = parseChallengeStr(cm[1]);
+          if (ch) {
+            try { localStorage.setItem('biq_pending_challenge', JSON.stringify(ch)); } catch {}
+            setPendingChallenge(ch);
+          }
+        }
       } catch {}
     };
     CapApp.getLaunchUrl().then(r => tryCapture(r?.url)).catch(() => {});
@@ -9507,6 +8192,16 @@ function AppInner() {
   //
   // Placed BEFORE the day-rollover useEffect below so that effect's dep
   // array can include tickLoginStreak without hitting a TDZ at render.
+  // 1.1: brief confetti on the big habit milestones (7/30/100-day streaks),
+  // layered on the existing toast + haptic + sound. Auto-clears after a few
+  // seconds so it re-fires cleanly on the next milestone.
+  const [milestoneConfetti, setMilestoneConfetti] = useState(false);
+  useEffect(() => {
+    if (!milestoneConfetti) return;
+    const t = setTimeout(() => setMilestoneConfetti(false), 5000);
+    return () => clearTimeout(t);
+  }, [milestoneConfetti]);
+
   const tickLoginStreak = useCallback(async () => {
     let result;
     if (user?.id) {
@@ -9524,15 +8219,28 @@ function AppInner() {
       const prevStreak  = prev?.streak  ?? 0;
       const prevLastDay = prev?.lastDay ?? 0;
       const prevBest    = prev?.best    ?? prev?.streak ?? 0;
-      let newStreak;
+      // 1.1 streak freeze: a SINGLE missed day with an available shield freezes
+      // the streak — it survives, and today still continues it. xp + shieldsUsed
+      // are read from localStorage (not state) so this stays out of
+      // tickLoginStreak's deps; it fires on mount, and depending on xp/stats
+      // values would make it re-tick on every XP/stats change.
+      let xpVal = 0, shieldsUsed = 0;
+      try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch {}
+      try { const s = JSON.parse(localStorage.getItem('biq_stats') || '{}'); shieldsUsed = s.shieldsUsed || 0; } catch {}
+      const shieldsAvail = Math.max(0, Math.floor(xpVal / 200) - shieldsUsed);
+      let newStreak, shieldSaved = false;
       if (prevLastDay === todayNum) newStreak = prevStreak;
       else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
-      else newStreak = 1;
+      else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
+        newStreak = prevStreak + 1;
+        shieldSaved = true;
+      } else newStreak = 1;
       result = {
         lastDay: todayNum,
         streak:  newStreak,
         best:    Math.max(prevBest, newStreak),
         ticked:  prevLastDay !== todayNum,
+        shieldSaved,
       };
     }
     if (!result) return;
@@ -9543,7 +8251,28 @@ function AppInner() {
     } catch {}
     setLoginStreak(result.streak);
     setBestLoginStreak(result.best);
-    if (result.ticked && result.streak > 1) {
+    // Keep the UI's shield count in sync. Signed-in: the RPC owns shieldsUsed
+    // (in login_streak) and returns it — mirror it into local stats so the
+    // Daily-tab banner shows the right number. Guests own it locally.
+    if (typeof result.shieldsUsed === "number") {
+      setStats(p => ({ ...p, shieldsUsed: result.shieldsUsed }));
+    }
+    if (result.shieldSaved) {
+      // A shield froze the missed day. Guests consume locally; signed-in users
+      // were already debited server-side (synced above). Clearer message than
+      // the regular streak toast, which is suppressed here.
+      if (!user?.id) setStats(p => {
+        // Persist the debit (not just React state) so the availability gate,
+        // which reads shieldsUsed from localStorage, sees it after a reload —
+        // otherwise one earned shield would freeze unlimited separate gaps.
+        const updated = { ...p, shieldsUsed: (p.shieldsUsed || 0) + 1 };
+        window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+        return updated;
+      });
+      showToast(`🛡️ Streak shield used — your ${result.streak}-day streak is safe!`);
+      haptic("heavy");
+      playSound("streak");
+    } else if (result.ticked && result.streak > 1) {
       if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
       setStreakToast(result.streak);
       haptic("heavy");
@@ -9611,6 +8340,10 @@ function AppInner() {
       // the app open across midnight get the streak credit + toast for
       // the new day, same as if they'd reopened the app.
       tickLoginStreak();
+      // 1.1: re-anchor the reminder window to the new "today" (offset 0) so a
+      // post-midnight completion cancels the correct reminder id (listened for
+      // in the notifications section).
+      try { window.dispatchEvent(new CustomEvent('biq:day-rollover')); } catch {}
     }, 60_000);
     return () => clearInterval(id);
   }, [tickLoginStreak]);
@@ -9796,11 +8529,20 @@ function AppInner() {
       gamesLastWeek = stats.gamesThisWeek || 0;
       gamesThisWeek = 1;
     }
+    // Per-category accuracy → powers the Ball IQ player card (FIFA-style
+    // competition ratings). allAnswers already carries { cat, isCorrect }.
+    const catStats = { ...(stats.catStats || {}) };
+    for (const ans of (newResult.allAnswers || [])) {
+      if (!ans || !ans.cat) continue;
+      const cur = catStats[ans.cat] || { c: 0, a: 0 };
+      catStats[ans.cat] = { c: cur.c + (ans.isCorrect ? 1 : 0), a: cur.a + 1 };
+    }
     const updated = {
       gamesPlayed: stats.gamesPlayed + 1,
       gamesThisWeek,
       gamesLastWeek,
       weekEpoch: currentWeekEpoch,
+      catStats,
       shieldsUsed: stats.shieldsUsed || 0,
       // Only count standard quiz scores toward bestScore (max 10)
       bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
@@ -10009,6 +8751,117 @@ function AppInner() {
     setScreen("local-results");
   }, []);
 
+  // ─── 1.1 Local notifications (evening daily reminder) ──────────────────────
+  const [notifEnabled, setNotifEnabled] = useState(() => {
+    try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
+  });
+  const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+
+  // Enable/disable the daily reminder. Enabling fires the OS permission prompt;
+  // a denial leaves it off and points the user at iOS Settings.
+  const handleToggleNotif = useCallback(async (on) => {
+    if (on) {
+      const granted = await requestNotifPermission();
+      if (!granted) {
+        setNotifEnabled(false);
+        try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+        showToast('Turn on notifications for Ball IQ in iOS Settings to get reminders');
+        return;
+      }
+      try { localStorage.setItem('biq_notif_enabled', '1'); } catch {}
+      setNotifEnabled(true);
+      const ws = readWordleTodayStatus();
+      const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
+      scheduleReminderWindow({ skipToday: playedToday });
+      showToast('Daily reminders on 🔔');
+    } else {
+      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+      setNotifEnabled(false);
+      cancelAllReminders();
+      showToast('Daily reminders off');
+    }
+  }, [dailyDone, showToast]);
+
+  // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
+  // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
+  // user declined). Only shows while the OS permission is still undecided.
+  const maybePromptNotif = useCallback(async () => {
+    if (!notificationsSupported()) return;
+    try {
+      if (localStorage.getItem('biq_notif_enabled') === '1') return;
+      const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
+      if (asks >= 2) return;
+      const perm = await getNotifPermission();
+      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return;
+      localStorage.setItem('biq_notif_asks', String(asks + 1));
+      setNotifPromptOpen(true);
+    } catch { /* noop */ }
+  }, []);
+
+  // (Re)schedule the rolling window on open + whenever today's play state
+  // changes (finishing Daily 7 flips dailyDone → reschedule with skipToday).
+  useEffect(() => {
+    if (!notifEnabled) return;
+    const ws = readWordleTodayStatus();
+    const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
+    scheduleReminderWindow({ skipToday: playedToday });
+  }, [notifEnabled, dailyDone]);
+
+  // A completed daily (Daily 7 or Footle) cancels tonight's reminder and, on a
+  // positive completion, is the trigger for the first soft pre-prompt.
+  useEffect(() => {
+    const onDailyDone = (e) => {
+      cancelTodayReminder();
+      if (e?.detail?.positive !== false) maybePromptNotif();
+    };
+    window.addEventListener('biq:daily-completed', onDailyDone);
+    return () => window.removeEventListener('biq:daily-completed', onDailyDone);
+  }, [maybePromptNotif]);
+
+  // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
+  // long-streak user (that would burn both lifetime asks before they ever see a
+  // milestone). initialStreakRef is the mount-time streak; a persisted flag makes
+  // it fire at most once ever.
+  useEffect(() => {
+    if (loginStreak >= 3 && initialStreakRef.current < 3) {
+      try {
+        if (localStorage.getItem('biq_notif_streak_asked') === '1') return;
+        localStorage.setItem('biq_notif_streak_asked', '1');
+      } catch {}
+      maybePromptNotif();
+    }
+  }, [loginStreak, maybePromptNotif]);
+
+  // Keep the Settings toggle honest: if the user revoked notifications in iOS
+  // Settings, the stored 'enabled' flag is stale (scheduleReminderWindow silently
+  // no-ops without permission, so the toggle would read ON while nothing fires).
+  // Reconcile against the live OS permission on mount and on app foreground.
+  useEffect(() => {
+    let cancelled = false;
+    const reconcile = async () => {
+      try { if (localStorage.getItem('biq_notif_enabled') !== '1') return; } catch { return; }
+      const perm = await getNotifPermission();
+      if (cancelled || perm === 'granted') return;
+      setNotifEnabled(false);
+      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+      cancelAllReminders();
+    };
+    reconcile();
+    const onVis = () => { if (document.visibilityState === 'visible') reconcile(); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => { cancelled = true; document.removeEventListener('visibilitychange', onVis); };
+  }, []);
+
+  // Re-anchor the rolling reminder window when the day flips while the app is
+  // left open. Otherwise "today" drifts off offset 0 and cancelTodayReminder()
+  // cancels a stale id, nagging the user tonight after they've already played.
+  useEffect(() => {
+    if (!notifEnabled) return;
+    const onRollover = () => { scheduleReminderWindow({ skipToday: false }); };
+    window.addEventListener('biq:day-rollover', onRollover);
+    return () => window.removeEventListener('biq:day-rollover', onRollover);
+  }, [notifEnabled]);
+
   const handleComplete = useCallback((res) => {
     // Don't pollute stats with BallIQ (different total) or daily (counted separately)
     if (mode !== "balliq") saveStats(res);
@@ -10022,13 +8875,13 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
@@ -10036,6 +8889,19 @@ function AppInner() {
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🎉 Perfect — every question right"), 800));
       haptic("levelup");
+    }
+
+    // ⭐ 5-star ask — surface the native App Store review sheet after a genuinely
+    // good moment, once the user has enough games to have an opinion. The module
+    // enforces a long cooldown + lifetime cap (and iOS rate-limits further), so
+    // this only actually prompts occasionally. Delayed to land at a lull after
+    // the celebration. Skips daily (which already shows the notif pre-prompt).
+    const hadGreatMoment =
+      (res.score === res.total && res.total >= 5) ||
+      (res.total >= 10 && res.score / res.total >= 0.8) ||
+      [7, 30, 100].includes(loginStreak);
+    if (hadGreatMoment && newTotal >= 5 && mode !== "daily") {
+      celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily/balliq)
@@ -10171,6 +9037,20 @@ function AppInner() {
       if (targetYMD === todayYMD) {
         setDailyDone(true);
         setDailyScore(res.score);
+        // 1.1: completing today's Daily 7 cancels tonight's reminder and is a
+        // positive moment to surface the notification pre-prompt.
+        try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: true } })); } catch {}
+        // 1.1 async challenge: head-to-head compare if a friend's challenge for
+        // today was pending. Consumed once shown.
+        if (pendingChallenge && pendingChallenge.date === todayYMD.replace(/-/g, "")) {
+          const mine = res.score, theirs = pendingChallenge.score;
+          const who = pendingChallenge.name || "your friend";
+          const msg = mine > theirs ? `🏆 You beat ${who}! ${mine}/7 vs ${theirs}/7`
+                    : mine === theirs ? `🤝 Tied with ${who} — ${mine}/7 each`
+                    : `${who} takes this one — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`;
+          celebrationTimeoutsRef.current.push(setTimeout(() => showToast(msg), 1800));
+          clearChallenge();
+        }
       }
       setActiveDailyDate(null);
       haptic("heavy");
@@ -10195,7 +9075,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge]);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
@@ -10272,19 +9152,48 @@ function AppInner() {
     await shareCard(cardType, cardData, { onToast: showToast, textFallback: text });
   }, [showToast]);
 
-  const shareProfile = useCallback(() => {
+  const shareProfile = useCallback(async () => {
+    // 1.1: share a balliq.app/p?... LINK that renders the player's FIFA card as
+    // its Open Graph preview (server-rendered via /api/og). On iMessage a single
+    // image FILE attaches but iOS strips the caption/link off it — a URL instead
+    // gives a tappable link AND a rich card preview across iMessage/WhatsApp/
+    // Twitter/Slack. Requires balliq.app to be deployed with api/og + api/p.
     const { level } = getLevelInfo(xp);
-    const iq = stats.bestIQ;
-    const lines = [
-      (profile.avatar||"⚽") + " " + (profile.name||`${APP_NAME} Player`),
-      level.icon + " " + level.name + " — " + xp + " XP",
-      iq ? APP_NAME + ": " + iq + " — " + iqLabel(iq) : null,
-      "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
-      "#BallIQ"
-    ].filter(Boolean).join("\n");
-    if (navigator.share) navigator.share({ text: lines }).catch(()=>{});
-    else navigator.clipboard?.writeText(lines).then(()=>showToast("📋 Profile copied")).catch(()=>{});
-  }, [xp, stats, profile, loginStreak]);
+    const iq = stats.bestIQ || 0;
+    const correct = stats.totalCorrect || 0;
+    const answered = stats.totalAnswered || 0;
+    const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
+    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
+    const params = new URLSearchParams({
+      n: profile.name || `${APP_NAME} Player`,
+      l: level.name || "",
+      li: level.icon || "⚽",
+      x: String(xp || 0),
+      g: String(stats.gamesPlayed || 0),
+      s: String(loginStreak || 0),
+      a: accuracy,
+      e: profile.avatar || "⚽",
+      iq: String(iq || 0),
+      ov: String(card.overall),
+      ti: card.tier,
+      r: card.ratings.map(x => x.rating).join(","),
+    });
+    const avatarUrl = authProfile?.avatar_url;
+    if (avatarUrl) params.set("img", avatarUrl);
+    const url = `https://balliq.app/p?${params.toString()}`;
+    const text = `Can you beat me at ${APP_NAME}? ⚽`;
+    try {
+      if (IS_NATIVE) {
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share your profile" });
+        return;
+      }
+      if (navigator.share) { await navigator.share({ title: APP_NAME, text, url }); return; }
+      if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); return; }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // user dismissed the sheet
+      try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); } } catch {}
+    }
+  }, [xp, stats, profile, loginStreak, showToast, authProfile]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
@@ -10538,10 +9447,10 @@ function AppInner() {
   const retakeIqTest = useCallback(() => startMode("balliq"), [startMode]);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
-  const useShield = useCallback(() => {
-    setStats(p => ({...p, shieldsUsed:(p.shieldsUsed||0)+1}));
-    showToast("🛡️ Streak shield activated — your streak is safe today");
-  }, [showToast]);
+  // 1.1 streak freeze: shields now AUTO-protect a missed day (consumed in
+  // tickLoginStreak for guests / the tick_login_streak RPC for signed-in users),
+  // so the old manual "Use Shield" action is gone — spending one by hand would
+  // just waste it. The Daily-tab banner is now informational (shieldCount).
   const shareDaily = useCallback(async () => {
     // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
     // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
@@ -10553,6 +9462,15 @@ function AppInner() {
     const streakLine = loginStreak > 0
       ? `🔥 ${loginStreak}-day streak`
       : "";
+    // 1.1 async challenge: encode score + date (+ challenger name) into the
+    // link so a friend who opens it sees "beat my X/7" on today's deterministic
+    // Daily 7 and gets a head-to-head compare after they finish. Format:
+    // balliq.app/?c=SCORE.YYYYMMDD[.Name]
+    const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
+    const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
+      ? authProfile.username
+      : ((profile?.name && profile.name !== "Player") ? profile.name : "");
+    const challengeUrl = `balliq.app/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
@@ -10562,7 +9480,7 @@ function AppInner() {
       grid,
       "",
       "Think you can beat me?",
-      "balliq.app",
+      challengeUrl,
     ].filter(Boolean).join("\n");
 
     try {
@@ -10579,8 +9497,8 @@ function AppInner() {
     } catch {
       showToast("Couldn't share — try again");
     }
-  }, [dailyScore, loginStreak, showToast]);
-  const shieldActive = useMemo(() => Math.floor(xp/200) > (stats.shieldsUsed||0), [xp, stats.shieldsUsed]);
+  }, [dailyScore, loginStreak, showToast, authProfile, profile]);
+  const shieldCount = useMemo(() => Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0)), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
@@ -10709,6 +9627,21 @@ function AppInner() {
         )}
 
         {hasOnboarded && <>
+        {/* Feature E: one-time username confirmation after a new social
+            sign-up. Overlays the app (z-index 500) until the user commits a
+            name; shown only once onboarding is complete so the two full-screen
+            steps don't stack. */}
+        {needsUsername && authProfile && (
+          <UsernameSetupModal
+            user={user}
+            authProfile={authProfile}
+            onSaved={(name) => {
+              setProfile(p => ({ ...(p || {}), name }));
+              try { localStorage.removeItem('biq_needs_username'); } catch {}
+              setNeedsUsername(false);
+            }}
+          />
+        )}
         {!inGame && (
           <DesktopNav
             onHomeClick={handleHomeClick}
@@ -10719,13 +9652,16 @@ function AppInner() {
             showToast={showToast}
           />
         )}
-        {!inGame && (
+        {!inGame && !(screen === "home" && tab === "home") && (
           <div className="hdr">
-            {/* Settings already has its own page-header (← Settings) so the
-                global wordmark would just stack a second identifier on top.
-                Hide it on that one screen; every other screen still keeps
-                the brand mark. */}
-            {screen !== "settings" && (
+            {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
+                — on a tab-bar app the app name on its own home is redundant, and
+                the personalised greeting now owns the top. Settings has its own
+                header; other sub-screens keep the brand mark as a home anchor. */}
+            {/* 1.1: hide the global wordmark on screens that already have their
+                own page-header (Settings, the online MP setup + lobby) — it just
+                stacks a second identifier. (Broader sub-screen audit deferred.) */}
+            {!["settings", "home", "online-stage1", "online-stage1-lobby"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -10736,8 +9672,8 @@ function AppInner() {
               </button>
             )}
             {screen === "home" && (
-              <div className="hdr-actions">
-                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
+              <div className="hdr-actions" style={{marginLeft:"auto"}}>
+                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")} style={{ background: "var(--s1)", border: "1px solid var(--border)" }}>⚙️</button>
               </div>
             )}
           </div>
@@ -10791,7 +9727,7 @@ function AppInner() {
                 setShowRatePrompt(false);
                 const ua = navigator.userAgent || "";
                 if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
-                  window.open("https://apps.apple.com/app/ball-iq", "_blank");
+                  window.open("https://apps.apple.com/app/id6775975961", "_blank");
                 } else if (/Android/i.test(ua)) {
                   window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
                 } else {
@@ -10844,6 +9780,44 @@ function AppInner() {
                 style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
               >
                 Stay
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 1.1: streak-milestone confetti (7/30/100-day). Top-level so it
+            layers over Home where the milestone toast appears. */}
+        {milestoneConfetti && <Confetti />}
+
+        {/* 1.1: soft notification pre-prompt — shown after a positive daily
+            completion (or first 3-day streak) before spending the one-shot iOS
+            permission prompt. "Yes" routes through the same enable path as the
+            Settings toggle. */}
+        {notifPromptOpen && (
+          <div
+            style={{position:"fixed",inset:0,top:0,right:0,bottom:0,left:0,background:"rgba(0,0,0,0.6)",zIndex:1100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}
+            onClick={() => setNotifPromptOpen(false)}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{width:"100%",maxWidth:440,background:"var(--s1)",borderTopLeftRadius:20,borderTopRightRadius:20,border:"1px solid var(--border)",borderBottom:"none",padding:"24px 22px calc(24px + env(safe-area-inset-bottom))",boxShadow:"0 -8px 40px rgba(0,0,0,0.5)"}}
+            >
+              <div style={{fontSize:40,textAlign:"center",marginBottom:8}} aria-hidden="true">🔔</div>
+              <div style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>Keep your streak alive</div>
+              <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.5,marginBottom:20}}>
+                Get one friendly reminder each evening if you haven't played yet — never spammy, and you can turn it off anytime in Settings.
+              </div>
+              <button
+                onClick={async () => { setNotifPromptOpen(false); await handleToggleNotif(true); }}
+                style={{width:"100%",minHeight:48,padding:"14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:14,fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+              >
+                Yes, remind me
+              </button>
+              <button
+                onClick={() => setNotifPromptOpen(false)}
+                style={{width:"100%",minHeight:44,padding:"12px",background:"none",color:"var(--t3)",border:"none",fontFamily:"inherit",fontSize:15,fontWeight:600,cursor:"pointer"}}
+              >
+                Not now
               </button>
             </div>
           </div>
@@ -10955,6 +9929,10 @@ function AppInner() {
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
               shareCard={shareCard}
+              challenge={(pendingChallenge && pendingChallenge.date === dateToYMD(new Date()).replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
+              onPlayChallenge={playDaily}
+              onDismissChallenge={clearChallenge}
+              setOnlineAutoCreate={setOnlineAutoCreate}
             />
           </div>
         )}
@@ -10965,8 +9943,7 @@ function AppInner() {
             <DailyTabScreen
               profile={profile}
               xp={xp}
-              shieldActive={shieldActive}
-              onUseShield={useShield}
+              shieldCount={shieldCount}
               dailyHistory={dailyHistory}
             />
           </div>
@@ -10982,7 +9959,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} />}
         {!inGame && screen === "blocked-users" && (
           <React.Suspense fallback={<div className="tab-pane" />}>
             <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />
@@ -10990,7 +9967,11 @@ function AppInner() {
         )}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
-        {!inGame && screen === "review" && <ReviewScreen onBack={() => setScreen("settings")} />}
+        {!inGame && screen === "review" && (
+          <React.Suspense fallback={<div className="tab-pane" />}>
+            <ReviewScreen onBack={() => setScreen("settings")} />
+          </React.Suspense>
+        )}
         {!inGame && screen === "daily-review" && dailyReviewState && (
           <DailyReviewScreen
             date={dailyReviewState.date}
@@ -11098,20 +10079,26 @@ function AppInner() {
 
         {/* ── ONLINE MULTIPLAYER ── */}
         {screen === "online-stage1" && (
-          <OnlineEntry
-            onBack={() => { clearPendingJoin(); goHome(); }}
-            onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
-            defaultName={authProfile?.username || profile?.name || ""}
-            autoJoinCode={pendingJoinCode}
-            onAutoJoinConsumed={clearPendingJoin}
-          />
+          <React.Suspense fallback={<div className="screen" />}>
+            <OnlineEntry
+              onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); goHome(); }}
+              onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
+              defaultName={authProfile?.username || profile?.name || ""}
+              autoJoinCode={pendingJoinCode}
+              onAutoJoinConsumed={clearPendingJoin}
+              autoCreate={onlineAutoCreate}
+              onAutoCreateConsumed={() => setOnlineAutoCreate(false)}
+            />
+          </React.Suspense>
         )}
         {screen === "online-stage1-lobby" && stage1RoomCode && (
-          <MultiplayerLobby
-            code={stage1RoomCode}
-            onExit={() => { setStage1RoomCode(""); setScreen("online-stage1"); }}
-            defaultName={authProfile?.username || profile?.name || ""}
-          />
+          <React.Suspense fallback={<div className="screen" />}>
+            <MultiplayerLobby
+              code={stage1RoomCode}
+              onExit={() => { setStage1RoomCode(""); setScreen("online-stage1"); }}
+              defaultName={authProfile?.username || profile?.name || ""}
+            />
+          </React.Suspense>
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
@@ -11229,12 +10216,12 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <nav className="tab-bar">
             {[
-              { id:"home",     icon:"⚽", label:"Home"    },
-              { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
-              { id:"profile",  icon:"👤", label:"Profile" },
-            ].map(({ id, icon, label, badge }) => (
+              { id:"home",     Icon: Home,         label:"Home"    },
+              { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
+              { id:"profile",  Icon: User,         label:"Profile" },
+            ].map(({ id, Icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => { haptic("soft"); setTab(id); }}>
-                <span className="tab-icon">{icon}</span>
+                <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}
               </button>

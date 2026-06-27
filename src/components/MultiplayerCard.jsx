@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Share } from "lucide-react";
-import { APP_NAME } from "../lib/scoring.js";
 
 // MultiplayerCard — Home tab. Replaces the old .util-rail.hero-online
 // rail. Two primary CTAs (Online + Local) and a corner Invite pill.
@@ -8,43 +7,19 @@ import { APP_NAME } from "../lib/scoring.js";
 // toast fallback). Local jumps straight into pass-and-play. Invite uses
 // Web Share API where available, otherwise copies the URL to clipboard
 // with a toast.
-export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnline, onLocal, showToast }) {
-  const onInvite = useCallback(async (e) => {
-    // Stop the click from reaching the card-level handlers (none here, but
-    // future-proof against being wrapped in a tappable parent).
+export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnline, onLocal, onInvite }) {
+  // 1.1: "Invite" used to share a code-less balliq.app link — a dead end for the
+  // recipient (no room to join). It now defers to the parent, which routes into
+  // the online flow, auto-creates a room, and lands you in the lobby where the
+  // real /join/CODE invite link lives.
+  const handleInvite = useCallback((e) => {
     e?.stopPropagation();
-    // Hardcoded — window.location.origin is capacitor://localhost inside the
-    // native app, which shared a dead link to whoever received the invite.
-    const url = 'https://balliq.app';
-    const shareData = {
-      title: APP_NAME,
-      text: `Play ${APP_NAME} with me — daily football trivia + multiplayer.`,
-      url,
-    };
-    try {
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share(shareData);
-        return;
-      }
-    } catch (err) {
-      // User-cancelled share is reported as AbortError on iOS Safari — silent.
-      if (err && err.name === 'AbortError') return;
-      // Otherwise fall through to clipboard fallback.
-    }
-    try {
-      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
-        showToast?.('🔗 Link copied — paste it to a friend');
-        return;
-      }
-    } catch {}
-    // Last-resort fallback: announce that we couldn't share. Should be very rare.
-    showToast?.(`Share ${url}`);
-  }, [showToast]);
+    onInvite?.();
+  }, [onInvite]);
 
   return (
     <div className="mp-card" role="group" aria-label="Multiplayer">
-      <button type="button" className="mp-card-invite" onClick={onInvite} aria-label="Invite a friend">
+      <button type="button" className="mp-card-invite" onClick={handleInvite} aria-label="Invite a friend">
         <Share size={13} strokeWidth={2.25} aria-hidden="true" />
         <span>Invite</span>
       </button>

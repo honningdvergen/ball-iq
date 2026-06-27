@@ -15,7 +15,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // Reads user/authProfile/isGuest via useAuth (same pattern as Profile
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
-export function HomeScreen({
+function HomeScreenImpl({
   profile,
   loginStreak,
   streakPulsing,
@@ -30,6 +30,10 @@ export function HomeScreen({
   startMode,
   setShowDiffPicker,
   shareCard,
+  challenge,
+  onPlayChallenge,
+  onDismissChallenge,
+  setOnlineAutoCreate,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -55,7 +59,17 @@ export function HomeScreen({
         // available — leaves "Good morning" alone until the user sets
         // a name (CTA below offers the affordance).
         const homeDisplayName = homeRealUsername || (profile?.name && !isDefaultName(profile.name) ? profile.name : null);
-        const homeGreetingBase = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; })();
+        const homeGreetingBase = (() => {
+          const now = new Date();
+          const h = now.getHours();
+          if (h < 12) return "Good morning";
+          if (h < 18) return "Good afternoon";
+          // Easter egg: ~1 in 5 evenings, swap in the "Good ebening" football-
+          // commentary pun. Seeded on the calendar date so it stays put through
+          // the whole evening (no flicker between renders) but varies day to day.
+          const daySeed = now.getFullYear() * 372 + (now.getMonth() + 1) * 31 + now.getDate();
+          return (daySeed % 5 === 0) ? "Good ebening" : "Good evening";
+        })();
         const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
@@ -68,24 +82,29 @@ export function HomeScreen({
           :                                       "Daily puzzle is up.";
         return (
           <div style={{padding:"6px 0 8px"}}>
-            <div style={{display:"flex", alignItems:"baseline", gap:10}}>
-              <div style={{fontSize:15, color:"var(--t2)", fontWeight:600}}>{greeting}</div>
-              {homeAuthLoading ? (
-                // Sprint #23 U2: min-width lock prevents the name-box
-                // width from popping when "Loading…" (~58px) is replaced
-                // by the actual username. Both states share the same
-                // minWidth so the row geometry is stable across the swap.
-                <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
-              ) : homeDisplayName ? (
-                <div style={{fontSize:15, color:"var(--t1)", fontWeight:700, minWidth:70}}>
-                  {homeDisplayName}
-                </div>
-              ) : null}
+            <div style={{display:"flex", alignItems:"center", gap:10}}>
+              <div style={{display:"flex", alignItems:"baseline", gap:8, flex:1, minWidth:0, flexWrap:"wrap"}}>
+                <div style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
+                {(homeAuthLoading && !homeDisplayName) ? (
+                  // Sprint #23 U2: min-width lock keeps the name-box width stable
+                  // across the Loading…→username swap. Only show the skeleton when
+                  // we have NO cached name to show — otherwise the local name
+                  // appears instantly instead of waiting for the server profile.
+                  <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
+                ) : homeDisplayName ? (
+                  <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
+                    {homeDisplayName}
+                  </div>
+                ) : null}
+              </div>
               {loginStreak > 0 && (
-                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} style={{marginLeft:"auto"}} aria-label={`${loginStreak}-day streak`}>
+                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
                   🔥 {loginStreak}
                 </span>
               )}
+              {/* 1.1: settings gear inline with the greeting (the shared header
+                  row is hidden on Home) — one tidy top row, no dead space. */}
+              <button onClick={() => setScreen("settings")} className="icon-btn" aria-label="Settings" style={{flexShrink:0}}>⚙️</button>
             </div>
             {subtext && (
               <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
@@ -104,6 +123,37 @@ export function HomeScreen({
           </div>
         );
       })()}
+
+      {/* 1.1 async challenge: a friend's "beat my Daily 7" link landed here.
+          Shown only when the challenge is for today and the user hasn't played
+          yet (gated by the parent). Play routes into today's Daily 7; the
+          head-to-head result toasts on completion. */}
+      {challenge && (
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:10,background:"linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.05))",border:"1px solid rgba(34,197,94,0.30)",borderRadius:14}}>
+          <span style={{fontSize:22}} aria-hidden="true">🏆</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:13.5,fontWeight:800,color:"var(--t1)",lineHeight:1.25}}>
+              {challenge.name ? `${challenge.name} challenged you` : "You've been challenged"}
+            </div>
+            <div style={{fontSize:12,color:"var(--t2)",marginTop:1}}>
+              Beat {challenge.score}/7 on today's Daily 7
+            </div>
+          </div>
+          <button
+            onClick={onPlayChallenge}
+            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:10,fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+          >
+            Play
+          </button>
+          <button
+            onClick={onDismissChallenge}
+            aria-label="Dismiss challenge"
+            style={{flexShrink:0,background:"none",border:"none",color:"var(--t3)",fontSize:18,cursor:"pointer",padding:"4px 2px",lineHeight:1}}
+          >
+            ×
+          </button>
+        </div>
+      )}
 
       {/* ── DAILY ZONE (Sprint #12) ──
           Wraps Footle hero + Today's 7 in a tinted container with a
@@ -160,6 +210,16 @@ export function HomeScreen({
             openAuthPrompt("online");
             return;
           }
+          setScreen("online-stage1");
+        }}
+        onInvite={() => {
+          // 1.1: "Invite" now creates a room and drops you in the lobby (where
+          // the real /join/CODE link lives) instead of sharing a dead link.
+          if (!user || isGuest) {
+            openAuthPrompt("online");
+            return;
+          }
+          setOnlineAutoCreate?.(true);
           setScreen("online-stage1");
         }}
         onLocal={() => startMode("local")}
@@ -252,3 +312,9 @@ export function HomeScreen({
     </div>
   );
 }
+
+// Memoized like its sibling tab screens (DailyTabScreen/ProfileScreen): all
+// three Home tabs stay mounted and AppInner re-renders on every unrelated state
+// change, so without this HomeScreen's whole tree re-rendered each time. Props
+// are stable (useCallback handlers + setters; challenge is null or a stable ref).
+export const HomeScreen = React.memo(HomeScreenImpl);

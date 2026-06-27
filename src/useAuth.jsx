@@ -167,12 +167,35 @@ export function AuthProvider({ children }) {
               const explicitSignup = localStorage.getItem('biq_signup_pending_clear') === '1'
               const isNewSignup = explicitSignup || isFreshAccount
               if (!isNewSignup) {
-                let preservedJoin = null
-                try { preservedJoin = localStorage.getItem('biq_pending_join') } catch {}
-                clearAllUserLocalStorage()
-                if (preservedJoin) {
-                  try { localStorage.setItem('biq_pending_join', preservedJoin) } catch {}
+                // Preserve a few keys across the existing-account wipe:
+                //   • biq_pending_join — an invite-link guest still lands in
+                //     the room they were headed to.
+                //   • TODAY's Footle + Daily-7 — a guest who just played
+                //     today's puzzles shouldn't lose them merely by signing
+                //     in (1.0.2 fix for "Footle doesn't save"). hydrate's
+                //     max-merge still lets the account's own remote state win
+                //     if it already completed today on another device, so this
+                //     only rescues the same-day progress the guest can see.
+                const todayKey = (() => {
+                  const d = new Date()
+                  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+                })()
+                const preserve = {}
+                for (const k of ['biq_pending_join', `biq_wordle_${todayKey}`, `biq_daily_${todayKey}`]) {
+                  try { const v = localStorage.getItem(k); if (v != null) preserve[k] = v } catch {}
                 }
+                clearAllUserLocalStorage()
+                for (const k of Object.keys(preserve)) {
+                  try { localStorage.setItem(k, preserve[k]) } catch {}
+                }
+              } else if (!explicitSignup) {
+                // Fresh SOCIAL sign-up (Apple/Google). Email sign-ups already
+                // chose a username at the Login screen (explicitSignup); social
+                // ones land on a server default (player_xxxxx). Flag the
+                // one-time "pick your username" step — App shows it once
+                // authProfile resolves, and clears the flag when done. (1.0.2
+                // Feature E.)
+                try { localStorage.setItem('biq_needs_username', '1') } catch {}
               }
               // else: new account → keep guest-local; hydrate absorbs it.
               localStorage.removeItem('biq_signup_pending_clear')

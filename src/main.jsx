@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import App from './App.jsx'
 import { AuthProvider } from './useAuth.jsx'
+import { initAds } from './lib/ads.js'
 
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
@@ -61,6 +62,31 @@ try {
   }
 } catch {}
 
+// Stale dynamic-import self-heal (web/PWA only — native bundles its chunks
+// locally and can't 404 them). After a deploy prunes the previous build's
+// hashed assets, a long-lived tab's import('./questions.js') can fail with a
+// ChunkLoadError that otherwise dead-ends in a generic "Couldn't start" toast.
+// Reload once to pull the fresh index.html + matching chunks; a sessionStorage
+// guard prevents a reload loop if the new build is still momentarily broken.
+try {
+  const isNative = !!(window.Capacitor?.isNativePlatform?.())
+  if (!isNative) {
+    const RELOAD_FLAG = 'biq_chunk_reload'
+    const isChunkError = (msg) =>
+      /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(String(msg || ''))
+    const heal = (msg) => {
+      if (!isChunkError(msg)) return
+      try {
+        if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
+        sessionStorage.setItem(RELOAD_FLAG, '1')
+      } catch {}
+      window.location.reload()
+    }
+    window.addEventListener('vite:preloadError', (e) => { try { e.preventDefault() } catch {} heal(e?.payload?.message || 'vite:preloadError') })
+    window.addEventListener('unhandledrejection', (e) => heal(e?.reason?.message || e?.reason))
+  }
+} catch {}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
@@ -68,3 +94,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </React.StrictMode>,
 )
+
+// Ads (web only, dormant until an AdSense client ID is set in lib/ads.js) —
+// initialise off the critical path so it never competes with first paint.
+if (typeof window !== 'undefined') {
+  const startAds = () => { try { initAds() } catch {} }
+  if ('requestIdleCallback' in window) window.requestIdleCallback(startAds, { timeout: 3000 })
+  else window.addEventListener('load', () => setTimeout(startAds, 1200))
+}

@@ -44,6 +44,8 @@ const RETRY_CONFIG = {
   end_game:         { attempts: 3, backoffMs: [500, 1500, 3000] },
   // Idempotent — second call after row removal is a no-op.
   leave_room:       { attempts: 3, backoffMs: [500, 1500, 3000] },
+  // Lobby-only host action (Race/Hot Streak). Idempotent — patient retry.
+  set_room_mode:    { attempts: 3, backoffMs: [500, 1500, 3000] },
 }
 
 // ±20% jitter on each backoff to prevent thundering-herd when many
@@ -206,5 +208,11 @@ export async function mpEndGame({ p_code }) {
 export async function mpLeaveRoom({ p_code }) {
   const { data, error } = await withRetry('leave_room', { p_code })
   if (error) return { left: false, error: error.message }
+  return data
+}
+
+export async function mpSetRoomMode({ p_code, p_mode }) {
+  const { data, error } = await withRetry('set_room_mode', { p_code, p_mode })
+  if (error) return { ok: false, error: error.message }
   return data
 }

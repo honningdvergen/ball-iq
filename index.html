@@ -23,6 +23,7 @@
     <meta name="twitter:image" content="https://balliq.app/og-image.png" />
     <meta name="twitter:image:alt" content="Ball IQ — The Ultimate Football Quiz" />
     <title>Ball IQ</title>
+    <link rel="canonical" href="https://balliq.app/" />
 
     <!-- Early hints — warm DNS / TLS for every origin the first paint + first auth needs. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -279,7 +280,7 @@
         border-bottom: 1px solid #1F2230;
       }
       .landing-nav-inner {
-        display: flex; align-items: center; justify-content: space-between;
+        display: flex; align-items: center; justify-content: flex-end;
         height: 100%;
         max-width: 1200px;
         margin: 0 auto;
@@ -493,8 +494,7 @@
     <div class="landing-top">
       <nav class="landing-nav">
         <div class="landing-nav-inner">
-          <div class="landing-nav-logo">Ball <em>IQ</em></div>
-          <a href="#cta-signup" class="landing-nav-cta">Get the app</a>
+          <a href="https://apps.apple.com/app/id6775975961" target="_blank" rel="noopener" class="landing-nav-cta">Get the app</a>
         </div>
       </nav>
     </div>
@@ -537,25 +537,22 @@
       </section>
 
       <section class="landing-signup" id="cta-signup">
-        <p class="landing-signup-eyebrow">Coming soon to iOS &amp; Android</p>
-        <h2 class="landing-signup-title">Be the first to play</h2>
-        <p class="landing-signup-sub">Drop your email and we'll let you know the moment Ball IQ launches on the App Store and Google Play.</p>
+        <p class="landing-signup-eyebrow">Now on the App Store</p>
+        <h2 class="landing-signup-title">Take Ball IQ with you</h2>
+        <p class="landing-signup-sub">Play right here in your browser, or grab the app for daily puzzles, streaks and online multiplayer on the go.</p>
         <div class="landing-store-badges">
-          <a href="#" class="landing-store-badge" data-store="ios">App Store →</a>
-          <a href="#" class="landing-store-badge" data-store="android">Google Play →</a>
+          <a href="https://apps.apple.com/app/id6775975961" target="_blank" rel="noopener" class="landing-store-badge" data-store="ios">Download on the App Store →</a>
         </div>
-        <form class="landing-signup-form" id="notifyForm" novalidate>
-          <input type="email" placeholder="your@email.com" required aria-label="Email address">
-          <button type="submit">Notify me</button>
-        </form>
-        <p class="landing-signup-norway">Made with ⚽ in Norway</p>
       </section>
 
       <footer class="landing-footer">
         <div>© 2026 Ball IQ</div>
         <div class="landing-footer-links">
+          <a href="/quiz/">Football quizzes</a>
+          <a href="/quiz/world-cup/">World Cup quiz</a>
+          <a href="/quiz/premier-league/">Premier League quiz</a>
+          <a href="/quiz/champions-league/">Champions League quiz</a>
           <a href="/privacy.html">Privacy</a>
-          <a href="#cta-signup">Contact</a>
           <a href="mailto:hello@balliq.app">hello@balliq.app</a>
         </div>
       </footer>
@@ -600,25 +597,8 @@
         });
       })();
 
-      // Store-badge "Coming soon" toast. Mirrors the toast shown when
-      // the DesktopNav badges are clicked (showToast in React). Lives
-      // outside the React tree because the landing-signup section is
-      // static HTML. Removed automatically after 2.8s.
-      (function () {
-        function comingSoonToast() {
-          var t = document.createElement('div');
-          t.textContent = 'Coming soon — TestFlight invite available, message me!';
-          t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1A1D27;color:#F0F1F5;border:1px solid #2A2D3A;padding:10px 18px;border-radius:9px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;z-index:1000;box-shadow:0 4px 24px rgba(0,0,0,0.4);animation:fadeIn 0.2s ease;';
-          document.body.appendChild(t);
-          setTimeout(function () { t.remove(); }, 2800);
-        }
-        document.querySelectorAll('.landing-store-badge').forEach(function (el) {
-          el.addEventListener('click', function (e) {
-            e.preventDefault();
-            comingSoonToast();
-          });
-        });
-      })();
+      // Landing store badge is now a real App Store link (the app is live), so
+      // no "coming soon" interception is needed.
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
