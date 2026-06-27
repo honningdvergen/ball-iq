@@ -15,7 +15,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // Reads user/authProfile/isGuest via useAuth (same pattern as Profile
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
-export function HomeScreen({
+function HomeScreenImpl({
   profile,
   loginStreak,
   streakPulsing,
@@ -310,3 +310,9 @@ export function HomeScreen({
     </div>
   );
 }
+
+// Memoized like its sibling tab screens (DailyTabScreen/ProfileScreen): all
+// three Home tabs stay mounted and AppInner re-renders on every unrelated state
+// change, so without this HomeScreen's whole tree re-rendered each time. Props
+// are stable (useCallback handlers + setters; challenge is null or a stable ref).
+export const HomeScreen = React.memo(HomeScreenImpl);

@@ -8,7 +8,7 @@ import Login from './Login.jsx';
 import ReviewScreen from './ReviewScreen.jsx';
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -18,6 +18,8 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './l
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders } from './lib/notifications.js';
+import { maybeRequestReview } from './lib/review.js';
+import { computeCard } from './lib/ballIqCard.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -1921,6 +1923,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
 .onboard-track{display:flex;height:100%;width:200%;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);}
 .onboard-step{width:50%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-sample-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;}
+.onboard-sample-opt{width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:transform 120ms ease,background 150ms ease,border-color 150ms ease;-webkit-appearance:none;appearance:none;}
+.onboard-sample-opt:active{transform:scale(0.99);}
+.onboard-sample-opt.correct{background:rgba(34,197,94,0.16);border-color:#22c55e;color:#22c55e;}
+.onboard-sample-opt.wrong{background:rgba(239,68,68,0.14);border-color:#ef4444;color:#fca5a5;}
+.onboard-sample-fb{margin:14px 0 2px;font-size:15px;font-weight:700;color:var(--text);min-height:22px;}
 .onboard-step-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
@@ -3596,10 +3604,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
       }];
     }
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
-    if (isSpeed && correct) {
-      const timeBonus = timeLeft * 10;
-      setSpeedScore(prev => prev + 100 + timeBonus);
-    }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, advance]);
 
@@ -4063,6 +4067,11 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
   // on success or shows an inline error on failure.
   useEffect(() => {
     if (!autoCreate) return;
+    // If a deep-link join is also pending this mount, let the join win — don't
+    // also create a room. Both effects run in the same commit and handleCreate's
+    // creating/joining guard reads a stale render snapshot that can't see the
+    // in-flight join, so without this both RPCs would fire.
+    if (autoJoinCode) { onAutoCreateConsumed?.(); return; }
     let cancelled = false;
     (async () => {
       try {
@@ -4083,7 +4092,12 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="page-title">Online Multiplayer</div>
       </div>
-      <div style={{ maxWidth: 360, margin: "24px auto 0", padding: "0 4px" }}>
+      <div style={{ maxWidth: 360, margin: "0 auto", padding: "0 4px", minHeight: "66vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ textAlign: "center", marginBottom: 30 }}>
+          <div style={{ fontSize: 46, lineHeight: 1, marginBottom: 12 }}>⚔️</div>
+          <div style={{ fontSize: 21, fontWeight: 800, color: "var(--text)", marginBottom: 6, letterSpacing: "-0.3px" }}>Who's got the better Ball IQ?</div>
+          <div style={{ fontSize: 13.5, color: "var(--t2)", lineHeight: 1.5 }}>Create a room, share the code, settle it head-to-head.</div>
+        </div>
         {mpRetrying && (
           <div style={{
             padding: "6px 12px",
@@ -4153,6 +4167,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
             {error}
           </div>
         )}
+
       </div>
     </div>
   );
@@ -4278,7 +4293,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -4308,11 +4323,29 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
       showReconnecting={showReconnecting}
       mode={mode}
       setMode={setMode}
+      scoringMode={room.mode || "race"}
+      onSetScoringMode={actions.setRoomMode}
     />
   );
 }
 
-function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode }) {
+function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, scoringMode, onSetScoringMode }) {
+  // Optimistic mode highlight: reflect the host's tap instantly, then let the
+  // realtime room.mode echo confirm it. Revert + toast if the RPC fails so the
+  // picker never silently no-ops or sticks on a value the server didn't accept.
+  const [pendingMode, setPendingMode] = useState(null);
+  const activeMode = pendingMode ?? scoringMode;
+  useEffect(() => {
+    if (pendingMode !== null && scoringMode === pendingMode) setPendingMode(null);
+  }, [scoringMode, pendingMode]);
+  const pickMode = useCallback(async (m) => {
+    setPendingMode(m);
+    const r = await onSetScoringMode?.(m);
+    if (!r || r.ok === false) {
+      setPendingMode(null);
+      try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Could not change mode — try again' })); } catch {}
+    }
+  }, [onSetScoringMode]);
   return (
     <div className="screen">
       <div className="page-hdr" style={{ position: "relative" }}>
@@ -4404,6 +4437,40 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             </div>
           )}
         </div>
+
+        {/* Scoring mode — shown to EVERYONE (room.mode broadcasts) so joiners
+            know what they're playing before the host hits Start. */}
+        <div style={{ textAlign: "center", fontSize: 13, color: "var(--t2)", marginBottom: 16 }}>
+          {activeMode === "hotstreak"
+            ? "🔥 Hot Streak — longest correct streak wins"
+            : "🏁 Race — fastest correct answers win"}
+        </div>
+
+        {/* Host-only scoring-mode picker. Calls set_room_mode → broadcasts via
+            room.mode to all clients (lobby badge + gameplay + results react). */}
+        {isHost && (
+          <>
+            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Game mode</div>
+            <div className="size-btns" style={{ marginBottom: 16 }}>
+              {[
+                { id: "race",      label: "🏁 Race" },
+                { id: "hotstreak", label: "🔥 Hot Streak" },
+              ].map(opt => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  className={`size-btn${activeMode === opt.id ? " on" : ""}`}
+                  onClick={() => pickMode(opt.id)}
+                  disabled={starting}
+                  aria-pressed={activeMode === opt.id}
+                  style={{ flex: 1 }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Stage 1F.4: host-only mode picker. Compact .size-btns
             segmented control matching Settings theme picker. Joiners
@@ -4531,10 +4598,15 @@ function LobbyError({ error, onExit, onRetry }) {
   );
 }
 
-function LobbyEnded({ players, myPlayer, onExit }) {
-  // Sort by score desc, with stable tiebreak by joined_at asc (earliest joiner
-  // wins ties — same approach the live ScoreBar uses).
+function LobbyEnded({ players, myPlayer, onExit, room }) {
+  const isHotStreak = room?.mode === 'hotstreak';
+  // Hot Streak ranks by best streak (tiebreak by points); Race ranks by points.
+  // Both fall back to joined_at asc so ties stay stable (earliest joiner wins).
   const sorted = (players || []).slice().sort((a, b) => {
+    if (isHotStreak) {
+      const bs = (b.best_streak || 0) - (a.best_streak || 0);
+      if (bs !== 0) return bs;
+    }
     if (b.score !== a.score) return b.score - a.score;
     const ta = a.joined_at || '';
     const tb = b.joined_at || '';
@@ -4579,6 +4651,8 @@ function LobbyEnded({ players, myPlayer, onExit }) {
 
   return (
     <div className="screen">
+      {/* Multiplayer winners deserve the same celebration solo wins get. */}
+      {isWinner && <Confetti />}
       <div className="page-hdr">
         <div className="page-title">Game over</div>
       </div>
@@ -4603,7 +4677,7 @@ function LobbyEnded({ players, myPlayer, onExit }) {
             letterSpacing: 0.4, textTransform: 'uppercase',
             marginBottom: 2, paddingLeft: 4,
           }}>
-            Final scores
+            {isHotStreak ? 'Best streaks' : 'Final scores'}
           </div>
           {sorted.map((p, idx) => {
             const isMe = !!myUserId && p.user_id === myUserId;
@@ -4637,7 +4711,7 @@ function LobbyEnded({ players, myPlayer, onExit }) {
                   color: 'var(--text)',
                   fontVariantNumeric: 'tabular-nums',
                 }}>
-                  {p.score ?? 0}
+                  {isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
                 </div>
               </div>
             );
@@ -4997,6 +5071,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           players={players}
           myUserId={myPlayer?.user_id}
           hostId={room.host_id}
+          mode={room.mode}
         />
 
         {!hostStillPresent && (
@@ -5427,7 +5502,7 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
 // (accent border + slightly brighter background). Host marker = small star.
 // Score updates flow in via realtime room_players UPDATE → useMultiplayerRoom
 // state update → re-render.
-function ScoreBar({ players, myUserId, hostId }) {
+function ScoreBar({ players, myUserId, hostId, mode }) {
   return (
     <div style={{
       display: "flex",
@@ -5464,7 +5539,7 @@ function ScoreBar({ players, myUserId, hostId }) {
                 {isHostPlayer && <span style={{ color: "var(--accent)", marginLeft: 4 }}>★</span>}
               </div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
-                {p.score}
+                {mode === "hotstreak" ? `🔥 ${p.streak ?? 0}` : p.score}
               </div>
             </div>
           </div>
@@ -6262,7 +6337,10 @@ function _loadImage(url, timeoutMs = 3000) {
     const t = setTimeout(() => reject(new Error("img timeout")), timeoutMs);
     img.onload = () => { clearTimeout(t); resolve(img); };
     img.onerror = () => { clearTimeout(t); reject(new Error("img error")); };
-    img.src = url;
+    // Unique per-load query so the CORS request never reuses a no-CORS cached
+    // entry — on WKWebView that opaque cached response would taint the canvas
+    // and silently degrade the photo card to text at toBlob().
+    img.src = url + (url.includes("?") ? "&" : "?") + "_cb=" + Date.now();
   });
 }
 
@@ -6416,25 +6494,43 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else if (type === "profile") {
-    // 1.1: profile card — circular photo avatar (or emoji) with a green ring,
-    // name, league pill, optional Ball IQ, divider, and a Games · Streak ·
-    // Accuracy row. Accuracy mirrors ProfileScreen (totalCorrect / totalAnswered,
-    // guarded against legacy >100% data).
-    const lvl = data?.level || {};
-    const xpVal = data?.xp ?? 0;
-    const iq = data?.iq || 0;
-    const st = data?.stats || {};
-    const streak = data?.loginStreak ?? 0;
-    const games = st.gamesPlayed || 0;
-    const correct = st.totalCorrect || 0;
-    const answered = st.totalAnswered || 0;
-    const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
-    const name = (data?.profile?.name) || `${APP_NAME} Player`;
-    const emoji = data?.profile?.avatar || "⚽";
+    // 1.1: FIFA-style Ball IQ card as a real PNG — tier-tinted background,
+    // overall + tier, photo/emoji avatar with a tier ring, name, and the six
+    // competition ratings with flags. Mirrors the in-app card + the OG render.
+    const TIER_CV = {
+      gold:   { c1: "#2c2510", c2: "#0e0c05", accent: "#F0C24B", text: "#FDF6E3", label: "GOLD" },
+      silver: { c1: "#1d1f26", c2: "#0b0c0f", accent: "#C7CED8", text: "#F2F4F8", label: "SILVER" },
+      bronze: { c1: "#241a12", c2: "#0e0a06", accent: "#CE8B36", text: "#F5ECE2", label: "BRONZE" },
+    };
+    const _card = data?.card || { overall: 0, tier: "bronze", ratings: [] };
+    const tp = TIER_CV[_card.tier] || TIER_CV.bronze;
+    const name = data?.name || `${APP_NAME} Player`;
+    const emoji = data?.emoji || "⚽";
     const avatarUrl = data?.avatarUrl || null;
 
-    // Avatar — circular photo if available, else emoji on a disc. Green ring.
-    const ar = 46, ax = cx, ay = 150;
+    // Tier-tinted background (covers the base dark fill + green accent bar).
+    const _bg = ctx.createLinearGradient(0, 0, W, H);
+    _bg.addColorStop(0, tp.c1);
+    _bg.addColorStop(1, tp.c2);
+    ctx.fillStyle = _bg;
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = tp.accent;
+    ctx.fillRect(0, 0, W, 6);
+
+    // Re-draw the header (the bg fill covered the base one).
+    ctx.textAlign = "left";
+    ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = tp.text;
+    ctx.fillText(`⚽ ${APP_NAME}`, padX, headerY);
+    ctx.textAlign = "right";
+    ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.globalAlpha = 0.6;
+    ctx.fillText("balliq.app", W - padX, headerY);
+    ctx.globalAlpha = 1;
+    ctx.textAlign = "center";
+
+    // Avatar — circular photo or emoji, with a tier ring.
+    const ar = 48, ax = cx, ay = 130;
     let drewPhoto = false;
     if (avatarUrl) {
       try {
@@ -6455,68 +6551,85 @@ async function generateShareCard(type, data) {
       ctx.fillStyle = "#16181F";
       ctx.fill();
       ctx.textBaseline = "middle";
-      ctx.font = '54px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '60px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#FFFFFF";
       ctx.fillText(emoji, ax, ay + 2);
       ctx.textBaseline = "alphabetic";
     }
-    ctx.strokeStyle = "#22c55e";
-    ctx.lineWidth = 3;
+    ctx.save();
+    ctx.strokeStyle = tp.accent;
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.arc(ax, ay, ar + 2, 0, Math.PI * 2);
+    ctx.arc(ax, ay, ar + 4, 0, Math.PI * 2);
     ctx.stroke();
+    ctx.restore();
 
-    // Name
-    ctx.font = '800 28px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(name, cx, 240);
+    // Name.
+    ctx.font = '800 27px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = tp.text;
+    ctx.fillText(name, cx, 224);
 
-    // League pill (icon + name + XP)
-    const pillText = `${lvl.icon || "⚽"} ${lvl.name || ""} · ${xpVal.toLocaleString()} XP`;
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    const pillW = ctx.measureText(pillText).width + 30;
-    const pillH = 30, pillY = 258;
-    ctx.fillStyle = "rgba(34,197,94,0.14)";
-    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, 15);
+    // Overall + tier label.
+    ctx.font = '900 60px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = tp.accent;
+    ctx.fillText(String(_card.overall), cx, 308);
+    ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = tp.text;
+    ctx.globalAlpha = 0.7;
+    ctx.fillText(`OVERALL · ${tp.label}`, cx, 332);
+    ctx.globalAlpha = 1;
+
+    // Divider.
+    ctx.fillStyle = tp.accent;
+    ctx.globalAlpha = 0.25;
+    ctx.fillRect(padX + 18, 352, W - (padX + 18) * 2, 1);
+    ctx.globalAlpha = 1;
+
+    // Six competition ratings — 2 columns x 3 rows: flag, rating, abbr.
+    const _ratings = _card.ratings || [];
+    const _gx = [65, 229];
+    const _rowY = [390, 436, 482];
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    for (let i = 0; i < _ratings.length && i < 6; i++) {
+      const r = _ratings[i];
+      const gx = _gx[i % 2];
+      const gy = _rowY[Math.floor(i / 2)];
+      ctx.font = '24px "Apple Color Emoji", Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = tp.text;
+      ctx.fillText(r.icon || "⚽", gx, gy);
+      ctx.font = '900 30px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = tp.accent;
+      ctx.fillText(String(r.rating), gx + 34, gy);
+      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = tp.text;
+      ctx.globalAlpha = 0.85;
+      ctx.fillText(r.abbr, gx + 80, gy);
+      ctx.globalAlpha = 1;
+    }
+    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "center";
+
+    // CTA — filled tier-accent pill.
+    const ctaText = "Can you beat me? ⚽";
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    const ctaW = ctx.measureText(ctaText).width + 46;
+    const ctaH = 42, ctaY = 514;
+    ctx.fillStyle = tp.accent;
+    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
     ctx.fill();
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "#22c55e";
-    ctx.fillText(pillText, cx, pillY + pillH / 2 + 1);
+    ctx.fillStyle = "#0A0A0A";
+    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
     ctx.textBaseline = "alphabetic";
 
-    // Ball IQ (optional)
-    if (iq) {
-      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#9BA0B8";
-      ctx.fillText(`${APP_NAME}: ${iq}`, cx, 322);
-    }
+    // Footer URL (re-draw; the bg fill covered the base one).
+    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = tp.text;
+    ctx.globalAlpha = 0.6;
+    ctx.fillText("balliq.app", cx, H - 24);
+    ctx.globalAlpha = 1;
 
-    // Divider anchoring the stats row
-    ctx.fillStyle = "#2A2D3A";
-    ctx.fillRect(padX + 40, 360, W - (padX + 40) * 2, 1);
-
-    // Stats row — Games · Streak · Accuracy
-    const statY = 416;
-    const stat3 = [
-      { v: String(games), l: "GAMES" },
-      { v: `🔥 ${streak}`, l: "STREAK" },
-      { v: accuracy, l: "ACCURACY" },
-    ];
-    const colW = (W - padX * 2) / 3;
-    stat3.forEach((s, i) => {
-      const colCx = padX + colW * i + colW / 2;
-      ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillText(s.v, colCx, statY);
-      ctx.font = '700 11px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#9BA0B8";
-      ctx.fillText(s.l, colCx, statY + 22);
-    });
-
-    // Subtitle
-    ctx.font = '700 16px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, 506);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -6533,19 +6646,44 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#22c55e";
     ctx.fillText(`${score}/${total}`, cx, 250);
 
-    ctx.font = '600 18px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '700 18px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(`${accuracy}% accuracy`, cx, 290);
+    ctx.fillText(`${accuracy}% accuracy`, cx, 292);
+
+    // Accuracy bar — fills the band with a real visual instead of dead space.
+    const barW = W - padX * 2 - 40, barX = cx - barW / 2, barY = 318, barH = 14;
+    _roundRectPath(ctx, barX, barY, barW, barH, 7);
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    ctx.fill();
+    const fillW = Math.max(barH, Math.round(barW * Math.min(100, Math.max(0, accuracy)) / 100));
+    _roundRectPath(ctx, barX, barY, fillW, barH, 7);
+    ctx.fillStyle = "#22c55e";
+    ctx.fill();
+
+    // Tier tagline keyed to accuracy.
+    const tier = accuracy >= 90 ? "Elite ⚽" : accuracy >= 70 ? "Sharp!" : accuracy >= 50 ? "Solid effort" : "Room to grow";
+    ctx.font = '800 24px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(tier, cx, 382);
 
     if (streak && streak >= 3) {
       ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "#FFC107";
-      ctx.fillText(`🔥 ${streak} in a row`, cx, 326);
+      ctx.fillStyle = "#FF6A00";
+      ctx.fillText(`🔥 ${streak} in a row`, cx, 416);
     }
 
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, 520);
+    // CTA — filled green pill (matches the profile card).
+    const ctaText = "Can you beat me? ⚽";
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    const ctaW = ctx.measureText(ctaText).width + 46;
+    const ctaH = 42, ctaY = 470;
+    ctx.fillStyle = "#22c55e";
+    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
+    ctx.fill();
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#06250F";
+    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
+    ctx.textBaseline = "alphabetic";
   }
 
   ctx.restore();
@@ -6610,7 +6748,7 @@ async function shareCard(type, data, opts = {}) {
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
-      if (type === "profile")   return `My ${APP_NAME} profile — ${data?.level?.name || "Player"}, ${(data?.xp || 0).toLocaleString()} XP. Can you beat me? ${link}`;
+      if (type === "profile")   return `My ${APP_NAME} card: ${data?.card?.overall ?? "?"} overall, ${(data?.card?.tier || "bronze").toUpperCase()} tier. Can you beat me? ${link}`;
       if (data?.modeLabel && data?.score != null && data?.total != null) {
         return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
       }
@@ -8748,10 +8886,16 @@ const SKILL_OPTIONS = [
   { id: "expert", icon: "🧠", name: "Expert",      desc: "I know obscure facts and follow football history.",      diff: "hard"   },
 ];
 
+// One easy, universally-fun taster so a brand-new player tastes the trivia
+// within seconds — kept deliberately light (still fully skippable, no login).
+const ONBOARD_SAMPLE = { q: "Which country has won the most FIFA World Cups?", o: ["Germany", "Brazil", "Italy", "Argentina"], a: 1 };
+
 function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
   const [skillLevel, setSkillLevel] = useState(null);
-  const TOTAL = 2;
+  const [sampleAnswered, setSampleAnswered] = useState(null);
+  const TOTAL = 3;
+  const stepW = `${100 / TOTAL}%`;
 
   const persistAndFinish = () => {
     try {
@@ -8811,9 +8955,9 @@ function OnboardingScreen({ onDone }) {
       </div>
 
       <div className="onboard-viewport">
-        <div className="onboard-track" style={{ transform: `translateX(-${step * 50}%)` }}>
+        <div className="onboard-track" style={{ width: `${TOTAL * 100}%`, transform: `translateX(-${step * (100 / TOTAL)}%)` }}>
           {/* 1. Welcome */}
-          <div className="onboard-step">
+          <div className="onboard-step" style={{ width: stepW }}>
             <div className="onboard-step-top">
               <div className="onboard-icon">⚽</div>
               <div className="onboard-title">Welcome to {APP_NAME}</div>
@@ -8824,8 +8968,44 @@ function OnboardingScreen({ onDone }) {
             <button className="onboard-btn" onClick={next}>Get Started</button>
           </div>
 
-          {/* 2. Skill Level */}
-          <div className="onboard-step">
+          {/* 2. Taste it — one quick question (the casual hook) */}
+          <div className="onboard-step" style={{ width: stepW }}>
+            <div className="onboard-step-top">
+              <div className="onboard-title" style={{ marginTop: 16 }}>Quick one — give it a go ⚽</div>
+              <div className="onboard-body" style={{ marginBottom: 14 }}>{ONBOARD_SAMPLE.q}</div>
+              <div className="onboard-sample-opts">
+                {ONBOARD_SAMPLE.o.map((opt, i) => {
+                  const answered = sampleAnswered !== null;
+                  const isCorrect = i === ONBOARD_SAMPLE.a;
+                  let cls = "onboard-sample-opt";
+                  if (answered && isCorrect) cls += " correct";
+                  else if (answered && sampleAnswered === i) cls += " wrong";
+                  return (
+                    <button
+                      key={i}
+                      className={cls}
+                      disabled={answered}
+                      onClick={() => { haptic(isCorrect ? "heavy" : "soft"); setSampleAnswered(i); }}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="onboard-sample-fb">
+                {sampleAnswered === null ? "" : (sampleAnswered === ONBOARD_SAMPLE.a
+                  ? "Nice — you're a natural ⚽"
+                  : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} (5 titles) — you'll pick these up fast!`)}
+              </div>
+            </div>
+            <div className="onboard-actions">
+              <button className="onboard-skip" onClick={skip}>Skip</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Next" : "Continue"}</button>
+            </div>
+          </div>
+
+          {/* 3. Skill Level */}
+          <div className="onboard-step" style={{ width: stepW }}>
             <div style={{width:"100%"}}>
               <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
               <div className="onboard-body">We'll tune the default difficulty to match.</div>
@@ -9861,7 +10041,14 @@ function AppInner() {
       // A shield froze the missed day. Guests consume locally; signed-in users
       // were already debited server-side (synced above). Clearer message than
       // the regular streak toast, which is suppressed here.
-      if (!user?.id) setStats(p => ({ ...p, shieldsUsed: (p.shieldsUsed || 0) + 1 }));
+      if (!user?.id) setStats(p => {
+        // Persist the debit (not just React state) so the availability gate,
+        // which reads shieldsUsed from localStorage, sees it after a reload —
+        // otherwise one earned shield would freeze unlimited separate gaps.
+        const updated = { ...p, shieldsUsed: (p.shieldsUsed || 0) + 1 };
+        window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+        return updated;
+      });
       showToast(`🛡️ Streak shield used — your ${result.streak}-day streak is safe!`);
       haptic("heavy");
       playSound("streak");
@@ -9933,6 +10120,10 @@ function AppInner() {
       // the app open across midnight get the streak credit + toast for
       // the new day, same as if they'd reopened the app.
       tickLoginStreak();
+      // 1.1: re-anchor the reminder window to the new "today" (offset 0) so a
+      // post-midnight completion cancels the correct reminder id (listened for
+      // in the notifications section).
+      try { window.dispatchEvent(new CustomEvent('biq:day-rollover')); } catch {}
     }, 60_000);
     return () => clearInterval(id);
   }, [tickLoginStreak]);
@@ -10118,11 +10309,20 @@ function AppInner() {
       gamesLastWeek = stats.gamesThisWeek || 0;
       gamesThisWeek = 1;
     }
+    // Per-category accuracy → powers the Ball IQ player card (FIFA-style
+    // competition ratings). allAnswers already carries { cat, isCorrect }.
+    const catStats = { ...(stats.catStats || {}) };
+    for (const ans of (newResult.allAnswers || [])) {
+      if (!ans || !ans.cat) continue;
+      const cur = catStats[ans.cat] || { c: 0, a: 0 };
+      catStats[ans.cat] = { c: cur.c + (ans.isCorrect ? 1 : 0), a: cur.a + 1 };
+    }
     const updated = {
       gamesPlayed: stats.gamesPlayed + 1,
       gamesThisWeek,
       gamesLastWeek,
       weekEpoch: currentWeekEpoch,
+      catStats,
       shieldsUsed: stats.shieldsUsed || 0,
       // Only count standard quiz scores toward bestScore (max 10)
       bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
@@ -10398,10 +10598,49 @@ function AppInner() {
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
   }, [maybePromptNotif]);
 
-  // Re-ask at the first 3-day streak if they passed the first time.
+  // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
+  // long-streak user (that would burn both lifetime asks before they ever see a
+  // milestone). initialStreakRef is the mount-time streak; a persisted flag makes
+  // it fire at most once ever.
   useEffect(() => {
-    if (loginStreak >= 3) maybePromptNotif();
+    if (loginStreak >= 3 && initialStreakRef.current < 3) {
+      try {
+        if (localStorage.getItem('biq_notif_streak_asked') === '1') return;
+        localStorage.setItem('biq_notif_streak_asked', '1');
+      } catch {}
+      maybePromptNotif();
+    }
   }, [loginStreak, maybePromptNotif]);
+
+  // Keep the Settings toggle honest: if the user revoked notifications in iOS
+  // Settings, the stored 'enabled' flag is stale (scheduleReminderWindow silently
+  // no-ops without permission, so the toggle would read ON while nothing fires).
+  // Reconcile against the live OS permission on mount and on app foreground.
+  useEffect(() => {
+    let cancelled = false;
+    const reconcile = async () => {
+      try { if (localStorage.getItem('biq_notif_enabled') !== '1') return; } catch { return; }
+      const perm = await getNotifPermission();
+      if (cancelled || perm === 'granted') return;
+      setNotifEnabled(false);
+      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+      cancelAllReminders();
+    };
+    reconcile();
+    const onVis = () => { if (document.visibilityState === 'visible') reconcile(); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => { cancelled = true; document.removeEventListener('visibilitychange', onVis); };
+  }, []);
+
+  // Re-anchor the rolling reminder window when the day flips while the app is
+  // left open. Otherwise "today" drifts off offset 0 and cancelTodayReminder()
+  // cancels a stale id, nagging the user tonight after they've already played.
+  useEffect(() => {
+    if (!notifEnabled) return;
+    const onRollover = () => { scheduleReminderWindow({ skipToday: false }); };
+    window.addEventListener('biq:day-rollover', onRollover);
+    return () => window.removeEventListener('biq:day-rollover', onRollover);
+  }, [notifEnabled]);
 
   const handleComplete = useCallback((res) => {
     // Don't pollute stats with BallIQ (different total) or daily (counted separately)
@@ -10430,6 +10669,19 @@ function AppInner() {
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🎉 Perfect — every question right"), 800));
       haptic("levelup");
+    }
+
+    // ⭐ 5-star ask — surface the native App Store review sheet after a genuinely
+    // good moment, once the user has enough games to have an opinion. The module
+    // enforces a long cooldown + lifetime cap (and iOS rate-limits further), so
+    // this only actually prompts occasionally. Delayed to land at a lull after
+    // the celebration. Skips daily (which already shows the notif pre-prompt).
+    const hadGreatMoment =
+      (res.score === res.total && res.total >= 5) ||
+      (res.total >= 10 && res.score / res.total >= 0.8) ||
+      [7, 30, 100].includes(loginStreak);
+    if (hadGreatMoment && newTotal >= 5 && mode !== "daily") {
+      celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily/balliq)
@@ -10680,22 +10932,25 @@ function AppInner() {
     await shareCard(cardType, cardData, { onToast: showToast, textFallback: text });
   }, [showToast]);
 
-  const shareProfile = useCallback(() => {
-    const { level } = getLevelInfo(xp);
-    const iq = stats.bestIQ;
-    // 1.1: share the branded PNG card (was 4 lines of plain text — the "Share
-    // Profile Card" label promised an image that never rendered). Routes
-    // through the proven shareCard pipeline (canvas → Filesystem → native
-    // ShareCard/CapShare files); the old text becomes the graceful fallback.
-    const textFallback = [
-      (profile.avatar||"⚽") + " " + (profile.name||`${APP_NAME} Player`),
-      level.icon + " " + level.name + " — " + xp + " XP",
-      iq ? APP_NAME + ": " + iq + " — " + iqLabel(iq) : null,
-      "Games: " + (stats.gamesPlayed||0) + " — Streak: " + loginStreak + " days",
-      "#BallIQ"
-    ].filter(Boolean).join("\n");
-    shareCard("profile", { profile, xp, stats, loginStreak, level, iq, avatarUrl: authProfile?.avatar_url || null }, { onToast: showToast, textFallback });
-  }, [xp, stats, profile, loginStreak, showToast, authProfile]);
+  const shareProfile = useCallback(async () => {
+    // 1.1: share a REAL PNG of the FIFA-style Ball IQ card via the canvas
+    // pipeline (shareCard → NativeShareCard). The actual card image lands in
+    // iMessage / WhatsApp / Snapchat, with a tappable balliq.app link riding
+    // along as the companion text item. No balliq.app deploy needed (unlike
+    // the OG-link approach) — the card renders fully client-side.
+    const correct = stats.totalCorrect || 0;
+    const answered = stats.totalAnswered || 0;
+    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
+    await shareCard("profile", {
+      card,
+      name: profile.name || `${APP_NAME} Player`,
+      emoji: profile.avatar || "⚽",
+      avatarUrl: authProfile?.avatar_url || null,
+    }, {
+      onToast: showToast,
+      textFallback: `Can you beat me at ${APP_NAME}? ⚽ https://balliq.app`,
+    });
+  }, [stats, profile, showToast, authProfile]);
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
@@ -10972,7 +11227,7 @@ function AppInner() {
     const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
       ? authProfile.username
       : ((profile?.name && profile.name !== "Player") ? profile.name : "");
-    const challengeUrl = `balliq.app/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName) : ""}`;
+    const challengeUrl = `balliq.app/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
@@ -11175,7 +11430,7 @@ function AppInner() {
             )}
             {screen === "home" && (
               <div className="hdr-actions" style={{marginLeft:"auto"}}>
-                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
+                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")} style={{ background: "var(--s1)", border: "1px solid var(--border)" }}>⚙️</button>
               </div>
             )}
           </div>
@@ -11431,8 +11686,8 @@ function AppInner() {
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
               shareCard={shareCard}
-              challenge={(pendingChallenge && pendingChallenge.date === todayKey.replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
-              onPlayChallenge={() => startMode("daily")}
+              challenge={(pendingChallenge && pendingChallenge.date === dateToYMD(new Date()).replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
+              onPlayChallenge={playDaily}
               onDismissChallenge={clearChallenge}
               setOnlineAutoCreate={setOnlineAutoCreate}
             />
@@ -11578,7 +11833,7 @@ function AppInner() {
         {/* ── ONLINE MULTIPLAYER ── */}
         {screen === "online-stage1" && (
           <OnlineEntry
-            onBack={() => { clearPendingJoin(); goHome(); }}
+            onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); goHome(); }}
             onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
             defaultName={authProfile?.username || profile?.name || ""}
             autoJoinCode={pendingJoinCode}
@@ -11710,12 +11965,12 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <nav className="tab-bar">
             {[
-              { id:"home",     icon:"⚽", label:"Home"    },
-              { id:"daily",    icon:"📅", label:"Daily",  badge: !dailyDone },
-              { id:"profile",  icon:"👤", label:"Profile" },
-            ].map(({ id, icon, label, badge }) => (
+              { id:"home",     Icon: Home,         label:"Home"    },
+              { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
+              { id:"profile",  Icon: User,         label:"Profile" },
+            ].map(({ id, Icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => { haptic("soft"); setTab(id); }}>
-                <span className="tab-icon">{icon}</span>
+                <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}
               </button>

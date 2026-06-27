@@ -61,6 +61,31 @@ try {
   }
 } catch {}
 
+// Stale dynamic-import self-heal (web/PWA only — native bundles its chunks
+// locally and can't 404 them). After a deploy prunes the previous build's
+// hashed assets, a long-lived tab's import('./questions.js') can fail with a
+// ChunkLoadError that otherwise dead-ends in a generic "Couldn't start" toast.
+// Reload once to pull the fresh index.html + matching chunks; a sessionStorage
+// guard prevents a reload loop if the new build is still momentarily broken.
+try {
+  const isNative = !!(window.Capacitor?.isNativePlatform?.())
+  if (!isNative) {
+    const RELOAD_FLAG = 'biq_chunk_reload'
+    const isChunkError = (msg) =>
+      /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(String(msg || ''))
+    const heal = (msg) => {
+      if (!isChunkError(msg)) return
+      try {
+        if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
+        sessionStorage.setItem(RELOAD_FLAG, '1')
+      } catch {}
+      window.location.reload()
+    }
+    window.addEventListener('vite:preloadError', (e) => { try { e.preventDefault() } catch {} heal(e?.payload?.message || 'vite:preloadError') })
+    window.addEventListener('unhandledrejection', (e) => heal(e?.reason?.message || e?.reason))
+  }
+} catch {}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>

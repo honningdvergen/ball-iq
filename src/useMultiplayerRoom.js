@@ -30,7 +30,7 @@ import { supabase } from './supabase.js'
 import { useAuth } from './useAuth.jsx'
 import {
   mpStartGame, mpSubmitAnswer, mpAdvanceQuestion,
-  mpLeaveRoom, mpEndGame,
+  mpLeaveRoom, mpEndGame, mpSetRoomMode,
 } from './multiplayerRpc.js'
 
 // Module-level helper: stable sort key for the players array.
@@ -293,6 +293,13 @@ export function useMultiplayerRoom(code) {
     return mpEndGame({ p_code: code })
   }, [code])
 
+  // Host-only, lobby-only: pick the scoring mode ('race' | 'hotstreak'). The
+  // server broadcasts the game_rooms UPDATE so every client's room.mode syncs.
+  const setRoomMode = useCallback(async (modeArg) => {
+    if (!code) return { ok: false, error: 'No active room' }
+    return mpSetRoomMode({ p_code: code, p_mode: modeArg })
+  }, [code])
+
   // Sprint #92 GGG1-#2: retry the initial fetch after a LobbyError exit
   // hatch. setRetryNonce(n => n + 1) invalidates the effect; the existing
   // code path resets loading/error and re-fetches. Safe to call repeatedly.
@@ -308,6 +315,6 @@ export function useMultiplayerRoom(code) {
     loading,
     error,
     channelStatus,
-    actions: { startGame, submitAnswer, advance, leave, end, retry },
+    actions: { startGame, submitAnswer, advance, leave, end, retry, setRoomMode },
   }
 }

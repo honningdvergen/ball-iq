@@ -5,6 +5,7 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../lib/scoring.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
+import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 
 export const BADGE_DEFS = [
   ["first_blood", "🎯", "First Whistle", "Complete your first game"],
@@ -269,7 +270,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
 // Lives inside ProfileScreen. Requires an authenticated user (userId). When
 // isActive is true the section loads friendships on mount and after any action
 // so counts + lists stay fresh when the user returns to the Profile tab.
-function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast, onOpenFriend }) {
+function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast, onOpenFriend, onShareProfile }) {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -610,7 +611,20 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             </button>
           </div>
         )}
-        {!loading && !loadError && accepted.length === 0 && <div className="friends-muted">No friends yet — search above to add some.</div>}
+        {!loading && !loadError && accepted.length === 0 && (
+          <div style={{
+            background:"var(--s1)",
+            border:"1px solid var(--border)",
+            borderRadius:14,
+            padding:"22px 16px",
+            textAlign:"center",
+          }}>
+            <div style={{fontSize:32, marginBottom:8}}>👥</div>
+            <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>No friends yet</div>
+            <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5, marginBottom:14}}>Search above to add friends — or share your profile to invite them.</div>
+            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Invite a friend</button>
+          </div>
+        )}
         {accepted.map(f => {
           const p = otherOf(f);
           if (!p) return null;
@@ -1225,92 +1239,78 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </button>
         </div>
       )}
-      <div className="profile-card">
-        <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
-          {/* Self-review (K1): div+onClick → button. Both the avatar and
-              the edit-pencil affordance trigger the same picker — keeping
-              both as separate tap targets matches the visual design.
-              Inline reset (appearance/font) overrides UA button defaults
-              while preserving the existing .profile-avatar CSS sizing
-              and border. */}
-          <button
-            type="button"
-            className="profile-avatar"
-            onClick={openAvatarPicker}
-            aria-label="Edit profile photo"
-            style={showPhoto
-              ? {padding:0, overflow:"hidden", background:"var(--s2)", appearance:"none", WebkitAppearance:"none", font:"inherit"}
-              : {appearance:"none", WebkitAppearance:"none", font:"inherit"}}
-          >
-            {uploading ? (
-              <span className="avatar-spinner" aria-label="Uploading…" />
-            ) : showPhoto ? (
-              <img
-                src={avatarUrl}
-                alt={currentName ? `${currentName}'s avatar` : "Profile avatar"}
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
-                style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}}
-              />
-            ) : (
-              displayEmoji
-            )}
-          </button>
-          <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
-        </div>
-        {authLoading ? (
-          <div className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>
-            Loading…
+      {/* Merged Ball IQ card — the FIFA-style player card IS the profile header:
+          editable avatar (tap → change photo) + editable name (tap → rename) +
+          level, fused with the overall, tier and six competition ratings. */}
+      {(() => {
+        const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
+        const _card = computeCard(stats?.catStats || {}, _acc);
+        const t = CARD_TIERS[_card.tier] || CARD_TIERS.bronze;
+        return (
+          <div style={{ background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden", marginBottom: 14 }}>
+            <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.055) 0%, transparent 38%)", pointerEvents: "none" }} />
+
+            {/* Overall (left) + editable avatar (right) */}
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
+              <div>
+                <div style={{ fontSize: 50, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{_card.overall}</div>
+                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
+                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+              </div>
+              <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
+                <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo" style={showPhoto
+                  ? {padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                  : {border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                  {uploading ? (
+                    <span className="avatar-spinner" aria-label="Uploading…" />
+                  ) : showPhoto ? (
+                    <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? `${currentName}'s avatar` : "Profile avatar"} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
+                  ) : (
+                    displayEmoji
+                  )}
+                </button>
+                <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
+              </div>
+            </div>
+
+            {/* Editable name */}
+            <div style={{ marginTop: 12 }}>
+              {authLoading ? (
+                <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
+              ) : editingName ? (
+                <input className="profile-name-input" style={{textAlign:"left", maxWidth:"100%", color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+              ) : showNameCTA ? (
+                <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
+                  Set your name <span style={{fontSize:13,opacity:0.6}} aria-hidden="true">✏️</span>
+                </button>
+              ) : (
+                <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
+                  {currentName || authProfile?.username || profile?.name || "Player"}
+                  <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
+                </button>
+              )}
+            </div>
+
+            {/* Level + IQ */}
+            <div className="profile-level-badge" style={{marginTop:8}}>{level.icon} {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
+            {iq ? <div className="profile-iq-line" style={{marginTop:5,color:t.text,opacity:0.7}}>{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong></div> : null}
+
+            <div style={{ height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
+
+            {/* Six competition ratings */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 12, columnGap: 18 }}>
+              {_card.ratings.map(r => (
+                <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                  <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0 }}>{r.icon}</div>
+                  <div style={{ fontSize: 19, fontWeight: 900, color: t.accent, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.rating}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: 0.8, letterSpacing: 0.5 }}>{r.abbr}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        ) : editingName ? (
-          <input
-            className="profile-name-input"
-            value={nameDraft}
-            onChange={e => setNameDraft(e.target.value.slice(0, 24))}
-            onKeyDown={e => {
-              if (e.key === "Enter") saveName();
-              else if (e.key === "Escape") setEditingName(false);
-            }}
-            onBlur={saveName}
-            placeholder="Your name"
-            autoFocus
-            aria-label="Your display name"
-          />
-        ) : showNameCTA ? (
-          <>
-            <button
-              className="profile-name"
-              onClick={startNameEdit}
-              style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:"var(--t2)"}}
-              aria-label="Set your name"
-            >
-              Player
-            </button>
-            <button
-              onClick={startNameEdit}
-              style={{background:"none",border:"none",padding:"4px 8px",marginTop:2,fontSize:12,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"inherit"}}
-              aria-label="Set your name"
-            >
-              ✏️ Tap to set your name
-            </button>
-          </>
-        ) : (
-          // 1.0.2: the name is always tappable to edit. Previously this was a
-          // static, non-tappable div, so a signed-in user with a real username
-          // had no way to change it (the home CTA only appears when there's no
-          // real name). Tap the name → inline editor, pre-filled.
-          <button
-            className="profile-name"
-            onClick={startNameEdit}
-            style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:"var(--t1)",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}}
-            aria-label="Edit your name"
-          >
-            {currentName || authProfile?.username || profile?.name || "Player"}
-            <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
-          </button>
-        )}
-        <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
-        {iq && <div className="profile-iq-line">{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong> of players</div>}
-      </div>
+        );
+      })()}
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based
           flex container replaces the previous marginTop:-4 hack that was
           overlapping the .share-profile-btn bottom margins. Sprint #34
@@ -1337,25 +1337,51 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>Play your first game to see your stats here</div>
         </div>
       ) : (
-        <div className="stat-grid" style={{marginBottom:16}}>
-          <div className="stat-tile"><div className="st-val">{stats.gamesPlayed||0}</div><div className="ds-eyebrow st-key">Games</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>🔥 {loginStreak}</div><div className="ds-eyebrow st-key">Day Streak</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.totalCorrect||0}</div><div className="ds-eyebrow st-key">Correct</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{(() => {
-            const c = stats.totalCorrect || 0;
-            const t = stats.totalAnswered || 0;
-            // Hide when no data, or when totalCorrect > totalAnswered (legacy
-            // data from before totalAnswered was tracked, or cross-device
-            // hydration drift) — better to show "—" than nonsense like 528%.
-            if (t === 0 || c > t) return "—";
-            return `${Math.round(100 * c / t)}%`;
-          })()}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
-          {stats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{stats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
-          {stats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{stats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
-          {stats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{stats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
-        </div>
+        (() => {
+          // Scouting Report — turns the old stat dashboard into a verdict on the
+          // player: strongest + weakest competition (from the card data), a
+          // skill comparison (percentile), records, and a specialist title.
+          const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
+          const card = computeCard(stats?.catStats || {}, acc);
+          const sorted = [...card.ratings].sort((a, b) => b.rating - a.rating);
+          const strongest = sorted[0];
+          const weakest = sorted[sorted.length - 1];
+          const spread = strongest.rating - weakest.rating;
+          // A title needs a clear standout; otherwise they're a versatile all-rounder.
+          const title = spread >= 5 ? `${strongest.name} Specialist` : "Versatile All-Rounder";
+          const accPct = (stats.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
+            ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
+          const rows = [
+            { icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" },
+            { icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" },
+            { icon: "🎯", label: "Accuracy", value: accPct, sub: pctile ? `Top ${100 - pctile}%` : null, color: "var(--accent)" },
+            { icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" },
+            { icon: "🏅", label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" },
+            { icon: "🎮", label: "Best score", value: `${stats.bestScore || 0}/10`, color: "var(--text)" },
+          ];
+          if (stats.bestHotStreak > 0) rows.push({ icon: "⚡", label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
+          if (stats.bestTrueFalse > 0) rows.push({ icon: "✅", label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
+          return (
+            <div style={{ marginBottom: 16 }}>
+              <div className="ds-eyebrow" style={{ marginBottom: 8 }}>🔍 Scouting Report</div>
+              <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 14, padding: "2px 16px" }}>
+                {rows.map((r, i) => (
+                  <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 0", borderTop: i === 0 ? "none" : "1px solid var(--border)" }}>
+                    <div style={{ fontSize: 18, width: 22, textAlign: "center", flexShrink: 0 }}>{r.icon}</div>
+                    <div style={{ fontSize: 13, color: "var(--t2)", fontWeight: 600 }}>{r.label}</div>
+                    <div style={{ marginLeft: "auto", display: "flex", alignItems: "baseline", gap: 7 }}>
+                      {r.sub ? <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 700 }}>{r.sub}</span> : null}
+                      <span style={{ fontSize: 15, fontWeight: 800, color: r.color }}>{r.value}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ textAlign: "center", marginTop: 10, fontSize: 14, fontWeight: 800, color: "var(--accent)", fontStyle: "italic" }}>
+                "{title}"
+              </div>
+            </div>
+          );
+        })()
       )}
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
@@ -1404,6 +1430,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           onChallenge={onChallenge}
           onToast={onToast}
           onOpenFriend={onOpenFriend}
+          onShareProfile={onShareProfile}
         />
       )}
       <div className="badges-section">
