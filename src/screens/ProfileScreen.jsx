@@ -1076,6 +1076,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const [emojiOverridesPhoto, setEmojiOverridesPhoto] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
+  // Optimistic name override — the card normally shows the SERVER username
+  // (authProfile), which lags a save by a Supabase round-trip + auth refresh;
+  // this makes the new name appear instantly on save.
+  const [pendingName, setPendingName] = useState(null);
   const fileInputRef = useRef(null);
   // Self-review (K2): handleCropConfirm could fire setUploading on the
   // unmounted component if upload completes after the user navigates
@@ -1099,8 +1103,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const realLocalName = !isDefaultName(localName) ? localName : null;
   // What we show on the card + pre-fill into the editor. Server name wins over
   // a local one; both fall back to "" so a default-named user edits from blank.
-  const currentName = realUsername || realLocalName || "";
-  const hasUsername = !!realUsername;
+  const currentName = pendingName || realUsername || realLocalName || "";
+  const hasUsername = !!realUsername || !!pendingName;
+  // Drop the optimistic override once the server echoes the new name back (or
+  // keep it if offline — local-first, the name still shows).
+  useEffect(() => {
+    if (pendingName != null && authProfile?.username === pendingName) setPendingName(null);
+  }, [authProfile?.username, pendingName]);
   const showNameCTA = !authLoading && !hasUsername && !realLocalName;
   const startNameEdit = () => {
     // Pre-fill with the current real name so a signed-in user *edits* their
@@ -1122,6 +1131,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
       toast("⚠️ That username isn't allowed — please choose another");
       return;
     }
+    setPendingName(v);
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
     // Mirror the change up to Supabase so leaderboards and other devices
