@@ -1411,7 +1411,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           if (stats.bestHotStreak > 0) rows.push({ icon: "⚡", label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
           if (stats.bestTrueFalse > 0) rows.push({ icon: "✅", label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
           return (
-            <div style={{ marginBottom: 16 }}>
+            <div className="scouting-report" style={{ marginBottom: 16 }}>
               <div className="ds-eyebrow" style={{ marginBottom: 8 }}>🔍 Scouting Report</div>
               <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 14, padding: "2px 16px" }}>
                 {rows.map((r, i) => (

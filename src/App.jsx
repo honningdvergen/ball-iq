@@ -2350,6 +2350,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* 1.2 web: cap the quiz reading column so the question + answer options don't
      stretch to the full column width on desktop (the most-used screen). */
   .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
+  /* Scouting Report: match the profile's 560-left desktop pattern (Sprint #34
+     F-S1) so the thin stat rows don't stretch wide. */
+  .scouting-report { max-width: 560px; }
   /* Sprint #27 Y3 F4: previously 3-col at desktop. Audit showed cards
      were mobile-sized floating in an 880px container — visually small
      and lonely. Compressing to 2-col gives each card ~430px width,
