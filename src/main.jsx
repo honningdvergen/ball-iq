@@ -93,7 +93,7 @@ try {
 // (/play, /play/*, /join/*, /c/*, …) render the game — so deep links and the
 // installed apps are never sent to the marketing page.
 const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
-const PlayDashboard = React.lazy(() => import('./play/PlayDashboard.jsx'))
+const PlayApp = React.lazy(() => import('./play/PlayApp.jsx'))
 
 const _path = (typeof window !== 'undefined' && window.location.pathname) || '/'
 const _isNativeApp =
@@ -127,7 +127,7 @@ if (showMarketing) {
 } else if (showPlayPreview) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.Suspense fallback={null}><PlayDashboard /></React.Suspense>,
+    <React.Suspense fallback={null}><PlayApp /></React.Suspense>,
   )
 } else {
   ReactDOM.createRoot(document.getElementById('root')).render(
