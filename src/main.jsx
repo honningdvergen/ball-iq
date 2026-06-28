@@ -93,6 +93,7 @@ try {
 // (/play, /play/*, /join/*, /c/*, …) render the game — so deep links and the
 // installed apps are never sent to the marketing page.
 const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
+const PlayDashboard = React.lazy(() => import('./play/PlayDashboard.jsx'))
 
 const _path = (typeof window !== 'undefined' && window.location.pathname) || '/'
 const _isNativeApp =
@@ -102,11 +103,13 @@ const _isNativeApp =
 const _isStandalonePWA =
   typeof window !== 'undefined' &&
   (window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true)
-const showMarketing =
-  !_isNativeApp && !_isStandalonePWA && (_path === '/' || _path.startsWith('/home-preview'))
+const _isBrowser = !_isNativeApp && !_isStandalonePWA
+const showMarketing = _isBrowser && (_path === '/' || _path.startsWith('/home-preview'))
+const showPlayPreview = _isBrowser && _path.startsWith('/play-preview')
 
-if (showMarketing) {
-  // Marketing surface: full-bleed black, no game-nav gutter, no landing chrome.
+// Full-bleed surfaces (marketing + the new Play dashboard preview) drop the
+// game-nav gutter + landing chrome and match the #0A0A0A canvas.
+const _fullBleed = () => {
   try {
     document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
     const root = document.getElementById('root')
@@ -114,10 +117,17 @@ if (showMarketing) {
     document.documentElement.style.background = '#0A0A0A'
     document.body.style.background = '#0A0A0A'
   } catch {}
+}
+
+if (showMarketing) {
+  _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.Suspense fallback={null}>
-      <MarketingHome />
-    </React.Suspense>,
+    <React.Suspense fallback={null}><MarketingHome /></React.Suspense>,
+  )
+} else if (showPlayPreview) {
+  _fullBleed()
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.Suspense fallback={null}><PlayDashboard /></React.Suspense>,
   )
 } else {
   ReactDOM.createRoot(document.getElementById('root')).render(
