@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
-import { SITE, HUB, CATEGORIES, ABOUT, CONTACT } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT } from './seo/content.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -285,6 +285,57 @@ ${footer()}`;
   return { slug: catCfg.slug, name: `${catCfg.name} quiz`, count: all.length, canonical };
 }
 
+// ── listicle page (cross-cutting "questions and answers" article) ─────────────
+function buildListiclePage(cfg, livePages) {
+  const rows = cfg.questionIds.map((id) => QB.find((r) => r.id === id)).filter(Boolean);
+  if (rows.length < 12) {
+    throw new Error(`[gen-seo] listicle "${cfg.slug}" resolved only ${rows.length} questions (< 12). Check questionIds.`);
+  }
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
+        ],
+      },
+    ],
+  });
+  const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
+  const faqHtml = cfg.faq.map((f) => `<dt>${esc(f.q)}</dt><dd>${esc(f.a)}</dd>`).join('\n');
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+${header([
+    { name: 'Home', url: `${SITE.base}/` },
+    { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+    { name: cfg.h1, url: canonical },
+  ])}
+<h1>${esc(cfg.h1)}</h1>
+<p class="lede">${esc(cfg.lede)}</p>
+<div class="intro">
+${introHtml}
+</div>
+${ctaBlock(`Want to play properly? The full Ball IQ game is free.`)}
+<h2>${rows.length} football trivia questions &amp; answers</h2>
+<p class="lede">Tap “Show answer” to reveal the answer and the story behind it.</p>
+${renderQA(rows)}
+${ctaBlock(`Thousands more questions, a daily challenge and live multiplayer — free in the Ball IQ app.`)}
+<h2>FAQ</h2>
+<dl class="faq">
+${faqHtml}
+</dl>
+<h2>More football quizzes</h2>
+${renderMesh(cfg.slug, livePages)}
+${footer()}`;
+  const dir = resolve(DIST, 'quiz', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: cfg.h1, count: rows.length, canonical };
+}
+
 // ── hub page ──────────────────────────────────────────────────────────────────
 function buildHubPage(livePages) {
   const canonical = `${SITE.base}/quiz/`;
@@ -440,18 +491,21 @@ function main() {
   const livePages = [
     { slug: HUB.slug, name: 'All football quizzes', count: null },
     ...CATEGORIES.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: catRows(c.cat).length })),
+    ...LISTICLES.map((l) => ({ slug: l.slug, name: l.h1, count: l.questionIds.length })),
   ];
 
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages));
+  const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   buildHubPage(livePages);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   buildSitemap(livePages);
   buildLlmsTxt(livePages);
 
-  console.log(`[gen-seo] wrote ${built.length} category pages + hub + about + contact + sitemap + llms.txt into dist/`);
+  console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle pages + hub + about + contact + sitemap + llms.txt into dist/`);
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
+  for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
   console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);

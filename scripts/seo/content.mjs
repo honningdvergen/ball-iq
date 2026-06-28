@@ -194,3 +194,38 @@ export const CATEGORIES = [
   },
   ...P3_CATEGORIES,
 ];
+
+// ── LISTICLE PAGES ────────────────────────────────────────────────────────────
+// Cross-cutting "questions and answers" article pages that target high-volume
+// head terms (e.g. "football trivia questions and answers"). Unlike category
+// pages they pin a hand-picked, CROSS-TOPIC set of questions by id. Every id
+// here has been run through the 3-lens currency fact-check before publishing.
+export const LISTICLES = [
+  {
+    slug: 'football-trivia-questions',
+    h1: 'Football Trivia Questions and Answers',
+    title: 'Football Trivia Questions and Answers (Hard) | Ball IQ',
+    description:
+      'Hard football trivia questions and answers across the World Cup, Premier League, Champions League, Euros, records and legends — each with the answer and the story behind it.',
+    about: 'Association football trivia',
+    lede: 'A hand-picked set of harder football trivia questions — with answers and the story behind each one.',
+    intro: [
+      `Think you know football? These are the questions that separate the diehards from the casuals — a hand-picked set of harder football trivia questions spanning the World Cup, the Premier League, the Champions League, the Euros and the game's all-time records and legends. Every one comes with the answer and a short explanation, so it works as much for learning as for testing yourself.`,
+      `They're pulled straight from the Ball IQ question bank — the same questions our players face in the app — and kept deliberately tough. You'll find the famous moments (Liverpool's 4-0 comeback against Barcelona, Denmark's 1992 fairytale) next to the deep cuts (who managed Blackburn to the title, which club Ronaldo left to join Barcelona in 1996). Get most of these and you genuinely know your football.`,
+      `Read them as a quiz or just for the stories behind the answers. When you want more — thousands of questions, a daily challenge, a Wordle-style football guessing game and live multiplayer — the full Ball IQ game is free.`,
+    ],
+    faq: [
+      { q: 'Are these football trivia questions hard?', a: 'Yes — this set is pitched at the harder end on purpose, so it tests even serious fans. For an easier warm-up, try our World Cup or Premier League quizzes.' },
+      { q: 'Do the questions come with answers?', a: 'Every question reveals the correct answer plus a short explanation of the story behind it — so you finish knowing something new, even on the ones you miss.' },
+      { q: 'Where do the questions come from?', a: 'From the Ball IQ question bank — hand-curated and fact-checked, the same questions our players face in the app.' },
+      { q: 'Is it free?', a: 'Yes — play right here in your browser with no sign-up, or get the free Ball IQ app for the full question bank, daily challenges and multiplayer.' },
+    ],
+    // Pruned to verified-clean ids after the 3-lens fact-check.
+    questionIds: [
+      'q_864355', 'q_e40932', 'q_919497', 'q_525a8f', 'q_fc472e', 'q_d51cd2',
+      'q_0accea', 'q_63c770', 'q_90effe', 'q_0a2ab8', 'q_c93bc3', 'q_7cb21d',
+      'q_23692a', 'q_4c0913', 'q_1d815f', 'q_a1278c', 'q_d5cd97', 'q_7b7413',
+      'q_cd169c', 'q_1baa06', 'q_6a3e53', 'q_c0963c', 'q_08e349', 'q_490e08',
+    ],
+  },
+];
