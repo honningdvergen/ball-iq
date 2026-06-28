@@ -226,6 +226,18 @@
       body.in-focused-play .ad-slot-sidebar-right,
       body.in-focused-play .ad-slot-banner { display: none !important; }
 
+      /* Phase 1 desktop redesign: a SIGNED-IN account gets a clean app
+         dashboard — hide the marketing landing chrome (top nav + What's-inside
+         / Take-Ball-IQ / footer) for them. Guests + logged-out visitors KEEP
+         it (it's the conversion page, and crawlers see it too). Body class is
+         toggled by AppInner's "is-authed" effect. Desktop-only by inheritance
+         (landing chrome only renders >=1024px anyway). */
+      body.is-authed .landing-top,
+      body.is-authed .landing-bottom,
+      body.is-authed .ad-slot-sidebar-left,
+      body.is-authed .ad-slot-sidebar-right,
+      body.is-authed .ad-slot-banner { display: none !important; }
+
       /* ── Desktop app column ────────────────────────────────────────────
          At >= 1024px in regular browser mode, constrain #root to a
          centered 600px column. transform: translateZ(0) creates a new

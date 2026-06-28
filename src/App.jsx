@@ -940,6 +940,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    for in-card eyebrows and other screen uses). Flex container so the
    Daily header can host a streak chip on the right; "More modes" with
    a single child sits left as expected via justify-content:space-between. */
+/* Phase 2 desktop redesign — home dashboard grid wrappers. Default to
+   display:contents so on mobile they generate NO boxes: the DOM flattens to
+   the exact old flat stack (zero layout change). The >=1024px block below
+   turns them into a real two-column grid. */
+.home-head, .home-grid-cols, .home-grid-a, .home-grid-b { display: contents; }
 .home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 16px;}
 /* Optional small uppercase eyebrow above .home-section-title — used to
    give a section a touch more presence. Kept declarative ("Game modes",
@@ -2353,6 +2358,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     max-width: 640px;
     padding: 0 24px 40px;
   }
+  /* Phase 2 desktop redesign: the Home tab is a WIDE dashboard; every other
+     screen keeps the 640px reading column. Scoped via body.home-active so a
+     tab switch swaps the width. */
+  body.home-active .app { max-width: 1240px; }
+  .home-grid-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .home-head, .home-grid-a, .home-grid-b { display: block; }
   /* 1.2 web: cap the quiz reading column so the question + answer options don't
      stretch to the full column width on desktop (the most-used screen). */
   .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
@@ -9317,6 +9333,32 @@ function AppInner() {
     } catch {}
     return () => { try { document.body.classList.remove("in-focused-play"); } catch {} };
   }, [inGame, screen]);
+
+  // Phase 1 desktop redesign: signed-in accounts get a clean app dashboard, so
+  // hide the index.html marketing landing chrome (.landing-top / .landing-bottom)
+  // for them via body.is-authed. Guests + logged-out keep the landing (it's the
+  // conversion page; crawlers see it too). The matching CSS lives in index.html.
+  useEffect(() => {
+    const authed = !!user && !isGuest;
+    try {
+      if (authed) document.body.classList.add("is-authed");
+      else document.body.classList.remove("is-authed");
+    } catch {}
+    return () => { try { document.body.classList.remove("is-authed"); } catch {} };
+  }, [user, isGuest]);
+
+  // Phase 2 desktop redesign: widen the desktop content column to a dashboard
+  // width ONLY on the Home tab. Every other screen (quiz, profile, daily,
+  // settings) keeps the narrow 640px reading column. body.home-active is the
+  // scoping hook; the CSS lives in the AppInner style block, gated >=1024px.
+  useEffect(() => {
+    const onHome = screen === "home" && tab === "home";
+    try {
+      if (onHome) document.body.classList.add("home-active");
+      else document.body.classList.remove("home-active");
+    } catch {}
+    return () => { try { document.body.classList.remove("home-active"); } catch {} };
+  }, [screen, tab]);
 
   // Belt-and-braces: strip any chaos-tagged item before the TrueFalseEngine
   // sees the questions list. The upstream selection path (getTrueFalseQs)
