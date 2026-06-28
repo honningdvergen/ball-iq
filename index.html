@@ -22,8 +22,17 @@
     <meta name="twitter:description" content="Test your football knowledge. 3,900+ questions across 10 game modes." />
     <meta name="twitter:image" content="https://balliq.app/og-image.png" />
     <meta name="twitter:image:alt" content="Ball IQ — The Ultimate Football Quiz" />
-    <title>Ball IQ</title>
+    <title>Ball IQ — The Ultimate Football Quiz</title>
     <link rel="canonical" href="https://balliq.app/" />
+    <!-- Homepage structured data (brand + app). Site-wide @graph; the /quiz/*
+         pages carry their own Quiz/Breadcrumb/FAQ schema. -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[
+      {"@type":"Organization","@id":"https://balliq.app/#org","name":"Ball IQ","url":"https://balliq.app/","logo":"https://balliq.app/icon-512.png"},
+      {"@type":"WebSite","@id":"https://balliq.app/#website","url":"https://balliq.app/","name":"Ball IQ","description":"The ultimate football quiz — 4,000+ questions across 10 game modes.","publisher":{"@id":"https://balliq.app/#org"}},
+      {"@type":"MobileApplication","@id":"https://balliq.app/#app","name":"Ball IQ — Football Trivia","operatingSystem":"iOS","applicationCategory":"GameApplication","url":"https://balliq.app/","downloadUrl":"https://apps.apple.com/app/id6775975961","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    ]}
+    </script>
 
     <!-- Early hints — warm DNS / TLS for every origin the first paint + first auth needs. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
