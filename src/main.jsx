@@ -87,17 +87,26 @@ try {
   }
 } catch {}
 
-// ── Marketing homepage preview ──────────────────────────────────────────────
-// Isolated route for building/verifying the new "Matchday" homepage on prod
-// WITHOUT touching the live game at /. When the homepage is approved this same
-// component moves to / and the game moves to /play (see redesign plan).
+// ── Front-door routing: marketing homepage ( / ) vs the game ( /play, … ) ────
+// The "Matchday" marketing homepage renders ONLY for regular browser tabs at the
+// root. The native iOS/Android app, installed PWAs, and EVERY other path
+// (/play, /play/*, /join/*, /c/*, …) render the game — so deep links and the
+// installed apps are never sent to the marketing page.
 const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
-const isMarketingPreview =
-  typeof window !== 'undefined' && window.location.pathname.startsWith('/home-preview')
 
-if (isMarketingPreview) {
-  // Strip the index.html static landing chrome + the desktop game-nav offset so
-  // the marketing page renders full-bleed (it has its own nav, no 220px sidebar).
+const _path = (typeof window !== 'undefined' && window.location.pathname) || '/'
+const _isNativeApp =
+  (typeof location !== 'undefined' && location.protocol === 'capacitor:') ||
+  !!(typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.()) ||
+  (typeof document !== 'undefined' && document.documentElement.classList.contains('native-app'))
+const _isStandalonePWA =
+  typeof window !== 'undefined' &&
+  (window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true)
+const showMarketing =
+  !_isNativeApp && !_isStandalonePWA && (_path === '/' || _path.startsWith('/home-preview'))
+
+if (showMarketing) {
+  // Marketing surface: full-bleed black, no game-nav gutter, no landing chrome.
   try {
     document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
     const root = document.getElementById('root')

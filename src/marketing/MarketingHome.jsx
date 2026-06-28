@@ -137,6 +137,17 @@ function Brand({ size = 20, imgSize = 32 }) {
 
 export default function MarketingHome() {
   const [openFaq, setOpenFaq] = useState(null);
+  // Returning players (any prior Ball IQ localStorage) get a fast-path CTA
+  // instead of the new-visitor pitch. No redirect — / stays the indexable
+  // homepage for everyone; only the hero CTA label changes.
+  const [hasPlayed] = useState(() => {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        if ((localStorage.key(i) || '').startsWith('biq_')) return true;
+      }
+    } catch {}
+    return false;
+  });
 
   useEffect(() => {
     const html = document.documentElement;
@@ -176,7 +187,7 @@ export default function MarketingHome() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', marginTop: 34 }}>
             <AppStoreBadge />
-            <GreenCTA href={PLAY} big>Play free in browser →</GreenCTA>
+            <GreenCTA href={PLAY} big>{hasPlayed ? 'Continue playing →' : 'Play free in browser →'}</GreenCTA>
           </div>
         </div>
 

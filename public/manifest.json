@@ -3,7 +3,7 @@
   "short_name": "Ball IQ",
   "description": "Test your football knowledge. 3,900+ questions across 10 game modes.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/play",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
