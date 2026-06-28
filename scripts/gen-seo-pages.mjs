@@ -228,24 +228,12 @@ function buildCategoryPage(catCfg, livePages) {
 
   const ld = jsonLd({
     '@context': 'https://schema.org',
+    // Google removed the "Practice problems" (Quiz) rich result in Jan 2026 and
+    // the FAQ rich result in 2026 — both now just report an "invalid element" in
+    // Search Console without producing any rich result. We keep only the still-
+    // supported BreadcrumbList; the visible Q&A + FAQ HTML below is unchanged, so
+    // there's no content/SEO loss — just no obsolete structured data.
     '@graph': [
-      {
-        '@type': 'Quiz',
-        '@id': `${canonical}#quiz`,
-        name: `${catCfg.name} Football Quiz`,
-        about: { '@type': 'Thing', name: catCfg.about },
-        url: canonical,
-        isAccessibleForFree: true,
-        hasPart: sample.map((r) => ({
-          '@type': 'Question',
-          eduQuestionType: 'Multiple choice',
-          name: r.q,
-          acceptedAnswer: { '@type': 'Answer', text: r.o[r.a], explanation: r.hint },
-          suggestedAnswer: r.o
-            .filter((_, i) => i !== r.a)
-            .map((o) => ({ '@type': 'Answer', text: o })),
-        })),
-      },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -253,14 +241,6 @@ function buildCategoryPage(catCfg, livePages) {
           { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
           { '@type': 'ListItem', position: 3, name: catCfg.name, item: canonical },
         ],
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: catCfg.faq.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a },
-        })),
       },
     ],
   });
