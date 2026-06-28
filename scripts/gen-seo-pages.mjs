@@ -400,6 +400,36 @@ function buildSitemap(livePages) {
   writeFileSync(resolve(DIST, 'sitemap.xml'), xml, 'utf8');
 }
 
+// ── llms.txt (AI / answer-engine discoverability — llmstxt.org convention) ─────
+// A concise, link-rich markdown summary LLM crawlers (ChatGPT, Perplexity, Gemini,
+// Claude, Google AI Overviews) can use to understand + cite the site. Generated
+// from livePages so it auto-grows as new quiz categories ship.
+function buildLlmsTxt(livePages) {
+  const cats = livePages.filter((p) => p.slug !== HUB.slug);
+  const quizLinks = [
+    `- [Football quizzes hub](${SITE.base}/quiz/): Every free football trivia category, each answer explained.`,
+    ...cats.map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers, each with a fact-checked explanation.`),
+  ].join('\n');
+  const txt = `# Ball IQ
+
+> Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes. Play free in any browser at ${SITE.base} or on iPhone.
+
+Every question is human-curated and every answer carries an explained, fact-checked hint. Topics span the World Cup, Premier League, Champions League, La Liga, Serie A, Bundesliga, club legends, managers and records. Game modes include the Daily 7, Footle (a Wordle-style daily footballer guess), live multiplayer for up to 8 players, Survival, Hot Streak and Legends.
+
+## Quizzes
+${quizLinks}
+
+## About
+- [About Ball IQ](${SITE.base}/about/): What Ball IQ is, who it is for, and how it works.
+- [Contact](${SITE.base}/contact/): How to get in touch.
+
+## Play
+- [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a FIFA-style profile rating and multiplayer.
+- [Ball IQ on the App Store](https://apps.apple.com/app/id6775975961): Free iPhone app.
+`;
+  writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');
+}
+
 // ── main ──────────────────────────────────────────────────────────────────────
 function main() {
   if (!existsSync(DIST)) {
@@ -418,12 +448,13 @@ function main() {
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   buildSitemap(livePages);
+  buildLlmsTxt(livePages);
 
-  console.log(`[gen-seo] wrote ${built.length} category pages + hub + about + contact + sitemap into dist/`);
+  console.log(`[gen-seo] wrote ${built.length} category pages + hub + about + contact + sitemap + llms.txt into dist/`);
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
-  console.log(`  ✓ /sitemap.xml`);
+  console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);
 }
 
 main();
