@@ -1,16 +1,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// P3 SEO DRAFTS — the 7 remaining category pages (hand-written, NOT yet live).
+// P3 SEO CATEGORIES — the 7 league/topic pages. NOW LIVE.
 //
-// This file is intentionally NOT imported by scripts/gen-seo-pages.mjs, so these
-// pages are NOT built or deployed. They're staged here so that the MOMENT GSC
-// confirms the pilot 4 are "Indexed", we (1) fact-check this prose with the same
-// adversarial pass used on the pilot, (2) move these objects into the CATEGORIES
-// array in content.mjs, and (3) deploy — P3 ships in minutes.
+// Imported by scripts/seo/content.mjs (spread into CATEGORIES), so the generator
+// builds + deploys these alongside the pilot. Shipped 2026-06-28 after GSC
+// confirmed the pilot 4 indexed.
 //
-// Each object matches the CATEGORIES shape in content.mjs exactly (drop-in).
-// Counts/hint-floors already verified ≥15 hint-bearing per category.
-// STILL TODO before going live: run the fact-check workflow over these intros +
-// FAQs (do not skip — same rigor as the pilot).
+// Each object matches the CATEGORIES shape in content.mjs exactly.
+// Counts verified ≥15 hint-bearing MCQs per category (77–146 each).
+// Prose fact-checked (accuracy + currency-as-of-today, adversarially re-verified):
+// 1 correction applied — Napoli's Serie A title count updated to four (2025 Scudetto).
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const P3_CATEGORIES = [
@@ -128,7 +126,7 @@ export const P3_CATEGORIES = [
     ],
     faq: [
       { q: 'Which club has won Serie A the most times?', a: 'Juventus, by a distance — including nine consecutive titles from 2011-12 to 2019-20, the longest unbroken run of league dominance in Italian football.' },
-      { q: 'Which club did Maradona make famous in Italy?', a: 'Napoli — he led them to their only two Serie A titles (1987, 1990) and remains the club’s defining icon. Napoli’s next Scudetto didn’t come until 2023.' },
+      { q: 'Which club did Maradona make famous in Italy?', a: 'Napoli — he led them to their first two Serie A titles (1987, 1990) and remains the club’s defining icon. Napoli’s next Scudetto didn’t come until 2023, with a fourth following in 2025.' },
       { q: 'What was Calciopoli?', a: 'The 2006 match-fixing scandal that stripped Juventus of two titles and relegated them to Serie B, while also punishing Milan, Fiorentina, Lazio and Reggina.' },
       { q: 'Is the Serie A quiz free to play?', a: 'Yes — play the sample free in your browser, or get the Ball IQ app for the full set.' },
     ],

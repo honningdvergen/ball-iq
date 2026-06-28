@@ -22,6 +22,10 @@
 // listicle get added here once GSC confirms indexation (plan phase P3).
 // ─────────────────────────────────────────────────────────────────────────────
 
+// P3 (the 7 league/topic categories) live in drafts-p3.mjs and were fact-checked
+// (currency-as-of-today, adversarially re-verified) before going live here.
+import { P3_CATEGORIES } from './drafts-p3.mjs';
+
 export const SITE = {
   base: 'https://balliq.app',
   name: 'Ball IQ',
@@ -188,4 +192,5 @@ export const CATEGORIES = [
       },
     ],
   },
+  ...P3_CATEGORIES,
 ];
