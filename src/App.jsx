@@ -3497,6 +3497,10 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   const [speedScore, setSpeedScore] = useState(0);
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
+  // The per-question auto-advance timeout must be cancellable the moment an
+  // answer registers; otherwise it can fire during the result/hint dwell and
+  // inject a phantom "timed out" record (skewing category ratings) + skip Next.
+  const answerTimeoutRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
   useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
   // Phase 6b Issue B: track previous timeLeft so the .timer-fill CSS
@@ -3506,7 +3510,15 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
   // changes; with this, width snaps instantly while drain animation
   // remains for the countdown direction.
   const prevTimeLeftRef = useRef(timerDuration);
-  useEffect(() => { prevTimeLeftRef.current = timeLeft; }, [timeLeft]);
+  // timeLeftRef mirrors the live countdown so the Speed bonus (computed in
+  // registerAnswer, whose deps deliberately exclude timeLeft to avoid recreating
+  // the callback every tick) reads the REAL remaining time, not a stale closure.
+  const timeLeftRef = useRef(timerDuration);
+  // speedScoreRef mirrors speedScore so doAdvance (deps exclude speedScore) emits
+  // the final question's just-added bonus rather than a pre-bonus stale value.
+  const speedScoreRef = useRef(0);
+  useEffect(() => { prevTimeLeftRef.current = timeLeft; timeLeftRef.current = timeLeft; }, [timeLeft]);
+  useEffect(() => { speedScoreRef.current = speedScore; }, [speedScore]);
   const [showQuit, setShowQuit] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const advanceRef = useRef(null);
@@ -3563,7 +3575,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     }
     if (idx + 1 >= total) {
       Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended', level: 'info', data: { mode, score: ns, total } });
-      setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore }); return;
+      setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore: speedScoreRef.current }); return;
     }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
@@ -3578,6 +3590,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
 
   const registerAnswer = useCallback((correct, userAnswerText, userIndex) => {
     clearInterval(timerRef.current);
+    clearTimeout(answerTimeoutRef.current);
     const ns = correct ? score + 1 : score;
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
@@ -3628,7 +3641,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         timedOut: false,
       }];
     }
-    if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeft * 10); }
+    if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeftRef.current * 10); }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, advance]);
 
@@ -3669,7 +3682,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
     }, 1000);
     // Separate effect watches for timeout (avoids stale closure entirely)
     const timeoutMs = (timerDuration * 1000) + 100;
-    const timeoutId = setTimeout(() => {
+    answerTimeoutRef.current = setTimeout(() => {
       // Phase 5x: capture timeout into allAnswers so the Daily review
       // screen renders this question with a "timed out" tag instead of
       // dropping it. Same shape as a wrong MCQ answer; userIdx=-1.
@@ -3701,7 +3714,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEn
         return s;
       });
     }, timeoutMs);
-    return () => { clearInterval(timerRef.current); clearTimeout(timeoutId); };
+    return () => { clearInterval(timerRef.current); clearTimeout(answerTimeoutRef.current); };
   }, [idx, timed, done, isTyped]);
 
   if (done) return null;
@@ -9471,7 +9484,7 @@ function AppInner() {
     const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
       ? authProfile.username
       : ((profile?.name && profile.name !== "Player") ? profile.name : "");
-    const challengeUrl = `balliq.app/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
+    const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
