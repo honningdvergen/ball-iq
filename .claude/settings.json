@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.aoshearman.com)",
+      "WebFetch(domain:www.apple.com)",
+      "WebFetch(domain:www.inta.org)",
+      "WebFetch(domain:www.lawinsport.com)",
+      "WebFetch(domain:androidapps.quora.com)",
+      "WebFetch(domain:www.sports.legal)",
+      "WebFetch(domain:arenesslaw.com)",
+      "WebFetch(domain:natlawreview.com)",
+      "WebFetch(domain:www.footyheadlines.com)"
+    ]
+  }
+}
