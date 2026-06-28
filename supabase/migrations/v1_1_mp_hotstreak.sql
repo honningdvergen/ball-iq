@@ -10,7 +10,8 @@
 
 -- ── schema ──────────────────────────────────────────────────────────────────
 alter table public.game_rooms  add column if not exists mode text not null default 'race';
-alter table public.game_rooms  add constraint game_rooms_mode_chk check (mode in ('race','hotstreak')) not valid;
+alter table public.game_rooms  drop constraint if exists game_rooms_mode_chk;
+alter table public.game_rooms  add  constraint game_rooms_mode_chk check (mode in ('race','hotstreak')) not valid;
 alter table public.room_players add column if not exists streak      int not null default 0;
 alter table public.room_players add column if not exists best_streak int not null default 0;
 

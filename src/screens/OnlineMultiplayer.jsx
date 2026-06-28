@@ -407,6 +407,11 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
       try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Could not change mode — try again' })); } catch {}
     }
   }, [onSetScoringMode]);
+  // Host-left detection (mirrors the gameplay banner at the MultiplayerGameplay
+  // level): if the host's row has vanished from the realtime player list, the
+  // room can never start (start_game rejects non-hosts), so surface an explicit
+  // dead-end + Leave instead of a normal-looking lobby that silently never starts.
+  const hostStillPresent = !!room && players.some(p => p.user_id === room.host_id);
   return (
     <div className="screen">
       <div className="page-hdr" style={{ position: "relative" }}>
@@ -419,6 +424,30 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         )}
       </div>
       <div style={{ padding: "16px 4px", maxWidth: 480, margin: "0 auto" }}>
+        {!isHost && !hostStillPresent && (
+          <div style={{
+            padding: "10px 14px",
+            background: "rgba(239, 68, 68, 0.1)",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+            borderRadius: 10,
+            marginBottom: 16,
+            fontSize: 13,
+            color: "var(--text)",
+            textAlign: "center",
+          }}>
+            ⚠️ The host left — this room is closed.{" "}
+            <button
+              onClick={onLeave}
+              style={{
+                background: "none", border: "none", color: "var(--accent)",
+                textDecoration: "underline", cursor: "pointer", fontSize: 13,
+                padding: 0, fontFamily: "inherit",
+              }}
+            >
+              Leave
+            </button>
+          </div>
+        )}
         {/* Code display */}
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
