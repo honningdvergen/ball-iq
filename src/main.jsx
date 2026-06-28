@@ -87,13 +87,33 @@ try {
   }
 } catch {}
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </React.StrictMode>,
-)
+// ── Marketing homepage preview ──────────────────────────────────────────────
+// Isolated route for building/verifying the new "Matchday" homepage on prod
+// WITHOUT touching the live game at /. When the homepage is approved this same
+// component moves to / and the game moves to /play (see redesign plan).
+const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
+const isMarketingPreview =
+  typeof window !== 'undefined' && window.location.pathname.startsWith('/home-preview')
+
+if (isMarketingPreview) {
+  // Strip the index.html static landing chrome so the preview renders clean.
+  try {
+    document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
+  } catch {}
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.Suspense fallback={null}>
+      <MarketingHome />
+    </React.Suspense>,
+  )
+} else {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </React.StrictMode>,
+  )
+}
 
 // Ads (web only, dormant until an AdSense client ID is set in lib/ads.js) —
 // initialise off the critical path so it never competes with first paint.
