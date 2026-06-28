@@ -96,9 +96,14 @@ const isMarketingPreview =
   typeof window !== 'undefined' && window.location.pathname.startsWith('/home-preview')
 
 if (isMarketingPreview) {
-  // Strip the index.html static landing chrome so the preview renders clean.
+  // Strip the index.html static landing chrome + the desktop game-nav offset so
+  // the marketing page renders full-bleed (it has its own nav, no 220px sidebar).
   try {
     document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
+    const root = document.getElementById('root')
+    if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = '#0A0A0A' }
+    document.documentElement.style.background = '#0A0A0A'
+    document.body.style.background = '#0A0A0A'
   } catch {}
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.Suspense fallback={null}>
