@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #0A0A0A; }
+  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; }
+  ::selection { background: rgba(88,204,2,0.3); color: #fff; }
+  @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</helmet>
+
+<div style="position:relative; min-height:100vh; background:#0A0A0A; overflow-x:hidden;">
+  <div style="position:fixed; top:-220px; left:50%; transform:translateX(-50%); width:880px; height:560px; background:radial-gradient(circle, rgba(255,106,0,0.10), transparent 62%); pointer-events:none; z-index:0;"></div>
+  <div style="position:fixed; bottom:-240px; left:50%; transform:translateX(-50%); width:760px; height:500px; background:radial-gradient(circle, rgba(88,204,2,0.08), transparent 64%); pointer-events:none; z-index:0;"></div>
+
+  <nav style="position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; padding:15px 32px; background:rgba(10,10,10,0.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid #16181F;">
+    <a href="Ball%20IQ%20Website.dc.html" style="display:flex; align-items:center; gap:9px;">
+      <img src="assets/ball.png" alt="Ball IQ" style="width:30px; height:30px; border-radius:8px;" />
+      <span style="font-weight:900; font-size:19px; color:#fff;">Ball&nbsp;<span style="color:#FFC107;">IQ</span></span>
+    </a>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <button style="padding:9px 17px; background:transparent; color:#F0F1F5; font-size:13px; font-weight:700; border:1px solid #2A2D3A; border-radius:10px; white-space:nowrap; cursor:pointer; font-family:'Inter',sans-serif; transition:border-color .15s, background .15s;" style-hover="border-color:#3A3D4A; background:#14161E; color:#fff;">Sign in</button>
+      <a href="Ball%20IQ%20Website.dc.html" style="font-size:13px; font-weight:600; color:#9BA0B8;" style-hover="color:#fff;">← Back to site</a>
+    </div>
+  </nav>
+
+  <sc-if value="{{ home }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:34px 32px 80px;">
+      <div style="display:flex; align-items:baseline; gap:9px;">
+        <span style="font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-0.02em; color:#fff;">Good evening,</span>
+        <span style="font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-0.02em; color:#9BA0B8;">Guest</span>
+      </div>
+
+      <div style="margin-top:22px; display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:24px; border-radius:18px; background:linear-gradient(100deg, rgba(255,106,0,0.10), rgba(88,204,2,0.06)); border:1px solid #242836;">
+        <div style="flex:1 1 320px; min-width:0;">
+          <div style="display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:#FF9245;">🔒 Guest mode</div>
+          <div style="margin-top:8px; font-size:18px; font-weight:800; color:#fff;">Your stats aren't being saved</div>
+          <div style="margin-top:5px; font-size:14px; line-height:1.55; color:#9BA0B8; max-width:52ch;">IQ rating, day streak and global rank live in your account. Get the app to track your progress and climb the leaderboard.</div>
+        </div>
+        <a href="https://apps.apple.com/no/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener" style="flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; padding:14px 22px; background:#58CC02; color:#0A0A0A; font-weight:800; font-size:15px; border-radius:12px; box-shadow:0 8px 22px -6px rgba(88,204,2,0.5), inset 0 1px 0 rgba(255,255,255,0.25); transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .15s;" style-hover="transform:translateY(-2px); filter:brightness(1.04);">Get the app →</a>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:18px; margin-top:18px;">
+        <div style="flex:1.5 1 380px; position:relative; overflow:hidden; border-radius:24px; padding:30px; background:#101218; border:1px solid #242836;">
+          <div style="position:absolute; top:-80px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(88,204,2,0.16), transparent 64%); pointer-events:none;"></div>
+          <div style="position:relative;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:11px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#58CC02;">⚽ Daily · Footle</div>
+            <div style="margin-top:12px; font-size:clamp(30px,4vw,42px); font-weight:900; letter-spacing:-0.03em; color:#fff; line-height:1;">Today's Footle</div>
+            <div style="margin-top:10px; font-size:15px; color:#9BA0B8; max-width:42ch;">Guess the footballer or manager's surname in six tries. A fresh one drops every day.</div>
+            <div style="display:flex; gap:7px; margin-top:22px;">
+              <div style="width:42px; height:42px; border-radius:9px; background:#58CC02; color:#0A0A0A; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">F</div>
+              <div style="width:42px; height:42px; border-radius:9px; background:#242836; color:#6E7180; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">O</div>
+              <div style="width:42px; height:42px; border-radius:9px; background:#FFC107; color:#0A0A0A; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">O</div>
+              <div style="width:42px; height:42px; border-radius:9px; background:#242836; color:#6E7180; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">T</div>
+              <div style="width:42px; height:42px; border-radius:9px; background:#58CC02; color:#0A0A0A; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">L</div>
+              <div style="width:42px; height:42px; border-radius:9px; background:#FFC107; color:#0A0A0A; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px;">E</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+              <button onClick="{{ startFootle }}" style="display:inline-flex; align-items:center; gap:8px; padding:15px 26px; background:#58CC02; color:#0A0A0A; font-family:'Inter',sans-serif; font-weight:800; font-size:16px; border:none; border-radius:13px; cursor:pointer; box-shadow:0 8px 22px -6px rgba(88,204,2,0.55), inset 0 1px 0 rgba(255,255,255,0.25); transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .15s;" style-hover="transform:translateY(-2px); filter:brightness(1.04);">Play Footle →</button>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#6E7180;">New word in 10:14:59</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1 1 300px; position:relative; overflow:hidden; border-radius:24px; padding:30px; background:linear-gradient(135deg,#FF6A00 0%,#FFC107 100%);">
+          <div style="position:absolute; right:-26px; bottom:-40px; font-size:170px; opacity:0.16; pointer-events:none; line-height:1;">🔥</div>
+          <div style="position:relative;">
+            <div style="font-size:11px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:rgba(10,10,10,0.55);">Daily 7</div>
+            <div style="margin-top:12px; font-size:clamp(26px,3.2vw,36px); font-weight:900; letter-spacing:-0.02em; color:#0A0A0A; line-height:1;">Today's seven</div>
+            <div style="margin-top:10px; font-size:14px; color:rgba(10,10,10,0.7);">Seven questions, the same for everyone. ~3 min.</div>
+            <button onClick="{{ startDaily }}" style="display:inline-flex; align-items:center; gap:8px; margin-top:24px; padding:14px 24px; background:#0A0A0A; color:#fff; font-family:'Inter',sans-serif; font-weight:800; font-size:15px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 8px 20px -6px rgba(0,0,0,0.5); transition:transform .18s cubic-bezier(.34,1.56,.64,1);" style-hover="transform:translateY(-2px);">Play the seven →</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin:38px 2px 16px; display:flex; align-items:baseline; justify-content:space-between;">
+        <h2 style="margin:0; font-size:clamp(20px,2.4vw,26px); font-weight:800; letter-spacing:-0.02em; color:#fff;">Game modes</h2>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#6E7180; letter-spacing:0.1em; text-transform:uppercase;">Solo &amp; multiplayer</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+        <button onClick="{{ mClassic }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid #242836; border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:#3A3D4A;"><div style="width:46px; height:46px; border-radius:13px; background:rgba(88,204,2,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">⏱️</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Classic</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">10 questions, 20s each.</div></button>
+        <button onClick="{{ mSurvival }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid #242836; border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:#3A3D4A;"><div style="width:46px; height:46px; border-radius:13px; background:rgba(255,106,0,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">🔥</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Survival</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">One wrong answer ends it.</div></button>
+        <button onClick="{{ mHot }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid #242836; border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:#3A3D4A;"><div style="width:46px; height:46px; border-radius:13px; background:rgba(255,193,7,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">⚡</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Hot Streak</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">60-second sprint.</div></button>
+        <button onClick="{{ mLegends }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid #242836; border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:#3A3D4A;"><div style="width:46px; height:46px; border-radius:13px; background:rgba(88,204,2,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">🏆</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Legends</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">Pre-2000 greats.</div></button>
+        <button onClick="{{ startOnline }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid rgba(88,204,2,0.25); border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:rgba(88,204,2,0.5);"><div style="width:46px; height:46px; border-radius:13px; background:rgba(88,204,2,0.12); display:flex; align-items:center; justify-content:center; font-size:24px;">🌐</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Online</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">Up to 8 players, live.</div></button>
+        <button onClick="{{ startLocal }}" style="text-align:left; padding:22px; background:#14161E; border:1px solid #242836; border-radius:18px; cursor:pointer; transition:transform .16s, border-color .16s; font-family:'Inter',sans-serif;" style-hover="transform:translateY(-4px); border-color:#3A3D4A;"><div style="width:46px; height:46px; border-radius:13px; background:rgba(88,204,2,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">👥</div><div style="margin-top:14px; font-size:18px; font-weight:800; color:#fff;">Local</div><div style="margin-top:3px; font-size:13.5px; color:#9BA0B8;">Pass &amp; play on one device.</div></button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ footle }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 20px 110px;">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <button onClick="{{ goHome }}" style="width:40px; height:40px; flex:0 0 auto; border-radius:12px; background:#14161E; border:1px solid #242836; color:#fff; font-size:17px; cursor:pointer; line-height:1;" style-hover="background:#1B1E27;">←</button>
+        <div style="flex:1;">
+          <div style="font-size:20px; font-weight:900; color:#fff; letter-spacing:-0.01em;">⚽ Footle</div>
+          <div style="font-size:12.5px; color:#9BA0B8;">Player or manager — guess the surname</div>
+        </div>
+        <div style="text-align:right;"><div style="font-size:9px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#6E7180;">Next</div><div style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:#58CC02;">10:14:59</div></div>
+      </div>
+
+      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:18px;">
+        <button onClick="{{ watchHint }}" style="display:inline-flex; align-items:center; gap:8px; padding:9px 14px; background:#14161E; border:1px solid #242836; border-radius:10px; color:#FFD24A; font-family:'Inter',sans-serif; font-weight:700; font-size:13px; cursor:pointer;" style-hover="border-color:#3A3D4A;">💡 Reveal a letter <span style="font-size:9px; font-weight:800; letter-spacing:0.1em; color:#6E7180; background:#0A0A0A; padding:2px 6px; border-radius:5px;">▶ AD</span></button>
+        <sc-if value="{{ fHintShow }}" hint-placeholder-val="{{ false }}"><span style="padding:8px 12px; background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.3); border-radius:10px; font-size:13px; font-weight:700; color:#FFD24A;">💡 {{ fHintText }}</span></sc-if>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; align-items:center; margin-top:18px;">
+        <sc-for list="{{ fRows }}" as="row" hint-placeholder-count="6">
+          <div style="display:flex; gap:6px;">
+            <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="7">
+              <div style="{{ cell.style }}">{{ cell.letter }}</div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ fOver }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px; padding:20px; border-radius:18px; background:#14161E; border:1px solid #242836; text-align:center;">
+          <div style="font-size:19px; font-weight:900; color:#fff;">{{ fBanner }}</div>
+          <div style="margin-top:6px; font-size:14px; color:#9BA0B8;">The answer was <span style="color:#58CC02; font-weight:800;">{{ fAnswerNice }}</span></div>
+          <button onClick="{{ watchFAnother }}" style="margin-top:16px; padding:13px 26px; background:#58CC02; color:#0A0A0A; font-family:'Inter',sans-serif; font-weight:800; font-size:15px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 8px 20px -6px rgba(88,204,2,0.55), inset 0 1px 0 rgba(255,255,255,0.25); transition:transform .18s, filter .15s;" style-hover="transform:translateY(-2px); filter:brightness(1.04);">Play another →</button>
+        </div>
+      </sc-if>
+
+      <div style="display:flex; flex-direction:column; gap:6px; margin-top:30px;">
+        <sc-for list="{{ keyRows }}" as="krow" hint-placeholder-count="3">
+          <div style="display:flex; gap:6px; justify-content:center;">
+            <sc-for list="{{ krow }}" as="key" hint-placeholder-count="10">
+              <button onClick="{{ key.onClick }}" style="{{ key.style }}">{{ key.label }}</button>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ quiz }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative; z-index:1; max-width:680px; margin:0 auto; padding:24px 24px 110px;">
+      <div style="display:flex; align-items:center; gap:14px; padding-top:2px;">
+        <button onClick="{{ goHome }}" style="width:40px; height:40px; flex:0 0 auto; border-radius:12px; background:#14161E; border:1px solid #242836; color:#fff; font-size:17px; cursor:pointer; line-height:1;" style-hover="background:#1B1E27;">✕</button>
+        <div style="flex:1; height:11px; background:#14161E; border:1px solid #242836; border-radius:999px; overflow:hidden;"><div style="{{ progStyle }}"></div></div>
+        <div style="{{ timerStyle }}">{{ timeLeft }}s</div>
+      </div>
+
+      <div style="margin-top:34px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#6E7180;">Q {{ qNum }} / {{ total }} · {{ mode }}</div>
+      <div style="margin-top:12px; font-size:clamp(22px,3vw,28px); font-weight:800; line-height:1.28; letter-spacing:-0.01em; color:#fff;">{{ question }}</div>
+
+      <div style="margin-top:26px; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px;">
+        <sc-for list="{{ answers }}" as="a" hint-placeholder-count="4">
+          <button onClick="{{ a.onPick }}" style="{{ a.rowStyle }}">
+            <span style="{{ a.letStyle }}">{{ a.letter }}</span>
+            <span style="flex:1;">{{ a.label }}</span>
+            <span style="font-size:18px; width:18px; text-align:center;">{{ a.mark }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+        <div style="{{ fbWrapStyle }}">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+            <span style="{{ fbPillStyle }}">{{ fbLabel }}</span>
+            <span style="font-size:14.5px; color:#F0F1F5; font-weight:500;">{{ fbDetail }}</span>
+          </div>
+          <button onClick="{{ next }}" style="width:100%; padding:16px; background:#58CC02; color:#0A0A0A; font-family:'Inter',sans-serif; font-weight:800; font-size:16px; border:none; border-radius:13px; cursor:pointer; box-shadow:0 8px 20px -6px rgba(88,204,2,0.55), inset 0 1px 0 rgba(255,255,255,0.25); transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .15s;" style-hover="transform:translateY(-2px); filter:brightness(1.04);">{{ nextLabel }}</button>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ results }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative; z-index:1; max-width:560px; margin:0 auto; padding:40px 24px 60px; text-align:center;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#6E7180;">{{ mode }} · complete</div>
+      <div style="font-size:64px; line-height:1; margin-top:20px;">{{ gradeEmoji }}</div>
+      <div style="margin-top:12px; font-size:clamp(28px,4vw,38px); font-weight:900; letter-spacing:-0.02em; color:#fff;">{{ grade }}</div>
+
+      <div style="margin-top:26px; background:#14161E; border:1px solid #242836; border-radius:22px; padding:30px 24px; box-shadow:0 16px 40px -16px rgba(0,0,0,0.6);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:56px; font-weight:700; letter-spacing:-0.02em; color:#58CC02; line-height:1;">{{ finalScore }}</div>
+        <div style="font-size:11px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#6E7180; margin-top:6px;">Final score</div>
+        <div style="display:flex; margin-top:24px; border-top:1px solid #1A1D27; padding-top:20px;">
+          <div style="flex:1;"><div style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#fff;">{{ acc }}%</div><div style="font-size:11px; color:#6E7180; margin-top:3px;">Accuracy</div></div>
+          <div style="flex:1; border-left:1px solid #1A1D27;"><div style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#fff;">{{ correctN }}/{{ totalN }}</div><div style="font-size:11px; color:#6E7180; margin-top:3px;">Correct</div></div>
+          <div style="flex:1; border-left:1px solid #1A1D27;"><div style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#FF8A3D;">{{ bestStreak }}</div><div style="font-size:11px; color:#6E7180; margin-top:3px;">Best run</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:16px;">
+        <button onClick="{{ watchReplay }}" style="flex:1; padding:16px; background:#58CC02; color:#0A0A0A; font-family:'Inter',sans-serif; font-weight:800; font-size:15px; border:none; border-radius:13px; cursor:pointer; box-shadow:0 8px 20px -6px rgba(88,204,2,0.55), inset 0 1px 0 rgba(255,255,255,0.25); transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .15s;" style-hover="transform:translateY(-2px); filter:brightness(1.04);">Play again</button>
+        <button onClick="{{ goHome }}" style="flex:1; padding:16px; background:#14161E; color:#fff; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; border:1px solid #242836; border-radius:13px; cursor:pointer; transition:background .15s, border-color .15s;" style-hover="background:#1B1E27; border-color:#3A3D4A;">Back to home</button>
+      </div>
+
+      <div style="margin-top:24px; display:flex; flex-wrap:wrap; align-items:center; gap:14px; padding:18px 20px; border-radius:16px; background:linear-gradient(100deg, rgba(255,106,0,0.10), rgba(88,204,2,0.06)); border:1px solid #242836; text-align:left;">
+        <span style="font-size:24px;">📱</span>
+        <div style="flex:1 1 200px;">
+          <div style="font-size:15px; font-weight:800; color:#fff;">Save this score</div>
+          <div style="font-size:13px; color:#9BA0B8;">Get the app to keep your streak and climb the global leaderboard.</div>
+        </div>
+        <a href="https://apps.apple.com/no/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener" style="flex:0 0 auto; padding:11px 18px; background:#fff; color:#0A0A0A; font-weight:800; font-size:13px; border-radius:10px;" style-hover="filter:brightness(0.94);">Get the app</a>
+      </div>
+
+      <div style="margin-top:14px; border:1px dashed #2A2D3A; border-radius:14px; background:#0C0E13; padding:20px; display:flex; flex-direction:column; align-items:center; gap:5px;">
+        <div style="font-size:9px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:#3C3F4C;">Advertisement</div>
+        <div style="font-size:12.5px; color:#6E7180;">Responsive banner · shown between games</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ inGame }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; bottom:0; left:0; right:0; z-index:25; background:rgba(12,14,19,0.96); border-top:1px solid #16181F; padding:8px 12px;">
+      <div style="max-width:728px; margin:0 auto; height:54px; border:1px dashed #2A2D3A; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:10px; background:#0A0A0A;">
+        <span style="font-size:9px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase; color:#3C3F4C;">Advertisement</span>
+        <span style="font-size:12px; color:#5C6070;">728×90 anchor</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ adOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:200; background:rgba(10,10,10,0.86); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div style="width:100%; max-width:400px; background:#14161E; border:1px solid #242836; border-radius:22px; overflow:hidden; box-shadow:0 30px 60px -20px rgba(0,0,0,0.85);">
+        <div style="position:relative; aspect-ratio:16/10; background:linear-gradient(135deg,#1A1D27,#0C0E13); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
+          <div style="position:absolute; top:12px; left:12px; font-size:9px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase; color:#9BA0B8; background:rgba(0,0,0,0.45); padding:3px 8px; border-radius:6px;">Ad</div>
+          <button onClick="{{ adSkip }}" style="position:absolute; top:9px; right:9px; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,0.5); border:none; color:#9BA0B8; font-size:14px; cursor:pointer; line-height:1;" style-hover="color:#fff;">✕</button>
+          <div style="font-size:38px; opacity:0.8;">▶</div>
+          <div style="font-size:13px; color:#9BA0B8;">Your ad plays here</div>
+          <sc-if value="{{ adCounting }}" hint-placeholder-val="{{ true }}"><div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#FFC107;">Reward in {{ adSecs }}s</div></sc-if>
+        </div>
+        <div style="padding:18px 20px;">
+          <div style="font-size:15px; font-weight:800; color:#fff;">{{ adTitle }}</div>
+          <div style="font-size:13px; color:#9BA0B8; margin-top:3px;">{{ adSub }}</div>
+          <sc-if value="{{ adDone }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ adFinish }}" style="width:100%; margin-top:14px; padding:14px; background:#58CC02; color:#0A0A0A; font-family:'Inter',sans-serif; font-weight:800; font-size:15px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 8px 20px -6px rgba(88,204,2,0.5);" style-hover="filter:brightness(1.04);">{{ adCta }}</button>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1140,&quot;height&quot;:760}}">
+const QUESTIONS = [
+  { question: "Which club did Lionel Messi join in 2023?", choices: ["Paris Saint-Germain", "Inter Miami", "Barcelona", "Al-Nassr"], answer: 1 },
+  { question: "Who won the 2022 FIFA World Cup?", choices: ["France", "Argentina", "Brazil", "Croatia"], answer: 1 },
+  { question: "Which club holds the longest unbeaten run in Premier League history \u2014 49 games?", choices: ["Chelsea", "Manchester City", "Arsenal", "Manchester United"], answer: 2 },
+  { question: "How many Ballon d'Or awards has Cristiano Ronaldo won?", choices: ["Four", "Five", "Six", "Seven"], answer: 1 },
+  { question: "Which nation has won the most World Cups?", choices: ["Germany", "Italy", "Brazil", "Argentina"], answer: 2 },
+  { question: "Who is the Premier League's all-time top scorer?", choices: ["Wayne Rooney", "Alan Shearer", "Harry Kane", "Thierry Henry"], answer: 1 },
+  { question: "Which stadium is the home of Real Madrid?", choices: ["Camp Nou", "Santiago Bernab\u00e9u", "Anfield", "San Siro"], answer: 1 },
+  { question: "Who managed Manchester United to the 1999 treble?", choices: ["Jos\u00e9 Mourinho", "Sir Alex Ferguson", "Ars\u00e8ne Wenger", "Pep Guardiola"], answer: 1 },
+];
+const FOOTLE_WORDS = ["ALISSON", "HAALAND", "RASHFORD", "SALAH", "RODRYGO", "ODEGAARD"];
+
+function evalGuess(guess, answer) {
+  const n = answer.length;
+  const res = new Array(n).fill('absent');
+  const ans = answer.split('');
+  const used = new Array(n).fill(false);
+  for (let i = 0; i < n; i++) { if (guess[i] === ans[i]) { res[i] = 'correct'; used[i] = true; } }
+  for (let i = 0; i < n; i++) {
+    if (res[i] === 'correct') continue;
+    const idx = ans.findIndex((c, j) => !used[j] && c === guess[i]);
+    if (idx >= 0) { res[i] = 'present'; used[idx] = true; }
+  }
+  return res;
+}
+
+class Component extends DCLogic {
+  state = { screen: 'home', mode: 'Classic', qIndex: 0, qTotal: 8, picked: null, answered: false, score: 0, streak: 0, bestStreak: 0, correct: 0, timeLeft: 20, lastGain: 0,
+            fIdx: 0, fAnswer: FOOTLE_WORDS[0], fGuesses: [], fCurrent: '', fStatus: 'playing', ad: null, fHint: null };
+
+  componentDidMount() { this._kd = (e) => this.onKey(e); window.addEventListener('keydown', this._kd); }
+  componentWillUnmount() { clearInterval(this.t); clearInterval(this._adT); window.removeEventListener('keydown', this._kd); }
+
+  watchAd(kind, fn) {
+    this._adAction = fn;
+    clearInterval(this._adT);
+    this.setState({ ad: { kind, secs: 5, done: false } });
+    this._adT = setInterval(() => {
+      this.setState(s => {
+        if (!s.ad) return null;
+        if (s.ad.secs <= 1) { clearInterval(this._adT); return { ad: { kind: s.ad.kind, secs: 0, done: true } }; }
+        return { ad: { kind: s.ad.kind, secs: s.ad.secs - 1, done: false } };
+      });
+    }, 1000);
+  }
+  adFinish = () => { clearInterval(this._adT); const fn = this._adAction; this._adAction = null; this.setState({ ad: null }, () => { if (fn) fn(); }); };
+  adSkip = () => { clearInterval(this._adT); this._adAction = null; this.setState({ ad: null }); };
+  watchReplay = () => this.watchAd('interstitial', () => this.restart());
+  watchFAnother = () => this.watchAd('interstitial', () => this.fAnother());
+  watchHint = () => this.watchAd('rewarded', () => this.giveHint());
+  giveHint = () => {
+    this.setState(s => {
+      const correctPos = {};
+      s.fGuesses.forEach(g => { for (let i = 0; i < g.length; i++) if (g[i] === s.fAnswer[i]) correctPos[i] = true; });
+      let pos = 0; for (let i = 0; i < s.fAnswer.length; i++) { if (!correctPos[i]) { pos = i; break; } }
+      return { fHint: { pos: pos + 1, letter: s.fAnswer[pos] } };
+    });
+  };
+
+  onKey(e) {
+    if (this.state.screen !== 'footle' || this.state.fStatus !== 'playing') return;
+    const k = e.key;
+    if (k === 'Enter') this.fSubmit();
+    else if (k === 'Backspace') this.fBack();
+    else if (/^[a-zA-Z]$/.test(k)) this.fType(k.toUpperCase());
+  }
+
+  // ---- Footle ----
+  startFootle = () => { clearInterval(this.t); this.setState(s => ({ screen: 'footle', fAnswer: FOOTLE_WORDS[s.fIdx], fGuesses: [], fCurrent: '', fStatus: 'playing', fHint: null })); };
+  fAnother = () => { this.setState(s => { const ni = (s.fIdx + 1) % FOOTLE_WORDS.length; return { fIdx: ni, fAnswer: FOOTLE_WORDS[ni], fGuesses: [], fCurrent: '', fStatus: 'playing', fHint: null }; }); };
+  fType = (ch) => { this.setState(s => (s.fStatus === 'playing' && s.fCurrent.length < s.fAnswer.length) ? { fCurrent: s.fCurrent + ch } : null); };
+  fBack = () => { this.setState(s => s.fCurrent ? { fCurrent: s.fCurrent.slice(0, -1) } : null); };
+  fSubmit = () => {
+    this.setState(s => {
+      if (s.fStatus !== 'playing' || s.fCurrent.length !== s.fAnswer.length) return null;
+      const ng = [...s.fGuesses, s.fCurrent];
+      let st = 'playing';
+      if (s.fCurrent === s.fAnswer) st = 'won';
+      else if (ng.length >= 6) st = 'lost';
+      return { fGuesses: ng, fCurrent: '', fStatus: st };
+    });
+  };
+
+  // ---- Quiz ----
+  startQuiz = (mode) => {
+    clearInterval(this.t);
+    const qTotal = mode === 'Daily 7' ? 7 : QUESTIONS.length;
+    this.setState({ screen: 'quiz', mode, qTotal, qIndex: 0, picked: null, answered: false, score: 0, streak: 0, bestStreak: 0, correct: 0, timeLeft: 20, lastGain: 0 }, this.startTimer);
+  };
+  startTimer = () => { clearInterval(this.t); this.setState({ timeLeft: 20 }); this.t = setInterval(this.tick, 1000); };
+  tick = () => {
+    this.setState(s => {
+      if (s.answered) return null;
+      if (s.timeLeft <= 1) { clearInterval(this.t); return { timeLeft: 0, picked: -1, answered: true, streak: 0, lastGain: 0 }; }
+      return { timeLeft: s.timeLeft - 1 };
+    });
+  };
+  pick = (i) => {
+    if (this.state.answered) return;
+    clearInterval(this.t);
+    this.setState(s => {
+      const q = QUESTIONS[s.qIndex];
+      const ok = i === q.answer;
+      const gain = ok ? 10 + s.timeLeft : 0;
+      const ns = ok ? s.streak + 1 : 0;
+      return { picked: i, answered: true, score: s.score + gain, streak: ns, bestStreak: Math.max(s.bestStreak, ns), correct: s.correct + (ok ? 1 : 0), lastGain: gain };
+    });
+  };
+  next = () => {
+    this.setState(s => {
+      if (s.qIndex + 1 >= s.qTotal) return { screen: 'results' };
+      return { qIndex: s.qIndex + 1, picked: null, answered: false, timeLeft: 20 };
+    }, () => { if (this.state.screen === 'quiz') this.startTimer(); });
+  };
+  goHome = () => { clearInterval(this.t); this.setState({ screen: 'home' }); };
+  restart = () => { this.startQuiz(this.state.mode); };
+  startDaily = () => this.startQuiz('Daily 7');
+  startOnline = () => this.startQuiz('Online');
+  startLocal = () => this.startQuiz('Local');
+
+  renderVals() {
+    const s = this.state;
+
+    // Footle tiles
+    const tileStyle = (st) => {
+      const base = { width: 'clamp(38px,11vw,52px)', height: 'clamp(38px,11vw,52px)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: 'clamp(17px,5vw,24px)', borderRadius: '10px', textTransform: 'uppercase' };
+      if (st === 'correct') return { ...base, background: '#58CC02', color: '#0A0A0A', border: '2px solid #58CC02' };
+      if (st === 'present') return { ...base, background: '#FFC107', color: '#0A0A0A', border: '2px solid #FFC107' };
+      if (st === 'absent') return { ...base, background: '#242836', color: '#8A8F9E', border: '2px solid #242836' };
+      if (st === 'filled') return { ...base, background: '#14161E', color: '#fff', border: '2px solid #4A4D5A' };
+      return { ...base, background: '#101218', color: '#fff', border: '2px solid #242836' };
+    };
+    const cols = s.fAnswer.length;
+    const fRows = [];
+    for (let r = 0; r < 6; r++) {
+      const cells = [];
+      if (r < s.fGuesses.length) {
+        const g = s.fGuesses[r]; const ev = evalGuess(g, s.fAnswer);
+        for (let c = 0; c < cols; c++) cells.push({ letter: g[c], style: tileStyle(ev[c]) });
+      } else if (r === s.fGuesses.length && s.fStatus === 'playing') {
+        for (let c = 0; c < cols; c++) { const ch = s.fCurrent[c] || ''; cells.push({ letter: ch, style: tileStyle(ch ? 'filled' : 'empty') }); }
+      } else {
+        for (let c = 0; c < cols; c++) cells.push({ letter: '', style: tileStyle('empty') });
+      }
+      fRows.push({ cells });
+    }
+    // keyboard states
+    const keyState = {};
+    const rank = { absent: 0, present: 1, correct: 2 };
+    s.fGuesses.forEach(g => { const ev = evalGuess(g, s.fAnswer); for (let i = 0; i < g.length; i++) { const ch = g[i]; if (!(ch in keyState) || rank[ev[i]] > rank[keyState[ch]]) keyState[ch] = ev[i]; } });
+    const keyStyle = (st, wide) => {
+      const base = { flex: wide ? '1.6' : '1', minWidth: wide ? '50px' : '26px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: wide ? '12px' : '15px', cursor: 'pointer', color: '#fff', textTransform: 'uppercase' };
+      if (st === 'correct') return { ...base, background: '#58CC02', color: '#0A0A0A' };
+      if (st === 'present') return { ...base, background: '#FFC107', color: '#0A0A0A' };
+      if (st === 'absent') return { ...base, background: '#191B22', color: '#5C6070' };
+      return { ...base, background: '#2A2D3A' };
+    };
+    const layout = ['QWERTYUIOP'.split(''), 'ASDFGHJKL'.split(''), ['ENTER', ...'ZXCVBNM'.split(''), 'BACK']];
+    const keyRows = layout.map(row => row.map(k => {
+      if (k === 'ENTER') return { label: 'Enter', onClick: this.fSubmit, style: keyStyle('special', true) };
+      if (k === 'BACK') return { label: '⌫', onClick: this.fBack, style: keyStyle('special', true) };
+      return { label: k, onClick: () => this.fType(k), style: keyStyle(keyState[k] || 'unused', false) };
+    }));
+    const fNice = s.fAnswer.charAt(0) + s.fAnswer.slice(1).toLowerCase();
+
+    // Quiz
+    const total = s.qTotal;
+    const q = QUESTIONS[Math.min(s.qIndex, QUESTIONS.length - 1)];
+    const answers = q.choices.map((label, i) => {
+      let bg = '#14161E', bd = '#242836', col = '#F0F1F5', lbg = '#242836', lfg = '#9BA0B8', mark = '';
+      if (s.answered) {
+        if (i === q.answer) { bg = 'rgba(88,204,2,0.12)'; bd = 'rgba(88,204,2,0.55)'; col = '#9BE25C'; lbg = '#58CC02'; lfg = '#0A0A0A'; mark = '✓'; }
+        else if (i === s.picked) { bg = 'rgba(255,59,48,0.10)'; bd = 'rgba(255,59,48,0.5)'; col = '#FF8A82'; lbg = '#FF3B30'; lfg = '#FFFFFF'; mark = '✗'; }
+        else { bg = '#101218'; bd = '#1A1D27'; col = '#6E7180'; lbg = '#141414'; lfg = '#6E7180'; }
+      }
+      return {
+        label, letter: 'ABCD'[i], mark, onPick: () => this.pick(i),
+        rowStyle: { display: 'flex', alignItems: 'center', gap: '13px', width: '100%', padding: '16px', textAlign: 'left', background: bg, border: '1.5px solid ' + bd, color: col, borderRadius: '14px', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '16px', cursor: s.answered ? 'default' : 'pointer', transition: 'all .15s' },
+        letStyle: { width: '32px', height: '32px', flex: '0 0 auto', borderRadius: '10px', background: lbg, color: lfg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '13px' },
+      };
+    });
+    const isCorrect = s.answered && s.picked === q.answer;
+    const isTimeout = s.answered && s.picked === -1;
+    const answerText = q.choices[q.answer];
+    let fbLabel = '', fbDetail = '', pillBg = '', pillFg = '', wrapBg = '';
+    if (s.answered) {
+      if (isCorrect) { fbLabel = 'Correct'; fbDetail = '+' + s.lastGain + ' · streak ' + s.streak; pillBg = 'rgba(88,204,2,0.16)'; pillFg = '#8AE042'; wrapBg = 'rgba(88,204,2,0.06)'; }
+      else if (isTimeout) { fbLabel = 'Time up'; fbDetail = 'Answer: ' + answerText; pillBg = 'rgba(255,193,7,0.16)'; pillFg = '#FFD24A'; wrapBg = 'rgba(255,193,7,0.05)'; }
+      else { fbLabel = 'Wrong'; fbDetail = 'Answer: ' + answerText; pillBg = 'rgba(255,59,48,0.16)'; pillFg = '#FF8A82'; wrapBg = 'rgba(255,59,48,0.05)'; }
+    }
+    const acc = Math.round((s.correct / total) * 100);
+    let grade = 'Back to training', gradeEmoji = '💪';
+    if (s.correct === total) { grade = 'Class of the season'; gradeEmoji = '🏆'; }
+    else if (s.correct >= total * 0.75) { grade = 'Top of the table'; gradeEmoji = '⭐'; }
+    else if (s.correct >= total * 0.5) { grade = 'Mid-table'; gradeEmoji = '⚽'; }
+
+    return {
+      home: s.screen === 'home', footle: s.screen === 'footle', quiz: s.screen === 'quiz', results: s.screen === 'results', inGame: s.screen === 'footle' || s.screen === 'quiz', adOpen: !!s.ad, adSecs: s.ad ? s.ad.secs : 0, adDone: !!(s.ad && s.ad.done), adCounting: !!(s.ad && !s.ad.done), adTitle: s.ad ? (s.ad.kind === 'rewarded' ? 'Watch to earn your hint' : 'Quick ad break') : '', adSub: s.ad ? (s.ad.kind === 'rewarded' ? 'Finish the ad to claim your reward.' : 'Your game continues right after.') : '', adCta: s.ad ? (s.ad.kind === 'rewarded' ? 'Claim reward' : 'Continue →') : '', adFinish: this.adFinish, adSkip: this.adSkip, watchReplay: this.watchReplay, watchFAnother: this.watchFAnother, watchHint: this.watchHint, fHintShow: !!s.fHint, fHintText: s.fHint ? ('Letter ' + s.fHint.pos + ' is ' + s.fHint.letter) : '',
+      startFootle: this.startFootle, fAnother: this.fAnother, startDaily: this.startDaily, startOnline: this.startOnline, startLocal: this.startLocal,
+      mClassic: () => this.startQuiz('Classic'), mSurvival: () => this.startQuiz('Survival'), mHot: () => this.startQuiz('Hot Streak'), mLegends: () => this.startQuiz('Legends'),
+      goHome: this.goHome, restart: this.restart, next: this.next,
+      fRows, keyRows, fOver: s.fStatus !== 'playing', fBanner: s.fStatus === 'won' ? '⚽ Brilliant!' : 'Out of guesses', fAnswerNice: fNice,
+      mode: s.mode, qNum: String(Math.min(s.qIndex + 1, total)).padStart(2, '0'), total: String(total).padStart(2, '0'),
+      question: q.question, answers, answered: s.answered,
+      timeLeft: String(s.timeLeft).padStart(2, '0'),
+      timerStyle: { fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, fontSize: '15px', color: s.timeLeft <= 5 ? '#FF3B30' : '#FFC107', minWidth: '40px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' },
+      progStyle: { width: (((s.qIndex + (s.answered ? 1 : 0)) / total) * 100) + '%', height: '100%', background: 'linear-gradient(90deg,#58CC02,#22c55e)', borderRadius: '999px', transition: 'width .35s cubic-bezier(.34,1.56,.64,1)' },
+      fbLabel, fbDetail,
+      fbPillStyle: { display: 'inline-flex', alignItems: 'center', padding: '4px 11px', borderRadius: '999px', background: pillBg, color: pillFg, fontSize: '11px', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' },
+      fbWrapStyle: { marginTop: '20px', padding: '18px', borderRadius: '16px', background: wrapBg, border: '1px solid #1A1D27' },
+      nextLabel: (s.qIndex + 1 >= total) ? 'See results' : 'Next question',
+      finalScore: s.score.toLocaleString(), acc, correctN: s.correct, totalN: total, bestStreak: s.bestStreak, grade, gradeEmoji,
+    };
+  }
+}
+</script>
+</body>
+</html>
