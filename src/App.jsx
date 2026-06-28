@@ -7585,6 +7585,12 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       // 1.1: completing today's Footle cancels tonight's reminder; a solve is
       // also a positive moment to surface the notification pre-prompt.
       try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won" } })); } catch {}
+      // ⭐ 5-star ask at a Footle emotional peak — a fast solve (≤3 guesses) is a
+      // genuine "I'm good at this" moment. maybeRequestReview enforces a long
+      // cooldown + lifetime cap + native-only, so it only occasionally prompts.
+      if (newStatus === "won" && newGuesses.length <= 3) {
+        timeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+      }
     }
   }, [state, current, answer]);
 
@@ -8914,7 +8920,8 @@ function AppInner() {
       (res.score === res.total && res.total >= 5) ||
       (res.total >= 10 && res.score / res.total >= 0.8) ||
       [7, 30, 100].includes(loginStreak);
-    if (hadGreatMoment && newTotal >= 5 && mode !== "daily") {
+    const willAskNativeReview = hadGreatMoment && newTotal >= 5 && mode !== "daily";
+    if (willAskNativeReview) {
       celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
     }
 
@@ -8955,11 +8962,14 @@ function AppInner() {
       setStats(p => ({...p, bestSurvival: res.score}));
     }
 
-    // Rate prompt — show once after 5+ games with a good score
+    // Rate prompt — show once after 5+ games with a good score. On native we
+    // defer to the native review sheet above (don't double-ask); on web, where
+    // that sheet no-ops, this App Store link is the only ask, so keep it.
     const shouldShowRate = !ratePromptShown
       && stats.gamesPlayed >= 4
       && res.score >= 7
-      && mode === "classic";
+      && mode === "classic"
+      && !(IS_NATIVE && willAskNativeReview);
     if (shouldShowRate) {
       setRatePromptShown(true);
       window.storage?.set("biq_rate_shown", "1").catch(() => {});
