@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { getWordleAnswer, gradeWordleGuess, WORDLE_PLAYERS } from '../lib/wordle.js';
 
 // Ball IQ "Play" web experience — the design handoff's Play.dc.html, recreated
@@ -298,19 +298,154 @@ function AdOverlay({ ad, onClose, onClaim }) {
   );
 }
 
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+const MODE_LABEL = { daily: 'Daily 7', classic: 'Classic', legends: 'Legends' };
+
+function QuizScreen({ quiz, onPick, onNext, onClose }) {
+  const q = quiz.questions[quiz.qIndex];
+  const total = quiz.questions.length;
+  const danger = quiz.timeLeft <= 5;
+  const wasCorrect = quiz.picked === q.a;
+  const timedOut = quiz.picked === null;
+  const last = quiz.qIndex + 1 >= total;
+  return (
+    <div style={{ position: 'relative', zIndex: 1, maxWidth: 680, margin: '0 auto', padding: '22px 20px 70px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <button onClick={onClose} className="ply-iconbtn" aria-label="Close" style={{ width: 38, height: 38, borderRadius: 11, background: 'transparent', border: '1px solid #2A2D3A', color: '#9BA0B8', fontSize: 16, cursor: 'pointer', flexShrink: 0 }}>✕</button>
+        <div style={{ flex: 1, height: 8, background: '#1A1D27', borderRadius: 999, overflow: 'hidden' }}>
+          <div style={{ height: '100%', width: `${(quiz.qIndex / total) * 100}%`, background: '#58CC02', borderRadius: 999, transition: 'width .3s' }} />
+        </div>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 18, fontWeight: 700, color: danger ? '#FF3B30' : '#FFC107', minWidth: 42, textAlign: 'right' }}>{quiz.timeLeft}s</div>
+      </div>
+      <div style={{ marginTop: 18, fontFamily: "'JetBrains Mono',monospace", fontSize: 12, color: '#6E7180', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Q {String(quiz.qIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')} · {MODE_LABEL[quiz.mode] || quiz.mode}</div>
+      <div style={{ marginTop: 10, fontSize: 'clamp(22px,3vw,28px)', fontWeight: 800, color: '#fff', lineHeight: 1.25 }}>{q.q}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 12, marginTop: 24 }}>
+        {q.o.map((opt, i) => {
+          const isCorrect = i === q.a, isPicked = i === quiz.picked;
+          let bg = '#14161E', bd = '#242836';
+          if (quiz.answered) {
+            if (isCorrect) { bg = 'rgba(88,204,2,0.12)'; bd = '#58CC02'; }
+            else if (isPicked) { bg = 'rgba(255,59,48,0.10)'; bd = '#FF3B30'; }
+          }
+          return (
+            <button key={i} onClick={() => onPick(i)} disabled={quiz.answered} style={{ display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left', padding: 16, background: bg, border: `1.5px solid ${bd}`, borderRadius: 14, cursor: quiz.answered ? 'default' : 'pointer', fontFamily: 'inherit' }}>
+              <span style={{ width: 28, height: 28, borderRadius: 8, background: '#0F1117', border: '1px solid #2A2D3A', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, color: '#9BA0B8', flexShrink: 0 }}>{'ABCD'[i]}</span>
+              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: '#F0F1F5' }}>{opt}</span>
+              {quiz.answered && isCorrect && <span style={{ color: '#58CC02', fontWeight: 800 }}>✓</span>}
+              {quiz.answered && isPicked && !isCorrect && <span style={{ color: '#FF3B30', fontWeight: 800 }}>✗</span>}
+            </button>
+          );
+        })}
+      </div>
+      {quiz.answered && (
+        <div style={{ marginTop: 22, background: '#101218', border: '1px solid #242836', borderRadius: 14, padding: '16px 18px', animation: 'plyPop .25s ease' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800, color: wasCorrect ? '#58CC02' : '#FF8A82' }}>
+              {wasCorrect ? `✓ Correct  +${quiz.lastGain}` : timedOut ? "⏱ Time's up" : '✗ Not quite'}
+            </span>
+            <button onClick={onNext} className="ply-green" style={{ padding: '11px 20px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: 14, border: 'none', borderRadius: 11, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 20px -8px rgba(88,204,2,0.5)' }}>{last ? 'See results →' : 'Next question →'}</button>
+          </div>
+          {q.hint && <div style={{ marginTop: 10, fontSize: 13.5, color: '#9BA0B8', lineHeight: 1.5 }}>{q.hint}</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function ResultsScreen({ quiz, onPlayAgain, onHome }) {
+  const total = quiz.questions.length;
+  const acc = Math.round((100 * quiz.correct) / total);
+  const grade = acc === 100 ? { e: '🏆', t: 'Class of the season' } : acc >= 70 ? { e: '🥇', t: 'Top of the table' } : acc >= 40 ? { e: '⚽', t: 'Mid-table' } : { e: '🎓', t: 'Back to training' };
+  const stat = (val, label, color) => (
+    <div style={{ flex: 1, textAlign: 'center' }}>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 22, fontWeight: 700, color: color || '#fff' }}>{val}</div>
+      <div style={{ marginTop: 3, fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#6E7180' }}>{label}</div>
+    </div>
+  );
+  return (
+    <div style={{ position: 'relative', zIndex: 1, maxWidth: 560, margin: '0 auto', padding: '34px 20px 80px', textAlign: 'center' }}>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6E7180' }}>{MODE_LABEL[quiz.mode] || quiz.mode} · Complete</div>
+      <div style={{ fontSize: 56, marginTop: 14 }}>{grade.e}</div>
+      <div style={{ marginTop: 6, fontSize: 'clamp(26px,4vw,34px)', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>{grade.t}</div>
+      <div style={{ marginTop: 24, background: '#101218', border: '1px solid #242836', borderRadius: 18, padding: 24 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 'clamp(40px,9vw,56px)', fontWeight: 700, color: '#58CC02', lineHeight: 1 }}>{quiz.score}</div>
+        <div style={{ marginTop: 6, fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180' }}>Final score</div>
+        <div style={{ display: 'flex', gap: 12, marginTop: 22, paddingTop: 18, borderTop: '1px solid #1A1D27' }}>
+          {stat(`${acc}%`, 'Accuracy')}
+          {stat(`${quiz.correct}/${total}`, 'Correct')}
+          {stat(quiz.bestStreak, 'Best run', '#FF8A3D')}
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
+        <button onClick={onPlayAgain} className="ply-green" style={{ flex: 1, minWidth: 160, padding: 14, background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: 15, border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 22px -6px rgba(88,204,2,0.5)' }}>Play again</button>
+        <button onClick={onHome} className="ply-signin" style={{ flex: 1, minWidth: 160, padding: 14, background: 'transparent', color: '#fff', fontWeight: 700, fontSize: 15, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Back to home</button>
+      </div>
+      <a href={APP_STORE} target="_blank" rel="noopener" style={{ display: 'block', marginTop: 16, background: 'linear-gradient(100deg, rgba(255,106,0,0.10), rgba(88,204,2,0.06))', border: '1px solid #242836', borderRadius: 16, padding: 18, textAlign: 'left' }}>
+        <div style={{ fontSize: 15, fontWeight: 800, color: '#fff' }}>Save this score → Get the app</div>
+        <div style={{ marginTop: 4, fontSize: 13, color: '#9BA0B8' }}>Track your IQ, streak and rank across every game.</div>
+      </a>
+      <div style={{ marginTop: 16, border: '1px dashed #2A2D3A', borderRadius: 12, padding: '18px', color: '#3C3F4C', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Advertisement · Responsive banner</div>
+    </div>
+  );
+}
+
 // ── CONTAINER ─────────────────────────────────────────────────────────────────
 export default function PlayApp() {
-  const [screen, setScreen] = useState('home'); // home | footle
+  const [screen, setScreen] = useState('home'); // home | footle | quiz | results
   const [ad, setAd] = useState(null);
   const [hint, setHint] = useState(null);
-  const answerRef = useRef('');
+  const [quiz, setQuiz] = useState(null);
 
   const goGame = () => { window.location.href = '/play'; };
 
+  const startQuiz = useCallback(async (mode) => {
+    const n = mode === 'daily' ? 7 : mode === 'classic' ? 10 : 8;
+    let pool;
+    try {
+      const mod = await import('../questions.js');
+      pool = (mod.QB || []).filter((x) => x.type === 'mcq' && Array.isArray(x.o) && x.o.length >= 2);
+    } catch { goGame(); return; }
+    if (mode === 'legends') pool = pool.filter((x) => x.cat === 'Legends');
+    const arr = pool.slice();
+    for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+    const questions = arr.slice(0, n);
+    if (questions.length === 0) { goGame(); return; }
+    setQuiz({ mode, questions, qIndex: 0, picked: null, answered: false, score: 0, streak: 0, bestStreak: 0, correct: 0, timeLeft: 20, lastGain: 0 });
+    setScreen('quiz');
+  }, []);
+
+  const startMode = useCallback((name) => {
+    const m = String(name).toLowerCase();
+    if (m === 'daily' || m === 'classic' || m === 'legends') startQuiz(m);
+    else goGame(); // survival / hot streak / online / local → existing engine for now
+  }, [startQuiz]);
+
+  // per-question countdown
+  useEffect(() => {
+    if (screen !== 'quiz' || !quiz || quiz.answered) return;
+    if (quiz.timeLeft <= 0) { setQuiz((q) => (q && !q.answered ? { ...q, picked: null, answered: true, streak: 0, lastGain: 0 } : q)); return; }
+    const t = setTimeout(() => setQuiz((q) => (q && !q.answered ? { ...q, timeLeft: q.timeLeft - 1 } : q)), 1000);
+    return () => clearTimeout(t);
+  }, [screen, quiz?.timeLeft, quiz?.answered]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const pick = (idx) => setQuiz((q) => {
+    if (!q || q.answered) return q;
+    const correct = idx === q.questions[q.qIndex].a;
+    const gain = correct ? 10 + q.timeLeft : 0;
+    const streak = correct ? q.streak + 1 : 0;
+    return { ...q, picked: idx, answered: true, score: q.score + gain, correct: q.correct + (correct ? 1 : 0), streak, bestStreak: Math.max(q.bestStreak, streak), lastGain: gain };
+  });
+
+  const next = () => {
+    if (!quiz) return;
+    if (quiz.qIndex + 1 >= quiz.questions.length) { setScreen('results'); return; }
+    setQuiz((q) => ({ ...q, qIndex: q.qIndex + 1, picked: null, answered: false, timeLeft: 20, lastGain: 0 }));
+  };
+
   const claimHint = () => {
     const ans = (getWordleAnswer() || '').toUpperCase();
-    const pos = 1 + Math.floor((ans.length) * 0.5); // a middle-ish letter
-    const i = Math.min(pos, ans.length) - 1;
+    const i = Math.min(Math.floor(ans.length / 2), ans.length - 1);
     setHint({ pos: i + 1, letter: ans[i] });
     setAd(null);
   };
@@ -320,16 +455,17 @@ export default function PlayApp() {
       <style>{STYLE}</style>
       <Glows />
       <Nav onSignIn={goGame} />
-      {screen === 'home' && (
-        <Home
-          onFootle={() => { setHint(null); setScreen('footle'); }}
-          onMode={() => goGame()}
+      {screen === 'home' && <Home onFootle={() => { setHint(null); setScreen('footle'); }} onMode={startMode} />}
+      {screen === 'footle' && <Footle onBack={() => setScreen('home')} onRequestHint={() => setAd({ kind: 'rewarded', onConfirm: claimHint })} hint={hint} />}
+      {screen === 'quiz' && quiz && <QuizScreen quiz={quiz} onPick={pick} onNext={next} onClose={() => setScreen('home')} />}
+      {screen === 'results' && quiz && (
+        <ResultsScreen
+          quiz={quiz}
+          onHome={() => setScreen('home')}
+          onPlayAgain={() => setAd({ kind: 'interstitial', onConfirm: () => { setAd(null); startQuiz(quiz.mode); } })}
         />
       )}
-      {screen === 'footle' && (
-        <Footle onBack={() => setScreen('home')} onRequestHint={() => setAd({ kind: 'rewarded' })} hint={hint} />
-      )}
-      {ad && <AdOverlay ad={ad} onClose={() => setAd(null)} onClaim={claimHint} />}
+      {ad && <AdOverlay ad={ad} onClose={() => setAd(null)} onClaim={() => ad.onConfirm && ad.onConfirm()} />}
     </div>
   );
 }
