@@ -25,6 +25,17 @@ const STYLE = `
 .mkt a { text-decoration:none; }
 .mkt-link { color:#9BA0B8; font-size:14px; font-weight:600; transition:color .15s; }
 .mkt-link:hover { color:#fff; }
+.mkt-nav { padding:15px 28px; }
+.mkt-nav-links { gap:30px; }
+/* Nav collapse: on phones the full link row + CTA overflows the viewport, so
+   drop the anchor-jump links (Features/Modes/FAQ) and keep the two real actions
+   (Play + Get the app) in a tighter row that always fits. */
+@media (max-width:640px) {
+  .mkt-nav { padding:12px 15px; }
+  .mkt-nav-links { gap:14px; }
+  .mkt-nav-sec { display:none; }
+  .mkt-nav-cta { padding:10px 15px !important; font-size:13px !important; }
+}
 .mkt-cta-green { transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, filter .15s; }
 .mkt-cta-green:hover { transform:translateY(-2px); box-shadow:0 14px 30px -6px rgba(88,204,2,0.72), inset 0 1px 0 rgba(255,255,255,0.25); filter:brightness(1.04); }
 .mkt-cta-app { transition:transform 80ms, border-color .15s; }
@@ -95,8 +106,8 @@ const AppStoreBadge = ({ small }) => (
   </a>
 );
 
-const GreenCTA = ({ href, children, big, target }) => (
-  <a href={href} target={target} rel={target ? 'noopener' : undefined} className="mkt-cta-green"
+const GreenCTA = ({ href, children, big, target, className }) => (
+  <a href={href} target={target} rel={target ? 'noopener' : undefined} className={`mkt-cta-green${className ? ' ' + className : ''}`}
      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: big ? '15px 26px' : '11px 20px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: big ? 16 : 14, borderRadius: 12, boxShadow: '0 8px 22px -6px rgba(88,204,2,0.6), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
     {children}
   </a>
@@ -161,14 +172,14 @@ export default function MarketingHome() {
       <style>{STYLE}</style>
 
       {/* ── NAV ── */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px 28px', background: 'rgba(10,10,10,0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderBottom: '1px solid #16181F' }}>
+      <nav className="mkt-nav" style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(10,10,10,0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderBottom: '1px solid #16181F' }}>
         <a href="/"><Brand /></a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 30 }}>
-          <a href="#features" className="mkt-link">Features</a>
-          <a href="#modes" className="mkt-link">Modes</a>
-          <a href="#faq" className="mkt-link">FAQ</a>
+        <div className="mkt-nav-links" style={{ display: 'flex', alignItems: 'center' }}>
+          <a href="#features" className="mkt-link mkt-nav-sec">Features</a>
+          <a href="#modes" className="mkt-link mkt-nav-sec">Modes</a>
+          <a href="#faq" className="mkt-link mkt-nav-sec">FAQ</a>
           <a href={PLAY} className="mkt-link" style={{ fontWeight: 700 }}>Play</a>
-          <GreenCTA href={APP_STORE} target="_blank">Get the app</GreenCTA>
+          <GreenCTA href={APP_STORE} target="_blank" className="mkt-nav-cta">Get the app</GreenCTA>
         </div>
       </nav>
 
