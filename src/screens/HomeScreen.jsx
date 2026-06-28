@@ -39,11 +39,6 @@ function HomeScreenImpl({
 
   return (
     <div className="screen tab-content">
-      {/* Phase 2 desktop redesign: head (full-width) + 2-col dashboard grid.
-          All three wrappers are `display:contents` on mobile, so the mobile
-          DOM/flow is byte-identical to the old flat stack; only >=1024px turns
-          .home-grid-cols into a real two-column grid. */}
-      <div className="home-head">
       {/* Greeting row — Sprint #11 Stage 3: streak chip relocated here
           (top-right of greeting), sub-text replaced with context-aware
           nudges keyed on what's still actionable today. */}
@@ -159,10 +154,7 @@ function HomeScreenImpl({
           </button>
         </div>
       )}
-      </div>{/* /home-head */}
 
-      <div className="home-grid-cols">
-      <div className="home-grid-a">
       {/* ── DAILY ZONE (Sprint #12) ──
           Wraps Footle hero + Today's 7 in a tinted container with a
           shared "DAILY" eyebrow + X/2 progress indicator. The cards
@@ -233,9 +225,7 @@ function HomeScreenImpl({
         onLocal={() => startMode("local")}
         showToast={showToast}
       />
-      </div>{/* /home-grid-a */}
 
-      <div className="home-grid-b">
       {/* ── MORE MODES ── */}
       {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
           for a slightly bolder line that holds at the 20px size in
@@ -319,8 +309,6 @@ function HomeScreenImpl({
           </div>
         );
       })()}
-      </div>{/* /home-grid-b */}
-      </div>{/* /home-grid-cols */}
     </div>
   );
 }
