@@ -2662,7 +2662,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 // and falls back to the pack's starter questions otherwise.
 const CLUB_PACK_TO_QB = {
   Arsenal: "Arsenal", Liverpool: "Liverpool", ManUtd: "Manchester United", ManCity: "Manchester City",
-  Chelsea: "Chelsea", Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
+  Chelsea: "Chelsea", Tottenham: "Tottenham Hotspur", Newcastle: "Newcastle United",
+  Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
   Juventus: "Juventus", AcMilan: "AC Milan", Atletico: "Atlético Madrid", Dortmund: "Borussia Dortmund",
   PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
 };
@@ -2887,6 +2888,14 @@ const CLUB_PACKS = {
       { q:"How many times have Ajax won the European Cup or Champions League?", o:["3","4","5","6"], a:2, diff:"medium" },
     ]
   },
+  Tottenham: {
+    name: "Tottenham", icon: "⚪", color: "#132257",
+    questions: [],
+  },
+  Newcastle: {
+    name: "Newcastle", icon: "⚫", color: "#241F20",
+    questions: [],
+  },
 };
 
 // ─── CLUB CRESTS ─────────────────────────────────────────────────────────────
@@ -3052,6 +3061,23 @@ const CLUB_CRESTS = {
     <rect x="22" y="52" width="56" height="2.5" fill="#CC0000"/>
     <rect x="22" y="62" width="56" height="2.5" fill="#CC0000"/>
     <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#CC0000" stroke-width="2"/>
+  </svg>`,
+  Tottenham: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="#132257"/>
+    <circle cx="50" cy="66" r="12" fill="#FFFFFF"/>
+    <ellipse cx="50" cy="42" rx="6" ry="9" fill="#FFFFFF"/>
+    <polygon points="55,36 64,34 56,43" fill="#FFFFFF"/>
+    <path d="M45 35 Q41 27 48 31" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`,
+  Newcastle: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="nufc_clip"><path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z"/></clipPath></defs>
+    <g clip-path="url(#nufc_clip)">
+      <rect x="0" y="0" width="100" height="100" fill="#FFFFFF"/>
+      <rect x="14" y="0" width="13" height="100" fill="#241F20"/>
+      <rect x="40" y="0" width="13" height="100" fill="#241F20"/>
+      <rect x="66" y="0" width="13" height="100" fill="#241F20"/>
+    </g>
+    <path d="M12 10 L88 10 L88 55 Q88 88 50 96 Q12 88 12 55 Z" fill="none" stroke="#241F20" stroke-width="2"/>
   </svg>`,
 };
 
@@ -6048,6 +6074,18 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
 // ─── CLUB QUIZ SCREEN ────────────────────────────────────────────────────────
 function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);
+  // Show the real (verified) pool size per club; falls back to the pack count.
+  const [verifiedCounts, setVerifiedCounts] = React.useState(null);
+  React.useEffect(() => {
+    let alive = true;
+    loadQuestions().then(({ QB }) => {
+      if (!alive) return;
+      const c = {};
+      for (const [k, name] of Object.entries(CLUB_PACK_TO_QB)) c[k] = QB.filter(q => q && q.club === name && q.type === "mcq" && Array.isArray(q.o)).length;
+      setVerifiedCounts(c);
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, []);
   // Sprint #68 JJ4: ESC + focus-trap on the upsell modal.
   const proModalRef = useRef(null);
   useModalA11y({ isOpen: showProModal, onClose: () => setShowProModal(false), ref: proModalRef });
@@ -6068,7 +6106,7 @@ function ClubQuizScreen({ onStart, onBack }) {
             </div>
             <div className="mi-body">
               <div className="mi-name">{pack.name}</div>
-              <div className="mi-desc">{(pack?.questions?.length) || 0} questions</div>
+              <div className="mi-desc">{Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0)} questions</div>
             </div>
             <div className="mi-arrow">→</div>
           </div>
