@@ -9,7 +9,8 @@
       "WebFetch(domain:www.sports.legal)",
       "WebFetch(domain:arenesslaw.com)",
       "WebFetch(domain:natlawreview.com)",
-      "WebFetch(domain:www.footyheadlines.com)"
+      "WebFetch(domain:www.footyheadlines.com)",
+      "WebFetch(domain:www.bdfutbol.com)"
     ]
   }
 }
