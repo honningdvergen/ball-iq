@@ -8493,9 +8493,6 @@ function AppInner() {
   const [dailyHistory, setDailyHistory] = useState({});
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
-  // Favourite club (a CLUB_PACKS key) — set when a club quiz is played, surfaced
-  // as a personalised "your club" tile on Home. Skippable / changeable; persisted.
-  const [favClub, setFavClub] = useState(() => { try { return localStorage.getItem("biq_fav_club") || null; } catch { return null; } });
 
   const toastTimerRef = useRef(null);
   const showToast = useCallback((msg, duration = 2800) => {
@@ -8874,8 +8871,6 @@ function AppInner() {
       }
       if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
       if (!qs.length) { showToast("No questions yet for this club"); return; }
-      setFavClub(clubKey);
-      try { localStorage.setItem("biq_fav_club", clubKey); } catch {}
       setActiveClub(clubKey);
       setMode("classic");
       setQuestions(qs);
@@ -10102,8 +10097,6 @@ function AppInner() {
               viewDailyScore={viewDailyScore}
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
-              favClub={favClub && CLUB_PACKS[favClub] ? { key: favClub, name: CLUB_PACKS[favClub].name } : null}
-              onPlayClub={launchClubQuiz}
               shareCard={shareCard}
               challenge={(pendingChallenge && pendingChallenge.date === dateToYMD(new Date()).replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
               onPlayChallenge={playDaily}

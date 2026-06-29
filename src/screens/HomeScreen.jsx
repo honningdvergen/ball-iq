@@ -29,8 +29,6 @@ function HomeScreenImpl({
   viewDailyScore,
   startMode,
   setShowDiffPicker,
-  favClub,
-  onPlayClub,
   shareCard,
   challenge,
   onPlayChallenge,
@@ -240,7 +238,7 @@ function HomeScreenImpl({
       <div className="home-section-title">More modes</div>
       <div className="play-grid">
         {[
-          { key:"clubquiz",  Icon: Shield,     name: favClub ? `${favClub.name} Quiz` : "Club Quiz", desc: favClub ? "Your club ⚽" : "Pick your club", onTap: favClub ? () => onPlayClub(favClub.key) : () => startMode("clubquiz") },
+          { key:"clubquiz",  Icon: Shield,     name: "Club Quiz", desc: "Pick your club", onTap: () => startMode("clubquiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
