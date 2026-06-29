@@ -101,6 +101,12 @@
       if (location.protocol === 'capacitor:' ||
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');
+      } else if (location.pathname === '/' &&
+                 !(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) &&
+                 !window.navigator.standalone) {
+        // Browser marketing homepage: hide the legacy landing chrome BEFORE paint
+        // so it doesn't flash on desktop cold loads before main.jsx's _fullBleed runs.
+        document.documentElement.classList.add('full-bleed');
       }
     </script>
     <style>
@@ -222,6 +228,12 @@
       }
       html.native-app body > .landing-bottom { padding-left: 0 !important; }
       html.native-app body { background-image: none !important; }
+
+      /* Browser marketing homepage: hide the legacy landing chrome pre-paint
+         (html.full-bleed set by the inline head script) so it doesn't flash on
+         desktop cold loads before main.jsx's _fullBleed() runs. */
+      html.full-bleed .landing-top,
+      html.full-bleed .landing-bottom { display: none !important; }
 
       /* Sprint #64 FF2 killswitch — hide landing chrome while the user is
          actively mid-game (quiz / Footle / local pass-and-play). Body class

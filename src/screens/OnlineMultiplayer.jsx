@@ -6,6 +6,7 @@ import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions } from '../App.jsx';
+import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
 // this ~1,700-line subtree stays out of the first-paint bundle. The logic is
@@ -724,6 +725,20 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
   // lasted longer, so it's a tie, not a win. (Only a full draw, so a clear
   // last-place player in a 3-way isn't told "it's a draw".)
   const survivalDraw = survivalLastStanding && sorted.length > 1 && sorted.every(p => p.eliminated_at_q === winner.eliminated_at_q);
+
+  // ⭐ 5-star ask at a multiplayer emotional peak — winning a LIVE game (>=2
+  // players, not a draw) is a genuine high, the same caliber moment solo wins
+  // get. Fires once; maybeRequestReview keeps its 45-day cooldown + lifetime cap
+  // + native-only gating, and shares one budget with the quiz/Footle nudges.
+  const reviewAskedRef = useRef(false);
+  useEffect(() => {
+    if (reviewAskedRef.current) return;
+    if (isWinner && !survivalDraw && (players?.length || 0) >= 2) {
+      reviewAskedRef.current = true;
+      const t = setTimeout(() => { maybeRequestReview(); }, 3500);
+      return () => clearTimeout(t);
+    }
+  }, [isWinner, survivalDraw, players]);
 
   // Medal emoji for podium positions; numeric rank thereafter.
   function rankBadge(idx) {

@@ -7961,9 +7961,13 @@ function AppInner() {
       const fromUrl = fromPath || fromQuery;
       if (fromUrl) {
         try { localStorage.setItem("biq_pending_join", fromUrl); } catch {}
-        // Strip the path/query so a refresh doesn't re-trigger the auto-join.
+        // Strip the path/query so a refresh doesn't re-trigger the auto-join —
+        // but drop ONLY the /join path + join param, preserving any other params
+        // (e.g. a co-present ?c= challenge token, read by the next init).
         try {
-          window.history.replaceState({}, "", `/${window.location.hash || ""}`);
+          const u = new URL(window.location.href);
+          u.pathname = "/"; u.searchParams.delete("join");
+          window.history.replaceState({}, "", u.pathname + u.search + u.hash);
         } catch {}
         return normalize(fromUrl);
       }
@@ -7990,7 +7994,7 @@ function AppInner() {
       const pathMatch = window.location.pathname.match(/^\/c\/([^/?#]+)/);
       const raw = (pathMatch ? pathMatch[1] : null) || new URLSearchParams(window.location.search).get("c");
       if (raw) {
-        try { window.history.replaceState({}, "", `/${window.location.hash || ""}`); } catch {}
+        try { const u = new URL(window.location.href); u.pathname = "/"; u.searchParams.delete("c"); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
         const challenge = parseChallengeStr(raw);
         if (challenge) {
           try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
