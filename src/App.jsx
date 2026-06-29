@@ -8434,6 +8434,9 @@ function AppInner() {
   const [dailyHistory, setDailyHistory] = useState({});
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
+  // Favourite club (a CLUB_PACKS key) — set when a club quiz is played, surfaced
+  // as a personalised "your club" tile on Home. Skippable / changeable; persisted.
+  const [favClub, setFavClub] = useState(() => { try { return localStorage.getItem("biq_fav_club") || null; } catch { return null; } });
 
   const toastTimerRef = useRef(null);
   const showToast = useCallback((msg, duration = 2800) => {
@@ -8787,6 +8790,41 @@ function AppInner() {
       } catch {}
     }
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
+
+  // Launch a specific club's quiz directly (used by the picker AND the Home
+  // personalised tile). Prefers our verified, hint-bearing QB questions, and
+  // remembers the club as the user's favourite so Home shows a "your club" shortcut.
+  const launchClubQuiz = useCallback(async (clubKey) => {
+    try {
+      const pack = CLUB_PACKS[clubKey];
+      if (!pack) return;
+      haptic("soft");
+      let qs = null;
+      const qbName = CLUB_PACK_TO_QB[clubKey];
+      if (qbName) {
+        try {
+          const { QB } = await loadQuestions();
+          const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o));
+          if (verified.length >= 10) {
+            qs = shuffle(verified).slice(0, 10).map(q => {
+              const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+              return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
+            });
+          }
+        } catch {}
+      }
+      if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
+      if (!qs.length) { showToast("No questions yet for this club"); return; }
+      setFavClub(clubKey);
+      try { localStorage.setItem("biq_fav_club", clubKey); } catch {}
+      setActiveClub(clubKey);
+      setMode("classic");
+      setQuestions(qs);
+      setScreen("quiz");
+    } catch (e) {
+      showToast("⚠️ Couldn't start club quiz");
+    }
+  }, [showToast]);
 
   // When a shared invite link is opened (?join=CODE), once auth resolves and
   // the user is signed in (not guest), route them to OnlineEntry with the
@@ -10005,6 +10043,8 @@ function AppInner() {
               viewDailyScore={viewDailyScore}
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
+              favClub={favClub && CLUB_PACKS[favClub] ? { key: favClub, name: CLUB_PACKS[favClub].name } : null}
+              onPlayClub={launchClubQuiz}
               shareCard={shareCard}
               challenge={(pendingChallenge && pendingChallenge.date === dateToYMD(new Date()).replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
               onPlayChallenge={playDaily}
@@ -10128,30 +10168,7 @@ function AppInner() {
         {/* ── CLUB QUIZ ── */}
         {screen === "club-quiz" && (
           <ClubQuizScreen
-            onStart={async (clubKey) => {
-              const pack = CLUB_PACKS[clubKey];
-              let qs = null;
-              // Prefer our fact-checked, hint-bearing QB questions when we have >=10
-              // for this club; option-shuffle them and cap at 10. Else use the pack.
-              const qbName = CLUB_PACK_TO_QB[clubKey];
-              if (qbName) {
-                try {
-                  const { QB } = await loadQuestions();
-                  const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o));
-                  if (verified.length >= 10) {
-                    qs = shuffle(verified).slice(0, 10).map(q => {
-                      const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
-                      return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
-                    });
-                  }
-                } catch {}
-              }
-              if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
-              setActiveClub(clubKey);
-              setMode("classic");
-              setQuestions(qs);
-              setScreen("quiz");
-            }}
+            onStart={launchClubQuiz}
             onBack={goHome}
           />
         )}

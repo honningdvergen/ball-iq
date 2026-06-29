@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
@@ -29,6 +29,8 @@ function HomeScreenImpl({
   viewDailyScore,
   startMode,
   setShowDiffPicker,
+  favClub,
+  onPlayClub,
   shareCard,
   challenge,
   onPlayChallenge,
@@ -238,6 +240,7 @@ function HomeScreenImpl({
       <div className="home-section-title">More modes</div>
       <div className="play-grid">
         {[
+          { key:"clubquiz",  Icon: Shield,     name: favClub ? `${favClub.name} Quiz` : "Club Quiz", desc: favClub ? "Your club ⚽" : "Pick your club", onTap: favClub ? () => onPlayClub(favClub.key) : () => startMode("clubquiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
@@ -300,7 +303,6 @@ function HomeScreenImpl({
         const COMING_SOON = [
           { key:"tikitakatoe", icon:"🎯",  name:"Tiki Taka Toe",    desc:"Tic-tac-toe with football connections" },
           { key:"guessplayer", icon:"🔍",  name:"Guess the Player", desc:"Identify the mystery player from clues" },
-          { key:"clubquiz",    icon:"🏟️", name:"Club Quiz",         desc:"Deep-dive trivia for your favourite club" },
         ];
         if (COMING_SOON.length === 0) return null;
         return (
