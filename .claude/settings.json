@@ -12,7 +12,8 @@
       "WebFetch(domain:www.footyheadlines.com)",
       "WebFetch(domain:www.bdfutbol.com)",
       "WebFetch(domain:www.worldfootball.net)",
-      "WebFetch(domain:fbref.com)"
+      "WebFetch(domain:fbref.com)",
+      "WebFetch(domain:grokipedia.com)"
     ]
   }
 }
