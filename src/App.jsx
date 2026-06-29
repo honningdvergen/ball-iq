@@ -2656,6 +2656,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 
 // ─── CLUB QUIZ PACKS (Pro feature — starter content) ────────────────────────
+// Maps each club-pack key to its canonical `club` value in the question bank, so
+// the club quiz serves our fact-checked, hint-bearing QB questions whenever we
+// have >=10 for that club — auto-upgrading each club as content is generated —
+// and falls back to the pack's starter questions otherwise.
+const CLUB_PACK_TO_QB = {
+  Arsenal: "Arsenal", Liverpool: "Liverpool", ManUtd: "Manchester United", ManCity: "Manchester City",
+  Chelsea: "Chelsea", Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
+  Juventus: "Juventus", AcMilan: "AC Milan", Atletico: "Atlético Madrid", Dortmund: "Borussia Dortmund",
+  PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
+};
+
 const CLUB_PACKS = {
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
@@ -10079,9 +10090,25 @@ function AppInner() {
         {/* ── CLUB QUIZ ── */}
         {screen === "club-quiz" && (
           <ClubQuizScreen
-            onStart={(clubKey) => {
+            onStart={async (clubKey) => {
               const pack = CLUB_PACKS[clubKey];
-              const qs = shuffle(pack.questions).slice(0, 10).map(q => ({...q, type:"mcq", cat:"ClubQuiz"}));
+              let qs = null;
+              // Prefer our fact-checked, hint-bearing QB questions when we have >=10
+              // for this club; option-shuffle them and cap at 10. Else use the pack.
+              const qbName = CLUB_PACK_TO_QB[clubKey];
+              if (qbName) {
+                try {
+                  const { QB } = await loadQuestions();
+                  const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o));
+                  if (verified.length >= 10) {
+                    qs = shuffle(verified).slice(0, 10).map(q => {
+                      const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+                      return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
+                    });
+                  }
+                } catch {}
+              }
+              if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
               setActiveClub(clubKey);
               setMode("classic");
               setQuestions(qs);
