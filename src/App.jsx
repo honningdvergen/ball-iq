@@ -3565,10 +3565,11 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
-function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest }) {
+function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
+  const [reportedKeys, setReportedKeys] = useState(() => new Set()); // questions flagged "report a problem" this run
   const isSpeed = mode === "speed";
   const timerDuration = isSpeed ? 8 : (timerSecondsOverride || 20);
   const [score, setScore] = useState(0);
@@ -3990,6 +3991,36 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           {idx + 1 >= total ? "Results →" : "Next →"}
         </button>
       )}
+      {answered && onReport && (() => {
+        const rkey = q?._histKey || (q?.id != null ? String(q.id) : q?.q);
+        const reported = reportedKeys.has(rkey);
+        return (
+          <button
+            type="button"
+            disabled={reported}
+            onClick={() => {
+              if (reported) return;
+              const picked = isTF
+                ? (selected === 1 ? "True" : selected === 0 ? "False" : null)
+                : (typeof selected === "number" && Array.isArray(q?.o) ? q.o[selected] : null);
+              const correct = isTF
+                ? ((q?.a === true || q?.a === 1) ? "True" : "False")
+                : (Array.isArray(q?.o) && typeof q?.a === "number" ? q.o[q.a] : (q?.typed_a || null));
+              onReport({ id: q?.id, q: q?.q, picked, correct, mode });
+              setReportedKeys(prev => new Set(prev).add(rkey));
+            }}
+            style={{
+              display:"block", margin:"12px auto 0", padding:"6px 10px",
+              background:"none", border:"none", cursor: reported ? "default" : "pointer",
+              color:"var(--t3)", fontSize:12, fontWeight:600, fontFamily:"inherit",
+              opacity: reported ? 0.65 : 1,
+              WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
+            }}
+          >
+            {reported ? "✓ Reported — thanks" : "⚑ Report a problem"}
+          </button>
+        );
+      })()}
 
       {showQuit && (
         <div className="modal-overlay" onClick={() => setShowQuit(false)}>
@@ -8235,6 +8266,7 @@ function AppInner() {
     return 0;
   });
   const [showRatePrompt, setShowRatePrompt] = useState(false);
+  const [rateView, setRateView] = useState("ask"); // 'ask' (loving it?) → 'store' (go rate). Unhappy → feedback, never the store.
   const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -8503,6 +8535,22 @@ function AppInner() {
       toastTimerRef.current = null;
     }, duration);
   }, []);
+
+  // Question report — a one-tap "report a problem" on the answer reveal writes to
+  // question_reports (RPC-only) so we can re-check flagged items. We always thank
+  // the player even if the write fails — the point is to defuse "this is wrong"
+  // frustration in-app rather than have it become a 1-star review.
+  const reportQuestion = useCallback((info) => {
+    supabase.rpc("report_question", {
+      p_question_id: info?.id != null ? String(info.id) : null,
+      p_question_text: info?.q || "(unknown)",
+      p_picked: info?.picked ?? null,
+      p_correct: info?.correct ?? null,
+      p_mode: info?.mode ?? null,
+      p_reason: null,
+    }).catch((e) => { try { console.warn("report_question failed", e); } catch {} });
+    showToast("Thanks — we'll double-check this one ⚽");
+  }, [showToast]);
 
   // Audit 2.4: surface localStorage quota exhaustion. safeSetItem fires this
   // event once per session on QuotaExceededError; without this, quota loss
@@ -9118,7 +9166,7 @@ function AppInner() {
     if (shouldShowRate) {
       setRatePromptShown(true);
       window.storage?.set("biq_rate_shown", "1").catch(() => {});
-      celebrationTimeoutsRef.current.push(setTimeout(() => setShowRatePrompt(true), 1800));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 1800));
     }
 
     // Award XP
@@ -9889,21 +9937,37 @@ function AppInner() {
         {showRatePrompt && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
             <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
-              <div style={{fontSize:48,marginBottom:12}}>⭐</div>
-              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
-              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
-              <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
-                setShowRatePrompt(false);
-                const ua = navigator.userAgent || "";
-                if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
-                  window.open("https://apps.apple.com/app/id6775975961", "_blank");
-                } else if (/Android/i.test(ua)) {
-                  window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
-                } else {
-                  showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
-                }
-              }}>Rate {APP_NAME} ⭐</button>
-              <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
+              {rateView === "ask" ? (
+                <>
+                  <div style={{fontSize:48,marginBottom:12}}>⚽</div>
+                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
+                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>We'd love to know how it's going for you.</div>
+                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => setRateView("store")}>Loving it! 😄</button>
+                  <button className="btn btn-s" onClick={() => {
+                    setShowRatePrompt(false);
+                    try { window.location.href = `mailto:hello@balliq.app?subject=${encodeURIComponent(APP_NAME + " feedback")}&body=${encodeURIComponent("What could be better?\n\n")}`; } catch {}
+                    showToast("Thanks — tell us what we can fix 🙏");
+                  }}>Not really</button>
+                </>
+              ) : (
+                <>
+                  <div style={{fontSize:48,marginBottom:12}}>⭐</div>
+                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Glad you're enjoying it!</div>
+                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
+                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
+                    setShowRatePrompt(false);
+                    const ua = navigator.userAgent || "";
+                    if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
+                      window.open("https://apps.apple.com/app/id6775975961", "_blank");
+                    } else if (/Android/i.test(ua)) {
+                      window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
+                    } else {
+                      showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
+                    }
+                  }}>Rate {APP_NAME} ⭐</button>
+                  <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -10326,6 +10390,7 @@ function AppInner() {
               soundEnabled={settings.sound === true}
               hintsEnabled={settings.hints !== false}
               onComplete={handleComplete}
+              onReport={reportQuestion}
               onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
             />
           </div>
