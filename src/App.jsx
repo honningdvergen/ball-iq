@@ -2668,6 +2668,40 @@ const CLUB_PACK_TO_QB = {
   PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
 };
 
+// League grouping for the club-quiz picker.
+const CLUB_LEAGUES = {
+  Arsenal: "pl", Liverpool: "pl", ManUtd: "pl", ManCity: "pl", Chelsea: "pl", Tottenham: "pl", Newcastle: "pl",
+  Barcelona: "laliga", RealMadrid: "laliga", Atletico: "laliga",
+  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea",
+  BayernMunich: "bundesliga", Dortmund: "bundesliga",
+  PSG: "ligue1",
+  Ajax: "other",
+};
+const CLUB_LEAGUE_SECTIONS = [
+  { key: "pl", label: "Premier League" },
+  { key: "laliga", label: "La Liga" },
+  { key: "seriea", label: "Serie A" },
+  { key: "bundesliga", label: "Bundesliga" },
+  { key: "ligue1", label: "Ligue 1" },
+  { key: "other", label: "More clubs" },
+];
+
+// Colour-code helpers for the club rows (no crests — the club colour IS the identity).
+function clubInitials(name) {
+  const w = String(name).trim().split(/\s+/);
+  return (w.length === 1 ? w[0].slice(0, 3) : w.map(x => x[0]).join("")).slice(0, 3).toUpperCase();
+}
+function clubHexToRgba(hex, a) {
+  const h = String(hex).replace("#", "");
+  const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function clubReadableText(hex) {
+  const h = String(hex).replace("#", "");
+  const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#0a0a0a" : "#ffffff";
+}
+
 const CLUB_PACKS = {
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
@@ -6098,20 +6132,33 @@ function ClubQuizScreen({ onStart, onBack }) {
       <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
         Test your deep knowledge of a specific club — history, players, trophies and iconic moments.
       </p>
-      <div className="mode-list">
-        {Object.entries(CLUB_PACKS).map(([key, pack]) => (
-          <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}>
-            <div className="mi-icon" style={{background:"transparent", padding:0, width:56, height:56, display:"flex", alignItems:"center", justifyContent:"center"}}>
-              <ClubCrest clubKey={key} size={48} />
+      {CLUB_LEAGUE_SECTIONS.map((section) => {
+        const clubs = Object.entries(CLUB_PACKS).filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key);
+        if (!clubs.length) return null;
+        return (
+          <div key={section.key} style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px" }}>{section.label}</div>
+            <div className="mode-list">
+              {clubs.map(([key, pack]) => {
+                const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
+                return (
+                  <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
+                    style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, 0.32)} 0%, ${clubHexToRgba(pack.color, 0.06)} 100%)`, borderColor: clubHexToRgba(pack.color, 0.4) }}>
+                    <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
+                      <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{clubInitials(pack.name)}</span>
+                    </div>
+                    <div className="mi-body">
+                      <div className="mi-name">{pack.name}</div>
+                      <div className="mi-desc">{count} questions</div>
+                    </div>
+                    <div className="mi-arrow">→</div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="mi-body">
-              <div className="mi-name">{pack.name}</div>
-              <div className="mi-desc">{Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0)} questions</div>
-            </div>
-            <div className="mi-arrow">→</div>
           </div>
-        ))}
-      </div>
+        );
+      })}
       <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
         <div style={{fontSize:22,marginBottom:6}}>🏆</div>
         <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>More clubs coming soon</div>
@@ -9776,7 +9823,7 @@ function AppInner() {
             {/* 1.1: hide the global wordmark on screens that already have their
                 own page-header (Settings, the online MP setup + lobby) — it just
                 stacks a second identifier. (Broader sub-screen audit deferred.) */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -10254,8 +10301,10 @@ function AppInner() {
               </div>
             )}
             {activeClub && CLUB_PACKS[activeClub] && (
-              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"10px 14px",background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14}}>
-                <ClubCrest clubKey={activeClub} size={80} />
+              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(CLUB_PACKS[activeClub].color, 0.14),border:`1px solid ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.4)}`,borderRadius:14}}>
+                <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:CLUB_PACKS[activeClub].color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.45)}`}}>
+                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(CLUB_PACKS[activeClub].color)}}>{clubInitials(CLUB_PACKS[activeClub].name)}</span>
+                </div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>Club Quiz</div>
                   <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{CLUB_PACKS[activeClub].name}</div>
