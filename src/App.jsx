@@ -2702,6 +2702,16 @@ function clubReadableText(hex) {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#0a0a0a" : "#ffffff";
 }
 
+// Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
+// not raw initials. Falls back to clubInitials() for any unmapped key.
+const CLUB_ABBR = {
+  Arsenal: "ARS", Liverpool: "LIV", ManUtd: "MUN", ManCity: "MCI", Chelsea: "CHE", Tottenham: "TOT", Newcastle: "NEW",
+  Barcelona: "FCB", RealMadrid: "RMA", Atletico: "ATM",
+  Juventus: "JUV", AcMilan: "ACM", InterMilan: "INT",
+  BayernMunich: "BAY", Dortmund: "BVB",
+  PSG: "PSG", Ajax: "AJA",
+};
+
 const CLUB_PACKS = {
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
@@ -2762,7 +2772,7 @@ const CLUB_PACKS = {
     ]
   },
   RealMadrid: {
-    name: "Real Madrid", icon: "⚪", color: "#FEBE10",
+    name: "Real Madrid", icon: "⚪", color: "#FFFFFF",
     questions: [
       { q:"How many Champions League titles has Real Madrid won in total?", o:["13","14","15","16"], a:2, diff:"easy" },
       { q:"Who scored Real Madrid's winning goal in the 2014 Champions League final vs Atletico?", o:["Benzema","Bale","Ramos","Modric"], a:2, diff:"medium" },
@@ -3555,12 +3565,12 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
-function QuizEngine({ questions, mode, diff, timerEnabled, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest }) {
+function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
   const isSpeed = mode === "speed";
-  const timerDuration = isSpeed ? 8 : 20;
+  const timerDuration = isSpeed ? 8 : (timerSecondsOverride || 20);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -6141,11 +6151,13 @@ function ClubQuizScreen({ onStart, onBack }) {
             <div className="mode-list">
               {clubs.map(([key, pack]) => {
                 const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
+                const lightClub = clubReadableText(pack.color) === "#0a0a0a";
+                const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                 return (
                   <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
-                    style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, 0.32)} 0%, ${clubHexToRgba(pack.color, 0.06)} 100%)`, borderColor: clubHexToRgba(pack.color, 0.4) }}>
+                    style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
                     <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
-                      <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{clubInitials(pack.name)}</span>
+                      <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
                     </div>
                     <div className="mi-body">
                       <div className="mi-name">{pack.name}</div>
@@ -9056,7 +9068,7 @@ function AppInner() {
     // the celebration. Skips daily (which already shows the notif pre-prompt).
     const hadGreatMoment =
       (res.score === res.total && res.total >= 5) ||
-      (res.total >= 10 && res.score / res.total >= 0.8) ||
+      (res.total >= 10 && res.score / res.total >= 0.9) ||
       [7, 30, 100].includes(loginStreak);
     const willAskNativeReview = hadGreatMoment && newTotal >= 5 && mode !== "daily";
     if (willAskNativeReview) {
@@ -9105,7 +9117,7 @@ function AppInner() {
     // that sheet no-ops, this App Store link is the only ask, so keep it.
     const shouldShowRate = !ratePromptShown
       && stats.gamesPlayed >= 4
-      && res.score >= 7
+      && res.score >= 9
       && mode === "classic"
       && !(IS_NATIVE && willAskNativeReview);
     if (shouldShowRate) {
@@ -9823,7 +9835,7 @@ function AppInner() {
             {/* 1.1: hide the global wordmark on screens that already have their
                 own page-header (Settings, the online MP setup + lobby) — it just
                 stacks a second identifier. (Broader sub-screen audit deferred.) */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -10303,7 +10315,7 @@ function AppInner() {
             {activeClub && CLUB_PACKS[activeClub] && (
               <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(CLUB_PACKS[activeClub].color, 0.14),border:`1px solid ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.4)}`,borderRadius:14}}>
                 <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:CLUB_PACKS[activeClub].color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.45)}`}}>
-                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(CLUB_PACKS[activeClub].color)}}>{clubInitials(CLUB_PACKS[activeClub].name)}</span>
+                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(CLUB_PACKS[activeClub].color)}}>{CLUB_ABBR[activeClub] || clubInitials(CLUB_PACKS[activeClub].name)}</span>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>Club Quiz</div>
@@ -10317,6 +10329,7 @@ function AppInner() {
               mode={mode}
               diff={diff}
               timerEnabled={settings.timer !== false}
+              timerSecondsOverride={activeClub ? 15 : undefined}
               soundEnabled={settings.sound === true}
               hintsEnabled={settings.hints !== false}
               onComplete={handleComplete}
