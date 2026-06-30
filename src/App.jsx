@@ -667,10 +667,10 @@ export const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
-  SerieA:"Serie A", Managers:"Managers", Records:"Records & Icons",
-  Legends:"Legends & History"
+  SerieA:"Serie A", Ligue1:"Ligue 1", Managers:"Managers", Records:"Records & Icons",
+  Legends:"Legends & History", Transfers:"Transfers"
 };
-const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Managers","Records","Legends"];
+const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
 
