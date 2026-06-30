@@ -13,7 +13,10 @@
       "WebFetch(domain:www.bdfutbol.com)",
       "WebFetch(domain:www.worldfootball.net)",
       "WebFetch(domain:fbref.com)",
-      "WebFetch(domain:grokipedia.com)"
+      "WebFetch(domain:grokipedia.com)",
+      "WebFetch(domain:immortalfootball.com)",
+      "WebFetch(domain:ajaxuniverse.com)",
+      "WebFetch(domain:soccertrippers.com)"
     ]
   }
 }
