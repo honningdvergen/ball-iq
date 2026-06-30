@@ -17,7 +17,19 @@
       "WebFetch(domain:immortalfootball.com)",
       "WebFetch(domain:ajaxuniverse.com)",
       "WebFetch(domain:soccertrippers.com)",
-      "WebFetch(domain:www.uefa.com)"
+      "WebFetch(domain:www.uefa.com)",
+      "WebFetch(domain:www.britannica.com)",
+      "WebFetch(domain:copaamerica.com)",
+      "WebFetch(domain:theanalyst.com)",
+      "WebFetch(domain:www.statista.com)",
+      "WebFetch(domain:www.acmilan.com)",
+      "WebFetch(domain:tribuna.com)",
+      "WebFetch(domain:www.statbunker.com)",
+      "WebFetch(domain:www.mancity.com)",
+      "WebFetch(domain:www.transfermarkt.com)",
+      "WebFetch(domain:www.republicworld.com)",
+      "WebFetch(domain:www.statmuse.com)",
+      "WebFetch(domain:www.fotmob.com)"
     ]
   }
 }
