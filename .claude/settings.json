@@ -16,7 +16,8 @@
       "WebFetch(domain:grokipedia.com)",
       "WebFetch(domain:immortalfootball.com)",
       "WebFetch(domain:ajaxuniverse.com)",
-      "WebFetch(domain:soccertrippers.com)"
+      "WebFetch(domain:soccertrippers.com)",
+      "WebFetch(domain:www.uefa.com)"
     ]
   }
 }
