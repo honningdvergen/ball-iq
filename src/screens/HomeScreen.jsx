@@ -37,6 +37,17 @@ function HomeScreenImpl({
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
+  // Cold-start race: on native the session restores from Preferences AFTER first
+  // paint, so there's a brief guest window before `user` is set during which the
+  // "set your name" CTA would flash for an already-signed-in user. Defer the CTA
+  // past that startup transient — homeAuthLoading covers the profile-fetch window,
+  // this covers the session-restore window.
+  const [ctaSettled, setCtaSettled] = React.useState(false);
+  React.useEffect(() => {
+    const t = setTimeout(() => setCtaSettled(true), 800);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="screen tab-content">
       {/* Greeting row — Sprint #11 Stage 3: streak chip relocated here
@@ -52,7 +63,7 @@ function HomeScreenImpl({
         const isDefaultName = (n) => !n || n === "Player" || /^player_/i.test(n);
         const homeRealUsername = authProfile?.username && !isDefaultName(authProfile.username) ? authProfile.username : null;
         const homeHasUsername = !!homeRealUsername;
-        const homeShowCTA = !homeAuthLoading && !homeHasUsername && (!homeLocalName || isDefaultName(homeLocalName));
+        const homeShowCTA = ctaSettled && !homeAuthLoading && !homeHasUsername && (!homeLocalName || isDefaultName(homeLocalName));
         // Brand-new guest installs (no signed-in user, no local name)
         // used to flash "Good morning, Guest" before auth resolved. Drop
         // the placeholder and the trailing comma when no real name is
