@@ -9382,7 +9382,16 @@ function AppInner() {
     const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
     const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
     const params = new URLSearchParams({
-      n: profile.name || `${APP_NAME} Player`,
+      n: (() => {
+        // Prefer the server username (where the set name actually lives) over the
+        // local profile.name, mirroring the Home greeting — otherwise a signed-in
+        // user's card shows "<App> Player" instead of their name.
+        const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
+        const u = authProfile?.username;
+        if (u && !isDef(u)) return u;
+        if (profile.name && !isDef(profile.name)) return profile.name;
+        return `${APP_NAME} Player`;
+      })(),
       l: level.name || "",
       li: level.icon || "⚽",
       x: String(xp || 0),
