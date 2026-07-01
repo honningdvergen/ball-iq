@@ -22,6 +22,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Custom URL scheme (matches iOS CFBundleURLSchemes: app.balliq) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="app.balliq" />
+            </intent-filter>
+
+            <!-- HTTPS App Links: multiplayer invites (/join/*) + async challenges (/c/*).
+                 Verifies once /.well-known/assetlinks.json is deployed with the Play
+                 App Signing SHA-256 fingerprint; until then these links open in the
+                 browser (no chooser) and the app.balliq:// scheme still works. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="balliq.app" android:pathPrefix="/join/" />
+                <data android:scheme="https" android:host="balliq.app" android:pathPrefix="/c/" />
+            </intent-filter>
+
         </activity>
 
         <provider
@@ -38,4 +58,6 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Daily-reminder local notifications; runtime-prompted on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
