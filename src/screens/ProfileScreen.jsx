@@ -1398,7 +1398,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           const rows = [];
           if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
           if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" });
-          else rows.push({ icon: "🧭", label: "Next up", value: "Play more leagues", color: "var(--t2)" });
+          else rows.push({ icon: "🧭", label: "Next up", value: "Try different leagues", color: "var(--t2)" });
           // Only show "Top X%" when it's actually a flex — iqPercentile floors
           // at 15, so a weak player would otherwise read "Top 85%" (sounds great,
           // means bottom-ish). Show it only for genuine top-half players.
