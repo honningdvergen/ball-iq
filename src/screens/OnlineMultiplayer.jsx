@@ -18,11 +18,13 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState("");
-  // V1 capacity is hardcoded to 4 (max headroom). The picker UI was
-  // removed (Finding 6.0): users rarely benefit from constraining
-  // capacity, and a wrong default locks out a 3rd/4th friend with no
-  // recovery. Re-introduce the picker if real user feedback demands it.
-  const CAPACITY = 4;
+  // Capacity is 8 — matches the "up to 8 players" marketing (site, store,
+  // screenshots). The picker UI was removed (Finding 6.0); a fixed generous cap
+  // avoids a wrong default locking out a friend. Server enforces per-room
+  // capacity (join_room checks count >= capacity); the lobby list scrolls
+  // vertically and the in-game player bar scrolls horizontally, so 8 renders
+  // cleanly. NOTE: wants a real 8-way realtime test before heavy promotion.
+  const CAPACITY = 8;
   // Show "Reconnecting…" pill while create_room / join_room is in
   // retry territory (the wrapper layer absorbs transient blips silently
   // on the first attempt; this indicator fires once the second attempt
