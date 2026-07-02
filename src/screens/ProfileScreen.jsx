@@ -1280,17 +1280,47 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
             {/* Brand eyebrow — frames this as a Ball IQ rating, not a generic player card */}
             <div style={{ position: "relative", fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: t.text, opacity: 0.5, marginBottom: 12 }}>BALL IQ RATING</div>
 
-            {/* Overall (left) + editable avatar (right) */}
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
-              <div>
+            {/* Two-column header: the full identity stack (overall + name + level
+                + IQ) lives in the left column; the avatar sits bigger and
+                vertically CENTERED against the whole stack on the right — no
+                dead space under a top-corner avatar. */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, position: "relative" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 50, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{_card.overall}</div>
                 <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
                 <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+                {/* Editable name */}
+                <div style={{ marginTop: 12 }}>
+                  {(authLoading && !currentName) ? (
+                    <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
+                  ) : editingName ? (
+                    <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
+                      <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
+                        style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
+                        style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
+                    </span>
+                  ) : showNameCTA ? (
+                    <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
+                      Set your name <span style={{fontSize:13,opacity:0.6}} aria-hidden="true">✏️</span>
+                    </button>
+                  ) : (
+                    <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
+                      {currentName || authProfile?.username || profile?.name || "Player"}
+                      <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Level + IQ */}
+                <div className="profile-level-badge" style={{marginTop:8}}>{level.icon} {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
+                {iq ? <div className="profile-iq-line" style={{marginTop:5,color:t.text,opacity:0.7}}>{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong></div> : null}
               </div>
-              <div className="profile-avatar-wrap" style={authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : undefined}>
+              <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
                 <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo" style={showPhoto
-                  ? {padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                  : {border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                  ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                  : {width:96, height:96, fontSize:44, border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
                   {uploading ? (
                     <span className="avatar-spinner" aria-label="Uploading…" />
                   ) : showPhoto ? (
@@ -1302,41 +1332,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
                 <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
               </div>
             </div>
-
-            {/* Editable name */}
-            <div style={{ marginTop: 12 }}>
-              {(authLoading && !currentName) ? (
-                // Only skeleton when there's no cached name yet — otherwise the
-                // name shows (and stays editable) instantly without waiting for
-                // the server profile (which can be slow, e.g. on web).
-                <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
-              ) : editingName ? (
-                <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                  <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
-                  {/* iOS keyboard "return" doesn't reliably fire keydown Enter on a
-                      bare input, so give explicit tap targets. onMouseDown
-                      preventDefault keeps focus so the click handles it (rather
-                      than the input blurring + committing first). */}
-                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
-                    style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
-                  <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
-                    style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
-                </span>
-              ) : showNameCTA ? (
-                <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
-                  Set your name <span style={{fontSize:13,opacity:0.6}} aria-hidden="true">✏️</span>
-                </button>
-              ) : (
-                <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
-                  {currentName || authProfile?.username || profile?.name || "Player"}
-                  <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
-                </button>
-              )}
-            </div>
-
-            {/* Level + IQ */}
-            <div className="profile-level-badge" style={{marginTop:8}}>{level.icon} {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
-            {iq ? <div className="profile-iq-line" style={{marginTop:5,color:t.text,opacity:0.7}}>{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong></div> : null}
 
             <div style={{ height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
 

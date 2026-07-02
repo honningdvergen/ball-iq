@@ -249,7 +249,8 @@ function HomeScreenImpl({
       <div className="home-section-title">More modes</div>
       <div className="play-grid">
         {[
-          { key:"clubquiz",  Icon: Shield,     name: "Club Quiz", desc: "Pick your club", onTap: () => startMode("clubquiz") },
+          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
+          { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },

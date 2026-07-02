@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, MP_PACKS } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -247,12 +247,15 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   const [startError, setStartError] = useState("");
   const [showReconnecting, setShowReconnecting] = useState(false);
   const [copyToast, setCopyToast] = useState("");
-  // Stage 1F.4: host-chosen mode. "classic" = 10Q, "sprint" = 5Q.
+  // Host-chosen format. "classic" = 10Q race, "sprint" = 5Q race,
+  // "survival" = 15Q escalating elimination (sets room.mode='survival').
   // Lobby-only state (the actual question count lands in startGame's
-  // RPC arg). Joiners don't see this picker — mode is implicit until
-  // gameplay starts; they just play whatever question count the host
-  // sent into start_game. No mode broadcast pre-start needed.
+  // RPC arg). Joiners see the format via the broadcast room.mode line.
   const [mode, setMode] = useState("classic");
+  // Host-chosen question pack ("mixed" | "cat:PL" | "club:Arsenal" …).
+  // The filtered questions land in start_game's array, so joiners
+  // automatically play the same pack — no extra broadcast needed.
+  const [pack, setPack] = useState("mixed");
 
   // "Reconnecting…" indicator only after >2s in a non-subscribed state to
   // avoid flicker on transient drops.
@@ -316,10 +319,11 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     if (starting) return;
     setStarting(true);
     setStartError("");
-    const questionCount = mode === "sprint" ? 5 : 10;
+    const survival = mode === "survival";
+    const questionCount = survival ? 15 : mode === "sprint" ? 5 : 10;
     let questions;
     try {
-      questions = await pickMultiplayerQuestions(questionCount);
+      questions = await pickMultiplayerQuestions(questionCount, pack, { escalate: survival });
     } catch (e) {
       console.warn('[handleStart]', e?.message || e);
       setStartError("Couldn't load questions — check your connection");
@@ -344,7 +348,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     // Success: keep starting=true. Realtime UPDATE will switch us to the
     // PlayingPlaceholder sub-view, which doesn't render the Start button
     // at all, so the lingering 'starting' state has no UI effect.
-  }, [actions, players.length, starting, mode]);
+  }, [actions, players.length, starting, mode, pack]);
 
   const isMe = useCallback((p) => myPlayer && p.user_id === myPlayer.user_id, [myPlayer]);
 
@@ -387,13 +391,15 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
       showReconnecting={showReconnecting}
       mode={mode}
       setMode={setMode}
+      pack={pack}
+      setPack={setPack}
       scoringMode={room.mode || "race"}
       onSetScoringMode={actions.setRoomMode}
     />
   );
 }
 
-function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, scoringMode, onSetScoringMode }) {
+function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode }) {
   // Optimistic mode highlight: reflect the host's tap instantly, then let the
   // realtime room.mode echo confirm it. Revert + toast if the RPC fails so the
   // picker never silently no-ops or sticks on a value the server didn't accept.
@@ -410,6 +416,14 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
       try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Could not change mode — try again' })); } catch {}
     }
   }, [onSetScoringMode]);
+  // Single "Format" axis: Classic/Sprint are race-scored lengths; Survival is
+  // the elimination mode. Picking a format sets the local length AND syncs
+  // room.mode (race|survival) so joiners see what they're about to play.
+  const pickFormat = useCallback((fmt) => {
+    setMode(fmt);
+    const target = fmt === "survival" ? "survival" : "race";
+    if (activeMode !== target) pickMode(target);
+  }, [setMode, activeMode, pickMode]);
   // Host-left detection (mirrors the gameplay banner at the MultiplayerGameplay
   // level): if the host's row has vanished from the realtime player list, the
   // room can never start (start_game rejects non-hosts), so surface an explicit
@@ -541,50 +555,57 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             : "🏁 Race — fastest correct answers win"}
         </div>
 
-        {/* Host-only scoring-mode picker. Calls set_room_mode → broadcasts via
-            room.mode to all clients (lobby badge + gameplay + results react). */}
+        {/* Host-only "what you play" axis: Mixed, one league/tournament, or
+            one club. The filtered questions land in start_game's array, so
+            joiners automatically play the same pack. Native select — Design
+            restyles later. */}
         {isHost && (
           <>
-            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Game mode</div>
-            <div className="size-btns" style={{ marginBottom: 16 }}>
-              {[
-                { id: "race",      label: "🏁 Race" },
-                { id: "hotstreak", label: "🔥 Hot Streak" },
-                { id: "survival",  label: "💀 Survival" },
-              ].map(opt => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  className={`size-btn${activeMode === opt.id ? " on" : ""}`}
-                  onClick={() => pickMode(opt.id)}
-                  disabled={starting}
-                  aria-pressed={activeMode === opt.id}
-                  style={{ flex: 1 }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
+            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Questions</div>
+            <select
+              value={pack}
+              onChange={(e) => setPack(e.target.value)}
+              disabled={starting}
+              aria-label="Question pack"
+              style={{
+                width: "100%", marginBottom: 16, padding: "12px 14px",
+                background: "var(--s1)", border: "1px solid var(--border)",
+                borderRadius: 12, color: "var(--text)", fontFamily: "inherit",
+                fontSize: 14, fontWeight: 600, appearance: "none", WebkitAppearance: "none",
+              }}
+            >
+              <option value="mixed">🎲 Mixed — all topics</option>
+              <optgroup label="Leagues & tournaments">
+                {MP_PACKS.filter(p => p.group === "Leagues & tournaments").map(p => (
+                  <option key={p.id} value={p.id}>{p.label}</option>
+                ))}
+              </optgroup>
+              <optgroup label="Clubs">
+                {MP_PACKS.filter(p => p.group === "Clubs").map(p => (
+                  <option key={p.id} value={p.id}>{p.label}</option>
+                ))}
+              </optgroup>
+            </select>
           </>
         )}
 
-        {/* Stage 1F.4: host-only mode picker. Compact .size-btns
-            segmented control matching Settings theme picker. Joiners
-            don't see this — mode is implicit; they play whatever
-            question count the host's startGame sent. */}
+        {/* Host-only "how you play" axis. Classic/Sprint are race-scored;
+            Survival flips room.mode to the elimination game with escalating
+            difficulty (easy → hard, one wrong = out, last standing wins). */}
         {isHost && (
           <>
-            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Game length</div>
+            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Format</div>
             <div className="size-btns" style={{ marginBottom: 16 }}>
               {[
-                { id: "classic", label: "🎯 Classic · 10Q" },
-                { id: "sprint",  label: "⚡ Sprint · 5Q"  },
+                { id: "classic",  label: "🎯 Classic · 10Q" },
+                { id: "sprint",   label: "⚡ Sprint · 5Q"  },
+                { id: "survival", label: "💀 Survival" },
               ].map(opt => (
                 <button
                   key={opt.id}
                   type="button"
                   className={`size-btn${mode === opt.id ? " on" : ""}`}
-                  onClick={() => setMode(opt.id)}
+                  onClick={() => pickFormat(opt.id)}
                   disabled={starting}
                   aria-pressed={mode === opt.id}
                   style={{ flex: 1 }}

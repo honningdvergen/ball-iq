@@ -27,6 +27,7 @@ import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT } from './seo/content.mjs';
+import { CLUBS } from './seo/clubs.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -48,6 +49,8 @@ const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 
 const catRows = (cat) => QB.filter((x) => x.cat === cat);
 const hintRows = (cat) => catRows(cat).filter((x) => x.hint && x.type === 'mcq' && Array.isArray(x.o));
+const clubRows = (club) => QB.filter((x) => x.club === club);
+const clubHintRows = (club) => clubRows(club).filter((x) => x.hint && x.type === 'mcq' && Array.isArray(x.o));
 
 // Deterministic, difficulty-spread sample: lead easy → end hard, stable by id.
 function curate(rows, n) {
@@ -285,6 +288,76 @@ ${footer()}`;
   return { slug: catCfg.slug, name: `${catCfg.name} quiz`, count: all.length, canonical };
 }
 
+// ── per-club page ─────────────────────────────────────────────────────────────
+// Mirrors buildCategoryPage but filters the bank by `club` instead of `cat`.
+// Prose comes from scripts/seo/clubs.mjs (fact-checked, currency-verified).
+function buildClubPage(cfg, clubPages, catPages) {
+  const all = clubRows(cfg.club);
+  const hints = clubHintRows(cfg.club);
+  if (hints.length < MIN_HINTS) {
+    throw new Error(
+      `[gen-seo] club "${cfg.club}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
+    );
+  }
+  const sample = curate(hints, Math.min(15, hints.length));
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
+        ],
+      },
+    ],
+  });
+
+  const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
+  const faqHtml = cfg.faq
+    .map((f) => `<dt>${esc(f.q)}</dt><dd>${esc(f.a)}</dd>`)
+    .join('\n');
+
+  const easy = all.filter((x) => x.diff === 'easy').length;
+  const medium = all.filter((x) => x.diff === 'medium').length;
+  const hard = all.filter((x) => x.diff === 'hard').length;
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+${header([
+    { name: 'Home', url: `${SITE.base}/` },
+    { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+    { name: cfg.name, url: canonical },
+  ])}
+<h1>${esc(cfg.h1)}</h1>
+<p class="lede">Free ${esc(cfg.name)} trivia questions with explained answers.</p>
+<div class="intro">
+${introHtml}
+</div>
+<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
+${ctaBlock(`Like these? Play the full ${cfg.name} quiz — it's free.`)}
+<h2>${esc(cfg.name)} quiz questions &amp; answers</h2>
+<p class="lede">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
+${renderQA(sample)}
+${ctaBlock(`The full ${cfg.name} question bank is in the Ball IQ app.`)}
+<h2>${esc(cfg.name)} quiz — FAQ</h2>
+<dl class="faq">
+${faqHtml}
+</dl>
+<h2>More club quizzes</h2>
+${renderMesh(cfg.slug, clubPages)}
+<h2>League &amp; tournament quizzes</h2>
+${renderMesh(cfg.slug, catPages)}
+${footer()}`;
+
+  const dir = resolve(DIST, 'quiz', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: `${cfg.name} quiz`, count: all.length, canonical };
+}
+
 // ── listicle page (cross-cutting "questions and answers" article) ─────────────
 function buildListiclePage(cfg, livePages) {
   const rows = cfg.questionIds.map((id) => QB.find((r) => r.id === id)).filter(Boolean);
@@ -337,7 +410,7 @@ ${footer()}`;
 }
 
 // ── hub page ──────────────────────────────────────────────────────────────────
-function buildHubPage(livePages) {
+function buildHubPage(livePages, clubPages) {
   const canonical = `${SITE.base}/quiz/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -375,6 +448,9 @@ ${introHtml}
 ${ctaBlock('Want the daily challenge, streaks and multiplayer? Play the full game free.')}
 <h2>Pick a quiz</h2>
 ${renderMesh(HUB.slug, livePages)}
+<h2>Club quizzes</h2>
+<p class="lede">Deep-dive quizzes on Europe's biggest clubs — history, legends and iconic moments.</p>
+${renderMesh(HUB.slug, clubPages)}
 ${footer()}`;
 
   const dir = resolve(DIST, 'quiz');
@@ -455,12 +531,15 @@ function buildSitemap(livePages) {
 // A concise, link-rich markdown summary LLM crawlers (ChatGPT, Perplexity, Gemini,
 // Claude, Google AI Overviews) can use to understand + cite the site. Generated
 // from livePages so it auto-grows as new quiz categories ship.
-function buildLlmsTxt(livePages) {
+function buildLlmsTxt(livePages, clubPages) {
   const cats = livePages.filter((p) => p.slug !== HUB.slug);
   const quizLinks = [
     `- [Football quizzes hub](${SITE.base}/quiz/): Every free football trivia category, each answer explained.`,
     ...cats.map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers, each with a fact-checked explanation.`),
   ].join('\n');
+  const clubLinks = clubPages
+    .map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers on the club's history, legends and trophies.`)
+    .join('\n');
   const txt = `# Ball IQ
 
 > Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes. Play free in any browser at ${SITE.base} or on iPhone.
@@ -469,6 +548,9 @@ Every question is human-curated and every answer carries an explained, fact-chec
 
 ## Quizzes
 ${quizLinks}
+
+## Club quizzes
+${clubLinks}
 
 ## About
 - [About Ball IQ](${SITE.base}/about/): What Ball IQ is, who it is for, and how it works.
@@ -494,18 +576,23 @@ function main() {
     ...LISTICLES.map((l) => ({ slug: l.slug, name: l.h1, count: l.questionIds.length })),
   ];
 
+  // Club pages: /quiz/<club-slug>/ — same URL namespace, own interlink mesh.
+  const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length }));
+
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
-  buildHubPage(livePages);
+  const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages));
+  buildHubPage(livePages, clubPages);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  buildSitemap(livePages);
-  buildLlmsTxt(livePages);
+  buildSitemap([...livePages, ...clubPages]);
+  buildLlmsTxt(livePages, clubPages);
 
-  console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle pages + hub + about + contact + sitemap + llms.txt into dist/`);
+  console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle + ${builtClubs.length} club pages + hub + about + contact + sitemap + llms.txt into dist/`);
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
+  for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
   console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);

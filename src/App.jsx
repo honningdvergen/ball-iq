@@ -11,7 +11,7 @@ import Login from './Login.jsx';
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Wifi } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -735,6 +735,37 @@ const CLUB_ABBR = {
   BayernMunich: "BAY", Dortmund: "BVB",
   PSG: "PSG", Ajax: "AJA",
 };
+
+// ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
+// Solo single-competition quizzes. Unlike the club quiz (which re-tags rows as
+// cat:"ClubQuiz"), league-quiz questions KEEP their real cat, so every answer
+// feeds the matching competition rating on the Ball IQ card (PRL/UCL/WCP/…).
+const LEAGUE_QUIZ_SECTIONS = [
+  { label: "Leagues", items: [
+    { cat: "PL",         name: "Premier League",   abbr: "PRL", color: "#3D195B" },
+    { cat: "LaLiga",     name: "La Liga",          abbr: "LAL", color: "#EE8707" },
+    { cat: "SerieA",     name: "Serie A",          abbr: "SEA", color: "#0578D3" },
+    { cat: "Bundesliga", name: "Bundesliga",       abbr: "BUN", color: "#D20515" },
+    { cat: "Ligue1",     name: "Ligue 1",          abbr: "L1",  color: "#1B2447" },
+  ]},
+  { label: "Tournaments", items: [
+    { cat: "UCL",      name: "Champions League", abbr: "UCL", color: "#123A8F" },
+    { cat: "WorldCup", name: "World Cup",        abbr: "WCP", color: "#8A6D1B" },
+    { cat: "Euros",    name: "Euros",            abbr: "EUR", color: "#1F6FB2" },
+  ]},
+];
+const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
+
+// Multiplayer question packs — the "what you play" axis of the lobby. ids are
+// "mixed" | "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by the host-only
+// pack picker in the lobby and by pickMultiplayerQuestions.
+export const MP_PACKS = [
+  { id: "mixed", label: "Mixed — all topics", group: null },
+  ...LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => ({ id: `cat:${i.cat}`, label: i.name, group: "Leagues & tournaments" }))),
+  ...Object.entries(CLUB_PACK_TO_QB)
+    .map(([key, name]) => ({ id: `club:${key}`, label: name, group: "Clubs" }))
+    .sort((a, b) => a.label.localeCompare(b.label)),
+];
 
 const CLUB_PACKS = {
   Arsenal: {
@@ -2095,17 +2126,36 @@ const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${bu
 // picker on OnlineEntry; pickMultiplayerQuestions can then accept
 // filter args. Stage 1F may also add seen_history integration if friend
 // testing surfaces "we keep seeing the same questions" complaints.
-export async function pickMultiplayerQuestions(count = 10) {
+export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { escalate = false } = {}) {
   const { QB } = await loadQuestions();
-  const eligible = QB.filter(q =>
+  let eligible = QB.filter(q =>
     q.type === "mcq" &&
     Array.isArray(q.o) && q.o.length === 4 &&
     typeof q.a === "number"
   );
+  // Host-selected pack ("cat:PL" / "club:Arsenal"): narrow the pool to one
+  // competition or one club. Falls back to the full mixed pool if the pack
+  // can't fill the requested count — a short pack must never produce a
+  // short game for the whole room.
+  if (packId && packId !== "mixed") {
+    const sep = String(packId).indexOf(":");
+    const kind = String(packId).slice(0, sep), key = String(packId).slice(sep + 1);
+    const filtered = kind === "cat" ? eligible.filter(q => q.cat === key)
+      : kind === "club" ? eligible.filter(q => q.club === CLUB_PACK_TO_QB[key])
+      : eligible;
+    if (filtered.length >= count) eligible = filtered;
+  }
   // Math.random() - 0.5 sort is biased but undetectable for casual
   // trivia. Upgrade to Fisher-Yates only if a user complaint surfaces.
   const shuffled = eligible.slice().sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map(q => ({
+  const picked = shuffled.slice(0, count);
+  // Survival format: escalate easy → medium → hard so the elimination
+  // game ramps up instead of dying on a random hard opener.
+  if (escalate) {
+    const rank = { easy: 0, medium: 1, hard: 2 };
+    picked.sort((a, b) => (rank[a.diff] ?? 1) - (rank[b.diff] ?? 1));
+  }
+  return picked.map(q => ({
     prompt: q.q,
     options: q.o,
     correct: q.a,
@@ -4246,6 +4296,106 @@ function ClubQuizScreen({ onStart, onBack }) {
   );
 }
 
+
+// League-quiz picker — mirrors ClubQuizScreen's colour-coded rows, grouped
+// Leagues / Tournaments. Counts show the live QB pool per competition.
+function LeagueQuizScreen({ onStart, onBack }) {
+  const [counts, setCounts] = React.useState(null);
+  React.useEffect(() => {
+    let alive = true;
+    loadQuestions().then(({ QB }) => {
+      if (!alive) return;
+      const c = {};
+      for (const s of LEAGUE_QUIZ_SECTIONS) for (const it of s.items) c[it.cat] = QB.filter(q => q && q.cat === it.cat && q.type === "mcq" && Array.isArray(q.o)).length;
+      setCounts(c);
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, []);
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
+        <div className="page-title">League Quizzes</div>
+      </div>
+      <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
+        Pick a competition — every answer builds that league's rating on your player card.
+      </p>
+      {LEAGUE_QUIZ_SECTIONS.map((section) => (
+        <div key={section.label} style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px" }}>{section.label}</div>
+          <div className="mode-list">
+            {section.items.map((it) => {
+              const lightRow = clubReadableText(it.color) === "#0a0a0a";
+              const a1 = lightRow ? 0.20 : 0.32, a2 = lightRow ? 0.05 : 0.06;
+              return (
+                <div key={it.cat} className="mode-item" onClick={() => { haptic("select"); onStart(it.cat); }}
+                  style={{ background: `linear-gradient(90deg, ${clubHexToRgba(it.color, a1)} 0%, ${clubHexToRgba(it.color, a2)} 100%)`, borderColor: clubHexToRgba(it.color, lightRow ? 0.5 : 0.4) }}>
+                  <div className="mi-icon" style={{ background: it.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(it.color, 0.45)}` }}>
+                    <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(it.color) }}>{it.abbr}</span>
+                  </div>
+                  <div className="mi-body">
+                    <div className="mi-name">{it.name}</div>
+                    <div className="mi-desc">{counts ? `${counts[it.cat]} questions` : "Loading…"}</div>
+                  </div>
+                  <div className="mi-arrow">→</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── ONLINE TAB (hub) ─────────────────────────────────────────────────────────
+// Dedicated bottom-nav home for multiplayer: the live-rooms hero, the
+// what-you-play / how-you-play explainer, local pass-and-play, and the async
+// challenges teaser. Presentational — all game entry goes through startMode
+// so auth-gating stays in one place.
+function OnlineHubTab({ startMode }) {
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <div className="page-title">Online</div>
+      </div>
+
+      <div style={{background:"linear-gradient(135deg,rgba(34,197,94,0.14),rgba(34,197,94,0.04))",border:"1px solid rgba(34,197,94,0.3)",borderRadius:18,padding:"20px 18px",marginBottom:14}}>
+        <div style={{fontSize:26,marginBottom:8}}>🌐</div>
+        <div style={{fontSize:19,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.3px",marginBottom:4}}>Live Multiplayer</div>
+        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.65,marginBottom:14}}>
+          Race up to 8 friends on the same questions in real time. Create a room and share the invite link — or join with a code.
+        </div>
+        <button className="btn-3d" style={{width:"100%"}} onClick={() => startMode("online")}>Create or join a room</button>
+      </div>
+
+      <div style={{display:"flex",gap:10,marginBottom:14}}>
+        <div style={{flex:1,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 14px"}}>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.08em",textTransform:"uppercase",color:"var(--t3)",marginBottom:8}}>Pick the questions</div>
+          <div style={{fontSize:13,color:"var(--t1)",fontWeight:700,lineHeight:1.9}}>🎲 Mixed<br/>🏆 League packs<br/>🛡️ Club packs</div>
+        </div>
+        <div style={{flex:1,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 14px"}}>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.08em",textTransform:"uppercase",color:"var(--t3)",marginBottom:8}}>Pick the format</div>
+          <div style={{fontSize:13,color:"var(--t1)",fontWeight:700,lineHeight:1.9}}>🎯 Classic · 10Q<br/>⚡ Sprint · 5Q<br/>💀 Survival</div>
+        </div>
+      </div>
+
+      <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"16px 16px",display:"flex",alignItems:"center",gap:14,marginBottom:14}}>
+        <div style={{fontSize:24}}>🎮</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:15,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
+          <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 8 players.</div>
+        </div>
+        <button onClick={() => startMode("local")} style={{padding:"10px 18px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
+      </div>
+
+      <div style={{background:"linear-gradient(135deg,rgba(168,85,247,0.08),rgba(168,85,247,0.02))",border:"1px solid rgba(168,85,247,0.2)",borderRadius:16,padding:"16px 16px"}}>
+        <div style={{fontSize:13,fontWeight:800,color:"var(--t1)",marginBottom:3}}>🤝 Challenges — coming soon</div>
+        <div style={{fontSize:12,color:"var(--t2)",lineHeight:1.6}}>Send a friend a challenge link. They play the same questions on their own time — winner takes the bragging rights.</div>
+      </div>
+    </div>
+  );
+}
 
 function SettingsToggle({ val, onChange }) {
   return (
@@ -6549,6 +6699,7 @@ function AppInner() {
   const [dailyHistory, setDailyHistory] = useState({});
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
+  const [activeLeague, setActiveLeague] = useState(null);
 
   const toastTimerRef = useRef(null);
   const showToast = useCallback((msg, duration = 2800) => {
@@ -6836,10 +6987,11 @@ function AppInner() {
   const startMode = useCallback(async (m) => {
     try {
       haptic("soft");
-      // Club quiz bypasses startMode entirely (it sets activeClub + setMode directly).
-      // Any mode reaching this function should clear it so a stale crest banner
-      // doesn't appear on the next quiz.
+      // Club/league quizzes bypass startMode entirely (their launchers set
+      // activeClub/activeLeague + setMode directly). Any mode reaching this
+      // function should clear both so a stale banner doesn't appear next quiz.
       setActiveClub(null);
+      setActiveLeague(null);
       // Dismiss first-quiz tip when user starts a game
       if (showFirstQuizTip && m === "classic") {
         setShowFirstQuizTip(false);
@@ -6860,6 +7012,7 @@ function AppInner() {
       if (m === "online") { setScreen("online-stage1"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
+      if (m === "leaguequiz") { setScreen("league-quiz"); return; }
       // Reset category for special modes that ignore it
       if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
@@ -6943,12 +7096,39 @@ function AppInner() {
       }
       if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
       if (!qs.length) { showToast("No questions yet for this club"); return; }
+      setActiveLeague(null);
       setActiveClub(clubKey);
       setMode("classic");
       setQuestions(qs);
       setScreen("quiz");
     } catch (e) {
       showToast("⚠️ Couldn't start club quiz");
+    }
+  }, [showToast]);
+
+  // Launch a single-competition quiz from the league picker. Questions keep
+  // their real `cat` (unlike club quiz's cat:"ClubQuiz" re-tag), so each
+  // answer feeds the matching competition rating on the Ball IQ card.
+  const launchLeagueQuiz = useCallback(async (catKey) => {
+    try {
+      const lg = LEAGUE_QUIZ_BY_CAT[catKey];
+      if (!lg) return;
+      haptic("soft");
+      const { QB } = await loadQuestions();
+      const pool = QB.filter(q => q && q.cat === catKey && q.type === "mcq" && Array.isArray(q.o));
+      if (pool.length < 10) { showToast("No questions yet for this competition"); return; }
+      const fresh = applySeenFilter(pool, 10, qbHistKey);
+      const qs = shuffle([...fresh]).slice(0, 10).map(q => {
+        const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+        return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
+      });
+      setActiveClub(null);
+      setActiveLeague(catKey);
+      setMode("classic");
+      setQuestions(qs);
+      setScreen("quiz");
+    } catch (e) {
+      showToast("⚠️ Couldn't start league quiz");
     }
   }, [showToast]);
 
@@ -6977,6 +7157,7 @@ function AppInner() {
   // (questions, turns, scores, eliminations). No legacy state touched here.
   const startLocalGame = useCallback((config) => {
     setActiveClub(null);
+    setActiveLeague(null);
     setLocalConfig(config);
     setLocalResult(null);
     setMode("local");
@@ -7635,6 +7816,7 @@ function AppInner() {
     setWrongAnswers([]);
     setLocalResult(null);
     setActiveClub(null);
+    setActiveLeague(null);
   }, []);
   // Wordmark "Home" handler — wired to both mobile .logo and DesktopNav's
   // dn-brand. If the user is currently in a Stage 1 multiplayer room,
@@ -7780,6 +7962,7 @@ function AppInner() {
     haptic("soft");
     setDiff(d);
     setActiveClub(null);
+    setActiveLeague(null);
     let qs;
     try {
       qs = await getQs({ cat: "All", diff: d, n: 10, ramp: true });
@@ -8214,6 +8397,13 @@ function AppInner() {
           </div>
         )}
 
+        {/* ── ONLINE TAB ── */}
+        {!inGame && screen === "home" && (
+          <div className="tab-pane" style={tab === "online" ? undefined : HIDDEN_STYLE}>
+            <OnlineHubTab startMode={startMode} />
+          </div>
+        )}
+
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
@@ -8321,6 +8511,14 @@ function AppInner() {
           />
         )}
 
+        {/* ── LEAGUE QUIZ ── */}
+        {screen === "league-quiz" && (
+          <LeagueQuizScreen
+            onStart={launchLeagueQuiz}
+            onBack={goHome}
+          />
+        )}
+
         {/* ── LOCAL SETUP ── */}
         {screen === "local-setup" && (
           <LocalSetup onStart={startLocalGame} onBack={goHome} />
@@ -8412,6 +8610,17 @@ function AppInner() {
                 </div>
               </div>
             )}
+            {!activeClub && activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] && (
+              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.14),border:`1px solid ${clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.4)}`,borderRadius:14}}>
+                <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:LEAGUE_QUIZ_BY_CAT[activeLeague].color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.45)}`}}>
+                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(LEAGUE_QUIZ_BY_CAT[activeLeague].color)}}>{LEAGUE_QUIZ_BY_CAT[activeLeague].abbr}</span>
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>League Quiz</div>
+                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{LEAGUE_QUIZ_BY_CAT[activeLeague].name}</div>
+                </div>
+              </div>
+            )}
             <QuizEngine
               key={mode}
               questions={questions}
@@ -8479,6 +8688,7 @@ function AppInner() {
           <nav className="tab-bar">
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
+              { id:"online",   Icon: Wifi,         label:"Online"  },
               { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
