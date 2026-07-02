@@ -756,16 +756,29 @@ const LEAGUE_QUIZ_SECTIONS = [
 ];
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
-// Multiplayer question packs — the "what you play" axis of the lobby. ids are
-// "mixed" | "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by the host-only
-// pack picker in the lobby and by pickMultiplayerQuestions.
-export const MP_PACKS = [
-  { id: "mixed", label: "Mixed — all topics", group: null },
-  ...LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => ({ id: `cat:${i.cat}`, label: i.name, group: "Leagues & tournaments" }))),
-  ...Object.entries(CLUB_PACK_TO_QB)
-    .map(([key, name]) => ({ id: `club:${key}`, label: name, group: "Clubs" }))
+// Multiplayer topics — the "what you play" axis of the lobby. ids are
+// "mixed" | "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by the lobby's
+// host-only topic card + picker (design handoff topics-*.dc.html) and by
+// pickMultiplayerQuestions. Tab split (Leagues · Clubs · Tournaments) and
+// icon treatment (flag emoji for leagues, monogram abbr for clubs) per spec.
+export const MP_TOPICS = {
+  mixed: { id: "mixed", label: "Mixed — all topics", icon: "🎲" },
+  leagues: [
+    { id: "cat:PL", label: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+    { id: "cat:LaLiga", label: "La Liga", icon: "🇪🇸" },
+    { id: "cat:SerieA", label: "Serie A", icon: "🇮🇹" },
+    { id: "cat:Bundesliga", label: "Bundesliga", icon: "🇩🇪" },
+    { id: "cat:Ligue1", label: "Ligue 1", icon: "🇫🇷" },
+  ],
+  tournaments: [
+    { id: "cat:UCL", label: "Champions League", icon: "⭐" },
+    { id: "cat:WorldCup", label: "World Cup", icon: "🌍" },
+    { id: "cat:Euros", label: "Euros", icon: "🏆" },
+  ],
+  clubs: Object.entries(CLUB_PACK_TO_QB)
+    .map(([key, name]) => ({ id: `club:${key}`, label: name, abbr: CLUB_ABBR[key] || clubInitials(name) }))
     .sort((a, b) => a.label.localeCompare(b.label)),
-];
+};
 
 const CLUB_PACKS = {
   Arsenal: {
