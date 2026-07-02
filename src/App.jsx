@@ -4348,53 +4348,133 @@ function LeagueQuizScreen({ onStart, onBack }) {
   );
 }
 
+// ─── Local head-to-head history (Online tab) ─────────────────────────────────
+// One record per finished MP room on this device — powers the Online tab's
+// W/L record, win streak and recent-opponents rail. Local-only for now; a
+// server-side h2h ledger can replace the read side later without UI changes.
+const MP_HISTORY_KEY = "biq_mp_history";
+export function readMpHistory() {
+  try { const h = JSON.parse(localStorage.getItem(MP_HISTORY_KEY) || "[]"); return Array.isArray(h) ? h : []; } catch { return []; }
+}
+export function recordMpResult(entry) {
+  try {
+    if (!entry || !entry.roomId) return;
+    const h = readMpHistory();
+    if (h.some(x => x.roomId === entry.roomId)) return;
+    h.unshift(entry);
+    localStorage.setItem(MP_HISTORY_KEY, JSON.stringify(h.slice(0, 50)));
+  } catch {}
+}
+
 // ─── ONLINE TAB (hub) ─────────────────────────────────────────────────────────
-// Dedicated bottom-nav home for multiplayer: the live-rooms hero, the
-// what-you-play / how-you-play explainer, local pass-and-play, and the async
-// challenges teaser. Presentational — all game entry goes through startMode
-// so auth-gating stays in one place.
-function OnlineHubTab({ startMode, setOnlineAutoCreate }) {
+// Head-to-head direction from the Claude Design handoff (Online Tab.dc.html):
+// VS hero (you vs latest rival), W/L/win-rate stat row, flat green Create
+// Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
+// Rematch. All game entry goes through startMode so auth-gating stays in one
+// place; Create/Rematch use the one-tap auto-create path into a lobby.
+function OnlineHubTab({ startMode, setOnlineAutoCreate, displayName, avatarUrl, avatarEmoji }) {
+  // Re-read on mount: the pane unmounts during gameplay (screen !== "home"),
+  // so returning from a finished game always re-mounts with fresh history.
+  const [history] = React.useState(() => readMpHistory());
+  const stats = React.useMemo(() => {
+    const games = history.length;
+    const wins = history.filter(h => h.won).length;
+    let streak = 0;
+    for (const h of history) { if (h.won) streak++; else break; }
+    const recent = [];
+    const seen = new Set();
+    for (const h of history) {
+      for (const o of (h.opponents || [])) {
+        if (!o || seen.has(o.id || o.name)) continue;
+        seen.add(o.id || o.name);
+        recent.push({ name: o.name, avatar: o.avatar || "⚽", won: (h.myScore ?? 0) >= (o.score ?? 0), line: `${h.myScore ?? 0}–${o.score ?? 0}` });
+        if (recent.length >= 3) break;
+      }
+      if (recent.length >= 3) break;
+    }
+    return { games, wins, losses: games - wins, winRate: games ? Math.round(100 * wins / games) : null, streak, recent, rival: recent[0] || null };
+  }, [history]);
+  const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
     <div className="screen">
-      <div className="page-hdr">
-        <div className="page-title">Online</div>
+      {/* Title + win-streak pill */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
+        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Online</div>
+        {stats.streak >= 2 && (
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
+            <span style={{fontSize:12}}>🔥</span>
+            <span style={{fontSize:13,fontWeight:800,color:"#FFC107",fontVariantNumeric:"tabular-nums"}}>{stats.streak} win streak</span>
+          </div>
+        )}
       </div>
 
-      <div style={{background:"linear-gradient(135deg,rgba(34,197,94,0.14),rgba(34,197,94,0.04))",border:"1px solid rgba(34,197,94,0.3)",borderRadius:18,padding:"20px 18px",marginBottom:14}}>
-        <div style={{fontSize:26,marginBottom:8}}>⚔️</div>
-        <div style={{fontSize:19,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.3px",marginBottom:4}}>Head to Head</div>
-        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.65,marginBottom:14}}>
-          Race up to 8 friends on the same questions in real time. One tap and you're in a lobby — share the invite link and go.
+      {/* VS hero card */}
+      <div style={{borderRadius:22,background:"var(--s1)",border:"1px solid var(--border)",padding:"22px 18px",boxShadow:"0 4px 16px rgba(0,0,0,0.35)",marginBottom:16}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:22}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
+            {avatarUrl
+              ? <img src={avatarUrl} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:84,height:84,borderRadius:"50%",objectFit:"cover",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)"}} />
+              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:40,background:"var(--s2)"}}>{avatarEmoji}</span>}
+            <span style={{fontSize:14,fontWeight:800,color:"var(--t1)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{displayName}</span>
+          </div>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:19,fontWeight:800,color:"var(--t3)"}}>VS</span>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
+            {stats.rival
+              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:40,background:"var(--s2)"}}>{stats.rival.avatar}</span>
+              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3A3D4A",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
+            <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
+          </div>
         </div>
-        {/* Create drops straight into a lobby (auto-create via OnlineEntry's
-            autoCreate prop — same one-tap path as Home's Invite button). */}
-        <button className="btn-3d" style={{width:"100%",marginBottom:10}} onClick={() => { setOnlineAutoCreate?.(true); startMode("online"); }}>⚔️ Create a room</button>
-        <button onClick={() => startMode("online")} style={{width:"100%",padding:"12px",borderRadius:12,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>Join with code</button>
+        <div style={{display:"flex",alignItems:"stretch",marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14}}>
+          {[
+            { v: stats.wins, label: "Wins", color: "#8AE042" },
+            { v: stats.losses, label: "Losses", color: "var(--t1)" },
+            { v: stats.winRate == null ? "—" : `${stats.winRate}%`, label: "Win rate", color: "#FFC107" },
+          ].map((s, i) => (
+            <React.Fragment key={s.label}>
+              {i > 0 && <div style={{width:1,background:"var(--border)"}} />}
+              <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:24,fontWeight:800,color:s.color,fontVariantNumeric:"tabular-nums"}}>{s.v}</span>
+                <span style={{fontSize:11,fontWeight:600,color:"var(--t2)"}}>{s.label}</span>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
 
-      <div style={{display:"flex",gap:10,marginBottom:14}}>
-        <div style={{flex:1,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 14px"}}>
-          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.08em",textTransform:"uppercase",color:"var(--t3)",marginBottom:8}}>Pick the questions</div>
-          <div style={{fontSize:13,color:"var(--t1)",fontWeight:700,lineHeight:1.9}}>🎲 Mixed<br/>🏆 League packs<br/>🛡️ Club packs</div>
-        </div>
-        <div style={{flex:1,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:14,padding:"14px 14px"}}>
-          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.08em",textTransform:"uppercase",color:"var(--t3)",marginBottom:8}}>Pick the format</div>
-          <div style={{fontSize:13,color:"var(--t1)",fontWeight:700,lineHeight:1.9}}>🎯 Classic · 10Q<br/>⚡ Sprint · 5Q<br/>💀 Survival</div>
-        </div>
-      </div>
+      {/* Flat green CTA (no 3D rim per design spec) + secondary join */}
+      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+        <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#07240D"}}>Create Room</span>
+      </button>
+      <button onClick={() => startMode("online")} style={{width:"100%",marginTop:10,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+        <span style={{fontSize:14}}>🔑</span><span style={{fontSize:15,fontWeight:700,color:"var(--t1)"}}>Join with Code</span>
+      </button>
 
-      <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"16px 16px",display:"flex",alignItems:"center",gap:14,marginBottom:14}}>
-        <div style={{fontSize:24}}>🎮</div>
+      {/* Recent opponents — appears once real games have been recorded */}
+      {stats.recent.length > 0 && (
+        <>
+          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Recent opponents</div>
+          <div style={{display:"flex",gap:9,marginTop:12}}>
+            {stats.recent.map((o) => (
+              <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
+                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:19}}>{o.avatar}</span>
+                <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
+                <span style={{fontSize:11,fontWeight:800,color:o.won ? "#8AE042" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
+                <button onClick={createRoom} style={{border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Local pass & play — kept reachable (not in the design frame) */}
+      <div style={{marginTop:16,display:"flex",alignItems:"center",gap:12,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"13px 14px"}}>
+        <span style={{fontSize:20}}>👥</span>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:15,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
+          <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
           <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 8 players.</div>
         </div>
-        <button onClick={() => startMode("local")} style={{padding:"10px 18px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
-      </div>
-
-      <div style={{background:"linear-gradient(135deg,rgba(168,85,247,0.08),rgba(168,85,247,0.02))",border:"1px solid rgba(168,85,247,0.2)",borderRadius:16,padding:"16px 16px"}}>
-        <div style={{fontSize:13,fontWeight:800,color:"var(--t1)",marginBottom:3}}>🤝 Challenges — coming soon</div>
-        <div style={{fontSize:12,color:"var(--t2)",lineHeight:1.6}}>Send a friend a challenge link. They play the same questions on their own time — winner takes the bragging rights.</div>
+        <button onClick={() => startMode("local")} style={{padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
     </div>
   );
@@ -8405,7 +8485,18 @@ function AppInner() {
         {/* ── ONLINE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "online" ? undefined : HIDDEN_STYLE}>
-            <OnlineHubTab startMode={startMode} setOnlineAutoCreate={setOnlineAutoCreate} />
+            <OnlineHubTab
+              startMode={startMode}
+              setOnlineAutoCreate={setOnlineAutoCreate}
+              displayName={(() => {
+                const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
+                if (authProfile?.username && !isDef(authProfile.username)) return authProfile.username;
+                if (profile.name && !isDef(profile.name)) return profile.name;
+                return "You";
+              })()}
+              avatarUrl={authProfile?.avatar_url}
+              avatarEmoji={profile.avatar || "⚽"}
+            />
           </div>
         )}
 

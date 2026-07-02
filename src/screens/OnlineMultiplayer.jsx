@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, MP_PACKS } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, MP_PACKS, recordMpResult } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -267,6 +267,30 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
       setShowReconnecting(false);
     }
   }, [channelStatus]);
+
+  // Persist a local head-to-head record once per finished room — powers the
+  // Online tab's W/L record, win streak and recent-opponents rail. Ref-guarded
+  // so realtime 'ended' echoes can't double-record (recordMpResult also
+  // dedupes by roomId as a second line of defence).
+  const endedRecordedRef = useRef(false);
+  useEffect(() => {
+    if (!room || room.state !== "ended" || endedRecordedRef.current) return;
+    if (!myPlayer || !players.length) return;
+    endedRecordedRef.current = true;
+    try {
+      const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0 }));
+      const top = Math.max(...rows.map(r => r.score));
+      const mine = rows.find(r => r.id === myPlayer.user_id);
+      recordMpResult({
+        roomId: room.id,
+        at: Date.now(),
+        mode: room.mode || "race",
+        won: !!mine && mine.score >= top,
+        myScore: mine ? mine.score : 0,
+        opponents: rows.filter(r => r.id !== myPlayer.user_id),
+      });
+    } catch {}
+  }, [room, players, myPlayer]);
 
   const handleLeave = useCallback(async () => {
     try { await actions.leave(); } catch {}
