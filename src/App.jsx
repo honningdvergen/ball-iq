@@ -5435,7 +5435,9 @@ const SKILL_OPTIONS = [
 
 // One easy, universally-fun taster so a brand-new player tastes the trivia
 // within seconds — kept deliberately light (still fully skippable, no login).
-const ONBOARD_SAMPLE = { q: "Which country has won the most World Cups?", o: ["Germany", "Brazil", "Italy", "Argentina"], a: 1 };
+// Reviewer-facing first impression (App Review sees this screen on every fresh
+// install) — keep it 100% free of competition/tournament branding.
+const ONBOARD_SAMPLE = { q: "Who has scored the most goals in men's international football?", o: ["Lionel Messi", "Cristiano Ronaldo", "Pelé", "Neymar"], a: 1 };
 
 function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);

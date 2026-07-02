@@ -217,8 +217,17 @@ function ctaBlock(label) {
 </div>`;
 }
 
+// League category → its clubs' page slugs, for topical cross-links (each league
+// page links its own clubs; clubs without a league page ride the hub + club mesh).
+const CAT_SLUG_TO_CLUB_SLUGS = {
+  'premier-league': ['arsenal', 'liverpool', 'manchester-united', 'manchester-city', 'tottenham', 'chelsea', 'newcastle'],
+  'la-liga': ['barcelona', 'real-madrid', 'atletico-madrid'],
+  'serie-a': ['juventus', 'inter-milan', 'ac-milan'],
+  'bundesliga': ['bayern-munich', 'borussia-dortmund'],
+};
+
 // ── per-category page ─────────────────────────────────────────────────────────
-function buildCategoryPage(catCfg, livePages) {
+function buildCategoryPage(catCfg, livePages, clubPages = []) {
   const all = catRows(catCfg.cat);
   const hints = hintRows(catCfg.cat);
   if (hints.length < MIN_HINTS) {
@@ -278,7 +287,14 @@ ${ctaBlock(`Hundreds more ${catCfg.name} questions in the Ball IQ app.`)}
 <dl class="faq">
 ${faqHtml}
 </dl>
-<h2>More football quizzes</h2>
+${(() => {
+    const rel = (CAT_SLUG_TO_CLUB_SLUGS[catCfg.slug] || [])
+      .map((s) => clubPages.find((p) => p.slug === s))
+      .filter(Boolean);
+    return rel.length
+      ? `<h2>${esc(catCfg.name)} club quizzes</h2>\n${renderMesh(catCfg.slug, rel)}\n`
+      : '';
+  })()}<h2>More football quizzes</h2>
 ${renderMesh(catCfg.slug, livePages)}
 ${footer()}`;
 
@@ -580,7 +596,7 @@ function main() {
   const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length }));
 
   const built = [];
-  for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages));
+  for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages));
   buildHubPage(livePages, clubPages);
