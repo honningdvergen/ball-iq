@@ -11,7 +11,7 @@ import Login from './Login.jsx';
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 import { DesktopNav } from './DesktopNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Wifi } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -8797,7 +8797,7 @@ function AppInner() {
           <nav className="tab-bar">
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
-              { id:"online",   Icon: Wifi,         label:"Online"  },
+              { id:"online",   Icon: Globe,        label:"Online"  },
               { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (

@@ -150,6 +150,21 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 
   const busy = creating || joining;
 
+  // Auto-create flow (Online tab "Create Room" / Home "Invite"): skip the
+  // entry UI entirely — a minimal creating state until the lobby takes over.
+  // On failure autoCreate is consumed (parent flips it false), so the full
+  // screen returns with the inline error for manual retry.
+  if (autoCreate && !error) {
+    return (
+      <div className="screen">
+        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
+          <span className="avatar-spinner" aria-label="Creating room" />
+          <div style={{ fontSize: 15, fontWeight: 700, color: "var(--t1)" }}>Setting up your room…</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -561,27 +576,25 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             </button>
           </div>
         )}
-        {/* Code display */}
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 6 }}>
+        {/* Room-code card (design handoff lobby.dc.html): eyebrow + mono code
+            + share pill in one compact card. Tapping the code still copies. */}
+        <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 20, padding: 18, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 24 }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, color: "var(--t3)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
             Room Code
           </div>
           <button
             onClick={onCopy}
             style={{
-              background: "var(--s1)", border: "1px solid var(--border)",
-              borderRadius: 14, padding: "16px 24px",
-              fontSize: 32, fontWeight: 800, letterSpacing: 8,
-              color: "var(--text)", fontFamily: "monospace",
+              background: "transparent", border: "none",
+              padding: "6px 0 0",
+              fontSize: 36, fontWeight: 800, letterSpacing: "0.2em",
+              color: "var(--text)", fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
               cursor: "pointer", display: "inline-block",
             }}
-            aria-label={`Copy room code ${room.code}`}
+            aria-label={`Copy room code ${room.code} — tap to copy`}
           >
             {room.code}
           </button>
-          <div style={{ fontSize: 12, color: "var(--t2)", marginTop: 6 }}>
-            Tap to copy — or share the invite link
-          </div>
           {/* Sprint #92 GGG4: native share sheet for the canonical /join/CODE
               URL. Recipient with the app installed triggers the Universal
               Link and lands in the join flow; without the app, the SPA
@@ -614,8 +627,9 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
 
         {/* Player list */}
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 8 }}>
-            Players ({players.length}/{room.capacity})
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
+            <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase" }}>Players</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{players.length} / {room.capacity}</div>
           </div>
           {players.length === 0 ? (
             <div style={{ padding: "20px", textAlign: "center", color: "var(--t2)", fontSize: 13 }}>

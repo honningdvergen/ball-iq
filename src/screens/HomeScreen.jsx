@@ -211,18 +211,11 @@ function HomeScreenImpl({
       })()}
 
       {/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
-          Two primary CTAs route directly: Online checks guest state
-          and either toasts a sign-in prompt or jumps to the online
-          stage; Local enters pass-and-play immediately. Invite pill
-          handles its own Share/clipboard flow. */}
+          Online lands on the Online tab (the multiplayer home — auth is
+          gated there on create/join, not on viewing); Local enters
+          pass-and-play immediately. Invite auto-creates a room. */}
       <MultiplayerCard
-        onOnline={() => {
-          if (!user || isGuest) {
-            openAuthPrompt("online");
-            return;
-          }
-          setScreen("online-stage1");
-        }}
+        onOnline={() => setTab("online")}
         onInvite={() => {
           // 1.1: "Invite" now creates a room and drops you in the lobby (where
           // the real /join/CODE link lives) instead of sharing a dead link.
