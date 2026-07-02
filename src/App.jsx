@@ -4353,7 +4353,7 @@ function LeagueQuizScreen({ onStart, onBack }) {
 // what-you-play / how-you-play explainer, local pass-and-play, and the async
 // challenges teaser. Presentational — all game entry goes through startMode
 // so auth-gating stays in one place.
-function OnlineHubTab({ startMode }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate }) {
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -4361,12 +4361,15 @@ function OnlineHubTab({ startMode }) {
       </div>
 
       <div style={{background:"linear-gradient(135deg,rgba(34,197,94,0.14),rgba(34,197,94,0.04))",border:"1px solid rgba(34,197,94,0.3)",borderRadius:18,padding:"20px 18px",marginBottom:14}}>
-        <div style={{fontSize:26,marginBottom:8}}>🌐</div>
-        <div style={{fontSize:19,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.3px",marginBottom:4}}>Live Multiplayer</div>
+        <div style={{fontSize:26,marginBottom:8}}>⚔️</div>
+        <div style={{fontSize:19,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.3px",marginBottom:4}}>Head to Head</div>
         <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.65,marginBottom:14}}>
-          Race up to 8 friends on the same questions in real time. Create a room and share the invite link — or join with a code.
+          Race up to 8 friends on the same questions in real time. One tap and you're in a lobby — share the invite link and go.
         </div>
-        <button className="btn-3d" style={{width:"100%"}} onClick={() => startMode("online")}>Create or join a room</button>
+        {/* Create drops straight into a lobby (auto-create via OnlineEntry's
+            autoCreate prop — same one-tap path as Home's Invite button). */}
+        <button className="btn-3d" style={{width:"100%",marginBottom:10}} onClick={() => { setOnlineAutoCreate?.(true); startMode("online"); }}>⚔️ Create a room</button>
+        <button onClick={() => startMode("online")} style={{width:"100%",padding:"12px",borderRadius:12,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>Join with code</button>
       </div>
 
       <div style={{display:"flex",gap:10,marginBottom:14}}>
@@ -8402,7 +8405,7 @@ function AppInner() {
         {/* ── ONLINE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "online" ? undefined : HIDDEN_STYLE}>
-            <OnlineHubTab startMode={startMode} />
+            <OnlineHubTab startMode={startMode} setOnlineAutoCreate={setOnlineAutoCreate} />
           </div>
         )}
 
