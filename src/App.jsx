@@ -5285,7 +5285,7 @@ const SKILL_OPTIONS = [
 
 // One easy, universally-fun taster so a brand-new player tastes the trivia
 // within seconds — kept deliberately light (still fully skippable, no login).
-const ONBOARD_SAMPLE = { q: "Which country has won the most FIFA World Cups?", o: ["Germany", "Brazil", "Italy", "Argentina"], a: 1 };
+const ONBOARD_SAMPLE = { q: "Which country has won the most World Cups?", o: ["Germany", "Brazil", "Italy", "Argentina"], a: 1 };
 
 function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
@@ -6733,7 +6733,7 @@ function AppInner() {
       gamesLastWeek = stats.gamesThisWeek || 0;
       gamesThisWeek = 1;
     }
-    // Per-category accuracy → powers the Ball IQ player card (FIFA-style
+    // Per-category accuracy → powers the Ball IQ player-rating card (per-
     // competition ratings). allAnswers already carries { cat, isCorrect }.
     const catStats = { ...(stats.catStats || {}) };
     for (const ans of (newResult.allAnswers || [])) {
@@ -7394,7 +7394,7 @@ function AppInner() {
   }, [showToast]);
 
   const shareProfile = useCallback(async () => {
-    // 1.1: share a balliq.app/p?... LINK that renders the player's FIFA card as
+    // 1.1: share a balliq.app/p?... LINK that renders the player's Ball IQ card as
     // its Open Graph preview (server-rendered via /api/og). On iMessage a single
     // image FILE attaches but iOS strips the caption/link off it — a URL instead
     // gives a tappable link AND a rich card preview across iMessage/WhatsApp/

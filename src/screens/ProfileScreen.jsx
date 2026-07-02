@@ -1265,17 +1265,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </button>
         </div>
       )}
-      {/* Merged Ball IQ card — the FIFA-style player card IS the profile header:
+      {/* Merged Ball IQ card — the player-rating card IS the profile header:
           editable avatar (tap → change photo) + editable name (tap → rename) +
           level, fused with the overall, tier and six competition ratings. */}
       {(() => {
         const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
         const _card = computeCard(stats?.catStats || {}, _acc);
-        const t = CARD_TIERS[_card.tier] || CARD_TIERS.bronze;
+        const t = CARD_TIERS[_card.tier] || CARD_TIERS.prospect;
         return (
           <div style={{ background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden", marginBottom: 14 }}>
             <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.055) 0%, transparent 38%)", pointerEvents: "none" }} />
+
+            {/* Brand eyebrow — frames this as a Ball IQ rating, not a generic player card */}
+            <div style={{ position: "relative", fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: t.text, opacity: 0.5, marginBottom: 12 }}>BALL IQ RATING</div>
 
             {/* Overall (left) + editable avatar (right) */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>

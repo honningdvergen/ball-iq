@@ -211,7 +211,7 @@ export default function MarketingHome() {
             <Phone src={SHOT.home} alt="Ball IQ home screen" floatDur="6s" />
           </div>
           <div style={{ width: 'clamp(150px,20vw,210px)', transform: 'rotate(7deg) translateY(8px)', marginLeft: -18 }}>
-            <Phone src={SHOT.profile} alt="FIFA-style profile card" floatDur="7s" floatDelay="-2.4s" />
+            <Phone src={SHOT.profile} alt="Ball IQ player-rating card" floatDur="7s" floatDelay="-2.4s" />
           </div>
         </div>
       </section>
@@ -278,7 +278,7 @@ export default function MarketingHome() {
           <div style={{ flex: '1 1 320px', minWidth: 300 }}>
             <div style={eyebrow('#FFC107')}>Your profile</div>
             <h2 style={h2Style}>Your football brain,<br />rated out of 99.</h2>
-            <p style={bodyStyle}>Every answer feeds a FIFA-style player card — an OVERALL rating broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
+            <p style={bodyStyle}>Every answer feeds your player card — an OVERALL rating broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
               <span style={chip({ background: 'rgba(255,193,7,0.12)', border: '1px solid rgba(255,193,7,0.3)', color: '#FFD24A', fontWeight: 700 })}>⭐ OVERALL rating</span>
               <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>🔍 Scouting report</span>

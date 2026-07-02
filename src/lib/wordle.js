@@ -69,7 +69,7 @@ export const WORDLE_PLAYERS = [
 // won/lost) to render "Harry Kane" instead of just "KANE" — first name
 // in muted body text, surname in accent. Editorial rules:
 //   - Standard surname: [firstName, properSurname] with diacritics on
-//     surname per FIFA-official form (Mbappé, Eto'o, Šuker, Müller).
+//     surname per standard spelling (Mbappé, Eto'o, Šuker, Müller).
 //   - Disambiguation locked: RONALDO=Cristiano (CR7), SILVA=David,
 //     COSTA=Diego, JONES=Phil — pool-author intent.
 //   - Brand-nickname WITH first name (informative form): GAZZA=Paul

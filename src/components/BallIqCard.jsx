@@ -1,11 +1,11 @@
 import React from "react";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 
-// FIFA-style Ball IQ player card. Tier (bronze/silver/gold) is driven by the
+// Ball IQ player-rating card. Tier (prospect/pro/elite) is driven by the
 // overall, which compiles the six competition ratings from per-category accuracy.
 export function BallIqCard({ catStats, name, avatarUrl, avatarEmoji = "⚽", overallAccuracy, showIdentity = true }) {
   const { overall, tier, ratings } = computeCard(catStats || {}, typeof overallAccuracy === "number" ? overallAccuracy : 0.4);
-  const t = CARD_TIERS[tier] || CARD_TIERS.bronze;
+  const t = CARD_TIERS[tier] || CARD_TIERS.prospect;
   return (
     <div style={{
       background: t.bg,
@@ -19,7 +19,7 @@ export function BallIqCard({ catStats, name, avatarUrl, avatarEmoji = "⚽", ove
       {/* faint accent glow top-left */}
       <div style={{ position: "absolute", top: -40, left: -40, width: 160, height: 160, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
 
-      {/* Top row — overall block (left) + avatar (right), FIFA-style. */}
+      {/* Top row — overall block (left) + avatar (right). */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
         <div>
           <div style={{ fontSize: 48, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{overall}</div>

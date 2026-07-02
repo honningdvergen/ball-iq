@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 
-// Dynamic Open Graph image — renders the player's FIFA-style Ball IQ card so a
+// Dynamic Open Graph image — renders the player's Ball IQ rating card so a
 // shared balliq.app/p?... link previews as their card (overall + tier + six
 // competition ratings + photo). Edge runtime; no JSX (plain element trees).
 
@@ -11,10 +11,12 @@ const h = (type, props, ...children) => ({
   props: { ...(props || {}), children: children.length === 0 ? undefined : (children.length === 1 ? children[0] : children) },
 });
 
+// Ball IQ's own slate → green → violet tier ramp (not metallic bronze/silver/gold).
+// Keys must match cardTier() in src/lib/ballIqCard.js.
 const TIERS = {
-  gold:   { bg: 'linear-gradient(135deg,#2c2510 0%,#0e0c05 100%)', accent: '#F0C24B', text: '#FDF6E3', label: 'GOLD' },
-  silver: { bg: 'linear-gradient(135deg,#1d1f26 0%,#0b0c0f 100%)', accent: '#C7CED8', text: '#F2F4F8', label: 'SILVER' },
-  bronze: { bg: 'linear-gradient(135deg,#241a12 0%,#0e0a06 100%)', accent: '#CE8B36', text: '#F5ECE2', label: 'BRONZE' },
+  elite:    { bg: 'linear-gradient(135deg,#241a33 0%,#0c0814 100%)', accent: '#A78BFA', text: '#F3EEFF', label: 'ELITE' },
+  pro:      { bg: 'linear-gradient(135deg,#0f2417 0%,#050d08 100%)', accent: '#22C55E', text: '#EAFBF0', label: 'PRO' },
+  prospect: { bg: 'linear-gradient(135deg,#161c26 0%,#080b10 100%)', accent: '#8AA4C8', text: '#EDF2F8', label: 'PROSPECT' },
 };
 
 // Competitions in the same order as the `r` (ratings) param. Country flags are
@@ -34,7 +36,7 @@ export default function handler(req) {
   const img = sp.get('img') || '';
   const emoji = sp.get('e') || '⚽';
   const overall = sp.get('ov') || '—';
-  const t = TIERS[sp.get('ti')] || TIERS.bronze;
+  const t = TIERS[sp.get('ti')] || TIERS.prospect;
   const ratings = (sp.get('r') || '').split(',');
 
   const avatarInner = img

@@ -475,7 +475,7 @@ ${quizLinks}
 - [Contact](${SITE.base}/contact/): How to get in touch.
 
 ## Play
-- [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a FIFA-style profile rating and multiplayer.
+- [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a Ball IQ player rating and multiplayer.
 - [Ball IQ on the App Store](https://apps.apple.com/app/id6775975961): Free iPhone app.
 `;
   writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');

@@ -1,12 +1,11 @@
-// Ball IQ player card — a FIFA-style card driven by per-category accuracy.
-// Six "competition" face stats + a compiled overall + a bronze/silver/gold tier.
+// Ball IQ player-rating card — driven by per-category accuracy. Six "competition"
+// face stats + a compiled overall + a Prospect / Pro / Elite rating tier.
 // catStats shape (from saveStats): { [cat]: { c: correctCount, a: answeredCount } }.
 
 // The six face stats. `cat` maps to the question bank's cat field; `abbr` is the
-// 3-letter card label (FIFA's PAC/SHO/PAS/DRI/DEF/PHY equivalent).
-// `icon` uses country flags (FIFA-card convention) — license-safe, unlike the
-// trademarked competition logos. England flag for the PL, a star for the UCL,
-// a globe for the World Cup.
+// 3-letter card label (the competition's short code).
+// `icon` uses country flags (license-safe, unlike the trademarked competition
+// logos). England flag for the PL, a star for the UCL, a globe for the World Cup.
 export const CARD_COMPS = [
   { abbr: "PRL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
   { abbr: "UCL", cat: "UCL",        name: "Champions League", icon: "⭐" },
@@ -29,18 +28,20 @@ export function compRating(cs, priorAcc = 0.4) {
   return Math.max(40, Math.min(99, Math.round(40 + acc * 59)));
 }
 
-// overall < 65 → bronze, 65-79 → silver, 80+ → gold.
+// overall < 65 → prospect, 65-79 → pro, 80+ → elite.
 export function cardTier(overall) {
-  if (overall >= 80) return "gold";
-  if (overall >= 65) return "silver";
-  return "bronze";
+  if (overall >= 80) return "elite";
+  if (overall >= 65) return "pro";
+  return "prospect";
 }
 
-// Tier palettes — shared by the in-app card header and the share render.
+// Tier palettes — Ball IQ's own slate → green → violet ramp (deliberately not a
+// metallic bronze/silver/gold scheme). Shared by the in-app card header and the
+// share render.
 export const CARD_TIERS = {
-  gold:   { bg: "linear-gradient(160deg,#2c2510 0%,#0e0c05 100%)", accent: "#F0C24B", text: "#FDF6E3", label: "GOLD" },
-  silver: { bg: "linear-gradient(160deg,#1d1f26 0%,#0b0c0f 100%)", accent: "#C7CED8", text: "#F2F4F8", label: "SILVER" },
-  bronze: { bg: "linear-gradient(160deg,#241a12 0%,#0e0a06 100%)", accent: "#CE8B36", text: "#F5ECE2", label: "BRONZE" },
+  elite:    { bg: "linear-gradient(160deg,#241a33 0%,#0c0814 100%)", accent: "#A78BFA", text: "#F3EEFF", label: "ELITE" },
+  pro:      { bg: "linear-gradient(160deg,#0f2417 0%,#050d08 100%)", accent: "#22C55E", text: "#EAFBF0", label: "PRO" },
+  prospect: { bg: "linear-gradient(160deg,#161c26 0%,#080b10 100%)", accent: "#8AA4C8", text: "#EDF2F8", label: "PROSPECT" },
 };
 
 // Compute the full card model from catStats.
