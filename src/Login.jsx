@@ -51,7 +51,7 @@ const PROMPT_COPY = {
 }
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
-  const { signUp, signIn, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
+  const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
   // Signup-framed gates ("play online", "add friends", …) target guests
   // WITHOUT accounts — open those in signup mode so the copy and the form
   // agree. Front door + expired-session keep the sign-in default.
@@ -152,6 +152,25 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
       </button>
     </>
   )
+
+  // "Forgot password?" — sends the Supabase recovery email; the link lands on
+  // balliq.app/reset where the app mounts the new-password overlay. Uses the
+  // email already typed into the form (nudges if it's empty).
+  const handleForgot = async () => {
+    if (loading) return
+    setError('')
+    setMessage('')
+    const target = (email || '').trim()
+    if (!target) { setError('Type your email above first, then tap "Forgot password?"'); return }
+    setLoading(true)
+    try {
+      const { error } = await resetPassword(target)
+      if (error) setError(error.message || 'Could not send the reset email — try again.')
+      else setMessage(`Reset link sent to ${target} — check your inbox.`)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Listen for session-expired events dispatched by useAuth.jsx's
   // onAuthStateChange handler (fires when SIGNED_OUT happens without
@@ -523,6 +542,22 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
       <div style={styles.form}>
         {error && <div style={styles.error}>{error}</div>}
         {message && <div style={styles.message}>{message}</div>}
+
+        {mode === 'login' && (
+          <button
+            type="button"
+            onClick={handleForgot}
+            disabled={loading}
+            style={{
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              font: 'inherit', fontSize: 13, fontWeight: 600, color: palette.accent,
+              padding: '8px 12px', margin: '-4px auto 0', display: 'block',
+              touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            Forgot password?
+          </button>
+        )}
 
         <div style={styles.toggleText}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}

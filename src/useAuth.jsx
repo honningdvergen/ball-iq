@@ -79,6 +79,10 @@ export function AuthProvider({ children }) {
   // 'expired') so the overlay can show a reward-framed header.
   const [authPromptOpen, setAuthPromptOpen] = useState(false)
   const [authPromptReason, setAuthPromptReason] = useState(null)
+  // Password-recovery flow: supabase fires PASSWORD_RECOVERY when the user
+  // arrives via the balliq.app/reset email link (the recovery session is
+  // already active); this mounts the new-password overlay app-wide.
+  const [passwordRecovery, setPasswordRecovery] = useState(false)
 
   // Tracks the currently-authenticated userId for hydrate-race protection.
   // hydrateLocalFromRemote captures userId at start; if this ref no longer
@@ -128,6 +132,7 @@ export function AuthProvider({ children }) {
       (event, session) => {
         activeUserIdRef.current = session?.user?.id ?? null
         setUser(session?.user ?? null)
+        if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true)
         if (session?.user) {
           setIsGuest(false)
           setAuthPromptOpen(false)   // close the auth overlay on success
@@ -580,6 +585,21 @@ export function AuthProvider({ children }) {
       safeSetItem('biq_last_email', email)
     }
     return result
+  }
+
+  // Password reset: sends the recovery email; its link lands on
+  // balliq.app/reset (non-/ paths render the game), where the
+  // PASSWORD_RECOVERY event above mounts the new-password overlay.
+  // NOTE: https://balliq.app/reset must be listed in Supabase Auth →
+  // URL Configuration → Redirect URLs or the link falls back to Site URL.
+  async function resetPassword(email) {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'password-reset requested', level: 'info' })
+    return supabase.auth.resetPasswordForEmail(email, { redirectTo: 'https://balliq.app/reset' })
+  }
+
+  async function updatePassword(newPassword) {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'password-update attempted', level: 'info' })
+    return supabase.auth.updateUser({ password: newPassword })
   }
 
   // Sprint #94 III3: social-auth shared helper. Web: standard
@@ -1245,6 +1265,10 @@ export function AuthProvider({ children }) {
       isGuest,
       signUp,
       signIn,
+      resetPassword,
+      updatePassword,
+      passwordRecovery,
+      clearPasswordRecovery: () => setPasswordRecovery(false),
       signInWithGoogle,
       signInWithApple,
       exchangeOAuthCallback,

@@ -256,7 +256,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 // joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
-function MultiplayerLobby({ code, onExit, defaultName }) {
+function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
   const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
@@ -416,7 +416,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -765,7 +765,7 @@ function LobbyError({ error, onExit, onRetry }) {
   );
 }
 
-function LobbyEnded({ players, myPlayer, onExit, room }) {
+function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const isHotStreak = room?.mode === 'hotstreak';
   const isSurvival = room?.mode === 'survival';
   // Survival ranks by who lasted longest (alive > later elimination); Hot Streak
@@ -812,6 +812,52 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
       return () => clearTimeout(t);
     }
   }, [isWinner, survivalDraw, players]);
+
+  // Game Over is the emotional peak of the Online loop — it used to dead-end
+  // at "Back to Home". Rematch spins up a fresh room (the parent swaps the
+  // lobby to the new code; share the invite link from there) and Share sends
+  // the result out while the adrenaline is still up.
+  const [rematching, setRematching] = useState(false);
+  const [rematchError, setRematchError] = useState("");
+  const handleRematch = async () => {
+    if (rematching) return;
+    setRematching(true);
+    setRematchError("");
+    const result = await mpCreateRoom({
+      p_capacity: 8,
+      p_name: myPlayer?.name || "Player",
+      p_avatar: myPlayer?.avatar || "⚽",
+    });
+    if (result?.error || !result?.code) {
+      setRematchError(result?.error || "Couldn't create a rematch room — try again");
+      setRematching(false);
+      return;
+    }
+    onRematch?.(result.code);
+  };
+  const handleShareResult = async () => {
+    const opp = sorted.find(p => p.user_id !== myUserId);
+    const oppBit = opp?.name ? ` against ${opp.name}` : "";
+    const text = survivalDraw
+      ? `🤝 Dead level${oppBit} on ${APP_NAME} — settling it in the rematch. Join us!`
+      : isWinner
+      ? `🏆 Just won an online match${oppBit} on ${APP_NAME}! Think you can take me?`
+      : `⚔️ Just went down${oppBit} on ${APP_NAME} — rematch incoming. Join us!`;
+    const url = INVITE_BASE_URL;
+    try {
+      if (Capacitor.isNativePlatform?.()) {
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share result" });
+        return;
+      }
+      if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+        await navigator.share({ title: APP_NAME, text, url });
+        return;
+      }
+    } catch (err) {
+      if (err && err.name === "AbortError") return;
+    }
+    try { await navigator.clipboard.writeText(`${text} ${url}`); } catch {}
+  };
 
   // Medal emoji for podium positions; numeric rank thereafter.
   function rankBadge(idx) {
@@ -930,7 +976,24 @@ function LobbyEnded({ players, myPlayer, onExit, room }) {
           )}
         </div>
 
-        <button className="btn-3d" onClick={onExit} style={{ width: '100%' }}>
+        {onRematch && (
+          <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
+            {rematching ? 'Setting up the rematch…' : '🔄 Rematch — same crew, new room'}
+          </button>
+        )}
+        {rematchError && (
+          <div style={{ color: '#FF6B6B', fontSize: 13, textAlign: 'center', marginBottom: 10 }}>{rematchError}</div>
+        )}
+        <button
+          onClick={handleShareResult}
+          style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+        >
+          📣 Share result
+        </button>
+        <button
+          onClick={onExit}
+          style={{ width: '100%', padding: 13, borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+        >
           Back to Home
         </button>
       </div>

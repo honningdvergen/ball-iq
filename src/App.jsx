@@ -4691,6 +4691,57 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
   );
 }
 
+// Password-recovery overlay — mounts app-wide when AuthProvider sees the
+// PASSWORD_RECOVERY event (the balliq.app/reset email link). The recovery
+// session is already active at that point, so updateUser only needs the new
+// password. Renders above everything at z 1200.
+function ResetPasswordOverlay() {
+  const { passwordRecovery, clearPasswordRecovery, updatePassword } = useAuth();
+  const [pw, setPw] = useState("");
+  const [pw2, setPw2] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  if (!passwordRecovery) return null;
+  const submit = async () => {
+    if (busy) return;
+    if (pw.length < 6) { setErr("Password must be at least 6 characters"); return; }
+    if (pw !== pw2) { setErr("Passwords don't match"); return; }
+    setBusy(true); setErr("");
+    const { error } = await updatePassword(pw);
+    setBusy(false);
+    if (error) { setErr(error.message || "Couldn't update the password — try again"); return; }
+    setDone(true);
+    setTimeout(() => clearPasswordRecovery(), 1800);
+  };
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:1200,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div style={{width:"100%",maxWidth:360,textAlign:"center"}}>
+        <div style={{fontSize:40,marginBottom:10}}>{done ? "✅" : "🔒"}</div>
+        <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>{done ? "Password updated" : "Set a new password"}</div>
+        {done ? (
+          <div style={{fontSize:14,color:"var(--t2)"}}>You're signed in — welcome back!</div>
+        ) : (
+          <>
+            <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6,marginBottom:18}}>You're signed in via the reset link — choose a new password to finish.</div>
+            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="New password" autoComplete="new-password"
+              style={{width:"100%",padding:"14px 16px",marginBottom:10,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:15,fontFamily:"inherit",outline:"none"}} />
+            <input type="password" value={pw2} onChange={e => setPw2(e.target.value)} placeholder="Repeat new password" autoComplete="new-password"
+              onKeyDown={e => { if (e.key === "Enter") submit(); }}
+              style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:15,fontFamily:"inherit",outline:"none"}} />
+            {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
+            <button onClick={submit} disabled={busy || !pw || !pw2}
+              style={{width:"100%",border:"none",borderRadius:14,background:"var(--accent)",padding:15,fontSize:15,fontWeight:800,color:"#07240D",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
+              {busy ? "Saving…" : "Save new password"}
+            </button>
+            <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Cancel</button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SettingsToggle({ val, onChange }) {
   return (
     <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
@@ -8953,9 +9004,11 @@ function AppInner() {
         {screen === "online-stage1-lobby" && stage1RoomCode && (
           <React.Suspense fallback={<div className="screen" />}>
             <MultiplayerLobby
+              key={stage1RoomCode}
               code={stage1RoomCode}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={authProfile?.username || profile?.name || ""}
+              onRematch={(c) => setStage1RoomCode(c)}
             />
           </React.Suspense>
         )}
@@ -9111,6 +9164,7 @@ function AppInner() {
         </>}
       </main>
       <OfflineBanner />
+      <ResetPasswordOverlay />
     </>
   );
 }
