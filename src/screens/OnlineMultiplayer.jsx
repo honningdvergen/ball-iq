@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, MP_TOPICS, recordMpResult } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -150,16 +150,16 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 
   const busy = creating || joining;
 
-  // Auto-create flow (Online tab "Create Room" / Home "Invite"): skip the
-  // entry UI entirely — a minimal creating state until the lobby takes over.
-  // On failure autoCreate is consumed (parent flips it false), so the full
-  // screen returns with the inline error for manual retry.
-  if (autoCreate && !error) {
+  // Auto-create / deep-link auto-join flows: skip the entry UI entirely — a
+  // minimal loading state until the lobby takes over. On failure the auto
+  // prop is consumed (parent flips it false), so the full screen returns
+  // with the inline error (+ prefilled code for auto-join) for manual retry.
+  if ((autoCreate || autoJoinCode) && !error) {
     return (
       <div className="screen">
         <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
-          <span className="avatar-spinner" aria-label="Creating room" />
-          <div style={{ fontSize: 15, fontWeight: 700, color: "var(--t1)" }}>Setting up your room…</div>
+          <span className="avatar-spinner" aria-label={autoJoinCode ? "Joining room" : "Creating room"} />
+          <div style={{ fontSize: 15, fontWeight: 700, color: "var(--t1)" }}>{autoJoinCode ? "Joining room…" : "Setting up your room…"}</div>
         </div>
       </div>
     );
@@ -438,75 +438,7 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
   );
 }
 
-// Resolve a pack id to its display treatment (icon or club monogram + copy)
-// for the lobby topic card and the picker's Done bar.
-function topicMeta(packId) {
-  if (!packId || packId === "mixed") return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
-  const comp = [...MP_TOPICS.leagues, ...MP_TOPICS.tournaments].find(t => t.id === packId);
-  if (comp) return { label: comp.label, icon: comp.icon, sub: "Competition pack" };
-  const club = MP_TOPICS.clubs.find(t => t.id === packId);
-  if (club) return { label: club.label, abbr: club.abbr, sub: "Club deep-dive" };
-  return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
-}
-
-// Full-screen topic picker (design handoff topics-leagues/clubs.dc.html):
-// Mixed pinned above Leagues · Clubs · Tournaments tabs, single-select radio
-// behaviour, pinned Done bar echoing the current selection. Local draft state
-// — nothing commits to the lobby until Done.
-function TopicPickerSheet({ value, onDone, onClose }) {
-  const [draft, setDraft] = useState(value || "mixed");
-  const [tab, setTab] = useState(() =>
-    String(value || "").startsWith("club:") ? "clubs"
-    : MP_TOPICS.tournaments.some(t => t.id === value) ? "tournaments"
-    : "leagues");
-  const meta = topicMeta(draft);
-  const doneLabel = draft === "mixed" ? "Done — Mixed, all topics" : `Done — ${meta.label}`;
-  const items = MP_TOPICS[tab] || [];
-  return (
-    <div style={{position:"fixed",inset:0,zIndex:999,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"calc(14px + env(safe-area-inset-top, 0px)) 20px 0",display:"flex",alignItems:"center",gap:12}}>
-        <button onClick={onClose} aria-label="Back" style={{width:38,height:38,borderRadius:12,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>←</button>
-        <span style={{fontSize:24,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Topics</span>
-      </div>
-      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px 20px"}}>
-        <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:15,textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
-          ...(draft === "mixed" ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
-          <span style={{fontSize:19}}>🎲</span>
-          <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
-          <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
-            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}
-            : {border:"1.5px solid #3A3D4A"})}}>{draft === "mixed" ? "✓" : ""}</span>
-        </button>
-        <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
-          {[{ id: "leagues", label: "Leagues" }, { id: "clubs", label: "Clubs" }, { id: "tournaments", label: "Tournaments" }].map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
-              ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3A3D4A",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
-          ))}
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginTop:14}}>
-          {items.map(it => {
-            const sel = draft === it.id;
-            return (
-              <button key={it.id} onClick={() => setDraft(it.id)} style={{borderRadius:16,padding:14,display:"flex",flexDirection:"column",gap:6,textAlign:"left",cursor:"pointer",fontFamily:"inherit",
-                ...(sel ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
-                  {it.abbr
-                    ? <span style={{width:34,height:34,borderRadius:10,background:sel ? "rgba(88,204,2,0.14)" : "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:sel ? "#8AE042" : "var(--t1)"}}>{it.abbr}</span>
-                    : <span style={{fontSize:24}}>{it.icon}</span>}
-                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}}>✓</span>}
-                </div>
-                <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "#8AE042" : "var(--t1)",marginTop:2}}>{it.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
-        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:15,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:15,fontSize:15.5,fontWeight:800,color:"#07240D",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
-      </div>
-    </div>
-  );
-}
+// topicMeta + TopicPickerSheet moved to App.jsx (shared with LocalSetup).
 
 function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode }) {
   // Optimistic mode highlight: reflect the host's tap instantly, then let the
@@ -674,7 +606,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             <>
               <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Topic</div>
               <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-                <span style={{width:46,height:46,borderRadius:13,background:"var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:"var(--t1)",flexShrink:0}}>{t.abbr || t.icon}</span>
+                <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
                 <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                   <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
                   <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>

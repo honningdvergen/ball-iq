@@ -47,7 +47,7 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
   return `${bestUnbeaten - unbeaten} to your best`;
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -252,6 +252,34 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory }) {
               <span className="daily-greet-ko-lab">KO in</span>
               <span className="daily-greet-ko-val mono">{ko}</span>
             </div>
+          </div>
+        );
+      })()}
+
+      {/* Play-today launch row — the Daily tab is a launchpad, not just
+          history. Footle status reads today's entry from footleHistory. */}
+      {(() => {
+        const f = footleHistory.get(todayYMD);
+        const footleSub = f?.status === "won" ? `Solved in ${f.used}/6`
+          : f?.status === "lost" ? "Played today"
+          : f?.status === "in-progress" ? "In progress"
+          : "Guess the player";
+        const footleCta = (f?.status === "won" || f?.status === "lost") ? "Review" : f?.status === "in-progress" ? "Continue" : "Play";
+        const cardStyle = { flex: 1, borderRadius: 16, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, cursor: "pointer", fontFamily: "inherit", textAlign: "center" };
+        return (
+          <div style={{ display: "flex", gap: 10, margin: "14px 0 2px" }}>
+            <button onClick={() => setScreen?.("wordle")} style={cardStyle}>
+              <span style={{ fontSize: 22 }}>⚽</span>
+              <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>Footle</span>
+              <span style={{ fontSize: 11.5, color: "var(--t3)" }}>{footleSub}</span>
+              <span style={{ marginTop: 4, border: "1.5px solid rgba(88,204,2,0.5)", borderRadius: 999, padding: "5px 16px", fontSize: 12, fontWeight: 800, color: "var(--accent)", background: "rgba(88,204,2,0.06)" }}>{footleCta}</span>
+            </button>
+            <button onClick={() => { if (!dailyDone) startMode?.("daily"); }} style={{ ...cardStyle, cursor: dailyDone ? "default" : "pointer" }}>
+              <span style={{ fontSize: 22 }}>📋</span>
+              <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>Daily 7</span>
+              <span style={{ fontSize: 11.5, color: "var(--t3)" }}>{dailyDone ? `Done · ${dailyScore}/7` : "7 questions · ~3 min"}</span>
+              <span style={{ marginTop: 4, border: dailyDone ? "1.5px solid var(--border)" : "1.5px solid rgba(88,204,2,0.5)", borderRadius: 999, padding: "5px 16px", fontSize: 12, fontWeight: 800, color: dailyDone ? "var(--t3)" : "var(--accent)", background: dailyDone ? "transparent" : "rgba(88,204,2,0.06)" }}>{dailyDone ? "Done ✓" : "Play"}</span>
+            </button>
           </div>
         );
       })()}

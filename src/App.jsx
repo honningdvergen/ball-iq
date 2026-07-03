@@ -756,30 +756,6 @@ const LEAGUE_QUIZ_SECTIONS = [
 ];
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
-// Multiplayer topics — the "what you play" axis of the lobby. ids are
-// "mixed" | "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by the lobby's
-// host-only topic card + picker (design handoff topics-*.dc.html) and by
-// pickMultiplayerQuestions. Tab split (Leagues · Clubs · Tournaments) and
-// icon treatment (flag emoji for leagues, monogram abbr for clubs) per spec.
-export const MP_TOPICS = {
-  mixed: { id: "mixed", label: "Mixed — all topics", icon: "🎲" },
-  leagues: [
-    { id: "cat:PL", label: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
-    { id: "cat:LaLiga", label: "La Liga", icon: "🇪🇸" },
-    { id: "cat:SerieA", label: "Serie A", icon: "🇮🇹" },
-    { id: "cat:Bundesliga", label: "Bundesliga", icon: "🇩🇪" },
-    { id: "cat:Ligue1", label: "Ligue 1", icon: "🇫🇷" },
-  ],
-  tournaments: [
-    { id: "cat:UCL", label: "Champions League", icon: "⭐" },
-    { id: "cat:WorldCup", label: "World Cup", icon: "🌍" },
-    { id: "cat:Euros", label: "Euros", icon: "🏆" },
-  ],
-  clubs: Object.entries(CLUB_PACK_TO_QB)
-    .map(([key, name]) => ({ id: `club:${key}`, label: name, abbr: CLUB_ABBR[key] || clubInitials(name) }))
-    .sort((a, b) => a.label.localeCompare(b.label)),
-};
-
 const CLUB_PACKS = {
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
@@ -1009,6 +985,108 @@ const CLUB_PACKS = {
     questions: [],
   },
 };
+
+// Multiplayer/local topics — the "what you play" axis. ids are "mixed" |
+// "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by TopicPickerSheet (used
+// by the online lobby AND local setup) and by pickMultiplayerQuestions.
+// Tab split (Leagues · Clubs · Tournaments) per the design handoff; clubs
+// carry their real colours (same treatment as the Club Quiz picker).
+export const MP_TOPICS = {
+  mixed: { id: "mixed", label: "Mixed — all topics", icon: "🎲" },
+  leagues: [
+    { id: "cat:PL", label: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+    { id: "cat:LaLiga", label: "La Liga", icon: "🇪🇸" },
+    { id: "cat:SerieA", label: "Serie A", icon: "🇮🇹" },
+    { id: "cat:Bundesliga", label: "Bundesliga", icon: "🇩🇪" },
+    { id: "cat:Ligue1", label: "Ligue 1", icon: "🇫🇷" },
+  ],
+  tournaments: [
+    { id: "cat:UCL", label: "Champions League", icon: "⭐" },
+    { id: "cat:WorldCup", label: "World Cup", icon: "🌍" },
+    { id: "cat:Euros", label: "Euros", icon: "🏆" },
+  ],
+  clubs: Object.entries(CLUB_PACK_TO_QB)
+    .map(([key, name]) => {
+      const color = CLUB_PACKS[key]?.color || null;
+      return {
+        id: `club:${key}`, label: name,
+        abbr: CLUB_ABBR[key] || clubInitials(name),
+        color, fg: color ? clubReadableText(color) : null,
+      };
+    })
+    .sort((a, b) => a.label.localeCompare(b.label)),
+};
+
+// Resolve a pack id to its display treatment (icon or club-coloured monogram
+// + copy) for the topic cards (online lobby + local setup) and the picker's
+// Done bar.
+export function topicMeta(packId) {
+  if (!packId || packId === "mixed") return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
+  const comp = [...MP_TOPICS.leagues, ...MP_TOPICS.tournaments].find(t => t.id === packId);
+  if (comp) return { label: comp.label, icon: comp.icon, sub: "Competition pack" };
+  const club = MP_TOPICS.clubs.find(t => t.id === packId);
+  if (club) return { label: club.label, abbr: club.abbr, color: club.color, fg: club.fg, sub: "Club deep-dive" };
+  return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
+}
+
+// Full-screen topic picker (design handoff topics-leagues/clubs.dc.html):
+// Mixed pinned above Leagues · Clubs · Tournaments tabs, single-select radio
+// behaviour, pinned Done bar echoing the current selection. Local draft state
+// — nothing commits until Done. Shared by the online lobby and local setup.
+export function TopicPickerSheet({ value, onDone, onClose }) {
+  const [draft, setDraft] = useState(value || "mixed");
+  const [tab, setTab] = useState(() =>
+    String(value || "").startsWith("club:") ? "clubs"
+    : MP_TOPICS.tournaments.some(t => t.id === value) ? "tournaments"
+    : "leagues");
+  const meta = topicMeta(draft);
+  const doneLabel = draft === "mixed" ? "Done — Mixed, all topics" : `Done — ${meta.label}`;
+  const items = MP_TOPICS[tab] || [];
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:999,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <div style={{padding:"calc(14px + env(safe-area-inset-top, 0px)) 20px 0",display:"flex",alignItems:"center",gap:12}}>
+        <button onClick={onClose} aria-label="Back" style={{width:38,height:38,borderRadius:12,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>←</button>
+        <span style={{fontSize:24,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Topics</span>
+      </div>
+      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px 20px"}}>
+        <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:15,textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
+          ...(draft === "mixed" ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
+          <span style={{fontSize:19}}>🎲</span>
+          <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
+          <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
+            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}
+            : {border:"1.5px solid #3A3D4A"})}}>{draft === "mixed" ? "✓" : ""}</span>
+        </button>
+        <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
+          {[{ id: "leagues", label: "Leagues" }, { id: "clubs", label: "Clubs" }, { id: "tournaments", label: "Tournaments" }].map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
+              ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3A3D4A",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginTop:14}}>
+          {items.map(it => {
+            const sel = draft === it.id;
+            return (
+              <button key={it.id} onClick={() => setDraft(it.id)} style={{borderRadius:16,padding:14,display:"flex",flexDirection:"column",gap:6,textAlign:"left",cursor:"pointer",fontFamily:"inherit",
+                ...(sel ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
+                  {it.abbr
+                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "#8AE042" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
+                    : <span style={{fontSize:24}}>{it.icon}</span>}
+                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}}>✓</span>}
+                </div>
+                <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "#8AE042" : "var(--t1)",marginTop:2}}>{it.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
+        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:15,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:15,fontSize:15.5,fontWeight:800,color:"#07240D",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
+      </div>
+    </div>
+  );
+}
 
 // ─── CLUB CRESTS ─────────────────────────────────────────────────────────────
 // Custom simplified SVG crests for each club pack. All share the same shield
@@ -2197,6 +2275,8 @@ function LocalSetup({ onStart, onBack }) {
   const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
   const [lmode, setLmode] = useState("classic");
   const [ldiff, setLdiff] = useState("medium");
+  const [topic, setTopic] = useState("mixed");
+  const [topicOpen, setTopicOpen] = useState(false);
 
   const setName = (idx, val) => setNames(n => { const copy = n.slice(); copy[idx] = val; return copy; });
 
@@ -2206,7 +2286,7 @@ function LocalSetup({ onStart, onBack }) {
       name: (names[i] || "").trim() || `Player ${i + 1}`,
       emoji: EMOJIS[i % EMOJIS.length],
     }));
-    onStart({ players, mode: lmode, diff: ldiff });
+    onStart({ players, mode: lmode, diff: ldiff, topic });
   };
 
   return (
@@ -2240,6 +2320,25 @@ function LocalSetup({ onStart, onBack }) {
           </div>
         ))}
       </div>
+
+      {/* Topic — same card + full-screen picker as the online lobby */}
+      <div className="ds-eyebrow local-section-label">Topic</div>
+      {(() => {
+        const t = topicMeta(topic);
+        return (
+          <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12}}>
+            <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
+            <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
+              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
+              <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
+            </div>
+            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#07240D",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+          </div>
+        );
+      })()}
+      {topicOpen && (
+        <TopicPickerSheet value={topic} onClose={() => setTopicOpen(false)} onDone={(id) => { setTopic(id); setTopicOpen(false); }} />
+      )}
 
       {/* Mode */}
       <div className="ds-eyebrow local-section-label">Mode</div>
@@ -2291,7 +2390,7 @@ function LocalSetup({ onStart, onBack }) {
 // reveal phase shows all the picks + correct answer in one go, so a later
 // player can't see what's right from an earlier player's feedback.
 function LocalGameScreen({ config, onComplete, onExit }) {
-  const { players, mode, diff } = config;
+  const { players, mode, diff, topic = "mixed" } = config;
   const TARGETS = { classic: 10, sprint: 5, survival: 30 };
   const target = TARGETS[mode] || 10;
   const CHUNK_SIZE = mode === "survival" ? 1 : 3;
@@ -2305,7 +2404,23 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     let cancelled = false;
     (async () => {
       try {
-        const raw = await getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
+        // Topic-scoped pools (same ids as the online lobby): a club topic
+        // filters the bank by club; a cat topic rides getQs' category filter;
+        // mixed keeps the original all-categories behaviour.
+        let raw;
+        if (String(topic).startsWith("club:")) {
+          const { QB } = await loadQuestions();
+          const clubName = CLUB_PACK_TO_QB[String(topic).slice(5)];
+          const pool = QB.filter(q => q && q.club === clubName && q.type === "mcq" && Array.isArray(q.o));
+          raw = shuffle(pool).slice(0, target).map(q => {
+            const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+            return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a) };
+          });
+        } else if (String(topic).startsWith("cat:")) {
+          raw = await getQs({ cat: String(topic).slice(4), diff, n: target, ramp: mode === "classic" });
+        } else {
+          raw = await getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
+        }
         if (cancelled) return;
         const filtered = (Array.isArray(raw) ? raw : []).filter(q => q && q.type !== "tf" && q.type !== "typed");
         setQuestions(filtered);
@@ -4385,7 +4500,20 @@ export function recordMpResult(entry) {
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-function OnlineHubTab({ startMode, setOnlineAutoCreate, displayName, avatarUrl, avatarEmoji }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji }) {
+  // Inline join-with-code — the code row lives ON the tab (no intermediate
+  // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
+  const [joinCode, setJoinCode] = React.useState("");
+  const [joining, setJoining] = React.useState(false);
+  const [joinError, setJoinError] = React.useState("");
+  const submitJoin = async () => {
+    if (joining) return;
+    setJoining(true); setJoinError("");
+    try {
+      const res = await onJoinCode?.(joinCode);
+      if (res && !res.ok && res.error) setJoinError(res.error);
+    } finally { setJoining(false); }
+  };
   // Re-read on mount: the pane unmounts during gameplay (screen !== "home"),
   // so returning from a finished game always re-mounts with fresh history.
   const [history] = React.useState(() => readMpHistory());
@@ -4459,9 +4587,25 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, displayName, avatarUrl, 
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#07240D"}}>Create Room</span>
       </button>
-      <button onClick={() => startMode("online")} style={{width:"100%",marginTop:10,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{fontSize:14}}>🔑</span><span style={{fontSize:15,fontWeight:700,color:"var(--t1)"}}>Join with Code</span>
+      <input
+        type="text"
+        value={joinCode}
+        onChange={(e) => { setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)); if (joinError) setJoinError(""); }}
+        onKeyDown={(e) => { if (e.key === "Enter" && joinCode.length === 6) submitJoin(); }}
+        placeholder="Got a code? Type it here"
+        autoCapitalize="characters"
+        autoCorrect="off"
+        autoComplete="off"
+        spellCheck={false}
+        maxLength={6}
+        disabled={joining}
+        aria-label="Room code"
+        style={{width:"100%",marginTop:10,padding:"13px 14px",fontSize:16,fontWeight:800,letterSpacing:joinCode ? "0.25em" : "normal",textAlign:"center",borderRadius:16,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",outline:"none",fontFamily:joinCode ? "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" : "inherit"}}
+      />
+      <button onClick={submitJoin} disabled={joining || joinCode.length !== 6} style={{width:"100%",marginTop:10,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit",opacity:(joining || joinCode.length !== 6) ? 0.55 : 1}}>
+        <span style={{fontSize:14}}>🔑</span><span style={{fontSize:15,fontWeight:700,color:"var(--t1)"}}>{joining ? "Joining…" : "Join with Code"}</span>
       </button>
+      {joinError && <div style={{color:"#FF6B6B",fontSize:13,textAlign:"center",marginTop:8}}>{joinError}</div>}
 
       {/* Recent opponents — appears once real games have been recorded */}
       {stats.recent.length > 0 && (
@@ -7901,6 +8045,29 @@ function AppInner() {
     [stats.gamesPlayed, loginStreak]
   );
 
+  // Inline join from the Online tab — same RPC + SQLSTATE copy as OnlineEntry,
+  // but the code row lives on the tab (no intermediate entry screen).
+  const hubJoinRoom = useCallback(async (rawCode) => {
+    if (!user || isGuest) { openAuthPrompt("online"); return { ok: false, error: "" }; }
+    const trimmed = String(rawCode || "").trim().toUpperCase();
+    if (trimmed.length !== 6) return { ok: false, error: "Enter the 6-character room code" };
+    const result = await mpJoinRoom({
+      p_code: trimmed,
+      p_name: (authProfile?.username || profile?.name || "Player"),
+      p_avatar: "⚽",
+    });
+    if (result.error) {
+      const msg = result.code === "53300" ? "This room is full"
+        : result.code === "P0002" ? "No room with that code — check with your friend"
+        : result.code === "42P01" ? "This room isn't accepting joins right now"
+        : (result.error || "Couldn't join room");
+      return { ok: false, error: msg };
+    }
+    setStage1RoomCode(result.code || trimmed);
+    setScreen("online-stage1-lobby");
+    return { ok: true };
+  }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt]);
+
   // Stable callbacks for memoized children
   const goHome = useCallback(() => {
     setScreen("home");
@@ -8491,6 +8658,10 @@ function AppInner() {
               xp={xp}
               shieldCount={shieldCount}
               dailyHistory={dailyHistory}
+              startMode={startMode}
+              setScreen={setScreen}
+              dailyDone={dailyDone}
+              dailyScore={dailyScore}
             />
           </div>
         )}
@@ -8501,6 +8672,7 @@ function AppInner() {
             <OnlineHubTab
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
+              onJoinCode={hubJoinRoom}
               displayName={(() => {
                 const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
                 if (authProfile?.username && !isDef(authProfile.username)) return authProfile.username;
@@ -8646,7 +8818,7 @@ function AppInner() {
         {screen === "online-stage1" && (
           <React.Suspense fallback={<div className="screen" />}>
             <OnlineEntry
-              onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); goHome(); }}
+              onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); goHome(); setTab("online"); }}
               onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
               defaultName={authProfile?.username || profile?.name || ""}
               autoJoinCode={pendingJoinCode}
@@ -8660,7 +8832,7 @@ function AppInner() {
           <React.Suspense fallback={<div className="screen" />}>
             <MultiplayerLobby
               code={stage1RoomCode}
-              onExit={() => { setStage1RoomCode(""); setScreen("online-stage1"); }}
+              onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={authProfile?.username || profile?.name || ""}
             />
           </React.Suspense>
