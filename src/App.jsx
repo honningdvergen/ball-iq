@@ -4506,6 +4506,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
   const [joinCode, setJoinCode] = React.useState("");
   const [joining, setJoining] = React.useState(false);
   const [joinError, setJoinError] = React.useState("");
+  const [joinFocus, setJoinFocus] = React.useState(false);
   const submitJoin = async () => {
     if (joining) return;
     setJoining(true); setJoinError("");
@@ -4575,7 +4576,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             <React.Fragment key={s.label}>
               {i > 0 && <div style={{width:1,background:"var(--border)"}} />}
               <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:24,fontWeight:800,color:s.color,fontVariantNumeric:"tabular-nums"}}>{s.v}</span>
+                {/* Inter for stat numbers (mono is codes-only — its dotted zero reads like an 8 in stats) */}
+                <span style={{fontSize:24,fontWeight:800,color:s.color,fontVariantNumeric:"tabular-nums"}}>{s.v}</span>
                 <span style={{fontSize:11,fontWeight:600,color:"var(--t2)"}}>{s.label}</span>
               </div>
             </React.Fragment>
@@ -4587,25 +4589,47 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#07240D"}}>Create Room</span>
       </button>
-      <input
-        type="text"
-        value={joinCode}
-        onChange={(e) => { setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)); if (joinError) setJoinError(""); }}
-        onKeyDown={(e) => { if (e.key === "Enter" && joinCode.length === 6) submitJoin(); }}
-        placeholder="Got a code? Type it here"
-        autoCapitalize="characters"
-        autoCorrect="off"
-        autoComplete="off"
-        spellCheck={false}
-        maxLength={6}
-        disabled={joining}
-        aria-label="Room code"
-        style={{width:"100%",marginTop:10,padding:"13px 14px",fontSize:16,fontWeight:800,letterSpacing:joinCode ? "0.25em" : "normal",textAlign:"center",borderRadius:16,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",outline:"none",fontFamily:joinCode ? "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" : "inherit"}}
-      />
-      <button onClick={submitJoin} disabled={joining || joinCode.length !== 6} style={{width:"100%",marginTop:10,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit",opacity:(joining || joinCode.length !== 6) ? 0.55 : 1}}>
-        <span style={{fontSize:14}}>🔑</span><span style={{fontSize:15,fontWeight:700,color:"var(--t1)"}}>{joining ? "Joining…" : "Join with Code"}</span>
-      </button>
-      {joinError && <div style={{color:"#FF6B6B",fontSize:13,textAlign:"center",marginTop:8}}>{joinError}</div>}
+      {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
+          sits dimmed until there's input, lights green once typing starts. */}
+      <div style={{display:"flex",gap:9,marginTop:10}}>
+        <div style={{flex:1,minWidth:0,borderRadius:16,background:"var(--s1)",padding:"0 15px",display:"flex",alignItems:"center",gap:10,
+          border:joinFocus ? "1.5px solid rgba(88,204,2,0.55)" : "1px solid var(--border)",
+          boxShadow:joinFocus ? "0 0 0 4px rgba(88,204,2,0.12)" : undefined}}>
+          <span style={{fontSize:14,flexShrink:0}}>🔑</span>
+          <input
+            type="text"
+            value={joinCode}
+            onChange={(e) => { setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)); if (joinError) setJoinError(""); }}
+            onKeyDown={(e) => { if (e.key === "Enter" && joinCode.length > 0) submitJoin(); }}
+            onFocus={() => setJoinFocus(true)}
+            onBlur={() => setJoinFocus(false)}
+            placeholder="Got a code? Type it here"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            autoComplete="off"
+            spellCheck={false}
+            maxLength={6}
+            disabled={joining}
+            enterKeyHint="go"
+            aria-label="Room code"
+            style={{flex:1,minWidth:0,border:"none",background:"transparent",outline:"none",padding:"15px 0",
+              fontSize:joinCode ? 17 : 14.5,fontWeight:joinCode ? 800 : 500,
+              letterSpacing:joinCode ? "0.22em" : "normal",
+              color:"var(--text)",
+              fontFamily:joinCode ? "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" : "inherit"}}
+          />
+        </div>
+        <button onClick={submitJoin} disabled={joining || joinCode.length === 0}
+          style={{borderRadius:16,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
+            ...(joinCode.length > 0 && !joining
+              ? {border:"none",background:"var(--accent)",color:"#07240D",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
+              : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
+          {joining ? "…" : "Join"}
+        </button>
+      </div>
+      {joinError
+        ? <div style={{color:"#FF6B6B",fontSize:12,marginTop:9,paddingLeft:4}}>{joinError}</div>
+        : (joinFocus || joinCode) ? <div style={{color:"var(--t3)",fontSize:11.5,marginTop:9,paddingLeft:4}}>Codes are 6 characters — ask your friend for theirs.</div> : null}
 
       {/* Recent opponents — appears once real games have been recorded */}
       {stats.recent.length > 0 && (
