@@ -6910,14 +6910,21 @@ function AppInner() {
   }, [milestoneConfetti]);
 
   const tickLoginStreak = useCallback(async () => {
+    // Calendar day in the USER'S timezone (days since epoch of the local
+    // date). The previous UTC day (Date.now()/DAY_MS client-side,
+    // current_date server-side) broke streaks for anyone west of UTC playing
+    // in the evening: consecutive LOCAL days straddled 00:00 UTC and read as
+    // a skipped day. The server clamps this value to ±2 of its UTC day.
+    const d0 = new Date();
+    const localDay = Math.floor((d0.getTime() - d0.getTimezoneOffset() * 60000) / 86400000);
     let result;
     if (user?.id) {
-      const { data, error } = await supabase.rpc('tick_login_streak');
+      const { data, error } = await supabase.rpc('tick_login_streak', { p_local_day: localDay });
       if (error) { console.warn('[tick_login_streak]', error.message); return; }
       result = data;
     } else {
       // Guest path — same logic as the RPC, executed client-side.
-      const todayNum = Math.floor(Date.now() / TIMINGS.DAY_MS);
+      const todayNum = localDay;
       let prev = null;
       try {
         const raw = localStorage.getItem('biq_login_streak');
@@ -6939,19 +6946,25 @@ function AppInner() {
       // the streak exists to create.
       const shieldsAvail = Math.min(3, Math.max(0, Math.floor(xpVal / 200) - shieldsUsed));
       let newStreak, shieldSaved = false;
-      if (prevLastDay === todayNum) newStreak = prevStreak;
-      else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
-      else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
-        newStreak = prevStreak + 1;
-        shieldSaved = true;
-      } else newStreak = 1;
-      result = {
-        lastDay: todayNum,
-        streak:  newStreak,
-        best:    Math.max(prevBest, newStreak),
-        ticked:  prevLastDay !== todayNum,
-        shieldSaved,
-      };
+      if (prevLastDay > todayNum) {
+        // lastDay is AHEAD of today (a legacy UTC tick banked a later day).
+        // Never reset for that — keep state as-is and leave lastDay alone.
+        result = { lastDay: prevLastDay, streak: prevStreak, best: prevBest, ticked: false, shieldSaved: false };
+      } else {
+        if (prevLastDay === todayNum) newStreak = prevStreak;
+        else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
+        else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
+          newStreak = prevStreak + 1;
+          shieldSaved = true;
+        } else newStreak = 1;
+        result = {
+          lastDay: todayNum,
+          streak:  newStreak,
+          best:    Math.max(prevBest, newStreak),
+          ticked:  prevLastDay !== todayNum,
+          shieldSaved,
+        };
+      }
     }
     if (!result) return;
     try {
