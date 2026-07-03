@@ -5808,7 +5808,7 @@ function OnboardingScreen({ onDone }) {
               <div className="onboard-sample-fb">
                 {sampleAnswered === null ? "" : (sampleAnswered === ONBOARD_SAMPLE.a
                   ? "Nice — you're a natural ⚽"
-                  : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} (5 titles) — you'll pick these up fast!`)}
+                  : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} — the all-time record holder. You'll pick these up fast!`)}
               </div>
             </div>
             <div className="onboard-actions">
@@ -7036,14 +7036,12 @@ function AppInner() {
     prefetchQuestions();
     // Prune expired seen-question history (>14 days old) on mount
     try { loadSeenHistory(); } catch {}
-    // Check if first-time user — show onboarding if not seen before.
-    // Sprint #26 X2: this local-only check still drives the FAST path
-    // (cold start before authProfile lands). The cross-device sync
-    // effect below reconciles against profile.onboarded_at once auth
-    // resolves.
-    window.storage?.get("biq_onboarded").then(r => {
-      if (!r) setHasOnboarded(false);
-    }).catch(() => setHasOnboarded(false));
+    // First-run onboarding is decided synchronously by the useState
+    // initializer (biq_onboarded); the cross-device sync effect below
+    // reconciles against profile.onboarded_at once auth resolves. (An async
+    // re-check here used to race that sync — replaying onboarding for
+    // already-onboarded users on fresh browsers and on EVERY visit in
+    // storage-blocked browsers — removed.)
 
     window.storage?.get("biq_stats").then(res => {
       if (res) { try { setStats(JSON.parse(res.value)); } catch {} }
@@ -7258,8 +7256,10 @@ function AppInner() {
       // function should clear both so a stale banner doesn't appear next quiz.
       setActiveClub(null);
       setActiveLeague(null);
-      // Dismiss first-quiz tip when user starts a game
-      if (showFirstQuizTip && m === "classic") {
+      // Dismiss first-quiz tip when the user starts ANY game — the tip's job
+      // is done the moment they play something (previously only Classic
+      // dismissed it, so it lingered after Daily/Footle/Club starts).
+      if (showFirstQuizTip) {
         setShowFirstQuizTip(false);
         try { window.storage?.set("biq_first_tip_shown", "1"); } catch {}
       }
@@ -8406,13 +8406,13 @@ function AppInner() {
         {/* First quiz tip — Sprint #27 Y3 F1: className lets a desktop
             media query constrain the left/right anchoring to the .app
             column. Mobile keeps the inline 16px padding via base CSS. */}
-        {showFirstQuizTip && !inGame && screen === "home" && (
+        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && (
           <div className="first-quiz-tip" style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
             <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(34,197,94,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
-                <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Tap "Play" to start your first quiz. New questions daily!</div>
+                <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Daily 7 — new questions every day!</div>
               </div>
               <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
@@ -8785,13 +8785,13 @@ function AppInner() {
               style={{width:"100%",maxWidth:360,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:18,padding:"26px 22px",textAlign:"center"}}
             >
               <div style={{fontSize:48,marginBottom:10}} aria-hidden="true">🎮</div>
-              <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Sign in to join the game</div>
+              <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Join the game</div>
               <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
               <button
                 onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}
                 style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
               >
-                Sign in
+                Sign up or sign in
               </button>
               <button
                 onClick={clearPendingJoin}

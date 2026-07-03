@@ -16,7 +16,19 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 
 const REMINDER_HOUR = 19;   // 7pm local
 const WINDOW_DAYS = 7;      // schedule a rolling week ahead
-// Reminder ids are namespaced by day-offset (0..6) from "today". Because we
+// Win-back tail: after the daily week goes quiet, a decaying set of nudges so
+// a lapsed user is still reachable (previously the app went permanently silent
+// after 7 days — the single biggest retention hole). Rescheduled — and thereby
+// pushed out — on every app open, so an active user never sees these. iOS
+// allows 64 pending local notifications; we use 12.
+const WINBACK = [
+  { off: 8,  body: 'Your streak misses you — 2 minutes gets it back 🔥' },
+  { off: 11, body: "New Daily 7 and Footle drop every day — today's are waiting ⚽" },
+  { off: 15, body: 'Club quizzes: 17 clubs, deep cuts only. Still know yours? 🛡️' },
+  { off: 22, body: 'Your rivals are pulling ahead on the leaderboard 👀' },
+  { off: 30, body: 'One quiz. Two minutes. See what you still remember ⚽' },
+];
+// Reminder ids are namespaced by day-offset from "today". Because we
 // reschedule the whole window on every app open, "today" is always offset 0 —
 // so cancelTodayReminder() can always target ID_BASE + 0.
 const ID_BASE = 700000;
@@ -64,6 +76,16 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
         schedule: { at, allowWhileIdle: true },
       });
     }
+    for (const w of WINBACK) {
+      const at = atFutureLocal(w.off);
+      if (!at) continue;
+      notifications.push({
+        id: ID_BASE + w.off,
+        title: '⚽ Ball IQ',
+        body: w.body,
+        schedule: { at, allowWhileIdle: true },
+      });
+    }
     if (notifications.length) await LocalNotifications.schedule({ notifications });
   } catch { /* non-fatal: reminders are best-effort */ }
 }
@@ -74,13 +96,14 @@ export async function cancelTodayReminder() {
   try { await LocalNotifications.cancel({ notifications: [{ id: ID_BASE }] }); } catch { /* noop */ }
 }
 
-// Cancel the whole window (Settings → off, or before a reschedule). Clears a
-// generous id range so no stray reminder survives a window shift.
+// Cancel the whole window + win-back tail (Settings → off, or before a
+// reschedule). Clears a generous id range (covers the day-30 tail) so no
+// stray reminder survives a window shift.
 export async function cancelAllReminders() {
   if (!notificationsSupported()) return;
   try {
     const ids = [];
-    for (let i = 0; i <= 13; i++) ids.push({ id: ID_BASE + i });
+    for (let i = 0; i <= 31; i++) ids.push({ id: ID_BASE + i });
     await LocalNotifications.cancel({ notifications: ids });
   } catch { /* noop */ }
 }

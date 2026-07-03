@@ -52,7 +52,10 @@ const PROMPT_COPY = {
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
   const { signUp, signIn, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
-  const [mode, setMode] = useState('login') // 'login' or 'signup'
+  // Signup-framed gates ("play online", "add friends", …) target guests
+  // WITHOUT accounts — open those in signup mode so the copy and the form
+  // agree. Front door + expired-session keep the sign-in default.
+  const [mode, setMode] = useState(promptReason && PROMPT_COPY[promptReason] ? 'signup' : 'login') // 'login' or 'signup'
   const [email, setEmail] = useState(readLastEmail)
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
@@ -63,6 +66,92 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const [sessionExpired, setSessionExpired] = useState(promptReason === 'expired')
   const isLight = readTheme() === 'light'
   const prompt = promptReason && PROMPT_COPY[promptReason] ? PROMPT_COPY[promptReason] : null
+
+  // Social sign-in hoisted so the signup-framed overlay can render it ABOVE
+  // the email form — one-tap Apple/Google is the zero-friction conversion
+  // path and shouldn't sit below six elements (or under the keyboard once
+  // the email input grabs focus). The front door keeps the original order.
+  const orDivider = (
+    <div style={styles.divider}>
+      <div style={styles.dividerLine} />
+      <span>or</span>
+      <div style={styles.dividerLine} />
+    </div>
+  )
+  const socialButtons = (
+    <>
+      <button
+        type="button"
+        onClick={async () => {
+          setError('')
+          setMessage('')
+          setLoading(true)
+          const { error } = await signInWithApple()
+          if (error) setError(error.message || 'Apple sign-in failed')
+          setLoading(false)
+        }}
+        disabled={loading}
+        aria-label="Sign in with Apple"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          padding: '14px 16px',
+          minHeight: 44,
+          fontSize: 15,
+          fontWeight: 600,
+          fontFamily: 'inherit',
+          borderRadius: 12,
+          border: 'none',
+          background: isLight ? '#000' : '#fff',
+          color: isLight ? '#fff' : '#000',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1,
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        {APPLE_LOGO_SVG(isLight ? '#fff' : '#000')}
+        <span>Sign in with Apple</span>
+      </button>
+      <button
+        type="button"
+        onClick={async () => {
+          setError('')
+          setMessage('')
+          setLoading(true)
+          const { error } = await signInWithGoogle()
+          if (error) setError(error.message || 'Google sign-in failed')
+          setLoading(false)
+        }}
+        disabled={loading}
+        aria-label="Continue with Google"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          padding: '13px 16px',
+          minHeight: 44,
+          fontSize: 15,
+          fontWeight: 500,
+          fontFamily: 'inherit',
+          borderRadius: 12,
+          border: `1px solid ${isLight ? '#dadce0' : '#3c4043'}`,
+          background: isLight ? '#fff' : '#1f1f1f',
+          color: isLight ? '#1f1f1f' : '#e8eaed',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1,
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        {GOOGLE_LOGO_SVG}
+        <span>Continue with Google</span>
+      </button>
+    </>
+  )
 
   // Listen for session-expired events dispatched by useAuth.jsx's
   // onAuthStateChange handler (fires when SIGNED_OUT happens without
@@ -121,7 +210,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           // arrives. Now they get an actionable nudge instead.
           setMessage('Looks like you already have an account. Try signing in instead.')
         } else {
-          setMessage('Check your email to confirm your account, then sign in.')
+          setMessage('Check your email to confirm your account — then come back and sign in. Your email will be filled in for you.')
         }
       } else {
         const { data, error } = await signIn(email, password)
@@ -343,6 +432,9 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
       )}
       <div style={styles.logo}>⚽</div>
       <div style={styles.title}>Ball <em style={{ color: palette.accent, fontStyle: 'normal' }}>IQ</em></div>
+      {prompt && (
+        <div style={{ ...styles.subtitle, fontSize: 17, fontWeight: 800, color: palette.text, marginBottom: 4 }}>{prompt.title}</div>
+      )}
       <div style={styles.subtitle}>
         {prompt ? prompt.sub : (mode === 'login' ? 'Welcome back' : 'Create your account')}
       </div>
@@ -350,6 +442,14 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
       {sessionExpired && (
         <div style={styles.expiredBanner}>
           Session expired — please sign in again
+        </div>
+      )}
+
+      {/* Signup-framed overlay: one-tap social first, email form second. */}
+      {prompt && (
+        <div style={styles.form}>
+          {socialButtons}
+          {orDivider}
         </div>
       )}
 
@@ -457,92 +557,15 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           </button>
         </div>
 
-        {/* Sprint #94 III3 — Social sign-in. Both buttons live above the
-            "Continue as guest" path. Apple appears first per Apple HIG
-            guideline 4.8 (must be at least as prominent as competing
-            providers). On native, taps open @capacitor/browser; the OAuth
-            callback hits app.balliq://auth/callback (registered in
-            ios/App/App/Info.plist) → appUrlOpen handler exchanges code
-            for session. On web, signInWithOAuth full-page redirects to
-            Supabase + back. Errors render in the same setError slot the
-            email/password flow uses. */}
-        <div style={styles.divider}>
-          <div style={styles.dividerLine} />
-          <span>or</span>
-          <div style={styles.dividerLine} />
-        </div>
-
-        <button
-          type="button"
-          onClick={async () => {
-            setError('')
-            setMessage('')
-            setLoading(true)
-            const { error } = await signInWithApple()
-            if (error) setError(error.message || 'Apple sign-in failed')
-            setLoading(false)
-          }}
-          disabled={loading}
-          aria-label="Sign in with Apple"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            padding: '14px 16px',
-            minHeight: 44,
-            fontSize: 15,
-            fontWeight: 600,
-            fontFamily: 'inherit',
-            borderRadius: 12,
-            border: 'none',
-            background: isLight ? '#000' : '#fff',
-            color: isLight ? '#fff' : '#000',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-            touchAction: 'manipulation',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          {APPLE_LOGO_SVG(isLight ? '#fff' : '#000')}
-          <span>Sign in with Apple</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={async () => {
-            setError('')
-            setMessage('')
-            setLoading(true)
-            const { error } = await signInWithGoogle()
-            if (error) setError(error.message || 'Google sign-in failed')
-            setLoading(false)
-          }}
-          disabled={loading}
-          aria-label="Continue with Google"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 10,
-            padding: '13px 16px',
-            minHeight: 44,
-            fontSize: 15,
-            fontWeight: 500,
-            fontFamily: 'inherit',
-            borderRadius: 12,
-            border: `1px solid ${isLight ? '#dadce0' : '#3c4043'}`,
-            background: isLight ? '#fff' : '#1f1f1f',
-            color: isLight ? '#1f1f1f' : '#e8eaed',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-            touchAction: 'manipulation',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          {GOOGLE_LOGO_SVG}
-          <span>Continue with Google</span>
-        </button>
+        {/* Sprint #94 III3 — Social sign-in (hoisted above as socialButtons).
+            Front door renders it here, below the email form; signup-framed
+            overlays render it pre-form instead. Apple first per HIG 4.8. */}
+        {!prompt && (
+          <>
+            {orDivider}
+            {socialButtons}
+          </>
+        )}
 
         <div style={{...styles.divider, marginTop: 16}}>
           <div style={styles.dividerLine} />

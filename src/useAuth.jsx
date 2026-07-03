@@ -546,6 +546,11 @@ export function AuthProvider({ children }) {
       }
     })
     if (error) return { error }
+    // Prefill the return trip: signup forces an email-confirm round trip that
+    // bounces through the browser, so when the user comes back to sign in the
+    // address should already be waiting in the form (signIn persists this on
+    // success; the signup path previously never did).
+    safeSetItem('biq_last_email', email)
     // Sprint #76 RR1: schedule a clear of guest-progress local-storage on
     // the next sign-in. Done at first-signin (not now) because the user
     // is still in guest mode between this signUp and email confirmation —
