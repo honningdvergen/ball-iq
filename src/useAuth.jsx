@@ -52,6 +52,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_seen_history_v2',
   'biq_pending_join',
   'biq_last_email',
+  'biq_mp_history', // Online-tab h2h ledger — per-user W/L record, must not leak across accounts
 ]
 const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
 
