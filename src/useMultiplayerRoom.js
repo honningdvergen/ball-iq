@@ -102,6 +102,14 @@ export function useMultiplayerRoom(code) {
       } catch {}
     }
 
+    // Foreground resync: iOS suspends the websocket while backgrounded, and
+    // the CLOSED→SUBSCRIBED catch-up below can lag — or never fire at all if
+    // the socket died without a status transition. Returning to the
+    // foreground always re-pulls room + players directly; the 2s debounce in
+    // refetchInitialState absorbs the overlap when both paths fire.
+    // (visibilitychange fires in the Capacitor WKWebView too.)
+    let removeForegroundSync = null
+
     ;(async () => {
       try {
         // Two-step initial fetch: game_rooms by code first to get room.id,
@@ -218,6 +226,16 @@ export function useMultiplayerRoom(code) {
             setChannelStatus('error')
           }
         })
+
+        const onVisible = () => {
+          if (cancelled) return
+          if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
+          refetchInitialState(roomData.id)
+        }
+        try {
+          document.addEventListener('visibilitychange', onVisible)
+          removeForegroundSync = () => document.removeEventListener('visibilitychange', onVisible)
+        } catch {}
       } catch (e) {
         if (cancelled) return
         setError(e?.message || String(e))
@@ -228,6 +246,7 @@ export function useMultiplayerRoom(code) {
 
     return () => {
       cancelled = true
+      if (removeForegroundSync) { try { removeForegroundSync() } catch {} }
       if (channelRef.current) {
         try { supabase.removeChannel(channelRef.current) } catch {}
         channelRef.current = null
