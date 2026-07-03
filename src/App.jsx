@@ -4500,7 +4500,7 @@ export function recordMpResult(entry) {
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, onOpenSettings, displayName, avatarUrl, avatarEmoji }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -4539,16 +4539,14 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, onOpenSettin
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
     <div className="screen">
-      {/* Title + win-streak pill (or settings gear when no streak, per 7a) */}
+      {/* Title + win-streak pill (no local gear — the global header has one) */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
         <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Online</div>
-        {stats.streak >= 2 ? (
+        {stats.streak >= 2 && (
           <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
             <span style={{fontSize:12}}>🔥</span>
             <span style={{fontSize:13,fontWeight:800,color:"#FFC107",fontVariantNumeric:"tabular-nums"}}>{stats.streak} win streak</span>
           </div>
-        ) : (
-          <button onClick={() => onOpenSettings?.()} aria-label="Settings" style={{width:38,height:38,borderRadius:12,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:16,cursor:"pointer",fontFamily:"inherit",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>⚙️</button>
         )}
       </div>
 
@@ -8699,7 +8697,6 @@ function AppInner() {
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
               onJoinCode={hubJoinRoom}
-              onOpenSettings={() => setScreen("settings")}
               displayName={(() => {
                 const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
                 if (authProfile?.username && !isDef(authProfile.username)) return authProfile.username;

@@ -244,9 +244,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         const playBtn = { border: "none", borderRadius: 12, background: "var(--accent)", boxShadow: "0 6px 18px rgba(88,204,2,0.25)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#07240D", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 };
         return (
           <>
-            <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: 6 }}>
-              <button onClick={() => setScreen?.("settings")} aria-label="Settings" style={{ width: 38, height: 38, borderRadius: 12, background: "var(--s1)", border: "1px solid var(--border)", color: "var(--t2)", fontSize: 16, cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>⚙️</button>
-            </div>
+            {/* No local gear — AppInner's global header already renders one. */}
             <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 2 }} role="status">
               {timeOfDayGreeting(now)}{(name || authLoading) ? ", " : ""}
               {authLoading ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>…</b> : name ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>{name}</b> : null}
