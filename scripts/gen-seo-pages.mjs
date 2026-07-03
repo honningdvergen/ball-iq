@@ -210,10 +210,20 @@ function renderMesh(currentSlug, livePages) {
   return `<div class="mesh">\n${links}\n</div>`;
 }
 
-function ctaBlock(label) {
+// Category slugs whose in-app League Quiz can be deep-launched via
+// /play?quiz=<slug> (must stay in sync with QUIZ_SLUG_TO_CAT in src/App.jsx).
+const QUIZ_DEEPLINK_SLUGS = new Set([
+  'world-cup', 'premier-league', 'champions-league',
+  'la-liga', 'serie-a', 'bundesliga', 'euros',
+]);
+
+// playHref lets club/league pages send the searcher STRAIGHT into the quiz
+// they Googled (/play?club=arsenal) instead of dumping them on the homepage
+// to re-find it — the weakest link in the zero-ad-spend funnel.
+function ctaBlock(label, playHref = `${SITE.base}/`) {
   return `<div class="cta">
 <p>${esc(label)}</p>
-<a class="btn" href="${SITE.base}/">Play free in your browser</a>
+<a class="btn" href="${playHref}">Play free in your browser</a>
 <a class="btn store" href="${SITE.appStore}" rel="noopener">Get the app</a>
 </div>`;
 }
@@ -279,11 +289,17 @@ ${header([
 ${introHtml}
 </div>
 <p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
-${ctaBlock(`Like these? Play the full ${catCfg.name} quiz — it's free.`)}
+${(() => {
+    const playHref = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : undefined;
+    return ctaBlock(`Like these? Play the full ${catCfg.name} quiz — it's free.`, playHref);
+  })()}
 <h2>${esc(catCfg.name)} quiz questions &amp; answers</h2>
 <p class="lede">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
-${ctaBlock(`Hundreds more ${catCfg.name} questions in the Ball IQ app.`)}
+${(() => {
+    const playHref = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : undefined;
+    return ctaBlock(`Hundreds more ${catCfg.name} questions in the Ball IQ app.`, playHref);
+  })()}
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
 <dl class="faq">
 ${faqHtml}
@@ -354,11 +370,11 @@ ${header([
 ${introHtml}
 </div>
 <p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
-${ctaBlock(`Like these? Play the full ${cfg.name} quiz — it's free.`)}
+${ctaBlock(`Like these? Play the full ${cfg.name} quiz — it's free.`, `${SITE.base}/play?club=${cfg.slug}`)}
 <h2>${esc(cfg.name)} quiz questions &amp; answers</h2>
 <p class="lede">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
-${ctaBlock(`The full ${cfg.name} question bank is in the Ball IQ app.`)}
+${ctaBlock(`The full ${cfg.name} question bank is in the Ball IQ app.`, `${SITE.base}/play?club=${cfg.slug}`)}
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
 <dl class="faq">
 ${faqHtml}
@@ -580,11 +596,37 @@ ${clubLinks}
   writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');
 }
 
+// ── QB schema gate ────────────────────────────────────────────────────────────
+// Runs inside `npm run build`, so a malformed question row FAILS the deploy
+// instead of crashing QuizEngine in production (7 TF-shaped rows without
+// q/type shipped exactly that way in the WC2026 pool — never again). Every
+// generation-pipeline batch lands through a build, so this gates those too.
+function validateQB() {
+  const errors = [];
+  for (const r of QB) {
+    if (!r || typeof r !== 'object') { errors.push('non-object row'); continue; }
+    const id = r.id || '(no id)';
+    if (!r.id) errors.push(`${id}: missing id — ${JSON.stringify(r).slice(0, 80)}`);
+    if (typeof r.q !== 'string' || !r.q.trim()) errors.push(`${id}: missing q`);
+    if (!r.type) errors.push(`${id}: missing type`);
+    if (r.type === 'mcq') {
+      if (!Array.isArray(r.o) || r.o.length < 2) errors.push(`${id}: mcq without a valid options array`);
+      else if (typeof r.a !== 'number' || r.a < 0 || r.a >= r.o.length) errors.push(`${id}: mcq answer index out of range`);
+    }
+    if (r.type === 'tf' && typeof r.a !== 'boolean') errors.push(`${id}: tf without boolean a`);
+  }
+  if (errors.length) {
+    throw new Error(`[gen-seo] QB schema gate FAILED — ${errors.length} malformed row(s):\n` + errors.slice(0, 20).join('\n'));
+  }
+  console.log(`[gen-seo] QB schema gate: ${QB.length} rows OK`);
+}
+
 // ── main ──────────────────────────────────────────────────────────────────────
 function main() {
   if (!existsSync(DIST)) {
     throw new Error(`[gen-seo] dist/ not found at ${DIST}. Run "vite build" first.`);
   }
+  validateQB();
 
   // livePages = hub + every category that has prose defined in content.mjs.
   const livePages = [

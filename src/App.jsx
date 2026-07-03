@@ -736,6 +736,23 @@ const CLUB_ABBR = {
   PSG: "PSG", Ajax: "AJA",
 };
 
+// SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
+// searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
+// these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
+const CLUB_SLUG_TO_PACK = {
+  "arsenal": "Arsenal", "liverpool": "Liverpool", "manchester-united": "ManUtd",
+  "manchester-city": "ManCity", "chelsea": "Chelsea", "tottenham": "Tottenham",
+  "newcastle": "Newcastle", "barcelona": "Barcelona", "real-madrid": "RealMadrid",
+  "atletico-madrid": "Atletico", "bayern-munich": "BayernMunich",
+  "borussia-dortmund": "Dortmund", "psg": "PSG", "inter-milan": "InterMilan",
+  "juventus": "Juventus", "ac-milan": "AcMilan", "ajax": "Ajax",
+};
+const QUIZ_SLUG_TO_CAT = {
+  "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
+  "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
+  "champions-league": "UCL", "world-cup": "WorldCup", "euros": "Euros",
+};
+
 // ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
 // Solo single-competition quizzes. Unlike the club quiz (which re-tags rows as
 // cat:"ClubQuiz"), league-quiz questions KEEP their real cat, so every answer
@@ -6603,6 +6620,28 @@ function AppInner() {
     try { localStorage.removeItem("biq_pending_challenge"); } catch {}
   }, []);
 
+  // Challenge links are only valid for their calendar day (the Daily 7 is
+  // deterministic per day). Two former silent dead-ends now explain
+  // themselves: a link opened a day late expires with a nudge to send one
+  // back, and a link opened AFTER already playing settles instantly. (The
+  // mid-flow compare in handleComplete clears the challenge synchronously
+  // with the dailyDone flip, so this effect never double-fires it.)
+  useEffect(() => {
+    if (!pendingChallenge) return;
+    const todayToken = dateToYMD(new Date()).replace(/-/g, "");
+    if (pendingChallenge.date !== todayToken) {
+      showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
+      clearChallenge();
+    } else if (dailyDone) {
+      const mine = dailyScore, theirs = pendingChallenge.score;
+      const who = pendingChallenge.name || "your friend";
+      showToast(mine > theirs ? `🏆 You already beat ${who} today — ${mine}/7 vs ${theirs}/7!`
+        : mine === theirs ? `🤝 Level with ${who} — ${mine}/7 each. Rematch tomorrow!`
+        : `😤 ${who} takes it — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`);
+      clearChallenge();
+    }
+  }, [pendingChallenge, dailyDone, dailyScore, showToast, clearChallenge]);
+
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
   // arrive via Universal Link (balliq.app/join/CODE) which Capacitor's
@@ -7416,6 +7455,33 @@ function AppInner() {
       showToast("⚠️ Couldn't start league quiz");
     }
   }, [showToast]);
+
+  // SEO deep-links: launch straight into the club/league quiz named in the
+  // URL (?club=<slug> / ?quiz=<league-slug>). Fire-once; params are stripped
+  // so refresh/share doesn't relaunch. If the visitor still has onboarding
+  // ahead of them, the quiz screen is already staged underneath and appears
+  // the moment onboarding completes.
+  const seoLaunchRef = useRef(false);
+  useEffect(() => {
+    if (seoLaunchRef.current) return;
+    seoLaunchRef.current = true;
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const clubSlug = (sp.get("club") || "").toLowerCase();
+      const quizSlug = (sp.get("quiz") || "").toLowerCase();
+      if (!clubSlug && !quizSlug) return;
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.delete("club"); u.searchParams.delete("quiz");
+        window.history.replaceState({}, "", u.pathname + u.search + u.hash);
+      } catch {}
+      const packKey = CLUB_SLUG_TO_PACK[clubSlug];
+      const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
+      if (packKey) launchClubQuiz(packKey);
+      else if (catKey) launchLeagueQuiz(catKey);
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // When a shared invite link is opened (?join=CODE), once auth resolves and
   // the user is signed in (not guest), route them to OnlineEntry with the
