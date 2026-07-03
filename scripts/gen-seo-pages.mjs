@@ -103,6 +103,7 @@ function head({ title, description, canonical, ld }) {
 <meta name="twitter:description" content="${esc(description)}" />
 <meta name="twitter:image" content="${SITE.ogImage}" />
 <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+<meta name="apple-itunes-app" content="app-id=6775975961" />
 <style>
   html{background:${PAGE_BG};-webkit-text-size-adjust:100%}
   *{box-sizing:border-box;margin:0;padding:0}

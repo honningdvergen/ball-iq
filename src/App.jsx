@@ -20,7 +20,7 @@ import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
-import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders } from './lib/notifications.js';
+import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { maybeRequestReview } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
 import {
@@ -2228,13 +2228,22 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
   // competition or one club. Falls back to the full mixed pool if the pack
   // can't fill the requested count — a short pack must never produce a
   // short game for the whole room.
+  let effectivePack = "mixed";
   if (packId && packId !== "mixed") {
     const sep = String(packId).indexOf(":");
     const kind = String(packId).slice(0, sep), key = String(packId).slice(sep + 1);
     const filtered = kind === "cat" ? eligible.filter(q => q.cat === key)
       : kind === "club" ? eligible.filter(q => q.club === CLUB_PACK_TO_QB[key])
       : eligible;
-    if (filtered.length >= count) eligible = filtered;
+    // Honour the pack whenever it's viable: full pools play at the requested
+    // count; a slightly-short pool (>=10) still plays AS THE PACK with a
+    // reduced count — a 13-question Ligue 1 survival beats silently serving
+    // Mixed while the lobby's topic card says Ligue 1. Only a genuinely thin
+    // pool (<10) falls back, and the caller is told so it can toast.
+    if (filtered.length >= count) { eligible = filtered; effectivePack = packId; }
+    else if (filtered.length >= 10) { eligible = filtered; count = filtered.length; effectivePack = packId; }
+  } else if (!packId || packId === "mixed") {
+    effectivePack = "mixed";
   }
   // Math.random() - 0.5 sort is biased but undetectable for casual
   // trivia. Upgrade to Fisher-Yates only if a user complaint surfaces.
@@ -2246,11 +2255,15 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
     const rank = { easy: 0, medium: 1, hard: 2 };
     picked.sort((a, b) => (rank[a.diff] ?? 1) - (rank[b.diff] ?? 1));
   }
-  return picked.map(q => ({
-    prompt: q.q,
-    options: q.o,
-    correct: q.a,
-  }));
+  return {
+    effectivePack,
+    questions: picked.map(q => {
+      // Per-game option shuffle: authored order skews correct answers toward
+      // A/B and turns rematches into answer-position memory tests.
+      const idx = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+      return { prompt: q.q, options: idx.map(i => q.o[i]), correct: idx.indexOf(q.a) };
+    }),
+  };
 }
 
 // QUESTION_DURATION_MS — keep in sync with server submit_answer's
@@ -2412,7 +2425,8 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           const { QB } = await loadQuestions();
           const clubName = CLUB_PACK_TO_QB[String(topic).slice(5)];
           const pool = QB.filter(q => q && q.club === clubName && q.type === "mcq" && Array.isArray(q.o));
-          raw = shuffle(pool).slice(0, target).map(q => {
+          const freshPool = applySeenFilter(pool, target, qbHistKey);
+          raw = shuffle([...freshPool]).slice(0, target).map(q => {
             const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
             return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a) };
           });
@@ -4407,15 +4421,14 @@ function ClubQuizScreen({ onStart, onBack }) {
       <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
         <div style={{fontSize:22,marginBottom:6}}>🏆</div>
         <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>More clubs coming soon</div>
-        <div style={{fontSize:13,color:"var(--t2)",marginBottom:12,lineHeight:1.6}}>International club packs — Napoli, Celtic, Ajax deep dive, PSV and more — are on the way.</div>
-        <div style={{fontSize:11,color:"var(--t3)",letterSpacing:1,fontWeight:600}}>Free update · No purchase needed</div>
+        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>Galatasaray, Benfica, Napoli, Fenerbahçe and more are on the way.</div>
       </div>
       {showProModal && (
         <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
           <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
             <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
-            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs will be available as a free update. Keep playing to stay ready!</div>
+            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs are on the way. Keep playing to stay ready!</div>
             <button className="btn btn-p" onClick={() => setShowProModal(false)}>Got it!</button>
           </div>
         </div>
@@ -6831,7 +6844,10 @@ function AppInner() {
       let xpVal = 0, shieldsUsed = 0;
       try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch {}
       try { const s = JSON.parse(localStorage.getItem('biq_stats') || '{}'); shieldsUsed = s.shieldsUsed || 0; } catch {}
-      const shieldsAvail = Math.max(0, Math.floor(xpVal / 200) - shieldsUsed);
+      // Capped at 3 banked: an uncapped shield pile lets a high-XP player run
+      // an infinite every-other-day "streak", which kills the loss aversion
+      // the streak exists to create.
+      const shieldsAvail = Math.min(3, Math.max(0, Math.floor(xpVal / 200) - shieldsUsed));
       let newStreak, shieldSaved = false;
       if (prevLastDay === todayNum) newStreak = prevStreak;
       else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
@@ -7353,7 +7369,10 @@ function AppInner() {
           const { QB } = await loadQuestions();
           const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o));
           if (verified.length >= 10) {
-            qs = shuffle(verified).slice(0, 10).map(q => {
+            // Same 14-day seen filter League Quiz applies — without it a club
+            // pool of ~20 serves immediate repeats while fresh rows sit unused.
+            const freshPool = applySeenFilter(verified, 10, qbHistKey);
+            qs = shuffle([...freshPool]).slice(0, 10).map(q => {
               const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
               return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
             });
@@ -7440,6 +7459,13 @@ function AppInner() {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
   const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+
+  // Tapping a reminder deep-links to the Daily tab — the notification's whole
+  // point is "play today's puzzles", so land the user on them.
+  useEffect(() => {
+    const off = onReminderTap(() => { setScreen("home"); setTab("daily"); });
+    return off;
+  }, []);
 
   // Enable/disable the daily reminder. Enabling fires the OS permission prompt;
   // a denial leaves it off and points the user at iOS Settings.
@@ -7830,8 +7856,14 @@ function AppInner() {
       cardType = "hotstreak";
       cardData = { score };
     } else {
+      // Club/league quizzes run under mode:"classic" — surface the tribal
+      // identity ("Arsenal Quiz — 9/10") instead of a generic Classic label;
+      // the club/league name is the single most shareable element.
+      const packLabel = extras?.club && CLUB_PACKS[extras.club] ? `${CLUB_PACKS[extras.club].name} Quiz`
+        : extras?.league && LEAGUE_QUIZ_BY_CAT[extras.league] ? `${LEAGUE_QUIZ_BY_CAT[extras.league].name} Quiz`
+        : null;
       cardData = {
-        modeLabel: MODE_LABELS[mode] || "Quiz",
+        modeLabel: packLabel || MODE_LABELS[mode] || "Quiz",
         score,
         total,
         streak: extras?.streak,
@@ -8219,7 +8251,7 @@ function AppInner() {
       showToast("Couldn't share — try again");
     }
   }, [dailyScore, loginStreak, showToast, authProfile, profile]);
-  const shieldCount = useMemo(() => Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0)), [xp, stats.shieldsUsed]);
+  const shieldCount = useMemo(() => Math.min(3, Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0))), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
@@ -8983,7 +9015,12 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
-            onShare={() => shareScore(result?.score, result?.total, mode, { streak: result?.bestStreak })}
+            onShare={() => (mode === "daily"
+              // Daily shares route through shareDaily — the (previously
+              // unwired) path that carries the balliq.app/c/ challenge link
+              // so the recipient gets the head-to-head compare flow.
+              ? shareDaily()
+              : shareScore(result?.score, result?.total, mode, { streak: result?.bestStreak, club: activeClub, league: activeLeague }))}
             onRetry={() => startMode(mode)}
           />
         )}

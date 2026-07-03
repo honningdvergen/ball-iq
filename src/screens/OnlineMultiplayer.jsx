@@ -293,16 +293,26 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     if (!myPlayer || !players.length) return;
     endedRecordedRef.current = true;
     try {
-      const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0 }));
-      const top = Math.max(...rows.map(r => r.score));
+      const gameMode = room.mode || "race";
+      // Rank by the same metric the game-over screen uses per mode: survival →
+      // latest elimination (alive beats everyone), hotstreak → best streak,
+      // race → points. Strict comparison: ties are NOT wins (the old `>=`
+      // recorded a draw as a W on both devices and inflated the Online tab).
+      const metric = (p) => gameMode === "survival"
+        ? (p.eliminated_at_q == null ? Number.MAX_SAFE_INTEGER : p.eliminated_at_q)
+        : gameMode === "hotstreak" ? (p.best_streak || 0)
+        : (p.score || 0);
+      const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0, m: metric(p) }));
       const mine = rows.find(r => r.id === myPlayer.user_id);
+      const opps = rows.filter(r => r.id !== myPlayer.user_id);
       recordMpResult({
         roomId: room.id,
         at: Date.now(),
-        mode: room.mode || "race",
-        won: !!mine && mine.score >= top,
+        mode: gameMode,
+        won: !!mine && opps.length > 0 && mine.m > Math.max(...opps.map(o => o.m)),
         myScore: mine ? mine.score : 0,
-        opponents: rows.filter(r => r.id !== myPlayer.user_id),
+        myMetric: mine ? mine.m : 0,
+        opponents: opps,
       });
     } catch {}
   }, [room, players, myPlayer]);
@@ -362,7 +372,13 @@ function MultiplayerLobby({ code, onExit, defaultName }) {
     const questionCount = survival ? 15 : mode === "sprint" ? 5 : 10;
     let questions;
     try {
-      questions = await pickMultiplayerQuestions(questionCount, pack, { escalate: survival });
+      const picked = await pickMultiplayerQuestions(questionCount, pack, { escalate: survival });
+      questions = picked.questions;
+      // Thin-pool fallback is no longer silent: tell the host the topic
+      // couldn't fill the game so the lobby card and reality agree.
+      if (pack !== "mixed" && picked.effectivePack === "mixed") {
+        try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: "Not enough questions in that topic yet — playing Mixed" })); } catch {}
+      }
     } catch (e) {
       console.warn('[handleStart]', e?.message || e);
       setStartError("Couldn't load questions — check your connection");
@@ -1175,9 +1191,12 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
     let cancelled = false;
     (async () => {
-      // Survival: once everyone is eliminated, end the game now rather than
-      // auto-advancing through the remaining questions (nothing left to play for).
-      if (room.mode === 'survival' && players.length > 0 && players.every(p => p.eliminated_at_q != null)) {
+      // Survival: end once the outcome is SETTLED — everyone out (draw) OR a
+      // sole survivor remains (winner decided; previously the room ground
+      // through every remaining question, forcing a Q2-eliminated loser to
+      // spectate ~4 minutes — most just quit instead).
+      const aliveCount = players.filter(p => p.eliminated_at_q == null).length;
+      if (room.mode === 'survival' && players.length > 0 && (aliveCount === 0 || (players.length >= 2 && aliveCount === 1))) {
         const endRes = await actions.end();
         if (cancelled || !mountedRef.current) return;
         if (endRes.error) { console.warn('[mp] end failed (all eliminated):', endRes.error); setRevealPhase('stuck'); }
@@ -1806,7 +1825,10 @@ function HostAdvanceControls({ phase, players, currentQuestion, totalQuestions, 
   if (phase === 'answering') {
     buttonLabel = isLastQuestion ? "End Game" : "Next Question →";
     buttonOnClick = onTriggerReveal;
-    buttonDisabled = answeredCount < 1;
+    // Always enabled: an ELIMINATED host has no timer (Trigger B) and a
+    // ghost opponent never trips allAnswered (Trigger A) — the old
+    // answeredCount<1 gate hard-deadlocked survival rooms in that state.
+    buttonDisabled = false;
     statusText = `${answeredCount}/${total} answered`;
     if (!allAnswered && answeredCount > 0) statusText += " — waiting for the rest";
   } else if (phase === 'revealing') {

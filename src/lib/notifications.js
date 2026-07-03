@@ -58,6 +58,19 @@ function atFutureLocal(offsetDays) {
   return at.getTime() > now.getTime() ? at : null;
 }
 
+// Daily-window copy rotates by weekday so a week of reminders never reads as
+// the same string seven times (all streak-agnostic — a notification scheduled
+// days ahead can't know the live count).
+const DAILY_BODIES = [
+  "Today's Footle & Daily 7 are still open — keep your streak going 🔥",
+  "Two minutes, seven questions — today's Daily 7 is waiting ⚽",
+  "Tonight's Footle is still unsolved. One good guess could do it 🧠",
+  "Don't lose the streak — today's puzzles close at midnight 🔥",
+  "Quick one before the day ends? Footle & the Daily 7 are open ⚽",
+  "Your daily fix: Footle and the 7. Still time tonight 🎯",
+  "Streak check — today's games are still open 🔥",
+];
+
 // (Re)schedule the rolling window. skipToday omits offset 0 — pass true when
 // the user has already completed today's daily so we don't nag them tonight.
 export async function scheduleReminderWindow({ skipToday = false } = {}) {
@@ -72,7 +85,7 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
       notifications.push({
         id: ID_BASE + off,
         title: '⚽ Ball IQ',
-        body: "Today's Footle & Daily 7 are still open — keep your streak going 🔥",
+        body: DAILY_BODIES[at.getDay() % DAILY_BODIES.length],
         schedule: { at, allowWhileIdle: true },
       });
     }
@@ -88,6 +101,16 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
     }
     if (notifications.length) await LocalNotifications.schedule({ notifications });
   } catch { /* non-fatal: reminders are best-effort */ }
+}
+
+// Tapping any reminder should land on the Daily tab (the notification's
+// implicit CTA), not just the last-viewed screen. Returns an unsubscribe fn.
+export function onReminderTap(cb) {
+  if (!notificationsSupported()) return () => {};
+  const handle = LocalNotifications.addListener('localNotificationActionPerformed', () => {
+    try { cb(); } catch { /* noop */ }
+  });
+  return () => { handle.then(h => h.remove()).catch(() => {}); };
 }
 
 // Cancel tonight's reminder — call when the user completes today's Footle/Daily 7.

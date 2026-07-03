@@ -368,6 +368,16 @@ export default function MarketingHome() {
               </div>
             </div>
             <div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', marginBottom: 16 }}>Club quizzes</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
+                <a href="/quiz/arsenal/" className="mkt-foot-link">Arsenal quiz</a>
+                <a href="/quiz/liverpool/" className="mkt-foot-link">Liverpool quiz</a>
+                <a href="/quiz/manchester-united/" className="mkt-foot-link">Man United quiz</a>
+                <a href="/quiz/real-madrid/" className="mkt-foot-link">Real Madrid quiz</a>
+                <a href="/quiz/barcelona/" className="mkt-foot-link">Barcelona quiz</a>
+              </div>
+            </div>
+            <div>
               <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', marginBottom: 16 }}>Company</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/about/" className="mkt-foot-link">About</a>

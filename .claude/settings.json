@@ -29,7 +29,28 @@
       "WebFetch(domain:www.transfermarkt.com)",
       "WebFetch(domain:www.republicworld.com)",
       "WebFetch(domain:www.statmuse.com)",
-      "WebFetch(domain:www.fotmob.com)"
+      "WebFetch(domain:www.fotmob.com)",
+      "WebFetch(domain:www.arsenal.com)",
+      "WebFetch(domain:fcbayern.com)",
+      "WebFetch(domain:www.rsssf.org)",
+      "WebFetch(domain:www.espn.co.uk)",
+      "WebFetch(domain:www.premierleague.com)",
+      "WebFetch(domain:www.fourfourtwo.com)",
+      "WebFetch(domain:www.skysports.com)",
+      "WebFetch(domain:www.espn.com)",
+      "WebFetch(domain:www.planetfootball.com)",
+      "WebFetch(domain:www.byfarthegreatestteam.com)",
+      "Bash(xargs -I{} sed -n '{},+8p' /Users/alexanderbrynolsen/ball-iq/src/questions.js)",
+      "WebFetch(domain:www.transfermarkt.co.uk)",
+      "WebFetch(domain:www.jetpunk.com)",
+      "Bash(npm -v)",
+      "WebFetch(domain:www.chelseafc.com)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/alexanderbrynolsen/ball-iq/public/og-image.png)",
+      "WebFetch(domain:english.ajax.nl)",
+      "WebFetch(domain:www.aljazeera.com)",
+      "WebFetch(domain:claude.ai)",
+      "Bash(~/.nvm/versions/node/v25.9.0/bin/node /private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/e420d99a-b769-4f62-beb3-62c68594f5c4/scratchpad/analyze.mjs)",
+      "Bash(echo \"exit:$?\")"
     ]
   }
 }
