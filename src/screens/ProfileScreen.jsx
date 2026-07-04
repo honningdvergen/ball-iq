@@ -1227,7 +1227,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   };
 
   return (
-    <div className="tab-content" style={{background:"var(--bg)"}}>
+    <div className="tab-content profile-screen" style={{background:"var(--bg)"}}>
       <input
         ref={fileInputRef}
         type="file"
@@ -1235,6 +1235,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
         onChange={handleFileChosen}
         style={{display:"none"}}
       />
+      {/* desktop-web-refresh (mock #04): the whole Profile reflows into a
+          1.15fr/0.85fr grid at >=1024. Mobile stays byte-identical — the column
+          wrappers are display:contents below 1024 (no box), the desktop-only
+          cards (.pd-hdr/.pd-left/.profile-col-right) are display:none until the
+          reveal, and the mobile identity block hides only at desktop. The
+          PWA-standalone killswitch resets all of it. */}
+      {/* Desktop (>=1024) page header — hidden on mobile via the .pd-hdr base rule. */}
+      <div className="pd-hdr">Profile</div>
+      {/* MAIN column — display:contents on mobile (children flow exactly as
+          before), grid-area "main" (left) at desktop. */}
+      <div className="profile-col-main">
       {/* Sprint #100 guest-first: persistent sign-in entry for guests. Shown
           for ALL guests (not just those who've played) so there's always a
           path to an account from Profile. Copy leans on the carry-over —
@@ -1265,6 +1276,91 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           </button>
         </div>
       )}
+      {/* ── DESKTOP (>=1024) LEFT column — mock #04. Rating card + League
+          ratings grid. Hidden on mobile via the .pd-left base display:none;
+          the mobile merged card below carries these on phones instead. Every
+          value is wired to the SAME computeCard(stats.catStats, acc) model the
+          mobile card + Home rail use — nothing hardcoded. ── */}
+      <div className="pd-left">
+        {(() => {
+          const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
+          const card = computeCard(stats?.catStats || {}, acc);
+          const tierLabel = (CARD_TIERS[card.tier] || CARD_TIERS.prospect).label;
+          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || (stats?.totalAnswered || 0) > 0;
+          return (
+            <div className="pd-rating">
+              <div className="pd-rating-eyebrow">Ball IQ rating</div>
+              <div className="pd-rating-row">
+                <button type="button" className="pd-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo">
+                  {uploading ? (
+                    <span className="avatar-spinner" aria-label="Uploading…" />
+                  ) : showPhoto ? (
+                    <img crossOrigin="anonymous" src={avatarUrl} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                  ) : (
+                    <span className="pd-avatar-emoji">{displayEmoji}</span>
+                  )}
+                </button>
+                <div className="pd-idcol">
+                  <div className="pd-nrow">
+                    {(authLoading && !currentName) ? (
+                      <span className="pd-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</span>
+                    ) : editingName ? (
+                      <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
+                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"none", background:"#58CC02", color:"#06230C", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
+                      </span>
+                    ) : (
+                      <button type="button" onClick={startNameEdit} aria-label={showNameCTA ? "Set your name" : "Edit your name"} style={{display:"inline-flex", alignItems:"center", background:"none", border:"none", padding:0, fontFamily:"inherit", cursor:"pointer", maxWidth:"100%"}}>
+                        <span className="pd-name">{showNameCTA ? "Set your name" : (currentName || authProfile?.username || profile?.name || "Player")}</span>
+                        <svg className="pd-name-pencil" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="pd-levelpill">{level.icon} {level.name} · {xp.toLocaleString()} XP</div>
+                </div>
+                <div className="pd-score">
+                  {hasPlayed ? (
+                    <>
+                      <div className="pd-overall-num">{card.overall}</div>
+                      <div className="pd-overall-cap">OVERALL</div>
+                      <div className="pd-tier">{tierLabel}</div>
+                    </>
+                  ) : (
+                    <div className="pd-coldstart">Play a game to get your Ball IQ</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+        {(() => {
+          const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
+          const card = computeCard(stats?.catStats || {}, acc);
+          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || (stats?.totalAnswered || 0) > 0;
+          // Green-highlight the single strongest PLAYED league (same "strongest"
+          // the scouting report names); everything else reads white. Cold-start
+          // (nothing played) → em-dashes, no highlight.
+          const strongestAbbr = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
+          return (
+            <div className="pd-leagues">
+              <div className="pd-leagues-title">League ratings</div>
+              <div className="pd-leagues-grid">
+                {card.ratings.map(r => (
+                  <div key={r.abbr} className="pd-league">
+                    <span className="pd-league-flag">{r.icon}</span>
+                    <span className="pd-league-name">{r.abbr === "UCL" ? "Champions Lg" : r.name}</span>
+                    <span className={`pd-league-rating${r.abbr === strongestAbbr ? " is-top" : ""}`}>{hasPlayed ? r.rating : "—"}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+      </div>
+      {/* MOBILE identity blocks (merged card + secondary actions + scouting).
+          display:contents on mobile, display:none at desktop. */}
+      <div className="profile-mobile-identity">
       {/* Merged Ball IQ card — the player-rating card IS the profile header:
           editable avatar (tap → change photo) + editable name (tap → rename) +
           level, fused with the overall, tier and six competition ratings. */}
@@ -1430,6 +1526,52 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           );
         })()
       )}
+      </div>
+      </div>
+      {/* ── DESKTOP (>=1024) RIGHT column — mock #04. Scouting report + a
+          green-outline Share button. Hidden on mobile via the .profile-col-right
+          base display:none (the mobile scouting card above covers phones). All
+          rows use real stats fields; cold-start shows em-dashes. ── */}
+      <div className="profile-col-right">
+        {(() => {
+          const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
+          const card = computeCard(stats?.catStats || {}, acc);
+          const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0] || null;
+          const accPct = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
+            ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
+          const DASH = "—";
+          const rows = [
+            { label: "Strongest", value: strongest ? `${strongest.name} · ${strongest.rating}` : DASH, cls: "is-green" },
+            { label: "Accuracy", value: accPct, cls: "is-mono" },
+            { label: "Day streak", value: (loginStreak || 0) >= 1 ? `🔥 ${loginStreak}` : DASH, cls: "is-amber" },
+            { label: "Best run", value: (stats?.bestStreak || 0) > 0 ? `${stats.bestStreak} in a row` : DASH, cls: "is-mono" },
+            { label: "Best score", value: (stats?.bestScore || 0) > 0 ? `${stats.bestScore} / 10` : DASH, cls: "is-mono" },
+          ];
+          return (
+            <div className="pd-scout">
+              <div className="pd-scout-head">
+                <span className="pd-scout-ico" aria-hidden="true">🔍</span>
+                <span className="pd-scout-title">Scouting report</span>
+              </div>
+              <div className="pd-scout-rows">
+                {rows.map((r, i) => (
+                  <div key={r.label} className={`pd-scout-row${i === rows.length - 1 ? " is-last" : ""}`}>
+                    <span className="pd-scout-k">{r.label}</span>
+                    <span className={`pd-scout-v ${r.value === DASH ? "is-dash" : r.cls}`}>{r.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+        <button type="button" className="pd-share" onClick={onShareProfile} aria-label="Share profile card">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
+          Share profile card
+        </button>
+      </div>
+      {/* BELOW column — Journey + Friends + Badges. display:contents on mobile,
+          full-width grid-area "below" at desktop (kept reachable per handoff). */}
+      <div className="profile-col-below">
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
         const topIdx = LEVELS.length - 1;
@@ -1536,6 +1678,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           );
         })()}
       </div>
+      </div>
+      {/* BELOW column ends. */}
       {showAvatarMenu && (
         <div className="emoji-picker-overlay" onClick={() => setShowAvatarMenu(false)}>
           <div className="emoji-picker-sheet" onClick={e => e.stopPropagation()}>
