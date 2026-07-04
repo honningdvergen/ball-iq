@@ -359,17 +359,27 @@ function QuizTaster() {
 
 // "Both" hero-adjacent play block: Footle + quiz taster, side-by-side on desktop,
 // stacked Footle-first on mobile. Turns the front door from a brochure into a game.
+// THE HERO. The games are the front door — a visitor is playing before they've
+// decided anything. No marketing headline above this; per the design, "Pick your
+// challenge" + the two playable cards IS the top of the page.
 function PlayNow() {
   return (
-    <section style={{ maxWidth: 1080, margin: '0 auto', padding: '6px 20px 12px' }}>
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <div style={eyebrow('#43d17a')}>Play free — right now</div>
-        <h2 style={{ ...h2Style, textAlign: 'center' }}>Pick your challenge.</h2>
-        <p style={{ ...bodyStyle, maxWidth: '48ch', margin: '12px auto 0', textAlign: 'center' }}>Crack today&apos;s Footle, or rate your Ball IQ in five questions. No sign-up, no download.</p>
+    <section style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px,5vw,56px) 20px 22px', overflow: 'hidden' }}>
+      <div className="mkt-glow" style={{ position: 'absolute', top: '20%', left: '50%', width: 'min(760px,120vw)', height: 'min(760px,120vw)', background: 'radial-gradient(circle, rgba(88,204,2,0.16) 0%, rgba(88,204,2,0.05) 38%, transparent 64%)', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginBottom: 30 }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 15px', border: '1px solid #2A2D3A', borderRadius: 999, background: 'rgba(26,29,39,0.6)', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.04em', color: '#9BA0B8' }}>
+          <span>⚽</span> Play free — no download needed
+        </div>
+        <h1 style={{ margin: '18px auto 0', maxWidth: '16ch', fontSize: 'clamp(34px,6vw,60px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff' }}>Pick your challenge.</h1>
+        <p style={{ margin: '16px auto 0', maxWidth: '46ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.55, color: '#9BA0B8' }}>Crack today&apos;s Footle, or rate your Ball IQ in five questions. Both free, right here.</p>
       </div>
-      <div className="mkt-play-grid">
+      <div className="mkt-play-grid" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mkt-play-card"><MiniFootle /></div>
         <div className="mkt-play-card"><QuizTaster /></div>
+      </div>
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
+        <GreenCTA href={APP_STORE} target="_blank">Get 4,000+ more in the app →</GreenCTA>
+        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>Free on iPhone · plays in any browser · Android coming soon</p>
       </div>
     </section>
   );
@@ -408,15 +418,6 @@ export default function MarketingHome() {
   // Returning players (any prior Ball IQ localStorage) get a fast-path CTA
   // instead of the new-visitor pitch. No redirect — / stays the indexable
   // homepage for everyone; only the hero CTA label changes.
-  const [hasPlayed] = useState(() => {
-    try {
-      for (let i = 0; i < localStorage.length; i++) {
-        if ((localStorage.key(i) || '').startsWith('biq_')) return true;
-      }
-    } catch {}
-    return false;
-  });
-
   useEffect(() => {
     const html = document.documentElement;
     const prev = html.style.scrollBehavior;
@@ -440,42 +441,7 @@ export default function MarketingHome() {
         </div>
       </nav>
 
-      {/* ── HERO ── */}
-      <section style={{ position: 'relative', maxWidth: 1200, margin: '0 auto', padding: '96px 24px 40px', textAlign: 'center', overflow: 'hidden' }}>
-        <div className="mkt-glow" style={{ position: 'absolute', top: '64%', left: '50%', width: 'min(820px,120vw)', height: 'min(820px,120vw)', background: 'radial-gradient(circle, rgba(255,106,0,0.26) 0%, rgba(255,106,0,0.10) 36%, transparent 64%)', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: 0 }} />
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px', border: '1px solid #2A2D3A', borderRadius: 999, background: 'rgba(26,29,39,0.6)', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9BA0B8' }}>
-            <span>🔥</span> The ultimate football quiz
-          </div>
-          <h1 style={{ margin: '22px auto 0', maxWidth: '14ch', fontSize: 'clamp(44px,8vw,86px)', fontWeight: 900, lineHeight: 0.98, letterSpacing: '-0.035em', color: '#fff' }}>
-            Prove you know <span style={{ color: '#FFC107', textShadow: '0 0 38px rgba(255,106,0,0.5)' }}>football.</span>
-          </h1>
-          <p style={{ margin: '24px auto 0', maxWidth: '52ch', fontSize: 'clamp(16px,2vw,19px)', lineHeight: 1.55, color: '#9BA0B8' }}>
-            4,000+ questions across 10 game modes. Play the daily, climb the ranks, or take on up to 8 players — live.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', marginTop: 34 }}>
-            <AppStoreBadge />
-            <PlayStoreBadge />
-            <GreenCTA href={PLAY} big>{hasPlayed ? 'Continue playing →' : 'Play free in browser →'}</GreenCTA>
-          </div>
-          <p style={{ margin: '16px auto 0', fontSize: 13, color: '#6E7180' }}>Free on iPhone · plays in any browser · Android coming soon</p>
-        </div>
-
-        {/* phone cluster */}
-        <div style={{ position: 'relative', zIndex: 1, marginTop: 56, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 'clamp(-30px,-2vw,0px)' }}>
-          <div style={{ width: 'clamp(150px,20vw,210px)', transform: 'rotate(-7deg) translateY(8px)', marginRight: -18 }}>
-            <Phone src={SHOT.footle} alt="Footle — Wordle for footballers" floatDur="6.5s" floatDelay="-1.2s" />
-          </div>
-          <div style={{ width: 'clamp(190px,26vw,268px)', position: 'relative', zIndex: 3 }}>
-            <Phone src={SHOT.home} alt="Ball IQ home screen" floatDur="6s" />
-          </div>
-          <div style={{ width: 'clamp(150px,20vw,210px)', transform: 'rotate(7deg) translateY(8px)', marginLeft: -18 }}>
-            <Phone src={SHOT.profile} alt="Ball IQ player-rating card" floatDur="7s" floatDelay="-2.4s" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── PLAY NOW — playable Footle + quiz taster, straight after the hero ── */}
+      {/* ── HERO — the playable Footle + quiz taster ARE the front door ── */}
       <PlayNow />
 
       {/* ── TICKER ── */}
