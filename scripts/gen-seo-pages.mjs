@@ -147,6 +147,7 @@ function head({ title, description, canonical, ld }) {
   .btn{display:inline-block;background:#43d17a;color:#06210f;font-weight:800;font-size:15px;padding:12px 22px;border-radius:10px}
   .btn:hover{text-decoration:none;filter:brightness(1.06)}
   .btn.store{background:#0b151e;color:#fff;border:1px solid #293a49;margin-left:8px}
+  .cta-note{color:#7fa890;font-size:12.5px;margin-top:12px}
   footer{margin-top:40px;padding-top:20px;border-top:1px solid #1b2a38;color:#738799;font-size:12.5px}
   footer a{color:#8aa0b4}
   footer .disc{margin-top:10px;color:#5f7387;font-size:11.5px;line-height:1.6}
@@ -225,6 +226,7 @@ function ctaBlock(label, playHref = `${SITE.base}/`) {
 <p>${esc(label)}</p>
 <a class="btn" href="${playHref}">Play free in your browser</a>
 <a class="btn store" href="${SITE.appStore}" rel="noopener">Get the app</a>
+<p class="cta-note">On iPhone, or free in any browser — Android coming soon.</p>
 </div>`;
 }
 

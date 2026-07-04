@@ -108,6 +108,34 @@ const AppStoreBadge = ({ small }) => (
   </a>
 );
 
+// Canonical single-colour Google Play glyph (simple-icons outline), tinted
+// muted grey to read as "not yet live".
+const GooglePlayGlyph = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="#9BA0B8" aria-hidden="true">
+    <path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z" />
+  </svg>
+);
+
+// Google Play badge — intentionally NOT a link. Android isn't shipped yet, and a
+// dead store link is worse than none. Muted styling + "Coming soon" eyebrow
+// signals the platform is on the way; the hero's green "Play free in browser"
+// CTA is what gives Android visitors an immediate action TODAY (the web app runs
+// fine on Android Chrome and installs as a PWA).
+const PlayStoreBadge = ({ small }) => (
+  <div className="mkt-cta-play" aria-label="Google Play — coming soon"
+       style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#0A0A0A', border: '1px solid #242836', borderRadius: small ? 12 : 14, opacity: 0.72 }}>
+    <GooglePlayGlyph size={small ? 18 : 22} />
+    {small ? (
+      <span style={{ fontSize: 13, color: '#9BA0B8', fontWeight: 700 }}>Android soon</span>
+    ) : (
+      <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, textAlign: 'left' }}>
+        <span style={{ fontSize: 10, color: '#6E7180', letterSpacing: '0.02em' }}>Coming soon to</span>
+        <span style={{ fontSize: 16, color: '#9BA0B8', fontWeight: 700 }}>Google Play</span>
+      </span>
+    )}
+  </div>
+);
+
 const GreenCTA = ({ href, children, big, target, className }) => (
   <a href={href} target={target} rel={target ? 'noopener' : undefined} className={`mkt-cta-green${className ? ' ' + className : ''}`}
      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: big ? '15px 26px' : '11px 20px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: big ? 16 : 14, borderRadius: 12, boxShadow: '0 8px 22px -6px rgba(88,204,2,0.6), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
@@ -136,7 +164,7 @@ const FAQS = [
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online 1v1, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the footballer or manager's surname in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
-  { q: 'Where can I play?', a: 'On iPhone via the App Store, or instantly in your browser at balliq.app — your progress follows your account.' },
+  { q: 'Where can I play?', a: 'On iPhone via the App Store, or instantly in your browser — on Android, desktop, anywhere — at balliq.app. A native Android app is on the way; your progress follows your account across all of them.' },
 ];
 
 function Brand({ size = 20, imgSize = 32 }) {
@@ -200,8 +228,10 @@ export default function MarketingHome() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', marginTop: 34 }}>
             <AppStoreBadge />
+            <PlayStoreBadge />
             <GreenCTA href={PLAY} big>{hasPlayed ? 'Continue playing →' : 'Play free in browser →'}</GreenCTA>
           </div>
+          <p style={{ margin: '16px auto 0', fontSize: 13, color: '#6E7180' }}>Free on iPhone · plays in any browser · Android coming soon</p>
         </div>
 
         {/* phone cluster */}
@@ -355,7 +385,7 @@ export default function MarketingHome() {
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
             <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>The ultimate football quiz. 4,000+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online.</p>
-            <div style={{ marginTop: 20 }}><AppStoreBadge small /></div>
+            <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
             <div>
