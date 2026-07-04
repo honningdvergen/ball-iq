@@ -4,196 +4,76 @@ import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, gradeWordleGuess, computeFootleStreak } from "../lib/wordle.js";
+import { getWordleAnswer } from "../lib/wordle.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
-import { safeSetItem } from "../safeStorage.js";
-import { supabase } from "../supabase.js";
 import { FootleHero } from "../components/FootleHero.jsx";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-// ── Inline, playable Footle board (DESKTOP web only) ─────────────────────────
-// Renders the REAL daily puzzle (getWordleAnswer) and reads/writes the SAME
-// localStorage store the full Footle screen uses (biq_wordle_<ymd>), so it
-// truly reflects + drives the day: the streak walker, FootleHero's evening
-// state and the Daily-tab activity ring all read that key. Kept as its own
-// component so its hooks never touch HomeScreenImpl's hook order, and it stays
-// mounted-but-hidden below 1024 / on non-Home tabs (the offsetParent guard on
-// the physical-keyboard listener makes it inert whenever it isn't visible).
-//
-// Deliberately NOT wired to: the emotional-peak review ask + biq:daily-completed
-// notification event + confetti that FootballWordle fires — those are
-// native/mobile concerns and firing them from a desktop-web inline board would
-// surface out-of-context prompts. The competitively-important bits (persisted
-// state + streak + cross-device sync) ARE wired.
-function DesktopFootleBoard({ onOpen, shareCard, userId }) {
-  // Snapshot today's puzzle at mount (dateKey + answer captured once). Home
-  // unmounts whenever you leave it (tab bar stays but opening the full Footle
-  // screen changes `screen`, and desktop sessions reload/navigate), so the board
-  // always re-reads a fresh day on return. Capturing here (vs recomputing each
-  // render) avoids a mid-session local-midnight drift where a rolled-over dateKey
-  // could grade/persist stale guesses under a new day's key.
+// ── Footle HERO card (DESKTOP web only) ──────────────────────────────────────
+// desktop-web-refresh: the Home hero is a compact GREEN hero card matching the
+// Claude Design handoff (reference screen 01), NOT a full playable board. It
+// reads today's real puzzle status from the SAME store the full Footle screen
+// uses (biq_wordle_<ymd>) so the CTA reflects reality — "Play today's Footle"
+// when unplayed, a solved/failed chip + "Review" when done. Playing happens on
+// the dedicated Footle screen (onPlay → setScreen("wordle")); the small board on
+// the right is decorative only. Kept as its own component so its hooks never
+// touch HomeScreenImpl's hook order, and it stays mounted-but-hidden below 1024
+// (the .home-footle-inline reveal class + the PWA-standalone killswitch).
+function DesktopFootleHero({ onPlay }) {
+  // Snapshot today's puzzle at mount (dateKey + answer captured once) so a
+  // mid-session local-midnight rollover can't mismatch the store key. Only the
+  // answer LENGTH is surfaced (as the mock does) — never the answer itself.
   const [dateKey] = React.useState(getWordleDateKey);
   const [answer] = React.useState(getWordleAnswer);
   const L = answer.length;
-  const MAX = 6;
-  const boardRef = React.useRef(null);
+  // Decorative board width — cap so a long surname can't crowd the copy column.
+  const cols = Math.min(L, 7);
 
-  const [state, setState] = React.useState(() => {
+  const store = (() => {
     try {
       const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
       if (raw) { const p = JSON.parse(raw); if (p && Array.isArray(p.guesses)) return p; }
     } catch {}
     return { guesses: [], status: "playing" };
-  });
-  const [current, setCurrent] = React.useState("");
-  const status = state.status;
-  const isDone = status === "won" || status === "lost";
-
-  // Persist to biq_wordle_<ymd>, matching FootballWordle's schema. Guard on
-  // guesses.length so merely MOUNTING the board never creates an empty key:
-  // computePast7DaysActivity treats key-existence as "played that day", so a
-  // premature write would false-mark today active. Cross-device sync mirrors
-  // FootballWordle's persist effect (fire-and-forget, userId-gated).
-  React.useEffect(() => {
-    if (!state.guesses.length) return;
-    try { safeSetItem(`biq_wordle_${dateKey}`, JSON.stringify(state)); } catch {}
-    if (userId) {
-      supabase.rpc("upsert_wordle_state", { p_ymd: dateKey, p_state: state })
-        .then(({ error }) => { if (error) console.warn("[wordle sync]", error.message); })
-        .catch((e) => console.warn("[wordle sync]", e?.message || e));
-    }
-  }, [state, dateKey, userId]);
-
-  const type = (ch) => { if (status !== "playing") return; setCurrent((c) => (c.length < L ? c + ch : c)); };
-  const del = () => setCurrent((c) => c.slice(0, -1));
-  const submit = () => {
-    if (status !== "playing" || current.length !== L) return;
-    const guesses = [...state.guesses, current];
-    let st = "playing";
-    if (current === answer) st = "won";
-    else if (guesses.length >= MAX) st = "lost";
-    setState({ guesses, status: st });
-    setCurrent("");
-  };
-
-  // Physical keyboard. Rebinds each render (no deps) so the closure sees fresh
-  // state/current — same pattern as the marketing MiniFootle. The offsetParent
-  // guard makes it a no-op whenever the board is display:none (mobile widths,
-  // and any non-Home tab, which the app hides via display:none) — so it never
-  // steals keystrokes app-wide while the always-mounted Home tab sits hidden.
-  React.useEffect(() => {
-    const onKey = (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      // Inert unless the board is actually visible (display:none on mobile
-      // widths + on any non-Home tab → offsetParent null).
-      if (!boardRef.current || boardRef.current.offsetParent === null) return;
-      if (status !== "playing") return;
-      // Don't hijack keys when a real control elsewhere on Home is focused —
-      // otherwise a keyboard user tabbing to a play-card and hitting Enter would
-      // have it swallowed here. Only capture when focus is loose (on <body>) or
-      // already within the board.
-      const active = document.activeElement;
-      if (active && active !== document.body && !boardRef.current.contains(active)) return;
-      if (e.key === "Enter") { e.preventDefault(); submit(); }
-      else if (e.key === "Backspace") { e.preventDefault(); del(); }
-      else if (/^[a-zA-Z]$/.test(e.key)) type(e.key.toUpperCase());
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  });
-
-  // On-screen keyboard letter states (green > yellow > grey), duplicate-safe via
-  // the app's own grader.
-  const keyState = {};
-  const rank = { grey: 1, yellow: 2, green: 3 };
-  for (const g of state.guesses) {
-    const gr = gradeWordleGuess(g, answer);
-    for (let i = 0; i < g.length; i++) {
-      const ch = g[i], st = gr[i];
-      if (!keyState[ch] || rank[st] > rank[keyState[ch]]) keyState[ch] = st;
-    }
-  }
-
-  const rows = [];
-  for (let r = 0; r < MAX; r++) {
-    if (r < state.guesses.length) {
-      rows.push({ letters: state.guesses[r].split(""), marks: gradeWordleGuess(state.guesses[r], answer), isCur: false });
-    } else if (r === state.guesses.length && status === "playing") {
-      const a = [];
-      for (let i = 0; i < L; i++) a.push(current[i] || "");
-      rows.push({ letters: a, marks: null, isCur: true });
-    } else {
-      rows.push({ letters: new Array(L).fill(""), marks: null, isCur: false });
-    }
-  }
-
-  const cap = answer.charAt(0) + answer.slice(1).toLowerCase();
-  const onShare = async () => {
-    if (!isDone || !shareCard) return;
-    const grades = state.guesses.map((g) => gradeWordleGuess(g, answer));
-    const isWon = status === "won";
-    const grid = grades.map((row) => row.map((c) => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")).join("\n");
-    const streak = isWon ? computeFootleStreak(new Date()) : 0;
-    const base = isWon ? `Solved in ${state.guesses.length} ${state.guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
-    const scoreLine = isWon && streak > 0 ? `${base} · 🔥 ${streak}-day streak` : base;
-    const dateLabel = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
-    const textFallback = `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
-    await shareCard("wordle", { score: state.guesses.length, total: 6, grades, dateLabel, failed: !isWon }, { onToast: () => {}, textFallback });
-  };
+  })();
+  const won = store.status === "won";
+  const lost = store.status === "lost";
+  const done = won || lost;
 
   return (
-    <div className="home-footle-inline" ref={boardRef}>
-      <div className="hfi-head">
-        <div className="hfi-head-copy">
-          <div className="hfi-eyebrow">Daily · Footle</div>
-          <div className="hfi-title">Footle</div>
-          <div className="hfi-sub">Guess today&apos;s footballer · {L} letters · 6 guesses</div>
+    <div className="home-footle-inline">
+      <span className="ffh-glow" aria-hidden="true" />
+      <div className="ffh-inner">
+        <div className="ffh-copy">
+          <div className="ffh-eyebrow">Daily · Footle</div>
+          <div className="ffh-title">Footle</div>
+          <div className="ffh-sub">{L} letters · 6 guesses · Surname of a footballer</div>
+          {done ? (
+            <div className="ffh-actions">
+              <span className={`ffh-solved${lost ? " is-lost" : ""}`}>
+                {won ? `✓ Solved in ${store.guesses.length}` : "✗ Out of guesses"}
+              </span>
+              <button type="button" className="ffh-review" onClick={onPlay} aria-label="Review today's Footle">
+                Review →
+              </button>
+            </div>
+          ) : (
+            <button type="button" className="ffh-cta" onClick={onPlay}>Play today&apos;s Footle</button>
+          )}
         </div>
-        <span className="hfi-badge" aria-hidden="true">⚽</span>
+        <div className="ffh-board" aria-hidden="true">
+          <div className="ffh-board-row">
+            {Array.from({ length: cols }).map((_, i) => (
+              <span key={i} className={`ffh-cell${i === 0 ? " is-active" : ""}`} />
+            ))}
+          </div>
+          <div className="ffh-board-row">
+            {Array.from({ length: cols }).map((_, i) => <span key={i} className="ffh-cell" />)}
+          </div>
+        </div>
       </div>
-      <div className="hfi-grid">
-        {rows.map((row, r) => (
-          <div className="hfi-row" key={r}>
-            {row.letters.map((ch, i) => {
-              const mark = row.marks ? row.marks[i] : null;
-              const cls = mark === "green" ? "hfi-tile hfi-green"
-                : mark === "yellow" ? "hfi-tile hfi-amber"
-                : mark === "grey" ? "hfi-tile hfi-dark"
-                : `hfi-tile${ch ? " hfi-filled" : ""}${row.isCur && i === current.length ? " hfi-active" : ""}`;
-              return <div key={i} className={cls}>{ch}</div>;
-            })}
-          </div>
-        ))}
-      </div>
-      {isDone ? (
-        <div className="hfi-result">
-          <div className="hfi-result-msg">
-            {status === "won"
-              ? <>Solved in <strong>{state.guesses.length}</strong> — it was {cap}.</>
-              : <>Out of guesses — it was {cap}.</>}
-          </div>
-          <div className="hfi-result-actions">
-            <button className="hfi-btn hfi-btn-primary" onClick={onShare} aria-label="Share today's Footle">↗︎ Share</button>
-            <button className="hfi-btn hfi-btn-ghost" onClick={onOpen} aria-label="Open the full Footle screen">Review</button>
-          </div>
-        </div>
-      ) : (
-        <div className="hfi-kb">
-          <div className="hfi-kb-row">
-            {"QWERTYUIOP".split("").map((k) => <button key={k} type="button" className={`hfi-key${keyState[k] ? " hfi-key-" + keyState[k] : ""}`} onClick={() => type(k)}>{k}</button>)}
-          </div>
-          <div className="hfi-kb-row">
-            {"ASDFGHJKL".split("").map((k) => <button key={k} type="button" className={`hfi-key${keyState[k] ? " hfi-key-" + keyState[k] : ""}`} onClick={() => type(k)}>{k}</button>)}
-          </div>
-          <div className="hfi-kb-row">
-            <button type="button" className="hfi-key hfi-key-wide" onClick={submit}>Enter</button>
-            {"ZXCVBNM".split("").map((k) => <button key={k} type="button" className={`hfi-key${keyState[k] ? " hfi-key-" + keyState[k] : ""}`} onClick={() => type(k)}>{k}</button>)}
-            <button type="button" className="hfi-key hfi-key-wide" onClick={del} aria-label="Delete">⌫</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -408,11 +288,7 @@ function HomeScreenImpl({
                 shareCard={shareCard}
               />
             </div>
-            <DesktopFootleBoard
-              onOpen={() => setScreen("wordle")}
-              shareCard={shareCard}
-              userId={user?.id}
-            />
+            <DesktopFootleHero onPlay={() => setScreen("wordle")} />
             <button
               className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
               onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
@@ -464,24 +340,32 @@ function HomeScreenImpl({
           const tm = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
           const lvl = getLevelInfo(xp || 0);
           return (
-            <div className="hr-card hr-rating" style={{ background: tm.bg, borderColor: `${tm.accent}55` }}>
-              <div className="hr-rating-glow" style={{ background: `radial-gradient(circle, ${tm.accent}22 0%, transparent 70%)` }} aria-hidden="true" />
+            <div className="hr-card hr-rating">
+              <div className="hr-rating-glow" aria-hidden="true" />
               <div className="hr-rating-id">
-                <div className="hr-avatar" style={{ borderColor: tm.accent }}>
+                <div className="hr-avatar" style={{ borderColor: "#58CC02" }}>
                   {authProfile?.avatar_url
                     ? <img src={authProfile.avatar_url} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     : (profile?.avatar || "⚽")}
                 </div>
                 <div className="hr-rating-idcol">
-                  <div className="hr-rating-name" style={{ color: tm.text }}>{railName}</div>
-                  <div className="hr-pills">
-                    <span className="hr-pill hr-pill-tier" style={{ color: tm.accent, borderColor: `${tm.accent}55` }}>{tm.label}</span>
-                    <span className="hr-pill hr-pill-xp">{lvl.level.icon} {(xp || 0).toLocaleString()} XP</span>
+                  <div className="hr-rating-name">
+                    <span className="hr-rating-nametext">{railName}</span>
+                    <svg className="hr-rating-pencil" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
                   </div>
+                  <span className="hr-rating-lvl">{lvl.level.icon} {lvl.level.name ? `${lvl.level.name} · ` : ""}{(xp || 0).toLocaleString()} XP</span>
                 </div>
               </div>
-              <div className="hr-rating-num" style={{ color: tm.accent }}>{card.overall}</div>
-              <div className="hr-rating-cap" style={{ color: tm.text }}>OVERALL · {tm.label}</div>
+              <div className="hr-rating-score">
+                <div className="hr-rating-num">{card.overall}</div>
+                <div className="hr-rating-scap">
+                  <div className="hr-rating-overall">OVERALL</div>
+                  <div className="hr-rating-tier">{tm.label}</div>
+                </div>
+              </div>
+              <button type="button" className="hr-rating-view" onClick={() => setTab("profile")}>
+                View full profile →
+              </button>
             </div>
           );
         })()}
@@ -517,27 +401,34 @@ function HomeScreenImpl({
           );
         })()}
 
-        {/* Friends leaderboard — COLD-START affordance.
-            TODO lift friends leaderboard: the live weekly board lives inside
-            ProfileScreen's FriendsSection (a Supabase `friendships` fetch + a
-            `leaderboard` useMemo). Surfacing the real thing on Home cleanly means
-            lifting that fetch to a shared hook — out of scope for this pass, so
-            render the invite/see-all cold-start rather than duplicating the
-            query inline. */}
-        <div className="hr-card hr-friends">
-          <div className="hr-friends-head">
-            <span className="hr-friends-title">Friends</span>
-            <button type="button" className="hr-friends-see" onClick={() => setTab("profile")}>See all →</button>
-          </div>
-          <div className="hr-friends-empty">
-            <span className="hr-friends-emoji" aria-hidden="true">🏆</span>
-            <div className="hr-friends-copy">
-              <div className="hr-friends-copy-t">Add friends to see a weekly leaderboard</div>
-              <div className="hr-friends-copy-s">Race your mates for the top score.</div>
+        {/* Your form — quick-stats card (mock screen 01, 3rd rail card). Same
+            real computation the Profile scouting report uses: overall accuracy,
+            best classic score, and the strongest competition from the card model.
+            Cold-start (no games yet) → a friendly prompt, never fake numbers. */}
+        {(() => {
+          const answered = stats?.totalAnswered || 0;
+          const correct = stats?.totalCorrect || 0;
+          const acc = answered > 0 && correct <= answered ? correct / answered : 0.4;
+          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || answered > 0;
+          const card = computeCard(stats?.catStats || {}, acc);
+          const played = (card.ratings || []).filter((r) => r.answered > 0).sort((a, b) => b.rating - a.rating);
+          const strongest = played[0] || null;
+          const best = stats?.bestScore || 0;
+          return (
+            <div className="hr-card hr-yf">
+              <div className="hr-yf-title">Your form</div>
+              {hasPlayed ? (
+                <div className="hr-yf-rows">
+                  <div className="hr-yf-row"><span className="hr-yf-k">Accuracy</span><span className="hr-yf-v">{Math.round(acc * 100)}%</span></div>
+                  {best > 0 && <div className="hr-yf-row"><span className="hr-yf-k">Best score</span><span className="hr-yf-v">{best} / 10</span></div>}
+                  {strongest && <div className="hr-yf-row"><span className="hr-yf-k">Strongest</span><span className="hr-yf-v hr-yf-v-green">{strongest.name}</span></div>}
+                </div>
+              ) : (
+                <div className="hr-yf-empty">Play a game to see your form.</div>
+              )}
             </div>
-          </div>
-          <button type="button" className="hr-friends-invite" onClick={() => setTab("profile")}>Add friends</button>
-        </div>
+          );
+        })()}
       </div>
 
       {/* ─────────── BELOW GRID (full-width) ─────────── */}

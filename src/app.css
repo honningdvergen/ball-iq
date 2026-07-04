@@ -2102,82 +2102,78 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .home-footle-mobile { display: none; }
   .home-footle-inline { display: block; }
 
-  /* ── Inline playable Footle (green hero, dark-only desktop chrome) ── */
+  /* ── Footle HERO card (green, dark-only desktop chrome) — mock screen 01 ──
+     A compact marketing-style hero (eyebrow → title → sub → CTA) with a small
+     DECORATIVE board on the right. Playing happens on the full Footle screen. */
   .home-footle-inline {
     position: relative;
-    border-radius: 20px;
-    padding: 20px 22px 22px;
-    background:
-      radial-gradient(circle at 88% -12%, rgba(138,224,66,0.18), transparent 55%),
-      linear-gradient(155deg, #0f2e13 0%, #0a1f0c 100%);
-    border: 1px solid rgba(88,204,2,0.30);
-    box-shadow: 0 12px 36px -14px rgba(88,204,2,0.35), 0 2px 10px rgba(0,0,0,0.4);
-    margin-bottom: 12px;
     overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid #234029;
+    background: linear-gradient(125deg, #10331B 0%, #0E1912 46%, #0F1117 100%);
+    padding: 26px;
+    margin-bottom: 0;
   }
-  .hfi-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-  .hfi-head-copy { min-width: 0; }
-  .hfi-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8AE042; }
-  .hfi-title { font-size: 30px; font-weight: 900; letter-spacing: -0.02em; color: #fff; line-height: 1.02; margin-top: 5px; }
-  .hfi-sub { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.66); margin-top: 6px; }
-  .hfi-badge { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: rgba(88,204,2,0.14); border: 1px solid rgba(88,204,2,0.32); }
-  .hfi-grid { display: flex; flex-direction: column; gap: 6px; align-items: center; margin-bottom: 16px; }
-  .hfi-row { display: flex; gap: 6px; }
-  .hfi-tile {
-    width: 42px; height: 42px; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;
-    font-weight: 800; font-size: 20px; text-transform: uppercase; line-height: 1; color: #fff;
-    background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.10);
-    transition: border-color 0.12s, background 0.12s;
+  .ffh-glow {
+    position: absolute; right: -10px; top: -10px;
+    width: 320px; height: 220px; pointer-events: none;
+    background: radial-gradient(circle at 75% 25%, rgba(88,204,2,0.22), transparent 60%);
   }
-  .hfi-tile.hfi-filled { border-color: rgba(255,255,255,0.34); }
-  .hfi-tile.hfi-active { border-color: rgba(138,224,66,0.65); }
-  .hfi-tile.hfi-green { background: #58CC02; border-color: #58CC02; color: #06230C; }
-  .hfi-tile.hfi-amber { background: #FFC107; border-color: #FFC107; color: #241B00; }
-  .hfi-tile.hfi-dark { background: #14161C; border-color: #14161C; color: #7C8193; }
-  .hfi-kb { display: flex; flex-direction: column; gap: 6px; }
-  .hfi-kb-row { display: flex; gap: 5px; justify-content: center; }
-  .hfi-key {
-    height: 44px; min-width: 0; flex: 1 1 0;
-    display: flex; align-items: center; justify-content: center;
-    border: none; border-radius: 8px; cursor: pointer;
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase;
-    background: #2A2D3A; color: #E8EAF0;
-    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
-    transition: filter 0.12s, transform 0.08s;
+  .ffh-inner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .ffh-copy { min-width: 0; }
+  .ffh-eyebrow { font-size: 11.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #8AE042; }
+  .ffh-title { font-size: 38px; font-weight: 900; letter-spacing: -0.03em; color: #fff; margin-top: 8px; line-height: 1; }
+  .ffh-sub { font-size: 14px; color: #B9C2C0; margin-top: 10px; }
+  .ffh-cta {
+    display: inline-flex; align-items: center; gap: 9px; margin-top: 20px;
+    padding: 13px 30px; border: none; border-radius: 14px; cursor: pointer;
+    background: #58CC02; color: #06230C; font-family: inherit; font-weight: 800; font-size: 15.5px;
+    box-shadow: 0 10px 26px -8px rgba(88,204,2,0.6);
+    -webkit-appearance: none; appearance: none;
+    transition: filter 0.12s, transform 0.12s;
   }
-  .hfi-key:hover { filter: brightness(1.12); }
-  .hfi-key:active { transform: translateY(1px); }
-  .hfi-key-wide { flex: 1.6 1 0; font-size: 12px; }
-  .hfi-key-green { background: #58CC02; color: #06230C; }
-  .hfi-key-yellow { background: #FFC107; color: #241B00; }
-  .hfi-key-grey { background: #14161C; color: #5B6070; }
-  .hfi-result { margin-top: 2px; padding: 14px 16px; border-radius: 14px; background: rgba(0,0,0,0.26); border: 1px solid rgba(255,255,255,0.08); text-align: center; }
-  .hfi-result-msg { font-size: 15px; font-weight: 700; color: #fff; }
-  .hfi-result-msg strong { color: #8AE042; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; }
-  .hfi-result-actions { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
-  .hfi-btn { padding: 10px 18px; border-radius: 10px; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 13px; cursor: pointer; border: none; -webkit-appearance: none; appearance: none; }
-  .hfi-btn-primary { background: #58CC02; color: #06230C; }
-  .hfi-btn-primary:hover { filter: brightness(1.05); }
-  .hfi-btn-ghost { background: transparent; color: #E8EAF0; border: 1px solid rgba(255,255,255,0.18); }
-  .hfi-btn-ghost:hover { border-color: rgba(255,255,255,0.32); }
+  .ffh-cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .ffh-cta:active { transform: translateY(0); }
+  .ffh-actions { display: flex; align-items: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+  .ffh-solved {
+    display: inline-flex; align-items: center; padding: 9px 16px; border-radius: 12px;
+    background: rgba(88,204,2,0.12); border: 1px solid rgba(88,204,2,0.4);
+    color: #8AE042; font-weight: 800; font-size: 14px;
+  }
+  .ffh-solved.is-lost { background: rgba(255,107,107,0.10); border-color: rgba(255,107,107,0.35); color: #FF6B6B; }
+  .ffh-review {
+    background: none; border: none; cursor: pointer; font-family: inherit;
+    color: #E8EAF0; font-weight: 700; font-size: 14px; padding: 4px 2px;
+  }
+  .ffh-review:hover { color: #fff; }
+  .ffh-board { flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; }
+  .ffh-board-row { display: flex; gap: 6px; }
+  .ffh-cell { width: 34px; height: 34px; border-radius: 7px; background: #0F1117; border: 2px solid #263042; }
+  .ffh-cell.is-active { border-color: #46516A; }
 
   /* ── Right rail cards ── */
   .hr-card { position: relative; border-radius: 16px; padding: 16px; background: var(--s1); border: 1px solid var(--border); overflow: hidden; }
-  .hr-rating { padding: 18px; }
-  .hr-rating-glow { position: absolute; top: -40px; left: -40px; width: 150px; height: 150px; border-radius: 50%; pointer-events: none; }
-  .hr-rating-id { display: flex; align-items: center; gap: 12px; position: relative; }
-  .hr-avatar { width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid; background: #16181F; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; flex: 0 0 auto; }
+  .hr-rating {
+    padding: 20px;
+    background: linear-gradient(160deg, rgba(88,204,2,0.08), var(--s1) 55%);
+    border-color: #234029;
+  }
+  .hr-rating-glow { position: absolute; top: -30px; right: -30px; width: 150px; height: 150px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(88,204,2,0.18) 0%, transparent 70%); }
+  .hr-rating-id { display: flex; align-items: center; gap: 13px; position: relative; }
+  .hr-avatar { width: 52px; height: 52px; border-radius: 50%; border: 2px solid #58CC02; box-shadow: 0 0 0 4px rgba(88,204,2,0.14); background: #16181F; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; flex: 0 0 auto; }
   .hr-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .hr-rating-idcol { min-width: 0; }
-  .hr-rating-name { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hr-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .hr-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; }
-  .hr-pill-tier { border: 1px solid; background: rgba(255,255,255,0.04); }
-  .hr-pill-xp { background: rgba(255,255,255,0.06); color: #C9CEDC; border: 1px solid rgba(255,255,255,0.08); }
-  .hr-rating-num { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 54px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-top: 16px; }
-  .hr-rating-cap { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; opacity: 0.7; margin-top: 4px; }
+  .hr-rating-name { display: flex; align-items: center; gap: 7px; }
+  .hr-rating-nametext { font-size: 17px; font-weight: 800; letter-spacing: -0.2px; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hr-rating-pencil { flex: 0 0 auto; color: var(--t3); }
+  .hr-rating-lvl { display: inline-flex; align-items: center; gap: 6px; margin-top: 5px; padding: 3px 9px; border-radius: 999px; background: rgba(255,193,7,0.1); font-size: 11.5px; font-weight: 700; color: #FFC107; }
+  .hr-rating-score { display: flex; align-items: flex-end; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #1D2A20; }
+  .hr-rating-num { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 52px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; }
+  .hr-rating-scap { padding-bottom: 5px; }
+  .hr-rating-overall { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: var(--t3); }
+  .hr-rating-tier { font-size: 19px; font-weight: 900; letter-spacing: -0.01em; color: #8AE042; text-transform: uppercase; }
+  .hr-rating-view { display: block; width: 100%; text-align: center; margin-top: 16px; padding: 11px; border-radius: 12px; border: 1px solid #2A2D3A; background: transparent; color: #E8EAF0; font-family: inherit; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: background 0.12s; }
+  .hr-rating-view:hover { background: #14161E; }
 
   .hr-streak-head { display: flex; align-items: center; gap: 12px; }
   .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
@@ -2185,10 +2181,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-streak-meta { display: flex; flex-direction: column; gap: 2px; }
   .hr-streak-label { font-size: 13px; font-weight: 700; color: var(--t1); }
   .hr-streak-best { font-size: 11.5px; font-weight: 600; color: var(--t3); }
-  .hr-form { display: grid; grid-template-columns: repeat(14, 1fr); gap: 4px; margin-top: 14px; }
-  .hr-form-cell { aspect-ratio: 1; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); }
+  .hr-form { display: flex; gap: 4px; margin-top: 14px; }
+  .hr-form-cell { flex: 1 1 0; height: 22px; border-radius: 5px; background: var(--s2); border: 1px solid var(--border); }
   .hr-form-cell.is-done { background: var(--accent); border-color: var(--accent); }
-  .hr-form-cell.is-today { box-shadow: 0 0 0 2px rgba(88,204,2,0.4); }
+  .hr-form-cell.is-today:not(.is-done) { background: transparent; border: 1.5px solid #FFC107; }
+  .hr-form-cell.is-done.is-today { box-shadow: 0 0 0 2px rgba(255,193,7,0.5); }
   .hr-form-cap { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--t3); margin-top: 8px; }
 
   .hr-friends-head { display: flex; align-items: center; justify-content: space-between; }
@@ -2222,6 +2219,54 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hab-store-ey { font-size: 10px; color: #9BA0B8; }
   .hab-store-nm { font-size: 16px; font-weight: 700; }
   .hab-soon { font-size: 12.5px; font-weight: 600; color: var(--t3); }
+
+  /* ── Daily zone: neutralise the mobile tinted/purple box at desktop so the
+     Footle hero + Daily 7 read as the mock's separate cards. The PWA-standalone
+     killswitch restores the mobile zone box. ── */
+  .daily-zone { background: none; border: none; border-radius: 0; padding: 0; margin-bottom: 20px; }
+  .light .daily-zone { background: none; border: none; }
+  .daily-zone-head { margin-bottom: 20px; padding: 0; }
+  .daily-zone-eyebrow { font-size: 12px; letter-spacing: 0.14em; color: var(--t3); }
+  .daily-zone-status { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 12.5px; color: var(--t3); }
+  .daily-zone > .home-footle-inline { margin-bottom: 20px; }
+
+  /* ── Daily 7: tamed amber card (mock) instead of the mobile full-orange bar. ── */
+  .daily-zone > .todays-seven-secondary {
+    background: linear-gradient(120deg, rgba(255,140,0,0.10), rgba(255,193,7,0.03) 60%, var(--s1));
+    border: 1px solid #33280E;
+    border-radius: 18px;
+    padding: 18px 20px;
+    color: var(--t1);
+    -webkit-text-fill-color: var(--t1);
+    box-shadow: none;
+    margin: 0;
+  }
+  .daily-zone > .todays-seven-secondary .t7s-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(255,170,0,0.14); border: 1px solid rgba(255,193,7,0.3); color: #FFC107; font-size: 20px; }
+  .daily-zone > .todays-seven-secondary .t7s-title { font-size: 16.5px; color: var(--t1); -webkit-text-fill-color: var(--t1); }
+  .daily-zone > .todays-seven-secondary .t7s-sub { font-size: 13px; color: var(--t3); }
+  .daily-zone > .todays-seven-secondary .t7s-sub strong { color: var(--t1); }
+  .daily-zone > .todays-seven-secondary .t7s-cta { background: rgba(255,193,7,0.14); border: 1px solid rgba(255,193,7,0.4); color: #FFC107; -webkit-text-fill-color: #FFC107; border-radius: 12px; padding: 11px 24px; font-size: 14px; }
+
+  /* ── Greeting: amber flame streak pill (mock) instead of the red gradient. ── */
+  .home-col-main .hst-streak {
+    background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.25);
+    color: #FFC107; -webkit-text-fill-color: #FFC107;
+    font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;
+    padding: 8px 14px; font-size: 14px; box-shadow: none;
+  }
+
+  /* ── Your form card (mock screen 01, 3rd rail card) ── */
+  .hr-yf-title { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t3); margin-bottom: 12px; }
+  .hr-yf-rows { display: flex; flex-direction: column; gap: 12px; }
+  .hr-yf-row { display: flex; align-items: center; justify-content: space-between; }
+  .hr-yf-k { font-size: 14px; color: var(--t2); }
+  .hr-yf-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 15px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
+  .hr-yf-v-green { font-family: 'Inter', sans-serif; color: #8AE042; }
+  .hr-yf-empty { font-size: 13px; color: var(--t3); line-height: 1.4; }
+
+  /* ── Play with friends: green tint + show both CTAs (mock). ── */
+  .mp-card { background: linear-gradient(135deg, rgba(88,204,2,0.09), var(--s1) 62%); border-color: #1E3A24; }
+  .mp-card-cta.local { display: inline-flex; }
 }
 
 @media (min-width: 1280px) {
@@ -2341,7 +2386,33 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .home-col-main, .home-col-below, .home-footle-mobile { display: contents !important; }
   .home-rail, .home-footle-inline, .home-app-banner { display: none !important; }
   .hg-greet, .hg-name { font-size: 20px !important; }
+  /* Home rebuild: restore the mobile Daily zone (tinted box), Daily 7 (orange
+     bar), the red streak pill and the plain mp-card so an installed desktop PWA
+     stays byte-identical to mobile. */
+  .daily-zone {
+    background: linear-gradient(180deg, rgba(124,58,237,0.06) 0%, rgba(255,106,0,0.04) 100%) !important;
+    border: 1px solid var(--border) !important; border-radius: 18px !important;
+    padding: 10px !important; margin-bottom: 10px !important;
+  }
+  .daily-zone-head { margin-bottom: 6px !important; padding: 0 4px !important; }
+  .daily-zone-eyebrow { font-family: 'Inter',sans-serif !important; font-size: 10px !important; letter-spacing: 0.14em !important; color: var(--t2) !important; }
+  .daily-zone-status { font-family: 'Inter',sans-serif !important; font-size: 10.5px !important; color: var(--t3) !important; }
   .daily-zone .todays-seven-secondary {
     background: linear-gradient(135deg, #FF6A00 0%, #FFC107 100%) !important;
+    border: 1px solid transparent !important; border-radius: 14px !important;
+    padding: 14px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.18) !important;
+    margin: 0 0 12px !important; color: #1A0F05 !important; -webkit-text-fill-color: #1A0F05 !important;
   }
+  .daily-zone .todays-seven-secondary .t7s-icon { width: 32px !important; height: 32px !important; border-radius: 10px !important; background: rgba(0,0,0,0.10) !important; border: none !important; color: inherit !important; font-size: 16px !important; }
+  .daily-zone .todays-seven-secondary .t7s-title { font-size: 14px !important; color: #1A0F05 !important; -webkit-text-fill-color: #1A0F05 !important; }
+  .daily-zone .todays-seven-secondary .t7s-sub { font-size: 11.5px !important; color: rgba(10,10,10,0.7) !important; }
+  .daily-zone .todays-seven-secondary .t7s-cta { background: rgba(0,0,0,0.12) !important; border: none !important; color: #1A0F05 !important; -webkit-text-fill-color: #1A0F05 !important; border-radius: 999px !important; padding: 7px 13px !important; font-size: 12px !important; }
+  .home-col-main .hst-streak {
+    background: linear-gradient(135deg,#FF6B35 0%,#F23131 100%) !important; border: none !important;
+    color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important;
+    font-family: 'Inter',sans-serif !important; padding: 2px 8px !important; font-size: 12px !important;
+    box-shadow: 0 1px 4px rgba(242,49,49,0.15) !important;
+  }
+  .mp-card { background: var(--s1) !important; border-color: var(--border) !important; }
+  .mp-card-cta.local { display: none !important; }
 }
