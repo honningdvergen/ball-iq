@@ -44,6 +44,9 @@ const STYLE = `
 .mkt-cta-black:hover { transform:translateY(-2px); box-shadow:0 16px 34px -8px rgba(0,0,0,0.72); }
 .mkt-mode { transition:transform .18s, border-color .18s; }
 .mkt-mode:hover { transform:translateY(-4px); border-color:#3A3D4A; }
+.mkt-opt { transition:transform .15s, border-color .15s, background .15s; }
+.mkt-opt:hover { transform:translateY(-1px); border-color:#3A3D4A; background:#161922; }
+.mkt-try-again:hover { border-color:#3A3D4A !important; color:#fff !important; }
 .mkt-foot-link { color:#9BA0B8; font-size:14px; transition:color .15s; }
 .mkt-foot-link:hover { color:#fff; }
 .mkt-reveal { opacity:0; transform:translateY(30px); transition:opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
@@ -148,6 +151,67 @@ const h2Style = { margin: '14px 0 0', fontSize: 'clamp(30px,4vw,42px)', fontWeig
 const bodyStyle = { margin: '18px 0 0', fontSize: 17, lineHeight: 1.6, color: '#9BA0B8', maxWidth: '46ch' };
 const chip = (extra) => ({ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, fontSize: 13, fontWeight: 600, ...extra });
 
+// Inline "taste of the game" — a real, tappable question right on the landing
+// page so a visitor is PLAYING before they've decided to click through. Famous,
+// satisfying questions only (no obscure trivia that makes people feel dumb on
+// first contact); correct-answer index is varied so it isn't guessable as
+// "always the first option". Hardcoded (5 rows, ~tiny) rather than importing the
+// question bank — keeps the freshly-slimmed marketing chunk lean.
+const TASTE_QS = [
+  { q: 'Who has won the most Ballon d’Or awards?', opts: ['Cristiano Ronaldo', 'Lionel Messi', 'Michel Platini', 'Johan Cruyff'], a: 1 },
+  { q: 'Which nation has won the most World Cups?', opts: ['Brazil', 'Germany', 'Italy', 'Argentina'], a: 0 },
+  { q: 'Who is the Premier League’s all-time top scorer?', opts: ['Harry Kane', 'Alan Shearer', 'Wayne Rooney', 'Sergio Agüero'], a: 1 },
+  { q: 'Which club has won the most Champions League titles?', opts: ['AC Milan', 'Bayern Munich', 'Liverpool', 'Real Madrid'], a: 3 },
+  { q: 'Who won the 2022 World Cup?', opts: ['France', 'Argentina', 'Brazil', 'Croatia'], a: 1 },
+];
+
+function TryOne() {
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState(null);
+  const cur = TASTE_QS[idx];
+  const answered = picked !== null;
+  const correct = answered && picked === cur.a;
+
+  const optStyle = (i) => {
+    const base = { display: 'flex', alignItems: 'center', gap: 12, width: '100%', textAlign: 'left', padding: '15px 18px', borderRadius: 14, border: '1px solid #242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 16, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
+    if (!answered) return base;
+    if (i === cur.a) return { ...base, borderColor: '#43d17a', background: 'rgba(67,209,122,0.12)', color: '#eafff2' };
+    if (i === picked) return { ...base, borderColor: '#ef4444', background: 'rgba(239,68,68,0.10)', color: '#ffe4e4' };
+    return { ...base, opacity: 0.5 };
+  };
+
+  const next = () => { setPicked(null); setIdx((idx + 1) % TASTE_QS.length); };
+
+  return (
+    <section style={{ maxWidth: 620, margin: '0 auto', padding: '4px 24px 10px' }}>
+      <div style={{ background: '#14161E', border: '1px solid #242836', borderRadius: 22, padding: 'clamp(22px,4vw,30px) clamp(18px,4vw,26px)', boxShadow: '0 26px 64px -34px rgba(0,0,0,0.85)' }}>
+        <div style={{ ...eyebrow('#43d17a'), textAlign: 'center' }}>Prove it — one question</div>
+        <h3 style={{ margin: '12px 0 20px', fontSize: 'clamp(19px,2.5vw,24px)', fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.02em', color: '#fff', textAlign: 'center' }}>{cur.q}</h3>
+        <div style={{ display: 'grid', gap: 10 }}>
+          {cur.opts.map((o, i) => (
+            <button key={i} disabled={answered} onClick={() => !answered && setPicked(i)} className={!answered ? 'mkt-opt' : undefined} style={optStyle(i)}>
+              <span style={{ flex: 1 }}>{o}</span>
+              {answered && i === cur.a && <span aria-hidden>✓</span>}
+              {answered && i === picked && i !== cur.a && <span aria-hidden>✕</span>}
+            </button>
+          ))}
+        </div>
+        {answered && (
+          <div style={{ marginTop: 18, textAlign: 'center' }}>
+            <p style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 700, color: correct ? '#43d17a' : '#ff9a9a' }}>
+              {correct ? "Nice — that's Ball IQ. 4,000+ more where that came from." : `Not quite — it's ${cur.opts[cur.a]}. Get the next one?`}
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <GreenCTA href={PLAY} big>Play free in browser →</GreenCTA>
+              <button onClick={next} className="mkt-try-again" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '13px 22px', background: 'transparent', color: '#9BA0B8', fontWeight: 700, fontSize: 15, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' }}>Try another ↻</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 const MODES = [
   { icon: '📋', tint: 'rgba(255,193,7,0.12)', name: 'Daily 7', sub: 'Seven questions, ~3 min.' },
   { icon: '⚽', tint: 'rgba(88,204,2,0.12)', name: 'Footle', sub: 'Guess the surname in six.' },
@@ -247,6 +311,9 @@ export default function MarketingHome() {
           </div>
         </div>
       </section>
+
+      {/* ── TRY ONE — inline playable question, straight after "Prove you know football." ── */}
+      <TryOne />
 
       {/* ── TICKER ── */}
       <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: '#0C0E13', padding: '16px 0' }}>
