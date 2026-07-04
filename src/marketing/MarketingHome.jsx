@@ -50,6 +50,11 @@ const STYLE = `
 .mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
 .mkt-play-card { background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
 @media (max-width:760px) { .mkt-play-grid { grid-template-columns:1fr; } }
+.mkt-qgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:10px; }
+.mkt-qtile { display:flex; align-items:center; gap:11px; padding:14px; background:#14161E; border:1px solid #242836; border-radius:14px; transition:transform .16s, border-color .16s; }
+.mkt-qtile:hover { transform:translateY(-3px); border-color:#3A3D4A; }
+.mkt-qtile-all { justify-content:center; background:rgba(88,204,2,0.08); border-color:rgba(88,204,2,0.3); }
+.mkt-qbadge { width:36px; height:36px; flex:0 0 auto; border-radius:10px; background:#1F2430; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#fff; letter-spacing:0.03em; }
 .mkt-foot-link { color:#9BA0B8; font-size:14px; transition:color .15s; }
 .mkt-foot-link:hover { color:#fff; }
 .mkt-reveal { opacity:0; transform:translateY(30px); transition:opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
@@ -385,6 +390,71 @@ function PlayNow() {
   );
 }
 
+// Club + league quiz grid — the SEO internal-linking mesh, on the homepage.
+// Every tile links to that topic's /quiz/<slug>/ LANDING page (never /play):
+// spreads link equity to the pages we want to rank, and matches the funnel
+// (land on the topic page → play the taster → deep-link into the app). Every
+// slug here MUST be a live generated page (scripts/gen-seo-pages.mjs) — a tile
+// pointing at a non-existent page is a 404: wasted crawl budget + dead UX.
+const QUIZ_CLUBS = [
+  { slug: 'manchester-united', label: 'Man United', badge: 'MUN' },
+  { slug: 'arsenal', label: 'Arsenal', badge: 'ARS' },
+  { slug: 'manchester-city', label: 'Man City', badge: 'MCI' },
+  { slug: 'liverpool', label: 'Liverpool', badge: 'LIV' },
+  { slug: 'chelsea', label: 'Chelsea', badge: 'CHE' },
+  { slug: 'tottenham', label: 'Tottenham', badge: 'TOT' },
+  { slug: 'newcastle', label: 'Newcastle', badge: 'NEW' },
+  { slug: 'barcelona', label: 'Barcelona', badge: 'BAR' },
+  { slug: 'real-madrid', label: 'Real Madrid', badge: 'RMA' },
+  { slug: 'atletico-madrid', label: 'Atlético', badge: 'ATM' },
+  { slug: 'juventus', label: 'Juventus', badge: 'JUV' },
+  { slug: 'inter-milan', label: 'Inter Milan', badge: 'INT' },
+  { slug: 'ac-milan', label: 'AC Milan', badge: 'MIL' },
+  { slug: 'bayern-munich', label: 'Bayern', badge: 'BAY' },
+  { slug: 'borussia-dortmund', label: 'Dortmund', badge: 'BVB' },
+  { slug: 'psg', label: 'PSG', badge: 'PSG' },
+  { slug: 'ajax', label: 'Ajax', badge: 'AJA' },
+];
+const QUIZ_LEAGUES = [
+  { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  { slug: 'la-liga', label: 'La Liga', emoji: '🇪🇸' },
+  { slug: 'serie-a', label: 'Serie A', emoji: '🇮🇹' },
+  { slug: 'bundesliga', label: 'Bundesliga', emoji: '🇩🇪' },
+  { slug: 'champions-league', label: 'Champions League', emoji: '⭐' },
+  { slug: 'euros', label: 'Euros', emoji: '🇪🇺' },
+  { slug: 'world-cup', label: 'World Cup', emoji: '🌍' },
+];
+
+function QuizTile({ href, badge, emoji, label }) {
+  return (
+    <a href={href} className="mkt-qtile">
+      <span className="mkt-qbadge" style={emoji ? { background: 'transparent', fontSize: 22 } : undefined}>{emoji || badge}</span>
+      <span style={{ fontSize: 14.5, fontWeight: 700, color: '#F0F1F5' }}>{label}</span>
+    </a>
+  );
+}
+
+function QuizGrid() {
+  return (
+    <section id="quizzes" style={{ maxWidth: 1140, margin: '0 auto', padding: 'clamp(46px,6vw,72px) 24px 12px' }}>
+      <div style={{ textAlign: 'center', marginBottom: 34 }}>
+        <div style={eyebrow('#43d17a')}>Browse quizzes</div>
+        <h2 style={{ ...h2Style, textAlign: 'center' }}>A quiz for every team and league.</h2>
+        <p style={{ ...bodyStyle, maxWidth: '52ch', margin: '12px auto 0', textAlign: 'center' }}>Pick your club or competition and test your knowledge — from the Premier League to the World Cup. New quizzes added every week.</p>
+      </div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '0 2px 12px' }}>Clubs</div>
+      <div className="mkt-qgrid">
+        {QUIZ_CLUBS.map((c) => <QuizTile key={c.slug} href={`/quiz/${c.slug}/`} badge={c.badge} label={c.label} />)}
+      </div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
+      <div className="mkt-qgrid">
+        {QUIZ_LEAGUES.map((l) => <QuizTile key={l.slug} href={`/quiz/${l.slug}/`} emoji={l.emoji} label={l.label} />)}
+        <a href="/quiz/" className="mkt-qtile mkt-qtile-all"><span style={{ fontSize: 14, fontWeight: 800, color: '#8AE042' }}>All quizzes →</span></a>
+      </div>
+    </section>
+  );
+}
+
 const MODES = [
   { icon: '📋', tint: 'rgba(255,193,7,0.12)', name: 'Daily 7', sub: 'Seven questions, ~3 min.' },
   { icon: '⚽', tint: 'rgba(88,204,2,0.12)', name: 'Footle', sub: 'Guess the surname in six.' },
@@ -443,6 +513,9 @@ export default function MarketingHome() {
 
       {/* ── HERO — the playable Footle + quiz taster ARE the front door ── */}
       <PlayNow />
+
+      {/* ── BROWSE QUIZZES — club/league landing-page mesh (SEO + funnel) ── */}
+      <QuizGrid />
 
       {/* ── TICKER ── */}
       <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: '#0C0E13', padding: '16px 0' }}>

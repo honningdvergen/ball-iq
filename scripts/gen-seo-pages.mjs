@@ -495,6 +495,12 @@ function buildListiclePage(cfg, livePages) {
   if (rows.length < 12) {
     throw new Error(`[gen-seo] listicle "${cfg.slug}" resolved only ${rows.length} questions (< 12). Check questionIds.`);
   }
+  // Interactive taster (same as club/category pages): 5 tappable questions,
+  // excluded from the static Q&A list below so nothing is spoiled.
+  const tasterRows = curate(rows.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o)), 5);
+  const hasTaster = tasterRows.length === 5;
+  const tasterIds = new Set(tasterRows.map((r) => r.id));
+  const listRows = hasTaster ? rows.filter((r) => !tasterIds.has(r.id)) : rows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -522,10 +528,10 @@ ${header([
 <div class="intro">
 ${introHtml}
 </div>
-${ctaBlock(`Want to play properly? The full Ball IQ game is free.`)}
-<h2>${rows.length} football trivia questions &amp; answers</h2>
+${hasTaster ? renderTaster(tasterRows, 'football', `${SITE.base}/`) : ctaBlock(`Want to play properly? The full Ball IQ game is free.`)}
+<h2>${listRows.length} football trivia questions &amp; answers</h2>
 <p class="lede">Tap “Show answer” to reveal the answer and the story behind it.</p>
-${renderQA(rows)}
+${renderQA(listRows)}
 ${ctaBlock(`Thousands more questions, a daily challenge and live multiplayer — free in the Ball IQ app.`)}
 <h2>FAQ</h2>
 <dl class="faq">
