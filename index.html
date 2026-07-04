@@ -224,7 +224,8 @@
       html.native-app .ad-slot-sidebar-left,
       html.native-app .ad-slot-sidebar-right,
       html.native-app .ad-slot-banner,
-      html.native-app .desktop-nav { display: none !important; }
+      html.native-app .desktop-nav,
+      html.native-app .biq-nav { display: none !important; }
       html.native-app body > #root {
         max-width: none !important;
         margin: 0 !important;
@@ -251,6 +252,15 @@
       body.in-focused-play .ad-slot-sidebar-right,
       body.in-focused-play .ad-slot-banner { display: none !important; }
 
+      /* desktop-web-refresh: on the game route (/play, …) the app owns the
+         whole desktop surface via the BiqNav rail — the marketing landing
+         chrome must not wrap the game. main.jsx sets body.biq-app at the
+         earliest game-route module-eval, so this beats the chrome's paint.
+         Mobile (< 1024px) never shows the chrome anyway; PWA/native already
+         killswitch it above — this is the browser-desktop /play case. */
+      body.biq-app .landing-top,
+      body.biq-app .landing-bottom { display: none !important; }
+
       /* ── Desktop app column ────────────────────────────────────────────
          At >= 1024px in regular browser mode, constrain #root to a
          centered 600px column. transform: translateZ(0) creates a new
@@ -268,7 +278,9 @@
          transform, so the app fills the viewport like before. */
       @media (min-width: 1024px) {
         body > #root {
-          padding-left: 220px;
+          /* desktop-web-refresh: was 220 (old .desktop-nav). BiqNav rail is
+             248px, so the content gutter must clear 248. */
+          padding-left: 248px;
         }
         /* Marketing chrome below the app needs the same sidebar clearance
            — otherwise the fixed DesktopNav overlays the leftmost portion
@@ -276,7 +288,8 @@
            1024-1640. Has been broken since Phase 5b; .landing-bottom
            never got the same offset as #root. */
         body > .landing-bottom {
-          padding-left: 220px;
+          /* desktop-web-refresh: match the 248px BiqNav rail offset (was 220). */
+          padding-left: 248px;
         }
       }
       @media (display-mode: standalone) {
@@ -288,6 +301,9 @@
         body > .landing-bottom {
           padding-left: 0 !important;
         }
+        /* desktop-web-refresh: installed PWA at >=1024 must never render the
+           desktop rail — mirror the app.css standalone reset. */
+        .biq-nav { display: none !important; }
       }
 
       /* ── Sticky top bar ────────────────────────────────────────────────

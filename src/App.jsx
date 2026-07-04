@@ -9,7 +9,9 @@ import Login from './Login.jsx';
 // Lazy: the 523-line review screen is settings-only, never on the cold/first
 // paint — React.lazy keeps it out of the initial bundle (Suspense at render).
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
-import { DesktopNav } from './DesktopNav.jsx';
+// DesktopNav.jsx is retained on disk (legacy rail) but no longer rendered —
+// the desktop-web-refresh swaps in BiqNav at >= 1024px.
+import { BiqNav } from './BiqNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -8589,7 +8591,7 @@ function AppInner() {
           />
         )}
         {!inGame && (
-          <DesktopNav
+          <BiqNav
             onHomeClick={handleHomeClick}
             tab={tab}
             setTab={setTab}

@@ -151,6 +151,14 @@ if (showMarketing) {
     <React.Suspense fallback={null}><PlayApp /></React.Suspense>,
   )
 } else {
+  // desktop-web-refresh: mark the document as the game shell so the desktop
+  // marketing chrome (.landing-top/.landing-bottom in index.html, shown at
+  // >=1024 in browser) stays hidden around the game on /play. Set here at
+  // module-eval — the earliest point we know this is a game route — so it
+  // beats the landing chrome's paint far sooner than an AppInner mount effect
+  // would, and it also covers the login screen (which is not AppInner). No-op
+  // in native/PWA where the landing chrome is already killswitched.
+  try { document.body.classList.add('biq-app') } catch { /* noop */ }
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <React.Suspense fallback={<SplashFallback />}>

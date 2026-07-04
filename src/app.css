@@ -1110,7 +1110,7 @@ button.friends-lb-row:hover{background:var(--s3);}
    1024px breakpoint doesn't apply there since the .app shell pretends
    it's mobile width. */
 @media (min-width: 1024px) {
-  .toast { left: calc(220px + 40px + 440px); }
+  .toast { left: calc(248px + 40px + 440px); }
 }
 @media (display-mode: standalone) {
   .toast { left: 50% !important; }
@@ -1655,6 +1655,138 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 }
 
 /* ════════════════════════════════════════════════════════════════════
+   BIQ NAV (desktop-web-refresh) — marketing-aesthetic left rail
+   ────────────────────────────────────────────────────────────────────
+   Replaces .desktop-nav at >= 1024px. Dark-only chrome using LITERAL
+   marketing hex (not app vars) so it reads correctly regardless of the
+   runtime light/dark theme, and sits flush against the desktop .app
+   (which is recolored to the marketing palette via the var overrides in
+   the reflow block below).
+
+   Base display:none — shown ONLY at >=1024px (browser). Reset to hidden
+   in @media(display-mode:standalone) [installed PWA] and under
+   html.native-app [Capacitor iOS/Android, in index.html] so the app /
+   installed PWAs never render it. Full-height (top:0/height:100vh),
+   unlike the old .desktop-nav which started at top:52px.
+   ════════════════════════════════════════════════════════════════════ */
+.biq-nav { display: none; }
+.biq-nav .bn-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: none;
+  padding: 0 8px;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #F0F1F5;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.biq-nav .bn-brand img { width: 32px; height: 32px; border-radius: 8px; flex: 0 0 auto; }
+.biq-nav .bn-brand em { color: #FFC107; font-style: normal; }
+.biq-nav .bn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 24px;
+}
+.biq-nav .bn-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #9BA0B8;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.biq-nav .bn-item svg { flex: 0 0 auto; }
+.biq-nav .bn-item:hover { background: rgba(255,255,255,0.04); color: #E8EAF0; }
+.biq-nav .bn-item[data-active="true"] {
+  background: rgba(88,204,2,0.12);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 #58CC02;
+}
+.biq-nav .bn-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #FF4D4D;
+  margin-left: 4px;
+  flex: 0 0 auto;
+}
+.biq-nav .bn-spacer { flex: 1 1 auto; }
+.biq-nav .bn-divider {
+  height: 1px;
+  background: #1A1D27;
+  margin: 10px 6px;
+}
+.biq-nav .bn-cta {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.biq-nav .bn-cta-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5A5F70;
+  padding: 0 8px;
+  margin-bottom: 2px;
+}
+.biq-nav .bn-store {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #14161E;
+  border: 1px solid #242836;
+  border-radius: 11px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #E8EAF0;
+  text-decoration: none;
+  transition: background 0.12s, border-color 0.12s;
+}
+.biq-nav .bn-store svg { flex: 0 0 auto; }
+.biq-nav a.bn-store:hover { background: #191c26; border-color: #2A2D3A; }
+.biq-nav .bn-store.is-disabled {
+  opacity: 0.6;
+  cursor: default;
+  color: #9BA0B8;
+}
+.biq-nav .bn-store-soon {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6E7180;
+  border: 1px solid #2A2D3A;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+
+/* ════════════════════════════════════════════════════════════════════
    DESKTOP APP REFLOW (Tier 1 + Tier 2)
    ────────────────────────────────────────────────────────────────────
    At >= 1024px viewport in regular browser mode:
@@ -1672,9 +1804,43 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    ════════════════════════════════════════════════════════════════════ */
 @media (min-width: 1024px) {
   .app {
-    max-width: 640px;
+    /* desktop-web-refresh: recolor the app RUNTIME to the marketing palette
+       (dark-only desktop chrome). Scoped to .app (NOT :root) so mobile keeps
+       its vars untouched. Reset back to the inherited mobile values in the
+       @media(display-mode:standalone) block so installed desktop PWAs stay
+       byte-identical. Native never hits >=1024 (iPhone-only, portrait-locked). */
+    --bg: #0A0A0A;
+    --s1: #0F1117;
+    --s2: #14161E;
+    --border: #242836;
+    --border2: #2A2D3A;
+    --accent: #58CC02;
+    /* Widen 640 -> centered 1180 so redesigned screens have room for
+       two-column desktop layouts. margin:0 auto (from the base .app rule)
+       centers it within the rail-padded content box. */
+    max-width: 1180px;
     padding: 0 24px 40px;
   }
+  /* BiqNav rail — full-height fixed left chrome, shown only at desktop. */
+  .biq-nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 248px;
+    height: 100vh;
+    padding: 22px 14px;
+    background: #0C0E13;
+    border-right: 1px solid #16181F;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 40;
+  }
+  /* The mobile tab-bar is display:none at desktop, so its bottom-clearance
+     padding is dead space here — zero it. Reset in standalone (PWA re-shows
+     the mobile tab-bar and needs the clearance back). */
+  .tab-content { padding-bottom: 0; }
   /* 1.2 web: cap the quiz reading column so the question + answer options don't
      stretch to the full column width on desktop (the most-used screen). */
   .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
@@ -1714,10 +1880,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      desktop snaps to sidebar(220) + app left margin(40) and matches the
      880px column width. */
   .first-quiz-tip {
-    left: calc(220px + 40px) !important;
+    left: calc(248px + 40px) !important;
     right: auto !important;
     width: 880px;
-    max-width: calc(100vw - 220px - 80px);
+    max-width: calc(100vw - 248px - 80px);
   }
   .tab-bar {
     /* Phase 3: tab bar replaced by DesktopNav at desktop sizes. The
@@ -1894,8 +2060,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      to feel intentional. All viewport variance gets absorbed by the
      right-side margin (margin-right: auto). */
   .app {
-    max-width: 880px;
-    margin-left: 40px;
+    /* desktop-web-refresh: was 880 left-anchored. Now a centered 1180 column
+       (matches the >=1024 rule) so the widened content sits balanced in the
+       rail-padded box rather than hugging the rail. */
+    max-width: 1180px;
+    margin-left: auto;
     margin-right: auto;
   }
 }
@@ -1911,6 +2080,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 }
 @media (display-mode: standalone) {
   .app {
+    /* desktop-web-refresh: an installed PWA on a >=1024 desktop would match
+       the min-width:1024 reflow rules, including the marketing-palette var
+       override. Restore the mobile palette by inheriting the vars from #root
+       (which carries the :root / .light values) so PWA stays byte-identical
+       in BOTH themes. Wins by source order (this block is after the reflow). */
+    --bg: inherit;
+    --s1: inherit;
+    --s2: inherit;
+    --border: inherit;
+    --border2: inherit;
+    --accent: inherit;
     max-width: 420px !important;
     /* Phase 6e: padding-bottom 100 → 0 to match the base .app rule that
        Phase 6a (100→24) and Phase 6d (24→0) progressively reduced. The
@@ -1962,6 +2142,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
   .desktop-nav { display: none !important; }
+  /* desktop-web-refresh: installed PWA never renders the desktop rail, and
+     the mobile tab-bar is re-shown above — so restore .tab-content's bottom
+     clearance that the >=1024 reflow zeroed (else content hides behind it). */
+  .biq-nav { display: none !important; }
+  .tab-content { padding-bottom: calc(66px + max(env(safe-area-inset-bottom,34px),34px)) !important; }
   .hdr { display: flex !important; }
   .hdr .logo { display: block !important; }
   .ds-eyebrow {
