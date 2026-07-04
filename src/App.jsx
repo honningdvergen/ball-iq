@@ -6729,28 +6729,6 @@ function AppInner() {
     try { localStorage.removeItem("biq_pending_challenge"); } catch {}
   }, []);
 
-  // Challenge links are only valid for their calendar day (the Daily 7 is
-  // deterministic per day). Two former silent dead-ends now explain
-  // themselves: a link opened a day late expires with a nudge to send one
-  // back, and a link opened AFTER already playing settles instantly. (The
-  // mid-flow compare in handleComplete clears the challenge synchronously
-  // with the dailyDone flip, so this effect never double-fires it.)
-  useEffect(() => {
-    if (!pendingChallenge) return;
-    const todayToken = dateToYMD(new Date()).replace(/-/g, "");
-    if (pendingChallenge.date !== todayToken) {
-      showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
-      clearChallenge();
-    } else if (dailyDone) {
-      const mine = dailyScore, theirs = pendingChallenge.score;
-      const who = pendingChallenge.name || "your friend";
-      showToast(mine > theirs ? `🏆 You already beat ${who} today — ${mine}/7 vs ${theirs}/7!`
-        : mine === theirs ? `🤝 Level with ${who} — ${mine}/7 each. Rematch tomorrow!`
-        : `😤 ${who} takes it — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`);
-      clearChallenge();
-    }
-  }, [pendingChallenge, dailyDone, dailyScore, showToast, clearChallenge]);
-
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
   // arrive via Universal Link (balliq.app/join/CODE) which Capacitor's
@@ -6852,6 +6830,7 @@ function AppInner() {
     } catch {}
     return null;
   });
+
   const [iqHistory, setIqHistory] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_iq_history");
@@ -7153,6 +7132,32 @@ function AppInner() {
       toastTimerRef.current = null;
     }, duration);
   }, []);
+
+  // Challenge links are only valid for their calendar day (the Daily 7 is
+  // deterministic per day). Two former silent dead-ends now explain themselves:
+  // a link opened a day late expires with a nudge to send one back, and a link
+  // opened AFTER already playing settles instantly. (The mid-flow compare in
+  // handleComplete clears the challenge synchronously with the dailyDone flip,
+  // so this effect never double-fires it.)
+  // Placed BELOW all its dependencies (pendingChallenge, dailyDone, dailyScore,
+  // showToast, clearChallenge): a deps array is evaluated during render, so a
+  // dep referenced above its `const` declaration is a temporal-dead-zone crash
+  // on every app load — which is exactly what was killing web /play.
+  useEffect(() => {
+    if (!pendingChallenge) return;
+    const todayToken = dateToYMD(new Date()).replace(/-/g, "");
+    if (pendingChallenge.date !== todayToken) {
+      showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
+      clearChallenge();
+    } else if (dailyDone) {
+      const mine = dailyScore, theirs = pendingChallenge.score;
+      const who = pendingChallenge.name || "your friend";
+      showToast(mine > theirs ? `🏆 You already beat ${who} today — ${mine}/7 vs ${theirs}/7!`
+        : mine === theirs ? `🤝 Level with ${who} — ${mine}/7 each. Rematch tomorrow!`
+        : `😤 ${who} takes it — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`);
+      clearChallenge();
+    }
+  }, [pendingChallenge, dailyDone, dailyScore, showToast, clearChallenge]);
 
   // Question report — a one-tap "report a problem" on the answer reveal writes to
   // question_reports (RPC-only) so we can re-check flagged items. We always thank
