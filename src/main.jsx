@@ -6,8 +6,6 @@ import './installPrompt.js'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
-import App from './App.jsx'
-import { AuthProvider } from './useAuth.jsx'
 import { initAds } from './lib/ads.js'
 
 // Sentry initialization — runs before app mount so render errors land in
@@ -107,6 +105,29 @@ const _isBrowser = !_isNativeApp && !_isStandalonePWA
 const showMarketing = _isBrowser && (_path === '/' || _path.startsWith('/home-preview'))
 const showPlayPreview = _isBrowser && _path.startsWith('/play-preview')
 
+// The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
+// download the ~200KB-gz game bundle. React.lazy only fires its import() on
+// first render — which is after createRoot + the initial reconcile — so for
+// game paths we ALSO kick the import off here at module-eval. Both calls
+// resolve to the same module promise (ESM dedupes by specifier), so this just
+// starts the network fetch a render-cycle earlier, overlapping it with mount.
+const loadGameRoot = () => import('./GameRoot.jsx')
+const GameRoot = React.lazy(loadGameRoot)
+if (!showMarketing && !showPlayPreview) loadGameRoot()
+
+// Suspense fallback for the lazily-loaded game tree: reproduces index.html's
+// #root splash markup (the same wordmark + animated bar) so swapping the
+// static HTML splash for React's tree during the GameRoot chunk fetch is
+// visually seamless — no blank flash on web/PWA game paths. On native the
+// chunk is bundled locally and resolves within a frame, so this shows only
+// momentarily before AppGate takes over.
+const SplashFallback = () => (
+  <div className="biq-splash" aria-label="Loading Ball IQ">
+    <div className="biq-splash-mark">Ball <em>IQ</em></div>
+    <div className="biq-splash-dot"></div>
+  </div>
+)
+
 // Full-bleed surfaces (marketing + the new Play dashboard preview) drop the
 // game-nav gutter + landing chrome and match the #0A0A0A canvas.
 const _fullBleed = () => {
@@ -132,9 +153,9 @@ if (showMarketing) {
 } else {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <React.Suspense fallback={<SplashFallback />}>
+        <GameRoot />
+      </React.Suspense>
     </React.StrictMode>,
   )
 }

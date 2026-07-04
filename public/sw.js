@@ -10,15 +10,18 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v6';
+const CACHE_VERSION = 'balliq-v7';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
 // Minimal app shell — the rest is picked up opportunistically on first fetch.
+// Deliberately NOT including /icon-1024.png (1.27MB): it was never needed for
+// first paint (favicons are /icon-192.png), and precaching it made every fresh
+// SW install block on a >1MB download before the shell was ready. Icons are
+// still served cache-first opportunistically via the STATIC_EXT matcher.
 const APP_SHELL = [
   '/',
   '/index.html',
-  '/icon-1024.png',
 ];
 
 // Origins we must NEVER cache — auth, realtime and API calls always go network.
