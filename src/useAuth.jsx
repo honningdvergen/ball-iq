@@ -544,11 +544,20 @@ export function AuthProvider({ children }) {
     // Sprint #100: mark a user-initiated auth so the SIGNED_IN handler runs
     // the guest→account migration exactly once (and not on session restore).
     try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
+    // emailRedirectTo lands the confirm link on a GAME path (/play), not the
+    // Site URL (=/ marketing). Marketing renders WITHOUT AuthProvider, so the
+    // session token Supabase appends to the redirect hash would go unconsumed —
+    // the user would confirm, land on the landing page, and still not be logged
+    // in. /play mounts GameRoot → useAuth picks up the session → SIGNED_IN runs
+    // the guest→account migration. Harmless if not yet allowlisted (Supabase
+    // falls back to Site URL = today's behaviour); takes effect once
+    // https://balliq.app/play is added to Auth → URL Configuration → Redirect URLs.
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { username: username }
+        data: { username: username },
+        emailRedirectTo: 'https://balliq.app/play',
       }
     })
     if (error) return { error }
