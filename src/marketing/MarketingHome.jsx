@@ -47,6 +47,9 @@ const STYLE = `
 .mkt-opt { transition:transform .15s, border-color .15s, background .15s; }
 .mkt-opt:hover { transform:translateY(-1px); border-color:#3A3D4A; background:#161922; }
 .mkt-try-again:hover { border-color:#3A3D4A !important; color:#fff !important; }
+.mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
+.mkt-play-card { background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
+@media (max-width:760px) { .mkt-play-grid { grid-template-columns:1fr; } }
 .mkt-foot-link { color:#9BA0B8; font-size:14px; transition:color .15s; }
 .mkt-foot-link:hover { color:#fff; }
 .mkt-reveal { opacity:0; transform:translateY(30px); transition:opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
@@ -165,48 +168,208 @@ const TASTE_QS = [
   { q: 'Who won the 2022 World Cup?', opts: ['France', 'Argentina', 'Brazil', 'Croatia'], a: 1 },
 ];
 
-function TryOne() {
+// ── Playable Footle (marketing taste) ────────────────────────────────────────
+// A lightweight, self-contained Wordle-for-footballers: 7-letter surname, six
+// guesses, two-pass colouring. Deliberately SEPARATE from the app's real Footle
+// (lib/wordle.js) — footballers-only per the handoff, and kept out of the
+// marketing chunk's weight. Client-side date-seeded daily word (a taste; the
+// competitive daily lives in the app — server-side word is a Phase 3 follow-up).
+const FOOTLE_WORDS = ['HAALAND', 'RONALDO', 'MALDINI', 'LAMPARD', 'GERRARD', 'CANTONA', 'SHEARER', 'SEEDORF', 'RIVALDO', 'ROBINHO', 'BALLACK', 'LINEKER'];
+const FOOTLE_TARGET = FOOTLE_WORDS[Math.floor(Date.now() / 86400000) % FOOTLE_WORDS.length];
+
+// Two-pass Wordle scoring: greens claimed first, then presents (duplicate-safe).
+function scoreGuess(guess, target) {
+  const res = new Array(guess.length).fill('absent');
+  const used = new Array(target.length).fill(false);
+  for (let i = 0; i < guess.length; i++) if (guess[i] === target[i]) { res[i] = 'correct'; used[i] = true; }
+  for (let i = 0; i < guess.length; i++) {
+    if (res[i] === 'correct') continue;
+    for (let j = 0; j < target.length; j++) { if (!used[j] && guess[i] === target[j]) { res[i] = 'present'; used[j] = true; break; } }
+  }
+  return res;
+}
+
+const footleTileStyle = (mark, filled, active) => {
+  const base = { width: 'clamp(30px,10.5vw,42px)', height: 'clamp(30px,10.5vw,42px)', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, border: '2px solid', fontWeight: 800, fontSize: 'clamp(15px,5vw,20px)', textTransform: 'uppercase', lineHeight: 1, color: '#fff' };
+  if (mark === 'correct') return { ...base, background: '#58CC02', borderColor: '#58CC02', color: '#06230C' };
+  if (mark === 'present') return { ...base, background: '#FFC107', borderColor: '#FFC107', color: '#241B00' };
+  if (mark === 'absent') return { ...base, background: '#181B24', borderColor: '#181B24', color: '#8E93A6' };
+  return { ...base, background: '#0F1117', borderColor: filled ? '#3A3D4A' : (active ? '#46516A' : '#232733') };
+};
+const footleKeyStyle = (state, wide) => {
+  const base = { height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 7, border: 'none', fontWeight: 700, fontSize: wide ? 11.5 : 14, cursor: 'pointer', flex: wide ? '1.6 1 0' : '1 1 0', fontFamily: 'inherit', textTransform: 'uppercase' };
+  if (state === 'correct') return { ...base, background: '#58CC02', color: '#06230C' };
+  if (state === 'present') return { ...base, background: '#FFC107', color: '#241B00' };
+  if (state === 'absent') return { ...base, background: '#14161C', color: '#5B6070' };
+  return { ...base, background: '#2A2D3A', color: '#E8EAF0' };
+};
+const RESET_BTN = { display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', background: 'transparent', color: '#9BA0B8', fontWeight: 700, fontSize: 14, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' };
+
+function MiniFootle() {
+  const target = FOOTLE_TARGET;
+  const L = target.length;
+  const MAX = 6;
+  const [guesses, setGuesses] = useState([]);
+  const [cur, setCur] = useState('');
+  const won = guesses.length > 0 && guesses[guesses.length - 1] === target;
+  const status = won ? 'won' : guesses.length >= MAX ? 'lost' : 'playing';
+
+  const type = (ch) => { if (status !== 'playing') return; setCur((c) => (c.length < L ? c + ch : c)); };
+  const del = () => setCur((c) => c.slice(0, -1));
+  const submit = () => { if (status !== 'playing' || cur.length !== L) return; setGuesses((g) => [...g, cur]); setCur(''); };
+  const reset = () => { setGuesses([]); setCur(''); };
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (status !== 'playing' || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === 'Enter') submit();
+      else if (e.key === 'Backspace') del();
+      else if (/^[a-zA-Z]$/.test(e.key)) type(e.key.toUpperCase());
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }); // rebinds each render so the handlers see fresh cur/guesses
+
+  const keyState = {};
+  const rank = { absent: 1, present: 2, correct: 3 };
+  for (const g of guesses) {
+    const sc = scoreGuess(g, target);
+    for (let i = 0; i < g.length; i++) { const ch = g[i], st = sc[i]; if (!keyState[ch] || rank[st] > rank[keyState[ch]]) keyState[ch] = st; }
+  }
+
+  const rows = [];
+  for (let r = 0; r < MAX; r++) {
+    if (r < guesses.length) rows.push({ letters: guesses[r].split(''), marks: scoreGuess(guesses[r], target), isCur: false });
+    else if (r === guesses.length && status === 'playing') { const a = []; for (let i = 0; i < L; i++) a.push(cur[i] || ''); rows.push({ letters: a, marks: null, isCur: true }); }
+    else rows.push({ letters: new Array(L).fill(''), marks: null, isCur: false });
+  }
+  const cap = target.charAt(0) + target.slice(1).toLowerCase();
+  const msg = status === 'won' ? `Nice — got it in ${guesses.length}. It was ${cap}.` : `Out of guesses — it was ${cap}.`;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><span style={{ fontSize: 20 }}>⚽</span><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>Daily Footle</span></div>
+      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Guess the mystery footballer in six.</div>
+      <div style={{ margin: '16px 0 0', display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center' }}>
+        {rows.map((row, r) => (
+          <div key={r} style={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
+            {row.letters.map((ch, i) => (
+              <div key={i} style={footleTileStyle(row.marks ? row.marks[i] : null, !!ch, row.isCur && i === cur.length)}>{ch}</div>
+            ))}
+          </div>
+        ))}
+      </div>
+      {status !== 'playing' ? (
+        <div style={{ marginTop: 14, padding: 14, background: '#14161E', border: '1px solid #242836', borderRadius: 14, textAlign: 'center' }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: '#fff' }}>{msg}</div>
+          <div style={{ fontSize: 13, color: '#9BA0B8', marginTop: 5 }}>A fresh Footle drops every day in the app.</div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 12 }}>
+            <GreenCTA href={PLAY}>Play the daily free →</GreenCTA>
+            <button onClick={reset} className="mkt-try-again" style={RESET_BTN}>Try again</button>
+          </div>
+        </div>
+      ) : (
+        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 4 }}>{'QWERTYUIOP'.split('').map((k) => <button key={k} onClick={() => type(k)} style={footleKeyStyle(keyState[k])}>{k}</button>)}</div>
+          <div style={{ display: 'flex', gap: 4, padding: '0 14px' }}>{'ASDFGHJKL'.split('').map((k) => <button key={k} onClick={() => type(k)} style={footleKeyStyle(keyState[k])}>{k}</button>)}</div>
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button onClick={submit} style={footleKeyStyle(null, true)}>Enter</button>
+            {'ZXCVBNM'.split('').map((k) => <button key={k} onClick={() => type(k)} style={footleKeyStyle(keyState[k])}>{k}</button>)}
+            <button onClick={del} aria-label="Delete" style={footleKeyStyle(null, true)}>⌫</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Playable quiz taster (marketing) — "What's your Ball IQ?" ────────────────
+// 5 famous questions → instant feedback → an IQ score out of 99. Homepage uses
+// skill tiers (per handoff); the /quiz/* landing pages use fan tiers.
+function QuizTaster() {
   const [idx, setIdx] = useState(0);
+  const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null);
+  const [done, setDone] = useState(false);
+  const total = TASTE_QS.length;
   const cur = TASTE_QS[idx];
   const answered = picked !== null;
-  const correct = answered && picked === cur.a;
+  const IQ = [46, 54, 63, 74, 88, 99];
+  const TIERS = ['Rising talent', 'Rising talent', 'Solid', 'Pro', 'Elite', 'World class'];
+
+  const pick = (i) => { if (answered) return; setPicked(i); if (i === cur.a) setScore((s) => s + 1); };
+  const next = () => { if (idx + 1 >= total) setDone(true); else { setIdx(idx + 1); setPicked(null); } };
+  const reset = () => { setIdx(0); setScore(0); setPicked(null); setDone(false); };
 
   const optStyle = (i) => {
-    const base = { display: 'flex', alignItems: 'center', gap: 12, width: '100%', textAlign: 'left', padding: '15px 18px', borderRadius: 14, border: '1px solid #242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 16, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
+    const base = { display: 'flex', alignItems: 'center', gap: 11, width: '100%', textAlign: 'left', padding: '12px 14px', borderRadius: 12, border: '1.5px solid #242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
     if (!answered) return base;
-    if (i === cur.a) return { ...base, borderColor: '#43d17a', background: 'rgba(67,209,122,0.12)', color: '#eafff2' };
-    if (i === picked) return { ...base, borderColor: '#ef4444', background: 'rgba(239,68,68,0.10)', color: '#ffe4e4' };
+    if (i === cur.a) return { ...base, borderColor: 'rgba(88,204,2,0.55)', background: 'rgba(88,204,2,0.12)', color: '#9BE25C' };
+    if (i === picked) return { ...base, borderColor: 'rgba(255,71,71,0.5)', background: 'rgba(255,71,71,0.1)', color: '#FF8A82' };
     return { ...base, opacity: 0.5 };
   };
 
-  const next = () => { setPicked(null); setIdx((idx + 1) % TASTE_QS.length); };
+  const head = (
+    <>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><span style={{ fontSize: 20 }}>🎯</span><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>What&apos;s your Ball IQ?</span></div>
+      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Five questions. Rated out of 99.</div>
+    </>
+  );
 
-  return (
-    <section style={{ maxWidth: 620, margin: '0 auto', padding: '4px 24px 10px' }}>
-      <div style={{ background: '#14161E', border: '1px solid #242836', borderRadius: 22, padding: 'clamp(22px,4vw,30px) clamp(18px,4vw,26px)', boxShadow: '0 26px 64px -34px rgba(0,0,0,0.85)' }}>
-        <div style={{ ...eyebrow('#43d17a'), textAlign: 'center' }}>Prove it — one question</div>
-        <h3 style={{ margin: '12px 0 20px', fontSize: 'clamp(19px,2.5vw,24px)', fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.02em', color: '#fff', textAlign: 'center' }}>{cur.q}</h3>
-        <div style={{ display: 'grid', gap: 10 }}>
-          {cur.opts.map((o, i) => (
-            <button key={i} disabled={answered} onClick={() => !answered && setPicked(i)} className={!answered ? 'mkt-opt' : undefined} style={optStyle(i)}>
-              <span style={{ flex: 1 }}>{o}</span>
-              {answered && i === cur.a && <span aria-hidden>✓</span>}
-              {answered && i === picked && i !== cur.a && <span aria-hidden>✕</span>}
-            </button>
-          ))}
-        </div>
-        {answered && (
-          <div style={{ marginTop: 18, textAlign: 'center' }}>
-            <p style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 700, color: correct ? '#43d17a' : '#ff9a9a' }}>
-              {correct ? "Nice — that's Ball IQ. 4,000+ more where that came from." : `Not quite — it's ${cur.opts[cur.a]}. Get the next one?`}
-            </p>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <GreenCTA href={PLAY} big>Play free in browser →</GreenCTA>
-              <button onClick={next} className="mkt-try-again" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '13px 22px', background: 'transparent', color: '#9BA0B8', fontWeight: 700, fontSize: 15, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' }}>Try another ↻</button>
-            </div>
+  if (done) {
+    return (
+      <div>
+        {head}
+        <div style={{ textAlign: 'center', padding: '18px 4px 4px' }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 64, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em', color: '#FFC107' }}>{IQ[score]}</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginTop: 4 }}>{TIERS[score]}</div>
+          <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 5 }}>You scored {score} / {total}</div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 16 }}>
+            <GreenCTA href={PLAY}>Beat your score →</GreenCTA>
+            <button onClick={reset} className="mkt-try-again" style={RESET_BTN}>Play again</button>
           </div>
-        )}
+        </div>
+      </div>
+    );
+  }
+
+  const pct = Math.round(((idx + (answered ? 1 : 0)) / total) * 100);
+  return (
+    <div>
+      {head}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16 }}>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180' }}>Q {idx + 1} / {total}</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: '#8AE042', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px' }}>{score} correct</span>
+      </div>
+      <div style={{ height: 5, borderRadius: 999, background: '#1A1D27', marginTop: 10, overflow: 'hidden' }}><div style={{ width: pct + '%', height: '100%', background: '#58CC02', borderRadius: 999, transition: 'width .3s ease' }} /></div>
+      <div style={{ marginTop: 12, fontSize: 17, fontWeight: 800, lineHeight: 1.3, color: '#fff' }}>{cur.q}</div>
+      <div style={{ display: 'grid', gap: 9, marginTop: 14 }}>
+        {cur.opts.map((o, i) => (
+          <button key={i} disabled={answered} onClick={() => pick(i)} className={!answered ? 'mkt-opt' : undefined} style={optStyle(i)}>
+            <span style={{ flex: 1 }}>{o}</span>
+            {answered && i === cur.a && <span aria-hidden>✓</span>}
+            {answered && i === picked && i !== cur.a && <span aria-hidden>✕</span>}
+          </button>
+        ))}
+      </div>
+      {answered && <button onClick={next} style={{ width: '100%', marginTop: 14, padding: 13, background: '#58CC02', color: '#06230C', border: 'none', borderRadius: 12, fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>{idx + 1 >= total ? 'See your Ball IQ →' : 'Next →'}</button>}
+    </div>
+  );
+}
+
+// "Both" hero-adjacent play block: Footle + quiz taster, side-by-side on desktop,
+// stacked Footle-first on mobile. Turns the front door from a brochure into a game.
+function PlayNow() {
+  return (
+    <section style={{ maxWidth: 1080, margin: '0 auto', padding: '6px 20px 12px' }}>
+      <div style={{ textAlign: 'center', marginBottom: 24 }}>
+        <div style={eyebrow('#43d17a')}>Play free — right now</div>
+        <h2 style={{ ...h2Style, textAlign: 'center' }}>Pick your challenge.</h2>
+        <p style={{ ...bodyStyle, maxWidth: '48ch', margin: '12px auto 0', textAlign: 'center' }}>Crack today&apos;s Footle, or rate your Ball IQ in five questions. No sign-up, no download.</p>
+      </div>
+      <div className="mkt-play-grid">
+        <div className="mkt-play-card"><MiniFootle /></div>
+        <div className="mkt-play-card"><QuizTaster /></div>
       </div>
     </section>
   );
@@ -312,8 +475,8 @@ export default function MarketingHome() {
         </div>
       </section>
 
-      {/* ── TRY ONE — inline playable question, straight after "Prove you know football." ── */}
-      <TryOne />
+      {/* ── PLAY NOW — playable Footle + quiz taster, straight after the hero ── */}
+      <PlayNow />
 
       {/* ── TICKER ── */}
       <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: '#0C0E13', padding: '16px 0' }}>
