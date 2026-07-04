@@ -6039,6 +6039,64 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+// Per-tab error boundary. The root ErrorBoundary above white-screens the WHOLE
+// app on any throw; this one isolates a crash to the single tab pane it wraps,
+// so a bad render in (say) Profile leaves Home / Daily / Online and the nav bar
+// fully usable. "Try again" resets the boundary in place with NO reload —
+// transient errors recover without losing app state; a hard crash simply falls
+// back again (user-triggered, so no flicker loop). Theme-aware (renders inside
+// the app where the CSS vars exist, unlike the root boundary which must survive
+// a dead theme). Reports to Sentry tagged with the tab name so per-surface
+// crash rates are visible separately from the root boundary.
+class TabErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error, info) {
+    console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
+    try {
+      Sentry.captureException(error, {
+        tags: { boundary: "tab", tab: this.props.name || "unknown" },
+        contexts: { react: { componentStack: info?.componentStack } },
+      });
+    } catch {}
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          minHeight:"60dvh", display:"flex", flexDirection:"column",
+          alignItems:"center", justifyContent:"center", padding:"48px 24px",
+          textAlign:"center"
+        }}>
+          <div style={{fontSize:40, marginBottom:14}}>⚽</div>
+          <div style={{fontSize:17, fontWeight:800, color:"var(--t1)", marginBottom:6, letterSpacing:"-0.3px"}}>
+            This tab hit a snag
+          </div>
+          <div style={{fontSize:13.5, color:"var(--t2)", lineHeight:1.7, marginBottom:22, maxWidth:280}}>
+            The rest of the app is fine — tap to reload just this screen.
+          </div>
+          <button
+            onClick={() => this.setState({ hasError:false })}
+            style={{
+              padding:"11px 24px", background:"#22c55e", border:"none",
+              borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:13.5,
+              fontWeight:700, color:"#0a1a00", cursor:"pointer"
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 // ProfileScreen, FriendProfileScreen, FriendsSection, CropModal, BADGE_DEFS,
 // AVATARS, avatarEmoji extracted to ./screens/ProfileScreen.jsx
 // (Sprint #13 Stage 1).
@@ -8813,6 +8871,7 @@ function AppInner() {
             Sprint #17 Stage 3 extracted Home into ./screens/HomeScreen.jsx. */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
+            <TabErrorBoundary name="home">
             <HomeScreen
               profile={profile}
               loginStreak={loginStreak}
@@ -8833,12 +8892,14 @@ function AppInner() {
               onDismissChallenge={clearChallenge}
               setOnlineAutoCreate={setOnlineAutoCreate}
             />
+            </TabErrorBoundary>
           </div>
         )}
 
         {/* ── DAILY TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "daily" ? undefined : HIDDEN_STYLE}>
+            <TabErrorBoundary name="daily">
             <DailyTabScreen
               profile={profile}
               xp={xp}
@@ -8849,12 +8910,14 @@ function AppInner() {
               dailyDone={dailyDone}
               dailyScore={dailyScore}
             />
+            </TabErrorBoundary>
           </div>
         )}
 
         {/* ── ONLINE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "online" ? undefined : HIDDEN_STYLE}>
+            <TabErrorBoundary name="online">
             <OnlineHubTab
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
@@ -8868,15 +8931,18 @@ function AppInner() {
               avatarUrl={authProfile?.avatar_url}
               avatarEmoji={profile.avatar || "⚽"}
             />
+            </TabErrorBoundary>
           </div>
         )}
 
         {/* ── PROFILE TAB ── */}
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
+            <TabErrorBoundary name="profile">
             <React.Suspense fallback={<div className="tab-pane" />}>
               <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
             </React.Suspense>
+            </TabErrorBoundary>
           </div>
         )}
 
