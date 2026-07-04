@@ -151,6 +151,7 @@ function head({ title, description, canonical, ld }) {
   footer{margin-top:40px;padding-top:20px;border-top:1px solid #1b2a38;color:#738799;font-size:12.5px}
   footer a{color:#8aa0b4}
   footer .disc{margin-top:10px;color:#5f7387;font-size:11.5px;line-height:1.6}
+${TASTER_CSS}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">${ld}</script>
@@ -197,6 +198,97 @@ function renderQA(rows) {
     })
     .join('\n');
   return `<ol class="qa-list">\n${items}\n</ol>`;
+}
+
+// ── Interactive quiz taster (Claude Design website handoff) ───────────────────
+// A playable 5-question widget injected into every club/league landing page:
+// tap an answer → instant right/wrong → "Your Ball IQ" score. Progressive
+// enhancement — the crawlable SEO copy (intro, stats, the static Q&A block, FAQ)
+// stays server-rendered; only this widget hydrates. Questions come from the real
+// bank and are EXCLUDED from the static Q&A block so playing isn't spoiled.
+// Self-contained per page (inline JS, no shared bundle) so each page is robust
+// on a cold load. IQ map + fan tiers per the handoff spec.
+const TASTER_CSS = `  .taster{margin:26px 0}
+  .taster .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#43d17a}
+  .taster h2{margin:8px 0 14px}
+  .tcard{background:#0e1a25;border:1px solid #1b2a38;border-radius:16px;padding:18px}
+  .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .th .tq{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7e93a6}
+  .th .ts{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:700;color:#8AE042;background:rgba(88,204,2,.1);border-radius:999px;padding:4px 10px}
+  .tbar{height:5px;border-radius:999px;background:#0b151e;overflow:hidden;margin-bottom:14px}
+  .tbf{height:100%;background:#43d17a;border-radius:999px;transition:width .3s ease}
+  .tqx{font-size:17px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:14px}
+  .tos{display:flex;flex-direction:column;gap:8px}
+  .to{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:12px 13px;border-radius:11px;border:1.5px solid #22323f;background:#0b151e;color:#dbe6f0;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s}
+  .to:hover:not(:disabled){border-color:#33475a;background:#10202c}
+  .to:disabled{cursor:default}
+  .to.correct{border-color:rgba(67,209,122,.6);background:rgba(67,209,122,.12);color:#9be25c}
+  .to.wrong{border-color:rgba(255,71,71,.5);background:rgba(255,71,71,.1);color:#ff8a82}
+  .to.dim{opacity:.5}
+  .to .tl{flex:0 0 auto;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;background:#1b2a38;color:#9fb0c0}
+  .to.correct .tl{background:#43d17a;color:#06210f}
+  .to.wrong .tl{background:#ff4747;color:#fff}
+  .to .tt{flex:1}
+  .to .tm{font-size:16px}
+  .tw{margin-top:10px;font-size:13.5px;color:#aebccb;line-height:1.55}
+  .tn{margin-top:14px;width:100%;padding:12px;border:none;border-radius:11px;background:#43d17a;color:#06210f;font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  .tn:hover{filter:brightness(1.06)}
+  .tn.again{margin-top:12px;background:#0b151e;border:1px solid #293a49;color:#eaf0f6}
+  .tdone{text-align:center;padding:6px 4px}
+  .tdone .tdl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9fb0c0}
+  .tiq{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:64px;font-weight:800;line-height:1;letter-spacing:-.03em;color:#FFC107;margin:8px 0 2px}
+  .ttier{font-size:18px;font-weight:800;color:#fff}
+  .tscore{font-size:14px;color:#aebccb;margin-top:6px}
+  .tcta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}`;
+
+const TASTER_JS = `(function(){
+var box=document.getElementById('biq-taster'),d=document.getElementById('biq-taster-data');
+if(!box||!d)return;
+var QS;try{QS=JSON.parse(d.textContent)}catch(e){return}
+if(!QS||!QS.length)return;
+var nm=box.getAttribute('data-name')||'this team',play=box.getAttribute('data-play')||'/',store=box.getAttribute('data-store')||'#';
+var IQ=[46,54,63,74,88,99],T=['Casual fan','Casual fan','Solid','Big fan','Superfan','Club legend'];
+var i=0,sc=0,p=null;
+function e(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function draw(){
+if(i>=QS.length){return done()}
+var q=QS[i],n=QS.length,pct=Math.round(((i+(p!==null?1:0))/n)*100),os='';
+for(var k=0;k<q.o.length;k++){
+var cl='to',mk='';
+if(p!==null){if(k===q.a){cl+=' correct';mk='<span class="tm">✓</span>'}else if(k===p){cl+=' wrong';mk='<span class="tm">✗</span>'}else{cl+=' dim'}}
+os+='<button class="'+cl+'" data-i="'+k+'"'+(p!==null?' disabled':'')+'><span class="tl">'+('ABCD'[k]||'')+'</span><span class="tt">'+e(q.o[k])+'</span>'+mk+'</button>'}
+var why=(p!==null&&q.why)?'<p class="tw">'+e(q.why)+'</p>':'';
+var nx=(p!==null)?'<button class="tn" data-next="1">'+(i+1>=n?'See your score →':'Next →')+'</button>':'';
+box.innerHTML='<div class="th"><span class="tq">Question '+(i+1)+' / '+n+'</span><span class="ts">'+sc+' correct</span></div><div class="tbar"><div class="tbf" style="width:'+pct+'%"></div></div><div class="tqx">'+e(q.q)+'</div><div class="tos">'+os+'</div>'+why+nx;
+var bs=box.querySelectorAll('.to');for(var b=0;b<bs.length;b++){bs[b].addEventListener('click',pick)}
+var nb=box.querySelector('.tn');if(nb){nb.addEventListener('click',next)}
+}
+function pick(ev){if(p!==null)return;var k=+ev.currentTarget.getAttribute('data-i');p=k;if(k===QS[i].a)sc++;draw()}
+function next(){i++;p=null;draw()}
+function done(){
+var iq=IQ[sc]!=null?IQ[sc]:IQ[IQ.length-1],ti=T[sc]!=null?T[sc]:T[T.length-1];
+box.innerHTML='<div class="tdone"><div class="tdl">Your Ball IQ</div><div class="tiq">'+iq+'</div><div class="ttier">'+e(ti)+'</div><div class="tscore">You scored '+sc+' / '+QS.length+' on the '+e(nm)+' taster</div><div class="tcta"><a class="btn" href="'+play+'">Play the full '+e(nm)+' quiz →</a><a class="btn store" href="'+store+'" rel="noopener">Get the app</a></div><button class="tn again">Play again</button></div>';
+var ag=box.querySelector('.again');if(ag){ag.addEventListener('click',function(){i=0;sc=0;p=null;draw()})}
+}
+draw();
+})();`;
+
+// Renders the interactive taster section. `rows` = exactly 5 curated questions
+// (excluded from the static Q&A block). `playHref` sends "Play the full quiz"
+// straight into that topic in the app.
+function renderTaster(rows, name, playHref) {
+  const payload = rows.map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
+  const data = JSON.stringify(payload).replace(/</g, '\\u003c');
+  const play = playHref || `${SITE.base}/`;
+  return `<section class="taster" aria-labelledby="taster-h">
+<div class="eyebrow">Free taster</div>
+<h2 id="taster-h">How well do you know ${esc(name)}?</h2>
+<div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.appStore}">
+<p class="tqx" style="font-size:15px;font-weight:600;color:#aebccb;margin:0">Five quick questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
+</div>
+<script type="application/json" id="biq-taster-data">${data}</script>
+<script>${TASTER_JS}</script>
+</section>`;
 }
 
 // Full-mesh internal links to every OTHER live page + the hub.
@@ -248,7 +340,9 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
       `[gen-seo] "${catCfg.cat}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const sample = curate(hints, catCfg.sample);
+  const tasterRows = curate(hints, 5);
+  const tasterIds = new Set(tasterRows.map((r) => r.id));
+  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), catCfg.sample);
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
   const ld = jsonLd({
@@ -292,8 +386,8 @@ ${introHtml}
 </div>
 <p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
 ${(() => {
-    const playHref = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : undefined;
-    return ctaBlock(`Like these? Play the full ${catCfg.name} quiz — it's free.`, playHref);
+    const playHref = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : `${SITE.base}/`;
+    return renderTaster(tasterRows, catCfg.name, playHref);
   })()}
 <h2>${esc(catCfg.name)} quiz questions &amp; answers</h2>
 <p class="lede">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
@@ -334,7 +428,9 @@ function buildClubPage(cfg, clubPages, catPages) {
       `[gen-seo] club "${cfg.club}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const sample = curate(hints, Math.min(15, hints.length));
+  const tasterRows = curate(hints, 5);
+  const tasterIds = new Set(tasterRows.map((r) => r.id));
+  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(12, hints.length - 5));
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
   const ld = jsonLd({
@@ -372,7 +468,7 @@ ${header([
 ${introHtml}
 </div>
 <p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
-${ctaBlock(`Like these? Play the full ${cfg.name} quiz — it's free.`, `${SITE.base}/play?club=${cfg.slug}`)}
+${renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`)}
 <h2>${esc(cfg.name)} quiz questions &amp; answers</h2>
 <p class="lede">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
