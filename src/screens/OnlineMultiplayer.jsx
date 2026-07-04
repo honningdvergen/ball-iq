@@ -1197,6 +1197,27 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
   }, [handleTimeoutAutoSubmit]);
 
+  // Survival spectator flag — hoisted ABOVE the early return so the headless
+  // advance clock below can depend on it without tripping the hooks-order rule.
+  const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
+
+  // Headless advance clock for eliminated survival spectators. The VISIBLE
+  // QuestionTimer is unmounted for them (a live answer-timer over dead buttons
+  // reads as answer pressure) — but advance_question is HOST-ONLY, so an
+  // eliminated HOST with no timer would never fire it and the round would STALL
+  // for every still-alive player (only a risk with 3+ players; a 2-player duel
+  // ends on the host's elimination via the sole-survivor rule). This runs the
+  // same countdown invisibly and, once expired, rolls the phase machine forward
+  // (answering → revealing → [2s pause] → advancing → the host's advance effect
+  // fires). Fully inert for non-eliminated players and non-survival modes — the
+  // visible QuestionTimer owns onExpire there, so there is no double-fire.
+  const spectatorRemainingMs = useQuestionTimer(QUESTION_DURATION_MS, currentQuestionIdx);
+  useEffect(() => {
+    if (!iAmEliminated) return;             // alive players: visible timer drives it
+    if (spectatorRemainingMs > 0) return;   // not expired yet
+    setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
+  }, [iAmEliminated, spectatorRemainingMs]);
+
   // 2s pause: revealing → advancing
   useEffect(() => {
     if (revealPhase !== 'revealing') return;
@@ -1310,9 +1331,9 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
   const isLastQuestion = currentQuestionIdx + 1 >= room.questions.length;
   const showRevealBanner = revealPhase === 'revealing';
-  // Survival spectator state — once eliminated, the player watches the round
-  // resolve (no answer-timer pressure, no answering).
-  const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
+  // Survival spectator state — iAmEliminated is hoisted above the early return
+  // (the headless advance clock depends on it). Once eliminated, the player
+  // watches the round resolve (no answer-timer pressure, no answering).
   const aliveCount = room.mode === 'survival' ? players.filter(p => p.eliminated_at_q == null).length : 0;
   // Stage 1C.7.1: derived `revealing` instead of raw `revealPhase !==
   // 'answering'`. Guards against the brief render between realtime UPDATE
