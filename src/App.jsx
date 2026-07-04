@@ -8883,6 +8883,10 @@ function AppInner() {
               profile={profile}
               loginStreak={loginStreak}
               streakPulsing={streakPulsing}
+              bestLoginStreak={bestLoginStreak}
+              stats={stats}
+              xp={xp}
+              dailyHistory={dailyHistory}
               dailyDone={dailyDone}
               dailyScore={dailyScore}
               setTab={setTab}
