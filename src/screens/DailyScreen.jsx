@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../useAuth.jsx";
 import { dateToYMD } from "../lib/date.js";
+import { getWordleAnswer } from "../lib/wordle.js";
+
+// Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
+// inline font used by the mobile markup so the >=1024 desktop layout renders
+// identical figures.
+const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
 
 // Milliseconds until the next LOCAL midnight. The "KO in Xh Ym" chip
 // previewed when the next Daily set unlocks for THIS user. Sprint #70
@@ -229,7 +235,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   }, [today, dailyHistory, footleHistory]);
 
   return (
-    <div className="tab-content">
+    <div className="tab-content daily-screen">
+      {/* ═══ MOBILE (<1024) — byte-identical existing markup. Wrapped in a
+          display:contents box (generates no layout box, so mobile flow is
+          unchanged) that flips to display:none at >=1024. ═══ */}
+      <div className="daily-col-mobile">
       {/* Daily redesign ("Today first" handoff): gear + greeting + title with
           countdown pill, then the hero checklist card — today's two puzzles
           with real CTAs that flip to result chips once played. */}
@@ -368,6 +378,189 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           </div>
         </div>
       )}
+      </div>{/* /.daily-col-mobile — end of byte-identical mobile markup */}
+
+      {/* ═══ DESKTOP (>=1024) — two-column layout copied from the design handoff
+          (screen 05 · Daily). Rendered always but display:none <1024, so mobile
+          stays byte-identical; reset in the PWA-standalone killswitch so an
+          installed desktop PWA also stays mobile-identical. All data comes from
+          the same derivations the mobile markup uses (footleHistory, dailyDone/
+          dailyScore, runStats, matchdays, form14) — nothing hardcoded. ═══ */}
+      <div className="daily-desktop">
+        {(() => {
+          const ko = formatKO(msToNextLocalMidnight(now));
+          const f = footleHistory.get(todayYMD);
+          const fWon = f?.status === "won";
+          const fPlayed = fWon || f?.status === "lost";
+          const playedCount = (fPlayed ? 1 : 0) + (dailyDone ? 1 : 0);
+          // Real Footle answer length (only the LENGTH is surfaced, never the
+          // word) — mirrors Home's DesktopFootleHero so the sub-label is honest
+          // rather than the mock's fixed "7 letters".
+          const footleLen = (() => { try { return getWordleAnswer().length; } catch { return 0; } })();
+
+          // 14-day form cells reuse the Home rail streak card's shape (done +
+          // today), derived from the SAME form14 the mobile strip renders so
+          // both breakpoints light identical days.
+          const streakCells = form14.map(d => ({ done: d.cls === "W" || d.cls === "D", isToday: d.isToday }));
+
+          // "This week" — last 7 local days. Puzzles solved = Footle wins +
+          // Daily 7 completions; Avg Daily 7 = mean score over completed Daily 7s.
+          const weekMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+          let solved = 0, d7sum = 0, d7count = 0;
+          for (let i = 0; i < 7; i++) {
+            const ymd = dateToYMD(new Date(weekMid - i * 86400000));
+            if (footleHistory.get(ymd)?.status === "won") solved++;
+            const sc = dailyHistory?.[ymd];
+            if (typeof sc === "number") { solved++; d7sum += sc; d7count++; }
+          }
+          const avgDaily7 = d7count > 0 ? (d7sum / d7count).toFixed(1) : null;
+
+          // Recent-days list = matchdays minus today (today lives in the two
+          // hero cards above, matching the handoff).
+          const recentDays = matchdays.filter(m => !m.isToday);
+
+          const rowCard = { display: "flex", alignItems: "center", gap: 16, borderRadius: 16, padding: "18px 20px" };
+          const iconBox = { width: 46, height: 46, flex: "0 0 auto", borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" };
+          const colHead = { width: 74, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em" };
+          const chip = { padding: "3px 10px", borderRadius: 999, fontFamily: MONO, fontSize: 12, fontWeight: 800 };
+          const dash = { fontSize: 13, fontWeight: 700, color: "var(--t3)" };
+          return (
+            <>
+              {/* Header: title + amber countdown pill */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>Daily</div>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
+                  <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
+                  <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "#FFC107", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+                </span>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1.55fr 0.9fr", gap: 22, marginTop: 22, alignItems: "start" }}>
+                {/* ── LEFT column ── */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)" }}>Today</span>
+                    <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} / 2 played</span>
+                  </div>
+
+                  {/* Footle row-card (green) */}
+                  <div style={{ ...rowCard, border: "1px solid #234029", background: "linear-gradient(120deg,#10331B,var(--s1) 62%)" }}>
+                    <span style={{ ...iconBox, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)", fontSize: 20 }}>⚽</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Footle</div>
+                      <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer</div>
+                    </div>
+                    {fPlayed ? (
+                      <button onClick={() => setScreen?.("wordle")} style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: 13.5, ...(fWon ? { background: "rgba(88,204,2,0.1)", border: "1.5px solid rgba(88,204,2,0.5)", color: "#8AE042" } : { background: "rgba(255,107,107,0.10)", border: "1.5px solid rgba(255,107,107,0.35)", color: "#FF6B6B" }) }}>
+                        {fWon ? `✓ Solved in ${f.used}` : "✗ Not solved"}
+                      </button>
+                    ) : (
+                      <button onClick={() => setScreen?.("wordle")} style={{ flex: "0 0 auto", padding: "10px 22px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.4)", color: "#8AE042", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
+                        {f?.status === "in-progress" ? "Continue" : "Play"}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Daily 7 row-card (amber) */}
+                  <div style={{ ...rowCard, border: "1px solid #33280E", background: "linear-gradient(120deg,rgba(255,140,0,0.10),var(--s1) 62%)" }}>
+                    <span style={{ ...iconBox, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", fontSize: 19 }}>📋</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Daily 7</div>
+                      <div style={{ fontSize: 12.5, color: "var(--t2)" }}>7 questions · ~3 min · shared by everyone today</div>
+                    </div>
+                    {dailyDone ? (
+                      <span style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, background: "rgba(255,193,7,0.1)", border: "1.5px solid rgba(255,193,7,0.4)", color: "#FFC107", fontWeight: 800, fontSize: 13.5 }}>{dailyScore}/7</span>
+                    ) : (
+                      <button onClick={() => startMode?.("daily")} style={{ flex: "0 0 auto", padding: "10px 22px", borderRadius: 12, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.4)", color: "#FFC107", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>Play</button>
+                    )}
+                  </div>
+
+                  {/* Recent days */}
+                  <div style={{ marginTop: 6 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                      <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>Recent days</span>
+                      <span style={{ display: "flex", gap: 26 }}>
+                        <span style={{ ...colHead, color: "#8AE042" }}>FOOTLE</span>
+                        <span style={{ ...colHead, color: "#FFC107" }}>DAILY 7</span>
+                      </span>
+                    </div>
+                    {recentDays.length === 0 ? (
+                      <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", fontSize: 12.5, color: "var(--t3)" }}>
+                        Play today, then your recent days show up here.
+                      </div>
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {recentDays.map(m => {
+                          const footleAria = m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played";
+                          const daily7Aria = m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played";
+                          return (
+                            <div key={m.ymd} aria-label={`${m.dateLabel} ${m.dateSub} — ${footleAria}, ${daily7Aria}`}
+                              style={{ display: "flex", alignItems: "center", borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "11px 16px" }}>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <span style={{ fontSize: 13.5, fontWeight: 700, color: "var(--t1)" }}>{m.dateLabel}</span>{" "}
+                                <span style={{ fontSize: 11, color: "var(--t3)" }}>{m.dateSub}</span>
+                              </div>
+                              <span style={{ width: 74, textAlign: "center" }} aria-hidden="true">
+                                {m.fWon
+                                  ? <span style={{ ...chip, background: "rgba(88,204,2,0.1)", color: "#8AE042" }}>{m.fUsed}</span>
+                                  : m.fAttempt
+                                  ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
+                                  : <span style={dash}>—</span>}
+                              </span>
+                              <span style={{ width: 74, textAlign: "center" }} aria-hidden="true">
+                                {m.t7Done
+                                  ? <span style={{ ...chip, background: "rgba(255,193,7,0.1)", color: "#FFC107" }}>{m.t7Score}/7</span>
+                                  : <span style={dash}>—</span>}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* ── RIGHT rail ── */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
+                  {/* Streak card — reuses the Home rail .hr-card.hr-streak markup +
+                      tokens, fed with Daily's own streak (runStats) + form14 so
+                      the mobile strip and this card never disagree. */}
+                  <div className="hr-card hr-streak" role="status" aria-label={`${runStats.unbeaten}-day daily streak, best ${runStats.bestUnbeaten}`}>
+                    <div className="hr-streak-head">
+                      <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true">🔥</span>{runStats.unbeaten}</div>
+                      <div className="hr-streak-meta">
+                        <div className="hr-streak-label">Day streak</div>
+                        <div className="hr-streak-best">Best · {runStats.bestUnbeaten}</div>
+                      </div>
+                    </div>
+                    <div className="hr-form" aria-hidden="true">
+                      {streakCells.map((c, i) => (
+                        <span key={i} className={`hr-form-cell${c.done ? " is-done" : ""}${c.isToday ? " is-today" : ""}`} />
+                      ))}
+                    </div>
+                    <div className="hr-form-cap">Last 14 days</div>
+                  </div>
+
+                  {/* This week */}
+                  <div style={{ borderRadius: 18, border: "1px solid var(--border)", background: "var(--s1)", padding: "18px 20px" }}>
+                    <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)", marginBottom: 12 }}>This week</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontSize: 14, color: "var(--t2)" }}>Puzzles solved</span>
+                        <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "var(--t1)", fontVariantNumeric: "tabular-nums" }}>{solved}</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontSize: 14, color: "var(--t2)" }}>Avg. Daily 7</span>
+                        <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: avgDaily7 ? "var(--t1)" : "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{avgDaily7 ? `${avgDaily7} / 7` : "—"}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })()}
+      </div>
     </div>
   );
 }

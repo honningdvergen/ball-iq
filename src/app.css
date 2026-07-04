@@ -289,6 +289,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    so an installed desktop PWA stays byte-identical to mobile. */
 .profile-col-main,.profile-col-below,.profile-mobile-identity{display:contents;}
 .pd-hdr,.pd-left,.profile-col-right{display:none;}
+/* ── desktop-web-refresh: Daily two-column structure (base = mobile) ──
+   Same pattern as Home/Profile. The existing mobile markup lives inside
+   .daily-col-mobile (display:contents below 1024 → no box, mobile flow
+   byte-identical); the new desktop layout (.daily-desktop) is display:none
+   until the >=1024 reveal. The desktop grid + card styling are inline styles
+   + the reused .hr-card/.hr-streak Home rail classes; the PWA-standalone
+   killswitch resets these two so an installed desktop PWA stays mobile-identical. */
+.daily-col-mobile{display:contents;}
+.daily-desktop{display:none;}
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
@@ -2355,6 +2364,21 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-share svg { flex: 0 0 auto; }
 }
 
+/* ═════════════════════════════════════════════════════════════════════════
+   desktop-web-refresh — DAILY tab two-column desktop layout (handoff #05).
+   >=1024 only. The mobile single-column markup is untouched: it sits inside
+   .daily-col-mobile (display:contents below 1024) which we hide here, and the
+   new .daily-desktop layout (display:none below 1024) reveals. The desktop
+   layout is inline-styled + reuses the Home rail's .hr-card/.hr-streak classes
+   (defined in the Home >=1024 block above), so nothing extra is needed beyond
+   the display flip. The PWA-standalone killswitch resets both wrappers so an
+   installed desktop PWA stays byte-identical to mobile.
+   ═════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .daily-col-mobile { display: none; }
+  .daily-desktop { display: block; }
+}
+
 @media (min-width: 1280px) {
   /* Widen the main column at >= 1280px and anchor it 40px from the
      sidebar so the two read as adjacent UI rather than separated by a
@@ -2479,6 +2503,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .profile-screen { display: block !important; }
   .profile-col-main, .profile-col-below, .profile-mobile-identity { display: contents !important; }
   .pd-hdr, .pd-left, .profile-col-right { display: none !important; }
+  /* desktop-web-refresh: installed PWA on >=1024 desktop hardware matches the
+     Daily reveal above. Reset both wrappers so the installed shell stays
+     byte-identical to mobile (mobile single-column markup only, no desktop
+     two-column layout). */
+  .daily-col-mobile { display: contents !important; }
+  .daily-desktop { display: none !important; }
   .hg-greet, .hg-name { font-size: 20px !important; }
   /* Home rebuild: restore the mobile Daily zone (tinted box), Daily 7 (orange
      bar), the red streak pill and the plain mp-card so an installed desktop PWA
