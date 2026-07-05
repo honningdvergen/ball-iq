@@ -1073,7 +1073,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
           <span style={{fontSize:19}}>🎲</span>
           <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
           <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
-            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}
+            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#06230C",fontWeight:900}
             : {border:"1.5px solid #3A3D4A"})}}>{draft === "mixed" ? "✓" : ""}</span>
         </button>
         <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
@@ -1092,7 +1092,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
                   {it.abbr
                     ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "#8AE042" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
                     : <span style={{fontSize:24}}>{it.icon}</span>}
-                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#07240D",fontWeight:900}}>✓</span>}
+                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#06230C",fontWeight:900}}>✓</span>}
                 </div>
                 <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "#8AE042" : "var(--t1)",marginTop:2}}>{it.label}</span>
               </button>
@@ -1101,7 +1101,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
         </div>
       </div>
       <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
-        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:15,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:15,fontSize:15.5,fontWeight:800,color:"#07240D",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
+        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:15,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:15,fontSize:15.5,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
       </div>
     </div>
   );
@@ -2424,7 +2424,7 @@ function LocalSetup({ onStart, onBack }) {
               <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
               <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
             </div>
-            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#07240D",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#06230C",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
           </div>
         );
       })()}
@@ -2797,7 +2797,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           })}
         </div>
         {phase === "locked" && (
-          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, #3B82F6)"}}>
+          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, #FFC107)"}}>
             ✓ Answer locked in
           </div>
         )}
@@ -3151,7 +3151,7 @@ async function generateShareCard(type, data) {
   ctx.fillRect(0, 0, W, H);
 
   // Top accent bar
-  ctx.fillStyle = "#22c55e";
+  ctx.fillStyle = "#58CC02";
   ctx.fillRect(0, 0, W, 6);
 
   // Header row — wordmark left, URL right
@@ -3188,7 +3188,7 @@ async function generateShareCard(type, data) {
     const total = data?.total ?? 6;
     const dateLabel = data?.dateLabel || "";
     const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
-    const colorMap = { green: "#22c55e", yellow: "#FFC107", grey: "#3A3F55" };
+    const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
 
     // Mode label
     ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -3204,7 +3204,7 @@ async function generateShareCard(type, data) {
     // fraction. In Footle fewer guesses is better, so "3/6" read like a
     // quiz score (3-of-6 correct) and undersold a good result. Sprint #99.
     ctx.font = '800 34px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#58CC02";
     ctx.fillText(headline, cx, 212);
 
     // Emoji-tile grid. 36×36 tiles, 4px gap, rows centered horizontally.
@@ -3239,7 +3239,7 @@ async function generateShareCard(type, data) {
     ctx.fillText("BALL IQ TEST", cx, 130);
 
     ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#58CC02";
     ctx.fillText(String(iq), cx, 260);
 
     // Funny label — wrapped to 300px
@@ -3284,7 +3284,7 @@ async function generateShareCard(type, data) {
     ctx.fillText(modeLabel, cx, 130);
 
     ctx.font = '900 80px "JetBrains Mono", "Courier New", monospace';
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#58CC02";
     ctx.fillText(`${score}/${total}`, cx, 250);
 
     ctx.font = '700 18px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -3298,7 +3298,7 @@ async function generateShareCard(type, data) {
     ctx.fill();
     const fillW = Math.max(barH, Math.round(barW * Math.min(100, Math.max(0, accuracy)) / 100));
     _roundRectPath(ctx, barX, barY, fillW, barH, 7);
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#58CC02";
     ctx.fill();
 
     // Tier tagline keyed to accuracy.
@@ -3318,7 +3318,7 @@ async function generateShareCard(type, data) {
     ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
     const ctaW = ctx.measureText(ctaText).width + 46;
     const ctaH = 42, ctaY = 470;
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#58CC02";
     _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
     ctx.fill();
     ctx.textBaseline = "middle";
@@ -3535,7 +3535,7 @@ export function Confetti() {
       dr: (Math.random() - 0.5) * 0.2,
       vy: Math.random() * 3 + 2,
       vx: (Math.random() - 0.5) * 2,
-      color: ["#22c55e","#FFC800","#FF4B4B","#1CB0F6","#CE82FF","#FF9600"][Math.floor(Math.random()*6)],
+      color: ["#58CC02","#FFC800","#FF4B4B","#1CB0F6","#CE82FF","#FF9600"][Math.floor(Math.random()*6)],
     }));
     let alive = true;
     const draw = () => {
@@ -3585,7 +3585,7 @@ function HardRightBurst({ onComplete }) {
         r: Math.random() * Math.PI * 2,
         dr: (Math.random() - 0.5) * 0.3,
         life: 1,
-        color: ["#22c55e", "#FFC800", "#FBBF24", "#16a34a"][Math.floor(Math.random() * 4)],
+        color: ["#58CC02", "#FFC800", "#FBBF24", "#16a34a"][Math.floor(Math.random() * 4)],
       };
     });
     let alive = true;
@@ -3894,10 +3894,10 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
             marginTop:8,
             fontSize:88,
             fontWeight:900,
-            color:"#22c55e",
+            color:"#58CC02",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow:"0 8px 32px rgba(34,197,94,0.35)",
+            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
@@ -4736,7 +4736,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
       <div className="online-col-b">
       {/* Flat green CTA (no 3D rim per design spec) + secondary join */}
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#07240D"}}>Create Room</span>
+        <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>Create Room</span>
       </button>
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
@@ -4771,7 +4771,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         <button onClick={submitJoin} disabled={joining || joinCode.length === 0}
           style={{borderRadius:16,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
             ...(joinCode.length > 0 && !joining
-              ? {border:"none",background:"var(--accent)",color:"#07240D",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
+              ? {border:"none",background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
               : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
           {joining ? "…" : "Join"}
         </button>
@@ -4852,7 +4852,7 @@ function ResetPasswordOverlay() {
               style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:15,fontFamily:"inherit",outline:"none"}} />
             {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
             <button onClick={submit} disabled={busy || !pw || !pw2}
-              style={{width:"100%",border:"none",borderRadius:14,background:"var(--accent)",padding:15,fontSize:15,fontWeight:800,color:"#07240D",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
+              style={{width:"100%",border:"none",borderRadius:14,background:"var(--accent)",padding:15,fontSize:15,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
               {busy ? "Saving…" : "Save new password"}
             </button>
             <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Cancel</button>
@@ -5621,7 +5621,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           aria-label="Close privacy policy"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1A1D27", border: "1px solid #2A2D3A",
+            background: "#14161E", border: "1px solid #2A2D3A",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -5640,12 +5640,12 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 27 June 2026</div>
 
         <div style={{
-          background: "#1A1D27", borderRadius: 16,
+          background: "#14161E", borderRadius: 16,
           padding: "18px 20px", margin: "12px 0 24px",
           border: "1px solid #2A2D3A",
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
-            <span style={{color: "#22c55e", fontWeight: 600}}>The short version:</span>{" "}
+            <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
             Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads and runs no usage tracking; our website uses only privacy-friendly, cookieless analytics. We never sell or share your data.
           </p>
         </div>
@@ -5772,7 +5772,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
           aria-label="Close help"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1A1D27", border: "1px solid #2A2D3A",
+            background: "#14161E", border: "1px solid #2A2D3A",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -5788,7 +5788,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
         {/* Phase 6d Issue 3: reuse privacyH2/privacyP from PrivacyScreen so
             Help and Privacy read as visual siblings (same h2 weight/color,
             same body color, same vertical rhythm). Was using a bright
-            #22c55e on questions which was louder than anywhere else in
+            #58CC02 on questions which was louder than anywhere else in
             the app. */}
         {FAQ_ENTRIES.map((entry, i) => (
           <React.Fragment key={i}>
@@ -5834,7 +5834,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#09131C",
+      background: "#0A0A0A",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -5857,7 +5857,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
           aria-label="Close known issues"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1A1D27", border: "1px solid #2A2D3A",
+            background: "#14161E", border: "1px solid #2A2D3A",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -5927,9 +5927,9 @@ function IqRecapOverlay({ entry, onClose, onRetake }) {
         <div
           className="numeric"
           style={{
-            fontSize:72, fontWeight:900, color:"#22c55e",
+            fontSize:72, fontWeight:900, color:"#58CC02",
             letterSpacing:"-0.03em", lineHeight:1,
-            textShadow:"0 8px 32px rgba(34,197,94,0.35)",
+            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
           }}
         >{iq}</div>
         <div style={{marginTop:10, fontSize:17, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.01em"}}>{label}</div>
@@ -6217,7 +6217,7 @@ class ErrorBoundary extends React.Component {
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#09131C", fontFamily:"Inter,sans-serif", textAlign:"center"
+          background:"#0A0A0A", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
           <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>
@@ -6229,7 +6229,7 @@ class ErrorBoundary extends React.Component {
           <button
             onClick={() => { this.setState({ hasError:false, error:null }); window.location.reload(); }}
             style={{
-              padding:"13px 28px", background:"#22c55e", border:"none",
+              padding:"13px 28px", background:"#58CC02", border:"none",
               borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:14,
               fontWeight:700, color:"#0a1a00", cursor:"pointer"
             }}
@@ -6287,7 +6287,7 @@ class TabErrorBoundary extends React.Component {
           <button
             onClick={() => this.setState({ hasError:false })}
             style={{
-              padding:"11px 24px", background:"#22c55e", border:"none",
+              padding:"11px 24px", background:"#58CC02", border:"none",
               borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:13.5,
               fontWeight:700, color:"#0a1a00", cursor:"pointer"
             }}
@@ -8931,7 +8931,7 @@ function AppInner() {
             column. Mobile keeps the inline 16px padding via base CSS. */}
         {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && (
           <div className="first-quiz-tip" style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
-            <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(34,197,94,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
+            <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(88,204,2,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
@@ -9448,8 +9448,8 @@ function AppInner() {
               </div>
             )}
             {mode === "chaos" && (
-              <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(168,85,247,0.10),rgba(255,106,0,0.06))",borderRadius:12,border:"1px solid rgba(168,85,247,0.22)"}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"#c084fc",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
+              <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(88,204,2,0.10),rgba(255,106,0,0.06))",borderRadius:12,border:"1px solid rgba(88,204,2,0.22)"}}>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"#8AE042",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
                 <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Quotes, moments &amp; madness — take a beat and think.</div>
               </div>
             )}

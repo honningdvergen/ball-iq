@@ -251,7 +251,6 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         const fPlayed = f?.status === "won" || f?.status === "lost";
         const playedCount = (fPlayed ? 1 : 0) + (dailyDone ? 1 : 0);
         const todayLabel = today.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-        const playBtn = { border: "none", borderRadius: 12, background: "var(--accent)", boxShadow: "0 6px 18px rgba(88,204,2,0.25)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#07240D", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 };
         return (
           <>
             {/* No local gear — AppInner's global header already renders one. */}
@@ -267,13 +266,14 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               </span>
             </div>
 
-            {/* Hero checklist card — today's two puzzles */}
-            <div style={{ marginTop: 16, borderRadius: 24, background: "var(--s1)", border: "1px solid var(--border)", padding: 18, boxShadow: "0 4px 16px rgba(0,0,0,0.35)" }}>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+            {/* Today's two puzzles — each a tinted row-card (green Footle,
+                amber Daily 7), matching the web Daily tab. */}
+            <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", padding: "0 2px", marginBottom: 2 }}>
                 <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)" }}>Today · {todayLabel}</span>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} of 2 played</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 13, marginTop: 15 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(88,204,2,0.13),rgba(88,204,2,0.02) 55%,var(--s1))", border: "1px solid rgba(88,204,2,0.22)", borderRadius: 16, padding: "14px 16px" }}>
                 <span style={{ width: 46, height: 46, borderRadius: 13, background: "var(--s2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 21 }}>⚽</span>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Footle</span>
@@ -284,11 +284,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     {f?.status === "won" ? `✓ Solved in ${f.used}` : "✗ Not solved"}
                   </button>
                 ) : (
-                  <button onClick={() => setScreen?.("wordle")} style={playBtn}>{f?.status === "in-progress" ? "Continue" : "Play"}</button>
+                  <button onClick={() => setScreen?.("wordle")} style={{ borderRadius: 12, background: "rgba(88,204,2,0.15)", border: "1px solid rgba(88,204,2,0.42)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#8AE042", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>{f?.status === "in-progress" ? "Continue" : "Play"}</button>
                 )}
               </div>
-              <div style={{ height: 1, background: "var(--border)", margin: "14px 0" }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(255,170,0,0.12),rgba(255,193,7,0.03) 55%,var(--s1))", border: "1px solid rgba(255,193,7,0.22)", borderRadius: 16, padding: "14px 16px" }}>
                 <span style={{ width: 46, height: 46, borderRadius: 13, background: "var(--s2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 21 }}>📋</span>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Daily 7</span>
@@ -297,7 +296,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 {dailyDone ? (
                   <span style={{ borderRadius: 12, background: "rgba(255,193,7,0.1)", border: "1.5px solid rgba(255,193,7,0.4)", padding: "10px 18px", fontSize: 13.5, fontWeight: 800, color: "#FFC107", flexShrink: 0 }}>{dailyScore}/7</span>
                 ) : (
-                  <button onClick={() => startMode?.("daily")} style={playBtn}>Play</button>
+                  <button onClick={() => startMode?.("daily")} style={{ borderRadius: 12, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>Play</button>
                 )}
               </div>
             </div>
@@ -370,7 +369,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       </div>
 
       {shieldCount > 0 && (
-        <div style={{background:"rgba(34,197,94,0.04)",border:"1px solid rgba(34,197,94,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
+        <div style={{background:"rgba(88,204,2,0.04)",border:"1px solid rgba(88,204,2,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontSize:20}}>🛡️</span>
           <div>
             <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>{shieldCount} streak shield{shieldCount === 1 ? "" : "s"} ready</div>

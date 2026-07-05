@@ -180,8 +180,8 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
         {mpRetrying && (
           <div style={{
             padding: "6px 12px",
-            background: "rgba(34, 197, 94, 0.1)",
-            border: "1px solid rgba(34, 197, 94, 0.3)",
+            background: "rgba(88, 204, 2, 0.1)",
+            border: "1px solid rgba(88, 204, 2, 0.3)",
             borderRadius: 8,
             marginBottom: 12,
             fontSize: 12,
@@ -627,7 +627,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
                   <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
                 </div>
-                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#07240D",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#06230C",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
               </div>
             </>
           );
@@ -878,8 +878,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       borderColor = 'rgba(234,179,8,0.45)'; // gold
       background = 'rgba(234,179,8,0.06)';
     } else if (isMe) {
-      borderColor = 'rgba(34,197,94,0.45)'; // accent green
-      background = 'rgba(34,197,94,0.06)';
+      borderColor = 'rgba(88,204,2,0.45)'; // accent green
+      background = 'rgba(88,204,2,0.06)';
     }
     return {
       display: 'flex', alignItems: 'center', gap: 12,
@@ -1419,8 +1419,8 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         {mpRetrying && (
           <div style={{
             padding: "6px 12px",
-            background: "rgba(34, 197, 94, 0.1)",
-            border: "1px solid rgba(34, 197, 94, 0.3)",
+            background: "rgba(88, 204, 2, 0.1)",
+            border: "1px solid rgba(88, 204, 2, 0.3)",
             borderRadius: 8,
             marginBottom: 10,
             fontSize: 12,
@@ -1697,9 +1697,9 @@ function QuestionTimer({ durationMs, onExpire, questionIdx }) {
 // Stage 1C.7 reveal-coloring constants. Hardcoded inline; Stage 1F may
 // promote to CSS theme tokens if more multiplayer-styling work happens.
 const MP_LOCK_COLOR    = "#64748b"; // slate-500 — neutral "this is my pick, not yet judged"
-const MP_CORRECT_COLOR = "#22c55e"; // green-500 — the right answer (and your pick if you got it)
+const MP_CORRECT_COLOR = "#58CC02"; // green-500 — the right answer (and your pick if you got it)
 const MP_WRONG_COLOR   = "#ef4444"; // red-500 — your wrong pick (already used elsewhere for errors)
-const MP_CORRECT_BG    = "rgba(34, 197, 94, 0.15)";
+const MP_CORRECT_BG    = "rgba(88, 204, 2, 0.15)";
 const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 
 // QuestionView: presentational. prompt + 4 option buttons.

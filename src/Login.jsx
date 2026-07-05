@@ -275,7 +275,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
         divider: '#555',
         border: '#2a2a2a',
         inputBg: '#141414',
-        accent: '#22c55e',
+        accent: '#58CC02',
         accentText: '#000',
       }
 
@@ -440,7 +440,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
             top: 'max(env(safe-area-inset-top,0px), 16px)',
             right: 16,
             width: 36, height: 36, borderRadius: 10,
-            background: isLight ? '#E5E5EA' : '#1A1D27',
+            background: isLight ? '#E5E5EA' : '#14161E',
             border: `1px solid ${palette.border}`,
             color: palette.text, fontSize: 18, lineHeight: 1,
             cursor: 'pointer', display: 'flex',

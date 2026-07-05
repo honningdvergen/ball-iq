@@ -1252,7 +1252,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           signing up now keeps everything you've done as a guest. */}
       {isGuest && (
         <div style={{
-          background:"linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.06))",
+          background:"linear-gradient(135deg, rgba(88,204,2,0.18), rgba(88,204,2,0.06))",
           border:"1px solid var(--accent-b)",
           borderRadius:16,
           padding:"18px 18px 16px",
@@ -1641,7 +1641,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
           }).map(([id,icon,name]) => {
             const isEarned = earned.has(id);
             const isSelected = selectedBadgeId === id;
-            const baseStyle = isEarned ? {background:"rgba(34,197,94,0.1)",borderColor:"rgba(34,197,94,0.25)"} : {};
+            const baseStyle = isEarned ? {background:"rgba(88,204,2,0.1)",borderColor:"rgba(88,204,2,0.25)"} : {};
             const selectedStyle = isSelected ? {boxShadow:"0 0 0 2px var(--accent)", transform:"scale(0.97)"} : {};
             return (
               <button

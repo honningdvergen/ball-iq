@@ -187,16 +187,19 @@ function HomeScreenImpl({
         return (
           <div className="hg-block" style={{padding:"6px 0 8px"}}>
             <div style={{display:"flex", alignItems:"center", gap:10}}>
-              <div style={{display:"flex", alignItems:"baseline", gap:8, flex:1, minWidth:0, flexWrap:"wrap"}}>
-                <div className="hg-greet" style={{fontSize:20, color:"var(--t2)", fontWeight:600, letterSpacing:"-0.3px"}}>{greeting}</div>
+              {/* Two-line greeting: subtitle-weight line 1 ("Good afternoon,")
+                  above a bold name that truncates with an ellipsis so long
+                  usernames never clip into / collide with the subtitle. */}
+              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:1, flex:1, minWidth:0}}>
+                <div className="hg-greet" style={{fontSize:13.5, color:"var(--t2)", fontWeight:500, letterSpacing:"-0.2px"}}>{greeting}</div>
                 {(homeAuthLoading && !homeDisplayName) ? (
                   // Sprint #23 U2: min-width lock keeps the name-box width stable
                   // across the Loading…→username swap. Only show the skeleton when
                   // we have NO cached name to show — otherwise the local name
                   // appears instantly instead of waiting for the server profile.
-                  <div style={{fontSize:20, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
+                  <div style={{fontSize:24, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
                 ) : homeDisplayName ? (
-                  <div className="hg-name" style={{fontSize:20, color:"var(--t1)", fontWeight:800, minWidth:70, letterSpacing:"-0.3px"}}>
+                  <div className="hg-name" style={{fontSize:24, color:"var(--t1)", fontWeight:800, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", letterSpacing:"-0.3px"}}>
                     {homeDisplayName}
                   </div>
                 ) : null}
@@ -241,7 +244,7 @@ function HomeScreenImpl({
           yet (gated by the parent). Play routes into today's Daily 7; the
           head-to-head result toasts on completion. */}
       {challenge && (
-        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:10,background:"linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.05))",border:"1px solid rgba(34,197,94,0.30)",borderRadius:14}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:10,background:"linear-gradient(135deg, rgba(88,204,2,0.16), rgba(88,204,2,0.05))",border:"1px solid rgba(88,204,2,0.30)",borderRadius:14}}>
           <span style={{fontSize:22}} aria-hidden="true">🏆</span>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:13.5,fontWeight:800,color:"var(--t1)",lineHeight:1.25}}>

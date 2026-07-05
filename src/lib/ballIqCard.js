@@ -39,9 +39,9 @@ export function cardTier(overall) {
 // metallic bronze/silver/gold scheme). Shared by the in-app card header and the
 // share render.
 export const CARD_TIERS = {
-  elite:    { bg: "linear-gradient(160deg,#241a33 0%,#0c0814 100%)", accent: "#A78BFA", text: "#F3EEFF", label: "ELITE" },
-  pro:      { bg: "linear-gradient(160deg,#0f2417 0%,#050d08 100%)", accent: "#22C55E", text: "#EAFBF0", label: "PRO" },
-  prospect: { bg: "linear-gradient(160deg,#161c26 0%,#080b10 100%)", accent: "#8AA4C8", text: "#EDF2F8", label: "PROSPECT" },
+  elite:    { bg: "linear-gradient(160deg,#2a2410 0%,#0a0a0a 100%)", accent: "#FFC107", text: "#FFF6E0", label: "ELITE" },
+  pro:      { bg: "linear-gradient(160deg,#0f2417 0%,#050d08 100%)", accent: "#58CC02", text: "#EAFBF0", label: "PRO" },
+  prospect: { bg: "linear-gradient(160deg,#14161e 0%,#080a0f 100%)", accent: "#9BA0B8", text: "#E8EAF0", label: "PROSPECT" },
 };
 
 // Compute the full card model from catStats.
