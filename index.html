@@ -113,6 +113,11 @@
         document.documentElement.classList.add('full-bleed');
       }
     </script>
+    <!-- AdSense account verification marker — a static, INERT meta tag (loads
+         nothing, makes no request) so it's safe in the native app while giving
+         Google a raw-HTML signal to confirm site ownership. The actual ad
+         script below stays web-only behind the native guard. -->
+    <meta name="google-adsense-account" content="ca-pub-7467890219483381" />
     <!-- Google AdSense loader — WEB ONLY. Injected via JS behind a native
          guard so the Capacitor app NEVER loads Google's ad/tracking script
          (the native app's privacy policy promises no ads / no analytics, and
