@@ -1930,7 +1930,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* desktop-web-refresh (Quiz #02): ONLY the main QuizEngine (.qd-wrap) spans
      the full app column so its top bar + thin progress read edge-to-edge; the
      play area re-centers via the .qd-play wrapper below. */
-  .qd-wrap { max-width: none; margin: 0; padding-top: 0; }
+  .qd-wrap { max-width: none; margin: 0; padding-top: 0; display: flex; flex-direction: column; min-height: calc(100dvh - 44px); }
 
   /* ── Top bar: mode badge + category (left) · counter + close (right) ── */
   .qd-topbar {
@@ -1949,19 +1949,25 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .qd-topbar-r { display: flex; align-items: center; gap: 18px; flex: 0 0 auto; }
   .qd-counter { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 14px; font-weight: 700; color: #9BA0B8; font-variant-numeric: tabular-nums; }
   .qd-close {
-    width: 38px; height: 38px; flex: 0 0 auto; border-radius: 11px;
-    background: #14161E; border: 1px solid #242836; color: #9BA0B8;
+    width: 46px; height: 46px; flex: 0 0 auto; border-radius: 12px;
+    background: #14161E; border: 1px solid #2A2D3A; color: #9BA0B8;
     display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: border-color .15s ease, color .15s ease;
+    transition: border-color .15s ease, color .15s ease, background .15s ease;
   }
-  .qd-close:hover { border-color: #3A3D4A; color: #E8EAF0; }
+  .qd-close svg { width: 20px; height: 20px; }
+  .qd-close:hover { border-color: #3A3D4A; color: #F0F1F5; background: #1A1D27; }
 
   /* Thin progress under the top bar. */
   .qd-progress { display: block; height: 4px; background: #14161E; }
   .qd-progress-fill { height: 100%; background: #58CC02; transition: width 0.45s cubic-bezier(0.22,1,0.36,1); }
 
-  /* ── Play area re-centered at 780px (topbar/progress stay full-width) ── */
-  .qd-play { display: block; max-width: 780px; margin: 0 auto; padding-top: 44px; }
+  /* ── Play area: a comfortably-wide column, centered BOTH axes (matches the
+     handoff — the play sits in the middle of the screen, not crammed at the
+     top). qd-wrap is a flex column filling the viewport; qd-play flexes to fill
+     the space below the topbar/progress and centers its content vertically,
+     while max-width + margin:auto centers it horizontally. Widened from 780 so
+     it uses more horizontal space on wide monitors. ── */
+  .qd-play { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 1120px; margin: 0 auto; padding: 24px 0; }
   /* Hide the mobile chrome — replaced by the desktop chrome above. */
   .qd-play .q-top,
   .qd-play .streak-bar,
@@ -2212,6 +2218,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      left-aligned reading column (handoff width). The marketing card palette is
      inherited automatically — the desktop .app block remaps --s1/--border — so
      only structure needs stating here. */
+  /* Settings stays a 680px column left-anchored after the rail (the handoff
+     pattern — content follows the nav). On ultra-wide the void falls to the
+     right; centering it would float it away from the rail, which reads worse. */
   .settings-section { max-width: 680px; }
   /* Hide the mobile back header (the rail owns navigation) — scoped to the
      Settings screen so other .page-hdr screens (Review, blocked-users) keep
@@ -2699,6 +2708,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .qd-play .q-tag { display: inline-flex !important; }
   .quiz-screen-wrap > div:not(.quiz-wrap) { display: block !important; }
   .quiz-wrap { max-width: 560px !important; margin-left: auto !important; margin-right: auto !important; }
+  /* Reset the >=1024 .qd-wrap flex/min-height so an installed PWA keeps the
+     block-flow mobile quiz (qd-play is display:contents above). */
+  .qd-wrap { display: block !important; min-height: 0 !important; }
   .qd-play .q-card { background: var(--s1) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3) !important; padding: 26px 22px !important; margin: 0 0 14px !important; }
   .qd-play .q-card::before { display: block !important; }
   .qd-play .q-text { font-size: 18px !important; text-align: left !important; line-height: 1.6 !important; letter-spacing: -0.3px !important; color: var(--text) !important; max-width: none !important; margin: 0 !important; }

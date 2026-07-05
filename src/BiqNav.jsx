@@ -29,7 +29,11 @@ const ICON = {
 };
 
 export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active, notifCount = 0, onOpenNotifs }) {
-  const goTab = (id) => () => setTab(id);
+  // Switching tabs from a sub-screen (Settings, Review, a friend profile, …)
+  // must also return to the home tab surface — the rail is always visible at
+  // desktop, unlike the mobile tab-bar which hides on sub-screens, so without
+  // the setScreen("home") a tab click would leave you stranded on the sub-screen.
+  const goTab = (id) => () => { setScreen("home"); setTab(id); };
   // `active` overrides which item highlights (nulled mid-game so no tab lights
   // up during a quiz). Falls back to `tab` when the prop isn't passed.
   const cur = active === undefined ? tab : active;
