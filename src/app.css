@@ -1895,6 +1895,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
        centers it within the rail-padded content box. */
     max-width: 1180px;
     padding: 0 24px 40px;
+    /* desktop-web-refresh: anchor the column flush to the RIGHT of the 248px
+       BiqNav rail (the base .app rule is margin:0 auto, which CENTERED the
+       1180px column inside the rail-padded #root and left a wide gap on the
+       left at >=1440px). Left-align so any ultra-wide leftover void falls to
+       the far right — matching the handoff (content sits right after the nav).
+       PWA standalone re-centers via margin:auto !important in the standalone
+       block below, so installed desktop PWAs stay byte-identical. */
+    margin-left: 0;
+    margin-right: auto;
   }
   /* BiqNav rail — full-height fixed left chrome, shown only at desktop. */
   .biq-nav {
@@ -2557,11 +2566,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      to feel intentional. All viewport variance gets absorbed by the
      right-side margin (margin-right: auto). */
   .app {
-    /* desktop-web-refresh: was 880 left-anchored. Now a centered 1180 column
-       (matches the >=1024 rule) so the widened content sits balanced in the
-       rail-padded box rather than hugging the rail. */
+    /* desktop-web-refresh: left-anchor the 1180 column flush to the RIGHT of
+       the rail (was centered, which left a wide bluish gap between rail and
+       content on >=1440px — the disparity vs the handoff). Any ultra-wide
+       leftover void now falls to the far right. #root is recolored to #0A0A0A
+       (index.html) so that void is a flat surface, not a band. */
     max-width: 1180px;
-    margin-left: auto;
+    margin-left: 0;
     margin-right: auto;
   }
 }

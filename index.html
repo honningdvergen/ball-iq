@@ -230,6 +230,9 @@
         max-width: none !important;
         margin: 0 !important;
         padding-left: 0 !important;
+        /* desktop-web-refresh: defensive — a native iPad viewport >=1024 also
+           matches the #root recolor above; keep native on the mobile --bg. */
+        background-color: #09131C !important;
       }
       html.native-app body > .landing-bottom { padding-left: 0 !important; }
       html.native-app body { background-image: none !important; }
@@ -281,6 +284,12 @@
           /* desktop-web-refresh: was 220 (old .desktop-nav). BiqNav rail is
              248px, so the content gutter must clear 248. */
           padding-left: 248px;
+          /* desktop-web-refresh: recolor #root to the desktop game surface so
+             the space between the rail and the (left-anchored) .app column is
+             one flat #0A0A0A, not the bluish mobile --bg (#09131C) showing
+             through the gap. body > #root beats app.css's html,#root. Reset in
+             the standalone + native blocks below so PWA/native keep #09131C. */
+          background-color: #0A0A0A;
         }
         /* Marketing chrome below the app needs the same sidebar clearance
            — otherwise the fixed DesktopNav overlays the leftmost portion
@@ -297,6 +306,10 @@
           max-width: none !important;
           margin: 0 !important;
           padding-left: 0 !important;
+          /* desktop-web-refresh: an installed PWA at >=1024 also matches the
+             #root recolor above; restore the mobile --bg so the installed shell
+             stays byte-identical (mirrors the .app --bg standalone reset). */
+          background-color: #09131C !important;
         }
         body > .landing-bottom {
           padding-left: 0 !important;

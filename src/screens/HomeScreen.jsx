@@ -382,14 +382,16 @@ function HomeScreenImpl({
 
         {/* Streak + 14-day form */}
         {(() => {
-          const now = new Date();
-          const todayMid = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+          // Drive the 14-cell bar from the SAME login streak the number above
+          // shows (there's no per-day login history to map, and the old
+          // dailyHistory cells tracked a DIFFERENT metric — daily-puzzle
+          // completion — so a 3-day login streak lit 0 cells). i = days-ago
+          // (0 = today); a streak of N lights the N most recent cells, so the
+          // lit run always agrees with .hr-streak-num. Capped at the 14 shown.
+          const streakDays = Math.max(0, loginStreak || 0);
           const cells = [];
           for (let i = 13; i >= 0; i--) {
-            const d = new Date(todayMid - i * DAY_MS);
-            const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-            const score = dailyHistory?.[ymd];
-            cells.push({ done: typeof score === "number", isToday: i === 0 });
+            cells.push({ done: i < streakDays, isToday: i === 0 });
           }
           const best = Math.max(bestLoginStreak || 0, loginStreak || 0);
           return (
@@ -401,7 +403,7 @@ function HomeScreenImpl({
                   <div className="hr-streak-best">Best · {best}</div>
                 </div>
               </div>
-              <div className="hr-form" aria-label="Daily play over the last 14 days">
+              <div className="hr-form" aria-label={`Login streak: ${loginStreak || 0} of the last 14 days`}>
                 {cells.map((c, i) => (
                   <span key={i} className={`hr-form-cell${c.done ? " is-done" : ""}${c.isToday ? " is-today" : ""}`} />
                 ))}
