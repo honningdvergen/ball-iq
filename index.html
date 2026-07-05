@@ -113,6 +113,29 @@
         document.documentElement.classList.add('full-bleed');
       }
     </script>
+    <!-- Google AdSense loader — WEB ONLY. Injected via JS behind a native
+         guard so the Capacitor app NEVER loads Google's ad/tracking script
+         (the native app's privacy policy promises no ads / no analytics, and
+         the App Store listing declares none). On the web (https) it loads
+         normally so AdSense can verify the site and serve ads. Placed right
+         after the native-app detection above so the class check is reliable.
+         Static SEO pages carry the raw tag directly (they are web-only). -->
+    <script>
+      (function () {
+        try {
+          var isNative = location.protocol === 'capacitor:' ||
+            (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
+            document.documentElement.classList.contains('native-app');
+          if (!isNative) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381';
+            s.crossOrigin = 'anonymous';
+            document.head.appendChild(s);
+          }
+        } catch (e) { /* noop */ }
+      })();
+    </script>
     <style>
       html, body {
         margin: 0;
