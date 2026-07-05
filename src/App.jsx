@@ -323,15 +323,24 @@ function getSeenKeySet() {
 function applySeenFilter(pool, needed, toKey) {
   const seen = getSeenKeySet();
   if (seen.size === 0) return pool;
-  const fresh = pool.filter(q => {
+  const hist = getSeenHistory();
+  const fresh = [], stale = [];
+  for (const q of pool) {
     const k = toKey(q);
-    return !k || !seen.has(k);
-  });
-  if (fresh.length >= needed) return fresh;
-  if (import.meta.env.DEV) {
-    console.log("[seen] pool exhausted for this category — serving full pool");
+    (!k || !seen.has(k) ? fresh : stale).push(q);
   }
-  return pool;
+  if (fresh.length >= needed) return fresh;
+  // Pool exhausted — everything left was seen inside the 14-day window. Instead
+  // of falling back to the WHOLE pool (which resurfaces recent questions at
+  // random — the #1 cause of "I just saw this" in small categories/clubs),
+  // keep the fresh ones and top up with the LEAST-recently-seen, so unavoidable
+  // repeats are spaced as far apart as the pool allows. The generous top-up
+  // still leaves the downstream diversity shuffle room to vary the order.
+  if (import.meta.env.DEV) {
+    console.log(`[seen] pool exhausted (${fresh.length}/${needed} fresh) — topping up with least-recently-seen`);
+  }
+  stale.sort((a, b) => (hist[toKey(a)] || 0) - (hist[toKey(b)] || 0));
+  return [...fresh, ...stale.slice(0, Math.max(needed * 2, needed + 6))];
 }
 function recordSeenQuestions(questions) {
   if (!questions || !questions.length) return;
