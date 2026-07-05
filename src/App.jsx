@@ -5484,6 +5484,75 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 }
 const SettingsScreen = React.memo(SettingsScreenImpl);
 
+// ── Notification bell + center (Phase 1: friend requests) ──────────────────
+// A globally-placed bell (mobile header, Home header, desktop rail) with an
+// unread badge = pending incoming friend-request count, opening a modal inbox.
+// Data + accept/decline live in AppInner (reusing the friendships table); these
+// are pure presentation. Play-invites + native push extend this later.
+function NotifBell({ count, onClick, className, style }) {
+  return (
+    <button
+      className={className || "icon-btn"}
+      onClick={onClick}
+      aria-label={count > 0 ? `Notifications, ${count} new` : "Notifications"}
+      style={{ position: "relative", ...style }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+      </svg>
+      {count > 0 && <span className="notif-badge">{count > 9 ? "9+" : count}</span>}
+    </button>
+  );
+}
+
+function NotificationCenter({ open, requests, onClose, onRespond, onOpenFriend }) {
+  const panelRef = useRef(null);
+  useModalA11y({ isOpen: open, onClose, ref: panelRef });
+  if (!open) return null;
+  return (
+    <div className="notif-overlay" onClick={onClose}>
+      <div ref={panelRef} tabIndex={-1} className="notif-panel" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Notifications">
+        <div className="notif-hdr">
+          <span className="notif-title">Notifications</span>
+          <button className="notif-close" onClick={onClose} aria-label="Close notifications">✕</button>
+        </div>
+        {requests.length === 0 ? (
+          <div className="notif-empty">
+            <div className="notif-empty-ic" aria-hidden="true">🔔</div>
+            <div className="notif-empty-t">You're all caught up</div>
+            <div className="notif-empty-s">Friend requests and invites show up here.</div>
+          </div>
+        ) : (
+          <div className="notif-list">
+            {requests.map(r => {
+              const p = r.requester || {};
+              return (
+                <div key={r.id} className="notif-item">
+                  <button
+                    className="notif-ava"
+                    onClick={() => p.id && onOpenFriend?.({ id: p.id, username: p.username, avatar: p.avatar })}
+                    aria-label={p.username ? `View ${p.username}'s profile` : "View profile"}
+                  >
+                    {p.avatar || "⚽"}
+                  </button>
+                  <div className="notif-body">
+                    <div className="notif-line"><strong>{p.username || "Someone"}</strong> wants to be friends</div>
+                    <div className="notif-actions">
+                      <button className="notif-btn notif-accept" onClick={() => onRespond(r.id, true)}>Accept</button>
+                      <button className="notif-btn notif-decline" onClick={() => onRespond(r.id, false)}>Decline</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
 // Full-screen in-app overlay. Content is hardcoded (no network fetch, no
 // CORS/asset-path pitfalls, no flash of a blank iframe). Rendered above the
@@ -8488,6 +8557,50 @@ function AppInner() {
     setTab("profile");
     setViewingFriendId(null);
   }, []);
+
+  // ── Notification center (Phase 1: friend requests) ──────────────────────
+  // Surfaces INCOMING pending friend requests globally (a bell + badge + inbox
+  // overlay) using the EXISTING friendships table — no new schema. Accept/Decline
+  // flip the same status column FriendsSection uses. The badge count is simply
+  // the number of pending incoming requests, so it self-clears as they're
+  // actioned — no read-state to persist. Play-invites (which need a server
+  // record) and native push land in later phases alongside a generic
+  // notifications table. Guests have no friendships, so this stays empty for them.
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifRequests, setNotifRequests] = useState([]);
+  const loadNotifRequests = useCallback(async () => {
+    if (!user?.id) { setNotifRequests([]); return; }
+    try {
+      const cols = "id,requester_id,requester:profiles!requester_id(id,username,avatar:avatar_id)";
+      const { data } = await supabase
+        .from("friendships")
+        .select(cols)
+        .eq("addressee_id", user.id)
+        .eq("status", "pending")
+        .limit(50);
+      setNotifRequests(Array.isArray(data) ? data : []);
+    } catch { /* soft-fail: the bell just shows no badge */ }
+  }, [user?.id]);
+  useEffect(() => { loadNotifRequests(); }, [loadNotifRequests]);
+  // Refresh when the tab regains focus (a request may have arrived while away).
+  // Cheap indexed count query; no realtime dependency (free-tier realtime
+  // doesn't reliably deliver postgres_changes — see the Stage-1 spike notes).
+  useEffect(() => {
+    const onFocus = () => loadNotifRequests();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [loadNotifRequests]);
+  const respondFriendRequest = useCallback(async (id, accept) => {
+    setNotifRequests(prev => prev.filter(r => r.id !== id)); // optimistic
+    try {
+      await supabase.from("friendships").update({ status: accept ? "accepted" : "declined" }).eq("id", id);
+      showToast(accept ? "✓ Friend added" : "Request declined");
+    } catch {
+      showToast("Couldn't update — try again");
+      loadNotifRequests();
+    }
+  }, [showToast, loadNotifRequests]);
+  const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifRequests(); }, [loadNotifRequests]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
@@ -8715,6 +8828,8 @@ function AppInner() {
           setScreen={setScreen}
           dailyDone={dailyDone}
           showToast={showToast}
+          notifCount={notifRequests.length}
+          onOpenNotifs={user ? openNotifs : undefined}
         />
         {!inGame && !(screen === "home" && tab === "home") && (
           <div className="hdr">
@@ -8736,7 +8851,8 @@ function AppInner() {
               </button>
             )}
             {screen === "home" && (
-              <div className="hdr-actions" style={{marginLeft:"auto"}}>
+              <div className="hdr-actions" style={{marginLeft:"auto",display:"flex",gap:8}}>
+                {user && <NotifBell count={notifRequests.length} onClick={openNotifs} style={{ background: "var(--s1)", border: "1px solid var(--border)" }} />}
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")} style={{ background: "var(--s1)", border: "1px solid var(--border)" }}>⚙️</button>
               </div>
             )}
@@ -9018,6 +9134,8 @@ function AppInner() {
               onPlayChallenge={playDaily}
               onDismissChallenge={clearChallenge}
               setOnlineAutoCreate={setOnlineAutoCreate}
+              notifCount={notifRequests.length}
+              onOpenNotifs={user ? openNotifs : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -9377,6 +9495,13 @@ function AppInner() {
       </main>
       <OfflineBanner />
       <ResetPasswordOverlay />
+      <NotificationCenter
+        open={notifOpen}
+        requests={notifRequests}
+        onClose={() => setNotifOpen(false)}
+        onRespond={respondFriendRequest}
+        onOpenFriend={(f) => { setNotifOpen(false); openFriendProfile(f); }}
+      />
     </>
   );
 }

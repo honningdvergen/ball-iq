@@ -116,6 +116,8 @@ function HomeScreenImpl({
   onPlayChallenge,
   onDismissChallenge,
   setOnlineAutoCreate,
+  notifCount = 0,
+  onOpenNotifs,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -203,6 +205,14 @@ function HomeScreenImpl({
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
                   🔥 {loginStreak}
                 </span>
+              )}
+              {/* Notification bell — the Home tab hides the shared header, so the
+                  bell lives here (signed-in only; onOpenNotifs passed then). */}
+              {onOpenNotifs && (
+                <button onClick={onOpenNotifs} className="icon-btn" aria-label={notifCount > 0 ? `Notifications, ${notifCount} new` : "Notifications"} style={{flexShrink:0, position:"relative"}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                  {notifCount > 0 && <span className="notif-badge">{notifCount > 9 ? "9+" : notifCount}</span>}
+                </button>
               )}
               {/* 1.1: settings gear inline with the greeting (the shared header
                   row is hidden on Home) — one tidy top row, no dead space. */}

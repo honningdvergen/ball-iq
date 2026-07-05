@@ -28,7 +28,7 @@ const ICON = {
   'aria-hidden': true,
 };
 
-export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active }) {
+export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active, notifCount = 0, onOpenNotifs }) {
   const goTab = (id) => () => setTab(id);
   // `active` overrides which item highlights (nulled mid-game so no tab lights
   // up during a quiz). Falls back to `tab` when the prop isn't passed.
@@ -77,6 +77,19 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active 
           </svg>
           <span>Friends</span>
         </button>
+
+        {/* Notifications — opens the inbox overlay; shown for signed-in users
+            (onOpenNotifs is only passed then). Badge = pending request count. */}
+        {onOpenNotifs && (
+          <button className="bn-item" onClick={onOpenNotifs}>
+            <svg {...ICON}>
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+            </svg>
+            <span>Notifications</span>
+            {notifCount > 0 && <span className="bn-badge">{notifCount > 9 ? '9+' : notifCount}</span>}
+          </button>
+        )}
       </nav>
 
       <div className="bn-spacer" />
