@@ -1893,15 +1893,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     /* Widen 640 -> centered 1180 so redesigned screens have room for
        two-column desktop layouts. margin:0 auto (from the base .app rule)
        centers it within the rail-padded content box. */
-    max-width: 1180px;
-    padding: 0 24px 40px;
-    /* desktop-web-refresh: anchor the column flush to the RIGHT of the 248px
-       BiqNav rail (the base .app rule is margin:0 auto, which CENTERED the
-       1180px column inside the rail-padded #root and left a wide gap on the
-       left at >=1440px). Left-align so any ultra-wide leftover void falls to
-       the far right — matching the handoff (content sits right after the nav).
-       PWA standalone re-centers via margin:auto !important in the standalone
-       block below, so installed desktop PWAs stay byte-identical. */
+    /* desktop-web-refresh: FILL the space right of the rail like the handoff
+       (was capped at 1180 + centered, which left a big void on wide screens).
+       A generous cap keeps ultra-wide (5K+) from ballooning, but on typical
+       wide monitors the content fills edge-to-edge. Left-anchored so it starts
+       flush at the 248px rail. PWA standalone resets to the mobile 420 column
+       via the standalone block below. */
+    max-width: 2600px;
+    padding: 0 34px 40px;
     margin-left: 0;
     margin-right: auto;
   }
@@ -2566,12 +2565,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      to feel intentional. All viewport variance gets absorbed by the
      right-side margin (margin-right: auto). */
   .app {
-    /* desktop-web-refresh: left-anchor the 1180 column flush to the RIGHT of
-       the rail (was centered, which left a wide bluish gap between rail and
-       content on >=1440px — the disparity vs the handoff). Any ultra-wide
-       leftover void now falls to the far right. #root is recolored to #0A0A0A
-       (index.html) so that void is a flat surface, not a band. */
-    max-width: 1180px;
+    /* desktop-web-refresh: fill the space right of the rail like the handoff
+       (was a centered 1180 column that left a big void on wide screens).
+       Generous cap so ultra-wide 5K+ doesn't balloon; left-anchored flush to
+       the rail. #root is #0A0A0A (index.html) so any leftover surface is flat. */
+    max-width: 2600px;
     margin-left: 0;
     margin-right: auto;
   }
