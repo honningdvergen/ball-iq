@@ -1730,7 +1730,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
-function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport }) {
+function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -1814,6 +1814,21 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
+
+  // ── desktop-web-refresh (Quiz #02): derived values for the >=1024 desktop
+  // chrome (top bar + thin progress + circular timer ring). Every element that
+  // consumes these is render-always / CSS-revealed (base display:none), so this
+  // math is inert on mobile — the mobile chrome (.q-top/.timer-row/.streak-bar/
+  // .q-tag) stays byte-identical. quizLabel is the mode/club/league badge passed
+  // from the mount site; the per-question category is the secondary label. ──
+  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", wc2026:"World Cup", local:"Local" };
+  const qdBadge = quizLabel || QD_MODE_BADGE[mode] || "Quiz";
+  const qdCat = q ? (CAT_LABELS[q.cat] || q.cat || "") : "";
+  const qdCounter = mode === "survival" ? `Q ${idx + 1}` : `Q ${String(idx + 1).padStart(2, "0")} / ${total}`;
+  const qdPct = total > 0 ? ((idx + (answered ? 1 : 0)) / total) * 100 : 0;
+  const QD_RING_C = 2 * Math.PI * 33; // r=33 → circumference ≈ 207.35
+  const qdRatio = timed ? Math.max(0, Math.min(1, timeLeft / timerDuration)) : 1;
+  const qdRingColor = qdRatio > 0.5 ? "#58CC02" : qdRatio > 0.25 ? "#FFC107" : "#FF4747";
 
   const doAdvance = useCallback((ns, nb, correct) => {
     if (mode === "survival" && !correct) {
@@ -1975,7 +1990,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   );
 
   return (
-    <div className={`quiz-wrap${q?.cat ? ` cat-${q.cat}` : ""}`}>
+    <div className={`quiz-wrap qd-wrap${q?.cat ? ` cat-${q.cat}` : ""}`}>
       {hardRightBurst && <HardRightBurst />}
       {hardRightBurst && (
         <div style={{
@@ -1999,6 +2014,29 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           🏆 HARD · NAILED IT
         </div>
       )}
+      {/* ── desktop-web-refresh (Quiz #02): >=1024 chrome. Render-always,
+          CSS-revealed (base display:none). The mobile chrome below (.q-top,
+          .streak-bar, .timer-row, .q-tag) is hidden at desktop instead; the
+          play area is centered via the .qd-play display:contents→block wrapper.
+          All of it is display:none < 1024, so mobile is byte-identical. ── */}
+      <div className="qd-topbar">
+        <div className="qd-topbar-l">
+          <span className="qd-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="7.5"></circle><path d="M12 13V9M9.5 2.5h5"></path></svg>
+            {qdBadge}
+          </span>
+          {qdCat && <span className="qd-cat">{qdCat}</span>}
+        </div>
+        <div className="qd-topbar-r">
+          <span className="qd-counter">{qdCounter}</span>
+          <button className="qd-close" onClick={() => { if (idx === 0) { onBack(); return; } setShowQuit(true); }} aria-label="Quit game">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+      </div>
+      <div className="qd-progress" aria-hidden="true"><div className="qd-progress-fill" style={{ width: `${qdPct}%` }} /></div>
+
+      <div className="qd-play">
       <div className="q-top">
         <button className="back-btn" onClick={() => {
           if (idx === 0) { onBack(); return; }
@@ -2042,6 +2080,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           <span className={`timer${(timeLeft/timerDuration)<=0.25?" urgent":""}`}>{timeLeft}s</span>
         </div>
       )}
+
+      {/* desktop-web-refresh (Quiz #02): streak · circular timer ring · correct.
+          Desktop-only (base display:none); reuses the live streak/score/timeLeft
+          state that drives the mobile chrome, so the two never disagree. */}
+      <div className="qd-meta" aria-hidden="true">
+        <span className="qd-pill qd-pill-streak"><span className="qd-pill-ic">🔥</span>{streak} streak</span>
+        {timed && !isTyped ? (
+          <div className="qd-ring">
+            <svg width="78" height="78" viewBox="0 0 78 78">
+              <circle cx="39" cy="39" r="33" fill="none" stroke="#242836" strokeWidth="7"></circle>
+              <circle cx="39" cy="39" r="33" fill="none" stroke={qdRingColor} strokeWidth="7" strokeLinecap="round"
+                strokeDasharray={QD_RING_C} strokeDashoffset={QD_RING_C * (1 - qdRatio)}
+                transform="rotate(-90 39 39)"
+                style={{ transition: timeLeft > prevTimeLeftRef.current ? "none" : "stroke-dashoffset 0.9s linear, stroke 0.3s ease" }} />
+            </svg>
+            <span className="qd-ring-n">{timeLeft}</span>
+          </div>
+        ) : null}
+        <span className="qd-pill qd-pill-correct"><span className="qd-pill-num">{score}</span>correct</span>
+      </div>
+      <div className="qd-eyebrow" aria-hidden="true">Question {idx + 1}</div>
 
       <div key={idx} className="q-card q-fade">
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
@@ -2186,6 +2245,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           </button>
         );
       })()}
+      </div>{/* /.qd-play */}
 
       {showQuit && (
         <div className="modal-overlay" onClick={() => setShowQuit(false)}>
@@ -8590,16 +8650,19 @@ function AppInner() {
             }}
           />
         )}
-        {!inGame && (
-          <BiqNav
-            onHomeClick={handleHomeClick}
-            tab={tab}
-            setTab={setTab}
-            setScreen={setScreen}
-            dailyDone={dailyDone}
-            showToast={showToast}
-          />
-        )}
+        {/* BiqNav (desktop rail) renders during games too now — the handoff
+            keeps the rail visible mid-quiz (active="none"). It's CSS-gated to
+            >=1024 (display:none on mobile/PWA/native), so this is desktop-only;
+            `active` is nulled mid-game so no tab highlights. */}
+        <BiqNav
+          onHomeClick={handleHomeClick}
+          tab={tab}
+          active={inGame ? null : tab}
+          setTab={setTab}
+          setScreen={setScreen}
+          dailyDone={dailyDone}
+          showToast={showToast}
+        />
         {!inGame && !(screen === "home" && tab === "home") && (
           <div className="hdr">
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
@@ -9126,7 +9189,7 @@ function AppInner() {
 
         {/* ── QUIZ ── */}
         {screen === "quiz" && mode !== "hotstreak" && mode !== "truefalse" && (
-          <div>
+          <div className="quiz-screen-wrap">
             {mode === "balliq" && (
               <div style={{marginTop:14,marginBottom:4}}>
                 <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",fontWeight:500,letterSpacing:0.2,marginBottom:4}}>{APP_NAME} Test · 20 Questions</div>
@@ -9178,6 +9241,9 @@ function AppInner() {
               hintsEnabled={settings.hints !== false}
               onComplete={handleComplete}
               onReport={reportQuestion}
+              quizLabel={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
+                : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
+                : undefined}
               onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
             />
           </div>

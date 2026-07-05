@@ -626,6 +626,14 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    the previous gold-tinted card so it doesn't compete with the question
    card below. Reads as a quiet status line above the question. */
 .streak-bar{background:transparent;border:none;border-radius:0;padding:0 2px 8px;display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
+/* desktop-web-refresh (Quiz #02) — desktop-only quiz chrome, hidden on mobile.
+   Revealed + laid out in the @media(min-width:1024px) block; there the mobile
+   chrome (.q-top/.streak-bar/.timer-row/.q-tag) is hidden instead. .qd-play is
+   display:contents on mobile so the mobile quiz flows byte-identically; it
+   becomes a centered 780px column at desktop. The @media(display-mode:standalone)
+   killswitch resets all of this so installed PWAs keep the mobile quiz. */
+.qd-topbar,.qd-progress,.qd-meta,.qd-eyebrow{display:none;}
+.qd-play{display:contents;}
 .streak-n{font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;}
 .streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
 .streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
@@ -1868,9 +1876,77 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      padding is dead space here — zero it. Reset in standalone (PWA re-shows
      the mobile tab-bar and needs the clearance back). */
   .tab-content { padding-bottom: 0; }
-  /* 1.2 web: cap the quiz reading column so the question + answer options don't
-     stretch to the full column width on desktop (the most-used screen). */
+  /* 1.2 web: cap the reading column for the OTHER quiz engines (Hot Streak,
+     True/False, MP) that share .quiz-wrap but aren't part of the #02 refresh. */
   .quiz-wrap { max-width: 560px; margin-left: auto; margin-right: auto; }
+  /* desktop-web-refresh (Quiz #02): ONLY the main QuizEngine (.qd-wrap) spans
+     the full app column so its top bar + thin progress read edge-to-edge; the
+     play area re-centers via the .qd-play wrapper below. */
+  .qd-wrap { max-width: none; margin: 0; padding-top: 0; }
+
+  /* ── Top bar: mode badge + category (left) · counter + close (right) ── */
+  .qd-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 18px 2px; border-bottom: 1px solid #16181F;
+  }
+  .qd-topbar-l { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .qd-badge {
+    display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto;
+    padding: 7px 13px; border-radius: 999px;
+    background: rgba(88,204,2,0.1); border: 1px solid rgba(88,204,2,0.28);
+    color: #8AE042; font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em;
+    white-space: nowrap; text-transform: uppercase;
+  }
+  .qd-cat { font-size: 14px; color: #9BA0B8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .qd-topbar-r { display: flex; align-items: center; gap: 18px; flex: 0 0 auto; }
+  .qd-counter { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 14px; font-weight: 700; color: #9BA0B8; font-variant-numeric: tabular-nums; }
+  .qd-close {
+    width: 38px; height: 38px; flex: 0 0 auto; border-radius: 11px;
+    background: #14161E; border: 1px solid #242836; color: #9BA0B8;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .qd-close:hover { border-color: #3A3D4A; color: #E8EAF0; }
+
+  /* Thin progress under the top bar. */
+  .qd-progress { display: block; height: 4px; background: #14161E; }
+  .qd-progress-fill { height: 100%; background: #58CC02; transition: width 0.45s cubic-bezier(0.22,1,0.36,1); }
+
+  /* ── Play area re-centered at 780px (topbar/progress stay full-width) ── */
+  .qd-play { display: block; max-width: 780px; margin: 0 auto; padding-top: 44px; }
+  /* Hide the mobile chrome — replaced by the desktop chrome above. */
+  .qd-play .q-top,
+  .qd-play .streak-bar,
+  .qd-play .timer-row,
+  .qd-play .q-tag { display: none; }
+  /* Hide the mode-intro banners above the quiz (identity now lives in the badge). */
+  .quiz-screen-wrap > div:not(.quiz-wrap) { display: none; }
+
+  /* Meta row: streak pill · circular timer ring · correct pill. */
+  .qd-meta { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 30px; }
+  .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #0F1117; border: 1px solid #242836; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 13.5px; font-weight: 700; }
+  .qd-pill-streak { color: #FFC107; }
+  .qd-pill-ic { font-family: 'Inter', sans-serif; font-size: 14px; }
+  .qd-pill-correct { color: #9BA0B8; }
+  .qd-pill-num { color: #8AE042; }
+  .qd-ring { position: relative; width: 78px; height: 78px; flex: 0 0 auto; }
+  .qd-ring-n { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 26px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+
+  /* Eyebrow + big centered question (the q-card becomes a bare container). */
+  .qd-eyebrow { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #6E7180; }
+  .qd-play .q-card { background: none; box-shadow: none; padding: 0; margin: 10px auto 0; max-width: 100%; }
+  .qd-play .q-card::before { display: none; }
+  .qd-play .q-text { font-size: 30px !important; font-weight: 800; line-height: 1.25; letter-spacing: -0.02em; text-align: center; color: #fff; max-width: 22ch; margin: 0 auto; }
+
+  /* Options → 2×2 grid with lettered chips. */
+  .qd-play .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 34px; }
+  .qd-play .opt { padding: 18px; border-radius: 15px; font-size: 16.5px; }
+  .qd-play .opt:hover:not(:disabled) { transform: none; border-color: #3A3D4A; background: var(--s2); }
+  .qd-play .opt-l { width: 32px; height: 32px; border-radius: 9px; }
+
+  /* Feedback + Next button centered, non-sticky (the desktop play area is short). */
+  .qd-play .feedback { max-width: 560px; margin-left: auto; margin-right: auto; margin-top: 20px; justify-content: center; }
+  .qd-play .next-btn-primary { position: static; width: auto; min-width: 240px; margin: 30px auto 0; padding: 14px 40px; border-radius: 14px; box-shadow: 0 10px 26px -8px rgba(88,204,2,0.6); }
   /* Scouting Report: match the profile's 560-left desktop pattern (Sprint #34
      F-S1) so the thin stat rows don't stretch wide. */
   .scouting-report { max-width: 560px; }
@@ -2509,6 +2585,25 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      two-column layout). */
   .daily-col-mobile { display: contents !important; }
   .daily-desktop { display: none !important; }
+  /* desktop-web-refresh (Quiz #02): installed PWA on >=1024 desktop hardware
+     matches the desktop quiz reveal above. Re-hide the desktop chrome, restore
+     .qd-play to display:contents, un-hide the mobile chrome + mode banners, and
+     revert the in-place restyles (q-card/q-text/opts/next) so the installed
+     shell renders the byte-identical mobile quiz. */
+  .qd-topbar, .qd-progress, .qd-meta, .qd-eyebrow { display: none !important; }
+  .qd-play { display: contents !important; }
+  .qd-play .q-top { display: flex !important; }
+  .qd-play .streak-bar { display: flex !important; }
+  .qd-play .timer-row { display: flex !important; }
+  .qd-play .q-tag { display: inline-flex !important; }
+  .quiz-screen-wrap > div:not(.quiz-wrap) { display: block !important; }
+  .quiz-wrap { max-width: 560px !important; margin-left: auto !important; margin-right: auto !important; }
+  .qd-play .q-card { background: var(--s1) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3) !important; padding: 26px 22px !important; margin: 0 0 14px !important; }
+  .qd-play .q-card::before { display: block !important; }
+  .qd-play .q-text { font-size: 18px !important; text-align: left !important; line-height: 1.6 !important; letter-spacing: -0.3px !important; color: var(--text) !important; max-width: none !important; margin: 0 !important; }
+  .qd-play .opts { display: flex !important; flex-direction: column !important; gap: 9px !important; margin-top: 0 !important; }
+  .qd-play .opt { padding: 14px !important; font-size: 15px !important; }
+  .qd-play .next-btn-primary { position: sticky !important; width: 100% !important; min-width: 0 !important; margin: 14px 0 0 !important; padding: 16px !important; }
   .hg-greet, .hg-name { font-size: 20px !important; }
   /* Home rebuild: restore the mobile Daily zone (tinted box), Daily 7 (orange
      bar), the red streak pill and the plain mp-card so an installed desktop PWA

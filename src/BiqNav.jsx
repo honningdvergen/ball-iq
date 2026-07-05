@@ -28,8 +28,11 @@ const ICON = {
   'aria-hidden': true,
 };
 
-export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick }) {
+export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active }) {
   const goTab = (id) => () => setTab(id);
+  // `active` overrides which item highlights (nulled mid-game so no tab lights
+  // up during a quiz). Falls back to `tab` when the prop isn't passed.
+  const cur = active === undefined ? tab : active;
 
   return (
     <aside className="biq-nav" aria-label="Primary">
@@ -40,7 +43,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick }) {
       </button>
 
       <nav className="bn-list">
-        <button className="bn-item" data-active={tab === 'home'} onClick={goTab('home')}>
+        <button className="bn-item" data-active={cur === 'home'} onClick={goTab('home')}>
           <svg {...ICON}>
             <path d="M3 10.5 12 3l9 7.5" />
             <path d="M5 9.5V21h5v-6h4v6h5V9.5" />
@@ -48,7 +51,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick }) {
           <span>Home</span>
         </button>
 
-        <button className="bn-item" data-active={tab === 'daily'} onClick={goTab('daily')}>
+        <button className="bn-item" data-active={cur === 'daily'} onClick={goTab('daily')}>
           <svg {...ICON}>
             <rect x="3" y="5" width="18" height="16" rx="3" />
             <path d="M8 3v4M16 3v4M3 10h18" />
@@ -57,7 +60,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick }) {
           {!dailyDone && <span className="bn-dot" aria-label="new" />}
         </button>
 
-        <button className="bn-item" data-active={tab === 'profile'} onClick={goTab('profile')}>
+        <button className="bn-item" data-active={cur === 'profile'} onClick={goTab('profile')}>
           <svg {...ICON}>
             <circle cx="12" cy="8" r="4" />
             <path d="M4 21c1.5-3.8 4.5-5.5 8-5.5s6.5 1.7 8 5.5" />
@@ -66,7 +69,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick }) {
         </button>
 
         {/* Redesign's "Friends" == the existing Online tab (OnlineHubTab). */}
-        <button className="bn-item" data-active={tab === 'online'} onClick={goTab('online')}>
+        <button className="bn-item" data-active={cur === 'online'} onClick={goTab('online')}>
           <svg {...ICON}>
             <circle cx="9" cy="8" r="3.4" />
             <path d="M2.5 20c1-3 3.5-4.4 6.5-4.4s5.5 1.4 6.5 4.4" />
