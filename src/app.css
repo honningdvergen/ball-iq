@@ -2162,10 +2162,20 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .journey-sub { font-size: 12px; }
   .journey-badge { font-size: 11px; padding: 5px 12px; }
 
-  /* F-S1: settings sections constrained to 560px left-aligned at desktop.
-     Avoids the lonely-control-in-880px-row look without the risk of
-     arbitrary 2-col grouping that the original F-S1 proposed. */
-  .settings-section { max-width: 560px; }
+  /* desktop-web-refresh (Settings #07): sections constrained to a 680px
+     left-aligned reading column (handoff width). The marketing card palette is
+     inherited automatically — the desktop .app block remaps --s1/--border — so
+     only structure needs stating here. */
+  .settings-section { max-width: 680px; }
+  /* Hide the mobile back header (the rail owns navigation) — scoped to the
+     Settings screen so other .page-hdr screens (Review, blocked-users) keep
+     their back button. The title promotion (F-S4 below) is intentionally global. */
+  .settings-screen .back-btn { display: none; }
+  .settings-screen .page-hdr { padding: 30px 0 12px; }
+  /* Flat, bordered cards (handoff #07): 1px border + 16px radius, no drop
+     shadow. Rows get a touch more breathing room at desktop reading distance. */
+  .settings-card { border: 1px solid var(--border); border-radius: 16px; box-shadow: none; }
+  .settings-row { padding: 15px 18px; }
 
   /* F-S2: settings rows bumped to desktop reading distance. */
   .sr-label { font-size: 15px; }
@@ -2190,9 +2200,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .about-card-version { margin-top: 0 !important; }
   .about-card-feedback { margin-top: 0 !important; flex-shrink: 0; }
 
-  /* F-S4: settings page-title bumped. Also applies to other .page-title
-     screens (Review, etc) at desktop — consistent desktop heading sizing. */
-  .page-title { font-size: 24px; }
+  /* F-S4: settings page-title bumped to the handoff's 27px bold heading. Also
+     applies to other .page-title screens (Review, etc) at desktop — consistent
+     desktop heading sizing. */
+  .page-title { font-size: 27px; font-weight: 800; letter-spacing: -0.02em; }
 }
 
 /* ═════════════════════════════════════════════════════════════════════
@@ -2645,6 +2656,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* desktop-web-refresh (Results #03): installed PWA keeps the mobile results. */
   .rd-mobile { display: contents !important; }
   .rd-desktop { display: none !important; }
+  /* desktop-web-refresh (Settings #07): installed PWA keeps the mobile settings.
+     Critically restore the back button — the desktop rail that replaces it is
+     killswitched in standalone, so without this a PWA would have no way back. */
+  .settings-section { max-width: none !important; }
+  .settings-screen .page-hdr { padding: 18px 0 22px !important; }
+  .settings-screen .back-btn { display: flex !important; }
+  .settings-card { border: none !important; border-radius: var(--r) !important; box-shadow: 0 2px 16px rgba(0,0,0,0.35) !important; }
+  .settings-row { padding: 14px 16px !important; }
+  .sr-label { font-size: 14px !important; }
+  .sr-desc { font-size: 12px !important; }
+  .page-title { font-size: 19px !important; font-weight: 700 !important; letter-spacing: -0.4px !important; }
   .hg-greet, .hg-name { font-size: 20px !important; }
   /* Home rebuild: restore the mobile Daily zone (tinted box), Daily 7 (orange
      bar), the red streak pill and the plain mp-card so an installed desktop PWA

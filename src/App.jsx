@@ -5040,7 +5040,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   };
 
   return (
-    <div className="screen" style={{background:"var(--bg)"}}>
+    <div className="screen settings-screen" style={{background:"var(--bg)"}}>
       <div className="page-hdr">
         <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="page-title">Settings</div>
@@ -8710,7 +8710,7 @@ function AppInner() {
         <BiqNav
           onHomeClick={handleHomeClick}
           tab={tab}
-          active={inGame || screen === "results" ? null : tab}
+          active={inGame || screen === "results" ? null : screen === "settings" ? "settings" : tab}
           setTab={setTab}
           setScreen={setScreen}
           dailyDone={dailyDone}
