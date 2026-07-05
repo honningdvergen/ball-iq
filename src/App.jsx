@@ -680,7 +680,8 @@ export const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
   WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
-  SerieA:"Serie A", Ligue1:"Ligue 1", Managers:"Managers", Records:"Records & Icons",
+  SerieA:"Serie A", Ligue1:"Ligue 1", SuperLig:"Süper Lig", Primeira:"Primeira Liga",
+  Managers:"Managers", Records:"Records & Icons",
   Legends:"Legends & History", Transfers:"Transfers"
 };
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
@@ -702,15 +703,17 @@ const CLUB_PACK_TO_QB = {
   Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
   Juventus: "Juventus", AcMilan: "AC Milan", Atletico: "Atlético Madrid", Dortmund: "Borussia Dortmund",
   PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
+  Napoli: "Napoli", Galatasaray: "Galatasaray", Benfica: "Benfica",
 };
 
 // League grouping for the club-quiz picker.
 const CLUB_LEAGUES = {
   Arsenal: "pl", Liverpool: "pl", ManUtd: "pl", ManCity: "pl", Chelsea: "pl", Tottenham: "pl", Newcastle: "pl",
   Barcelona: "laliga", RealMadrid: "laliga", Atletico: "laliga",
-  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea",
+  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea", Napoli: "seriea",
   BayernMunich: "bundesliga", Dortmund: "bundesliga",
   PSG: "ligue1",
+  Galatasaray: "superlig", Benfica: "primeira",
   Ajax: "other",
 };
 const CLUB_LEAGUE_SECTIONS = [
@@ -719,6 +722,8 @@ const CLUB_LEAGUE_SECTIONS = [
   { key: "seriea", label: "Serie A" },
   { key: "bundesliga", label: "Bundesliga" },
   { key: "ligue1", label: "Ligue 1" },
+  { key: "superlig", label: "Süper Lig" },
+  { key: "primeira", label: "Primeira Liga" },
   { key: "other", label: "More clubs" },
 ];
 
@@ -746,6 +751,7 @@ const CLUB_ABBR = {
   Juventus: "JUV", AcMilan: "ACM", InterMilan: "INT",
   BayernMunich: "BAY", Dortmund: "BVB",
   PSG: "PSG", Ajax: "AJA",
+  Napoli: "NAP", Galatasaray: "GAL", Benfica: "SLB",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -758,6 +764,7 @@ const CLUB_SLUG_TO_PACK = {
   "atletico-madrid": "Atletico", "bayern-munich": "BayernMunich",
   "borussia-dortmund": "Dortmund", "psg": "PSG", "inter-milan": "InterMilan",
   "juventus": "Juventus", "ac-milan": "AcMilan", "ajax": "Ajax",
+  "napoli": "Napoli", "galatasaray": "Galatasaray", "benfica": "Benfica",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1011,6 +1018,18 @@ const CLUB_PACKS = {
   },
   Newcastle: {
     name: "Newcastle", icon: "⚫", color: "#241F20",
+    questions: [],
+  },
+  Napoli: {
+    name: "Napoli", icon: "🔵", color: "#12A0D7",
+    questions: [],
+  },
+  Galatasaray: {
+    name: "Galatasaray", icon: "🟡", color: "#A90432",
+    questions: [],
+  },
+  Benfica: {
+    name: "Benfica", icon: "🔴", color: "#E32221",
     questions: [],
   },
 };
