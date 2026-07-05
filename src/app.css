@@ -2254,10 +2254,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 @media (min-width: 1024px) {
   .home-screen {
     display: grid;
-    grid-template-columns: minmax(0, 1.65fr) minmax(0, 0.9fr);
-    grid-template-areas: "main rail" "below below";
+    grid-template-columns: minmax(0, 1.62fr) minmax(0, 0.9fr);
+    /* Rail spans the RIGHT column across BOTH rows, so the full-width-feeling
+       "below" content (More modes) stays in the LEFT column under the main
+       content — matching the handoff (modes live in the left column, not a row
+       spanning under the rail). This also fixes the overlap: the sticky rail no
+       longer has a full-bleed row beneath it to travel over on scroll. */
+    grid-template-areas: "main rail" "below rail";
     column-gap: 26px;
-    row-gap: 4px;
+    row-gap: 20px;
     align-items: start;
   }
   .home-col-main { display: flex; flex-direction: column; grid-area: main; min-width: 0; }
