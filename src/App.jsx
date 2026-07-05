@@ -5637,7 +5637,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
             `new Date().toLocaleDateString()` which falsely claimed the
             policy was updated every day the user viewed it. Bump this
             string whenever the policy content materially changes. */}
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 27 June 2026</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 5 July 2026</div>
 
         <div style={{
           background: "#14161E", borderRadius: 16,
@@ -5646,7 +5646,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
             <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
-            Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads and runs no usage tracking; our website uses only privacy-friendly, cookieless analytics. We never sell or share your data.
+            Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads and runs no usage tracking. Our website (balliq.app) shows ads via Google, which uses cookies, alongside privacy-friendly cookieless analytics — but the app itself stays ad-free and cookie-free. We never sell your data.
           </p>
         </div>
 
@@ -5669,14 +5669,16 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>We use Sentry to catch crashes and bugs. When something goes wrong in the app, Sentry receives a stack trace, the browser version, and a short trail of recent actions ("breadcrumbs") — no question text, no personal data. We strip your email and auth tokens from every event before it leaves your device. We use this only to fix bugs, never for tracking.</p>
 
         <h2 style={privacyH2}>4. Analytics &amp; ads</h2>
-        <p style={privacyP}>The {APP_NAME} <strong>app</strong> uses no analytics tools, tracking pixels, or advertising SDKs. It does not measure how you use it, shows no ads, and works with no ad networks.</p>
-        <p style={privacyP}>Our <strong>website (balliq.app)</strong> uses Vercel Web Analytics — a privacy-friendly, cookieless analytics service — to understand aggregate traffic, such as how many people visit a page. It sets no cookies, does not track you across other websites, and does not identify you personally. The website does not currently display ads; if that changes, we will update this policy first.</p>
+        <p style={privacyP}>The {APP_NAME} <strong>app</strong> uses no analytics tools, tracking pixels, or advertising SDKs. It does not measure how you use it, shows no ads, and works with no ad networks. This is enforced in code: the ad and analytics scripts are blocked from ever loading inside the app.</p>
+        <p style={privacyP}>Our <strong>website (balliq.app)</strong> uses Vercel Web Analytics — a privacy-friendly, cookieless analytics service — to understand aggregate traffic, such as how many people visit a page. It sets no cookies, does not track you across other websites, and does not identify you personally.</p>
+        <p style={privacyP}>Our <strong>website (balliq.app)</strong> also displays ads through <strong>Google AdSense</strong>. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. If you are in the EEA, UK, or Switzerland, you will be asked for your consent choices through a Google-certified consent prompt before any personalised ads are shown, and you can change your choice at any time. You can review how Google uses data from sites that use its services at <span style={{color:"#58CC02"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"#58CC02"}}>adssettings.google.com</span>.</p>
 
         <h2 style={privacyH2}>5. Third-party services we use</h2>
         <ul style={{paddingLeft: 20, marginBottom: 12}}>
           <li style={privacyLi}><strong>Supabase (database, auth, storage):</strong> When you sign in, your email, username, profile data, game results and avatar image are stored on Supabase servers (EU region). Supabase is our data processor.</li>
           <li style={privacyLi}><strong>Sentry (error monitoring):</strong> Crash reports are sent to Sentry with email and tokens scrubbed before transmission.</li>
           <li style={privacyLi}><strong>Vercel (hosting + website analytics):</strong> Serves {APP_NAME} over HTTPS and may log standard request data (IP, timestamp, URL) for operational purposes. On our website (balliq.app) we also use Vercel Web Analytics for aggregate, cookieless usage metrics — no cookies, no cross-site tracking, no personal identification.</li>
+          <li style={privacyLi}><strong>Google AdSense (website ads):</strong> Our website (balliq.app) displays ads through Google AdSense. Google and its ad partners may set cookies or similar identifiers to serve, measure, and (with consent) personalise ads. This runs on the website only — never in the app. See policies.google.com/technologies/ads.</li>
           <li style={privacyLi}><strong>Google Fonts:</strong> We load the Inter and JetBrains Mono fonts from fonts.googleapis.com. Google may log your IP address when fonts are fetched.</li>
           <li style={privacyLi}><strong>Cropper.js (CDN):</strong> When you upload a profile picture, we load an image-cropping library from cdnjs.cloudflare.com. The CDN provider may log your IP address.</li>
         </ul>
