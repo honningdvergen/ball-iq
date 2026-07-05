@@ -8465,10 +8465,15 @@ function AppInner() {
     goHome();
   }, [screen, stage1RoomCode, goHome]);
   const challengeFriend = useCallback((friend) => {
-    // No native invite flow yet — drop the challenger into the online lobby
-    // with a toast hinting at the friend's name so they can share the code.
-    showToast(friend ? `Share your room code with ${friend.username}` : "Online lobby");
+    // Seamless challenge: auto-create a room and drop the challenger straight
+    // into the lobby AS HOST (the same one-tap path the Home/Online "Create
+    // room" buttons use), then they share the invite link from there. Previously
+    // this called startMode("online") WITHOUT the auto-create flag, which landed
+    // on the old create/join chooser screen — the "outdated screen" bug.
+    // (True push-invite of a specific friend awaits the notification center.)
+    setOnlineAutoCreate(true);
     startMode("online");
+    showToast(friend?.username ? `Room ready — share the invite link with ${friend.username}` : "Room ready — share the invite link");
   }, [showToast, startMode]);
   // Friend profile screen — full-screen overlay, reachable from any tappable
   // friend row in FriendsSection (Your friends list + Friends leaderboard).
