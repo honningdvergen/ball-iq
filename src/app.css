@@ -663,7 +663,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .rc-title{animation:sIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.05s both;}
 .rc-title{font-size:24px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
 .rc-sub{font-size:13px;color:var(--t2);}
-.score-big{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-2px;}
+.score-big{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
 .score-pct{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
 .sbox{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;animation:sboxIn 0.4s cubic-bezier(0.22,1,0.36,1) both;}
@@ -683,7 +683,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .iq-ring.great{animation:iqPulse 1.5s ease infinite;}
 @keyframes iqPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 .iq-ring-inner{width:120px;height:120px;border-radius:50%;background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.iq-num{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;letter-spacing:-2px;color:var(--text);}
+.iq-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;letter-spacing:-0.02em;color:var(--text);}
 .iq-sub{font-size:9px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.2px;margin-top:2px;}
 .iq-label{font-size:21px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
@@ -1465,7 +1465,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-result-side{position:relative;padding:18px 10px;background:var(--s1);border:1px solid var(--border);border-radius:16px;text-align:center;}
 .og-result-side.winner{border-color:var(--accent);background:rgba(88,204,2,0.08);box-shadow:0 4px 18px rgba(88,204,2,0.15);}
 .og-result-name{font-size:13px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.og-result-score{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
+.og-result-score{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
 .og-result-side.winner .og-result-score{color:var(--accent);}
 .og-result-divider{font-size:22px;font-weight:900;color:var(--t3);}
 
@@ -2029,7 +2029,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     border: 1px solid #1D2A20;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
-  .rd-badge-score { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 58px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .rd-badge-score { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 58px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
   .rd-badge-total { font-size: 30px; color: #6E7180; }
   .rd-badge-tier { font-size: 13px; font-weight: 700; color: #8AE042; margin-top: 8px; }
   .rd-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 26px; }
@@ -2383,7 +2383,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-rating-pencil { flex: 0 0 auto; color: var(--t3); }
   .hr-rating-lvl { display: inline-flex; align-items: center; gap: 6px; margin-top: 5px; padding: 3px 9px; border-radius: 999px; background: rgba(255,193,7,0.1); font-size: 11.5px; font-weight: 700; color: #FFC107; }
   .hr-rating-score { display: flex; align-items: flex-end; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #1D2A20; }
-  .hr-rating-num { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 52px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; }
+  .hr-rating-num { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 52px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; }
   .hr-rating-scap { padding-bottom: 5px; }
   .hr-rating-overall { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: var(--t3); }
   .hr-rating-tier { font-size: 19px; font-weight: 900; letter-spacing: -0.01em; color: #8AE042; text-transform: uppercase; }
@@ -2391,7 +2391,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-rating-view:hover { background: #14161E; }
 
   .hr-streak-head { display: flex; align-items: center; gap: 12px; }
-  .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
+  .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
   .hr-flame { font-size: 24px; }
   .hr-streak-meta { display: flex; flex-direction: column; gap: 2px; }
   .hr-streak-label { font-size: 13px; font-weight: 700; color: var(--t1); }
@@ -2527,7 +2527,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-name-pencil { flex: 0 0 auto; margin-left: 8px; color: #6E7180; }
   .pd-levelpill { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 5px 11px; border-radius: 999px; background: rgba(255,193,7,0.1); font-size: 12px; font-weight: 700; color: #FFC107; }
   .pd-score { flex: 0 0 auto; text-align: right; }
-  .pd-overall-num { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 60px; font-weight: 800; line-height: 0.85; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .pd-overall-num { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 60px; font-weight: 800; line-height: 0.85; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
   .pd-overall-cap { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #6E7180; margin-top: 4px; }
   .pd-tier { font-size: 18px; font-weight: 900; color: #8AE042; }
   .pd-coldstart { font-size: 13px; font-weight: 600; color: var(--t3); line-height: 1.4; max-width: 160px; margin-left: auto; }
