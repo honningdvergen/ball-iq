@@ -890,6 +890,45 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
     };
   }
 
+  // ── Head-to-head scoreboard: 1v1 is the overwhelmingly common Online case,
+  //    and a plain ranked list read as flat/"dull". For exactly two players we
+  //    render a big VS board (avatars + the mode metric + winner accent); 3+
+  //    players keep the podium list below. All from existing player fields —
+  //    no new data. ──
+  const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
+  const twoPlayer = sorted.length === 2;
+  const meP = myUserId ? sorted.find(p => p.user_id === myUserId) : sorted[0];
+  const oppP = twoPlayer ? sorted.find(p => p !== meP) : null;
+  const metricOf = (p) => isSurvival ? (p?.eliminated_at_q == null ? Infinity : p.eliminated_at_q) : isHotStreak ? (p?.best_streak || 0) : (p?.score || 0);
+  const metricText = (p) => isSurvival ? (p?.eliminated_at_q == null ? '❤️' : `Q${p.eliminated_at_q + 1}`) : isHotStreak ? `${p?.best_streak ?? 0}` : `${p?.score ?? 0}`;
+  const metricUnit = isSurvival ? 'survived' : isHotStreak ? 'streak' : 'points';
+  const boardDraw = twoPlayer && (survivalDraw || metricOf(meP) === metricOf(oppP));
+  const iWonBoard = twoPlayer && !boardDraw && metricOf(meP) > metricOf(oppP);
+  const vsSide = (p, mine, won) => (
+    <div style={{
+      flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+      padding: '20px 10px', borderRadius: 16,
+      background: won ? 'rgba(88,204,2,0.08)' : 'var(--s1)',
+      border: `1.5px solid ${won ? 'rgba(88,204,2,0.5)' : 'var(--border)'}`,
+      opacity: (!won && !boardDraw && !mine) ? 0.9 : 1,
+    }}>
+      <span style={{
+        width: 62, height: 62, borderRadius: '50%', flex: '0 0 auto',
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 30,
+        background: 'var(--s2)',
+        border: `2.5px solid ${won ? 'var(--accent)' : mine ? 'rgba(88,204,2,0.4)' : 'var(--border)'}`,
+        boxShadow: won ? '0 0 0 5px rgba(88,204,2,0.12)' : 'none',
+      }}>{p?.avatar || '⚽'}</span>
+      <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {mine ? 'You' : (p?.name || 'Player')}
+      </span>
+      <span style={{ fontFamily: MONO, fontSize: 40, fontWeight: 800, lineHeight: 1, color: won ? '#8AE042' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
+        {metricText(p)}
+      </span>
+      <span style={{ fontSize: 10.5, color: 'var(--t3)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{metricUnit}</span>
+    </div>
+  );
+
   return (
     <div className="screen">
       {/* Multiplayer winners deserve the same celebration solo wins get.
@@ -916,7 +955,18 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
           )}
         </div>
 
-        {/* Final scores list */}
+        {/* Head-to-head VS board (1v1, the common case) or the ranked list (3+). */}
+        {twoPlayer && meP && oppP && (
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: 12, marginBottom: 24 }}>
+            {vsSide(meP, true, iWonBoard)}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>
+              <span style={{ fontFamily: MONO, fontSize: 16, fontWeight: 800, color: 'var(--t3)' }}>VS</span>
+            </div>
+            {vsSide(oppP, false, !iWonBoard && !boardDraw)}
+          </div>
+        )}
+        {/* Final scores list (3+ players) */}
+        {!twoPlayer && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
           <div style={{
             fontSize: 11, color: 'var(--t2)',
@@ -975,6 +1025,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
             </div>
           )}
         </div>
+        )}
 
         {onRematch && (
           <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
