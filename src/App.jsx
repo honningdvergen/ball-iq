@@ -4690,6 +4690,13 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         )}
       </div>
 
+      {/* desktop-web-refresh (Friends #06 lean): two-column reflow at >=1024.
+          The wrappers are display:contents on mobile (no box → byte-identical
+          single-column flow) and a grid at desktop: your record (left) + the
+          private-match actions (right). Leaderboard deferred to a bigger user
+          base, so the left column holds the app's real head-to-head record. */}
+      <div className="online-cols">
+      <div className="online-col-a">
       {/* VS hero card */}
       <div style={{borderRadius:22,background:"var(--s1)",border:"1px solid var(--border)",padding:"22px 18px",boxShadow:"0 4px 16px rgba(0,0,0,0.35)",marginBottom:16}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:22}}>
@@ -4725,6 +4732,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         </div>
       </div>
 
+      </div>{/* /.online-col-a */}
+      <div className="online-col-b">
       {/* Flat green CTA (no 3D rim per design spec) + secondary join */}
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#07240D"}}>Create Room</span>
@@ -4797,6 +4806,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         </div>
         <button onClick={() => startMode("local")} style={{padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
+      </div>{/* /.online-col-b */}
+      </div>{/* /.online-cols */}
     </div>
   );
 }
