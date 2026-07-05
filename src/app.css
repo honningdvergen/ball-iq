@@ -644,6 +644,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    display:contents (no box, byte-identical mobile flow); becomes a grid at
    >=1024. Standalone killswitch resets to contents. */
 .online-cols,.online-col-a,.online-col-b{display:contents;}
+/* .mp-cap wraps the online entry/lobby/gameplay/results at their mount so the
+   sparse MP screens sit in a centered comfortable column at desktop instead of
+   stretching full-width. display:contents on mobile → byte-identical. */
+.mp-cap{display:contents;}
 .streak-n{font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;}
 .streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
 .streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
@@ -2003,6 +2007,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .qd-play .next-btn-primary { position: static; width: auto; min-width: 240px; margin: 30px auto 0; padding: 14px 40px; border-radius: 14px; box-shadow: 0 10px 26px -8px rgba(88,204,2,0.6); }
 
   /* ══ Friends #06 lean — Online-tab two-column reflow ══ */
+  /* The Online/Friends hub is sparse (a VS record card + create/join) — cap it
+     to a comfortable column so it doesn't stretch into near-empty full-width
+     cards on wide monitors (unlike Home, which has rich content that fills). */
+  .online-hub { max-width: 1200px; margin-left: 0; margin-right: auto; }
+  /* Online entry / lobby / MP gameplay / results — focused screens, centered in
+     a comfortable column so they don't stretch full-width on wide monitors. */
+  .mp-cap { display: block; max-width: 920px; margin-left: auto; margin-right: auto; }
   .online-cols { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 22px; align-items: start; margin-top: 4px; }
   .online-col-a, .online-col-b { display: block; min-width: 0; }
 
@@ -2722,6 +2733,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .rd-desktop { display: none !important; }
   /* desktop-web-refresh (Friends #06 lean): installed PWA keeps the mobile Online tab. */
   .online-cols, .online-col-a, .online-col-b { display: contents !important; }
+  .online-hub { max-width: none !important; }
+  .mp-cap { display: contents !important; }
   /* desktop-web-refresh (Settings #07): installed PWA keeps the mobile settings.
      Critically restore the back button — the desktop rail that replaces it is
      killswitched in standalone, so without this a PWA would have no way back. */

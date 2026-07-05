@@ -4678,7 +4678,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
   }, [history]);
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
-    <div className="screen">
+    <div className="screen online-hub">
       {/* Title + win-streak pill (no local gear — the global header has one) */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
         <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Online</div>
@@ -9377,6 +9377,7 @@ function AppInner() {
 
         {/* ── ONLINE MULTIPLAYER ── */}
         {screen === "online-stage1" && (
+          <div className="mp-cap">
           <React.Suspense fallback={<div className="screen" />}>
             <OnlineEntry
               onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); }}
@@ -9394,8 +9395,10 @@ function AppInner() {
               onAutoCreateConsumed={() => setOnlineAutoCreate(false)}
             />
           </React.Suspense>
+          </div>
         )}
         {screen === "online-stage1-lobby" && stage1RoomCode && (
+          <div className="mp-cap">
           <React.Suspense fallback={<div className="screen" />}>
             <MultiplayerLobby
               key={stage1RoomCode}
@@ -9405,6 +9408,7 @@ function AppInner() {
               onRematch={(c) => setStage1RoomCode(c)}
             />
           </React.Suspense>
+          </div>
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
