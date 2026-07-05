@@ -23,6 +23,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './l
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
+import { registerPush, onPushTap } from './lib/push.js';
 import { maybeRequestReview } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
 import {
@@ -7874,6 +7875,27 @@ function AppInner() {
     const off = onReminderTap(() => { setScreen("home"); setTab("daily"); });
     return off;
   }, []);
+
+  // ─── 1.3 Native push (APNs) ────────────────────────────────────────────────
+  // Route a push tap: a play invite deep-links straight into the lobby with the
+  // room code; anything else lands on the Online tab (where the inbox lives).
+  // Set the router once, before registration, so a cold-launch-from-push works.
+  useEffect(() => {
+    onPushTap((data) => {
+      if (data?.type === "play_invite" && data?.code) {
+        setStage1RoomCode(String(data.code));
+        setScreen("online-stage1-lobby");
+      } else {
+        setScreen("home"); setTab("online");
+      }
+    });
+  }, []);
+
+  // Register this device's APNs token once the user is signed in (native only;
+  // no-ops on web). Fires the iOS push-permission prompt on first run.
+  useEffect(() => {
+    if (user?.id) registerPush(user.id);
+  }, [user?.id]);
 
   // Enable/disable the daily reminder. Enabling fires the OS permission prompt;
   // a denial leaves it off and points the user at iOS Settings.
