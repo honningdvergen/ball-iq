@@ -3836,7 +3836,7 @@ function ResultsCloseBtn({ onClose }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest }) {
+function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -3865,9 +3865,24 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
     ? `${result.score} in a row before missing one`
     : `${result.score} correct out of ${result.total}`;
 
+  // ── desktop-web-refresh (Results #03): values for the >=1024 card (circular
+  //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
+  //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
+  //  (display:contents→none at desktop) so it stays byte-identical. ──
+  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos", wc2026:"World Cup" };
+  const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
+  const rdDots = (() => {
+    const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
+    while (arr.length < result.total) arr.push(false); // timed-out / unanswered → miss
+    return arr.slice(0, result.total);
+  })();
+  const rdTier = isDaily ? dailyTierCopy(result.score, result.total).headline : scoreTagline(pct);
+  const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
+
   return (
     <div className="screen" style={{paddingTop:8, position:"relative"}}>
       {(isPerfect || showConfetti) && <Confetti />}
+      <div className="rd-mobile">
       <ResultsCloseBtn onClose={onHome} />
 
       {/* Final score eyebrow + huge green number + caption */}
@@ -3980,6 +3995,39 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
           </div>
         </div>
       )}
+      </div>{/* /.rd-mobile */}
+
+      {/* ── desktop-web-refresh (Results #03): centered card. display:none <1024;
+          revealed at desktop where .rd-mobile is hidden. Standalone PWA resets
+          both so installed desktop shells keep the mobile results. ── */}
+      <div className="rd-desktop">
+        <div className="rd-card">
+          <div className="rd-eyebrow">Round complete</div>
+          <div className="rd-sub">{rdSubtitle}</div>
+          <div className="rd-badge">
+            <div className="rd-badge-score">{result.score}<span className="rd-badge-total">/{result.total}</span></div>
+            <div className="rd-badge-tier">{rdTier}</div>
+          </div>
+          <div className="rd-dots" aria-hidden="true">
+            {rdDots.map((ok, i) => (
+              <span key={i} className={`rd-dot ${ok ? "ok" : "no"}`}>{ok ? "✓" : "✗"}</span>
+            ))}
+          </div>
+          <div className="rd-tiles">
+            <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">Accuracy</div></div>
+            <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">XP earned</div></div>
+            <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
+          </div>
+          <div className="rd-actions">
+            <button className="rd-btn rd-btn-primary" onClick={onRetry}>Play again</button>
+            <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
+            <button className="rd-btn rd-btn-ghost" onClick={onShare}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
+              Share
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -8657,7 +8705,7 @@ function AppInner() {
         <BiqNav
           onHomeClick={handleHomeClick}
           tab={tab}
-          active={inGame ? null : tab}
+          active={inGame || screen === "results" ? null : tab}
           setTab={setTab}
           setScreen={setScreen}
           dailyDone={dailyDone}
@@ -9290,6 +9338,9 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
+            label={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
+              : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
+              : null}
             onShare={() => (mode === "daily"
               // Daily shares route through shareDaily — the (previously
               // unwired) path that carries the balliq.app/c/ challenge link
