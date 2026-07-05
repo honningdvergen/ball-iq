@@ -7,7 +7,9 @@ Apple key already created: Key ID `83D74N8R2J`, Team ID `A99W5L256P`, bundle `ap
 ## 1. Database
 Apply the migration (Supabase dashboard → SQL editor, or `supabase db push`):
 - `supabase/migrations/v1_3_push_tokens.sql` — the `device_tokens` table + `register_device_token` RPC.
-- (The `notifications` table from `v1_3_notifications.sql` should already be live from Phase 1b — if not, apply it too.)
+- `supabase/migrations/v1_3_friend_push_notifications.sql` — friendships trigger so friend
+  requests/accepts also push (rows are inserted `read=true`: push fires, inbox stays clean).
+- (The `notifications` table from `v1_3_notifications.sql` should already be live from Phase 1b — if not, apply it FIRST.)
 
 ## 2. Edge function
 ```
@@ -47,5 +49,4 @@ Supabase dashboard → **Database → Webhooks → Create**:
 4. If nothing arrives: check the edge function logs (Supabase → Edge Functions → send-push → Logs). 400/410 responses mean bad/expired token; a JWT/`iss` error means a secret is wrong.
 
 ## Follow-ups (not in this pass)
-- **Friend-request push:** friend requests currently read live from `friendships` (no `notifications` row), so they don't push yet. A small trigger on `friendships` (insert a `friend_request` notification) will light them up — the edge fn already handles that type.
 - Web push (VAPID) if you ever want browser notifications — separate path.
