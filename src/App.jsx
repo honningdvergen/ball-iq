@@ -5517,10 +5517,11 @@ function NotifBell({ count, onClick, className, style }) {
   );
 }
 
-function NotificationCenter({ open, requests, onClose, onRespond, onOpenFriend }) {
+function NotificationCenter({ open, requests, invites = [], onClose, onRespond, onJoinInvite, onDismissInvite, onOpenFriend }) {
   const panelRef = useRef(null);
   useModalA11y({ isOpen: open, onClose, ref: panelRef });
   if (!open) return null;
+  const isEmpty = requests.length === 0 && invites.length === 0;
   return (
     <div className="notif-overlay" onClick={onClose}>
       <div ref={panelRef} tabIndex={-1} className="notif-panel" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Notifications">
@@ -5528,7 +5529,7 @@ function NotificationCenter({ open, requests, onClose, onRespond, onOpenFriend }
           <span className="notif-title">Notifications</span>
           <button className="notif-close" onClick={onClose} aria-label="Close notifications">✕</button>
         </div>
-        {requests.length === 0 ? (
+        {isEmpty ? (
           <div className="notif-empty">
             <div className="notif-empty-ic" aria-hidden="true">🔔</div>
             <div className="notif-empty-t">You're all caught up</div>
@@ -5536,6 +5537,19 @@ function NotificationCenter({ open, requests, onClose, onRespond, onOpenFriend }
           </div>
         ) : (
           <div className="notif-list">
+            {/* Play invites first — they're time-sensitive (the room is live). */}
+            {invites.map(inv => (
+              <div key={inv.id} className="notif-item">
+                <span className="notif-ava" aria-hidden="true">{inv.actor_avatar || "🎮"}</span>
+                <div className="notif-body">
+                  <div className="notif-line"><strong>{inv.actor_name || "A friend"}</strong> invited you to play</div>
+                  <div className="notif-actions">
+                    <button className="notif-btn notif-accept" onClick={() => onJoinInvite?.(inv)}>Join</button>
+                    <button className="notif-btn notif-decline" onClick={() => onDismissInvite?.(inv)}>Dismiss</button>
+                  </div>
+                </div>
+              </div>
+            ))}
             {requests.map(r => {
               const p = r.requester || {};
               return (
@@ -8547,13 +8561,16 @@ function AppInner() {
   const challengeFriend = useCallback((friend) => {
     // Seamless challenge: auto-create a room and drop the challenger straight
     // into the lobby AS HOST (the same one-tap path the Home/Online "Create
-    // room" buttons use), then they share the invite link from there. Previously
-    // this called startMode("online") WITHOUT the auto-create flag, which landed
-    // on the old create/join chooser screen — the "outdated screen" bug.
-    // (True push-invite of a specific friend awaits the notification center.)
+    // room" buttons use). Stash the friend's id so that once the room's code is
+    // known (onLobbyEnter) we fire an in-app play_invite notification to them —
+    // they'll see it in their bell/inbox with a one-tap Join. The share link in
+    // the lobby remains as a fallback for non-friends / older clients.
+    // (setPendingInviteFriendId is defined below; referenced only in the body,
+    // which runs at call time — safe, and kept out of deps to avoid a TDZ eval.)
+    setPendingInviteFriendId(friend?.id || null);
     setOnlineAutoCreate(true);
     startMode("online");
-    showToast(friend?.username ? `Room ready — share the invite link with ${friend.username}` : "Room ready — share the invite link");
+    showToast(friend?.username ? `Room ready — inviting ${friend.username}` : "Room ready — share the invite link");
   }, [showToast, startMode]);
   // Friend profile screen — full-screen overlay, reachable from any tappable
   // friend row in FriendsSection (Your friends list + Friends leaderboard).
@@ -8578,9 +8595,11 @@ function AppInner() {
   // record) and native push land in later phases alongside a generic
   // notifications table. Guests have no friendships, so this stays empty for them.
   const [notifOpen, setNotifOpen] = useState(false);
-  const [notifRequests, setNotifRequests] = useState([]);
-  const loadNotifRequests = useCallback(async () => {
-    if (!user?.id) { setNotifRequests([]); return; }
+  const [notifRequests, setNotifRequests] = useState([]);   // incoming friend requests (from friendships)
+  const [notifInvites, setNotifInvites] = useState([]);     // play invites (from notifications table)
+  const loadNotifs = useCallback(async () => {
+    if (!user?.id) { setNotifRequests([]); setNotifInvites([]); return; }
+    // Friend requests — incoming pending rows from friendships.
     try {
       const cols = "id,requester_id,requester:profiles!requester_id(id,username,avatar:avatar_id)";
       const { data } = await supabase
@@ -8591,16 +8610,28 @@ function AppInner() {
         .limit(50);
       setNotifRequests(Array.isArray(data) ? data : []);
     } catch { /* soft-fail: the bell just shows no badge */ }
+    // Play invites — unread rows from the notifications table (v1_3 migration).
+    try {
+      const { data } = await supabase
+        .from("notifications")
+        .select("id,type,actor_name,actor_avatar,payload,created_at")
+        .eq("user_id", user.id)
+        .eq("read", false)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      setNotifInvites(Array.isArray(data) ? data : []);
+    } catch { /* table may not exist yet on older deploys — soft-fail */ }
   }, [user?.id]);
-  useEffect(() => { loadNotifRequests(); }, [loadNotifRequests]);
-  // Refresh when the tab regains focus (a request may have arrived while away).
-  // Cheap indexed count query; no realtime dependency (free-tier realtime
-  // doesn't reliably deliver postgres_changes — see the Stage-1 spike notes).
+  useEffect(() => { loadNotifs(); }, [loadNotifs]);
+  // Refresh when the tab regains focus (an event may have arrived while away).
+  // Cheap indexed queries; no realtime dependency (free-tier realtime doesn't
+  // reliably deliver postgres_changes — see the Stage-1 spike notes).
   useEffect(() => {
-    const onFocus = () => loadNotifRequests();
+    const onFocus = () => loadNotifs();
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
-  }, [loadNotifRequests]);
+  }, [loadNotifs]);
+  const notifCount = notifRequests.length + notifInvites.length;
   const respondFriendRequest = useCallback(async (id, accept) => {
     setNotifRequests(prev => prev.filter(r => r.id !== id)); // optimistic
     try {
@@ -8608,10 +8639,32 @@ function AppInner() {
       showToast(accept ? "✓ Friend added" : "Request declined");
     } catch {
       showToast("Couldn't update — try again");
-      loadNotifRequests();
+      loadNotifs();
     }
-  }, [showToast, loadNotifRequests]);
-  const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifRequests(); }, [loadNotifRequests]);
+  }, [showToast, loadNotifs]);
+  // Play-invite actions. Join sets pendingJoinCode — the auto-join effect above
+  // then routes into the lobby. Both mark the notification read so it clears.
+  const joinInvite = useCallback(async (inv) => {
+    const code = inv?.payload?.code;
+    setNotifInvites(prev => prev.filter(n => n.id !== inv.id)); // optimistic
+    setNotifOpen(false);
+    try { await supabase.from("notifications").update({ read: true }).eq("id", inv.id); } catch { /* best-effort */ }
+    if (code) setPendingJoinCode(String(code).toUpperCase());
+    else showToast("This invite's room has expired");
+  }, [showToast]);
+  const dismissInvite = useCallback(async (inv) => {
+    setNotifInvites(prev => prev.filter(n => n.id !== inv.id)); // optimistic
+    try { await supabase.from("notifications").update({ read: true }).eq("id", inv.id); } catch { /* best-effort */ }
+  }, []);
+  // A specific friend can be invited to play: challengeFriend stashes their id;
+  // once the auto-created room's code is known (onLobbyEnter) we fire the invite.
+  const [pendingInviteFriendId, setPendingInviteFriendId] = useState(null);
+  const sendPlayInvite = useCallback(async (addresseeId, code) => {
+    if (!addresseeId || !code) return;
+    try { await supabase.rpc("send_play_invite", { p_addressee: addresseeId, p_code: code }); }
+    catch { /* soft-fail: the share link in the lobby still works as a fallback */ }
+  }, []);
+  const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifs(); }, [loadNotifs]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
@@ -8839,7 +8892,7 @@ function AppInner() {
           setScreen={setScreen}
           dailyDone={dailyDone}
           showToast={showToast}
-          notifCount={notifRequests.length}
+          notifCount={notifCount}
           onOpenNotifs={user ? openNotifs : undefined}
         />
         {!inGame && !(screen === "home" && tab === "home") && (
@@ -8863,7 +8916,7 @@ function AppInner() {
             )}
             {screen === "home" && (
               <div className="hdr-actions" style={{marginLeft:"auto",display:"flex",gap:8}}>
-                {user && <NotifBell count={notifRequests.length} onClick={openNotifs} style={{ background: "var(--s1)", border: "1px solid var(--border)" }} />}
+                {user && <NotifBell count={notifCount} onClick={openNotifs} style={{ background: "var(--s1)", border: "1px solid var(--border)" }} />}
                 <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")} style={{ background: "var(--s1)", border: "1px solid var(--border)" }}>⚙️</button>
               </div>
             )}
@@ -9145,7 +9198,7 @@ function AppInner() {
               onPlayChallenge={playDaily}
               onDismissChallenge={clearChallenge}
               setOnlineAutoCreate={setOnlineAutoCreate}
-              notifCount={notifRequests.length}
+              notifCount={notifCount}
               onOpenNotifs={user ? openNotifs : undefined}
             />
             </TabErrorBoundary>
@@ -9326,8 +9379,14 @@ function AppInner() {
         {screen === "online-stage1" && (
           <React.Suspense fallback={<div className="screen" />}>
             <OnlineEntry
-              onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); goHome(); setTab("online"); }}
-              onLobbyEnter={(c) => { setStage1RoomCode(c); setScreen("online-stage1-lobby"); }}
+              onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); }}
+              onLobbyEnter={(c) => {
+                setStage1RoomCode(c);
+                setScreen("online-stage1-lobby");
+                // Challenge flow: fire the play_invite to the stashed friend now
+                // that the room code exists, then clear the pending target.
+                if (pendingInviteFriendId) { sendPlayInvite(pendingInviteFriendId, c); setPendingInviteFriendId(null); }
+              }}
               defaultName={authProfile?.username || profile?.name || ""}
               autoJoinCode={pendingJoinCode}
               onAutoJoinConsumed={clearPendingJoin}
@@ -9509,8 +9568,11 @@ function AppInner() {
       <NotificationCenter
         open={notifOpen}
         requests={notifRequests}
+        invites={notifInvites}
         onClose={() => setNotifOpen(false)}
         onRespond={respondFriendRequest}
+        onJoinInvite={joinInvite}
+        onDismissInvite={dismissInvite}
         onOpenFriend={(f) => { setNotifOpen(false); openFriendProfile(f); }}
       />
     </>
