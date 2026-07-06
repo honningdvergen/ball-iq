@@ -228,4 +228,42 @@ export const LISTICLES = [
       'q_cd169c', 'q_1baa06', 'q_6a3e53', 'q_c0963c', 'q_08e349', 'q_490e08',
     ],
   },
+  {
+    // 2026-07-06: targets the spiking "world cup quiz questions and answers"
+    // cluster (GSC already shows an impression for the fifa variant). Prose is
+    // deliberately time-safe — only permanently-true tournament facts — so the
+    // page converts to evergreen nostalgia traffic after the July 19 final.
+    slug: 'world-cup-2026-quiz-questions',
+    h1: 'World Cup 2026 Quiz Questions and Answers',
+    title: 'World Cup Quiz Questions and Answers (2026) | Ball IQ',
+    description:
+      '55+ World Cup quiz questions with answers — from Uruguay 1930 to the 48-team 2026 tournament in the USA, Canada and Mexico. Free, with the story behind every answer.',
+    about: 'FIFA World Cup trivia',
+    lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, every answer explained.',
+    intro: [
+      `The summer of the 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico, with the final at MetLife Stadium in New Jersey on July 19 — is the perfect excuse to find out how much World Cup history you actually know. This is a big, hand-picked set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930 to Argentina's shoot-out win over France in Qatar in 2022.`,
+      `The set is graded from easy to hard. The warm-ups ask things any fan should get — who won in 2010, which country has lifted the trophy five times. The middle band digs into the famous moments: Maradona's 1986, the headbutt final of 2006, Germany 7-1 Brazil. And the hard end is for the obsessives — controversial penalties in extra time, golden goals, and the scorers everyone forgets. Whether you're building a pub-quiz round, testing your mates during the group stage, or just settling an argument, there's a difficulty band for it.`,
+      `Every question comes with the answer and a short explanation of the story behind it, so you learn something even on the ones you miss — that's the Ball IQ way. Play the interactive sample below free in your browser, no sign-up needed. And when you want more than one round, the full Ball IQ game is free: thousands of fact-checked questions, a World Cup category, a daily challenge and Footle, our Wordle-style daily footballer game.`,
+    ],
+    faq: [
+      { q: 'How many questions are in this World Cup quiz?', a: 'Over 55 on this page, graded easy to hard, each with the answer and a short explanation. The Ball IQ app has a full World Cup category on top of that, plus thousands of questions across other competitions.' },
+      { q: 'Does it cover the 2026 World Cup?', a: 'The 2026 tournament — the first with 48 teams, hosted by the USA, Canada and Mexico with the final at MetLife Stadium on July 19, 2026 — is the occasion, but the questions cover all of World Cup history, so the quiz never goes stale.' },
+      { q: 'Can I use these for a pub quiz?', a: 'Absolutely — that’s what the difficulty grading is for. Take ten easy ones for a warm-up round and ten hard ones for the tie-breaker, and the explanations double as the quizmaster’s answer notes.' },
+      { q: 'Is it free?', a: 'Yes — read and play everything on this page free in your browser with no sign-up. The free Ball IQ app adds the full question bank, daily challenges and live multiplayer.' },
+    ],
+    // Curated 2026-07-06 from the wc2026-tagged, hint-bearing, fact-checked
+    // pool (historical questions only — nothing that references 2026 results).
+    questionIds: [
+      'q_6a89c9', 'q_1d0d44', 'q_8b2c96', 'q_94bd1f', 'q_91885b', 'q_daec22',
+      'q_4e8571', 'q_6e1c7f', 'q_54d598', 'q_c57cdf', 'q_a71513', 'q_e64f49',
+      'q_91f758', 'q_e268d2', 'q_81df70', 'q_5a4947', 'q_05402a', 'q_167a08',
+      'q_c13e37', 'q_2598ad', 'q_e56652', 'q_dbf430', 'q_8291b6', 'q_79e93e',
+      'q_d516d2', 'q_3e6f2c', 'q_ae4e7e', 'q_77bde8', 'q_644bb4', 'q_ed5b17',
+      'q_2423c6', 'q_1e635a', 'q_16a635', 'q_e0ce8a', 'q_58c84a', 'q_4b68dd',
+      'q_2bd2a8', 'q_bc44c2', 'q_0e64df', 'q_b6cbaa', 'q_ea9ba9', 'q_e86d23',
+      'q_149194', 'q_a1996c', 'q_864355', 'q_919497', 'q_5a274f', 'q_bd10c6',
+      'q_066e80', 'q_57fa25', 'q_02acbb', 'q_5dde99', 'q_d8cb2f', 'q_0c0f40',
+      'q_1ba67b', 'q_ead8d3', 'q_079e01', 'q_2c1747', 'q_c35d5d', 'q_3862ba',
+    ],
+  },
 ];
