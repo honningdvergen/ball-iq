@@ -116,11 +116,13 @@ const CLUB_BADGE = {
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
   'la-liga': '🇪🇸', 'serie-a': '🇮🇹', bundesliga: '🇩🇪', euros: '🇪🇺',
+  'ligue-1': '🇫🇷', 'super-lig': '🇹🇷', 'primeira-liga': '🇵🇹',
   'football-records': '📊', legends: '🏆', managers: '🧠',
 };
 const CAT_KIND = {
   'world-cup': 'Tournament quiz', 'champions-league': 'Tournament quiz', euros: 'Tournament quiz',
   'premier-league': 'League quiz', 'la-liga': 'League quiz', 'serie-a': 'League quiz', bundesliga: 'League quiz',
+  'ligue-1': 'League quiz', 'super-lig': 'League quiz', 'primeira-liga': 'League quiz',
   'football-records': 'Quiz', legends: 'Quiz', managers: 'Quiz',
 };
 
@@ -512,6 +514,7 @@ function footer() {
 const QUIZ_DEEPLINK_SLUGS = new Set([
   'world-cup', 'premier-league', 'champions-league',
   'la-liga', 'serie-a', 'bundesliga', 'euros',
+  'ligue-1', 'super-lig', 'primeira-liga',
 ]);
 
 // League category → its clubs' page slugs, for topical cross-links (each league
@@ -521,6 +524,9 @@ const CAT_SLUG_TO_CLUB_SLUGS = {
   'la-liga': ['barcelona', 'real-madrid', 'atletico-madrid'],
   'serie-a': ['juventus', 'inter-milan', 'ac-milan', 'napoli'],
   'bundesliga': ['bayern-munich', 'borussia-dortmund'],
+  'ligue-1': ['psg'],
+  'super-lig': ['galatasaray'],
+  'primeira-liga': ['benfica'],
 };
 
 // ── per-category page ─────────────────────────────────────────────────────────

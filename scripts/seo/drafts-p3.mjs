@@ -179,4 +179,109 @@ export const P3_CATEGORIES = [
       { q: 'Is the Euros quiz free to play?', a: 'Yes — play the sample free in your browser, or get the Ball IQ app for the full set.' },
     ],
   },
+
+  {
+    "cat": "Ligue1",
+    "slug": "ligue-1",
+    "name": "Ligue 1",
+    "h1": "Ligue 1 Quiz",
+    "title": "Ligue 1 Quiz — French Football Trivia & Answers | Ball IQ",
+    "description": "Free Ligue 1 quiz with explained answers — PSG's dominance, Marseille 1993, Zidane, Mbappé, Le Classique and the history of French football.",
+    "about": "Ligue 1",
+    "sample": 20,
+    "intro": [
+      "French football is the game's great production line — the league that gave the world Michel Platini, Jean-Pierre Papin and Kylian Mbappé, and where Zinedine Zidane learned his trade at Cannes and Bordeaux — and this free Ligue 1 quiz covers all of it. Paris Saint-Germain's era of dominance and Le Classique, their ferocious rivalry with Marseille that splits the country between the capital and the south. The historic greens of Saint-Étienne. Lyon's dynasty, Monaco's golden generations, and the outsiders who gate-crashed the title race when nobody gave them a chance. Whether you follow the modern superclub or the deep history, this is the category that tests both.",
+      "It spans every defining era. Saint-Étienne ruled the 1960s and 70s, and their ten titles stood as the benchmark for decades — until PSG's Qatari-era machine swept past them; as of the end of the 2025-26 season, Paris hold a record 14, including five in a row. In between came Marseille's 1993 European Cup, the first won by any French club, Lyon's unprecedented seven consecutive titles from 2002 to 2008, Montpellier's fairy-tale 2012 crown, Monaco dethroning PSG in 2017 behind a teenage Kylian Mbappé, and Lille doing it again in 2021. And the PSG story kept growing: Zlatan Ibrahimović's swagger, Neymar's world-record €222m arrival, Lionel Messi's two seasons in Paris, Mbappé leaving for Real Madrid in 2024 as the club's all-time top scorer — and, at last, the Champions League in 2025, thrashing Inter 5-0 in Munich, then retained on penalties against Arsenal in 2026.",
+      "Questions cover champions and top scorers, famous Classiques, record transfers and the players who made the league a talent factory — from easy openers about which club has won Ligue 1 the most to hard ones about specific title races, European nights and where the legends began. Difficulty builds from casual to genuinely deep, so a new fan and a lifelong Ligue 1 obsessive both get a real test.",
+      "As with every Ball IQ quiz, each answer comes with a short explanation, so even the questions you miss teach you something about French football. Play the free sample below, then open the Ball IQ app for the full Ligue 1 bank plus daily challenges."
+    ],
+    "faq": [
+      {
+        "q": "Which club has won Ligue 1 the most times?",
+        "a": "Paris Saint-Germain, with a record 14 titles as of the end of the 2025-26 season — including five in a row. Saint-Étienne and Marseille are next with ten each; Saint-Étienne's total stood as the record for decades before PSG's modern dominance."
+      },
+      {
+        "q": "Has a French club ever won the Champions League?",
+        "a": "Yes — Marseille were the first, beating AC Milan 1-0 in the 1993 final. They remained the only French winner for over three decades, until PSG beat Inter 5-0 in the 2025 final and then retained the trophy against Arsenal in 2026."
+      },
+      {
+        "q": "Is the Ligue 1 quiz free to play?",
+        "a": "Yes — play the sample free in your browser, or get the Ball IQ app for the full Ligue 1 question bank plus daily challenges."
+      },
+      {
+        "q": "How hard are the questions?",
+        "a": "They build from easy — recent champions, famous names — to genuinely hard questions about specific seasons, transfers and the deeper corners of French football history, so every level of fan gets tested."
+      }
+    ]
+  },
+
+  {
+    "cat": "SuperLig",
+    "slug": "super-lig",
+    "name": "Süper Lig",
+    "h1": "Süper Lig Quiz",
+    "title": "Süper Lig Quiz — Turkish Football Trivia & Answers | Ball IQ",
+    "description": "Free Süper Lig quiz with explained answers — Galatasaray, Fenerbahçe, Beşiktaş, Trabzonspor, the Intercontinental Derby and Turkish football history.",
+    "about": "Süper Lig",
+    "sample": 20,
+    "intro": [
+      "Turkish football is played at a temperature few leagues can match, and this free Süper Lig quiz covers the clubs, players and rivalries that make it burn. The Istanbul Big Three — Galatasaray, Fenerbahçe and Beşiktaş — have divided the city and the championship between them for generations, with Trabzonspor from the Black Sea coast standing as the historic fourth power. At the heart of it all is the Intercontinental Derby, Galatasaray against Fenerbahçe, the only great club fixture that spans two continents — one side of the Bosphorus in Europe, the other in Asia. If you can name the title winners, the derby heroes and the foreign stars who made Istanbul home, this category was built for you.",
+      "The history rewards knowing. Galatasaray top the honours list with a record 26 league titles after clinching a fourth in a row in 2025-26, and in 2000 they won the UEFA Cup — beating Arsenal on penalties in Copenhagen to claim the first major European trophy in Turkish football. The league has always pulled in stars: Gheorghe Hagi running Galatasaray's midfield in the late 1990s, Didier Drogba and Wesley Sneijder arriving in 2013, and José Mourinho taking charge of Fenerbahçe in 2024. Homegrown legends loom just as large — Hakan Şükür's 249 goals remain the Süper Lig's all-time scoring record. And the quiz remembers the upsets too: Bursaspor's stunning 2010 title, as only the fifth club ever to win the league, and Trabzonspor ending a 38-year wait for the championship in 2021-22.",
+      "The questions cover champions and top scorers, famous derbies, European campaigns and the transfers that stopped Istanbul in its tracks. Easy ones ask about recent title winners and the biggest names to wear the shirts; harder ones dig into specific seasons, title races and the club records only the diehards carry around — which season broke the Istanbul monopoly, who led Trabzonspor back to the summit, which years belonged to which club. Difficulty climbs from casual to genuinely hard, so whether you follow the league week to week or just know the famous chapters, there's a level that will test you. It's a category for fans who understand that in Turkey, football is never just football.",
+      "As with every Ball IQ quiz, each answer comes with a short explanation — the context behind the fact — so even the questions you miss become things you'll remember for the next derby debate. Play the free sample below, right in your browser. When you want more, the full Süper Lig bank lives in the free Ball IQ app for iPhone, alongside daily challenges and real-time multiplayer, where you can put a mate's Turkish football knowledge to the test head-to-head."
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Süper Lig titles?",
+        "a": "Galatasaray, with a record 26 championships after winning the 2025-26 title — their fourth in a row. Fenerbahçe are next with 19, ahead of Beşiktaş on 16."
+      },
+      {
+        "q": "Who is the Süper Lig's all-time top scorer?",
+        "a": "Hakan Şükür, with 249 league goals — most of them for Galatasaray, where he won eight league titles and the 2000 UEFA Cup, the first major European trophy won by a Turkish club."
+      },
+      {
+        "q": "Is the Süper Lig quiz free?",
+        "a": "Yes — play the sample free in your browser, or get the Ball IQ app for the full Süper Lig question bank plus daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Süper Lig quiz?",
+        "a": "It builds from easy to hard — early questions cover recent champions and famous names, while later ones dig into specific seasons, records and derby history. Every answer is explained, so you learn something even when you miss."
+      }
+    ]
+  },
+
+  {
+    "cat": "Primeira",
+    "slug": "primeira-liga",
+    "name": "Primeira Liga",
+    "h1": "Primeira Liga Quiz",
+    "title": "Primeira Liga Quiz — Portuguese Football Trivia & Answers | Ball IQ",
+    "description": "Free Primeira Liga quiz with explained answers — Benfica, Porto, Sporting, Eusébio, the Guttmann curse and Portugal's great talent factory.",
+    "about": "Primeira Liga",
+    "sample": 20,
+    "intro": [
+      "Portuguese football has punched far above its weight for as long as the game has been played, and this free Primeira Liga quiz covers the league that made it possible. It's a championship ruled by the Big Three — Benfica, with a record 38 titles as of the end of 2025-26, Porto, champions again that season, and Sporting CP — and famously closed to everyone else: only twice in nearly a century has an outsider been crowned, Belenenses in 1946 and Boavista in 2001. But it's also football's great talent factory, the league where Eusébio, Luís Figo and Cristiano Ronaldo announced themselves before conquering the world. If you can tell your Estádio da Luz from your Estádio do Dragão, this is your category.",
+      "It runs through the eras that built the league's legend. Béla Guttmann's Benfica won back-to-back European Cups in 1961 and 1962 — the second with a young Eusébio scoring twice against Real Madrid — before Guttmann left in a pay dispute and, so the story goes, cursed the club never to win another European trophy; more than sixty years and a string of lost finals later, it still hasn't lifted one. Porto answered with European Cups of their own in 1987 and 2004, the latter the crowning act of José Mourinho's spell, a year after he'd won the 2003 UEFA Cup. And Sporting's 2020-21 title ended a 19-year wait under Rúben Amorim — the coach whose success in Lisbon later carried him to Manchester United — before Porto reclaimed the crown in 2025-26.",
+      "The questions cover champions, derbies and European nights — the Lisbon derby between Benfica and Sporting, O Clássico when Porto come to town — and they lean hard into the league's role as football's great selling shop: Ronaldo's Sporting debut in 2002, Figo emerging from that same academy, João Félix's €126m move to Atlético Madrid in 2019, Enzo Fernández leaving Benfica for Chelsea for €121m — then a British record — in January 2023, and Darwin Núñez heading to Liverpool. There's room for the curiosities too, like Braga's extraordinary stadium carved into the face of a quarry for Euro 2004. Difficulty builds from easy openers to genuinely hard questions about specific seasons, fees and finals, so casual fans and Portuguese-football diehards both get a proper test.",
+      "As with every Ball IQ quiz, each answer comes with a short explanation — the year an outsider last broke the duopoly, why the Guttmann story refuses to die, which club sold which wonderkid and for how much — so even the questions you miss become facts you keep. That's the point of the format: it settles arguments and starts better ones. Play the free sample below in your browser, no sign-up needed, then get the free Ball IQ app for the full Primeira Liga bank, plus daily challenges and multiplayer to test your friends."
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Primeira Liga titles?",
+        "a": "Benfica, with a record 38 as of the end of the 2025-26 season — ahead of Porto's 31 and Sporting CP's 21. Only Belenenses (1946) and Boavista (2001) have ever won the title outside the Big Three."
+      },
+      {
+        "q": "Who won the Primeira Liga in 2025-26?",
+        "a": "Porto — their 31st title, sealed with two matches to spare, ending Sporting CP's back-to-back championship run of 2023-24 and 2024-25."
+      },
+      {
+        "q": "Is the Primeira Liga quiz free?",
+        "a": "Yes — the sample is free in your browser, and the full bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Primeira Liga quiz?",
+        "a": "It starts with easy openers about the Big Three and recent champions, then climbs to hard questions on specific seasons, transfer fees and European finals — built so both casual fans and diehards get tested."
+      }
+    ]
+  },
 ];
