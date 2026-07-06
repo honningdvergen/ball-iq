@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v7';
+const CACHE_VERSION = 'balliq-v8';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 
@@ -23,6 +23,16 @@ const APP_SHELL = [
   '/',
   '/index.html',
 ];
+
+// Build-time precache manifest — scripts/gen-sw-precache.mjs replaces the empty
+// array in dist/sw.js with every hashed /assets/* file of the deploy. Without
+// this, the install visit cached zero JS/CSS (SW registers after load, assets
+// were fetched uncontrolled), so an installed PWA opened offline white-screened
+// until its SECOND full online load. Because the manifest hashes change per
+// deploy, sw.js bytes change → the new SW installs and precaches the new
+// assets BEFORE activating, which also closes the fresh-HTML/stale-assets gap.
+// Stays [] in dev (source file) — behaviour there is unchanged.
+const PRECACHE_MANIFEST = [];
 
 // Origins we must NEVER cache — auth, realtime and API calls always go network.
 const NEVER_CACHE_HOSTS = [
@@ -38,7 +48,14 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then((cache) => cache.addAll(APP_SHELL).catch(() => { /* allow partial */ }))
+      .then((cache) =>
+        cache.addAll(APP_SHELL)
+          .catch(() => { /* allow partial */ })
+          // Precache each asset individually (addAll is all-or-nothing; one 404
+          // must not void the whole install). Failures fall back to the
+          // opportunistic on-fetch caching path.
+          .then(() => Promise.allSettled(PRECACHE_MANIFEST.map((u) => cache.add(u))))
+      )
       .then(() => self.skipWaiting())
   );
 });

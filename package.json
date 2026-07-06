@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "lint": "eslint src",
-    "build": "eslint src --quiet && vite build && node scripts/gen-seo-pages.mjs",
+    "build": "eslint src --quiet && vite build && node scripts/gen-seo-pages.mjs && node scripts/gen-sw-precache.mjs",
     "preview": "vite preview",
     "publish-review": "node scripts/publish-review.mjs",
     "publish-review:dry": "node scripts/publish-review.mjs --dry-run",

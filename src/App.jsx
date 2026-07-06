@@ -769,6 +769,7 @@ const CLUB_SLUG_TO_PACK = {
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
   "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
+  "super-lig": "SuperLig", "primeira-liga": "Primeira",
   "champions-league": "UCL", "world-cup": "WorldCup", "euros": "Euros",
 };
 
@@ -4843,7 +4844,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         <span style={{fontSize:20}}>👥</span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
-          <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 8 players.</div>
+          <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 6 players.</div>
         </div>
         <button onClick={() => startMode("local")} style={{padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>

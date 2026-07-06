@@ -468,7 +468,7 @@ const MODES = [
 
 const FAQS = [
   { q: 'Is Ball IQ free?', a: 'Yes. Download and play for free — guests can jump straight into solo and local games, no account needed.' },
-  { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online 1v1, save your streak, and build your profile card and leaderboard rank.' },
+  { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the footballer or manager's surname in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
   { q: 'Where can I play?', a: 'On iPhone via the App Store, or instantly in your browser — on Android, desktop, anywhere — at balliq.app. A native Android app is on the way; your progress follows your account across all of them.' },
@@ -569,7 +569,7 @@ export default function MarketingHome() {
             <p style={bodyStyle}>Match up with up to eight players online, or pass and play locally — same questions, live scores, and a podium at the final whistle.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
               <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}>🌐 Online · up to 8</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>👥 Local 1v1</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>👥 Local · up to 6</span>
             </div>
           </div>
         </Reveal>
