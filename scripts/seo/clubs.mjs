@@ -553,5 +553,101 @@ export const CLUBS = [
         "a": "It ranges from easy (which club is famous for Total Football?) to hard (who scored the winner in the 1995 final, or which season did Ajax reach the Champions League semi-final?). The mix means casual fans and lifelong supporters both get a real test."
       }
     ]
-  }
+  },
+  {
+    "club": "Napoli",
+    "slug": "napoli",
+    "name": "Napoli",
+    "h1": "Napoli Quiz",
+    "title": "Napoli Quiz — Partenopei Trivia Questions & Answers | Ball IQ",
+    "description": "Free Napoli quiz with explained answers — Maradona's scudetti, the 1989 UEFA Cup, Spalletti's 2023 title and Conte's 2025 triumph. Play in your browser.",
+    "intro": [
+      "Napoli were founded in 1926 and have spent a century carrying an entire city on their back — the one club that matters in Naples, playing in the sky blue of the bay beneath Vesuvius. This free Napoli quiz spans the whole story: the decades of longing, the seven seasons when Diego Maradona made the San Paolo the centre of the football world, the 33-year wait that followed him out the door, and the astonishing modern run that delivered two more scudetti in three seasons under Luciano Spalletti and Antonio Conte. Four league titles as of 2026, a UEFA Cup, a number 10 shirt retired in Maradona's honour and a stadium renamed after him — few clubs compress this much drama into one history, and none celebrate quite like Naples does. If you know why the ground is no longer called the San Paolo, this is your quiz.",
+      "The defining nights are all in here. 1987, when Maradona dragged Napoli to the first scudetto in the club's history and added the Coppa Italia for a double. The 1989 UEFA Cup, their first major European trophy — a 2-1 first-leg win over Stuttgart at the San Paolo with Maradona and Careca on the scoresheet, then a 3-3 draw in Germany to take it 5-4 on aggregate. The 1990 run-in, when Napoli pipped Milan by two points for a second title. Then the long silence, broken on 4 May 2023 by Victor Osimhen's second-half equaliser at Udinese — a 1-1 draw that sealed the third scudetto with five games to spare, 33 years after the last. And 23 May 2025, when Scott McTominay — that season's Serie A MVP — and Romelu Lukaku beat Cagliari 2-0 to clinch a fourth, one point ahead of Inter.",
+      "Expect the full spread of topics. Transfers run from the then-world-record fee that brought Maradona from Barcelona in 1984 to the modern churn: Khvicha Kvaratskhelia's €70m move to Paris Saint-Germain in January 2025, Victor Osimhen's €75m sale to Galatasaray that summer, and Kevin De Bruyne arriving on a free from Manchester City in June 2025. Records mean Dries Mertens' 148 goals, the most in club history, and the Ma-Gi-Ca front line of Maradona, Bruno Giordano and Careca, who shared 36 goals in 1987-88 while Maradona took the capocannoniere crown with 15. Managers span Ottavio Bianchi, Luciano Spalletti — at 64 the oldest coach to win Serie A — and Antonio Conte, a champion in his first season before departing at the end of 2025-26. Difficulty is graded easy to hard: warm up on which club sold Maradona to Napoli before the quiz starts asking who scored in the first leg of the 1989 final.",
+      "Every question comes with a short explained answer — not just \"wrong, it was Careca\", but the story behind it: why that UEFA Cup meant so much to Naples, or how a 1-1 draw in Udine set off one of the great city-wide parties in football history. Even the ones you miss leave you knowing more about Napoli than when you started. Play the sample set below for free, straight in your browser, no sign-up needed. When you want the rest, the full Napoli question bank lives in the Ball IQ app, alongside the daily challenge and multiplayer modes — so you can put your Partenopei knowledge up against friends who insist theirs is better."
+    ],
+    "faq": [
+      {
+        "q": "How many Serie A titles have Napoli won?",
+        "a": "Four, as of 2026: 1986-87 and 1989-90 with Maradona, 2022-23 under Luciano Spalletti — clinched by Osimhen's equaliser at Udinese on 4 May 2023, ending a 33-year wait — and 2024-25 under Antonio Conte, sealed with a 2-0 win over Cagliari on 23 May 2025. Inter took the 2025-26 title, so Napoli start next season as challengers again."
+      },
+      {
+        "q": "Why is Napoli's stadium named after Diego Maradona?",
+        "a": "The city renamed the Stadio San Paolo the Stadio Diego Armando Maradona on 4 December 2020, days after Maradona died aged 60. In seven seasons from 1984 to 1991 he led Napoli to their first two scudetti (1987 and 1990), the 1987 Coppa Italia and the 1989 UEFA Cup."
+      },
+      {
+        "q": "Is the Napoli quiz free to play?",
+        "a": "Yes — play the sample questions free in your browser with no sign-up. The full Napoli question bank, plus daily challenges and multiplayer, lives in the Ball IQ app."
+      },
+      {
+        "q": "How hard is the Napoli quiz?",
+        "a": "It runs from easy (which club did Napoli sign Maradona from in 1984?) to hard (who scored Napoli's goals in the first leg of the 1989 UEFA Cup final against Stuttgart?). The mix means casual fans and diehards both get a proper test."
+      }
+    ]
+  },
+  {
+    "club": "Galatasaray",
+    "slug": "galatasaray",
+    "name": "Galatasaray",
+    "h1": "Galatasaray Quiz",
+    "title": "Galatasaray Quiz — Cimbom Trivia Questions & Answers | Ball IQ",
+    "description": "Free Galatasaray quiz with explained answers — from the 2000 UEFA Cup win and Hagi to Osimhen and a record 26th title. Play free in your browser.",
+    "intro": [
+      "Galatasaray were founded in October 1905 by Ali Sami Yen and his fellow students at Galatasaray High School, and no Turkish club has won more — a record 26 Süper Lig titles as of 2026, the last four of them in a row. This free Galatasaray quiz runs the full length of the story: the Fatih Terim sides that won four straight championships between 1996 and 2000 and then conquered Europe, the Gheorghe Hagi and Hakan Şükür years, the Didier Drogba and Wesley Sneijder team of the 2010s, and the Okan Buruk era of Mauro Icardi and Victor Osimhen. It takes in the Intercontinental Derby against Fenerbahçe — Europe against Asia across the Bosphorus — the old Ali Sami Yen and today's RAMS Park, and the 'Welcome to Hell' nights that once made Istanbul the away trip every European side dreaded. If you call the club Cimbom, this is your quiz.",
+      "The defining nights are all in here. Copenhagen, 17 May 2000: goalless with Arsenal after extra time, then a 4-1 shoot-out win sealed by Gheorghe Popescu's penalty — the first major European trophy ever won by a Turkish club, capping a treble season under Fatih Terim. Three months later in Monaco, Mário Jardel scored twice, the second a golden goal, to beat Champions League winners Real Madrid 2-1 in the UEFA Super Cup. Rewind to November 1993 and the 'Welcome to Hell' banners that greeted Manchester United at the airport, before a 0-0 draw at the Ali Sami Yen put Galatasaray through on away goals and Eric Cantona saw red in the chaos. The modern era keeps pace: Victor Osimhen's two goals in the 3-0 Turkish Cup final win over Trabzonspor that set up the 2024-25 double, and the 4-2 defeat of Antalyaspor on 9 May 2026 that clinched a record-extending 26th league title.",
+      "Expect the full spread of topics. Transfers run from Hagi arriving from Barcelona in 1996 to the €75m that made Osimhen's move from Napoli permanent in the summer of 2025 — a Turkish transfer record by a distance, agreed after his 37-goal loan season. Records mean Hakan Şükür's 288 goals, still the club's all-time mark, Fernando Muslera's 551 appearances across 14 seasons before his farewell in May 2025 — the most by any foreign player in the club's history — and a national-record 19 Turkish Cups. Managers span Terim's multiple spells and Okan Buruk's four consecutive titles from 2022-23 to 2025-26, matching the run he played in himself. Difficulty is graded easy to hard: the warm-ups ask which English club Galatasaray beat in the 2000 UEFA Cup final, while the deep cuts want to know who converted the winning penalty in Copenhagen or who scored the golden goal in Monaco.",
+      "Every question comes with a short explained answer, so a miss still teaches you something — why the 2000 final went to penalties, how a golden goal settled a Super Cup, or which record Osimhen broke on his way to the double. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Galatasaray question bank — plus daily challenges, streaks and multiplayer — it's all waiting in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many Süper Lig titles have Galatasaray won?",
+        "a": "A record 26 as of 2026. The 26th was clinched with a 4-2 win over Antalyaspor on 9 May 2026 — a fourth consecutive championship under Okan Buruk, matching the club's famous four-in-a-row of 1996 to 2000."
+      },
+      {
+        "q": "What was Galatasaray's biggest European triumph?",
+        "a": "The 2000 UEFA Cup. They beat Arsenal 4-1 on penalties after a 0-0 draw in Copenhagen on 17 May 2000, becoming the first Turkish club to win a major European trophy. That August they added the UEFA Super Cup, beating Real Madrid 2-1 in Monaco on Mário Jardel's golden goal."
+      },
+      {
+        "q": "Is the Galatasaray quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Galatasaray question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Galatasaray quiz?",
+        "a": "It runs from easy (which English club did Galatasaray beat in the 2000 UEFA Cup final?) to genuinely hard (who scored the winning penalty in Copenhagen?). The mix means casual fans and lifelong Cimbom obsessives both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Benfica",
+    "slug": "benfica",
+    "name": "Benfica",
+    "h1": "Benfica Quiz",
+    "title": "Benfica Quiz — O Glorioso Trivia Questions & Answers | Ball IQ",
+    "description": "Free Benfica quiz with explained answers — from Eusébio's European Cups to Enzo's €121m exit. Sample questions in your browser, full bank in the app.",
+    "intro": [
+      "Benfica were founded in Lisbon in 1904 and have spent the 122 years since setting the standard in Portuguese football: a record 38 Primeira Liga titles as of 2026, two European Cups, and a production line of talent the rest of Europe shops from every summer. Home is the Estádio da Luz, rebuilt for Euro 2004 and still the loudest ground in Portugal on derby night. This quiz covers the lot — the Béla Guttmann and Eusébio years, the curse that supposedly followed them, the record title hauls, the €100m-plus sales, and the strange 2025-26 campaign in which Benfica went all 34 league games unbeaten and somehow still finished third. Whether you stand with the ultras in the Curva Sul or admire O Glorioso from a distance, there's a run of questions here with your name on it.",
+      "The defining stretch remains 1961 and 1962. On 31 May 1961, Guttmann's side beat Barcelona 3-2 at the Wankdorf Stadium in Bern, ending Real Madrid's five-year monopoly on the European Cup. A year later in Amsterdam they beat Madrid themselves, 5-3, a 20-year-old Eusébio striking twice to out-duel a Ferenc Puskás hat-trick in one of the greatest finals ever played. Then Guttmann, refused a pay rise, walked out — and legend holds he swore Benfica would not win another European final for a hundred years. Eight finals since, eight defeats: the European Cups of 1963, 1965 and 1968, the 1983 UEFA Cup, the 1988 and 1990 European Cup finals against PSV and Milan, and the Europa League finals of 2013 and 2014. Eusébio even prayed at Guttmann's grave before the 1990 final in Vienna. Milan won 1-0.",
+      "Expect plenty on the sales that fund the machine: João Félix's €126m move to Atlético Madrid in 2019 remains the club-record sale as of 2026, Chelsea triggered Enzo Fernández's €121m release clause in January 2023 barely six months after he arrived from River Plate, and Darwin Núñez joined Liverpool in 2022 for an initial €75m that could rise to €100m with add-ons. Manager questions run from Guttmann to José Mourinho — appointed in September 2025, gone to Real Madrid by June 2026 and replaced by Marco Silva — and the boardroom features too: Rui Costa won re-election as president in November 2025 with more than 93,000 members voting, a world record for a club election. Cult heroes from Mário Coluna to Luisão get their due. The difficulty climbs steadily: early questions ask which stadium Benfica call home and who their two great rivals are; later ones want scorers, dates and clause values from memory.",
+      "What separates Ball IQ from a list of pub-quiz questions is that every answer is explained. Get one wrong and you don't just see the correct option — you learn why: the context behind Guttmann's exit, how the 1962 final swung after Puskás's hat-trick, why Enzo's release clause made Benfica the selling club every sporting director studies. It turns a quiz into the fastest way to genuinely deepen your Benfica knowledge, whether you're a lifelong sócio or building your football education one club at a time. You can start right now: a set of sample Benfica questions is free to play in your browser, no download or sign-up needed. When you're ready for the full question bank — plus daily challenges to protect your streak and real-time multiplayer to settle arguments with Porto- and Sporting-supporting friends — the complete experience lives in the Ball IQ app for iPhone."
+    ],
+    "faq": [
+      {
+        "q": "How many European Cups have Benfica won?",
+        "a": "Two, back to back. Béla Guttmann's side beat Barcelona 3-2 at the Wankdorf Stadium in Bern on 31 May 1961, then beat Real Madrid 5-3 in Amsterdam on 2 May 1962, with Eusébio scoring twice. They have lost all eight European finals they've reached since — the last two being the 2013 and 2014 Europa League finals — a run fans blame on the Guttmann curse."
+      },
+      {
+        "q": "Who is Benfica's manager now?",
+        "a": "Marco Silva, appointed on 9 June 2026 on a two-year deal after leaving Fulham. He replaced José Mourinho, who took charge in September 2025 and left when Real Madrid came calling — but not before overseeing an unbeaten 2025-26 league campaign (23 wins, 11 draws) that, remarkably, was only good enough for third place behind Porto and Sporting."
+      },
+      {
+        "q": "Is the Benfica quiz free?",
+        "a": "Yes — the sample Benfica questions are free to play right here in your browser, no sign-up needed. The full Benfica question bank, plus daily challenges and real-time multiplayer against friends, lives in the Ball IQ app for iPhone."
+      },
+      {
+        "q": "How hard are the questions?",
+        "a": "They run from easy to genuinely hard. An easy one: which stadium have Benfica called home since 2003? (The Estádio da Luz.) A hard one: which midfielder did Benfica sign from River Plate in July 2022 and sell to Chelsea for his €121m release clause just six months later? If you got that instantly, the harder tiers are built for you."
+      }
+    ]
+  },
 ];

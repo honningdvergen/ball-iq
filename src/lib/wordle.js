@@ -532,6 +532,15 @@ export function getWordleDayIndex() {
   return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / DAY_MS);
 }
 
+// Human-facing puzzle number for share text ("Footle #64"): #1 = the
+// WORDLE_ANCHOR_DAY (2026-05-04, pre-launch). Accepts a Date so the review
+// screen can number PAST puzzles; both share builders must use this — the
+// number is the token that makes strangers' grids comparable in a feed.
+export function getFootleNumber(date = new Date()) {
+  const di = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / DAY_MS);
+  return di - WORDLE_ANCHOR_DAY + 1;
+}
+
 // Stride spreads length groups across the schedule (WORDLE_PLAYERS is
 // sorted by length, so plain `dayIndex % length` clustered ~30+ same-
 // length days in a row). gcd(WORDLE_STRIDE, WORDLE_PLAYERS.length) MUST

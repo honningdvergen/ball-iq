@@ -111,6 +111,7 @@ const CLUB_BADGE = {
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
   'bayern-munich': 'BAY', 'borussia-dortmund': 'BVB', psg: 'PSG', ajax: 'AJA',
+  napoli: 'NAP', galatasaray: 'GAL', benfica: 'SLB',
 };
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
@@ -357,6 +358,7 @@ function head({ title, description, canonical, ld }) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="${PAGE_BG}" />
 <meta name="color-scheme" content="dark" />
+<meta name="robots" content="max-image-preview:large" />
 <meta name="google-adsense-account" content="ca-pub-7467890219483381" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381" crossorigin="anonymous"></script>
 <title>${esc(title)}</title>
@@ -516,7 +518,7 @@ const QUIZ_DEEPLINK_SLUGS = new Set([
 const CAT_SLUG_TO_CLUB_SLUGS = {
   'premier-league': ['arsenal', 'liverpool', 'manchester-united', 'manchester-city', 'tottenham', 'chelsea', 'newcastle'],
   'la-liga': ['barcelona', 'real-madrid', 'atletico-madrid'],
-  'serie-a': ['juventus', 'inter-milan', 'ac-milan'],
+  'serie-a': ['juventus', 'inter-milan', 'ac-milan', 'napoli'],
   'bundesliga': ['bayern-munich', 'borussia-dortmund'],
 };
 
@@ -914,6 +916,39 @@ function buildSitemap(livePages) {
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
   writeFileSync(resolve(DIST, 'sitemap.xml'), xml, 'utf8');
+  return urls.map((u) => u.loc);
+}
+
+// ── IndexNow ──────────────────────────────────────────────────────────────────
+// One POST per production deploy tells Bing / DuckDuckGo / Yandex (and through
+// Bing's index, ChatGPT search + Copilot citations) about every URL — no quota,
+// unlike GSC. The key file lives in public/<key>.txt (a REAL static file:
+// the SPA rewrite answers 200 for any path, so IndexNow validation would pass
+// HTML otherwise — it must serve the bare key). Re-submitting the same URLs on
+// every deploy is allowed and idempotent per the protocol.
+const INDEXNOW_KEY = '967335a8eed02e9f0e588f735a8e002a';
+async function pingIndexNow(urlList) {
+  if (process.env.VERCEL_ENV !== 'production') {
+    console.log('[gen-seo] IndexNow: skipped (not a Vercel production build)');
+    return;
+  }
+  try {
+    const res = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: 'balliq.app',
+        key: INDEXNOW_KEY,
+        keyLocation: `https://balliq.app/${INDEXNOW_KEY}.txt`,
+        urlList,
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
+    console.log(`[gen-seo] IndexNow: submitted ${urlList.length} URLs → HTTP ${res.status}`);
+  } catch (e) {
+    // Never fail the build over a ping.
+    console.log(`[gen-seo] IndexNow: ping failed (${e?.message || e}) — build continues`);
+  }
 }
 
 // ── llms.txt (AI / answer-engine discoverability — llmstxt.org convention) ─────
@@ -978,7 +1013,7 @@ function validateQB() {
 }
 
 // ── main ──────────────────────────────────────────────────────────────────────
-function main() {
+async function main() {
   if (!existsSync(DIST)) {
     throw new Error(`[gen-seo] dist/ not found at ${DIST}. Run "vite build" first.`);
   }
@@ -1001,8 +1036,9 @@ function main() {
   buildHubPage(livePages, clubPages);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  buildSitemap([...livePages, ...clubPages]);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages]);
   buildLlmsTxt(livePages, clubPages);
+  await pingIndexNow(sitemapUrls);
 
   console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle + ${builtClubs.length} club pages + hub + about + contact + sitemap + llms.txt into dist/`);
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
@@ -1013,4 +1049,4 @@ function main() {
   console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);
 }
 
-main();
+await main();

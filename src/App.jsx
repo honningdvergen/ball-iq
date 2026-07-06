@@ -30,7 +30,7 @@ import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
-  gradeWordleGuess, computeFootleStreak,
+  gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
@@ -3412,9 +3412,11 @@ async function shareCard(type, data, opts = {}) {
       if (type === "wordle") {
         // "3/6" reads as "half right" to non-players — say attempts instead.
         // The PNG card keeps the emoji grid, which carries that context.
-        if (data.failed) return `Today's Footle got me — can you do better? ${link}`;
-        if (data.score === 1) return `Got today's Footle on my FIRST guess 🎯 ${link}`;
-        return `Got today's Footle in ${data.score} guesses — can you beat me? ${link}`;
+        // The puzzle number makes the line comparable across feeds.
+        const n = data.num > 0 ? ` #${data.num}` : "";
+        if (data.failed) return `Footle${n} got me — can you do better? ${link}`;
+        if (data.score === 1) return `Got Footle${n} on my FIRST guess 🎯 ${link}`;
+        return `Got Footle${n} in ${data.score} guesses — can you beat me? ${link}`;
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
@@ -4304,19 +4306,25 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
       const grades = gradeWordleGuess(g, answer);
       return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
     }).join("\n");
-    const score = won ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
+    const num = getFootleNumber(date);
+    const tag = num > 0 ? ` #${num}` : "";
     const streak = won ? computeFootleStreak(date) : 0;
-    const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
-    return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
+    // Wordle-convention first line ("Footle #64 3/6") — the number + compact
+    // score is what makes grids comparable between strangers in a feed. The
+    // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
+    // explicit "guesses" wording lives only on the PNG card headline.
+    const head = `⚽ ${APP_NAME} Footle${tag} ${won ? guesses.length : "X"}/6`;
+    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    return `${head}${streakLine}\n\n${grid}\n\nballiq.app`;
   }, [guesses, answer, won, lost, hasData, date]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
     const grades = guesses.map(g => gradeWordleGuess(g, answer));
     await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: lost,
+      score: guesses.length, total: 6, grades, dateLabel, failed: lost, num: getFootleNumber(date),
     }, { onToast: () => {}, textFallback: shareText });
-  }, [shareText, guesses, answer, dateLabel, lost]);
+  }, [shareText, guesses, answer, dateLabel, lost, date]);
 
   // Read-only grid. Phase 5z polish: drop empty rows on won state —
   // show only the rows the user actually used. Lost state keeps all 6
@@ -6641,10 +6649,14 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
     }).join("\n");
-    const score = won ? `Solved in ${state.guesses.length} ${state.guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
+    const num = getFootleNumber();
+    const tag = num > 0 ? ` #${num}` : "";
     const streak = won ? computeFootleStreak(new Date()) : 0;
-    const scoreLine = won && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
-    return `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
+    // Same Wordle-convention format as the review screen's builder — the two
+    // MUST stay in sync (one puzzle, one share format).
+    const head = `⚽ ${APP_NAME} Footle${tag} ${won ? state.guesses.length : "X"}/6`;
+    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    return `${head}${streakLine}\n\n${grid}\n\nballiq.app`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -6658,6 +6670,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       grades,
       dateLabel,
       failed: state.status === "lost",
+      num: getFootleNumber(),
     }, {
       onToast: (msg) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(msg) })); } catch {} },
       textFallback: shareText,
