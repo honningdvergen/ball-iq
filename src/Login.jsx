@@ -67,92 +67,6 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const isLight = readTheme() === 'light'
   const prompt = promptReason && PROMPT_COPY[promptReason] ? PROMPT_COPY[promptReason] : null
 
-  // Social sign-in hoisted so the signup-framed overlay can render it ABOVE
-  // the email form — one-tap Apple/Google is the zero-friction conversion
-  // path and shouldn't sit below six elements (or under the keyboard once
-  // the email input grabs focus). The front door keeps the original order.
-  const orDivider = (
-    <div style={styles.divider}>
-      <div style={styles.dividerLine} />
-      <span>or</span>
-      <div style={styles.dividerLine} />
-    </div>
-  )
-  const socialButtons = (
-    <>
-      <button
-        type="button"
-        onClick={async () => {
-          setError('')
-          setMessage('')
-          setLoading(true)
-          const { error } = await signInWithApple()
-          if (error) setError(error.message || 'Apple sign-in failed')
-          setLoading(false)
-        }}
-        disabled={loading}
-        aria-label="Sign in with Apple"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 8,
-          padding: '14px 16px',
-          minHeight: 44,
-          fontSize: 15,
-          fontWeight: 600,
-          fontFamily: 'inherit',
-          borderRadius: 12,
-          border: 'none',
-          background: isLight ? '#000' : '#fff',
-          color: isLight ? '#fff' : '#000',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          opacity: loading ? 0.6 : 1,
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        {APPLE_LOGO_SVG(isLight ? '#fff' : '#000')}
-        <span>Sign in with Apple</span>
-      </button>
-      <button
-        type="button"
-        onClick={async () => {
-          setError('')
-          setMessage('')
-          setLoading(true)
-          const { error } = await signInWithGoogle()
-          if (error) setError(error.message || 'Google sign-in failed')
-          setLoading(false)
-        }}
-        disabled={loading}
-        aria-label="Continue with Google"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          padding: '13px 16px',
-          minHeight: 44,
-          fontSize: 15,
-          fontWeight: 500,
-          fontFamily: 'inherit',
-          borderRadius: 12,
-          border: `1px solid ${isLight ? '#dadce0' : '#3c4043'}`,
-          background: isLight ? '#fff' : '#1f1f1f',
-          color: isLight ? '#1f1f1f' : '#e8eaed',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          opacity: loading ? 0.6 : 1,
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        {GOOGLE_LOGO_SVG}
-        <span>Continue with Google</span>
-      </button>
-    </>
-  )
-
   // "Forgot password?" — sends the Supabase recovery email; the link lands on
   // balliq.app/reset where the app mounts the new-password overlay. Uses the
   // email already typed into the form (nudges if it's empty).
@@ -427,6 +341,94 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
       maxWidth: '360px',
     },
   }
+
+  // Social sign-in defined once so the signup-framed overlay can render it
+  // ABOVE the email form — one-tap Apple/Google is the zero-friction
+  // conversion path. Render order is decided at the usage sites; this
+  // DECLARATION must stay below `styles`/`palette`, which the JSX evaluates
+  // immediately (declaring it above them crashed every Login render with a
+  // TDZ ReferenceError — caught in prod 2026-07-06).
+  const orDivider = (
+    <div style={styles.divider}>
+      <div style={styles.dividerLine} />
+      <span>or</span>
+      <div style={styles.dividerLine} />
+    </div>
+  )
+  const socialButtons = (
+    <>
+      <button
+        type="button"
+        onClick={async () => {
+          setError('')
+          setMessage('')
+          setLoading(true)
+          const { error } = await signInWithApple()
+          if (error) setError(error.message || 'Apple sign-in failed')
+          setLoading(false)
+        }}
+        disabled={loading}
+        aria-label="Sign in with Apple"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          padding: '14px 16px',
+          minHeight: 44,
+          fontSize: 15,
+          fontWeight: 600,
+          fontFamily: 'inherit',
+          borderRadius: 12,
+          border: 'none',
+          background: isLight ? '#000' : '#fff',
+          color: isLight ? '#fff' : '#000',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1,
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        {APPLE_LOGO_SVG(isLight ? '#fff' : '#000')}
+        <span>Sign in with Apple</span>
+      </button>
+      <button
+        type="button"
+        onClick={async () => {
+          setError('')
+          setMessage('')
+          setLoading(true)
+          const { error } = await signInWithGoogle()
+          if (error) setError(error.message || 'Google sign-in failed')
+          setLoading(false)
+        }}
+        disabled={loading}
+        aria-label="Continue with Google"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          padding: '13px 16px',
+          minHeight: 44,
+          fontSize: 15,
+          fontWeight: 500,
+          fontFamily: 'inherit',
+          borderRadius: 12,
+          border: `1px solid ${isLight ? '#dadce0' : '#3c4043'}`,
+          background: isLight ? '#fff' : '#1f1f1f',
+          color: isLight ? '#1f1f1f' : '#e8eaed',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1,
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        {GOOGLE_LOGO_SVG}
+        <span>Continue with Google</span>
+      </button>
+    </>
+  )
 
   return (
     <div style={styles.container}>
