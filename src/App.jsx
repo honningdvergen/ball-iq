@@ -7848,12 +7848,14 @@ function AppInner() {
       const sp = new URLSearchParams(window.location.search);
       const clubSlug = (sp.get("club") || "").toLowerCase();
       const quizSlug = (sp.get("quiz") || "").toLowerCase();
-      if (!clubSlug && !quizSlug) return;
+      const gameSlug = (sp.get("game") || "").toLowerCase(); // ?game=footle — /football-wordle/ CTA + directory listings
+      if (!clubSlug && !quizSlug && !gameSlug) return;
       try {
         const u = new URL(window.location.href);
-        u.searchParams.delete("club"); u.searchParams.delete("quiz");
+        u.searchParams.delete("club"); u.searchParams.delete("quiz"); u.searchParams.delete("game");
         window.history.replaceState({}, "", u.pathname + u.search + u.hash);
       } catch {}
+      if (gameSlug === "footle") { setScreen("wordle"); return; }
       const packKey = CLUB_SLUG_TO_PACK[clubSlug];
       const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
       if (packKey) launchClubQuiz(packKey);

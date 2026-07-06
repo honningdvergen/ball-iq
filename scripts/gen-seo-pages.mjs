@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -496,6 +496,7 @@ function footer() {
 <a href="${SITE.base}/quiz/manchester-united/">Man United quiz</a>
 <a href="${SITE.base}/quiz/champions-league/">Champions League quiz</a>
 <a href="${SITE.base}/quiz/">All quizzes</a>
+<a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/privacy.html">Privacy</a>
@@ -896,11 +897,72 @@ ${footer()}`;
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
 }
 
+// ── Footle landing page (/football-wordle/) ──────────────────────────────────
+// Game-name SEO: "football wordle" / "footle" — Ball IQ was absent from that
+// SERP even though Footle IS the product. Shared chrome; the green CTA
+// deep-links into the playable no-login game (PlayApp reads ?game=footle).
+function buildFootlePage(cfg) {
+  const canonical = `${SITE.base}/${cfg.slug}/`;
+  const playHref = `${SITE.base}/play?game=footle`;
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
+        ],
+      },
+    ],
+  });
+  const howHtml = cfg.how
+    .map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`)
+    .join('\n');
+  const bodyHtml = cfg.body.map((p) => `<p>${esc(p)}</p>`).join('\n');
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+<body>
+${NAV}
+<main>
+${heroSection({
+    crumbItems: [
+      { name: 'Home', url: `${SITE.base}/` },
+      { name: 'Footle', url: canonical },
+    ],
+    badge: { text: '⚽', emoji: true },
+    kind: 'Daily game',
+    name: 'Footle',
+    h1: cfg.h1,
+    lead: cfg.lede,
+    statLine: 'Free · no sign-up · new footballer every day',
+    playHref,
+    playLabel: "Play today's Footle →",
+  })}
+<section class="sec"><h2>How to play</h2>
+<div class="prose">
+${howHtml}
+</div></section>
+<section class="sec"><h2>Wordle, but make it football</h2>
+<div class="prose">
+${bodyHtml}
+</div></section>
+${appCtaBand('football')}
+<section class="sec"><h2>Footle FAQ</h2>
+${renderFaq(cfg.faq)}
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+}
+
 // ── sitemap ───────────────────────────────────────────────────────────────────
 function buildSitemap(livePages) {
   const urls = [
     { loc: `${SITE.base}/`, freq: 'daily', pri: '1.0' },
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
@@ -1034,6 +1096,7 @@ async function main() {
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages));
   buildHubPage(livePages, clubPages);
+  buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   const sitemapUrls = buildSitemap([...livePages, ...clubPages]);
@@ -1045,6 +1108,7 @@ async function main() {
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
+  console.log(`  ✓ /football-wordle/  (Footle landing)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
   console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { getWordleAnswer, gradeWordleGuess, WORDLE_PLAYERS } from '../lib/wordle.js';
+import { getWordleAnswer, gradeWordleGuess, WORDLE_PLAYERS, getFootleNumber } from '../lib/wordle.js';
 
 // Ball IQ "Play" web experience — the design handoff's Play.dc.html, recreated
 // in React. State machine: home → footle → (quiz → results, later slices) + an
@@ -139,9 +139,24 @@ function Footle({ onBack, onRequestHint, hint }) {
   const [guesses, setGuesses] = useState([]);
   const [current, setCurrent] = useState('');
   const [status, setStatus] = useState('playing');
+  const [copied, setCopied] = useState(false);
   const N = answer.length;
 
   const grades = useMemo(() => guesses.map((g) => gradeWordleGuess(g, answer)), [guesses, answer]);
+
+  // Same share format as the app's Footle (one puzzle, one format): the
+  // "#N n/6" line is the comparability token. navigator.share where available,
+  // clipboard fallback with a "Copied!" flash otherwise.
+  const shareResult = useCallback(async () => {
+    const grid = grades.map((row) => row.map((c) => (c === 'green' ? '🟩' : c === 'yellow' ? '🟨' : '⬛')).join('')).join('\n');
+    const num = getFootleNumber();
+    const tag = num > 0 ? ` #${num}` : '';
+    const text = `⚽ Ball IQ Footle${tag} ${status === 'won' ? guesses.length : 'X'}/6\n\n${grid}\n\nballiq.app`;
+    if (navigator.share) {
+      try { await navigator.share({ text }); return; } catch { return; } // cancel = done
+    }
+    try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {}
+  }, [grades, guesses.length, status]);
 
   const submit = useCallback(() => {
     if (current.length !== N || status !== 'playing') return;
@@ -231,7 +246,10 @@ function Footle({ onBack, onRequestHint, hint }) {
         <div style={{ marginTop: 22, textAlign: 'center', background: '#101218', border: '1px solid #242836', borderRadius: 16, padding: 20, animation: 'plyPop .3s ease' }}>
           <div style={{ fontSize: 22, fontWeight: 900, color: status === 'won' ? '#58CC02' : '#fff' }}>{status === 'won' ? '⚽ Brilliant!' : 'Out of guesses'}</div>
           <div style={{ marginTop: 6, fontSize: 14, color: '#9BA0B8' }}>The answer was <strong style={{ color: '#fff' }}>{answer}</strong></div>
-          <button onClick={onBack} className="ply-green" style={{ marginTop: 16, padding: '12px 22px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: 15, border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 22px -6px rgba(88,204,2,0.5)' }}>Back to play →</button>
+          <div style={{ marginTop: 16, display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={shareResult} style={{ padding: '12px 22px', background: '#14161E', color: '#fff', fontWeight: 800, fontSize: 15, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit' }}>{copied ? '✓ Copied!' : '📋 Share result'}</button>
+            <button onClick={onBack} className="ply-green" style={{ padding: '12px 22px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: 15, border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 22px -6px rgba(88,204,2,0.5)' }}>Back to play →</button>
+          </div>
         </div>
       )}
 
@@ -392,7 +410,13 @@ function ResultsScreen({ quiz, onPlayAgain, onHome }) {
 
 // ── CONTAINER ─────────────────────────────────────────────────────────────────
 export default function PlayApp() {
-  const [screen, setScreen] = useState('home'); // home | footle | quiz | results
+  // /play?game=footle deep-links straight into the game — the /football-wordle
+  // landing page and every directory listing use it ("lands directly on
+  // playable Footle" is the qualifying bar for most daily-game directories).
+  const [screen, setScreen] = useState(() => { // home | footle | quiz | results
+    try { return new URLSearchParams(window.location.search).get('game') === 'footle' ? 'footle' : 'home'; }
+    catch { return 'home'; }
+  });
   const [ad, setAd] = useState(null);
   const [hint, setHint] = useState(null);
   const [quiz, setQuiz] = useState(null);

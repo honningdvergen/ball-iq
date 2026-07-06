@@ -267,3 +267,34 @@ export const LISTICLES = [
     ],
   },
 ];
+
+// ── FOOTLE LANDING PAGE ───────────────────────────────────────────────────────
+// /football-wordle/ — game-name SEO ("football wordle", "footle"). Ball IQ was
+// absent from that SERP even though Footle IS the product (2026-07 growth
+// research). Product facts only — nothing time-fragile. The CTA deep-links
+// straight into the playable no-login game (PlayApp reads ?game=footle).
+export const FOOTLE_PAGE = {
+  slug: 'football-wordle',
+  h1: 'Footle — the Football Wordle',
+  title: 'Footle — Play the Football Wordle Free | Daily Footballer Guessing Game',
+  description:
+    "Footle by Ball IQ is the football Wordle — guess the footballer's surname in 6 tries. A new player every day. Free, in your browser, no sign-up.",
+  lede: 'Guess the footballer in 6 tries. New player every day — free, no sign-up.',
+  how: [
+    ["Guess a footballer's surname", 'Legends or current stars, players or managers — type any surname of the right length and hit enter.'],
+    ['Read the colours', "Green: right letter, right spot. Yellow: in the name, different spot. Grey: not in the name at all."],
+    ['Solve it in six', "Surnames vary in length — the grid shows how many letters today's player has. You get six guesses."],
+    ['Come back tomorrow', 'One Footle per day, the same player for everyone. Share your emoji grid and protect your streak.'],
+  ],
+  body: [
+    `Footle is Ball IQ's daily football word game — Wordle, but the answer is always a footballer. Every day there is one player or manager to find, the same for everyone, and six guesses to find them. The tiles tell you how close you are: green for a letter in the right place, yellow for a letter that is in the surname but somewhere else, grey for a miss. Unlike classic Wordle, the surnames are not locked to five letters — SALAH is a very different puzzle from LEWANDOWSKI — so the size of the grid is itself a clue.`,
+    `It is free, plays right in the browser, and needs no account. When you solve it (or run out of guesses), you get the shareable emoji grid — "⚽ Ball IQ Footle #64 3/6" — to compare with your friends. In the free Ball IQ app, Footle also tracks your solve streak, and sits alongside the daily quiz challenge, 4,000+ fact-checked trivia questions and live multiplayer.`,
+  ],
+  faq: [
+    { q: 'What is Footle?', a: "Footle is a daily football version of Wordle by Ball IQ: guess the footballer's surname in six tries, with green, yellow and grey tiles guiding you. One puzzle per day, the same player for everyone." },
+    { q: 'Is Footle free? Do I need an account?', a: 'Completely free and no account needed — it runs in your browser. The free Ball IQ app adds solve streaks, daily quiz challenges and live multiplayer.' },
+    { q: 'When does a new Footle come out?', a: 'At midnight, local time. Everyone playing on the same calendar day gets the same footballer.' },
+    { q: 'How is Footle different from Wordle?', a: "The answer is always a footballer's surname — players or managers, legends or current stars — and the length varies from puzzle to puzzle, so the grid size is your first clue." },
+    { q: 'Is this the same as other football Wordle games?', a: 'There are a few football guessing games out there — this one is Footle by Ball IQ, part of the Ball IQ football quiz game. If a friend shared a "⚽ Ball IQ Footle" emoji grid, this is where it came from.' },
+  ],
+};
