@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -877,13 +877,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
     if (isFirst) {
       borderColor = 'rgba(234,179,8,0.45)'; // gold
       background = 'rgba(234,179,8,0.06)';
-    } else if (isMe) {
-      borderColor = 'rgba(88,204,2,0.45)'; // accent green
-      background = 'rgba(88,204,2,0.06)';
+    } else if (idx === 1 && !survivalDraw) {
+      borderColor = 'rgba(148,163,184,0.4)'; // silver
+      background = 'rgba(148,163,184,0.05)';
+    } else if (idx === 2 && !survivalDraw) {
+      borderColor = 'rgba(196,132,72,0.4)'; // bronze
+      background = 'rgba(196,132,72,0.05)';
     }
+    if (isMe && !isFirst) borderColor = 'rgba(88,204,2,0.45)'; // my row always reads green
     return {
       display: 'flex', alignItems: 'center', gap: 12,
-      padding: '12px 14px',
+      padding: idx === 0 ? '15px 14px' : '12px 14px',
       background,
       border: '1px solid ' + borderColor,
       borderRadius: 12,
@@ -904,6 +908,41 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const metricUnit = isSurvival ? 'survived' : isHotStreak ? 'streak' : 'points';
   const boardDraw = twoPlayer && (survivalDraw || metricOf(meP) === metricOf(oppP));
   const iWonBoard = twoPlayer && !boardDraw && metricOf(meP) > metricOf(oppP);
+
+  // Margin line ("You won by 3") — numeric modes only; survival margins mix
+  // question indexes with the alive-Infinity sentinel, so it gets a phrase.
+  const boardMargin = (() => {
+    if (!twoPlayer || boardDraw) return null;
+    if (isSurvival) {
+      const w = iWonBoard ? meP : oppP;
+      return w?.eliminated_at_q == null
+        ? (iWonBoard ? 'You survived to the end' : `${oppP?.name || 'They'} survived to the end`)
+        : (iWonBoard ? 'You lasted longer' : `${oppP?.name || 'They'} lasted longer`);
+    }
+    const diff = Math.abs(metricOf(meP) - metricOf(oppP));
+    const unit = isHotStreak ? '' : diff === 1 ? ' point' : ' points';
+    return iWonBoard ? `You won by ${diff}${unit}` : `Beaten by ${diff}${unit}`;
+  })();
+
+  // Lifetime head-to-head vs this opponent, from the local biq_mp_history
+  // ledger (this finished room is already recorded by the parent's ended
+  // effect, so the chip includes it). Draw = not won AND my metric equalled
+  // the opponents' best — the ledger stores both sides' metrics.
+  const h2h = useMemo(() => {
+    if (!twoPlayer || !oppP?.user_id) return null;
+    try {
+      const games = readMpHistory().filter(e => (e.opponents || []).some(o => o.id === oppP.user_id));
+      if (games.length < 2) return null; // first meeting — the board already says it all
+      let w = 0, d = 0, l = 0;
+      for (const g of games) {
+        const best = Math.max(...(g.opponents || []).map(o => o.m ?? 0));
+        if (g.won) w++; else if ((g.myMetric ?? 0) === best) d++; else l++;
+      }
+      const name = oppP.name || 'them';
+      const line = w > l ? `You lead ${w}–${l}` : l > w ? `${name} leads ${l}–${w}` : `All square at ${w}–${l}`;
+      return { line: `${line} vs ${name}`, draws: d };
+    } catch { return null; }
+  }, [twoPlayer, oppP?.user_id, oppP?.name]);
   const vsSide = (p, mine, won) => (
     <div style={{
       flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
@@ -957,12 +996,30 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
 
         {/* Head-to-head VS board (1v1, the common case) or the ranked list (3+). */}
         {twoPlayer && meP && oppP && (
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: 12, marginBottom: 24 }}>
-            {vsSide(meP, true, iWonBoard)}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>
-              <span style={{ fontFamily: MONO, fontSize: 16, fontWeight: 800, color: 'var(--t3)' }}>VS</span>
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'stretch', gap: 12 }}>
+              {vsSide(meP, true, iWonBoard)}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>
+                <span style={{ fontFamily: MONO, fontSize: 16, fontWeight: 800, color: 'var(--t3)' }}>VS</span>
+              </div>
+              {vsSide(oppP, false, !iWonBoard && !boardDraw)}
             </div>
-            {vsSide(oppP, false, !iWonBoard && !boardDraw)}
+            {(boardMargin || h2h) && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 12 }}>
+                {boardMargin && (
+                  <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--t2)' }}>{boardMargin}</div>
+                )}
+                {h2h && (
+                  <div style={{
+                    fontSize: 12, fontWeight: 700, color: 'var(--t2)',
+                    padding: '5px 12px', borderRadius: 999,
+                    background: 'var(--s1)', border: '1px solid var(--border)',
+                  }}>
+                    ⚔️ {h2h.line}{h2h.draws > 0 ? ` · ${h2h.draws} draw${h2h.draws === 1 ? '' : 's'}` : ''}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
         {/* Final scores list (3+ players) */}
@@ -1006,15 +1063,24 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
                     )}
                   </div>
                 </div>
-                <div style={{
-                  fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
-                  fontSize: 18, fontWeight: 800,
-                  color: 'var(--text)',
-                  fontVariantNumeric: 'tabular-nums',
-                }}>
-                  {isSurvival
-                    ? (p.eliminated_at_q == null ? '❤️' : `💀 Q${p.eliminated_at_q + 1}`)
-                    : isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{
+                    fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
+                    fontSize: 18, fontWeight: 800,
+                    color: 'var(--text)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}>
+                    {isSurvival
+                      ? (p.eliminated_at_q == null ? '❤️' : `💀 Q${p.eliminated_at_q + 1}`)
+                      : isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
+                  </div>
+                  {/* Secondary stat: survival + hot streak rank on their own metric,
+                      so surface raw points as the tie-breaker context. */}
+                  {(isSurvival || isHotStreak) && (
+                    <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 600, marginTop: 1 }}>
+                      {(p.score ?? 0)} pts
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -1251,6 +1317,18 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // Survival spectator flag — hoisted ABOVE the early return so the headless
   // advance clock below can depend on it without tripping the hooks-order rule.
   const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
+
+  // Elimination MOMENT overlay — the knockout is Survival's signature beat and
+  // a one-line banner undersold it (playtester feedback). Fires once when
+  // iAmEliminated flips true, then hands back to the persistent banner.
+  const [elimOverlay, setElimOverlay] = useState(false);
+  const elimSeenRef = useRef(false);
+  useEffect(() => {
+    if (iAmEliminated && !elimSeenRef.current) {
+      elimSeenRef.current = true;
+      setElimOverlay(true);
+    }
+  }, [iAmEliminated]);
 
   // Headless advance clock for eliminated survival spectators. The VISIBLE
   // QuestionTimer is unmounted for them (a live answer-timer over dead buttons
@@ -1551,6 +1629,42 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           revealing={revealing}
           questionIdx={currentQuestionIdx}
         />
+
+        {/* Elimination moment — one dramatic beat, then the persistent banner
+            below takes over for the spectator phase. */}
+        {elimOverlay && (
+          <div
+            onClick={() => setElimOverlay(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 1000,
+              background: 'rgba(10,10,10,0.88)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
+            }}
+          >
+            <div onClick={(e) => e.stopPropagation()} style={{
+              width: '100%', maxWidth: 340, textAlign: 'center',
+              background: 'var(--s1)', border: '1px solid rgba(239,68,68,0.35)',
+              borderRadius: 20, padding: '30px 22px 22px',
+            }}>
+              <div style={{ fontSize: 54, marginBottom: 10 }}>💀</div>
+              <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>
+                Knocked out on Q{(myPlayer?.eliminated_at_q ?? 0) + 1}
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--t2)', marginBottom: 20 }}>
+                {aliveCount === 1 ? '1 player still alive' : `${aliveCount} players still alive`} — stick around to see who takes it.
+              </div>
+              <button className="btn-3d" onClick={() => setElimOverlay(false)} style={{ width: '100%', marginBottom: 8 }}>
+                👀 Keep watching
+              </button>
+              <button
+                onClick={handleLeave}
+                style={{ width: '100%', padding: 12, borderRadius: 12, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Leave game
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Reserved answer-locked banner slot — reserves space so
             HostAdvanceControls below stays anchored regardless of whether
