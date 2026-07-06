@@ -783,6 +783,8 @@ const LEAGUE_QUIZ_SECTIONS = [
     { cat: "SerieA",     name: "Serie A",          abbr: "SEA", color: "#0578D3" },
     { cat: "Bundesliga", name: "Bundesliga",       abbr: "BUN", color: "#D20515" },
     { cat: "Ligue1",     name: "Ligue 1",          abbr: "L1",  color: "#1B2447" },
+    { cat: "SuperLig",   name: "Süper Lig",        abbr: "TSL", color: "#E30A17" },
+    { cat: "Primeira",   name: "Primeira Liga",    abbr: "PRI", color: "#046A38" },
   ]},
   { label: "Tournaments", items: [
     { cat: "UCL",      name: "Champions League", abbr: "UCL", color: "#123A8F" },
@@ -1047,6 +1049,8 @@ export const MP_TOPICS = {
     { id: "cat:SerieA", label: "Serie A", icon: "🇮🇹" },
     { id: "cat:Bundesliga", label: "Bundesliga", icon: "🇩🇪" },
     { id: "cat:Ligue1", label: "Ligue 1", icon: "🇫🇷" },
+    { id: "cat:SuperLig", label: "Süper Lig", icon: "🇹🇷" },
+    { id: "cat:Primeira", label: "Primeira Liga", icon: "🇵🇹" },
   ],
   tournaments: [
     { id: "cat:UCL", label: "Champions League", icon: "⭐" },
