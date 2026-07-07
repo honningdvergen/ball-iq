@@ -6687,7 +6687,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
       <div className="wd-header">
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
-          <div className="wd-title">⚽ Footle</div>
+          <div className="wd-title" style={{display:"inline-flex",alignItems:"center",gap:8}}><span aria-hidden="true" style={{width:24,height:24,borderRadius:6,background:"#58CC02",color:"#06230C",fontWeight:800,fontSize:14,display:"inline-flex",alignItems:"center",justifyContent:"center",lineHeight:1,flexShrink:0}}>F</span>Footle</div>
           <div className="wd-sub">Player or manager — guess the surname</div>
         </div>
         <div className="wd-countdown" title="New player tomorrow">
@@ -8976,7 +8976,7 @@ function AppInner() {
             {/* 1.1: hide the global wordmark on screens that already have their
                 own page-header (Settings, the online MP setup + lobby) — it just
                 stacks a second identifier. (Broader sub-screen audit deferred.) */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
