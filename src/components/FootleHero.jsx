@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, gradeWordleGuess, computeFootleStreak } from "../lib/wordle.js";
+import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak } from "../lib/wordle.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
 // grid preview + Play CTA; evening state (won/lost) shows the user's
@@ -17,6 +17,28 @@ import { getWordleAnswer, gradeWordleGuess, computeFootleStreak } from "../lib/w
 // #17 Stage 3 extracted FootleHero to this module but left shareCard
 // in App.jsx because it's too entangled with toast plumbing + the
 // canvas card drawer to move cleanly.
+// Rotating morning-teaser pairs — [guess, answer], both 5-letter footballer
+// surnames so the sample always fits the 5-col strip. The day's pair is
+// picked by the same local-calendar day index the puzzle uses (rotates at
+// midnight, wraps back to MESSI after the cycle). Grades are computed with
+// the REAL gradeWordleGuess engine at render time, so the demonstrated
+// logic can never drift from the game's actual rules. Every pair was
+// engine-checked to show a good color mix (most: all three states).
+const TEASER_PAIRS = [
+  ["MOSES", "MESSI"],
+  ["KROOS", "RAMOS"],
+  ["KEANE", "KANTE"],
+  ["SILVA", "SALAH"],
+  ["HENRY", "NEUER"],
+  ["PEDRI", "PIQUE"],
+  ["VILLA", "VIDAL"],
+  ["RAMOS", "MARTA"],
+  ["MOUNT", "FODEN"],
+  ["TERRY", "HENRY"],
+  ["COSTA", "KANTE"],
+  ["NEVES", "TEVEZ"],
+];
+
 export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview, shareCard }) {
   const ws = readWordleTodayStatus();
   const isWon = ws.kind === "won";
@@ -71,6 +93,8 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   const cols = answer.length || 5;
   if (!isDone) {
     const inProgress = ws.kind === "in-progress";
+    const [teaserGuess, teaserAnswer] = TEASER_PAIRS[getWordleDayIndex() % TEASER_PAIRS.length];
+    const teaserGrades = gradeWordleGuess(teaserGuess, teaserAnswer);
     return (
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
@@ -85,23 +109,17 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
           </div>
         </div>
         <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {/* Sample solve, graded with REAL Footle logic vs answer MESSI:
-              row 1 guess MOSES -> M green, O grey, S green (pos 3), E yellow,
-              S yellow (second S exists at pos 4); row 2 MESSI all green.
-              Teaches all three states and pays off with the solve. */}
+          {/* Today's rotating sample solve: imperfect guess graded by the real
+              engine, then the answer solved all-green (see TEASER_PAIRS). */}
           <div className="fh-row">
-            <div className="fh-tile fh-tile-green">M</div>
-            <div className="fh-tile fh-tile-grey">O</div>
-            <div className="fh-tile fh-tile-green">S</div>
-            <div className="fh-tile fh-tile-yellow">E</div>
-            <div className="fh-tile fh-tile-yellow">S</div>
+            {teaserGrades.map((c, i) => (
+              <div key={i} className={`fh-tile fh-tile-${c}`}>{teaserGuess[i]}</div>
+            ))}
           </div>
           <div className="fh-row">
-            <div className="fh-tile fh-tile-green">M</div>
-            <div className="fh-tile fh-tile-green">E</div>
-            <div className="fh-tile fh-tile-green">S</div>
-            <div className="fh-tile fh-tile-green">S</div>
-            <div className="fh-tile fh-tile-green">I</div>
+            {teaserAnswer.split("").map((ch, i) => (
+              <div key={i} className="fh-tile fh-tile-green">{ch}</div>
+            ))}
           </div>
         </div>
       </button>
