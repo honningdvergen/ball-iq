@@ -85,17 +85,23 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
           </div>
         </div>
         <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {/* Sample guess: MESSI graded imperfectly — instantly readable AND
-              teaches all three states (right spot / wrong spot / not in name). */}
+          {/* Sample solve, graded with REAL Footle logic vs answer MESSI:
+              row 1 guess MOSES -> M green, O grey, S green (pos 3), E yellow,
+              S yellow (second S exists at pos 4); row 2 MESSI all green.
+              Teaches all three states and pays off with the solve. */}
           <div className="fh-row">
             <div className="fh-tile fh-tile-green">M</div>
-            <div className="fh-tile fh-tile-yellow">E</div>
-            <div className="fh-tile fh-tile-grey">S</div>
+            <div className="fh-tile fh-tile-grey">O</div>
             <div className="fh-tile fh-tile-green">S</div>
-            <div className="fh-tile fh-tile-grey">I</div>
+            <div className="fh-tile fh-tile-yellow">E</div>
+            <div className="fh-tile fh-tile-yellow">S</div>
           </div>
           <div className="fh-row">
-            {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
+            <div className="fh-tile fh-tile-green">M</div>
+            <div className="fh-tile fh-tile-green">E</div>
+            <div className="fh-tile fh-tile-green">S</div>
+            <div className="fh-tile fh-tile-green">S</div>
+            <div className="fh-tile fh-tile-green">I</div>
           </div>
         </div>
       </button>
