@@ -74,6 +74,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     return (
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
+          <div className="fh-eyebrow">Daily · Footle</div>
           <div className="fh-title">Footle</div>
           <div className="fh-sub">
             {cols} letters · 6 guesses · daily<br />
@@ -84,11 +85,16 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
           </div>
         </div>
         <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {Array.from({ length: PREVIEW_ROWS }).map((_, r) => (
-            <div className="fh-row" key={r}>
-              {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
-            </div>
-          ))}
+          <div className="fh-row">
+            <div className="fh-tile fh-tile-green">K</div>
+            <div className="fh-tile fh-tile-yellow">A</div>
+            <div className="fh-tile fh-tile-empty" />
+            <div className="fh-tile fh-tile-empty" />
+            <div className="fh-tile fh-tile-empty" />
+          </div>
+          <div className="fh-row">
+            {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
+          </div>
         </div>
       </button>
     );
@@ -102,6 +108,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   return (
     <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Footle — missed today"}>
       <div className="fh-body">
+        <div className="fh-eyebrow">Daily · Footle</div>
         <div className="fh-title">{isWon ? "Solved" : "Missed"}</div>
         <div className="fh-score">
           {isWon ? <>in <strong>{guesses.length}</strong> {guesses.length === 1 ? "guess" : "guesses"}</> : <>today</>}

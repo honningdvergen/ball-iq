@@ -1590,6 +1590,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
 .fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.fh-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#8AE042;-webkit-text-fill-color:#8AE042;margin-bottom:6px;}
 .fh-title{font-size:30px;font-weight:900;line-height:1;letter-spacing:-0.8px;}
 .fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
 .fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
@@ -1603,12 +1604,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    today's answer length); evening grid columns track today's actual answer
    length (4-8). Tile size matched D1 mockup proportions — 13×13 with 3px
    gaps — so the squares carry the visual weight the smaller tiles lacked. */
-.fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:3px;align-self:flex-start;padding-top:2px;}
-.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),13px);gap:3px;}
-.fh-tile{width:13px;height:13px;border-radius:3px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);}
+.fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:5px;align-self:center;}
+.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),24px);gap:5px;}
+.fh-tile{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;line-height:1;}
 .fh-tile-empty{background:rgba(255,255,255,0.10);}
-.fh-tile-green{background:#58CC02;border-color:transparent;}
-.fh-tile-yellow{background:#FFC107;border-color:transparent;}
+.fh-tile-green{background:#58CC02;border-color:transparent;color:#06230C;}
+.fh-tile-yellow{background:#FFC107;border-color:transparent;color:#332500;}
 .fh-tile-grey{background:rgba(255,255,255,0.16);border-color:transparent;}
 
 /* ── TODAY'S 7 SECONDARY ── (Sprint #11 Stage 2) ──
