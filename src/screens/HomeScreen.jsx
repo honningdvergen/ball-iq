@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -206,20 +206,21 @@ function HomeScreenImpl({
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
-                  🔥 {loginStreak}
+                  <span className="hst-flame" aria-hidden="true">🔥</span>
+                  <span className="hst-num">{loginStreak}</span>
                 </span>
               )}
               {/* Notification bell — the Home tab hides the shared header, so the
                   bell lives here (signed-in only; onOpenNotifs passed then). */}
               {onOpenNotifs && (
-                <button onClick={onOpenNotifs} className="icon-btn" aria-label={notifCount > 0 ? `Notifications, ${notifCount} new` : "Notifications"} style={{flexShrink:0, position:"relative"}}>
+                <button onClick={onOpenNotifs} className="icon-btn hdr-ic" aria-label={notifCount > 0 ? `Notifications, ${notifCount} new` : "Notifications"} style={{flexShrink:0, position:"relative"}}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                  {notifCount > 0 && <span className="notif-badge">{notifCount > 9 ? "9+" : notifCount}</span>}
+                  {notifCount > 0 && <span className="notif-dot" aria-hidden="true" />}
                 </button>
               )}
               {/* 1.1: settings gear inline with the greeting (the shared header
                   row is hidden on Home) — one tidy top row, no dead space. */}
-              <button onClick={() => setScreen("settings")} className="icon-btn" aria-label="Settings" style={{flexShrink:0}}>⚙️</button>
+              <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}>⚙️</button>
             </div>
             {subtext && (
               <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
@@ -307,7 +308,7 @@ function HomeScreenImpl({
               onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
               aria-label={dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7"}
             >
-              <span className="t7s-icon" aria-hidden="true">📋</span>
+              <span className="t7s-icon" aria-hidden="true"><ClipboardList size={22} strokeWidth={2} /></span>
               <span className="t7s-body">
                 <span className="t7s-title">Daily 7</span>
                 <span className="t7s-sub">
@@ -463,19 +464,19 @@ function HomeScreenImpl({
           { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
-          { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
+          { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
           { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
           { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
           { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
-        ].map(({ key, Icon, name, desc, onTap }) => (
+        ].map(({ key, Icon, name, desc, onTap, iconColor }) => (
           <button
             key={key}
             className="play-card"
             onClick={onTap || (() => startMode(key))}
           >
             <span className="play-card-icon">
-              <Icon size={20} strokeWidth={2.25} color="var(--accent)" aria-hidden="true" />
+              <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
             </span>
             <span className="play-card-body">
               <span className="play-card-name">{name}</span>

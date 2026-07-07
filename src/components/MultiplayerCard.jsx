@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Share } from "lucide-react";
+import { Share, Users } from "lucide-react";
 
 // MultiplayerCard — Home tab. Replaces the old .util-rail.hero-online
 // rail. Two primary CTAs (Online + Local) and a corner Invite pill.
@@ -24,7 +24,7 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnlin
         <span>Invite</span>
       </button>
       <div className="mp-card-row">
-        <span className="mp-card-icon" aria-hidden="true">👥</span>
+        <span className="mp-card-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <div className="mp-card-titles">
           <div className="mp-card-title">Play with Friends</div>
           <div className="mp-card-sub">Race friends online or play locally.</div>

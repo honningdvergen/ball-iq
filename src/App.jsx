@@ -13,7 +13,7 @@ const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 // the desktop-web-refresh swaps in BiqNav at >= 1024px.
 import { BiqNav } from './BiqNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y } from './useModalA11y.js';
@@ -4841,7 +4841,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
 
       {/* Local pass & play — kept reachable (not in the design frame) */}
       <div style={{marginTop:16,display:"flex",alignItems:"center",gap:12,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"13px 14px"}}>
-        <span style={{fontSize:20}}>👥</span>
+        <span style={{width:44,height:44,borderRadius:12,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:"#8AE042"}} aria-hidden="true"><Users size={21} strokeWidth={2} /></span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
           <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 6 players.</div>
@@ -5554,7 +5554,7 @@ function NotifBell({ count, onClick, className, style }) {
         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
       </svg>
-      {count > 0 && <span className="notif-badge">{count > 9 ? "9+" : count}</span>}
+      {count > 0 && <span className="notif-dot" aria-hidden="true" />}
     </button>
   );
 }
@@ -8988,8 +8988,8 @@ function AppInner() {
             )}
             {screen === "home" && (
               <div className="hdr-actions" style={{marginLeft:"auto",display:"flex",gap:8}}>
-                {user && <NotifBell count={notifCount} onClick={openNotifs} style={{ background: "var(--s1)", border: "1px solid var(--border)" }} />}
-                <button className="icon-btn" aria-label="Settings" onClick={() => setScreen("settings")} style={{ background: "var(--s1)", border: "1px solid var(--border)" }}>⚙️</button>
+                {user && <NotifBell count={notifCount} onClick={openNotifs} className="icon-btn hdr-ic" />}
+                <button className="icon-btn hdr-ic" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
               </div>
             )}
           </div>

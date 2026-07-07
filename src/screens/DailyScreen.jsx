@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { ClipboardList } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { dateToYMD } from "../lib/date.js";
 import { getWordleAnswer } from "../lib/wordle.js";
@@ -274,7 +275,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} of 2 played</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(88,204,2,0.13),rgba(88,204,2,0.02) 55%,var(--s1))", border: "1px solid rgba(88,204,2,0.22)", borderRadius: 16, padding: "14px 16px" }}>
-                <span style={{ width: 46, height: 46, borderRadius: 13, background: "var(--s2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 21 }}>⚽</span>
+                <span style={{ width: 46, height: 46, borderRadius: 13, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)", display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span></span>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Footle</span>
                   <span style={{ fontSize: 12, color: "var(--t3)" }}>Guess the player</span>
@@ -288,7 +289,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 )}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(255,170,0,0.12),rgba(255,193,7,0.03) 55%,var(--s1))", border: "1px solid rgba(255,193,7,0.22)", borderRadius: 16, padding: "14px 16px" }}>
-                <span style={{ width: 46, height: 46, borderRadius: 13, background: "var(--s2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 21 }}>📋</span>
+                <span style={{ width: 46, height: 46, borderRadius: 13, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", color: "#FFC107", display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><ClipboardList size={22} strokeWidth={2} /></span>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Daily 7</span>
                   <span style={{ fontSize: 12, color: "var(--t3)" }}>7 questions · ~3 min</span>
@@ -444,7 +445,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
                   {/* Footle row-card (green) */}
                   <div style={{ ...rowCard, border: "1px solid #234029", background: "linear-gradient(120deg,#10331B,var(--s1) 62%)" }}>
-                    <span style={{ ...iconBox, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)", fontSize: 20 }}>⚽</span>
+                    <span style={{ ...iconBox, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)" }} aria-hidden="true"><span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span></span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Footle</div>
                       <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer</div>
@@ -462,7 +463,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
                   {/* Daily 7 row-card (amber) */}
                   <div style={{ ...rowCard, border: "1px solid #33280E", background: "linear-gradient(120deg,rgba(255,140,0,0.10),var(--s1) 62%)" }}>
-                    <span style={{ ...iconBox, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", fontSize: 19 }}>📋</span>
+                    <span style={{ ...iconBox, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", color: "#FFC107" }} aria-hidden="true"><ClipboardList size={21} strokeWidth={2} /></span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Daily 7</div>
                       <div style={{ fontSize: 12.5, color: "var(--t2)" }}>7 questions · ~3 min · shared by everyone today</div>

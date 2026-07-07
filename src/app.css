@@ -301,11 +301,13 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
-.hst-streak{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.28);border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFC107;-webkit-text-fill-color:#FFC107;letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
+.hst-streak{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.28);border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFC107;-webkit-text-fill-color:#FFC107;letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
 /* Pulse fires once per session when loginStreak exceeds the value
    captured at AppInner mount (i.e. user just earned today's streak day).
    Subtle by design — celebrating the moment, not demanding attention. */
 .hst-streak.is-pulsing{animation:streakPulse 1.5s cubic-bezier(0.22,1,0.36,1);}
+.hst-flame{font-size:16px;line-height:1;}
+.hst-num{font-family:'JetBrains Mono',monospace;font-size:15.5px;font-weight:800;color:#FFC107;-webkit-text-fill-color:#FFC107;font-variant-numeric:tabular-nums;line-height:1;}
 @keyframes streakPulse{
   0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,193,7,0.0); }
   18%  { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(255,193,7,0.18), 0 3px 10px rgba(255,193,7,0.28); }
@@ -372,26 +374,26 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:radial-gradient(circle at 90% -10%,rgba(88,204,2,0.12),transparent 55%),linear-gradient(135deg,#0e2818 0%,#11352a 100%);border:1px solid rgba(88,204,2,0.22);box-shadow:0 2px 10px rgba(0,0,0,0.35);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(135deg,rgba(88,204,2,0.10),#0F1117 62%);border:1px solid #1E3A24;box-shadow:0 0 30px -14px rgba(88,204,2,0.4);overflow:hidden;contain:layout paint style;}
 .light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
-.mp-card-icon{width:42px;height:42px;border-radius:12px;background:rgba(88,204,2,0.16);border:1px solid rgba(88,204,2,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#58CC02;flex-shrink:0;line-height:1;}
+.mp-card-icon{width:46px;height:46px;border-radius:13px;background:rgba(88,204,2,0.14);border:1px solid rgba(88,204,2,0.3);display:inline-flex;align-items:center;justify-content:center;color:#8AE042;flex-shrink:0;line-height:1;}
 .light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
-.mp-card-title{font-size:16px;font-weight:900;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
+.mp-card-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
 .light .mp-card-title{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
-.mp-card-sub{font-size:12px;color:rgba(255,255,255,0.78);margin-top:5px;font-weight:600;line-height:1.4;}
+.mp-card-sub{font-size:12.5px;color:#9BA0B8;margin-top:5px;font-weight:600;line-height:1.4;}
 .light .mp-card-sub{color:#48484A;}
-.mp-card-invite{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#fff;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.mp-card-invite{position:absolute;top:18px;right:18px;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:10px;background:transparent;border:1px solid #2A2D3A;color:#E8EAF0;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#E8EAF0;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
 .light .mp-card-invite{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.10);color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .light .mp-card-invite:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.16);}
-.mp-card-ctas{display:flex;gap:8px;margin-top:10px;align-items:stretch;}
-.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#58CC02;color:#0a1f12;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#0a1f12;touch-action:manipulation;box-shadow:0 2px 6px rgba(88,204,2,0.35);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-ctas{display:flex;gap:10px;margin-top:15px;align-items:stretch;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
-.mp-card-cta.ghost{background:transparent;color:#fff;border:1.5px solid rgba(88,204,2,0.45);box-shadow:none;-webkit-text-fill-color:#fff;}
+.mp-card-cta.ghost{background:transparent;color:#8AE042;border:1px solid #2A6B33;box-shadow:none;-webkit-text-fill-color:#8AE042;}
 .mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
 .light .mp-card-cta.ghost{color:#34A853;border-color:rgba(52,168,83,0.50);-webkit-text-fill-color:#34A853;}
 .light .mp-card-cta.ghost:hover{background:rgba(52,168,83,0.06);}
@@ -445,7 +447,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-.play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--s2);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
+.play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--s1);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;width:100%;min-width:0;}
 .play-card-name{display:block;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .play-card-desc{font-size:12px;color:var(--t2);line-height:1.3;font-weight:500;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
@@ -1366,7 +1368,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    palette (the .app >=1024 block remaps --s1/--s2/--border/--accent). The
    badge is absolutely positioned, so its host button must be position:relative
    (the bell buttons set that inline). */
-.notif-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--red,#FF3B30);color:#fff;-webkit-text-fill-color:#fff;font-size:10px;font-weight:800;line-height:16px;text-align:center;font-family:'Inter',sans-serif;box-shadow:0 0 0 2px var(--s1);pointer-events:none;}
+/* Header icon tile (bell + gear cluster, all tabs) — 40x40 per the Home Tweaks
+   handoff; the unread signal is a 7px dot, not a numeric badge. */
+.hdr-ic{width:40px;height:40px;min-width:40px;min-height:40px;border-radius:12px;background:var(--s2);border:1px solid var(--border);}
+.notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#FF4D4D;border:1.5px solid #14161E;pointer-events:none;}
 .bn-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#FF3B30;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;font-family:'Inter',sans-serif;}
 .notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-start;justify-content:center;z-index:210;padding:64px 16px 20px;animation:fadeIn 0.15s ease;}
 .notif-panel{background:var(--s1);border:1px solid var(--border);border-radius:18px;width:100%;max-width:400px;max-height:min(70vh,560px);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-lg);animation:slideUp 0.22s cubic-bezier(0.22,1,0.36,1);}
@@ -1614,7 +1619,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Footle hero's vertical weight. */
 .todays-seven-secondary{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:14px;background:linear-gradient(120deg,rgba(255,140,0,0.10),rgba(255,193,7,0.03) 60%,var(--s1));color:var(--t1);-webkit-text-fill-color:var(--t1);border:1px solid rgba(255,193,7,0.18);cursor:pointer;font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 2px 10px rgba(0,0,0,0.18);overflow:hidden;margin-bottom:12px;transition:transform 0.1s,box-shadow 0.15s;contain:layout paint style;}
 .todays-seven-secondary:active{transform:scale(0.99);}
-.t7s-icon{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(255,193,7,0.14);border:1px solid rgba(255,193,7,0.3);color:#FFC107;font-size:16px;flex-shrink:0;}
+.t7s-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:rgba(255,170,0,0.14);border:1px solid rgba(255,193,7,0.3);color:#FFC107;flex-shrink:0;}
 .t7s-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
 .t7s-title{font-size:14px;font-weight:900;line-height:1.1;letter-spacing:-0.2px;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .t7s-sub{font-size:11.5px;line-height:1.3;color:var(--t3);font-weight:600;}
