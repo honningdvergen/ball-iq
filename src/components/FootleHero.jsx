@@ -60,11 +60,14 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     }, { onToast: () => {}, textFallback });
   }, [isDone, isWon, isLost, guesses, grades, streak, today, shareCard]);
 
-  // I2: morning grid is fixed 5×6 (Wordle-style teaser, identity over
+  // I2: morning grid is a fixed-width Wordle-style teaser (identity over
   // accuracy — the actual answer length leaks in the subtitle anyway).
-  // Evening grid uses today's actual answer length (4-8 cols) with 6 rows
-  // padded as needed. Eyebrow dropped (G3a) — wordmark + score line carry
-  // the identity; "daily" stays in the morning subtitle.
+  // Evening grid uses today's actual answer length (4-8 cols).
+  // Home Tweaks follow-up: the teaser is capped at 2 ROWS in both states
+  // (the full 6-row board read as a huge grid on Home — the design frame
+  // shows a compact 2-row strip). Evening keeps the LAST two rows so the
+  // winning green row stays the payoff.
+  const PREVIEW_ROWS = 2;
   const cols = answer.length || 5;
   if (!isDone) {
     const inProgress = ws.kind === "in-progress";
@@ -81,7 +84,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
           </div>
         </div>
         <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {Array.from({ length: 6 }).map((_, r) => (
+          {Array.from({ length: PREVIEW_ROWS }).map((_, r) => (
             <div className="fh-row" key={r}>
               {Array.from({ length: 5 }).map((_, c) => <div key={c} className="fh-tile fh-tile-empty" />)}
             </div>
@@ -91,9 +94,11 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     );
   }
 
-  // Evening state — solved or lost. Grid pads to 6 rows so the proportion
-  // matches morning regardless of how many guesses the user actually used.
-  const padRows = Math.max(0, 6 - grades.length);
+  // Evening state — solved or lost. Shows the LAST two guess rows (capped
+  // like the morning teaser) padded up to 2 so morning/evening proportions
+  // match.
+  const shownGrades = grades.slice(-PREVIEW_ROWS);
+  const padRows = Math.max(0, PREVIEW_ROWS - shownGrades.length);
   return (
     <div className="footle-hero footle-hero-evening" role="group" aria-label={isWon ? `Footle solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Footle — missed today"}>
       <div className="fh-body">
@@ -113,7 +118,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
         </div>
       </div>
       <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
-        {grades.map((row, r) => (
+        {shownGrades.map((row, r) => (
           <div className="fh-row" key={r}>
             {row.map((c, i) => <div key={i} className={`fh-tile fh-tile-${c}`} />)}
           </div>
