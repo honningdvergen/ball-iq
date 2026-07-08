@@ -123,6 +123,10 @@ const APP_VERSION = "1.1.0";
 // Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
 // Drives the About "Rate" + "Share" deep links.
 const APP_STORE_ID = "6775975961";
+// Country-coded canonical store URL. The country-less /app/id… form errors on
+// desktop web (no local store to resolve); country-coded loads everywhere and
+// Apple auto-redirects to the viewer's own storefront.
+const APP_STORE_URL = "https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961";
 // Shared style for the three About-card actions (Rate / Share / Feedback).
 const ABOUT_ACTION_STYLE = {
   flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
@@ -360,7 +364,7 @@ function clearSeenHistory() {
 }
 
 
-async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }) {
+async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
   const { QB } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
@@ -375,6 +379,10 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }
     pool = pool.filter(q => q.cat !== "Legends");
   }
   if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat);
+  // Club/league quizzes are for invested fans — drop "easy" (casual-obvious or
+  // telegraphed) entirely. Only topic-scoped callers pass noEasy; general modes
+  // (Classic, Daily 7, Survival, Hot Streak) keep the full easy→hard range.
+  if (noEasy) pool = pool.filter(q => q.diff !== "easy");
   // Honesty over silence: if a category has nothing to offer, return empty
   // so the caller can show a "not enough questions" toast. If we have some
   // but fewer than `n`, return the shuffled pool — better to play 7 real
@@ -410,9 +418,9 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false }
       }
       return picked;
     };
-    const easy = pick("easy", 3);
-    const med  = pick("medium", 4);
-    const hard = pick("hard", 3);
+    const easy = noEasy ? [] : pick("easy", 3);
+    const med  = pick("medium", noEasy ? 6 : 4);
+    const hard = pick("hard", noEasy ? 4 : 3);
     // Fill any gaps with whatever's available
     const got = [...easy, ...med, ...hard];
     if (got.length === 10) {
@@ -2345,9 +2353,17 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
   if (packId && packId !== "mixed") {
     const sep = String(packId).indexOf(":");
     const kind = String(packId).slice(0, sep), key = String(packId).slice(sep + 1);
-    const filtered = kind === "cat" ? eligible.filter(q => q.cat === key)
+    let filtered = kind === "cat" ? eligible.filter(q => q.cat === key)
       : kind === "club" ? eligible.filter(q => q.club === CLUB_PACK_TO_QB[key])
       : eligible;
+    // Club/league packs are for invested fans — never serve "easy". Drop it
+    // whenever the no-easy pool can still sustain a game (>=10); the count logic
+    // below shrinks the round if needed, and only a genuinely thin pool keeps
+    // easy to avoid starving the room.
+    if (kind === "cat" || kind === "club") {
+      const noEasy = filtered.filter(q => q.diff !== "easy");
+      if (noEasy.length >= 10) filtered = noEasy;
+    }
     // Honour the pack whenever it's viable: full pools play at the requested
     // count; a slightly-short pool (>=10) still plays AS THE PACK with a
     // reduced count — a 13-question Ligue 1 survival beats silently serving
@@ -2538,13 +2554,16 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           const { QB } = await loadQuestions();
           const clubName = CLUB_PACK_TO_QB[String(topic).slice(5)];
           const pool = QB.filter(q => q && q.club === clubName && q.type === "mcq" && Array.isArray(q.o));
-          const freshPool = applySeenFilter(pool, target, qbHistKey);
+          // No "easy" in club games (invested fans); keep full pool only if the
+          // no-easy pool is too thin to fill the round.
+          const noEasyPool = pool.filter(q => q.diff !== "easy");
+          const freshPool = applySeenFilter(noEasyPool.length >= 10 ? noEasyPool : pool, target, qbHistKey);
           raw = shuffle([...freshPool]).slice(0, target).map(q => {
             const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
             return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a) };
           });
         } else if (String(topic).startsWith("cat:")) {
-          raw = await getQs({ cat: String(topic).slice(4), diff, n: target, ramp: mode === "classic" });
+          raw = await getQs({ cat: String(topic).slice(4), diff, n: target, ramp: mode === "classic", noEasy: true });
         } else {
           raw = await getQs({ cat: "All", diff, n: target, ramp: mode === "classic", includeLegends: mode === "survival" });
         }
@@ -5024,14 +5043,14 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
     return () => { alive = false; };
   }, []);
   const shareApp = async () => {
-    const url = APP_STORE_ID ? `https://apps.apple.com/app/id${APP_STORE_ID}` : "balliq.app";
+    const url = APP_STORE_ID ? APP_STORE_URL : "balliq.app";
     const text = `⚽ Ball IQ — the football quiz for real fans. ${url}`;
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
   };
   const rateApp = () => {
     if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'App Store rating opens once we’re live 🙌' })); return; }
-    try { window.open(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`, '_blank'); } catch {}
+    try { window.open(`${APP_STORE_URL}?action=write-review`, '_blank'); } catch {}
   };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native
@@ -7787,10 +7806,15 @@ function AppInner() {
         try {
           const { QB } = await loadQuestions();
           const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o));
-          if (verified.length >= 10) {
+          // Club quizzes are for die-hard fans — never serve "easy" (casual-obvious
+          // or telegraphed). Fall back to the full pool only if a club is too thin
+          // on medium+hard to fill 10 (none currently are; thinnest is ~16).
+          const noEasy = verified.filter(q => q.diff !== "easy");
+          const clubPool = noEasy.length >= 10 ? noEasy : verified;
+          if (clubPool.length >= 10) {
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.
-            const freshPool = applySeenFilter(verified, 10, qbHistKey);
+            const freshPool = applySeenFilter(clubPool, 10, qbHistKey);
             qs = shuffle([...freshPool]).slice(0, 10).map(q => {
               const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
               return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
@@ -7820,8 +7844,12 @@ function AppInner() {
       haptic("soft");
       const { QB } = await loadQuestions();
       const pool = QB.filter(q => q && q.cat === catKey && q.type === "mcq" && Array.isArray(q.o));
-      if (pool.length < 10) { showToast("No questions yet for this competition"); return; }
-      const fresh = applySeenFilter(pool, 10, qbHistKey);
+      // League quizzes are for invested fans — never serve "easy". Fall back to
+      // the full pool only if the no-easy pool can't fill 10 (none currently).
+      const noEasy = pool.filter(q => q.diff !== "easy");
+      const gradedPool = noEasy.length >= 10 ? noEasy : pool;
+      if (gradedPool.length < 10) { showToast("No questions yet for this competition"); return; }
+      const fresh = applySeenFilter(gradedPool, 10, qbHistKey);
       const qs = shuffle([...fresh]).slice(0, 10).map(q => {
         const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
         return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
@@ -9057,7 +9085,7 @@ function AppInner() {
                     setShowRatePrompt(false);
                     const ua = navigator.userAgent || "";
                     if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
-                      window.open("https://apps.apple.com/app/id6775975961", "_blank");
+                      window.open(APP_STORE_URL, "_blank");
                     } else if (/Android/i.test(ua)) {
                       window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
                     } else {

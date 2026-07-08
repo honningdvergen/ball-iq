@@ -59,19 +59,21 @@ const hintRows = (cat) => catRows(cat).filter((x) => x.hint && x.type === 'mcq' 
 const clubRows = (club) => QB.filter((x) => x.club === club);
 const clubHintRows = (club) => clubRows(club).filter((x) => x.hint && x.type === 'mcq' && Array.isArray(x.o));
 
-// Deterministic, difficulty-spread sample: lead easy → end hard, stable by id.
+// Deterministic medium→hard sample, stable by id. NO "easy": club/league pages
+// land on invested fans, and an obvious sample question tells them the whole
+// quiz is soft. Lead medium → end hard.
 function curate(rows, n) {
   const byDiff = { easy: [], medium: [], hard: [] };
   for (const r of rows) (byDiff[r.diff] || byDiff.medium).push(r);
   for (const k of Object.keys(byDiff)) byDiff[k].sort((a, b) => (a.id < b.id ? -1 : 1));
-  const want = { easy: Math.round(n * 0.4), medium: Math.round(n * 0.35) };
-  want.hard = n - want.easy - want.medium;
+  const want = { medium: Math.round(n * 0.55) };
+  want.hard = n - want.medium;
   const out = [];
-  for (const k of ['easy', 'medium', 'hard']) out.push(...byDiff[k].slice(0, want[k]));
-  // Top up from any remaining rows (preserving easy→hard order) if a bucket was short.
+  for (const k of ['medium', 'hard']) out.push(...byDiff[k].slice(0, want[k]));
+  // Top up from remaining medium→hard rows if a bucket was short (never easy).
   if (out.length < n) {
     const used = new Set(out.map((r) => r.id));
-    for (const k of ['easy', 'medium', 'hard']) {
+    for (const k of ['medium', 'hard']) {
       for (const r of byDiff[k]) {
         if (out.length >= n) break;
         if (!used.has(r.id)) { out.push(r); used.add(r.id); }
@@ -82,12 +84,12 @@ function curate(rows, n) {
 }
 
 // Taster picker — the /quiz page lands on real fans, and a trivially easy
-// question insults them. The bank's difficulty labels are INFLATED: "medium" is
-// mostly obvious-to-a-fan (shirt numbers, "who ended Utd's grip = Arsenal"),
-// while "hard" reliably separates a die-hard from a casual (a real fan aces it,
-// a casual is challenged — never impossible, since it's their own club). So the
-// taster is HARD-ONLY, topping up with medium then easy only when a club's hard
-// pool is genuinely thin. Deterministic (stable by id).
+// question insults them. Difficulty labels were re-graded bank-wide (full-MCQ:
+// fact obscurity + distractor strength + telegraphing), so "hard" now reliably
+// separates a die-hard from a casual (a real fan aces it, a casual is
+// challenged — never impossible, since it's their own club). The taster is
+// HARD-FIRST, topping up with medium ONLY (never easy) when a club's hard pool
+// is thin. Deterministic (stable by id).
 function tasterPick(rows, n) {
   const byDiff = { easy: [], medium: [], hard: [] };
   for (const r of rows) (byDiff[r.diff] || byDiff.medium).push(r);
@@ -95,7 +97,7 @@ function tasterPick(rows, n) {
   const out = [...byDiff.hard.slice(0, n)];
   if (out.length < n) {
     const used = new Set(out.map((r) => r.id));
-    for (const k of ['medium', 'easy']) {
+    for (const k of ['medium']) {
       for (const r of byDiff[k]) {
         if (out.length >= n) break;
         if (!used.has(r.id)) { out.push(r); used.add(r.id); }
@@ -1250,7 +1252,7 @@ ${clubLinks}
 
 ## Play
 - [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a Ball IQ player rating and multiplayer.
-- [Ball IQ on the App Store](https://apps.apple.com/app/id6775975961): Free iPhone app.
+- [Ball IQ on the App Store](https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961): Free iPhone app.
 `;
   writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');
 }

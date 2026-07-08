@@ -6,7 +6,8 @@ import { getWordleAnswer, gradeWordleGuess, WORDLE_PLAYERS, getFootleNumber } fr
 // ad overlay. Reuses the app's REAL Footle word + evaluation (lib/wordle.js).
 // Mounted at /play-preview for now; flips to /play when complete.
 
-const APP_STORE = 'https://apps.apple.com/app/id6775975961';
+// Country-coded canonical — country-less /app/id… errors on desktop web.
+const APP_STORE = 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961';
 const BALL = '/marketing/ball.png';
 
 const STYLE = `

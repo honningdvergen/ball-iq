@@ -9,7 +9,10 @@ import { Phone } from './Phone.jsx';
 // Scroll reveals use IntersectionObserver (the prototype's CSS scroll-timeline
 // equivalent, per the README). All ambient motion respects prefers-reduced-motion.
 
-const APP_STORE = 'https://apps.apple.com/app/id6775975961';
+// Country-coded canonical URL. The country-less /app/id… form deep-links fine on
+// iOS but errors ("An Error Occurred") on desktop web, where there's no local
+// store to resolve into. Apple redirects any storefront to the viewer's own.
+const APP_STORE = 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961';
 const PLAY = '/play';
 const BALL = '/marketing/ball.png';
 const SHOT = {
