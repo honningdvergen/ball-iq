@@ -128,6 +128,27 @@ const CAT_KIND = {
 
 const deriveBadge = (name) => name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'FB';
 
+// Club brand colours — mirror the app's CLUB_PACKS so the web badges read the
+// same as the in-app club list. Light shirts (Real Madrid white, Dortmund
+// yellow) get dark text via readableOn(); a hairline border keeps very dark
+// badges (Juventus, Newcastle) legible on the near-black cards.
+const CLUB_COLOR = {
+  arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
+  barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
+  chelsea: '#034694', 'bayern-munich': '#DC052D', juventus: '#000000',
+  'ac-milan': '#FB090B', 'atletico-madrid': '#CB3524', 'borussia-dortmund': '#FDE100',
+  psg: '#003170', 'inter-milan': '#010E80', ajax: '#CC0000', tottenham: '#132257',
+  newcastle: '#241F20', napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
+};
+const readableOn = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? '#0A0A0A' : '#fff';
+};
+const clubBadgeStyle = (slug) => {
+  const c = CLUB_COLOR[slug];
+  return c ? `background:${c};color:${readableOn(c)};border:1px solid rgba(255,255,255,.16)` : '';
+};
+
 // Badge for a related-quiz tile, keyed by slug.
 function badgeFor(slug, name) {
   if (slug === HUB.slug) return { text: '⚽', emoji: true };
@@ -179,7 +200,7 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref
     ? ''
     : badge.emoji
       ? `<span class="badge-chip emoji">${badge.text}</span>`
-      : `<span class="badge-chip">${esc(badge.text)}</span>`;
+      : `<span class="badge-chip"${badge.color ? ` style="background:${badge.color};color:${readableOn(badge.color)};border:1px solid rgba(255,255,255,.16)"` : ''}>${esc(badge.text)}</span>`;
   const ctaRow = playHref
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}">${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
@@ -255,7 +276,7 @@ function renderTiles(pages) {
       const b = badgeFor(p.slug, p.name);
       const chip = b.emoji
         ? `<span class="tbadge emoji">${b.text}</span>`
-        : `<span class="tbadge">${esc(b.text)}</span>`;
+        : `<span class="tbadge" style="${clubBadgeStyle(p.slug)}">${esc(b.text)}</span>`;
       return `<a class="tile" href="${href}">${chip}<span class="tname">${esc(p.name)}</span></a>`;
     })
     .join('\n');
@@ -749,7 +770,7 @@ ${heroTwoCol({
       { name: 'Quizzes', url: `${SITE.base}/quiz/` },
       { name: cfg.name, url: canonical },
     ],
-    badge: { text: CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name), emoji: false },
+    badge: { text: CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name), emoji: false, color: CLUB_COLOR[cfg.slug] },
     kind: 'Club quiz',
     name: cfg.name,
     h1: cfg.h1,
