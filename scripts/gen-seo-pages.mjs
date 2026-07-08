@@ -396,7 +396,9 @@ function head({ title, description, canonical, ld }) {
   img{max-width:100%;display:block}
   a{color:var(--grn-soft);text-decoration:none}
   a:hover{text-decoration:underline}
-  main{max-width:900px;margin:0 auto;padding:0 20px}
+  main{max-width:1120px;margin:0 auto;padding:0 24px}
+  /* readable inner width for long-form/list sections (handoff keeps prose + FAQ narrow inside the wide frame) */
+  .narrow{max-width:760px;margin-left:auto;margin-right:auto}
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
   /* nav */
   .nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #16181F}
@@ -607,11 +609,11 @@ ${appCtaBand(catCfg.name)}
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
 </section>
-<section class="sec">
+<section class="sec narrow">
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
 ${renderFaq(catCfg.faq, { q: `More about ${catCfg.name}`, html: `${restHtml}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
-<section class="sec">
+<section class="sec narrow">
 <h2>Sample ${esc(catCfg.name)} questions &amp; answers</h2>
 <p class="sub">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
@@ -691,11 +693,11 @@ ${appCtaBand(cfg.name)}
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
 </section>
-<section class="sec">
+<section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `More about ${cfg.name}`, html: `${restHtml}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
-<section class="sec">
+<section class="sec narrow">
 <h2>Sample ${esc(cfg.name)} questions &amp; answers</h2>
 <p class="sub">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
