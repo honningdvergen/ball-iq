@@ -693,13 +693,6 @@ ${heroTwoCol({
     playHref: '#taster',
   }, renderTaster(tasterRows, catCfg.name, deepPlay))}
 ${renderCovers(catCfg.name, true)}
-<section class="sec narrow">
-<h2>About the ${esc(catCfg.name)} quiz</h2>
-<div class="prose">
-${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
-<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
-</div>
-</section>
 ${appCtaBand(catCfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -707,7 +700,7 @@ ${renderTiles(related)}
 </section>
 <section class="sec narrow">
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
-${renderFaq(catCfg.faq)}
+${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
 </main>
 ${footer()}`;
@@ -779,13 +772,6 @@ ${heroTwoCol({
     playHref: '#taster',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
 ${renderCovers(cfg.name, false)}
-<section class="sec narrow">
-<h2>About the ${esc(cfg.name)} quiz</h2>
-<div class="prose">
-${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
-<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
-</div>
-</section>
 ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -793,7 +779,7 @@ ${renderTiles(related)}
 </section>
 <section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq)}
+${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
 </main>
 ${footer()}`;
