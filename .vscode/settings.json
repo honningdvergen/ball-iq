@@ -1,0 +1,29 @@
+{
+  "//": "Perf: keep VS Code's file watcher + search out of heavy generated/vendor folders. These stay VISIBLE in the explorer (not files.exclude), just not scanned.",
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.git/**": true,
+    "**/ios/App/Pods/**": true,
+    "**/ios/build/**": true,
+    "**/ios/DerivedData/**": true,
+    "**/ios/App/App/public/**": true,
+    "**/android/app/build/**": true,
+    "**/android/.gradle/**": true,
+    "**/test-results/**": true,
+    "**/playwright-report/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/ios/App/Pods": true,
+    "**/ios/build": true,
+    "**/ios/App/App/public": true,
+    "**/android/app/build": true,
+    "**/android/.gradle": true,
+    "**/test-results": true,
+    "**/playwright-report": true,
+    "**/*.map": true,
+    "**/package-lock.json": true
+  }
+}
