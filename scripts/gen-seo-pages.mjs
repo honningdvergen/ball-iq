@@ -178,12 +178,15 @@ ${appStoreBadge()}
     : '';
   const stat = statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
   return `<section class="hero">
+<div class="hero-glow" aria-hidden="true"></div>
+<div class="hero-in">
 ${crumbs(crumbItems)}
 <div class="kicker">${chip}<span class="eyebrow">${esc(kind)}</span></div>
 <h1>${esc(h1)}</h1>
 <p class="hero-lead">${esc(lead)}</p>
 ${ctaRow}
 ${stat}
+</div>
 </section>`;
 }
 
@@ -398,9 +401,9 @@ function head({ title, description, canonical, ld }) {
   /* nav */
   .nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #16181F}
   .nav-in{max-width:900px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:inline-flex;align-items:center;gap:9px;font-weight:900;font-size:19px;letter-spacing:-.02em;color:#fff}
+  .brand{display:inline-flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
   .brand:hover{text-decoration:none}
-  .brand img{width:28px;height:28px;border-radius:7px}
+  .brand img{width:32px;height:32px;border-radius:8px}
   .brand b{color:var(--amber);font-weight:900}
   .nav-right{display:flex;align-items:center;gap:16px}
   .nav-link{color:var(--tx3);font-size:14px;font-weight:600}
@@ -408,7 +411,11 @@ function head({ title, description, canonical, ld }) {
   .nav-cta{display:inline-flex;align-items:center;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px;box-shadow:0 8px 22px -6px rgba(88,204,2,.5)}
   .nav-cta:hover{text-decoration:none;filter:brightness(1.04)}
   /* hero */
-  .hero{padding:46px 0 40px}
+  .hero{padding:46px 0 40px;position:relative;overflow:hidden}
+  .hero-in{position:relative;z-index:2}
+  .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(88,204,2,.14) 0%,rgba(88,204,2,.04) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
+  @keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.72}}
+  @media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
   .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
   .crumbs a{color:var(--tx3)}
   .crumbs a:hover{color:#fff;text-decoration:none}
@@ -476,6 +483,7 @@ function head({ title, description, canonical, ld }) {
   /* footer */
   .foot{border-top:1px solid #16181F;background:var(--bg2);margin-top:36px}
   .foot-in{max-width:900px;margin:0 auto;padding:40px 20px 48px}
+  .foot .brand img{width:28px;height:28px}
   .foot-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin:18px 0}
   .foot-links a{color:var(--tx3);font-size:14px}
   .foot-links a:hover{color:#fff;text-decoration:none}
