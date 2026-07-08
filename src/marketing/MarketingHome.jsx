@@ -425,10 +425,30 @@ const QUIZ_LEAGUES = [
   { slug: 'world-cup', label: 'World Cup', emoji: '🌍' },
 ];
 
-function QuizTile({ href, badge, emoji, label }) {
+// Club brand colours (mirror the app CLUB_PACKS + the /quiz SEO badges) for
+// badge tinting. Light shirts (Real Madrid white, Dortmund yellow) get dark
+// text via readableOn(); a hairline border keeps dark badges legible.
+const CLUB_COLOR = {
+  'manchester-united': '#DA291C', arsenal: '#EF0107', 'manchester-city': '#6CABDD',
+  liverpool: '#C8102E', chelsea: '#034694', tottenham: '#132257', newcastle: '#241F20',
+  barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'atletico-madrid': '#CB3524',
+  juventus: '#000000', 'inter-milan': '#010E80', 'ac-milan': '#FB090B',
+  'bayern-munich': '#DC052D', 'borussia-dortmund': '#FDE100', psg: '#003170', ajax: '#CC0000',
+};
+const readableOn = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? '#0A0A0A' : '#fff';
+};
+
+function QuizTile({ href, badge, emoji, label, color }) {
+  const badgeStyle = emoji
+    ? { background: 'transparent', fontSize: 22 }
+    : color
+      ? { background: color, color: readableOn(color), border: '1px solid rgba(255,255,255,0.16)' }
+      : undefined;
   return (
     <a href={href} className="mkt-qtile">
-      <span className="mkt-qbadge" style={emoji ? { background: 'transparent', fontSize: 22 } : undefined}>{emoji || badge}</span>
+      <span className="mkt-qbadge" style={badgeStyle}>{emoji || badge}</span>
       <span style={{ fontSize: 14.5, fontWeight: 700, color: '#F0F1F5' }}>{label}</span>
     </a>
   );
@@ -444,7 +464,7 @@ function QuizGrid() {
       </div>
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '0 2px 12px' }}>Clubs</div>
       <div className="mkt-qgrid">
-        {QUIZ_CLUBS.map((c) => <QuizTile key={c.slug} href={`/quiz/${c.slug}/`} badge={c.badge} label={c.label} />)}
+        {QUIZ_CLUBS.map((c) => <QuizTile key={c.slug} href={`/quiz/${c.slug}/`} badge={c.badge} label={c.label} color={CLUB_COLOR[c.slug]} />)}
       </div>
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
       <div className="mkt-qgrid">
