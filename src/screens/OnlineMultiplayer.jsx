@@ -352,7 +352,7 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
         return;
       }
     } catch (err) {
-      if (err && err.name === 'AbortError') return; // user cancelled — silent
+      if (err && (err.name === 'AbortError' || /cancel/i.test(err?.message || ''))) return; // user cancelled — silent
     }
     try {
       await navigator.clipboard.writeText(`${text} ${url}`);
@@ -854,7 +854,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         return;
       }
     } catch (err) {
-      if (err && err.name === "AbortError") return;
+      if (err && (err.name === "AbortError" || /cancel/i.test(err?.message || ""))) return;
     }
     try { await navigator.clipboard.writeText(`${text} ${url}`); } catch {}
   };

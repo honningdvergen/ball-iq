@@ -390,7 +390,11 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, 
   if (pool.length < 5) {
     return [];
   }
-  if (diff === "easy") pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
+  // noEasy is authoritative: if a caller both drops easy AND was handed
+  // diff:"easy" (e.g. a local-MP league topic where the Easy chip is still
+  // selectable), do NOT then filter to easy-only — that empties the pool and
+  // instantly ends the game. noEasy wins → the medium+hard pool stands.
+  if (diff === "easy" && !noEasy) pool = pool.filter(q => q.diff === "easy" && (q.type === "mcq" || q.type === "tf"));
   else if (diff === "medium") pool = pool.filter(q => q.diff !== "hard");
   // Hide questions seen within the last 14 days; fall back to full pool if too few remain
   pool = applySeenFilter(pool, n, qbHistKey);
@@ -8426,7 +8430,7 @@ function AppInner() {
       if (navigator.share) { await navigator.share({ title: APP_NAME, text, url }); return; }
       if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); return; }
     } catch (e) {
-      if (e && e.name === "AbortError") return; // user dismissed the sheet
+      if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return; // user dismissed the sheet
       try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); } } catch {}
     }
   }, [xp, stats, profile, loginStreak, showToast, authProfile]);

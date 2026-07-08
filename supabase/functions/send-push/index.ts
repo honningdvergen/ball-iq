@@ -94,9 +94,18 @@ async function sendOne(token: string, jwt: string, alert: ReturnType<typeof buil
     },
     body: JSON.stringify(payload),
   });
-  if (res.status === 410 || res.status === 400) {
-    // BadDeviceToken / Unregistered → prune it.
+  // Only prune on a genuine dead-token signal. 410 = Unregistered (always dead).
+  // 400 covers MANY reasons (BadTopic, PayloadTooLarge, BadMessageId, …) — pruning
+  // on any 400 would delete perfectly valid tokens whenever the payload/config is
+  // off, so we prune on 400 only when APNs' reason is a dead-token reason.
+  if (res.status === 410) {
     await admin.from("device_tokens").delete().eq("token", token);
+  } else if (res.status === 400) {
+    let reason = "";
+    try { reason = ((await res.clone().json())?.reason) || ""; } catch { /* no body */ }
+    if (reason === "BadDeviceToken" || reason === "Unregistered" || reason === "DeviceTokenNotForTopic") {
+      await admin.from("device_tokens").delete().eq("token", token);
+    }
   }
   return res.status;
 }

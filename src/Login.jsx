@@ -108,7 +108,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     setError(''); setMessage(''); setLoading(true)
     try {
       if (mode === 'signup') {
-        if (!username.trim() || username.length < 3) { setError('Username must be at least 3 characters'); setLoading(false); return }
+        if (username.trim().length < 3) { setError('Username must be at least 3 characters'); setLoading(false); return }
         if (isProfaneUsername(username.trim())) {
           // Client-side gate before hitting Supabase. The SQL trigger
           // profiles_profanity_check is the bypass-proof backstop.

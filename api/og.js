@@ -33,7 +33,16 @@ const COMPS = [
 export default function handler(req) {
   const sp = new URL(req.url).searchParams;
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
-  const img = sp.get('img') || '';
+  let img = sp.get('img') || '';
+  // SSRF guard: this endpoint fetches `img` server-side, so only proxy images
+  // from our own Supabase storage host. Any attacker-controlled ?img= URL is
+  // dropped to the emoji fallback rather than fetched.
+  if (img) {
+    try {
+      const u = new URL(img);
+      if (u.protocol !== 'https:' || u.hostname !== 'blcisypmngimqkwxrrdm.supabase.co') img = '';
+    } catch { img = ''; }
+  }
   const emoji = sp.get('e') || '⚽';
   const overall = sp.get('ov') || '—';
   const t = TIERS[sp.get('ti')] || TIERS.prospect;
