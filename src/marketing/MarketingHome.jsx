@@ -27,6 +27,10 @@ const STYLE = `
 .mkt-link:hover { color:#fff; }
 .mkt-nav { padding:15px 28px; }
 .mkt-nav-links { gap:30px; }
+/* Highlighted "Play free" — green-outline ghost button with a soft glow, sits
+   next to the solid "Get the app" so the free web play is an obvious action. */
+.mkt-nav-play { display:inline-flex; align-items:center; padding:9px 17px; border:1.5px solid rgba(88,204,2,0.65); border-radius:12px; background:rgba(88,204,2,0.08); color:#8AE042; font-weight:800; font-size:14px; box-shadow:0 0 20px -6px rgba(88,204,2,0.5); transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, background .18s, border-color .18s; }
+.mkt-nav-play:hover { transform:translateY(-2px); background:rgba(88,204,2,0.15); border-color:#58CC02; box-shadow:0 0 26px -4px rgba(88,204,2,0.65); color:#AEEF6E; }
 /* Nav collapse: on phones the full link row + CTA overflows the viewport, so
    drop the anchor-jump links (Features/Modes/FAQ) and keep the two real actions
    (Play + Get the app) in a tighter row that always fits. */
@@ -523,10 +527,10 @@ export default function MarketingHome() {
       <nav className="mkt-nav" style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(10,10,10,0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderBottom: '1px solid #16181F' }}>
         <a href="/"><Brand /></a>
         <div className="mkt-nav-links" style={{ display: 'flex', alignItems: 'center' }}>
-          <a href="#features" className="mkt-link mkt-nav-sec">Features</a>
+          <a href="#quizzes" className="mkt-link mkt-nav-sec">Quizzes</a>
           <a href="#modes" className="mkt-link mkt-nav-sec">Modes</a>
           <a href="#faq" className="mkt-link mkt-nav-sec">FAQ</a>
-          <a href={PLAY} className="mkt-link" style={{ fontWeight: 700 }}>Play</a>
+          <a href={PLAY} className="mkt-nav-play mkt-nav-cta">Play free</a>
           <GreenCTA href={APP_STORE} target="_blank" className="mkt-nav-cta">Get the app</GreenCTA>
         </div>
       </nav>
