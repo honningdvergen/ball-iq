@@ -9,7 +9,7 @@
   },
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#09131C",
+    "backgroundColor": "#0A0A0A",
     "limitsNavigationsToAppBoundDomains": false
   },
   "android": {
@@ -20,7 +20,7 @@
     "SplashScreen": {
       "launchShowDuration": 3000,
       "launchAutoHide": false,
-      "backgroundColor": "#09131C",
+      "backgroundColor": "#0A0A0A",
       "androidScaleType": "CENTER_CROP",
       "iosSpinnerStyle": "small",
       "spinnerColor": "#58CC02",
@@ -29,7 +29,7 @@
     },
     "StatusBar": {
       "style": "DARK",
-      "backgroundColor": "#09131C",
+      "backgroundColor": "#0A0A0A",
       "overlaysWebView": true
     },
     "Keyboard": {
