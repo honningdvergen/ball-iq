@@ -34,6 +34,7 @@ import { dirname, resolve } from 'node:path';
 import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { PLAYERS } from './seo/players.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -419,8 +420,17 @@ const LEAGUE_COVERS = (n) => [
   ['Famous matches', 'Iconic games, comebacks and unforgettable goals.'],
   ['History & eras', 'Founding stories, golden eras and how it all evolved.'],
 ];
-function renderCovers(name, isLeague) {
-  const cards = (isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name))
+const PLAYER_COVERS = (n) => [
+  ['Career & clubs', `Every club ${n} played for and the moves in between.`],
+  ['Trophies & honours', 'Leagues, cups and the biggest nights of the career.'],
+  ['Goals & records', 'The milestones, the tallies and the records set.'],
+  ['International', 'The national-team story — tournaments, caps and glory.'],
+  ['Iconic moments', 'The goals and games fans will never forget.'],
+  ['Awards', "Ballon d'Ors, Golden Boots and individual honours."],
+];
+function renderCovers(name, isLeague, isPlayer) {
+  const set = isPlayer ? PLAYER_COVERS(name) : isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name);
+  const cards = set
     .map(([t, d]) => `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`)
     .join('\n');
   return `<section class="sec">
@@ -788,6 +798,78 @@ ${footer()}`;
   mkdirSync(dir, { recursive: true });
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
   return { slug: cfg.slug, name: `${cfg.name} quiz`, count: all.length, canonical };
+}
+
+// ── per-player page ───────────────────────────────────────────────────────────
+// Mirrors buildClubPage, but the bank has no `player` field — a question is
+// "about" a player if any `match` alternative appears in the stem or the
+// correct answer. Prose comes from scripts/seo/players.mjs (fact-checked). No
+// in-app "player quiz" mode, so the taster funnels to the app generally.
+function playerHintRows(match) {
+  const re = new RegExp('(' + match.join('|') + ')', 'i');
+  return QB.filter(
+    (x) =>
+      x.type === 'mcq' &&
+      Array.isArray(x.o) &&
+      x.hint &&
+      (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
+  );
+}
+function buildPlayerPage(cfg, clubPages, catPages) {
+  const hints = playerHintRows(cfg.match);
+  if (hints.length < MIN_HINTS) {
+    throw new Error(`[gen-seo] player "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
+  }
+  const tasterRows = curate(hints, 5);
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
+        ],
+      },
+    ],
+  });
+  const related = [...clubPages.slice(0, 8), ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4)];
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+<body>
+${NAV}
+<main>
+${heroTwoCol({
+    crumbItems: [
+      { name: 'Home', url: `${SITE.base}/` },
+      { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+      { name: cfg.name, url: canonical },
+    ],
+    badge: { text: cfg.initials, emoji: false },
+    kind: 'Player quiz',
+    name: cfg.name,
+    h1: cfg.h1,
+    lead: cfg.description,
+    statLine: `${hints.length}+ ${cfg.name} questions · new ones added weekly`,
+    playHref: '#taster',
+  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/`))}
+${renderCovers(cfg.name, false, true)}
+${appCtaBand(cfg.name)}
+<section class="sec">
+<h2>More quizzes to try</h2>
+${renderTiles(related)}
+</section>
+<section class="sec narrow">
+<h2>${esc(cfg.name)} quiz — FAQ</h2>
+${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'quiz', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: `${cfg.name} quiz`, count: hints.length, canonical };
 }
 
 // ── listicle page (cross-cutting "questions and answers" article) ─────────────
@@ -1190,16 +1272,19 @@ async function main() {
 
   // Club pages: /quiz/<club-slug>/ — same URL namespace, own interlink mesh.
   const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length }));
+  // Player pages: /quiz/<player-slug>/ — same namespace; text-matched question sets.
+  const playerPages = PLAYERS.map((p) => ({ slug: p.slug, name: `${p.name} quiz`, count: playerHintRows(p.match).length }));
 
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages));
+  const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   buildHubPage(livePages, clubPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages]);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages]);
   buildLlmsTxt(livePages, clubPages);
   await pingIndexNow(sitemapUrls);
 
@@ -1207,6 +1292,7 @@ async function main() {
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
+  for (const b of builtPlayers) console.log(`  ✓ /quiz/${b.slug}/  (player, ${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /football-wordle/  (Footle landing)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
