@@ -9,8 +9,8 @@
   "orientation": "portrait",
   "lang": "en",
   "dir": "ltr",
-  "background_color": "#09131C",
-  "theme_color": "#09131C",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
   "categories": ["games", "sports"],
   "screenshots": [],
   "icons": [
