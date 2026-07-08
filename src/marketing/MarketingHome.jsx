@@ -418,6 +418,9 @@ const QUIZ_CLUBS = [
   { slug: 'borussia-dortmund', label: 'Dortmund', badge: 'BVB' },
   { slug: 'psg', label: 'PSG', badge: 'PSG' },
   { slug: 'ajax', label: 'Ajax', badge: 'AJA' },
+  { slug: 'napoli', label: 'Napoli', badge: 'NAP' },
+  { slug: 'galatasaray', label: 'Galatasaray', badge: 'GAL' },
+  { slug: 'benfica', label: 'Benfica', badge: 'SLB' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
@@ -438,6 +441,7 @@ const CLUB_COLOR = {
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'atletico-madrid': '#CB3524',
   juventus: '#000000', 'inter-milan': '#010E80', 'ac-milan': '#FB090B',
   'bayern-munich': '#DC052D', 'borussia-dortmund': '#FDE100', psg: '#003170', ajax: '#CC0000',
+  napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
