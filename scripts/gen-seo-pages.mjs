@@ -474,13 +474,13 @@ function head({ title, description, canonical, ld }) {
   img{max-width:100%;display:block}
   a{color:var(--grn-soft);text-decoration:none}
   a:hover{text-decoration:underline}
-  main{max-width:1120px;margin:0 auto;padding:0 24px}
+  main{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px)}
   /* readable inner width for long-form/list sections (handoff keeps prose + FAQ narrow inside the wide frame) */
   .narrow{max-width:760px;margin-left:auto;margin-right:auto}
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
   /* nav */
   .nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #16181F}
-  .nav-in{max-width:900px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .nav-in{max-width:none;margin:0 auto;padding:13px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:inline-flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
   .brand:hover{text-decoration:none}
   .brand img{width:32px;height:32px;border-radius:8px}
@@ -573,7 +573,7 @@ function head({ title, description, canonical, ld }) {
   details.ans .why{color:var(--tx3);font-size:14px;line-height:1.55}
   /* footer */
   .foot{border-top:1px solid #16181F;background:var(--bg2);margin-top:36px}
-  .foot-in{max-width:900px;margin:0 auto;padding:40px 20px 48px}
+  .foot-in{max-width:none;margin:0 auto;padding:40px clamp(20px,4vw,48px) 48px}
   .foot .brand img{width:28px;height:28px}
   .foot-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin:18px 0}
   .foot-links a{color:var(--tx3);font-size:14px}
