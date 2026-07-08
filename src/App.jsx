@@ -7943,6 +7943,16 @@ function AppInner() {
     return off;
   }, []);
 
+  // "Continue as guest" from the auth overlay routes here so it lands on Home
+  // (the "just let me play" destination), not the screen the overlay was opened
+  // from (e.g. Settings' sign-in row). The overlay is a sibling of AppInner in
+  // AppGate, so it signals via a window event — same pattern as reminders/pushes.
+  useEffect(() => {
+    const goHome = () => { setScreen("home"); setTab("home"); };
+    window.addEventListener("biq:go-home", goHome);
+    return () => window.removeEventListener("biq:go-home", goHome);
+  }, []);
+
   // ─── 1.3 Native push (APNs) ────────────────────────────────────────────────
   // Route a push tap: a play invite deep-links straight into the lobby with the
   // room code; anything else lands on the Online tab (where the inbox lives).

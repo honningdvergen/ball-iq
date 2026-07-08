@@ -153,6 +153,19 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const openSignin = () => { setError(''); setMessage(''); setMode('login'); setView('email') }
   const backToChoices = () => { setError(''); setMessage(''); setView('choices') }
   const toggleMode = () => { setMode((m) => (m === 'signup' ? 'login' : 'signup')); setError(''); setMessage('') }
+  // "Continue as guest": the front door creates a guest session; the on-demand
+  // overlay (the user is ALREADY a guest) dismisses AND routes to Home. Landing
+  // back on the screen the overlay was opened from (e.g. Settings' sign-in row)
+  // surprised testers who expected "just let me play". AppInner listens for
+  // biq:go-home (the overlay is its sibling in AppGate).
+  const guestContinue = () => {
+    if (asOverlay) {
+      try { window.dispatchEvent(new CustomEvent('biq:go-home')) } catch {}
+      onClose?.()
+    } else {
+      continueAsGuest()
+    }
+  }
 
   const isSignup = mode === 'signup'
   const heroTitle = prompt ? prompt.title : 'How good is your Ball IQ?'
@@ -253,9 +266,9 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                 style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1 }}>
                 {MAIL_GLYPH}<span>Continue with email</span>
               </button>
-              <button type="button" className="biql-guest" onClick={asOverlay ? onClose : continueAsGuest}
+              <button type="button" className="biql-guest" onClick={guestContinue}
                 style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.border}`, background: 'transparent', color: C.t2, fontSize: 15 }}>
-                {asOverlay ? 'Maybe later' : 'Continue as guest'}
+                Continue as guest
               </button>
               <div style={{ textAlign: 'center', fontSize: 11.5, lineHeight: 1.5, color: C.legal, marginTop: 4 }}>
                 By continuing you agree to our <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Terms</a> &amp; <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Privacy Policy</a>.
