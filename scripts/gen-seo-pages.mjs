@@ -164,7 +164,17 @@ function crumbs(items) {
 
 // The play-first hero. `badge` = { text, emoji } or null (listicle/simple pages).
 // `playHref` is the green CTA target ("#taster" on quiz pages).
-function heroSection({ crumbItems, badge, kind, name, h1, lead, statLine, playHref, playLabel }) {
+// Compact App Store button for the two-column quiz hero (single-line "App Store").
+function appStoreBadgeMini() {
+  return `<a class="store-badge mini" href="${SITE.appStore}" rel="noopener" target="_blank">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.42 2.2-1.26 2.99-.84.79-1.85 1.25-2.95 1.16-.13-1.06.4-2.18 1.18-2.95.83-.82 2.06-1.41 3.03-1.4.01.07.01.13 0 .2zm3.66 16.06c-.6 1.38-.88 1.99-1.65 3.2-1.08 1.69-2.6 3.79-4.48 3.81-1.67.02-2.1-1.09-4.37-1.07-2.27.01-2.74 1.09-4.41 1.07-1.88-.02-3.32-1.92-4.4-3.6-3.02-4.74-3.34-10.29-1.47-13.24 1.33-2.09 3.43-3.32 5.4-3.32 2.01 0 3.27 1.1 4.93 1.1 1.61 0 2.59-1.1 4.91-1.1 1.76 0 3.62.96 4.95 2.61-4.35 2.38-3.64 8.59.96 10.54z"/></svg>
+<span class="mini-tx">App Store</span>
+</a>`;
+}
+
+// Inner hero content (breadcrumb → stat), shared by the single-column heroSection
+// (Footle landing, listicles) and the two-column quiz hero (heroTwoCol).
+function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref, playLabel, mini }) {
   const chip = !badge
     ? ''
     : badge.emoji
@@ -173,19 +183,36 @@ function heroSection({ crumbItems, badge, kind, name, h1, lead, statLine, playHr
   const ctaRow = playHref
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}">${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
-${appStoreBadge()}
+${mini ? appStoreBadgeMini() : appStoreBadge()}
 </div>`
     : '';
   const stat = statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
-  return `<section class="hero">
-<div class="hero-glow" aria-hidden="true"></div>
-<div class="hero-in">
-${crumbs(crumbItems)}
+  return `${crumbs(crumbItems)}
 <div class="kicker">${chip}<span class="eyebrow">${esc(kind)}</span></div>
 <h1>${esc(h1)}</h1>
 <p class="hero-lead">${esc(lead)}</p>
 ${ctaRow}
-${stat}
+${stat}`;
+}
+
+// Single-column hero (Footle landing, listicles).
+function heroSection(props) {
+  return `<section class="hero">
+<div class="hero-glow" aria-hidden="true"></div>
+<div class="hero-in">
+${heroInner(props)}
+</div>
+</section>`;
+}
+
+// Two-column quiz hero: intro/CTA on the left, playable taster (rightHtml) on
+// the right (Claude Design "Quiz Landing" handoff). Stacks on narrow screens.
+function heroTwoCol(props, rightHtml) {
+  return `<section class="hero">
+<div class="hero-glow" aria-hidden="true"></div>
+<div class="hero-grid">
+<div class="hero-left">${heroInner({ ...props, mini: true })}</div>
+<div class="hero-right">${rightHtml}</div>
 </div>
 </section>`;
 }
@@ -262,11 +289,11 @@ function renderQA(rows) {
 // bank and are EXCLUDED from the static Q&A block so playing isn't spoiled.
 // Self-contained per page (inline JS, no shared bundle) so each page is robust
 // on a cold load. IQ map + fan tiers per the handoff spec.
-const TASTER_CSS = `  .taster{padding:22px 0 40px;text-align:center}
-  .taster .eyebrow{display:block;margin-bottom:10px}
-  .taster h2{margin:0 auto 22px;max-width:20ch;text-align:center}
-  .tcard{max-width:560px;margin:0 auto;text-align:left;background:#0F1117;border:1px solid #242836;border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
-  .taster-note{margin:16px auto 0;font-size:13px;color:#6E7180;max-width:560px}
+const TASTER_CSS = `  .taster{text-align:left}
+  .taster .eyebrow{display:block;margin-bottom:8px}
+  .taster h2{margin:8px 0 16px;text-align:left;font-size:clamp(21px,2.4vw,28px)}
+  .tcard{max-width:none;margin:0;text-align:left;background:#0F1117;border:1px solid #242836;border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
+  .taster-note{margin:14px 0 0;font-size:13px;color:#6E7180}
   .tph{font-size:15px;font-weight:600;color:#9BA0B8;margin:0;line-height:1.5}
   .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   .th .tq{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6E7180}
@@ -341,7 +368,7 @@ function renderTaster(rows, name, playHref) {
   const data = JSON.stringify(payload).replace(/</g, '\\u003c');
   const play = playHref || `${SITE.base}/`;
   return `<section class="taster" id="taster" aria-labelledby="taster-h">
-<div class="eyebrow">Free taster</div>
+<div class="eyebrow">Free taster · No sign-up</div>
 <h2 id="taster-h">How well do you know ${esc(name)}?</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.appStore}">
 <p class="tph">Five quick questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
@@ -349,6 +376,36 @@ function renderTaster(rows, name, playHref) {
 <p class="taster-note">Sample questions shown — the full quiz has many more.</p>
 <script type="application/json" id="biq-taster-data">${data}</script>
 <script>${TASTER_JS}</script>
+</section>`;
+}
+
+// ── "What the <topic> quiz covers" topic grid (Claude Design handoff) ─────────
+// Six generic-but-on-topic cards. Reassures the searcher what's inside + adds
+// crawlable keyword coverage (history, players, managers, trophies, records).
+const CLUB_COVERS = (n) => [
+  ['Club history', `Founding, golden eras and the moments that shaped ${n}.`],
+  ['Players & legends', 'Cult heroes and record-breakers, past and present.'],
+  ['Managers', 'The bosses in the dugout and the trophies they won.'],
+  ['Trophies & honours', 'Every title, cup and big European night that counts.'],
+  ['Records & stats', 'Appearances, goals, transfers and all-time bests.'],
+  ['Iconic moments', 'Famous games, comebacks and unforgettable goals.'],
+];
+const LEAGUE_COVERS = (n) => [
+  ['Champions & title races', 'Every winner and the races that went down to the wire.'],
+  ['Players & legends', `The stars and record-breakers who defined the ${n}.`],
+  ['Managers', 'The great bosses and the dynasties they built.'],
+  ['Trophies & records', 'Top scorers, appearances, transfers and all-time bests.'],
+  ['Famous matches', 'Iconic games, comebacks and unforgettable goals.'],
+  ['History & eras', 'Founding stories, golden eras and how it all evolved.'],
+];
+function renderCovers(name, isLeague) {
+  const cards = (isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name))
+    .map(([t, d]) => `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`)
+    .join('\n');
+  return `<section class="sec">
+<h2>What the ${esc(name)} quiz covers</h2>
+<p class="sub">Every question is written and checked by football fans, across the topics that decide a real ${esc(name)} expert:</p>
+<div class="covers">${cards}</div>
 </section>`;
 }
 
@@ -418,6 +475,15 @@ function head({ title, description, canonical, ld }) {
   .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(88,204,2,.14) 0%,rgba(88,204,2,.04) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
   @keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.72}}
   @media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
+  /* two-column quiz hero: intro/CTA left, playable taster right */
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,0.98fr);gap:clamp(28px,4vw,52px);align-items:center}
+  .hero-left,.hero-right{min-width:0}
+  @media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  /* "What the <club> quiz covers" topic grid */
+  .covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:6px}
+  .cov{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 16px}
+  .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
+  .cov p{font-size:13.5px;color:var(--tx3);line-height:1.5;margin:0}
   .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
   .crumbs a{color:var(--tx3)}
   .crumbs a:hover{color:#fff;text-decoration:none}
@@ -439,6 +505,8 @@ function head({ title, description, canonical, ld }) {
   .store-badge-tx{display:flex;flex-direction:column;line-height:1.1;text-align:left}
   .store-badge-tx small{font-size:10px;color:var(--tx3);letter-spacing:.02em}
   .store-badge-tx strong{font-size:16px;color:#fff;font-weight:700}
+  .store-badge.mini{padding:13px 20px}
+  .store-badge.mini .mini-tx{font-size:15px;color:#fff;font-weight:700}
   /* sections */
   .sec{padding:30px 0}
   .sub{color:var(--tx3);font-size:15px;margin:-6px 0 16px;max-width:60ch}
@@ -589,7 +657,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
 <body>
 ${NAV}
 <main>
-${heroSection({
+${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
       { name: 'Quizzes', url: `${SITE.base}/quiz/` },
@@ -599,11 +667,18 @@ ${heroSection({
     kind: CAT_KIND[catCfg.slug] || 'League quiz',
     name: catCfg.name,
     h1: catCfg.h1,
-    lead,
+    lead: catCfg.description,
     statLine: `${all.length}+ ${catCfg.name} questions · new ones added weekly`,
     playHref: '#taster',
-  })}
-${renderTaster(tasterRows, catCfg.name, deepPlay)}
+  }, renderTaster(tasterRows, catCfg.name, deepPlay))}
+${renderCovers(catCfg.name, true)}
+<section class="sec narrow">
+<h2>About the ${esc(catCfg.name)} quiz</h2>
+<div class="prose">
+${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
+</div>
+</section>
 ${appCtaBand(catCfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -611,12 +686,7 @@ ${renderTiles(related)}
 </section>
 <section class="sec narrow">
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
-${renderFaq(catCfg.faq, { q: `More about ${catCfg.name}`, html: `${restHtml}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
-</section>
-<section class="sec narrow">
-<h2>Sample ${esc(catCfg.name)} questions &amp; answers</h2>
-<p class="sub">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
-${renderQA(sample)}
+${renderFaq(catCfg.faq)}
 </section>
 </main>
 ${footer()}`;
@@ -673,7 +743,7 @@ function buildClubPage(cfg, clubPages, catPages) {
 <body>
 ${NAV}
 <main>
-${heroSection({
+${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
       { name: 'Quizzes', url: `${SITE.base}/quiz/` },
@@ -683,11 +753,18 @@ ${heroSection({
     kind: 'Club quiz',
     name: cfg.name,
     h1: cfg.h1,
-    lead,
+    lead: cfg.description,
     statLine: `${all.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
-  })}
-${renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`)}
+  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
+${renderCovers(cfg.name, false)}
+<section class="sec narrow">
+<h2>About the ${esc(cfg.name)} quiz</h2>
+<div class="prose">
+${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>
+</div>
+</section>
 ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -695,12 +772,7 @@ ${renderTiles(related)}
 </section>
 <section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq, { q: `More about ${cfg.name}`, html: `${restHtml}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
-</section>
-<section class="sec narrow">
-<h2>Sample ${esc(cfg.name)} questions &amp; answers</h2>
-<p class="sub">${sample.length} sample questions. Tap “Show answer” to reveal the answer and the story behind it.</p>
-${renderQA(sample)}
+${renderFaq(cfg.faq)}
 </section>
 </main>
 ${footer()}`;
