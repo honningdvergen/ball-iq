@@ -81,6 +81,30 @@ function curate(rows, n) {
   return out.slice(0, n);
 }
 
+// Taster picker — the /quiz page lands on real fans, and a trivially easy
+// question insults them. The bank's difficulty labels are INFLATED: "medium" is
+// mostly obvious-to-a-fan (shirt numbers, "who ended Utd's grip = Arsenal"),
+// while "hard" reliably separates a die-hard from a casual (a real fan aces it,
+// a casual is challenged — never impossible, since it's their own club). So the
+// taster is HARD-ONLY, topping up with medium then easy only when a club's hard
+// pool is genuinely thin. Deterministic (stable by id).
+function tasterPick(rows, n) {
+  const byDiff = { easy: [], medium: [], hard: [] };
+  for (const r of rows) (byDiff[r.diff] || byDiff.medium).push(r);
+  for (const k of Object.keys(byDiff)) byDiff[k].sort((a, b) => (a.id < b.id ? -1 : 1));
+  const out = [...byDiff.hard.slice(0, n)];
+  if (out.length < n) {
+    const used = new Set(out.map((r) => r.id));
+    for (const k of ['medium', 'easy']) {
+      for (const r of byDiff[k]) {
+        if (out.length >= n) break;
+        if (!used.has(r.id)) { out.push(r); used.add(r.id); }
+      }
+    }
+  }
+  return out.slice(0, n);
+}
+
 // Split a paragraph list into a short hero lead (first sentence[s]) and the
 // remaining long-form prose (kept crawlable in the "About" section below the
 // fold). Grows the lead until it reaches a readable length so single short
@@ -647,7 +671,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
       `[gen-seo] "${catCfg.cat}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const tasterRows = curate(hints, 5);
+  const tasterRows = tasterPick(hints, 5);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), catCfg.sample);
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
@@ -732,7 +756,7 @@ function buildClubPage(cfg, clubPages, catPages) {
       `[gen-seo] club "${cfg.club}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const tasterRows = curate(hints, 5);
+  const tasterRows = tasterPick(hints, 5);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(12, hints.length - 5));
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
@@ -820,7 +844,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   if (hints.length < MIN_HINTS) {
     throw new Error(`[gen-seo] player "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
   }
-  const tasterRows = curate(hints, 5);
+  const tasterRows = tasterPick(hints, 5);
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -880,7 +904,7 @@ function buildListiclePage(cfg, livePages) {
   }
   // Interactive taster (same as club/category pages): 5 tappable questions,
   // excluded from the static Q&A list below so nothing is spoiled.
-  const tasterRows = curate(rows.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o)), 5);
+  const tasterRows = tasterPick(rows.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o)), 5);
   const hasTaster = tasterRows.length === 5;
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   const listRows = hasTaster ? rows.filter((r) => !tasterIds.has(r.id)) : rows;
