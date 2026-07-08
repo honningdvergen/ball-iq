@@ -952,6 +952,10 @@ ${howHtml}
 <div class="prose">
 ${bodyHtml}
 </div></section>
+<section class="sec"><h2>Stuck on today's Footle?</h2>
+<div class="prose">
+<p>Need a nudge before you burn a guess? The <a href="${SITE.base}/football-wordle/answer/">Footle hints &amp; answer page</a> gives progressive clues for today's puzzle — the answer stays hidden until you tap to reveal it — plus a running archive of every past Football Wordle solution. Best used after you've had a proper go yourself.</p>
+</div></section>
 ${appCtaBand('football')}
 <section class="sec"><h2>Footle FAQ</h2>
 ${renderFaq(cfg.faq)}
@@ -969,6 +973,7 @@ function buildSitemap(livePages) {
     { loc: `${SITE.base}/`, freq: 'daily', pri: '1.0' },
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
