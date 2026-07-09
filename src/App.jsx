@@ -716,6 +716,7 @@ const CLUB_PACK_TO_QB = {
   Juventus: "Juventus", AcMilan: "AC Milan", Atletico: "Atlético Madrid", Dortmund: "Borussia Dortmund",
   PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
   Napoli: "Napoli", Galatasaray: "Galatasaray", Benfica: "Benfica",
+  Fenerbahce: "Fenerbahçe", Porto: "Porto", Roma: "Roma",
 };
 
 // League grouping for the club-quiz picker.
@@ -725,7 +726,8 @@ const CLUB_LEAGUES = {
   Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea", Napoli: "seriea",
   BayernMunich: "bundesliga", Dortmund: "bundesliga",
   PSG: "ligue1",
-  Galatasaray: "superlig", Benfica: "primeira",
+  Galatasaray: "superlig", Benfica: "primeira", Fenerbahce: "superlig",
+  Porto: "primeira", Roma: "seriea",
   Ajax: "other",
 };
 const CLUB_LEAGUE_SECTIONS = [
@@ -764,6 +766,7 @@ const CLUB_ABBR = {
   BayernMunich: "BAY", Dortmund: "BVB",
   PSG: "PSG", Ajax: "AJA",
   Napoli: "NAP", Galatasaray: "GAL", Benfica: "SLB",
+  Fenerbahce: "FEN", Porto: "POR", Roma: "ROM",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -777,6 +780,7 @@ const CLUB_SLUG_TO_PACK = {
   "borussia-dortmund": "Dortmund", "psg": "PSG", "inter-milan": "InterMilan",
   "juventus": "Juventus", "ac-milan": "AcMilan", "ajax": "Ajax",
   "napoli": "Napoli", "galatasaray": "Galatasaray", "benfica": "Benfica",
+  "fenerbahce": "Fenerbahce", "porto": "Porto", "roma": "Roma",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1045,6 +1049,18 @@ const CLUB_PACKS = {
   },
   Benfica: {
     name: "Benfica", icon: "🔴", color: "#E32221",
+    questions: [],
+  },
+  Fenerbahce: {
+    name: "Fenerbahçe", icon: "🟡", color: "#163962",
+    questions: [],
+  },
+  Porto: {
+    name: "Porto", icon: "🔵", color: "#00428C",
+    questions: [],
+  },
+  Roma: {
+    name: "Roma", icon: "🔴", color: "#8E1F2F",
     questions: [],
   },
 };
@@ -2564,7 +2580,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           const freshPool = applySeenFilter(noEasyPool.length >= 10 ? noEasyPool : pool, target, qbHistKey);
           raw = shuffle([...freshPool]).slice(0, target).map(q => {
             const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
-            return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a) };
+            return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
           });
         } else if (String(topic).startsWith("cat:")) {
           raw = await getQs({ cat: String(topic).slice(4), diff, n: target, ramp: mode === "classic", noEasy: true });
