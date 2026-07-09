@@ -7684,6 +7684,10 @@ function AppInner() {
               bestHotStreak: updated.bestHotStreak || 0,
               bestTrueFalse: updated.bestTrueFalse || 0,
               totalAnswered: updated.totalAnswered || 0,
+              // Per-competition c/a counts that power the Ball IQ card. Previously
+              // saved to localStorage only, so the card reset to a flat baseline on
+              // every fresh install / new device (nothing to restore server-side).
+              catStats: updated.catStats || {},
             },
           }).eq('id', user.id);
           if (updErr) {

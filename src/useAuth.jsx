@@ -392,6 +392,21 @@ export function AuthProvider({ children }) {
       finalStats[k] = Math.max(localStats[k] || 0, remoteStats[k] || 0)
     }
 
+    // catStats (per-competition {c,a}) powers the Ball IQ card. It's a jsonb map,
+    // not a scalar, so it needs its own merge: pick the fuller record per cat
+    // (more answers) so a fresh install / new device restores it from remote,
+    // while a device with more local play keeps its higher counts. Without this
+    // the card resets to a flat all-baseline on every reinstall.
+    const localCat = (localStats.catStats && typeof localStats.catStats === 'object') ? localStats.catStats : {}
+    const remoteCat = (remoteStats.catStats && typeof remoteStats.catStats === 'object') ? remoteStats.catStats : {}
+    const mergedCat = {}
+    for (const cat of new Set([...Object.keys(localCat), ...Object.keys(remoteCat)])) {
+      const l = localCat[cat] || { c: 0, a: 0 }
+      const r = remoteCat[cat] || { c: 0, a: 0 }
+      mergedCat[cat] = ((r.a || 0) > (l.a || 0)) ? r : l
+    }
+    finalStats.catStats = mergedCat
+
     // Write to localStorage. Hydration is intentionally read-only with respect
     // to Supabase: saveStats (App.jsx) is the canonical writer for aggregate
     // stats via atomic delta RPCs. Letting hydration also write back creates
