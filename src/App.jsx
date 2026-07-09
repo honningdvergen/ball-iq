@@ -1924,7 +1924,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       // userAnswerText carries what the user picked so the missed-answers
       // review on the result screen can show "✗ X · ✓ Y". Typed inputs
       // don't pass it (different code path); those just show "✓ correct".
-      wrongAnswersRef.current = [...wrongAnswersRef.current, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat }];
+      wrongAnswersRef.current = [...wrongAnswersRef.current, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat, hint: q.hint }];
     }
     // Phase 5x: capture the full answer record for the Daily review
     // screen. userIndex is the actual selected index passed from
@@ -4049,6 +4049,7 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
                   </div>
                 )}
                 <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
+                {w.hint && <div className="wr-why">{w.hint}</div>}
               </div>
             ))}
           </div>
@@ -4260,6 +4261,7 @@ function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory
                   </div>
                 )}
                 <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
+                {w.hint && <div className="wr-why">{w.hint}</div>}
               </div>
             ))}
           </div>
