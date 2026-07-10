@@ -54,6 +54,26 @@ const esc = (s) =>
 // JSON-LD must not allow a `</script>` breakout; escape `<`.
 const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 
+// Education Q&A ("flashcard") Quiz node — the ONE quiz structured-data rich
+// result Google still supports in 2026: Practice-problems Quiz died Jan 2026
+// and FAQ rich results died May 2026 (both removed in f8dcb98), but the
+// Education Q&A carousel (Quiz + flashcard Questions) remains live per
+// developers.google.com/search/docs/appearance/structured-data/education-qa.
+// Content-parity rule: only ever call this with rows the page VISIBLY renders
+// (renderQA / the taster) — never with unrendered bank rows. Capped to keep
+// <head> lean; a subset of visible content is fine, a superset is not.
+const eduQuizLd = (name, rows) => ({
+  '@type': 'Quiz',
+  name: `${name} quiz`,
+  about: { '@type': 'Thing', name },
+  hasPart: rows.slice(0, 20).map((r) => ({
+    '@type': 'Question',
+    eduQuestionType: 'Flashcard',
+    text: r.q,
+    acceptedAnswer: { '@type': 'Answer', text: `${r.o[r.a]}${r.hint ? ` — ${r.hint}` : ''}` },
+  })),
+});
+
 const catRows = (cat) => QB.filter((x) => x.cat === cat);
 const hintRows = (cat) => catRows(cat).filter((x) => x.hint && x.type === 'mcq' && Array.isArray(x.o));
 const clubRows = (club) => QB.filter((x) => x.club === club);
@@ -681,11 +701,11 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
 
   const ld = jsonLd({
     '@context': 'https://schema.org',
-    // Google removed the "Practice problems" (Quiz) rich result in Jan 2026 and
-    // the FAQ rich result in 2026 — both now just report an "invalid element" in
-    // Search Console without producing any rich result. We keep only the still-
-    // supported BreadcrumbList; the visible Q&A + FAQ HTML below is unchanged, so
-    // there's no content/SEO loss — just no obsolete structured data.
+    // Structured-data policy (2026): Practice-problems Quiz + FAQPage rich
+    // results are dead (dropped in f8dcb98 — they only produce "invalid
+    // element" noise in Search Console). BreadcrumbList remains supported,
+    // and the Education Q&A FLASHCARD Quiz variant is still live — emitted
+    // here anchored to the same `sample` rows renderQA() prints below.
     '@graph': [
       {
         '@type': 'BreadcrumbList',
@@ -695,6 +715,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
           { '@type': 'ListItem', position: 3, name: catCfg.name, item: canonical },
         ],
       },
+      eduQuizLd(catCfg.name, sample),
     ],
   });
 
@@ -731,6 +752,11 @@ ${heroTwoCol({
   }, renderTaster(tasterRows, catCfg.name, deepPlay))}
 ${renderCovers(catCfg.name, true)}
 ${appCtaBand(catCfg.name)}
+<section class="sec narrow">
+<h2>${esc(catCfg.name)} sample questions &amp; answers</h2>
+<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+${renderQA(sample)}
+</section>
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -775,6 +801,9 @@ function buildClubPage(cfg, clubPages, catPages) {
           { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
         ],
       },
+      // Flashcard Quiz node anchored to the visible sample Q&A (see the
+      // structured-data policy note in buildCategoryPage).
+      eduQuizLd(cfg.name, sample),
     ],
   });
 
@@ -810,6 +839,11 @@ ${heroTwoCol({
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
 ${renderCovers(cfg.name, false)}
 ${appCtaBand(cfg.name)}
+<section class="sec narrow">
+<h2>${esc(cfg.name)} sample questions &amp; answers</h2>
+<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+${renderQA(sample)}
+</section>
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -848,6 +882,10 @@ function buildPlayerPage(cfg, clubPages, catPages) {
     throw new Error(`[gen-seo] player "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
   }
   const tasterRows = tasterPick(hints, 5);
+  const tasterIds = new Set(tasterRows.map((r) => r.id));
+  // Visible sample Q&A (same pattern as category/club pages) — also anchors
+  // the flashcard Quiz node below. MIN_HINTS guard above guarantees ≥10 left.
+  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(10, hints.length - 5));
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -860,6 +898,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
           { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
         ],
       },
+      eduQuizLd(cfg.name, sample),
     ],
   });
   const related = [...clubPages.slice(0, 8), ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4)];
@@ -883,6 +922,11 @@ ${heroTwoCol({
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/`))}
 ${renderCovers(cfg.name, false, true)}
 ${appCtaBand(cfg.name)}
+<section class="sec narrow">
+<h2>${esc(cfg.name)} sample questions &amp; answers</h2>
+<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+${renderQA(sample)}
+</section>
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -923,6 +967,8 @@ function buildListiclePage(cfg, livePages) {
           { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
         ],
       },
+      // Flashcard Quiz node anchored to the listicle's fully-visible Q&A list.
+      eduQuizLd(cfg.h1, listRows),
     ],
   });
   const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
