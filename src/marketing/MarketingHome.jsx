@@ -63,6 +63,12 @@ const STYLE = `
 .mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
 .mkt-play-card { background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
 @media (max-width:760px) { .mkt-play-grid { grid-template-columns:1fr; } }
+/* Wide-desktop scale: the page is authored in px around a ~1280–1440
+   composition, so at 1920+ it floats in dark space and the nav/logo read
+   small. zoom (not transform) keeps layout, sticky nav, and hit targets
+   tracking the scale. Deliberately gentle — a nudge, not a redesign. */
+@media (min-width:1600px) { .mkt { zoom:1.13; } }
+@media (min-width:2400px) { .mkt { zoom:1.3; } }
 .mkt-qgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:10px; }
 .mkt-qtile { display:flex; align-items:center; gap:11px; padding:14px; background:#14161E; border:1px solid #242836; border-radius:14px; transition:transform .16s, border-color .16s; }
 .mkt-qtile:hover { transform:translateY(-3px); border-color:#3A3D4A; }
