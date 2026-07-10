@@ -3457,10 +3457,14 @@ async function shareCard(type, data, opts = {}) {
         // "3/6" reads as "half right" to non-players — say attempts instead.
         // The PNG card keeps the emoji grid, which carries that context.
         // The puzzle number makes the line comparable across feeds.
+        // Footle deep-links to the puzzle itself (/footle boot alias) so
+        // recipients land in the game, not on the marketing home. Other card
+        // types keep the homepage `link` above.
+        const wLink = "⚽ https://balliq.app/footle";
         const n = data.num > 0 ? ` #${data.num}` : "";
-        if (data.failed) return `Footle${n} got me — can you do better? ${link}`;
-        if (data.score === 1) return `Got Footle${n} on my FIRST guess 🎯 ${link}`;
-        return `Got Footle${n} in ${data.score} guesses — can you beat me? ${link}`;
+        if (data.failed) return `Footle${n} got me — can you do better? ${wLink}`;
+        if (data.score === 1) return `Got Footle${n} on my FIRST guess 🎯 ${wLink}`;
+        return `Got Footle${n} in ${data.score} guesses — can you beat me? ${wLink}`;
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
@@ -4361,7 +4365,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
     // explicit "guesses" wording lives only on the PNG card headline.
     const head = `⚽ ${APP_NAME} Footle${tag} ${won ? guesses.length : "X"}/6`;
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
-    return `${head}${streakLine}\n\n${grid}\n\nballiq.app`;
+    return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [guesses, answer, won, lost, hasData, date]);
 
   const onShare = useCallback(async () => {
@@ -4439,6 +4443,11 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
                   auto 0 so Share and Back share an identical 10px gap
                   from the flex parent. */}
               <button onClick={onShare} className="wd-share" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share result</button>
+              {/* Web-only, same rationale as the active-game screen: native's
+                  share sheet already offers WhatsApp with the PNG card. */}
+              {!IS_NATIVE && shareText && (
+                <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share on WhatsApp</a>
+              )}
               <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
             </div>
           )}
@@ -6702,7 +6711,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     // MUST stay in sync (one puzzle, one share format).
     const head = `⚽ ${APP_NAME} Footle${tag} ${won ? state.guesses.length : "X"}/6`;
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
-    return `${head}${streakLine}\n\n${grid}\n\nballiq.app`;
+    return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
 
   const onShare = useCallback(async () => {
@@ -6765,6 +6774,13 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
             );
           })()}
           <button className="wd-share" onClick={onShare}>Share result</button>
+          {/* wa.me is web-only: inside the Capacitor WebView it often loads
+              the wa.me web page instead of app-switching, and the native
+              share sheet (shareCard's IS_NATIVE branch) already surfaces
+              WhatsApp with the PNG card — strictly better there. */}
+          {!IS_NATIVE && shareText && (
+            <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Share on WhatsApp</a>
+          )}
           <div className="wd-result-foot">New player in {countdown}</div>
           {/* Sprint #64 FF1: post-solve install nudge. Won-only so the
               banner lands on a positive moment. Internal hook gates on
@@ -7900,6 +7916,18 @@ function AppInner() {
     if (seoLaunchRef.current) return;
     seoLaunchRef.current = true;
     try {
+      // Short share alias: balliq.app/footle → today's puzzle. Share texts use
+      // this path because it linkifies reliably even scheme-less in WhatsApp /
+      // iMessage (bare domains with query strings often don't). The ?game=footle
+      // branch below stays — the /football-wordle/ landing CTA depends on it.
+      const aliasPath = window.location.pathname;
+      if (aliasPath === "/footle" || aliasPath === "/footle/") {
+        // Keep search + hash: /footle?utm_source=reddit must stay attributable
+        // (the ?game= path below likewise strips only its own params).
+        try { window.history.replaceState({}, "", "/play" + window.location.search + window.location.hash); } catch {}
+        setScreen("wordle");
+        return;
+      }
       const sp = new URLSearchParams(window.location.search);
       const clubSlug = (sp.get("club") || "").toLowerCase();
       const quizSlug = (sp.get("quiz") || "").toLowerCase();

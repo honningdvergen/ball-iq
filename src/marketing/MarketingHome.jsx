@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from './Phone.jsx';
+// Tiny data-free module (NOT lib/wordle.js — that would drag the 400+-player
+// answer list into this chunk). Powers the "Footle #N is live today" chip.
+import { getFootleNumber } from '../lib/footleNumber.js';
 
 // Ball IQ marketing homepage — the "Matchday" direction from the design
 // handoff (design/website-handoff/). Recreated faithfully in React from
@@ -14,6 +17,9 @@ import { Phone } from './Phone.jsx';
 // store to resolve into. Apple redirects any storefront to the viewer's own.
 const APP_STORE = 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961';
 const PLAY = '/play';
+// Build-time question-bank count (vite define, re-derived every deploy so it
+// never drifts stale). Fallback keeps dev servers / edge cases safe.
+const QB_COUNT = Number(import.meta.env.VITE_QB_COUNT || 4000);
 const BALL = '/marketing/ball.png';
 const SHOT = {
   home: '/marketing/balliq-screenshot-00-home.png',
@@ -276,7 +282,9 @@ function MiniFootle() {
           <div style={{ fontSize: 15, fontWeight: 800, color: '#fff' }}>{msg}</div>
           <div style={{ fontSize: 13, color: '#9BA0B8', marginTop: 5 }}>A fresh Footle drops every day in the app.</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 12 }}>
-            <GreenCTA href={PLAY}>Play the daily free →</GreenCTA>
+            {/* Deep link straight into the app's real daily Footle — plain
+                /play would strand them on the home dashboard, one game away. */}
+            <GreenCTA href="/play?game=footle">Play the daily free →</GreenCTA>
             <button onClick={reset} className="mkt-try-again" style={RESET_BTN}>Try again</button>
           </div>
         </div>
@@ -389,9 +397,21 @@ function PlayNow() {
         <div className="mkt-play-card"><MiniFootle /></div>
         <div className="mkt-play-card"><QuizTaster /></div>
       </div>
+      {/* Social-proof strip — REAL, non-drifting numbers only: QB_COUNT is
+          build-time injected, Footle # is computed client-side per local day.
+          The middle chip references the app's competitive DAILY, deliberately
+          not captioning the MiniFootle taste above (separate 12-word game). */}
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 26 }}>
+        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>🧠 {QB_COUNT.toLocaleString('en-US')} fact-checked questions</span>
+        <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}>⚽ Footle #{getFootleNumber()} is live today</span>
+        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>📱 Free on iPhone + any browser</span>
+      </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
         <GreenCTA href={APP_STORE} target="_blank">Get 4,000+ more in the app →</GreenCTA>
-        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>Free on iPhone · plays in any browser · Android coming soon</p>
+        {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
+            content stays free, Pro = features/cosmetics), soften to "Free to
+            play". "In the app" scoping is mandatory — this page runs AdSense. */}
+        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>100% free · no ads in the app · Android coming soon</p>
       </div>
     </section>
   );
@@ -498,7 +518,7 @@ const MODES = [
 ];
 
 const FAQS = [
-  { q: 'Is Ball IQ free?', a: 'Yes. Download and play for free — guests can jump straight into solo and local games, no account needed.' },
+  { q: 'Is Ball IQ free?', a: 'Yes — 100% free, and the app shows no ads. Guests can jump straight into solo and local games, no account needed.' },
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the footballer or manager's surname in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
@@ -684,7 +704,7 @@ export default function MarketingHome() {
         <div style={{ maxWidth: 1140, margin: '0 auto', padding: '56px 24px 40px', display: 'flex', flexWrap: 'wrap', gap: 40, justifyContent: 'space-between' }}>
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
-            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>The ultimate football quiz. 4,000+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online.</p>
+            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>The ultimate football quiz. 4,000+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>

@@ -638,6 +638,7 @@ function footer() {
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/privacy.html">Privacy</a>
 </div>
+<p class="foot-copy">Ball IQ is 100% free — no ads in the app.</p>
 <p class="foot-copy">© 2026 ${esc(SITE.name)} — ${esc(SITE.tagline)}.</p>
 <p class="foot-disc">Ball IQ is an independent football trivia game and is not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club or competition. All team and competition names are used for identification and editorial reference only.</p>
 </div></footer>
@@ -725,7 +726,7 @@ ${heroTwoCol({
     name: catCfg.name,
     h1: catCfg.h1,
     lead: catCfg.description,
-    statLine: `${all.length}+ ${catCfg.name} questions · new ones added weekly`,
+    statLine: `Free · ${all.length}+ ${catCfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, catCfg.name, deepPlay))}
 ${renderCovers(catCfg.name, true)}
@@ -804,7 +805,7 @@ ${heroTwoCol({
     name: cfg.name,
     h1: cfg.h1,
     lead: cfg.description,
-    statLine: `${all.length}+ ${cfg.name} questions · new ones added weekly`,
+    statLine: `Free · ${all.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
 ${renderCovers(cfg.name, false)}
@@ -877,7 +878,7 @@ ${heroTwoCol({
     name: cfg.name,
     h1: cfg.h1,
     lead: cfg.description,
-    statLine: `${hints.length}+ ${cfg.name} questions · new ones added weekly`,
+    statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/`))}
 ${renderCovers(cfg.name, false, true)}

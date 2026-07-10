@@ -152,7 +152,7 @@ function Footle({ onBack, onRequestHint, hint }) {
     const grid = grades.map((row) => row.map((c) => (c === 'green' ? '🟩' : c === 'yellow' ? '🟨' : '⬛')).join('')).join('\n');
     const num = getFootleNumber();
     const tag = num > 0 ? ` #${num}` : '';
-    const text = `⚽ Ball IQ Footle${tag} ${status === 'won' ? guesses.length : 'X'}/6\n\n${grid}\n\nballiq.app`;
+    const text = `⚽ Ball IQ Footle${tag} ${status === 'won' ? guesses.length : 'X'}/6\n\n${grid}\n\nballiq.app/footle`;
     if (navigator.share) {
       try { await navigator.share({ text }); return; } catch { return; } // cancel = done
     }

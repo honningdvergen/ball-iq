@@ -33,7 +33,17 @@ function versionJsonPlugin(sha) {
 // question bank), so splitting vendor dependencies into their own cacheable
 // chunks means a code-only change doesn't invalidate the React/Supabase
 // bundle in the browser cache on the next visit.
-export default defineConfig({
+export default defineConfig(async () => {
+  // Question-bank size, injected as VITE_QB_COUNT so the marketing home can
+  // show the real count without bundling the 1.3MB bank into its chunk; it
+  // re-derives on every build so the number can never drift stale. DYNAMIC
+  // import on purpose: a static `import { QB }` at the top makes questions.js
+  // a watched config dependency, so every question-batch edit restarted the
+  // dev server instead of hot-reloading (reproduced). Dynamic import stays
+  // out of the config watch graph.
+  const { QB } = await import('./src/questions.js')
+
+  return {
   plugins: [
     react(),
     versionJsonPlugin(gitSha),
@@ -59,6 +69,7 @@ export default defineConfig({
   ],
   define: {
     'import.meta.env.VITE_GIT_SHA': JSON.stringify(gitSha),
+    'import.meta.env.VITE_QB_COUNT': JSON.stringify(QB.length),
   },
   build: {
     target: 'es2020',
@@ -80,4 +91,5 @@ export default defineConfig({
       },
     },
   },
+  }
 })

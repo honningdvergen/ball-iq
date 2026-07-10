@@ -1561,6 +1561,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
 .wd-share{margin:4px auto 0;padding:10px 22px;background:#58CC02;color:#0A0A0A;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:#0A0A0A;}
 .wd-share:active{opacity:0.85;}
+/* WhatsApp variant — an <a>, so flex-center + no underline to render like
+   its sibling button. WhatsApp brand green; dark text keeps AA contrast. */
+.wd-share--wa{display:inline-flex;align-items:center;justify-content:center;background:#25D366;text-decoration:none;box-sizing:border-box;}
+.wd-share--wa:active{opacity:0.85;}
 .wd-back{padding:10px 22px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:var(--accent);}
 .wd-back:active{opacity:0.85;}
 
