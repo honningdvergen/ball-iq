@@ -649,5 +649,101 @@ export const CLUBS = [
         "a": "They run from easy to genuinely hard. An easy one: which stadium have Benfica called home since 2003? (The Estádio da Luz.) A hard one: which midfielder did Benfica sign from River Plate in July 2022 and sell to Chelsea for his €121m release clause just six months later? If you got that instantly, the harder tiers are built for you."
       }
     ]
+  },,
+  {
+    "club": "Fenerbahçe",
+    "slug": "fenerbahce",
+    "name": "Fenerbahçe",
+    "h1": "Fenerbahçe Quiz",
+    "title": "Fenerbahçe Quiz — Yellow Canaries Trivia Questions & Answers | Ball IQ",
+    "description": "Free Fenerbahçe quiz with explained answers — from Lefter and Alex de Souza to Bolić at Old Trafford and Zico's 2008 run. Play in your browser.",
+    "intro": [
+      "Fenerbahçe were founded in 1907 in Kadıköy, on the Asian shore of Istanbul, and have spent well over a century as one of the great institutions of Turkish football. This free Fenerbahçe quiz covers the whole arc — from the Ottoman-era beginnings under founders Ziya Songülen, Ayetullah Bey and Necip Okaner, through the club's dominance of the Istanbul league and the professional Süper Lig era that began in 1959, to the modern sides that keep chasing an elusive league title. Few clubs carry an identity this vivid: the yellow-and-navy of the Sarı-Lacivertliler, the roar of the Şükrü Saracoğlu, and the badge worn like a crest of the city's Anatolian side. They are the Sarı Kanaryalar — the Yellow Canaries. If you bleed sarı-lacivert, this quiz is for you.",
+      "The defining moments come with dates worth knowing. On 30 October 1996 Elvir Bolić struck the only goal at Old Trafford to win 1-0 and end Manchester United's 40-year unbeaten run in European home matches. Under Zico in 2007-08 Fenerbahçe reached the club's first Champions League quarter-final, seeing off Sevilla on penalties before beating Chelsea 2-1 in Kadıköy on 2 April 2008 and going out only 3-2 on aggregate at Stamford Bridge. Then there are the legends: Zeki Rıza Sporel, the all-time top scorer with 470 goals; Lefter Küçükandonyadis, the 'Ordinaryüs' who scored over 420; and Alex de Souza, the beloved captain of 2004-2012 with 171 goals in 344 games. And always, the Intercontinental Derby with Galatasaray — a rivalry that spans two continents.",
+      "Expect questions on the transfers, the managers, the iconic games and the club records. You'll be asked about the record-breaking Süper Lig fee paid for Youssef En-Nesyri from Sevilla in 2024, the managerial merry-go-round from Zico to José Mourinho and Domenico Tedesco, and the count of Süper Lig titles — 19 in the professional era, the last of them in 2013-14. There are cult heroes to name, derby scorelines to place, and European nights to date. Difficulty climbs from gentle openers about the Yellow Canaries and their most famous No.10 to genuinely hard deep cuts about specific seasons, line-ups and long-serving squad men, so casual matchgoers at Kadıköy and stat-hungry obsessives both get a proper test.",
+      "Every question comes with a short explained answer, so even a miss leaves you with the detail that makes it stick — why Bolić's goal mattered so much, or how the pre-1959 championships fold into the club's honours. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Fenerbahçe quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many Süper Lig titles have Fenerbahçe won?",
+        "a": "Nineteen in the professional Süper Lig era that began in 1959 — one of the highest tallies in Turkey. As of the 2025-26 season the most recent came in 2013-14. Counting the pre-1959 national championships, the club's official total of Turkish titles is 28."
+      },
+      {
+        "q": "Who is Fenerbahçe's greatest legend?",
+        "a": "It depends how you weigh it. Zeki Rıza Sporel is the all-time top scorer with 470 goals, and Lefter Küçükandonyadis — the 'Ordinaryüs' — is the iconic early idol. For modern fans it's Alex de Souza, captain from 2004 to 2012, who scored 171 goals in 344 games and is adored in Kadıköy."
+      },
+      {
+        "q": "Is the Fenerbahçe quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fenerbahçe question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Fenerbahçe quiz?",
+        "a": "It runs from easy (who are the Yellow Canaries?) to hard (specific seasons, derby scorelines and squad deep cuts). The difficulty is mixed, so casual fans and obsessives both get a real test."
+      }
+    ]
   },
+  {
+    "club": "Porto",
+    "slug": "porto",
+    "name": "Porto",
+    "h1": "Porto Quiz",
+    "title": "Porto Quiz — Dragons Trivia Questions & Answers | Ball IQ",
+    "description": "Free Porto quiz with explained answers — from Madjer's 1987 backheel and Mourinho's 2004 Champions League to a record 31st league title. Play in your browser.",
+    "intro": [
+      "Porto are the relentless engine of Portuguese football — founded in the northern port city in 1893, based since 2003 at the Estádio do Dragão, and crowned champions of Portugal more often than any other club. This free Porto quiz covers the whole story: the Fernando Gomes goal glut of the 1980s, the two European crowns, the five-in-a-row league dynasty of the 1990s, and the conveyor belt of South American talent bought cheap and sold on for fortunes. For a club from a country of barely ten million, Porto have punched at the very top of Europe for four decades, and they wear the nickname to match — Os Dragões, the Dragons, the fire-breathing beast on the crest. Their rivalry with Benfica and Sporting frames the domestic season, but Porto's real identity has always been European: cussed, well-drilled and forever ready to upset a bigger name. If you call them the Dragons, this quiz is for you.",
+      "The defining nights are unforgettable. Vienna, 27 May 1987: a European Cup final against Bayern Munich slipping away at 1-0 down until Rabah Madjer flicked in an outrageous backheel on 77 minutes, then teed up Juary to win it 2-1 and land Porto's first continental crown. Gelsenkirchen, 26 May 2004: José Mourinho's young, fearless side dismantling Monaco 3-0 through Carlos Alberto, Deco and Dmitri Alenichev — the night the 'Special One' was born, a week before he left for Chelsea. Around those came more silverware: the 2003 UEFA Cup, won 3-2 after extra time against Celtic in Seville, and the 2011 Europa League, a 1-0 win over Braga in an all-Portuguese final in Dublin, Radamel Falcao heading the winner in André Villas-Boas's treble season. Add Fernando Gomes's club-record 352 goals and two European Golden Shoes, and the five straight titles from 1994-95 to 1998-99 — a first for any Portuguese club — and the history runs deep.",
+      "Expect questions on the famous sell-on transfers — Deco to Barcelona in 2004, Falcao to Atlético Madrid for around €40 million in 2011, Hulk's big-money move to Zenit St Petersburg in 2012, James Rodríguez to Monaco for €45 million in 2013 — the model that turned the Dragão into Europe's smartest trading floor. The managers get their turn too, from Mourinho and Villas-Boas to Francesco Farioli, the debutant head coach who led Porto to a record 31st Primeira Liga title in 2025-26. You'll be asked about the iconic finals, the Intercontinental Cups of 1987 and 2004, the club's record league haul, and the cult heroes fans still sing about. Difficulty climbs from easy openers — who scored the 1987 backheel, which club Porto beat in the 2004 final — to genuinely hard deep cuts about specific scorelines, squad players and transfer fees. Casual fans and lifelong Super Dragões both get a proper test.",
+      "Every question comes with a short explained answer, so even when you miss one you pick up the detail that makes it stick — the exact minute of Madjer's backheel, or which club Porto sold a future Galáctico to. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Porto quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many league titles have Porto won?",
+        "a": "A record 31 Primeira Liga titles as of the 2025-26 season — more than any other Portuguese club. The latest came in 2025-26 under debutant head coach Francesco Farioli, ending a three-year wait since 2021-22. The haul includes five in a row from 1994-95 to 1998-99, the first Portuguese club to manage it."
+      },
+      {
+        "q": "Who is Porto's record goalscorer?",
+        "a": "Fernando Gomes, with 352 goals across two spells between 1974 and 1989 — still the club's all-time top scorer as of 2026. Nicknamed 'Bi-Bota', he won the European Golden Shoe twice, in 1983 and 1985. Right-back and captain João Pinto holds the appearance record with 587 games."
+      },
+      {
+        "q": "Is the Porto quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Porto question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Porto quiz?",
+        "a": "It runs from easy (who scored the 1987 backheel against Bayern?) to hard (specific finals, transfer fees and squad deep cuts). Difficulty is mixed so casual fans and lifelong Dragões both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Roma",
+    "slug": "roma",
+    "name": "Roma",
+    "h1": "Roma Quiz",
+    "title": "Roma Quiz — Giallorossi Trivia Questions & Answers | Ball IQ",
+    "description": "Free AS Roma quiz with explained answers — from Totti and the 2001 Scudetto to the Barcelona comeback and Champions League 2026. Play in your browser.",
+    "intro": [
+      "AS Roma were born in 1927, when the Fascist official Italo Foschi merged three of the capital's clubs — Roman, Alba-Audace and Fortitudo — into one side to take on the powers of the north. They played their early years at the Campo Testaccio, a cramped wooden ground in a working-class quarter where the club's fierce identity was forged, before settling into the vast Stadio Olimpico they share with Lazio. This free Roma quiz covers the whole story: the giallorosso shirt, the she-wolf on the crest, the ultras of the Curva Sud, and a fanbase that treats the club less as a team than a calling. If you call them the Giallorossi — or I Lupi, the Wolves — this quiz is for you.",
+      "The defining moments are told in scudetti and heartbreak. Roma's first title came in 1941-42; the second, in 1982-83, was sealed in Genoa on 8 May 1983 and remains the great romantic championship, the side of Falcao, Bruno Conti and Agostino Di Bartolomei. A year later they reached the 1984 European Cup final in their own Stadio Olimpico, only to lose to Liverpool on penalties — the cruellest night in the club's history. Redemption of a kind came in 2000-01, when Fabio Capello's team, powered by Gabriel Batistuta's goals, pipped Juventus by two points and beat Parma 3-1 on the final day. Then, on a delirious 2018 night, Roma overturned a 4-1 deficit to beat Barcelona 3-0 — Dzeko, De Rossi, a Manolas header — and reach a first Champions League semi-final.",
+      "Expect questions on the transfers, from Batistuta's record-breaking arrival in 2000 to Paulo Dybala joining on a free from Juventus in 2022; on the managers, Nils Liedholm, Capello, Luciano Spalletti, Jose Mourinho and, as of the 2025-26 season, Gian Piero Gasperini; and on the iconic games, from the 2001 title decider to the 2022 Conference League final in Tirana, where Mourinho's side beat Feyenoord 1-0 for Roma's first major European trophy in over 60 years. There are records too — Francesco Totti's untouchable numbers, Daniele De Rossi's loyalty, the club's nine Coppe Italia. Difficulty climbs from easy openers about famous captains and Scudetto years to genuinely hard deep cuts on scorelines, squad players and forgotten cup runs, so casual tifosi and lifelong obsessives both get a proper test.",
+      "Every question comes with a short explained answer, so even the ones you miss leave you with the detail that makes it stick — why 1983 still means so much, or how Roma qualified for the Champions League in May 2026 for the first time in seven years by winning at Hellas Verona. That is the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Roma quiz — plus daily challenges, leaderboards and multiplayer — it is all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many trophies have Roma won?",
+        "a": "Three Serie A titles (1941-42, 1982-83 and 2000-01), nine Coppe Italia, the 1960-61 Inter-Cities Fairs Cup, and the 2021-22 UEFA Conference League — their first UEFA European trophy, won under Jose Mourinho against Feyenoord in Tirana."
+      },
+      {
+        "q": "Who is Roma's greatest player?",
+        "a": "Francesco Totti, by common consent. A one-club legend, he made a club-record 786 appearances and scored 307 goals across 25 seasons, and holds the record for the most Serie A goals scored for a single club. Daniele De Rossi, second on the all-time appearance list, is the other great modern Giallorosso."
+      },
+      {
+        "q": "Is the Roma quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Roma question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Roma quiz?",
+        "a": "It runs from easy (in which season did Totti win the Scudetto with Roma?) to hard (specific finals, scorelines and squad deep cuts). The difficulty is mixed, so casual fans and obsessives both get a real test."
+      }
+    ]
+  }
 ];
