@@ -3915,6 +3915,85 @@ function ResultsCloseBtn({ onClose }) {
   );
 }
 
+// ── Stump-a-mate: one-question challenge screen (balliq.app/q?id=… link) ────
+// The recipient side of the viral loop: answer a single question with zero
+// login, get the reveal + the hint story, then the chain CTA ("pass it on")
+// and a full-quiz conversion path. Sender side lives in Results (🥜 button).
+const stumpLink = (row) =>
+  `https://balliq.app/q?id=${row.id}&qt=${encodeURIComponent(row.q.slice(0, 160))}${row.cat ? `&c=${encodeURIComponent(row.cat)}` : ""}`;
+
+async function shareStumpText(text) {
+  try {
+    if (navigator.share) { await navigator.share({ text }); return; }
+  } catch { return; } // user cancelled the sheet = done
+  try {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "Link copied 📋" }));
+    }
+  } catch {}
+}
+
+function StumpScreen({ row, onPlayFull, onHome }) {
+  const [picked, setPicked] = useState(-1);
+  const done = picked >= 0;
+  const gotIt = done && picked === row.a;
+
+  const onPick = (i) => {
+    if (done) return;
+    setPicked(i);
+    haptic(i === row.a ? "correct" : "wrong");
+  };
+  const onPass = () => {
+    const text = gotIt
+      ? `Got it ✅ your turn 😏 ⚽ ${stumpLink(row)}`
+      : `It got me too 🙈 can YOU get it? ⚽ ${stumpLink(row)}`;
+    shareStumpText(text);
+  };
+
+  const optStyle = (i) => {
+    const base = { display: "block", width: "100%", textAlign: "left", padding: "14px 16px", marginTop: 10, borderRadius: 12, border: "1.5px solid var(--bd, #2A2D3A)", background: "var(--card, #14161E)", color: "var(--text, #F0F1F5)", fontFamily: "inherit", fontSize: 15, fontWeight: 700, cursor: done ? "default" : "pointer" };
+    if (!done) return base;
+    if (i === row.a) return { ...base, borderColor: "var(--accent, #58CC02)", background: "rgba(88,204,2,0.12)" };
+    if (i === picked) return { ...base, borderColor: "var(--red, #FF5A5A)", background: "rgba(255,90,90,0.10)", opacity: 0.9 };
+    return { ...base, opacity: 0.55 };
+  };
+
+  return (
+    <div className="screen">
+      <div className="page-hdr">
+        <div className="page-title">🥜 Stump a mate</div>
+      </div>
+      <div style={{ fontSize: 13, fontWeight: 700, color: "var(--t2)", marginBottom: 10 }}>
+        A mate bets you can't get this{row.cat ? ` (${row.cat})` : ""}:
+      </div>
+      <div style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.35, color: "var(--text)", letterSpacing: "-0.2px" }}>{row.q}</div>
+      <div style={{ marginTop: 14 }}>
+        {row.o.map((opt, i) => (
+          <button key={i} style={optStyle(i)} onClick={() => onPick(i)} disabled={done}>{opt}</button>
+        ))}
+      </div>
+      {done && (
+        <>
+          <div style={{ textAlign: "center", marginTop: 18, fontSize: 17, fontWeight: 800, color: gotIt ? "var(--accent)" : "var(--red, #FF5A5A)" }}>
+            {gotIt ? "⚽ You got it!" : "Stumped! 🥜"}
+          </div>
+          {row.hint && (
+            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, #14161E)", border: "1px solid var(--bd, #2A2D3A)", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
+              {row.hint}
+            </div>
+          )}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginTop: 20 }}>
+            <button className="btn-3d" onClick={onPass}>🥜 Pass it on</button>
+            <button className="btn-3d ghost" onClick={onPlayFull}>Play the full quiz</button>
+            <button className="btn-3d ghost" onClick={onHome}>Explore Ball IQ</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -3933,6 +4012,27 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
   // Personal best detection
   const eligibleForPB = mode === "classic" && result.total === 10;
   const isNewBest = eligibleForPB && result.score > (classicBest || 0) && result.score > 0;
+
+  // Stump-a-mate ammo (contextual, per Alex's call): prefer the hardest
+  // question that got the player (self-deprecating share beats a brag for
+  // k-factor), else the hardest one they aced. Plain code, NOT hooks — this
+  // sits below the balliq-mode early return. askedQuestions rows are the
+  // shuffled play copies, but stumpLink only reads id/q/cat, and the
+  // recipient re-resolves the original row from the bank by id.
+  const diffRank = { hard: 3, medium: 2, easy: 1 };
+  const stumpables = (askedQuestions || []).filter((x) => x && x.id && x.type === "mcq" && Array.isArray(x.o) && x.o.length >= 2);
+  const wrongTexts = new Set((wrongAnswers || []).map((w) => w.q));
+  const stumpWrong = stumpables.filter((x) => wrongTexts.has(x.q));
+  const stumpPool = stumpWrong.length ? stumpWrong : stumpables;
+  const stumpQ = stumpPool.length ? stumpPool.slice().sort((a, b) => (diffRank[b.diff] || 0) - (diffRank[a.diff] || 0))[0] : null;
+  const onStump = () => {
+    if (!stumpQ) return;
+    haptic("soft");
+    const text = stumpWrong.length
+      ? `This one got me 🙈 bet you can't get it either ⚽ ${stumpLink(stumpQ)}`
+      : `I got this one — bet you can't 😏 ⚽ ${stumpLink(stumpQ)}`;
+    shareStumpText(text);
+  };
   const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;
   const isNewPersonalBest = isNewBest || survivalNewBest;
 
@@ -4050,6 +4150,7 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
       <div className="results-actions" style={{marginTop:18}}>
         <button className="btn-3d" onClick={onRetry}>Play Again</button>
         <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
+        {stumpQ && <button className="btn-3d ghost" onClick={onStump}>🥜 Stump a mate</button>}
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
 
@@ -7911,6 +8012,8 @@ function AppInner() {
   // so refresh/share doesn't relaunch. If the visitor still has onboarding
   // ahead of them, the quiz screen is already staged underneath and appears
   // the moment onboarding completes.
+  // Stump-a-mate: the bank row a /q?id=… link resolved to (screen "stump").
+  const [stumpRow, setStumpRow] = useState(null);
   const seoLaunchRef = useRef(false);
   useEffect(() => {
     if (seoLaunchRef.current) return;
@@ -7932,13 +8035,24 @@ function AppInner() {
       const clubSlug = (sp.get("club") || "").toLowerCase();
       const quizSlug = (sp.get("quiz") || "").toLowerCase();
       const gameSlug = (sp.get("game") || "").toLowerCase(); // ?game=footle — /football-wordle/ CTA + directory listings
-      if (!clubSlug && !quizSlug && !gameSlug) return;
+      const stumpId = (sp.get("stump") || "").trim().toLowerCase(); // ?stump=q_… — Stump-a-mate link (api/q.js)
+      if (!clubSlug && !quizSlug && !gameSlug && !stumpId) return;
       try {
         const u = new URL(window.location.href);
-        u.searchParams.delete("club"); u.searchParams.delete("quiz"); u.searchParams.delete("game");
+        u.searchParams.delete("club"); u.searchParams.delete("quiz"); u.searchParams.delete("game"); u.searchParams.delete("stump");
         window.history.replaceState({}, "", u.pathname + u.search + u.hash);
       } catch {}
       if (gameSlug === "footle") { setScreen("wordle"); return; }
+      if (stumpId && /^q_[a-z0-9]+$/.test(stumpId)) {
+        // Async on purpose: the bank is lazy-loaded. The stump screen is
+        // guest-friendly — recipients answer with zero login (same staging-
+        // under-onboarding behavior as the club/league deep-links).
+        loadQuestions().then(({ QB }) => {
+          const row = QB.find((r) => r && r.id === stumpId && r.type === "mcq" && Array.isArray(r.o));
+          if (row) { setStumpRow(row); setScreen("stump"); }
+        }).catch(() => {});
+        return;
+      }
       const packKey = CLUB_SLUG_TO_PACK[clubSlug];
       const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
       if (packKey) launchClubQuiz(packKey);
@@ -9577,6 +9691,13 @@ function AppInner() {
 
         {/* ── FOOTBALL WORDLE ── */}
         {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} />}
+        {screen === "stump" && stumpRow && (
+          <StumpScreen
+            row={stumpRow}
+            onPlayFull={() => { const c = stumpRow?.cat; setStumpRow(null); setScreen("home"); if (c) launchLeagueQuiz(c); }}
+            onHome={() => { setStumpRow(null); goHome(); }}
+          />
+        )}
 
         {/* ── HOT STREAK ── */}
         {screen === "quiz" && mode === "hotstreak" && (

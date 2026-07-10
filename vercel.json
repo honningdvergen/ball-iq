@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/p", "destination": "/api/p" },
+    { "source": "/q", "destination": "/api/q" },
     { "source": "/football-wordle/answer", "destination": "/api/footle" },
     { "source": "/football-wordle/answer/", "destination": "/api/footle" },
     { "source": "/(.*)", "destination": "/index.html" }
