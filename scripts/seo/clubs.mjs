@@ -649,7 +649,7 @@ export const CLUBS = [
         "a": "They run from easy to genuinely hard. An easy one: which stadium have Benfica called home since 2003? (The Estádio da Luz.) A hard one: which midfielder did Benfica sign from River Plate in July 2022 and sell to Chelsea for his €121m release clause just six months later? If you got that instantly, the harder tiers are built for you."
       }
     ]
-  },,
+  },
   {
     "club": "Fenerbahçe",
     "slug": "fenerbahce",
