@@ -25,24 +25,31 @@ function versionJsonPlugin(sha) {
     closeBundle() {
       const payload = { sha, builtAt: new Date().toISOString() }
       writeFileSync(resolve('dist', 'version.json'), JSON.stringify(payload))
-      // SOURCE-MAP SAFETY NET (2026-07-11 full-medical finding, High):
-      // map deletion used to live ONLY inside sentryVitePlugin's
-      // filesToDeleteAfterUpload — but that whole plugin self-disables when
-      // SENTRY_AUTH_TOKEN is unset (e.g. on Vercel today), so production
-      // served full sourcesContent maps: the complete readable App.jsx AND
-      // the entire question bank with answers. Maps must never ship,
-      // regardless of Sentry: when the token is absent, delete them here.
-      // (With the token set, Sentry uploads first, then deletes them itself.)
-      if (!process.env.SENTRY_AUTH_TOKEN) {
-        const assets = resolve('dist', 'assets')
-        if (existsSync(assets)) {
-          let n = 0
-          for (const f of readdirSync(assets)) {
-            if (f.endsWith('.map')) { rmSync(resolve(assets, f)); n++ }
-          }
-          console.log(`[sourcemap-safety] SENTRY_AUTH_TOKEN unset — deleted ${n} .map files from dist/assets`)
-        }
+    },
+  }
+}
+
+// SOURCE-MAP SAFETY NET (2026-07-11 full-medical finding, High):
+// map deletion used to live ONLY inside sentryVitePlugin's
+// filesToDeleteAfterUpload — which never fires when the plugin is disabled
+// (no token) OR when the upload fails (invalid token — observed on Vercel:
+// Sentry receives events but shows minified names, and maps still shipped).
+// Production served full sourcesContent maps: the complete readable App.jsx
+// AND the entire question bank with answers. Deletion is now UNCONDITIONAL
+// and runs in a dedicated plugin placed AFTER sentryVitePlugin, so a
+// successful Sentry upload still happens first when the token works.
+function stripSourcemapsPlugin() {
+  return {
+    name: 'strip-sourcemaps-always',
+    apply: 'build',
+    closeBundle() {
+      const assets = resolve('dist', 'assets')
+      if (!existsSync(assets)) return
+      let n = 0
+      for (const f of readdirSync(assets)) {
+        if (f.endsWith('.map')) { rmSync(resolve(assets, f)); n++ }
       }
+      console.log(`[sourcemap-safety] deleted ${n} .map files from dist/assets (unconditional)`)
     },
   }
 }
@@ -84,6 +91,8 @@ export default defineConfig(async () => {
         filesToDeleteAfterUpload: ['./dist/assets/*.map'],
       },
     }),
+    // MUST stay after sentryVitePlugin — see comment on the plugin.
+    stripSourcemapsPlugin(),
   ],
   define: {
     'import.meta.env.VITE_GIT_SHA': JSON.stringify(gitSha),
@@ -93,10 +102,12 @@ export default defineConfig(async () => {
     target: 'es2020',
     cssCodeSplit: true,
     // Source maps: required for Sentry to translate minified stacks back to
-    // readable file:line. The maps themselves are uploaded to Sentry (not
-    // served from balliq.app) — the Sentry plugin strips sourcemap references
-    // from the prod bundles after upload.
-    sourcemap: true,
+    // readable file:line. 'hidden' emits the .map files for the Sentry upload
+    // but writes NO sourceMappingURL comment into the bundles — so shipped JS
+    // never advertises map URLs even if a map were to slip through. (Also
+    // rotates all chunk hashes vs the 'true' era, orphaning any previously
+    // CDN-cached map URLs.) stripSourcemapsPlugin deletes the files post-build.
+    sourcemap: 'hidden',
     rollupOptions: {
       output: {
         manualChunks: {
