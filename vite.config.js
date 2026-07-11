@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { execSync } from 'node:child_process'
-import { writeFileSync } from 'node:fs'
+import { writeFileSync, readdirSync, rmSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 // Capture the short git SHA at build time and inject it as VITE_GIT_SHA so
@@ -25,6 +25,24 @@ function versionJsonPlugin(sha) {
     closeBundle() {
       const payload = { sha, builtAt: new Date().toISOString() }
       writeFileSync(resolve('dist', 'version.json'), JSON.stringify(payload))
+      // SOURCE-MAP SAFETY NET (2026-07-11 full-medical finding, High):
+      // map deletion used to live ONLY inside sentryVitePlugin's
+      // filesToDeleteAfterUpload — but that whole plugin self-disables when
+      // SENTRY_AUTH_TOKEN is unset (e.g. on Vercel today), so production
+      // served full sourcesContent maps: the complete readable App.jsx AND
+      // the entire question bank with answers. Maps must never ship,
+      // regardless of Sentry: when the token is absent, delete them here.
+      // (With the token set, Sentry uploads first, then deletes them itself.)
+      if (!process.env.SENTRY_AUTH_TOKEN) {
+        const assets = resolve('dist', 'assets')
+        if (existsSync(assets)) {
+          let n = 0
+          for (const f of readdirSync(assets)) {
+            if (f.endsWith('.map')) { rmSync(resolve(assets, f)); n++ }
+          }
+          console.log(`[sourcemap-safety] SENTRY_AUTH_TOKEN unset — deleted ${n} .map files from dist/assets`)
+        }
+      }
     },
   }
 }
