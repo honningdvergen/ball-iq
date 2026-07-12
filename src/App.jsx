@@ -7801,6 +7801,7 @@ function AppInner() {
       }).then(({ error }) => {
         if (error) {
           console.error("[score save]", error?.message || "Unknown error");
+          Sentry.captureException(error, { tags: { area: 'score-save' } });
           showToast("⚠️ Score didn't save — check your connection");
         }
       });
@@ -7825,6 +7826,7 @@ function AppInner() {
             });
             if (rpcErr) {
               console.error("[score sync]", rpcErr?.message || "Unknown error");
+              Sentry.captureException(rpcErr, { tags: { area: 'score-sync' } });
               syncFailed = true;
             }
           }
@@ -7846,10 +7848,12 @@ function AppInner() {
           }).eq('id', user.id);
           if (updErr) {
             console.error("[profile sync]", updErr?.message || "Unknown error");
+            Sentry.captureException(updErr, { tags: { area: 'profile-sync' } });
             syncFailed = true;
           }
         } catch (e) {
           console.error("[profile sync]", e?.message || "Unknown error");
+          Sentry.captureException(e, { tags: { area: 'profile-sync' } });
           syncFailed = true;
         }
         // Surface a single quiet toast per session — flaky connections
@@ -8388,7 +8392,10 @@ function AppInner() {
       if (user?.id) {
         supabase.rpc('increment_xp', { user_id: user.id, xp_delta: earned })
           .then(({ error }) => {
-            if (error) console.error("[xp sync]", error?.message || "Unknown error");
+            if (error) {
+              console.error("[xp sync]", error?.message || "Unknown error");
+              Sentry.captureException(error, { tags: { area: 'xp-sync' } });
+            }
           });
       }
     }
