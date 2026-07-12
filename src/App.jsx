@@ -788,6 +788,12 @@ const QUIZ_SLUG_TO_CAT = {
   "super-lig": "SuperLig", "primeira-liga": "Primeira",
   "champions-league": "UCL", "world-cup": "WorldCup", "euros": "Euros",
 };
+// Reverse maps for share deep-links (opportunity-scan #1): a club/league quiz
+// result should link the recipient back into THAT quiz (/play?club=… /
+// ?quiz=…), not the marketing homepage — the boot routing above already
+// handles these params; shares just never used them.
+const PACK_TO_CLUB_SLUG = Object.fromEntries(Object.entries(CLUB_SLUG_TO_PACK).map(([s, k]) => [k, s]));
+const CAT_TO_QUIZ_SLUG = Object.fromEntries(Object.entries(QUIZ_SLUG_TO_CAT).map(([s, c]) => [c, s]));
 
 // ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
 // Solo single-competition quizzes. Unlike the club quiz (which re-tags rows as
@@ -3468,7 +3474,12 @@ async function shareCard(type, data, opts = {}) {
   // renders card + tappable text bubble; image-first extensions take the
   // PNG and ignore the text.
   const SHARE_LINE = (() => {
-    const link = "⚽ https://balliq.app";
+    // Deep-link recipients into the APP (or the exact quiz they were just
+    // beaten at), never the marketing homepage — the /play boot routing
+    // handles ?club= / ?quiz= already. data.deepLink is set by shareScore
+    // for club/league results. (opportunity-scan #1)
+    const deepPath = (data && typeof data.deepLink === "string" && data.deepLink.startsWith("/")) ? data.deepLink : "/play";
+    const link = `⚽ https://balliq.app${deepPath}`;
     try {
       if (type === "wordle") {
         // "3/6" reads as "half right" to non-players — say attempts instead.
@@ -8526,7 +8537,12 @@ function AppInner() {
     // fails). Game-result focused — no profile bits.
     const pct = total ? Math.round(score / total * 100) : 0;
     const beat = "Can you beat me? ⚽";
-    const url = "balliq.app";
+    // opportunity-scan #1: deep-link recipients into the app — and for
+    // club/league results, into the exact quiz they were just beaten at.
+    const clubSlug = extras?.club ? PACK_TO_CLUB_SLUG[extras.club] : null;
+    const quizSlug = extras?.league ? CAT_TO_QUIZ_SLUG[extras.league] : null;
+    const deepLink = clubSlug ? `/play?club=${clubSlug}` : quizSlug ? `/play?quiz=${quizSlug}` : "/play";
+    const url = `balliq.app${deepLink}`;
     const msgs = {
       daily: (() => {
         const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
@@ -8589,6 +8605,7 @@ function AppInner() {
         streak: extras?.streak,
       };
     }
+    cardData = { ...cardData, deepLink };
     await shareCard(cardType, cardData, { onToast: showToast, textFallback: text });
   }, [showToast]);
 

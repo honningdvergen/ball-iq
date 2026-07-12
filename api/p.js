@@ -27,7 +27,9 @@ export default function handler(req) {
   descParts.push(`${Number(xp).toLocaleString()} XP`);
   descParts.push(`${games} games · ${streak}-day streak · ${accuracy}`);
   const description = `${descParts.join(' · ')} — can you beat me? ⚽`;
-  const appUrl = `${origin}/`;
+  // /play, not the marketing homepage: a shared player-card recipient should
+  // land in the app one tap from playing. (opportunity-scan #1)
+  const appUrl = `${origin}/play`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
