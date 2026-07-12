@@ -78,13 +78,13 @@ function buildAlert(rec: any): { title: string; body: string; data: Record<strin
   const p = rec.payload || {};
   switch (rec.type) {
     case "play_invite":
-      return { title: "⚽ Ball IQ", body: `${actor} invited you to a game`, data: { type: "play_invite", code: p.code || "" } };
+      return { title: "Ball IQ", body: `${actor} invited you to a game`, data: { type: "play_invite", code: p.code || "" } };
     case "friend_request":
-      return { title: "⚽ Ball IQ", body: `${actor} sent you a friend request`, data: { type: "friend_request" } };
+      return { title: "Ball IQ", body: `${actor} sent you a friend request`, data: { type: "friend_request" } };
     case "friend_accept":
-      return { title: "⚽ Ball IQ", body: `${actor} accepted your friend request`, data: { type: "friend_accept" } };
+      return { title: "Ball IQ", body: `${actor} accepted your friend request`, data: { type: "friend_accept" } };
     default:
-      return { title: "⚽ Ball IQ", body: p.body || "You have a new notification", data: { type: rec.type || "generic" } };
+      return { title: "Ball IQ", body: p.body || "You have a new notification", data: { type: rec.type || "generic" } };
   }
 }
 

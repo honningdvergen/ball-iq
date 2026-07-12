@@ -317,6 +317,11 @@ function QuizTaster() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null);
   const [done, setDone] = useState(false);
+  // Parked-pointer hover artifact (Alex report, browser-repro verified): after
+  // clicking Next, the cursor sits on top of one option of the NEXT question,
+  // so :hover lights a seemingly random option each round. Hover styling only
+  // arms once the pointer actually MOVES on the current question.
+  const [hoverArmed, setHoverArmed] = useState(false);
   const total = TASTE_QS.length;
   const cur = TASTE_QS[idx];
   const answered = picked !== null;
@@ -324,11 +329,16 @@ function QuizTaster() {
   const TIERS = ['Rising talent', 'Rising talent', 'Solid', 'Pro', 'Elite', 'World class'];
 
   const pick = (i) => { if (answered) return; setPicked(i); if (i === cur.a) setScore((s) => s + 1); };
-  const next = () => { if (idx + 1 >= total) setDone(true); else { setIdx(idx + 1); setPicked(null); } };
-  const reset = () => { setIdx(0); setScore(0); setPicked(null); setDone(false); };
+  const next = () => { if (idx + 1 >= total) setDone(true); else { setIdx(idx + 1); setPicked(null); setHoverArmed(false); } };
+  const reset = () => { setIdx(0); setScore(0); setPicked(null); setDone(false); setHoverArmed(false); };
 
   const optStyle = (i) => {
-    const base = { display: 'flex', alignItems: 'center', gap: 11, width: '100%', textAlign: 'left', padding: '12px 14px', borderRadius: 12, border: '1.5px solid #242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
+    // Longhand border props ONLY — mixing the `border` shorthand with a
+    // `borderColor` override made React clear borderColor on the next
+    // question while skipping the (string-identical) shorthand, leaving the
+    // picked+correct buttons with UA-default BLACK rings that moved around
+    // every round (Alex report, computed-style probe confirmed).
+    const base = { display: 'flex', alignItems: 'center', gap: 11, width: '100%', textAlign: 'left', padding: '12px 14px', borderRadius: 12, borderWidth: 1.5, borderStyle: 'solid', borderColor: '#242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
     if (!answered) return base;
     if (i === cur.a) return { ...base, borderColor: 'rgba(88,204,2,0.55)', background: 'rgba(88,204,2,0.12)', color: '#9BE25C' };
     if (i === picked) return { ...base, borderColor: 'rgba(255,71,71,0.5)', background: 'rgba(255,71,71,0.1)', color: '#FF8A82' };
@@ -369,9 +379,9 @@ function QuizTaster() {
       </div>
       <div style={{ height: 5, borderRadius: 999, background: '#1A1D27', marginTop: 10, overflow: 'hidden' }}><div style={{ width: pct + '%', height: '100%', background: '#58CC02', borderRadius: 999, transition: 'width .3s ease' }} /></div>
       <div style={{ marginTop: 12, fontSize: 17, fontWeight: 800, lineHeight: 1.3, color: '#fff' }}>{cur.q}</div>
-      <div style={{ display: 'grid', gap: 9, marginTop: 14 }}>
+      <div style={{ display: 'grid', gap: 9, marginTop: 14 }} onMouseMove={hoverArmed ? undefined : () => setHoverArmed(true)}>
         {cur.opts.map((o, i) => (
-          <button key={i} disabled={answered} onClick={() => pick(i)} className={!answered ? 'mkt-opt' : undefined} style={optStyle(i)}>
+          <button key={i} disabled={answered} onClick={() => pick(i)} className={!answered && hoverArmed ? 'mkt-opt' : undefined} style={optStyle(i)}>
             <span style={{ flex: 1 }}>{o}</span>
             {answered && i === cur.a && <span aria-hidden>✓</span>}
             {answered && i === picked && i !== cur.a && <span aria-hidden>✕</span>}

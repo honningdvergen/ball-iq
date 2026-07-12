@@ -1618,10 +1618,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
 .fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
 .fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 16px;height:36px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;}
 /* nowrap + no-shrink: on wide Footle grids (6-letter answers) the flex column
    squeezed these CTAs — "↗︎ Share" wrapped to two lines and the 999px radius
-   turned it into a blob (Alex's device catch, build 43 test). */
+   turned it into a blob (Alex's device catch, build 43 test). FIXED height +
+   line-height:1: the ↗︎ glyph's taller font metrics made Share a bigger pill
+   than Review; explicit height makes the pair identical (second device catch). */
 .fh-cta:active{transform:scale(0.97);opacity:0.92;}
 .fh-cta-secondary{background:rgba(255,255,255,0.16);color:#fff;-webkit-text-fill-color:#fff;border:1px solid rgba(255,255,255,0.22);}
 .fh-cta-secondary:hover{background:rgba(255,255,255,0.22);}

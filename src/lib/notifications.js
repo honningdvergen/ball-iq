@@ -84,7 +84,7 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
       if (!at) continue;
       notifications.push({
         id: ID_BASE + off,
-        title: '⚽ Ball IQ',
+        title: 'Ball IQ',
         body: DAILY_BODIES[at.getDay() % DAILY_BODIES.length],
         schedule: { at, allowWhileIdle: true },
       });
@@ -94,7 +94,7 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
       if (!at) continue;
       notifications.push({
         id: ID_BASE + w.off,
-        title: '⚽ Ball IQ',
+        title: 'Ball IQ',
         body: w.body,
         schedule: { at, allowWhileIdle: true },
       });
