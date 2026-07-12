@@ -4721,7 +4721,7 @@ function ClubQuizScreen({ onStart, onBack }) {
                 const lightClub = clubReadableText(pack.color) === "#0a0a0a";
                 const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                 return (
-                  <div key={key} className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
+                  <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
                     style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
                     <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
                       <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
@@ -4731,7 +4731,7 @@ function ClubQuizScreen({ onStart, onBack }) {
                       <div className="mi-desc">{count} questions</div>
                     </div>
                     <div className="mi-arrow">→</div>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -4789,7 +4789,7 @@ function LeagueQuizScreen({ onStart, onBack }) {
               const lightRow = clubReadableText(it.color) === "#0a0a0a";
               const a1 = lightRow ? 0.20 : 0.32, a2 = lightRow ? 0.05 : 0.06;
               return (
-                <div key={it.cat} className="mode-item" onClick={() => { haptic("select"); onStart(it.cat); }}
+                <button key={it.cat} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(it.cat); }}
                   style={{ background: `linear-gradient(90deg, ${clubHexToRgba(it.color, a1)} 0%, ${clubHexToRgba(it.color, a2)} 100%)`, borderColor: clubHexToRgba(it.color, lightRow ? 0.5 : 0.4) }}>
                   <div className="mi-icon" style={{ background: it.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(it.color, 0.45)}` }}>
                     <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(it.color) }}>{it.abbr}</span>
@@ -4799,7 +4799,7 @@ function LeagueQuizScreen({ onStart, onBack }) {
                     <div className="mi-desc">{counts ? `${counts[it.cat]} questions` : "Loading…"}</div>
                   </div>
                   <div className="mi-arrow">→</div>
-                </div>
+                </button>
               );
             })}
           </div>
