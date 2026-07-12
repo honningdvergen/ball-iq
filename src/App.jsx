@@ -2143,6 +2143,13 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         </div>
       )}
 
+      {/* Screen-reader countdown — announces only at thresholds (10s/5s/time's
+          up), never every second, so AT users know time is draining in timed
+          modes without a chatty per-second read. (medical accessibility HIGH.) */}
+      <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
+        {timed && !isTyped ? (timeLeft === 10 ? "10 seconds left" : timeLeft === 5 ? "5 seconds left" : timeLeft === 0 ? "Time's up" : "") : ""}
+      </div>
+
       {/* desktop-web-refresh (Quiz #02): streak · circular timer ring · correct.
           Desktop-only (base display:none); reuses the live streak/score/timeLeft
           state that drives the mobile chrome, so the two never disagree. */}

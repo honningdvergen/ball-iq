@@ -215,6 +215,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* 1.2 web a11y: a visible keyboard-focus ring across all interactive elements —
    previously only .btn-3d had one, so desktop Tab navigation was invisible. */
 button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play-card:focus-visible,.mode-item:focus-visible,.tab-item:focus-visible,.icon-btn:focus-visible,input:focus-visible,.typed-inp:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+/* Visually hidden but readable by screen readers — for live-region announcements. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
 .btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
