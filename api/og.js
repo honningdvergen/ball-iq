@@ -76,10 +76,14 @@ export default function handler(req) {
       if (u.protocol !== 'https:' || u.hostname !== 'blcisypmngimqkwxrrdm.supabase.co') img = '';
     } catch { img = ''; }
   }
-  const emoji = sp.get('e') || '⚽';
-  const overall = sp.get('ov') || '—';
+  // Clamp every free-text param — this is a compute-billed edge function, so
+  // unbounded inputs are a cost/abuse vector (n/qt/c were already sliced; e/ov/r
+  // were not — medical security-client finding). Ratings also caps its entry
+  // count so a giant CSV can't fan out the render.
+  const emoji = (sp.get('e') || '⚽').slice(0, 8);
+  const overall = (sp.get('ov') || '—').slice(0, 4);
   const t = TIERS[sp.get('ti')] || TIERS.prospect;
-  const ratings = (sp.get('r') || '').split(',');
+  const ratings = (sp.get('r') || '').slice(0, 64).split(',').slice(0, 6);
 
   const avatarInner = img
     ? h('img', { src: img, width: 190, height: 190, style: { width: 190, height: 190, borderRadius: 95, objectFit: 'cover' } })
