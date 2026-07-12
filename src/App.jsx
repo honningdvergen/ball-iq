@@ -7750,6 +7750,13 @@ function AppInner() {
       catStats[ans.cat] = { c: cur.c + (ans.isCorrect ? 1 : 0), a: cur.a + 1 };
     }
     const updated = {
+      // Preserve any stats keys not explicitly recomputed below — without this
+      // spread, saveStats rebuilds from a hand-maintained allow-list and silently
+      // drops bestSurvival + streak{7,30,100}Celebrated on every save (they're set
+      // via setStats elsewhere but never persisted), causing lying "New Survival
+      // record" toasts and duplicate streak-milestone confetti after reload.
+      // (2026-07-12 medical, correctness-state, confirmed.)
+      ...stats,
       gamesPlayed: stats.gamesPlayed + 1,
       gamesThisWeek,
       gamesLastWeek,
