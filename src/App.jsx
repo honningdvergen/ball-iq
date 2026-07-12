@@ -8464,6 +8464,29 @@ function AppInner() {
       celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 1800));
     }
 
+    // Guest→account nudge at the results HIGH (opportunity-scan #4): the
+    // reward-framed 'save' auth prompt existed but was only reachable from
+    // Settings — guests were never asked at the moment their progress felt
+    // worth keeping. Fires ONCE ever, at a peak (Daily 7 done, or a new
+    // classic/survival personal best — compared against pre-update stats,
+    // this closure's `stats` predates saveStats). Never stacks: skips when
+    // the rate prompt claimed this results screen, and on native lets the
+    // notification pre-prompt win the first-daily moment (the nudge simply
+    // takes the next peak — its once-flag is only set when actually shown).
+    try {
+      const nudged = localStorage.getItem('biq_save_nudge_shown') === '1';
+      const isPB = (mode === "classic" && res.score > (stats.bestScore || 0))
+        || (mode === "survival" && res.score > (stats.bestStreak || 0));
+      const peak = mode === "daily" || isPB;
+      const notifWillClaim = IS_NATIVE && mode === "daily"
+        && localStorage.getItem('biq_notif_enabled') !== '1'
+        && parseInt(localStorage.getItem('biq_notif_asks') || '0', 10) < 2;
+      if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim) {
+        localStorage.setItem('biq_save_nudge_shown', '1');
+        celebrationTimeoutsRef.current.push(setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 2000));
+      }
+    } catch { /* nudge is never load-bearing */ }
+
     // Award XP
     const earned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
     awardXp(earned);
