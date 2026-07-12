@@ -216,3 +216,14 @@ export async function mpSetRoomMode({ p_code, p_mode }) {
   if (error) return { ok: false, error: error.message }
   return data
 }
+
+// reveal_question — post-close disclosure of the correct answer index
+// (answer-key hardening Phase 1). Best-effort single shot, deliberately
+// outside the retry machinery: the caller falls back to the embedded key
+// (pre-Phase-2 rooms) or simply skips the green highlight on failure —
+// the reveal must never block on this.
+export async function mpRevealQuestion({ p_code, p_question_idx }) {
+  const { data, error } = await supabase.rpc('reveal_question', { p_code, p_question_idx })
+  if (error) return { revealed: false, error: error.message }
+  return data
+}

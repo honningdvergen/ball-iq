@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
-import { useMpRetryStatus, mpCreateRoom, mpJoinRoom } from '../multiplayerRpc.js';
+import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
@@ -1314,6 +1314,25 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     setRevealPhase(prev => prev === 'answering' ? 'revealing' : prev);
   }, [handleTimeoutAutoSubmit]);
 
+  // Answer-key hardening (Phase 1, 2026-07-13): once Phase 2 strips `correct`
+  // from the stored questions jsonb, the reveal's green highlight comes from
+  // the member-gated reveal_question RPC (discloses the index only after the
+  // question closes server-side). Pre-Phase-2 rooms still embed the key, so
+  // this fetch no-ops for them (question.correct !== undefined). Serves ALL
+  // reveal viewers — answerers, timeout players, eliminated spectators and
+  // late joiners — none of whom can rely on submit_answer's response.
+  const [revealCorrectIdx, setRevealCorrectIdx] = useState(null);
+  useEffect(() => { setRevealCorrectIdx(null); }, [currentQuestionIdx]);
+  useEffect(() => {
+    if (revealPhase === 'answering') return;
+    if (!question || question.correct !== undefined) return;
+    let alive = true;
+    mpRevealQuestion({ p_code: room.code, p_question_idx: currentQuestionIdx })
+      .then((r) => { if (alive && r?.revealed) setRevealCorrectIdx(r.correct); })
+      .catch(() => { /* best-effort — reveal renders without the highlight */ });
+    return () => { alive = false; };
+  }, [revealPhase, question, currentQuestionIdx, room.code]);
+
   // Survival spectator flag — hoisted ABOVE the early return so the headless
   // advance clock below can depend on it without tripping the hooks-order rule.
   const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
@@ -1628,6 +1647,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           onPick={handleAnswerPick}
           revealing={revealing}
           questionIdx={currentQuestionIdx}
+          revealCorrectIdx={revealCorrectIdx}
         />
 
         {/* Elimination moment — one dramatic beat, then the persistent banner
@@ -1846,7 +1866,7 @@ const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 // "your wrong" path fires → late joiner sees only the green-correct
 // highlight during reveal, no red anywhere. Same for timeout (-1):
 // `idx === -1` is false for all valid idx → no spurious red.
-function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx }) {
+function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx, revealCorrectIdx }) {
   // Stage 1C.7.5 + Stage 1F follow-up: suppress option-button color
   // transitions on the first frame after a question change. Stale color
   // transitions from the prior question's reveal state would bleed into
@@ -1880,12 +1900,20 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => {
           const isLocked = lockedAnswerIdx === idx;
-          const isCorrect = idx === question.correct;
+          // Embedded key (pre-Phase-2 rooms) wins for instant paint; the
+          // RPC-disclosed index covers Phase-2 rooms where questions no
+          // longer carry `correct`. `?? null` keeps undefined===undefined
+          // from ever counting as a match.
+          const isCorrect = idx === (question.correct ?? revealCorrectIdx ?? null);
           // Reveal-state classifications. Late-joiner (null) and timeout
           // (-1) cases short-circuit naturally — `null === idx` and
           // `-1 === idx` are both false for all valid idx.
           const isRevealCorrect = revealing && isCorrect;
-          const isYourWrong = revealing && isLocked && !isCorrect;
+          // Only mark your pick wrong once the correct index is actually
+          // known — otherwise a Phase-2 room would flash a correct pick red
+          // during the reveal RPC round-trip.
+          const correctKnown = (question.correct ?? revealCorrectIdx) != null;
+          const isYourWrong = revealing && isLocked && correctKnown && !isCorrect;
           // Dim other unselected options ONLY during answering (not during
           // reveal — colors carry the message instead). Also requires a
           // valid pick (>=0), excluding null/timeout cases.
