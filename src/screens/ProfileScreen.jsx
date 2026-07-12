@@ -700,6 +700,16 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const [reportMessage, setReportMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const toast = onToast || (() => {});
+  // Focus-trap + ESC-close + focus-restore for the 3-dot / Report / Block
+  // dialogs (medical accessibility: they declared role=dialog without the
+  // trap, so keyboard users could Tab out of these safety flows and ESC did
+  // nothing). Same one-line pattern as the crop modal in this file.
+  const menuRef = useRef(null);
+  const reportRef = useRef(null);
+  const blockRef = useRef(null);
+  useModalA11y({ isOpen: menuOpen, onClose: () => setMenuOpen(false), ref: menuRef });
+  useModalA11y({ isOpen: reportOpen, onClose: () => !submitting && setReportOpen(false), ref: reportRef });
+  useModalA11y({ isOpen: blockConfirmOpen, onClose: () => !submitting && setBlockConfirmOpen(false), ref: blockRef });
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -875,6 +885,8 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           onClick={() => setMenuOpen(false)}
         >
           <div
+            ref={menuRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label={`Actions for ${username}`}
@@ -907,6 +919,8 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           onClick={() => !submitting && setReportOpen(false)}
         >
           <div
+            ref={reportRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label={`Report ${username}`}
@@ -957,6 +971,8 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           onClick={() => !submitting && setBlockConfirmOpen(false)}
         >
           <div
+            ref={blockRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label={`Confirm blocking ${username}`}
