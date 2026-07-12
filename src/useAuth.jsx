@@ -8,6 +8,7 @@ import { supabase } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
+import { unregisterPush } from './lib/push.js'
 
 // Sprint #94 III3: native OAuth uses a custom URL scheme registered in
 // ios/App/App/Info.plist (CFBundleURLTypes). Supabase redirects the auth
@@ -1084,8 +1085,14 @@ export function AuthProvider({ children }) {
     //    preserved by the helper.
     // 3. End the auth session.
     // 4. Clear ballIQ_guestMode + isGuest state.
+    const signedOutUid = activeUserIdRef.current
     activeUserIdRef.current = null
     clearAllUserLocalStorage()
+    // Drop this device's push token BEFORE ending the session — the delete is
+    // RLS-gated on auth.uid(), so it must run while still authenticated. Stops
+    // a shared device from receiving pushes for the account that just signed
+    // out. Best-effort, native-only (no-ops on web). (medical auth-session.)
+    try { await unregisterPush(signedOutUid) } catch {}
     await supabase.auth.signOut()
     localStorage.removeItem('ballIQ_guestMode')
     setIsGuest(false)

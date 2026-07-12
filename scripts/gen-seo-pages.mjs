@@ -1213,6 +1213,10 @@ ${footer()}`;
 
 // ── sitemap ───────────────────────────────────────────────────────────────────
 function buildSitemap(livePages) {
+  // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
+  // priority, so without it the sitemap gives the crawler no freshness signal.
+  // Pages are regenerated every deploy, so the build date is an honest hint.
+  const lastmod = new Date().toISOString().slice(0, 10);
   const urls = [
     { loc: `${SITE.base}/`, freq: 'daily', pri: '1.0' },
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
@@ -1228,7 +1232,7 @@ function buildSitemap(livePages) {
   const body = urls
     .map(
       (u) =>
-        `  <url>\n    <loc>${u.loc}</loc>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`,
+        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`,
     )
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
