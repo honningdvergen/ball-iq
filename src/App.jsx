@@ -9861,7 +9861,7 @@ function AppInner() {
               { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} onClick={() => { haptic("soft"); setTab(id); }}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => { haptic("soft"); setTab(id); }}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}

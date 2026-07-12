@@ -992,7 +992,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                 type="button"
                 onClick={handleBlock}
                 disabled={submitting}
-                style={{flex:1,padding:"14px",background:"#ff6b6b",border:"none",color:"#fff",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
+                style={{flex:1,padding:"14px",background:"#d32f2f",border:"none",color:"#fff",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
               >{submitting ? "Blocking…" : "Block"}</button>
             </div>
           </div>
