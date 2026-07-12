@@ -1595,6 +1595,11 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
   const [picked, setPicked] = useState(null); // { choice, correct } | null
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
+  // medical correctness-state (low): the per-answer advance setTimeout had no
+  // cleanup — if the 60s clock ended during the reveal delay, the pending
+  // setIdx fired after unmount (harmless no-op in React 18, but `total: idx`
+  // could under-count by one). Mirror TrueFalseEngine's ref+cleanup pattern.
+  const advanceTimeoutRef = useRef(null);
   const q = questions[idx % questions.length];
 
   useEffect(() => {
@@ -1606,7 +1611,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
         return t - 1;
       });
     }, 1000);
-    return () => clearInterval(timerRef.current);
+    return () => { clearInterval(timerRef.current); clearTimeout(advanceTimeoutRef.current); };
   }, []);
 
   useEffect(() => {
@@ -1622,7 +1627,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
     setPicked({ choice: i, correct });
     // Give the player time to read the hint on a wrong answer; otherwise advance quickly
     const delay = !correct && q.hint ? 1800 : 400;
-    setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, delay);
+    advanceTimeoutRef.current = setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, delay);
   };
 
   const pct = (timeLeft / 60) * 100;
@@ -9811,6 +9816,10 @@ function AppInner() {
               hintsEnabled={settings.hints !== false}
               onComplete={handleComplete}
               onReport={reportQuestion}
+              // medical correctness-state (low): without this the in-game
+              // Survival PB / "New PB!" badges could never render — QuizEngine
+              // gates them on survivalBest > 0 and the prop was never passed.
+              survivalBest={stats.bestStreak}
               quizLabel={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
                 : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
                 : undefined}

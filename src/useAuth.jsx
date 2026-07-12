@@ -167,8 +167,17 @@ export function AuthProvider({ children }) {
           // a wipe so a guest who followed an invite link, then signed in,
           // still lands in the room.
           try {
-            if (localStorage.getItem('biq_auth_attempt') === '1') {
-              localStorage.removeItem('biq_auth_attempt')
+            // medical auth-session (low): the sentinel used to be a bare '1'
+            // that was never cleared on a failed/cancelled attempt, so it
+            // could linger for days and mis-fire the migration on a much
+            // later unrelated SIGNED_IN. Now a timestamp with a 10-minute
+            // TTL — abandoned attempts expire on their own. ('1' accepted
+            // one release for pre-deploy stragglers.)
+            const attemptRaw = localStorage.getItem('biq_auth_attempt')
+            if (attemptRaw) localStorage.removeItem('biq_auth_attempt') // consume on ANY sign-in, fresh or stale
+            const attemptFresh = attemptRaw === '1'
+              || (Number(attemptRaw) > 0 && Date.now() - Number(attemptRaw) < 600000)
+            if (attemptFresh) {
               const createdAtMs = Date.parse(session.user.created_at || '') || 0
               const isFreshAccount = createdAtMs > 0 && (Date.now() - createdAtMs) < 120000
               const explicitSignup = localStorage.getItem('biq_signup_pending_clear') === '1'
@@ -559,7 +568,7 @@ export function AuthProvider({ children }) {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-up attempted', level: 'info' })
     // Sprint #100: mark a user-initiated auth so the SIGNED_IN handler runs
     // the guest→account migration exactly once (and not on session restore).
-    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
+    try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
     // emailRedirectTo lands the confirm link on a GAME path (/play), not the
     // Site URL (=/ marketing). Marketing renders WITHOUT AuthProvider, so the
     // session token Supabase appends to the redirect hash would go unconsumed —
@@ -601,7 +610,7 @@ export function AuthProvider({ children }) {
 
   async function signIn(email, password) {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-in attempted', level: 'info' })
-    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
+    try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
     const result = await supabase.auth.signInWithPassword({ email, password })
     if (!result.error && result.data?.session) {
       // Pre-fill convenience for next visit (post-expiry, re-launch).
@@ -642,7 +651,7 @@ export function AuthProvider({ children }) {
   // OAuth identity from Settings (post-launch task — not blocking V1).
   async function signInWithOAuth(provider) {
     Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
-    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
+    try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
     const isNative = Capacitor.isNativePlatform?.()
     if (isNative) {
       console.log('[OAuth] start', { provider, redirectTo: NATIVE_OAUTH_REDIRECT })
@@ -716,7 +725,7 @@ export function AuthProvider({ children }) {
   // they return cleanly so Login can clear its loading state.
   async function signInWithApple() {
     Sentry.addBreadcrumb({ category: 'auth', message: 'apple sign-in attempted', level: 'info' })
-    try { localStorage.setItem('biq_auth_attempt', '1') } catch {}
+    try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
     const isNative = Capacitor.isNativePlatform?.()
     if (!isNative) return signInWithOAuth('apple')
     try {
