@@ -3598,6 +3598,9 @@ function CountUp({ value, duration = 900, delay = 150, triggerHaptic = false, su
 export function Confetti() {
   const canvasRef = useRef(null);
   useEffect(() => {
+    // Honor prefers-reduced-motion (vestibular disorders / migraine): skip the
+    // full-viewport confetti animation entirely. (medical, accessibility.)
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -3632,7 +3635,7 @@ export function Confetti() {
     requestAnimationFrame(draw);
     return () => { alive = false; };
   }, []);
-  return <canvas ref={canvasRef} style={{position:"fixed",top:0,left:0,pointerEvents:"none",zIndex:500,width:"100%",height:"100%"}} />;
+  return <canvas ref={canvasRef} aria-hidden="true" style={{position:"fixed",top:0,left:0,pointerEvents:"none",zIndex:500,width:"100%",height:"100%"}} />;
 }
 
 
@@ -3642,6 +3645,8 @@ export function Confetti() {
 function HardRightBurst({ onComplete }) {
   const canvasRef = useRef(null);
   useEffect(() => {
+    // Honor prefers-reduced-motion: skip the burst but keep the flow moving.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { onComplete?.(); return; }
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -3698,7 +3703,7 @@ function HardRightBurst({ onComplete }) {
     requestAnimationFrame(draw);
     return () => { alive = false; };
   }, [onComplete]);
-  return <canvas ref={canvasRef} style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,pointerEvents:"none",zIndex:500}} />;
+  return <canvas ref={canvasRef} aria-hidden="true" style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,pointerEvents:"none",zIndex:500}} />;
 }
 
 
@@ -9209,7 +9214,7 @@ function AppInner() {
         )}
 
         {/* Global toasts */}
-        {toast && <div className="toast">{toast}</div>}
+        {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
 
         {/* First quiz tip — Sprint #27 Y3 F1: className lets a desktop
             media query constrain the left/right anchoring to the .app
@@ -9380,7 +9385,7 @@ function AppInner() {
             <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:24,fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
           </div>
         )}
-        {streakToast && <div className="streak-toast"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
+        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
 
         {/* ── CLASSIC DIFFICULTY SHEET ── */}
         {showDiffPicker && (
