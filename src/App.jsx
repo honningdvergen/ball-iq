@@ -3126,6 +3126,16 @@ function LocalResults({ result, onHome, onRetry }) {
 // ─── XP + LEVEL SYSTEM ────────────────────────────────────────────────────────
 // LEVELS + getLevelInfo extracted to ./lib/scoring.js (Sprint #13 Stage 1).
 
+// Footle XP (opportunity-scan #3): the flagship daily habit previously fed
+// ZERO progression — levels/shields/badges exerted no pull on exactly the
+// daily-loop users. Won: fewer guesses = more XP (60 → 30); lost: 10 for
+// showing up (the streak-keeping visit still counts for something).
+function getFootleXP(won, guesses) {
+  if (!won) return 10;
+  const g = Math.min(6, Math.max(1, guesses || 6));
+  return 30 + (6 - g) * 6;
+}
+
 function getXPForResult(score, total, mode) {
   if (mode === "hotstreak") {
     // Hot Streak: 5 XP per correct, bonus tiers
@@ -6736,9 +6746,16 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     if (newStatus !== "playing") {
       setRevealed(false);
       timeoutsRef.current.push(setTimeout(() => setRevealed(true), answer.length * TIMINGS.WORDLE_FLIP_MS + 200));
+      // Win/loss feedback at the moment of truth (scan #3) — playSound
+      // self-gates on the user's sound setting.
+      if (newStatus === "won") { try { haptic("correct"); playSound("correct"); } catch {} }
+      else { try { haptic("wrong"); playSound("wrong"); } catch {} }
       // 1.1: completing today's Footle cancels tonight's reminder; a solve is
       // also a positive moment to surface the notification pre-prompt.
-      try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won" } })); } catch {}
+      // game/won/guesses ride along so the app shell can award Footle XP
+      // exactly once (this transition fires once per day by construction —
+      // finished puzzles never re-enter submitGuess).
+      try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
       // ⭐ 5-star ask at a Footle emotional peak — a fast solve (≤3 guesses) is a
       // genuine "I'm good at this" moment. maybeRequestReview enforces a long
       // cooldown + lifetime cap + native-only, so it only occasionally prompts.
@@ -6912,6 +6929,11 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
               </div>
             );
           })()}
+          {/* Static earned-XP footer, mirroring every other result screen —
+              the daily hero now visibly feeds the same progression economy. */}
+          <div style={{fontSize:13,fontWeight:700,color:"var(--accent)",marginBottom:10}}>
+            +{getFootleXP(state.status === "won", state.guesses.length)} XP
+          </div>
           <button className="wd-share" onClick={onShare}>Share result</button>
           {/* wa.me is web-only: inside the Capacitor WebView it often loads
               the wa.me web page instead of app-switching, and the native
@@ -8245,16 +8267,64 @@ function AppInner() {
     scheduleReminderWindow({ skipToday: playedToday });
   }, [notifEnabled, dailyDone]);
 
+  // Shared XP award: local level math + persist + level-up celebration +
+  // atomic remote delta for signed-in users. Extracted from handleComplete so
+  // Footle (via the biq:daily-completed event) feeds the same economy
+  // (opportunity-scan #3). MUST be declared ABOVE the daily-completed effect
+  // below — its dep array reads this const during render (TDZ crash caught by
+  // the e2e verify on first build).
+  const awardXp = useCallback((earned) => {
+    if (!earned || earned <= 0) return;
+    setXp(prev => {
+      const oldInfo = getLevelInfo(prev);
+      const newXp = prev + earned;
+      const newInfo = getLevelInfo(newXp);
+      window.storage?.set("biq_xp", String(newXp)).catch(() => {});
+      const leveledUp = newInfo.level.name !== oldInfo.level.name;
+      // XP toast intentionally not fired here — every result screen
+      // already shows a static "+N XP earned" footer, so the floating
+      // toast was duplicating the same indicator. Level-ups still get
+      // the full-screen levelUpOverlay below for celebration.
+      if (leveledUp) {
+        if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
+        levelUpTimerRef.current = setTimeout(() => {
+          setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
+          levelUpTimerRef.current = setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
+        }, 400);
+      }
+      return newXp;
+    });
+    // Atomic delta-add to remote xp via RPC. Mirrors increment_score so
+    // concurrent game finishes across devices compose correctly. No-op for
+    // guests / signed-out — xp stays local-only.
+    if (user?.id) {
+      supabase.rpc('increment_xp', { user_id: user.id, xp_delta: earned })
+        .then(({ error }) => {
+          if (error) {
+            console.error("[xp sync]", error?.message || "Unknown error");
+            Sentry.captureException(error, { tags: { area: 'xp-sync' } });
+          }
+        });
+    }
+  }, [user?.id]);
+
   // A completed daily (Daily 7 or Footle) cancels tonight's reminder and, on a
   // positive completion, is the trigger for the first soft pre-prompt.
   useEffect(() => {
     const onDailyDone = (e) => {
       cancelTodayReminder();
       if (e?.detail?.positive !== false) maybePromptNotif();
+      // Footle XP (scan #3). ONLY for game:'footle' — the Daily 7 also fires
+      // this event and already earns XP via handleComplete; awarding here for
+      // it too would double-pay. Footle's dispatch happens exactly once per
+      // day (the won/lost transition), so no dedup guard is needed.
+      if (e?.detail?.game === 'footle') {
+        awardXp(getFootleXP(e.detail.won === true, e.detail.guesses));
+      }
     };
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
-  }, [maybePromptNotif]);
+  }, [maybePromptNotif, awardXp]);
 
   // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
   // long-streak user (that would burn both lifetime asks before they ever see a
@@ -8396,39 +8466,7 @@ function AppInner() {
 
     // Award XP
     const earned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
-    if (earned > 0) {
-      setXp(prev => {
-        const oldInfo = getLevelInfo(prev);
-        const newXp = prev + earned;
-        const newInfo = getLevelInfo(newXp);
-        window.storage?.set("biq_xp", String(newXp)).catch(() => {});
-        const leveledUp = newInfo.level.name !== oldInfo.level.name;
-        // XP toast intentionally not fired here — every result screen
-        // already shows a static "+N XP earned" footer, so the floating
-        // toast was duplicating the same indicator. Level-ups still get
-        // the full-screen levelUpOverlay below for celebration.
-        if (leveledUp) {
-          if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
-          levelUpTimerRef.current = setTimeout(() => {
-            setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
-            levelUpTimerRef.current = setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
-          }, 400);
-        }
-        return newXp;
-      });
-      // Atomic delta-add to remote xp via RPC. Mirrors increment_score so
-      // concurrent game finishes across devices compose correctly. No-op for
-      // guests / signed-out — xp stays local-only.
-      if (user?.id) {
-        supabase.rpc('increment_xp', { user_id: user.id, xp_delta: earned })
-          .then(({ error }) => {
-            if (error) {
-              console.error("[xp sync]", error?.message || "Unknown error");
-              Sentry.captureException(error, { tags: { area: 'xp-sync' } });
-            }
-          });
-      }
-    }
+    awardXp(earned);
 
     // Save BallIQ history (last 7 scores) + best IQ in stats
     if (mode === "balliq") {
