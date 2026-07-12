@@ -1581,6 +1581,19 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
+/* Desktop composition. On mobile the full-height flow is perfect; on a wide
+   viewport the same layout top-pinned the game (keyboard's margin-bottom:auto
+   pushed all free space into a big void below) and let the flex:1 keys fan out
+   edge-to-edge. Cap to a tidy centred column and vertically centre it so the
+   game reads as an intentional card (NYT-Wordle style) rather than a stranded
+   strip. This is also the /footle backlink landing page — first impression for
+   directory reviewers and r/WebGames. Mobile (<1024px) untouched. */
+@media (min-width: 1024px) {
+  .wd-screen{max-width:500px;margin-inline:auto;justify-content:center;min-height:calc(100dvh - 132px);}
+  .wd-keyboard{margin-bottom:0;}
+  .wd-key{height:52px;font-size:15px;}
+}
+
 /* Sprint #11 Stage 5 cleanup: removed orphaned home-tab CSS.
    .hero-pair* — orphaned from an earlier redesign, no JSX usage.
    .daily-section-eyebrow + .daily-pair* — replaced by .footle-hero
