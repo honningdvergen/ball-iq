@@ -23,6 +23,13 @@ const KEY_ID = Deno.env.get("APNS_KEY_ID") ?? "";
 const TEAM_ID = Deno.env.get("APNS_TEAM_ID") ?? "";
 const BUNDLE_ID = Deno.env.get("APNS_BUNDLE_ID") ?? "app.balliq";
 const APNS_HOST = Deno.env.get("APNS_HOST") ?? "api.push.apple.com";
+// Shared secret proving a POST really came from our DB webhook, not an
+// internet caller crafting {user_id, actor_name, payload} to push arbitrary
+// text to any user (medical security-backend finding). ROLLOUT ORDER: first add
+//   headers => { 'x-webhook-secret': '<secret>' }
+// to the notifications DB webhook, THEN set PUSH_WEBHOOK_SECRET here — the check
+// only enforces when the env var is present, so it fails safe either way.
+const WEBHOOK_SECRET = Deno.env.get("PUSH_WEBHOOK_SECRET") ?? "";
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -113,6 +120,11 @@ async function sendOne(token: string, jwt: string, alert: ReturnType<typeof buil
 Deno.serve(async (req) => {
   try {
     if (req.method !== "POST") return new Response("ok", { status: 200 });
+    // Reject forged calls once the shared secret is configured (fail-safe: no
+    // secret set => no enforcement, preserving current behaviour during rollout).
+    if (WEBHOOK_SECRET && req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
+      return new Response("unauthorized", { status: 401 });
+    }
     if (!KEY_P8 || !KEY_ID || !TEAM_ID) {
       return new Response("APNs secrets not configured", { status: 500 });
     }
