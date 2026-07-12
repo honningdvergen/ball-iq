@@ -1630,6 +1630,11 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
 
   return (
     <div className="quiz-wrap">
+      {/* SR countdown at thresholds only — same pattern as QuizEngine.
+          Hot Streak runs a 60s clock, so add a 30s waypoint. */}
+      <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
+        {timeLeft === 30 ? "30 seconds left" : timeLeft === 10 ? "10 seconds left" : timeLeft === 5 ? "5 seconds left" : timeLeft === 0 ? "Time's up" : ""}
+      </div>
       <div className="q-top">
         <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${pct}%`, background:barColor, transition:'width 1s linear'}} /></div>
@@ -6773,6 +6778,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
               key={i}
               className={`wd-tile wd-${grades[i]} wd-flip`}
               style={{ animationDelay: `${i * 280}ms` }}
+              aria-label={`${g[i]}, ${grades[i] === "green" ? "correct" : grades[i] === "yellow" ? "wrong position" : "not in the name"}`}
             >{g[i]}</div>
           ))}
         </div>
@@ -6912,9 +6918,13 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
             <div className="wd-kb-row" key={ri}>
               {row.map((k) => {
                 const isAction = k === "DEL";
-                const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${getWordleKeyState(k, state.guesses, answer) || "idle"}`;
+                const st = isAction ? null : getWordleKeyState(k, state.guesses, answer);
+                const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${st || "idle"}`;
+                // Append the key's revealed state so SR users get the same
+                // feedback the colors carry (medical accessibility).
+                const stDesc = st === "green" ? ", correct" : st === "yellow" ? ", wrong position" : st === "grey" ? ", not in the name" : "";
                 return (
-                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : k}>
+                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );

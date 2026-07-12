@@ -1804,6 +1804,10 @@ function QuestionTimer({ durationMs, onExpire, questionIdx }) {
       }}>
         {seconds}s
       </div>
+      {/* SR countdown at thresholds only — same pattern as QuizEngine/HotStreak. */}
+      <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
+        {seconds === 10 ? "10 seconds left" : seconds === 5 ? "5 seconds left" : seconds === 0 ? "Time's up" : ""}
+      </div>
     </div>
   );
 }
