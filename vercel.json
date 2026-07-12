@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/p", "destination": "/api/p" },
     { "source": "/q", "destination": "/api/q" },
+    { "source": "/c/:token", "destination": "/api/c?t=:token" },
     { "source": "/football-wordle/answer", "destination": "/api/footle" },
     { "source": "/football-wordle/answer/", "destination": "/api/footle" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
