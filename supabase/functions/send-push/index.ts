@@ -29,7 +29,10 @@ const APNS_HOST = Deno.env.get("APNS_HOST") ?? "api.push.apple.com";
 //   headers => { 'x-webhook-secret': '<secret>' }
 // to the notifications DB webhook, THEN set PUSH_WEBHOOK_SECRET here — the check
 // only enforces when the env var is present, so it fails safe either way.
-const WEBHOOK_SECRET = Deno.env.get("PUSH_WEBHOOK_SECRET") ?? "";
+// .trim(): dashboard-pasted secrets routinely carry a trailing newline (bit us
+// on first rollout — digest proved the stored value was "<secret>\n"), which
+// would fail the exact-match against the clean header value forever.
+const WEBHOOK_SECRET = (Deno.env.get("PUSH_WEBHOOK_SECRET") ?? "").trim();
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
