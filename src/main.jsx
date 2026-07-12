@@ -13,6 +13,19 @@ import { initAds } from './lib/ads.js'
 // ship with VITE_SENTRY_DSN set (Vercel env var); dev/preview builds run
 // without it and Sentry no-ops silently.
 if (import.meta.env.VITE_SENTRY_DSN) {
+  // Native-gate performance tracing: the privacy policy states the *app* runs
+  // no analytics, but browserTracingIntegration sampling records navigation/
+  // pageload transactions (a usage measure). Keep crash reporting everywhere;
+  // sample transactions on web only, never inside the Capacitor app.
+  // (2026-07-12 medical, error-observability, medium.)
+  const isNative = typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.() === true
+  // Remove the URL fragment (Supabase returns access_token/refresh_token there
+  // after OAuth/magic-link) and redact token query params so a credential can
+  // never ride into a Sentry event via request.url or a navigation breadcrumb.
+  const scrubUrl = (u) => {
+    if (typeof u !== 'string') return u
+    return u.split('#')[0].replace(/([?&])(access_token|refresh_token|provider_token|code|token|apikey)=[^&]*/gi, '$1$2=REDACTED')
+  }
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE,
@@ -20,19 +33,25 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     integrations: [
       Sentry.browserTracingIntegration(),
     ],
-    tracesSampleRate: 0.1,
-    // PII scrub: strip user email + Supabase tokens from breadcrumbs and
+    tracesSampleRate: isNative ? 0 : 0.1,
+    // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
     beforeSend(event) {
       if (event.user) {
         delete event.user.email
         delete event.user.username
       }
+      if (event.request?.url) event.request.url = scrubUrl(event.request.url)
       if (event.breadcrumbs) {
         for (const bc of event.breadcrumbs) {
           if (bc.data?.headers) {
             delete bc.data.headers.Authorization
             delete bc.data.headers.apikey
+          }
+          if (bc.data) {
+            for (const k of ['url', 'to', 'from']) {
+              if (typeof bc.data[k] === 'string') bc.data[k] = scrubUrl(bc.data[k])
+            }
           }
         }
       }
