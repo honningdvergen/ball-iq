@@ -8,12 +8,18 @@
 // means marketing visitors never fetch the game code at all, and game visitors
 // get an early module-eval warm-up (see main.jsx) so the fetch overlaps mount.
 import { AuthProvider } from './useAuth.jsx'
-import App from './App.jsx'
+import App, { ErrorBoundary } from './App.jsx'
 
 export default function GameRoot() {
+  // ErrorBoundary ABOVE AuthProvider: the root boundary inside App can't catch
+  // a throw in the provider itself (session hydration, storage access). This
+  // outer wrap turns an auth-init crash into the styled fallback + Sentry
+  // capture instead of a white screen. (medical error-observability.)
   return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }

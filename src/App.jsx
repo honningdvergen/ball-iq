@@ -6402,7 +6402,11 @@ function DailyHeroCountdown() {
 }
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
-class ErrorBoundary extends React.Component {
+// Exported so GameRoot can ALSO wrap AuthProvider with it — a render/init throw
+// inside useAuth used to escape every boundary (the root boundary rendered
+// inside App, a child of the provider) and white-screen the app.
+// (medical error-observability, medium.)
+export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
