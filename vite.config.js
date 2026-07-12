@@ -77,11 +77,18 @@ export default defineConfig(async () => {
     // set the token via env var. Org/project slugs accept env overrides so
     // the user can adjust without code changes.
     sentryVitePlugin({
-      org: process.env.SENTRY_ORG || 'ball-iq',
+      // Org slug MUST match the token's org — sentry-cli hard-errors on any
+      // mismatch ("Two different org values supplied"), which failed the
+      // 2026-07-13 prod build the moment the long-dead token was fixed
+      // (env var had been misspelled ENTRY_AUTH_TOKEN since May 6).
+      org: process.env.SENTRY_ORG || 'alexander-bryn-olsen',
       project: process.env.SENTRY_PROJECT || 'ball-iq',
       authToken: process.env.SENTRY_AUTH_TOKEN,
       release: { name: gitSha },
       disable: !process.env.SENTRY_AUTH_TOKEN,
+      // Upload problems must WARN, never fail the deploy — observability
+      // tooling may not block shipping (it already cost us one prod build).
+      errorHandler(err) { console.warn('[sentry-plugin] upload failed (non-fatal):', err?.message || err) },
       // Sprint #73 OO5: delete .map files after upload so they don't ship
       // to Vercel and become publicly fetchable at /assets/<hash>.js.map.
       // The plugin strips the inline sourceMappingURL comment regardless,
