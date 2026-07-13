@@ -7121,6 +7121,40 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // Deep-link recipients play BEFORE onboarding (opportunity-scan #6). A boot
+  // that arrives via a share/SEO deep link (footle alias or ?game=footle,
+  // ?stump=, ?club=/?quiz= slugs, /c/ Daily-7 challenge) defers the
+  // OnboardingScreen gate for this session — the OG cards promise "no
+  // sign-up", so the shared moment must render first. Decided synchronously
+  // from window.location at mount: it MUST run before the pendingChallenge
+  // initializer and the SEO-launch effect below strip these params via
+  // replaceState. Slugs are validated against the module maps so a dead link
+  // doesn't suppress onboarding for nothing. biq_onboarded is NOT written —
+  // onboarding still shows, on the first Home visit after the staged screen.
+  const [deferOnboarding, setDeferOnboarding] = useState(() => {
+    try {
+      const path = window.location.pathname;
+      if (path === "/footle" || path === "/footle/" || /^\/c\/./.test(path)) return true;
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.get("game") === "footle") return true;
+      if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
+      if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;
+      if (QUIZ_SLUG_TO_CAT[(sp.get("quiz") || "").toLowerCase()]) return true;
+      if (sp.get("c")) return true; // query-form challenge fallback
+    } catch {}
+    return false;
+  });
+  // The deferral lifts on the first RETURN to Home — i.e. once the staged
+  // destination has actually rendered (screen left "home") and the user
+  // navigates back. Lifting on any screen==="home" render would fire during
+  // the async staging window (stump/club launches load the question bank
+  // before setScreen), re-blocking the moment the deep link paid for.
+  const stagedScreenSeenRef = useRef(false);
+  useEffect(() => {
+    if (!deferOnboarding) return;
+    if (screen !== "home") { stagedScreenSeenRef.current = true; return; }
+    if (stagedScreenSeenRef.current) setDeferOnboarding(false);
+  }, [screen, deferOnboarding]);
   // 1.0.2 Feature E: one-time "pick your username" step after a NEW social
   // sign-up. useAuth sets biq_needs_username='1' for fresh Apple/Google
   // accounts (email sign-ups already chose a username). We surface the modal
@@ -9358,8 +9392,10 @@ function AppInner() {
       <main className={`app${settings.theme === "light" ? " light" : ""}`}>
         <div className="sbar" />
 
-        {/* ── ONBOARDING — shown to first-time users only ── */}
-        {!hasOnboarded && (
+        {/* ── ONBOARDING — shown to first-time users only. Deep-link boots
+            defer it (deferOnboarding) so the shared moment renders first;
+            the gate returns on the next organic Home visit. ── */}
+        {!hasOnboarded && !deferOnboarding && (
           <OnboardingScreen
             onDone={() => {
               setHasOnboarded(true);
@@ -9377,7 +9413,7 @@ function AppInner() {
           />
         )}
 
-        {hasOnboarded && <>
+        {(hasOnboarded || deferOnboarding) && <>
         {/* Feature E: one-time username confirmation after a new social
             sign-up. Overlays the app (z-index 500) until the user commits a
             name; shown only once onboarding is complete so the two full-screen
