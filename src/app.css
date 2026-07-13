@@ -1632,8 +1632,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    length (4-8). Tile size matched D1 mockup proportions — 13×13 with 3px
    gaps — so the squares carry the visual weight the smaller tiles lacked. */
 .fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:5px;align-self:center;}
-.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),24px);gap:5px;}
-.fh-tile{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;line-height:1;}
+/* --fh-tile scales with answer length (set inline by FootleHero): long
+   surnames (7-8+ letters) shrink the tiles so the grid never collides with
+   the "Solved in N guesses" text column (Alex device catch). */
+.fh-row{display:grid;grid-template-columns:repeat(var(--fh-cols,5),var(--fh-tile,24px));gap:5px;}
+.fh-tile{width:var(--fh-tile,24px);height:var(--fh-tile,24px);border-radius:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:calc(var(--fh-tile,24px) * 0.54);line-height:1;}
 .fh-tile-empty{background:rgba(255,255,255,0.10);}
 .fh-tile-green{background:#58CC02;border-color:transparent;color:#06230C;-webkit-text-fill-color:#06230C;}
 .fh-tile-yellow{background:#FFC107;border-color:transparent;color:#332500;-webkit-text-fill-color:#332500;}

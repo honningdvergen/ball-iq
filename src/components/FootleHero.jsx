@@ -150,7 +150,9 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
           <button className="fh-cta fh-cta-secondary" onClick={onShare} aria-label="Share today's Footle">↗︎ Share</button>
         </div>
       </div>
-      <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
+      {/* --fh-tile shrinks for long surnames so an 8-col grid never overlaps
+          the "Solved in N guesses" text column. */}
+      <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols, "--fh-tile": cols >= 8 ? "17px" : cols === 7 ? "19px" : cols === 6 ? "21px" : "24px"}}>
         {shownGrades.map((row, r) => (
           <div className="fh-row" key={r}>
             {row.map((c, i) => <div key={i} className={`fh-tile fh-tile-${c}`} />)}
