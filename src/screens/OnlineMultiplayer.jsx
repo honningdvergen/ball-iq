@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -837,6 +837,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
     onRematch?.(result.code);
   };
   const handleShareResult = async () => {
+    if (rematching) return; // a rematch room is already being created via the other button
     const opp = sorted.find(p => p.user_id !== myUserId);
     const oppBit = opp?.name ? ` against ${opp.name}` : "";
     const text = survivalDraw
@@ -844,20 +845,47 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       : isWinner
       ? `🏆 Just won an online match${oppBit} on ${APP_NAME}! Think you can take me?`
       : `⚔️ Just went down${oppBit} on ${APP_NAME} — rematch incoming. Join us!`;
-    const url = INVITE_BASE_URL;
+    // The copy promises a rematch but the link used to be the bare homepage —
+    // an ended room isn't joinable, so spin up the rematch room FIRST (same
+    // create as handleRematch) and share its canonical /join/CODE link.
+    // Create failure, or no onRematch wired, falls back to the generic-URL
+    // share — never block the share on the rematch.
+    let url = INVITE_BASE_URL;
+    let rematchCode = null;
+    if (onRematch) {
+      setRematching(true);
+      const created = await mpCreateRoom({
+        p_capacity: 8,
+        p_name: myPlayer?.name || "Player",
+        p_avatar: myPlayer?.avatar || "⚽",
+      });
+      if (created?.code && !created?.error) {
+        rematchCode = created.code;
+        url = `${INVITE_BASE_URL}/join/${encodeURIComponent(rematchCode)}`;
+      } else {
+        setRematching(false);
+      }
+    }
+    // Land the sharer in the lobby they just advertised — even on a cancelled
+    // sheet: the room exists and they're its host; stranding it leaves a
+    // zombie room and a share link pointing at a lobby nobody is waiting in.
+    const enterRematch = () => { if (rematchCode) onRematch?.(rematchCode); };
     try {
       if (Capacitor.isNativePlatform?.()) {
         await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share result" });
+        enterRematch();
         return;
       }
       if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
         await navigator.share({ title: APP_NAME, text, url });
+        enterRematch();
         return;
       }
     } catch (err) {
-      if (err && (err.name === "AbortError" || /cancel/i.test(err?.message || ""))) return;
+      if (err && (err.name === "AbortError" || /cancel/i.test(err?.message || ""))) { enterRematch(); return; }
     }
     try { await navigator.clipboard.writeText(`${text} ${url}`); } catch {}
+    enterRematch();
   };
 
   // Medal emoji for podium positions; numeric rank thereafter.
@@ -1214,6 +1242,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
 
   const handleAnswerPick = useCallback(async (answerIdx) => {
     if (myAnswer || serverConfirmedAnswered) return;
+    haptic('select'); // lock-in ack — same beat as solo's option-tap buzz
 
     const lockTimeMs = Date.now() - questionStartedAtRef.current;
     const submittedQuestionIdx = currentQuestionIdx;
@@ -1334,6 +1363,22 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     return () => { alive = false; };
   }, [revealPhase, question, currentQuestionIdx, room.code]);
 
+  // Reveal verdict haptic — the solo engines buzz correct/wrong the moment the
+  // green highlight lands; MP reveals were silent. Keyed on the EFFECTIVE
+  // correct index because Phase-2 rooms learn it async via reveal_question,
+  // with a per-question ref so reveal re-renders (and the late-arriving RPC
+  // result) don't re-buzz. lockedAnswerIdx == null skips: eliminated
+  // spectators and refresh-restored players have no local pick, so no verdict.
+  const revealHapticQRef = useRef(-1);
+  useEffect(() => {
+    if (revealPhase === 'answering') return;
+    const correctIdx = question?.correct ?? revealCorrectIdx;
+    if (correctIdx == null || lockedAnswerIdx == null) return;
+    if (revealHapticQRef.current === currentQuestionIdx) return;
+    revealHapticQRef.current = currentQuestionIdx;
+    haptic(lockedAnswerIdx === correctIdx ? 'correct' : 'wrong');
+  }, [revealPhase, question, revealCorrectIdx, currentQuestionIdx, lockedAnswerIdx]);
+
   // Survival spectator flag — hoisted ABOVE the early return so the headless
   // advance clock below can depend on it without tripping the hooks-order rule.
   const iAmEliminated = room.mode === 'survival' && myPlayer?.eliminated_at_q != null;
@@ -1347,6 +1392,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     if (iAmEliminated && !elimSeenRef.current) {
       elimSeenRef.current = true;
       setElimOverlay(true);
+      haptic('heavy'); // the knockout is Survival's signature beat — pair the overlay with a thud
     }
   }, [iAmEliminated]);
 

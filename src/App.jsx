@@ -1560,7 +1560,7 @@ const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform
 // that hides desktop landing chrome (.landing-top / .desktop-nav / etc.).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
-function haptic(type) {
+export function haptic(type) {
   try {
     let enabled = true;
     try {
@@ -3025,7 +3025,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
 }
 
 // ─── LOCAL RESULTS ────────────────────────────────────────────────────────────
-function LocalResults({ result, onHome, onRetry }) {
+function LocalResults({ result, onHome, onRetry, onShare }) {
   if (!result || !result.players || result.players.length === 0) {
     return (
       <div className="screen" style={{paddingTop:8, position:"relative"}}>
@@ -3157,6 +3157,7 @@ function LocalResults({ result, onHome, onRetry }) {
 
       <div className="results-actions" style={{marginTop:16}}>
         <button className="btn-3d" onClick={onRetry}>Play Again</button>
+        {onShare && <button className="btn-3d ghost" onClick={onShare}>Share Score</button>}
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
     </div>
@@ -8806,6 +8807,30 @@ function AppInner() {
     };
     const text = msgs[mode] || msgs.classic;
 
+    // Couch multiplayer (mode "local"): players rotate through ONE shared
+    // question list, so there is no per-player score/total fraction — the
+    // standard image card would render a bogus "0/0 · 0% accuracy". Share the
+    // podium plaintext directly instead of a card.
+    if (mode === "local") {
+      try {
+        if (IS_NATIVE) {
+          await CapShare.share({ title: APP_NAME, text, dialogTitle: "Share result" });
+          return;
+        }
+        if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+          await navigator.share({ title: APP_NAME, text });
+          return;
+        }
+      } catch (err) {
+        if (err && (err.name === "AbortError" || /cancel/i.test(err?.message || ""))) return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Copied to clipboard 📋");
+      } catch {}
+      return;
+    }
+
     // Pick the right card variant + payload for shareCard.
     const MODE_LABELS = {
       classic: "Classic Quiz",
@@ -10205,6 +10230,7 @@ function AppInner() {
             result={localResult}
             onHome={goHome}
             onRetry={() => { if (localConfig) startLocalGame(localConfig); }}
+            onShare={() => shareScore(0, 0, "local")}
           />
         )}
 
