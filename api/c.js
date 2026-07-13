@@ -18,15 +18,18 @@ export default function handler(req) {
   const origin = url.origin;
   const token = (url.searchParams.get('t') || '').trim();
 
-  // SCORE.YYYYMMDD[.Name] — score 0-7, date sanity-checked, name optional
-  // (URI-encoded by the sharer; literal dots ride as %2E).
+  // SCORE.YYYYMMDD[.Name] — score 0-7, name optional (URI-encoded by the
+  // sharer; literal dots ride as %2E). The DATE range check is part of token
+  // VALIDITY (fresh-code audit): an absurd date like 99999999 must degrade to
+  // the generic card + bare /play, not ship a personalized card + raw token.
   const m = token.match(/^([0-7])\.(\d{8})(?:\.(.+))?$/);
-  let score = 0, name = '', dateLabel = '';
+  let valid = false, score = 0, name = '', dateLabel = '';
   if (m) {
-    score = parseInt(m[1], 10);
-    try { name = decodeURIComponent(m[3] || '').slice(0, 22); } catch { name = ''; }
     const y = +m[2].slice(0, 4), mo = +m[2].slice(4, 6), d = +m[2].slice(6, 8);
     if (y > 2020 && y < 2100 && mo >= 1 && mo <= 12 && d >= 1 && d <= 31) {
+      valid = true;
+      score = parseInt(m[1], 10);
+      try { name = decodeURIComponent(m[3] || '').slice(0, 22); } catch { name = ''; }
       const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       dateLabel = `${d} ${MONTHS[mo - 1]}`;
     }
@@ -38,12 +41,12 @@ export default function handler(req) {
   if (dateLabel) ogParams.set('d', dateLabel);
   const ogImage = `${origin}/api/og?${ogParams.toString()}`;
 
-  const title = m ? `${who} scored ${score}/7 on the Daily 7 ⚽` : 'Daily 7 challenge ⚽';
-  const description = m
+  const title = valid ? `${who} scored ${score}/7 on the Daily 7 ⚽` : 'Daily 7 challenge ⚽';
+  const description = valid
     ? `Same 7 questions, one try — beat ${name ? 'them' : 'it'} before midnight. Free, no sign-up.`
     : "Today's 7 football questions are waiting. Free, no sign-up.";
   // Invalid/missing token falls back to the app home rather than a dead screen.
-  const appUrl = m ? `${origin}/play?c=${encodeURIComponent(token)}` : `${origin}/play`;
+  const appUrl = valid ? `${origin}/play?c=${encodeURIComponent(token)}` : `${origin}/play`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">

@@ -128,7 +128,11 @@ export default function handler(req) {
   // count so a giant CSV can't fan out the render.
   const emoji = (sp.get('e') || '⚽').slice(0, 8);
   const overall = (sp.get('ov') || '—').slice(0, 4);
-  const t = TIERS[sp.get('ti')] || TIERS.prospect;
+  // Own-property guard: prototype keys like ti=constructor resolve truthy on a
+  // plain object lookup and would render the card with undefined styling
+  // (fresh-code audit — no crash, but deterministic fallback is better).
+  const tiKey = sp.get('ti');
+  const t = (tiKey && Object.prototype.hasOwnProperty.call(TIERS, tiKey)) ? TIERS[tiKey] : TIERS.prospect;
   const ratings = (sp.get('r') || '').slice(0, 64).split(',').slice(0, 6);
 
   const avatarInner = img
