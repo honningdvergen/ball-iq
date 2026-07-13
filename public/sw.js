@@ -10,9 +10,21 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v8';
+const CACHE_VERSION = 'balliq-v9'; // v9: bounded caches (docs split out + LRU-ish trims)
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
+const DOC_CACHE = `${CACHE_VERSION}-docs`;
+
+// ── Cache bounds — trim, don't evict ──────────────────────────────────────
+// The accumulation is load-bearing: an open tab running LAST deploy's HTML
+// still lazy-loads LAST deploy's hashed chunks, so we must keep a few
+// deploys' worth of stale assets alive. These bounds only trim the tail.
+// MAX_STATIC_EXTRA = stale-asset entries allowed BEYOND the current deploy's
+// protected set (~2-3 deploys of headroom at ~40 hashed assets each).
+// MAX_DOCS bounds navigated HTML entries — before v9 every unique /c/<token>
+// challenge URL became a permanent cache row for byte-identical SPA shell.
+const MAX_STATIC_EXTRA = 120;
+const MAX_DOCS = 24;
 
 // Minimal app shell — the rest is picked up opportunistically on first fetch.
 // Deliberately NOT including /icon-1024.png (1.27MB): it was never needed for
@@ -82,6 +94,29 @@ function isGoogleFonts(url) {
   return url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
 }
 
+// Trim a cache down to `max` entries, never touching protected pathnames.
+// Cache keys() returns insertion order, so deleting from the front is an
+// oldest-first (LRU-ish) trim. Best-effort: a failed trim must never break
+// the fetch that triggered it.
+async function trimCache(cacheName, max, isProtectedPath) {
+  try {
+    const cache = await caches.open(cacheName);
+    const keys = await cache.keys();
+    const candidates = keys.filter((req) => {
+      try { return !isProtectedPath(new URL(req.url).pathname); } catch { return true; }
+    });
+    const excess = candidates.length - max;
+    if (excess > 0) {
+      await Promise.all(candidates.slice(0, excess).map((req) => cache.delete(req)));
+    }
+  } catch { /* trim is best-effort */ }
+}
+
+// Current deploy's assets are sacred — only PREVIOUS deploys' leftovers may go.
+const PROTECTED_STATIC = new Set([...APP_SHELL, ...PRECACHE_MANIFEST]);
+const isProtectedStatic = (pathname) => PROTECTED_STATIC.has(pathname);
+const isProtectedDoc = (pathname) => pathname === '/' || pathname === '/index.html';
+
 async function cacheFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
   const hit = await cache.match(request);
@@ -90,7 +125,11 @@ async function cacheFirst(request, cacheName) {
     const res = await fetch(request);
     if (res && res.ok) {
       // Only cache cacheable responses (basic or cors, not opaque errors).
-      cache.put(request, res.clone()).catch(() => {});
+      cache.put(request, res.clone())
+        .then(() => {
+          if (cacheName === STATIC_CACHE) return trimCache(STATIC_CACHE, MAX_STATIC_EXTRA, isProtectedStatic);
+        })
+        .catch(() => {});
     }
     return res;
   } catch (err) {
@@ -100,16 +139,28 @@ async function cacheFirst(request, cacheName) {
 }
 
 async function networkFirstDocument(request) {
+  // Normalize the cache key to origin+path: the HTML served for
+  // /play?c=<token> is byte-identical to /play (the SPA reads the query from
+  // location at runtime), so query variants must share ONE cache row.
+  let docKey = request;
+  try {
+    const u = new URL(request.url);
+    docKey = new Request(u.origin + u.pathname);
+  } catch { /* keep original request as key */ }
   try {
     const res = await fetch(request);
     if (res && res.ok) {
-      const cache = await caches.open(STATIC_CACHE);
-      cache.put(request, res.clone()).catch(() => {});
+      const cache = await caches.open(DOC_CACHE);
+      cache.put(docKey, res.clone())
+        .then(() => trimCache(DOC_CACHE, MAX_DOCS, isProtectedDoc))
+        .catch(() => {});
     }
     return res;
   } catch (err) {
-    const cache = await caches.open(STATIC_CACHE);
-    const fallback = await cache.match(request) || await cache.match('/index.html') || await cache.match('/');
+    const docs = await caches.open(DOC_CACHE);
+    const statics = await caches.open(STATIC_CACHE);
+    const fallback = await docs.match(docKey)
+      || await statics.match('/index.html') || await statics.match('/');
     if (fallback) return fallback;
     throw err;
   }
