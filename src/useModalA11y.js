@@ -81,6 +81,28 @@ function ensurePopstateListener() {
   })
 }
 
+// Android hardware back (Capacitor backButton) routes through here so a press
+// closes the topmost modal the same way the browser back button does.
+// Returns true when a modal was open (close initiated) so the caller can stop
+// its fallback navigation. history.back() replays the exact popstate path
+// above — stack pop, viaPopstate marking, and cleanup bookkeeping all behave
+// identically to a real back gesture, so no second close mechanism exists.
+export function closeTopModal() {
+  if (modalStack.length === 0) return false
+  try {
+    window.history.back()
+  } catch {
+    // history unavailable — close directly; cleanup's myId check prevents the
+    // orphaned pushed entry from causing an over-pop later.
+    const top = modalStack.pop()
+    if (top) {
+      top.viaPopstate = true
+      try { top.onClose() } catch {}
+    }
+  }
+  return true
+}
+
 export function useModalA11y({ isOpen, onClose, ref }) {
   useEffect(() => {
     if (!isOpen) return

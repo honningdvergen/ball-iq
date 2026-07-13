@@ -16,7 +16,7 @@ import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
-import { useModalA11y } from './useModalA11y.js';
+import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
@@ -1880,6 +1880,23 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   useEffect(() => () => {
     if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
   }, []);
+
+  // Android hardware back mid-quiz — AppInner turns Capacitor's backButton
+  // into a cancelable "biq:hw-back" window event while a game is mounted.
+  // Claim it (preventDefault) and mirror the ← button exactly: Q1 backs out
+  // directly, later questions raise the quit-confirm; a press while the
+  // confirm is up dismisses it (same as the backdrop tap). The quit modal is
+  // deliberately NOT on the useModalA11y stack, so the shell can't close it.
+  useEffect(() => {
+    const onHwBack = (e) => {
+      e.preventDefault();
+      if (showQuit) { setShowQuit(false); return; }
+      if (idx === 0) { onBack(); return; }
+      setShowQuit(true);
+    };
+    window.addEventListener("biq:hw-back", onHwBack);
+    return () => window.removeEventListener("biq:hw-back", onHwBack);
+  }, [idx, showQuit, onBack]);
 
 
   const total = questions?.length || 0;
@@ -9161,6 +9178,60 @@ function AppInner() {
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   useModalA11y({ isOpen: !!howToPlay, onClose: () => setHowToPlay(null), ref: howToPlayRef });
   useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
+
+  // ── Android hardware back (opportunity-scan #11) ─────────────────────────
+  // Registering ANY Capacitor backButton listener replaces the Android
+  // default (WebView history-back, else exit/minimize), so every case the
+  // default used to cover must be handled here. iOS never fires backButton
+  // and web never runs the registration effect (IS_NATIVE), so the handler
+  // itself needs no per-platform gating. Priority ladder:
+  //   1. topmost useModalA11y modal → close it via the same popstate path
+  //      the browser back button uses (the quit/leave confirms in 2–3 are
+  //      handled separately: QuizEngine's is not on that stack)
+  //   2. MP lobby/room → the same leave-room confirm as the wordmark click
+  //      (the confirm IS on the a11y stack, so a second press dismisses it)
+  //   3. mid-game → cancelable biq:hw-back event; QuizEngine claims it and
+  //      runs its ← quit-confirm; engines without a confirm (Hot Streak,
+  //      True/False, Footle, local play) leave it unclaimed → back out
+  //      exactly like their ← buttons (goHome)
+  //   4. sub-screens → mirror that screen's visible back target
+  //   5. home screen on a non-home tab → Home tab
+  //   6. Home/home → background the app (Android home-screen expectation)
+  // The handler lives in a ref (mirrored every render, same idea as the
+  // onCompleteRef pattern) so the one-shot listener registration below never
+  // fires a stale screen/tab closure.
+  const hwBackRef = useRef(null);
+  useEffect(() => {
+    hwBackRef.current = () => {
+      if (closeTopModal()) return;
+      if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
+      if (inGame || screen === "wordle") {
+        // dispatchEvent returns false when a listener preventDefault()ed —
+        // i.e. the mounted engine claimed the press and owns the quit flow.
+        let claimed = false;
+        try { claimed = !window.dispatchEvent(new CustomEvent("biq:hw-back", { cancelable: true })); } catch {}
+        if (!claimed) goHome();
+        return;
+      }
+      if (screen === "blocked-users" || screen === "review") { setScreen("settings"); return; }
+      // Review screens keep the current tab (their visible back only flips
+      // screen), unlike goHome which would also reset the tab to home.
+      if (screen === "daily-review" || screen === "puzzle-review") { setScreen("home"); return; }
+      if (screen === "friend-profile") { closeFriendProfile(); return; }
+      if (screen === "stump") { setStumpRow(null); goHome(); return; }
+      if (screen === "online-stage1") { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); return; }
+      if (screen !== "home") { goHome(); return; }
+      if (tab !== "home") { setTab("home"); return; }
+      CapApp.minimizeApp().catch(() => {});
+    };
+  });
+  useEffect(() => {
+    if (!IS_NATIVE) return;
+    let handlePromise = CapApp.addListener("backButton", () => { try { hwBackRef.current?.(); } catch {} });
+    return () => {
+      Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {});
+    };
+  }, []);
 
   const startClassicWithDiff = useCallback(async (d) => {
     // Build a Classic game with the explicitly-chosen difficulty — don't rely
