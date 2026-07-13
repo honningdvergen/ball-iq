@@ -7101,7 +7101,13 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
 // appUrlOpen handler. Returns null on a malformed token.
 function parseChallengeStr(c) {
   if (!c) return null;
-  const [scoreStr, dateStr, nameEnc] = String(c).split(".");
+  // rest.join("."): dots INSIDE the name must survive. shareDaily encodes
+  // them as %2E, but the api/c.js web redirect percent-decodes the token and
+  // encodeURIComponent doesn't re-encode "." (unreserved) — so a name like
+  // "J.Doe" arrives with a literal dot and the old 3-way destructure
+  // truncated it to "J" (fresh-code audit, diff-review).
+  const [scoreStr, dateStr, ...rest] = String(c).split(".");
+  const nameEnc = rest.join(".");
   const score = parseInt(scoreStr, 10);
   if (isNaN(score) || !/^\d{8}$/.test(dateStr || "")) return null;
   let name = "";
@@ -7204,7 +7210,11 @@ function AppInner() {
       const pathMatch = window.location.pathname.match(/^\/c\/([^/?#]+)/);
       const raw = (pathMatch ? pathMatch[1] : null) || new URLSearchParams(window.location.search).get("c");
       if (raw) {
-        try { const u = new URL(window.location.href); u.pathname = "/"; u.searchParams.delete("c"); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
+        // Keep the current pathname — forcing "/" stranded web /play?c=…
+        // recipients on the MARKETING home after a refresh (main.jsx renders
+        // marketing when path === "/"). Only our own param is stripped,
+        // mirroring the ?club=/?quiz= capture. (fresh-code audit)
+        try { const u = new URL(window.location.href); u.searchParams.delete("c"); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
         const challenge = parseChallengeStr(raw);
         if (challenge) {
           try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
@@ -8522,7 +8532,14 @@ function AppInner() {
       const notifWillClaim = IS_NATIVE && mode === "daily"
         && localStorage.getItem('biq_notif_enabled') !== '1'
         && parseInt(localStorage.getItem('biq_notif_asks') || '0', 10) < 2;
-      if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim) {
+      // Level-up guard (fresh-code audit): the full-screen level-up overlay
+      // owns +400..+3900ms; the auth sheet at +2000ms would cover it. Skip
+      // and leave the once-flag unset so the nudge takes the next peak.
+      // (Note: in the normal path the flag is set at SCHEDULE time, 2s
+      // before the sheet is actually displayed.)
+      const nudgeEarned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
+      const willLevelUp = nudgeEarned > 0 && getLevelInfo(xp).level.name !== getLevelInfo(xp + nudgeEarned).level.name;
+      if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim && !willLevelUp) {
         localStorage.setItem('biq_save_nudge_shown', '1');
         celebrationTimeoutsRef.current.push(setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 2000));
       }
@@ -8622,7 +8639,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge, awardXp, isGuest, openAuthPrompt, xp]);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {

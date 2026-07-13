@@ -46,7 +46,14 @@ export default function handler(req) {
     ? `Same 7 questions, one try — beat ${name ? 'them' : 'it'} before midnight. Free, no sign-up.`
     : "Today's 7 football questions are waiting. Free, no sign-up.";
   // Invalid/missing token falls back to the app home rather than a dead screen.
-  const appUrl = valid ? `${origin}/play?c=${encodeURIComponent(token)}` : `${origin}/play`;
+  // Re-canonicalize rather than pass the raw token through: searchParams.get
+  // percent-DECODED it (%2E -> "."), and encodeURIComponent won't re-encode
+  // dots (unreserved) — so a dotted name like "J.Doe" would reach the app's
+  // dot-splitting parser corrupted. Rebuild with the sharer's own encoding
+  // (dots in names ride as %2E), keeping even old cached clients correct.
+  const appUrl = valid
+    ? `${origin}/play?c=${m[1]}.${m[2]}${name ? '.' + encodeURIComponent(name).replace(/\./g, '%2E') : ''}`
+    : `${origin}/play`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
