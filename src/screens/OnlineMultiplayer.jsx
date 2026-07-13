@@ -222,6 +222,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
               spellCheck={false}
               maxLength={6}
               disabled={busy}
+              onKeyDown={(e) => { if (e.key === "Enter") handleJoin(); }}
               style={{
                 padding: "14px 16px",
                 fontSize: 22,

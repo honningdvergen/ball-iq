@@ -2602,6 +2602,9 @@ function LocalGameScreen({ config, onComplete, onExit }) {
   // stored a Promise and `(Promise || []).filter` crashed with a TypeError.
   // Load via useEffect; null = still loading, [] = loaded (possibly empty).
   const [questions, setQuestions] = useState(null);
+  // Retry nonce for the load-failure screen below: bumping it re-runs the
+  // load effect. questions: null = loading, [] = failed/empty.
+  const [loadNonce, setLoadNonce] = useState(0);
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -2637,9 +2640,10 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return () => { cancelled = true; };
     // config is captured at mount (LocalGameScreen unmounts on exit); no
     // need to re-fetch on prop change since LocalSetup creates a fresh
-    // instance for each game.
+    // instance for each game. loadNonce re-runs it for the error screen's
+    // Try Again.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadNonce]);
   const totalQs = questions?.length ?? 0;
 
   const [currentQIdx, setCurrentQIdx] = useState(0);  // index of question currently on screen
@@ -2674,6 +2678,10 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     // Skip while questions are still async-loading — totalQs would otherwise
     // read 0 and immediately fire onComplete with "questions-out".
     if (questions === null) return;
+    // Load failed / pool came back empty ([]): the error screen below owns
+    // this state. Without the guard, currentQIdx (0) >= totalQs (0) fires a
+    // fake 0-0 "questions-out" podium via onComplete.
+    if (totalQs === 0) return;
     if (mode !== "survival") {
       if (currentQIdx >= totalQs) {
         setPhase("done");
@@ -2747,6 +2755,22 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
+
+  // Load failure — mirrors QuizEngine's !q guard. Must render BEFORE the
+  // loading/finishing fallback below (explicit state before fallback checks),
+  // which would otherwise swallow this as an eternal "Finishing up…". Pairs
+  // with the totalQs === 0 guard in the end-of-game effect.
+  if (questions !== null && totalQs === 0) {
+    return (
+      <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14,padding:"0 24px",textAlign:"center"}}>
+        <div style={{fontSize:36}}>⚽</div>
+        <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>Couldn't load questions</div>
+        <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>Check your connection and try again.</div>
+        <button className="btn-3d" style={{marginTop:6,maxWidth:240}} onClick={() => { setQuestions(null); setLoadNonce(n => n + 1); }}>Try Again</button>
+        <button className="btn-3d ghost" style={{maxWidth:240}} onClick={onExit}>Back to Home</button>
+      </div>
+    );
+  }
 
   if (phase === "done" || !currentQ) {
     return (
@@ -7618,6 +7642,33 @@ function AppInner() {
         showToast(`💔 Streak reset — day ${result.streak} of the rebuild. Your best: ${best} 🔥`, 4200);
       }
     }
+    // Milestone celebration on the day-7/30/100 CROSSING itself (the tick),
+    // not only when a game finishes on the milestone day — a user who opens
+    // the app on day 7 but plays tomorrow previously never saw it.
+    // handleComplete keeps its copy behind the same once-flags. Flags are
+    // read from localStorage rather than stats state so deps stay [user?.id]
+    // — depending on stats would re-run the mount tick on every stats change
+    // (same constraint as the shield read above).
+    if (result.ticked && [7, 30, 100].includes(result.streak)) {
+      let persisted = {};
+      try { persisted = JSON.parse(localStorage.getItem('biq_stats') || '{}') || {}; } catch {}
+      const flag = `streak${result.streak}Celebrated`;
+      if (!persisted[flag]) {
+        const msg = result.streak === 7 ? "🔥 7-day streak — you're building a habit"
+          : result.streak === 30 ? "🏆 30-day streak — incredible dedication"
+          : "💎 100-day streak — you are a legend";
+        // 1200ms so it lands after the regular streak toast/pulse — same
+        // delay handleComplete's copy uses.
+        celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(msg); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
+        setStats(p => {
+          const updated = { ...p, [flag]: true };
+          // Persist directly (setStats alone doesn't write storage) so a
+          // reload before the next saveStats can't replay the celebration.
+          window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+          return updated;
+        });
+      }
+    }
   }, [user?.id]);
 
   // Phase G: fires once per AppInner mount (or when user.id transitions
@@ -8983,7 +9034,10 @@ function AppInner() {
   );
 
   const levelInfo = useMemo(() => getLevelInfo(xp), [xp]);
-  const earnedBadges = useMemo(() => computeBadges(stats, xp, loginStreak), [stats, xp, loginStreak]);
+  // Streak badges (roll5/roll30) key off the BEST streak, not the live one —
+  // computed from the live value they un-earn themselves the day a streak
+  // dies. bestLoginStreak only ratchets (both tick paths persist max(best, streak)).
+  const earnedBadges = useMemo(() => computeBadges(stats, xp, Math.max(bestLoginStreak || 0, loginStreak || 0)), [stats, xp, loginStreak, bestLoginStreak]);
 
   // Cross-device sync: useAuth.hydrateLocalFromRemote dispatches biq:hydrated
   // after merging Supabase profile state with localStorage. Refresh in-memory
@@ -9889,7 +9943,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<div className="tab-pane" />}>
-              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
+              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
             </React.Suspense>
             </TabErrorBoundary>
           </div>

@@ -1077,7 +1077,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
@@ -1172,7 +1172,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, level:
   const [selectedBadgeId, setSelectedBadgeId] = useState(null);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
-  const earned = earnedBadges || computeBadges(stats, xp, loginStreak);
+  // Same best-streak rule as AppInner's earnedBadges memo — streak badges never un-earn.
+  const earned = earnedBadges || computeBadges(stats, xp, Math.max(bestLoginStreak || 0, loginStreak || 0));
   const iq = stats.bestIQ || null;
   const pctile = iq ? iqPercentile(iq) : null;
   const avatarUrl = authProfile?.avatar_url || null;
