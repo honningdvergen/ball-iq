@@ -54,7 +54,7 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
   return `${bestUnbeaten - unbeaten} to your best`;
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -191,7 +191,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
-        ymd, md, dateLabel, dateSub, isToday, t7Score, t7Done, fAttempt, fWon, fUsed,
+        // isYesterday gates the catch-up affordance — deliberately yesterday
+        // only, not arbitrary back-fill: the comeback hook targets the day
+        // the user just missed (getDailyQsForDate is deterministic for any
+        // date, so no extra plumbing is needed).
+        ymd, md, dateLabel, dateSub, isToday, isYesterday: i === 1, t7Score, t7Done, fAttempt, fWon, fUsed,
       });
     }
     return rows;
@@ -359,11 +363,22 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
                   : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
               </span>
+              {m.isYesterday && !m.t7Done && playDailyForDate ? (
+                // Comeback hook (opportunity-scan #8): yesterday's missed
+                // Daily 7 stays playable for one day. This cell drops
+                // aria-hidden — it holds a real control, not a decorative chip.
+                <span style={{ width: 70, display: "inline-flex", justifyContent: "center" }}>
+                  <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
+                    aria-label="Catch up — play yesterday's Daily 7"
+                    style={{ display: "inline-flex", padding: "4px 10px", borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 11.5, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit" }}>Catch up</button>
+                </span>
+              ) : (
               <span style={{ width: 70, display: "inline-flex", justifyContent: "center" }} aria-hidden="true">
                 {m.t7Done
                   ? <span style={{ display: "inline-flex", padding: "3px 10px", borderRadius: 999, background: "rgba(255,193,7,0.1)", fontSize: 12, fontWeight: 800, color: "#FFC107" }}>{m.t7Score}/7</span>
                   : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
               </span>
+              )}
             </div>
           );
         })}
@@ -507,11 +522,22 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                   ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
                                   : <span style={dash}>—</span>}
                               </span>
+                              {m.isYesterday && !m.t7Done && playDailyForDate ? (
+                                // Same catch-up affordance as the mobile row —
+                                // desktop and mobile must agree on which days
+                                // are actionable.
+                                <span style={{ width: 74, textAlign: "center" }}>
+                                  <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
+                                    aria-label="Catch up — play yesterday's Daily 7"
+                                    style={{ display: "inline-flex", padding: "4px 10px", borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 11.5, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit" }}>Catch up</button>
+                                </span>
+                              ) : (
                               <span style={{ width: 74, textAlign: "center" }} aria-hidden="true">
                                 {m.t7Done
                                   ? <span style={{ ...chip, background: "rgba(255,193,7,0.1)", color: "#FFC107" }}>{m.t7Score}/7</span>
                                   : <span style={dash}>—</span>}
                               </span>
+                              )}
                             </div>
                           );
                         })}

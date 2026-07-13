@@ -7496,6 +7496,16 @@ function AppInner() {
       }
     }
     if (!result) return;
+    // Streak-death acknowledgment (opportunity-scan #8): capture the streak
+    // this device last persisted BEFORE the cache write below overwrites it.
+    // Read from localStorage, not state — same reason as xp/shieldsUsed
+    // above: a state dep would re-create this callback and re-fire the
+    // mount-tick effect on every streak change.
+    let prevKnownStreak = 0;
+    try {
+      const raw = localStorage.getItem('biq_login_streak');
+      if (raw) { const p = JSON.parse(raw); if (typeof p?.streak === 'number') prevKnownStreak = p.streak; }
+    } catch {}
     try {
       localStorage.setItem('biq_login_streak', JSON.stringify({
         lastDay: result.lastDay, streak: result.streak, best: result.best,
@@ -7530,6 +7540,20 @@ function AppInner() {
       haptic("heavy");
       playSound("streak");
       streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+    } else if (result.streak < prevKnownStreak && prevKnownStreak >= 3) {
+      // The streak died since this device last ticked (normally streak === 1
+      // after a reset; a stale multi-device cache can land higher). Without
+      // this the counter silently drops — name the loss once and frame the
+      // rebuild against the user's best. Ack is keyed on the death's day
+      // number so a re-tick or second same-day open can't repeat it, while
+      // a later, separate death (new day number) still shows.
+      let acked = false;
+      try { acked = localStorage.getItem('biq_streak_death_ack') === String(result.lastDay); } catch {}
+      if (!acked) {
+        try { localStorage.setItem('biq_streak_death_ack', String(result.lastDay)); } catch {}
+        const best = (typeof result.best === 'number' && result.best > 0) ? result.best : prevKnownStreak;
+        showToast(`💔 Streak reset — day ${result.streak} of the rebuild. Your best: ${best} 🔥`, 4200);
+      }
     }
   }, [user?.id]);
 
@@ -9690,6 +9714,7 @@ function AppInner() {
               setScreen={setScreen}
               dailyDone={dailyDone}
               dailyScore={dailyScore}
+              playDailyForDate={playDailyForDate}
             />
             </TabErrorBoundary>
           </div>

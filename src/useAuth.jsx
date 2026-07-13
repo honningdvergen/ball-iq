@@ -40,6 +40,11 @@ const AuthContext = createContext(null)
 //   - biq_install_dismissed (Sprint #34 BB2: 30-day TTL flag set when
 //     the user dismisses the "Install Ball IQ" card in Settings. Install
 //     state is per-device — preserving on sign-out matches user intent.)
+//   - biq_streak_death_ack (UX dismiss-flag — day number of the last
+//     acknowledged streak death; keeps the "streak reset" toast one-shot.
+//     Safe across accounts: biq_login_streak IS cleared on sign-out, so a
+//     new user's first tick has no cached streak and the death check
+//     can't fire until a fresh death lands on a new day number.)
 //   - ballIQ_guestMode (handled separately by signOut)
 const USER_SCOPED_STATIC_KEYS = [
   'biq_xp',
