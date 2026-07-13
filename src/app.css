@@ -852,6 +852,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .install-card-step-icon{font-size:13px;}
 .install-card-step-label{font-weight:600;color:var(--t1);}
 .install-card-arrow{color:var(--t3);font-weight:600;}
+/* Keep each arrow glued to the chip it points at when the row wraps —
+   otherwise the second arrow dangles at a line end pointing at nothing
+   (344-375px sweep finding). */
+.install-card-pair{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
 /* ── INSTALL BANNER (Sprint #64 FF1) — post-Footle solve ── */
 .install-banner{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:linear-gradient(180deg,rgba(88,204,2,0.08),rgba(88,204,2,0.02));border:1px solid rgba(88,204,2,0.20);display:flex;gap:12px;align-items:center;}
 .install-banner-icon{font-size:22px;line-height:1;flex-shrink:0;}
@@ -2815,4 +2819,18 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .mp-card { background: var(--s1) !important; border-color: var(--border) !important; }
   .mp-card-cta.local { display: none !important; }
+}
+
+/* ── NARROW PHONES (≤360px: iPhone SE/13 mini class) — 344px sweep findings.
+   Placed at END of file: these override same-specificity base rules, so
+   cascade order is load-bearing. The install banner's fixed actions cluster
+   squeezes the text column to one-word-per-line; wrapping actions onto their
+   own row restores it. The wc-tile desc and profile identity get one extra
+   line / smaller type. */
+@media (max-width: 360px) {
+  .install-banner { flex-wrap: wrap; }
+  .install-banner-actions { width: 100%; justify-content: flex-end; }
+  .play-card.wc-tile .play-card-desc { -webkit-line-clamp: 2; }
+  .profile-name { font-size: 17px; }
+  .profile-level-badge { font-size: 11px; gap: 4px; padding: 4px 9px; white-space: nowrap; max-width: 100%; overflow: hidden; }
 }

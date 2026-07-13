@@ -2531,7 +2531,7 @@ function LocalSetup({ onStart, onBack }) {
           <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12}}>
             <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
             <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
-              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
+              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",display:"-webkit-box",WebkitBoxOrient:"vertical",WebkitLineClamp:2,lineHeight:1.25}}>{t.label}</span>
               <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
             </div>
             <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#06230C",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
@@ -5230,13 +5230,17 @@ function InstallCard() {
                 <span className="install-card-step-icon" aria-hidden="true">⤴</span>
                 <span className="install-card-step-label">Share</span>
               </span>
-              <span className="install-card-arrow" aria-hidden="true">→</span>
-              <span className="install-card-step">
-                <span className="install-card-step-label">Add to Home Screen</span>
+              <span className="install-card-pair">
+                <span className="install-card-arrow" aria-hidden="true">→</span>
+                <span className="install-card-step">
+                  <span className="install-card-step-label">Add to Home Screen</span>
+                </span>
               </span>
-              <span className="install-card-arrow" aria-hidden="true">→</span>
-              <span className="install-card-step">
-                <span className="install-card-step-label">Add</span>
+              <span className="install-card-pair">
+                <span className="install-card-arrow" aria-hidden="true">→</span>
+                <span className="install-card-step">
+                  <span className="install-card-step-label">Add</span>
+                </span>
               </span>
             </div>
           ) : null}
@@ -9594,7 +9598,10 @@ function AppInner() {
         {/* First quiz tip — Sprint #27 Y3 F1: className lets a desktop
             media query constrain the left/right anchoring to the .app
             column. Mobile keeps the inline 16px padding via base CSS. */}
-        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && (
+        {/* Suppressed while a home bottom-sheet is up — the fixed tip (z 996)
+            otherwise floats over the sheet and covers the Medium option
+            (344-375px sweep finding). */}
+        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && !showDiffPicker && !showFriendsPicker && !showBallIQIntro && (
           <div className="first-quiz-tip" style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
             <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(88,204,2,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
