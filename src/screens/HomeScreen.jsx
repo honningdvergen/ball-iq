@@ -5,6 +5,7 @@ import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer } from "../lib/wordle.js";
+import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { FootleHero } from "../components/FootleHero.jsx";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
@@ -252,7 +253,7 @@ function HomeScreenImpl({
               {challenge.name ? `${challenge.name} challenged you` : "You've been challenged"}
             </div>
             <div style={{fontSize:12,color:"var(--t2)",marginTop:1}}>
-              Beat {challenge.score}/7 on today's Daily 7
+              Beat {challenge.score}/7{challenge.date !== dateToYMD(new Date()).replace(/-/g, "") ? " (yesterday's score)" : ""} on today's Daily 7
             </div>
           </div>
           <button

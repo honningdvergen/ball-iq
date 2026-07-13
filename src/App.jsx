@@ -7115,6 +7115,19 @@ function parseChallengeStr(c) {
   return { score: Math.max(0, Math.min(7, score)), date: dateStr, name: name.slice(0, 24) };
 }
 
+// Challenge-token freshness: 0 = today, 1 = yesterday (honored, but labelled
+// "(yesterday's score)" — the Daily 7 is deterministic per day, so their score
+// came from a different question set), 2 = out of window (2+ days old, or
+// future-dated/garbage — both expire).
+function challengeDayOffset(dateStr) {
+  const now = new Date();
+  if (dateStr === dateToYMD(now).replace(/-/g, "")) return 0;
+  const y = new Date(now);
+  y.setDate(y.getDate() - 1);
+  if (dateStr === dateToYMD(y).replace(/-/g, "")) return 1;
+  return 2;
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   perfMark('AppInner render (first)');
@@ -7264,6 +7277,12 @@ function AppInner() {
     setPendingChallenge(null);
     try { localStorage.removeItem("biq_pending_challenge"); } catch {}
   }, []);
+  // opportunity-scan #9: settled head-to-head outcome — { mine, theirs, name,
+  // yesterday } — drives the "Send it back" result modal that replaced the old
+  // ~2s toast. Declared up here with the rest of the challenge state (and above
+  // the settle effect) so nothing references it before its const exists; null =
+  // closed.
+  const [challengeResult, setChallengeResult] = useState(null);
 
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
@@ -7693,28 +7712,32 @@ function AppInner() {
     }, duration);
   }, []);
 
-  // Challenge links are only valid for their calendar day (the Daily 7 is
-  // deterministic per day). Two former silent dead-ends now explain themselves:
-  // a link opened a day late expires with a nudge to send one back, and a link
-  // opened AFTER already playing settles instantly. (The mid-flow compare in
-  // handleComplete clears the challenge synchronously with the dailyDone flip,
-  // so this effect never double-fires it.)
+  // Challenge validity: a token is honored on its own calendar day and — since
+  // the Daily 7 is deterministic per day, a day-old score came from a different
+  // question set — the day AFTER too, labelled "(yesterday's score)" so the
+  // compare stays honest. 2+ days old expires with a nudge to send one back;
+  // a link opened AFTER already playing settles instantly via the result modal.
+  // (The mid-flow compare in handleComplete clears the challenge synchronously
+  // with the dailyDone flip, so this effect never double-fires it.)
   // Placed BELOW all its dependencies (pendingChallenge, dailyDone, dailyScore,
   // showToast, clearChallenge): a deps array is evaluated during render, so a
   // dep referenced above its `const` declaration is a temporal-dead-zone crash
   // on every app load — which is exactly what was killing web /play.
   useEffect(() => {
     if (!pendingChallenge) return;
-    const todayToken = dateToYMD(new Date()).replace(/-/g, "");
-    if (pendingChallenge.date !== todayToken) {
+    const age = challengeDayOffset(pendingChallenge.date);
+    if (age > 1) {
       showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
       clearChallenge();
     } else if (dailyDone) {
-      const mine = dailyScore, theirs = pendingChallenge.score;
-      const who = pendingChallenge.name || "your friend";
-      showToast(mine > theirs ? `🏆 You already beat ${who} today — ${mine}/7 vs ${theirs}/7!`
-        : mine === theirs ? `🤝 Level with ${who} — ${mine}/7 each. Rematch tomorrow!`
-        : `😤 ${who} takes it — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`);
+      // Already played today: settle instantly in the result modal (a toast
+      // evaporated before anyone could "send it back").
+      setChallengeResult({
+        mine: dailyScore,
+        theirs: pendingChallenge.score,
+        name: pendingChallenge.name,
+        yesterday: age === 1,
+      });
       clearChallenge();
     }
   }, [pendingChallenge, dailyDone, dailyScore, showToast, clearChallenge]);
@@ -8573,7 +8596,12 @@ function AppInner() {
       // before the sheet is actually displayed.)
       const nudgeEarned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
       const willLevelUp = nudgeEarned > 0 && getLevelInfo(xp).level.name !== getLevelInfo(xp + nudgeEarned).level.name;
-      if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim && !willLevelUp) {
+      // Challenge-settlement guard (caught by the #9 e2e drive): a challenged
+      // guest finishing the Daily gets the "Send it back" modal at +1800ms —
+      // the auth sheet at +2000ms covered it and blocked its buttons. The
+      // challenge result IS the viral moment; the nudge takes the next peak.
+      const challengeWillSettle = mode === "daily" && !!pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1;
+      if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim && !willLevelUp && !challengeWillSettle) {
         localStorage.setItem('biq_save_nudge_shown', '1');
         celebrationTimeoutsRef.current.push(setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 2000));
       }
@@ -8638,15 +8666,21 @@ function AppInner() {
         // 1.1: completing today's Daily 7 cancels tonight's reminder and is a
         // positive moment to surface the notification pre-prompt.
         try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: true } })); } catch {}
-        // 1.1 async challenge: head-to-head compare if a friend's challenge for
-        // today was pending. Consumed once shown.
-        if (pendingChallenge && pendingChallenge.date === todayYMD.replace(/-/g, "")) {
-          const mine = res.score, theirs = pendingChallenge.score;
-          const who = pendingChallenge.name || "your friend";
-          const msg = mine > theirs ? `🏆 You beat ${who}! ${mine}/7 vs ${theirs}/7`
-                    : mine === theirs ? `🤝 Tied with ${who} — ${mine}/7 each`
-                    : `${who} takes this one — ${theirs}/7 vs your ${mine}/7. Rematch tomorrow!`;
-          celebrationTimeoutsRef.current.push(setTimeout(() => showToast(msg), 1800));
+        // 1.1 async challenge: head-to-head result if a friend's challenge
+        // (today's, or yesterday's — labelled) was pending. opportunity-scan #9:
+        // a modal with a "Send it back" CTA replaced the old ~2s toast — the
+        // re-share is the whole viral loop and a toast never earned one.
+        // Delayed like the other celebrations so Results lands first; payload
+        // captured eagerly and the challenge cleared synchronously so the
+        // settle effect can't double-fire.
+        if (pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1) {
+          const payload = {
+            mine: res.score,
+            theirs: pendingChallenge.score,
+            name: pendingChallenge.name,
+            yesterday: challengeDayOffset(pendingChallenge.date) === 1,
+          };
+          celebrationTimeoutsRef.current.push(setTimeout(() => setChallengeResult(payload), 1800));
           clearChallenge();
         }
       }
@@ -9253,6 +9287,9 @@ function AppInner() {
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   useModalA11y({ isOpen: !!howToPlay, onClose: () => setHowToPlay(null), ref: howToPlayRef });
   useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
+  // opportunity-scan #9: async-challenge "Send it back" result modal.
+  const challengeResultRef = useRef(null);
+  useModalA11y({ isOpen: !!challengeResult, onClose: () => setChallengeResult(null), ref: challengeResultRef });
 
   // ── Android hardware back (opportunity-scan #11) ─────────────────────────
   // Registering ANY Capacitor backButton listener replaces the Android
@@ -9594,6 +9631,59 @@ function AppInner() {
           </div>
         )}
 
+        {/* opportunity-scan #9: async-challenge head-to-head result. Replaces
+            the old ~2s toast — the "Send it back" re-share is the viral step,
+            so the outcome needs a persistent surface with a share CTA. */}
+        {challengeResult && (
+          <div
+            style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+            onClick={() => setChallengeResult(null)}
+          >
+            <div
+              ref={challengeResultRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Challenge result"
+              style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px calc(28px + env(safe-area-inset-bottom, 0px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{fontSize:44,marginBottom:8}} aria-hidden="true">
+                {challengeResult.mine > challengeResult.theirs ? "🏆" : challengeResult.mine === challengeResult.theirs ? "🤝" : "😤"}
+              </div>
+              <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:16}}>
+                {challengeResult.mine > challengeResult.theirs ? `You beat ${challengeResult.name || "your friend"}!`
+                  : challengeResult.mine === challengeResult.theirs ? `Level with ${challengeResult.name || "your friend"}`
+                  : `${challengeResult.name || "Your friend"} takes this one`}
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:20}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:12}}>
+                  <span style={{fontSize:14,fontWeight:700,color:"var(--t1)"}}>You</span>
+                  <span style={{fontSize:16,fontWeight:900,color:"var(--t1)"}}>{challengeResult.mine}/7</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:12}}>
+                  <span style={{fontSize:14,fontWeight:700,color:"var(--t2)"}}>
+                    {challengeResult.name || "Your friend"}{challengeResult.yesterday ? " (yesterday's score)" : ""}
+                  </span>
+                  <span style={{fontSize:16,fontWeight:900,color:"var(--t2)"}}>{challengeResult.theirs}/7</span>
+                </div>
+              </div>
+              <button
+                onClick={() => { setChallengeResult(null); shareDaily(); }}
+                style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
+              >
+                Send it back 🔁
+              </button>
+              <button
+                onClick={() => setChallengeResult(null)}
+                style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* 1.1: streak-milestone confetti (7/30/100-day). Top-level so it
             layers over Home where the milestone toast appears. */}
         {milestoneConfetti && <Confetti />}
@@ -9743,7 +9833,7 @@ function AppInner() {
               startMode={startMode}
               setShowDiffPicker={setShowDiffPicker}
               shareCard={shareCard}
-              challenge={(pendingChallenge && pendingChallenge.date === dateToYMD(new Date()).replace(/-/g, "") && !dailyDone) ? pendingChallenge : null}
+              challenge={(pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1 && !dailyDone) ? pendingChallenge : null}
               onPlayChallenge={playDaily}
               onDismissChallenge={clearChallenge}
               setOnlineAutoCreate={setOnlineAutoCreate}
