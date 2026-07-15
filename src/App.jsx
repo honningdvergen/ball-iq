@@ -113,6 +113,30 @@ const TIMINGS = {
   SEEN_WINDOW_MS: 14 * 24 * 60 * 60 * 1000,
 };
 
+// Boot URL, snapshotted at module eval — i.e. before any component renders and
+// therefore before any of AppInner's deep-link initializers replaceState the
+// path/query away. Deep-link detection MUST read these rather than live
+// window.location: those initializers strip the URL as a side effect, so a
+// re-run of a later initializer (StrictMode double-invokes them) sees a
+// different URL than the first run did. Snapshot once, read many.
+const BOOT_PATH = (() => { try { return window.location.pathname; } catch { return "/"; } })();
+const BOOT_SEARCH = (() => { try { return window.location.search; } catch { return ""; } })();
+
+// Invite-code normalizer. Module-level so the deep-link deferral check and the
+// pendingJoinCode initializer decide "is this a real code?" with ONE rule —
+// they disagreed before, and /join/x deferred onboarding for a code that
+// normalized to null (no gate, no auto-join, nothing staged).
+const normalizeJoinCode = s => (s || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+
+// Deep-link onboarding deferral, module-scoped because BOOT_PATH is immutable
+// and AppInner REMOUNTS (AppGate unmounts it whenever effectiveLoading flips —
+// a guest signing in sets profileNotReady). Component-local state would re-arm
+// the deferral from the same boot URL on every remount while the "staged screen
+// was seen" ref reset to false, suppressing onboarding for the whole session.
+// Spent-once + seen-across-remounts fixes both halves.
+let bootDeferralSpent = false;
+let bootStagedScreenSeen = false;
+
 
 
 // V1.1: chaos default-difficulty normalization + QB_WC2026 / QB_CHAOS
@@ -1565,7 +1589,7 @@ export function haptic(type) {
 }
 
 // ─── HOT STREAK ENGINE ────────────────────────────────────────────────────────
-function HotStreakEngine({ questions, onComplete, onBack }) {
+function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -1579,7 +1603,14 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
   const advanceTimeoutRef = useRef(null);
   const q = questions[idx % questions.length];
 
+  useEffect(() => () => clearTimeout(advanceTimeoutRef.current), []);
+
+  // The 60s clock PAUSES while the rules sheet is open. The sheet exists to be
+  // read, and reading it otherwise costs a chunk of the run — the "?" would be
+  // a trap. timeLeft is never reset here, so it resumes exactly where it
+  // stopped (contrast QuizEngine, whose timer effect re-seeds timerDuration).
   useEffect(() => {
+    if (rulesOpen || done) return;
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) { clearInterval(timerRef.current); setDone(true); return 0; }
@@ -1588,8 +1619,8 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
         return t - 1;
       });
     }, 1000);
-    return () => { clearInterval(timerRef.current); clearTimeout(advanceTimeoutRef.current); };
-  }, []);
+    return () => clearInterval(timerRef.current);
+  }, [rulesOpen, done]);
 
   useEffect(() => {
     if (done) onComplete({ score, total: idx, bestStreak: score });
@@ -1621,6 +1652,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
         <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${pct}%`, background:barColor, transition:'width 1s linear'}} /></div>
         <span className="q-ctr" style={{color: timeLeft <= 10 ? 'var(--red)' : 'var(--t2)', fontWeight: timeLeft <= 10 ? 800 : 500}}>{timeLeft}s</span>
+        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
       </div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
         <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}>⚡🔥 Hot Streak</div>
@@ -1665,7 +1697,7 @@ function HotStreakEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── TRUE OR FALSE ENGINE ─────────────────────────────────────────────────────
-function TrueFalseEngine({ questions, onComplete, onBack }) {
+function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null); // { val, correct } | null
@@ -1738,6 +1770,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
         <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (picked?1:0)) / total) * 100}%`}} /></div>
         <span className="q-ctr">{idx + 1}/{total}</span>
+        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
       </div>
       <div style={{textAlign:'center',padding:'8px 0 4px'}}>
         <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:'var(--accent)',letterSpacing:2}}>✅ True or False</span>
@@ -1779,7 +1812,7 @@ function TrueFalseEngine({ questions, onComplete, onBack }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
-function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel }) {
+function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -2116,6 +2149,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         <div className="q-top-right">
           {score > 0 && <span className="q-score-live">{score}<span className="q-score-tick"> ✓</span></span>}
           <span className="q-ctr">{mode === "survival" ? `Q${idx + 1}` : `${idx + 1}/${total}`}</span>
+          {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
         </div>
       </div>
 
@@ -6241,9 +6275,12 @@ function XPBar({ xp, streak }) {
 
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
-// 2-step welcome flow shown once per device after auth. Persists:
-//   biq_skill_level  — "casual" | "fan" | "expert" (or absent)
-//   biq_onboarded    — "1" once completed (or skipped to end)
+// 2-step flow shown once per device after auth. Persists:
+//   biq_skill_level  — "casual" | "fan" | "expert" (or absent → medium default)
+//   biq_onboarded    — "1" once completed OR skipped
+//
+// The pure-copy "Welcome to Ball IQ" step was deleted (it had no skip control).
+// Step 1 is now the sample question; Skip is present on every step — see `skip`.
 const SKILL_OPTIONS = [
   { id: "casual", icon: "🌱", name: "Casual Fan", desc: "I watch the big games and know the top teams.",           diff: "easy"   },
   { id: "fan",    icon: "⚽", name: "Football Fan", desc: "I follow a league or two and the major competitions.",   diff: "medium" },
@@ -6260,7 +6297,7 @@ function OnboardingScreen({ onDone }) {
   const [step, setStep] = useState(0);
   const [skillLevel, setSkillLevel] = useState(null);
   const [sampleAnswered, setSampleAnswered] = useState(null);
-  const TOTAL = 3;
+  const TOTAL = 2;
   const stepW = `${100 / TOTAL}%`;
 
   const persistAndFinish = () => {
@@ -6302,10 +6339,13 @@ function OnboardingScreen({ onDone }) {
     if (step < TOTAL - 1) setStep(s => s + 1);
     else persistAndFinish();
   };
+  // Skip exits the flow; it used to be byte-identical to `next`.
+  // persistAndFinish() writes biq_onboarded + profiles.onboarded_at, so a
+  // skipper is never re-prompted; skillLevel left null keeps the medium
+  // default (biq_settings is not touched when it's null).
   const skip = () => {
     haptic("soft");
-    if (step < TOTAL - 1) setStep(s => s + 1);
-    else persistAndFinish();
+    persistAndFinish();
   };
 
   return (
@@ -6321,19 +6361,7 @@ function OnboardingScreen({ onDone }) {
 
       <div className="onboard-viewport">
         <div className="onboard-track" style={{ width: `${TOTAL * 100}%`, transform: `translateX(-${step * (100 / TOTAL)}%)` }}>
-          {/* 1. Welcome */}
-          <div className="onboard-step" style={{ width: stepW }}>
-            <div className="onboard-step-top">
-              <div className="onboard-icon">⚽</div>
-              <div className="onboard-title">Welcome to {APP_NAME}</div>
-              <div className="onboard-body">
-                The ultimate football quiz. Test your knowledge, beat your mates, climb the league.
-              </div>
-            </div>
-            <button className="onboard-btn" onClick={next}>Get Started</button>
-          </div>
-
-          {/* 2. Taste it — one quick question (the casual hook) */}
+          {/* 1. Taste it — one quick question (the casual hook). */}
           <div className="onboard-step" style={{ width: stepW }}>
             <div className="onboard-step-top">
               <div className="onboard-title" style={{ marginTop: 16 }}>Quick one — give it a go ⚽</div>
@@ -6369,7 +6397,7 @@ function OnboardingScreen({ onDone }) {
             </div>
           </div>
 
-          {/* 3. Skill Level */}
+          {/* 2. Skill Level — optional; Skip lands straight in the app. */}
           <div className="onboard-step" style={{ width: stepW }}>
             <div style={{width:"100%"}}>
               <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
@@ -6532,7 +6560,12 @@ class TabErrorBoundary extends React.Component {
 // See /tmp/league-v1.1-spec.md for the design that brings League back with
 // real backend leaderboards in v1.1.
 
+// Rules sheets, keyed by `mode`. Opened via setHowToPlay(mode) — every entry
+// here MUST have a "?" affordance wired to it somewhere (this registry sat
+// entirely unreachable for months: a first-time Footle player got a blank grid,
+// a keyboard, and no explanation of the colours).
 const HOW_TO_PLAY = {
+  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real player or manager surname","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   wc2026: { title:"🌍 World Cup 2026", steps:["15 questions about the 2026 World Cup","All 48 competing nations covered","Questions on history, players and format","No timer — test your knowledge","Great prep for the tournament!"] },
@@ -6620,7 +6653,7 @@ const WORDLE_KB_ROWS = [
   ["Z","X","C","V","B","N","M","DEL"],
 ];
 
-const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
+const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily }) {
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
   const dateKey = getWordleDateKey();
@@ -6667,6 +6700,26 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
   // mounted. Distinguishes a fresh solve (fire confetti once) from re-opening
   // a solved puzzle later in the day (no confetti on every revisit).
   const wasFinishedAtMount = useRef(state.status !== "playing");
+
+  // Auto-open the rules ONCE, for a first-time Footle player only: nothing on
+  // the grid says what green/yellow/grey mean or that a guess must be a real
+  // surname. Only fires on a genuinely untouched puzzle — someone mid-grid (or
+  // re-opening a finished one) has already worked it out and doesn't need a
+  // sheet over it.
+  const rulesAutoOpenedRef = useRef(false);
+  useEffect(() => {
+    if (rulesAutoOpenedRef.current || !onHowToPlay) return;
+    if (wasFinishedAtMount.current || state.guesses.length > 0) return;
+    try {
+      if (localStorage.getItem("biq_footle_rules_seen") === "1") return;
+      localStorage.setItem("biq_footle_rules_seen", "1");
+    } catch {}
+    rulesAutoOpenedRef.current = true;
+    onHowToPlay();
+    // Mount-only by construction (the ref latches, and guesses.length is read
+    // from the mount-time state); deps kept minimal deliberately.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onHowToPlay]);
 
   // Persist on every change to the game state.
   useEffect(() => {
@@ -6879,8 +6932,19 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
         <div className="wd-header-text">
           <div className="wd-title">Footle</div>
-          <div className="wd-sub">Player or manager — guess the surname</div>
+          {/* Shortened when the "?" joined this row: the button + its gap take
+              56px out of the flex:1 text column, which wrapped the old
+              "Player or manager — guess the surname" onto a 3rd line and pushed
+              the grid + keyboard down (measured 375px: header 56→71.5px). The
+              player-or-manager rule it carried now lives in the rules sheet
+              (step 4), which auto-opens for first-timers. Measured with the "?"
+              present: header 44px @375, 56px @320 — at or under the pre-"?"
+              baseline at both. Re-measure both if this string grows. */}
+          <div className="wd-sub">Guess the surname</div>
         </div>
+        {onHowToPlay && (
+          <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>
+        )}
         <div className="wd-countdown" title="New player tomorrow">
           <div className="wd-countdown-label">Next</div>
           <div className="wd-countdown-time">{countdown}</div>
@@ -6928,14 +6992,21 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
             <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Share on WhatsApp</a>
           )}
           <div className="wd-result-foot">New player in {countdown}</div>
-          {/* Sprint #64 FF1: post-solve install nudge. Won-only so the
-              banner lands on a positive moment. Internal hook gates on
-              already-installed, installed-ever (iOS Safari reopen edge
-              case from EE3), display-mode standalone, install-affordance
-              available, and a 30-day dismiss cooldown — first solve
-              triggers; dismiss silences for 30d; next post-expiry solve
-              re-eligible. */}
-          {state.status === "won" && <InstallBanner />}
+          {/* Second-play CTA. Rendered on won AND lost; hidden once today's
+              Daily 7 is done (the mount site passes no handler then, since
+              startMode would only toast "already done today"). */}
+          {onPlayDaily && (
+            <button className="wd-back" onClick={onPlayDaily} style={{margin:"2px auto 0"}}>
+              Not done yet? Play today's Daily 7 →
+            </button>
+          )}
+          {/* Sprint #64 FF1: post-Footle install nudge. Now rendered on any
+              TERMINAL state, not won-only — install is web's only return
+              mechanism (web has no notifications) and losers were excluded.
+              The internal hook still gates on already-installed, installed-ever
+              (iOS Safari reopen edge case from EE3), display-mode standalone,
+              install-affordance available, and a 30-day dismiss cooldown. */}
+          <InstallBanner />
         </div>
       )}
 
@@ -7104,20 +7175,36 @@ function AppInner() {
   const [screen, setScreen] = useState("home");
   // Deep-link recipients play BEFORE onboarding (opportunity-scan #6). A boot
   // that arrives via a share/SEO deep link (footle alias or ?game=footle,
-  // ?stump=, ?club=/?quiz= slugs, /c/ Daily-7 challenge) defers the
-  // OnboardingScreen gate for this session — the OG cards promise "no
-  // sign-up", so the shared moment must render first. Decided synchronously
-  // from window.location at mount: it MUST run before the pendingChallenge
-  // initializer and the SEO-launch effect below strip these params via
-  // replaceState. Slugs are validated against the module maps so a dead link
-  // doesn't suppress onboarding for nothing. biq_onboarded is NOT written —
-  // onboarding still shows, on the first Home visit after the staged screen.
+  // ?stump=, ?club=/?quiz= slugs, /c/ Daily-7 challenge, /join/ invite) defers
+  // the OnboardingScreen gate for this session — the OG cards promise "no
+  // sign-up", so the shared moment must render first. Slugs are validated
+  // against the module maps so a dead link doesn't suppress onboarding for
+  // nothing. biq_onboarded is NOT written — onboarding still shows, on the
+  // first Home visit after the staged screen.
+  //
+  // Reads BOOT_PATH/BOOT_SEARCH (snapshotted at module eval), NOT live
+  // window.location: the pendingJoinCode / pendingChallenge initializers below
+  // strip the path+query via replaceState as an initializer SIDE EFFECT, and
+  // StrictMode double-invokes useState initializers — so on the second pass
+  // this one saw an already-stripped URL, returned false, and that was the
+  // value React committed. Every deep-link deferral silently no-op'd in dev,
+  // and the ordering was load-bearing in prod (any initializer added above
+  // would have broken it the same way). The snapshot makes it idempotent.
   const [deferOnboarding, setDeferOnboarding] = useState(() => {
+    if (bootDeferralSpent) return false;
     try {
-      const path = window.location.pathname;
+      const path = BOOT_PATH;
       if (path === "/footle" || path === "/footle/" || /^\/c\/./.test(path)) return true;
-      const sp = new URLSearchParams(window.location.search);
+      // The code itself survives the deferral: the pendingJoinCode initializer
+      // below persists it to localStorage (biq_pending_join) before stripping
+      // the path, so the join modal / auto-join still fire. Validated through
+      // normalizeJoinCode — the same rule that initializer applies — so a code
+      // it would reject can't suppress onboarding for nothing.
+      const joinPath = path.match(/^\/join\/([A-Za-z0-9]+)/);
+      if (joinPath && normalizeJoinCode(joinPath[1])) return true;
+      const sp = new URLSearchParams(BOOT_SEARCH);
       if (sp.get("game") === "footle") return true;
+      if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
       if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;
       if (QUIZ_SLUG_TO_CAT[(sp.get("quiz") || "").toLowerCase()]) return true;
@@ -7130,11 +7217,10 @@ function AppInner() {
   // navigates back. Lifting on any screen==="home" render would fire during
   // the async staging window (stump/club launches load the question bank
   // before setScreen), re-blocking the moment the deep link paid for.
-  const stagedScreenSeenRef = useRef(false);
   useEffect(() => {
     if (!deferOnboarding) return;
-    if (screen !== "home") { stagedScreenSeenRef.current = true; return; }
-    if (stagedScreenSeenRef.current) setDeferOnboarding(false);
+    if (screen !== "home") { bootStagedScreenSeen = true; return; }
+    if (bootStagedScreenSeen) { bootDeferralSpent = true; setDeferOnboarding(false); }
   }, [screen, deferOnboarding]);
   // 1.0.2 Feature E: one-time "pick your username" step after a NEW social
   // sign-up. useAuth sets biq_needs_username='1' for fresh Apple/Google
@@ -7184,7 +7270,6 @@ function AppInner() {
       // Sprint #92 GGG3: parse BOTH /join/CODE (new path-based, matches
       // Universal Links) and ?join=CODE (legacy query-based) so previously-
       // shared invite URLs keep routing correctly. Path form takes priority.
-      const normalize = s => s.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
       const pathMatch = window.location.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
       const fromPath = pathMatch ? pathMatch[1] : null;
       const params = new URLSearchParams(window.location.search);
@@ -7200,10 +7285,10 @@ function AppInner() {
           u.pathname = "/"; u.searchParams.delete("join");
           window.history.replaceState({}, "", u.pathname + u.search + u.hash);
         } catch {}
-        return normalize(fromUrl);
+        return normalizeJoinCode(fromUrl);
       }
       const stored = localStorage.getItem("biq_pending_join");
-      if (stored) return normalize(stored);
+      if (stored) return normalizeJoinCode(stored);
     } catch {}
     return null;
   });
@@ -8453,12 +8538,17 @@ function AppInner() {
     }
   }, [user?.id]);
 
-  // A completed daily (Daily 7 or Footle) cancels tonight's reminder and, on a
-  // positive completion, is the trigger for the first soft pre-prompt.
+  // A completed daily (Daily 7 or Footle) cancels tonight's reminder and is the
+  // trigger for the first soft pre-prompt.
+  //
+  // The pre-prompt used to be gated on detail.positive — a lost Footle is the
+  // only thing that ever sets positive:false, so losers never got asked. This
+  // is a soft in-app ask, not the OS dialog, and maybePromptNotif still caps
+  // itself at 2 lifetime asks and no-ops once permission is decided.
   useEffect(() => {
     const onDailyDone = (e) => {
       cancelTodayReminder();
-      if (e?.detail?.positive !== false) maybePromptNotif();
+      maybePromptNotif();
       // Footle XP (scan #3). ONLY for game:'footle' — the Daily 7 also fires
       // this event and already earns XP via handleComplete; awarding here for
       // it too would double-pay. Footle's dispatch happens exactly once per
@@ -8969,8 +9059,8 @@ function AppInner() {
   //
   // Preserved keys: biq_settings, biq_profile, biq_seen_history_v2,
   // biq_onboarded, biq_skill_level, and the various UI flags
-  // (biq_first_tip_shown, biq_rate_shown, biq_pending_join, biq-splash) —
-  // those aren't stats. biq_skill_level in particular is a difficulty
+  // (biq_first_tip_shown, biq_rate_shown, biq_footle_rules_seen,
+  // biq_pending_join, biq-splash) — those aren't stats. biq_skill_level in particular is a difficulty
   // preference, not a stat; clearing it would force the user back through
   // the onboarding skill-level picker and produce incoherent state
   // (biq_onboarded=1 with no skill level set).
@@ -9362,8 +9452,25 @@ function AppInner() {
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!showBallIQIntro, onClose: () => setShowBallIQIntro(false), ref: ballIQIntroRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
-  useModalA11y({ isOpen: !!howToPlay, onClose: () => setHowToPlay(null), ref: howToPlayRef });
+  // Stable identity, deliberately: useModalA11y's effect deps are
+  // [isOpen, onClose, ref], so an inline arrow re-runs the whole effect on
+  // EVERY AppInner render while the sheet is open — each re-run does a
+  // pushState + a cleanup history.back(). Two cleanups landing before the
+  // first popstate arrives overflow the module's single `inhibitNextPopstate`
+  // boolean, and the second popstate closes the modal. That is exactly what
+  // ate the auto-opened Footle rules sheet: opening during the burst of
+  // renders after a screen transition closed it again in the same tick.
+  const closeHowToPlay = useCallback(() => setHowToPlay(null), []);
+  useModalA11y({ isOpen: !!howToPlay, onClose: closeHowToPlay, ref: howToPlayRef });
   useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
+  // Openers for the HOW_TO_PLAY sheet. Stable identities so the engines can
+  // treat them as effect deps (FootballWordle's one-time auto-open does).
+  // `openQuizRules` is undefined for modes with no entry, which is what hides
+  // the "?" affordance on those screens rather than opening an empty sheet.
+  const openFootleRules = useCallback(() => setHowToPlay("wordle"), []);
+  const openHotStreakRules = useCallback(() => setHowToPlay("hotstreak"), []);
+  const openTrueFalseRules = useCallback(() => setHowToPlay("truefalse"), []);
+  const openQuizRules = useCallback(() => setHowToPlay(mode), [mode]);
   // opportunity-scan #9: async-challenge "Send it back" result modal.
   const challengeResultRef = useRef(null);
   useModalA11y({ isOpen: !!challengeResult, onClose: () => setChallengeResult(null), ref: challengeResultRef });
@@ -9589,19 +9696,18 @@ function AppInner() {
         {/* Global toasts */}
         {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
 
-        {/* First quiz tip — Sprint #27 Y3 F1: className lets a desktop
-            media query constrain the left/right anchoring to the .app
-            column. Mobile keeps the inline 16px padding via base CSS. */}
-        {/* Suppressed while a home bottom-sheet is up — the fixed tip (z 996)
-            otherwise floats over the sheet and covers the Medium option
-            (344-375px sweep finding). */}
-        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && !showDiffPicker && !showFriendsPicker && !showBallIQIntro && (
-          <div className="first-quiz-tip" style={{position:"fixed",bottom:80,left:16,right:16,zIndex:996,pointerEvents:"none"}}>
-            <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(88,204,2,0.3)",pointerEvents:"auto",display:"flex",alignItems:"center",gap:12}}>
+        {/* First-session tip. Was position:fixed over the mode grid it was
+            meant to explain; now an inline card above the home content — with
+            nothing to cover, the old bottom-sheet suppression guards and the
+            .first-quiz-tip desktop re-anchoring class are both gone. Points at
+            Footle rather than Daily 7. */}
+        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && (
+          <div style={{margin:"0 0 12px"}}>
+            <div style={{background:"var(--accent)",color:"#0a1a00",borderRadius:14,padding:"14px 18px",boxShadow:"0 6px 24px rgba(88,204,2,0.3)",display:"flex",alignItems:"center",gap:12}}>
               <div style={{fontSize:28,lineHeight:1}}>⚽</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
-                <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Daily 7 — new questions every day!</div>
+                <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Footle — one puzzle, everyone gets the same player.</div>
               </div>
               <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
@@ -10140,7 +10246,7 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} />}
+        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} />}
         {screen === "stump" && stumpRow && (
           <StumpScreen
             row={stumpRow}
@@ -10155,6 +10261,8 @@ function AppInner() {
             questions={questions}
             onComplete={handleComplete}
             onBack={goHome}
+            onHowToPlay={openHotStreakRules}
+            rulesOpen={howToPlay === "hotstreak"}
           />
         )}
 
@@ -10164,6 +10272,7 @@ function AppInner() {
             questions={trueFalseQuestions}
             onComplete={handleComplete}
             onBack={goHome}
+            onHowToPlay={openTrueFalseRules}
           />
         )}
 
@@ -10229,6 +10338,9 @@ function AppInner() {
                 : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
                 : undefined}
               onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
+              // Only modes with a HOW_TO_PLAY entry get the "?" — passing an
+              // opener for (say) Classic would open an empty sheet.
+              onHowToPlay={HOW_TO_PLAY[mode] ? openQuizRules : undefined}
             />
           </div>
         )}
