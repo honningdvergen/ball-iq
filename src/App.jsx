@@ -12,6 +12,10 @@ const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 // Desktop left rail (>= 1024px, browser only — hidden in native + installed PWA).
 import { BiqNav } from './BiqNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
+// Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
+// between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
+// on the same Daily 7. See tests/unit/quiz.test.js.
+import { seededShuffle, pickDailyQuestions } from './lib/quiz.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
@@ -470,17 +474,6 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, 
   });
 }
 
-function seededShuffle(arr, seed) {
-  // Fast seeded shuffle using mulberry32 PRNG — no indexOf, O(n) not O(n²)
-  let s = seed >>> 0;
-  const prng = () => { s ^= s << 13; s ^= s >> 17; s ^= s << 5; return (s >>> 0) / 4294967296; };
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(prng() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 
 async function getBallIQQuestions() {
   const { QB } = await loadQuestions();
@@ -509,28 +502,13 @@ async function getBallIQQuestions() {
 
 async function getDailyQsForDate(date) {
   const { QB } = await loadQuestions();
-  // MCQ only for daily — consistent experience, no typed surprises.
-  // Phase 6c.1: Daily 7 is a casual experience; gate cat:"Legends" out for the
-  // same reason getQs does.
-  //
-  // EVERY PLAYER GETS THE SAME SEVEN. The Daily 7 is a comparison surface (/c/
-  // challenge links, the "You beat X!" modal, the OG card), so selection must
-  // depend on the date and nothing else. Two things used to break that:
-  //   1. No applySeenFilter here. It reads device-local 14-day history, so two
-  //      players with different play histories got different questions. We
-  //      still RECORD into that history via _histKey below (other modes read
-  //      it) — this one never reads it. Cost: you may re-see a question from
-  //      another mode; rare against a ~3k pool.
-  //   2. seededShuffle, never Math.sin. Math.sin is implementation-approximated
-  //      per spec — 137/3000 values differ between JavaScriptCore (iOS
-  //      WKWebView, Safari) and V8 (Android, Chrome), which flipped the old
-  //      comparator's sign and reordered the pool per engine. seededShuffle is
-  //      integer bitwise only (ToUint32 is spec-exact): verified bit-identical
-  //      on both. Also O(n) vs the old comparator's O(n² log n) indexOf.
-  // Cached completions in biq_daily_<ymd> are unaffected.
-  const seed = dayIndexForDate(date);
-  const mcqOnly = QB.filter(q => q.type === "mcq" && q.cat !== "Legends");
-  return seededShuffle(mcqOnly, seed * 1013904223).slice(0, 7).map(q => {
+  // Selection lives in src/lib/quiz.js — pure and tested. It must depend on the
+  // date and nothing else (the Daily 7 feeds /c/ challenge links and an OG card),
+  // and the reasons why are documented there. We still RECORD into seen-history
+  // via _histKey below — other modes consume it; the daily just never reads it.
+  // Cached completions in biq_daily_<ymd> are unaffected. Option order below is
+  // deliberately per-player random: it doesn't change WHICH seven you get.
+  return pickDailyQuestions(QB, dayIndexForDate(date)).map(q => {
     const histKey = qbHistKey(q);
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = shuffle(indices);
