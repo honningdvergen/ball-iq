@@ -109,7 +109,22 @@ The old CTA asked someone who just laughed at a football joke to: leave the plat
 
 **Footle plays in the browser in three seconds and requires nothing.** The app is the upsell for people who already like it — never the front door.
 
-**Destination: `balliq.app/footle?utm_source=<platform>`. Never the App Store.**
+**Destination: the short attributed redirects. Never the App Store.**
+
+| Link | 307s to | Use on |
+|---|---|---|
+| `balliq.app/t` | `/footle?utm_source=threads` | Threads |
+| `balliq.app/ig` | `/footle?utm_source=instagram` | Instagram |
+| `balliq.app/tt` | `/footle?utm_source=tiktok` | TikTok |
+| `balliq.app/x` | `/footle?utm_source=x` | X |
+
+Added in `vercel.json` (`redirects`, commit `d4535fb`, 2026-07-15) because **`balliq.app/footle?utm_source=threads` renders TRUNCATED on a Threads profile** — it displays as `balliq.app/footle?utm_source`, which reads as a malformed URL on the one element you want tapped. Alex spotted it; his earlier "we probably want a relatively short link" instinct was right, just for a display reason rather than the save-failure we were debugging at the time.
+
+Why it works: Vercel processes `redirects` **before** `rewrites`, so these resolve before the `/((?!assets/).*)` → `/index.html` catch-all swallows them. They are 307 not 301 — targets may change and browsers cache 301s indefinitely. Query merging works (`/t?cb=1` → `/footle?cb=1&utm_source=threads`).
+
+**Deploys propagate per-edge:** immediately after pushing, `/t` returned 307 on one check and 200 seconds later on the next — different Vercel edge nodes, mid-rollout. Poll several times before concluding a redirect is broken.
+
+The raw form (`balliq.app/footle?utm_source=<platform>`) is still correct anywhere display doesn't matter.
 - `/footle` is a boot alias (`src/App.jsx:8313`) and **preserves the query string** (`:8314`) — UTMs survive. Verified.
 - Verified 2026-07-15: cold arrival works. Logged out, phone viewport, tapped link → straight into a playable grid. No onboarding wall, no signup gate.
 - Footle is the product, not the trivia app: it owns every long streak; 8 users have played it 9–22 separate days.
