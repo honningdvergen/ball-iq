@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/t", "destination": "/footle?utm_source=threads", "permanent": false },
+    { "source": "/ig", "destination": "/footle?utm_source=instagram", "permanent": false },
+    { "source": "/tt", "destination": "/footle?utm_source=tiktok", "permanent": false },
+    { "source": "/x", "destination": "/footle?utm_source=x", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/p", "destination": "/api/p" },
     { "source": "/q", "destination": "/api/q" },
