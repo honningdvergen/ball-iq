@@ -9,8 +9,7 @@ import Login from './Login.jsx';
 // Lazy: the 523-line review screen is settings-only, never on the cold/first
 // paint — React.lazy keeps it out of the initial bundle (Suspense at render).
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
-// DesktopNav.jsx is retained on disk (legacy rail) but no longer rendered —
-// the desktop-web-refresh swaps in BiqNav at >= 1024px.
+// Desktop left rail (>= 1024px, browser only — hidden in native + installed PWA).
 import { BiqNav } from './BiqNav.jsx';
 import { loadQuestions, prefetchQuestions } from './questions-loader.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users } from 'lucide-react';
@@ -1529,7 +1528,7 @@ function playSound(type) {
 // inside the plugin itself, so no extra guard needed for that case.
 const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 // Belt-and-braces for index.html's head script: re-apply the native-app class
-// that hides desktop landing chrome (.landing-top / .desktop-nav / etc.).
+// that hides desktop landing chrome (.landing-top / .landing-bottom / etc.).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
 export function haptic(type) {
@@ -9137,8 +9136,8 @@ function AppInner() {
     setActiveClub(null);
     setActiveLeague(null);
   }, []);
-  // Wordmark "Home" handler — wired to both mobile .logo and DesktopNav's
-  // dn-brand. If the user is currently in a Stage 1 multiplayer room,
+  // Wordmark "Home" handler — wired to the mobile .logo and the BiqNav
+  // brand. If the user is currently in a Stage 1 multiplayer room,
   // confirm before bailing so we don't accidentally orphan their seat.
   // Calls leave_room directly (bypassing MultiplayerLobby's actions.leave)
   // since we need to clean up before the screen-state change unmounts the

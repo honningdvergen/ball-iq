@@ -1,6 +1,6 @@
-// BiqNav — desktop-web-refresh left rail. Replaces DesktopNav at >= 1024px
+// BiqNav — the desktop left rail, shown at >= 1024px
 // with the marketing-site aesthetic (dark-only chrome, Inter + the marketing
-// palette). Same call-site contract as DesktopNav (tab/setTab/setScreen/
+// palette). Call-site contract: (tab/setTab/setScreen/
 // dailyDone/showToast/onHomeClick) — showToast is no longer consumed because
 // the App Store CTA is a real link now, so it's intentionally left off the
 // destructure.

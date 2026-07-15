@@ -246,14 +246,12 @@
       /* NATIVE killswitch — Capacitor WKWebView is NOT display-mode:
          standalone, so the PWA rules above never fire in the iOS/Android
          app. html.native-app is set by the inline head script above.
-         Mirrors every standalone killswitch in this file plus App.jsx's
-         .desktop-nav (higher specificity wins over its display:flex). */
+         Mirrors every standalone killswitch in this file. */
       html.native-app .landing-top,
       html.native-app .landing-bottom,
       html.native-app .ad-slot-sidebar-left,
       html.native-app .ad-slot-sidebar-right,
       html.native-app .ad-slot-banner,
-      html.native-app .desktop-nav,
       html.native-app .biq-nav { display: none !important; }
       html.native-app body > #root {
         max-width: none !important;
@@ -313,7 +311,7 @@
          transform, so the app fills the viewport like before. */
       @media (min-width: 1024px) {
         body > #root {
-          /* desktop-web-refresh: was 220 (old .desktop-nav). BiqNav rail is
+          /* desktop-web-refresh: was 220 under the old rail. BiqNav rail is
              248px, so the content gutter must clear 248. */
           padding-left: 248px;
           /* desktop-web-refresh: recolor #root to the desktop game surface so
@@ -331,7 +329,7 @@
         html.light body > #root { background-color: #0A0A0A; }
         body.light { background-color: #0A0A0A; }
         /* Marketing chrome below the app needs the same sidebar clearance
-           — otherwise the fixed DesktopNav overlays the leftmost portion
+           — otherwise the fixed BiqNav rail overlays the leftmost portion
            of the features grid / signup / footer at viewport widths
            1024-1640. Has been broken since Phase 5b; .landing-bottom
            never got the same offset as #root. */

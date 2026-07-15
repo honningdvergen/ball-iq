@@ -1672,121 +1672,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .t7s-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 13px;background:rgba(255,193,7,0.14);color:#FFC107;-webkit-text-fill-color:#FFC107;border-radius:999px;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:0.01em;}
 
 /* ════════════════════════════════════════════════════════════════════
-   DESKTOP NAV (Phase 2/5)
-   ────────────────────────────────────────────────────────────────────
-   Left sidebar navigation, fixed to the viewport at desktop sizes only.
-   Hidden by default; shown at >= 1024px in regular browser mode; reset
-   to hidden in PWA standalone. Phase 3 will hide the existing tab bar
-   at desktop so this becomes the sole navigation.
-   ════════════════════════════════════════════════════════════════════ */
-.desktop-nav { display: none; }
-.dn-brand {
-  font-family: 'Inter', sans-serif;
-  font-size: 19px;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--t1);
-  padding: 0 12px 8px;
-}
-.dn-brand em {
-  color: var(--accent);
-  font-style: normal;
-}
-.dn-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.dn-list button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 12px 10px 16px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  color: var(--t2);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s;
-}
-.dn-list button::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 8px; bottom: 8px;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: transparent;
-  transition: background 0.12s;
-}
-.dn-list button:hover { background: var(--s1); color: var(--t1); }
-.dn-list button[data-active="true"] {
-  color: var(--t1);
-  background: var(--s1);
-}
-.dn-list button[data-active="true"]::before {
-  background: var(--accent);
-}
-.dn-divider {
-  height: 1px;
-  margin: 10px 16px;
-  background: var(--border);
-}
-.dn-dot {
-  display: inline-block;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #FF4B4B;
-  margin-left: 4px;
-}
-.dn-cta {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px 12px;
-  border-top: 1px solid var(--border);
-}
-.dn-cta-eyebrow {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--t3);
-  margin-bottom: 4px;
-}
-.dn-cta-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 12px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--t2);
-  border-radius: 9px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
-}
-.dn-cta-badge:hover {
-  background: var(--s1);
-  color: var(--t1);
-  border-color: var(--border2);
-}
-
-/* ════════════════════════════════════════════════════════════════════
    BIQ NAV (desktop-web-refresh) — marketing-aesthetic left rail
    ────────────────────────────────────────────────────────────────────
-   Replaces .desktop-nav at >= 1024px. Dark-only chrome using LITERAL
+   The desktop left rail. Dark-only chrome using LITERAL
    marketing hex (not app vars) so it reads correctly regardless of the
    runtime light/dark theme, and sits flush against the desktop .app
    (which is recolored to the marketing palette via the var overrides in
@@ -1795,8 +1683,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Base display:none — shown ONLY at >=1024px (browser). Reset to hidden
    in @media(display-mode:standalone) [installed PWA] and under
    html.native-app [Capacitor iOS/Android, in index.html] so the app /
-   installed PWAs never render it. Full-height (top:0/height:100vh),
-   unlike the old .desktop-nav which started at top:52px.
+   installed PWAs never render it. Full-height (top:0/height:100vh).
    ════════════════════════════════════════════════════════════════════ */
 .biq-nav { display: none; }
 .biq-nav .bn-brand {
@@ -2165,7 +2052,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     max-width: calc(100vw - 248px - 80px);
   }
   .tab-bar {
-    /* Phase 3: tab bar replaced by DesktopNav at desktop sizes. The
+    /* Phase 3: tab bar replaced by the BiqNav rail at desktop sizes. The
        Tier 2 repositioning rules below are inert when display:none
        but kept for revert-path clarity. */
     display: none;
@@ -2201,20 +2088,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .mp-card-cta:only-of-type { flex: 1; }
   /* MP subtitle desktop/mobile swap dropped in Sprint #11 G2 along with
      the .hero-online-sub element itself. */
-  .desktop-nav {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 52px;
-    left: 0;
-    width: 220px;
-    height: calc(100vh - 52px);
-    overflow-y: auto;
-    padding: 14px 12px 16px;
-    background: var(--bg);
-    border-right: 1px solid var(--border);
-    z-index: 40;
-  }
   .ds-eyebrow {
     font-size: 12px;
     color: var(--t2);
@@ -2693,11 +2566,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .light .fix-dot.miss { border-color: var(--border2); }
   .light .xp-bar-track { background: var(--border); }
 
-  /* Drop the in-app wordmark at desktop — DesktopNav owns branding. */
+  /* Drop the in-app wordmark at desktop — the BiqNav rail owns branding. */
   .hdr .logo { display: none; }
   /* Hide the entire .hdr at desktop. Level bar was removed (Profile
      screen carries level info via .profile-level-badge), and the
-     Settings cog is redundant on desktop because DesktopNav has its
+     Settings cog is redundant on desktop because the BiqNav rail has its
      own Settings button. With nothing to render, .hdr becomes pure
      vertical padding — kill it so greeting is the first content. */
   .hdr { display: none; }
@@ -2784,7 +2657,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
-  .desktop-nav { display: none !important; }
   /* desktop-web-refresh: installed PWA never renders the desktop rail, and
      the mobile tab-bar is re-shown above — so restore .tab-content's bottom
      clearance that the >=1024 reflow zeroed (else content hides behind it). */
