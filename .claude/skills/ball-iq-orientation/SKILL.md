@@ -46,6 +46,36 @@ Every genuinely new bug found on 2026-07-14/15 came from running something, not 
 
 Audits produce claims. Only execution produces facts. If a claim is cheap to test, test it.
 
+## Where the bugs actually are
+
+A 14-organ code audit graded this repo **A-** on 2026-07-12. Three days later a
+single day of work found: two literally unwinnable Footle answers, iOS and
+Android drawing different daily questions, every share card unfurling blank, and
+a 15% activation rate nobody knew about.
+
+Both are true. The grade was fair — the code IS good. **The bugs that survive a
+good audit are the ones that live BETWEEN things:**
+
+| Gap | Example found here |
+|---|---|
+| Between code and **data** | `SNIJDER: ["Wesley", "Sneijder"]` — perfect code, wrong content. Unwinnable puzzle. No linter, type or review catches this. |
+| Between **engines** | `Math.sin` in a sort comparator: 137/3000 values differ JSC vs V8. Unreadable as a bug; only `jsc` vs `node` shows it. |
+| Between code and **config** | `Disallow: /api/` in robots.txt nullified three sprints of share work. The renderer was flawless. |
+| Between **two features** | `applySeenFilter` works correctly; `/c/` challenge links assume determinism. No single file is wrong. |
+| Between **built and shipped** | ~6k lines of verified fixes worth exactly zero until `git push`. |
+| Between the app and its **users** | 28/58 accounts never played. Sat in the `scores` table through three scans; nobody ran a query. |
+
+**Every audit lens reads files. None of those live in a file.**
+
+So: when asked to audit or find bugs, do NOT only read code. Also —
+- **Run it across the real runtimes** (iOS = JavaScriptCore, Android/Chrome = V8; `jsc` lives at
+  `/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Helpers/jsc`).
+- **Check the data, not just the code that reads it.** Correlate outcomes against inputs.
+- **Query prod.** The Supabase connector is live and read-only queries are free.
+- **Check what production actually serves**, and check it as the *consumer* does (`curl -A "Twitterbot/1.0"`),
+  not as the config claims.
+- **Look across feature boundaries** for assumed contracts.
+
 ## Standing rules from the user
 
 - **"Fix everything we find — no regressions."** A finding is not filed, it's fixed — or explicitly deferred by him. If it can't land complete, land it **inert** (empty registry, dormant flag) so it renders nothing rather than something broken.
