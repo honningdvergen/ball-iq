@@ -8071,7 +8071,15 @@ function AppInner() {
     if (user?.id && newResult.score !== undefined) {
       supabase.from('scores').insert({
         user_id: user.id,
-        game_mode: mode || 'classic',
+        // Club and league quizzes run with mode="classic" (their launchers set
+        // activeClub/activeLeague and setMode directly), so every one of them
+        // used to land here labelled "classic" — indistinguishable from a real
+        // Classic game, forever. Missing data is honest; mislabelled data looks
+        // complete and quietly answers the wrong question. startMode clears both
+        // and the launchers clear each other, so at most one is ever set.
+        game_mode: activeClub ? `club:${activeClub}`
+          : activeLeague ? `league:${activeLeague}`
+          : (mode || 'classic'),
         score: newResult.score,
         correct_answers: newResult.score,
         total_questions: newResult.total || 10,
@@ -8141,7 +8149,7 @@ function AppInner() {
         }
       })();
     }
-  }, [mode, stats, user, showToast]);
+  }, [mode, stats, user, showToast, activeClub, activeLeague]);
 
   const today = new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
 
@@ -8555,11 +8563,33 @@ function AppInner() {
       // day (the won/lost transition), so no dedup guard is needed.
       if (e?.detail?.game === 'footle') {
         awardXp(getFootleXP(e.detail.won === true, e.detail.guesses));
+        // Footle wrote NOTHING to `scores` until now — its only trace was the
+        // wordle_state jsonb. So the most-played mode, the one that owns every
+        // long streak, was invisible in the only table anyone would query, and
+        // "what do people actually play?" had no answer. Same dispatch that
+        // pays XP: fires once per day by construction, so no dedup guard.
+        // score/total are guesses-used out of 6 — a loss is 6/6, matching the
+        // shape of every other row (correct out of attempted).
+        if (user?.id) {
+          const used = Math.min(e.detail.guesses || 6, 6);
+          supabase.from('scores').insert({
+            user_id: user.id,
+            game_mode: 'footle',
+            score: e.detail.won === true ? used : 0,
+            correct_answers: e.detail.won === true ? 1 : 0,
+            total_questions: 1,
+          }).then(({ error }) => {
+            if (error) {
+              console.warn('[footle score]', error.message);
+              Sentry.captureException(error, { tags: { area: 'footle-score' } });
+            }
+          });
+        }
       }
     };
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
-  }, [maybePromptNotif, awardXp]);
+  }, [maybePromptNotif, awardXp, user?.id]);
 
   // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
   // long-streak user (that would burn both lifetime asks before they ever see a
