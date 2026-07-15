@@ -7,9 +7,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import { initAds } from './lib/ads.js'
-// Root render-crash net for the marketing / play-preview trees (the game tree
-// gets the same boundary via GameRoot). Without it a render throw under the
-// bare Suspense white-screened those pages with zero Sentry capture.
+// Root render-crash net for the marketing tree (the game tree gets the same
+// boundary via GameRoot). Without it a render throw under the bare Suspense
+// white-screened the page with zero Sentry capture.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 
 // Sentry initialization — runs before app mount so render errors land in
@@ -131,7 +131,6 @@ try {
 // (/play, /play/*, /join/*, /c/*, …) render the game — so deep links and the
 // installed apps are never sent to the marketing page.
 const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
-const PlayApp = React.lazy(() => import('./play/PlayApp.jsx'))
 
 const _path = (typeof window !== 'undefined' && window.location.pathname) || '/'
 const _isNativeApp =
@@ -143,7 +142,6 @@ const _isStandalonePWA =
   (window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true)
 const _isBrowser = !_isNativeApp && !_isStandalonePWA
 const showMarketing = _isBrowser && (_path === '/' || _path.startsWith('/home-preview'))
-const showPlayPreview = _isBrowser && _path.startsWith('/play-preview')
 
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
 // download the ~200KB-gz game bundle. React.lazy only fires its import() on
@@ -153,7 +151,7 @@ const showPlayPreview = _isBrowser && _path.startsWith('/play-preview')
 // starts the network fetch a render-cycle earlier, overlapping it with mount.
 const loadGameRoot = () => import('./GameRoot.jsx')
 const GameRoot = React.lazy(loadGameRoot)
-if (!showMarketing && !showPlayPreview) loadGameRoot()
+if (!showMarketing) loadGameRoot()
 
 // Suspense fallback for the lazily-loaded game tree: reproduces index.html's
 // #root splash markup (the same wordmark + animated bar) so swapping the
@@ -184,11 +182,6 @@ if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary><React.Suspense fallback={null}><MarketingHome /></React.Suspense></ErrorBoundary>,
-  )
-} else if (showPlayPreview) {
-  _fullBleed()
-  ReactDOM.createRoot(document.getElementById('root')).render(
-    <ErrorBoundary><React.Suspense fallback={null}><PlayApp /></React.Suspense></ErrorBoundary>,
   )
 } else {
   // desktop-web-refresh: mark the document as the game shell so the desktop

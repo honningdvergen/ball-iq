@@ -2,9 +2,9 @@ import React from "react";
 import * as Sentry from "@sentry/react";
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
-// Lives outside App.jsx so main.jsx can ALSO wrap the marketing / play-preview
-// trees with it — before this extraction those rendered under bare Suspense,
-// so any render throw white-screened them with zero Sentry capture.
+// Lives outside App.jsx so main.jsx can ALSO wrap the marketing tree with it —
+// before this extraction that rendered under a bare Suspense, so any render
+// throw white-screened it with zero Sentry capture.
 // Exported so GameRoot can ALSO wrap AuthProvider with it — a render/init throw
 // inside useAuth used to escape every boundary (the root boundary rendered
 // inside App, a child of the provider) and white-screen the app.

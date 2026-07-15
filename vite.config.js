@@ -65,7 +65,7 @@ function stripSourcemapsPlugin() {
 // visitor at / download the game bundle, breaking the front-door guarantee
 // in main.jsx ("marketing visitors never download the game bundle"). The
 // script mirrors main.jsx's routing — it skips only plain browser tabs on
-// / , /home-preview*, /play-preview*; native + PWA + every game path
+// / and /home-preview*; native + PWA + every game path
 // preload. Degrades gracefully: if the chunk isn't in the bundle (renamed,
 // inlined, future refactor), nothing is injected and the build proceeds.
 // Runs at closeBundle, resolving the chunk off disk rather than from the
@@ -104,7 +104,7 @@ function preloadGameRootPlugin() {
         '||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());' +
         "var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;" +
         'var p=location.pathname;' +
-        "var mkt=(p==='/'||p.indexOf('/home-preview')===0||p.indexOf('/play-preview')===0)&&!native&&!standalone;" +
+        "var mkt=(p==='/'||p.indexOf('/home-preview')===0)&&!native&&!standalone;" +
         'if(mkt)return;' +
         "var l=document.createElement('link');l.rel='modulepreload';" +
         `l.href=${JSON.stringify('/assets/' + file)};l.crossOrigin='';` +

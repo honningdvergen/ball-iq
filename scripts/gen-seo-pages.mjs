@@ -1256,9 +1256,8 @@ ${footer()}`;
 // ── Footle landing page (/football-wordle/) ──────────────────────────────────
 // Game-name SEO: "football wordle" / "footle" — Ball IQ was absent from that
 // SERP even though Footle IS the product. Shared chrome; the green CTA
-// deep-links into the playable no-login game (the REAL app's deep-link handler
-// in src/App.jsx reads ?game=footle at /play — not PlayApp, which only renders
-// at /play-preview).
+// deep-links into the playable no-login game (src/App.jsx's deep-link handler
+// reads ?game=footle at /play).
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;

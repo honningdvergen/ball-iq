@@ -6479,7 +6479,7 @@ function DailyHeroCountdown() {
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 // Extracted to ./components/ErrorBoundary.jsx so main.jsx can also wrap the
-// marketing / play-preview trees. Re-exported here because GameRoot imports it
+// marketing tree. Re-exported here because GameRoot imports it
 // from './App.jsx'.
 export { ErrorBoundary };
 
