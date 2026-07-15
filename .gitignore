@@ -34,3 +34,10 @@ ios/DerivedData/
 *.p8
 *.p12
 key.properties
+
+# Raw pg_dump lands here UNSCRUBBED (contains the service_role JWT inside the
+# send_push trigger definition). Claude scrubs it into pg_dump-baseline.sql;
+# the raw file must never be committable.
+supabase/prod-snapshot/pg_dump-baseline.raw.sql
+android/.idea/deploymentTargetSelector.xml
+android/.idea/runConfigurations.xml

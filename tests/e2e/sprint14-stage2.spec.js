@@ -30,7 +30,7 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
     }
   });
 
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
@@ -50,7 +50,7 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
 test('Daily tab — Sprint #24 v4 layout renders', async ({ page, context }) => {
   await seedGuestMode(context);
 
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   // Sprint #27 Y2: at desktop viewports the mobile tab bar is replaced

@@ -35,9 +35,9 @@ export function cardTier(overall) {
   return "prospect";
 }
 
-// Tier palettes — Ball IQ's own slate → green → violet ramp (deliberately not a
-// metallic bronze/silver/gold scheme). Shared by the in-app card header and the
-// share render.
+// Tier palettes — Ball IQ's grey → green → gold ramp (neutral slate prospect,
+// brand-green pro, gold elite). Shared by the in-app card header and the share
+// render (api/og.js imports these — keep this module the single source of truth).
 export const CARD_TIERS = {
   elite:    { bg: "linear-gradient(160deg,#2a2410 0%,#0a0a0a 100%)", accent: "#FFC107", text: "#FFF6E0", label: "ELITE" },
   pro:      { bg: "linear-gradient(160deg,#0f2417 0%,#050d08 100%)", accent: "#58CC02", text: "#EAFBF0", label: "PRO" },

@@ -296,12 +296,11 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
     try {
       const gameMode = room.mode || "race";
       // Rank by the same metric the game-over screen uses per mode: survival →
-      // latest elimination (alive beats everyone), hotstreak → best streak,
-      // race → points. Strict comparison: ties are NOT wins (the old `>=`
-      // recorded a draw as a W on both devices and inflated the Online tab).
+      // latest elimination (alive beats everyone), race → points. Strict
+      // comparison: ties are NOT wins (the old `>=` recorded a draw as a W on
+      // both devices and inflated the Online tab).
       const metric = (p) => gameMode === "survival"
         ? (p.eliminated_at_q == null ? Number.MAX_SAFE_INTEGER : p.eliminated_at_q)
-        : gameMode === "hotstreak" ? (p.best_streak || 0)
         : (p.score || 0);
       const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0, m: metric(p) }));
       const mine = rows.find(r => r.id === myPlayer.user_id);
@@ -607,9 +606,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         {/* Scoring mode — shown to EVERYONE (room.mode broadcasts) so joiners
             know what they're playing before the host hits Start. */}
         <div style={{ textAlign: "center", fontSize: 13, color: "var(--t2)", marginBottom: 16 }}>
-          {activeMode === "hotstreak"
-            ? "🔥 Hot Streak — longest correct streak wins"
-            : activeMode === "survival"
+          {activeMode === "survival"
             ? "💀 Survival — one wrong answer and you're out"
             : "🏁 Race — fastest correct answers win"}
         </div>
@@ -767,20 +764,15 @@ function LobbyError({ error, onExit, onRetry }) {
 }
 
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
-  const isHotStreak = room?.mode === 'hotstreak';
   const isSurvival = room?.mode === 'survival';
-  // Survival ranks by who lasted longest (alive > later elimination); Hot Streak
-  // ranks by best streak; Race ranks by points. All fall back to joined_at asc
-  // so ties stay stable (earliest joiner wins).
+  // Survival ranks by who lasted longest (alive > later elimination); Race
+  // ranks by points. All fall back to joined_at asc so ties stay stable
+  // (earliest joiner wins).
   const sorted = (players || []).slice().sort((a, b) => {
     if (isSurvival) {
       const ae = a.eliminated_at_q == null ? Infinity : a.eliminated_at_q;
       const be = b.eliminated_at_q == null ? Infinity : b.eliminated_at_q;
       if (ae !== be) return be - ae;
-    }
-    if (isHotStreak) {
-      const bs = (b.best_streak || 0) - (a.best_streak || 0);
-      if (bs !== 0) return bs;
     }
     if (b.score !== a.score) return b.score - a.score;
     const ta = a.joined_at || '';
@@ -932,9 +924,9 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const twoPlayer = sorted.length === 2;
   const meP = myUserId ? sorted.find(p => p.user_id === myUserId) : sorted[0];
   const oppP = twoPlayer ? sorted.find(p => p !== meP) : null;
-  const metricOf = (p) => isSurvival ? (p?.eliminated_at_q == null ? Infinity : p.eliminated_at_q) : isHotStreak ? (p?.best_streak || 0) : (p?.score || 0);
-  const metricText = (p) => isSurvival ? (p?.eliminated_at_q == null ? '❤️' : `Q${p.eliminated_at_q + 1}`) : isHotStreak ? `${p?.best_streak ?? 0}` : `${p?.score ?? 0}`;
-  const metricUnit = isSurvival ? 'survived' : isHotStreak ? 'streak' : 'points';
+  const metricOf = (p) => isSurvival ? (p?.eliminated_at_q == null ? Infinity : p.eliminated_at_q) : (p?.score || 0);
+  const metricText = (p) => isSurvival ? (p?.eliminated_at_q == null ? '❤️' : `Q${p.eliminated_at_q + 1}`) : `${p?.score ?? 0}`;
+  const metricUnit = isSurvival ? 'survived' : 'points';
   const boardDraw = twoPlayer && (survivalDraw || metricOf(meP) === metricOf(oppP));
   const iWonBoard = twoPlayer && !boardDraw && metricOf(meP) > metricOf(oppP);
 
@@ -949,7 +941,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         : (iWonBoard ? 'You lasted longer' : `${oppP?.name || 'They'} lasted longer`);
     }
     const diff = Math.abs(metricOf(meP) - metricOf(oppP));
-    const unit = isHotStreak ? '' : diff === 1 ? ' point' : ' points';
+    const unit = diff === 1 ? ' point' : ' points';
     return iWonBoard ? `You won by ${diff}${unit}` : `Beaten by ${diff}${unit}`;
   })();
 
@@ -1059,11 +1051,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
             letterSpacing: 0.4, textTransform: 'uppercase',
             marginBottom: 2, paddingLeft: 4,
           }}>
-            {isSurvival ? 'Last standing' : isHotStreak ? 'Best streaks' : 'Final scores'}
+            {isSurvival ? 'Last standing' : 'Final scores'}
           </div>
-          {(isSurvival || isHotStreak) && !survivalDraw && (
+          {isSurvival && !survivalDraw && (
             <div style={{ fontSize: 11, color: 'var(--t3)', paddingLeft: 4, marginBottom: 6 }}>
-              {isSurvival ? 'Knocked out later = ranked higher' : 'Longest correct streak wins'}
+              Knocked out later = ranked higher
             </div>
           )}
           {sorted.map((p, idx) => {
@@ -1101,11 +1093,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
                   }}>
                     {isSurvival
                       ? (p.eliminated_at_q == null ? '❤️' : `💀 Q${p.eliminated_at_q + 1}`)
-                      : isHotStreak ? `🔥 ${p.best_streak ?? 0}` : (p.score ?? 0)}
+                      : (p.score ?? 0)}
                   </div>
-                  {/* Secondary stat: survival + hot streak rank on their own metric,
-                      so surface raw points as the tie-breaker context. */}
-                  {(isSurvival || isHotStreak) && (
+                  {/* Secondary stat: survival ranks on its own metric, so
+                      surface raw points as the tie-breaker context. */}
+                  {isSurvival && (
                     <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 600, marginTop: 1 }}>
                       {(p.score ?? 0)} pts
                     </div>
@@ -1313,7 +1305,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // disabled so they never tap, and their answered_question only advances when
   // their own 20s timer fires. Gating the reveal on them would force the living
   // to wait the full timer every post-elimination question. So only living
-  // players gate the reveal in survival (all players in race/hotstreak).
+  // players gate the reveal in survival (all players in race).
   const allAnswered = players.length > 0 && players
     .filter(p => room?.mode !== 'survival' || p.eliminated_at_q == null)
     .every(p => p.answered_question >= currentQuestionIdx);
@@ -2112,8 +2104,8 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
                 {isHostPlayer && <span style={{ color: "var(--accent)", marginLeft: 4 }}>★</span>}
               </div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
-                {mode === "hotstreak" ? `🔥 ${p.streak ?? 0}`
-                  : mode === "survival" ? <span role="img" aria-label={p.eliminated_at_q != null ? "eliminated" : "still alive"}>{p.eliminated_at_q != null ? "💀" : "❤️"}</span>
+                {mode === "survival"
+                  ? <span role="img" aria-label={p.eliminated_at_q != null ? "eliminated" : "still alive"}>{p.eliminated_at_q != null ? "💀" : "❤️"}</span>
                   : p.score}
               </div>
             </div>

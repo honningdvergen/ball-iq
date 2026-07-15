@@ -45,14 +45,20 @@ async function saveToken(token) {
 // isn't missed. Receives the push's `data` payload (e.g. { type, code }).
 export function onPushTap(cb) { _tapCb = cb; }
 
-// Call after sign-in on native. Requests permission (first call only shows the
-// iOS prompt), attaches listeners once, and registers with APNs. Idempotent.
-export async function registerPush(userId) {
+// Call after sign-in on native. Attaches listeners once and registers with
+// APNs. Idempotent. `requestPermission: true` fires the ONE-SHOT iOS permission
+// prompt (only the explicit user opt-in path may do this — a deny there is
+// permanent); `requestPermission: false` is the passive path (session resolve):
+// it only checks the existing permission and proceeds if already granted,
+// never prompting.
+export async function registerPush(userId, { requestPermission = true } = {}) {
   if (!pushSupported() || !userId) return;
   _uid = userId;
   try {
-    const perm = await PushNotifications.requestPermissions();
-    if (perm.receive !== 'granted') return; // user declined — leave it
+    const perm = requestPermission
+      ? await PushNotifications.requestPermissions()
+      : await PushNotifications.checkPermissions();
+    if (perm.receive !== 'granted') return; // not granted — leave it
     if (!_wired) {
       _wired = true;
       // Token issued / rotated by APNs → persist it.

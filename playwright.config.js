@@ -18,9 +18,23 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: process.env.BALLIQ_BASE_URL || 'https://balliq.app',
+    // Local vite dev server by default (started by webServer below). The
+    // suite went dead when it pointed at prod: the 2026-07-04 marketing
+    // split made '/' render MarketingHome, and specs now goto('/play').
+    // Set BALLIQ_BASE_URL to audit a deployed environment instead.
+    baseURL: process.env.BALLIQ_BASE_URL || 'http://localhost:4173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+  },
+
+  // Auto-start the app for the default local baseURL. reuseExistingServer
+  // lets a dev keep `npm run dev`-style servers running on 4173 locally;
+  // CI always boots a fresh one.
+  webServer: {
+    command: 'npx vite --port 4173 --strictPort',
+    url: 'http://localhost:4173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
   },
 
   // Mobile viewport profiles. Each tagged so individual viewports can be

@@ -27,7 +27,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 async function shotMode({ page, testInfo, modeName, openLocator }) {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   const entry = openLocator(page)

@@ -14,6 +14,7 @@
 // dark-only chrome and must read correctly regardless of the runtime theme.
 // The visible display gating + hover/active states live in app.css (.biq-nav
 // *), so this file is pure structure.
+import { APP_STORE_URL } from './lib/links.js';
 
 // Shared attrs for the 20px 2px-stroke line icons.
 const ICON = {
@@ -114,7 +115,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
         {/* App Store — live listing, real link (no coming-soon toast). */}
         <a
           className="bn-store"
-          href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961"
+          href={APP_STORE_URL}
           target="_blank"
           rel="noopener"
         >

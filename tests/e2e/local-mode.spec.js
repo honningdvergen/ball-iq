@@ -31,7 +31,7 @@ async function captureErrors(page) {
 }
 
 async function enterLocalSetup(page) {
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   // MultiplayerCard's Local CTA on Home — labelled "Local" or "Pass-and-play"

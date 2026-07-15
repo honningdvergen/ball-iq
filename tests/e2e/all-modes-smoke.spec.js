@@ -36,7 +36,7 @@ async function expectNoCrash(page, errs, label) {
 test('Footle entry', async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.locator('.footle-hero').first().click();
@@ -47,7 +47,7 @@ test('Footle entry', async ({ page, context }) => {
 test("Today's 7 entry", async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.locator('.todays-seven-secondary').first().click();
@@ -59,7 +59,7 @@ for (const mode of ['Classic', 'Survival', 'Hot Streak', 'Legends', 'Chaos']) {
   test(`More-modes — ${mode}`, async ({ page, context }) => {
     await seedGuestMode(context);
     const errs = await captureErrors(page);
-    await page.goto('/');
+    await page.goto('/play');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
     await page.locator('.play-card').filter({ hasText: mode }).first().click();
@@ -71,7 +71,7 @@ for (const mode of ['Classic', 'Survival', 'Hot Streak', 'Legends', 'Chaos']) {
 test('Ball IQ Test entry', async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.locator('.play-card').filter({ hasText: /Ball IQ Test|IQ Test/ }).first().click();
@@ -82,7 +82,7 @@ test('Ball IQ Test entry', async ({ page, context }) => {
 test('Multiplayer Online entry (guest → toast, no crash)', async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Play online multiplayer' }).first().click();
@@ -101,7 +101,7 @@ test('Multiplayer Local entry', async ({ page, context }, testInfo) => {
   );
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Play local multiplayer' }).first().click();

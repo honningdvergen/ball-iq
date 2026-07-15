@@ -42,6 +42,10 @@ const DIST = resolve(ROOT, 'dist');
 
 const MIN_HINTS = 15; // fail the build if any category falls below this
 
+// AdSense publisher id. Mirrored in index.html (native-guarded there) and in
+// public/ads.txt — all three must agree or AdSense stops serving.
+const ADSENSE_CLIENT = 'ca-pub-7467890219483381';
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 const esc = (s) =>
   String(s)
@@ -315,6 +319,46 @@ function renderFaq(faq, extra) {
   return `<div class="faq">\n${items.join('\n')}\n</div>`;
 }
 
+// ── AdSense display slots ────────────────────────────────────────────────────
+// The loader lives in head(). These <ins> blocks are the actual inventory —
+// without them the loader runs and renders nothing (which was the state until
+// now: all cost, no revenue).
+//
+// PLACEMENT POLICY — slots go BELOW appCtaBand(), never above it, and never
+// adjacent to the hero taster. Two independent reasons, both load-bearing:
+//   1. Funnel. The taster + CTA band turn a searcher into a player and then an
+//      install, which is worth far more than an impression. Anything competing
+//      for attention above the CTA band trades a high-value conversion for a
+//      low-value click. Below it, the reader has already declined to convert —
+//      that attention is free to monetise.
+//   2. AdSense policy. Ads adjacent to interactive elements attract accidental
+//      clicks; Google classes that as invalid traffic and penalises at the
+//      ACCOUNT level, not the page level. The taster is interactive. Keep away.
+//
+// SLOT IDS come from ad units created in the AdSense dashboard — they are not
+// derivable from code. AD_SLOTS is empty until those exist; adSlot() renders
+// nothing while a slot id is absent, so the generator stays safe to run.
+const AD_SLOTS = {
+  // afterQA: '1234567890',
+  // afterFaq: '0987654321',
+};
+
+// The loader is only emitted when real slots exist AND the page type carries
+// them (head({ ads: true })). This is the whole point: before this, every
+// generated page — including Contact and About, which have no ad slots and
+// never will — pulled Google's ad library on every visit. All cost, no revenue,
+// on the fastest pages we own. With AD_SLOTS empty, NO page loads it.
+const ADS_ENABLED = Object.keys(AD_SLOTS).length > 0;
+
+function adSlot(key, label) {
+  const id = AD_SLOTS[key];
+  if (!id) return '';
+  return `<aside class="ad-slot" aria-label="${esc(label || 'Advertisement')}">
+<ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${id}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</aside>`;
+}
+
 // Responsive related-quiz tile grid. Every tile links to a LIVE /quiz/<slug>/.
 function renderTiles(pages) {
   const items = pages
@@ -489,7 +533,11 @@ function renderCovers(name, isLeague, isPlayer) {
 // ── shared <head> + inline CSS ────────────────────────────────────────────────
 // Inter (UI) + JetBrains Mono (numbers/tags) loaded NON-render-blocking, same as
 // the app's index.html.
-function head({ title, description, canonical, ld }) {
+// `ads` opts a page type INTO the AdSense loader. Only pages that actually
+// render adSlot() calls should pass it — see the AD_SLOTS placement policy.
+// The account meta below stays on every page unconditionally: it is inert
+// (makes no request) and is Google's raw-HTML site-ownership signal.
+function head({ title, description, canonical, ld, ads = false }) {
   return `<!DOCTYPE html>
 <html lang="en" style="background-color:${PAGE_BG}">
 <head>
@@ -498,8 +546,30 @@ function head({ title, description, canonical, ld }) {
 <meta name="theme-color" content="${PAGE_BG}" />
 <meta name="color-scheme" content="dark" />
 <meta name="robots" content="max-image-preview:large" />
-<meta name="google-adsense-account" content="ca-pub-7467890219483381" />
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381" crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="${ADSENSE_CLIENT}" />${ads && ADS_ENABLED ? `
+<script>
+/* AdSense loader — WEB ONLY, injected behind a native guard mirroring index.html.
+   These pages are authored for the web, but capacitor's webDir:"dist" copies the
+   WHOLE build into the iOS/Android app bundle — they ship inside the native app
+   whether or not anything links to them. A raw <script src> here would mean the
+   native app fetches Google's ad/tracking script the moment any route reaches
+   one, silently contradicting the App Store privacy declaration (no ads / no
+   analytics). Today nothing reaches them — main.jsx gates marketing on !native
+   and the AASA only claims /join/* and /c/* — but that is a property of the
+   ROUTING, not of these pages, and routing changes. This guard makes it
+   structural rather than a comment someone has to remember. */
+(function(){try{
+  var native = location.protocol === 'capacitor:' ||
+    (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
+    document.documentElement.classList.contains('native-app');
+  if (native) return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}';
+  s.crossOrigin = 'anonymous';
+  document.head.appendChild(s);
+}catch(e){}})();
+</script>` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
 <link rel="canonical" href="${canonical}" />
@@ -594,6 +664,14 @@ function head({ title, description, canonical, ld }) {
   .appband h2{color:#0A0A0A;font-size:clamp(23px,3.4vw,34px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
   .appband p{color:rgba(10,10,10,.72);font-size:16px;font-weight:600;line-height:1.5;margin-bottom:22px}
   .appband .store-badge{border-color:rgba(10,10,10,.25)}
+  /* ad slots — min-height reserves the box BEFORE the ad arrives, so filling it
+     shifts nothing. Ads are the classic CLS offender and these pages live or die
+     on Core Web Vitals; an unreserved slot would trade search rank for ad pennies.
+     The label keeps us the right side of AdSense's "clearly labelled" rule and
+     stops a unit reading as our own content. */
+  .ad-slot{max-width:760px;margin:10px auto 26px;min-height:280px}
+  .ad-slot::before{content:"Advertisement";display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx4)}
+  .ad-slot .adsbygoogle{display:block;min-height:250px}
   /* related tiles */
   .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
   .tile{display:flex;align-items:center;gap:11px;padding:14px;background:var(--card2);border:1px solid var(--bd);border-radius:14px;transition:border-color .16s,transform .16s}
@@ -678,15 +756,28 @@ const QUIZ_DEEPLINK_SLUGS = new Set([
 const CAT_SLUG_TO_CLUB_SLUGS = {
   'premier-league': ['arsenal', 'liverpool', 'manchester-united', 'manchester-city', 'tottenham', 'chelsea', 'newcastle'],
   'la-liga': ['barcelona', 'real-madrid', 'atletico-madrid'],
-  'serie-a': ['juventus', 'inter-milan', 'ac-milan', 'napoli'],
+  'serie-a': ['juventus', 'inter-milan', 'ac-milan', 'napoli', 'roma'],
   'bundesliga': ['bayern-munich', 'borussia-dortmund'],
   'ligue-1': ['psg'],
-  'super-lig': ['galatasaray'],
-  'primeira-liga': ['benfica'],
+  'super-lig': ['galatasaray', 'fenerbahce'],
+  'primeira-liga': ['benfica', 'porto'],
 };
 
+// Loud resolver: a mapped slug with no live club page is mesh drift — fail the
+// build rather than silently dropping the link (a .filter(Boolean) here once
+// hid orphaned club pages for weeks).
+function resolveLeagueClubs(catSlug, clubPages) {
+  return (CAT_SLUG_TO_CLUB_SLUGS[catSlug] || []).map((s) => {
+    const page = clubPages.find((p) => p.slug === s);
+    if (!page) {
+      throw new Error(`[gen-seo] CAT_SLUG_TO_CLUB_SLUGS maps "${catSlug}" → "${s}", but no club page has that slug. Fix the map or scripts/seo/clubs.mjs.`);
+    }
+    return page;
+  });
+}
+
 // ── per-category page ─────────────────────────────────────────────────────────
-function buildCategoryPage(catCfg, livePages, clubPages = []) {
+function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) {
   const all = catRows(catCfg.cat);
   const hints = hintRows(catCfg.cat);
   if (hints.length < MIN_HINTS) {
@@ -728,11 +819,12 @@ function buildCategoryPage(catCfg, livePages, clubPages = []) {
 
   const deepPlay = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : `${SITE.base}/`;
   const related = [
-    ...(CAT_SLUG_TO_CLUB_SLUGS[catCfg.slug] || []).map((s) => clubPages.find((p) => p.slug === s)).filter(Boolean),
+    ...resolveLeagueClubs(catCfg.slug, clubPages),
     ...livePages.filter((p) => p.slug !== catCfg.slug),
+    ...playerPages,
   ];
 
-  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld })}
+  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
 <main>
@@ -757,6 +849,7 @@ ${appCtaBand(catCfg.name)}
 <p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
 </section>
+${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -765,6 +858,7 @@ ${renderTiles(related)}
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
 ${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
+${adSlot('afterFaq')}
 </main>
 ${footer()}`;
 
@@ -777,7 +871,7 @@ ${footer()}`;
 // ── per-club page ─────────────────────────────────────────────────────────────
 // Mirrors buildCategoryPage but filters the bank by `club` instead of `cat`.
 // Prose comes from scripts/seo/clubs.mjs (fact-checked, currency-verified).
-function buildClubPage(cfg, clubPages, catPages) {
+function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
   const all = clubRows(cfg.club);
   const hints = clubHintRows(cfg.club);
   if (hints.length < MIN_HINTS) {
@@ -817,9 +911,10 @@ function buildClubPage(cfg, clubPages, catPages) {
   const related = [
     ...clubPages.filter((p) => p.slug !== cfg.slug),
     ...catPages,
+    ...playerPages,
   ];
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
 <main>
@@ -844,6 +939,7 @@ ${appCtaBand(cfg.name)}
 <p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
 </section>
+${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -852,6 +948,7 @@ ${renderTiles(related)}
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
+${adSlot('afterFaq')}
 </main>
 ${footer()}`;
 
@@ -865,7 +962,7 @@ ${footer()}`;
 // Mirrors buildClubPage, but the bank has no `player` field — a question is
 // "about" a player if any `match` alternative appears in the stem or the
 // correct answer. Prose comes from scripts/seo/players.mjs (fact-checked). No
-// in-app "player quiz" mode, so the taster funnels to the app generally.
+// in-app "player quiz" mode, so the taster funnels to the game at /play.
 function playerHintRows(match) {
   const re = new RegExp('(' + match.join('|') + ')', 'i');
   return QB.filter(
@@ -902,7 +999,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
     ],
   });
   const related = [...clubPages.slice(0, 8), ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4)];
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
 <main>
@@ -919,7 +1016,7 @@ ${heroTwoCol({
     lead: cfg.description,
     statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
-  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/`))}
+  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
 ${renderCovers(cfg.name, false, true)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -927,6 +1024,7 @@ ${appCtaBand(cfg.name)}
 <p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
 ${renderQA(sample)}
 </section>
+${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -935,6 +1033,7 @@ ${renderTiles(related)}
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
 </section>
+${adSlot('afterFaq')}
 </main>
 ${footer()}`;
   const dir = resolve(DIST, 'quiz', cfg.slug);
@@ -972,7 +1071,7 @@ function buildListiclePage(cfg, livePages) {
     ],
   });
   const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
 <main>
@@ -1001,6 +1100,7 @@ ${renderTiles(livePages.filter((p) => p.slug !== cfg.slug))}
 <h2>FAQ</h2>
 ${renderFaq(cfg.faq)}
 </section>
+${adSlot('afterFaq')}
 <section class="sec">
 <h2>About this quiz</h2>
 <div class="prose">
@@ -1012,6 +1112,7 @@ ${introHtml}
 <p class="sub">Tap “Show answer” to reveal the answer and the story behind it.</p>
 ${renderQA(listRows)}
 </section>
+${adSlot('afterQA')}
 </main>
 ${footer()}`;
   const dir = resolve(DIST, 'quiz', cfg.slug);
@@ -1021,7 +1122,7 @@ ${footer()}`;
 }
 
 // ── hub page ──────────────────────────────────────────────────────────────────
-function buildHubPage(livePages, clubPages) {
+function buildHubPage(livePages, clubPages, playerPages = []) {
   const canonical = `${SITE.base}/quiz/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -1073,6 +1174,11 @@ ${renderTiles(livePages.filter((p) => p.slug !== HUB.slug))}
 <h2>Club quizzes</h2>
 <p class="sub">Deep-dive quizzes on Europe's biggest clubs — history, legends and iconic moments.</p>
 ${renderTiles(clubPages)}
+</section>
+<section class="sec">
+<h2>Player quizzes</h2>
+<p class="sub">One-player deep dives — careers, records and the moments that made them.</p>
+${renderTiles(playerPages)}
 </section>
 <section class="sec">
 <h2>About Ball IQ quizzes</h2>
@@ -1150,7 +1256,9 @@ ${footer()}`;
 // ── Footle landing page (/football-wordle/) ──────────────────────────────────
 // Game-name SEO: "football wordle" / "footle" — Ball IQ was absent from that
 // SERP even though Footle IS the product. Shared chrome; the green CTA
-// deep-links into the playable no-login game (PlayApp reads ?game=footle).
+// deep-links into the playable no-login game (the REAL app's deep-link handler
+// in src/App.jsx reads ?game=footle at /play — not PlayApp, which only renders
+// at /play-preview).
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;
@@ -1353,11 +1461,11 @@ async function main() {
   const playerPages = PLAYERS.map((p) => ({ slug: p.slug, name: `${p.name} quiz`, count: playerHintRows(p.match).length }));
 
   const built = [];
-  for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages));
+  for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
-  const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages));
+  const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
-  buildHubPage(livePages, clubPages);
+  buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);

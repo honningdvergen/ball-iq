@@ -18,7 +18,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('home — full page', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   await page.screenshot({
@@ -28,7 +28,7 @@ test('home — full page', async ({ page }, testInfo) => {
 })
 
 test('daily — full page', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   const dailyTab = page.locator('button.tab-item:has-text("Daily")')

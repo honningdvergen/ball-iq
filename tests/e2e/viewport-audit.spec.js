@@ -41,7 +41,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('home screen — full page', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   // Give the lazy-loaded questions chunk a beat to settle so the home
   // mode picker renders fully populated.
@@ -53,7 +53,7 @@ test('home screen — full page', async ({ page }, testInfo) => {
 })
 
 test('daily tab — full page', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   // Tap the Daily tab in the bottom tab bar. Its label is "Daily".
@@ -70,7 +70,7 @@ test('daily tab — full page', async ({ page }, testInfo) => {
 })
 
 test('wordle main — full page', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   // From the Daily section / mode picker, find the Puzzle (Wordle) entry.
@@ -103,7 +103,7 @@ test('wordle main — full page', async ({ page }, testInfo) => {
 // locator.screenshot captures the element rect with no overlay regardless
 // of how the auto-scroll resolves.
 test('home — critical element captures', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
 

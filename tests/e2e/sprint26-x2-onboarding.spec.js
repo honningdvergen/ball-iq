@@ -21,7 +21,7 @@ test('fresh guest sees onboarding', async ({ page, context }) => {
     } catch {}
   });
 
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   // Onboarding has a skip button at minimum. Look for any "Skill" / "Skip" /
   // welcome-style text typical of step 0/1.
@@ -42,7 +42,7 @@ test('guest with biq_onboarded=1 skips onboarding', async ({ page, context }) =>
     } catch {}
   });
 
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   // Tab bar visible = we reached the main app, onboarding was skipped.
   await expect(page.locator('.tab-bar')).toBeVisible();
@@ -56,7 +56,7 @@ test('onboarded user does NOT replay onboarding after refresh', async ({ page, c
     } catch {}
   });
 
-  await page.goto('/');
+  await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await expect(page.locator('.tab-bar')).toBeVisible();
 

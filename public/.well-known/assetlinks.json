@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.balliq",
+      "sha256_cert_fingerprints": [
+        "96:E5:9D:0A:46:96:19:62:FD:DE:D9:80:90:AF:22:08:4B:E5:82:A8:D7:D8:E8:A3:CC:A7:F4:4B:12:6D:27:CD",
+        "23:EF:AB:CC:E6:C8:D2:3B:88:EF:DD:E8:30:01:E8:9F:CC:07:F4:58:F9:EE:0F:84:B9:51:52:D2:B3:40:12:66"
+      ]
+    }
+  }
+]

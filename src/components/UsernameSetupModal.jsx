@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { supabase } from "../supabase.js";
 import { isProfaneUsername } from "../lib/profanity.js";
+import { useModalA11y } from "../useModalA11y.js";
 
 // 1.0.2 Feature E: one-time "pick your username" step shown right after a NEW
 // Apple/Google sign-up. Email sign-ups already choose a username at the Login
@@ -39,8 +40,18 @@ function derivePrefill(user, authProfile) {
   return name.length >= 3 ? name : "";
 }
 
+// Mandatory step — there is no dismiss path (App.jsx only unmounts this on
+// onSaved), so back/ESC close is a stable no-op: the hook is here for the
+// focus trap + focus restore, and so a back gesture consumes the pushed
+// history entry instead of exiting the app. Must be module-level — an inline
+// arrow would re-run the hook's effect (and push a history entry) on every
+// keystroke re-render.
+const noDismiss = () => {};
+
 export function UsernameSetupModal({ user, authProfile, onSaved }) {
   const initial = useMemo(() => derivePrefill(user, authProfile), [user, authProfile]);
+  const modalRef = useRef(null);
+  useModalA11y({ isOpen: true, onClose: noDismiss, ref: modalRef });
   const [draft, setDraft] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -91,7 +102,7 @@ export function UsernameSetupModal({ user, authProfile, onSaved }) {
   };
 
   return (
-    <div className="onboard-wrap" role="dialog" aria-modal="true" aria-label="Choose your username">
+    <div ref={modalRef} tabIndex={-1} className="onboard-wrap" role="dialog" aria-modal="true" aria-label="Choose your username">
       <div className="onboard-viewport">
         <div className="onboard-step" style={{ width: "100%" }}>
           <div className="onboard-step-top">

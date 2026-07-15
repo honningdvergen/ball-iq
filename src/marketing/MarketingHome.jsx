@@ -12,10 +12,8 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 // Scroll reveals use IntersectionObserver (the prototype's CSS scroll-timeline
 // equivalent, per the README). All ambient motion respects prefers-reduced-motion.
 
-// Country-coded canonical URL. The country-less /app/id… form deep-links fine on
-// iOS but errors ("An Error Occurred") on desktop web, where there's no local
-// store to resolve into. Apple redirects any storefront to the viewer's own.
-const APP_STORE = 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961';
+// Country-coded canonical URL — single source of truth in lib/links.js.
+import { APP_STORE_URL as APP_STORE } from '../lib/links.js';
 const PLAY = '/play';
 // Build-time question-bank count (vite define, re-derived every deploy so it
 // never drifts stale). Fallback keeps dev servers / edge cases safe.

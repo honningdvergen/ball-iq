@@ -7,6 +7,8 @@
 // routing or persistence. Friends button scrolls to the existing
 // .friends-section inside the Profile tab. Settings opens the existing
 // Settings screen.
+import { APP_STORE_URL } from './lib/links.js';
+
 export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast, onHomeClick }) {
   const goTab = (id) => () => setTab(id);
 
@@ -54,7 +56,7 @@ export function DesktopNav({ tab, setTab, setScreen, dailyDone, showToast, onHom
       </nav>
       <div className="dn-cta">
         <div className="dn-cta-eyebrow">Get the app</div>
-        <a href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener" className="dn-cta-badge">App Store →</a>
+        <a href={APP_STORE_URL} target="_blank" rel="noopener" className="dn-cta-badge">App Store →</a>
         <a href="#" onClick={onStoreClick} className="dn-cta-badge">Google Play →</a>
       </div>
     </aside>

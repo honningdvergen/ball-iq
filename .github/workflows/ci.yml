@@ -1,0 +1,76 @@
+# Ball IQ CI — first safety net (2026-07-14).
+#
+# Job 1 (build-and-unit) is the hard gate: it mirrors the local
+# `npm run build` pipeline (eslint gate, vite build, SEO page gen) plus the
+# vitest unit suite. No secrets needed — the Sentry vite plugin self-disables
+# when SENTRY_AUTH_TOKEN is unset.
+#
+# Job 2 (e2e) runs the Playwright suite against a local vite server
+# (playwright.config.js webServer). It is continue-on-error FOR NOW — flip it
+# strict once it has proven green in CI for a while; a red-from-day-one gate
+# just teaches people to ignore CI.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (build gate — no-undef + rules-of-hooks are errors)
+        run: npx eslint src --quiet
+
+      - name: Build
+        run: npx vite build
+
+      - name: Generate SEO pages
+        run: node scripts/gen-seo-pages.mjs
+
+      - name: Unit tests
+        run: npx vitest run
+
+  e2e:
+    runs-on: ubuntu-latest
+    # Not yet a gate — see header comment. Flip to strict (remove this line)
+    # once the suite has proven reliably green in CI.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # chromium covers the Galaxy/desktop projects, webkit the iPhone/iPad
+      # ones (playwright device descriptors pick the engine per project).
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Playwright e2e
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

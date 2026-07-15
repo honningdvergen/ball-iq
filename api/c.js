@@ -60,6 +60,9 @@ export default function handler(req) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- googlebot-only noindex: keeps this share page out of search while leaving it
+     readable to card crawlers. See public/robots.txt for why this lives here. -->
+<meta name="googlebot" content="noindex">
 <title>${esc(title)}</title>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ball IQ">

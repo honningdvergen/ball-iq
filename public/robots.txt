@@ -1,7 +1,19 @@
 User-agent: *
 Allow: /
+
+# /api/og renders the OG card images. It MUST stay crawlable: /p, /q and /c all
+# point og:image at it (api/p.js, api/q.js, api/c.js), and Twitterbot,
+# facebookexternalhit and Slackbot all obey robots.txt — a Disallow here makes
+# every share on every surface unfurl with no image, silently. This Allow is
+# listed before the Disallow for first-match crawlers; Google uses longest-match,
+# where /api/og beats /api/ regardless of order. Do not "tidy" this away.
+Allow: /api/og
 Disallow: /api/
-Disallow: /p$
-Disallow: /p?
+
+# NOTE: /p, /q and /c are deliberately NOT disallowed here. They are share pages
+# we don't want in the search index, but blocking them in robots.txt also blocks
+# the card crawlers that need to READ their og: tags. The keep-out-of-index
+# intent now lives as <meta name="googlebot" content="noindex"> inside each
+# endpoint — which Google's indexer honours and card crawlers ignore.
 
 Sitemap: https://balliq.app/sitemap.xml

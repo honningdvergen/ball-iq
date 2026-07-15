@@ -312,10 +312,13 @@ export function useMultiplayerRoom(code) {
     return mpEndGame({ p_code: code })
   }, [code])
 
-  // Host-only, lobby-only: pick the scoring mode ('race' | 'hotstreak'). The
+  // Host-only, lobby-only: pick the scoring mode ('race' | 'survival'). The
   // server broadcasts the game_rooms UPDATE so every client's room.mode syncs.
+  // Rejects anything else client-side (the RPC still accepts legacy
+  // 'hotstreak'; hardening it is deferred with MP Phase 2).
   const setRoomMode = useCallback(async (modeArg) => {
     if (!code) return { ok: false, error: 'No active room' }
+    if (modeArg !== 'race' && modeArg !== 'survival') return { ok: false, error: `Invalid mode: ${modeArg}` }
     return mpSetRoomMode({ p_code: code, p_mode: modeArg })
   }, [code])
 

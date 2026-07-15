@@ -33,6 +33,8 @@ import {
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
+import { ErrorBoundary } from './components/ErrorBoundary.jsx';
+import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL } from './lib/links.js';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
 import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 // Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
@@ -76,41 +78,9 @@ perfMark('module-load: App.jsx parsed');
 // real security; this is just UI hiding.
 const REVIEWER_EMAIL = "alexbo99@hotmail.no";
 
-// ─── STORAGE SHIM ─────────────────────────────────────────────────────────────
-// Provides window.storage API using localStorage as fallback when deployed.
-// This ensures game progress persists across sessions on Vercel/mobile.
-if (typeof window !== 'undefined' && !window.storage) {
-  window.storage = {
-    get: async (key) => {
-      try {
-        const value = localStorage.getItem(key);
-        return value !== null ? { key, value } : null;
-      } catch { return null; }
-    },
-    set: async (key, value) => {
-      try {
-        localStorage.setItem(key, String(value));
-        return { key, value };
-      } catch { return null; }
-    },
-    delete: async (key) => {
-      try {
-        localStorage.removeItem(key);
-        return { key, deleted: true };
-      } catch { return null; }
-    },
-    list: async (prefix) => {
-      try {
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (!prefix || k.startsWith(prefix)) keys.push(k);
-        }
-        return { keys, prefix };
-      } catch { return { keys: [] }; }
-    },
-  };
-}
+// (The old async storage shim on window is gone — reads go straight to
+// localStorage; writes go through safeSetItem so QuotaExceededError is
+// surfaced via the biq:storage-quota-exceeded toast instead of vanishing.)
 
 // ─── APP META ─────────────────────────────────────────────────────────────────
 // Single source of truth for the version string — surfaced in Settings → About.
@@ -120,13 +90,8 @@ if (typeof window !== 'undefined' && !window.storage) {
 // bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
 // current for the web build.
 const APP_VERSION = "1.1.0";
-// Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
-// Drives the About "Rate" + "Share" deep links.
-const APP_STORE_ID = "6775975961";
-// Country-coded canonical store URL. The country-less /app/id… form errors on
-// desktop web (no local store to resolve); country-coded loads everywhere and
-// Apple auto-redirects to the viewer's own storefront.
-const APP_STORE_URL = "https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961";
+// APP_STORE_ID / APP_STORE_URL / PLAY_STORE_URL moved to ./lib/links.js
+// (single source of truth for every store CTA in src/ — imported above).
 // Shared style for the three About-card actions (Rate / Share / Feedback).
 const ABOUT_ACTION_STYLE = {
   flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
@@ -522,20 +487,27 @@ async function getBallIQQuestions() {
 async function getDailyQsForDate(date) {
   const { QB } = await loadQuestions();
   // MCQ only for daily — consistent experience, no typed surprises.
-  // Phase 6c.1: Daily 7 is a casual experience; gate cat:"Legends"
-  // out for the same reason getQs does. Cross-device determinism on
-  // the same day is preserved (same seed → same filtered pool → same
-  // questions). Cached completions in biq_daily_<ymd> are unaffected.
+  // Phase 6c.1: Daily 7 is a casual experience; gate cat:"Legends" out for the
+  // same reason getQs does.
+  //
+  // EVERY PLAYER GETS THE SAME SEVEN. The Daily 7 is a comparison surface (/c/
+  // challenge links, the "You beat X!" modal, the OG card), so selection must
+  // depend on the date and nothing else. Two things used to break that:
+  //   1. No applySeenFilter here. It reads device-local 14-day history, so two
+  //      players with different play histories got different questions. We
+  //      still RECORD into that history via _histKey below (other modes read
+  //      it) — this one never reads it. Cost: you may re-see a question from
+  //      another mode; rare against a ~3k pool.
+  //   2. seededShuffle, never Math.sin. Math.sin is implementation-approximated
+  //      per spec — 137/3000 values differ between JavaScriptCore (iOS
+  //      WKWebView, Safari) and V8 (Android, Chrome), which flipped the old
+  //      comparator's sign and reordered the pool per engine. seededShuffle is
+  //      integer bitwise only (ToUint32 is spec-exact): verified bit-identical
+  //      on both. Also O(n) vs the old comparator's O(n² log n) indexOf.
+  // Cached completions in biq_daily_<ymd> are unaffected.
   const seed = dayIndexForDate(date);
   const mcqOnly = QB.filter(q => q.type === "mcq" && q.cat !== "Legends");
-  const sorted = [...mcqOnly].sort((a, b) => {
-    const sa = Math.sin(seed * 2654435769 + mcqOnly.indexOf(a) * 1013904223) - 0.5;
-    const sb = Math.sin(seed * 2654435769 + mcqOnly.indexOf(b) * 1013904223) - 0.5;
-    return sa - sb;
-  });
-  // Hide questions seen within the last 14 days (falls back to full pool if < 7 remain)
-  const filtered = applySeenFilter(sorted, 7, qbHistKey);
-  return filtered.slice(0, 7).map(q => {
+  return seededShuffle(mcqOnly, seed * 1013904223).slice(0, 7).map(q => {
     const histKey = qbHistKey(q);
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = shuffle(indices);
@@ -2299,8 +2271,10 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         );
       })()}
 
+      {/* role="status" is polite by implication — NOT assertive, which the quiz
+          timer already owns; two assertive regions would clobber each other. */}
       {answered && (
-        <div className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
+        <div role="status" className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
           <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct"))
             ? "✓ Correct!"
             : isTyped
@@ -4079,7 +4053,35 @@ function StumpScreen({ row, onPlayFull, onHome }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label }) {
+// Wrong-answer review list — shared by the mobile results stack and the
+// desktop rd-card so the learn-loop survives at every width (desktop used to
+// silently drop it: the list lived inside .rd-mobile, display:none >= 1024).
+function WrongAnswersReview({ wrongAnswers }) {
+  if (!wrongAnswers || wrongAnswers.length === 0) return null;
+  return (
+    <div style={{marginTop:24}}>
+      <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
+        Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
+      </div>
+      <div className="wrong-review">
+        {wrongAnswers.map((w, i) => (
+          <div key={i} className="wr-item">
+            <div className="wr-q">{w.q}</div>
+            {w.user && (
+              <div className="wr-user">
+                <span className="wr-x">✗</span>{w.user}
+              </div>
+            )}
+            <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
+            {w.hint && <div className="wr-why">{w.hint}</div>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -4093,6 +4095,14 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
 
   const xpEarned = getXPForResult(result.score, result.total, mode);
   const showConfetti = isSurvival ? result.score >= 10 : pct >= 80;
+
+  // Daily 7 is one-shot: "Play Again" would just re-call startMode('daily')
+  // and toast "Already done today" — a dead primary button. Point the CTA at
+  // the OTHER daily loop (Footle) while it's still open; when both dailies
+  // are done, show a non-button "come back tomorrow" state instead.
+  const footleToday = isDaily ? readWordleTodayStatus() : null;
+  const footleOpen = footleToday && (footleToday.kind === "ready" || footleToday.kind === "in-progress");
+  const footleCta = footleToday?.kind === "in-progress" ? "Continue today's Footle" : "Play today's Footle";
 
   // Personal best detection
   const eligibleForPB = mode === "classic" && result.total === 10;
@@ -4233,34 +4243,20 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
           Amber Share was dropped for cross-screen consistency — Share is a
           secondary action everywhere now. */}
       <div className="results-actions" style={{marginTop:18}}>
-        <button className="btn-3d" onClick={onRetry}>Play Again</button>
+        {!isDaily && <button className="btn-3d" onClick={onRetry}>Play Again</button>}
+        {isDaily && footleOpen && <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>}
+        {isDaily && !footleOpen && (
+          <div style={{textAlign:"center", padding:"12px 0 2px", fontSize:14, fontWeight:700, color:"var(--t2)"}}>
+            Both dailies done — come back tomorrow 🌙
+          </div>
+        )}
         <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         {stumpQ && <button className="btn-3d ghost" onClick={onStump}>🥜 Stump a mate</button>}
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
 
       {/* Wrong answers review — below the buttons */}
-      {wrongAnswers && wrongAnswers.length > 0 && (
-        <div style={{marginTop:24}}>
-          <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
-            Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
-          </div>
-          <div className="wrong-review">
-            {wrongAnswers.map((w, i) => (
-              <div key={i} className="wr-item">
-                <div className="wr-q">{w.q}</div>
-                {w.user && (
-                  <div className="wr-user">
-                    <span className="wr-x">✗</span>{w.user}
-                  </div>
-                )}
-                <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
-                {w.hint && <div className="wr-why">{w.hint}</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <WrongAnswersReview wrongAnswers={wrongAnswers} />
       </div>{/* /.rd-mobile */}
 
       {/* ── desktop-web-refresh (Results #03): centered card. display:none <1024;
@@ -4285,13 +4281,22 @@ function Results({ result, mode, onHome, onRetry, onShare, iqHistory, survivalBe
             <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
           </div>
           <div className="rd-actions">
-            <button className="rd-btn rd-btn-primary" onClick={onRetry}>Play again</button>
+            {!isDaily && <button className="rd-btn rd-btn-primary" onClick={onRetry}>Play again</button>}
+            {isDaily && footleOpen && <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>}
+            {isDaily && !footleOpen && (
+              <span style={{alignSelf:"center", fontSize:13.5, fontWeight:700, color:"var(--t2)"}}>Come back tomorrow 🌙</span>
+            )}
             <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
             <button className="rd-btn rd-btn-ghost" onClick={onShare}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
               Share
             </button>
+            {stumpQ && <button className="rd-btn rd-btn-ghost" onClick={onStump}>🥜 Stump a mate</button>}
           </div>
+        </div>
+        {/* Same review loop as mobile — constrained to the rd-card column. */}
+        <div style={{maxWidth:560, margin:"0 auto"}}>
+          <WrongAnswersReview wrongAnswers={wrongAnswers} />
         </div>
       </div>
     </div>
@@ -6297,7 +6302,6 @@ function OnboardingScreen({ onDone }) {
       }
       localStorage.setItem("biq_onboarded", "1");
     } catch {}
-    try { window.storage?.set("biq_onboarded", "1").catch(() => {}); } catch {}
     // Sprint #26 X2: persist to profile so the flag survives across devices.
     // Guest users (no signed-in session) stay local-only; the migration on
     // first sign-in propagates the local flag to their profile.
@@ -6474,62 +6478,10 @@ function DailyHeroCountdown() {
 }
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
-// Exported so GameRoot can ALSO wrap AuthProvider with it — a render/init throw
-// inside useAuth used to escape every boundary (the root boundary rendered
-// inside App, a child of the provider) and white-screen the app.
-// (medical error-observability, medium.)
-export class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-  componentDidCatch(error, info) {
-    console.error("[boundary]", error?.message || "Unknown error");
-    // Sprint #75 QQ7: forward to Sentry so launch-day monitoring sees
-    // render crashes. Without this, any crash that triggers the fallback
-    // UI is invisible — users see "Something went wrong" but ops never
-    // knows. info.componentStack pinpoints where in the React tree.
-    try {
-      Sentry.captureException(error, {
-        tags: { boundary: 'app-root' },
-        contexts: { react: { componentStack: info?.componentStack } },
-      });
-    } catch {}
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{
-          minHeight:"100dvh", display:"flex", flexDirection:"column",
-          alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#0A0A0A", fontFamily:"Inter,sans-serif", textAlign:"center"
-        }}>
-          <div style={{fontSize:48, marginBottom:16}}>⚽</div>
-          <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>
-            Something went wrong
-          </div>
-          <div style={{fontSize:14, color:"#9BA0B8", lineHeight:1.7, marginBottom:28}}>
-            Even the best teams have bad days. Tap below to restart.
-          </div>
-          <button
-            onClick={() => { this.setState({ hasError:false, error:null }); window.location.reload(); }}
-            style={{
-              padding:"13px 28px", background:"#58CC02", border:"none",
-              borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:14,
-              fontWeight:700, color:"#0a1a00", cursor:"pointer"
-            }}
-          >
-            Restart App
-          </button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+// Extracted to ./components/ErrorBoundary.jsx so main.jsx can also wrap the
+// marketing / play-preview trees. Re-exported here because GameRoot imports it
+// from './App.jsx'.
+export { ErrorBoundary };
 
 // Per-tab error boundary. The root ErrorBoundary above white-screens the WHOLE
 // app on any throw; this one isolates a crash to the single tab pane it wraps,
@@ -6744,8 +6696,16 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId }) {
     // merge. Skip the empty-grid initial state to avoid a useless write.
     if (userId && state.guesses.length > 0) {
       supabase.rpc('upsert_wordle_state', { p_ymd: dateKey, p_state: state })
-        .then(({ error }) => { if (error) console.warn('[wordle sync]', error.message); })
-        .catch(e => console.warn('[wordle sync]', e?.message || e));
+        .then(({ error }) => {
+          if (error) {
+            console.warn('[wordle sync]', error.message);
+            Sentry.captureException(error, { tags: { area: 'wordle-sync' } });
+          }
+        })
+        .catch(e => {
+          console.warn('[wordle sync]', e?.message || e);
+          Sentry.captureException(e, { tags: { area: 'wordle-sync' } });
+        });
     }
   }, [state, storageKey, userId, dateKey]);
 
@@ -7620,7 +7580,7 @@ function AppInner() {
         // which reads shieldsUsed from localStorage, sees it after a reload —
         // otherwise one earned shield would freeze unlimited separate gaps.
         const updated = { ...p, shieldsUsed: (p.shieldsUsed || 0) + 1 };
-        window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+        safeSetItem("biq_stats", JSON.stringify(updated));
         return updated;
       });
       showToast(`🛡️ Streak shield used — your ${result.streak}-day streak is safe!`);
@@ -7669,7 +7629,7 @@ function AppInner() {
           const updated = { ...p, [flag]: true };
           // Persist directly (setStats alone doesn't write storage) so a
           // reload before the next saveStats can't replay the celebration.
-          window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+          safeSetItem("biq_stats", JSON.stringify(updated));
           return updated;
         });
       }
@@ -7747,7 +7707,7 @@ function AppInner() {
   const setProfile = useCallback((updater) => {
     setProfileState(prev => {
       const next = typeof updater === "function" ? updater(prev) : updater;
-      window.storage?.set("biq_profile", JSON.stringify(next)).catch(() => {});
+      safeSetItem("biq_profile", JSON.stringify(next));
       return next;
     });
   }, []);
@@ -7864,59 +7824,63 @@ function AppInner() {
     // already-onboarded users on fresh browsers and on EVERY visit in
     // storage-blocked browsers — removed.)
 
-    window.storage?.get("biq_stats").then(res => {
-      if (res) { try { setStats(JSON.parse(res.value)); } catch {} }
-    }).catch(() => {});
-    window.storage?.get(todayKey).then(res => {
-      if (res) { try { const d = JSON.parse(res.value); setDailyDone(true); setDailyScore(d.score); } catch {} }
-    }).catch(() => {});
+    try {
+      const raw = localStorage.getItem("biq_stats");
+      if (raw !== null) setStats(JSON.parse(raw));
+    } catch {}
+    try {
+      const raw = localStorage.getItem(todayKey);
+      if (raw !== null) { const d = JSON.parse(raw); setDailyDone(true); setDailyScore(d.score); }
+    } catch {}
     // Load full daily history — any biq_daily_YYYY-MM-DD entry
-    (async () => {
-      try {
-        const listRes = await window.storage?.list("biq_daily_");
-        const keys = listRes?.keys || [];
-        const hist = {};
-        for (const k of keys) {
-          const m = k.match(/^biq_daily_(\d{4}-\d{2}-\d{2})$/);
-          if (!m) continue;
-          try {
-            const r = await window.storage?.get(k);
-            if (!r) continue;
-            const parsed = JSON.parse(r.value);
-            if (typeof parsed?.score === "number") hist[m[1]] = parsed.score;
-          } catch {}
-        }
-        setDailyHistory(hist);
-      } catch {}
-    })();
-    window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
-    window.storage?.get("biq_iq_history").then(res => {
-      if (res) { try { setIqHistory(JSON.parse(res.value)); } catch {} }
-    }).catch(() => {});
-    window.storage?.get("biq_xp").then(res => {
-      if (res) { try { setXp(parseInt(res.value) || 0); } catch {} }
-    }).catch(() => {});
-    window.storage?.get("biq_hotstreak_best").then(res => {
-      if (res) { try { setHotstreakBest(parseInt(res.value) || 0); } catch {} }
-    }).catch(() => {});
-    window.storage?.get("biq_first_tip_shown").then(res => {
-      if (!res) setShowFirstQuizTip(true);
-    }).catch(() => {});
-    window.storage?.get("biq_rate_shown").then(res => {
-      if (res) setRatePromptShown(true);
-    }).catch(() => {});
+    try {
+      const hist = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        const m = k && k.match(/^biq_daily_(\d{4}-\d{2}-\d{2})$/);
+        if (!m) continue;
+        try {
+          const parsed = JSON.parse(localStorage.getItem(k));
+          if (typeof parsed?.score === "number") hist[m[1]] = parsed.score;
+        } catch {}
+      }
+      setDailyHistory(hist);
+    } catch {}
+    try {
+      const raw = localStorage.getItem("biq_profile");
+      if (raw !== null) setProfileState(JSON.parse(raw));
+    } catch {}
+    try {
+      const raw = localStorage.getItem("biq_iq_history");
+      if (raw !== null) setIqHistory(JSON.parse(raw));
+    } catch {}
+    try {
+      const raw = localStorage.getItem("biq_xp");
+      if (raw !== null) setXp(parseInt(raw) || 0);
+    } catch {}
+    try {
+      const raw = localStorage.getItem("biq_hotstreak_best");
+      if (raw !== null) setHotstreakBest(parseInt(raw) || 0);
+    } catch {}
+    try {
+      if (localStorage.getItem("biq_first_tip_shown") === null) setShowFirstQuizTip(true);
+    } catch {}
+    try {
+      if (localStorage.getItem("biq_rate_shown") !== null) setRatePromptShown(true);
+    } catch {}
     // Login streak handled by Phase G's tickLoginStreak useEffect — server
     // authoritative for signed-in users via tick_login_streak RPC, local
     // compute for guests. Removed from this mount-effect to eliminate the
     // hydrate-vs-mount-effect race (audit finding 2.1).
     // Load persisted settings
-    window.storage?.get("biq_settings").then(res => {
-      if (res) { try {
-        const s = JSON.parse(res.value);
+    try {
+      const raw = localStorage.getItem("biq_settings");
+      if (raw !== null) {
+        const s = JSON.parse(raw);
         setSettings(s);
         if (s.defaultDiff) setDiff(s.defaultDiff === "med" ? "medium" : s.defaultDiff);
-      } catch {} }
-    }).catch(() => {});
+      }
+    } catch {}
   }, []);
 
   // Sprint #26 X2: cross-device onboarding sync. Runs whenever authProfile
@@ -7940,7 +7904,6 @@ function AppInner() {
     if (profileOnboarded && !localOnboarded) {
       setHasOnboarded(true);
       try { localStorage.setItem("biq_onboarded", "1"); } catch {}
-      try { window.storage?.set("biq_onboarded", "1").catch(() => {}); } catch {}
     } else if (localOnboarded && !profileOnboarded) {
       supabase.from('profiles')
         .update({ onboarded_at: new Date().toISOString() })
@@ -8004,7 +7967,7 @@ function AppInner() {
       bestTrueFalse: mode === "truefalse" ? Math.max(stats.bestTrueFalse || 0, newResult.score) : (stats.bestTrueFalse || 0),
     };
     setStats(updated);
-    window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+    safeSetItem("biq_stats", JSON.stringify(updated));
 
     // Save individual score to Supabase if user is logged in
     if (user?.id && newResult.score !== undefined) {
@@ -8097,7 +8060,7 @@ function AppInner() {
       // dismissed it, so it lingered after Daily/Footle/Club starts).
       if (showFirstQuizTip) {
         setShowFirstQuizTip(false);
-        try { window.storage?.set("biq_first_tip_shown", "1"); } catch {}
+        safeSetItem("biq_first_tip_shown", "1");
       }
 
       // "balliq_confirmed" is only used as a transient signal from the
@@ -8376,9 +8339,11 @@ function AppInner() {
   }, []);
 
   // Register this device's APNs token once the user is signed in (native only;
-  // no-ops on web). Fires the iOS push-permission prompt on first run.
+  // no-ops on web). PASSIVE: never fires the one-shot iOS permission prompt at
+  // sign-in — it only registers if permission was already granted (via the
+  // notifications toggle / soft pre-prompt, which own the actual prompt).
   useEffect(() => {
-    if (user?.id) registerPush(user.id);
+    if (user?.id) registerPush(user.id, { requestPermission: false });
   }, [user?.id]);
 
   // Enable/disable the daily reminder. Enabling fires the OS permission prompt;
@@ -8394,6 +8359,9 @@ function AppInner() {
       }
       try { localStorage.setItem('biq_notif_enabled', '1'); } catch {}
       setNotifEnabled(true);
+      // Permission just granted (local + remote share one iOS grant) — register
+      // for APNs push too, so the passive sign-in path picks up a token here on.
+      if (user?.id) registerPush(user.id, { requestPermission: true });
       const ws = readWordleTodayStatus();
       const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
       scheduleReminderWindow({ skipToday: playedToday });
@@ -8404,7 +8372,7 @@ function AppInner() {
       cancelAllReminders();
       showToast('Daily reminders off');
     }
-  }, [dailyDone, showToast]);
+  }, [dailyDone, showToast, user?.id]);
 
   // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
   // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
@@ -8443,7 +8411,7 @@ function AppInner() {
       const oldInfo = getLevelInfo(prev);
       const newXp = prev + earned;
       const newInfo = getLevelInfo(newXp);
-      window.storage?.set("biq_xp", String(newXp)).catch(() => {});
+      safeSetItem("biq_xp", String(newXp));
       const leveledUp = newInfo.level.name !== oldInfo.level.name;
       // XP toast intentionally not fired here — every result screen
       // already shows a static "+N XP earned" footer, so the floating
@@ -8624,7 +8592,7 @@ function AppInner() {
       && !(IS_NATIVE && willAskNativeReview);
     if (shouldShowRate) {
       setRatePromptShown(true);
-      window.storage?.set("biq_rate_shown", "1").catch(() => {});
+      safeSetItem("biq_rate_shown", "1");
       celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 1800));
     }
 
@@ -8670,15 +8638,18 @@ function AppInner() {
     // Save BallIQ history (last 7 scores) + best IQ in stats
     if (mode === "balliq") {
       const iq = calcBallIQ(res.score, res.total);
-      window.storage?.get("biq_profile").then(r => { if(r) { try { setProfileState(JSON.parse(r.value)); } catch {} } }).catch(()=>{});
-    window.storage?.get("biq_iq_history").then(r => {
-        const hist = (() => { try { return r ? JSON.parse(r.value) : []; } catch { return []; } })();
+      try {
+        const raw = localStorage.getItem("biq_profile");
+        if (raw !== null) setProfileState(JSON.parse(raw));
+      } catch {}
+      try {
+        const hist = (() => { try { const raw = localStorage.getItem("biq_iq_history"); return raw !== null ? JSON.parse(raw) : []; } catch { return []; } })();
         const updated = [...hist, { iq, date: Date.now() }].slice(-7);
-        window.storage?.set("biq_iq_history", JSON.stringify(updated)).catch(() => {});
-      }).catch(() => {});
+        safeSetItem("biq_iq_history", JSON.stringify(updated));
+      } catch {}
       setStats(prev => {
         const updated = { ...prev, bestIQ: Math.max(prev.bestIQ || 0, iq) };
-        window.storage?.set("biq_stats", JSON.stringify(updated)).catch(() => {});
+        safeSetItem("biq_stats", JSON.stringify(updated));
         return updated;
       });
     }
@@ -8688,11 +8659,11 @@ function AppInner() {
       const targetDate = activeDailyDate || new Date();
       const targetYMD = dateToYMD(targetDate);
       const key = keyForDate(targetDate);
-      window.storage?.set(key, JSON.stringify({
+      safeSetItem(key, JSON.stringify({
         score: res.score,
         wrongAnswers: res.wrongAnswers || [],
         allAnswers: res.allAnswers || [],
-      })).catch(() => {});
+      }));
       // Cross-device sync — push score, wrongAnswers, and allAnswers to
       // profiles via three atomic JSON-merge RPCs. wrongAnswers is kept
       // alongside allAnswers (redundant but harmless; Phase 5x followup
@@ -8701,17 +8672,41 @@ function AppInner() {
       // has 7 entries on a complete game so it always fires).
       if (user?.id) {
         supabase.rpc('upsert_daily_score', { p_ymd: targetYMD, p_score: res.score })
-          .then(({ error }) => { if (error) console.warn('[daily sync]', error.message); })
-          .catch(e => console.warn('[daily sync]', e?.message || e));
+          .then(({ error }) => {
+            if (error) {
+              console.warn('[daily sync]', error.message);
+              Sentry.captureException(error, { tags: { area: 'daily-sync' } });
+            }
+          })
+          .catch(e => {
+            console.warn('[daily sync]', e?.message || e);
+            Sentry.captureException(e, { tags: { area: 'daily-sync' } });
+          });
         if (res.wrongAnswers && res.wrongAnswers.length > 0) {
           supabase.rpc('upsert_daily_wrong_answers', { p_ymd: targetYMD, p_wrongs: res.wrongAnswers })
-            .then(({ error }) => { if (error) console.warn('[daily wa sync]', error.message); })
-            .catch(e => console.warn('[daily wa sync]', e?.message || e));
+            .then(({ error }) => {
+              if (error) {
+                console.warn('[daily wa sync]', error.message);
+                Sentry.captureException(error, { tags: { area: 'daily-wa-sync' } });
+              }
+            })
+            .catch(e => {
+              console.warn('[daily wa sync]', e?.message || e);
+              Sentry.captureException(e, { tags: { area: 'daily-wa-sync' } });
+            });
         }
         if (res.allAnswers && res.allAnswers.length > 0) {
           supabase.rpc('upsert_daily_all_answers', { p_ymd: targetYMD, p_answers: res.allAnswers })
-            .then(({ error }) => { if (error) console.warn('[daily aa sync]', error.message); })
-            .catch(e => console.warn('[daily aa sync]', e?.message || e));
+            .then(({ error }) => {
+              if (error) {
+                console.warn('[daily aa sync]', error.message);
+                Sentry.captureException(error, { tags: { area: 'daily-aa-sync' } });
+              }
+            })
+            .catch(e => {
+              console.warn('[daily aa sync]', e?.message || e);
+              Sentry.captureException(e, { tags: { area: 'daily-aa-sync' } });
+            });
         }
       }
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
@@ -8751,7 +8746,7 @@ function AppInner() {
     if (mode === "hotstreak") {
       if (res.score > hotstreakBest) {
         setHotstreakBest(res.score);
-        window.storage?.set("biq_hotstreak_best", String(res.score)).catch(() => {});
+        safeSetItem("biq_hotstreak_best", String(res.score));
       }
     }
     // Record the questions actually shown into the 14-day seen history
@@ -8768,7 +8763,7 @@ function AppInner() {
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
       const updated = { ...prev, ...patch };
-      window.storage?.set("biq_settings", JSON.stringify(updated)).catch(() => {});
+      safeSetItem("biq_settings", JSON.stringify(updated));
       return updated;
     });
     // Apply defaultDiff immediately
@@ -8990,20 +8985,16 @@ function AppInner() {
     setHotstreakBest(0);
     try {
       // Single-key wipes — write the empty stats object, delete everything else.
-      await Promise.all([
-        window.storage?.set("biq_stats", JSON.stringify(reset)),
-        window.storage?.delete("biq_xp"),
-        window.storage?.delete("biq_login_streak"),
-        window.storage?.delete("biq_iq_history"),
-        window.storage?.delete("biq_hotstreak_best"),
-      ].map(p => Promise.resolve(p).catch(() => {})));
-      // Prefix wipes — daily completions and wordle state.
-      const listRes = await window.storage?.list();
-      const keys = listRes?.keys || [];
-      for (const k of keys) {
-        if (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k) || /^biq_wordle_/.test(k)) {
-          await window.storage?.delete(k).catch(() => {});
-        }
+      safeSetItem("biq_stats", JSON.stringify(reset));
+      // Prefix wipes collected first — removing while iterating localStorage
+      // shifts the key indices and skips entries.
+      const doomed = ["biq_xp", "biq_login_streak", "biq_iq_history", "biq_hotstreak_best"];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (/^biq_daily_\d{4}-\d{2}-\d{2}$/.test(k) || /^biq_wordle_/.test(k))) doomed.push(k);
+      }
+      for (const k of doomed) {
+        try { localStorage.removeItem(k); } catch {}
       }
     } catch {}
     showToast("✓ Stats cleared");
@@ -9609,7 +9600,7 @@ function AppInner() {
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Daily 7 — new questions every day!</div>
               </div>
-              <button onClick={() => { setShowFirstQuizTip(false); window.storage?.set("biq_first_tip_shown","1").catch(()=>{}); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
+              <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
           </div>
         )}
@@ -9659,7 +9650,7 @@ function AppInner() {
                     if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
                       window.open(APP_STORE_URL, "_blank");
                     } else if (/Android/i.test(ua)) {
-                      window.open("https://play.google.com/store/apps/details?id=com.balliq.app", "_blank");
+                      window.open(PLAY_STORE_URL, "_blank");
                     } else {
                       showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
                     }
@@ -10283,6 +10274,8 @@ function AppInner() {
               ? shareDaily()
               : shareScore(result?.score, result?.total, mode, { streak: result?.bestStreak, club: activeClub, league: activeLeague }))}
             onRetry={() => startMode(mode)}
+            // Daily results primary CTA: same navigation the Daily tab uses.
+            onPlayFootle={() => setScreen("wordle")}
           />
         )}
 

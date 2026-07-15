@@ -1050,7 +1050,16 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
         <div className="page-title">Blocked users</div>
       </div>
       {rows === null ? (
-        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Loading…</div>
+        // Same skeleton pattern as the friends list above — this screen is one
+        // tap away from it on the same journey, so the loading states match.
+        <div style={{padding:"4px 16px 24px"}} aria-busy="true" aria-label="Loading blocked users">
+          {[0,1,2].map(i => (
+            <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0"}}>
+              <div className="skeleton" style={{width:28,height:28,borderRadius:"50%",flexShrink:0}} />
+              <div className="skeleton" style={{height:12,width:`${55-i*10}%`,borderRadius:6}} />
+            </div>
+          ))}
+        </div>
       ) : rows.length === 0 ? (
         <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>No blocked users.</div>
       ) : (

@@ -263,6 +263,9 @@
            matches the #root recolor above; keep native on the mobile --bg. */
         background-color: #0A0A0A !important;
       }
+      /* Theme-aware variant of the native #root reset above: in light theme
+         the mobile --bg is #F2F2F7, not #0A0A0A. Higher specificity wins. */
+      html.native-app.light body > #root { background-color: #F2F2F7 !important; }
       html.native-app body > .landing-bottom { padding-left: 0 !important; }
       html.native-app body { background-image: none !important; }
 
@@ -320,6 +323,13 @@
              the standalone + native blocks below so PWA/native keep #0A0A0A. */
           background-color: #0A0A0A;
         }
+        /* Light theme: the desktop game chrome is dark-only (app.css pins the
+           dark token set at >=1024), so the canvas around the rail/column must
+           go dark too — otherwise html.light's #F2F2F7 rules above win on
+           specificity and frame the dark app in light grey. Restored to light
+           in the standalone block below (installed PWAs keep the mobile look). */
+        html.light body > #root { background-color: #0A0A0A; }
+        body.light { background-color: #0A0A0A; }
         /* Marketing chrome below the app needs the same sidebar clearance
            — otherwise the fixed DesktopNav overlays the leftmost portion
            of the features grid / signup / footer at viewport widths
@@ -340,6 +350,12 @@
              stays byte-identical (mirrors the .app --bg standalone reset). */
           background-color: #0A0A0A !important;
         }
+        /* Mirror of the >=1024 light-canvas recolor above — an installed PWA
+           in light theme must keep the light canvas at any size. Also outranks
+           the theme-blind `body > #root` #0A0A0A reset above, which used to
+           force a dark #root behind the light app in wide standalone windows. */
+        html.light body > #root { background-color: #F2F2F7 !important; }
+        body.light { background-color: #F2F2F7 !important; }
         body > .landing-bottom {
           padding-left: 0 !important;
         }

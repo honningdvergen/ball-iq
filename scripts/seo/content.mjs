@@ -272,7 +272,8 @@ export const LISTICLES = [
 // /football-wordle/ — game-name SEO ("football wordle", "footle"). Ball IQ was
 // absent from that SERP even though Footle IS the product (2026-07 growth
 // research). Product facts only — nothing time-fragile. The CTA deep-links
-// straight into the playable no-login game (PlayApp reads ?game=footle).
+// straight into the playable no-login game (the REAL app's deep-link handler
+// in src/App.jsx reads ?game=footle at /play — not PlayApp//play-preview).
 export const FOOTLE_PAGE = {
   slug: 'football-wordle',
   h1: 'Footle — the Football Wordle',

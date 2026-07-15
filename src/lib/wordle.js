@@ -549,13 +549,88 @@ export function getWordleDayIndex() {
 export const WORDLE_ANCHOR_IDX = 129;
 export const WORDLE_STRIDE = 131;
 
-// Stride-formula lookup for a specific day index. Pulled out of
-// getWordleAnswer() so anywhere that needs the puzzle for a non-today
-// date (e.g. PuzzleReviewScreen reviewing an arbitrary date) shares one
-// source of truth. The plain `dayIndex % len` formula MUST NOT be used —
-// it computes a different answer than the active game uses for the same day.
+// FROZEN answer log — Footle #1 (day WORDLE_ANCHOR_DAY, 2026-05-04) through
+// #400. WORDLE_ANSWER_LOG[n] is the answer for day index WORDLE_ANCHOR_DAY+n.
+//
+// WHY: the stride formula depends on WORDLE_PLAYERS.length as the modulo
+// base, so appending even ONE player silently rewrote every past and future
+// answer — including the publicly indexed answer archive (api/footle.js).
+// This log freezes the schedule the formula produced when the pool had 406
+// players, so the pool can now grow safely: days inside the log never move.
+//
+// GENERATED from the stride formula below (anchor idx 129, stride 131,
+// pool length 406) — tests/unit/wordle-schedule.test.js recomputes the
+// formula and asserts every log entry still matches while the pool is
+// unchanged, and that growing the pool moves no logged answer.
+//
+// TO EXTEND past #400: append more entries deliberately (any pool players,
+// hand-picked or generated) — do NOT rely on the formula fallback below,
+// which shifts whenever the pool grows.
+export const WORDLE_ANSWER_LOG = [
+  "GAZZA","PIATEK","BENRAHMA","MOUNT","SAGNOL","MARTINEZ","VILLA","BAILEY",
+  "BIERHOFF","JONES","BIELSA","BISSAKA","GIGGS","CHIESA","DEROSSI","DAEI",
+  "BAGGIO","VOELLER","BERG","ROBSON","ZIRKZEE","HART","ROONEY","CARRICK",
+  "EVRA","MILLA","HUMMELS","LAHM","BOWEN","EUSEBIO","IAQUINTA","BARRY",
+  "ELANGA","DESAILLY","NUNEZ","MARSCH","LINDELOF","SILVA","BAILLY","PODOLSKI",
+  "SMITH","TUCHEL","GHIGGIA","VIDIC","FOFANA","KOVACIC","ZAHA","VIALLI",
+  "HOLDING","PEPE","KEEGAN","KOMPANY","HOWE","AGUERO","ALISSON","DIAZ",
+  "SUKER","SNIJDER","OZIL","GREEN","PLATINI","KANE","WHITE","VOLKAN",
+  "ZAMORANO","ONANA","GORDON","SMALLING","PEDRO","CABAYE","RIJKAARD","KLOSE",
+  "POTTER","DEMIRAL","TEVEZ","HALLER","MARQUEZ","HOLT","HIERRO","WARNOCK",
+  "OLMO","HANSEN","ALMIRON","CECH","SUAREZ","EDERSON","RICE","POYET",
+  "SEEDORF","REUS","DUNNE","LINEKER","COLE","BUSBY","MUSCAT","BERAHINO",
+  "MENDY","TIGANA","STERLING","ALVES","ZAMORA","BUSQUETS","NEUER","ALONSO",
+  "CASILLAS","KLOPP","LUKAKU","WILLIAN","GERA","TORRES","ELLIOTT","SHAW",
+  "FOWLER","BENITEZ","DEAN","WENGER","MAGUIRE","SAKA","BURNS","MALDINI",
+  "TONI","AGGER","CANTONA","OWEN","CONTE","RONALDO","GUARDADO","DEPAY",
+  "HAYNES","MAKELELE","COSTA","MORENO","FABREGAS","GOTZE","ANTONY","MOURINHO",
+  "BANKS","LLORIS","MANCINI","HONG","HAZARD","LAUDRUP","ZOFF","BERGER",
+  "ROBINHO","POPE","CRUYFF","RUDIGER","ISCO","WOODS","GATTUSO","STAM",
+  "PEDRI","WILKINS","MANE","SARRI","HAALAND","GUERRERO","TOURE","HOWARD",
+  "MAZRAOUI","EVANS","HEINZE","COUTINHO","KROOS","WALKER","FERGUSON","MOORE",
+  "VARANE","FRIEDEL","NAGY","MORATA","ENRIQUE","SANE","MULLER","MARTIAL",
+  "BENT","PUSKAS","KIMMICH","KAKA","DOYLE","INZAGHI","ZOLA","ELANO",
+  "BUTCHER","PELE","KOVAC","BENZEMA","GUNDOGAN","MIKEL","ALBERT","VLAHOVIC",
+  "JAMES","TRAORE","COURTOIS","TOTTI","BAINES","DALGLISH","HURST","DAVIES",
+  "BERGOMI","HUTH","DROGBA","BENNETT","LEAO","RIBERY","ANTONIO","GRAY",
+  "YASHIN","DEMBELE","KOPA","SHEVA","MILITAO","RAUL","LEIVA","SHILTON",
+  "BEST","CARRA","BECKHAM","RIQUELME","YAMAL","PALMER","HEIGHWAY","VARDY",
+  "HUTTON","JORGINHO","NESTA","BARTON","MARADONA","ADAMS","HAKIMI","MILBURN",
+  "IDAH","MAHREZ","MUSIALA","BOSZ","ROBBEN","BRADLEY","KING","PETERS",
+  "ENDRICK","ZICO","MATIP","ASENSIO","XAVI","KANTE","FLOWERS","INCE",
+  "WALSH","GERRARD","RANGNICK","WIRTZ","NEDVED","CAMPBELL","BRADY","TAYLOR",
+  "VINICIUS","PIRLO","PEARCE","CHARLTON","PIRES","CAVANI","ZANETTI","VORM",
+  "MILNER","ROSICKY","WARK","PERSIE","INSIGNE","HUNT","HODDLE","WALCOTT",
+  "KANU","NEYMAR","HERRERA","ALBA","TUDOR","TOSHACK","RUSH","MOYES",
+  "LAMPARD","BROOKING","MUSAH","SEAMAN","TROSSARD","KEOWN","PETROV","GREALISH",
+  "VIERI","PARKER","BERGKAMP","DIXON","FALCAO","BENATIA","MESSI","DYBALA",
+  "KHEDIRA","AMOR","GULLIT","SHAQIRI","LATO","WADDLE","INIESTA","ETOO",
+  "MBAPPE","VERATTI","JOTA","DALOT","SOUNESS","CASE","VOGTS","SHEARER",
+  "BARDSLEY","REYNA","WAGNER","ANDERSON","POGBA","HAMSIK","GVARDIOL","PUYOL",
+  "LAUREN","CLEMENCE","KEANE","GALLAS","ADRIANO","SALAH","ICARDI","DOWNING",
+  "DIAS","KOEMAN","LANZINI","COCU","WRIGHT","RIVALDO","VAVA","MODRIC",
+  "MERTENS","MATA","BRAVO","KENNEDY","NEAL","COUTO","SCHOLES","DENILSON",
+  "DAVID","VALDES","MENDIETA","MARIA","GERSON","CASEMIRO","PIQUE","WERNER",
+  "REDKNAPP","IRWIN","CRESPO","VALDANO","HENRY","KOUNDE","VANDIJK","VIDA",
+  "DAVIDS","MUNTARI","DUFF","VIEIRA","BARELLA","DIDA","BUFFON","HIGUAIN",
+  "NANI","VERON","BALLACK","BABB","HEALY","FIRMINO","BENAYOUN","OLISE",
+  "VLASIC","WILSHERE","FODEN","ANELKA","VALVERDE","RAMOS","KONATE","MATTHAUS",
+  "BRUCE","ARTETA","PIZARRO","TERRY","THIAGO","VANGAAL","WEAH","BARESI",
+  "KOLAROV","WISE","HUGHES","BELOTTI","KEPA","ZIDANE","RAFINHA","PARK",
+];
+
+// Answer lookup for a specific day index. Pulled out of getWordleAnswer()
+// so anywhere that needs the puzzle for a non-today date (e.g.
+// PuzzleReviewScreen reviewing an arbitrary date) shares one source of
+// truth. Days covered by WORDLE_ANSWER_LOG (Footle #1..#400) read the
+// frozen log; only days beyond the horizon fall back to the stride formula
+// — extend the log before #400 arrives (~2027-06-07). The plain
+// `dayIndex % len` formula MUST NOT be used — it computes a different
+// answer than the active game uses for the same day.
 export function getWordleAnswerForDayIndex(dayIndex) {
-  const offset = (dayIndex - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
+  const n = dayIndex - WORDLE_ANCHOR_DAY;
+  if (n >= 0 && n < WORDLE_ANSWER_LOG.length) return WORDLE_ANSWER_LOG[n];
+  const offset = n * WORDLE_STRIDE;
   const len = WORDLE_PLAYERS.length;
   const idx = ((WORDLE_ANCHOR_IDX + offset) % len + len) % len;
   return WORDLE_PLAYERS[idx];

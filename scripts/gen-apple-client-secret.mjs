@@ -8,7 +8,10 @@
 // Usage:
 //   node scripts/gen-apple-client-secret.mjs [path-to-.p8]
 //
-// Default path: ~/Downloads/AuthKey_55P67V9N7S.p8
+// Default path: ~/.balliq/keys/AuthKey_55P67V9N7S.p8
+// (moved out of ~/Downloads 2026-07-14 — .p8 keys are download-once; a cleaned
+//  Downloads folder would have silently killed Sign in with Apple at the next
+//  secret rotation. Back this directory up.)
 //
 // Steps after running:
 //   1. Copy the JWT printed below.
@@ -29,7 +32,7 @@ const AUDIENCE    = 'https://appleid.apple.com';
 const VALIDITY_S  = 15_777_000; // ~6 months — Apple's hard cap.
 
 // ── Resolve .p8 path ───────────────────────────────────────────────────────
-const p8Path = process.argv[2] || join(homedir(), 'Downloads', `AuthKey_${KEY_ID}.p8`);
+const p8Path = process.argv[2] || join(homedir(), '.balliq', 'keys', `AuthKey_${KEY_ID}.p8`);
 
 let p8;
 try {

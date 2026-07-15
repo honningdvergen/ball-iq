@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak } from "../lib/wordle.js";
+import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber } from "../lib/wordle.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
 // grid preview + Play CTA; evening state (won/lost) shows the user's
@@ -73,12 +73,17 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     const grid = grades.map(row =>
       row.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")
     ).join("\n");
-    const score = isWon ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}` : "Didn't solve today";
-    const scoreLine = isWon && streak > 0 ? `${score} · 🔥 ${streak}-day streak` : score;
-    const textFallback = `⚽ ${APP_NAME} — Footle\n${scoreLine}\n\n${grid}\n\nballiq.app`;
+    const num = getFootleNumber();
+    const tag = num > 0 ? ` #${num}` : "";
+    // Same Wordle-convention format as the other two share builders (review
+    // screen + FootballWordle in App.jsx) — the three MUST stay in sync: the
+    // #N token is what makes grids comparable between strangers in a feed.
+    const head = `⚽ ${APP_NAME} Footle${tag} ${isWon ? guesses.length : "X"}/6`;
+    const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
     await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: isLost,
+      score: guesses.length, total: 6, grades, dateLabel, failed: isLost, num,
     }, { onToast: () => {}, textFallback });
   }, [isDone, isWon, isLost, guesses, grades, streak, today, shareCard]);
 

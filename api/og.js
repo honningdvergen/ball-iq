@@ -1,8 +1,18 @@
 import { ImageResponse } from '@vercel/og';
+import { CARD_TIERS, CARD_COMPS } from '../src/lib/ballIqCard.js';
 
 // Dynamic Open Graph image — renders the player's Ball IQ rating card so a
 // shared balliq.app/p?... link previews as their card (overall + tier + six
 // competition ratings + photo). Edge runtime; no JSX (plain element trees).
+//
+// Tier palettes + the competition list (order must match the `r` ratings param)
+// come from the SAME module the in-app card renders from, so the share preview
+// can never drift from the app again — a hand-copied palette here once shipped
+// a violet ELITE while the app showed gold. No test covers this file, so assert
+// the import shape at module load instead.
+if (!Array.isArray(CARD_COMPS) || CARD_COMPS.length !== 6) {
+  throw new Error(`api/og: expected 6 CARD_COMPS from ballIqCard.js, got ${CARD_COMPS?.length}`);
+}
 
 export const config = { runtime: 'edge' };
 
@@ -10,25 +20,6 @@ const h = (type, props, ...children) => ({
   type,
   props: { ...(props || {}), children: children.length === 0 ? undefined : (children.length === 1 ? children[0] : children) },
 });
-
-// Ball IQ's own slate → green → violet tier ramp (not metallic bronze/silver/gold).
-// Keys must match cardTier() in src/lib/ballIqCard.js.
-const TIERS = {
-  elite:    { bg: 'linear-gradient(135deg,#241a33 0%,#0c0814 100%)', accent: '#A78BFA', text: '#F3EEFF', label: 'ELITE' },
-  pro:      { bg: 'linear-gradient(135deg,#0f2417 0%,#050d08 100%)', accent: '#22C55E', text: '#EAFBF0', label: 'PRO' },
-  prospect: { bg: 'linear-gradient(135deg,#161c26 0%,#080b10 100%)', accent: '#8AA4C8', text: '#EDF2F8', label: 'PROSPECT' },
-};
-
-// Competitions in the same order as the `r` (ratings) param. Country flags are
-// license-safe (unlike the trademarked competition logos).
-const COMPS = [
-  { abbr: 'PRL', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-  { abbr: 'UCL', icon: '⭐' },
-  { abbr: 'WCP', icon: '🌍' },
-  { abbr: 'LAL', icon: '🇪🇸' },
-  { abbr: 'BUN', icon: '🇩🇪' },
-  { abbr: 'SEA', icon: '🇮🇹' },
-];
 
 // Stump-a-mate card (?t=stump): the question, answer redacted — paired with
 // api/q.js. Same 1200×630 canvas, app palette (near-black + brand green).
@@ -132,22 +123,44 @@ export default function handler(req) {
   // plain object lookup and would render the card with undefined styling
   // (fresh-code audit — no crash, but deterministic fallback is better).
   const tiKey = sp.get('ti');
-  const t = (tiKey && Object.prototype.hasOwnProperty.call(TIERS, tiKey)) ? TIERS[tiKey] : TIERS.prospect;
+  const t = (tiKey && Object.prototype.hasOwnProperty.call(CARD_TIERS, tiKey)) ? CARD_TIERS[tiKey] : CARD_TIERS.prospect;
   const ratings = (sp.get('r') || '').slice(0, 64).split(',').slice(0, 6);
+  // `s` = day streak (same param the /p description line uses). ≥2 earns a flame
+  // chip — a 0/1 "streak" is noise, not a brag.
+  const streak = Math.min(9999, Math.max(0, parseInt((sp.get('s') || '0').slice(0, 5), 10) || 0));
+  // Strongest league = highest of the six ratings (first wins ties); its chip
+  // gets an accent ring. -1 (no valid numbers) elevates nothing.
+  let bestIdx = -1;
+  let bestVal = -Infinity;
+  ratings.forEach((v, i) => {
+    const num = parseInt(v, 10);
+    if (Number.isFinite(num) && num > bestVal) { bestVal = num; bestIdx = i; }
+  });
 
   const avatarInner = img
     ? h('img', { src: img, width: 190, height: 190, style: { width: 190, height: 190, borderRadius: 95, objectFit: 'cover' } })
     : h('div', { style: { width: 190, height: 190, borderRadius: 95, background: '#16181F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 100 } }, emoji);
   const avatar = h('div', { style: { display: 'flex', padding: 5, borderRadius: 102, background: t.accent } }, avatarInner);
 
-  const cell = (comp, val) => h('div', { style: { display: 'flex', alignItems: 'center', gap: 12, width: 228 } },
+  // Every cell carries the same border/padding (transparent when not the best)
+  // so the elevated chip doesn't knock the grid out of alignment.
+  const cell = (comp, val, isBest) => h('div', {
+    style: {
+      display: 'flex', alignItems: 'center', gap: 12, width: 228,
+      padding: '6px 12px', borderRadius: 14,
+      border: isBest ? `2px solid ${t.accent}` : '2px solid transparent',
+      background: isBest ? 'rgba(255,255,255,0.07)' : 'transparent',
+    },
+  },
     h('div', { style: { fontSize: 34, display: 'flex' } }, comp.icon),
     h('div', { style: { fontSize: 48, fontWeight: 900, color: t.accent, display: 'flex' } }, val || '—'),
     h('div', { style: { fontSize: 23, fontWeight: 700, color: t.text, opacity: 0.85, display: 'flex' } }, comp.abbr),
   );
   const rows = [];
   for (let i = 0; i < 6; i += 2) {
-    rows.push(h('div', { style: { display: 'flex', gap: 26 } }, cell(COMPS[i], ratings[i]), cell(COMPS[i + 1], ratings[i + 1])));
+    rows.push(h('div', { style: { display: 'flex', gap: 26 } },
+      cell(CARD_COMPS[i], ratings[i], i === bestIdx),
+      cell(CARD_COMPS[i + 1], ratings[i + 1], i + 1 === bestIdx)));
   }
 
   const tree = h('div', {
@@ -169,13 +182,21 @@ export default function handler(req) {
         h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: t.text, opacity: 0.65, marginTop: 6, display: 'flex' } }, 'OVERALL'),
         h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 2, color: t.accent, marginTop: 10, display: 'flex' } }, t.label),
       ),
-      // Avatar + name
+      // Avatar + name (+ streak chip when the streak is worth bragging about)
       h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center' } },
         avatar,
         h('div', { style: { fontSize: 44, fontWeight: 800, color: t.text, marginTop: 18, display: 'flex' } }, name),
+        ...(streak >= 2 ? [
+          h('div', { style: { display: 'flex', alignItems: 'center', fontSize: 24, fontWeight: 800, color: t.text, background: 'rgba(255,255,255,0.08)', padding: '8px 20px', borderRadius: 999, marginTop: 14 } }, `🔥 ${streak} day streak`),
+        ] : []),
       ),
       // Ratings
       h('div', { style: { display: 'flex', flexDirection: 'column', gap: 24 } }, ...rows),
+    ),
+    // Challenge line — same tone as the Daily-7 card's "Beat it today" CTA.
+    h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, paddingBottom: 30 } },
+      h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: t.accent, padding: '10px 24px', borderRadius: 999 } }, 'Think you can beat this?'),
+      h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: t.text, opacity: 0.65 } }, 'Free football trivia · balliq.app'),
     ),
   );
 

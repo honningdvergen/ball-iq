@@ -36,6 +36,12 @@ export default function handler(req) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Keep this share page out of the search index WITHOUT hiding it from card
+     crawlers. Targets googlebot specifically — a blanket name="robots" noindex
+     is read by other crawlers too, and this page exists to be unfurled. This
+     replaces the old robots.txt "Disallow: /p$" lines, which blocked the very
+     crawlers the page is for. -->
+<meta name="googlebot" content="noindex">
 <title>${esc(title)}</title>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ball IQ">

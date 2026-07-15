@@ -7,6 +7,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import { initAds } from './lib/ads.js'
+// Root render-crash net for the marketing / play-preview trees (the game tree
+// gets the same boundary via GameRoot). Without it a render throw under the
+// bare Suspense white-screened those pages with zero Sentry capture.
+import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
@@ -76,6 +80,23 @@ if (import.meta.env.VITE_SENTRY_DSN) {
 try {
   if (typeof navigator !== 'undefined' && navigator.storage?.persist) {
     navigator.storage.persist().catch(() => {})
+  }
+} catch {}
+
+// Native splash failsafe: capacitor.config.json sets launchAutoHide:false
+// (deliberate — the app hides the splash once its first real frame is ready),
+// which means a hang or crash before that hide() call strands the user on a
+// permanent frozen splash with the ErrorBoundary unreachable beneath it. This
+// timer guarantees the splash always lifts within ~8s — comfortably past any
+// legitimate cold start, and hide() is idempotent so the normal early-hide
+// path is unaffected. Web: gated off entirely.
+try {
+  if (window.Capacitor?.isNativePlatform?.()) {
+    setTimeout(() => {
+      import('@capacitor/splash-screen')
+        .then(({ SplashScreen }) => SplashScreen.hide())
+        .catch(() => {})
+    }, 8000)
   }
 } catch {}
 
@@ -162,12 +183,12 @@ const _fullBleed = () => {
 if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.Suspense fallback={null}><MarketingHome /></React.Suspense>,
+    <ErrorBoundary><React.Suspense fallback={null}><MarketingHome /></React.Suspense></ErrorBoundary>,
   )
 } else if (showPlayPreview) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.Suspense fallback={null}><PlayApp /></React.Suspense>,
+    <ErrorBoundary><React.Suspense fallback={null}><PlayApp /></React.Suspense></ErrorBoundary>,
   )
 } else {
   // desktop-web-refresh: mark the document as the game shell so the desktop
