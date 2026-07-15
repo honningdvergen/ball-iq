@@ -50,6 +50,28 @@ function readLastEmail() {
   try { return localStorage.getItem('biq_last_email') || '' } catch { return '' }
 }
 
+// gotrue always supplies a `message`, so any `|| 'fallback'` after error.message
+// is dead — the raw string ("Invalid login credentials", "Email not confirmed")
+// is what users actually saw. Map the known codes to copy that names the cause
+// and the next tap. Matches on both `code` (newer gotrue) and `message` (older).
+function authErrorCopy(error, fallback) {
+  const code = error?.code || ''
+  const raw = error?.message || ''
+  if (code === 'invalid_credentials' || /invalid login credentials/i.test(raw)) {
+    return "That email and password don't match. Check the password, or tap “Forgot?” above to reset it."
+  }
+  if (code === 'email_not_confirmed' || /email not confirmed/i.test(raw)) {
+    return 'Almost there — confirm your email first. Check your inbox (and spam) for the link we sent.'
+  }
+  if (code === 'over_email_send_rate_limit' || code === 'over_request_rate_limit' || /rate limit/i.test(raw)) {
+    return 'Too many tries just now — wait a minute and try again.'
+  }
+  if (code === 'user_not_found' || /user not found/i.test(raw)) {
+    return "We couldn't find an account with that email. Sign up instead?"
+  }
+  return fallback
+}
+
 // Sprint #100 guest-first: reward-framed hero copy shown when the Login overlay
 // is opened from a specific gated feature. Keeps the "what's in it for me" front
 // and centre instead of a bare wall.
@@ -92,8 +114,8 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     setLoading(true)
     try {
       const { error } = await resetPassword(target)
-      if (error) setError(error.message || 'Could not send the reset email — try again.')
-      else setMessage(`Reset link sent to ${target} — check your inbox.`)
+      if (error) setError(authErrorCopy(error, "Couldn't send the reset email — check the address and try again."))
+      else setMessage(`Reset link sent to ${target} — check your inbox (and spam).`)
     } finally { setLoading(false) }
   }
 
@@ -121,7 +143,9 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           // profiles.username UNIQUE constraint; map both Postgres + gotrue forms.
           const raw = error.message || ''
           const isDupUsername = /profiles_username_key|duplicate key|already (?:registered|taken)|database error saving new user/i.test(raw)
-          setError(isDupUsername ? `Username "${username.trim()}" is already taken — try another.` : (raw || 'Sign-up failed — please try again.'))
+          setError(isDupUsername
+            ? `Username "${username.trim()}" is already taken — try another.`
+            : authErrorCopy(error, "Couldn't create your account — check your details and try again."))
         } else if (Array.isArray(data?.user?.identities) && data.user.identities.length === 0) {
           // Supabase enumeration-protection returns success with identities=[]
           // when the email already exists (no confirmation email sent).
@@ -131,13 +155,14 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
         }
       } else {
         const { data, error } = await signIn(email, password)
-        if (error) setError(error.message || 'Log-in failed — please try again.')
-        else if (!data?.session) setError('Log-in succeeded but no session was returned. Please try again.')
+        if (error) setError(authErrorCopy(error, "Couldn't log you in — check your connection and try again."))
+        else if (!data?.session) setError("Couldn't finish logging you in — please try again.")
         // On success, onAuthStateChange swaps to AppInner, unmounting this.
       }
     } catch (e) {
       console.error('[login] handleSubmit exception', e?.name, e?.message)
-      setError(`Unexpected error: ${e?.message || String(e)}`)
+      // Raw exception text stays in the console for debugging, never on screen.
+      setError('Something went wrong on our end — please try again.')
     }
     setLoading(false)
   }
@@ -145,7 +170,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const socialSignIn = (fn, label) => async () => {
     setError(''); setMessage(''); setLoading(true)
     const { error } = await fn()
-    if (error) setError(error.message || `${label} sign-in failed`)
+    if (error) setError(authErrorCopy(error, `Couldn't sign in with ${label} — try again, or use email instead.`))
     setLoading(false)
   }
 
@@ -212,7 +237,10 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     msg: { color: C.greenSoft, fontSize: 13.5, textAlign: 'center', lineHeight: 1.5 },
   }
 
-  const banner = sessionExpired ? <div style={S.banner}>Session expired — please log in again</div> : null
+  // The people who see this most are the daily players whose tokens aged out
+  // overnight — reassure that nothing was lost rather than reporting a systems
+  // event at them. (Sign-ins expire by design; see the session-persistence note.)
+  const banner = sessionExpired ? <div style={S.banner}>Welcome back — sign in to pick up your streak. Your XP and stats are safe.</div> : null
 
   return (
     <div className="biql" style={S.root}>

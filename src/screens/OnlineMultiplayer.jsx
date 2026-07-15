@@ -44,7 +44,9 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
       p_avatar: "⚽",
     });
     if (result.error) {
-      setError(result.error || "Couldn't create room");
+      // Raw RPC text is console-only; the player gets an action they can take.
+      console.warn('[handleCreate] createRoom', result.code || '', result.error);
+      setError("Couldn't create the room — check your connection and try again.");
       setCreating(false);
       return;
     }
@@ -84,7 +86,8 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
       } else if (result.code === "42P01") {
         setError("This room isn't accepting joins right now");
       } else {
-        setError(result.error || "Couldn't join room");
+        console.warn('[handleJoin] joinRoom', result.code || '', result.error);
+        setError("Couldn't join the room — check your connection and try again.");
       }
       setJoining(false);
       return;
@@ -387,7 +390,10 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
     }
     const result = await actions.startGame(questions, players.length);
     if (result.error) {
-      setStartError(result.error);
+      // result.error is raw plpgsql text ("room is not in lobby (state=playing)")
+      // — useful in the console, meaningless to a player. Never render it.
+      console.warn('[handleStart] startGame', result.code || '', result.error);
+      setStartError("Couldn't start the game — tap Start again.");
       setStarting(false);
       return;
     }
@@ -395,7 +401,8 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
       if (result.reason === "roster_changed") {
         setStartError(`Roster changed — now ${result.current_count} players. Tap Start again.`);
       } else {
-        setStartError(result.reason || "Could not start game");
+        console.warn('[handleStart] not started', result.reason);
+        setStartError("Couldn't start the game — tap Start again.");
       }
       setStarting(false);
       return;
@@ -822,7 +829,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       p_avatar: myPlayer?.avatar || "⚽",
     });
     if (result?.error || !result?.code) {
-      setRematchError(result?.error || "Couldn't create a rematch room — try again");
+      console.warn('[handleRematch] createRoom', result?.code || '', result?.error);
+      setRematchError("Couldn't set up the rematch — check your connection and try again.");
       setRematching(false);
       return;
     }

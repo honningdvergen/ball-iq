@@ -533,15 +533,16 @@ function HomeScreenImpl({
           );
         })()}
       </div>
-      {/* Coming-Soon shelf — teaser cards for modes that aren't ready
-          yet. True or False is intentionally NOT surfaced here; its
-          runtime logic stays in place but the entry point remains
-          hidden. Section auto-hides if the array is empty. */}
+      {/* Coming-Soon shelf — teaser line for modes that aren't ready yet.
+          Section auto-hides if the array is empty. Only list a mode here once
+          it actually exists behind a flag and has a ship date; naming a mode
+          with no implementation reads as a broken promise on first contact.
+          (Tiki Taka Toe / Guess the Player were listed here with no route, no
+          handler and no code — removed 2026-07-15.) True or False is
+          intentionally NOT surfaced; its runtime logic stays in place but the
+          entry point remains hidden. */}
       {(() => {
-        const COMING_SOON = [
-          { key:"tikitakatoe", icon:"🎯",  name:"Tiki Taka Toe",    desc:"Tic-tac-toe with football connections" },
-          { key:"guessplayer", icon:"🔍",  name:"Guess the Player", desc:"Identify the mystery player from clues" },
-        ];
+        const COMING_SOON = [];
         if (COMING_SOON.length === 0) return null;
         return (
           <div className="coming-soon-list">

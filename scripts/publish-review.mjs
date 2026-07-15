@@ -119,13 +119,27 @@ const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
 });
 
 // Resolve reviewer email → uuid via admin API. Service-role key required.
-const { data: usersData, error: userErr } = await supabase.auth.admin.listUsers();
-if (userErr) {
-  console.error('Could not list users:', userErr.message);
-  console.error('Make sure SUPABASE_SERVICE_ROLE_KEY is the service_role secret, not the anon key.');
-  process.exit(1);
+// Paginate: listUsers() with no params sends an empty per_page, so gotrue
+// applies its default of 50 and returns newest-first. The reviewer is one of
+// the oldest accounts, so once the project passed 50 users it fell off page 1
+// and this script aborted with "No Supabase user found". Same 1000-row trap
+// as the question_review fetch below (Sprint #89) — drain the pages instead.
+const USER_PAGE_SIZE = 1000;
+let reviewer = null;
+for (let page = 1; ; page++) {
+  const { data: usersData, error: userErr } = await supabase.auth.admin.listUsers({
+    page,
+    perPage: USER_PAGE_SIZE,
+  });
+  if (userErr) {
+    console.error('Could not list users:', userErr.message);
+    console.error('Make sure SUPABASE_SERVICE_ROLE_KEY is the service_role secret, not the anon key.');
+    process.exit(1);
+  }
+  reviewer = usersData.users.find(u => u.email === REVIEWER_EMAIL);
+  if (reviewer) break;
+  if (usersData.users.length < USER_PAGE_SIZE) break;
 }
-const reviewer = usersData.users.find(u => u.email === REVIEWER_EMAIL);
 if (!reviewer) {
   console.error(`No Supabase user found with email ${REVIEWER_EMAIL}`);
   process.exit(1);
@@ -159,10 +173,35 @@ const byId = new Map();
 for (const d of decisions) byId.set(d.question_id, d);
 
 const summary = {
-  qb: { approved: 0, edited: 0, rejected: 0, flagged: 0, removedIds: [], editedIds: [], flaggedIds: [] },
-  tf: { approved: 0, edited: 0, rejected: 0, flagged: 0, removedIds: [], editedIds: [], flaggedIds: [] },
+  qb: { approved: 0, edited: 0, rejected: 0, flagged: 0, cleared: 0, removedIds: [], editedIds: [], flaggedIds: [], clearedIds: [] },
+  tf: { approved: 0, edited: 0, rejected: 0, flagged: 0, cleared: 0, removedIds: [], editedIds: [], flaggedIds: [], clearedIds: [] },
   pending: 0,
+  ignoredEditKeys: {},
 };
+
+// The edits jsonb is reviewer-authored free-form JSON, so it is NOT safe to
+// merge wholesale: in practice it carries triage bookkeeping
+// ({action, triage, applied, verdict}) rather than question fields, and
+// serializeEntry writes any unknown key straight into the shipped bank — which
+// would put "verdict":"flawed" in the client bundle. Only these content fields
+// may be patched. `id` is excluded on purpose (it is the review/deep-link key)
+// and `flag` is owned by the status branches above, not by an edit.
+const PATCHABLE = {
+  qb: new Set(['q', 'o', 'a', 'cat', 'tag', 'type', 'diff', 'hint', 'v', 'typed_a', 'aliases', 'league', 'club']),
+  tf: new Set(['s', 'a', 'cat', 'tag', 'type', 'diff', 'hint', 'v']),
+};
+
+// Split an edits payload into the fields we will apply and the keys we won't.
+function sanitizeEdits(edits, kind) {
+  const allowed = PATCHABLE[kind];
+  const patch = {};
+  const ignored = [];
+  for (const [k, v] of Object.entries(edits)) {
+    if (allowed.has(k)) patch[k] = v;
+    else ignored.push(k);
+  }
+  return { patch, ignored };
+}
 
 function applyDecision(item, kind /* 'qb' | 'tf' */) {
   const id = item.id;
@@ -174,18 +213,35 @@ function applyDecision(item, kind /* 'qb' | 'tf' */) {
   const bucket = summary[kind];
   switch (dec.status) {
     case 'approved': {
+      // The flag marker is two-way: 'flagged' adds it below, and an approved
+      // question is a resolved one, so clear it here. Without this the marker
+      // is write-only — a flag→approved transition leaves flag:true in the
+      // bank forever and the next triage re-opens questions already cleared.
+      const { flag, ...resolved } = item;
+      if (flag !== undefined) {
+        bucket.cleared++;
+        bucket.clearedIds.push(id);
+      }
       const edits = dec.edits;
       if (edits && typeof edits === 'object' && Object.keys(edits).length > 0) {
-        bucket.edited++;
-        bucket.editedIds.push(id);
-        // Shallow merge — the question shape is flat (id, q, o, a, cat, ...).
-        // The edits jsonb is treated as a partial-field patch.
-        return { ...item, ...edits };
+        const { patch, ignored } = sanitizeEdits(edits, kind);
+        for (const k of ignored) {
+          summary.ignoredEditKeys[k] = (summary.ignoredEditKeys[k] || 0) + 1;
+        }
+        if (Object.keys(patch).length > 0) {
+          bucket.edited++;
+          bucket.editedIds.push(id);
+          // Shallow merge — the question shape is flat (id, q, o, a, cat, ...).
+          // The sanitized patch is a partial-field update.
+          return { ...resolved, ...patch };
+        }
+        // Edits held nothing patchable (pure triage metadata) — a plain approval.
       }
       bucket.approved++;
-      return item;
+      return resolved;
     }
     case 'rejected':
+      // Removed outright, so any flag goes with it — nothing to clear.
       bucket.rejected++;
       bucket.removedIds.push(id);
       return null;
@@ -277,9 +333,18 @@ newSrc = replaceArrayBody(newSrc, 'TF_STATEMENTS', newTF, TF_ORDER);
 
 // ─── summary output ──────────────────────────────────────────────────────────
 console.log('## Decisions applied');
-console.log(`QB                approved=${summary.qb.approved}  edited=${summary.qb.edited}  rejected=${summary.qb.rejected}  flagged=${summary.qb.flagged}`);
-console.log(`TF_STATEMENTS     approved=${summary.tf.approved}  edited=${summary.tf.edited}  rejected=${summary.tf.rejected}  flagged=${summary.tf.flagged}`);
+console.log(`QB                approved=${summary.qb.approved}  edited=${summary.qb.edited}  rejected=${summary.qb.rejected}  flagged=${summary.qb.flagged}  flags-cleared=${summary.qb.cleared}`);
+console.log(`TF_STATEMENTS     approved=${summary.tf.approved}  edited=${summary.tf.edited}  rejected=${summary.tf.rejected}  flagged=${summary.tf.flagged}  flags-cleared=${summary.tf.cleared}`);
 console.log(`Pending           ${summary.pending}`);
+const ignoredKeys = Object.entries(summary.ignoredEditKeys);
+if (ignoredKeys.length > 0) {
+  console.log('');
+  console.log('## Non-question keys in `edits` — NOT written to the bank');
+  for (const [k, n] of ignoredKeys.sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${k.padEnd(18)} ignored on ${n} question(s)`);
+  }
+  console.log('  (reviewer bookkeeping stays in question_review; only content fields publish)');
+}
 console.log('');
 console.log('## Net change');
 console.log(`QB:             ${QB_orig.length} → ${newQB.length}  (Δ ${newQB.length - QB_orig.length})`);
@@ -306,12 +371,15 @@ if (DRY_RUN) {
       qb_edited: summary.qb.edited,
       qb_rejected: summary.qb.rejected,
       qb_flagged: summary.qb.flagged,
+      qb_flags_cleared: summary.qb.cleared,
       tf_approved: summary.tf.approved,
       tf_edited: summary.tf.edited,
       tf_rejected: summary.tf.rejected,
       tf_flagged: summary.tf.flagged,
+      tf_flags_cleared: summary.tf.cleared,
       pending: summary.pending,
     },
+    ignored_edit_keys: summary.ignoredEditKeys,
     qb_total: { before: QB_orig.length, after: newQB.length },
     tf_total: { before: TF_orig.length, after: newTF.length },
     qb_removed_ids: summary.qb.removedIds,
@@ -320,6 +388,8 @@ if (DRY_RUN) {
     tf_edited_ids: summary.tf.editedIds,
     qb_flagged_ids: summary.qb.flaggedIds,
     tf_flagged_ids: summary.tf.flaggedIds,
+    qb_flags_cleared_ids: summary.qb.clearedIds,
+    tf_flags_cleared_ids: summary.tf.clearedIds,
   }, null, 2));
   console.log('');
   console.log(`Wrote ${path.relative(ROOT, QFILE)}`);

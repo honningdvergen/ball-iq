@@ -7670,7 +7670,35 @@ function AppInner() {
         setDailyHistory(hist);
       } catch {}
     };
+    // Streak integrity: a day rollover is the CLOCK passing midnight, not the
+    // user opening the app. Ticking straight from the poller banked a streak
+    // day for an app/tab left open overnight with nobody in front of it, so a
+    // flame could climb for days without a single interaction. Phase G's
+    // intent — keeping the app open across midnight still earns the day — is
+    // preserved, but the credit is now DEFERRED until the app is genuinely
+    // used on the new day: a hidden→visible transition (a real open) or a real
+    // pointer/key event. If neither happens, the mount tick on the next real
+    // open earns the day instead, so nothing is lost.
     let lastKey = dayKey();
+    let pendingTick = false;
+    const earnRolloverTick = () => {
+      if (document.visibilityState !== "visible") return;
+      // Re-check the date here rather than trusting the poller to have set
+      // pendingTick: timers do NOT run while the app is backgrounded (iOS
+      // suspends the webview, browsers freeze the tab), so on the suspend-
+      // across-midnight path — the single most common way this fires — the
+      // poller never observed the flip and resume order is
+      // visibilitychange → earnRolloverTick → pendingTick still false.
+      const cur = dayKey();
+      if (cur !== lastKey) { lastKey = cur; pendingTick = true; }
+      if (!pendingTick) return;
+      pendingTick = false;
+      tickLoginStreak();
+    };
+    const onVisibility = () => { if (document.visibilityState === "visible") earnRolloverTick(); };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pointerdown", earnRolloverTick, { passive: true });
+    window.addEventListener("keydown", earnRolloverTick);
     const id = setInterval(() => {
       const cur = dayKey();
       if (cur === lastKey) return;
@@ -7690,16 +7718,22 @@ function AppInner() {
         setDailyScore(null);
       }
       rebuildHistory();
-      // Phase G: re-tick login streak on day rollover so users who keep
-      // the app open across midnight get the streak credit + toast for
-      // the new day, same as if they'd reopened the app.
-      tickLoginStreak();
+      // Phase G: re-tick login streak on day rollover so users who keep the
+      // app open across midnight get the streak credit + toast for the new
+      // day, same as if they'd reopened the app — but only once they actually
+      // use it (see earnRolloverTick above).
+      pendingTick = true;
       // 1.1: re-anchor the reminder window to the new "today" (offset 0) so a
       // post-midnight completion cancels the correct reminder id (listened for
       // in the notifications section).
       try { window.dispatchEvent(new CustomEvent('biq:day-rollover')); } catch {}
     }, 60_000);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pointerdown", earnRolloverTick);
+      window.removeEventListener("keydown", earnRolloverTick);
+    };
   }, [tickLoginStreak]);
 
 
@@ -9924,6 +9958,14 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "daily" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="daily">
+            {/* Home's 🔥 and Daily's 🔥 show DIFFERENT numbers on purpose, and
+                that's the open question — not a wiring bug. Home renders
+                loginStreak (days you OPENED the app, owned by tickLoginStreak);
+                Daily renders its own `unbeaten` run (days you PLAYED a puzzle).
+                Both are labelled "day streak" under the same flame, which is
+                what actually confuses people. Passing loginStreak down here
+                would make them agree by downgrading Daily to count opens —
+                a product decision, so it's Alex's call, not a silent prop. */}
             <DailyTabScreen
               profile={profile}
               xp={xp}

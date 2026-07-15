@@ -735,7 +735,9 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     const { error } = await submitReport({ reportedId: friendId, reason: reportReason, message: reportMessage });
     setSubmitting(false);
     if (error) {
-      toast(`⚠️ ${error.message || "Couldn't submit report — try again"}`);
+      // Postgres/RLS text is console-only — a reporter gets copy, not a SQLSTATE.
+      console.warn('[handleReportSubmit]', error.code || '', error.message);
+      toast("⚠️ Couldn't submit the report — check your connection and try again.");
       return;
     }
     setReportOpen(false);
@@ -748,7 +750,8 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     const { error } = await blockUser(friendId);
     setSubmitting(false);
     if (error) {
-      toast(`⚠️ ${error.message || "Couldn't block — try again"}`);
+      console.warn('[handleBlock]', error.code || '', error.message);
+      toast("⚠️ Couldn't block this player — check your connection and try again.");
       return;
     }
     setBlockConfirmOpen(false);
