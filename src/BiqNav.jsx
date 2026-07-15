@@ -73,14 +73,17 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
           <span>Profile</span>
         </button>
 
-        {/* Redesign's "Friends" == the existing Online tab (OnlineHubTab). */}
+        {/* Label + icon must match the mobile tab bar (App.jsx tab-bar array):
+            same destination, same name. The redesign handoff called this
+            "Friends", but the tab holds create/join room, invites, async
+            challenges and h2h history — friends are a subset. Globe mirrors
+            the mobile Globe icon. */}
         <button className="bn-item" data-active={cur === 'online'} onClick={goTab('online')}>
           <svg {...ICON}>
-            <circle cx="9" cy="8" r="3.4" />
-            <path d="M2.5 20c1-3 3.5-4.4 6.5-4.4s5.5 1.4 6.5 4.4" />
-            <path d="M16 5.2a3.4 3.4 0 0 1 0 6.4M18 20c-.3-1.6-1-2.9-2-3.8" />
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3z" />
           </svg>
-          <span>Friends</span>
+          <span>Online</span>
         </button>
 
         {/* Notifications — opens the inbox overlay; shown for signed-in users
