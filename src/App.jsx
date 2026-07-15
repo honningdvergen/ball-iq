@@ -5409,26 +5409,6 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
-      <div className="settings-section">
-        <div className="ds-eyebrow settings-section-title">Appearance</div>
-        <div className="settings-card">
-          <div className="settings-row">
-            <div className="sr-left">
-              <div className="sr-label">Theme</div>
-              <div className="sr-desc">Light or dark interface</div>
-            </div>
-            <div className="sr-right">
-              <div className="size-btns">
-                {["dark","light"].map(thm => (
-                  <button key={thm} className={`size-btn${settings.theme===thm?" on":""}`} onClick={() => onUpdate({theme:thm})}>
-                    {thm === "dark" ? "🌙 Dark" : "☀️ Light"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <InstallCard />
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">Gameplay</div>
@@ -6293,7 +6273,7 @@ function OnboardingScreen({ onDone }) {
             const raw = localStorage.getItem("biq_settings");
             const s = raw
               ? JSON.parse(raw)
-              : { defaultDiff: "medium", hints: true, timer: true, theme: "dark", sound: false, haptics: true };
+              : { defaultDiff: "medium", hints: true, timer: true, sound: false, haptics: true };
             s.defaultDiff = diffFor;
             localStorage.setItem("biq_settings", JSON.stringify(s));
           } catch {}
@@ -7346,7 +7326,7 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { hints:true, timer:true, theme:"dark", sound:false, haptics:true };
+    const defaults = { hints:true, timer:true, sound:false, haptics:true };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
@@ -9033,30 +9013,20 @@ function AppInner() {
     showToast("✓ Stats cleared");
   }, [showToast, user?.id]);
 
-  // Apply theme and font size to document root
+  // Ball IQ is dark-only (light theme removed 2026-07-15). Strip a stale
+  // `.light` class off html/body for anyone whose saved settings still carry
+  // theme:"light" from before the removal — without this they'd keep the old
+  // class on every boot and resolve half-missing light tokens.
   useEffect(() => {
-    const body = document.body;
-    const root = document.documentElement;
-    // Theme — apply .light to both html and body so edge surfaces (html, #root)
-    // can also resolve var(--bg) to the light palette.
-    if (settings.theme === "light") {
-      body.classList.add("light");
-      root.classList.add("light");
-    } else {
-      body.classList.remove("light");
-      root.classList.remove("light");
-    }
-    // Sprint #90 EEE5: keep the native iOS status bar in sync with theme.
-    // Without this, switching to light theme renders the dark status-bar
-    // glyphs over the light WebView, making time/battery unreadable. Style
-    // semantics: "Dark" = dark glyphs (for light bg), "Light" = light
-    // glyphs (for dark bg). Safe to call on web (no-op fallback).
+    document.body.classList.remove("light");
+    document.documentElement.classList.remove("light");
+    // "Light" style = light glyphs, for our dark background.
     try {
       if (Capacitor.isNativePlatform?.()) {
-        StatusBar.setStyle({ style: settings.theme === "light" ? StatusBarStyle.Dark : StatusBarStyle.Light }).catch(() => {});
+        StatusBar.setStyle({ style: StatusBarStyle.Light }).catch(() => {});
       }
     } catch {}
-  }, [settings.theme]);
+  }, []);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
@@ -9533,7 +9503,7 @@ function AppInner() {
 
   return (
     <>
-      <main className={`app${settings.theme === "light" ? " light" : ""}`}>
+      <main className="app">
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only. Deep-link boots

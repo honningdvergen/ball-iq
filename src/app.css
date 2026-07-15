@@ -32,7 +32,7 @@
   --border:#242836;      /* subtle separator (was #2E3147 blue) */
   --border2:#2A2D3A;     /* stronger border (was #3A3F60 blue) */
   --text:#FFFFFF;        /* pure white — max contrast */
-  --t1:#FFFFFF;          /* alias for --text; Sprint #72 NN1 added — many .light overrides set --t1 but :root was relying on the cascade fallback, which worked by accident */
+  --t1:#FFFFFF;          /* alias for --text */
   --t2:#9BA0B8;          /* neutral muted (was #8B8FA8 blue-grey) */
   --t3:#7E828C;          /* neutral dim — lifted from handoff #6E7180 to clear WCAG AA 4.5:1 on the new #0A0A0A canvas (was #767B98 blue-purple) */
   --accent:#58CC02;      /* Web green — unified app↔web (was #58CC02 muted); on-green text #06230C */
@@ -40,7 +40,7 @@
   --accent-b:rgba(88,204,2,0.28);
   --green:#58CC02;
   --green-l:rgba(88,204,2,0.10);
-  --green-ink:#58CC02;   /* green as TEXT. Same as brand on dark; .light swaps in a darker AA-passing green — brand #58CC02 is ~2:1 on white (fills/borders only there) */
+  --green-ink:#58CC02;   /* green as TEXT */
   --red:#FF4B4B;         /* Duolingo red — energetic */
   --red-l:rgba(255,75,75,0.10);
   --gold:#FFC107;        /* amber — matches web (was #FFC800) */
@@ -52,105 +52,27 @@
 }
 
 /* ── LIGHT THEME ── */
-.light{
-  /* iOS system palette — clean, airy, premium */
-  background:#F2F2F7;
-  color:#1C1C1E;
-  --bg:#F2F2F7;
-  --s1:#FFFFFF;
-  --s2:#F2F2F7;
-  --s3:#E5E5EA;
-  --border:#E5E5EA;
-  --border2:#C7C7CC;
-  --text:#1C1C1E;
-  --t1:#1C1C1E;
-  --t2:#48484A;          /* darker secondary — readable on white */
-  --t3:#6E6E73;          /* darker tertiary — readable on white */
-  --accent:#34A853;
-  --accent-dim:rgba(52,168,83,0.10);
-  --accent-b:rgba(52,168,83,0.25);
-  --info:#2563EB;        /* Tailwind blue-600 — slightly darker for contrast on light bg */
-  --green:#34C759;
-  --green-l:rgba(52,199,89,0.12);
-  --green-ink:#2E7000;   /* brand-hue green dark enough for 4.5:1 text on white + the 88,204,2 tints */
-  --red:#FF3B30;
-  --red-l:rgba(255,59,48,0.09);
-  --gold:#FF9500;       /* iOS system orange */
-  --gold-l:rgba(255,149,0,0.09);
-  --r:14px;
-  --sh:0 1px 0 rgba(0,0,0,0.05),0 1px 6px rgba(0,0,0,0.07);
-  --sh-lg:0 4px 20px rgba(0,0,0,0.10),0 1px 4px rgba(0,0,0,0.06);
-}
 
 /* ─── iOS-STYLE LIGHT OVERRIDES ─── */
 
 /* All cards go borderless — shadow does the lifting */
-.light .cta,
-.light .mode-item,
-.light .q-card,
-.light .sbar-box,
-.light .lcard,
-.light .rc,
-.light .settings-card,
-.light .settings-panel,
-.light .rc,
-.light .sbox,
-.light .pc,
-.light .chip,
-.light .icon-btn,
-.light .back-btn {
-  border:none;
-  box-shadow:var(--sh);
-}
 
 /* Hover states — lift gently */
-.light .cta:hover         { box-shadow:var(--sh-lg); }
-.light .mode-item:hover   { box-shadow:var(--sh-lg); background:var(--s1); }
-.light .chip:hover:not(.on){ background:var(--s1); }
 
 /* Challenge CTA = white card */
-.light .cta-challenge { background:var(--s1); }
 
 /* Answer options — white base, grey hover */
-.light .opt {
-  border:none;
-  box-shadow:var(--sh);
-  background:var(--s1);
-}
-.light .opt:hover:not(:disabled){ background:var(--s3); box-shadow:var(--sh); }
 
 /* iOS-style grouped settings: hairline separators inside white card */
-.light .settings-card { border-radius:12px; overflow:hidden; }
-.light .settings-row  { border-bottom:0.5px solid var(--border); }
-.light .settings-row:last-child { border-bottom:none; }
 
 /* Autocomplete */
-.light .ac-list { box-shadow:var(--sh-lg); border:none; }
 
 /* Toast */
-.light .toast { border:none; box-shadow:var(--sh-lg); background:var(--s1); }
 
 /* Text input */
-.light .typed-inp { border:none; box-shadow:var(--sh); background:var(--s1); }
-.light .typed-inp:focus { box-shadow:0 0 0 3px var(--accent-b),var(--sh); }
 
 /* Mode icon bg */
-.light .mi-icon { background:var(--s2); }
-.light .app { background:var(--bg); }
-.light .tab-bar { background:rgba(242,242,247,0.95); border-top:0.5px solid #D1D1D6; box-shadow:0 -1px 0 rgba(0,0,0,0.08); }
-.light .tab-item.active .tab-icon { color:var(--accent); }
-.light .tab-item .tab-label { color:var(--t2); }
-.light .tab-item.active .tab-label { color:var(--accent); }
-.light .mode-item { border:0.5px solid #E5E5EA; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-.light .mode-item:hover { box-shadow:0 2px 12px rgba(0,0,0,0.10); }
-.light .page-hdr { border-bottom:0.5px solid #E5E5EA; }
-.light .q-card { box-shadow:0 2px 12px rgba(0,0,0,0.08); border:0.5px solid #E5E5EA; }
-.light .rc { box-shadow:0 2px 16px rgba(0,0,0,0.08); border:0.5px solid #E5E5EA; }
-.light .sbox { box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 /* .feedback.correct: no light override — the unified brand-green tint + --green-ink base works on both themes. */
-.light .feedback.wrong { background:rgba(255,59,48,0.08); border-color:rgba(255,59,48,0.2); }
-.light .opt { border:1px solid #E5E5EA; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
-.light .opt:hover:not(:disabled) { background:#F9F9F9; box-shadow:0 2px 8px rgba(0,0,0,0.10); border-color:#D1D1D6; }
 
 /* Sprint #72 NN1: .fix-row was missing a light-theme override. The dark
    gradient (rgba(16,40,54,0.45) → rgba(26,29,39,0.85)) is opaque enough
@@ -158,41 +80,20 @@
    matchday rows reading as dark teal-on-light-page — sore-thumb in
    the otherwise iOS-styled light theme. Replace with the standard
    light card pattern: white surface, hairline border, soft shadow. */
-.light .fix-row { background: var(--s1); border: 0.5px solid #E5E5EA; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-.light .fix-row.is-today { background: rgba(88,204,2,0.08); border-color: rgba(88,204,2,0.30); }
-.light .fix-row.is-today .fix-md { color: var(--accent); }
-.light .fix-dot.miss { border-color: #D1D1D6; }
-.light .logo { color:#1C1C1E; }
-.light .back-btn { background:#FFFFFF; border:0.5px solid #E5E5EA; color:#1C1C1E; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
-.light .xp-bar-track { background:#E5E5EA; }
-.light .settings-panel { background:#FFFFFF; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
-.light .badge-tile.locked { background:#F2F2F7; border-color:#E5E5EA; }
-.light .badge-tile.earned { background:rgba(52,168,83,0.08); border-color:rgba(52,168,83,0.2); }
 
 /* Eyebrow — full opacity in light */
 
 /* Play CTA — vibrant green with warm shadow */
-.light .cta-play { box-shadow:0 4px 20px rgba(48,168,85,0.28),0 1px 4px rgba(48,168,85,0.18); }
-.light .cta-play:hover { box-shadow:0 6px 28px rgba(48,168,85,0.35),0 2px 6px rgba(48,168,85,0.20); }
 
 /* Progress bar track */
-.light .prog-track { background:var(--s3); }
 
 /* Size/chip buttons in settings */
-.light .size-btn { background:var(--s2); border:none; }
-.light .size-btn.on { background:var(--accent); color:#fff; }
 
 /* Correct/wrong opt states in light */
-.light .opt.correct { border:1.5px solid #58CC02; background:rgba(88,204,2,0.09); }
-.light .opt.wrong   { border:1.5px solid var(--red); background:rgba(255,59,48,0.07); }
 
 /* Green-as-text on light surfaces — quiz screen accents that use --accent
    (#34A853, ~3:1 on white) or per-category brand green (#58CC02, ~2:1)
    drop to --green-ink for AA. (0,3,0) beats the later per-category (0,2,0). */
-.light .q-score-live { color:var(--green-ink); }
-.light .ac-hi { color:var(--green-ink); }
-.light .cat-PL .q-tag, .light .cat-UCL .q-tag,
-.light .cat-Euros .q-tag, .light .cat-Managers .q-tag { color:var(--green-ink); }
 
 /* Smooth theme transitions */
 .cta,.opt,.mode-item,.q-card,.settings-card,.settings-panel,.sbar-box,.rc,.sbox,.pc,.icon-btn,.back-btn,.chip,.typed-inp{
@@ -258,7 +159,6 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .hdr-xp-lbl{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.02em;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .hdr-xp-track{flex:1;height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
 .hdr-xp-fill{height:100%;background:#58CC02;border-radius:999px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
-.light .hdr-xp-track{background:#E5E5EA;}
 .logo em{color:var(--accent);font-style:normal;}
 .hdr-actions{display:flex;align-items:center;gap:8px;}
 .icon-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);transition:all 0.15s;flex-shrink:0;}
@@ -387,28 +287,20 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
 .mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(135deg,rgba(88,204,2,0.10),#0F1117 62%);border:1px solid #1E3A24;box-shadow:0 0 30px -14px rgba(88,204,2,0.4);overflow:hidden;contain:layout paint style;}
-.light .mp-card{background:radial-gradient(circle at 90% -10%,rgba(52,168,83,0.16),transparent 55%),linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:1px solid rgba(52,168,83,0.35);box-shadow:0 2px 12px rgba(52,168,83,0.10),0 1px 4px rgba(0,0,0,0.04);}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
 .mp-card-icon{width:46px;height:46px;border-radius:13px;background:rgba(88,204,2,0.14);border:1px solid rgba(88,204,2,0.3);display:inline-flex;align-items:center;justify-content:center;color:#8AE042;flex-shrink:0;line-height:1;}
-.light .mp-card-icon{background:rgba(52,168,83,0.16);color:#34A853;border-color:rgba(52,168,83,0.45);box-shadow:0 0 10px rgba(52,168,83,0.18);}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
-.light .mp-card-title{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
 .mp-card-sub{font-size:12.5px;color:#9BA0B8;margin-top:5px;font-weight:600;line-height:1.4;}
-.light .mp-card-sub{color:#48484A;}
 .mp-card-invite{position:absolute;top:18px;right:18px;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:10px;background:transparent;border:1px solid #2A2D3A;color:#E8EAF0;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#E8EAF0;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
-.light .mp-card-invite{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.10);color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
-.light .mp-card-invite:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.16);}
 .mp-card-ctas{display:flex;gap:10px;margin-top:15px;align-items:stretch;}
 .mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
 .mp-card-cta.ghost{background:transparent;color:#8AE042;border:1px solid #2A6B33;box-shadow:none;-webkit-text-fill-color:#8AE042;}
 .mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
-.light .mp-card-cta.ghost{color:var(--green-ink);border-color:rgba(88,204,2,0.55);-webkit-text-fill-color:var(--green-ink);}
-.light .mp-card-cta.ghost:hover{background:rgba(52,168,83,0.06);}
 
 /* ── DAILY ZONE (Sprint #12) ──
    Tinted green-to-amber gradient container framing Footle + Today's 7 as
@@ -416,7 +308,6 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    read as the focal-point of the home screen. Inside cards keep their
    shipped styling (green FootleHero gradient, tamed amber T7 secondary). */
 .daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(88,204,2,0.05) 0%,rgba(255,193,7,0.03) 100%);border-radius:18px;padding:10px 10px 10px;margin-bottom:10px;contain:layout paint style;}
-.light .daily-zone{background:linear-gradient(180deg,rgba(88,204,2,0.05) 0%,rgba(255,193,7,0.03) 100%);border-color:#E5E5EA;}
 .daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 4px;}
 .daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:'Inter',sans-serif;}
 .daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
@@ -458,7 +349,6 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .play-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:center;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
-.light .play-card{border:1px solid #E5E5EA;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--s1);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}
 .play-card-body{display:flex;flex-direction:column;gap:1px;width:100%;min-width:0;}
 .play-card-name{display:block;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -513,23 +403,17 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
   border:1px solid rgba(234,179,8,0.28);
 }
 .play-card.wc-tile:hover{border-color:rgba(234,179,8,0.45);box-shadow:0 4px 18px rgba(234,179,8,0.18);background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 50%),linear-gradient(120deg,#1a0f05 0%,#2d1a09 45%,#0a1f12 100%);}
-.light .play-card.wc-tile{background:linear-gradient(120deg,#fff7ed 0%,#fef3c7 45%,#dcfce7 100%);border-color:rgba(234,179,8,0.35);}
 .play-card.wc-tile .wc-tile-icon{margin-bottom:0;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);box-shadow:0 0 8px rgba(255,200,0,0.20);}
 .play-card.wc-tile .wc-tile-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;align-items:flex-start;}
 .play-card.wc-tile .play-card-name{color:#fff;font-size:14px;font-weight:800;line-height:1.2;}
 .play-card.wc-tile .play-card-desc{color:rgba(255,255,255,0.65);font-size:11px;-webkit-line-clamp:1;}
-.light .play-card.wc-tile .play-card-name{color:#1C1C1E;-webkit-text-fill-color:#1C1C1E;}
-.light .play-card.wc-tile .play-card-desc{color:#48484A;}
 /* J3 fix: badge was absolute-positioned at top:8/right:10 and overlapped the
    inline countdown chip. Now both live inside a right-aligned vertical stack
    (.wc-tile-meta) so they share space cleanly without collision. */
 .wc-tile-meta{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .wc-tile-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.35);color:#FFC800;font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;-webkit-text-fill-color:#FFC800;line-height:1.3;}
-.light .wc-tile-badge{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
 .wc-tile-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:rgba(255,200,0,0.14);border:1px solid rgba(255,200,0,0.30);color:#FFC800;font-size:11px;font-weight:800;font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;-webkit-text-fill-color:#FFC800;line-height:1.3;}
 .wc-tile-chip-live{background:rgba(88,204,2,0.15);border-color:rgba(88,204,2,0.45);color:#58CC02;-webkit-text-fill-color:#58CC02;letter-spacing:0.04em;}
-.light .wc-tile-chip{background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.30);color:#B45309;-webkit-text-fill-color:#B45309;}
-.light .wc-tile-chip-live{background:rgba(88,204,2,0.12);border-color:rgba(88,204,2,0.45);color:var(--green-ink);-webkit-text-fill-color:var(--green-ink);}
 @keyframes hardRightBadge{0%{opacity:0;transform:translate(-50%,-30%) scale(0.8);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translate(-50%,-70%) scale(0.9);}}
 /* ── Play button: neutral elevated (accent reserved for Daily action) ── */
 .cta-play{background:var(--s1);border:1px solid var(--border);}
@@ -921,14 +805,6 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
 .tab-content{padding-bottom:calc(66px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
-.light .q-card,.light .mode-item,.light .rc,.light .sbar-box,.light .lcard,
-.light .streak-section,.light .li-card,.light .profile-card,
-.light .badge-tile,.light .settings-card{
-  border:0.5px solid var(--border);box-shadow:var(--sh);
-}
-
-.light .tab-bar{background:rgba(255,255,255,0.88);border-top-color:rgba(0,0,0,0.08);}
-.light .tab-badge{border-color:rgba(255,255,255,0.9);}
 
 /* ── DAILY SCREEN ── */
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
@@ -941,8 +817,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 
 /* MonthlyCalendar (.cal-*) + diagonal-split cells removed Sprint #16
    Stage 6 — Daily v3 dropped the calendar entirely in favour of the
-   matchday list. The .cal-legend rule on .light theme below is also
-   gone; legend lived inside MonthlyCalendar. */
+   matchday list. */
 /* ── DAILY GREETING STRIP (Sprint #16 Stage 2) ── */
 .daily-greet{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px 12px;margin-bottom:2px;border-bottom:1px solid var(--border);}
 .daily-greet-text{display:flex;align-items:baseline;gap:6px;min-width:0;flex:1;}
@@ -1146,9 +1021,6 @@ button.friends-lb-row:hover{background:var(--s3);}
 .crop-status{position:absolute;top:0;right:0;bottom:0;left:0;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
 .crop-status-err{color:var(--red);}
 .crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0a0a0a;flex-shrink:0;}
-.light .crop-overlay{background:rgba(0,0,0,0.85);}
-.light .crop-stage{background:#1a1a1a;}
-.light .crop-actions{background:#1a1a1a;border-top:1px solid #2a2a2a;}
 .crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
 .crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(88,204,2,0.28);}
@@ -1321,10 +1193,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 /* ── ONBOARDING ── */
 .onboard-wrap{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
-.light .onboard-wrap{background:radial-gradient(ellipse at 50% 0%, #FFFFFF 0%, #F2F2F7 65%);}
 .onboard-progress{display:flex;gap:6px;padding:0 24px;margin-bottom:24px;}
 .onboard-bar{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,0.12);transition:background 0.25s;}
-.light .onboard-bar{background:rgba(0,0,0,0.08);}
 .onboard-bar.done{background:var(--accent);}
 .onboard-bar.active{background:var(--accent);box-shadow:0 0 8px rgba(88,204,2,0.5);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
@@ -1496,7 +1366,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-breakdown{display:flex;flex-direction:column;gap:6px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:8px;}
 .og-breakdown-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;}
 .og-breakdown-row:nth-child(odd){background:rgba(255,255,255,0.02);}
-.light .og-breakdown-row:nth-child(odd){background:rgba(0,0,0,0.02);}
 .og-breakdown-q{flex:1;min-width:0;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .og-breakdown-marks{display:flex;gap:6px;flex-shrink:0;}
 .og-mark{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:rgba(255,90,90,0.16);color:#FF5A5A;}
@@ -1553,7 +1422,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
 .wd-tile.wd-grey{background:var(--s2);border-color:var(--s2);color:var(--text);}
-.html.light .wd-tile.wd-grey,.light .wd-tile.wd-grey{background:#9CA0AB;border-color:#9CA0AB;color:#fff;}
 .wd-flip{animation:wdFlip 600ms ease forwards;animation-fill-mode:both;}
 @keyframes wdFlip{
   0%{transform:rotateX(0deg);}
@@ -1592,7 +1460,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 .wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
-.light .wd-key-grey{background:#9CA0AB;color:#fff;}
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
@@ -2384,7 +2251,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      Footle hero + Daily 7 read as the mock's separate cards. The PWA-standalone
      killswitch restores the mobile zone box. ── */
   .daily-zone { background: none; border: none; border-radius: 0; padding: 0; margin-bottom: 20px; }
-  .light .daily-zone { background: none; border: none; }
   .daily-zone-head { margin-bottom: 20px; padding: 0; }
   .daily-zone-eyebrow { font-size: 12px; letter-spacing: 0.14em; color: var(--t3); }
   .daily-zone-status { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 12.5px; color: var(--t3); }
@@ -2542,29 +2408,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
 }
 @media (min-width: 1024px) {
-  /* ── Light-theme structural re-pins (desktop is dark-only) ──────────────
-     The .light overrides near the top of this file hardcode light-surface
-     hexes (white panels, #F9F9F9 hovers, #1C1C1E text, #E5E5EA hairlines).
-     With the desktop reflow's dark token set they'd render white-on-white
-     or black-on-black. Re-pin the ones visible at desktop back to the dark
-     values. EVERY rule here has a restore in the standalone mirror below.
-     Order matters: the grouped border re-pin precedes :hover (same 0,4,0
-     specificity as the .opt:hover rule — hover must win in the cascade). */
-  .light .opt:not(.correct):not(.wrong),
-  .light .q-card, .light .mode-item, .light .rc,
-  .light .fix-row, .light .play-card, .light .daily-zone { border-color: var(--border); }
-  .light .opt:hover:not(:disabled) { background: var(--s2); border-color: var(--border2); box-shadow: none; }
-  .light .settings-panel { background: var(--s1); box-shadow: none; }
-  .light .badge-tile.locked { background: var(--s1); border-color: var(--border); }
-  .light .mp-card-title { color: #fff; -webkit-text-fill-color: #fff; }
-  .light .mp-card-invite { background: transparent; border-color: #2A2D3A; color: #E8EAF0; -webkit-text-fill-color: #E8EAF0; }
-  .light .onboard-wrap { background: radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%); }
-  .light .onboard-bar { background: rgba(255,255,255,0.12); }
-  .light .size-btn.on { background: var(--accent-dim); border: 1px solid var(--accent-b); color: var(--accent); }
-  .light .page-hdr { border-bottom-color: var(--border); }
-  .light .back-btn { background: var(--s1); border-color: var(--border); color: var(--t2); box-shadow: none; }
-  .light .fix-dot.miss { border-color: var(--border2); }
-  .light .xp-bar-track { background: var(--border); }
+  /* ── Desktop chrome removals ─────────────────────────────────────────── */
 
   /* Drop the in-app wordmark at desktop — the BiqNav rail owns branding. */
   .hdr .logo { display: none; }
@@ -2580,8 +2424,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     /* desktop-web-refresh: an installed PWA on a >=1024 desktop would match
        the min-width:1024 reflow rules, including the marketing-palette var
        override. Restore the mobile palette by inheriting the vars from #root
-       (which carries the :root / .light values) so PWA stays byte-identical
-       in BOTH themes. Wins by source order (this block is after the reflow). */
+       (which carries the :root values) so PWA stays byte-identical.
+       Wins by source order (this block is after the reflow). */
     --bg: inherit;
     --s1: inherit;
     --s2: inherit;
@@ -2771,21 +2615,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      theme keeps the original iOS-styled light values (mirror lockstep).
      Order matters: grouped border restore precedes :hover (same specificity,
      both !important — hover must win in the cascade). */
-  .light .opt:not(.correct):not(.wrong) { border-color: #E5E5EA !important; }
-  .light .fix-row, .light .play-card, .light .daily-zone { border-color: #E5E5EA !important; }
-  .light .q-card, .light .mode-item, .light .rc { border-color: var(--border) !important; }
-  .light .opt:hover:not(:disabled) { background: #F9F9F9 !important; border-color: #D1D1D6 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important; }
-  .light .settings-panel { background: #FFFFFF !important; box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important; }
-  .light .badge-tile.locked { background: #F2F2F7 !important; border-color: #E5E5EA !important; }
-  .light .mp-card-title { color: #1C1C1E !important; -webkit-text-fill-color: #1C1C1E !important; }
-  .light .mp-card-invite { background: rgba(0,0,0,0.05) !important; border-color: rgba(0,0,0,0.10) !important; color: #1C1C1E !important; -webkit-text-fill-color: #1C1C1E !important; }
-  .light .onboard-wrap { background: radial-gradient(ellipse at 50% 0%, #FFFFFF 0%, #F2F2F7 65%) !important; }
-  .light .onboard-bar { background: rgba(0,0,0,0.08) !important; }
-  .light .size-btn.on { background: var(--accent) !important; border: none !important; color: #fff !important; }
-  .light .page-hdr { border-bottom-color: #E5E5EA !important; }
-  .light .back-btn { background: #FFFFFF !important; border-color: #E5E5EA !important; color: #1C1C1E !important; box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important; }
-  .light .fix-dot.miss { border-color: #D1D1D6 !important; }
-  .light .xp-bar-track { background: #E5E5EA !important; }
 }
 
 /* ── NARROW PHONES (≤360px: iPhone SE/13 mini class) — 344px sweep findings.
