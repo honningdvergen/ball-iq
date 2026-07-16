@@ -458,12 +458,21 @@ const QUIZ_CLUBS = [
   { slug: 'napoli', label: 'Napoli', badge: 'NAP' },
   { slug: 'galatasaray', label: 'Galatasaray', badge: 'GAL' },
   { slug: 'benfica', label: 'Benfica', badge: 'SLB' },
+  { slug: 'fenerbahce', label: 'Fenerbahçe', badge: 'FEN' },
+  { slug: 'porto', label: 'Porto', badge: 'POR' },
+  { slug: 'roma', label: 'Roma', badge: 'ROM' },
+  { slug: 'celtic', label: 'Celtic', badge: 'CEL' },
+  { slug: 'rangers', label: 'Rangers', badge: 'RAN' },
+  { slug: 'marseille', label: 'Marseille', badge: 'OM' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
   { slug: 'la-liga', label: 'La Liga', emoji: '🇪🇸' },
   { slug: 'serie-a', label: 'Serie A', emoji: '🇮🇹' },
   { slug: 'bundesliga', label: 'Bundesliga', emoji: '🇩🇪' },
+  { slug: 'ligue-1', label: 'Ligue 1', emoji: '🇫🇷' },
+  { slug: 'super-lig', label: 'Süper Lig', emoji: '🇹🇷' },
+  { slug: 'primeira-liga', label: 'Primeira Liga', emoji: '🇵🇹' },
   { slug: 'champions-league', label: 'Champions League', emoji: '⭐' },
   { slug: 'euros', label: 'Euros', emoji: '🇪🇺' },
   { slug: 'world-cup', label: 'World Cup', emoji: '🌍' },
@@ -479,6 +488,8 @@ const CLUB_COLOR = {
   juventus: '#000000', 'inter-milan': '#010E80', 'ac-milan': '#FB090B',
   'bayern-munich': '#DC052D', 'borussia-dortmund': '#FDE100', psg: '#003170', ajax: '#CC0000',
   napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
+  fenerbahce: '#163962', porto: '#00428C', roma: '#8E1F2F',
+  celtic: '#018749', rangers: '#1B458F', marseille: '#2FAEE0',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

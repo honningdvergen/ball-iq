@@ -164,6 +164,7 @@ const CLUB_BADGE = {
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
   'bayern-munich': 'BAY', 'borussia-dortmund': 'BVB', psg: 'PSG', ajax: 'AJA',
   napoli: 'NAP', galatasaray: 'GAL', benfica: 'SLB',
+  fenerbahce: 'FEN', porto: 'POR', roma: 'ROM', celtic: 'CEL', rangers: 'RAN', marseille: 'OM',
 };
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
@@ -191,6 +192,8 @@ const CLUB_COLOR = {
   'ac-milan': '#FB090B', 'atletico-madrid': '#CB3524', 'borussia-dortmund': '#FDE100',
   psg: '#003170', 'inter-milan': '#010E80', ajax: '#CC0000', tottenham: '#132257',
   newcastle: '#241F20', napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
+  fenerbahce: '#163962', porto: '#00428C', roma: '#8E1F2F',
+  celtic: '#018749', rangers: '#1B458F', marseille: '#2FAEE0',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

@@ -690,6 +690,7 @@ const CLUB_PACK_TO_QB = {
   PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
   Napoli: "Napoli", Galatasaray: "Galatasaray", Benfica: "Benfica",
   Fenerbahce: "Fenerbahçe", Porto: "Porto", Roma: "Roma",
+  Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
 };
 
 // League grouping for the club-quiz picker.
@@ -701,6 +702,7 @@ const CLUB_LEAGUES = {
   PSG: "ligue1",
   Galatasaray: "superlig", Benfica: "primeira", Fenerbahce: "superlig",
   Porto: "primeira", Roma: "seriea",
+  Celtic: "scottish", Rangers: "scottish", Marseille: "ligue1",
   Ajax: "other",
 };
 const CLUB_LEAGUE_SECTIONS = [
@@ -711,6 +713,7 @@ const CLUB_LEAGUE_SECTIONS = [
   { key: "ligue1", label: "Ligue 1" },
   { key: "superlig", label: "Süper Lig" },
   { key: "primeira", label: "Primeira Liga" },
+  { key: "scottish", label: "Scottish Premiership" },
   { key: "other", label: "More clubs" },
 ];
 
@@ -740,6 +743,7 @@ const CLUB_ABBR = {
   PSG: "PSG", Ajax: "AJA",
   Napoli: "NAP", Galatasaray: "GAL", Benfica: "SLB",
   Fenerbahce: "FEN", Porto: "POR", Roma: "ROM",
+  Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -754,6 +758,7 @@ const CLUB_SLUG_TO_PACK = {
   "juventus": "Juventus", "ac-milan": "AcMilan", "ajax": "Ajax",
   "napoli": "Napoli", "galatasaray": "Galatasaray", "benfica": "Benfica",
   "fenerbahce": "Fenerbahce", "porto": "Porto", "roma": "Roma",
+  "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1040,6 +1045,18 @@ const CLUB_PACKS = {
   },
   Roma: {
     name: "Roma", icon: "🔴", color: "#8E1F2F",
+    questions: [],
+  },
+  Celtic: {
+    name: "Celtic", icon: "🍀", color: "#018749",
+    questions: [],
+  },
+  Rangers: {
+    name: "Rangers", icon: "🔵", color: "#1B458F",
+    questions: [],
+  },
+  Marseille: {
+    name: "Marseille", icon: "⚪", color: "#2FAEE0",
     questions: [],
   },
 };

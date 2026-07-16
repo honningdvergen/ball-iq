@@ -745,5 +745,101 @@ export const CLUBS = [
         "a": "It runs from easy (in which season did Totti win the Scudetto with Roma?) to hard (specific finals, scorelines and squad deep cuts). The difficulty is mixed, so casual fans and obsessives both get a real test."
       }
     ]
+  },
+  {
+    "club": "Celtic",
+    "slug": "celtic",
+    "name": "Celtic",
+    "h1": "Celtic Quiz",
+    "title": "Celtic Quiz — Bhoys Trivia Questions & Answers | Ball IQ",
+    "description": "Free Celtic quiz with explained answers — from the Lisbon Lions and Henrik Larsson to nine-in-a-row and the Old Firm. Play in your browser, no sign-up.",
+    "intro": [
+      "Celtic were founded in the East End of Glasgow in 1887 by an Irish-born Marist, Brother Walfrid, to raise money for the poor of the city's community — and played their first match, against Rangers, in 1888. This free Celtic quiz covers the whole story of the club from Parkhead: the green-and-white hoops, the roar of Celtic Park (the ground supporters call 'Paradise'), and a history running from Willie Maley through Jock Stein to the modern Bhoys. If you know your Celtic, this is your test.",
+      "No moment defines the club like Lisbon. In 1967, Jock Stein's side became the first British club to win the European Cup, beating Inter Milan 2-1 in the Portuguese capital with a team drawn almost entirely from within a few miles of Glasgow — the immortal Lisbon Lions. Stein's Celtic also won nine league titles in a row between 1966 and 1974, a Scottish record later matched but never beaten. The quiz travels from that golden age to Henrik Larsson's goal-laden years, Martin O'Neill's run to the 2003 UEFA Cup final in Seville, and Brendan Rodgers' unbeaten domestic treble of 2016-17.",
+      "Expect questions on the managers, the great European nights, the Old Firm derby with Rangers, and the cult heroes fans still sing about. You'll be asked who captained the Lisbon Lions, which Swedish striker became a Parkhead idol, and where that 1967 final was played. Difficulty climbs from easy openers about famous champions and the club's founding to genuinely hard deep cuts about specific finals, scorers and seasons — a proper test for the matchgoer and the stats obsessive alike.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Celtic quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Celtic's greatest achievement?",
+        "a": "Winning the 1967 European Cup — Celtic beat Inter Milan 2-1 in Lisbon to become the first British club to lift the trophy, with a squad famously drawn almost entirely from the Glasgow area. That team is known forever as the Lisbon Lions."
+      },
+      {
+        "q": "Who managed Celtic's Lisbon Lions?",
+        "a": "Jock Stein, who took charge in 1965 and masterminded the 1967 European Cup triumph as well as nine consecutive Scottish league titles between 1966 and 1974."
+      },
+      {
+        "q": "Is the Celtic quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Celtic question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Celtic quiz?",
+        "a": "It scales from easy to hard. Early questions cover well-known facts like the Lisbon Lions and the green-and-white hoops; later ones dig into specific finals, scorers and seasons that even lifelong supporters find testing."
+      }
+    ]
+  },
+  {
+    "club": "Rangers",
+    "slug": "rangers",
+    "name": "Rangers",
+    "h1": "Rangers Quiz",
+    "title": "Rangers Quiz — Gers Trivia Questions & Answers | Ball IQ",
+    "description": "Free Rangers quiz with explained answers — from the 1972 Cup Winners' Cup and nine-in-a-row to Ibrox and the Old Firm. Play free in your browser.",
+    "intro": [
+      "Rangers were founded in Glasgow in 1872 and have played at Ibrox — one of British football's grandest stadiums — since 1899. This free Rangers quiz covers the whole story of the club: the royal blue, the marble staircase, managers from Bill Struth to Walter Smith, and one of the fiercest rivalries in world sport, the Old Firm derby with Celtic. If you know your Gers, this is your test.",
+      "Rangers' proudest European night came in 1972, when they won the European Cup Winners' Cup, beating Dynamo Moscow 3-2 in the final in Barcelona. Domestically, few runs compare to the nine league titles in a row between 1989 and 1997, built under Graeme Souness and completed by Walter Smith, with idols like Ally McCoist, Brian Laudrup and Paul Gascoigne. The quiz also tells the modern chapter: financial collapse and liquidation in 2012, the reformed club restarting in Scottish football's fourth tier, and the long climb back — including a run to the 2022 Europa League final.",
+      "Expect questions on the European finals, the managers, the Old Firm, and the players fans still talk about. You'll be asked who scored twice in the 1972 final, which manager completed nine-in-a-row, and which division Rangers restarted in after 2012. Difficulty climbs from easy openers about Ibrox and the club colours to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Rangers quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Rangers' greatest European achievement?",
+        "a": "Winning the 1972 European Cup Winners' Cup — Rangers beat Dynamo Moscow 3-2 in the final in Barcelona, with Willie Johnston scoring twice. It remains the club's only major European trophy."
+      },
+      {
+        "q": "What happened to Rangers in 2012?",
+        "a": "The club suffered financial collapse and was liquidated in 2012. A reformed Rangers had to restart in the fourth tier of Scottish football and climbed back up the divisions to the top flight."
+      },
+      {
+        "q": "Is the Rangers quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Rangers question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Rangers quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Ibrox and the 1972 final to testing deep cuts on specific seasons, scorers and the nine-in-a-row era."
+      }
+    ]
+  },
+  {
+    "club": "Marseille",
+    "slug": "marseille",
+    "name": "Marseille",
+    "h1": "Marseille Quiz",
+    "title": "Marseille Quiz — OM Trivia Questions & Answers | Ball IQ",
+    "description": "Free Olympique de Marseille quiz with explained answers — from the 1993 Champions League to the Vélodrome and 'Droit Au But'. Play free in your browser.",
+    "intro": [
+      "Olympique de Marseille were founded in 1899 and are one of French football's giants, roared on by a famously passionate support at the Stade Vélodrome. This free Marseille quiz covers the whole story of OM: the white and blue of the city, the motto 'Droit Au But' ('Straight to the Goal'), the flamboyant Bernard Tapie era, and a place in history no other French club can claim. If you know your OM, this is your test.",
+      "In 1993, Marseille became — and remain — the first and only French club to win the European Cup / Champions League, beating AC Milan 1-0 in the final in Munich with a Basile Boli header. That side, captained by Didier Deschamps and managed by Raymond Goethals, is the club's crowning glory. It came alongside one of the game's great scandals: Marseille were later stripped of their 1992-93 French league title over a domestic match-fixing affair. The quiz covers both the triumph and the fall, plus nine French championships and decades of stars.",
+      "Expect questions on the 1993 final, the managers, the great players, and the club's proud identity. You'll be asked who scored the winning goal against Milan, who captained the side, and what the club's motto means. Difficulty climbs from easy openers about the Vélodrome and the club colours to genuinely hard deep cuts about specific finals, transfers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Marseille quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Marseille's greatest achievement?",
+        "a": "Winning the 1993 Champions League — Marseille beat AC Milan 1-0 in the final in Munich, with Basile Boli scoring the only goal. They remain the first and only French club to win Europe's top club competition."
+      },
+      {
+        "q": "Why were Marseille stripped of a league title?",
+        "a": "Marseille were stripped of their 1992-93 French league title following a domestic match-fixing scandal that came to light around the same time as their European Cup triumph."
+      },
+      {
+        "q": "Is the Marseille quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Marseille question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Marseille quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Vélodrome and the 1993 final to testing deep cuts on specific finals, transfers and seasons."
+      }
+    ]
   }
 ];
