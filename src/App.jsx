@@ -7890,7 +7890,19 @@ function AppInner() {
     // within the first ~200ms of paint experience any noticeable wait,
     // and that wait is invisible (Home stays mounted, no spinner).
     // See questions-loader.js + docs/BUNDLE_SPLITTING_ANALYSIS.md.
-    prefetchQuestions();
+    //
+    // Deferred to IDLE time (2026-07-16): social traffic boots straight into
+    // /footle, which imports NOTHING from questions.js — so an eager prefetch
+    // was ~424KB of cellular transfer + a main-thread eval competing with the
+    // arriving user's first Footle guess. requestIdleCallback runs it only when
+    // the main thread is free; quiz users still get it well before they tap Play
+    // (idle fires within ~1-2s on Home). setTimeout fallback for WKWebViews
+    // without rIC (iOS < 17.4).
+    {
+      const idlePrefetch = () => { try { prefetchQuestions(); } catch {} };
+      if (typeof requestIdleCallback === 'function') requestIdleCallback(idlePrefetch, { timeout: 3000 });
+      else setTimeout(idlePrefetch, 1200);
+    }
     // Prune expired seen-question history (>14 days old) on mount
     try { loadSeenHistory(); } catch {}
     // First-run onboarding is decided synchronously by the useState
@@ -9333,6 +9345,19 @@ function AppInner() {
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
   }, [loadNotifs]);
+  // Interval poll while signed in + tab visible (2026-07-16). Free-tier realtime
+  // doesn't deliver postgres_changes, and focus-only refresh means the bell stays
+  // silent for a friend request / play invite that arrives while the app is open
+  // and focused. A cheap 30s indexed re-fetch closes that gap on web — the only
+  // delivery channel until native APNs banners land in build 45. Skips guests and
+  // pauses when hidden so it costs nothing in the background.
+  useEffect(() => {
+    if (!user?.id || isGuest) return;
+    const id = setInterval(() => {
+      if (typeof document === "undefined" || document.visibilityState === "visible") loadNotifs();
+    }, 30000);
+    return () => clearInterval(id);
+  }, [user?.id, isGuest, loadNotifs]);
   const notifCount = notifRequests.length + notifInvites.length;
   const respondFriendRequest = useCallback(async (id, accept) => {
     setNotifRequests(prev => prev.filter(r => r.id !== id)); // optimistic
