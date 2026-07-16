@@ -1,0 +1,55 @@
+# Nightly logical backup of the PRODUCTION Supabase database.
+#
+# WHY: the project runs on Supabase's free tier, which has NO automated database
+# backups and no PITR. Every account, login streak and score exists in exactly
+# one unsnapshotted copy (supabase/prod-snapshot/ is SCHEMA ONLY, not data). This
+# is the cheapest possible mitigation: a logical dump on a 15MB DB takes seconds,
+# runs free on GitHub Actions, and is retained as a downloadable artifact.
+#
+# ACTIVATION (one-time, by Alex): add a repo secret named SUPABASE_DB_URL =
+#   the prod DIRECT connection string, from Supabase -> Project Settings ->
+#   Database -> Connection string -> URI (postgres://postgres:[PASSWORD]@db.
+#   blcisypmngimqkwxrrdm.supabase.co:5432/postgres). Until the secret is set the
+#   job fails loudly with a clear message (it does not silently pass).
+#
+# SECURITY: the only interpolation into a run step is the numeric github.run_id
+# (in an artifact name, not a shell command). The DB URL is a repo SECRET passed
+# via env and quoted. No untrusted github.event.* data is used anywhere.
+#
+# Restore: download the artifact, gunzip, then psql the data.sql back into a
+# fresh project (schema.sql first if rebuilding from scratch).
+name: Nightly DB backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # 03:00 UTC daily
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Dump schema + data
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "::error::SUPABASE_DB_URL secret is not set. Add it in repo Settings -> Secrets and variables -> Actions (see this workflow header for where to get the value)."
+            exit 1
+          fi
+          mkdir -p backup
+          # supabase db dump is version-aware (handles the pg17 server); schema then data.
+          supabase db dump --db-url "$DB_URL" -f backup/schema.sql
+          supabase db dump --db-url "$DB_URL" --data-only -f backup/data.sql
+          gzip backup/*.sql
+          echo "Backup contents:"; ls -la backup
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: backup/
+          retention-days: 30

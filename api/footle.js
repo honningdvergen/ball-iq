@@ -23,7 +23,9 @@ export const config = { runtime: 'edge' };
 
 const SITE = 'https://balliq.app';
 const DAY_MS = 24 * 60 * 60 * 1000;
-const ARCHIVE_DAYS = 21; // yesterday + 20 more shown in the past-answers list
+const ARCHIVE_DAYS = 90; // yesterday + 89 more — each past puzzle is its own indexable
+                         // "footle #N answer" long-tail target (deterministic from
+                         // WORDLE_ANSWER_LOG, so a deeper archive is free + drift-proof).
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -100,7 +102,8 @@ export default function handler() {
   const archiveRows = archive
     .map(
       (a) =>
-        `<tr><td class="an">#${a.n}</td><td class="ad">${esc(a.date)}</td><td class="aa">${esc(a.full)} <span class="asr">(${esc(a.surname)})</span></td></tr>`,
+        // id anchor makes each past puzzle directly linkable — /football-wordle/answer/#footle-64
+        `<tr id="footle-${a.n}"><td class="an">#${a.n}</td><td class="ad">${esc(a.date)}</td><td class="aa">${esc(a.full)} <span class="asr">(${esc(a.surname)})</span></td></tr>`,
     )
     .join('\n');
 

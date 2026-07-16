@@ -4934,7 +4934,7 @@ export function recordMpResult(entry) {
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji, onChallenge }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -4963,7 +4963,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
       for (const o of (h.opponents || [])) {
         if (!o || seen.has(o.id || o.name)) continue;
         seen.add(o.id || o.name);
-        recent.push({ name: o.name, avatar: o.avatar || "⚽", won: (h.myScore ?? 0) >= (o.score ?? 0), line: `${h.myScore ?? 0}–${o.score ?? 0}` });
+        recent.push({ id: o.id, name: o.name, avatar: o.avatar || "⚽", won: (h.myScore ?? 0) >= (o.score ?? 0), line: `${h.myScore ?? 0}–${o.score ?? 0}` });
         if (recent.length >= 3) break;
       }
       if (recent.length >= 3) break;
@@ -5084,7 +5084,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
                 <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:19}}>{o.avatar}</span>
                 <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
                 <span style={{fontSize:11,fontWeight:800,color:o.won ? "#8AE042" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
-                <button onClick={createRoom} style={{border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
+                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
               </div>
             ))}
           </div>
@@ -10097,6 +10097,7 @@ function AppInner() {
             <OnlineHubTab
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
+              onChallenge={challengeFriend}
               onJoinCode={hubJoinRoom}
               displayName={(() => {
                 const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
