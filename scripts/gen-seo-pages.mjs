@@ -35,6 +35,7 @@ import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { PLAYERS } from './seo/players.mjs';
+import { NATIONS } from './seo/nations.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -1042,6 +1043,93 @@ ${footer()}`;
   return { slug: cfg.slug, name: `${cfg.name} quiz`, count: hints.length, canonical };
 }
 
+// ── per-nation page ────────────────────────────────────────────────────────────
+// Same shape as buildPlayerPage: the bank has no `nation` field, so a question is
+// "about" a nation if any `match` alternative appears in the stem or the correct
+// answer. Prose (fact-checked, web-verified) comes from scripts/seo/nations.mjs.
+// World-Cup-timed: nation/host search peaks every 4 years. Nation pages interlink
+// with each other + the tournament category pages (World Cup, Euros).
+function nationHintRows(match) {
+  const re = new RegExp('(' + match.join('|') + ')', 'i');
+  return QB.filter(
+    (x) =>
+      x.type === 'mcq' &&
+      Array.isArray(x.o) &&
+      x.hint &&
+      (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
+  );
+}
+function buildNationPage(cfg, catPages, nationPages) {
+  const hints = nationHintRows(cfg.match);
+  if (hints.length < MIN_HINTS) {
+    throw new Error(`[gen-seo] nation "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
+  }
+  const tasterRows = tasterPick(hints, 5);
+  const tasterIds = new Set(tasterRows.map((r) => r.id));
+  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(10, hints.length - 5));
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
+        ],
+      },
+      eduQuizLd(cfg.name, sample),
+    ],
+  });
+  // Nation-to-nation mesh + the tournament categories (World Cup / Euros).
+  const related = [
+    ...nationPages.filter((p) => p.slug !== cfg.slug).slice(0, 8),
+    ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4),
+  ];
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
+<body>
+${NAV}
+<main>
+${heroTwoCol({
+    crumbItems: [
+      { name: 'Home', url: `${SITE.base}/` },
+      { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+      { name: cfg.name, url: canonical },
+    ],
+    badge: { text: cfg.initials, emoji: false },
+    kind: 'National team quiz',
+    name: cfg.name,
+    h1: cfg.h1,
+    lead: cfg.description,
+    statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
+    playHref: '#taster',
+  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
+${renderCovers(cfg.name, false, true)}
+${appCtaBand(cfg.name)}
+<section class="sec narrow">
+<h2>${esc(cfg.name)} sample questions &amp; answers</h2>
+<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+${renderQA(sample)}
+</section>
+${adSlot('afterQA')}
+<section class="sec">
+<h2>More quizzes to try</h2>
+${renderTiles(related)}
+</section>
+<section class="sec narrow">
+<h2>${esc(cfg.name)} quiz — FAQ</h2>
+${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
+</section>
+${adSlot('afterFaq')}
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'quiz', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: `${cfg.name} quiz`, count: hints.length, canonical };
+}
+
 // ── listicle page (cross-cutting "questions and answers" article) ─────────────
 function buildListiclePage(cfg, livePages) {
   const rows = cfg.questionIds.map((id) => QB.find((r) => r.id === id)).filter(Boolean);
@@ -1458,17 +1546,20 @@ async function main() {
   const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length }));
   // Player pages: /quiz/<player-slug>/ — same namespace; text-matched question sets.
   const playerPages = PLAYERS.map((p) => ({ slug: p.slug, name: `${p.name} quiz`, count: playerHintRows(p.match).length }));
+  // Nation pages: /quiz/<nation-slug>/ — same namespace; text-matched question sets.
+  const nationPages = NATIONS.map((n) => ({ slug: n.slug, name: `${n.name} quiz`, count: nationHintRows(n.match).length }));
 
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
+  const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages]);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages]);
   buildLlmsTxt(livePages, clubPages);
   await pingIndexNow(sitemapUrls);
 
@@ -1477,6 +1568,7 @@ async function main() {
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
   for (const b of builtPlayers) console.log(`  ✓ /quiz/${b.slug}/  (player, ${b.count} Qs in bank)`);
+  for (const b of builtNations) console.log(`  ✓ /quiz/${b.slug}/  (nation, ${b.count} Qs in bank)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /football-wordle/  (Footle landing)`);
   console.log(`  ✓ /about/  ✓ /contact/`);
