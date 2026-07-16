@@ -1550,6 +1550,35 @@ const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform
 // that hides desktop landing chrome (.landing-top / .landing-bottom / etc.).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
+// Post-Footle App Store nudge (2026-07-16, Alex): the apple-itunes-app smart
+// banner never renders inside Threads/IG/X in-app webviews — exactly where
+// social traffic lands — and InstallBanner needs a PWA install affordance
+// those webviews don't expose. So the social funnel finished Footle with NO
+// visible path to the app. iOS-web-gated: desktop can't install an iOS app
+// and the Play listing isn't live yet (Android keeps the PWA InstallBanner).
+// iPadOS 13+ reports "Mac" + touch, hence the maxTouchPoints branch.
+const IS_IOS_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
+  (/iPad|iPhone|iPod/.test(navigator.userAgent || "") ||
+    ((navigator.userAgent || "").includes("Mac") && navigator.maxTouchPoints > 1));
+function FootleGetAppCTA({ style }) {
+  if (!IS_IOS_WEB) return null;
+  return (
+    <>
+      <a
+        className="wd-share"
+        href={APP_STORE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ background: "var(--accent)", color: "#0a0a0a", fontWeight: 800, textDecoration: "none", ...style }}
+      >
+        📲 Get the free app
+      </a>
+      <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginTop: 2 }}>
+        Streaks, daily reminders &amp; 4,000+ quiz questions
+      </div>
+    </>
+  );
+}
 export function haptic(type) {
   try {
     let enabled = true;
@@ -4667,6 +4696,9 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
               {!IS_NATIVE && shareText && (
                 <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share on WhatsApp</a>
               )}
+              {/* Same App Store nudge as the live puzzle's result (archive
+                  visitors from the indexed /footle archive are pure web). */}
+              <FootleGetAppCTA style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}} />
               <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
             </div>
           )}
@@ -6986,6 +7018,10 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
           {!IS_NATIVE && shareText && (
             <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Share on WhatsApp</a>
           )}
+          {/* Strong post-game App Store nudge for the social-webview funnel
+              (see FootleGetAppCTA def) — the result moment is where
+              Wordle-likes convert. */}
+          <FootleGetAppCTA />
           <div className="wd-result-foot">New player in {countdown}</div>
           {/* Second-play CTA. Rendered on won AND lost; hidden once today's
               Daily 7 is done (the mount site passes no handler then, since
