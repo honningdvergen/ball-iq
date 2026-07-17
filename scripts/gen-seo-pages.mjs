@@ -380,10 +380,44 @@ function renderTiles(pages) {
   return `<div class="tiles">\n${items}\n</div>`;
 }
 
+// ── Option shuffling for the STATIC pages ────────────────────────────────────
+// The APP shuffles options at render time (App.jsx: `shuffle([0,1,2,3])` then
+// remaps `a`), so the stored `a` index is only an authoring convention — most
+// authors write the correct option first and it never shows in-product. The
+// generator has no such shuffle, so that convention leaked straight onto the
+// landing pages: 56% of club questions are stored at index 0, and 8 clubs
+// (Chelsea, Atlético, PSG, Inter, AC Milan, Dortmund, Rangers, PSV) are 100%
+// answer-first — i.e. the playable taster on our highest-intent SEO pages could
+// be aced by tapping the first option every time. Fixed here, at the render
+// boundary, NOT in the bank (the data is fine; only presentation was wrong).
+//
+// MUST be deterministic: a Math.random shuffle would reorder every page on
+// every build, churning dist/ diffs forever. Seeded on the question's stable
+// sha1 id, so a given question always shuffles the same way.
+const seedFromId = (id) => {
+  let h = 2166136261 >>> 0; // FNV-1a
+  const s = String(id || '');
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0;
+};
+function shuffleOptions(r) {
+  if (!Array.isArray(r.o) || r.o.length < 2 || typeof r.a !== 'number') return r;
+  const idx = r.o.map((_, i) => i);
+  let h = seedFromId(r.id ?? r.q);
+  // Fisher-Yates driven by a deterministic xorshift32 PRNG.
+  for (let i = idx.length - 1; i > 0; i--) {
+    h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0;
+    const j = h % (i + 1);
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  return { ...r, o: idx.map((i) => r.o[i]), a: idx.indexOf(r.a) };
+}
+
 // Difficulty-spread sample Q&A block (answers revealed on click; text stays in DOM).
 function renderQA(rows) {
   const items = rows
-    .map((r) => {
+    .map((row) => {
+      const r = shuffleOptions(row);
       const answer = r.o[r.a];
       const opts = r.o.map((o) => `<li>${esc(o)}</li>`).join('');
       return `<li class="qa">
@@ -482,7 +516,9 @@ draw();
 // (excluded from the static Q&A block). `playHref` sends "Play the full quiz"
 // straight into that topic in the app.
 function renderTaster(rows, name, playHref) {
-  const payload = rows.map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
+  // shuffleOptions: without it the taster could be aced by tapping option 1
+  // every time (the stored `a` is answer-first for 56% of club questions).
+  const payload = rows.map(shuffleOptions).map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
   const data = JSON.stringify(payload).replace(/</g, '\\u003c');
   const play = playHref || `${SITE.base}/`;
   return `<section class="taster" id="taster" aria-labelledby="taster-h">
