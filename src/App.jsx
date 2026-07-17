@@ -10295,9 +10295,29 @@ function AppInner() {
               <div style={{fontSize:48,marginBottom:10}} aria-hidden="true">🎮</div>
               <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Join the game</div>
               <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
+              {/* Social in-app webviews (Snapchat/IG/Threads) are a separate,
+                  always-logged-out browser AND swallow Universal Links — so
+                  users who ARE logged into the installed app hit this gate
+                  (task #22, Alex repro 2026-07-17). Custom schemes DO escape
+                  those webviews. The scheme URL keeps `balliq.app` as its
+                  hostname because the live binary's appUrlOpen parser
+                  (tryCapture) hostname-checks before extracting the code —
+                  this exact shape deep-links code-intact on build 43+ with
+                  no native change. Silent no-op if the app isn't installed,
+                  so the sign-in path below stays available. */}
+              {IS_IOS_WEB && (
+                <button
+                  onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}
+                  style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                >
+                  📲 Got the app? Open it there
+                </button>
+              )}
               <button
                 onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}
-                style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                style={IS_IOS_WEB
+                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:8}
+                  : {width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
               >
                 Sign up or sign in
               </button>
