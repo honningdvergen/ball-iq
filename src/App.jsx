@@ -691,6 +691,7 @@ const CLUB_PACK_TO_QB = {
   Napoli: "Napoli", Galatasaray: "Galatasaray", Benfica: "Benfica",
   Fenerbahce: "Fenerbahçe", Porto: "Porto", Roma: "Roma",
   Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
+  Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
 };
 
 // League grouping for the club-quiz picker.
@@ -703,7 +704,10 @@ const CLUB_LEAGUES = {
   Galatasaray: "superlig", Benfica: "primeira", Fenerbahce: "superlig",
   Porto: "primeira", Roma: "seriea",
   Celtic: "scottish", Rangers: "scottish", Marseille: "ligue1",
-  Ajax: "other",
+  // Wave D: PSV + Feyenoord finally give Ajax a real league home — it sat in
+  // "other" only because it was the lone Dutch club.
+  Ajax: "eredivisie", Feyenoord: "eredivisie", PSV: "eredivisie",
+  Anderlecht: "belgian",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -714,6 +718,8 @@ const CLUB_LEAGUE_SECTIONS = [
   { key: "superlig", label: "Süper Lig" },
   { key: "primeira", label: "Primeira Liga" },
   { key: "scottish", label: "Scottish Premiership" },
+  { key: "eredivisie", label: "Eredivisie" },
+  { key: "belgian", label: "Belgian Pro League" },
   { key: "other", label: "More clubs" },
 ];
 
@@ -744,6 +750,7 @@ const CLUB_ABBR = {
   Napoli: "NAP", Galatasaray: "GAL", Benfica: "SLB",
   Fenerbahce: "FEN", Porto: "POR", Roma: "ROM",
   Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
+  Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -759,6 +766,7 @@ const CLUB_SLUG_TO_PACK = {
   "napoli": "Napoli", "galatasaray": "Galatasaray", "benfica": "Benfica",
   "fenerbahce": "Fenerbahce", "porto": "Porto", "roma": "Roma",
   "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
+  "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1057,6 +1065,18 @@ const CLUB_PACKS = {
   },
   Marseille: {
     name: "Marseille", icon: "⚪", color: "#2FAEE0",
+    questions: [],
+  },
+  Feyenoord: {
+    name: "Feyenoord", icon: "🔴", color: "#DA020E",
+    questions: [],
+  },
+  PSV: {
+    name: "PSV", icon: "🔴", color: "#ED1C24",
+    questions: [],
+  },
+  Anderlecht: {
+    name: "Anderlecht", icon: "🟣", color: "#52247F",
     questions: [],
   },
 };

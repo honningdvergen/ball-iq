@@ -841,5 +841,101 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the Vélodrome and the 1993 final to testing deep cuts on specific finals, transfers and seasons."
       }
     ]
+  },
+  {
+    "club": "Feyenoord",
+    "slug": "feyenoord",
+    "name": "Feyenoord",
+    "h1": "Feyenoord Quiz",
+    "title": "Feyenoord Quiz — De Kuip Trivia Questions & Answers | Ball IQ",
+    "description": "Free Feyenoord quiz with explained answers — from the 1970 European Cup and De Kuip to De Klassieker and two UEFA Cups. Play free in your browser.",
+    "intro": [
+      "Feyenoord were founded in Rotterdam in 1908 and have played at Stadion Feijenoord — known to everyone simply as De Kuip, 'the tub' — since 1937. This free Feyenoord quiz covers the whole story of the club: the red-and-white halved shirt, the black shorts, and a working-class identity summed up by the motto Rotterdam and the club share, 'Geen woorden maar daden' — no words but deeds. If you know your Feyenoord, this is your test.",
+      "The club's greatest night came in 1970, when Feyenoord became the first Dutch club to win the European Cup, beating Celtic 2-1 after extra time at the San Siro with Ove Kindvall's late goal, under the Austrian coach Ernst Happel. Later that year they added the Intercontinental Cup against Estudiantes. Feyenoord went on to win the UEFA Cup in 1974, beating Tottenham Hotspur, and again in 2002 against Borussia Dortmund, and Johan Cruyff finished his playing career in Rotterdam by winning the 1984 league-and-cup double.",
+      "Expect questions on De Klassieker with Ajax, the Rotterdam derby with Sparta, the European nights, the managers and the club legends fans still sing about. You'll be asked who scored the 1970 winner, what De Kuip's nickname means, and which competition Feyenoord lifted in both 1974 and 2002. Difficulty climbs from easy openers about the founding and the colours to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Feyenoord quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Feyenoord's greatest achievement?",
+        "a": "Winning the 1970 European Cup — Feyenoord beat Celtic 2-1 after extra time at the San Siro in Milan, with Ove Kindvall scoring the winner, to become the first Dutch club to lift the trophy. They added the Intercontinental Cup the same year."
+      },
+      {
+        "q": "Why is Feyenoord's stadium called De Kuip?",
+        "a": "'Kuip' is Dutch for tub, a nod to the steep bowl shape of Stadion Feijenoord, which opened in 1937. Virtually nobody calls it by its official name."
+      },
+      {
+        "q": "Is the Feyenoord quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Feyenoord question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Feyenoord quiz?",
+        "a": "It scales from easy to hard — from well-known facts about De Kuip and the 1970 European Cup to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "PSV",
+    "slug": "psv",
+    "name": "PSV",
+    "h1": "PSV Quiz",
+    "title": "PSV Quiz — PSV Eindhoven Trivia Questions & Answers | Ball IQ",
+    "description": "Free PSV Eindhoven quiz with explained answers — from the 1988 European Cup and treble to Romário, Ronaldo and Philips Stadion. Play free in your browser.",
+    "intro": [
+      "PSV were founded in Eindhoven in 1913 as the sports club of the Philips electronics company, and still play at the Philips Stadion in the heart of the city. This free PSV quiz covers the whole story: the red-and-white stripes, the Eindhoven roots, and a reputation as one of the great talent factories in European football. If you know your PSV, this is your test.",
+      "The summit came in 1988, when Guus Hiddink's side completed a treble — the Eredivisie, the KNVB Cup and the European Cup, beating Benfica on penalties in Stuttgart after Hans van Breukelen's decisive save. That team was captained by Eric Gerets and included Ronald Koeman, who would later join Barcelona's Dream Team. PSV's eye for a player runs deep: weeks after that final, Romário arrived from Vasco da Gama in the summer of 1988 and tore the Eredivisie apart before Barcelona came calling in 1993, and the club has launched a string of forwards onto the biggest stages.",
+      "Expect questions on the 1988 treble, the managers, the Brazilians and Dutchmen who made their names in Eindhoven, and the club's European history. You'll be asked who saved the decisive penalty, which club PSV beat in the 1988 final, and where the club's name comes from. Difficulty climbs from easy openers about the founding and the stadium to genuinely hard deep cuts about specific finals, transfers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full PSV quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is PSV's greatest achievement?",
+        "a": "The 1988 treble — PSV won the Eredivisie, the KNVB Cup and the European Cup in a single season under Guus Hiddink, beating Benfica on penalties in the final in Stuttgart after Hans van Breukelen's save."
+      },
+      {
+        "q": "What does PSV stand for?",
+        "a": "Philips Sport Vereniging — the club was founded in 1913 as the sports club of the Philips electronics company in Eindhoven, and still plays at the Philips Stadion."
+      },
+      {
+        "q": "Is the PSV quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full PSV question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the PSV quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the 1988 treble and Philips Stadion to testing deep cuts on specific finals, transfers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Anderlecht",
+    "slug": "anderlecht",
+    "name": "Anderlecht",
+    "h1": "Anderlecht Quiz",
+    "title": "Anderlecht Quiz — RSC Anderlecht Trivia Questions & Answers | Ball IQ",
+    "description": "Free RSC Anderlecht quiz with explained answers — from two Cup Winners' Cups and the 1983 UEFA Cup to Paul Van Himst and the purple and white. Play free in your browser.",
+    "intro": [
+      "RSC Anderlecht were founded in 1908 in the Brussels borough that gives them their name, and the purple and white have been Belgian football's defining colours ever since. This free Anderlecht quiz covers the whole story: the Brussels roots, the trophy-laden decades, and a run of European nights that made a Belgian club genuinely feared on the continent. If you know your Anderlecht, this is your test.",
+      "Anderlecht's European golden age arrived in the 1970s and 80s. They won the European Cup Winners' Cup in 1976 and again in 1978, and lifted the UEFA Cup in 1983 — a haul few clubs outside the traditional giants can match. Paul Van Himst, named Belgium's footballer of the twentieth century, won all four of his Golden Shoes at Anderlecht across sixteen years at the club, while the Dutch winger Rob Rensenbrink scored in both of those Cup Winners' Cup final victories.",
+      "Expect questions on the European finals, the managers, the great Brussels sides and the players who defined them. You'll be asked which trophy Anderlecht won twice in the 1970s, who Belgium's footballer of the century was, and what the club's colours are. Difficulty climbs from easy openers about the founding and the purple shirt to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Anderlecht quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What are Anderlecht's biggest European achievements?",
+        "a": "Anderlecht won the European Cup Winners' Cup twice, in 1976 and 1978, and the UEFA Cup in 1983 — a European haul that puts them among the most successful Belgian clubs in history."
+      },
+      {
+        "q": "Who is Anderlecht's most celebrated player?",
+        "a": "Paul Van Himst was named Belgium's footballer of the twentieth century and won all four of his Golden Shoes at Anderlecht. The Dutch winger Rob Rensenbrink is another club icon, having scored in both of Anderlecht's Cup Winners' Cup final wins."
+      },
+      {
+        "q": "Is the Anderlecht quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Anderlecht question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Anderlecht quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the purple and white and the Cup Winners' Cups to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
   }
 ];

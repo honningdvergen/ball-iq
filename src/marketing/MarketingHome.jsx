@@ -464,6 +464,9 @@ const QUIZ_CLUBS = [
   { slug: 'celtic', label: 'Celtic', badge: 'CEL' },
   { slug: 'rangers', label: 'Rangers', badge: 'RAN' },
   { slug: 'marseille', label: 'Marseille', badge: 'OM' },
+  { slug: 'feyenoord', label: 'Feyenoord', badge: 'FEY' },
+  { slug: 'psv', label: 'PSV', badge: 'PSV' },
+  { slug: 'anderlecht', label: 'Anderlecht', badge: 'RSCA' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
@@ -490,6 +493,7 @@ const CLUB_COLOR = {
   napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
   fenerbahce: '#163962', porto: '#00428C', roma: '#8E1F2F',
   celtic: '#018749', rangers: '#1B458F', marseille: '#2FAEE0',
+  feyenoord: '#DA020E', psv: '#ED1C24', anderlecht: '#52247F',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
