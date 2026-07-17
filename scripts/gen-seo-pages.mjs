@@ -183,6 +183,18 @@ const CAT_KIND = {
 
 const deriveBadge = (name) => name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'FB';
 
+// Dynamic OG card for a landing page: unfurls as "How well do you know <name>?"
+// in the club's colour (api/og.js ?t=club) instead of the static app image.
+// This is the preview a link shows on Reddit/WhatsApp/iMessage — a club-branded
+// card massively out-clicks a generic "Ultimate Football Quiz" ad. `color` may
+// be undefined (card falls back to brand green); badge/kind mirror the hero.
+const clubOgImage = ({ name, badge, color, kind }) => {
+  const p = new URLSearchParams({ t: 'club', n: name, k: kind });
+  if (badge) p.set('b', badge);
+  if (color) p.set('c', color);
+  return `${SITE.base}/api/og?${p.toString()}`;
+};
+
 // Club brand colours — mirror the app's CLUB_PACKS so the web badges read the
 // same as the in-app club list. Light shirts (Real Madrid white, Dortmund
 // yellow) get dark text via readableOn(); a hairline border keeps very dark
@@ -581,7 +593,7 @@ function renderCovers(name, isLeague, isPlayer) {
 // render adSlot() calls should pass it — see the AD_SLOTS placement policy.
 // The account meta below stays on every page unconditionally: it is inert
 // (makes no request) and is Google's raw-HTML site-ownership signal.
-function head({ title, description, canonical, ld, ads = false }) {
+function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage }) {
   return `<!DOCTYPE html>
 <html lang="en" style="background-color:${PAGE_BG}">
 <head>
@@ -621,7 +633,7 @@ function head({ title, description, canonical, ld, ads = false }) {
 <meta property="og:url" content="${canonical}" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(description)}" />
-<meta property="og:image" content="${SITE.ogImage}" />
+<meta property="og:image" content="${ogImage}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Ball IQ football quiz" />
@@ -629,7 +641,7 @@ function head({ title, description, canonical, ld, ads = false }) {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${esc(title)}" />
 <meta name="twitter:description" content="${esc(description)}" />
-<meta name="twitter:image" content="${SITE.ogImage}" />
+<meta name="twitter:image" content="${ogImage}" />
 <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
 <meta name="apple-itunes-app" content="app-id=6775975961" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -868,7 +880,9 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
     ...playerPages,
   ];
 
-  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true })}
+  const catKind = CAT_KIND[catCfg.slug] || 'League quiz';
+  const ogImage = clubOgImage({ name: catCfg.name, badge: '', color: CLUB_COLOR[catCfg.slug], kind: catKind });
+  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true, ogImage })}
 <body>
 ${NAV}
 <main>
@@ -879,7 +893,7 @@ ${heroTwoCol({
       { name: catCfg.name, url: canonical },
     ],
     badge: { text: CAT_EMOJI[catCfg.slug] || '⚽', emoji: true },
-    kind: CAT_KIND[catCfg.slug] || 'League quiz',
+    kind: catKind,
     name: catCfg.name,
     h1: catCfg.h1,
     lead: catCfg.description,
@@ -958,7 +972,9 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
     ...playerPages,
   ];
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
+  const clubBadge = CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name);
+  const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: 'Club quiz' });
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage })}
 <body>
 ${NAV}
 <main>
@@ -968,7 +984,7 @@ ${heroTwoCol({
       { name: 'Quizzes', url: `${SITE.base}/quiz/` },
       { name: cfg.name, url: canonical },
     ],
-    badge: { text: CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name), emoji: false, color: CLUB_COLOR[cfg.slug] },
+    badge: { text: clubBadge, emoji: false, color: CLUB_COLOR[cfg.slug] },
     kind: 'Club quiz',
     name: cfg.name,
     h1: cfg.h1,

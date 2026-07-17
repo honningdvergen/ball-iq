@@ -155,11 +155,65 @@ function inviteCard(sp) {
   return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
 }
 
+// Club / category landing card (?t=club): the SEO pages (/quiz/<slug>/) point
+// og:image here instead of the static app card, so a shared link unfurls as
+// "How well do you know Arsenal?" with the club's own colour — infinitely more
+// clickable to a fan than a generic "Ultimate Football Quiz · 3,900+ questions"
+// ad. `n` = display name, `b` = 3-letter badge, `c` = brand hex, `k` = kind
+// label (e.g. "Club quiz" / "League quiz"). All are presentation; no payload.
+function clubCard(sp) {
+  const name = (sp.get('n') || 'Football').slice(0, 28);
+  const badge = (sp.get('b') || '').slice(0, 4).toUpperCase();
+  const kind = (sp.get('k') || 'Quiz').slice(0, 20);
+  // Sanitise the colour to a hex literal — this string goes straight into a
+  // style value, and the param is attacker-influenceable via a crafted link.
+  const rawC = sp.get('c') || '';
+  const brand = /^#?[0-9a-fA-F]{6}$/.test(rawC) ? (rawC[0] === '#' ? rawC : '#' + rawC) : '#58CC02';
+  // Dark brand colours (Juventus, Newcastle) need light badge text; light ones
+  // (Dortmund yellow, Madrid white) need dark. Same luminance test the site uses.
+  const r = parseInt(brand.slice(1, 3), 16), g = parseInt(brand.slice(3, 5), 16), b = parseInt(brand.slice(5, 7), 16);
+  const badgeText = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0A0A0A' : '#FFFFFF';
+
+  const tree = h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: 40 } },
+      ...(badge ? [h('div', {
+        style: {
+          width: 150, height: 150, borderRadius: 32, display: 'flex', flexShrink: 0,
+          alignItems: 'center', justifyContent: 'center',
+          fontSize: 54, fontWeight: 900, letterSpacing: 2,
+          background: brand, color: badgeText, border: '2px solid rgba(255,255,255,0.12)',
+        },
+      }, badge)] : []),
+      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
+        h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#58CC02', display: 'flex' } }, kind.toUpperCase()),
+        h('div', { style: { fontSize: 66, fontWeight: 900, lineHeight: 1.05, color: '#FFFFFF', display: 'flex' } }, `How well do you know ${name}?`),
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 6 } },
+          h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Play free'),
+          h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'No sign-up · answers explained'),
+        ),
+      ),
+    ),
+  );
+  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+}
+
 export default function handler(req) {
   const sp = new URL(req.url).searchParams;
   if (sp.get('t') === 'stump') return stumpCard(sp);
   if (sp.get('t') === 'challenge') return challengeCard(sp);
   if (sp.get('t') === 'invite') return inviteCard(sp);
+  if (sp.get('t') === 'club') return clubCard(sp);
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
   let img = sp.get('img') || '';
   // SSRF guard: this endpoint fetches `img` server-side, so only proxy images
