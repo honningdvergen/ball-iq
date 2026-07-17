@@ -470,6 +470,9 @@ const QUIZ_CLUBS = [
   { slug: 'besiktas', label: 'Beşiktaş', badge: 'BJK' },
   { slug: 'trabzonspor', label: 'Trabzonspor', badge: 'TS' },
   { slug: 'club-brugge', label: 'Club Brugge', badge: 'CLU' },
+  { slug: 'red-star-belgrade', label: 'Red Star Belgrade', badge: 'CZ' },
+  { slug: 'dinamo-zagreb', label: 'Dinamo Zagreb', badge: 'DIN' },
+  { slug: 'basel', label: 'FC Basel', badge: 'BAS' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
@@ -498,6 +501,7 @@ const CLUB_COLOR = {
   celtic: '#018749', rangers: '#1B458F', marseille: '#2FAEE0',
   feyenoord: '#DA020E', psv: '#ED1C24', anderlecht: '#52247F',
   besiktas: '#000000', trabzonspor: '#7B1E3C', 'club-brugge': '#0A4595',
+  'red-star-belgrade': '#E4002B', 'dinamo-zagreb': '#1B458F', basel: '#002D62',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

@@ -693,6 +693,7 @@ const CLUB_PACK_TO_QB = {
   Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
   Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
   Besiktas: "Besiktas", Trabzonspor: "Trabzonspor", ClubBrugge: "Club Brugge",
+  RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Basel: "Basel",
 };
 
 // League grouping for the club-quiz picker.
@@ -710,6 +711,10 @@ const CLUB_LEAGUES = {
   Ajax: "eredivisie", Feyenoord: "eredivisie", PSV: "eredivisie",
   Anderlecht: "belgian", ClubBrugge: "belgian",
   Besiktas: "superlig", Trabzonspor: "superlig",
+  // Wave E: lone clubs from Serbia/Croatia/Switzerland — kept in "other" until a
+  // second club from each country justifies its own league section (same rule
+  // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
+  RedStar: "other", DinamoZagreb: "other", Basel: "other",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -754,6 +759,7 @@ const CLUB_ABBR = {
   Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
   Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
   Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
+  RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -771,6 +777,7 @@ const CLUB_SLUG_TO_PACK = {
   "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
   "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
   "besiktas": "Besiktas", "trabzonspor": "Trabzonspor", "club-brugge": "ClubBrugge",
+  "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "basel": "Basel",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1093,6 +1100,18 @@ const CLUB_PACKS = {
   },
   ClubBrugge: {
     name: "Club Brugge", icon: "🔵", color: "#0A4595",
+    questions: [],
+  },
+  RedStar: {
+    name: "Red Star Belgrade", icon: "⭐", color: "#E4002B",
+    questions: [],
+  },
+  DinamoZagreb: {
+    name: "Dinamo Zagreb", icon: "🔵", color: "#1B458F",
+    questions: [],
+  },
+  Basel: {
+    name: "Basel", icon: "🔴", color: "#002D62",
     questions: [],
   },
 };

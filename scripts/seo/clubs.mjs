@@ -1033,5 +1033,101 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the 1978 final and the Bruges derby to testing deep cuts on specific finals, scorers and seasons."
       }
     ]
+  },
+  {
+    "club": "Red Star Belgrade",
+    "slug": "red-star-belgrade",
+    "name": "Red Star Belgrade",
+    "h1": "Red Star Belgrade Quiz",
+    "title": "Red Star Belgrade Quiz — Crvena Zvezda Trivia Questions & Answers | Ball IQ",
+    "description": "Free Red Star Belgrade quiz with explained answers — from the 1991 European Cup in Bari to the Marakana, the Eternal Derby and Dragan Džajić. Play free in your browser.",
+    "intro": [
+      "Red Star Belgrade — Crvena zvezda — were founded in 1945 and have spent the decades since turning their corner of Belgrade into the loudest address in Balkan football. This free Red Star quiz covers the whole story: the red-and-white shirts, the Marakana rocking under the Delije, and the Eternal Derby against Partizan that stops the city. If you know your Zvezda, this is your test.",
+      "The club's greatest night came in 1991, when Red Star beat Marseille on penalties in Bari to win the European Cup, then added the Intercontinental Cup against Colo-Colo the same year. That side was studded with talent — Darko Pančev, Europe's top league scorer in 1990-91, the young Robert Prosinečki, and Dejan Savićević, all of whom were soon sold to Italy and Spain. Behind them stands Dragan Džajić, the left winger nicknamed 'Magic Dragan', still regarded as the greatest player the club ever produced.",
+      "Expect questions on the 1991 triumph, the Eternal Derby, the managers, and the stream of players who left the Marakana for the biggest leagues in Europe. You'll be asked who scored the decisive penalty in Bari, which French club Red Star beat in that final, and what the club's famous stadium is nicknamed. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Red Star quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Red Star Belgrade's greatest achievement?",
+        "a": "Winning the 1991 European Cup — Red Star beat Marseille on penalties in the final in Bari, and added the Intercontinental Cup against Colo-Colo the same year. It remains the pinnacle of the club's history."
+      },
+      {
+        "q": "What is the Eternal Derby?",
+        "a": "The match between Red Star Belgrade and Partizan — one of the fiercest rivalries in world football, contested by the two biggest clubs in the Serbian capital and followed by the Delije and Grobari ultras."
+      },
+      {
+        "q": "Is the Red Star quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Red Star question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Red Star quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the 1991 European Cup and the Eternal Derby to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Dinamo Zagreb",
+    "slug": "dinamo-zagreb",
+    "name": "Dinamo Zagreb",
+    "h1": "Dinamo Zagreb Quiz",
+    "title": "Dinamo Zagreb Quiz — Modri Trivia Questions & Answers | Ball IQ",
+    "description": "Free Dinamo Zagreb quiz with explained answers — from the 1967 Fairs Cup and Maksimir to Luka Modrić, the Bad Blue Boys and the Eternal Derby. Play free in your browser.",
+    "intro": [
+      "Dinamo Zagreb were established in 1945 and have long been the standard-bearers of Croatian football, playing in blue at Maksimir Stadium in front of the Bad Blue Boys. This free Dinamo quiz covers the whole story: the modri — the blues — the Eternal Derby against Hajduk Split, the European nights, and a talent factory that has fed the biggest clubs in the world. If you know your Dinamo, this is your test.",
+      "The club's great European trophy came in 1967, when Dinamo won the Inter-Cities Fairs Cup, taking the two-legged final by beating Leeds United. Since Croatian independence they have dominated at home, and their academy reads like a who's who: Luka Modrić, who left for Tottenham Hotspur in 2008 before becoming a Ballon d'Or winner, Mateo Kovačić, Dejan Lovren and Mario Mandžukić all came through Maksimir. In 2020 they beat Tottenham 3-0 on the night in the Europa League, Mislav Oršić scoring a hat-trick, and a year earlier goalkeeper Dominik Livaković became a national hero at the 2022 World Cup.",
+      "Expect questions on the 1967 final, the Eternal Derby, the managers, and the players who made their names in Zagreb before moving on. You'll be asked which English club Dinamo beat to win the Fairs Cup, which future Ballon d'Or winner left for Tottenham, and what the club's colour is. Difficulty climbs from easy openers about the city and the blue shirt to genuinely hard deep cuts about specific finals, transfers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Dinamo Zagreb quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Dinamo Zagreb's greatest European achievement?",
+        "a": "Winning the 1967 Inter-Cities Fairs Cup — Dinamo took the two-legged final against Leeds United to lift the trophy, the club's landmark European success."
+      },
+      {
+        "q": "Which famous players came through Dinamo Zagreb's academy?",
+        "a": "Luka Modrić, who left for Tottenham Hotspur in 2008 and went on to win the Ballon d'Or, plus Mateo Kovačić, Dejan Lovren and Mario Mandžukić — Dinamo is one of Europe's most productive talent factories."
+      },
+      {
+        "q": "Is the Dinamo Zagreb quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Dinamo Zagreb question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Dinamo Zagreb quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Bad Blue Boys and the 1967 Fairs Cup to testing deep cuts on specific finals, transfers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Basel",
+    "slug": "basel",
+    "name": "Basel",
+    "h1": "FC Basel Quiz",
+    "title": "FC Basel Quiz — Rotblau Trivia Questions & Answers | Ball IQ",
+    "description": "Free FC Basel quiz with explained answers — from St. Jakob-Park and the Champions League nights to Mohamed Salah, Xherdan Shaqiri and the talent factory. Play free in your browser.",
+    "intro": [
+      "FC Basel were founded in 1893 and play in red and blue at St. Jakob-Park, the biggest stadium in Switzerland. This free Basel quiz covers the whole story: the rotblau, the Swiss title runs, the European nights that punched above the club's weight, and a talent factory that has sent player after player to the biggest leagues. If you know your Basel, this is your test.",
+      "Basel's reputation was built on European upsets and the players who made them. They knocked Manchester United out of the Champions League group stage with a 2-1 win at St. Jakob-Park in December 2011, and beat Chelsea home and away the following season. Above all they are a selling club with an eye for a talent: Mohamed Salah was signed in 2012 and sold on to Chelsea, while Xherdan Shaqiri, Granit Xhaka, Yann Sommer, Ivan Rakitić and Breel Embolo all passed through on their way to the top.",
+      "Expect questions on the Champions League nights, the Swiss title races, the managers and the players Basel launched. You'll be asked which English giant Basel beat in 2011, which club signed Salah from them, and what the club's colours are. Difficulty climbs from easy openers about the city and the stadium to genuinely hard deep cuts about specific European ties, transfers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Basel quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "Why is FC Basel known as a talent factory?",
+        "a": "Basel has an outstanding record of developing and selling players to Europe's biggest clubs — Mohamed Salah, Xherdan Shaqiri, Granit Xhaka, Yann Sommer and Ivan Rakitić all played for Basel before moving on to the top level."
+      },
+      {
+        "q": "What are FC Basel's most famous European results?",
+        "a": "Knocking Manchester United out of the Champions League group stage with a 2-1 win at St. Jakob-Park in December 2011, and beating Chelsea both home and away the following season — the club's signature European upsets."
+      },
+      {
+        "q": "Is the FC Basel quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Basel question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the FC Basel quiz?",
+        "a": "It scales from easy to hard — from well-known facts about St. Jakob-Park and the Salah transfer to testing deep cuts on specific European ties, transfers and seasons."
+      }
+    ]
   }
 ];
