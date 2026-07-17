@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -343,7 +343,11 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
   // Recipients without the app open the SPA which path-captures /join/CODE
   // into the same pendingJoinCode flow.
   const handleShareInvite = useCallback(async () => {
-    const url = `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
+    // Pass our own display name so the link unfurls as "<name> wants to play
+    // you" (api/join.js -> api/og.js ?t=invite) rather than the generic app
+    // card the recipient used to see. Presentation only — the join still keys
+    // off the code, so an absent name just falls back to "A mate".
+    const url = buildInviteUrl(code, myPlayer?.name);
     const text = `⚽ Play me at ${APP_NAME}! Tap to join:`;
     try {
       if (Capacitor.isNativePlatform?.()) {
@@ -365,7 +369,7 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
       setCopyToast("Couldn't share — copy the code instead");
       setTimeout(() => setCopyToast(""), 2200);
     }
-  }, [code]);
+  }, [code, myPlayer?.name]);
 
   const handleStart = useCallback(async () => {
     if (starting) return;
@@ -861,7 +865,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       });
       if (created?.code && !created?.error) {
         rematchCode = created.code;
-        url = `${INVITE_BASE_URL}/join/${encodeURIComponent(rematchCode)}`;
+        url = buildInviteUrl(rematchCode, myPlayer?.name);
       } else {
         setRematching(false);
       }

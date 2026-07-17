@@ -1,7 +1,7 @@
 {
   "name": "Ball IQ",
   "short_name": "Ball IQ",
-  "description": "Test your football knowledge. 4,000+ questions across 10 game modes.",
+  "description": "Test your football knowledge. Thousands of questions across 10 game modes.",
   "id": "/",
   "start_url": "/play",
   "scope": "/",

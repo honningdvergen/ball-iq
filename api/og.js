@@ -98,10 +98,68 @@ function challengeCard(sp) {
   return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
 }
 
+// Multiplayer invite card (?t=invite): a /join/CODE link previewed as an
+// invitation rather than a generic app ad. Before this, every invite unfurled
+// as the static index.html card ("The Ultimate Football Quiz") — the recipient
+// could not tell an invite from a download link, so the room code (the one
+// thing they need) was invisible until they tapped.
+function inviteCard(sp) {
+  const code = (sp.get('c') || '').slice(0, 6);
+  const name = (sp.get('n') || '').slice(0, 22);
+  const who = name || 'A mate';
+
+  // The code is the payload — render it as discrete glyph tiles so it stays
+  // legible in a thumbnailed chat preview and can be typed in by hand if the
+  // tap-through ever fails.
+  const tiles = code
+    ? Array.from(code, (ch, i) =>
+        h('div', {
+          key: i,
+          style: {
+            width: 78, height: 96, borderRadius: 16, display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            fontSize: 52, fontWeight: 900, color: '#FFFFFF',
+            background: '#1A1D27', border: '2px solid #2A2E3C',
+          },
+        }, ch)
+      )
+    : [];
+
+  const tree = h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
+      h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 4, color: '#58CC02', display: 'flex' } }, 'MULTIPLAYER INVITE'),
+      h('div', { style: { fontSize: 60, fontWeight: 900, lineHeight: 1.1, color: '#FFFFFF', display: 'flex' } }, `${who} wants to play you`),
+      ...(tiles.length
+        ? [h('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
+            h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 700, color: '#9BA0B8', marginRight: 8 } }, 'ROOM'),
+            ...tiles,
+          )]
+        : []),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Tap to join'),
+        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Head-to-head · free, no sign-up'),
+      ),
+    ),
+  );
+  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+}
+
 export default function handler(req) {
   const sp = new URL(req.url).searchParams;
   if (sp.get('t') === 'stump') return stumpCard(sp);
   if (sp.get('t') === 'challenge') return challengeCard(sp);
+  if (sp.get('t') === 'invite') return inviteCard(sp);
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
   let img = sp.get('img') || '';
   // SSRF guard: this endpoint fetches `img` server-side, so only proxy images

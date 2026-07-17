@@ -937,5 +937,101 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the purple and white and the Cup Winners' Cups to testing deep cuts on specific finals, scorers and seasons."
       }
     ]
+  },
+  {
+    "club": "Besiktas",
+    "slug": "besiktas",
+    "name": "Beşiktaş",
+    "h1": "Beşiktaş Quiz",
+    "title": "Beşiktaş Quiz — Black Eagles Trivia Questions & Answers | Ball IQ",
+    "description": "Free Beşiktaş quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies. Play free in your browser.",
+    "intro": [
+      "Beşiktaş were founded in 1903, making them the oldest club of Istanbul's big three — the football branch followed in 1911 — and they have played in the shadow of the Dolmabahçe Palace on the European shore of the Bosphorus for most of their history. This free Beşiktaş quiz covers the whole story: the black-and-white stripes, the Kara Kartallar — the Black Eagles — and a support that treats the club as a birthright rather than a hobby. If you know your Beşiktaş, this is your test.",
+      "The defining season came in 1991-92, when Gordon Milne's side became the first team to go through a Süper Lig campaign unbeaten — an English manager writing one of the most Turkish chapters in the league's history. That side's attack was the club's most beloved: the Metin-Ali-Feyyaz trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar, together since the mid-1980s and still chanted as a single word. Later came Sergen Yalçın, who returned as manager to win the league and cup double in 2020-21, and the ground at Dolmabahçe was rebuilt in 2016 on the site of the old BJK İnönü Stadium.",
+      "Expect questions on the Istanbul derbies with Fenerbahçe and Galatasaray, the unbeaten season, the Çarşı terrace culture, the managers and the imports who became cult heroes. You'll be asked which district gives the club its name, who led the club through 1991-92, and what the Black Eagles nickname refers to. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific seasons, scorers and squads.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Beşiktaş quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Beşiktaş's most famous season?",
+        "a": "1991-92 — under the English manager Gordon Milne, Beşiktaş became the first club to complete a Süper Lig season unbeaten, a feat still referenced whenever a Turkish side goes on a long unbeaten run."
+      },
+      {
+        "q": "Why are Beşiktaş called the Black Eagles?",
+        "a": "Kara Kartallar — the Black Eagles — dates to 19 January 1941, when Beşiktaş kept pouring forward in a 6-0 win over Süleymaniye and a fisherman in the crowd, Mehmet Galin, roared 'Come on, Black Eagles! Attack, Black Eagles!' The name stuck and the club later adopted it officially. Beşiktaş themselves take their name from the Istanbul district on the European side of the Bosphorus where they were founded in 1903."
+      },
+      {
+        "q": "Is the Beşiktaş quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Beşiktaş question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Beşiktaş quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Black Eagles and the Istanbul derbies to testing deep cuts on specific seasons, scorers and squads."
+      }
+    ]
+  },
+  {
+    "club": "Trabzonspor",
+    "slug": "trabzonspor",
+    "name": "Trabzonspor",
+    "h1": "Trabzonspor Quiz",
+    "title": "Trabzonspor Quiz — Black Sea Storm Trivia Questions & Answers | Ball IQ",
+    "description": "Free Trabzonspor quiz with explained answers — from breaking Istanbul's monopoly in 1976 to Şenol Güneş and the 2022 title. Play free in your browser.",
+    "intro": [
+      "Trabzonspor were founded in 1967 on the Black Sea coast, and within a decade they had done something no club had managed before them. This free Trabzonspor quiz covers the whole story: the burgundy and blue, the Karadeniz Fırtınası — the Black Sea Storm — and a city that treats the club as its answer to Istanbul. If you know your Trabzonspor, this is your test.",
+      "In 1975-76, Trabzonspor became the first club from outside Istanbul to win the Turkish league, ending a monopoly that had held since the league began and turning a provincial side into a national cause. It was no fluke: four more titles followed by 1981, and a sixth in 1983-84. Then came the long wait — the seventh arrived in 2021-22 under Abdullah Avcı, 38 years after the sixth. The club's greatest servant spans the whole arc: Şenol Güneş kept goal for the champions of the 1970s and 80s, later managed the club, and took Turkey to third place at the 2002 World Cup. The stadium complex is named after him, though the ground carries a sponsor's name on match days.",
+      "Expect questions on the 1976 breakthrough, the titles Şenol Güneş won in goal, the Georgians and Turks who made their names in Trabzon, and the rivalry with Fenerbahçe. You'll be asked which club first broke Istanbul's grip on the title, who the stadium complex is named after, and what the club's colours are. Difficulty climbs from easy openers about the city and the nickname to genuinely hard deep cuts about specific seasons, scorers and squads.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Trabzonspor quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "Why is Trabzonspor's 1976 title so significant?",
+        "a": "Because Trabzonspor were the first club from outside Istanbul to win the Turkish league. Until 1975-76 the title had never left the city, and the win made a Black Sea club the standard-bearer for the rest of Turkey."
+      },
+      {
+        "q": "Who is Şenol Güneş?",
+        "a": "A Trabzonspor icon twice over — he kept goal for the title-winning sides of the 1970s and 80s and later managed the club, and he took Turkey to third place at the 2002 World Cup. Trabzonspor's ground is the Şenol Güneş Sports Complex, named in his honour, though it carries a commercial sponsor's name on match days."
+      },
+      {
+        "q": "Is the Trabzonspor quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Trabzonspor question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Trabzonspor quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the 1976 breakthrough and the Black Sea Storm to testing deep cuts on specific seasons, scorers and squads."
+      }
+    ]
+  },
+  {
+    "club": "Club Brugge",
+    "slug": "club-brugge",
+    "name": "Club Brugge",
+    "h1": "Club Brugge Quiz",
+    "title": "Club Brugge Quiz — Blauw-Zwart Trivia Questions & Answers | Ball IQ",
+    "description": "Free Club Brugge quiz with explained answers — from the 1978 European Cup final and Ernst Happel to Jan Ceulemans and the Bruges derby. Play free in your browser.",
+    "intro": [
+      "Club Brugge were founded in 1891, which makes them one of the oldest clubs in Belgium, and the blauw-zwart — blue and black — have spent the century since making a medieval tourist town into a serious football address. This free Club Brugge quiz covers the whole story: the Jan Breydel Stadium — opened in 1975 as the Olympiastadion — which Club moved into that year and shared for decades with local rivals Cercle Brugge, the Belgian Clásico with Anderlecht, and the European run that took a Belgian club closer to the continent's biggest prize than any had gone before. If you know your Club, this is your test.",
+      "The peak came in 1978, when Club Brugge became the first Belgian club to reach a European Cup final, losing 1-0 to Liverpool at Wembley to a Kenny Dalglish goal. Two years earlier the same opponents had beaten them in the UEFA Cup final. The man who took them to Wembley was Ernst Happel, the Austrian who had already won the European Cup with Feyenoord in 1970 — a reminder of how small the map of great coaches really is. The club's own icon is Jan Ceulemans, who turned down Milan to stay in Bruges and captained Belgium to the World Cup semi-final in 1986.",
+      "Expect questions on the European nights, the Bruges derby, the managers and the players who defined the blue and black. You'll be asked which club beat Brugge in the 1978 final, who coached that side, and which ground — then still called the Olympiastadion — Club moved into in 1975. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Club Brugge quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Club Brugge's greatest European run?",
+        "a": "Reaching the 1978 European Cup final — the first Belgian club to do so. Ernst Happel's side lost 1-0 to Liverpool at Wembley to a Kenny Dalglish goal, two years after losing the 1976 UEFA Cup final to the same opponents."
+      },
+      {
+        "q": "Who is Jan Ceulemans?",
+        "a": "Club Brugge's defining player — a forward who famously turned down a move to Milan to stay in Bruges, and who captained Belgium to the semi-finals of the 1986 World Cup."
+      },
+      {
+        "q": "Is the Club Brugge quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Club Brugge question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Club Brugge quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the 1978 final and the Bruges derby to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
   }
 ];

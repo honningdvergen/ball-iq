@@ -692,6 +692,7 @@ const CLUB_PACK_TO_QB = {
   Fenerbahce: "Fenerbahçe", Porto: "Porto", Roma: "Roma",
   Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
   Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
+  Besiktas: "Besiktas", Trabzonspor: "Trabzonspor", ClubBrugge: "Club Brugge",
 };
 
 // League grouping for the club-quiz picker.
@@ -707,7 +708,8 @@ const CLUB_LEAGUES = {
   // Wave D: PSV + Feyenoord finally give Ajax a real league home — it sat in
   // "other" only because it was the lone Dutch club.
   Ajax: "eredivisie", Feyenoord: "eredivisie", PSV: "eredivisie",
-  Anderlecht: "belgian",
+  Anderlecht: "belgian", ClubBrugge: "belgian",
+  Besiktas: "superlig", Trabzonspor: "superlig",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -751,6 +753,7 @@ const CLUB_ABBR = {
   Fenerbahce: "FEN", Porto: "POR", Roma: "ROM",
   Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
   Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
+  Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -767,6 +770,7 @@ const CLUB_SLUG_TO_PACK = {
   "fenerbahce": "Fenerbahce", "porto": "Porto", "roma": "Roma",
   "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
   "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
+  "besiktas": "Besiktas", "trabzonspor": "Trabzonspor", "club-brugge": "ClubBrugge",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1077,6 +1081,18 @@ const CLUB_PACKS = {
   },
   Anderlecht: {
     name: "Anderlecht", icon: "🟣", color: "#52247F",
+    questions: [],
+  },
+  Besiktas: {
+    name: "Beşiktaş", icon: "🦅", color: "#000000",
+    questions: [],
+  },
+  Trabzonspor: {
+    name: "Trabzonspor", icon: "🌊", color: "#7B1E3C",
+    questions: [],
+  },
+  ClubBrugge: {
+    name: "Club Brugge", icon: "🔵", color: "#0A4595",
     questions: [],
   },
 };
@@ -2430,8 +2446,22 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
 // reads BOTH path and query) so previously-shared invite links keep working.
 // Android App Links wiring is queued for a dedicated Android sprint.
 export const INVITE_BASE_URL = "https://balliq.app";
-const buildInviteUrl = (code) => `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
-const buildInviteText = (code) => `⚽ Play me at ${APP_NAME}! Tap to join: ${buildInviteUrl(code)}`;
+// Single source of truth for invite URLs. This used to be dead code that
+// screens/OnlineMultiplayer.jsx hand-duplicated inline; the copies had already
+// drifted apart in their share text, so the lobby now calls this.
+//
+// `name` (the host's display name) is optional and rides as ?n= purely so the
+// link UNFURLS as a personalised card — api/join.js reads it to render "Alex
+// wants to play you" instead of "A mate wants to play you". It is presentation
+// only: the join flow keys off the CODE alone, so a missing, stale or spoofed
+// name can never affect which room you land in. The iOS Universal Link is
+// matched on the /join/* PATH, so appending a query cannot break it, and the
+// boot parser's path regex (/^\/join\/([A-Za-z0-9]+)/) ignores the query too.
+export const buildInviteUrl = (code, name) => {
+  const base = `${INVITE_BASE_URL}/join/${encodeURIComponent(code)}`;
+  const who = String(name || "").trim().slice(0, 22);
+  return who ? `${base}?n=${encodeURIComponent(who)}` : base;
+};
 
 // ─── STAGE 1: ONLINE MULTIPLAYER ─────────────────────────────────────────────
 //

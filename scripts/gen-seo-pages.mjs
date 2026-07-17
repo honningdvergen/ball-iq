@@ -166,6 +166,7 @@ const CLUB_BADGE = {
   napoli: 'NAP', galatasaray: 'GAL', benfica: 'SLB',
   fenerbahce: 'FEN', porto: 'POR', roma: 'ROM', celtic: 'CEL', rangers: 'RAN', marseille: 'OM',
   feyenoord: 'FEY', psv: 'PSV', anderlecht: 'RSCA',
+  besiktas: 'BJK', trabzonspor: 'TS', 'club-brugge': 'CLU',
 };
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
@@ -196,6 +197,7 @@ const CLUB_COLOR = {
   fenerbahce: '#163962', porto: '#00428C', roma: '#8E1F2F',
   celtic: '#018749', rangers: '#1B458F', marseille: '#2FAEE0',
   feyenoord: '#DA020E', psv: '#ED1C24', anderlecht: '#52247F',
+  besiktas: '#000000', trabzonspor: '#7B1E3C', 'club-brugge': '#0A4595',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

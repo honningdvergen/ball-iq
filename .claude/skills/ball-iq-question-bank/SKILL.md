@@ -20,6 +20,18 @@ The Daily 7 (`getDailyQsForDate`, App.jsx) feeds `/c/` challenge links, the "You
 - **Never consume `applySeenFilter`** in a comparison-facing selection — it reads device-local 14-day history, so two players diverge. Still *record* into it via `_histKey` (other modes read it).
 - **Never seed a shuffle with `Math.sin`** or any implementation-approximated math. The spec permits engines to differ: 137/3000 values differ between JavaScriptCore (iOS/Safari) and V8 (Android/Chrome). Use `seededShuffle` — integer bitwise only, ToUint32 is spec-exact, verified bit-identical on both.
 
+## ZERO ERROR — the standing bar for generating questions
+
+Alex, firm, 2026-07-16: *"we will use whatever time, resources and agents we need to meet that ZERO ERROR bar. Let us not rush the clubs if it just leads to audits later. Get it right the first time."*
+
+This governs **how** new questions are generated (club expansion, forge runs, any bulk add):
+
+- **Verify INLINE, never generate-fast-audit-later.** Each question goes generate → examiner → skeptic → adversarial fact-check, and **only survivors get committed.** The alternative — dump auto-generated questions in, audit afterwards — is exactly what produced the 412 flagged rows. Do not repeat it.
+- **`a` is an INDEX into `o`, not the answer.** Off-by-one produces a fluent, confident, wrong answer. Resolve `o[a]` and verify the *resolved string*, not the index. Real trap: `q_0b5f8f` has `o:["1","2","3","0"], a:3` → answer is `"0"`, but `o[2]` is the string `"3"`, so a misread yields "3".
+- **The verifier must be more conservative than the generator.** A false "this is wrong" that flips a *correct* answer is worse than a false negative. When a fact is genuinely contested or unverifiable, omit the question rather than ship a guess.
+- **Slower is correct.** Whatever agent count inline verification costs, spend it. Never trade the bar for speed. No club/batch ships until its questions are verified true — 25k football obsessives read these under the app's name, and wrong answers land in the App Store.
+- **Do NOT prioritise thin-history subjects** for volume (Saudi/US/expansion clubs founded post-2000): shallow genuine trivia forces the generator toward padding, which is where fabrication creeps in. History-rich subjects have real facts to draw on. See [[project_club_expansion]].
+
 ## Standards
 
 - **Hints:** the SEO generator throws rather than emit a page for any category/club with fewer than `MIN_HINTS` (15) hint-bearing MCQs. Adding a club without hints breaks the build, by design.

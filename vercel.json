@@ -9,6 +9,7 @@
     { "source": "/p", "destination": "/api/p" },
     { "source": "/q", "destination": "/api/q" },
     { "source": "/c/:token", "destination": "/api/c?t=:token" },
+    { "source": "/join/:code", "destination": "/api/join?c=:code" },
     { "source": "/football-wordle/answer", "destination": "/api/footle" },
     { "source": "/football-wordle/answer/", "destination": "/api/footle" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
