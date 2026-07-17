@@ -7436,6 +7436,13 @@ function AppInner() {
   // the settle effect) so nothing references it before its const exists; null =
   // closed.
   const [challengeResult, setChallengeResult] = useState(null);
+  // Social-webview escape hatch (task #22, Alex steer 2026-07-17: "if people
+  // share their result it is okay to push the app"). A /c/ challenge tapped
+  // inside Snapchat/IG opens their in-app browser, which swallows the Universal
+  // Link and is always logged-out — so an app-having friend is stranded on web.
+  // Dismissible (the challenge stays guest-playable for the app-less), iOS-web
+  // only, and the app-scheme URL deep-links code-intact on the LIVE binary.
+  const [challengeAppNudgeDismissed, setChallengeAppNudgeDismissed] = useState(false);
 
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
@@ -10293,6 +10300,39 @@ function AppInner() {
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
         {showHelp && <HelpScreen onClose={closeHelp} />}
         {showKnownIssues && <KnownIssuesScreen onClose={closeKnownIssues} />}
+
+        {/* Challenge "open in app" nudge — iOS-web only, dismissible top banner.
+            Shows when a friend's Daily 7 challenge is pending; deep-links into
+            the installed app (which parses /c/ on the live binary) for people
+            who have it, while the web challenge stays playable for those who
+            don't. See challengeAppNudgeDismissed comment for the why. */}
+        {IS_IOS_WEB && pendingChallenge && !challengeAppNudgeDismissed && (
+          <div style={{position:"fixed",top:0,left:0,right:0,zIndex:1090,display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"var(--accent)",boxShadow:"0 2px 10px rgba(0,0,0,0.25)",animation:"fadeIn 0.2s ease"}}>
+            <span style={{fontSize:20}} aria-hidden="true">🎯</span>
+            <div style={{flex:1,fontSize:13,fontWeight:700,color:"#0a1a00",lineHeight:1.3}}>
+              {pendingChallenge.name ? `${pendingChallenge.name} challenged you` : "You've got a Daily 7 challenge"} — open it in the app
+            </div>
+            <button
+              onClick={() => {
+                try {
+                  const c = pendingChallenge;
+                  const str = `${c.score}.${c.date}${c.name ? "." + encodeURIComponent(c.name) : ""}`;
+                  window.location.href = `app.balliq://balliq.app/c/${str}`;
+                } catch {}
+              }}
+              style={{flexShrink:0,padding:"7px 14px",background:"#0a1a00",color:"var(--accent)",border:"none",borderRadius:9,fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+            >
+              Open
+            </button>
+            <button
+              onClick={() => setChallengeAppNudgeDismissed(true)}
+              aria-label="Dismiss"
+              style={{flexShrink:0,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",background:"transparent",color:"#0a1a00",border:"none",fontSize:18,fontWeight:700,cursor:"pointer"}}
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         {/* Shared-invite gate: someone tapped a balliq.app/?join=CODE link
             but they're either signed-out or browsing as a guest. Prompt them
