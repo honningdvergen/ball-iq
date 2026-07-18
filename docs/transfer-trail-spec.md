@@ -72,7 +72,12 @@ balliq.app/trail
 - **Volume:** MVP **60–80 players** (~2 months of dailies); extend to ~150 (~5 months) in waves, exactly like the club-quiz program. ~80 × ~6 clubs ≈ 8–12 KB, lazy-loaded.
 - **Sourcing at the zero-error bar:** career order is unambiguous public record (the Wikipedia "Senior career" infobox is a single canonical column). Repurpose the existing **generate→examiner→skeptic forge** — but the skeptic's job here is narrow and mechanical: re-derive the club *set* and *order* from an independent source and assert equality. At 60–80 entries, **Alex spot-checks 100%** — it's small enough. A wrong order is *unfalsifiable to the player* and screenshot-worthy in the bad way (same trust class as a wrong question key, and the club-pack ~17% leak lesson), so this pass is non-negotiable.
 - **Honesty on the club-visual claim:** the Transfer Trail brief asserted "~41 club registry blocks with color+emoji" exist to reuse — **they don't.** questions.js carries `club:` *tags* and MarketingHome has 3-letter *badges* (no colours). MVP uses **neutral text chips**; a small `{club → color, abbrev}` map is a v1 polish item, not a blocker.
-- **Editorial rules to lock before batch generation (30 min, Alex-only):** include loans? (recommend yes — mark them; they add ordering difficulty) · youth/academy? (recommend no, senior only) · return spells as separate rungs? (recommend yes — they're the fun) · max rungs? (recommend cap at 6; only pick 5–6-club careers for MVP, skip 10-club journeymen where sources disagree).
+- **Editorial rules — ✅ LOCKED 2026-07-18** (Alex delegated the calls: "I am not sure how we are going to do it exactly… go ahead" — adopted the panel's recommendations):
+  1. **Loans: INCLUDED, marked** (`loan: true` on the spell) — they add the ordering difficulty that makes it fun.
+  2. **Youth/academy: EXCLUDED** — senior spells only (youth data is where sources disagree).
+  3. **Return spells: separate rungs** — label-based grading makes duplicate-club careers "just work".
+  4. **Max 6 rungs** — MVP curates 5–6-club careers only; skip long journeymen where sources disagree.
+- **SEO (Alex, 2026-07-18): "career path should be part of the SEO too."** At ship time add a gen-seo landing page (`/transfer-trail/`) targeting "football career path quiz" / "guess the footballer by career" / "put the transfer history in order" — clone the `/football-wordle/` Footle landing as the template, with the blind career ladder as the taster.
 
 ## 5. MVP scope (smallest shippable) + cuts
 
