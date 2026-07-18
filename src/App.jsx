@@ -694,6 +694,8 @@ const CLUB_PACK_TO_QB = {
   Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
   Besiktas: "Besiktas", Trabzonspor: "Trabzonspor", ClubBrugge: "Club Brugge",
   RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Basel: "Basel",
+  Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
+  Leeds: "Leeds United", WestHam: "West Ham",
 };
 
 // League grouping for the club-quiz picker.
@@ -715,6 +717,7 @@ const CLUB_LEAGUES = {
   // second club from each country justifies its own league section (same rule
   // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
   RedStar: "other", DinamoZagreb: "other", Basel: "other",
+  Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -760,6 +763,7 @@ const CLUB_ABBR = {
   Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
   Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
   RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
+  Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -778,6 +782,8 @@ const CLUB_SLUG_TO_PACK = {
   "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
   "besiktas": "Besiktas", "trabzonspor": "Trabzonspor", "club-brugge": "ClubBrugge",
   "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "basel": "Basel",
+  "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
+  "leeds-united": "Leeds", "west-ham": "WestHam",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1112,6 +1118,26 @@ const CLUB_PACKS = {
   },
   Basel: {
     name: "Basel", icon: "🔴", color: "#002D62",
+    questions: [],
+  },
+  Forest: {
+    name: "Nottingham Forest", icon: "🌳", color: "#E53233",
+    questions: [],
+  },
+  Villa: {
+    name: "Aston Villa", icon: "🦁", color: "#670E36",
+    questions: [],
+  },
+  Everton: {
+    name: "Everton", icon: "🔵", color: "#003399",
+    questions: [],
+  },
+  Leeds: {
+    name: "Leeds United", icon: "⚪", color: "#1D428A",
+    questions: [],
+  },
+  WestHam: {
+    name: "West Ham", icon: "⚒️", color: "#7A263A",
     questions: [],
   },
 };

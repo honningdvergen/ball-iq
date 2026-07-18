@@ -1129,5 +1129,165 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about St. Jakob-Park and the Salah transfer to testing deep cuts on specific European ties, transfers and seasons."
       }
     ]
+  },
+  {
+    "club": "Nottingham Forest",
+    "slug": "nottingham-forest",
+    "name": "Nottingham Forest",
+    "h1": "Nottingham Forest Quiz",
+    "title": "Nottingham Forest Quiz — Garibaldi Red Trivia Questions & Answers | Ball IQ",
+    "description": "Free Nottingham Forest quiz with explained answers — from Brian Clough and back-to-back European Cups to the City Ground, Stuart Pearce and Trevor Francis. Play free in your browser.",
+    "intro": [
+      "Nottingham Forest were founded in 1865, making them one of the oldest football clubs in the world, and have played beside the River Trent at the City Ground since 1898. This free Forest quiz covers the whole story: the Garibaldi red they were among the first clubs ever to wear, the Trent End, and one of the most improbable rises in the history of the European game. If you know your Forest, this is your test.",
+      "The story belongs to Brian Clough. His side won the First Division in 1977-78 — their first season back in the top flight — then won the European Cup at the very first attempt, beating Malmö 1-0 in 1979, and retained it against Hamburg at the Bernabéu in 1980. Trevor Francis, Britain's first £1 million footballer, scored in the 1979 final; Peter Shilton kept goal; John Robertson supplied the magic on the left. Kenny Burns was reinvented from striker to Footballer of the Year at centre-back, and years later Stuart Pearce — 'Psycho' — became the captain the City Ground adored.",
+      "Expect questions on the Clough era, the two European Cups, the League Cup wins, the record sales of Roy Keane and Stan Collymore, and the rivalry with Derby County. You'll be asked which Swedish club Forest beat in 1979, who scored the winner in Madrid in 1980, and what colour the Garibaldi shirt is. Difficulty climbs from easy openers about the City Ground to genuinely hard deep cuts about specific finals, scorers and transfers.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Nottingham Forest quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Nottingham Forest's greatest achievement?",
+        "a": "Winning the European Cup twice in a row under Brian Clough — beating Malmö 1-0 in 1979 and Hamburg 1-0 in 1980, having won the First Division title in 1977-78, their first season back in the top flight."
+      },
+      {
+        "q": "Who was Brian Clough?",
+        "a": "The manager who took Nottingham Forest from the Second Division to back-to-back European Cups. He also won a league title at rivals Derby County, and Forest's meetings with Derby now contest the Brian Clough Trophy."
+      },
+      {
+        "q": "Is the Nottingham Forest quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Forest question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Nottingham Forest quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the City Ground and the European Cups to testing deep cuts on specific finals, scorers and transfers."
+      }
+    ]
+  },
+  {
+    "club": "Aston Villa",
+    "slug": "aston-villa",
+    "name": "Aston Villa",
+    "h1": "Aston Villa Quiz",
+    "title": "Aston Villa Quiz — Claret & Blue Trivia Questions & Answers | Ball IQ",
+    "description": "Free Aston Villa quiz with explained answers — from the 1982 European Cup and Peter Withe to Villa Park, the Second City derby and Unai Emery. Play free in your browser.",
+    "intro": [
+      "Aston Villa were founded in 1874 and were one of the twelve founding members of the Football League in 1888. This free Villa quiz covers the whole story: the claret and blue, Villa Park, a proud Victorian and Edwardian dominance, and the night in 1982 when Villa conquered Europe. If you know your Villa, this is your test.",
+      "That European Cup remains the peak. In 1982, Tony Barton's side beat Bayern Munich 1-0 in Rotterdam, Peter Withe scoring the only goal after reserve goalkeeper Nigel Spink came on early and produced the game of his life. Villa added the European Super Cup that year too. Across their history they have won the First Division seven times and the FA Cup and League Cup many times over, and under Unai Emery they returned to the Champions League in the 2024-25 season. The Second City derby against Birmingham City runs through it all.",
+      "Expect questions on the 1982 final, the club legends, the managers, and Villa's founding role in English league football. You'll be asked which German club Villa beat in Rotterdam, who scored the winner, and which local club are their fiercest rivals. Difficulty climbs from easy openers about Villa Park and the colours to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Aston Villa quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Aston Villa's greatest achievement?",
+        "a": "Winning the 1982 European Cup — Tony Barton's side beat Bayern Munich 1-0 in the final in Rotterdam, with Peter Withe scoring the only goal and reserve keeper Nigel Spink starring after coming on early."
+      },
+      {
+        "q": "Are Aston Villa one of English football's oldest clubs?",
+        "a": "Yes — founded in 1874, Villa were one of the twelve founding members of the Football League in 1888 and one of the dominant sides of early English football."
+      },
+      {
+        "q": "Is the Aston Villa quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Villa question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Aston Villa quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Villa Park and the 1982 European Cup to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Everton",
+    "slug": "everton",
+    "name": "Everton",
+    "h1": "Everton Quiz",
+    "title": "Everton Quiz — The Toffees Trivia Questions & Answers | Ball IQ",
+    "description": "Free Everton quiz with explained answers — from Dixie Dean's 60 goals and the 1985 Cup Winners' Cup to Goodison Park, the School of Science and the Merseyside derby. Play free in your browser.",
+    "intro": [
+      "Everton were founded in 1878 and were one of the twelve founding members of the Football League in 1888. This free Everton quiz covers the whole story: the royal blue, the 'School of Science' reputation for stylish football, the great Goodison Park sides, and a proud place among the most successful clubs in English history. If you know your Everton, this is your test.",
+      "The records run deep. Dixie Dean scored 60 league goals in the 1927-28 season, a feat in English top-flight football that has never been beaten. Everton have won the First Division nine times, and their finest modern side — Howard Kendall's team of the mid-1980s — won the European Cup Winners' Cup in 1985, beating Rapid Vienna 3-1, with Neville Southall a giant in goal. The Merseyside derby against Liverpool is one of the most-played fixtures in English football.",
+      "Expect questions on Dixie Dean, the 1985 European night, the great managers, and Everton's founding role in the league. You'll be asked how many goals Dean scored in 1927-28, which competition Everton won in 1985, and what colour the Toffees play in. Difficulty climbs from easy openers about Goodison Park to genuinely hard deep cuts about specific seasons, scorers and finals.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Everton quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Everton's most famous record?",
+        "a": "Dixie Dean scoring 60 league goals in the 1927-28 season — a record for the English top flight that has never been surpassed. Everton have also won the First Division nine times and the 1985 European Cup Winners' Cup."
+      },
+      {
+        "q": "Why are Everton called the School of Science?",
+        "a": "The nickname dates back to the club's reputation in the early 20th century for a stylish, technical passing game. Everton were also one of the twelve founding members of the Football League in 1888."
+      },
+      {
+        "q": "Is the Everton quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Everton question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Everton quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Goodison Park and Dixie Dean to testing deep cuts on specific seasons, scorers and finals."
+      }
+    ]
+  },
+  {
+    "club": "Leeds United",
+    "slug": "leeds-united",
+    "name": "Leeds United",
+    "h1": "Leeds United Quiz",
+    "title": "Leeds United Quiz — Elland Road Trivia Questions & Answers | Ball IQ",
+    "description": "Free Leeds United quiz with explained answers — from Don Revie's champions and the Fairs Cup to Elland Road, Billy Bremner and Marcelo Bielsa. Play free in your browser.",
+    "intro": [
+      "Leeds United were formed in 1919 to take the place of the disbanded Leeds City, and have played at Elland Road ever since. This free Leeds quiz covers the whole story: the white shirts, the fierce Elland Road atmosphere, the great Don Revie side, and a modern revival that captured neutrals' hearts. If you know your Leeds, this is your test.",
+      "Don Revie built the defining team. Leeds won the First Division in 1969 and 1974, lifted the Inter-Cities Fairs Cup in 1968 and 1971, and were driven by Billy Bremner in midfield and Jack Charlton — a 1966 World Cup winner with England — at the back. Leeds were also the last champions of the old First Division, winning the title in 1991-92 under Howard Wilkinson just before the Premier League began. After a long absence, Marcelo Bielsa's thrilling side won promotion back to the top flight in 2020.",
+      "Expect questions on the Revie era, the Fairs Cup nights, the club legends, and the rivalry with Manchester United. You'll be asked which disbanded club Leeds replaced in 1919, who holds the appearance record, and which manager led the 2020 promotion. Difficulty climbs from easy openers about Elland Road to genuinely hard deep cuts about specific titles, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Leeds United quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Leeds United's greatest era?",
+        "a": "The Don Revie years — Leeds won the First Division in 1969 and 1974 and the Inter-Cities Fairs Cup in 1968 and 1971, built around Billy Bremner and Jack Charlton. Leeds were also the last champions of the old First Division, in 1991-92."
+      },
+      {
+        "q": "Which club did Leeds United replace?",
+        "a": "Leeds United were formed in 1919 to take the place of Leeds City, which had been disbanded. They have played at Elland Road throughout their history."
+      },
+      {
+        "q": "Is the Leeds United quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leeds question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Leeds United quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Elland Road and Don Revie to testing deep cuts on specific titles, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "West Ham",
+    "slug": "west-ham",
+    "name": "West Ham",
+    "h1": "West Ham Quiz",
+    "title": "West Ham Quiz — The Hammers Trivia Questions & Answers | Ball IQ",
+    "description": "Free West Ham quiz with explained answers — from Bobby Moore and 1966 to the 1965 Cup Winners' Cup, the Academy of Football and the 2023 Conference League. Play free in your browser.",
+    "intro": [
+      "West Ham United were founded in 1895 as Thames Ironworks, becoming West Ham United in 1900, and are known across the game as 'the Academy of Football'. This free West Ham quiz covers the whole story: the claret and blue, 'I'm Forever Blowing Bubbles', the move from the Boleyn Ground to the London Stadium in 2016, and a claim on the greatest day in English football. If you know your Hammers, this is your test.",
+      "West Ham's fingerprints are on 1966. England's World Cup-winning captain Bobby Moore was a Hammer, as were Geoff Hurst, who scored a hat-trick in the final, and Martin Peters. The club won the FA Cup in 1964 and the European Cup Winners' Cup in 1965, beating 1860 Munich at Wembley. After decades without a major trophy, David Moyes' side won the UEFA Europa Conference League in 2023, Jarrod Bowen scoring a late winner against Fiorentina — the club's first major trophy in more than forty years.",
+      "Expect questions on the 1966 connection, the European nights, the club legends, and the Academy of Football. You'll be asked which West Ham players started the 1966 World Cup final, which trophy the club won in 1965, and who scored the winner in 2023. Difficulty climbs from easy openers about the colours and the anthem to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full West Ham quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is West Ham's connection to 1966?",
+        "a": "Three West Ham players were central to England's 1966 World Cup win: captain Bobby Moore, hat-trick hero Geoff Hurst, and Martin Peters, who also scored in the final."
+      },
+      {
+        "q": "What was West Ham's first major trophy in over 40 years?",
+        "a": "The 2023 UEFA Europa Conference League — David Moyes' side beat Fiorentina in the final, with Jarrod Bowen scoring a late winner. West Ham had earlier won the FA Cup in 1964 and the Cup Winners' Cup in 1965."
+      },
+      {
+        "q": "Is the West Ham quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full West Ham question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the West Ham quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Academy of Football and 1966 to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
   }
 ];
