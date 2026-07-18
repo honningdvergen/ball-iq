@@ -170,6 +170,8 @@ const CLUB_BADGE = {
   'red-star-belgrade': 'CZ', 'dinamo-zagreb': 'DIN', basel: 'BAS',
   'nottingham-forest': 'NFO', 'aston-villa': 'AVL', everton: 'EVE',
   'leeds-united': 'LEE', 'west-ham': 'WHU',
+  'athletic-bilbao': 'ATH', sevilla: 'SEV', 'real-betis': 'BET',
+  'schalke-04': 'S04', 'hamburger-sv': 'HSV',
 };
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
@@ -216,6 +218,8 @@ const CLUB_COLOR = {
   'red-star-belgrade': '#E4002B', 'dinamo-zagreb': '#1B458F', basel: '#002D62',
   'nottingham-forest': '#E53233', 'aston-villa': '#670E36', everton: '#003399',
   'leeds-united': '#1D428A', 'west-ham': '#7A263A',
+  'athletic-bilbao': '#EE2523', sevilla: '#CB0007', 'real-betis': '#00954C',
+  'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

@@ -696,6 +696,8 @@ const CLUB_PACK_TO_QB = {
   RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Basel: "Basel",
   Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
   Leeds: "Leeds United", WestHam: "West Ham",
+  Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
+  Schalke: "Schalke 04", Hamburg: "Hamburger SV",
 };
 
 // League grouping for the club-quiz picker.
@@ -718,6 +720,8 @@ const CLUB_LEAGUES = {
   // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
   RedStar: "other", DinamoZagreb: "other", Basel: "other",
   Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
+  Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
+  Schalke: "bundesliga", Hamburg: "bundesliga",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -764,6 +768,7 @@ const CLUB_ABBR = {
   Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
   RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
+  Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -784,6 +789,8 @@ const CLUB_SLUG_TO_PACK = {
   "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "basel": "Basel",
   "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
   "leeds-united": "Leeds", "west-ham": "WestHam",
+  "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
+  "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1138,6 +1145,26 @@ const CLUB_PACKS = {
   },
   WestHam: {
     name: "West Ham", icon: "⚒️", color: "#7A263A",
+    questions: [],
+  },
+  Athletic: {
+    name: "Athletic Bilbao", icon: "🦁", color: "#EE2523",
+    questions: [],
+  },
+  Sevilla: {
+    name: "Sevilla", icon: "🔴", color: "#CB0007",
+    questions: [],
+  },
+  Betis: {
+    name: "Real Betis", icon: "🟢", color: "#00954C",
+    questions: [],
+  },
+  Schalke: {
+    name: "Schalke 04", icon: "🔵", color: "#004E9E",
+    questions: [],
+  },
+  Hamburg: {
+    name: "Hamburger SV", icon: "⬦", color: "#0A3A7A",
     questions: [],
   },
 };

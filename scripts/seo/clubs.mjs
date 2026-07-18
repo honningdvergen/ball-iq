@@ -1289,5 +1289,165 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the Academy of Football and 1966 to testing deep cuts on specific finals, scorers and seasons."
       }
     ]
+  },
+  {
+    "club": "Athletic Bilbao",
+    "slug": "athletic-bilbao",
+    "name": "Athletic Bilbao",
+    "h1": "Athletic Bilbao Quiz",
+    "title": "Athletic Bilbao Quiz — Los Leones Trivia Questions & Answers | Ball IQ",
+    "description": "Free Athletic Bilbao quiz with explained answers — from the Basque-only cantera and San Mamés to Telmo Zarra, the 2024 Copa del Rey and the Basque derby. Play free in your browser.",
+    "intro": [
+      "Athletic Club — Athletic Bilbao — were founded in 1898 and are one of the most distinctive institutions in world football. This free Athletic quiz covers the whole story: the red-and-white stripes, San Mamés (La Catedral), Los Leones, and the famous cantera philosophy of fielding only players with Basque roots or developed in the Basque region. If you know your Athletic, this is your test.",
+      "Few clubs carry this much history. Athletic are one of only three clubs never to have been relegated from La Liga, alongside Real Madrid and Barcelona, and won eight Spanish league titles, the last of them in 1983-84. They have lifted the Copa del Rey more than almost anyone, and in 2024 they ended a 40-year wait for a major trophy by beating Mallorca on penalties. The club's identity runs through Telmo Zarra, after whom the Zarra Trophy is named, goalkeeper-captain José Ángel Iribar, and Rafael 'Pichichi' Moreno, whose nickname adorns La Liga's top-scorer award. Titles are still paraded down the Nervión estuary on La Gabarra, a river barge.",
+      "Expect questions on the Basque-only policy, San Mamés, the great legends, and the Basque derby against Real Sociedad. You'll be asked what Los Leones means, which club Athletic beat in the 2024 cup final, and what makes their recruitment unique. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Athletic Bilbao quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What makes Athletic Bilbao unique?",
+        "a": "Their cantera philosophy — Athletic sign only players with Basque roots or developed in the Basque region. They are also one of only three clubs never relegated from La Liga, alongside Real Madrid and Barcelona."
+      },
+      {
+        "q": "When did Athletic Bilbao last win a major trophy?",
+        "a": "In 2024 — Athletic won the Copa del Rey, beating Mallorca on penalties in the final at La Cartuja in Seville, ending a 40-year wait for a major honour."
+      },
+      {
+        "q": "Is the Athletic Bilbao quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Athletic question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Athletic Bilbao quiz?",
+        "a": "It scales from easy to hard — from well-known facts about San Mamés and Los Leones to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Sevilla",
+    "slug": "sevilla",
+    "name": "Sevilla",
+    "h1": "Sevilla Quiz",
+    "title": "Sevilla Quiz — Sevilla FC Trivia Questions & Answers | Ball IQ",
+    "description": "Free Sevilla quiz with explained answers — from a record run of UEFA Cup and Europa League triumphs to the Sánchez-Pizjuán, Monchi and the Seville derby. Play free in your browser.",
+    "intro": [
+      "Sevilla FC were founded in 1890, one of the oldest clubs in Spain, and play in red and white at the Estadio Ramón Sánchez-Pizjuán. This free Sevilla quiz covers the whole story: the fervent Nervión atmosphere, a golden age of European cup football, and a recruitment model that became the envy of the continent. If you know your Sevilla, this is your test.",
+      "Sevilla made the UEFA Cup and Europa League their own. They won back-to-back UEFA Cups in 2006 and 2007, then an astonishing three in a row in 2014, 2015 and 2016 under Unai Emery, and lifted the trophy again in 2020 and 2023 — no club has a stronger history in the competition. Behind much of it was the sporting director Monchi, famed for buying and selling brilliantly, and stars like Frédéric Kanouté, Ivan Rakitić and the one-club local hero Jesús Navas. Diego Maradona even spent a season at the club in the early 1990s.",
+      "Expect questions on the European nights, the Sánchez-Pizjuán, the managers and the Seville derby against Real Betis. You'll be asked in which years Sevilla won three straight Europa Leagues, who masterminded their transfer model, and which competition they made their own. Difficulty climbs from easy openers about the city and the colours to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Sevilla quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Sevilla best known for in Europe?",
+        "a": "Their dominance of the UEFA Cup and Europa League — Sevilla won it in 2006 and 2007, three times in a row in 2014, 2015 and 2016 under Unai Emery, and again in 2020 and 2023, a European record in the competition."
+      },
+      {
+        "q": "Who is Monchi?",
+        "a": "The celebrated sporting director who built much of Sevilla's success by identifying, buying and selling players brilliantly, turning the club into one of Europe's smartest operators in the transfer market."
+      },
+      {
+        "q": "Is the Sevilla quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sevilla question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Sevilla quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Sánchez-Pizjuán and the Europa League run to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Real Betis",
+    "slug": "real-betis",
+    "name": "Real Betis",
+    "h1": "Real Betis Quiz",
+    "title": "Real Betis Quiz — Béticos Trivia Questions & Answers | Ball IQ",
+    "description": "Free Real Betis quiz with explained answers — from the 1935 title and the green-and-white to the 2022 Copa del Rey, Joaquín and the Seville derby. Play free in your browser.",
+    "intro": [
+      "Real Betis Balompié were founded in 1907 and play in green-and-white stripes at the Estadio Benito Villamarín. This free Betis quiz covers the whole story: the passionate Béticos, the unmistakable chant '¡Viva el Betis manque pierda!' — long live Betis even when they lose — and one of the most loyal supports in Spanish football. If you know your Betis, this is your test.",
+      "Betis won La Liga in 1934-35, the club's sole league title and a proud landmark, and have lifted the Copa del Rey three times, in 1977, 2005 and most recently in 2022, when they beat Valencia on penalties. The modern era has been defined by the winger Joaquín, a beloved one-club icon of his generation, and by the manager Manuel Pellegrini, who brought European nights back to the Villamarín. Above all, the club's identity is bound up with the Seville derby against Sevilla, one of the fiercest in Spain.",
+      "Expect questions on the 1935 title, the cup wins, the club legends and the derby. You'll be asked what the famous Betis chant means, which club they beat to win the 2022 Copa del Rey, and what colours they wear. Difficulty climbs from easy openers about the city and the green-and-white to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Real Betis quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Real Betis's greatest achievement?",
+        "a": "Winning La Liga in 1934-35 — the club's only league title — and three Copa del Rey trophies, in 1977, 2005 and 2022, the last of them beating Valencia on penalties."
+      },
+      {
+        "q": "What does '¡Viva el Betis manque pierda!' mean?",
+        "a": "It translates as 'Long live Betis, even when they lose' — the defining chant of one of Spanish football's most loyal and passionate supports."
+      },
+      {
+        "q": "Is the Real Betis quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Betis question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Real Betis quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the green-and-white and the derby to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Schalke 04",
+    "slug": "schalke-04",
+    "name": "Schalke 04",
+    "h1": "Schalke 04 Quiz",
+    "title": "Schalke 04 Quiz — Die Knappen Trivia Questions & Answers | Ball IQ",
+    "description": "Free Schalke 04 quiz with explained answers — from the miners' club and the 1997 UEFA Cup Eurofighters to the Revierderby with Dortmund and the Royal Blues. Play free in your browser.",
+    "intro": [
+      "FC Schalke 04 were founded in 1904 in Gelsenkirchen, in the heart of the Ruhr coalfield, and play in royal blue and white. This free Schalke quiz covers the whole story: Die Knappen — the miners — the enormous, devoted support, and one of the great rivalries in world football. If you know your Schalke, this is your test.",
+      "Schalke were German football's dominant force in its early decades, winning seven national championships between 1934 and 1958. Their greatest modern night came in 1997, when the side known as the 'Eurofighters' won the UEFA Cup, beating Inter Milan on penalties. They have won the DFB-Pokal several times and have called the Arena AufSchalke home since 2001. Nothing defines the club like the Revierderby against Borussia Dortmund, the Ruhr derby that divides the region — and after decades in the top flight, Schalke were relegated from the Bundesliga in 2021.",
+      "Expect questions on the miners' heritage, the 1997 European triumph, the great sides and the Dortmund rivalry. You'll be asked which competition the Eurofighters won, what Die Knappen refers to, and which club contest the Revierderby. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Schalke 04 quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Schalke 04's greatest European achievement?",
+        "a": "Winning the 1997 UEFA Cup — the side known as the 'Eurofighters' beat Inter Milan on penalties in the final. Schalke also won seven German championships between 1934 and 1958."
+      },
+      {
+        "q": "Why are Schalke called Die Knappen?",
+        "a": "'Knappen' is an old German word for miners — Schalke grew from the coal-mining community of Gelsenkirchen in the Ruhr, and the nickname reflects those working-class roots."
+      },
+      {
+        "q": "Is the Schalke 04 quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Schalke question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Schalke 04 quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Revierderby and the Eurofighters to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Hamburger SV",
+    "slug": "hamburger-sv",
+    "name": "Hamburger SV",
+    "h1": "Hamburger SV Quiz",
+    "title": "Hamburger SV Quiz — HSV Trivia Questions & Answers | Ball IQ",
+    "description": "Free Hamburger SV quiz with explained answers — from the 1983 European Cup and Kevin Keegan to Uwe Seeler, the Volksparkstadion and the Bundesliga clock. Play free in your browser.",
+    "intro": [
+      "Hamburger SV — HSV — were founded in 1887 and play at the Volksparkstadion, wearing the famous white diamond on blue. This free HSV quiz covers the whole story: one of the giants of German football, the great European night in Athens, and a club whose long unbroken run in the Bundesliga became part of its very identity. If you know your HSV, this is your test.",
+      "The peak came in 1983, when Ernst Happel's side won the European Cup, beating Juventus 1-0 in Athens with a goal from Felix Magath. HSV won six German championships, the last of them also in 1983, and the European Cup Winners' Cup in 1977. Kevin Keegan starred for the club between 1977 and 1980, winning two Ballon d'Or awards while there, and the one-club legend Uwe Seeler remains the definitive HSV icon. For decades HSV were the only club ever-present in the Bundesliga since its founding in 1963 — a run marked by a stadium clock counting their time in the top flight — until they were finally relegated in 2018 and the clock was stopped.",
+      "Expect questions on the 1983 European Cup, the Keegan years, the great legends and the Bundesliga clock. You'll be asked which Italian club HSV beat in Athens, who scored the winner, and which English star won the Ballon d'Or while at the club. Difficulty climbs from easy openers about the colours and the city to genuinely hard deep cuts about specific finals, scorers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Hamburger SV quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Hamburger SV's greatest achievement?",
+        "a": "Winning the 1983 European Cup — Ernst Happel's side beat Juventus 1-0 in the final in Athens, with Felix Magath scoring the only goal. HSV also won six German championships and the 1977 European Cup Winners' Cup."
+      },
+      {
+        "q": "What was the Bundesliga clock at Hamburg?",
+        "a": "A clock in the stadium that counted HSV's unbroken time in the Bundesliga — for decades they were the only ever-present club since the league's 1963 founding, until they were relegated in 2018 and the clock was stopped."
+      },
+      {
+        "q": "Is the Hamburger SV quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full HSV question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Hamburger SV quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the 1983 European Cup and Kevin Keegan to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
   }
 ];
