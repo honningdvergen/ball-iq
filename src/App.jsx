@@ -8503,7 +8503,10 @@ function AppInner() {
       // this path because it linkifies reliably even scheme-less in WhatsApp /
       // iMessage (bare domains with query strings often don't). The ?game=footle
       // branch below stays — the /football-wordle/ landing CTA depends on it.
-      const aliasPath = window.location.pathname;
+      // Case-insensitive: share cards emit lowercase /footle, but a manually
+      // typed /FOOTLE or /Footle (or a platform that capitalises the URL) must
+      // still deep-link straight into the puzzle rather than dumping to home.
+      const aliasPath = (window.location.pathname || "").toLowerCase();
       if (aliasPath === "/footle" || aliasPath === "/footle/") {
         // Keep search + hash: /footle?utm_source=reddit must stay attributable
         // (the ?game= path below likewise strips only its own params).
