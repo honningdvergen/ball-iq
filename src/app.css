@@ -1452,8 +1452,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-back{padding:10px 22px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:var(--accent);}
 .wd-back:active{opacity:0.85;}
 
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;}
-.wd-kb-row{display:flex;justify-content:center;gap:5px;}
+/* Playtester (2026-07-19): thumbs need wider keys, but the design must not
+   change — no colours, no placement, no new look. The width comes from space
+   the keyboard wasn't using: margin-inline:-10px bleeds it into .app's 20px
+   side padding (still 10px off the screen edge — same trick NYT Wordle uses;
+   ONLY the keyboard + its ENTER child widen, the grid/header stay put), and
+   the inter-key gap drops 5→4px. Net: top-row keys ~29px → ~32px at 375px. */
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-10px;}
+.wd-kb-row{display:flex;justify-content:center;gap:4px;}
 .wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
