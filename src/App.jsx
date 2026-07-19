@@ -698,6 +698,8 @@ const CLUB_PACK_TO_QB = {
   Leeds: "Leeds United", WestHam: "West Ham",
   Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
+  Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
+  Sporting: "Sporting CP", SaintEtienne: "Saint-Étienne",
 };
 
 // League grouping for the club-quiz picker.
@@ -722,6 +724,8 @@ const CLUB_LEAGUES = {
   Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
   Schalke: "bundesliga", Hamburg: "bundesliga",
+  Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
+  Sporting: "primeira", SaintEtienne: "ligue1",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -769,6 +773,7 @@ const CLUB_ABBR = {
   RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
+  Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -791,6 +796,8 @@ const CLUB_SLUG_TO_PACK = {
   "leeds-united": "Leeds", "west-ham": "WestHam",
   "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
   "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
+  "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
+  "sporting-cp": "Sporting", "saint-etienne": "SaintEtienne",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1165,6 +1172,26 @@ const CLUB_PACKS = {
   },
   Hamburg: {
     name: "Hamburger SV", icon: "⬦", color: "#0A3A7A",
+    questions: [],
+  },
+  Fiorentina: {
+    name: "Fiorentina", icon: "🟣", color: "#592C82",
+    questions: [],
+  },
+  Lazio: {
+    name: "Lazio", icon: "🦅", color: "#87D8F7",
+    questions: [],
+  },
+  Torino: {
+    name: "Torino", icon: "🐂", color: "#8A1E12",
+    questions: [],
+  },
+  Sporting: {
+    name: "Sporting CP", icon: "🦁", color: "#008056",
+    questions: [],
+  },
+  SaintEtienne: {
+    name: "Saint-Étienne", icon: "🟢", color: "#009E60",
     questions: [],
   },
 };

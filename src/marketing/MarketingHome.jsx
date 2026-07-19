@@ -483,6 +483,11 @@ const QUIZ_CLUBS = [
   { slug: 'real-betis', label: 'Real Betis', badge: 'BET' },
   { slug: 'schalke-04', label: 'Schalke 04', badge: 'S04' },
   { slug: 'hamburger-sv', label: 'Hamburger SV', badge: 'HSV' },
+  { slug: 'fiorentina', label: 'Fiorentina', badge: 'FIO' },
+  { slug: 'lazio', label: 'Lazio', badge: 'LAZ' },
+  { slug: 'torino', label: 'Torino', badge: 'TOR' },
+  { slug: 'sporting-cp', label: 'Sporting CP', badge: 'SCP' },
+  { slug: 'saint-etienne', label: 'Saint-Étienne', badge: 'ASSE' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
@@ -516,6 +521,8 @@ const CLUB_COLOR = {
   'leeds-united': '#1D428A', 'west-ham': '#7A263A',
   'athletic-bilbao': '#EE2523', sevilla: '#CB0007', 'real-betis': '#00954C',
   'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
+  fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
+  'sporting-cp': '#008056', 'saint-etienne': '#009E60',
 };
 const readableOn = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);

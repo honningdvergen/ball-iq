@@ -1449,5 +1449,165 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the 1983 European Cup and Kevin Keegan to testing deep cuts on specific finals, scorers and seasons."
       }
     ]
+  },
+  {
+    "club": "Fiorentina",
+    "slug": "fiorentina",
+    "name": "Fiorentina",
+    "h1": "Fiorentina Quiz",
+    "title": "Fiorentina Quiz — La Viola Trivia Questions & Answers | Ball IQ",
+    "description": "Free Fiorentina quiz with explained answers — from Batistuta and Antognoni to the purple shirts, the Artemio Franchi and the Derby dell'Appennino. Play free in your browser.",
+    "intro": [
+      "Fiorentina were founded in 1926 from the merger of two Florentine clubs, and by 1929 they wore the purple that made them La Viola — legend says the original red-and-white kit came out purple after a botched wash. This free Fiorentina quiz covers the whole story: the Giglio of Florence on the crest, the Curva Fiesole in full voice, and the Stadio Artemio Franchi with its concrete Marathon Tower, designed by Pier Luigi Nervi in the 1930s. If you know your Viola, this is your test.",
+      "The trophies came in two bursts: a first Scudetto in 1955-56, with the Brazilian winger Julinho flying, and a second in 1968-69 with the young 'Ye-Ye' side. In between and after came the icons. Giancarlo Antognoni wore the 10 for his entire prime and made a club-record 429 appearances; Kurt Hamrin — 'Uccellino' — scored 150 Serie A goals; and Gabriel Batistuta struck 207 goals in nine years, staying loyally in Serie B after the 1993 relegation and firing the club straight back up. The 1990 sale of Roberto Baggio to Juventus sparked riots in the streets — the rivalry with Turin has burned ever since.",
+      "Expect questions on the legends, the two titles, the transfers and the Derby dell'Appennino with Bologna. You'll be asked why the shirts are purple, who holds the appearance record, and what Batistuta did when the club went down. Difficulty climbs from easy openers about Florence and the colours to genuinely hard deep cuts about specific seasons, scorers and finals.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Fiorentina quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "Why do Fiorentina play in purple?",
+        "a": "The club switched from red-and-white to purple in 1929 — the popular legend says the old shirts turned purple after a botched wash in the Arno. The colour made them La Viola, one of football's most distinctive identities."
+      },
+      {
+        "q": "Who is Fiorentina's greatest player?",
+        "a": "The two icons are Giancarlo Antognoni — the one-club number 10 with a record 429 appearances — and Gabriel Batistuta, 'Batigol', who scored 207 goals and famously stayed after the 1993 relegation to fire the club back into Serie A."
+      },
+      {
+        "q": "Is the Fiorentina quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fiorentina question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Fiorentina quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the purple shirts and Batistuta to testing deep cuts on specific seasons, scorers and finals."
+      }
+    ]
+  },
+  {
+    "club": "Lazio",
+    "slug": "lazio",
+    "name": "Lazio",
+    "h1": "Lazio Quiz",
+    "title": "Lazio Quiz — Biancocelesti Trivia Questions & Answers | Ball IQ",
+    "description": "Free Lazio quiz with explained answers — from the 1999 Cup Winners' Cup and the 2000 Scudetto to the eagle, the Derby della Capitale and Ciro Immobile. Play free in your browser.",
+    "intro": [
+      "Lazio were founded in 1900 as a running club, took white and sky blue as a tribute to Greece — home of the Olympic ideal — and carry the eagle on the badge that makes them le Aquile. This free Lazio quiz covers the whole story: the Stadio Olimpico shared with Roma since 1953, the Curva Nord, and the fiercest fixture in the capital. When Rome's clubs were merged to create AS Roma in 1927, Lazio refused — the Derby della Capitale has carried that edge ever since.",
+      "The first Scudetto came in 1973-74 under Tommaso Maestrelli, with Giorgio Chinaglia's 24 goals leading Serie A. The golden turn of the millennium brought the rest: the last-ever Cup Winners' Cup in 1999, won 2-1 against Mallorca at Villa Park with Pavel Nedvěd scoring the winner, the 1999 UEFA Super Cup against Manchester United, and the 2000 Scudetto under Sven-Göran Eriksson, sealed on a dramatic rain-soaked final day. That era traded in world records — Christian Vieri sold to Inter, Hernán Crespo signed from Parma for £35.5 million — while the academy produced Alessandro Nesta, the Rome-born captain of the double winners.",
+      "Expect questions on the 1999-2000 era, the legends from Silvio Piola — whose 274 goals remain Serie A's all-time record — to Ciro Immobile, who left in 2024 as the club's all-time top scorer after a 36-goal European Golden Shoe season. You'll be asked which club Lazio beat at Villa Park, who coached the 2000 champions, and what the eagle stands for. Difficulty climbs from easy openers to genuinely hard deep cuts.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Lazio quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Lazio's greatest European achievement?",
+        "a": "Winning the last-ever European Cup Winners' Cup in 1999 — beating Mallorca 2-1 at Villa Park with Pavel Nedvěd's late winner — and following it with the 1999 UEFA Super Cup against Manchester United."
+      },
+      {
+        "q": "Why do Lazio wear sky blue and have an eagle on the badge?",
+        "a": "The white and sky blue were chosen as a tribute to Greece, the home of the Olympic ideal, and the eagle gives the club its nickname le Aquile — since 2010 a live eagle has even flown over the stadium before home games."
+      },
+      {
+        "q": "Is the Lazio quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Lazio question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Lazio quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the eagle and the Derby della Capitale to testing deep cuts on specific finals, scorers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Torino",
+    "slug": "torino",
+    "name": "Torino",
+    "h1": "Torino Quiz",
+    "title": "Torino Quiz — Il Grande Torino Trivia Questions & Answers | Ball IQ",
+    "description": "Free Torino quiz with explained answers — from the Grande Torino and the Superga disaster to Valentino Mazzola, the granata and the Derby della Mole. Play free in your browser.",
+    "intro": [
+      "Torino were founded in 1906 by dissidents who split from Juventus, and the maroon shirts made them the granata — Il Toro, the bull, on the crest. This free Torino quiz covers the whole story: the Derby della Mole against the old enemy, the fortress Filadelfia, and the greatest and most tragic team in Italian history. If you know your Toro, this is your test.",
+      "Il Grande Torino won five consecutive Serie A titles in the 1940s, built by president Ferruccio Novo and captained by Valentino Mazzola, the attacking number 10 who defined an era — in one 1947 international, Italy's team was almost entirely Torino players. Then, on 4 May 1949, the plane carrying the entire squad crashed into the Superga hillside above Turin. Every player died, four games from another title. Superga is not just history — it is the club's soul, honoured every year since.",
+      "There was life after: the 1975-76 Scudetto under Gigi Radice, sealed in a title race with Juventus; the 1993 Coppa Italia; and the 1992 UEFA Cup final, reached by knocking out Real Madrid in the semi-finals before losing to Ajax on away goals. You'll be asked who captained the Grande Torino, what happened at Superga, and which Scottish forward arrived in 1961 for a British-record fee before becoming a Manchester United legend. Difficulty climbs from easy openers to genuinely hard deep cuts.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Torino quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What was the Grande Torino?",
+        "a": "The greatest Italian team of the 1940s — five consecutive Serie A titles, captained by Valentino Mazzola. The entire squad died when their plane crashed into the Superga hillside above Turin on 4 May 1949, four games from another title."
+      },
+      {
+        "q": "What is the Derby della Mole?",
+        "a": "The Turin derby between Torino and Juventus — named after the Mole Antonelliana, the city's landmark tower. Torino were founded in 1906 by a group that split from Juventus, which gives the fixture its edge."
+      },
+      {
+        "q": "Is the Torino quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Torino question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Torino quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the granata and Superga to testing deep cuts on specific seasons, transfers and European runs."
+      }
+    ]
+  },
+  {
+    "club": "Sporting CP",
+    "slug": "sporting-cp",
+    "name": "Sporting CP",
+    "h1": "Sporting CP Quiz",
+    "title": "Sporting CP Quiz — Os Leões Trivia Questions & Answers | Ball IQ",
+    "description": "Free Sporting CP quiz with explained answers — from the 1964 Cup Winners' Cup and the Cinco Violinos to Cristiano Ronaldo's academy and Figo. Play free in your browser.",
+    "intro": [
+      "Sporting Clube de Portugal were founded in 1906 in Lisbon, wear the green-and-white hoops, and carry the lion — Os Leões — on the crest. This free Sporting quiz covers the whole story: the Estádio José Alvalade, rebuilt in 2003 for Euro 2004, the Lisbon derby against Benfica, and a place alongside Benfica and Porto in Portugal's Três Grandes. If you know your Sporting, this is your test.",
+      "The great European night came in 1964, when Sporting won the Cup Winners' Cup, beating MTK Budapest in a replay settled by João Morais from a free kick — a run that included a 16-1 win that still defies belief. At home, the Cinco Violinos forward line of the 1940s set the standard. But Sporting's modern fame is the academy: Cristiano Ronaldo wore 28 as a teenager before Manchester United came for him in 2003, Luís Figo left for Barcelona in 1995, and Rui Patrício, Nani, Quaresma and Bruno Fernandes all followed the same path to the top. In 2020 the club renamed the academy in Ronaldo's honour.",
+      "Expect questions on the 1964 triumph, the academy's production line, the transfers and the title droughts — including the 2020-21 championship under Rúben Amorim, the first in 19 years. You'll be asked which number Ronaldo wore, who Sporting beat in 1964, and where Bruno Fernandes went in January 2020. Difficulty climbs from easy openers about the lions and Lisbon to genuinely hard deep cuts.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Sporting quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Sporting CP most famous for?",
+        "a": "Two things: the 1964 Cup Winners' Cup — their great European triumph — and one of the world's finest academies, which produced Cristiano Ronaldo, Luís Figo, Nani, Rui Patrício and Bruno Fernandes. Sporting renamed the academy in Ronaldo's honour in 2020."
+      },
+      {
+        "q": "When did Sporting last win the Portuguese title before the recent era?",
+        "a": "After a 19-year drought, Rúben Amorim's side won the 2020-21 Primeira Liga — the wait had stretched back to 2002. Sporting's historic dominance includes a spell of seven titles in eight seasons."
+      },
+      {
+        "q": "Is the Sporting CP quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sporting question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Sporting CP quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the lions and Ronaldo's academy to testing deep cuts on specific finals, transfers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Saint-Étienne",
+    "slug": "saint-etienne",
+    "name": "Saint-Étienne",
+    "h1": "Saint-Étienne Quiz",
+    "title": "Saint-Étienne Quiz — Les Verts Trivia Questions & Answers | Ball IQ",
+    "description": "Free Saint-Étienne quiz with explained answers — from the golden era and the poteaux carrés of 1976 to le Chaudron, Rocheteau and Platini. Play free in your browser.",
+    "intro": [
+      "AS Saint-Étienne were founded in 1919 by employees of the Casino grocery company, turned professional in 1933, and became Les Verts — the Greens — the most romantic name in French football. This free Saint-Étienne quiz covers the whole story: the Stade Geoffroy-Guichard, built 'à l'anglaise' with four separate stands and nicknamed le Chaudron for its ferocious atmosphere, the Kop Nord, and the derby with Lyon. If you know your Verts, this is your test.",
+      "The golden era brought ten French league titles between the late 1950s and 1981, six Coupes de France between 1962 and 1977, and the run that made the club immortal: the 1976 European Cup final against Bayern Munich at Hampden Park, lost 1-0 amid the cursed square goalposts — les poteaux carrés — after shots rattled the frame. The day after the defeat, roughly 100,000 people celebrated the team on the Champs-Élysées. Dominique Rocheteau — l'Ange Vert — led the line; Robert Herbin, appointed at just 33, was the coach; and in 1979 a young Michel Platini arrived from Nancy.",
+      "Expect questions on the golden era, the European nights — including the famous comebacks in le Chaudron — the legends from Salif Keïta, the first African Footballer of the Year in 1970, to record scorer Hervé Revelli, and the club's modern chapters. You'll be asked what the poteaux carrés were, who managed the 1976 finalists, and which company's employees founded the club. Difficulty climbs from easy openers to genuinely hard deep cuts.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Saint-Étienne quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What are the 'poteaux carrés'?",
+        "a": "The square goalposts of Hampden Park in the 1976 European Cup final — Saint-Étienne struck the frame against Bayern Munich and lost 1-0, and French football has cursed the square posts ever since. Around 100,000 people still celebrated the team on the Champs-Élysées the next day."
+      },
+      {
+        "q": "Why are Saint-Étienne so celebrated in France?",
+        "a": "Their golden era brought ten league titles between the late 1950s and 1981 — with legends like Dominique Rocheteau, record scorer Hervé Revelli and coach Robert Herbin — making Les Verts the defining French club side of their age."
+      },
+      {
+        "q": "Is the Saint-Étienne quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Saint-Étienne question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Saint-Étienne quiz?",
+        "a": "It scales from easy to hard — from well-known facts about le Chaudron and the 1976 final to testing deep cuts on specific seasons, scorers and European nights."
+      }
+    ]
   }
 ];
