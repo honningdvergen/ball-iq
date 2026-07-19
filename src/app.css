@@ -1457,8 +1457,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    the keyboard wasn't using: margin-inline:-10px bleeds it into .app's 20px
    side padding (still 10px off the screen edge — same trick NYT Wordle uses;
    ONLY the keyboard + its ENTER child widen, the grid/header stay put), and
-   the inter-key gap drops 5→4px. Net: top-row keys ~29px → ~32px at 375px. */
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-10px;}
+   the inter-key gap drops 5→4px. Net: top-row keys ~29px → ~32px at 375px.
+   -12px (8px off the edge) matches NYT Wordle's measured inset — Alex's
+   reference screenshot 2026-07-19. Do not go past -14px: curved screen edges
+   start eating the Q/P keys. */
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-12px;}
 .wd-kb-row{display:flex;justify-content:center;gap:4px;}
 .wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 .wd-key:active{transform:scale(0.96);}
