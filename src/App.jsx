@@ -1709,7 +1709,7 @@ function FootleGetAppCTA({ style }) {
         📲 Get the free app
       </a>
       <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginTop: 2 }}>
-        Streaks, daily reminders &amp; 4,000+ quiz questions
+        Streaks, daily reminders &amp; 5,000+ quiz questions
       </div>
     </>
   );

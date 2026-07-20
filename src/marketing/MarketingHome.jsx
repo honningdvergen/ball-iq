@@ -18,6 +18,8 @@ const PLAY = '/play';
 // Build-time question-bank count (vite define, re-derived every deploy so it
 // never drifts stale). Fallback keeps dev servers / edge cases safe.
 const QB_COUNT = Number(import.meta.env.VITE_QB_COUNT || 4000);
+// Rounded floor for marketing copy (e.g. 5,483 -> "5,000+"); auto-updates from QB_COUNT so it never drifts.
+const QB_ROUND = Math.floor(QB_COUNT / 1000) * 1000;
 const BALL = '/marketing/ball.png';
 const SHOT = {
   home: '/marketing/balliq-screenshot-00-home.png',
@@ -421,7 +423,7 @@ function PlayNow() {
         <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>📱 Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
-        <GreenCTA href={APP_STORE} target="_blank">Get 4,000+ more in the app →</GreenCTA>
+        <GreenCTA href={APP_STORE} target="_blank">Get {QB_ROUND.toLocaleString('en-US')}+ questions in the app →</GreenCTA>
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
@@ -631,7 +633,7 @@ export default function MarketingHome() {
         <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180', whiteSpace: 'nowrap' }}>
           {[0, 1].map((i) => (
             <span key={i}>
-              {['4,000+ Questions', '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
+              {[`${QB_ROUND.toLocaleString('en-US')}+ Questions`, '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
                 <React.Fragment key={j}>{'  '}{t}{'  '}<span style={{ color: '#FF6A00' }}>✦</span></React.Fragment>
               ))}
             </span>
@@ -762,7 +764,7 @@ export default function MarketingHome() {
         <div style={{ maxWidth: 1140, margin: '0 auto', padding: '56px 24px 40px', display: 'flex', flexWrap: 'wrap', gap: 40, justifyContent: 'space-between' }}>
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
-            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>The ultimate football quiz. 4,000+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.</p>
+            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>{`The ultimate football quiz. ${QB_ROUND.toLocaleString('en-US')}+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.`}</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
