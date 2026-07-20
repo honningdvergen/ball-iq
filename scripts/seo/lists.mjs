@@ -9396,5 +9396,585 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Euros"
+  },
+  {
+    "slug": "most-ligue-1-titles",
+    "h1": "Clubs With the Most Ligue 1 Titles",
+    "title": "Most Ligue 1 Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most Ligue 1 titles? Paris Saint-Germain lead the all-time ranking. Every French champion since 1932, ranked by titles.",
+    "intro": [
+      "French football's top flight has crowned champions since 1932, and its history splits neatly into two eras: a long spell where the title moved freely between the country's great clubs, and the recent age of Paris Saint-Germain dominance. This page ranks every Ligue 1 champion by number of titles.",
+      "PSG now lead the all-time list with 14, having pulled clear during the Qatari-ownership era. Saint-Étienne's 10 titles, most from a golden 1960s and 70s, keep them second, just ahead of Marseille. Note that Marseille were stripped of the 1992-93 title amid a match-fixing scandal, so it does not count toward their total."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Paris Saint-Germain",
+        "14",
+        "1985, 1993, 2012, 2013, 2014, 2015, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025"
+      ],
+      [
+        "2",
+        "Saint-Étienne",
+        "10",
+        "1956, 1963, 1966, 1967, 1968, 1969, 1973, 1974, 1975, 1980"
+      ],
+      [
+        "3",
+        "Marseille",
+        "9",
+        "1936, 1947, 1970, 1971, 1988, 1989, 1990, 1991, 2009"
+      ],
+      [
+        "4",
+        "Monaco",
+        "8",
+        "1960, 1962, 1977, 1981, 1987, 1996, 1999, 2016"
+      ],
+      [
+        "4",
+        "Nantes",
+        "8",
+        "1964, 1965, 1972, 1976, 1979, 1982, 1994, 2000"
+      ],
+      [
+        "6",
+        "Lyon",
+        "7",
+        "2001, 2002, 2003, 2004, 2005, 2006, 2007"
+      ],
+      [
+        "7",
+        "Bordeaux",
+        "6",
+        "1949, 1983, 1984, 1986, 1998, 2008"
+      ],
+      [
+        "7",
+        "Reims",
+        "6",
+        "1948, 1952, 1954, 1957, 1959, 1961"
+      ],
+      [
+        "9",
+        "Lille",
+        "4",
+        "1945, 1953, 2010, 2020"
+      ],
+      [
+        "9",
+        "Nice",
+        "4",
+        "1950, 1951, 1955, 1958"
+      ],
+      [
+        "11",
+        "Sète",
+        "2",
+        "1933, 1938"
+      ],
+      [
+        "11",
+        "Sochaux",
+        "2",
+        "1934, 1937"
+      ],
+      [
+        "13",
+        "Auxerre",
+        "1",
+        "1995"
+      ],
+      [
+        "13",
+        "Lens",
+        "1",
+        "1997"
+      ],
+      [
+        "13",
+        "Montpellier",
+        "1",
+        "2011"
+      ],
+      [
+        "13",
+        "Olympique Lillois",
+        "1",
+        "1932"
+      ],
+      [
+        "13",
+        "RC Paris",
+        "1",
+        "1935"
+      ],
+      [
+        "13",
+        "Roubaix-Tourcoing",
+        "1",
+        "1946"
+      ],
+      [
+        "13",
+        "Strasbourg",
+        "1",
+        "1978"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Ligue 1 titles?",
+        "a": "Paris Saint-Germain have won the most, with 14. Saint-Étienne are second with 10, and Marseille third."
+      },
+      {
+        "q": "Why is the 1992-93 Ligue 1 title not counted?",
+        "a": "Marseille finished top in 1992-93 but were stripped of the title following a match-fixing scandal, and it was not reassigned. It is the only season with no official champion."
+      },
+      {
+        "q": "Is this every Ligue 1 champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list, see our Ligue 1 champions list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Ligue 1"
+  },
+  {
+    "slug": "most-europa-league-titles",
+    "h1": "Clubs With the Most Europa League Titles",
+    "title": "Most Europa League Titles: Clubs Ranked (UEFA Cup) | Ball IQ",
+    "description": "Which club has won the most Europa League / UEFA Cup titles? Sevilla lead by a distance. Every winner ranked, with the years they lifted it.",
+    "intro": [
+      "Europe's second-tier club competition — the UEFA Cup until 2009, the Europa League since — has been won by clubs from across the continent since 1972. This page ranks every winner by number of titles.",
+      "One club stands far above the rest: Sevilla have made the competition their own with 7 triumphs, all since 2006, a record no one else comes close to. Behind them, a cluster of clubs including Juventus, Inter, Liverpool, Atlético Madrid and Tottenham share three apiece."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Sevilla",
+        "7",
+        "2005, 2006, 2013, 2014, 2015, 2019, 2022"
+      ],
+      [
+        "2",
+        "Atletico Madrid",
+        "3",
+        "2009, 2011, 2017"
+      ],
+      [
+        "2",
+        "Inter Milan",
+        "3",
+        "1990, 1993, 1997"
+      ],
+      [
+        "2",
+        "Juventus",
+        "3",
+        "1976, 1989, 1992"
+      ],
+      [
+        "2",
+        "Liverpool",
+        "3",
+        "1972, 1975, 2000"
+      ],
+      [
+        "2",
+        "Tottenham Hotspur",
+        "3",
+        "1971, 1983, 2024"
+      ],
+      [
+        "7",
+        "Borussia Monchengladbach",
+        "2",
+        "1974, 1978"
+      ],
+      [
+        "7",
+        "Chelsea",
+        "2",
+        "2012, 2018"
+      ],
+      [
+        "7",
+        "Eintracht Frankfurt",
+        "2",
+        "1979, 2021"
+      ],
+      [
+        "7",
+        "Feyenoord",
+        "2",
+        "1973, 2001"
+      ],
+      [
+        "7",
+        "IFK Goteborg",
+        "2",
+        "1981, 1986"
+      ],
+      [
+        "7",
+        "Parma",
+        "2",
+        "1994, 1998"
+      ],
+      [
+        "7",
+        "Porto",
+        "2",
+        "2002, 2010"
+      ],
+      [
+        "7",
+        "Real Madrid",
+        "2",
+        "1984, 1985"
+      ],
+      [
+        "15",
+        "Ajax",
+        "1",
+        "1991"
+      ],
+      [
+        "15",
+        "Anderlecht",
+        "1",
+        "1982"
+      ],
+      [
+        "15",
+        "Aston Villa",
+        "1",
+        "2025"
+      ],
+      [
+        "15",
+        "Atalanta",
+        "1",
+        "2023"
+      ],
+      [
+        "15",
+        "Bayer Leverkusen",
+        "1",
+        "1987"
+      ],
+      [
+        "15",
+        "Bayern Munich",
+        "1",
+        "1995"
+      ],
+      [
+        "15",
+        "CSKA Moscow",
+        "1",
+        "2004"
+      ],
+      [
+        "15",
+        "Galatasaray",
+        "1",
+        "1999"
+      ],
+      [
+        "15",
+        "Ipswich Town",
+        "1",
+        "1980"
+      ],
+      [
+        "15",
+        "Manchester United",
+        "1",
+        "2016"
+      ],
+      [
+        "15",
+        "Napoli",
+        "1",
+        "1988"
+      ],
+      [
+        "15",
+        "PSV Eindhoven",
+        "1",
+        "1977"
+      ],
+      [
+        "15",
+        "Schalke 04",
+        "1",
+        "1996"
+      ],
+      [
+        "15",
+        "Shakhtar Donetsk",
+        "1",
+        "2008"
+      ],
+      [
+        "15",
+        "Valencia",
+        "1",
+        "2003"
+      ],
+      [
+        "15",
+        "Villarreal",
+        "1",
+        "2020"
+      ],
+      [
+        "15",
+        "Zenit St Petersburg",
+        "1",
+        "2007"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Europa League titles?",
+        "a": "Sevilla have won the most, with 7 — all since 2006. No other club has more than three UEFA Cup / Europa League titles."
+      },
+      {
+        "q": "What was the Europa League called before?",
+        "a": "It was the UEFA Cup from its start in 1971-72 until 2008-09, when it was rebranded as the UEFA Europa League and absorbed the old competition's history."
+      },
+      {
+        "q": "Is this every Europa League winner?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list of every final, see our Europa League winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Europa League"
+  },
+  {
+    "slug": "most-copa-america-titles",
+    "h1": "Countries With the Most Copa América Titles",
+    "title": "Most Copa América Titles: Countries Ranked | Ball IQ",
+    "description": "Which country has won the most Copa América titles? Argentina and Uruguay lead the oldest international tournament. Every winner ranked by titles.",
+    "intro": [
+      "The Copa América, first held in 1916, is the oldest international football tournament in the world. This page ranks every winner by number of titles — a race led, as ever, by South America's two grand old rivals.",
+      "Argentina lead the all-time count with 16, having edged clear of Uruguay (15) with their 2021 and 2024 triumphs. Brazil are third with 9, and only a handful of other nations — Peru, Paraguay, Chile, Bolivia and Colombia — have ever lifted the trophy."
+    ],
+    "columns": [
+      "Rank",
+      "Country",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Argentina",
+        "16",
+        "1921, 1925, 1927, 1929, 1937, 1941, 1945, 1946, 1947, 1955, 1957, 1959, 1991, 1993, 2021, 2024"
+      ],
+      [
+        "2",
+        "Uruguay",
+        "15",
+        "1916, 1917, 1920, 1923, 1924, 1926, 1935, 1942, 1956, 1959, 1967, 1983, 1987, 1995, 2011"
+      ],
+      [
+        "3",
+        "Brazil",
+        "9",
+        "1919, 1922, 1949, 1989, 1997, 1999, 2004, 2007, 2019"
+      ],
+      [
+        "4",
+        "Chile",
+        "2",
+        "2015, 2016"
+      ],
+      [
+        "4",
+        "Paraguay",
+        "2",
+        "1953, 1979"
+      ],
+      [
+        "4",
+        "Peru",
+        "2",
+        "1939, 1975"
+      ],
+      [
+        "7",
+        "Bolivia",
+        "1",
+        "1963"
+      ],
+      [
+        "7",
+        "Colombia",
+        "1",
+        "2001"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which country has won the most Copa América titles?",
+        "a": "Argentina have won the most, with 16, just ahead of Uruguay on 15. Brazil are third with 9."
+      },
+      {
+        "q": "What is the oldest international football tournament?",
+        "a": "The Copa América, first played in 1916, is the oldest continental championship in international football — older than both the World Cup and the European Championship."
+      },
+      {
+        "q": "Is this every Copa América winner?",
+        "a": "This page ranks countries by titles. For the full year-by-year list of every winner, runner-up and host, see our Copa América winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Copa América"
+  },
+  {
+    "slug": "most-afcon-titles",
+    "h1": "Countries With the Most AFCON Titles",
+    "title": "Most AFCON Titles: Africa Cup of Nations Winners Ranked | Ball IQ",
+    "description": "Which country has won the most Africa Cup of Nations titles? Egypt lead with a record haul. Every AFCON winner ranked by titles, with the years.",
+    "intro": [
+      "The Africa Cup of Nations has crowned the continent's champions since 1957. This page ranks every winner by number of titles — a list headed, emphatically, by one nation.",
+      "Egypt are the kings of African football with 7 titles, more than any other country. Cameroon follow on 5 and Ghana on 4, while a broad group of nations from across the continent have all had their moment lifting the trophy."
+    ],
+    "columns": [
+      "Rank",
+      "Country",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Egypt",
+        "7",
+        "1957, 1959, 1986, 1998, 2006, 2008, 2010"
+      ],
+      [
+        "2",
+        "Cameroon",
+        "5",
+        "1984, 1988, 2000, 2002, 2017"
+      ],
+      [
+        "3",
+        "Ghana",
+        "4",
+        "1963, 1965, 1978, 1982"
+      ],
+      [
+        "4",
+        "Ivory Coast",
+        "3",
+        "1992, 2015, 2023"
+      ],
+      [
+        "4",
+        "Nigeria",
+        "3",
+        "1980, 1994, 2013"
+      ],
+      [
+        "6",
+        "Algeria",
+        "2",
+        "1990, 2019"
+      ],
+      [
+        "6",
+        "Morocco",
+        "2",
+        "1976, 2025"
+      ],
+      [
+        "8",
+        "Congo",
+        "1",
+        "1972"
+      ],
+      [
+        "8",
+        "DR Congo",
+        "1",
+        "1968"
+      ],
+      [
+        "8",
+        "Ethiopia",
+        "1",
+        "1962"
+      ],
+      [
+        "8",
+        "Senegal",
+        "1",
+        "2021"
+      ],
+      [
+        "8",
+        "South Africa",
+        "1",
+        "1996"
+      ],
+      [
+        "8",
+        "Sudan",
+        "1",
+        "1970"
+      ],
+      [
+        "8",
+        "Tunisia",
+        "1",
+        "2004"
+      ],
+      [
+        "8",
+        "Zaire",
+        "1",
+        "1974"
+      ],
+      [
+        "8",
+        "Zambia",
+        "1",
+        "2012"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which country has won the most AFCON titles?",
+        "a": "Egypt have won the most Africa Cup of Nations titles, with 7 — a record. Cameroon are second with 5 and Ghana third with 4."
+      },
+      {
+        "q": "Who won the most recent AFCON?",
+        "a": "Morocco won the most recent Africa Cup of Nations, held on home soil, beating Senegal in the final."
+      },
+      {
+        "q": "Is this every AFCON winner?",
+        "a": "This page ranks countries by titles. For the full tournament-by-tournament list of every winner, runner-up and host, see our AFCON winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Africa Cup of Nations"
   }
 ];
