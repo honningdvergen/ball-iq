@@ -35,6 +35,7 @@ import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { PLAYERS } from './seo/players.mjs';
+import { LISTS } from './seo/lists.mjs';
 import { NATIONS } from './seo/nations.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -1116,6 +1117,102 @@ ${footer()}`;
   return { slug: cfg.slug, name: `${cfg.name} quiz`, count: hints.length, canonical };
 }
 
+// ── reference-list page (/lists/<slug>/) ────────────────────────────────────────
+// Settled-fact tables (Ballon d'Or winners, CL winners by year, PL top scorers…)
+// as SEO / AI-answer pages that funnel into the quizzes. Data is forge-verified
+// in scripts/seo/lists.mjs. Auto-interlinks into club + player /quiz/ pages by
+// scanning the rows for known entities — feeding the internal-link mesh.
+function listRelatedPages(rows, clubPages, playerPages) {
+  const hay = rows.flat().join(' | ').toLowerCase();
+  const out = [];
+  const seen = new Set();
+  const add = (p) => { if (!seen.has(p.slug)) { seen.add(p.slug); out.push(p); } };
+  for (const p of playerPages) {
+    const surname = p.name.replace(/ quiz$/i, '').split(' ').pop().toLowerCase();
+    if (surname.length > 3 && hay.includes(surname)) add(p);
+  }
+  for (const c of clubPages) {
+    const nm = c.name.replace(/ quiz$/i, '').toLowerCase();
+    if (nm.length > 3 && hay.includes(nm)) add(c);
+  }
+  return out.slice(0, 12);
+}
+function buildListPage(cfg, clubPages, playerPages, catPages) {
+  const canonical = `${SITE.base}/lists/${cfg.slug}/`;
+  const cols = cfg.columns;
+  const rows = cfg.rows;
+  const related = listRelatedPages(rows, clubPages, playerPages);
+  const tiles = related.length >= 4 ? related : [...related, ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 6 - related.length)];
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: cfg.h1,
+        numberOfItems: rows.length,
+        itemListElement: rows.slice(0, 100).map((r, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: r.filter(Boolean).slice(0, 2).join(' — '),
+        })),
+      },
+    ],
+  });
+  const asOf = cfg.updated ? ` · verified ${cfg.updated}` : '';
+  const table = `<div class="ltable-wrap"><table class="ltable">
+<thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>
+<tbody>
+${rows.map((r) => `<tr>${r.map((cell, i) => `<td${i === 0 ? ' class="lt-first"' : ''}>${esc(cell)}</td>`).join('')}</tr>`).join('\n')}
+</tbody></table></div>`;
+  const style = `<style>
+  .ltable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+  .ltable{border-collapse:collapse;width:100%;font-size:15px;min-width:min(100%,520px)}
+  .ltable th{text-align:left;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;font-size:12px;padding:12px 14px;border-bottom:1px solid var(--bd2);white-space:nowrap;position:sticky;top:0;background:var(--card2)}
+  .ltable td{padding:11px 14px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:top}
+  .ltable tbody tr:last-child td{border-bottom:0}
+  .ltable tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
+  .ltable .lt-first{font-weight:700;color:#fff;white-space:nowrap}
+  </style>`;
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
+<body>
+${NAV}
+<main>
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football lists</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 6px">${esc(cfg.h1)}</h1>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · from the Ball IQ football team</p>
+${cfg.intro.map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
+</section>
+<section class="sec narrow">
+${table}
+</section>
+${adSlot('afterQA')}
+${appCtaBand(cfg.ctaName || 'football')}
+<section class="sec">
+<h2>Quizzes to test yourself</h2>
+${renderTiles(tiles)}
+</section>
+<section class="sec narrow">
+<h2>${esc(cfg.h1)} — FAQ</h2>
+${renderFaq(cfg.faq)}
+</section>
+${adSlot('afterFaq')}
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'lists', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: cfg.h1, count: rows.length, canonical };
+}
+
 // ── per-nation page ────────────────────────────────────────────────────────────
 // Same shape as buildPlayerPage: the bank has no `nation` field, so a question is
 // "about" a nation if any `match` alternative appears in the stem or the correct
@@ -1480,7 +1577,7 @@ ${footer()}`;
 }
 
 // ── sitemap ───────────────────────────────────────────────────────────────────
-function buildSitemap(livePages) {
+function buildSitemap(livePages, listPages = []) {
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
   // Pages are regenerated every deploy, so the build date is an honest hint.
@@ -1493,6 +1590,7 @@ function buildSitemap(livePages) {
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
+    ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
@@ -1621,6 +1719,8 @@ async function main() {
   const playerPages = PLAYERS.map((p) => ({ slug: p.slug, name: `${p.name} quiz`, count: playerHintRows(p.match).length }));
   // Nation pages: /quiz/<nation-slug>/ — same namespace; text-matched question sets.
   const nationPages = NATIONS.map((n) => ({ slug: n.slug, name: `${n.name} quiz`, count: nationHintRows(n.match).length }));
+  // Reference-list pages: /lists/<slug>/ — settled-fact tables, own namespace.
+  const listPages = LISTS.map((l) => ({ slug: l.slug, name: l.h1, count: l.rows.length }));
 
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
@@ -1628,11 +1728,12 @@ async function main() {
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
+  const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages));
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages]);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages);
   buildLlmsTxt(livePages, clubPages);
   await pingIndexNow(sitemapUrls);
 
@@ -1642,6 +1743,7 @@ async function main() {
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
   for (const b of builtPlayers) console.log(`  ✓ /quiz/${b.slug}/  (player, ${b.count} Qs in bank)`);
   for (const b of builtNations) console.log(`  ✓ /quiz/${b.slug}/  (nation, ${b.count} Qs in bank)`);
+  for (const b of builtLists) console.log(`  ✓ /lists/${b.slug}/  (reference list, ${b.count} rows)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /football-wordle/  (Footle landing)`);
   console.log(`  ✓ /about/  ✓ /contact/`);

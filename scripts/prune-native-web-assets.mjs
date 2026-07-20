@@ -35,6 +35,7 @@ const TARGET_DIRS = [
 const PRUNE_EXACT = [
   // SEO landing pages (static HTML dirs; the native shell is SPA-only)
   'quiz',
+  'lists',
   'football-wordle',
   'about',
   'contact',
