@@ -374,9 +374,12 @@ function renderFaq(faq, extra) {
 // derivable from code. AD_SLOTS is empty until those exist; adSlot() renders
 // nothing while a slot id is absent, so the generator stays safe to run.
 const AD_SLOTS = {
-  // afterQA: '1234567890',
-  // afterFaq: '0987654321',
-  // listInline: '1122334455',  // in-table slot on long /lists pages (every ~20 rows)
+  // Live 2026-07-20: one banner unit ("OLSEN", slot 4505987680) reused across all
+  // three placements to go live fast. Reporting lumps them together — split into
+  // named units (afterQA/afterFaq/listInline) later if per-placement data is wanted.
+  afterQA: '4505987680',
+  afterFaq: '4505987680',
+  listInline: '4505987680',
 };
 
 // The loader is only emitted when real slots exist AND the page type carries
