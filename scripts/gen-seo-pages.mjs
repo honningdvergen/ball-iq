@@ -1642,7 +1642,7 @@ async function pingIndexNow(urlList) {
 // A concise, link-rich markdown summary LLM crawlers (ChatGPT, Perplexity, Gemini,
 // Claude, Google AI Overviews) can use to understand + cite the site. Generated
 // from livePages so it auto-grows as new quiz categories ship.
-function buildLlmsTxt(livePages, clubPages) {
+function buildLlmsTxt(livePages, clubPages, playerPages = [], listPages = []) {
   const cats = livePages.filter((p) => p.slug !== HUB.slug);
   const quizLinks = [
     `- [Football quizzes hub](${SITE.base}/quiz/): Every free football trivia category, each answer explained.`,
@@ -1651,9 +1651,15 @@ function buildLlmsTxt(livePages, clubPages) {
   const clubLinks = clubPages
     .map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers on the club's history, legends and trophies.`)
     .join('\n');
+  const playerLinks = playerPages
+    .map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers on the player's career, clubs, transfers and records.`)
+    .join('\n');
+  const listLinks = listPages
+    .map((p) => `- [${p.name}](${SITE.base}/lists/${p.slug}/): ${p.name} — a complete, fact-checked reference table (${p.count} entries).`)
+    .join('\n');
   const txt = `# Ball IQ
 
-> Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes. Play free in any browser at ${SITE.base} or on iPhone.
+> Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes, plus fact-checked football reference lists. Play free in any browser at ${SITE.base} or on iPhone.
 
 Every question is human-curated and every answer carries an explained, fact-checked hint. Topics span the World Cup, Premier League, Champions League, La Liga, Serie A, Bundesliga, club legends, managers and records. Game modes include the Daily 7, Footle (a Wordle-style daily footballer guess), live multiplayer for up to 8 players, Survival, Hot Streak and Legends.
 
@@ -1662,7 +1668,7 @@ ${quizLinks}
 
 ## Club quizzes
 ${clubLinks}
-
+${playerPages.length ? `\n## Player quizzes\n${playerLinks}\n` : ''}${listPages.length ? `\n## Football reference lists (fact-checked data tables)\n${listLinks}\n` : ''}
 ## About
 - [About Ball IQ](${SITE.base}/about/): What Ball IQ is, who it is for, and how it works.
 - [Contact](${SITE.base}/contact/): How to get in touch.
@@ -1734,7 +1740,7 @@ async function main() {
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages);
-  buildLlmsTxt(livePages, clubPages);
+  buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
   console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle + ${builtClubs.length} club pages + hub + about + contact + sitemap + llms.txt into dist/`);

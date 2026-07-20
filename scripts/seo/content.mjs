@@ -39,11 +39,11 @@ export const SITE = {
 export const HUB = {
   slug: 'quiz',
   h1: 'Football Quizzes',
-  title: 'Football Quiz — Free Trivia Questions & Answers | Ball IQ',
+  title: 'Football (Soccer) Quiz — Free Trivia Questions & Answers | Ball IQ',
   description:
-    'Play free football quizzes covering the World Cup, Premier League, Champions League and more. Thousands of trivia questions with explained answers — no sign-up needed.',
+    'Play free football and soccer quizzes covering the World Cup, Premier League, Champions League and more. Thousands of soccer trivia questions with explained answers — no sign-up needed.',
   intro: [
-    `Ball IQ is a football quiz built for people who actually argue about football. Not the surface-level "name the striker" stuff — real questions about the moments, records and managers that shaped the game, each one with a short explanation so you walk away knowing something you didn't before.`,
+    `Ball IQ is a football quiz built for people who actually argue about football. Not the surface-level "name the striker" stuff — real questions about the moments, records and managers that shaped the game, each one with a short explanation so you walk away knowing something you didn't before. Whether you call it football or soccer, it's the same game and the same obsession — and the same free quizzes here.`,
     `Every quiz below is free, runs straight in your browser, and needs no sign-up. Pick a topic and play: the FIFA World Cup, from Uruguay 1930 to Argentina's penalty-shootout win in Qatar; the Premier League, from the 1992 breakaway to Manchester City's 100-point season; the UEFA Champions League, from Real Madrid's early European Cup dynasty to Liverpool's 4-0 comeback against Barcelona. There are also dedicated quizzes on La Liga, Serie A, the Bundesliga, the Euros, football's great managers, and the all-time records that settle pub arguments.`,
     `What makes Ball IQ different is the explanations. Most online quizzes just tell you "wrong, the answer was Spain." Ours tell you Spain beat the Netherlands 1-0 in Johannesburg with Andrés Iniesta's extra-time winner — context that makes the next question easier and the whole thing feel like learning rather than guessing. Questions are graded easy, medium and hard, so casual fans and obsessives both get a proper test.`,
     `Ball IQ started as a mobile app and grew into a full football trivia platform with a daily challenge, a Wordle-style "Footle" guessing game, and live multiplayer where you go head-to-head with friends. The quizzes on this page are a free taste of the question bank. Find a topic you love below, play a round, and if you want the daily streak, the leaderboards and the multiplayer, the full game is a tap away.`,
