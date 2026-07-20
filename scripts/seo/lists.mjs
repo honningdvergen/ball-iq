@@ -13753,5 +13753,3428 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Club World Cup"
+  },
+  {
+    "slug": "eredivisie-top-scorers",
+    "h1": "Eredivisie Top Scorer Every Season (1956-57 to 2025-26)",
+    "title": "Eredivisie Top Scorer Every Season (1956-2026) | Ball IQ",
+    "description": "Complete list of the Eredivisie top scorer for every season from 1956-57 to 2025-26, with player, club and goal tally.",
+    "intro": [
+      "Since the Dutch top flight turned fully professional in 1956, the Eredivisie has produced a golden boot winner every single season. The very first belonged to PSV's Coen Dillen, whose 43 goals in 1956-57 remain the highest single-season total the league has ever seen, a record that has stood untouched for seven decades.",
+      "The roll call reads like a history of Dutch football greatness. Johan Cruyff, Marco van Basten, Dennis Bergkamp, Ruud van Nistelrooy and Luis Suarez all topped the charts before moving on to conquer Europe, while imports like Romario, Ronaldo and Wilfried Bony announced themselves in the Netherlands. Ajax, PSV and Feyenoord players dominate the list, though provincial clubs such as Heerenveen, AZ and Vitesse have regularly gatecrashed the party. Since 2020-21 the award has carried the name of the Willy van der Kuijlen Trophy, honouring the Eredivisie's all-time leading scorer.",
+      "The table below lists the leading scorer for every season from 1956-57 through 2025-26. Where two players finished level on goals the season is shared, as happened most recently in 2023-24 when Luuk de Jong and Vangelis Pavlidis both reached 29."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1956-57",
+        "Coen Dillen",
+        "PSV",
+        "43"
+      ],
+      [
+        "1957-58",
+        "Leen Canjels",
+        "NAC",
+        "32"
+      ],
+      [
+        "1958-59",
+        "Leen Canjels",
+        "NAC",
+        "34"
+      ],
+      [
+        "1959-60",
+        "Henk Groot",
+        "Ajax",
+        "38"
+      ],
+      [
+        "1960-61",
+        "Henk Groot",
+        "Ajax",
+        "41"
+      ],
+      [
+        "1961-62",
+        "Dick Tol",
+        "Volendam",
+        "27"
+      ],
+      [
+        "1962-63",
+        "Pierre Kerkhoffs",
+        "PSV",
+        "22"
+      ],
+      [
+        "1963-64",
+        "Frans Geurtsen",
+        "DWS",
+        "28"
+      ],
+      [
+        "1964-65",
+        "Frans Geurtsen",
+        "DWS",
+        "23"
+      ],
+      [
+        "1965-66",
+        "Willy van der Kuijlen / Piet Kruiver",
+        "PSV / Feyenoord",
+        "23"
+      ],
+      [
+        "1966-67",
+        "Johan Cruyff",
+        "Ajax",
+        "33"
+      ],
+      [
+        "1967-68",
+        "Ove Kindvall",
+        "Feyenoord",
+        "28"
+      ],
+      [
+        "1968-69",
+        "Dick van Dijk / Ove Kindvall",
+        "FC Twente / Feyenoord",
+        "30"
+      ],
+      [
+        "1969-70",
+        "Willy van der Kuijlen",
+        "PSV",
+        "26"
+      ],
+      [
+        "1970-71",
+        "Ove Kindvall",
+        "Feyenoord",
+        "24"
+      ],
+      [
+        "1971-72",
+        "Johan Cruyff",
+        "Ajax",
+        "25"
+      ],
+      [
+        "1972-73",
+        "Willy Janssens / Willy Brokamp",
+        "NEC / MVV",
+        "18"
+      ],
+      [
+        "1973-74",
+        "Willy van der Kuijlen",
+        "PSV",
+        "27"
+      ],
+      [
+        "1974-75",
+        "Ruud Geels",
+        "Ajax",
+        "30"
+      ],
+      [
+        "1975-76",
+        "Ruud Geels",
+        "Ajax",
+        "29"
+      ],
+      [
+        "1976-77",
+        "Ruud Geels",
+        "Ajax",
+        "34"
+      ],
+      [
+        "1977-78",
+        "Ruud Geels",
+        "Ajax",
+        "30"
+      ],
+      [
+        "1978-79",
+        "Kees Kist",
+        "AZ'67",
+        "34"
+      ],
+      [
+        "1979-80",
+        "Kees Kist",
+        "AZ'67",
+        "27"
+      ],
+      [
+        "1980-81",
+        "Ruud Geels",
+        "Sparta Rotterdam",
+        "22"
+      ],
+      [
+        "1981-82",
+        "Wim Kieft",
+        "Ajax",
+        "32"
+      ],
+      [
+        "1982-83",
+        "Peter Houtman",
+        "Feyenoord",
+        "30"
+      ],
+      [
+        "1983-84",
+        "Marco van Basten",
+        "Ajax",
+        "28"
+      ],
+      [
+        "1984-85",
+        "Marco van Basten",
+        "Ajax",
+        "22"
+      ],
+      [
+        "1985-86",
+        "Marco van Basten",
+        "Ajax",
+        "37"
+      ],
+      [
+        "1986-87",
+        "Marco van Basten",
+        "Ajax",
+        "31"
+      ],
+      [
+        "1987-88",
+        "Wim Kieft",
+        "PSV",
+        "29"
+      ],
+      [
+        "1988-89",
+        "Romario",
+        "PSV",
+        "19"
+      ],
+      [
+        "1989-90",
+        "Romario",
+        "PSV",
+        "23"
+      ],
+      [
+        "1990-91",
+        "Romario / Dennis Bergkamp",
+        "PSV / Ajax",
+        "25"
+      ],
+      [
+        "1991-92",
+        "Dennis Bergkamp",
+        "Ajax",
+        "24"
+      ],
+      [
+        "1992-93",
+        "Dennis Bergkamp",
+        "Ajax",
+        "26"
+      ],
+      [
+        "1993-94",
+        "Jari Litmanen",
+        "Ajax",
+        "26"
+      ],
+      [
+        "1994-95",
+        "Ronaldo",
+        "PSV",
+        "30"
+      ],
+      [
+        "1995-96",
+        "Luc Nilis",
+        "PSV",
+        "21"
+      ],
+      [
+        "1996-97",
+        "Luc Nilis",
+        "PSV",
+        "21"
+      ],
+      [
+        "1997-98",
+        "Nikos Machlas",
+        "Vitesse",
+        "34"
+      ],
+      [
+        "1998-99",
+        "Ruud van Nistelrooy",
+        "PSV",
+        "31"
+      ],
+      [
+        "1999-00",
+        "Ruud van Nistelrooy",
+        "PSV",
+        "29"
+      ],
+      [
+        "2000-01",
+        "Mateja Kezman",
+        "PSV",
+        "24"
+      ],
+      [
+        "2001-02",
+        "Pierre van Hooijdonk",
+        "Feyenoord",
+        "24"
+      ],
+      [
+        "2002-03",
+        "Mateja Kezman",
+        "PSV",
+        "35"
+      ],
+      [
+        "2003-04",
+        "Mateja Kezman",
+        "PSV",
+        "31"
+      ],
+      [
+        "2004-05",
+        "Dirk Kuyt",
+        "Feyenoord",
+        "29"
+      ],
+      [
+        "2005-06",
+        "Klaas-Jan Huntelaar",
+        "Heerenveen / Ajax",
+        "33"
+      ],
+      [
+        "2006-07",
+        "Afonso Alves",
+        "Heerenveen",
+        "34"
+      ],
+      [
+        "2007-08",
+        "Klaas-Jan Huntelaar",
+        "Ajax",
+        "33"
+      ],
+      [
+        "2008-09",
+        "Mounir El Hamdaoui",
+        "AZ",
+        "23"
+      ],
+      [
+        "2009-10",
+        "Luis Suarez",
+        "Ajax",
+        "35"
+      ],
+      [
+        "2010-11",
+        "Bjorn Vleminckx",
+        "NEC",
+        "23"
+      ],
+      [
+        "2011-12",
+        "Bas Dost",
+        "Heerenveen",
+        "32"
+      ],
+      [
+        "2012-13",
+        "Wilfried Bony",
+        "Vitesse",
+        "31"
+      ],
+      [
+        "2013-14",
+        "Alfred Finnbogason",
+        "Heerenveen",
+        "29"
+      ],
+      [
+        "2014-15",
+        "Memphis Depay",
+        "PSV",
+        "22"
+      ],
+      [
+        "2015-16",
+        "Vincent Janssen",
+        "AZ",
+        "27"
+      ],
+      [
+        "2016-17",
+        "Nicolai Jorgensen",
+        "Feyenoord",
+        "21"
+      ],
+      [
+        "2017-18",
+        "Alireza Jahanbakhsh",
+        "AZ",
+        "21"
+      ],
+      [
+        "2018-19",
+        "Luuk de Jong / Dusan Tadic",
+        "PSV / Ajax",
+        "28"
+      ],
+      [
+        "2019-20",
+        "Steven Berghuis / Cyriel Dessers",
+        "Feyenoord / Heracles Almelo",
+        "15"
+      ],
+      [
+        "2020-21",
+        "Georgios Giakoumakis",
+        "VVV-Venlo",
+        "26"
+      ],
+      [
+        "2021-22",
+        "Sebastien Haller",
+        "Ajax",
+        "21"
+      ],
+      [
+        "2022-23",
+        "Anastasios Douvikas / Xavi Simons",
+        "FC Utrecht / PSV",
+        "19"
+      ],
+      [
+        "2023-24",
+        "Luuk de Jong / Vangelis Pavlidis",
+        "PSV / AZ",
+        "29"
+      ],
+      [
+        "2024-25",
+        "Sem Steijn",
+        "Twente",
+        "24"
+      ],
+      [
+        "2025-26",
+        "Ayase Ueda",
+        "Feyenoord",
+        "25"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has the most goals in a single Eredivisie season?",
+        "a": "Coen Dillen holds the record with 43 goals for PSV in the inaugural 1956-57 season. No player has come close since, and the mark has stood for nearly 70 years."
+      },
+      {
+        "q": "Who was the 2025-26 Eredivisie top scorer?",
+        "a": "Ayase Ueda of Feyenoord finished as the 2025-26 Eredivisie top scorer with 25 goals, winning the Willy van der Kuijlen Trophy by a clear margin under manager Robin van Persie."
+      },
+      {
+        "q": "What is the Willy van der Kuijlen Trophy?",
+        "a": "It is the award given to the Eredivisie's leading scorer each season, introduced under that name in 2020-21. It honours Willy van der Kuijlen, the competition's all-time top scorer with 311 goals for PSV."
+      },
+      {
+        "q": "Which players have won the Eredivisie top scorer award most often?",
+        "a": "Ruud Geels topped the charts five times (four with Ajax, once with Sparta). Marco van Basten won four straight with Ajax, and Willy van der Kuijlen and Johan Cruyff also feature multiple times."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Eredivisie"
+  },
+  {
+    "slug": "primeira-liga-top-scorers",
+    "h1": "Primeira Liga Top Scorers — Every Season (1934–35 to 2025–26)",
+    "title": "Primeira Liga Top Scorers by Season (Bola de Prata) | Ball IQ",
+    "description": "The Primeira Liga top scorer for every season since 1934–35 — the full Bola de Prata roll call of players, clubs and goal tallies from Peyroteo to Suárez.",
+    "intro": [
+      "Portugal's top flight has crowned a leading marksman every season since 1934–35, an honour recognised today by the Bola de Prata (\"Silver Ball\"), awarded by the newspaper A Bola. This table gathers the whole run of winners in one place, from Sporting's Manuel Soeiro in the inaugural campaign to the present day.",
+      "The list is dominated by the \"Big Three\" — Benfica, Porto and Sporting CP — whose forwards have claimed the vast majority of titles. Legends leap off the page: Fernando Peyroteo's post-war avalanches for Sporting, Eusébio's seven awards for Benfica, Fernando Gomes' six for Porto, and Mário Jardel's five, including a staggering 42-goal haul in 2001–02.",
+      "The modern era has produced its own record-chasers. Viktor Gyökeres poured in 29 and then 39 league goals in back-to-back Sporting seasons before his move to the Premier League, the highest single-season tally since Jardel. Yet Héctor Yazalde's 46 goals for Sporting in 1973–74 remains the competition's all-time single-season benchmark."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1934–35",
+        "Manuel Soeiro",
+        "Sporting CP",
+        "14"
+      ],
+      [
+        "1935–36",
+        "Pinga",
+        "Porto",
+        "21"
+      ],
+      [
+        "1936–37",
+        "Manuel Soeiro",
+        "Sporting CP",
+        "24"
+      ],
+      [
+        "1937–38",
+        "Fernando Peyroteo",
+        "Sporting CP",
+        "34"
+      ],
+      [
+        "1938–39",
+        "Costuras",
+        "Porto",
+        "18"
+      ],
+      [
+        "1939–40",
+        "Fernando Peyroteo / Slavko Kodrnja",
+        "Sporting CP / Porto",
+        "29"
+      ],
+      [
+        "1940–41",
+        "Fernando Peyroteo",
+        "Sporting CP",
+        "29"
+      ],
+      [
+        "1941–42",
+        "Correia Dias",
+        "Porto",
+        "36"
+      ],
+      [
+        "1942–43",
+        "Julinho",
+        "Benfica",
+        "24"
+      ],
+      [
+        "1943–44",
+        "Francisco Rodrigues",
+        "Vitória de Setúbal",
+        "28"
+      ],
+      [
+        "1944–45",
+        "Francisco Rodrigues",
+        "Vitória de Setúbal",
+        "21"
+      ],
+      [
+        "1945–46",
+        "Fernando Peyroteo",
+        "Sporting CP",
+        "39"
+      ],
+      [
+        "1946–47",
+        "Fernando Peyroteo",
+        "Sporting CP",
+        "33"
+      ],
+      [
+        "1947–48",
+        "António Araújo",
+        "Porto",
+        "36"
+      ],
+      [
+        "1948–49",
+        "Fernando Peyroteo",
+        "Sporting CP",
+        "30"
+      ],
+      [
+        "1949–50",
+        "Julinho",
+        "Benfica",
+        "28"
+      ],
+      [
+        "1950–51",
+        "Manuel Vasques",
+        "Sporting CP",
+        "29"
+      ],
+      [
+        "1951–52",
+        "José Águas",
+        "Benfica",
+        "28"
+      ],
+      [
+        "1952–53",
+        "Matateu",
+        "Belenenses",
+        "29"
+      ],
+      [
+        "1953–54",
+        "João Martins",
+        "Sporting CP",
+        "31"
+      ],
+      [
+        "1954–55",
+        "Matateu",
+        "Belenenses",
+        "32"
+      ],
+      [
+        "1955–56",
+        "José Águas",
+        "Benfica",
+        "28"
+      ],
+      [
+        "1956–57",
+        "José Águas",
+        "Benfica",
+        "30"
+      ],
+      [
+        "1957–58",
+        "Arsénio Duarte",
+        "CUF",
+        "23"
+      ],
+      [
+        "1958–59",
+        "José Águas",
+        "Benfica",
+        "26"
+      ],
+      [
+        "1959–60",
+        "Edmur Ribeiro",
+        "Vitória de Guimarães",
+        "25"
+      ],
+      [
+        "1960–61",
+        "José Águas",
+        "Benfica",
+        "27"
+      ],
+      [
+        "1961–62",
+        "Azumir Veríssimo",
+        "Porto",
+        "23"
+      ],
+      [
+        "1962–63",
+        "José Augusto Torres",
+        "Benfica",
+        "26"
+      ],
+      [
+        "1963–64",
+        "Eusébio",
+        "Benfica",
+        "28"
+      ],
+      [
+        "1964–65",
+        "Eusébio",
+        "Benfica",
+        "28"
+      ],
+      [
+        "1965–66",
+        "Eusébio / Ernesto Figueiredo",
+        "Benfica / Sporting CP",
+        "25"
+      ],
+      [
+        "1966–67",
+        "Eusébio",
+        "Benfica",
+        "31"
+      ],
+      [
+        "1967–68",
+        "Eusébio",
+        "Benfica",
+        "42"
+      ],
+      [
+        "1968–69",
+        "Manuel António",
+        "Académica de Coimbra",
+        "19"
+      ],
+      [
+        "1969–70",
+        "Eusébio",
+        "Benfica",
+        "20"
+      ],
+      [
+        "1970–71",
+        "Artur Jorge",
+        "Benfica",
+        "23"
+      ],
+      [
+        "1971–72",
+        "Artur Jorge",
+        "Benfica",
+        "27"
+      ],
+      [
+        "1972–73",
+        "Eusébio",
+        "Benfica",
+        "40"
+      ],
+      [
+        "1973–74",
+        "Héctor Yazalde",
+        "Sporting CP",
+        "46"
+      ],
+      [
+        "1974–75",
+        "Héctor Yazalde",
+        "Sporting CP",
+        "30"
+      ],
+      [
+        "1975–76",
+        "Rui Jordão",
+        "Benfica",
+        "30"
+      ],
+      [
+        "1976–77",
+        "Fernando Gomes",
+        "Porto",
+        "26"
+      ],
+      [
+        "1977–78",
+        "Fernando Gomes",
+        "Porto",
+        "25"
+      ],
+      [
+        "1978–79",
+        "Fernando Gomes",
+        "Porto",
+        "27"
+      ],
+      [
+        "1979–80",
+        "Rui Jordão",
+        "Sporting CP",
+        "31"
+      ],
+      [
+        "1980–81",
+        "Nené",
+        "Benfica",
+        "20"
+      ],
+      [
+        "1981–82",
+        "Jacques Pereira",
+        "Porto",
+        "27"
+      ],
+      [
+        "1982–83",
+        "Fernando Gomes",
+        "Porto",
+        "36"
+      ],
+      [
+        "1983–84",
+        "Fernando Gomes / Nené",
+        "Porto / Benfica",
+        "21"
+      ],
+      [
+        "1984–85",
+        "Fernando Gomes",
+        "Porto",
+        "39"
+      ],
+      [
+        "1985–86",
+        "Manuel Fernandes",
+        "Sporting CP",
+        "30"
+      ],
+      [
+        "1986–87",
+        "Paulinho Cascavel",
+        "Vitória de Guimarães",
+        "22"
+      ],
+      [
+        "1987–88",
+        "Paulinho Cascavel",
+        "Sporting CP",
+        "23"
+      ],
+      [
+        "1988–89",
+        "Vata",
+        "Benfica",
+        "16"
+      ],
+      [
+        "1989–90",
+        "Mats Magnusson",
+        "Benfica",
+        "33"
+      ],
+      [
+        "1990–91",
+        "Rui Águas",
+        "Benfica",
+        "25"
+      ],
+      [
+        "1991–92",
+        "Ricky",
+        "Boavista",
+        "30"
+      ],
+      [
+        "1992–93",
+        "Jorge Cadete",
+        "Sporting CP",
+        "18"
+      ],
+      [
+        "1993–94",
+        "Rashidi Yekini",
+        "Vitória de Setúbal",
+        "21"
+      ],
+      [
+        "1994–95",
+        "Hassan Nader",
+        "Farense",
+        "21"
+      ],
+      [
+        "1995–96",
+        "Domingos",
+        "Porto",
+        "25"
+      ],
+      [
+        "1996–97",
+        "Mário Jardel",
+        "Porto",
+        "30"
+      ],
+      [
+        "1997–98",
+        "Mário Jardel",
+        "Porto",
+        "26"
+      ],
+      [
+        "1998–99",
+        "Mário Jardel",
+        "Porto",
+        "36"
+      ],
+      [
+        "1999–2000",
+        "Mário Jardel",
+        "Porto",
+        "37"
+      ],
+      [
+        "2000–01",
+        "Pena",
+        "Porto",
+        "22"
+      ],
+      [
+        "2001–02",
+        "Mário Jardel",
+        "Sporting CP",
+        "42"
+      ],
+      [
+        "2002–03",
+        "Fary Faye / Simão Sabrosa",
+        "Beira-Mar / Benfica",
+        "18"
+      ],
+      [
+        "2003–04",
+        "Benni McCarthy",
+        "Porto",
+        "20"
+      ],
+      [
+        "2004–05",
+        "Liédson",
+        "Sporting CP",
+        "25"
+      ],
+      [
+        "2005–06",
+        "Albert Meyong",
+        "Belenenses",
+        "17"
+      ],
+      [
+        "2006–07",
+        "Liédson",
+        "Sporting CP",
+        "15"
+      ],
+      [
+        "2007–08",
+        "Lisandro López",
+        "Porto",
+        "24"
+      ],
+      [
+        "2008–09",
+        "Nenê",
+        "Nacional",
+        "20"
+      ],
+      [
+        "2009–10",
+        "Óscar Cardozo",
+        "Benfica",
+        "26"
+      ],
+      [
+        "2010–11",
+        "Hulk",
+        "Porto",
+        "23"
+      ],
+      [
+        "2011–12",
+        "Óscar Cardozo / Lima",
+        "Benfica / Braga",
+        "20"
+      ],
+      [
+        "2012–13",
+        "Jackson Martínez",
+        "Porto",
+        "26"
+      ],
+      [
+        "2013–14",
+        "Jackson Martínez",
+        "Porto",
+        "20"
+      ],
+      [
+        "2014–15",
+        "Jackson Martínez",
+        "Porto",
+        "21"
+      ],
+      [
+        "2015–16",
+        "Jonas",
+        "Benfica",
+        "32"
+      ],
+      [
+        "2016–17",
+        "Bas Dost",
+        "Sporting CP",
+        "34"
+      ],
+      [
+        "2017–18",
+        "Jonas",
+        "Benfica",
+        "34"
+      ],
+      [
+        "2018–19",
+        "Haris Seferović",
+        "Benfica",
+        "23"
+      ],
+      [
+        "2019–20",
+        "Carlos Vinícius / Mehdi Taremi / Pizzi",
+        "Benfica / Rio Ave / Benfica",
+        "18"
+      ],
+      [
+        "2020–21",
+        "Pedro Gonçalves",
+        "Sporting CP",
+        "23"
+      ],
+      [
+        "2021–22",
+        "Darwin Núñez",
+        "Benfica",
+        "26"
+      ],
+      [
+        "2022–23",
+        "Mehdi Taremi",
+        "Porto",
+        "22"
+      ],
+      [
+        "2023–24",
+        "Viktor Gyökeres",
+        "Sporting CP",
+        "29"
+      ],
+      [
+        "2024–25",
+        "Viktor Gyökeres",
+        "Sporting CP",
+        "39"
+      ],
+      [
+        "2025–26",
+        "Luis Suárez",
+        "Sporting CP",
+        "28"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who is the all-time top scorer in a single Primeira Liga season?",
+        "a": "Héctor Yazalde holds the record with 46 goals for Sporting CP in 1973–74. It earned him the European Golden Boot and remains the highest single-season tally in Portuguese top-flight history, ahead of Eusébio's 42 (1967–68) and Mário Jardel's 42 (2001–02)."
+      },
+      {
+        "q": "Who has won the Bola de Prata the most times?",
+        "a": "Eusébio leads with seven Primeira Liga top-scorer awards for Benfica between 1964 and 1973. Fernando Peyroteo (Sporting) and Fernando Gomes (Porto) each won it six times, with Gomes also collecting two European Golden Boots."
+      },
+      {
+        "q": "Who was the Primeira Liga top scorer in 2025–26?",
+        "a": "Luis Suárez of Sporting CP won the Bola de Prata for 2025–26 with 28 league goals, taking over as Sporting's leading marksman after Viktor Gyökeres departed for the Premier League."
+      },
+      {
+        "q": "How many goals did Viktor Gyökeres score in the Primeira Liga?",
+        "a": "Gyökeres won back-to-back Bola de Prata awards for Sporting CP, scoring 29 league goals in 2023–24 and 39 in 2024–25. His 39-goal season was the most in the Portuguese top flight since Mário Jardel's 42 in 2001–02."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Primeira Liga"
+  },
+  {
+    "slug": "super-lig-top-scorers",
+    "h1": "Süper Lig Top Scorers (Gol Kralı) — Every Season, 1959 to 2025-26",
+    "title": "Süper Lig Top Scorers by Season (1959–2026) — Gol Kralı | Ball IQ",
+    "description": "The Turkish Süper Lig top scorer (Gol Kralı) for every season from 1959 to 2025-26 — player, club and goal tally in one complete, verified list.",
+    "intro": [
+      "Turkey crowns a Gol Kralı — literally 'goal king' — at the end of every Süper Lig season, and the honour roll reads like a history of Turkish football itself. It opens with Metin Oktay, the Galatasaray idol who topped the charts six times and still holds a share of the early scoring records, and runs all the way to the imported goal machines of the modern era.",
+      "The list below covers every campaign from the league's 1959 debut through 2025-26. A handful of seasons ended in a tie, with two players sharing the crown on equal goals — those are shown together on a single row. Tanju Çolak's 39 goals in 1987-88 remains the single-season benchmark, a mark that even prolific recent kings like Mauro Icardi and Victor Osimhen have not threatened.",
+      "Lately the award has followed the money and firepower of Galatasaray and Fenerbahçe, but the 2025-26 season bucked the trend: Trabzonspor's Paul Onuachu and Başakşehir's Eldor Shomurodov tied on 22 goals apiece. Think you can name the Gol Kralı from your era? Test yourself with a Turkish football quiz on Ball IQ."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1959",
+        "Metin Oktay",
+        "Galatasaray",
+        "11"
+      ],
+      [
+        "1959-60",
+        "Metin Oktay",
+        "Galatasaray",
+        "33"
+      ],
+      [
+        "1960-61",
+        "Metin Oktay",
+        "Galatasaray",
+        "36"
+      ],
+      [
+        "1961-62",
+        "Fikri Elma",
+        "Ankara Demirspor",
+        "21"
+      ],
+      [
+        "1962-63",
+        "Metin Oktay",
+        "Galatasaray",
+        "38"
+      ],
+      [
+        "1963-64",
+        "Güven Önüt",
+        "Beşiktaş",
+        "19"
+      ],
+      [
+        "1964-65",
+        "Metin Oktay",
+        "Galatasaray",
+        "17"
+      ],
+      [
+        "1965-66",
+        "Ertan Adatepe",
+        "Ankaragücü",
+        "20"
+      ],
+      [
+        "1966-67",
+        "Ertan Adatepe",
+        "Ankaragücü",
+        "18"
+      ],
+      [
+        "1967-68",
+        "Fevzi Zemzem",
+        "Göztepe",
+        "19"
+      ],
+      [
+        "1968-69",
+        "Metin Oktay",
+        "Galatasaray",
+        "17"
+      ],
+      [
+        "1969-70",
+        "Fethi Heper",
+        "Eskişehirspor",
+        "13"
+      ],
+      [
+        "1970-71",
+        "Ogün Altıparmak",
+        "Fenerbahçe",
+        "16"
+      ],
+      [
+        "1971-72",
+        "Fethi Heper",
+        "Eskişehirspor",
+        "20"
+      ],
+      [
+        "1972-73",
+        "Osman Arpacıoğlu",
+        "Fenerbahçe",
+        "16"
+      ],
+      [
+        "1973-74",
+        "Cemil Turan",
+        "Fenerbahçe",
+        "14"
+      ],
+      [
+        "1974-75",
+        "Ömer Kaner",
+        "Eskişehirspor",
+        "14"
+      ],
+      [
+        "1975-76",
+        "Cemil Turan / Ali Osman Renklibay",
+        "Fenerbahçe / Ankaragücü",
+        "17"
+      ],
+      [
+        "1976-77",
+        "Necmi Perekli",
+        "Trabzonspor",
+        "18"
+      ],
+      [
+        "1977-78",
+        "Cemil Turan",
+        "Fenerbahçe",
+        "17"
+      ],
+      [
+        "1978-79",
+        "Özer Umdu",
+        "Adanaspor",
+        "15"
+      ],
+      [
+        "1979-80",
+        "Mustafa Denizli / Bahtiyar Yorulmaz",
+        "Altay / Bursaspor",
+        "12"
+      ],
+      [
+        "1980-81",
+        "Bora Öztürk",
+        "Adanaspor",
+        "15"
+      ],
+      [
+        "1981-82",
+        "Selçuk Yula",
+        "Fenerbahçe",
+        "16"
+      ],
+      [
+        "1982-83",
+        "Selçuk Yula",
+        "Fenerbahçe",
+        "19"
+      ],
+      [
+        "1983-84",
+        "Tarik Hodžić",
+        "Galatasaray",
+        "16"
+      ],
+      [
+        "1984-85",
+        "Aykut Yiğit",
+        "Sakaryaspor",
+        "20"
+      ],
+      [
+        "1985-86",
+        "Tanju Çolak",
+        "Samsunspor",
+        "33"
+      ],
+      [
+        "1986-87",
+        "Tanju Çolak",
+        "Samsunspor",
+        "25"
+      ],
+      [
+        "1987-88",
+        "Tanju Çolak",
+        "Galatasaray",
+        "39"
+      ],
+      [
+        "1988-89",
+        "Aykut Kocaman",
+        "Fenerbahçe",
+        "29"
+      ],
+      [
+        "1989-90",
+        "Feyyaz Uçar",
+        "Beşiktaş",
+        "28"
+      ],
+      [
+        "1990-91",
+        "Tanju Çolak",
+        "Galatasaray",
+        "31"
+      ],
+      [
+        "1991-92",
+        "Aykut Kocaman",
+        "Fenerbahçe",
+        "25"
+      ],
+      [
+        "1992-93",
+        "Tanju Çolak",
+        "Fenerbahçe",
+        "27"
+      ],
+      [
+        "1993-94",
+        "Bülent Uygun",
+        "Fenerbahçe",
+        "22"
+      ],
+      [
+        "1994-95",
+        "Aykut Kocaman",
+        "Fenerbahçe",
+        "27"
+      ],
+      [
+        "1995-96",
+        "Shota Arveladze",
+        "Trabzonspor",
+        "25"
+      ],
+      [
+        "1996-97",
+        "Hakan Şükür",
+        "Galatasaray",
+        "38"
+      ],
+      [
+        "1997-98",
+        "Hakan Şükür",
+        "Galatasaray",
+        "33"
+      ],
+      [
+        "1998-99",
+        "Hakan Şükür",
+        "Galatasaray",
+        "19"
+      ],
+      [
+        "1999-2000",
+        "Serkan Aykut",
+        "Samsunspor",
+        "30"
+      ],
+      [
+        "2000-01",
+        "Okan Yılmaz",
+        "Bursaspor",
+        "23"
+      ],
+      [
+        "2001-02",
+        "Arif Erdem / İlhan Mansız",
+        "Galatasaray / Beşiktaş",
+        "21"
+      ],
+      [
+        "2002-03",
+        "Okan Yılmaz",
+        "Bursaspor",
+        "24"
+      ],
+      [
+        "2003-04",
+        "Zafer Biryol",
+        "Konyaspor",
+        "25"
+      ],
+      [
+        "2004-05",
+        "Fatih Tekke",
+        "Trabzonspor",
+        "31"
+      ],
+      [
+        "2005-06",
+        "Gökhan Ünal",
+        "Kayserispor",
+        "25"
+      ],
+      [
+        "2006-07",
+        "Alex",
+        "Fenerbahçe",
+        "19"
+      ],
+      [
+        "2007-08",
+        "Semih Şentürk",
+        "Fenerbahçe",
+        "17"
+      ],
+      [
+        "2008-09",
+        "Milan Baroš",
+        "Galatasaray",
+        "20"
+      ],
+      [
+        "2009-10",
+        "Ariza Makukula",
+        "Kayserispor",
+        "21"
+      ],
+      [
+        "2010-11",
+        "Alex",
+        "Fenerbahçe",
+        "28"
+      ],
+      [
+        "2011-12",
+        "Burak Yılmaz",
+        "Trabzonspor",
+        "33"
+      ],
+      [
+        "2012-13",
+        "Burak Yılmaz",
+        "Galatasaray",
+        "24"
+      ],
+      [
+        "2013-14",
+        "Aatif Chahechouhe",
+        "Sivasspor",
+        "17"
+      ],
+      [
+        "2014-15",
+        "Fernandão",
+        "Bursaspor",
+        "22"
+      ],
+      [
+        "2015-16",
+        "Mario Gómez",
+        "Beşiktaş",
+        "26"
+      ],
+      [
+        "2016-17",
+        "Vágner Love",
+        "Alanyaspor",
+        "23"
+      ],
+      [
+        "2017-18",
+        "Bafétimbi Gomis",
+        "Galatasaray",
+        "29"
+      ],
+      [
+        "2018-19",
+        "Mbaye Diagne",
+        "Kasımpaşa",
+        "30"
+      ],
+      [
+        "2019-20",
+        "Alexander Sørloth",
+        "Trabzonspor",
+        "24"
+      ],
+      [
+        "2020-21",
+        "Aaron Boupendza",
+        "Hatayspor",
+        "22"
+      ],
+      [
+        "2021-22",
+        "Umut Bozok",
+        "Kasımpaşa",
+        "20"
+      ],
+      [
+        "2022-23",
+        "Enner Valencia",
+        "Fenerbahçe",
+        "29"
+      ],
+      [
+        "2023-24",
+        "Mauro Icardi",
+        "Galatasaray",
+        "25"
+      ],
+      [
+        "2024-25",
+        "Victor Osimhen",
+        "Galatasaray",
+        "26"
+      ],
+      [
+        "2025-26",
+        "Paul Onuachu / Eldor Shomurodov",
+        "Trabzonspor / İstanbul Başakşehir",
+        "22"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the Süper Lig Gol Kralı the most times?",
+        "a": "Metin Oktay tops the list with six Gol Kralı titles for Galatasaray between 1959 and 1969. Tanju Çolak (four) and Aykut Kocaman (three) are the next most decorated in the award's history."
+      },
+      {
+        "q": "What is the most goals scored in a single Süper Lig season?",
+        "a": "Tanju Çolak's 39 goals for Galatasaray in 1987-88 is the highest single-season total by any Süper Lig top scorer. Hakan Şükür's 38 in 1996-97 and Metin Oktay's 38 in 1962-63 are the closest challengers."
+      },
+      {
+        "q": "Who was the Süper Lig top scorer in 2025-26?",
+        "a": "The 2025-26 Gol Kralı was shared: Paul Onuachu of Trabzonspor and Eldor Shomurodov of İstanbul Başakşehir each finished on 22 goals."
+      },
+      {
+        "q": "Who was the 2024-25 Süper Lig top scorer?",
+        "a": "Victor Osimhen won the 2024-25 Gol Kralı with 26 goals for Galatasaray while on loan from Napoli, edging out a competitive field of imported strikers."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Süper Lig"
+  },
+  {
+    "slug": "coupe-de-france-winners",
+    "h1": "Coupe de France Winners: Every Final from 1918 to 2026",
+    "title": "Coupe de France Winners: Full List of Every Final | Ball IQ",
+    "description": "Every Coupe de France winner from 1918 to 2026 — full list of finals with runners-up and scores. PSG lead the all-time roll; Lens won the 2026 final.",
+    "intro": [
+      "The Coupe de France is French football's oldest and most open knockout competition, first contested in the 1917-18 season and playable by clubs from every tier of the pyramid. That open format is why the final has pitted amateurs against giants, and why each spring a single decider — long staged at the Stade de France — settles the whole tournament.",
+      "Red Star and the early Paris clubs dominated the opening decades, but the modern era belongs to Paris Saint-Germain, whose 16 triumphs are a record. Marseille sit next on the all-time list, with Lille, Saint-Étienne and Monaco among the other clubs to have lifted the trophy multiple times.",
+      "The table below lists every final by season, with the runner-up and the score, from Olympique de Pantin's inaugural win to RC Lens claiming their first-ever title in 2026. The 1991-92 edition is the only blank on the roll: it was abandoned without a winner after the Furiani stand collapse."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1917-18",
+        "Olympique de Pantin",
+        "FC Lyon",
+        "3–0"
+      ],
+      [
+        "1918-19",
+        "CASG Paris",
+        "Olympique de Pantin",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "1919-20",
+        "CA Paris",
+        "Le Havre",
+        "2–1"
+      ],
+      [
+        "1920-21",
+        "Red Star",
+        "Olympique de Pantin",
+        "2–1"
+      ],
+      [
+        "1921-22",
+        "Red Star",
+        "Rennes",
+        "2–0"
+      ],
+      [
+        "1922-23",
+        "Red Star",
+        "Sète",
+        "4–2"
+      ],
+      [
+        "1923-24",
+        "Marseille",
+        "Sète",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "1924-25",
+        "CASG Paris",
+        "FC Rouen",
+        "3–2 (replay)"
+      ],
+      [
+        "1925-26",
+        "Marseille",
+        "AS Valentigney",
+        "4–1"
+      ],
+      [
+        "1926-27",
+        "Marseille",
+        "US Quevilly",
+        "3–0"
+      ],
+      [
+        "1927-28",
+        "Red Star",
+        "CA Paris",
+        "3–1"
+      ],
+      [
+        "1928-29",
+        "Montpellier",
+        "Sète",
+        "2–0"
+      ],
+      [
+        "1929-30",
+        "Sète",
+        "RC Paris",
+        "3–1 (a.e.t.)"
+      ],
+      [
+        "1930-31",
+        "Club Français",
+        "Montpellier",
+        "3–0"
+      ],
+      [
+        "1931-32",
+        "Cannes",
+        "RC Roubaix",
+        "1–0"
+      ],
+      [
+        "1932-33",
+        "Excelsior AC Roubaix",
+        "RC Roubaix",
+        "3–1"
+      ],
+      [
+        "1933-34",
+        "Sète",
+        "Marseille",
+        "2–1"
+      ],
+      [
+        "1934-35",
+        "Marseille",
+        "Rennes",
+        "3–0"
+      ],
+      [
+        "1935-36",
+        "RC Paris",
+        "FCO Charleville",
+        "1–0"
+      ],
+      [
+        "1936-37",
+        "Sochaux",
+        "Strasbourg",
+        "2–1"
+      ],
+      [
+        "1937-38",
+        "Marseille",
+        "Metz",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1938-39",
+        "RC Paris",
+        "Olympique Lillois",
+        "3–1"
+      ],
+      [
+        "1939-40",
+        "RC Paris",
+        "Marseille",
+        "2–1"
+      ],
+      [
+        "1940-41",
+        "Bordeaux",
+        "SC Fives",
+        "2–0"
+      ],
+      [
+        "1941-42",
+        "Red Star",
+        "Sète",
+        "2–0"
+      ],
+      [
+        "1942-43",
+        "Marseille",
+        "Bordeaux",
+        "4–0 (replay)"
+      ],
+      [
+        "1943-44",
+        "ÉF Nancy-Lorraine",
+        "ÉF Reims-Champagne",
+        "4–0"
+      ],
+      [
+        "1944-45",
+        "RC Paris",
+        "Lille",
+        "3–0"
+      ],
+      [
+        "1945-46",
+        "Lille",
+        "Red Star",
+        "4–2"
+      ],
+      [
+        "1946-47",
+        "Lille",
+        "Strasbourg",
+        "2–0"
+      ],
+      [
+        "1947-48",
+        "Lille",
+        "Lens",
+        "3–2"
+      ],
+      [
+        "1948-49",
+        "RC Paris",
+        "Lille",
+        "5–2"
+      ],
+      [
+        "1949-50",
+        "Reims",
+        "RC Paris",
+        "2–0"
+      ],
+      [
+        "1950-51",
+        "Strasbourg",
+        "Valenciennes",
+        "3–0"
+      ],
+      [
+        "1951-52",
+        "Nice",
+        "Bordeaux",
+        "5–3"
+      ],
+      [
+        "1952-53",
+        "Lille",
+        "Nancy",
+        "2–1"
+      ],
+      [
+        "1953-54",
+        "Nice",
+        "Marseille",
+        "2–1"
+      ],
+      [
+        "1954-55",
+        "Lille",
+        "Bordeaux",
+        "5–2"
+      ],
+      [
+        "1955-56",
+        "Sedan",
+        "Troyes",
+        "3–1"
+      ],
+      [
+        "1956-57",
+        "Toulouse",
+        "Angers",
+        "6–3"
+      ],
+      [
+        "1957-58",
+        "Reims",
+        "Nîmes",
+        "3–1"
+      ],
+      [
+        "1958-59",
+        "Le Havre",
+        "Sochaux",
+        "3–0 (replay)"
+      ],
+      [
+        "1959-60",
+        "Monaco",
+        "Saint-Étienne",
+        "4–2 (a.e.t.)"
+      ],
+      [
+        "1960-61",
+        "Sedan",
+        "Nîmes",
+        "3–1"
+      ],
+      [
+        "1961-62",
+        "Saint-Étienne",
+        "Nancy",
+        "1–0"
+      ],
+      [
+        "1962-63",
+        "Monaco",
+        "Lyon",
+        "2–0 (replay)"
+      ],
+      [
+        "1963-64",
+        "Lyon",
+        "Bordeaux",
+        "2–0"
+      ],
+      [
+        "1964-65",
+        "Rennes",
+        "Sedan",
+        "3–1 (replay)"
+      ],
+      [
+        "1965-66",
+        "Strasbourg",
+        "Nantes",
+        "1–0"
+      ],
+      [
+        "1966-67",
+        "Lyon",
+        "Sochaux",
+        "3–1"
+      ],
+      [
+        "1967-68",
+        "Saint-Étienne",
+        "Bordeaux",
+        "2–1"
+      ],
+      [
+        "1968-69",
+        "Marseille",
+        "Bordeaux",
+        "2–0"
+      ],
+      [
+        "1969-70",
+        "Saint-Étienne",
+        "Nantes",
+        "5–0"
+      ],
+      [
+        "1970-71",
+        "Rennes",
+        "Lyon",
+        "1–0"
+      ],
+      [
+        "1971-72",
+        "Marseille",
+        "Bastia",
+        "2–1"
+      ],
+      [
+        "1972-73",
+        "Lyon",
+        "Nantes",
+        "2–1"
+      ],
+      [
+        "1973-74",
+        "Saint-Étienne",
+        "Monaco",
+        "2–1"
+      ],
+      [
+        "1974-75",
+        "Saint-Étienne",
+        "Lens",
+        "2–0"
+      ],
+      [
+        "1975-76",
+        "Marseille",
+        "Lyon",
+        "2–0"
+      ],
+      [
+        "1976-77",
+        "Saint-Étienne",
+        "Reims",
+        "2–1"
+      ],
+      [
+        "1977-78",
+        "Nancy",
+        "Nice",
+        "1–0"
+      ],
+      [
+        "1978-79",
+        "Nantes",
+        "Auxerre",
+        "4–1 (a.e.t.)"
+      ],
+      [
+        "1979-80",
+        "Monaco",
+        "Orléans",
+        "3–1"
+      ],
+      [
+        "1980-81",
+        "Bastia",
+        "Saint-Étienne",
+        "2–1"
+      ],
+      [
+        "1981-82",
+        "Paris Saint-Germain",
+        "Saint-Étienne",
+        "2–2 (a.e.t., 6–5 pens)"
+      ],
+      [
+        "1982-83",
+        "Paris Saint-Germain",
+        "Nantes",
+        "3–2"
+      ],
+      [
+        "1983-84",
+        "Metz",
+        "Monaco",
+        "2–0 (a.e.t.)"
+      ],
+      [
+        "1984-85",
+        "Monaco",
+        "Paris Saint-Germain",
+        "1–0"
+      ],
+      [
+        "1985-86",
+        "Bordeaux",
+        "Marseille",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1986-87",
+        "Bordeaux",
+        "Marseille",
+        "2–0"
+      ],
+      [
+        "1987-88",
+        "Metz",
+        "Sochaux",
+        "1–1 (a.e.t., 5–4 pens)"
+      ],
+      [
+        "1988-89",
+        "Marseille",
+        "Monaco",
+        "4–3"
+      ],
+      [
+        "1989-90",
+        "Montpellier",
+        "RC Paris",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1990-91",
+        "Monaco",
+        "Marseille",
+        "1–0"
+      ],
+      [
+        "1991-92",
+        "No competition",
+        "—",
+        "Cancelled — Furiani disaster"
+      ],
+      [
+        "1992-93",
+        "Paris Saint-Germain",
+        "Nantes",
+        "3–0"
+      ],
+      [
+        "1993-94",
+        "Auxerre",
+        "Montpellier",
+        "3–0"
+      ],
+      [
+        "1994-95",
+        "Paris Saint-Germain",
+        "Strasbourg",
+        "1–0"
+      ],
+      [
+        "1995-96",
+        "Auxerre",
+        "Nîmes",
+        "2–1"
+      ],
+      [
+        "1996-97",
+        "Nice",
+        "Guingamp",
+        "1–1 (a.e.t., 4–3 pens)"
+      ],
+      [
+        "1997-98",
+        "Paris Saint-Germain",
+        "Lens",
+        "2–1"
+      ],
+      [
+        "1998-99",
+        "Nantes",
+        "Sedan",
+        "1–0"
+      ],
+      [
+        "1999-00",
+        "Nantes",
+        "Calais RUFC",
+        "2–1"
+      ],
+      [
+        "2000-01",
+        "Strasbourg",
+        "Amiens",
+        "0–0 (a.e.t., 5–4 pens)"
+      ],
+      [
+        "2001-02",
+        "Lorient",
+        "Bastia",
+        "1–0"
+      ],
+      [
+        "2002-03",
+        "Auxerre",
+        "Paris Saint-Germain",
+        "2–1"
+      ],
+      [
+        "2003-04",
+        "Paris Saint-Germain",
+        "Châteauroux",
+        "1–0"
+      ],
+      [
+        "2004-05",
+        "Auxerre",
+        "Sedan",
+        "2–1"
+      ],
+      [
+        "2005-06",
+        "Paris Saint-Germain",
+        "Marseille",
+        "2–1"
+      ],
+      [
+        "2006-07",
+        "Sochaux",
+        "Marseille",
+        "2–2 (a.e.t., 5–4 pens)"
+      ],
+      [
+        "2007-08",
+        "Lyon",
+        "Paris Saint-Germain",
+        "1–0"
+      ],
+      [
+        "2008-09",
+        "Guingamp",
+        "Rennes",
+        "2–1"
+      ],
+      [
+        "2009-10",
+        "Paris Saint-Germain",
+        "Monaco",
+        "1–0 (a.e.t.)"
+      ],
+      [
+        "2010-11",
+        "Lille",
+        "Paris Saint-Germain",
+        "1–0"
+      ],
+      [
+        "2011-12",
+        "Lyon",
+        "US Quevilly",
+        "1–0"
+      ],
+      [
+        "2012-13",
+        "Bordeaux",
+        "Evian",
+        "3–2"
+      ],
+      [
+        "2013-14",
+        "Guingamp",
+        "Rennes",
+        "2–0"
+      ],
+      [
+        "2014-15",
+        "Paris Saint-Germain",
+        "Auxerre",
+        "1–0"
+      ],
+      [
+        "2015-16",
+        "Paris Saint-Germain",
+        "Marseille",
+        "4–2"
+      ],
+      [
+        "2016-17",
+        "Paris Saint-Germain",
+        "Angers",
+        "1–0"
+      ],
+      [
+        "2017-18",
+        "Paris Saint-Germain",
+        "Les Herbiers",
+        "2–0"
+      ],
+      [
+        "2018-19",
+        "Rennes",
+        "Paris Saint-Germain",
+        "2–2 (a.e.t., 6–5 pens)"
+      ],
+      [
+        "2019-20",
+        "Paris Saint-Germain",
+        "Saint-Étienne",
+        "1–0"
+      ],
+      [
+        "2020-21",
+        "Paris Saint-Germain",
+        "Monaco",
+        "2–0"
+      ],
+      [
+        "2021-22",
+        "Nantes",
+        "Nice",
+        "1–0"
+      ],
+      [
+        "2022-23",
+        "Toulouse",
+        "Nantes",
+        "5–1"
+      ],
+      [
+        "2023-24",
+        "Paris Saint-Germain",
+        "Lyon",
+        "2–1"
+      ],
+      [
+        "2024-25",
+        "Paris Saint-Germain",
+        "Reims",
+        "3–0"
+      ],
+      [
+        "2025-26",
+        "Lens",
+        "Nice",
+        "3–1"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most Coupe de France titles?",
+        "a": "Paris Saint-Germain are the record holders with 16 wins, having lifted the trophy again in 2025. Marseille are next on the all-time list with 10, followed by Saint-Étienne on six and clubs such as Lille and Monaco."
+      },
+      {
+        "q": "Who won the 2026 Coupe de France?",
+        "a": "RC Lens won the 2025-26 Coupe de France, beating Nice 3–1 in the final at the Stade de France on 22 May 2026. It was Lens's first-ever Coupe de France title, at their fourth final after losing in 1948, 1975 and 1998."
+      },
+      {
+        "q": "Why was there no Coupe de France winner in 1992?",
+        "a": "The 1991-92 edition was abandoned without a winner after the Furiani stadium disaster on 5 May 1992, when a temporary stand collapsed before a semi-final between Bastia and Marseille. The French federation cancelled the rest of the tournament."
+      },
+      {
+        "q": "What is the Coupe de France?",
+        "a": "The Coupe de France is French football's premier domestic cup, a single-elimination knockout first held in 1917-18. It is open to clubs from every level of the football pyramid, from amateur sides to Ligue 1 giants, which is why lower-league teams occasionally reach the final."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Coupe de France"
+  },
+  {
+    "slug": "asian-cup-winners",
+    "h1": "Every AFC Asian Cup Winner (1956–2023)",
+    "title": "AFC Asian Cup Winners: Full List 1956–2023 | Ball IQ",
+    "description": "The complete list of AFC Asian Cup winners from 1956 to 2023, with runner-up and host for every edition. Japan lead with four titles; Qatar are back-to-back holders.",
+    "intro": [
+      "The AFC Asian Cup is the top prize in men's international football across Asia, first contested in 1956 in Hong Kong with just four teams playing a round-robin. It has since grown into a 24-nation tournament and ranks among the oldest continental championships in the world, predating the European Championship by four years.",
+      "No single country has dominated the way some nations have in other regions. Japan sit top of the roll of honour with four titles, all won since 1992, while Iran and Saudi Arabia have three each and South Korea — winners of the first two editions — have not lifted it since 1960. Iran are the only side to win three in a row, taking the trophy in 1968, 1972 and 1976.",
+      "The most recent edition was the 2023 Asian Cup, which was played in Qatar in January and February 2024 after being moved from its original host, China. Qatar beat Jordan 3–1 in the Lusail final to retain the trophy they first won in 2019, becoming the fifth nation to win consecutive Asian Cups and the first to do so since Japan in 2000 and 2004. The next tournament, in 2027, is scheduled for Saudi Arabia."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Host"
+    ],
+    "rows": [
+      [
+        "1956",
+        "South Korea",
+        "Israel",
+        "Hong Kong"
+      ],
+      [
+        "1960",
+        "South Korea",
+        "Israel",
+        "South Korea"
+      ],
+      [
+        "1964",
+        "Israel",
+        "India",
+        "Israel"
+      ],
+      [
+        "1968",
+        "Iran",
+        "Burma",
+        "Iran"
+      ],
+      [
+        "1972",
+        "Iran",
+        "South Korea",
+        "Thailand"
+      ],
+      [
+        "1976",
+        "Iran",
+        "Kuwait",
+        "Iran"
+      ],
+      [
+        "1980",
+        "Kuwait",
+        "South Korea",
+        "Kuwait"
+      ],
+      [
+        "1984",
+        "Saudi Arabia",
+        "China",
+        "Singapore"
+      ],
+      [
+        "1988",
+        "Saudi Arabia",
+        "South Korea",
+        "Qatar"
+      ],
+      [
+        "1992",
+        "Japan",
+        "Saudi Arabia",
+        "Japan"
+      ],
+      [
+        "1996",
+        "Saudi Arabia",
+        "United Arab Emirates",
+        "United Arab Emirates"
+      ],
+      [
+        "2000",
+        "Japan",
+        "Saudi Arabia",
+        "Lebanon"
+      ],
+      [
+        "2004",
+        "Japan",
+        "China",
+        "China"
+      ],
+      [
+        "2007",
+        "Iraq",
+        "Saudi Arabia",
+        "Indonesia, Malaysia, Thailand & Vietnam"
+      ],
+      [
+        "2011",
+        "Japan",
+        "Australia",
+        "Qatar"
+      ],
+      [
+        "2015",
+        "Australia",
+        "South Korea",
+        "Australia"
+      ],
+      [
+        "2019",
+        "Qatar",
+        "Japan",
+        "United Arab Emirates"
+      ],
+      [
+        "2023",
+        "Qatar",
+        "Jordan",
+        "Qatar"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most AFC Asian Cup titles?",
+        "a": "Japan are the most successful nation with four titles (1992, 2000, 2004 and 2011). Iran and Saudi Arabia follow with three each, while South Korea and Qatar have two apiece."
+      },
+      {
+        "q": "Who won the 2023 AFC Asian Cup?",
+        "a": "Qatar won the 2023 AFC Asian Cup, beating Jordan 3–1 in the final in Lusail. The tournament was hosted by Qatar and played in January and February 2024 after being moved from the original host, China."
+      },
+      {
+        "q": "Has any country won the Asian Cup back-to-back?",
+        "a": "Yes. Qatar won consecutive titles in 2019 and 2023, becoming the fifth nation to do so after South Korea, Iran, Saudi Arabia and Japan. Iran went furthest, winning three in a row in 1968, 1972 and 1976 — the only nation to achieve a three-peat."
+      },
+      {
+        "q": "Where will the next AFC Asian Cup be held?",
+        "a": "The 2027 AFC Asian Cup is scheduled to be hosted by Saudi Arabia. As of July 2026 it has not yet been played, so Qatar remain the reigning champions."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Asian Cup"
+  },
+  {
+    "slug": "concacaf-gold-cup-winners",
+    "h1": "Every CONCACAF Gold Cup Winner (1963–2025)",
+    "title": "Every CONCACAF Gold Cup Winner (1963–2025) | Ball IQ",
+    "description": "Complete list of every CONCACAF Gold Cup winner and its predecessor the CONCACAF Championship, from 1963 to 2025, with runners-up and hosts.",
+    "intro": [
+      "The CONCACAF Gold Cup is the championship of North America, Central America and the Caribbean, contested every two years by the region's national teams. It took its current name and knockout format in 1991, but its lineage runs back to 1963, when the tournament was played as the CONCACAF Championship. Both eras are included below for the complete continental record.",
+      "Two nations tower over the competition. Mexico and the United States have shared almost every Gold Cup trophy since 1991, with Mexico moving to a record ten titles after beating the USA in the 2025 final. Canada is the only other side to break their grip, winning as a surprise in 2000. The earlier Championship years were far more open, with Costa Rica, Guatemala, Haiti and Honduras all lifting the trophy.",
+      "The table lists every edition from 1963 to 2025. Note that several early Championship tournaments were decided by a final round-robin group rather than a single final, so the 'runner-up' for those years is the team that finished second in the standings. Recent editions have been co-hosted, most often by the United States and Canada."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Host"
+    ],
+    "rows": [
+      [
+        "1963",
+        "Costa Rica",
+        "El Salvador",
+        "El Salvador"
+      ],
+      [
+        "1965",
+        "Mexico",
+        "Guatemala",
+        "Guatemala"
+      ],
+      [
+        "1967",
+        "Guatemala",
+        "Mexico",
+        "Honduras"
+      ],
+      [
+        "1969",
+        "Costa Rica",
+        "Guatemala",
+        "Costa Rica"
+      ],
+      [
+        "1971",
+        "Mexico",
+        "Haiti",
+        "Trinidad and Tobago"
+      ],
+      [
+        "1973",
+        "Haiti",
+        "Trinidad and Tobago",
+        "Haiti"
+      ],
+      [
+        "1977",
+        "Mexico",
+        "Haiti",
+        "Mexico"
+      ],
+      [
+        "1981",
+        "Honduras",
+        "El Salvador",
+        "Honduras"
+      ],
+      [
+        "1985",
+        "Canada",
+        "Honduras",
+        "Various (qualifying)"
+      ],
+      [
+        "1989",
+        "Costa Rica",
+        "United States",
+        "Various (qualifying)"
+      ],
+      [
+        "1991",
+        "United States",
+        "Honduras",
+        "United States"
+      ],
+      [
+        "1993",
+        "Mexico",
+        "United States",
+        "Mexico & United States"
+      ],
+      [
+        "1996",
+        "Mexico",
+        "Brazil",
+        "United States"
+      ],
+      [
+        "1998",
+        "Mexico",
+        "United States",
+        "United States"
+      ],
+      [
+        "2000",
+        "Canada",
+        "Colombia",
+        "United States"
+      ],
+      [
+        "2002",
+        "United States",
+        "Costa Rica",
+        "United States"
+      ],
+      [
+        "2003",
+        "Mexico",
+        "Brazil",
+        "Mexico & United States"
+      ],
+      [
+        "2005",
+        "United States",
+        "Panama",
+        "United States"
+      ],
+      [
+        "2007",
+        "United States",
+        "Mexico",
+        "United States"
+      ],
+      [
+        "2009",
+        "Mexico",
+        "United States",
+        "United States"
+      ],
+      [
+        "2011",
+        "Mexico",
+        "United States",
+        "United States"
+      ],
+      [
+        "2013",
+        "United States",
+        "Panama",
+        "United States"
+      ],
+      [
+        "2015",
+        "Mexico",
+        "Jamaica",
+        "Canada & United States"
+      ],
+      [
+        "2017",
+        "United States",
+        "Jamaica",
+        "United States"
+      ],
+      [
+        "2019",
+        "Mexico",
+        "United States",
+        "United States (with Costa Rica & Jamaica)"
+      ],
+      [
+        "2021",
+        "United States",
+        "Mexico",
+        "United States"
+      ],
+      [
+        "2023",
+        "Mexico",
+        "Panama",
+        "Canada & United States"
+      ],
+      [
+        "2025",
+        "Mexico",
+        "United States",
+        "Canada & United States"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most CONCACAF Gold Cups?",
+        "a": "Mexico is the most successful nation with 10 Gold Cup titles, followed by the United States with 7. Counting the CONCACAF Championship era (1963–1989), Mexico and Costa Rica each added three earlier titles as well."
+      },
+      {
+        "q": "Who won the 2025 CONCACAF Gold Cup?",
+        "a": "Mexico won the 2025 Gold Cup, beating the United States 2–1 in the final at NRG Stadium in Houston on July 6, 2025. It was Mexico's record-extending tenth title and a second in a row after their 2023 win."
+      },
+      {
+        "q": "Has any team other than Mexico or the USA won the Gold Cup?",
+        "a": "Yes. Canada won the Gold Cup in 2000, defeating Colombia in the final. It remains the only Gold Cup title (since 1991) not won by Mexico or the United States."
+      },
+      {
+        "q": "What was the CONCACAF Championship?",
+        "a": "The CONCACAF Championship was the tournament's original name from 1963 to 1989, before it was rebranded as the Gold Cup in 1991. Costa Rica won the first edition in 1963, and nations like Guatemala, Haiti and Honduras also lifted the trophy during that era."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Gold Cup"
+  },
+  {
+    "slug": "most-serie-a-titles",
+    "h1": "Clubs With the Most Serie A Titles (Scudetti)",
+    "title": "Clubs With the Most Serie A Titles, Ranked | Ball IQ",
+    "description": "The clubs with the most Serie A titles, ranked by official FIGC-recognised Scudetti — from Juventus and Inter down to every one-time Italian champion.",
+    "intro": [
+      "Italy's league champions wear the Scudetto, the small tricolour shield sewn onto the following season's shirt, and only sixteen clubs have earned the right to do so since the national championship began in 1898. The competition took its modern round-robin \"Serie A\" form in 1929, but the honours roll is counted continuously from those earliest pioneer-era titles, which is why clubs like Genoa and Pro Vercelli sit high on the all-time list despite not having won in a century.",
+      "Three clubs tower over the rest. Juventus lead the way, followed by the two Milan giants, Internazionale and AC Milan — Inter's total stretching back to their 1908 founding and the Ambrosiana-Inter years of the 1930s. Below them, a cluster of historic names from the game's formative decades (Torino, Bologna, Pro Vercelli) share seven apiece, while a modern chasing pack led by Napoli reflects how the balance of power keeps shifting.",
+      "One stretch of the record book carries an asterisk. The 2006 Calciopoli scandal saw Juventus stripped of their 2004-05 title, which was left unassigned, and their 2005-06 title, which was reassigned to Inter. Both clubs dispute aspects of the outcome to this day, so the figures below use the counts officially recognised by the FIGC, the Italian federation, with the controversy explained in full."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Notable years"
+    ],
+    "rows": [
+      [
+        "1",
+        "Juventus",
+        "36",
+        "First title 1905; five straight 1930–31 to 1934–35; a record nine in a row from 2011–12 to 2019–20. Two further titles (2004–05, 2005–06) were revoked in Calciopoli."
+      ],
+      [
+        "2",
+        "Internazionale (Inter)",
+        "21",
+        "1909–10; the Grande Inter era 1962–66; Ambrosiana-Inter titles of the 1930s; awarded 2005–06; plus 2020–21, 2023–24 and 2025–26."
+      ],
+      [
+        "3",
+        "AC Milan",
+        "19",
+        "1901; the Sacchi–Capello dynasty of the late 1980s and 1990s; 2003–04; 2010–11; most recently 2021–22."
+      ],
+      [
+        "4",
+        "Genoa",
+        "9",
+        "Won six of the first seven Italian championships (1898–1904); last crowned in 1923–24."
+      ],
+      [
+        "5",
+        "Torino",
+        "7",
+        "Il Grande Torino claimed five Scudetti in the 1940s; last title in 1975–76."
+      ],
+      [
+        "5",
+        "Bologna",
+        "7",
+        "A power of the pre-war game, winning from 1924–25 through 1940–41; last in 1963–64."
+      ],
+      [
+        "5",
+        "Pro Vercelli",
+        "7",
+        "Seven titles between 1908 and 1922, one of the sport's original Italian dynasties."
+      ],
+      [
+        "8",
+        "Napoli",
+        "4",
+        "1986–87 and 1989–90 with Diego Maradona; then 2022–23 and 2024–25."
+      ],
+      [
+        "9",
+        "Roma",
+        "3",
+        "1941–42; 1982–83; 2000–01."
+      ],
+      [
+        "10",
+        "Fiorentina",
+        "2",
+        "1955–56 and 1968–69."
+      ],
+      [
+        "10",
+        "Lazio",
+        "2",
+        "1973–74 and 1999–2000."
+      ],
+      [
+        "12",
+        "Cagliari",
+        "1",
+        "1969–70, inspired by Gigi Riva."
+      ],
+      [
+        "12",
+        "Casale",
+        "1",
+        "1913–14."
+      ],
+      [
+        "12",
+        "Hellas Verona",
+        "1",
+        "1984–85, one of the great Serie A upsets."
+      ],
+      [
+        "12",
+        "Novese",
+        "1",
+        "1921–22."
+      ],
+      [
+        "12",
+        "Sampdoria",
+        "1",
+        "1990–91."
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Serie A titles?",
+        "a": "Juventus, with 36 Scudetti officially recognised by the FIGC — comfortably ahead of Internazionale on 21 and AC Milan on 19. Juventus also hold the record for the longest winning streak, nine consecutive titles from 2011–12 to 2019–20."
+      },
+      {
+        "q": "What happened to Juventus's 2004-05 and 2005-06 titles?",
+        "a": "Following the 2006 Calciopoli refereeing scandal, the FIGC revoked both. The 2004-05 Scudetto was cancelled and left unassigned, so no club holds it. The 2005-06 title was stripped from Juventus and awarded to Inter. Juventus won both on the pitch and still claim the 2004-05 crown, but neither counts toward their recognised total of 36 — hence the difference between Juventus's own tally and the federation's figure used here."
+      },
+      {
+        "q": "Who won the most recent Serie A title?",
+        "a": "Inter won the 2025-26 Scudetto, their 21st, finishing clear of Napoli. Before that, Napoli took the 2024-25 title (their fourth) and Inter won 2023-24 (their 20th)."
+      },
+      {
+        "q": "Why does Inter's total include the Ambrosiana-Inter era?",
+        "a": "Under Italy's Fascist regime, Inter were forced to merge and play as Ambrosiana (later Ambrosiana-Inter) from 1928 to 1945, winning titles in 1929–30 and the late 1930s under that name. The club is legally continuous, so those Scudetti count toward Inter's all-time total of 21."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Serie A"
+  },
+  {
+    "slug": "most-fa-cups",
+    "h1": "Clubs With the Most FA Cups",
+    "title": "Most FA Cups: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most FA Cups? The full ranking of every FA Cup winner by number of titles, from the record holders down.",
+    "intro": [
+      "The FA Cup, first contested in 1871-72, is the oldest football competition in the world — and over 150 years it has been lifted by dozens of clubs. This page ranks them all by number of wins.",
+      "Arsenal lead the way with 14 FA Cups, narrowly ahead of Manchester United on 13. A cluster of historic names — Tottenham, Liverpool, Aston Villa, Chelsea and Manchester City among them — fill out the top of a roll of honour that stretches back to Victorian amateur sides."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "FA Cups",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Arsenal",
+        "14",
+        "1929, 1935, 1949, 1970, 1978, 1992, 1997, 2001, 2002, 2004, 2013, 2014, 2016, 2019"
+      ],
+      [
+        "2",
+        "Manchester United",
+        "13",
+        "1908, 1947, 1962, 1976, 1982, 1984, 1989, 1993, 1995, 1998, 2003, 2015, 2023"
+      ],
+      [
+        "3",
+        "Chelsea",
+        "8",
+        "1969, 1996, 1999, 2006, 2008, 2009, 2011, 2017"
+      ],
+      [
+        "3",
+        "Liverpool",
+        "8",
+        "1964, 1973, 1985, 1988, 1991, 2000, 2005, 2021"
+      ],
+      [
+        "3",
+        "Manchester City",
+        "8",
+        "1903, 1933, 1955, 1968, 2010, 2018, 2022, 2025"
+      ],
+      [
+        "3",
+        "Tottenham Hotspur",
+        "8",
+        "1900, 1920, 1960, 1961, 1966, 1980, 1981, 1990"
+      ],
+      [
+        "7",
+        "Aston Villa",
+        "7",
+        "1886, 1894, 1896, 1904, 1912, 1919, 1956"
+      ],
+      [
+        "8",
+        "Blackburn Rovers",
+        "6",
+        "1883, 1884, 1885, 1889, 1890, 1927"
+      ],
+      [
+        "8",
+        "Newcastle United",
+        "6",
+        "1909, 1923, 1931, 1950, 1951, 1954"
+      ],
+      [
+        "10",
+        "Everton",
+        "5",
+        "1905, 1932, 1965, 1983, 1994"
+      ],
+      [
+        "10",
+        "Wanderers",
+        "5",
+        "1871, 1872, 1875, 1876, 1877"
+      ],
+      [
+        "10",
+        "West Bromwich Albion",
+        "5",
+        "1887, 1891, 1930, 1953, 1967"
+      ],
+      [
+        "13",
+        "Bolton Wanderers",
+        "4",
+        "1922, 1925, 1928, 1957"
+      ],
+      [
+        "13",
+        "Sheffield United",
+        "4",
+        "1898, 1901, 1914, 1924"
+      ],
+      [
+        "13",
+        "Wolverhampton Wanderers",
+        "4",
+        "1892, 1907, 1948, 1959"
+      ],
+      [
+        "16",
+        "Sheffield Wednesday",
+        "3",
+        "1895, 1906, 1934"
+      ],
+      [
+        "16",
+        "West Ham United",
+        "3",
+        "1963, 1974, 1979"
+      ],
+      [
+        "18",
+        "Bury",
+        "2",
+        "1899, 1902"
+      ],
+      [
+        "18",
+        "Nottingham Forest",
+        "2",
+        "1897, 1958"
+      ],
+      [
+        "18",
+        "Old Etonians",
+        "2",
+        "1878, 1881"
+      ],
+      [
+        "18",
+        "Portsmouth",
+        "2",
+        "1938, 2007"
+      ],
+      [
+        "18",
+        "Preston North End",
+        "2",
+        "1888, 1937"
+      ],
+      [
+        "18",
+        "Sunderland",
+        "2",
+        "1936, 1972"
+      ],
+      [
+        "24",
+        "Barnsley",
+        "1",
+        "1911"
+      ],
+      [
+        "24",
+        "Blackburn Olympic",
+        "1",
+        "1882"
+      ],
+      [
+        "24",
+        "Blackpool",
+        "1",
+        "1952"
+      ],
+      [
+        "24",
+        "Bradford City",
+        "1",
+        "1910"
+      ],
+      [
+        "24",
+        "Burnley",
+        "1",
+        "1913"
+      ],
+      [
+        "24",
+        "Cardiff City",
+        "1",
+        "1926"
+      ],
+      [
+        "24",
+        "Charlton Athletic",
+        "1",
+        "1946"
+      ],
+      [
+        "24",
+        "Clapham Rovers",
+        "1",
+        "1879"
+      ],
+      [
+        "24",
+        "Coventry City",
+        "1",
+        "1986"
+      ],
+      [
+        "24",
+        "Crystal Palace",
+        "1",
+        "2024"
+      ],
+      [
+        "24",
+        "Derby County",
+        "1",
+        "1945"
+      ],
+      [
+        "24",
+        "Huddersfield Town",
+        "1",
+        "1921"
+      ],
+      [
+        "24",
+        "Ipswich Town",
+        "1",
+        "1977"
+      ],
+      [
+        "24",
+        "Leeds United",
+        "1",
+        "1971"
+      ],
+      [
+        "24",
+        "Leicester City",
+        "1",
+        "2020"
+      ],
+      [
+        "24",
+        "Notts County",
+        "1",
+        "1893"
+      ],
+      [
+        "24",
+        "Old Carthusians",
+        "1",
+        "1880"
+      ],
+      [
+        "24",
+        "Oxford University",
+        "1",
+        "1873"
+      ],
+      [
+        "24",
+        "Royal Engineers",
+        "1",
+        "1874"
+      ],
+      [
+        "24",
+        "Southampton",
+        "1",
+        "1975"
+      ],
+      [
+        "24",
+        "Wigan Athletic",
+        "1",
+        "2012"
+      ],
+      [
+        "24",
+        "Wimbledon",
+        "1",
+        "1987"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most FA Cups?",
+        "a": "Arsenal have won the most FA Cups, with 14, just ahead of Manchester United on 13."
+      },
+      {
+        "q": "How old is the FA Cup?",
+        "a": "The FA Cup is the oldest national football competition in the world, first played in the 1871-72 season — 16 years before the Football League existed."
+      },
+      {
+        "q": "Is this every FA Cup winner?",
+        "a": "This page ranks clubs by number of wins. For the full season-by-season list of every final, winner, runner-up and score, see our FA Cup winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the FA Cup"
+  },
+  {
+    "slug": "most-copa-libertadores",
+    "h1": "Clubs With the Most Copa Libertadores Titles",
+    "title": "Most Copa Libertadores Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most Copa Libertadores titles? The full ranking of South America's greatest clubs by continental crowns.",
+    "intro": [
+      "The Copa Libertadores is South America's premier club competition, the continent's equivalent of the Champions League, contested since 1960. This page ranks every winner by number of titles.",
+      "Independiente of Argentina set the benchmark with 7, the most in the tournament's history. Fellow Argentine giants Boca Juniors and Uruguay's Peñarol lead the chase, ahead of the great Brazilian clubs who have dominated the modern era."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Independiente",
+        "7",
+        "1964, 1965, 1972, 1973, 1974, 1975, 1984"
+      ],
+      [
+        "2",
+        "Boca Juniors",
+        "6",
+        "1977, 1978, 2000, 2001, 2003, 2007"
+      ],
+      [
+        "3",
+        "Peñarol",
+        "5",
+        "1960, 1961, 1966, 1982, 1987"
+      ],
+      [
+        "4",
+        "Estudiantes",
+        "4",
+        "1968, 1969, 1970, 2009"
+      ],
+      [
+        "4",
+        "Flamengo",
+        "4",
+        "1981, 2019, 2022, 2025"
+      ],
+      [
+        "4",
+        "River Plate",
+        "4",
+        "1986, 1996, 2015, 2018"
+      ],
+      [
+        "7",
+        "Grêmio",
+        "3",
+        "1983, 1995, 2017"
+      ],
+      [
+        "7",
+        "Nacional",
+        "3",
+        "1971, 1980, 1988"
+      ],
+      [
+        "7",
+        "Olimpia",
+        "3",
+        "1979, 1990, 2002"
+      ],
+      [
+        "7",
+        "Palmeiras",
+        "3",
+        "1999, 2020, 2021"
+      ],
+      [
+        "7",
+        "Santos",
+        "3",
+        "1962, 1963, 2011"
+      ],
+      [
+        "7",
+        "São Paulo",
+        "3",
+        "1992, 1993, 2005"
+      ],
+      [
+        "13",
+        "Atlético Nacional",
+        "2",
+        "1989, 2016"
+      ],
+      [
+        "13",
+        "Cruzeiro",
+        "2",
+        "1976, 1997"
+      ],
+      [
+        "13",
+        "Internacional",
+        "2",
+        "2006, 2010"
+      ],
+      [
+        "16",
+        "Argentinos Juniors",
+        "1",
+        "1985"
+      ],
+      [
+        "16",
+        "Atlético Mineiro",
+        "1",
+        "2013"
+      ],
+      [
+        "16",
+        "Botafogo",
+        "1",
+        "2024"
+      ],
+      [
+        "16",
+        "Colo-Colo",
+        "1",
+        "1991"
+      ],
+      [
+        "16",
+        "Corinthians",
+        "1",
+        "2012"
+      ],
+      [
+        "16",
+        "Fluminense",
+        "1",
+        "2023"
+      ],
+      [
+        "16",
+        "LDU Quito",
+        "1",
+        "2008"
+      ],
+      [
+        "16",
+        "Once Caldas",
+        "1",
+        "2004"
+      ],
+      [
+        "16",
+        "Racing",
+        "1",
+        "1967"
+      ],
+      [
+        "16",
+        "San Lorenzo",
+        "1",
+        "2014"
+      ],
+      [
+        "16",
+        "Vasco da Gama",
+        "1",
+        "1998"
+      ],
+      [
+        "16",
+        "Vélez Sarsfield",
+        "1",
+        "1994"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Copa Libertadores titles?",
+        "a": "Independiente have won the most, with 7 Copa Libertadores titles."
+      },
+      {
+        "q": "What is the Copa Libertadores?",
+        "a": "It is South America's top club competition, played since 1960 — the continental championship whose winner represents CONMEBOL, comparable to the UEFA Champions League in Europe."
+      },
+      {
+        "q": "Is this every Copa Libertadores winner?",
+        "a": "This page ranks clubs by titles. For the full year-by-year list, see our Copa Libertadores winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Copa Libertadores"
+  },
+  {
+    "slug": "most-coupe-de-france-titles",
+    "h1": "Clubs With the Most Coupe de France Titles",
+    "title": "Most Coupe de France Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most Coupe de France titles? The full ranking of every French Cup winner by number of trophies.",
+    "intro": [
+      "The Coupe de France, France's premier knockout cup, has been contested since 1917-18. This page ranks every winner by number of titles.",
+      "Paris Saint-Germain lead the all-time count with 16, having made the competition their own in the modern era. Marseille and a host of historic French clubs make up a deep and varied roll of honour."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Paris Saint-Germain",
+        "16",
+        "1981, 1982, 1992, 1994, 1997, 2003, 2005, 2009, 2014, 2015, 2016, 2017, 2019, 2020, 2023, 2024"
+      ],
+      [
+        "2",
+        "Marseille",
+        "10",
+        "1923, 1925, 1926, 1934, 1937, 1942, 1968, 1971, 1975, 1988"
+      ],
+      [
+        "3",
+        "Lille",
+        "6",
+        "1945, 1946, 1947, 1952, 1954, 2010"
+      ],
+      [
+        "3",
+        "Saint-Étienne",
+        "6",
+        "1961, 1967, 1969, 1973, 1974, 1976"
+      ],
+      [
+        "5",
+        "Lyon",
+        "5",
+        "1963, 1966, 1972, 2007, 2011"
+      ],
+      [
+        "5",
+        "Monaco",
+        "5",
+        "1959, 1962, 1979, 1984, 1990"
+      ],
+      [
+        "5",
+        "RC Paris",
+        "5",
+        "1935, 1938, 1939, 1944, 1948"
+      ],
+      [
+        "5",
+        "Red Star",
+        "5",
+        "1920, 1921, 1922, 1927, 1941"
+      ],
+      [
+        "9",
+        "Auxerre",
+        "4",
+        "1993, 1995, 2002, 2004"
+      ],
+      [
+        "9",
+        "Bordeaux",
+        "4",
+        "1940, 1985, 1986, 2012"
+      ],
+      [
+        "9",
+        "Nantes",
+        "4",
+        "1978, 1998, 1999, 2021"
+      ],
+      [
+        "12",
+        "Nice",
+        "3",
+        "1951, 1953, 1996"
+      ],
+      [
+        "12",
+        "Rennes",
+        "3",
+        "1964, 1970, 2018"
+      ],
+      [
+        "12",
+        "Strasbourg",
+        "3",
+        "1950, 1965, 2000"
+      ],
+      [
+        "15",
+        "CASG Paris",
+        "2",
+        "1918, 1924"
+      ],
+      [
+        "15",
+        "Guingamp",
+        "2",
+        "2008, 2013"
+      ],
+      [
+        "15",
+        "Metz",
+        "2",
+        "1983, 1987"
+      ],
+      [
+        "15",
+        "Montpellier",
+        "2",
+        "1928, 1989"
+      ],
+      [
+        "15",
+        "Reims",
+        "2",
+        "1949, 1957"
+      ],
+      [
+        "15",
+        "Sedan",
+        "2",
+        "1955, 1960"
+      ],
+      [
+        "15",
+        "Sète",
+        "2",
+        "1929, 1933"
+      ],
+      [
+        "15",
+        "Sochaux",
+        "2",
+        "1936, 2006"
+      ],
+      [
+        "15",
+        "Toulouse",
+        "2",
+        "1956, 2022"
+      ],
+      [
+        "24",
+        "Bastia",
+        "1",
+        "1980"
+      ],
+      [
+        "24",
+        "CA Paris",
+        "1",
+        "1919"
+      ],
+      [
+        "24",
+        "Cannes",
+        "1",
+        "1931"
+      ],
+      [
+        "24",
+        "Club Français",
+        "1",
+        "1930"
+      ],
+      [
+        "24",
+        "ÉF Nancy-Lorraine",
+        "1",
+        "1943"
+      ],
+      [
+        "24",
+        "Excelsior AC Roubaix",
+        "1",
+        "1932"
+      ],
+      [
+        "24",
+        "Le Havre",
+        "1",
+        "1958"
+      ],
+      [
+        "24",
+        "Lens",
+        "1",
+        "2025"
+      ],
+      [
+        "24",
+        "Lorient",
+        "1",
+        "2001"
+      ],
+      [
+        "24",
+        "Nancy",
+        "1",
+        "1977"
+      ],
+      [
+        "24",
+        "No competition",
+        "1",
+        "1991"
+      ],
+      [
+        "24",
+        "Olympique de Pantin",
+        "1",
+        "1917"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Coupe de France titles?",
+        "a": "Paris Saint-Germain have won the most Coupe de France titles, with 16."
+      },
+      {
+        "q": "What is the Coupe de France?",
+        "a": "It is France's main domestic knockout cup competition, open to clubs from every level of the French football pyramid, first played in 1917-18."
+      },
+      {
+        "q": "Is this every Coupe de France winner?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list, see our Coupe de France winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Coupe de France"
   }
 ];
