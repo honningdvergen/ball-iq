@@ -802,6 +802,7 @@ function footer() {
 <a href="${SITE.base}/quiz/manchester-united/">Man United quiz</a>
 <a href="${SITE.base}/quiz/champions-league/">Champions League quiz</a>
 <a href="${SITE.base}/quiz/">All quizzes</a>
+<a href="${SITE.base}/lists/">Football lists</a>
 <a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
@@ -1150,7 +1151,8 @@ function buildListPage(cfg, clubPages, playerPages, catPages) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
-          { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
+          { '@type': 'ListItem', position: 2, name: 'Football lists', item: `${SITE.base}/lists/` },
+          { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
         ],
       },
       {
@@ -1186,7 +1188,7 @@ ${NAV}
 <main>
 ${style}
 <section class="sec narrow">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football lists</span></nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/lists/">Football lists</a> › <span>${esc(cfg.h1)}</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 6px">${esc(cfg.h1)}</h1>
 <p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · from the Ball IQ football team</p>
 ${cfg.intro.map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
@@ -1211,6 +1213,73 @@ ${footer()}`;
   mkdirSync(dir, { recursive: true });
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
   return { slug: cfg.slug, name: cfg.h1, count: rows.length, canonical };
+}
+
+// ── /lists hub ──────────────────────────────────────────────────────────────────
+// Index page for every reference list. Gives the (otherwise sitemap-only) list
+// pages internal crawl paths + authority, and is itself an SEO page for
+// "football lists / records / winners". Linked from the shared footer.
+function buildListsHubPage(lists, clubPages, catPages) {
+  if (!lists.length) return null;
+  const canonical = `${SITE.base}/lists/`;
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Football lists', item: canonical },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Football reference lists',
+        numberOfItems: lists.length,
+        itemListElement: lists.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: l.h1, url: `${SITE.base}/lists/${l.slug}/` })),
+      },
+    ],
+  });
+  const cards = lists
+    .map((l) => `<a class="lcard" href="${SITE.base}/lists/${l.slug}/">
+<span class="lcard-t">${esc(l.h1)}</span>
+<span class="lcard-d">${esc(l.description)}</span>
+<span class="lcard-n">${l.rows.length} entries →</span></a>`)
+    .join('\n');
+  const style = `<style>
+  .lcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:8px}
+  .lcard{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--bd);border-radius:14px;background:var(--card);transition:border-color .15s,transform .15s}
+  .lcard:hover{border-color:var(--bd3);transform:translateY(-2px);text-decoration:none}
+  .lcard-t{font-weight:800;color:#fff;font-size:17px;line-height:1.2}
+  .lcard-d{color:var(--tx3);font-size:14px;line-height:1.45}
+  .lcard-n{color:var(--grn-soft);font-size:13px;font-weight:600;margin-top:auto}
+  </style>`;
+  const html = `${head({ title: 'Football Lists: Winners, Records & Top Scorers | Ball IQ', description: 'Complete, fact-checked football reference lists — every World Cup and Ballon d\'Or winner, league champions and top scorers, year by year. Free to browse.', canonical, ld, ads: true })}
+<body>
+${NAV}
+<main>
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football lists</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">Football Lists, Records &amp; Winners</h1>
+<p style="margin:0 0 12px;color:var(--tx2)">Fact-checked reference lists for football fans — every winner, champion and top scorer, laid out year by year and kept accurate. Each one is free to browse, and pairs with a quiz so you can test what you know.</p>
+</section>
+<section class="sec">
+<div class="lcards">
+${cards}
+</div>
+</section>
+${appCtaBand('football')}
+<section class="sec">
+<h2>Or jump into a quiz</h2>
+${renderTiles([...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4), ...clubPages.slice(0, 4)])}
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'lists');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: 'lists', canonical };
 }
 
 // ── per-nation page ────────────────────────────────────────────────────────────
@@ -1590,6 +1659,7 @@ function buildSitemap(livePages, listPages = []) {
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
+    ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
@@ -1735,6 +1805,7 @@ async function main() {
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages));
+  buildListsHubPage(LISTS, clubPages, livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
