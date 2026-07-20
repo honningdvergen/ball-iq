@@ -917,6 +917,12 @@ export const LISTS = [
         "Paris Saint-Germain",
         "Inter Milan",
         "5–0"
+      ],
+      [
+        "2025–26",
+        "Paris Saint-Germain",
+        "Arsenal",
+        "1–1 (a.e.t., 4–3 pen.)"
       ]
     ],
     "faq": [
@@ -1154,6 +1160,12 @@ export const LISTS = [
         "Mohamed Salah",
         "Liverpool",
         "29"
+      ],
+      [
+        "2025-26",
+        "Erling Haaland",
+        "Manchester City",
+        "27"
       ]
     ],
     "faq": [
@@ -2022,6 +2034,11 @@ export const LISTS = [
         "2024-25",
         "Barcelona",
         "Real Madrid"
+      ],
+      [
+        "2025-26",
+        "Barcelona",
+        "Real Madrid"
       ]
     ],
     "faq": [
@@ -2530,6 +2547,11 @@ export const LISTS = [
         "2024–25",
         "Napoli",
         "Internazionale"
+      ],
+      [
+        "2025–26",
+        "Internazionale",
+        "Napoli"
       ]
     ],
     "faq": [
@@ -2878,6 +2900,11 @@ export const LISTS = [
         "2024-25",
         "Bayern Munich",
         "Bayer Leverkusen"
+      ],
+      [
+        "2025-26",
+        "Bayern Munich",
+        "Borussia Dortmund"
       ]
     ],
     "faq": [
@@ -3251,6 +3278,11 @@ export const LISTS = [
         "2024-25",
         "Galatasaray",
         "Fenerbahçe"
+      ],
+      [
+        "2025-26",
+        "Galatasaray",
+        "Fenerbahçe"
       ]
     ],
     "faq": [
@@ -3454,6 +3486,11 @@ export const LISTS = [
         "2024-25",
         "Liverpool",
         "Arsenal"
+      ],
+      [
+        "2025-26",
+        "Arsenal",
+        "Manchester City"
       ]
     ],
     "faq": [
@@ -3932,6 +3969,11 @@ export const LISTS = [
         "2024-25",
         "Paris Saint-Germain",
         "Marseille"
+      ],
+      [
+        "2025-26",
+        "Paris Saint-Germain",
+        "Lens"
       ]
     ],
     "faq": [
@@ -4315,6 +4357,11 @@ export const LISTS = [
         "2024-25",
         "PSV",
         "Ajax"
+      ],
+      [
+        "2025-26",
+        "PSV",
+        "Feyenoord"
       ]
     ],
     "faq": [
@@ -4808,6 +4855,11 @@ export const LISTS = [
         "2024-25",
         "Sporting CP",
         "Benfica"
+      ],
+      [
+        "2025-26",
+        "Porto",
+        "Sporting CP"
       ]
     ],
     "faq": [
@@ -4981,6 +5033,11 @@ export const LISTS = [
         "2024-25",
         "Celtic",
         "Rangers"
+      ],
+      [
+        "2025-26",
+        "Celtic",
+        "Heart of Midlothian"
       ]
     ],
     "faq": [
