@@ -3273,5 +3273,1735 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Süper Lig"
+  },
+  {
+    "slug": "premier-league-champions",
+    "h1": "Every Premier League Champion (1992-2025)",
+    "title": "Premier League Champions: Every Winner by Season (1992-2025) | Ball IQ",
+    "description": "The complete list of Premier League champions and runners-up for every season from 1992-93 to 2024-25, with title winners in full chronological order.",
+    "intro": [
+      "The Premier League launched in 1992-93, breaking away from the old Football League First Division to become English football's top tier. Since then, only a handful of clubs have managed to get their hands on the trophy, and the roll of honour tells the story of shifting eras of dominance across more than three decades.",
+      "Manchester United set the early pace, racking up title after title through the 1990s and 2000s. The last fifteen years, though, belong largely to Manchester City, whose spending and squad depth produced an unprecedented run of championships, including four in a row. Only two clubs, Blackburn Rovers and Leicester City, have ever crashed the party as unexpected one-off winners.",
+      "This page lists every Premier League champion and runner-up, season by season, from the inaugural 1992-93 campaign through to 2024-25 — the year Liverpool reclaimed the crown under Arne Slot. Note that these are Premier League era titles only; earlier First Division championships are counted separately."
+    ],
+    "columns": [
+      "Season",
+      "Champions",
+      "Runner-up"
+    ],
+    "rows": [
+      [
+        "1992-93",
+        "Manchester United",
+        "Aston Villa"
+      ],
+      [
+        "1993-94",
+        "Manchester United",
+        "Blackburn Rovers"
+      ],
+      [
+        "1994-95",
+        "Blackburn Rovers",
+        "Manchester United"
+      ],
+      [
+        "1995-96",
+        "Manchester United",
+        "Newcastle United"
+      ],
+      [
+        "1996-97",
+        "Manchester United",
+        "Newcastle United"
+      ],
+      [
+        "1997-98",
+        "Arsenal",
+        "Manchester United"
+      ],
+      [
+        "1998-99",
+        "Manchester United",
+        "Arsenal"
+      ],
+      [
+        "1999-2000",
+        "Manchester United",
+        "Arsenal"
+      ],
+      [
+        "2000-01",
+        "Manchester United",
+        "Arsenal"
+      ],
+      [
+        "2001-02",
+        "Arsenal",
+        "Liverpool"
+      ],
+      [
+        "2002-03",
+        "Manchester United",
+        "Arsenal"
+      ],
+      [
+        "2003-04",
+        "Arsenal",
+        "Chelsea"
+      ],
+      [
+        "2004-05",
+        "Chelsea",
+        "Arsenal"
+      ],
+      [
+        "2005-06",
+        "Chelsea",
+        "Manchester United"
+      ],
+      [
+        "2006-07",
+        "Manchester United",
+        "Chelsea"
+      ],
+      [
+        "2007-08",
+        "Manchester United",
+        "Chelsea"
+      ],
+      [
+        "2008-09",
+        "Manchester United",
+        "Liverpool"
+      ],
+      [
+        "2009-10",
+        "Chelsea",
+        "Manchester United"
+      ],
+      [
+        "2010-11",
+        "Manchester United",
+        "Chelsea"
+      ],
+      [
+        "2011-12",
+        "Manchester City",
+        "Manchester United"
+      ],
+      [
+        "2012-13",
+        "Manchester United",
+        "Manchester City"
+      ],
+      [
+        "2013-14",
+        "Manchester City",
+        "Liverpool"
+      ],
+      [
+        "2014-15",
+        "Chelsea",
+        "Manchester City"
+      ],
+      [
+        "2015-16",
+        "Leicester City",
+        "Arsenal"
+      ],
+      [
+        "2016-17",
+        "Chelsea",
+        "Tottenham Hotspur"
+      ],
+      [
+        "2017-18",
+        "Manchester City",
+        "Manchester United"
+      ],
+      [
+        "2018-19",
+        "Manchester City",
+        "Liverpool"
+      ],
+      [
+        "2019-20",
+        "Liverpool",
+        "Manchester City"
+      ],
+      [
+        "2020-21",
+        "Manchester City",
+        "Manchester United"
+      ],
+      [
+        "2021-22",
+        "Manchester City",
+        "Liverpool"
+      ],
+      [
+        "2022-23",
+        "Manchester City",
+        "Arsenal"
+      ],
+      [
+        "2023-24",
+        "Manchester City",
+        "Arsenal"
+      ],
+      [
+        "2024-25",
+        "Liverpool",
+        "Arsenal"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Premier League titles?",
+        "a": "Manchester United has won the most Premier League titles with 13, all under manager Sir Alex Ferguson between 1993 and 2013. Manchester City is second with a rapidly growing tally, having dominated the competition since 2011-12."
+      },
+      {
+        "q": "Who won the first ever Premier League title?",
+        "a": "Manchester United won the inaugural Premier League title in 1992-93, finishing ten points clear of runners-up Aston Villa. It ended the club's 26-year wait for an English top-flight championship."
+      },
+      {
+        "q": "Have any 'underdog' clubs won the Premier League?",
+        "a": "Yes. Blackburn Rovers won in 1994-95, and Leicester City pulled off one of sport's greatest shocks by winning the 2015-16 title as 5000-1 pre-season outsiders. They remain the only two clubs outside the traditional powers to lift the trophy."
+      },
+      {
+        "q": "Who won the 2024-25 Premier League?",
+        "a": "Liverpool won the 2024-25 Premier League, their second title of the Premier League era, in Arne Slot's first season as manager. Arsenal finished as runners-up for the third season in a row."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Premier League"
+  },
+  {
+    "slug": "ligue-1-champions",
+    "h1": "Every Ligue 1 Champion (1932-2025)",
+    "title": "Ligue 1 Champions: Full Winners List by Season (1932-2025) | Ball IQ",
+    "description": "The complete list of French Ligue 1 champions and runners-up for every season from 1932-33 to 2024-25, from Olympique Lillois to PSG's modern dynasty.",
+    "intro": [
+      "France's top flight kicked off as a professional league in 1932, and its roll of honour reads like a tour of the country's football heartlands: the northern mill towns of Lille and Roubaix, the Mediterranean giants of Marseille and Nice, and the green wave of Saint-Étienne, whose 10 titles set the early benchmark. For decades no single club could keep a grip on the trophy for long.",
+      "That changed with the Qatari takeover of Paris Saint-Germain. Since 2013 PSG have turned the Ligue 1 title into an almost annual formality, assembling the most dominant era any French club has known and pushing their tally past Saint-Étienne and Marseille to lead the all-time count. Only Montpellier, Monaco and Lille have interrupted the run.",
+      "This table lists every champion and runner-up from the inaugural 1932-33 season through 2024-25. Note the 1992-93 line: Marseille finished top on the pitch but were stripped of the title amid a match-fixing scandal, and no champion was officially awarded that year."
+    ],
+    "columns": [
+      "Season",
+      "Champions",
+      "Runner-up"
+    ],
+    "rows": [
+      [
+        "1932-33",
+        "Olympique Lillois",
+        "Cannes"
+      ],
+      [
+        "1933-34",
+        "Sète",
+        "Fives"
+      ],
+      [
+        "1934-35",
+        "Sochaux",
+        "Strasbourg"
+      ],
+      [
+        "1935-36",
+        "RC Paris",
+        "Olympique Lillois"
+      ],
+      [
+        "1936-37",
+        "Marseille",
+        "Sochaux"
+      ],
+      [
+        "1937-38",
+        "Sochaux",
+        "Marseille"
+      ],
+      [
+        "1938-39",
+        "Sète",
+        "Marseille"
+      ],
+      [
+        "1939-45",
+        "Not contested (World War II)",
+        "—"
+      ],
+      [
+        "1945-46",
+        "Lille",
+        "Saint-Étienne"
+      ],
+      [
+        "1946-47",
+        "Roubaix-Tourcoing",
+        "Reims"
+      ],
+      [
+        "1947-48",
+        "Marseille",
+        "Lille"
+      ],
+      [
+        "1948-49",
+        "Reims",
+        "Lille"
+      ],
+      [
+        "1949-50",
+        "Bordeaux",
+        "Lille"
+      ],
+      [
+        "1950-51",
+        "Nice",
+        "Lille"
+      ],
+      [
+        "1951-52",
+        "Nice",
+        "Bordeaux"
+      ],
+      [
+        "1952-53",
+        "Reims",
+        "Sochaux"
+      ],
+      [
+        "1953-54",
+        "Lille",
+        "Reims"
+      ],
+      [
+        "1954-55",
+        "Reims",
+        "Toulouse"
+      ],
+      [
+        "1955-56",
+        "Nice",
+        "Lens"
+      ],
+      [
+        "1956-57",
+        "Saint-Étienne",
+        "Lens"
+      ],
+      [
+        "1957-58",
+        "Reims",
+        "Nîmes"
+      ],
+      [
+        "1958-59",
+        "Nice",
+        "Nîmes"
+      ],
+      [
+        "1959-60",
+        "Reims",
+        "Nîmes"
+      ],
+      [
+        "1960-61",
+        "Monaco",
+        "RC Paris"
+      ],
+      [
+        "1961-62",
+        "Reims",
+        "RC Paris"
+      ],
+      [
+        "1962-63",
+        "Monaco",
+        "Reims"
+      ],
+      [
+        "1963-64",
+        "Saint-Étienne",
+        "Monaco"
+      ],
+      [
+        "1964-65",
+        "Nantes",
+        "Bordeaux"
+      ],
+      [
+        "1965-66",
+        "Nantes",
+        "Bordeaux"
+      ],
+      [
+        "1966-67",
+        "Saint-Étienne",
+        "Nantes"
+      ],
+      [
+        "1967-68",
+        "Saint-Étienne",
+        "Nice"
+      ],
+      [
+        "1968-69",
+        "Saint-Étienne",
+        "Bordeaux"
+      ],
+      [
+        "1969-70",
+        "Saint-Étienne",
+        "Marseille"
+      ],
+      [
+        "1970-71",
+        "Marseille",
+        "Saint-Étienne"
+      ],
+      [
+        "1971-72",
+        "Marseille",
+        "Nîmes"
+      ],
+      [
+        "1972-73",
+        "Nantes",
+        "Nice"
+      ],
+      [
+        "1973-74",
+        "Saint-Étienne",
+        "Nantes"
+      ],
+      [
+        "1974-75",
+        "Saint-Étienne",
+        "Marseille"
+      ],
+      [
+        "1975-76",
+        "Saint-Étienne",
+        "Nice"
+      ],
+      [
+        "1976-77",
+        "Nantes",
+        "Lens"
+      ],
+      [
+        "1977-78",
+        "Monaco",
+        "Nantes"
+      ],
+      [
+        "1978-79",
+        "Strasbourg",
+        "Nantes"
+      ],
+      [
+        "1979-80",
+        "Nantes",
+        "Sochaux"
+      ],
+      [
+        "1980-81",
+        "Saint-Étienne",
+        "Nantes"
+      ],
+      [
+        "1981-82",
+        "Monaco",
+        "Saint-Étienne"
+      ],
+      [
+        "1982-83",
+        "Nantes",
+        "Bordeaux"
+      ],
+      [
+        "1983-84",
+        "Bordeaux",
+        "Monaco"
+      ],
+      [
+        "1984-85",
+        "Bordeaux",
+        "Nantes"
+      ],
+      [
+        "1985-86",
+        "Paris Saint-Germain",
+        "Nantes"
+      ],
+      [
+        "1986-87",
+        "Bordeaux",
+        "Marseille"
+      ],
+      [
+        "1987-88",
+        "Monaco",
+        "Bordeaux"
+      ],
+      [
+        "1988-89",
+        "Marseille",
+        "Paris Saint-Germain"
+      ],
+      [
+        "1989-90",
+        "Marseille",
+        "Bordeaux"
+      ],
+      [
+        "1990-91",
+        "Marseille",
+        "Monaco"
+      ],
+      [
+        "1991-92",
+        "Marseille",
+        "Monaco"
+      ],
+      [
+        "1992-93",
+        "Not awarded (Marseille stripped of title)",
+        "Paris Saint-Germain"
+      ],
+      [
+        "1993-94",
+        "Paris Saint-Germain",
+        "Marseille"
+      ],
+      [
+        "1994-95",
+        "Nantes",
+        "Lyon"
+      ],
+      [
+        "1995-96",
+        "Auxerre",
+        "Paris Saint-Germain"
+      ],
+      [
+        "1996-97",
+        "Monaco",
+        "Paris Saint-Germain"
+      ],
+      [
+        "1997-98",
+        "Lens",
+        "Metz"
+      ],
+      [
+        "1998-99",
+        "Bordeaux",
+        "Marseille"
+      ],
+      [
+        "1999-2000",
+        "Monaco",
+        "Paris Saint-Germain"
+      ],
+      [
+        "2000-01",
+        "Nantes",
+        "Lyon"
+      ],
+      [
+        "2001-02",
+        "Lyon",
+        "Lens"
+      ],
+      [
+        "2002-03",
+        "Lyon",
+        "Monaco"
+      ],
+      [
+        "2003-04",
+        "Lyon",
+        "Paris Saint-Germain"
+      ],
+      [
+        "2004-05",
+        "Lyon",
+        "Lille"
+      ],
+      [
+        "2005-06",
+        "Lyon",
+        "Bordeaux"
+      ],
+      [
+        "2006-07",
+        "Lyon",
+        "Marseille"
+      ],
+      [
+        "2007-08",
+        "Lyon",
+        "Bordeaux"
+      ],
+      [
+        "2008-09",
+        "Bordeaux",
+        "Marseille"
+      ],
+      [
+        "2009-10",
+        "Marseille",
+        "Lyon"
+      ],
+      [
+        "2010-11",
+        "Lille",
+        "Marseille"
+      ],
+      [
+        "2011-12",
+        "Montpellier",
+        "Paris Saint-Germain"
+      ],
+      [
+        "2012-13",
+        "Paris Saint-Germain",
+        "Marseille"
+      ],
+      [
+        "2013-14",
+        "Paris Saint-Germain",
+        "Monaco"
+      ],
+      [
+        "2014-15",
+        "Paris Saint-Germain",
+        "Lyon"
+      ],
+      [
+        "2015-16",
+        "Paris Saint-Germain",
+        "Lyon"
+      ],
+      [
+        "2016-17",
+        "Monaco",
+        "Paris Saint-Germain"
+      ],
+      [
+        "2017-18",
+        "Paris Saint-Germain",
+        "Monaco"
+      ],
+      [
+        "2018-19",
+        "Paris Saint-Germain",
+        "Lille"
+      ],
+      [
+        "2019-20",
+        "Paris Saint-Germain",
+        "Marseille"
+      ],
+      [
+        "2020-21",
+        "Lille",
+        "Paris Saint-Germain"
+      ],
+      [
+        "2021-22",
+        "Paris Saint-Germain",
+        "Marseille"
+      ],
+      [
+        "2022-23",
+        "Paris Saint-Germain",
+        "Lens"
+      ],
+      [
+        "2023-24",
+        "Paris Saint-Germain",
+        "Monaco"
+      ],
+      [
+        "2024-25",
+        "Paris Saint-Germain",
+        "Marseille"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Ligue 1 titles?",
+        "a": "Paris Saint-Germain lead the all-time list. Fuelled by their Qatari ownership since 2011, PSG have overtaken Saint-Étienne (10 titles) and Marseille (nine recognised titles) to become France's most successful club, winning nearly every season since 2013."
+      },
+      {
+        "q": "Why is there no champion for the 1992-93 season?",
+        "a": "Marseille finished top of the table on the pitch but were stripped of the title after a match-fixing scandal involving a bribed opponent late in the campaign. French authorities declined to award the championship to anyone else, so 1992-93 has no official winner. Runner-up PSG were not promoted to champions."
+      },
+      {
+        "q": "Who won Ligue 1 in 2024-25?",
+        "a": "Paris Saint-Germain won the 2024-25 title, sealing it with six games to spare in April 2025. Marseille finished second, well behind PSG's total, as Luis Enrique's side cruised to another dominant French championship."
+      },
+      {
+        "q": "Which clubs have broken PSG's title run since 2013?",
+        "a": "Only three sides have interrupted PSG since their dynasty began. Monaco won in 2016-17 and Lille in 2020-21, while Montpellier's shock 2011-12 triumph came just before the Qatari-era dominance fully took hold."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Ligue 1"
+  },
+  {
+    "slug": "eredivisie-champions",
+    "h1": "Every Eredivisie Champion (1956-57 to 2024-25)",
+    "title": "Eredivisie Champions: Full List of Dutch League Winners by Season | Ball IQ",
+    "description": "The complete list of Eredivisie champions and runners-up, season by season from 1956-57 through 2024-25. Every Dutch top-flight title winner in one table.",
+    "intro": [
+      "The Eredivisie has crowned a champion of Dutch football every season since 1956-57, when the country's regional leagues were folded into a single national professional division. Ajax lifted that inaugural title, setting the tone for nearly seven decades in which one of three clubs would claim the trophy far more often than not.",
+      "Ajax, PSV Eindhoven and Feyenoord form the league's traditional 'big three', and between them they have won the overwhelming majority of Eredivisie titles. Only a handful of outsiders have broken through: DOS, Sparta and DWS in the early years, and AZ (as AZ '67) and Twente in the modern era. That concentration of success makes the Dutch title race one of European football's most predictable at the top and most fiercely contested just beneath it.",
+      "The table below lists every Eredivisie champion and runner-up from the first 1956-57 season to the most recent 2024-25 campaign, in which PSV edged Ajax to retain their crown. The 2019-20 season is included but was declared void with no champion awarded after play was halted by the COVID-19 pandemic."
+    ],
+    "columns": [
+      "Season",
+      "Champions",
+      "Runner-up"
+    ],
+    "rows": [
+      [
+        "1956-57",
+        "Ajax",
+        "Fortuna '54"
+      ],
+      [
+        "1957-58",
+        "DOS",
+        "SC Enschede"
+      ],
+      [
+        "1958-59",
+        "Sparta",
+        "Rapid JC"
+      ],
+      [
+        "1959-60",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1960-61",
+        "Feyenoord",
+        "Ajax"
+      ],
+      [
+        "1961-62",
+        "Feyenoord",
+        "PSV"
+      ],
+      [
+        "1962-63",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1963-64",
+        "DWS",
+        "PSV"
+      ],
+      [
+        "1964-65",
+        "Feyenoord",
+        "DWS"
+      ],
+      [
+        "1965-66",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1966-67",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1967-68",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1968-69",
+        "Feyenoord",
+        "Ajax"
+      ],
+      [
+        "1969-70",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1970-71",
+        "Feyenoord",
+        "Ajax"
+      ],
+      [
+        "1971-72",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1972-73",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1973-74",
+        "Feyenoord",
+        "Twente"
+      ],
+      [
+        "1974-75",
+        "PSV",
+        "Feyenoord"
+      ],
+      [
+        "1975-76",
+        "PSV",
+        "Feyenoord"
+      ],
+      [
+        "1976-77",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1977-78",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1978-79",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1979-80",
+        "Ajax",
+        "AZ '67"
+      ],
+      [
+        "1980-81",
+        "AZ '67",
+        "Ajax"
+      ],
+      [
+        "1981-82",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1982-83",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1983-84",
+        "Feyenoord",
+        "PSV"
+      ],
+      [
+        "1984-85",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1985-86",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1986-87",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1987-88",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1988-89",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1989-90",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1990-91",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1991-92",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "1992-93",
+        "Feyenoord",
+        "PSV"
+      ],
+      [
+        "1993-94",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "1994-95",
+        "Ajax",
+        "Roda JC"
+      ],
+      [
+        "1995-96",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1996-97",
+        "PSV",
+        "Feyenoord"
+      ],
+      [
+        "1997-98",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "1998-99",
+        "Feyenoord",
+        "Willem II"
+      ],
+      [
+        "1999-2000",
+        "PSV",
+        "Heerenveen"
+      ],
+      [
+        "2000-01",
+        "PSV",
+        "Feyenoord"
+      ],
+      [
+        "2001-02",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2002-03",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2003-04",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2004-05",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2005-06",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2006-07",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2007-08",
+        "PSV",
+        "Twente"
+      ],
+      [
+        "2008-09",
+        "AZ",
+        "Twente"
+      ],
+      [
+        "2009-10",
+        "Twente",
+        "Ajax"
+      ],
+      [
+        "2010-11",
+        "Ajax",
+        "Twente"
+      ],
+      [
+        "2011-12",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "2012-13",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2013-14",
+        "Ajax",
+        "Feyenoord"
+      ],
+      [
+        "2014-15",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2015-16",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2016-17",
+        "Feyenoord",
+        "Ajax"
+      ],
+      [
+        "2017-18",
+        "PSV",
+        "Ajax"
+      ],
+      [
+        "2018-19",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2019-20",
+        "No title awarded (season abandoned, COVID-19)",
+        "—"
+      ],
+      [
+        "2020-21",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2021-22",
+        "Ajax",
+        "PSV"
+      ],
+      [
+        "2022-23",
+        "Feyenoord",
+        "PSV"
+      ],
+      [
+        "2023-24",
+        "PSV",
+        "Feyenoord"
+      ],
+      [
+        "2024-25",
+        "PSV",
+        "Ajax"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Eredivisie titles?",
+        "a": "Ajax has won the most Eredivisie titles, with well over 30 championships since the league began in 1956-57 — comfortably ahead of PSV Eindhoven and Feyenoord, the other two members of Dutch football's 'big three'."
+      },
+      {
+        "q": "Who won the Eredivisie in 2024-25?",
+        "a": "PSV Eindhoven won the 2024-25 Eredivisie, finishing ahead of Ajax to retain the title they had also won in 2023-24."
+      },
+      {
+        "q": "Which clubs have won the Eredivisie besides Ajax, PSV and Feyenoord?",
+        "a": "Only five other clubs have been champions: DOS (1957-58), Sparta Rotterdam (1958-59), DWS (1963-64), AZ — as AZ '67 in 1980-81 and again in 2008-09 — and Twente (2009-10)."
+      },
+      {
+        "q": "Why is there no Eredivisie champion for 2019-20?",
+        "a": "The 2019-20 season was ended early and declared void because of the COVID-19 pandemic. The KNVB decided not to award the title, so no champion was crowned that year, even though Ajax led on goal difference when play stopped."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Eredivisie"
+  },
+  {
+    "slug": "primeira-liga-champions",
+    "h1": "Every Primeira Liga Champion (1934-35 to 2024-25)",
+    "title": "Primeira Liga Champions: Every Portuguese League Winner by Season | Ball IQ",
+    "description": "The complete list of Portuguese Primeira Liga champions and runners-up, season by season from 1934-35 to 2024-25 — Benfica, Porto and Sporting CP's title history.",
+    "intro": [
+      "Portugal's top flight has crowned a champion every season since Porto lifted the very first title in 1934-35. Nine decades later the story is still written almost entirely by three clubs — Benfica, Porto and Sporting CP, the 'três grandes' who between them have taken all but two championships in league history.",
+      "Only Os Belenenses (1945-46) and Boavista (2000-01) have ever broken the monopoly, each managing a single, celebrated title. Everything else has been a Lisbon-versus-Porto tug of war, from Benfica's Eusébio-era dominance in the 1960s to Porto's run of six titles in seven seasons in the 2000s.",
+      "The table below lists every champion and runner-up in full, from 1934-35 through Sporting CP's back-to-back triumphs in 2023-24 and 2024-25 — the Lions' first successive titles since the 1950s."
+    ],
+    "columns": [
+      "Season",
+      "Champions",
+      "Runner-up"
+    ],
+    "rows": [
+      [
+        "1934-35",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1935-36",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1936-37",
+        "Benfica",
+        "Belenenses"
+      ],
+      [
+        "1937-38",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1938-39",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1939-40",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1940-41",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1941-42",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1942-43",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1943-44",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1944-45",
+        "Benfica",
+        "Belenenses"
+      ],
+      [
+        "1945-46",
+        "Belenenses",
+        "Benfica"
+      ],
+      [
+        "1946-47",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1947-48",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1948-49",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1949-50",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1950-51",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1951-52",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1952-53",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1953-54",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1954-55",
+        "Benfica",
+        "Belenenses"
+      ],
+      [
+        "1955-56",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1956-57",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1957-58",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1958-59",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1959-60",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1960-61",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1961-62",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1962-63",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1963-64",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1964-65",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1965-66",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1966-67",
+        "Benfica",
+        "Académica de Coimbra"
+      ],
+      [
+        "1967-68",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1968-69",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1969-70",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1970-71",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1971-72",
+        "Benfica",
+        "Vitória de Setúbal"
+      ],
+      [
+        "1972-73",
+        "Benfica",
+        "Belenenses"
+      ],
+      [
+        "1973-74",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1974-75",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1975-76",
+        "Benfica",
+        "Boavista"
+      ],
+      [
+        "1976-77",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "1977-78",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1978-79",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1979-80",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "1980-81",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1981-82",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "1982-83",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1983-84",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1984-85",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1985-86",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1986-87",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1987-88",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1988-89",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1989-90",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1990-91",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1991-92",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1992-93",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1993-94",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "1994-95",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1995-96",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1996-97",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "1997-98",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "1998-99",
+        "Porto",
+        "Boavista"
+      ],
+      [
+        "1999-2000",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "2000-01",
+        "Boavista",
+        "Porto"
+      ],
+      [
+        "2001-02",
+        "Sporting CP",
+        "Boavista"
+      ],
+      [
+        "2002-03",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2003-04",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2004-05",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "2005-06",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "2006-07",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "2007-08",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "2008-09",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "2009-10",
+        "Benfica",
+        "Braga"
+      ],
+      [
+        "2010-11",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2011-12",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2012-13",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2013-14",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "2014-15",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "2015-16",
+        "Benfica",
+        "Sporting CP"
+      ],
+      [
+        "2016-17",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "2017-18",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2018-19",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "2019-20",
+        "Porto",
+        "Benfica"
+      ],
+      [
+        "2020-21",
+        "Sporting CP",
+        "Porto"
+      ],
+      [
+        "2021-22",
+        "Porto",
+        "Sporting CP"
+      ],
+      [
+        "2022-23",
+        "Benfica",
+        "Porto"
+      ],
+      [
+        "2023-24",
+        "Sporting CP",
+        "Benfica"
+      ],
+      [
+        "2024-25",
+        "Sporting CP",
+        "Benfica"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Primeira Liga titles?",
+        "a": "Benfica are the most successful club in Primeira Liga history with 38 titles, ahead of Porto on 31 and Sporting CP on 21 (as of the 2024-25 season)."
+      },
+      {
+        "q": "Have any clubs outside the 'três grandes' won the Primeira Liga?",
+        "a": "Only two. Os Belenenses won the title in 1945-46 and Boavista won it in 2000-01. Every other championship since 1934-35 has gone to Benfica, Porto or Sporting CP."
+      },
+      {
+        "q": "Who won the Primeira Liga in 2024-25?",
+        "a": "Sporting CP were champions in 2024-25, finishing ahead of runners-up Benfica. It completed back-to-back titles for Sporting after their 2023-24 win — their first successive championships since the 1950s."
+      },
+      {
+        "q": "Who was the first-ever Primeira Liga champion?",
+        "a": "Porto won the inaugural Portuguese championship in 1934-35, finishing ahead of Sporting CP."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Primeira Liga"
+  },
+  {
+    "slug": "scottish-premiership-champions",
+    "h1": "Every Scottish Premiership Champion (1998-2025)",
+    "title": "Scottish Premiership Champions: Full Winners List 1998-2025 | Ball IQ",
+    "description": "Every Scottish top-flight champion by season from 1998-99 to 2024-25, with runners-up. Celtic and Rangers's grip on the SPL and SPFL Premiership title, in full.",
+    "intro": [
+      "Scotland's top flight rebranded twice across this era. The Scottish Premier League broke away from the old Premier Division in 1998, then merged with the Scottish Football League in 2013 to form the SPFL, whose top tier became the Premiership. Through every name change, one truth held: the trophy almost never left Glasgow.",
+      "Since 1998-99 the title has gone to Celtic or Rangers in every single season. The pattern swings in blocks — Rangers opened the era, Celtic answered, and the two traded three- and four-year runs of dominance. Rangers's 2012 financial collapse and demotion to the fourth tier handed Celtic an uninterrupted nine-in-a-row stretch, broken only when a rebuilt Rangers took the 2020-21 crown.",
+      "The runner-up column tells the more interesting story. Beyond the Old Firm, clubs like Hearts, Motherwell and — most persistently — Aberdeen have pushed into second, chasing a gap that has often stretched past ten or even seventeen points. This list runs every season from 1998-99 through 2024-25."
+    ],
+    "columns": [
+      "Season",
+      "Champions",
+      "Runner-up"
+    ],
+    "rows": [
+      [
+        "1998-99",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "1999-2000",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2000-01",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2001-02",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2002-03",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2003-04",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2004-05",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2005-06",
+        "Celtic",
+        "Heart of Midlothian"
+      ],
+      [
+        "2006-07",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2007-08",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2008-09",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2009-10",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2010-11",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2011-12",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2012-13",
+        "Celtic",
+        "Motherwell"
+      ],
+      [
+        "2013-14",
+        "Celtic",
+        "Motherwell"
+      ],
+      [
+        "2014-15",
+        "Celtic",
+        "Aberdeen"
+      ],
+      [
+        "2015-16",
+        "Celtic",
+        "Aberdeen"
+      ],
+      [
+        "2016-17",
+        "Celtic",
+        "Aberdeen"
+      ],
+      [
+        "2017-18",
+        "Celtic",
+        "Aberdeen"
+      ],
+      [
+        "2018-19",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2019-20",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2020-21",
+        "Rangers",
+        "Celtic"
+      ],
+      [
+        "2021-22",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2022-23",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2023-24",
+        "Celtic",
+        "Rangers"
+      ],
+      [
+        "2024-25",
+        "Celtic",
+        "Rangers"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Scottish Premiership titles?",
+        "a": "In the SPL/SPFL Premiership era from 1998-99, Celtic have won the most with 19 titles, compared to Rangers's 8. Across all of Scottish top-flight history the two are much closer, with both clubs on 55 top-division titles after Celtic's 2024-25 win."
+      },
+      {
+        "q": "Has any club other than Celtic or Rangers won the Scottish Premiership since 1998?",
+        "a": "No. Every single title from 1998-99 through 2024-25 has gone to either Celtic or Rangers. The last club outside the Old Firm to win Scotland's top flight was Aberdeen in 1984-85."
+      },
+      {
+        "q": "Why did Rangers not win any titles between 2011 and 2021?",
+        "a": "Rangers were liquidated in 2012 following financial trouble and the newco club had to restart in the fourth tier. They climbed back to the top flight by 2016 but did not win the Premiership again until 2020-21, allowing Celtic to complete nine titles in a row."
+      },
+      {
+        "q": "Who finished as runner-up most often behind the Old Firm?",
+        "a": "Aberdeen were the most persistent challengers, finishing second in four consecutive seasons from 2014-15 to 2017-18. Motherwell (2012-13, 2013-14) and Hearts (2005-06) also claimed runner-up spots during the era."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Scottish football"
   }
 ];
