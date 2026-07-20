@@ -79,7 +79,7 @@ export const CLUBS = [
     "slug": "manchester-united",
     "name": "Manchester United",
     "h1": "Manchester United Quiz",
-    "title": "Manchester United Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Manchester United Quiz — Man Utd Trivia Questions & Answers | Ball IQ",
     "description": "Free Manchester United quiz with explained answers — from the Busby Babes and the 1999 treble to the Carrick era. Every answer tells the story behind it.",
     "intro": [
       "Manchester United are the club English football measures itself against — from Sir Matt Busby's post-war rebuilding through the Munich air disaster of 1958, redemption at Wembley a decade later, and the twenty-six trophy-laden years of Sir Alex Ferguson. This free Manchester United quiz covers the whole sweep: the Busby Babes, the Ferguson dynasty, the 1999 treble, and the modern era under Michael Carrick. Twenty English league titles, a record thirteen of them in the Premier League, and three European Cups give you plenty to be tested on. Old Trafford calls itself the Theatre of Dreams, and this quiz is built on the moments that earned the name.",
@@ -111,7 +111,7 @@ export const CLUBS = [
     "slug": "manchester-city",
     "name": "Manchester City",
     "h1": "Manchester City Quiz",
-    "title": "Manchester City Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Manchester City Quiz — Man City Trivia Questions & Answers | Ball IQ",
     "description": "Free Manchester City quiz with explained answers — from Agüero 93:20 and the Istanbul treble to Pep Guardiola's decade. Test your City knowledge.",
     "intro": [
       "Manchester City are the club that has lived both extremes of English football. This free Manchester City quiz spans the whole arc — from the Joe Mercer and Malcolm Allison side that won the league in 1968, through the wilderness years that bottomed out in English football's third tier in 1998-99, to the Abu Dhabi takeover of 2008 and the Guardiola dynasty that redefined how the game is played in England. For decades City were Manchester's fallible, much-loved underdogs; now they are one of the defining superpowers of the modern game. The quiz covers both lives, because a real City fan knows Shaun Goater as well as they know Erling Haaland.",
@@ -143,7 +143,7 @@ export const CLUBS = [
     "slug": "tottenham",
     "name": "Tottenham Hotspur",
     "h1": "Tottenham Hotspur Quiz",
-    "title": "Tottenham Hotspur Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Tottenham Hotspur Quiz — Spurs Trivia Questions & Answers | Ball IQ",
     "description": "Free Tottenham Hotspur quiz with explained answers — from the 1961 Double and Gazza to the 2025 Europa League win in Bilbao. How well do you know Spurs?",
     "intro": [
       "Tottenham Hotspur have chased glory their own stylish way since 1882 — this is the club of \"To Dare Is to Do\", of Danny Blanchflower's insistence that the game is about glory. This free Tottenham quiz covers the full sweep: from the 1901 FA Cup, when Spurs became the only non-League club to win it since the Football League was formed, to Bilbao in May 2025, when Brennan Johnson's goal against Manchester United ended a seventeen-year wait for a trophy. In between sit Arthur Rowe's push-and-run champions of 1951, the Glory Glory European nights at White Hart Lane, and the move into the vast new Tottenham Hotspur Stadium in 2019. If you know your Spurs, this is where you prove it.",
@@ -175,7 +175,7 @@ export const CLUBS = [
     "slug": "chelsea",
     "name": "Chelsea",
     "h1": "Chelsea Quiz",
-    "title": "Chelsea Quiz — Football Trivia Questions & Answers | Ball IQ",
+    "title": "Chelsea Quiz — Blues Trivia Questions & Answers | Ball IQ",
     "description": "Free Chelsea quiz with explained answers — from Zola and the Mourinho years to Drogba in Munich and the 2025 Club World Cup. Test your Blues knowledge.",
     "intro": [
       "Chelsea have crammed more drama into the last twenty-five years than most clubs manage in a century — and this quiz covers all of it, plus the decades before. It runs from the club's founding at Stamford Bridge in 1905 and Ted Drake's 1955 title winners, through Roman Abramovich's 2003 takeover that rewrote English football's economics, to Cole Palmer dismantling Paris Saint-Germain in the 2025 Club World Cup final. In between, the Blues became the first club to win all five UEFA trophies — the 2025 Conference League, sealed 4-1 against Real Betis in Wrocław, completed a set that already held the Champions League, Europa League, Cup Winners' Cup and Super Cup. Restless, glamorous and never boring: that's the club, and that's the quiz.",
@@ -207,7 +207,7 @@ export const CLUBS = [
     "slug": "newcastle",
     "name": "Newcastle United",
     "h1": "Newcastle United Quiz",
-    "title": "Newcastle United Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Newcastle United Quiz — Magpies & Toon Trivia Questions & Answers | Ball IQ",
     "description": "Free Newcastle United quiz with explained answers — from Jackie Milburn and Keegan's Entertainers to the 2025 Carabao Cup win. Test your Toon knowledge.",
     "intro": [
       "Newcastle United are one of football's great romantic causes — a one-club city, St James' Park perched above it, and black-and-white stripes worn with a devotion that never depended on silverware. This free Newcastle United quiz covers the full sweep of that story, from the Edwardian side that won three league titles in five seasons to Dan Burn's thumping header at Wembley in 2025. In between sit the FA Cup years of the fifties, the Entertainers, the agonising near-misses and two relegations that never emptied the ground. If you know your Gallowgate from your Leazes, this is your quiz.",
@@ -271,7 +271,7 @@ export const CLUBS = [
     "slug": "real-madrid",
     "name": "Real Madrid",
     "h1": "Real Madrid Quiz",
-    "title": "Real Madrid Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Real Madrid Quiz — Los Blancos Trivia Questions & Answers | Ball IQ",
     "description": "Free Real Madrid quiz with explained answers — from Di Stéfano's five straight European Cups to La Décima and the 2024 Wembley final. Test your knowledge.",
     "intro": [
       "No club in football carries more weight than Real Madrid: a record fifteen European Cups, a record 36 Spanish league titles, and a self-image built on winning the biggest games in white. This free Real Madrid quiz spans the whole story — from the club's founding in 1902 and the presidency of Santiago Bernabéu that turned it into Europe's first superpower, through Alfredo Di Stéfano's 1950s dynasty, all the way to Kylian Mbappé and the modern side. It covers the finals, the Galácticos, the Clásicos and the records that make Madrid the reference point for everyone else. If it happened at the Bernabéu, it's fair game.",
@@ -367,7 +367,7 @@ export const CLUBS = [
     "slug": "psg",
     "name": "Paris Saint-Germain",
     "h1": "Paris Saint-Germain Quiz",
-    "title": "Paris Saint-Germain Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Paris Saint-Germain Quiz — PSG Trivia Questions & Answers | Ball IQ",
     "description": "Test your PSG knowledge with free trivia questions and explained answers — from Weah and Ronaldinho to back-to-back Champions League wins in 2025 and 2026.",
     "intro": [
       "Paris Saint-Germain are football's great modern superpower — a club founded only in 1970 that now sits at the very top of the European game. This free PSG quiz covers the whole journey: the merger that created the club, the cup-fighting decades at the Parc des Princes, the Qatari takeover of 2011 that changed everything, and the Luis Enrique side that won back-to-back Champions Leagues in 2025 and 2026. Few clubs have packed so much drama into so little history — world-record transfers, a galáctico front three, painful European collapses and, finally, total triumph. If you can tell your Raí from your Rothen, this is your quiz.",
@@ -431,7 +431,7 @@ export const CLUBS = [
     "slug": "juventus",
     "name": "Juventus",
     "h1": "Juventus Quiz",
-    "title": "Juventus Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Juventus Quiz — Juve Trivia Questions & Answers | Ball IQ",
     "description": "Free Juventus quiz — from the Del Piero years to nine in a row and Spalletti's rebuild. Trivia questions with explained answers. Play the sample free.",
     "intro": [
       "The Ball IQ Juventus quiz runs from the black-and-white beginnings in Turin right through to the 2025/26 season, and it is built around the thing that makes the Old Lady the Old Lady: winning, relentlessly, and being loved and resented in equal measure for it. This is the club of 36 Serie A titles — more than anyone in Italy — a record 15 Coppa Italia trophies, and the first club ever to complete the full set of major UEFA competitions. It is also the club that got dragged to Serie B in 2006 and clawed its way back to build a dynasty. If you know your Scudetti from your Supercoppe, this is your test.",
@@ -495,7 +495,7 @@ export const CLUBS = [
     "slug": "borussia-dortmund",
     "name": "Borussia Dortmund",
     "h1": "Borussia Dortmund Quiz",
-    "title": "Borussia Dortmund Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Borussia Dortmund Quiz — BVB Trivia Questions & Answers | Ball IQ",
     "description": "Free Borussia Dortmund quiz with explained answers — from the 1997 Champions League win to Klopp, Haaland and the Yellow Wall. Test your BVB knowledge.",
     "intro": [
       "Borussia Dortmund are German football's great romantics — a black-and-yellow institution built on 80,000 roaring fans, breakneck attacking football and a knack for producing the next superstar before anyone else spots him. This free Borussia Dortmund quiz spans the whole story, from the club's post-war German championships of the 1950s and 60s to the modern BVB of pressing and counter-attacks, all played out in front of the Südtribüne, the 'Yellow Wall' that is the largest standing terrace in European club football.",
