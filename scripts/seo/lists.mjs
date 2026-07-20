@@ -9066,5 +9066,299 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "Copa América"
+  },
+  {
+    "slug": "most-la-liga-titles",
+    "h1": "Clubs With the Most La Liga Titles",
+    "title": "Most La Liga Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most La Liga titles? Real Madrid lead the all-time ranking. Every Spanish league champion since 1929, ranked by titles.",
+    "intro": [
+      "Spain's top flight has been dominated by two clubs since it began in 1929, but the full roll of honour runs deeper. This page ranks every La Liga champion by number of titles, from Real Madrid's record haul down to the one-off winners.",
+      "Real Madrid lead the way with 36 titles, ahead of great rivals Barcelona on 29. Atlético Madrid are comfortably the third force, while Athletic Bilbao and Valencia head the chasing pack of clubs who have broken the duopoly over the decades."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Real Madrid",
+        "36",
+        "1931, 1932, 1953, 1954, 1956, 1957, 1960, 1961, 1962, 1963, 1964, 1966, 1967, 1968, 1971, 1974, 1975, 1977, 1978, 1979, 1985, 1986, 1987, 1988, 1989, 1994, 1996, 2000, 2002, 2006, 2007, 2011, 2016, 2019, 2021, 2023"
+      ],
+      [
+        "2",
+        "Barcelona",
+        "29",
+        "1928, 1944, 1947, 1948, 1951, 1952, 1958, 1959, 1973, 1984, 1990, 1991, 1992, 1993, 1997, 1998, 2004, 2005, 2008, 2009, 2010, 2012, 2014, 2015, 2017, 2018, 2022, 2024, 2025"
+      ],
+      [
+        "3",
+        "Atletico Madrid",
+        "11",
+        "1939, 1940, 1949, 1950, 1965, 1969, 1972, 1976, 1995, 2013, 2020"
+      ],
+      [
+        "4",
+        "Athletic Bilbao",
+        "8",
+        "1929, 1930, 1933, 1935, 1942, 1955, 1982, 1983"
+      ],
+      [
+        "5",
+        "Valencia",
+        "6",
+        "1941, 1943, 1946, 1970, 2001, 2003"
+      ],
+      [
+        "6",
+        "Real Sociedad",
+        "2",
+        "1980, 1981"
+      ],
+      [
+        "7",
+        "Deportivo La Coruna",
+        "1",
+        "1999"
+      ],
+      [
+        "7",
+        "Real Betis",
+        "1",
+        "1934"
+      ],
+      [
+        "7",
+        "Sevilla",
+        "1",
+        "1945"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most La Liga titles?",
+        "a": "Real Madrid have won the most La Liga titles, with 36. Barcelona are second with 29, and Atlético Madrid third with 11."
+      },
+      {
+        "q": "Which clubs have won La Liga besides Real Madrid and Barcelona?",
+        "a": "Nine clubs in total have won La Liga. Beyond Real Madrid and Barcelona, Atlético Madrid, Athletic Bilbao, Valencia, Real Sociedad, Deportivo La Coruña, Sevilla and Real Betis have all been champions of Spain."
+      },
+      {
+        "q": "Is this every La Liga champion?",
+        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every La Liga champion and runner-up, see our La Liga champions list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "La Liga"
+  },
+  {
+    "slug": "most-bundesliga-titles",
+    "h1": "Clubs With the Most Bundesliga Titles",
+    "title": "Most Bundesliga Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most Bundesliga titles? Bayern Munich dominate the all-time ranking. Every German champion since 1963, ranked by titles.",
+    "intro": [
+      "Germany's Bundesliga was founded in 1963, and while one club has towered over it, the title has still travelled widely across the country. This page ranks every Bundesliga champion by number of titles.",
+      "Bayern Munich's dominance is without parallel in Europe's big leagues: they hold 34 Bundesliga titles, many times more than anyone else. Behind them, Borussia Mönchengladbach and Borussia Dortmund lead a competitive chasing group that also includes Werder Bremen, Hamburg and Stuttgart."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Bayern Munich",
+        "34",
+        "1968, 1971, 1972, 1973, 1979, 1980, 1984, 1985, 1986, 1988, 1989, 1993, 1996, 1998, 1999, 2000, 2002, 2004, 2005, 2007, 2009, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025"
+      ],
+      [
+        "2",
+        "Borussia Dortmund",
+        "5",
+        "1994, 1995, 2001, 2010, 2011"
+      ],
+      [
+        "2",
+        "Borussia Monchengladbach",
+        "5",
+        "1969, 1970, 1974, 1975, 1976"
+      ],
+      [
+        "4",
+        "Werder Bremen",
+        "4",
+        "1964, 1987, 1992, 2003"
+      ],
+      [
+        "5",
+        "Hamburger SV",
+        "3",
+        "1978, 1981, 1982"
+      ],
+      [
+        "5",
+        "VfB Stuttgart",
+        "3",
+        "1983, 1991, 2006"
+      ],
+      [
+        "7",
+        "1. FC Kaiserslautern",
+        "2",
+        "1990, 1997"
+      ],
+      [
+        "7",
+        "1. FC Koln",
+        "2",
+        "1963, 1977"
+      ],
+      [
+        "9",
+        "1. FC Nurnberg",
+        "1",
+        "1967"
+      ],
+      [
+        "9",
+        "Bayer Leverkusen",
+        "1",
+        "2023"
+      ],
+      [
+        "9",
+        "Eintracht Braunschweig",
+        "1",
+        "1966"
+      ],
+      [
+        "9",
+        "TSV 1860 Munich",
+        "1",
+        "1965"
+      ],
+      [
+        "9",
+        "VfL Wolfsburg",
+        "1",
+        "2008"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Bundesliga titles?",
+        "a": "Bayern Munich have won the most Bundesliga titles by a huge margin, with 34. No other club has more than five."
+      },
+      {
+        "q": "Who has won the Bundesliga besides Bayern Munich?",
+        "a": "Borussia Mönchengladbach and Borussia Dortmund are next with five each, followed by Werder Bremen, Hamburger SV, VfB Stuttgart and others. Bayer Leverkusen won their first title in 2023-24."
+      },
+      {
+        "q": "Is this every Bundesliga champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list since 1963-64, see our Bundesliga champions list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Bundesliga"
+  },
+  {
+    "slug": "most-euros-wins",
+    "h1": "Countries With the Most European Championship Wins",
+    "title": "Most Euros Wins: Countries Ranked | Ball IQ",
+    "description": "Which country has won the most European Championships? Spain lead with four. Every nation to win the Euros, ranked by titles, with the years.",
+    "intro": [
+      "The UEFA European Championship has been held every four years since 1960, and only a handful of nations have ever conquered the continent. This page ranks every Euros winner by number of titles.",
+      "Spain stand alone at the top with 4, having pulled clear with their 2024 triumph. Germany follow with three (two as West Germany, one after reunification), while Italy and France are the only other multiple winners."
+    ],
+    "columns": [
+      "Rank",
+      "Country",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Spain",
+        "4",
+        "1964, 2008, 2012, 2024"
+      ],
+      [
+        "2",
+        "Germany",
+        "3",
+        "1972, 1980, 1996"
+      ],
+      [
+        "3",
+        "France",
+        "2",
+        "1984, 2000"
+      ],
+      [
+        "3",
+        "Italy",
+        "2",
+        "1968, 2020"
+      ],
+      [
+        "5",
+        "Czechoslovakia",
+        "1",
+        "1976"
+      ],
+      [
+        "5",
+        "Denmark",
+        "1",
+        "1992"
+      ],
+      [
+        "5",
+        "Greece",
+        "1",
+        "2004"
+      ],
+      [
+        "5",
+        "Netherlands",
+        "1",
+        "1988"
+      ],
+      [
+        "5",
+        "Portugal",
+        "1",
+        "2016"
+      ],
+      [
+        "5",
+        "Soviet Union",
+        "1",
+        "1960"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which country has won the most Euros?",
+        "a": "Spain have won the most European Championships, with 4 (1964, 2008, 2012 and 2024). Germany are second with three."
+      },
+      {
+        "q": "How many Euros have Germany won?",
+        "a": "Three — in 1972 and 1980 as West Germany, and in 1996 as a reunified Germany. That puts them second behind Spain."
+      },
+      {
+        "q": "Is this every Euros winner?",
+        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our European Championship winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Euros"
   }
 ];
