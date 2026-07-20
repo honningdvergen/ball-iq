@@ -376,6 +376,7 @@ function renderFaq(faq, extra) {
 const AD_SLOTS = {
   // afterQA: '1234567890',
   // afterFaq: '0987654321',
+  // listInline: '1122334455',  // in-table slot on long /lists pages (every ~20 rows)
 };
 
 // The loader is only emitted when real slots exist AND the page type carries
@@ -1168,10 +1169,24 @@ function buildListPage(cfg, clubPages, playerPages, catPages) {
     ],
   });
   const asOf = cfg.updated ? ` · verified ${cfg.updated}` : '';
+  // Long lists intersperse an in-table ad every AD_EVERY rows (dormant until an
+  // AD_SLOTS.listInline id exists — adSlot returns '' otherwise, so nothing ships
+  // until AdSense is approved). Kept modest + never above the first screen of data.
+  const AD_EVERY = 20;
+  const bodyRows = rows
+    .map((r, idx) => {
+      const tr = `<tr>${r.map((cell, i) => `<td${i === 0 ? ' class="lt-first"' : ''}>${esc(cell)}</td>`).join('')}</tr>`;
+      if ((idx + 1) % AD_EVERY === 0 && idx + 1 < rows.length) {
+        const ad = adSlot('listInline', 'Advertisement');
+        if (ad) return `${tr}\n<tr class="ltable-ad"><td colspan="${cols.length}">${ad}</td></tr>`;
+      }
+      return tr;
+    })
+    .join('\n');
   const table = `<div class="ltable-wrap"><table class="ltable">
 <thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>
 <tbody>
-${rows.map((r) => `<tr>${r.map((cell, i) => `<td${i === 0 ? ' class="lt-first"' : ''}>${esc(cell)}</td>`).join('')}</tr>`).join('\n')}
+${bodyRows}
 </tbody></table></div>`;
   const style = `<style>
   .ltable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
@@ -1181,6 +1196,8 @@ ${rows.map((r) => `<tr>${r.map((cell, i) => `<td${i === 0 ? ' class="lt-first"' 
   .ltable tbody tr:last-child td{border-bottom:0}
   .ltable tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
   .ltable .lt-first{font-weight:700;color:#fff;white-space:nowrap}
+  .ltable-ad td{padding:12px 14px;background:rgba(255,255,255,.02)}
+  .ltable-ad td .ad-slot{margin:0}
   </style>`;
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
