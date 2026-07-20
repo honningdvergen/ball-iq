@@ -255,7 +255,7 @@ function appStoreBadge() {
 
 const NAV = `<header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right"><a class="nav-link" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-cta" href="${SITE.appStore}" rel="noopener" target="_blank">Get the app</a></div>
+<div class="nav-right"><a class="nav-link" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.appStore}" rel="noopener" target="_blank">Get the app</a></div>
 </div></header>`;
 
 function crumbs(items) {

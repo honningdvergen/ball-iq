@@ -615,6 +615,7 @@ export default function MarketingHome() {
         <a href="/"><Brand /></a>
         <div className="mkt-nav-links" style={{ display: 'flex', alignItems: 'center' }}>
           <a href="#quizzes" className="mkt-link mkt-nav-sec">Quizzes</a>
+          <a href="/lists/" className="mkt-link mkt-nav-sec">Records</a>
           <a href="#modes" className="mkt-link mkt-nav-sec">Modes</a>
           <a href="#faq" className="mkt-link mkt-nav-sec">FAQ</a>
           <a href={PLAY} className="mkt-nav-play mkt-nav-cta">Play free</a>
