@@ -5490,5 +5490,3581 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Premier League"
+  },
+  {
+    "slug": "la-liga-top-scorers",
+    "h1": "La Liga Top Scorers: Every Pichichi Trophy Winner (1928–29 to 2024–25)",
+    "title": "La Liga Top Scorers: Every Pichichi Winner by Season | Ball IQ",
+    "description": "The complete list of La Liga Pichichi Trophy winners, season by season, from 1928–29 to 2024–25 — every top scorer, their club, and their goal tally.",
+    "intro": [
+      "The Pichichi Trophy, awarded each year by Spanish sports daily Marca, honours the top goalscorer in La Liga. Named after Athletic Bilbao legend Rafael 'Pichichi' Moreno, the award has crowned Spain's most lethal finishers since the league's inaugural 1928–29 season. This table gathers every winner in one place, from Paco Bienzobas's modest 14-goal haul to the record-shattering seasons of the modern era.",
+      "No name looms larger than Lionel Messi, who claimed a record eight Pichichis for Barcelona, including the astonishing 50-goal campaign of 2011–12 that still stands as the single-season La Liga record. Telmo Zarra and Hugo Sánchez each won it five times, while the Messi–Cristiano Ronaldo duopoly defined the 2010s before newcomers began breaking through again.",
+      "Recent seasons have reopened the race. Robert Lewandowski took the 2022–23 award in his debut Barcelona campaign, Girona's Artem Dovbyk stunned the giants in 2023–24, and Kylian Mbappé announced his Real Madrid arrival by topping the charts with 31 goals in 2024–25."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1928–29",
+        "Paco Bienzobas",
+        "Real Sociedad",
+        "14"
+      ],
+      [
+        "1929–30",
+        "Guillermo Gorostiza",
+        "Athletic Bilbao",
+        "19"
+      ],
+      [
+        "1930–31",
+        "Bata",
+        "Athletic Bilbao",
+        "27"
+      ],
+      [
+        "1931–32",
+        "Guillermo Gorostiza",
+        "Athletic Bilbao",
+        "12"
+      ],
+      [
+        "1932–33",
+        "Manuel Olivares",
+        "Real Madrid",
+        "16"
+      ],
+      [
+        "1933–34",
+        "Isidro Lángara",
+        "Oviedo",
+        "27"
+      ],
+      [
+        "1934–35",
+        "Isidro Lángara",
+        "Oviedo",
+        "26"
+      ],
+      [
+        "1935–36",
+        "Isidro Lángara",
+        "Oviedo",
+        "28"
+      ],
+      [
+        "1939–40",
+        "Victorio Unamuno",
+        "Athletic Bilbao",
+        "20"
+      ],
+      [
+        "1940–41",
+        "Pruden",
+        "Atlético Madrid",
+        "30"
+      ],
+      [
+        "1941–42",
+        "Mundo",
+        "Valencia",
+        "27"
+      ],
+      [
+        "1942–43",
+        "Mariano Martín",
+        "Barcelona",
+        "32"
+      ],
+      [
+        "1943–44",
+        "Mundo",
+        "Valencia",
+        "27"
+      ],
+      [
+        "1944–45",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "19"
+      ],
+      [
+        "1945–46",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "24"
+      ],
+      [
+        "1946–47",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "34"
+      ],
+      [
+        "1947–48",
+        "Pahiño",
+        "Celta Vigo",
+        "23"
+      ],
+      [
+        "1948–49",
+        "César Rodríguez",
+        "Barcelona",
+        "28"
+      ],
+      [
+        "1949–50",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "25"
+      ],
+      [
+        "1950–51",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "38"
+      ],
+      [
+        "1951–52",
+        "Pahiño",
+        "Real Madrid",
+        "28"
+      ],
+      [
+        "1952–53",
+        "Telmo Zarra",
+        "Athletic Bilbao",
+        "24"
+      ],
+      [
+        "1953–54",
+        "Alfredo Di Stéfano",
+        "Real Madrid",
+        "27"
+      ],
+      [
+        "1954–55",
+        "Juan Arza",
+        "Sevilla",
+        "28"
+      ],
+      [
+        "1955–56",
+        "Alfredo Di Stéfano",
+        "Real Madrid",
+        "24"
+      ],
+      [
+        "1956–57",
+        "Alfredo Di Stéfano",
+        "Real Madrid",
+        "31"
+      ],
+      [
+        "1957–58",
+        "Alfredo Di Stéfano (shared)",
+        "Real Madrid",
+        "19"
+      ],
+      [
+        "1958–59",
+        "Alfredo Di Stéfano",
+        "Real Madrid",
+        "23"
+      ],
+      [
+        "1959–60",
+        "Ferenc Puskás",
+        "Real Madrid",
+        "26"
+      ],
+      [
+        "1960–61",
+        "Ferenc Puskás",
+        "Real Madrid",
+        "27"
+      ],
+      [
+        "1961–62",
+        "Juan Seminario",
+        "Zaragoza",
+        "25"
+      ],
+      [
+        "1962–63",
+        "Ferenc Puskás",
+        "Real Madrid",
+        "26"
+      ],
+      [
+        "1963–64",
+        "Ferenc Puskás",
+        "Real Madrid",
+        "20"
+      ],
+      [
+        "1964–65",
+        "Cayetano Ré",
+        "Barcelona",
+        "25"
+      ],
+      [
+        "1965–66",
+        "Vavá II",
+        "Elche",
+        "19"
+      ],
+      [
+        "1966–67",
+        "Waldo",
+        "Valencia",
+        "24"
+      ],
+      [
+        "1967–68",
+        "Fidel Uriarte",
+        "Athletic Bilbao",
+        "22"
+      ],
+      [
+        "1968–69",
+        "José Eulogio Gárate (shared)",
+        "Atlético Madrid",
+        "14"
+      ],
+      [
+        "1969–70",
+        "José Eulogio Gárate (shared)",
+        "Atlético Madrid",
+        "16"
+      ],
+      [
+        "1970–71",
+        "José Eulogio Gárate (shared)",
+        "Atlético Madrid",
+        "17"
+      ],
+      [
+        "1971–72",
+        "Enrique Porta",
+        "Granada",
+        "20"
+      ],
+      [
+        "1972–73",
+        "Marianín",
+        "Oviedo",
+        "19"
+      ],
+      [
+        "1973–74",
+        "Quini",
+        "Sporting Gijón",
+        "20"
+      ],
+      [
+        "1974–75",
+        "Carlos",
+        "Athletic Bilbao",
+        "19"
+      ],
+      [
+        "1975–76",
+        "Quini",
+        "Sporting Gijón",
+        "18"
+      ],
+      [
+        "1976–77",
+        "Mario Kempes",
+        "Valencia",
+        "24"
+      ],
+      [
+        "1977–78",
+        "Mario Kempes",
+        "Valencia",
+        "28"
+      ],
+      [
+        "1978–79",
+        "Hans Krankl",
+        "Barcelona",
+        "29"
+      ],
+      [
+        "1979–80",
+        "Quini",
+        "Sporting Gijón",
+        "24"
+      ],
+      [
+        "1980–81",
+        "Quini",
+        "Barcelona",
+        "20"
+      ],
+      [
+        "1981–82",
+        "Quini",
+        "Barcelona",
+        "26"
+      ],
+      [
+        "1982–83",
+        "Poli Rincón",
+        "Real Betis",
+        "20"
+      ],
+      [
+        "1983–84",
+        "Jorge da Silva (shared)",
+        "Valladolid",
+        "17"
+      ],
+      [
+        "1984–85",
+        "Hugo Sánchez",
+        "Atlético Madrid",
+        "19"
+      ],
+      [
+        "1985–86",
+        "Hugo Sánchez",
+        "Real Madrid",
+        "22"
+      ],
+      [
+        "1986–87",
+        "Hugo Sánchez",
+        "Real Madrid",
+        "34"
+      ],
+      [
+        "1987–88",
+        "Hugo Sánchez",
+        "Real Madrid",
+        "29"
+      ],
+      [
+        "1988–89",
+        "Baltazar",
+        "Atlético Madrid",
+        "35"
+      ],
+      [
+        "1989–90",
+        "Hugo Sánchez",
+        "Real Madrid",
+        "38"
+      ],
+      [
+        "1990–91",
+        "Emilio Butragueño",
+        "Real Madrid",
+        "19"
+      ],
+      [
+        "1991–92",
+        "Manolo",
+        "Atlético Madrid",
+        "27"
+      ],
+      [
+        "1992–93",
+        "Bebeto",
+        "Deportivo La Coruña",
+        "29"
+      ],
+      [
+        "1993–94",
+        "Romário",
+        "Barcelona",
+        "30"
+      ],
+      [
+        "1994–95",
+        "Iván Zamorano",
+        "Real Madrid",
+        "28"
+      ],
+      [
+        "1995–96",
+        "Juan Antonio Pizzi",
+        "Tenerife",
+        "31"
+      ],
+      [
+        "1996–97",
+        "Ronaldo",
+        "Barcelona",
+        "34"
+      ],
+      [
+        "1997–98",
+        "Christian Vieri",
+        "Atlético Madrid",
+        "24"
+      ],
+      [
+        "1998–99",
+        "Raúl",
+        "Real Madrid",
+        "25"
+      ],
+      [
+        "1999–2000",
+        "Salva Ballesta",
+        "Racing Santander",
+        "27"
+      ],
+      [
+        "2000–01",
+        "Raúl",
+        "Real Madrid",
+        "24"
+      ],
+      [
+        "2001–02",
+        "Diego Tristán",
+        "Deportivo La Coruña",
+        "21"
+      ],
+      [
+        "2002–03",
+        "Roy Makaay",
+        "Deportivo La Coruña",
+        "29"
+      ],
+      [
+        "2003–04",
+        "Ronaldo",
+        "Real Madrid",
+        "25"
+      ],
+      [
+        "2004–05",
+        "Diego Forlán",
+        "Villarreal",
+        "25"
+      ],
+      [
+        "2005–06",
+        "Samuel Eto'o",
+        "Barcelona",
+        "26"
+      ],
+      [
+        "2006–07",
+        "Ruud van Nistelrooy",
+        "Real Madrid",
+        "25"
+      ],
+      [
+        "2007–08",
+        "Dani Güiza",
+        "Mallorca",
+        "27"
+      ],
+      [
+        "2008–09",
+        "Diego Forlán",
+        "Atlético Madrid",
+        "32"
+      ],
+      [
+        "2009–10",
+        "Lionel Messi",
+        "Barcelona",
+        "34"
+      ],
+      [
+        "2010–11",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "40"
+      ],
+      [
+        "2011–12",
+        "Lionel Messi",
+        "Barcelona",
+        "50"
+      ],
+      [
+        "2012–13",
+        "Lionel Messi",
+        "Barcelona",
+        "46"
+      ],
+      [
+        "2013–14",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "31"
+      ],
+      [
+        "2014–15",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "48"
+      ],
+      [
+        "2015–16",
+        "Luis Suárez",
+        "Barcelona",
+        "40"
+      ],
+      [
+        "2016–17",
+        "Lionel Messi",
+        "Barcelona",
+        "37"
+      ],
+      [
+        "2017–18",
+        "Lionel Messi",
+        "Barcelona",
+        "34"
+      ],
+      [
+        "2018–19",
+        "Lionel Messi",
+        "Barcelona",
+        "36"
+      ],
+      [
+        "2019–20",
+        "Lionel Messi",
+        "Barcelona",
+        "25"
+      ],
+      [
+        "2020–21",
+        "Lionel Messi",
+        "Barcelona",
+        "30"
+      ],
+      [
+        "2021–22",
+        "Karim Benzema",
+        "Real Madrid",
+        "27"
+      ],
+      [
+        "2022–23",
+        "Robert Lewandowski",
+        "Barcelona",
+        "23"
+      ],
+      [
+        "2023–24",
+        "Artem Dovbyk",
+        "Girona",
+        "24"
+      ],
+      [
+        "2024–25",
+        "Kylian Mbappé",
+        "Real Madrid",
+        "31"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most Pichichi Trophies?",
+        "a": "Lionel Messi holds the record with eight Pichichi Trophies, all with Barcelona (2009–10, 2011–12, 2012–13, and every season from 2016–17 to 2020–21). Telmo Zarra and Hugo Sánchez each won it five times."
+      },
+      {
+        "q": "What is the most goals scored in a single La Liga season?",
+        "a": "Lionel Messi set the record with 50 goals in the 2011–12 season. His 46 goals in 2012–13 and Cristiano Ronaldo's 48 in 2014–15 are the next-highest single-season Pichichi totals."
+      },
+      {
+        "q": "Who won the Pichichi in the 2024–25 season?",
+        "a": "Kylian Mbappé won the 2024–25 Pichichi in his debut season for Real Madrid, scoring 31 La Liga goals — six clear of runner-up Robert Lewandowski — and also claiming the European Golden Boot."
+      },
+      {
+        "q": "Has any player outside Barcelona or Real Madrid won the Pichichi recently?",
+        "a": "Yes. Girona's Artem Dovbyk won the 2023–24 Pichichi with 24 goals, the first winner from outside the two giants since Diego Forlán of Atlético Madrid in 2008–09."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "La Liga"
+  },
+  {
+    "slug": "serie-a-top-scorers",
+    "h1": "Serie A Top Scorers: Every Capocannoniere Since 1929-30",
+    "title": "Serie A Top Scorers (Capocannoniere) by Season, 1929-2025 | Ball IQ",
+    "description": "The complete list of Serie A top scorers (Capocannoniere) for every season from 1929-30 to 2024-25 — player, club and goal tally, with joint winners.",
+    "intro": [
+      "The Capocannoniere is the award given to the leading goalscorer in Italy's Serie A each season. Since the league adopted its single-division round-robin format in 1929-30, the title has traced the arc of Italian football — from the marksmen of the pre-war Ambrosiana-Inter and Juventus sides to the imported goal machines of the modern game.",
+      "No footballer has dominated the charts quite like Gunnar Nordahl, the Swedish AC Milan striker who claimed the honour five times between 1949 and 1955 and set benchmarks that stood for decades. Later eras produced their own serial winners, from Michel Platini's hat-trick of titles at Juventus in the mid-1980s to Ciro Immobile, whose four crowns for Lazio include a record-equalling 36-goal haul in 2019-20.",
+      "This table lists every Capocannoniere from 1929-30 through 2024-25, with the winning club and goal total. Seasons are shared where two or more players finished level, and the wartime years of 1943-44 and 1944-45 are omitted because no official top-flight championship or scoring title was contested."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1929-30",
+        "Giuseppe Meazza",
+        "Ambrosiana-Inter",
+        "31"
+      ],
+      [
+        "1930-31",
+        "Rodolfo Volk",
+        "Roma",
+        "29"
+      ],
+      [
+        "1931-32",
+        "Angelo Schiavio / Pedro Petrone",
+        "Bologna / Fiorentina",
+        "25"
+      ],
+      [
+        "1932-33",
+        "Felice Borel",
+        "Juventus",
+        "29"
+      ],
+      [
+        "1933-34",
+        "Felice Borel",
+        "Juventus",
+        "32"
+      ],
+      [
+        "1934-35",
+        "Enrique Guaita",
+        "Roma",
+        "28"
+      ],
+      [
+        "1935-36",
+        "Giuseppe Meazza",
+        "Ambrosiana-Inter",
+        "25"
+      ],
+      [
+        "1936-37",
+        "Silvio Piola",
+        "Lazio",
+        "21"
+      ],
+      [
+        "1937-38",
+        "Giuseppe Meazza",
+        "Ambrosiana-Inter",
+        "20"
+      ],
+      [
+        "1938-39",
+        "Aldo Boffi / Ettore Puricelli",
+        "AC Milan / Bologna",
+        "19"
+      ],
+      [
+        "1939-40",
+        "Aldo Boffi",
+        "AC Milan",
+        "24"
+      ],
+      [
+        "1940-41",
+        "Ettore Puricelli",
+        "Bologna",
+        "22"
+      ],
+      [
+        "1941-42",
+        "Aldo Boffi",
+        "AC Milan",
+        "22"
+      ],
+      [
+        "1942-43",
+        "Silvio Piola",
+        "Lazio",
+        "21"
+      ],
+      [
+        "1945-46",
+        "Guglielmo Gabetto",
+        "Torino",
+        "22"
+      ],
+      [
+        "1946-47",
+        "Valentino Mazzola",
+        "Torino",
+        "29"
+      ],
+      [
+        "1947-48",
+        "Giampiero Boniperti",
+        "Juventus",
+        "27"
+      ],
+      [
+        "1948-49",
+        "István Nyers",
+        "Inter",
+        "26"
+      ],
+      [
+        "1949-50",
+        "Gunnar Nordahl",
+        "AC Milan",
+        "35"
+      ],
+      [
+        "1950-51",
+        "Gunnar Nordahl",
+        "AC Milan",
+        "34"
+      ],
+      [
+        "1951-52",
+        "John Hansen",
+        "Juventus",
+        "30"
+      ],
+      [
+        "1952-53",
+        "Gunnar Nordahl",
+        "AC Milan",
+        "26"
+      ],
+      [
+        "1953-54",
+        "Gunnar Nordahl",
+        "AC Milan",
+        "23"
+      ],
+      [
+        "1954-55",
+        "Gunnar Nordahl",
+        "AC Milan",
+        "27"
+      ],
+      [
+        "1955-56",
+        "Gino Pivatelli",
+        "Bologna",
+        "29"
+      ],
+      [
+        "1956-57",
+        "Dino da Costa",
+        "Roma",
+        "22"
+      ],
+      [
+        "1957-58",
+        "John Charles",
+        "Juventus",
+        "28"
+      ],
+      [
+        "1958-59",
+        "Antonio Angelillo",
+        "Inter",
+        "33"
+      ],
+      [
+        "1959-60",
+        "Omar Sívori",
+        "Juventus",
+        "28"
+      ],
+      [
+        "1960-61",
+        "Sergio Brighenti",
+        "Sampdoria",
+        "27"
+      ],
+      [
+        "1961-62",
+        "José Altafini / Aurelio Milani",
+        "AC Milan / Fiorentina",
+        "22"
+      ],
+      [
+        "1962-63",
+        "Harald Nielsen / Pedro Manfredini",
+        "Bologna / Roma",
+        "19"
+      ],
+      [
+        "1963-64",
+        "Harald Nielsen",
+        "Bologna",
+        "21"
+      ],
+      [
+        "1964-65",
+        "Sandro Mazzola / Alberto Orlando",
+        "Inter / Fiorentina",
+        "17"
+      ],
+      [
+        "1965-66",
+        "Luís Vinício",
+        "Vicenza",
+        "25"
+      ],
+      [
+        "1966-67",
+        "Gigi Riva",
+        "Cagliari",
+        "18"
+      ],
+      [
+        "1967-68",
+        "Pierino Prati",
+        "AC Milan",
+        "15"
+      ],
+      [
+        "1968-69",
+        "Gigi Riva",
+        "Cagliari",
+        "21"
+      ],
+      [
+        "1969-70",
+        "Gigi Riva",
+        "Cagliari",
+        "21"
+      ],
+      [
+        "1970-71",
+        "Roberto Boninsegna",
+        "Inter",
+        "24"
+      ],
+      [
+        "1971-72",
+        "Roberto Boninsegna",
+        "Inter",
+        "22"
+      ],
+      [
+        "1972-73",
+        "Giuseppe Savoldi / Paolino Pulici / Gianni Rivera",
+        "Bologna / Torino / AC Milan",
+        "17"
+      ],
+      [
+        "1973-74",
+        "Giorgio Chinaglia",
+        "Lazio",
+        "24"
+      ],
+      [
+        "1974-75",
+        "Paolino Pulici",
+        "Torino",
+        "18"
+      ],
+      [
+        "1975-76",
+        "Paolino Pulici",
+        "Torino",
+        "21"
+      ],
+      [
+        "1976-77",
+        "Francesco Graziani",
+        "Torino",
+        "21"
+      ],
+      [
+        "1977-78",
+        "Paolo Rossi",
+        "Vicenza",
+        "24"
+      ],
+      [
+        "1978-79",
+        "Bruno Giordano",
+        "Lazio",
+        "19"
+      ],
+      [
+        "1979-80",
+        "Roberto Bettega",
+        "Juventus",
+        "16"
+      ],
+      [
+        "1980-81",
+        "Roberto Pruzzo",
+        "Roma",
+        "18"
+      ],
+      [
+        "1981-82",
+        "Roberto Pruzzo",
+        "Roma",
+        "15"
+      ],
+      [
+        "1982-83",
+        "Michel Platini",
+        "Juventus",
+        "16"
+      ],
+      [
+        "1983-84",
+        "Michel Platini",
+        "Juventus",
+        "20"
+      ],
+      [
+        "1984-85",
+        "Michel Platini",
+        "Juventus",
+        "18"
+      ],
+      [
+        "1985-86",
+        "Roberto Pruzzo",
+        "Roma",
+        "19"
+      ],
+      [
+        "1986-87",
+        "Pietro Paolo Virdis",
+        "AC Milan",
+        "17"
+      ],
+      [
+        "1987-88",
+        "Diego Maradona",
+        "Napoli",
+        "15"
+      ],
+      [
+        "1988-89",
+        "Aldo Serena",
+        "Inter",
+        "22"
+      ],
+      [
+        "1989-90",
+        "Marco van Basten",
+        "AC Milan",
+        "19"
+      ],
+      [
+        "1990-91",
+        "Gianluca Vialli",
+        "Sampdoria",
+        "19"
+      ],
+      [
+        "1991-92",
+        "Marco van Basten",
+        "AC Milan",
+        "25"
+      ],
+      [
+        "1992-93",
+        "Giuseppe Signori",
+        "Lazio",
+        "26"
+      ],
+      [
+        "1993-94",
+        "Giuseppe Signori",
+        "Lazio",
+        "23"
+      ],
+      [
+        "1994-95",
+        "Gabriel Batistuta",
+        "Fiorentina",
+        "26"
+      ],
+      [
+        "1995-96",
+        "Igor Protti / Giuseppe Signori",
+        "Bari / Lazio",
+        "24"
+      ],
+      [
+        "1996-97",
+        "Filippo Inzaghi",
+        "Atalanta",
+        "24"
+      ],
+      [
+        "1997-98",
+        "Oliver Bierhoff",
+        "Udinese",
+        "27"
+      ],
+      [
+        "1998-99",
+        "Márcio Amoroso",
+        "Udinese",
+        "22"
+      ],
+      [
+        "1999-2000",
+        "Andriy Shevchenko",
+        "AC Milan",
+        "24"
+      ],
+      [
+        "2000-01",
+        "Hernán Crespo",
+        "Lazio",
+        "26"
+      ],
+      [
+        "2001-02",
+        "David Trezeguet / Dario Hübner",
+        "Juventus / Piacenza",
+        "24"
+      ],
+      [
+        "2002-03",
+        "Christian Vieri",
+        "Inter",
+        "24"
+      ],
+      [
+        "2003-04",
+        "Andriy Shevchenko",
+        "AC Milan",
+        "24"
+      ],
+      [
+        "2004-05",
+        "Cristiano Lucarelli",
+        "Livorno",
+        "24"
+      ],
+      [
+        "2005-06",
+        "Luca Toni",
+        "Fiorentina",
+        "31"
+      ],
+      [
+        "2006-07",
+        "Francesco Totti",
+        "Roma",
+        "26"
+      ],
+      [
+        "2007-08",
+        "Alessandro Del Piero",
+        "Juventus",
+        "21"
+      ],
+      [
+        "2008-09",
+        "Zlatan Ibrahimović",
+        "Inter",
+        "25"
+      ],
+      [
+        "2009-10",
+        "Antonio Di Natale",
+        "Udinese",
+        "29"
+      ],
+      [
+        "2010-11",
+        "Antonio Di Natale",
+        "Udinese",
+        "28"
+      ],
+      [
+        "2011-12",
+        "Zlatan Ibrahimović",
+        "AC Milan",
+        "28"
+      ],
+      [
+        "2012-13",
+        "Edinson Cavani",
+        "Napoli",
+        "29"
+      ],
+      [
+        "2013-14",
+        "Ciro Immobile",
+        "Torino",
+        "22"
+      ],
+      [
+        "2014-15",
+        "Mauro Icardi / Luca Toni",
+        "Inter / Hellas Verona",
+        "22"
+      ],
+      [
+        "2015-16",
+        "Gonzalo Higuaín",
+        "Napoli",
+        "36"
+      ],
+      [
+        "2016-17",
+        "Edin Džeko",
+        "Roma",
+        "29"
+      ],
+      [
+        "2017-18",
+        "Mauro Icardi / Ciro Immobile",
+        "Inter / Lazio",
+        "29"
+      ],
+      [
+        "2018-19",
+        "Fabio Quagliarella",
+        "Sampdoria",
+        "26"
+      ],
+      [
+        "2019-20",
+        "Ciro Immobile",
+        "Lazio",
+        "36"
+      ],
+      [
+        "2020-21",
+        "Cristiano Ronaldo",
+        "Juventus",
+        "29"
+      ],
+      [
+        "2021-22",
+        "Ciro Immobile",
+        "Lazio",
+        "27"
+      ],
+      [
+        "2022-23",
+        "Victor Osimhen",
+        "Napoli",
+        "26"
+      ],
+      [
+        "2023-24",
+        "Lautaro Martínez",
+        "Inter",
+        "24"
+      ],
+      [
+        "2024-25",
+        "Mateo Retegui",
+        "Atalanta",
+        "25"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the Serie A Capocannoniere the most times?",
+        "a": "Gunnar Nordahl holds the record with five Capocannoniere titles, all with AC Milan between 1949-50 and 1954-55. Giuseppe Meazza, Silvio Piola, Michel Platini, Roberto Pruzzo and Ciro Immobile are among those who have won it multiple times."
+      },
+      {
+        "q": "What is the record for most goals in a single Serie A season?",
+        "a": "In the modern era, Gonzalo Higuaín (2015-16) and Ciro Immobile (2019-20) share the record with 36 goals each, both achieved across a 38-game season. Higuaín's total broke Gino Rossetti's long-standing single-season mark from the 1920s."
+      },
+      {
+        "q": "Who was the Serie A top scorer in 2024-25?",
+        "a": "Mateo Retegui of Atalanta won the 2024-25 Capocannoniere with 25 goals, finishing six clear of Juventus and Fiorentina forward Moise Kean. He was only the second Atalanta player to top the Serie A charts, after Filippo Inzaghi in 1996-97."
+      },
+      {
+        "q": "Why are some seasons missing from the list?",
+        "a": "The 1943-44 and 1944-45 seasons are omitted because World War II halted the official national championship; a regional wartime tournament in 1943-44 is not recognised as an official Serie A title. The league resumed in 1945-46."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Serie A"
+  },
+  {
+    "slug": "bundesliga-top-scorers",
+    "h1": "Bundesliga Top Scorers by Season (1963-64 to 2024-25)",
+    "title": "Bundesliga Top Scorers by Season: Every Torschützenkönig | Ball IQ",
+    "description": "The complete list of Bundesliga top scorers (Torschützenkönig) for every season from 1963-64 to 2024-25, with player, club and goal tally.",
+    "intro": [
+      "Since the Bundesliga kicked off in 1963-64, the league's leading marksman has been crowned Torschützenkönig — and from 1966 onward handed the Kicker Torjägerkanone, the miniature cannon trophy that remains German football's most coveted individual prize for a striker. This table tracks every winner across more than six decades, from Uwe Seeler's opening-season 30 goals to Harry Kane's back-to-back cannons in Bavaria.",
+      "Two names tower over the rest. Gerd Müller bagged the award seven times for Bayern Munich, including a staggering 40-goal haul in 1971-72 that stood as the single-season record for nearly half a century. Robert Lewandowski matched Müller's seven titles and finally broke that record with 41 goals in 2020-21, capping a run of five straight cannons that no one had managed before.",
+      "Ties are part of the story too: several seasons ended with two players sharing top billing, from Lothar Emmerich and a young Gerd Müller in 1966-67 to Niclas Füllkrug and Christopher Nkunku splitting the honour in a low-scoring 2022-23. Every shared crown is listed below exactly as the record stands."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1963-64",
+        "Uwe Seeler",
+        "Hamburger SV",
+        "30"
+      ],
+      [
+        "1964-65",
+        "Rudolf Brunnenmeier",
+        "1860 Munich",
+        "24"
+      ],
+      [
+        "1965-66",
+        "Lothar Emmerich",
+        "Borussia Dortmund",
+        "31"
+      ],
+      [
+        "1966-67",
+        "Lothar Emmerich / Gerd Müller",
+        "Borussia Dortmund / Bayern Munich",
+        "28"
+      ],
+      [
+        "1967-68",
+        "Johannes Löhr",
+        "1. FC Köln",
+        "27"
+      ],
+      [
+        "1968-69",
+        "Gerd Müller",
+        "Bayern Munich",
+        "30"
+      ],
+      [
+        "1969-70",
+        "Gerd Müller",
+        "Bayern Munich",
+        "38"
+      ],
+      [
+        "1970-71",
+        "Lothar Kobluhn",
+        "Rot-Weiß Oberhausen",
+        "24"
+      ],
+      [
+        "1971-72",
+        "Gerd Müller",
+        "Bayern Munich",
+        "40"
+      ],
+      [
+        "1972-73",
+        "Gerd Müller",
+        "Bayern Munich",
+        "36"
+      ],
+      [
+        "1973-74",
+        "Jupp Heynckes / Gerd Müller",
+        "Borussia Mönchengladbach / Bayern Munich",
+        "30"
+      ],
+      [
+        "1974-75",
+        "Jupp Heynckes",
+        "Borussia Mönchengladbach",
+        "27"
+      ],
+      [
+        "1975-76",
+        "Klaus Fischer",
+        "FC Schalke 04",
+        "29"
+      ],
+      [
+        "1976-77",
+        "Dieter Müller",
+        "1. FC Köln",
+        "34"
+      ],
+      [
+        "1977-78",
+        "Dieter Müller / Gerd Müller",
+        "1. FC Köln / Bayern Munich",
+        "24"
+      ],
+      [
+        "1978-79",
+        "Klaus Allofs",
+        "Fortuna Düsseldorf",
+        "22"
+      ],
+      [
+        "1979-80",
+        "Karl-Heinz Rummenigge",
+        "Bayern Munich",
+        "26"
+      ],
+      [
+        "1980-81",
+        "Karl-Heinz Rummenigge",
+        "Bayern Munich",
+        "29"
+      ],
+      [
+        "1981-82",
+        "Horst Hrubesch",
+        "Hamburger SV",
+        "27"
+      ],
+      [
+        "1982-83",
+        "Rudi Völler",
+        "Werder Bremen",
+        "23"
+      ],
+      [
+        "1983-84",
+        "Karl-Heinz Rummenigge",
+        "Bayern Munich",
+        "26"
+      ],
+      [
+        "1984-85",
+        "Klaus Allofs",
+        "1. FC Köln",
+        "26"
+      ],
+      [
+        "1985-86",
+        "Stefan Kuntz",
+        "VfL Bochum",
+        "22"
+      ],
+      [
+        "1986-87",
+        "Uwe Rahn",
+        "Borussia Mönchengladbach",
+        "24"
+      ],
+      [
+        "1987-88",
+        "Jürgen Klinsmann",
+        "VfB Stuttgart",
+        "19"
+      ],
+      [
+        "1988-89",
+        "Thomas Allofs / Roland Wohlfarth",
+        "1. FC Köln / Bayern Munich",
+        "17"
+      ],
+      [
+        "1989-90",
+        "Jørn Andersen",
+        "Eintracht Frankfurt",
+        "18"
+      ],
+      [
+        "1990-91",
+        "Roland Wohlfarth",
+        "Bayern Munich",
+        "21"
+      ],
+      [
+        "1991-92",
+        "Fritz Walter",
+        "VfB Stuttgart",
+        "22"
+      ],
+      [
+        "1992-93",
+        "Ulf Kirsten / Tony Yeboah",
+        "Bayer Leverkusen / Eintracht Frankfurt",
+        "20"
+      ],
+      [
+        "1993-94",
+        "Stefan Kuntz / Tony Yeboah",
+        "1. FC Kaiserslautern / Eintracht Frankfurt",
+        "18"
+      ],
+      [
+        "1994-95",
+        "Mario Basler / Heiko Herrlich",
+        "Werder Bremen / Borussia Mönchengladbach",
+        "20"
+      ],
+      [
+        "1995-96",
+        "Fredi Bobic",
+        "VfB Stuttgart",
+        "17"
+      ],
+      [
+        "1996-97",
+        "Ulf Kirsten",
+        "Bayer Leverkusen",
+        "22"
+      ],
+      [
+        "1997-98",
+        "Ulf Kirsten",
+        "Bayer Leverkusen",
+        "22"
+      ],
+      [
+        "1998-99",
+        "Michael Preetz",
+        "Hertha BSC",
+        "23"
+      ],
+      [
+        "1999-2000",
+        "Martin Max",
+        "1860 Munich",
+        "19"
+      ],
+      [
+        "2000-01",
+        "Sergej Barbarez / Ebbe Sand",
+        "Hamburger SV / FC Schalke 04",
+        "22"
+      ],
+      [
+        "2001-02",
+        "Márcio Amoroso / Martin Max",
+        "Borussia Dortmund / 1860 Munich",
+        "18"
+      ],
+      [
+        "2002-03",
+        "Thomas Christiansen / Giovane Élber",
+        "VfL Bochum / Bayern Munich",
+        "21"
+      ],
+      [
+        "2003-04",
+        "Aílton",
+        "Werder Bremen",
+        "28"
+      ],
+      [
+        "2004-05",
+        "Marek Mintál",
+        "1. FC Nürnberg",
+        "24"
+      ],
+      [
+        "2005-06",
+        "Miroslav Klose",
+        "Werder Bremen",
+        "25"
+      ],
+      [
+        "2006-07",
+        "Theofanis Gekas",
+        "VfL Bochum",
+        "20"
+      ],
+      [
+        "2007-08",
+        "Luca Toni",
+        "Bayern Munich",
+        "24"
+      ],
+      [
+        "2008-09",
+        "Grafite",
+        "VfL Wolfsburg",
+        "28"
+      ],
+      [
+        "2009-10",
+        "Edin Džeko",
+        "VfL Wolfsburg",
+        "22"
+      ],
+      [
+        "2010-11",
+        "Mario Gómez",
+        "Bayern Munich",
+        "28"
+      ],
+      [
+        "2011-12",
+        "Klaas-Jan Huntelaar",
+        "FC Schalke 04",
+        "29"
+      ],
+      [
+        "2012-13",
+        "Stefan Kießling",
+        "Bayer Leverkusen",
+        "25"
+      ],
+      [
+        "2013-14",
+        "Robert Lewandowski",
+        "Borussia Dortmund",
+        "20"
+      ],
+      [
+        "2014-15",
+        "Alexander Meier",
+        "Eintracht Frankfurt",
+        "19"
+      ],
+      [
+        "2015-16",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "30"
+      ],
+      [
+        "2016-17",
+        "Pierre-Emerick Aubameyang",
+        "Borussia Dortmund",
+        "31"
+      ],
+      [
+        "2017-18",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "29"
+      ],
+      [
+        "2018-19",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "22"
+      ],
+      [
+        "2019-20",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "34"
+      ],
+      [
+        "2020-21",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "41"
+      ],
+      [
+        "2021-22",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "35"
+      ],
+      [
+        "2022-23",
+        "Niclas Füllkrug / Christopher Nkunku",
+        "Werder Bremen / RB Leipzig",
+        "16"
+      ],
+      [
+        "2023-24",
+        "Harry Kane",
+        "Bayern Munich",
+        "36"
+      ],
+      [
+        "2024-25",
+        "Harry Kane",
+        "Bayern Munich",
+        "26"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most Bundesliga top scorer awards?",
+        "a": "Gerd Müller and Robert Lewandowski share the record with seven Torschützenkönig titles each. Müller won his for Bayern Munich between 1967 and 1978, while Lewandowski claimed his with Borussia Dortmund and Bayern between 2014 and 2022, including a record five in a row."
+      },
+      {
+        "q": "What is the most goals scored in a single Bundesliga season?",
+        "a": "Robert Lewandowski holds the record with 41 goals for Bayern Munich in 2020-21, breaking Gerd Müller's long-standing mark of 40, set for Bayern in 1971-72."
+      },
+      {
+        "q": "Who was the Bundesliga top scorer in 2024-25?",
+        "a": "Harry Kane of Bayern Munich topped the charts with 26 goals, winning the Torjägerkanone for the second season running after his 36-goal debut campaign in 2023-24."
+      },
+      {
+        "q": "Can two players share the Bundesliga top scorer title?",
+        "a": "Yes. When two players finish level on goals, both are named Torschützenkönig. It has happened several times, including Lothar Emmerich and Gerd Müller in 1966-67 and Niclas Füllkrug and Christopher Nkunku in 2022-23."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Bundesliga"
+  },
+  {
+    "slug": "ligue-1-top-scorers",
+    "h1": "Ligue 1 Top Scorer Every Season (1932–33 to 2024–25)",
+    "title": "Ligue 1 Top Scorers by Season: Every Golden Boot Winner | Ball IQ",
+    "description": "The complete list of Ligue 1 top scorers for every season from 1932–33 to 2024–25 — player, club and goals, from Just Fontaine and Josip Skoblar to Kylian Mbappé.",
+    "intro": [
+      "France's top flight has crowned a leading marksman every season since its 1932–33 debut, and the roll call doubles as a history of European goalscoring. The early decades belonged to prolific imports and homegrown talents alike — Roger Courtois, Just Fontaine and the astonishing Josip Skoblar, whose 44 goals for Marseille in 1970–71 remain the single-season Ligue 1 record that no one has come close to touching since.",
+      "A handful of names recur like a drumbeat. Carlos Bianchi topped the charts five times in the 1970s across Reims and Paris Saint-Germain, Delio Onnis piled up goals for Monaco, Tours and Toulon, and Jean-Pierre Papin strung together five straight Golden Boots for Marseille from 1988 to 1992 — a run only Kylian Mbappé has since rivalled. Ties were common in the amateur and early professional eras, when two or even three players finished level and shared the honour.",
+      "The modern era is defined by Mbappé, who led the division in six of seven seasons before leaving for Real Madrid, twice edging Wissam Ben Yedder and once posting 33 goals. His departure blew the race open: in 2024–25 Ousmane Dembélé and Mason Greenwood both finished on 21, with Dembélé taking the Golden Boot on the penalties tiebreak. The table below lists every season's leading scorer, the club they scored for, and their final tally."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1932–33",
+        "Walter Kaiser / Robert Mercier",
+        "Rennes / Club Français",
+        "15"
+      ],
+      [
+        "1933–34",
+        "István Lukács",
+        "Sète",
+        "28"
+      ],
+      [
+        "1934–35",
+        "André Abegglen",
+        "Sochaux",
+        "30"
+      ],
+      [
+        "1935–36",
+        "Roger Courtois",
+        "Sochaux",
+        "34"
+      ],
+      [
+        "1936–37",
+        "Oskar Rohr",
+        "Strasbourg",
+        "30"
+      ],
+      [
+        "1937–38",
+        "Jean Nicolas",
+        "Rouen",
+        "26"
+      ],
+      [
+        "1938–39",
+        "Roger Courtois / Désiré Koranyi",
+        "Sochaux / Sète",
+        "27"
+      ],
+      [
+        "1945–46",
+        "René Bihel",
+        "Lille",
+        "28"
+      ],
+      [
+        "1946–47",
+        "Pierre Sinibaldi",
+        "Reims",
+        "33"
+      ],
+      [
+        "1947–48",
+        "Jean Baratte",
+        "Lille",
+        "31"
+      ],
+      [
+        "1948–49",
+        "Jean Baratte / Josef Humpál",
+        "Lille / Sochaux",
+        "26"
+      ],
+      [
+        "1949–50",
+        "Jean Grumellon",
+        "Rennes",
+        "25"
+      ],
+      [
+        "1950–51",
+        "Roger Piantoni / Jean Courteaux",
+        "Nancy / Nice",
+        "27"
+      ],
+      [
+        "1951–52",
+        "Gunnar Andersson",
+        "Marseille",
+        "31"
+      ],
+      [
+        "1952–53",
+        "Gunnar Andersson",
+        "Marseille",
+        "35"
+      ],
+      [
+        "1953–54",
+        "Édouard Kargu",
+        "Bordeaux",
+        "27"
+      ],
+      [
+        "1954–55",
+        "René Bliard",
+        "Reims",
+        "30"
+      ],
+      [
+        "1955–56",
+        "Thadée Cisowski",
+        "Racing Paris",
+        "31"
+      ],
+      [
+        "1956–57",
+        "Thadée Cisowski",
+        "Racing Paris",
+        "33"
+      ],
+      [
+        "1957–58",
+        "Just Fontaine",
+        "Reims",
+        "34"
+      ],
+      [
+        "1958–59",
+        "Thadée Cisowski",
+        "Racing Paris",
+        "30"
+      ],
+      [
+        "1959–60",
+        "Just Fontaine",
+        "Reims",
+        "28"
+      ],
+      [
+        "1960–61",
+        "Roger Piantoni",
+        "Reims",
+        "28"
+      ],
+      [
+        "1961–62",
+        "Sékou Touré",
+        "Montpellier",
+        "25"
+      ],
+      [
+        "1962–63",
+        "Serge Masnaghetti",
+        "Valenciennes",
+        "35"
+      ],
+      [
+        "1963–64",
+        "Ahmed Oudjani",
+        "Lens",
+        "30"
+      ],
+      [
+        "1964–65",
+        "Jacques Simon",
+        "Nantes",
+        "24"
+      ],
+      [
+        "1965–66",
+        "Philippe Gondet",
+        "Nantes",
+        "36"
+      ],
+      [
+        "1966–67",
+        "Hervé Revelli",
+        "Saint-Étienne",
+        "31"
+      ],
+      [
+        "1967–68",
+        "Étienne Sansonetti",
+        "Ajaccio",
+        "26"
+      ],
+      [
+        "1968–69",
+        "André Guy",
+        "Lyon",
+        "25"
+      ],
+      [
+        "1969–70",
+        "Hervé Revelli",
+        "Saint-Étienne",
+        "28"
+      ],
+      [
+        "1970–71",
+        "Josip Skoblar",
+        "Marseille",
+        "44"
+      ],
+      [
+        "1971–72",
+        "Josip Skoblar",
+        "Marseille",
+        "30"
+      ],
+      [
+        "1972–73",
+        "Josip Skoblar",
+        "Marseille",
+        "26"
+      ],
+      [
+        "1973–74",
+        "Carlos Bianchi",
+        "Reims",
+        "30"
+      ],
+      [
+        "1974–75",
+        "Delio Onnis",
+        "Monaco",
+        "30"
+      ],
+      [
+        "1975–76",
+        "Carlos Bianchi",
+        "Reims",
+        "34"
+      ],
+      [
+        "1976–77",
+        "Carlos Bianchi",
+        "Reims",
+        "28"
+      ],
+      [
+        "1977–78",
+        "Carlos Bianchi",
+        "Paris Saint-Germain",
+        "37"
+      ],
+      [
+        "1978–79",
+        "Carlos Bianchi",
+        "Paris Saint-Germain",
+        "27"
+      ],
+      [
+        "1979–80",
+        "Erwin Kostedde / Delio Onnis",
+        "Laval / Monaco",
+        "21"
+      ],
+      [
+        "1980–81",
+        "Delio Onnis",
+        "Tours",
+        "24"
+      ],
+      [
+        "1981–82",
+        "Delio Onnis",
+        "Tours",
+        "29"
+      ],
+      [
+        "1982–83",
+        "Vahid Halilhodžić",
+        "Nantes",
+        "27"
+      ],
+      [
+        "1983–84",
+        "Patrice Garande / Delio Onnis",
+        "Auxerre / Toulon",
+        "21"
+      ],
+      [
+        "1984–85",
+        "Vahid Halilhodžić",
+        "Nantes",
+        "28"
+      ],
+      [
+        "1985–86",
+        "Jules Bocandé",
+        "Metz",
+        "23"
+      ],
+      [
+        "1986–87",
+        "Bernard Zénier",
+        "Metz",
+        "18"
+      ],
+      [
+        "1987–88",
+        "Jean-Pierre Papin",
+        "Marseille",
+        "19"
+      ],
+      [
+        "1988–89",
+        "Jean-Pierre Papin",
+        "Marseille",
+        "22"
+      ],
+      [
+        "1989–90",
+        "Jean-Pierre Papin",
+        "Marseille",
+        "30"
+      ],
+      [
+        "1990–91",
+        "Jean-Pierre Papin",
+        "Marseille",
+        "23"
+      ],
+      [
+        "1991–92",
+        "Jean-Pierre Papin",
+        "Marseille",
+        "27"
+      ],
+      [
+        "1992–93",
+        "Alen Bokšić",
+        "Marseille",
+        "23"
+      ],
+      [
+        "1993–94",
+        "Roger Boli / Youri Djorkaeff / Nicolas Ouédec",
+        "Lens / Monaco / Nantes",
+        "20"
+      ],
+      [
+        "1994–95",
+        "Patrice Loko",
+        "Nantes",
+        "22"
+      ],
+      [
+        "1995–96",
+        "Sonny Anderson",
+        "Monaco",
+        "21"
+      ],
+      [
+        "1996–97",
+        "Stéphane Guivarc'h",
+        "Rennes",
+        "21"
+      ],
+      [
+        "1997–98",
+        "Stéphane Guivarc'h",
+        "Auxerre",
+        "21"
+      ],
+      [
+        "1998–99",
+        "Sylvain Wiltord",
+        "Bordeaux",
+        "22"
+      ],
+      [
+        "1999–2000",
+        "Sonny Anderson",
+        "Lyon",
+        "23"
+      ],
+      [
+        "2000–01",
+        "Sonny Anderson",
+        "Lyon",
+        "22"
+      ],
+      [
+        "2001–02",
+        "Djibril Cissé / Pauleta",
+        "Auxerre / Bordeaux",
+        "22"
+      ],
+      [
+        "2002–03",
+        "Shabani Nonda",
+        "Monaco",
+        "26"
+      ],
+      [
+        "2003–04",
+        "Djibril Cissé",
+        "Auxerre",
+        "26"
+      ],
+      [
+        "2004–05",
+        "Alexander Frei",
+        "Rennes",
+        "20"
+      ],
+      [
+        "2005–06",
+        "Pauleta",
+        "Paris Saint-Germain",
+        "21"
+      ],
+      [
+        "2006–07",
+        "Pauleta",
+        "Paris Saint-Germain",
+        "15"
+      ],
+      [
+        "2007–08",
+        "Karim Benzema",
+        "Lyon",
+        "20"
+      ],
+      [
+        "2008–09",
+        "André-Pierre Gignac",
+        "Toulouse",
+        "24"
+      ],
+      [
+        "2009–10",
+        "Mamadou Niang",
+        "Marseille",
+        "18"
+      ],
+      [
+        "2010–11",
+        "Moussa Sow",
+        "Lille",
+        "25"
+      ],
+      [
+        "2011–12",
+        "Olivier Giroud / Nenê",
+        "Montpellier / Paris Saint-Germain",
+        "21"
+      ],
+      [
+        "2012–13",
+        "Zlatan Ibrahimović",
+        "Paris Saint-Germain",
+        "30"
+      ],
+      [
+        "2013–14",
+        "Zlatan Ibrahimović",
+        "Paris Saint-Germain",
+        "26"
+      ],
+      [
+        "2014–15",
+        "Alexandre Lacazette",
+        "Lyon",
+        "27"
+      ],
+      [
+        "2015–16",
+        "Zlatan Ibrahimović",
+        "Paris Saint-Germain",
+        "38"
+      ],
+      [
+        "2016–17",
+        "Edinson Cavani",
+        "Paris Saint-Germain",
+        "35"
+      ],
+      [
+        "2017–18",
+        "Edinson Cavani",
+        "Paris Saint-Germain",
+        "28"
+      ],
+      [
+        "2018–19",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "33"
+      ],
+      [
+        "2019–20",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "18"
+      ],
+      [
+        "2020–21",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "27"
+      ],
+      [
+        "2021–22",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "28"
+      ],
+      [
+        "2022–23",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "29"
+      ],
+      [
+        "2023–24",
+        "Kylian Mbappé",
+        "Paris Saint-Germain",
+        "27"
+      ],
+      [
+        "2024–25",
+        "Ousmane Dembélé",
+        "Paris Saint-Germain",
+        "21"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has scored the most goals in a single Ligue 1 season?",
+        "a": "Josip Skoblar holds the record with 44 goals for Marseille in 1970–71, a tally no player has matched since. Zlatan Ibrahimović's 38 for PSG in 2015–16 is the highest of the modern era."
+      },
+      {
+        "q": "Who has won the most Ligue 1 top-scorer titles?",
+        "a": "Carlos Bianchi and Delio Onnis lead the all-time list. Bianchi topped the charts five times in the 1970s, while Jean-Pierre Papin won five in a row from 1988 to 1992 and Kylian Mbappé led the division in six of seven seasons before 2024."
+      },
+      {
+        "q": "Who was the Ligue 1 top scorer in 2024–25?",
+        "a": "Ousmane Dembélé of Paris Saint-Germain won the Golden Boot with 21 goals. He finished level with Marseille's Mason Greenwood, who also scored 21, but took the award on the penalties-scored tiebreak."
+      },
+      {
+        "q": "Why is there no Ligue 1 top scorer between 1939 and 1945?",
+        "a": "The French Championship was suspended during the Second World War, so no official league title or top-scorer award was contested from the 1939–40 season through 1944–45. Play resumed in 1945–46."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Ligue 1"
+  },
+  {
+    "slug": "champions-league-top-scorers",
+    "h1": "Champions League Top Scorer Every Season (1955-56 to 2024-25)",
+    "title": "Champions League Top Scorers by Season: Complete List | Ball IQ",
+    "description": "The top scorer of every European Cup and UEFA Champions League season from 1955-56 to 2024-25, with player, club and goal tally for each year.",
+    "intro": [
+      "Since the European Cup kicked off in 1955, one player has finished ahead of the rest in front of goal almost every season. This complete list runs from Miloš Milutinović's eight goals in that debut 1955-56 campaign, through the 1992 rebrand to the UEFA Champions League, all the way to the 2024-25 final. In the early decades the leading tallies were modest — often five, six or seven goals — and ties at the top were common, reflecting a straight knockout format with far fewer matches than today's expanded league phase.",
+      "The modern era belongs to two names above all others. Cristiano Ronaldo topped the scoring charts a record seven times and set the single-season benchmark of 17 goals in 2013-14, while Lionel Messi led or shared the lead five times, peaking at 14 in 2011-12. Between them they dominated a remarkable twelve-year stretch until Robert Lewandowski broke the streak with 15 goals for Bayern Munich in 2019-20.",
+      "More recently the crown has spread around. Erling Haaland announced himself in 2020-21 and again in 2022-23, Karim Benzema drove Real Madrid's 2021-22 triumph, and the last two seasons ended in ties — Harry Kane and Kylian Mbappé sharing 2023-24, then Raphinha and Serhou Guirassy each hitting 13 in 2024-25. Where a season ended level, every joint-top scorer is listed together in the same row."
+    ],
+    "columns": [
+      "Season",
+      "Player",
+      "Club",
+      "Goals"
+    ],
+    "rows": [
+      [
+        "1955-56",
+        "Miloš Milutinović",
+        "Partizan",
+        "8"
+      ],
+      [
+        "1956-57",
+        "Dennis Viollet",
+        "Manchester United",
+        "9"
+      ],
+      [
+        "1957-58",
+        "Alfredo Di Stéfano",
+        "Real Madrid",
+        "10"
+      ],
+      [
+        "1958-59",
+        "Just Fontaine",
+        "Reims",
+        "10"
+      ],
+      [
+        "1959-60",
+        "Ferenc Puskás",
+        "Real Madrid",
+        "12"
+      ],
+      [
+        "1960-61",
+        "José Águas",
+        "Benfica",
+        "11"
+      ],
+      [
+        "1961-62",
+        "Heinz Strehl",
+        "1. FC Nürnberg",
+        "8"
+      ],
+      [
+        "1962-63",
+        "José Altafini",
+        "AC Milan",
+        "14"
+      ],
+      [
+        "1963-64",
+        "Vladica Kovačević / Sandro Mazzola / Ferenc Puskás",
+        "Partizan / Inter Milan / Real Madrid",
+        "7"
+      ],
+      [
+        "1964-65",
+        "José Torres",
+        "Benfica",
+        "11"
+      ],
+      [
+        "1965-66",
+        "Flórián Albert / Eusébio",
+        "Ferencváros / Benfica",
+        "7"
+      ],
+      [
+        "1966-67",
+        "Jürgen Piepenburg / Paul Van Himst",
+        "Vorwärts Berlin / Anderlecht",
+        "6"
+      ],
+      [
+        "1967-68",
+        "Eusébio",
+        "Benfica",
+        "6"
+      ],
+      [
+        "1968-69",
+        "Denis Law",
+        "Manchester United",
+        "9"
+      ],
+      [
+        "1969-70",
+        "Mick Jones",
+        "Leeds United",
+        "8"
+      ],
+      [
+        "1970-71",
+        "Antonis Antoniadis",
+        "Panathinaikos",
+        "10"
+      ],
+      [
+        "1971-72",
+        "Johan Cruyff / Antal Dunai / Lou Macari / Silvester Takač",
+        "Ajax / Újpest / Celtic / Standard Liège",
+        "5"
+      ],
+      [
+        "1972-73",
+        "Gerd Müller",
+        "Bayern Munich",
+        "11"
+      ],
+      [
+        "1973-74",
+        "Gerd Müller",
+        "Bayern Munich",
+        "8"
+      ],
+      [
+        "1974-75",
+        "Gerd Müller / Eduard Markarov",
+        "Bayern Munich / Ararat Yerevan",
+        "5"
+      ],
+      [
+        "1975-76",
+        "Jupp Heynckes",
+        "Borussia Mönchengladbach",
+        "6"
+      ],
+      [
+        "1976-77",
+        "Gerd Müller / Franco Cucinotta",
+        "Bayern Munich / FC Zürich",
+        "5"
+      ],
+      [
+        "1977-78",
+        "Allan Simonsen",
+        "Borussia Mönchengladbach",
+        "5"
+      ],
+      [
+        "1978-79",
+        "Claudio Sulser",
+        "Grasshopper",
+        "11"
+      ],
+      [
+        "1979-80",
+        "Søren Lerby",
+        "Ajax",
+        "10"
+      ],
+      [
+        "1980-81",
+        "Terry McDermott / Graeme Souness / Karl-Heinz Rummenigge",
+        "Liverpool / Liverpool / Bayern Munich",
+        "6"
+      ],
+      [
+        "1981-82",
+        "Dieter Hoeneß",
+        "Bayern Munich",
+        "7"
+      ],
+      [
+        "1982-83",
+        "Paolo Rossi",
+        "Juventus",
+        "6"
+      ],
+      [
+        "1983-84",
+        "Viktor Sokol",
+        "Dinamo Minsk",
+        "6"
+      ],
+      [
+        "1984-85",
+        "Torbjörn Nilsson / Michel Platini",
+        "IFK Göteborg / Juventus",
+        "7"
+      ],
+      [
+        "1985-86",
+        "Torbjörn Nilsson",
+        "IFK Göteborg",
+        "6"
+      ],
+      [
+        "1986-87",
+        "Borislav Cvetković",
+        "Red Star Belgrade",
+        "7"
+      ],
+      [
+        "1987-88",
+        "Gheorghe Hagi / Rabah Madjer / Ally McCoist / Míchel / Rui Águas / Petar Novák / René van der Gijp",
+        "Multiple clubs",
+        "4"
+      ],
+      [
+        "1988-89",
+        "Marco van Basten",
+        "AC Milan",
+        "10"
+      ],
+      [
+        "1989-90",
+        "Romário / Jean-Pierre Papin",
+        "PSV Eindhoven / Marseille",
+        "6"
+      ],
+      [
+        "1990-91",
+        "Peter Pacult / Jean-Pierre Papin",
+        "Tirol Innsbruck / Marseille",
+        "6"
+      ],
+      [
+        "1991-92",
+        "Sergei Yuran / Jean-Pierre Papin",
+        "Benfica / Marseille",
+        "7"
+      ],
+      [
+        "1992-93",
+        "Romário",
+        "PSV Eindhoven",
+        "7"
+      ],
+      [
+        "1993-94",
+        "Ronald Koeman / Wynton Rufer",
+        "Barcelona / Werder Bremen",
+        "8"
+      ],
+      [
+        "1994-95",
+        "George Weah",
+        "Paris Saint-Germain",
+        "7"
+      ],
+      [
+        "1995-96",
+        "Jari Litmanen",
+        "Ajax",
+        "9"
+      ],
+      [
+        "1996-97",
+        "Milinko Pantić",
+        "Atlético Madrid",
+        "5"
+      ],
+      [
+        "1997-98",
+        "Alessandro Del Piero",
+        "Juventus",
+        "10"
+      ],
+      [
+        "1998-99",
+        "Andriy Shevchenko / Dwight Yorke",
+        "Dynamo Kyiv / Manchester United",
+        "8"
+      ],
+      [
+        "1999-2000",
+        "Mário Jardel / Rivaldo / Raúl",
+        "Porto / Barcelona / Real Madrid",
+        "10"
+      ],
+      [
+        "2000-01",
+        "Raúl",
+        "Real Madrid",
+        "7"
+      ],
+      [
+        "2001-02",
+        "Ruud van Nistelrooy",
+        "Manchester United",
+        "10"
+      ],
+      [
+        "2002-03",
+        "Ruud van Nistelrooy",
+        "Manchester United",
+        "12"
+      ],
+      [
+        "2003-04",
+        "Fernando Morientes",
+        "Monaco",
+        "9"
+      ],
+      [
+        "2004-05",
+        "Ruud van Nistelrooy",
+        "Manchester United",
+        "8"
+      ],
+      [
+        "2005-06",
+        "Andriy Shevchenko",
+        "AC Milan",
+        "9"
+      ],
+      [
+        "2006-07",
+        "Kaká",
+        "AC Milan",
+        "10"
+      ],
+      [
+        "2007-08",
+        "Cristiano Ronaldo",
+        "Manchester United",
+        "8"
+      ],
+      [
+        "2008-09",
+        "Lionel Messi",
+        "Barcelona",
+        "9"
+      ],
+      [
+        "2009-10",
+        "Lionel Messi",
+        "Barcelona",
+        "8"
+      ],
+      [
+        "2010-11",
+        "Lionel Messi",
+        "Barcelona",
+        "12"
+      ],
+      [
+        "2011-12",
+        "Lionel Messi",
+        "Barcelona",
+        "14"
+      ],
+      [
+        "2012-13",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "12"
+      ],
+      [
+        "2013-14",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "17"
+      ],
+      [
+        "2014-15",
+        "Neymar / Cristiano Ronaldo / Lionel Messi",
+        "Barcelona / Real Madrid / Barcelona",
+        "10"
+      ],
+      [
+        "2015-16",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "16"
+      ],
+      [
+        "2016-17",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "12"
+      ],
+      [
+        "2017-18",
+        "Cristiano Ronaldo",
+        "Real Madrid",
+        "15"
+      ],
+      [
+        "2018-19",
+        "Lionel Messi",
+        "Barcelona",
+        "12"
+      ],
+      [
+        "2019-20",
+        "Robert Lewandowski",
+        "Bayern Munich",
+        "15"
+      ],
+      [
+        "2020-21",
+        "Erling Haaland",
+        "Borussia Dortmund",
+        "10"
+      ],
+      [
+        "2021-22",
+        "Karim Benzema",
+        "Real Madrid",
+        "15"
+      ],
+      [
+        "2022-23",
+        "Erling Haaland",
+        "Manchester City",
+        "12"
+      ],
+      [
+        "2023-24",
+        "Harry Kane / Kylian Mbappé",
+        "Bayern Munich / Paris Saint-Germain",
+        "8"
+      ],
+      [
+        "2024-25",
+        "Raphinha / Serhou Guirassy",
+        "Barcelona / Borussia Dortmund",
+        "13"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has been the Champions League top scorer the most times?",
+        "a": "Cristiano Ronaldo has finished as the top scorer in a single season a record seven times. Lionel Messi led or shared the scoring charts five times, and between them they topped the standings for twelve consecutive seasons until Robert Lewandowski broke the run in 2019-20."
+      },
+      {
+        "q": "What is the most goals scored in a single Champions League season?",
+        "a": "Cristiano Ronaldo holds the record with 17 goals for Real Madrid in the 2013-14 season, when Madrid won 'La Décima'. He also scored 16 in 2015-16, the next-highest single-season tally in the competition's history."
+      },
+      {
+        "q": "Who was the Champions League top scorer in 2024-25?",
+        "a": "Barcelona's Raphinha and Borussia Dortmund's Serhou Guirassy each scored 13 goals in the 2024-25 UEFA Champions League. UEFA awarded the Golden Boot to Guirassy on the fewer-minutes tie-breaker, but both are recognised as the season's joint-top scorers on 13."
+      },
+      {
+        "q": "Why do some seasons list more than one top scorer?",
+        "a": "Especially in the earlier knockout era, several players often finished level on goals with no additional tie-breaker applied. Every player who shared the lead is listed together in that season's row — as with the 1971-72 four-way tie on five goals or the 2024-25 tie on 13."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Champions League"
+  },
+  {
+    "slug": "europa-league-winners",
+    "h1": "Every UEFA Cup & Europa League Winner (1971-72 to 2024-25)",
+    "title": "Europa League Winners: Full List by Season | Ball IQ",
+    "description": "Complete season-by-season list of every UEFA Cup and UEFA Europa League winner from 1971-72 to 2024-25, with runners-up and final scores.",
+    "intro": [
+      "Europe's second-tier club competition began life as the UEFA Cup in 1971-72, replacing the old Inter-Cities Fairs Cup. For its first 26 seasons the final was played over two legs, home and away, with the trophy decided on aggregate score. From the 1997-98 edition onwards it switched to a single showpiece match at a neutral venue.",
+      "In 2009-10 the tournament was rebranded as the UEFA Europa League and folded in the former UEFA Cup and Intertoto strands, expanding to a group-stage format. The competition has become a Spanish stronghold in the modern era: Sevilla alone have lifted the trophy a record seven times, while Italian, German and English clubs have all enjoyed sustained runs of success.",
+      "The table below lists every champion by season, from Tottenham's inaugural 1972 win through to their 2025 triumph in Bilbao. Aggregate scores are given for the two-legged finals up to 1996-97; single-match results follow, with penalty shootouts and extra time noted where relevant."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1971-72",
+        "Tottenham Hotspur",
+        "Wolverhampton Wanderers",
+        "3-2 agg"
+      ],
+      [
+        "1972-73",
+        "Liverpool",
+        "Borussia Monchengladbach",
+        "3-2 agg"
+      ],
+      [
+        "1973-74",
+        "Feyenoord",
+        "Tottenham Hotspur",
+        "4-2 agg"
+      ],
+      [
+        "1974-75",
+        "Borussia Monchengladbach",
+        "Twente",
+        "5-1 agg"
+      ],
+      [
+        "1975-76",
+        "Liverpool",
+        "Club Brugge",
+        "4-3 agg"
+      ],
+      [
+        "1976-77",
+        "Juventus",
+        "Athletic Bilbao",
+        "2-2 agg (won on away goals)"
+      ],
+      [
+        "1977-78",
+        "PSV Eindhoven",
+        "Bastia",
+        "3-0 agg"
+      ],
+      [
+        "1978-79",
+        "Borussia Monchengladbach",
+        "Red Star Belgrade",
+        "2-1 agg"
+      ],
+      [
+        "1979-80",
+        "Eintracht Frankfurt",
+        "Borussia Monchengladbach",
+        "3-3 agg (won on away goals)"
+      ],
+      [
+        "1980-81",
+        "Ipswich Town",
+        "AZ Alkmaar",
+        "5-4 agg"
+      ],
+      [
+        "1981-82",
+        "IFK Goteborg",
+        "Hamburg",
+        "4-0 agg"
+      ],
+      [
+        "1982-83",
+        "Anderlecht",
+        "Benfica",
+        "2-1 agg"
+      ],
+      [
+        "1983-84",
+        "Tottenham Hotspur",
+        "Anderlecht",
+        "2-2 agg (4-3 pens)"
+      ],
+      [
+        "1984-85",
+        "Real Madrid",
+        "Videoton",
+        "3-1 agg"
+      ],
+      [
+        "1985-86",
+        "Real Madrid",
+        "Koln",
+        "5-3 agg"
+      ],
+      [
+        "1986-87",
+        "IFK Goteborg",
+        "Dundee United",
+        "2-1 agg"
+      ],
+      [
+        "1987-88",
+        "Bayer Leverkusen",
+        "Espanyol",
+        "3-3 agg (3-2 pens)"
+      ],
+      [
+        "1988-89",
+        "Napoli",
+        "Stuttgart",
+        "5-4 agg"
+      ],
+      [
+        "1989-90",
+        "Juventus",
+        "Fiorentina",
+        "3-1 agg"
+      ],
+      [
+        "1990-91",
+        "Inter Milan",
+        "Roma",
+        "2-1 agg"
+      ],
+      [
+        "1991-92",
+        "Ajax",
+        "Torino",
+        "2-2 agg (won on away goals)"
+      ],
+      [
+        "1992-93",
+        "Juventus",
+        "Borussia Dortmund",
+        "6-1 agg"
+      ],
+      [
+        "1993-94",
+        "Inter Milan",
+        "Salzburg",
+        "2-0 agg"
+      ],
+      [
+        "1994-95",
+        "Parma",
+        "Juventus",
+        "2-1 agg"
+      ],
+      [
+        "1995-96",
+        "Bayern Munich",
+        "Bordeaux",
+        "5-1 agg"
+      ],
+      [
+        "1996-97",
+        "Schalke 04",
+        "Inter Milan",
+        "1-1 agg (4-1 pens)"
+      ],
+      [
+        "1997-98",
+        "Inter Milan",
+        "Lazio",
+        "3-0"
+      ],
+      [
+        "1998-99",
+        "Parma",
+        "Marseille",
+        "3-0"
+      ],
+      [
+        "1999-2000",
+        "Galatasaray",
+        "Arsenal",
+        "0-0 (4-1 pens)"
+      ],
+      [
+        "2000-01",
+        "Liverpool",
+        "Alaves",
+        "5-4 (golden goal)"
+      ],
+      [
+        "2001-02",
+        "Feyenoord",
+        "Borussia Dortmund",
+        "3-2"
+      ],
+      [
+        "2002-03",
+        "Porto",
+        "Celtic",
+        "3-2 (aet)"
+      ],
+      [
+        "2003-04",
+        "Valencia",
+        "Marseille",
+        "2-0"
+      ],
+      [
+        "2004-05",
+        "CSKA Moscow",
+        "Sporting CP",
+        "3-1"
+      ],
+      [
+        "2005-06",
+        "Sevilla",
+        "Middlesbrough",
+        "4-0"
+      ],
+      [
+        "2006-07",
+        "Sevilla",
+        "Espanyol",
+        "2-2 (3-1 pens)"
+      ],
+      [
+        "2007-08",
+        "Zenit St Petersburg",
+        "Rangers",
+        "2-0"
+      ],
+      [
+        "2008-09",
+        "Shakhtar Donetsk",
+        "Werder Bremen",
+        "2-1 (aet)"
+      ],
+      [
+        "2009-10",
+        "Atletico Madrid",
+        "Fulham",
+        "2-1 (aet)"
+      ],
+      [
+        "2010-11",
+        "Porto",
+        "Braga",
+        "1-0"
+      ],
+      [
+        "2011-12",
+        "Atletico Madrid",
+        "Athletic Bilbao",
+        "3-0"
+      ],
+      [
+        "2012-13",
+        "Chelsea",
+        "Benfica",
+        "2-1"
+      ],
+      [
+        "2013-14",
+        "Sevilla",
+        "Benfica",
+        "0-0 (4-2 pens)"
+      ],
+      [
+        "2014-15",
+        "Sevilla",
+        "Dnipro",
+        "3-2"
+      ],
+      [
+        "2015-16",
+        "Sevilla",
+        "Liverpool",
+        "3-1"
+      ],
+      [
+        "2016-17",
+        "Manchester United",
+        "Ajax",
+        "2-0"
+      ],
+      [
+        "2017-18",
+        "Atletico Madrid",
+        "Marseille",
+        "3-0"
+      ],
+      [
+        "2018-19",
+        "Chelsea",
+        "Arsenal",
+        "4-1"
+      ],
+      [
+        "2019-20",
+        "Sevilla",
+        "Inter Milan",
+        "3-2"
+      ],
+      [
+        "2020-21",
+        "Villarreal",
+        "Manchester United",
+        "1-1 (11-10 pens)"
+      ],
+      [
+        "2021-22",
+        "Eintracht Frankfurt",
+        "Rangers",
+        "1-1 (5-4 pens)"
+      ],
+      [
+        "2022-23",
+        "Sevilla",
+        "Roma",
+        "1-1 (4-1 pens)"
+      ],
+      [
+        "2023-24",
+        "Atalanta",
+        "Bayer Leverkusen",
+        "3-0"
+      ],
+      [
+        "2024-25",
+        "Tottenham Hotspur",
+        "Manchester United",
+        "1-0"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the Europa League the most times?",
+        "a": "Sevilla are the record holders with seven titles, all won since 2006. Their haul (2006, 2007, 2014, 2015, 2016, 2020 and 2023) dwarfs every other club; no one else has more than three UEFA Cup/Europa League crowns."
+      },
+      {
+        "q": "When did the UEFA Cup become the Europa League?",
+        "a": "The competition was rebranded as the UEFA Europa League for the 2009-10 season, when it absorbed the old UEFA Cup and Intertoto Cup formats. Atletico Madrid were the first winners under the new name, beating Fulham 2-1 after extra time."
+      },
+      {
+        "q": "Who won the 2025 Europa League final?",
+        "a": "Tottenham Hotspur won the 2024-25 Europa League, beating Manchester United 1-0 in the final in Bilbao on 21 May 2025. Brennan Johnson's first-half goal ended Spurs' 17-year trophy drought and secured Champions League qualification."
+      },
+      {
+        "q": "Why were early UEFA Cup finals played over two legs?",
+        "a": "From 1971-72 until 1996-97 the final was contested across two matches, one at each finalist's home ground, with the winner decided on aggregate score (and away goals or penalties if level). The single-match neutral-venue final was introduced in 1997-98."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Europa League"
+  },
+  {
+    "slug": "afcon-winners",
+    "h1": "Every AFCON Winner: Africa Cup of Nations Champions (1957–2025)",
+    "title": "AFCON Winners: Every Africa Cup of Nations Champion (1957–2025) | Ball IQ",
+    "description": "The complete list of Africa Cup of Nations winners from 1957 to 2025 — every champion, runner-up and host, with Egypt the record seven-time winners.",
+    "intro": [
+      "The Africa Cup of Nations is the continent's oldest and most prestigious international football tournament, first contested in 1957 with just three teams: Egypt, Sudan and Ethiopia. From those modest beginnings it has grown into a 24-nation showpiece watched by hundreds of millions, staged every two years and long regarded as the toughest trophy to win outside the World Cup itself.",
+      "Egypt are the undisputed kings of the competition. The Pharaohs claimed the very first edition in 1957 and have gone on to lift the trophy a record seven times, including a hat-trick of titles in 2006, 2008 and 2010. Cameroon follow with five crowns, while Ghana and Nigeria have each been champions on multiple occasions. Powerhouses from every corner of the continent — from Zambia's fairytale 2012 triumph to Algeria, Senegal and Ivory Coast in the modern era — have all had their moment.",
+      "The three most recent editions each carried a quirk of the calendar and, in one case, of the courtroom. AFCON 2021 was played in early 2022 in Cameroon and won by Senegal; AFCON 2023 was played in early 2024 in Ivory Coast, where the host nation recovered from a group-stage scare to be crowned champions; and AFCON 2025, held in Morocco, ended in a contested final. Below is the full roll of honour, one row per tournament, from 1957 to the present day."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Host"
+    ],
+    "rows": [
+      [
+        "1957",
+        "Egypt",
+        "Ethiopia",
+        "Sudan"
+      ],
+      [
+        "1959",
+        "Egypt",
+        "Sudan",
+        "Egypt"
+      ],
+      [
+        "1962",
+        "Ethiopia",
+        "Egypt",
+        "Ethiopia"
+      ],
+      [
+        "1963",
+        "Ghana",
+        "Sudan",
+        "Ghana"
+      ],
+      [
+        "1965",
+        "Ghana",
+        "Tunisia",
+        "Tunisia"
+      ],
+      [
+        "1968",
+        "DR Congo",
+        "Ghana",
+        "Ethiopia"
+      ],
+      [
+        "1970",
+        "Sudan",
+        "Ghana",
+        "Sudan"
+      ],
+      [
+        "1972",
+        "Congo",
+        "Mali",
+        "Cameroon"
+      ],
+      [
+        "1974",
+        "Zaire",
+        "Zambia",
+        "Egypt"
+      ],
+      [
+        "1976",
+        "Morocco",
+        "Guinea",
+        "Ethiopia"
+      ],
+      [
+        "1978",
+        "Ghana",
+        "Uganda",
+        "Ghana"
+      ],
+      [
+        "1980",
+        "Nigeria",
+        "Algeria",
+        "Nigeria"
+      ],
+      [
+        "1982",
+        "Ghana",
+        "Libya",
+        "Libya"
+      ],
+      [
+        "1984",
+        "Cameroon",
+        "Nigeria",
+        "Ivory Coast"
+      ],
+      [
+        "1986",
+        "Egypt",
+        "Cameroon",
+        "Egypt"
+      ],
+      [
+        "1988",
+        "Cameroon",
+        "Nigeria",
+        "Morocco"
+      ],
+      [
+        "1990",
+        "Algeria",
+        "Nigeria",
+        "Algeria"
+      ],
+      [
+        "1992",
+        "Ivory Coast",
+        "Ghana",
+        "Senegal"
+      ],
+      [
+        "1994",
+        "Nigeria",
+        "Zambia",
+        "Tunisia"
+      ],
+      [
+        "1996",
+        "South Africa",
+        "Tunisia",
+        "South Africa"
+      ],
+      [
+        "1998",
+        "Egypt",
+        "South Africa",
+        "Burkina Faso"
+      ],
+      [
+        "2000",
+        "Cameroon",
+        "Nigeria",
+        "Ghana & Nigeria"
+      ],
+      [
+        "2002",
+        "Cameroon",
+        "Senegal",
+        "Mali"
+      ],
+      [
+        "2004",
+        "Tunisia",
+        "Morocco",
+        "Tunisia"
+      ],
+      [
+        "2006",
+        "Egypt",
+        "Ivory Coast",
+        "Egypt"
+      ],
+      [
+        "2008",
+        "Egypt",
+        "Cameroon",
+        "Ghana"
+      ],
+      [
+        "2010",
+        "Egypt",
+        "Ghana",
+        "Angola"
+      ],
+      [
+        "2012",
+        "Zambia",
+        "Ivory Coast",
+        "Gabon & Equatorial Guinea"
+      ],
+      [
+        "2013",
+        "Nigeria",
+        "Burkina Faso",
+        "South Africa"
+      ],
+      [
+        "2015",
+        "Ivory Coast",
+        "Ghana",
+        "Equatorial Guinea"
+      ],
+      [
+        "2017",
+        "Cameroon",
+        "Egypt",
+        "Gabon"
+      ],
+      [
+        "2019",
+        "Algeria",
+        "Senegal",
+        "Egypt"
+      ],
+      [
+        "2021",
+        "Senegal",
+        "Egypt",
+        "Cameroon"
+      ],
+      [
+        "2023",
+        "Ivory Coast",
+        "Nigeria",
+        "Ivory Coast"
+      ],
+      [
+        "2025",
+        "Morocco",
+        "Senegal",
+        "Morocco"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most AFCON titles?",
+        "a": "Egypt are the record winners with seven titles (1957, 1959, 1986, 1998, 2006, 2008 and 2010), including a unique three-in-a-row between 2006 and 2010. Cameroon are next with five, ahead of Ghana on four and Nigeria on three."
+      },
+      {
+        "q": "Who won AFCON 2025 in Morocco?",
+        "a": "Morocco are the official champions of AFCON 2025, staged on home soil. The final against Senegal was marred by controversy after Senegal briefly walked off the pitch, and the CAF Appeal Board awarded Morocco a 3-0 win by forfeit in March 2026. Senegal lodged an appeal with the Court of Arbitration for Sport, but no ruling had overturned the result as of July 2026, meaning Morocco's title stands."
+      },
+      {
+        "q": "Why was AFCON 2021 played in 2022?",
+        "a": "The tournament kept its official '2021' name but was pushed into January and February 2022 in Cameroon, partly because of the COVID-19 pandemic and the difficulty of staging it during the northern-hemisphere summer. The same calendar quirk applied to AFCON 2023, which was actually played in early 2024 in Ivory Coast."
+      },
+      {
+        "q": "Which countries have hosted the Africa Cup of Nations more than once?",
+        "a": "Egypt and Ghana are among the most frequent hosts, having staged the tournament several times each. Ethiopia hosted three of the early editions, while more recent host nations include Angola (2010), Gabon (2017), Cameroon (2021), Ivory Coast (2023) and Morocco (2025)."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Africa Cup of Nations"
+  },
+  {
+    "slug": "copa-america-winners",
+    "h1": "Every Copa América Winner (1916–2024)",
+    "title": "Copa América Winners: Full List by Year (1916–2024) | Ball IQ",
+    "description": "The complete list of Copa América winners from 1916 to 2024, with the runner-up and host nation for every edition of South America's oldest trophy.",
+    "intro": [
+      "The Copa América is the oldest international football tournament in the world, first contested in 1916 as the South American Championship. Run by CONMEBOL, it has crowned a champion of the continent for more than a century, and since 1993 has regularly invited guest nations from CONCACAF and beyond to complete the field.",
+      "Two nations tower over the rest. Uruguay dominated the early decades and Argentina surged ahead in the modern era, and after Argentina's 2024 triumph the two sit at the top of the roll of honour — Argentina on 16 titles, Uruguay on 15. Brazil, despite its global stature, trails on nine, a reminder that continental supremacy has never been a straight line.",
+      "This table lists every edition of the tournament in chronological order, including the two separately organised championships of 1959 and the host-less, rotating editions of 1975, 1979 and 1983. Two of the most recent finals are worth flagging: Argentina beat Brazil at the Maracanã in 2021 to end a long trophy drought, then edged Colombia in extra time in the United States in 2024."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Host"
+    ],
+    "rows": [
+      [
+        "1916",
+        "Uruguay",
+        "Argentina",
+        "Argentina"
+      ],
+      [
+        "1917",
+        "Uruguay",
+        "Argentina",
+        "Uruguay"
+      ],
+      [
+        "1919",
+        "Brazil",
+        "Uruguay",
+        "Brazil"
+      ],
+      [
+        "1920",
+        "Uruguay",
+        "Argentina",
+        "Chile"
+      ],
+      [
+        "1921",
+        "Argentina",
+        "Brazil",
+        "Argentina"
+      ],
+      [
+        "1922",
+        "Brazil",
+        "Paraguay",
+        "Brazil"
+      ],
+      [
+        "1923",
+        "Uruguay",
+        "Argentina",
+        "Uruguay"
+      ],
+      [
+        "1924",
+        "Uruguay",
+        "Argentina",
+        "Uruguay"
+      ],
+      [
+        "1925",
+        "Argentina",
+        "Brazil",
+        "Argentina"
+      ],
+      [
+        "1926",
+        "Uruguay",
+        "Argentina",
+        "Chile"
+      ],
+      [
+        "1927",
+        "Argentina",
+        "Uruguay",
+        "Peru"
+      ],
+      [
+        "1929",
+        "Argentina",
+        "Paraguay",
+        "Argentina"
+      ],
+      [
+        "1935",
+        "Uruguay",
+        "Argentina",
+        "Peru"
+      ],
+      [
+        "1937",
+        "Argentina",
+        "Brazil",
+        "Argentina"
+      ],
+      [
+        "1939",
+        "Peru",
+        "Uruguay",
+        "Peru"
+      ],
+      [
+        "1941",
+        "Argentina",
+        "Uruguay",
+        "Chile"
+      ],
+      [
+        "1942",
+        "Uruguay",
+        "Argentina",
+        "Uruguay"
+      ],
+      [
+        "1945",
+        "Argentina",
+        "Brazil",
+        "Chile"
+      ],
+      [
+        "1946",
+        "Argentina",
+        "Brazil",
+        "Argentina"
+      ],
+      [
+        "1947",
+        "Argentina",
+        "Paraguay",
+        "Ecuador"
+      ],
+      [
+        "1949",
+        "Brazil",
+        "Paraguay",
+        "Brazil"
+      ],
+      [
+        "1953",
+        "Paraguay",
+        "Brazil",
+        "Peru"
+      ],
+      [
+        "1955",
+        "Argentina",
+        "Chile",
+        "Chile"
+      ],
+      [
+        "1956",
+        "Uruguay",
+        "Chile",
+        "Uruguay"
+      ],
+      [
+        "1957",
+        "Argentina",
+        "Brazil",
+        "Peru"
+      ],
+      [
+        "1959",
+        "Argentina",
+        "Brazil",
+        "Argentina"
+      ],
+      [
+        "1959",
+        "Uruguay",
+        "Argentina",
+        "Ecuador"
+      ],
+      [
+        "1963",
+        "Bolivia",
+        "Paraguay",
+        "Bolivia"
+      ],
+      [
+        "1967",
+        "Uruguay",
+        "Argentina",
+        "Uruguay"
+      ],
+      [
+        "1975",
+        "Peru",
+        "Colombia",
+        "Various venues"
+      ],
+      [
+        "1979",
+        "Paraguay",
+        "Chile",
+        "Various venues"
+      ],
+      [
+        "1983",
+        "Uruguay",
+        "Brazil",
+        "Various venues"
+      ],
+      [
+        "1987",
+        "Uruguay",
+        "Chile",
+        "Argentina"
+      ],
+      [
+        "1989",
+        "Brazil",
+        "Uruguay",
+        "Brazil"
+      ],
+      [
+        "1991",
+        "Argentina",
+        "Brazil",
+        "Chile"
+      ],
+      [
+        "1993",
+        "Argentina",
+        "Mexico",
+        "Ecuador"
+      ],
+      [
+        "1995",
+        "Uruguay",
+        "Brazil",
+        "Uruguay"
+      ],
+      [
+        "1997",
+        "Brazil",
+        "Bolivia",
+        "Bolivia"
+      ],
+      [
+        "1999",
+        "Brazil",
+        "Uruguay",
+        "Paraguay"
+      ],
+      [
+        "2001",
+        "Colombia",
+        "Mexico",
+        "Colombia"
+      ],
+      [
+        "2004",
+        "Brazil",
+        "Argentina",
+        "Peru"
+      ],
+      [
+        "2007",
+        "Brazil",
+        "Argentina",
+        "Venezuela"
+      ],
+      [
+        "2011",
+        "Uruguay",
+        "Paraguay",
+        "Argentina"
+      ],
+      [
+        "2015",
+        "Chile",
+        "Argentina",
+        "Chile"
+      ],
+      [
+        "2016",
+        "Chile",
+        "Argentina",
+        "United States"
+      ],
+      [
+        "2019",
+        "Brazil",
+        "Peru",
+        "Brazil"
+      ],
+      [
+        "2021",
+        "Argentina",
+        "Brazil",
+        "Brazil"
+      ],
+      [
+        "2024",
+        "Argentina",
+        "Colombia",
+        "United States"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most Copa América titles?",
+        "a": "Argentina holds the record with 16 titles, having overtaken Uruguay with their 2024 win. Uruguay is second on 15, and Brazil third on 9. No other nation has won more than two."
+      },
+      {
+        "q": "Who won the 2024 Copa América?",
+        "a": "Argentina won the 2024 Copa América, beating Colombia 1–0 after extra time in the final at Hard Rock Stadium in Miami. Lautaro Martínez scored the decisive goal in the 112th minute, sealing Argentina's record 16th title."
+      },
+      {
+        "q": "Why are there two Copa América editions in 1959?",
+        "a": "In 1959 two separate South American Championships were held. The first, hosted by Argentina in the first half of the year, was won by the hosts; the second, an extraordinary edition hosted by Ecuador in December, was won by Uruguay."
+      },
+      {
+        "q": "Has a non-South American country ever won the Copa América?",
+        "a": "No. Although guest nations such as Mexico, the United States, Japan and Qatar have taken part, only CONMEBOL members have won the trophy. Mexico came closest, finishing runner-up in 1993 and 2001."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "Copa América"
   }
 ];
