@@ -298,4 +298,109 @@ export const PLAYERS = [
       }
     ]
   },
+  {
+    "slug": "cruyff",
+    "match": [
+      "Cruyff"
+    ],
+    "name": "Johan Cruyff",
+    "initials": "JC14",
+    "h1": "Johan Cruyff Quiz",
+    "title": "Johan Cruyff Quiz: Ajax, Barcelona, Total Football | Ball IQ",
+    "description": "Free Johan Cruyff quiz — play in your browser, no sign-up. Every answer explained, from Ajax and Total Football to the Barcelona Dream Team.",
+    "intro": [
+      "Johan Cruyff was the Dutch genius who didn't just play football — he rewired how the whole sport thinks about it. He rose through Ajax's academy to become the face of Total Football, moved to Barcelona in a world-record deal, wound down his playing days across the United States, Levante, a second Ajax spell and a final title-winning year at Feyenoord, then came back as the manager who built Barcelona's Dream Team. If you can picture the Cruyff Turn against Sweden, hum along to \"Clockwork Orange,\" and argue that the 1974 Netherlands side was better than the team that beat them, this quiz is built for you.",
+      "The numbers behind the mythology hold up. Cruyff won the Ballon d'Or three times — in 1971, 1973 and 1974 — a haul only a handful of players have ever matched. At Ajax he scored 193 goals in 245 games and lifted three straight European Cups; at the 1974 World Cup he dragged the Netherlands to the final and took home the Golden Ball as the tournament's best player, even in defeat to West Germany. Then he did it all again from the dugout: his Barcelona won four consecutive La Liga titles from 1991 to 1994 and the club's first-ever European Cup in 1992.",
+      "Expect the full spread. Questions run from his eight Eredivisie titles at Ajax and that first Barcelona La Liga in 1973-74, through the record transfer fees of the era, the Total Football tactics he embodied under Rinus Michels, the Dream Team he assembled as a coach, and the way his philosophy passed down to Pep Guardiola and modern Barcelona. Difficulty scales from gentle openers any fan will nail up to deep cuts that separate the students of the game from the casuals.",
+      "Every answer comes with a short explanation, so you finish the quiz knowing more than when you started. It's completely free, runs right in your browser, and needs no sign-up. If it hooks you, the Ball IQ app goes deeper — over 4,000 football questions, a daily football word game, and multiplayer modes where you can test your knowledge against friends in real time."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs did Johan Cruyff play for?",
+        "a": "Cruyff came through Ajax, where he became a star between 1964 and 1973, then joined Barcelona in a world-record transfer. He later played for the Los Angeles Aztecs and Washington Diplomats in the United States and for Levante in Spain, before returning to Ajax and finishing his playing career with a title-winning season at rivals Feyenoord in 1983-84."
+      },
+      {
+        "q": "What did Johan Cruyff win, and which records does he hold?",
+        "a": "As a player Cruyff won three Ballon d'Or awards (1971, 1973, 1974), three consecutive European Cups and eight Eredivisie titles with Ajax, La Liga with Barcelona, and the Golden Ball at the 1974 World Cup. As Barcelona's manager he built the Dream Team, winning four straight La Liga titles (1991-1994) and the club's first European Cup in 1992 — making him Barcelona's most successful manager until Guardiola."
+      },
+      {
+        "q": "Is the Johan Cruyff quiz free to play?",
+        "a": "Yes. The Johan Cruyff quiz is completely free and plays right in your browser with no sign-up required. If you want more, the Ball IQ app offers over 4,000 football questions, a daily football word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Johan Cruyff quiz?",
+        "a": "It scales from easy to hard. Early questions cover the basics any fan knows — his clubs, his Ballon d'Or wins, Total Football — while later ones dig into specific seasons, transfer details, and his managerial career. Every answer is explained, so you learn as you play."
+      }
+    ]
+  },
+  {
+    "slug": "drogba",
+    "match": [
+      "Drogba"
+    ],
+    "name": "Didier Drogba",
+    "initials": "DD11",
+    "h1": "Didier Drogba Quiz",
+    "title": "Didier Drogba Quiz — Test Your IQ | Ball IQ",
+    "description": "Free Didier Drogba quiz — play in your browser, no sign-up. Every answer explained. Test your knowledge of the Chelsea and Ivory Coast legend.",
+    "intro": [
+      "Didier Drogba is the Ivorian centre-forward who turned power, presence and an unshakeable sense of the big occasion into one of the finest striking careers of his generation. He came late and worked upward — Le Mans and Guingamp in the French lower reaches, a breakout season at Marseille, then the 2004 move to Chelsea that made his name — before later chapters at Shanghai Shenhua, Galatasaray, a title-winning return to Chelsea, Montreal Impact and Phoenix Rising, where he hung up his boots in 2018. If you can still picture him bullying centre-backs at Stamford Bridge and dragging the Ivory Coast to their first World Cups, this quiz is built for you.",
+      "His defining night came in Munich in May 2012. With Chelsea a goal down and minutes from defeat in the Champions League final, Drogba rose to head an 88th-minute equaliser against Bayern, then buried the winning penalty in the shootout to deliver the club's first European Cup. It fit a career-long pattern: a knack for scoring when the stakes were highest earned him the reputation as the ultimate big-game player. He finished as Chelsea's all-time leading foreign scorer with 164 goals in 381 appearances, won four Premier League titles, and was twice named African Footballer of the Year.",
+      "Expect the full spread. The quiz moves through his transfers and fees, his two Premier League Golden Boots, his knack for scoring in finals, and his standing as Ivory Coast's all-time top scorer with 65 goals in 105 caps — including the appeal for peace that helped pause a civil war back home. Questions scale from gentle openers any Chelsea fan will nod at to deep cuts that reward people who followed every step from Le Mans to Munich and beyond.",
+      "Every answer comes with an explanation, so you finish knowing more than you started — and it's completely free in your browser with no sign-up. If it leaves you wanting more, the Ball IQ app has 4,000+ football questions, a daily football word game, and multiplayer modes to test your knowledge against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs did Didier Drogba play for?",
+        "a": "Drogba came up through Le Mans and Guingamp in France before a breakout year at Marseille. He joined Chelsea in 2004, then moved on to Shanghai Shenhua and Galatasaray, returned to Chelsea for a title-winning 2014-15 season, and finished his career in North America with Montreal Impact and Phoenix Rising, retiring in 2018."
+      },
+      {
+        "q": "What did Didier Drogba win, and which records does he hold?",
+        "a": "With Chelsea he won the 2012 Champions League — heading the late equaliser and scoring the winning penalty against Bayern — plus four Premier League titles, four FA Cups and two League Cups. He also won the Turkish Süper Lig with Galatasaray, took two Premier League Golden Boots, and was twice African Footballer of the Year. He remains Chelsea's all-time top foreign scorer and Ivory Coast's all-time leading scorer."
+      },
+      {
+        "q": "Is the Didier Drogba quiz free to play?",
+        "a": "Yes — it's completely free and runs right in your browser with no sign-up required. For more, the Ball IQ app carries 4,000+ football questions, a daily football word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Didier Drogba quiz?",
+        "a": "It scales from easy to hard. Early questions are friendly for any Chelsea or Ivory Coast fan, while later ones dig into transfer fees, finals and career totals that reward the real diehards. Every answer is explained, so you learn as you go."
+      }
+    ]
+  },
+  {
+    "slug": "lewandowski",
+    "match": [
+      "Lewandowski"
+    ],
+    "name": "Robert Lewandowski",
+    "initials": "RL9",
+    "h1": "Robert Lewandowski Quiz",
+    "title": "Robert Lewandowski Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Robert Lewandowski quiz — play in your browser, no sign-up. Dortmund, Bayern, Barça and Chicago Fire, every answer explained. Test your Lewy IQ.",
+    "intro": [
+      "Robert Lewandowski is the most complete penalty-box striker of his generation, a goalscorer whose career reads like a tour of European football's biggest stages. From humble beginnings at Znicz Pruszków and Lech Poznań in Poland, he broke out at Borussia Dortmund, became a record-shattering machine at Bayern Munich, led the line at Barcelona for four seasons, and in the summer of 2026 crossed the Atlantic to join Chicago Fire in MLS as a free agent. If you can recite his goal tallies season by season and know exactly which records he took off Gerd Müller, this quiz is built for you.",
+      "The defining chapter came in 2019-20, when Lewandowski drove Bayern to a Champions League triumph and became the first player to finish as the sole top scorer in the league, domestic cup and Champions League in the same treble-winning campaign. He followed it the next season by scoring 41 Bundesliga goals in 2020-21 — beating Müller's 49-year-old single-season record of 40 with a last-gasp strike on the final day — and was twice named The Best FIFA Men's Player, in 2020 and 2021. Across his career he has scored more than 600 club goals and remains Poland's all-time leading scorer with more than 80 international goals.",
+      "Expect the full spread. The quiz moves from his free transfer from Dortmund to Bayern and his 2022 move to Barcelona, through the individual honours — European Golden Shoes, a Pichichi Trophy, back-to-back FIFA awards — and into the moments only devoted fans remember, like his five goals in nine minutes off the bench against Wolfsburg. There are questions on his three La Liga titles and Copa del Rey with Barça, his Bundesliga dominance, and his Poland captaincy. Difficulty scales from gentle openers to deep cuts that will stretch even the most obsessive Lewy watcher.",
+      "Every answer comes with a short explanation, so you finish knowing more than when you started — this is a quiz that teaches as much as it tests. It is completely free and runs right in your browser with no sign-up required. If you enjoy it, the Ball IQ app goes further with more than 4,000 football questions, a daily football word game, and multiplayer modes where you can go head-to-head with friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Robert Lewandowski played for?",
+        "a": "Lewandowski came through Znicz Pruszków and Lech Poznań in Poland before moving to Borussia Dortmund in 2010. He joined Bayern Munich on a free transfer in 2014, signed for Barcelona in 2022, and after his contract expired in 2026 he joined Chicago Fire in MLS as a free agent."
+      },
+      {
+        "q": "What has Robert Lewandowski won and which records does he hold?",
+        "a": "He won the 2019-20 Champions League and multiple Bundesliga titles with Bayern Munich, plus Bundesliga crowns and the 2013 Champions League final appearance with Dortmund, and three La Liga titles and the Copa del Rey with Barcelona. He holds the Bundesliga single-season record of 41 goals (2020-21), won multiple European Golden Shoes, and was named The Best FIFA Men's Player in 2020 and 2021. He is also Poland's all-time top scorer."
+      },
+      {
+        "q": "Is the Robert Lewandowski quiz free to play?",
+        "a": "Yes. The Lewandowski quiz is completely free and plays straight in your browser with no sign-up or download. If you want more, the Ball IQ app offers over 4,000 football questions, a daily football word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Robert Lewandowski quiz?",
+        "a": "It scales from easy to hard. Early questions cover the headline facts of his career, while later ones dig into specific goal records, transfer details and career moments. Every answer is explained, so you learn as you play whatever your level."
+      }
+    ]
+  }
 ];
