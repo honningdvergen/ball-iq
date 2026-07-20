@@ -5060,5 +5060,435 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "Scottish football"
+  },
+  {
+    "slug": "most-champions-league-titles",
+    "h1": "Clubs With the Most Champions League Titles",
+    "title": "Most Champions League Titles: Clubs Ranked | Ball IQ",
+    "description": "Which clubs have won the most European Cup / Champions League titles? Real Madrid lead the all-time ranking — every winner, ranked by titles.",
+    "intro": [
+      "The European Cup, rebranded the UEFA Champions League in 1992, is the most prestigious prize in club football — and a handful of clubs have made it their own. This page ranks every club to have won it, by number of titles, from Real Madrid's record haul down to the one-time winners.",
+      "Real Madrid stand far clear at the top: they won the first five editions in a row from 1956 and have kept adding to the tally ever since, more than doubling the count of their nearest rivals. AC Milan are the most successful of the chasing pack, ahead of the modern powerhouses of Bayern Munich and Liverpool."
+    ],
+    "columns": [
+      "Rank",
+      "Team",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Real Madrid",
+        "15",
+        "1955, 1956, 1957, 1958, 1959, 1965, 1997, 1999, 2001, 2013, 2015, 2016, 2017, 2021, 2023"
+      ],
+      [
+        "2",
+        "AC Milan",
+        "7",
+        "1962, 1968, 1988, 1989, 1993, 2002, 2006"
+      ],
+      [
+        "3",
+        "Bayern Munich",
+        "6",
+        "1973, 1974, 1975, 2000, 2012, 2019"
+      ],
+      [
+        "3",
+        "Liverpool",
+        "6",
+        "1976, 1977, 1980, 1983, 2004, 2018"
+      ],
+      [
+        "5",
+        "Barcelona",
+        "5",
+        "1991, 2005, 2008, 2010, 2014"
+      ],
+      [
+        "6",
+        "Ajax",
+        "4",
+        "1970, 1971, 1972, 1994"
+      ],
+      [
+        "7",
+        "Inter Milan",
+        "3",
+        "1963, 1964, 2009"
+      ],
+      [
+        "7",
+        "Manchester United",
+        "3",
+        "1967, 1998, 2007"
+      ],
+      [
+        "9",
+        "Benfica",
+        "2",
+        "1960, 1961"
+      ],
+      [
+        "9",
+        "Chelsea",
+        "2",
+        "2011, 2020"
+      ],
+      [
+        "9",
+        "Juventus",
+        "2",
+        "1984, 1995"
+      ],
+      [
+        "9",
+        "Nottingham Forest",
+        "2",
+        "1978, 1979"
+      ],
+      [
+        "9",
+        "Paris Saint-Germain",
+        "2",
+        "2024, 2025"
+      ],
+      [
+        "9",
+        "Porto",
+        "2",
+        "1986, 2003"
+      ],
+      [
+        "15",
+        "Aston Villa",
+        "1",
+        "1981"
+      ],
+      [
+        "15",
+        "Borussia Dortmund",
+        "1",
+        "1996"
+      ],
+      [
+        "15",
+        "Celtic",
+        "1",
+        "1966"
+      ],
+      [
+        "15",
+        "Feyenoord",
+        "1",
+        "1969"
+      ],
+      [
+        "15",
+        "Hamburger SV",
+        "1",
+        "1982"
+      ],
+      [
+        "15",
+        "Manchester City",
+        "1",
+        "2022"
+      ],
+      [
+        "15",
+        "Marseille",
+        "1",
+        "1992"
+      ],
+      [
+        "15",
+        "PSV Eindhoven",
+        "1",
+        "1987"
+      ],
+      [
+        "15",
+        "Red Star Belgrade",
+        "1",
+        "1990"
+      ],
+      [
+        "15",
+        "Steaua București",
+        "1",
+        "1985"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Champions League titles?",
+        "a": "Real Madrid have won the most, with 15 European Cup / Champions League titles — comfortably a record. They won the first five editions from 1956 to 1960 and have led the all-time count ever since."
+      },
+      {
+        "q": "Which club has won the second-most Champions League titles?",
+        "a": "AC Milan are second on the all-time list with seven, ahead of Bayern Munich and Liverpool, who are level on six each."
+      },
+      {
+        "q": "Is this a complete list of Champions League winners?",
+        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every final, winner, runner-up and score, see our Champions League winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Champions League"
+  },
+  {
+    "slug": "most-ballon-dors",
+    "h1": "Players With the Most Ballon d'Or Awards",
+    "title": "Most Ballon d'Ors: Players Ranked (Messi, Ronaldo…) | Ball IQ",
+    "description": "Who has won the most Ballon d'Or awards? Lionel Messi leads with a record eight. Every multiple winner, ranked, with the years they won.",
+    "intro": [
+      "The Ballon d'Or has gone to the best player in the world (in Europe, until 2007) every year since 1956. This page ranks the players who have won it more than once — the small club of true greats who dominated their eras.",
+      "Lionel Messi stands alone at the top with a record eight, ahead of Cristiano Ronaldo on five. Behind that modern duopoly sit three of the game's all-time icons — Johan Cruyff, Michel Platini and Marco van Basten — each a three-time winner."
+    ],
+    "columns": [
+      "Rank",
+      "Player",
+      "Ballon d'Ors",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Lionel Messi",
+        "8",
+        "2009, 2010, 2011, 2012, 2015, 2019, 2021, 2023"
+      ],
+      [
+        "2",
+        "Cristiano Ronaldo",
+        "5",
+        "2008, 2013, 2014, 2016, 2017"
+      ],
+      [
+        "3",
+        "Johan Cruyff",
+        "3",
+        "1971, 1973, 1974"
+      ],
+      [
+        "3",
+        "Marco van Basten",
+        "3",
+        "1988, 1989, 1992"
+      ],
+      [
+        "3",
+        "Michel Platini",
+        "3",
+        "1983, 1984, 1985"
+      ],
+      [
+        "6",
+        "Alfredo Di Stéfano",
+        "2",
+        "1957, 1959"
+      ],
+      [
+        "6",
+        "Franz Beckenbauer",
+        "2",
+        "1972, 1976"
+      ],
+      [
+        "6",
+        "Karl-Heinz Rummenigge",
+        "2",
+        "1980, 1981"
+      ],
+      [
+        "6",
+        "Kevin Keegan",
+        "2",
+        "1978, 1979"
+      ],
+      [
+        "6",
+        "Ronaldo",
+        "2",
+        "1997, 2002"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Who has won the most Ballon d'Or awards?",
+        "a": "Lionel Messi has won the most, with 8 — in 2009, 2010, 2011, 2012, 2015, 2019, 2021 and 2023. Cristiano Ronaldo is next with five."
+      },
+      {
+        "q": "Who has won three Ballon d'Ors?",
+        "a": "Three players have won it three times each: Johan Cruyff, Michel Platini and Marco van Basten."
+      },
+      {
+        "q": "Is this every Ballon d'Or winner?",
+        "a": "This page ranks the multiple winners. For the full year-by-year list of every Ballon d'Or winner since 1956, with their club and nationality, see our Ballon d'Or winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Ballon d'Or"
+  },
+  {
+    "slug": "most-world-cups",
+    "h1": "Countries With the Most World Cup Wins",
+    "title": "Most World Cup Wins: Countries Ranked | Ball IQ",
+    "description": "Which country has won the most World Cups? Brazil lead with five. Every nation to win the FIFA World Cup, ranked by titles, with the years.",
+    "intro": [
+      "Only eight nations have ever won the FIFA World Cup since it began in 1930. This page ranks them by number of titles, from Brazil's record five down to England's single triumph in 1966.",
+      "Brazil are the benchmark with five, the only side to have played at every finals. Italy and Germany follow on four apiece — Germany's tally combining their three wins as West Germany with the 2014 title won as a reunified nation."
+    ],
+    "columns": [
+      "Rank",
+      "Country",
+      "Titles",
+      "Years won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Brazil",
+        "5",
+        "1958, 1962, 1970, 1994, 2002"
+      ],
+      [
+        "2",
+        "Germany",
+        "4",
+        "1954, 1974, 1990, 2014"
+      ],
+      [
+        "2",
+        "Italy",
+        "4",
+        "1934, 1938, 1982, 2006"
+      ],
+      [
+        "4",
+        "Argentina",
+        "3",
+        "1978, 1986, 2022"
+      ],
+      [
+        "5",
+        "France",
+        "2",
+        "1998, 2018"
+      ],
+      [
+        "5",
+        "Spain",
+        "2",
+        "2010, 2026"
+      ],
+      [
+        "5",
+        "Uruguay",
+        "2",
+        "1930, 1950"
+      ],
+      [
+        "8",
+        "England",
+        "1",
+        "1966"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which country has won the most World Cups?",
+        "a": "Brazil have won the most, with five titles (1958, 1962, 1970, 1994 and 2002). They are also the only nation to have appeared at every World Cup finals."
+      },
+      {
+        "q": "How many World Cups have Germany won?",
+        "a": "Four — in 1954, 1974 and 1990 as West Germany, and in 2014 as a reunified Germany. That puts them level with Italy on four, behind Brazil."
+      },
+      {
+        "q": "Is this every World Cup winner?",
+        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our World Cup winners list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the World Cup"
+  },
+  {
+    "slug": "most-premier-league-titles",
+    "h1": "Clubs With the Most Premier League Titles",
+    "title": "Most Premier League Titles: Clubs Ranked | Ball IQ",
+    "description": "Which club has won the most Premier League titles? Manchester United lead with 13. Every Premier League winner since 1992, ranked by titles.",
+    "intro": [
+      "Since the Premier League began in 1992-93, only seven clubs have won it. This page ranks them by number of titles, from Manchester United's early dominance to Manchester City's modern dynasty.",
+      "Manchester United set the pace with 13 titles, all under Sir Alex Ferguson. Manchester City have closed fast since 2011-12, while Blackburn Rovers and Leicester City remain the only one-off winners to have crashed the established order."
+    ],
+    "columns": [
+      "Rank",
+      "Club",
+      "Titles",
+      "Seasons won"
+    ],
+    "rows": [
+      [
+        "1",
+        "Manchester United",
+        "13",
+        "1992, 1993, 1995, 1996, 1998, 1999, 2000, 2002, 2006, 2007, 2008, 2010, 2012"
+      ],
+      [
+        "2",
+        "Manchester City",
+        "8",
+        "2011, 2013, 2017, 2018, 2020, 2021, 2022, 2023"
+      ],
+      [
+        "3",
+        "Chelsea",
+        "5",
+        "2004, 2005, 2009, 2014, 2016"
+      ],
+      [
+        "4",
+        "Arsenal",
+        "4",
+        "1997, 2001, 2003, 2025"
+      ],
+      [
+        "5",
+        "Liverpool",
+        "2",
+        "2019, 2024"
+      ],
+      [
+        "6",
+        "Blackburn Rovers",
+        "1",
+        "1994"
+      ],
+      [
+        "6",
+        "Leicester City",
+        "1",
+        "2015"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Premier League titles?",
+        "a": "Manchester United have won the most, with 13 — all under Sir Alex Ferguson between 1993 and 2013. Manchester City are second and closing."
+      },
+      {
+        "q": "Which clubs have won the Premier League only once?",
+        "a": "Blackburn Rovers (1994-95) and Leicester City (2015-16) are the only clubs to have won the Premier League exactly once — Leicester's 5000-1 title is regarded as the greatest shock in the competition's history."
+      },
+      {
+        "q": "Is this every Premier League champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list of every champion and runner-up since 1992-93, see our Premier League champions list."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Premier League"
   }
 ];
