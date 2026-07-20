@@ -402,5 +402,252 @@ export const PLAYERS = [
         "a": "It scales from easy to hard. Early questions cover the headline facts of his career, while later ones dig into specific goal records, transfer details and career moments. Every answer is explained, so you learn as you play whatever your level."
       }
     ]
+  },
+  {
+    "slug": "salah",
+    "match": [
+      "Salah"
+    ],
+    "name": "Mohamed Salah",
+    "initials": "MS11",
+    "h1": "Mohamed Salah Quiz",
+    "title": "Mohamed Salah Quiz: Liverpool & Egypt Trivia | Ball IQ",
+    "description": "Free Mohamed Salah quiz — Liverpool, Roma, Egypt, the Golden Boots and records. Play in your browser, no sign-up, every answer explained.",
+    "intro": [
+      "Mohamed Salah is one of the defining forwards of the Premier League era, an Egyptian winger who turned a slow start in Europe into nine record-breaking years at the very top. His path ran from Cairo's Arab Contractors to Basel in Switzerland, through a frustrating first crack at the Premier League with Chelsea, into a reinvention in Italy with Fiorentina and then Roma, and finally to Liverpool, where from 2017 he became one of the most feared attackers on the planet. That spell ended in the summer of 2026, closing a chapter that reshaped how the club scored goals. If you can trace the arc from El Mokawloon to Anfield — and you have an opinion on where he belongs among the all-time greats — this quiz is built for you.",
+      "Salah's 2024-25 season is the case for the defence in any greatest-of-his-generation argument. He scored 29 Premier League goals and laid on 18 assists, becoming the first player in the competition's history to win the Golden Boot and the Playmaker award in the same campaign, and dragging Liverpool to the title in Arne Slot's first season. It earned him a record third PFA Players' Player of the Year award. That fourth Golden Boot also drew him level with Thierry Henry at the top of the all-time list, and it was no flash in the pan: back in 2017-18 he had scored 32 goals in a 38-game season, still the benchmark for a single top-flight year. He finished as Liverpool's third-highest scorer of all time with more than 250 goals for the club, and their leading Premier League marksman.",
+      "Expect the full spread. The questions move through his transfers — the Basel breakout, the false start at Chelsea, the Roma resurrection and the 2017 move to Liverpool — and on to the trophies: the 2019 Champions League, two Premier League titles, the FA Cup, League Cup, Club World Cup and Super Cup. There are the records (four Golden Boots, most goals by an African in Champions League history), the landmark moments, and his Egypt career — national captain, one of the highest scorers in the nation's history, two AFCON finals, and leading the Pharaohs out at the 2026 World Cup. Difficulty scales from easy openers any Liverpool fan will nod at, up to deep cuts that separate the genuine Salah obsessives from the crowd.",
+      "Every answer comes with a short explanation, so you finish the quiz knowing more than when you started — the year, the number, the context behind each one. It is completely free, runs right here in your browser, and needs no sign-up. If you enjoy it, Ball IQ has more than 4,000 football questions across clubs, leagues and legends, a daily football word game, and multiplayer modes where you can put your knowledge up against friends. Salah is only the beginning."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Mohamed Salah played for?",
+        "a": "Salah began with the Arab Contractors (El Mokawloon) in Egypt before moving to Basel in Switzerland in 2012. He joined Chelsea in 2014, then had loan spells at Fiorentina and Roma, making the Roma move permanent. In 2017 he signed for Liverpool, where he spent nine years and became one of the club's greatest ever forwards before leaving as a free agent in the summer of 2026."
+      },
+      {
+        "q": "What has Mohamed Salah won and which records does he hold?",
+        "a": "With Liverpool he won the 2019 Champions League, two Premier League titles (2019-20 and 2024-25), the FA Cup, League Cup, Club World Cup and UEFA Super Cup. Individually he has four Premier League Golden Boots, level with Thierry Henry, plus a record three PFA Players' Player of the Year awards. He is Liverpool's all-time leading Premier League scorer, the highest-scoring African in Champions League history, and Egypt's captain and one of its all-time leading scorers."
+      },
+      {
+        "q": "Is the Mohamed Salah quiz free to play?",
+        "a": "Yes. The Mohamed Salah quiz is completely free, plays directly in your browser, and needs no sign-up or download. If you want more, the full Ball IQ app has over 4,000 football questions spanning clubs, leagues and legends, a daily football word game, and multiplayer modes to play against friends."
+      },
+      {
+        "q": "How hard is the Mohamed Salah quiz?",
+        "a": "It scales. Early questions are friendly for any Liverpool or Premier League fan, then the difficulty climbs toward deep cuts on his early career, exact numbers, transfer details and Egypt exploits that only serious Salah followers will know. Every answer is explained, so even the ones you miss teach you something."
+      }
+    ]
+  },
+  {
+    "slug": "henry",
+    "match": [
+      "Thierry Henry",
+      "Henry"
+    ],
+    "name": "Thierry Henry",
+    "initials": "TH14",
+    "h1": "Thierry Henry Quiz",
+    "title": "Thierry Henry Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Thierry Henry quiz you can play in your browser, no sign-up. From Monaco to Arsenal's Invincibles to Barcelona's treble — every answer explained.",
+    "intro": [
+      "Thierry Henry is one of the most complete forwards the game has produced, a striker whose blend of pace, poise and finishing rewrote what a modern number nine could be. His career arc ran from AS Monaco, where Arsène Wenger first shaped him, through a difficult spell at Juventus, into the Arsenal years that made him a legend, then on to Barcelona, before he closed out his playing days at New York Red Bulls in Major League Soccer. If you can picture the swerve of a left-footed finish curled inside the far post, this quiz is for you.",
+      "The Arsenal chapter is where the legend was built. Henry became the club's all-time leading scorer with 228 goals and finished as the Premier League's top scorer four times, winning four Golden Boots — a total since matched by Mohamed Salah. In the 2003-04 Invincibles season he scored 30 league goals; the year before, in 2002-03, he became the only player in Premier League history to record at least 20 goals and 20 assists in a single campaign, with 24 goals and 20 assists. At Barcelona he completed the picture, winning the 2009 treble of La Liga, Copa del Rey and Champions League, and internationally he won the 1998 World Cup and Euro 2000 with France, finishing his national-team career with 51 goals in 123 caps.",
+      "Expect the full spread. The questions cover his transfers and the moves between Monaco, Juventus, Arsenal, Barcelona and New York; the individual records and Golden Boots; the defining moments from the Invincibles run to the Barcelona treble; and the France trophies. Difficulty scales from easy openers most fans will know to deep cuts that reward people who followed every season — the kind of detail that separates the casual viewer from the obsessive.",
+      "Every answer comes with an explanation, so you learn the story behind the stat as you play. It is completely free in your browser with no sign-up required. If you want more, the Ball IQ app has over 4,000 football questions, a daily football word game, and multiplayer modes to test yourself against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Thierry Henry played for?",
+        "a": "Henry began at AS Monaco, then moved to Juventus, before joining Arsenal where he became the club's all-time leading scorer. He later played for Barcelona, winning the 2009 treble, and finished his career at New York Red Bulls in MLS, with a short loan back to Arsenal in 2012."
+      },
+      {
+        "q": "What has Thierry Henry won and which records does he hold?",
+        "a": "Henry won the 1998 World Cup and Euro 2000 with France, and the 2009 treble (La Liga, Copa del Rey, Champions League) with Barcelona. He is Arsenal's all-time top scorer with 228 goals, won four Premier League Golden Boots (a total since matched by Mohamed Salah), and is the only player in Premier League history with 20+ goals and 20+ assists in a single season, achieved in 2002-03."
+      },
+      {
+        "q": "Is the Thierry Henry quiz free to play?",
+        "a": "Yes. The Thierry Henry quiz is completely free to play in your browser with no sign-up required. For more, the Ball IQ app has over 4,000 football questions across clubs, players and competitions, plus a daily word game and multiplayer."
+      },
+      {
+        "q": "How hard is the Thierry Henry quiz?",
+        "a": "It scales from easy to hard. Early questions cover the basics most fans know, then it works up to deep career detail on transfers, records and specific moments. Every answer is explained, so you pick up the full story as you go."
+      }
+    ]
+  },
+  {
+    "slug": "rooney",
+    "match": [
+      "Rooney"
+    ],
+    "name": "Wayne Rooney",
+    "initials": "WR10",
+    "h1": "The Wayne Rooney Quiz",
+    "title": "Wayne Rooney Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Wayne Rooney quiz you can play right in your browser, no sign-up. Clubs, goals, records and big moments, with every answer explained.",
+    "intro": [
+      "Wayne Rooney is the Croxteth teenager who grew into English football's defining forward of his generation, a player whose career ran from a wonder goal at 16 to the top of two record books. He burst out of Everton's academy, moved to Manchester United in 2004 for a fee that made him the most expensive teenager in the world, spent thirteen trophy-laden seasons at Old Trafford, then closed the loop with a final Everton spell before playing out his career at DC United and Derby County. If you can still picture the scruffy kid curling one past David Seaman to end Arsenal's unbeaten run, this quiz is built for you.",
+      "The numbers are the kind fans quote from memory. Rooney is Manchester United's all-time leading goalscorer with 253 goals across 559 appearances, a tally that edged him past Sir Bobby Charlton. For England he won 120 caps and scored 53 goals, and for the best part of a decade he stood as his country's all-time top scorer before Harry Kane finally passed the mark. Add it all up and his senior career cleared 360 goals for club and country.",
+      "Expect the full spread. There are questions on the record-breaking 2004 transfer to United and the hat-trick debut against Fenerbahce that announced it, on his five Premier League titles and the 2008 Champions League, on the overhead kick against Manchester City that still tops best-goal polls, and on the England years from Euro 2004 breakthrough to captaincy. The difficulty scales from gentle openers any fan will nail up to deep cuts on his Everton return, his DC United and Derby County chapters, and his later move into management. ",
+      "Every answer comes with a short explanation, so you finish knowing more than when you started, and the whole thing is free to play right in your browser with no sign-up. If it leaves you wanting more, the Ball IQ app carries over 4,000 football questions, a daily football word game, and multiplayer modes where you can put your knowledge up against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs did Wayne Rooney play for?",
+        "a": "Rooney came through at Everton and made his senior debut there in 2002. He joined Manchester United in 2004, where he spent thirteen seasons and became the club's all-time top scorer, before returning to Everton in 2017. He finished his playing career with DC United in Major League Soccer and then as player-coach at Derby County, retiring in 2021."
+      },
+      {
+        "q": "What did Wayne Rooney win, and which records does he hold?",
+        "a": "With Manchester United he won five Premier League titles, the Champions League in 2008, the Europa League, an FA Cup, four League Cups and the Club World Cup. He is United's all-time record goalscorer with 253 goals, and he was England's all-time leading scorer with 53 goals until Harry Kane surpassed the mark."
+      },
+      {
+        "q": "Is the Wayne Rooney quiz free to play?",
+        "a": "Yes. The Wayne Rooney quiz is completely free and plays right in your browser with no sign-up and no download. If you want more, the Ball IQ app adds over 4,000 football questions, a daily football word game and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Wayne Rooney quiz?",
+        "a": "It scales from easy to hard. Early questions cover the headline facts most fans know, then it works up to deeper detail on his transfers, his Everton return, his MLS and Derby spells and his England career. Every answer is explained, so you learn the story behind each one as you go."
+      }
+    ]
+  },
+  {
+    "slug": "gerrard",
+    "match": [
+      "Gerrard"
+    ],
+    "name": "Steven Gerrard",
+    "initials": "SG8",
+    "h1": "Steven Gerrard Quiz",
+    "title": "Steven Gerrard Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Steven Gerrard quiz you can play in your browser, no sign-up. Liverpool, England and LA Galaxy questions with every answer explained.",
+    "intro": [
+      "Steven Gerrard is the one-club talisman who carried Liverpool for the better part of two decades, a driving central midfielder who could tackle, pass, run and — above all — score the kind of goals that decided finals. He came through Liverpool's academy, made his debut in 1998, wore the armband for more than a decade, and stayed until 2015 before a farewell spell at LA Galaxy in Major League Soccer closed out his playing days. Add 114 England caps on top, and you have one of the defining British midfielders of his generation. If you can still picture him arriving late into the box with the outside of his right boot cocked, this quiz is built for you.",
+      "His masterpiece came in Istanbul on 25 May 2005. Liverpool were 3-0 down to AC Milan at half-time in the Champions League final; Gerrard's header just after the hour started the comeback, the Reds drew level at 3-3, and they won the shoot-out to lift the European Cup as captain. It remains the single most famous night of his career, but it sits alongside a 2006 FA Cup final so dominated by him it is simply called \"the Gerrard final,\" and a 2001 season in which he helped Liverpool win the UEFA Cup, FA Cup and League Cup treble. For England he won 114 caps and scored 21 goals, captaining his country 38 times.",
+      "Expect the full spread. The quiz moves from the gentle openers — his boyhood club, his shirt number, the city he never left — through to the deep cuts: the 2013-14 Premier League title that slipped away, his goal tallies, his three World Cups and three European Championships, and the second act in the dugout at Rangers, Aston Villa and Al-Ettifaq, including the unbeaten Scottish Premiership title he delivered at Ibrox in 2021. Questions scale from easy to hard, so casual fans get a foothold and lifers get properly tested.",
+      "Every answer comes with a short explanation, so you finish the round knowing more than when you started — the fee, the date, the final, the context. It is completely free to play in your browser with no sign-up required. If you want more, the Ball IQ app has over 4,000 football questions, a daily football word game, and multiplayer modes to take on your mates head to head."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Steven Gerrard played for?",
+        "a": "Gerrard was a genuine one-club man in Europe, spending his entire top-level career at Liverpool from his 1998 debut until 2015, where he made more than 700 appearances and captained the side for over a decade. He then finished his playing days with a two-season spell at LA Galaxy in Major League Soccer in 2015 and 2016 before retiring."
+      },
+      {
+        "q": "What has Steven Gerrard won, and which records does he hold?",
+        "a": "With Liverpool, Gerrard won the 2005 Champions League as captain, the 2001 UEFA Cup, two FA Cups (2001 and 2006), three League Cups and the 2005 UEFA Super Cup. He never won the Premier League, famously falling short in 2013-14. He earned 114 England caps — among the most in the nation's history — scoring 21 goals. As a manager he later won the 2020-21 Scottish Premiership title with Rangers, unbeaten in the league."
+      },
+      {
+        "q": "Is the Steven Gerrard quiz free to play?",
+        "a": "Yes. The Steven Gerrard quiz is completely free and runs right in your browser with no sign-up and no download. If you want to keep going, the Ball IQ app packs in over 4,000 football questions, a daily football word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Steven Gerrard quiz?",
+        "a": "It scales from easy to hard. Early questions cover the basics any Liverpool fan knows — his club, his number, Istanbul — before ramping up to goal totals, trophy dates, England appearances and his managerial career. Every answer is explained, so it rewards knowledge and teaches you something whether you score full marks or not."
+      }
+    ]
+  },
+  {
+    "slug": "ronaldinho",
+    "match": [
+      "Ronaldinho"
+    ],
+    "name": "Ronaldinho",
+    "initials": "R10",
+    "h1": "The Ronaldinho Quiz",
+    "title": "Ronaldinho Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Ronaldinho quiz you can play in your browser, no sign-up. Every answer explained — from Grêmio and PSG to Barcelona, Milan and the 2002 World Cup.",
+    "intro": [
+      "Ronaldinho is the Brazilian playmaker who made football look like joy, and this quiz is built for the fans who still watch his highlight reels on repeat. His path ran from Grêmio in his native Porto Alegre to Paris Saint-Germain, then to the Barcelona side he dragged back to the top of Europe, on to AC Milan, and home again to Brazil with Flamengo, Atlético Mineiro, Querétaro in Mexico and finally Fluminense. If you can name the club where he lifted the Copa Libertadores, or you remember the night the Bernabéu stood to applaud an opponent, this one is for you.",
+      "At Barcelona he was the centre of everything, scoring 94 goals in 207 appearances and winning back-to-back La Liga titles in 2004-05 and 2005-06 before capping it with the 2005-06 Champions League. In 2005 he won the Ballon d'Or, adding to the FIFA World Player of the Year awards he took in both 2004 and 2005 — the years he was, by common consent, the best footballer on the planet. Before all of it, aged 22, he had already won the 2002 World Cup with Brazil, scoring the audacious long-range free kick that beat England in the quarter-final.",
+      "Expect the full spread. The quiz moves through his transfers and fees — the roughly €30m move from PSG to Barcelona in 2003, the switch to Milan in 2008 — his trophies from the 1999 Copa América and 2002 World Cup to the 2013 Copa Libertadores with Atlético Mineiro, and the moments that defined him: the toe-poke against Chelsea, the no-look passes, the smile. Questions scale from easy openers any fan will get to deep cuts that separate the casual viewer from the true student of O Bruxo.",
+      "Every answer comes with an explanation, so you finish knowing more than when you started. It is completely free, playable right here in your browser with no sign-up required. If you enjoy it, the Ball IQ app goes further — over 4,000 football questions, a daily football word game, and multiplayer modes where you can test your knowledge against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Ronaldinho played for?",
+        "a": "Ronaldinho came through Grêmio in Brazil, then moved to Paris Saint-Germain in 2001, Barcelona in 2003, and AC Milan in 2008. He returned to Brazil with Flamengo and then Atlético Mineiro, had a spell at Querétaro in Mexico, and finished his top-level career at Fluminense in 2015. In 2026, aged 46, he joined Serie C side Ravenna, initially in an ambassador role with a possible cameo appearance not ruled out."
+      },
+      {
+        "q": "What has Ronaldinho won, and which records does he hold?",
+        "a": "Ronaldinho won the 2002 World Cup and 1999 Copa América with Brazil, two La Liga titles (2004-05, 2005-06) and the 2005-06 Champions League with Barcelona, and the 2013 Copa Libertadores with Atlético Mineiro. Individually he won the 2005 Ballon d'Or and was named FIFA World Player of the Year in both 2004 and 2005."
+      },
+      {
+        "q": "Is the Ronaldinho quiz free to play?",
+        "a": "Yes. The Ronaldinho quiz is completely free and runs right in your browser with no sign-up or download needed. If you want more, the Ball IQ app offers over 4,000 football questions, a daily football word game, and multiplayer modes to challenge your friends."
+      },
+      {
+        "q": "How hard is the Ronaldinho quiz?",
+        "a": "It scales from easy to hard. Early questions welcome casual fans with his best-known clubs and trophies, then it ramps up to transfer fees, specific seasons, goal tallies and career details that reward true devotees. Every answer is explained, so you learn something whether you ace it or get caught out."
+      }
+    ]
+  },
+  {
+    "slug": "neymar",
+    "match": [
+      "Neymar"
+    ],
+    "name": "Neymar",
+    "initials": "NJR",
+    "h1": "Neymar Quiz",
+    "title": "Neymar Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Neymar quiz you can play in your browser, no sign-up. Every answer explained, from Santos and Barcelona to PSG and Brazil. How high is your Ball IQ?",
+    "intro": [
+      "Neymar is the most gifted Brazilian forward of his generation, a player whose career carried him from the beaches of Santos to the very top of the European game and back again. He broke through as a teenage phenomenon at Santos, moved to Barcelona in 2013 to form one third of the fearsome MSN attack, became the most expensive footballer in history when Paris Saint-Germain paid his release clause in 2017, spent a season and a half in Saudi Arabia with Al-Hilal, and returned to his boyhood club Santos in 2025. If you can name the trophies, the transfers and the trademark moments across all four of those chapters, this quiz is built for you.",
+      "The defining stretch came at Barcelona. In 2014-15 Neymar was central to a treble-winning side, sharing the front line with Lionel Messi and Luis Suarez and scoring in the Champions League final against Juventus in Berlin as Barcelona became the first club to complete the continental treble twice. For his country he went further still: he overtook Pele to become Brazil's all-time leading goalscorer, won the Golden Ball at the 2013 Confederations Cup, and captained the side to Olympic gold on home soil in 2016. He announced his retirement from international football after Brazil's 2026 World Cup campaign, finishing as the Selecao's record scorer.",
+      "Expect the full spread. There are questions on the world-record fee that took him to PSG in 2017, the La Liga, Copa del Rey and Ligue 1 titles, the treble in Spain, his more than 450 career goals for club and country, and the individual moments only real fans remember. The difficulty scales from easy openers any Neymar fan will nod at, up to deep cuts on specific finals, scorelines and squad numbers that will separate the casual watcher from the obsessive.",
+      "Every answer comes with an explanation, so you finish the quiz knowing more than when you started. It is completely free, plays right in your browser, and needs no sign-up. If you enjoy it, the Ball IQ app goes deeper still, with more than 4,000 football questions, a daily football word game, and multiplayer modes where you can test your knowledge against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Neymar played for?",
+        "a": "Neymar came through at Santos in Brazil before joining Barcelona in 2013, moving to Paris Saint-Germain in 2017 in a world-record transfer, signing for Al-Hilal in Saudi Arabia in 2023, and returning to Santos in 2025. He also became Brazil's all-time leading goalscorer before retiring from international football after the 2026 World Cup."
+      },
+      {
+        "q": "What has Neymar won and which records does he hold?",
+        "a": "Neymar won a treble with Barcelona in 2014-15 (La Liga, Copa del Rey and the Champions League), along with multiple Ligue 1 titles at PSG and the Saudi Pro League with Al-Hilal in 2023-24; with Santos he lifted the 2011 Copa Libertadores. Internationally he won Olympic gold in 2016, a silver in 2012, and the 2013 Confederations Cup Golden Ball, and he overtook Pele as Brazil's all-time top scorer."
+      },
+      {
+        "q": "Is the Neymar quiz free to play?",
+        "a": "Yes. The Neymar quiz is completely free, plays directly in your browser, and needs no sign-up or download. If you want more, the Ball IQ app has over 4,000 football questions, a daily football word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Neymar quiz?",
+        "a": "The quiz scales from easy to hard. It opens with questions most fans will know and builds toward deeper ones on specific finals, transfer fees, trophies and career numbers. Every answer is explained, so you learn as you play whether you are a casual fan or a Neymar obsessive."
+      }
+    ]
+  },
+  {
+    "slug": "modric",
+    "match": [
+      "Modrić",
+      "Modric"
+    ],
+    "name": "Luka Modrić",
+    "initials": "LM10",
+    "h1": "The Luka Modrić Quiz",
+    "title": "Luka Modrić Quiz: Test Your Knowledge | Ball IQ",
+    "description": "Free Luka Modrić quiz, playable in your browser with no sign-up. Every answer explained, from Dinamo Zagreb to Real Madrid to AC Milan.",
+    "intro": [
+      "Luka Modrić is the midfield metronome who redefined what a small, unhurried playmaker could win at the very top of the game. His path runs from Dinamo Zagreb, where he came through the academy and survived a hardening loan spell in the Bosnian league, to Tottenham Hotspur, and then to Real Madrid in 2012 — the move that turned a gifted passer into a serial European champion. In the summer of 2025 he closed his 13-year Madrid chapter and joined AC Milan on a free transfer, still starting at 40. If you can picture the drop of the shoulder, the outside-of-the-boot switch of play, and the way he glided through a decade of Clásicos, this quiz is built for you.",
+      "The defining year was 2018. Modrić anchored Real Madrid to a third straight Champions League title, then captained Croatia to their first World Cup final, winning the Golden Ball as the tournament's best player along the way. That autumn he was awarded the Ballon d'Or, ending a ten-year run in which only Lionel Messi and Cristiano Ronaldo had claimed it — and he swept the Best FIFA Men's Player and UEFA Men's Player of the Year awards in the same season. At Madrid he lifted the Champions League six times across his career; for Croatia he became the nation's most-capped player, passing 200 international appearances at the 2026 World Cup — his fifth — on his way to 202 caps and 29 goals.",
+      "Expect the full spread. The quiz walks his transfers and the fees that carried him, his six European Cups, his back-to-back World Cup medals — silver in 2018, bronze in 2022 — and the individual honours that piled up late in his career. There are the small details true fans hoard: the loan to Zrinjski Mostar, the Croatian league titles at Dinamo, his shirt numbers, the managers he played under. Difficulty scales from gentle openers any follower will nod at up to deep cuts that separate the diehards from the rest.",
+      "Every answer comes with an explanation, so you finish knowing more than when you started — not just whether you were right. It is completely free, plays instantly in your browser, and needs no sign-up. If it sparks something, the Ball IQ app goes further: over 4,000 football questions across clubs and competitions, a daily football word game, and multiplayer modes where you can test your knowledge head-to-head against friends."
+    ],
+    "faq": [
+      {
+        "q": "Which clubs has Luka Modrić played for?",
+        "a": "Modrić came through Dinamo Zagreb (with loan spells at Zrinjski Mostar and Inter Zaprešić), then signed for Tottenham Hotspur in 2008, moved to Real Madrid in 2012, and joined AC Milan on a free transfer in 2025, where he continues to play."
+      },
+      {
+        "q": "What has Luka Modrić won, and which records does he hold?",
+        "a": "He won the 2018 Ballon d'Or along with the Best FIFA Men's Player and UEFA Men's Player of the Year awards that same year, lifted the Champions League six times with Real Madrid, and won multiple La Liga titles. He is Croatia's most-capped player with 202 appearances, led them to the 2018 World Cup final, and took the 2018 Golden Ball."
+      },
+      {
+        "q": "Is the Luka Modrić quiz free to play?",
+        "a": "Yes. The Modrić quiz is completely free, runs in your browser, and needs no sign-up. If you want more, the Ball IQ app has over 4,000 football questions, a daily word game, and multiplayer modes."
+      },
+      {
+        "q": "How hard is the Luka Modrić quiz?",
+        "a": "It scales from easy to hard — gentle openers about his major clubs and trophies, then deeper questions on early loans, fees, shirt numbers, and international milestones. Every answer is explained, so it doubles as a way to learn his career, not just test it."
+      }
+    ]
   }
 ];
