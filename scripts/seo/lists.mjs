@@ -6071,6 +6071,12 @@ export const LISTS = [
         "Kylian Mbappé",
         "Real Madrid",
         "31"
+      ],
+      [
+        "2025–26",
+        "Kylian Mbappé",
+        "Real Madrid",
+        "25"
       ]
     ],
     "faq": [
@@ -6674,6 +6680,12 @@ export const LISTS = [
         "Mateo Retegui",
         "Atalanta",
         "25"
+      ],
+      [
+        "2025-26",
+        "Lautaro Martínez",
+        "Inter",
+        "17"
       ]
     ],
     "faq": [
@@ -7085,6 +7097,12 @@ export const LISTS = [
         "Harry Kane",
         "Bayern Munich",
         "26"
+      ],
+      [
+        "2025-26",
+        "Harry Kane",
+        "Bayern Munich",
+        "36"
       ]
     ],
     "faq": [
@@ -7646,6 +7664,12 @@ export const LISTS = [
         "Ousmane Dembélé",
         "Paris Saint-Germain",
         "21"
+      ],
+      [
+        "2025–26",
+        "Esteban Lepaul",
+        "Rennes",
+        "21"
       ]
     ],
     "faq": [
@@ -8105,6 +8129,12 @@ export const LISTS = [
         "Raphinha / Serhou Guirassy",
         "Barcelona / Borussia Dortmund",
         "13"
+      ],
+      [
+        "2025-26",
+        "Kylian Mbappé",
+        "Real Madrid",
+        "15"
       ]
     ],
     "faq": [
@@ -8468,6 +8498,12 @@ export const LISTS = [
         "Tottenham Hotspur",
         "Manchester United",
         "1-0"
+      ],
+      [
+        "2025-26",
+        "Aston Villa",
+        "SC Freiburg",
+        "3-0"
       ]
     ],
     "faq": [
