@@ -9976,5 +9976,3782 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Africa Cup of Nations"
+  },
+  {
+    "slug": "fa-cup-winners",
+    "h1": "Every FA Cup Winner by Season (1872–2026)",
+    "title": "FA Cup Winners: Every Final 1872–2026 | Ball IQ",
+    "description": "The complete list of FA Cup winners by season, from the first final in 1871-72 to Manchester City's 2025-26 triumph, with runners-up and scores.",
+    "intro": [
+      "The Football Association Challenge Cup is the oldest national football competition in the world. First contested in the 1871-72 season, when Wanderers beat Royal Engineers 1-0 at the Kennington Oval, it predates the Football League by 16 years and has crowned a champion nearly every season since — pausing only for the two World Wars.",
+      "Its history spans amateur gentlemen's sides like the Old Etonians and Oxford University, the rise of the northern professional clubs, and the modern dominance of the game's biggest names. The final moved to the original Wembley in 1923, decamped to Cardiff's Millennium Stadium while the new Wembley was built, and returned in 2007. For decades a drawn final meant a replay; the last one came in 1993, and finals level after extra time are now settled on penalties.",
+      "The table below lists every FA Cup final winner by season, alongside the runner-up and the score. Where a final needed a replay, went to extra time, or was decided from the penalty spot, that is noted in the Score column. No rows are shown for the seasons the competition was not held during World War I and World War II."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1871-72",
+        "Wanderers",
+        "Royal Engineers",
+        "1-0"
+      ],
+      [
+        "1872-73",
+        "Wanderers",
+        "Oxford University",
+        "2-0"
+      ],
+      [
+        "1873-74",
+        "Oxford University",
+        "Royal Engineers",
+        "2-0"
+      ],
+      [
+        "1874-75",
+        "Royal Engineers",
+        "Old Etonians",
+        "2-0 (replay; 1-1 aet)"
+      ],
+      [
+        "1875-76",
+        "Wanderers",
+        "Old Etonians",
+        "3-0 (replay; 1-1)"
+      ],
+      [
+        "1876-77",
+        "Wanderers",
+        "Oxford University",
+        "2-1 (aet)"
+      ],
+      [
+        "1877-78",
+        "Wanderers",
+        "Royal Engineers",
+        "3-1"
+      ],
+      [
+        "1878-79",
+        "Old Etonians",
+        "Clapham Rovers",
+        "1-0"
+      ],
+      [
+        "1879-80",
+        "Clapham Rovers",
+        "Oxford University",
+        "1-0"
+      ],
+      [
+        "1880-81",
+        "Old Carthusians",
+        "Old Etonians",
+        "3-0"
+      ],
+      [
+        "1881-82",
+        "Old Etonians",
+        "Blackburn Rovers",
+        "1-0"
+      ],
+      [
+        "1882-83",
+        "Blackburn Olympic",
+        "Old Etonians",
+        "2-1 (aet)"
+      ],
+      [
+        "1883-84",
+        "Blackburn Rovers",
+        "Queen's Park",
+        "2-1"
+      ],
+      [
+        "1884-85",
+        "Blackburn Rovers",
+        "Queen's Park",
+        "2-0"
+      ],
+      [
+        "1885-86",
+        "Blackburn Rovers",
+        "West Bromwich Albion",
+        "2-0 (replay; 0-0)"
+      ],
+      [
+        "1886-87",
+        "Aston Villa",
+        "West Bromwich Albion",
+        "2-0"
+      ],
+      [
+        "1887-88",
+        "West Bromwich Albion",
+        "Preston North End",
+        "2-1"
+      ],
+      [
+        "1888-89",
+        "Preston North End",
+        "Wolverhampton Wanderers",
+        "3-0"
+      ],
+      [
+        "1889-90",
+        "Blackburn Rovers",
+        "Sheffield Wednesday",
+        "6-1"
+      ],
+      [
+        "1890-91",
+        "Blackburn Rovers",
+        "Notts County",
+        "3-1"
+      ],
+      [
+        "1891-92",
+        "West Bromwich Albion",
+        "Aston Villa",
+        "3-0"
+      ],
+      [
+        "1892-93",
+        "Wolverhampton Wanderers",
+        "Everton",
+        "1-0"
+      ],
+      [
+        "1893-94",
+        "Notts County",
+        "Bolton Wanderers",
+        "4-1"
+      ],
+      [
+        "1894-95",
+        "Aston Villa",
+        "West Bromwich Albion",
+        "1-0"
+      ],
+      [
+        "1895-96",
+        "Sheffield Wednesday",
+        "Wolverhampton Wanderers",
+        "2-1"
+      ],
+      [
+        "1896-97",
+        "Aston Villa",
+        "Everton",
+        "3-2"
+      ],
+      [
+        "1897-98",
+        "Nottingham Forest",
+        "Derby County",
+        "3-1"
+      ],
+      [
+        "1898-99",
+        "Sheffield United",
+        "Derby County",
+        "4-1"
+      ],
+      [
+        "1899-1900",
+        "Bury",
+        "Southampton",
+        "4-0"
+      ],
+      [
+        "1900-01",
+        "Tottenham Hotspur",
+        "Sheffield United",
+        "3-1 (replay; 2-2)"
+      ],
+      [
+        "1901-02",
+        "Sheffield United",
+        "Southampton",
+        "2-1 (replay; 1-1)"
+      ],
+      [
+        "1902-03",
+        "Bury",
+        "Derby County",
+        "6-0"
+      ],
+      [
+        "1903-04",
+        "Manchester City",
+        "Bolton Wanderers",
+        "1-0"
+      ],
+      [
+        "1904-05",
+        "Aston Villa",
+        "Newcastle United",
+        "2-0"
+      ],
+      [
+        "1905-06",
+        "Everton",
+        "Newcastle United",
+        "1-0"
+      ],
+      [
+        "1906-07",
+        "Sheffield Wednesday",
+        "Everton",
+        "2-1"
+      ],
+      [
+        "1907-08",
+        "Wolverhampton Wanderers",
+        "Newcastle United",
+        "3-1"
+      ],
+      [
+        "1908-09",
+        "Manchester United",
+        "Bristol City",
+        "1-0"
+      ],
+      [
+        "1909-10",
+        "Newcastle United",
+        "Barnsley",
+        "2-0 (replay; 1-1)"
+      ],
+      [
+        "1910-11",
+        "Bradford City",
+        "Newcastle United",
+        "1-0 (replay; 0-0)"
+      ],
+      [
+        "1911-12",
+        "Barnsley",
+        "West Bromwich Albion",
+        "1-0 (replay aet; 0-0)"
+      ],
+      [
+        "1912-13",
+        "Aston Villa",
+        "Sunderland",
+        "1-0"
+      ],
+      [
+        "1913-14",
+        "Burnley",
+        "Liverpool",
+        "1-0"
+      ],
+      [
+        "1914-15",
+        "Sheffield United",
+        "Chelsea",
+        "3-0"
+      ],
+      [
+        "1919-20",
+        "Aston Villa",
+        "Huddersfield Town",
+        "1-0 (aet)"
+      ],
+      [
+        "1920-21",
+        "Tottenham Hotspur",
+        "Wolverhampton Wanderers",
+        "1-0"
+      ],
+      [
+        "1921-22",
+        "Huddersfield Town",
+        "Preston North End",
+        "1-0"
+      ],
+      [
+        "1922-23",
+        "Bolton Wanderers",
+        "West Ham United",
+        "2-0"
+      ],
+      [
+        "1923-24",
+        "Newcastle United",
+        "Aston Villa",
+        "2-0"
+      ],
+      [
+        "1924-25",
+        "Sheffield United",
+        "Cardiff City",
+        "1-0"
+      ],
+      [
+        "1925-26",
+        "Bolton Wanderers",
+        "Manchester City",
+        "1-0"
+      ],
+      [
+        "1926-27",
+        "Cardiff City",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1927-28",
+        "Blackburn Rovers",
+        "Huddersfield Town",
+        "3-1"
+      ],
+      [
+        "1928-29",
+        "Bolton Wanderers",
+        "Portsmouth",
+        "2-0"
+      ],
+      [
+        "1929-30",
+        "Arsenal",
+        "Huddersfield Town",
+        "2-0"
+      ],
+      [
+        "1930-31",
+        "West Bromwich Albion",
+        "Birmingham",
+        "2-1"
+      ],
+      [
+        "1931-32",
+        "Newcastle United",
+        "Arsenal",
+        "2-1"
+      ],
+      [
+        "1932-33",
+        "Everton",
+        "Manchester City",
+        "3-0"
+      ],
+      [
+        "1933-34",
+        "Manchester City",
+        "Portsmouth",
+        "2-1"
+      ],
+      [
+        "1934-35",
+        "Sheffield Wednesday",
+        "West Bromwich Albion",
+        "4-2"
+      ],
+      [
+        "1935-36",
+        "Arsenal",
+        "Sheffield United",
+        "1-0"
+      ],
+      [
+        "1936-37",
+        "Sunderland",
+        "Preston North End",
+        "3-1"
+      ],
+      [
+        "1937-38",
+        "Preston North End",
+        "Huddersfield Town",
+        "1-0 (aet)"
+      ],
+      [
+        "1938-39",
+        "Portsmouth",
+        "Wolverhampton Wanderers",
+        "4-1"
+      ],
+      [
+        "1945-46",
+        "Derby County",
+        "Charlton Athletic",
+        "4-1 (aet)"
+      ],
+      [
+        "1946-47",
+        "Charlton Athletic",
+        "Burnley",
+        "1-0 (aet)"
+      ],
+      [
+        "1947-48",
+        "Manchester United",
+        "Blackpool",
+        "4-2"
+      ],
+      [
+        "1948-49",
+        "Wolverhampton Wanderers",
+        "Leicester City",
+        "3-1"
+      ],
+      [
+        "1949-50",
+        "Arsenal",
+        "Liverpool",
+        "2-0"
+      ],
+      [
+        "1950-51",
+        "Newcastle United",
+        "Blackpool",
+        "2-0"
+      ],
+      [
+        "1951-52",
+        "Newcastle United",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1952-53",
+        "Blackpool",
+        "Bolton Wanderers",
+        "4-3"
+      ],
+      [
+        "1953-54",
+        "West Bromwich Albion",
+        "Preston North End",
+        "3-2"
+      ],
+      [
+        "1954-55",
+        "Newcastle United",
+        "Manchester City",
+        "3-1"
+      ],
+      [
+        "1955-56",
+        "Manchester City",
+        "Birmingham City",
+        "3-1"
+      ],
+      [
+        "1956-57",
+        "Aston Villa",
+        "Manchester United",
+        "2-1"
+      ],
+      [
+        "1957-58",
+        "Bolton Wanderers",
+        "Manchester United",
+        "2-0"
+      ],
+      [
+        "1958-59",
+        "Nottingham Forest",
+        "Luton Town",
+        "2-1"
+      ],
+      [
+        "1959-60",
+        "Wolverhampton Wanderers",
+        "Blackburn Rovers",
+        "3-0"
+      ],
+      [
+        "1960-61",
+        "Tottenham Hotspur",
+        "Leicester City",
+        "2-0"
+      ],
+      [
+        "1961-62",
+        "Tottenham Hotspur",
+        "Burnley",
+        "3-1"
+      ],
+      [
+        "1962-63",
+        "Manchester United",
+        "Leicester City",
+        "3-1"
+      ],
+      [
+        "1963-64",
+        "West Ham United",
+        "Preston North End",
+        "3-2"
+      ],
+      [
+        "1964-65",
+        "Liverpool",
+        "Leeds United",
+        "2-1 (aet)"
+      ],
+      [
+        "1965-66",
+        "Everton",
+        "Sheffield Wednesday",
+        "3-2"
+      ],
+      [
+        "1966-67",
+        "Tottenham Hotspur",
+        "Chelsea",
+        "2-1"
+      ],
+      [
+        "1967-68",
+        "West Bromwich Albion",
+        "Everton",
+        "1-0 (aet)"
+      ],
+      [
+        "1968-69",
+        "Manchester City",
+        "Leicester City",
+        "1-0"
+      ],
+      [
+        "1969-70",
+        "Chelsea",
+        "Leeds United",
+        "2-1 (replay aet; 2-2)"
+      ],
+      [
+        "1970-71",
+        "Arsenal",
+        "Liverpool",
+        "2-1 (aet)"
+      ],
+      [
+        "1971-72",
+        "Leeds United",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1972-73",
+        "Sunderland",
+        "Leeds United",
+        "1-0"
+      ],
+      [
+        "1973-74",
+        "Liverpool",
+        "Newcastle United",
+        "3-0"
+      ],
+      [
+        "1974-75",
+        "West Ham United",
+        "Fulham",
+        "2-0"
+      ],
+      [
+        "1975-76",
+        "Southampton",
+        "Manchester United",
+        "1-0"
+      ],
+      [
+        "1976-77",
+        "Manchester United",
+        "Liverpool",
+        "2-1"
+      ],
+      [
+        "1977-78",
+        "Ipswich Town",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1978-79",
+        "Arsenal",
+        "Manchester United",
+        "3-2"
+      ],
+      [
+        "1979-80",
+        "West Ham United",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1980-81",
+        "Tottenham Hotspur",
+        "Manchester City",
+        "3-2 (replay aet; 1-1)"
+      ],
+      [
+        "1981-82",
+        "Tottenham Hotspur",
+        "Queens Park Rangers",
+        "1-0 (replay; 1-1 aet)"
+      ],
+      [
+        "1982-83",
+        "Manchester United",
+        "Brighton & Hove Albion",
+        "4-0 (replay; 2-2 aet)"
+      ],
+      [
+        "1983-84",
+        "Everton",
+        "Watford",
+        "2-0"
+      ],
+      [
+        "1984-85",
+        "Manchester United",
+        "Everton",
+        "1-0 (aet)"
+      ],
+      [
+        "1985-86",
+        "Liverpool",
+        "Everton",
+        "3-1"
+      ],
+      [
+        "1986-87",
+        "Coventry City",
+        "Tottenham Hotspur",
+        "3-2 (aet)"
+      ],
+      [
+        "1987-88",
+        "Wimbledon",
+        "Liverpool",
+        "1-0"
+      ],
+      [
+        "1988-89",
+        "Liverpool",
+        "Everton",
+        "3-2 (aet)"
+      ],
+      [
+        "1989-90",
+        "Manchester United",
+        "Crystal Palace",
+        "1-0 (replay; 3-3 aet)"
+      ],
+      [
+        "1990-91",
+        "Tottenham Hotspur",
+        "Nottingham Forest",
+        "2-1 (aet)"
+      ],
+      [
+        "1991-92",
+        "Liverpool",
+        "Sunderland",
+        "2-0"
+      ],
+      [
+        "1992-93",
+        "Arsenal",
+        "Sheffield Wednesday",
+        "2-1 (replay aet; 1-1 aet)"
+      ],
+      [
+        "1993-94",
+        "Manchester United",
+        "Chelsea",
+        "4-0"
+      ],
+      [
+        "1994-95",
+        "Everton",
+        "Manchester United",
+        "1-0"
+      ],
+      [
+        "1995-96",
+        "Manchester United",
+        "Liverpool",
+        "1-0"
+      ],
+      [
+        "1996-97",
+        "Chelsea",
+        "Middlesbrough",
+        "2-0"
+      ],
+      [
+        "1997-98",
+        "Arsenal",
+        "Newcastle United",
+        "2-0"
+      ],
+      [
+        "1998-99",
+        "Manchester United",
+        "Newcastle United",
+        "2-0"
+      ],
+      [
+        "1999-2000",
+        "Chelsea",
+        "Aston Villa",
+        "1-0"
+      ],
+      [
+        "2000-01",
+        "Liverpool",
+        "Arsenal",
+        "2-1"
+      ],
+      [
+        "2001-02",
+        "Arsenal",
+        "Chelsea",
+        "2-0"
+      ],
+      [
+        "2002-03",
+        "Arsenal",
+        "Southampton",
+        "1-0"
+      ],
+      [
+        "2003-04",
+        "Manchester United",
+        "Millwall",
+        "3-0"
+      ],
+      [
+        "2004-05",
+        "Arsenal",
+        "Manchester United",
+        "0-0 (Arsenal won 5-4 pens)"
+      ],
+      [
+        "2005-06",
+        "Liverpool",
+        "West Ham United",
+        "3-3 (Liverpool won 3-1 pens, aet)"
+      ],
+      [
+        "2006-07",
+        "Chelsea",
+        "Manchester United",
+        "1-0 (aet)"
+      ],
+      [
+        "2007-08",
+        "Portsmouth",
+        "Cardiff City",
+        "1-0"
+      ],
+      [
+        "2008-09",
+        "Chelsea",
+        "Everton",
+        "2-1"
+      ],
+      [
+        "2009-10",
+        "Chelsea",
+        "Portsmouth",
+        "1-0"
+      ],
+      [
+        "2010-11",
+        "Manchester City",
+        "Stoke City",
+        "1-0"
+      ],
+      [
+        "2011-12",
+        "Chelsea",
+        "Liverpool",
+        "2-1"
+      ],
+      [
+        "2012-13",
+        "Wigan Athletic",
+        "Manchester City",
+        "1-0"
+      ],
+      [
+        "2013-14",
+        "Arsenal",
+        "Hull City",
+        "3-2 (aet)"
+      ],
+      [
+        "2014-15",
+        "Arsenal",
+        "Aston Villa",
+        "4-0"
+      ],
+      [
+        "2015-16",
+        "Manchester United",
+        "Crystal Palace",
+        "2-1 (aet)"
+      ],
+      [
+        "2016-17",
+        "Arsenal",
+        "Chelsea",
+        "2-1"
+      ],
+      [
+        "2017-18",
+        "Chelsea",
+        "Manchester United",
+        "1-0"
+      ],
+      [
+        "2018-19",
+        "Manchester City",
+        "Watford",
+        "6-0"
+      ],
+      [
+        "2019-20",
+        "Arsenal",
+        "Chelsea",
+        "2-1"
+      ],
+      [
+        "2020-21",
+        "Leicester City",
+        "Chelsea",
+        "1-0"
+      ],
+      [
+        "2021-22",
+        "Liverpool",
+        "Chelsea",
+        "0-0 (Liverpool won 6-5 pens, aet)"
+      ],
+      [
+        "2022-23",
+        "Manchester City",
+        "Manchester United",
+        "2-1"
+      ],
+      [
+        "2023-24",
+        "Manchester United",
+        "Manchester City",
+        "2-1"
+      ],
+      [
+        "2024-25",
+        "Crystal Palace",
+        "Manchester City",
+        "1-0"
+      ],
+      [
+        "2025-26",
+        "Manchester City",
+        "Chelsea",
+        "1-0"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most FA Cups?",
+        "a": "Arsenal has won the FA Cup a record 14 times, most recently in 2020. Manchester United are second with 13 titles, followed by Tottenham Hotspur and Chelsea. Manchester City reached eight wins with their 2025-26 victory over Chelsea."
+      },
+      {
+        "q": "What is the oldest football competition in the world?",
+        "a": "The FA Cup is the oldest national football competition. It was first contested in the 1871-72 season, when Wanderers beat Royal Engineers 1-0 in the final at the Kennington Oval in London."
+      },
+      {
+        "q": "Has a club from outside England ever won the FA Cup?",
+        "a": "Yes. Cardiff City, based in Wales, won the FA Cup in 1927, beating Arsenal 1-0. They remain the only club from outside England to lift the trophy. Cardiff also reached the finals of 1925 and 2008 as runners-up."
+      },
+      {
+        "q": "When was the last FA Cup final replay?",
+        "a": "The last final decided by a replay was in 1993, when Arsenal beat Sheffield Wednesday 2-1 after extra time in the replay. Finals level after extra time have since been settled by a penalty shoot-out, as in 2005, 2006 and 2022."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the FA Cup"
+  },
+  {
+    "slug": "efl-cup-winners",
+    "h1": "Every EFL Cup (League Cup) Winner by Season",
+    "title": "EFL Cup Winners: Full List by Season (1961–2026) | Ball IQ",
+    "description": "Every EFL Cup / League Cup winner by season from 1960-61 to 2025-26, with runners-up and final scores. The complete Carabao Cup roll of honour.",
+    "intro": [
+      "The EFL Cup is England's second domestic knockout competition, born in 1960 as a midweek tournament for Football League clubs. Aston Villa lifted the first trophy in 1961, edging Rotherham United over a two-legged final — a format the cup kept until 1966, when it switched to the familiar single showpiece match.",
+      "Few competitions have changed their name as often. Sponsorship has rebadged the same trophy as the Milk Cup, Littlewoods Cup, Rumbelows Cup, Coca-Cola Cup, Worthington Cup, Carling Cup, Capital One Cup and, since 2017, the Carabao Cup. Through every rebrand the prize has stayed the same: silverware, a strong run of cup nights, and in most eras a place in European competition for the winner.",
+      "Liverpool are the record holders, and Manchester City have dominated the modern era, but the League Cup has always left room for surprises — Swindon Town, Oxford United, Luton Town and Bradford City have all reached finals. The table below lists every champion by season, with the runner-up and final score for each edition through 2025-26."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1960-61",
+        "Aston Villa",
+        "Rotherham United",
+        "3-2 (agg)"
+      ],
+      [
+        "1961-62",
+        "Norwich City",
+        "Rochdale",
+        "4-0 (agg)"
+      ],
+      [
+        "1962-63",
+        "Birmingham City",
+        "Aston Villa",
+        "3-1 (agg)"
+      ],
+      [
+        "1963-64",
+        "Leicester City",
+        "Stoke City",
+        "4-3 (agg)"
+      ],
+      [
+        "1964-65",
+        "Chelsea",
+        "Leicester City",
+        "3-2 (agg)"
+      ],
+      [
+        "1965-66",
+        "West Bromwich Albion",
+        "West Ham United",
+        "5-3 (agg)"
+      ],
+      [
+        "1966-67",
+        "Queens Park Rangers",
+        "West Bromwich Albion",
+        "3-2"
+      ],
+      [
+        "1967-68",
+        "Leeds United",
+        "Arsenal",
+        "1-0"
+      ],
+      [
+        "1968-69",
+        "Swindon Town",
+        "Arsenal",
+        "3-1 (a.e.t.)"
+      ],
+      [
+        "1969-70",
+        "Manchester City",
+        "West Bromwich Albion",
+        "2-1 (a.e.t.)"
+      ],
+      [
+        "1970-71",
+        "Tottenham Hotspur",
+        "Aston Villa",
+        "2-0"
+      ],
+      [
+        "1971-72",
+        "Stoke City",
+        "Chelsea",
+        "2-1"
+      ],
+      [
+        "1972-73",
+        "Tottenham Hotspur",
+        "Norwich City",
+        "1-0"
+      ],
+      [
+        "1973-74",
+        "Wolverhampton Wanderers",
+        "Manchester City",
+        "2-1"
+      ],
+      [
+        "1974-75",
+        "Aston Villa",
+        "Norwich City",
+        "1-0"
+      ],
+      [
+        "1975-76",
+        "Manchester City",
+        "Newcastle United",
+        "2-1"
+      ],
+      [
+        "1976-77",
+        "Aston Villa",
+        "Everton",
+        "3-2 (2nd replay)"
+      ],
+      [
+        "1977-78",
+        "Nottingham Forest",
+        "Liverpool",
+        "1-0 (replay)"
+      ],
+      [
+        "1978-79",
+        "Nottingham Forest",
+        "Southampton",
+        "3-2"
+      ],
+      [
+        "1979-80",
+        "Wolverhampton Wanderers",
+        "Nottingham Forest",
+        "1-0"
+      ],
+      [
+        "1980-81",
+        "Liverpool",
+        "West Ham United",
+        "2-1 (replay)"
+      ],
+      [
+        "1981-82",
+        "Liverpool",
+        "Tottenham Hotspur",
+        "3-1 (a.e.t.)"
+      ],
+      [
+        "1982-83",
+        "Liverpool",
+        "Manchester United",
+        "2-1 (a.e.t.)"
+      ],
+      [
+        "1983-84",
+        "Liverpool",
+        "Everton",
+        "1-0 (replay)"
+      ],
+      [
+        "1984-85",
+        "Norwich City",
+        "Sunderland",
+        "1-0"
+      ],
+      [
+        "1985-86",
+        "Oxford United",
+        "Queens Park Rangers",
+        "3-0"
+      ],
+      [
+        "1986-87",
+        "Arsenal",
+        "Liverpool",
+        "2-1"
+      ],
+      [
+        "1987-88",
+        "Luton Town",
+        "Arsenal",
+        "3-2"
+      ],
+      [
+        "1988-89",
+        "Nottingham Forest",
+        "Luton Town",
+        "3-1"
+      ],
+      [
+        "1989-90",
+        "Nottingham Forest",
+        "Oldham Athletic",
+        "1-0"
+      ],
+      [
+        "1990-91",
+        "Sheffield Wednesday",
+        "Manchester United",
+        "1-0"
+      ],
+      [
+        "1991-92",
+        "Manchester United",
+        "Nottingham Forest",
+        "1-0"
+      ],
+      [
+        "1992-93",
+        "Arsenal",
+        "Sheffield Wednesday",
+        "2-1"
+      ],
+      [
+        "1993-94",
+        "Aston Villa",
+        "Manchester United",
+        "3-1"
+      ],
+      [
+        "1994-95",
+        "Liverpool",
+        "Bolton Wanderers",
+        "2-1"
+      ],
+      [
+        "1995-96",
+        "Aston Villa",
+        "Leeds United",
+        "3-0"
+      ],
+      [
+        "1996-97",
+        "Leicester City",
+        "Middlesbrough",
+        "1-0 (replay, a.e.t.)"
+      ],
+      [
+        "1997-98",
+        "Chelsea",
+        "Middlesbrough",
+        "2-0 (a.e.t.)"
+      ],
+      [
+        "1998-99",
+        "Tottenham Hotspur",
+        "Leicester City",
+        "1-0"
+      ],
+      [
+        "1999-2000",
+        "Leicester City",
+        "Tranmere Rovers",
+        "2-1"
+      ],
+      [
+        "2000-01",
+        "Liverpool",
+        "Birmingham City",
+        "1-1 (5-4 pens)"
+      ],
+      [
+        "2001-02",
+        "Blackburn Rovers",
+        "Tottenham Hotspur",
+        "2-1"
+      ],
+      [
+        "2002-03",
+        "Liverpool",
+        "Manchester United",
+        "2-0"
+      ],
+      [
+        "2003-04",
+        "Middlesbrough",
+        "Bolton Wanderers",
+        "2-1"
+      ],
+      [
+        "2004-05",
+        "Chelsea",
+        "Liverpool",
+        "3-2 (a.e.t.)"
+      ],
+      [
+        "2005-06",
+        "Manchester United",
+        "Wigan Athletic",
+        "4-0"
+      ],
+      [
+        "2006-07",
+        "Chelsea",
+        "Arsenal",
+        "2-1"
+      ],
+      [
+        "2007-08",
+        "Tottenham Hotspur",
+        "Chelsea",
+        "2-1 (a.e.t.)"
+      ],
+      [
+        "2008-09",
+        "Manchester United",
+        "Tottenham Hotspur",
+        "0-0 (4-1 pens)"
+      ],
+      [
+        "2009-10",
+        "Manchester United",
+        "Aston Villa",
+        "2-1"
+      ],
+      [
+        "2010-11",
+        "Birmingham City",
+        "Arsenal",
+        "2-1"
+      ],
+      [
+        "2011-12",
+        "Liverpool",
+        "Cardiff City",
+        "2-2 (3-2 pens)"
+      ],
+      [
+        "2012-13",
+        "Swansea City",
+        "Bradford City",
+        "5-0"
+      ],
+      [
+        "2013-14",
+        "Manchester City",
+        "Sunderland",
+        "3-1"
+      ],
+      [
+        "2014-15",
+        "Chelsea",
+        "Tottenham Hotspur",
+        "2-0"
+      ],
+      [
+        "2015-16",
+        "Manchester City",
+        "Liverpool",
+        "1-1 (3-1 pens)"
+      ],
+      [
+        "2016-17",
+        "Manchester United",
+        "Southampton",
+        "3-2"
+      ],
+      [
+        "2017-18",
+        "Manchester City",
+        "Arsenal",
+        "3-0"
+      ],
+      [
+        "2018-19",
+        "Manchester City",
+        "Chelsea",
+        "0-0 (4-3 pens)"
+      ],
+      [
+        "2019-20",
+        "Manchester City",
+        "Aston Villa",
+        "2-1"
+      ],
+      [
+        "2020-21",
+        "Manchester City",
+        "Tottenham Hotspur",
+        "1-0"
+      ],
+      [
+        "2021-22",
+        "Liverpool",
+        "Chelsea",
+        "0-0 (11-10 pens)"
+      ],
+      [
+        "2022-23",
+        "Manchester United",
+        "Newcastle United",
+        "2-0"
+      ],
+      [
+        "2023-24",
+        "Liverpool",
+        "Chelsea",
+        "1-0 (a.e.t.)"
+      ],
+      [
+        "2024-25",
+        "Newcastle United",
+        "Liverpool",
+        "2-1"
+      ],
+      [
+        "2025-26",
+        "Manchester City",
+        "Arsenal",
+        "2-0"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most EFL Cups?",
+        "a": "Liverpool are the record holders with 10 League Cup titles (1981, 1982, 1983, 1984, 1995, 2001, 2003, 2012, 2022 and 2024). Manchester City are second with nine, including four in a row between 2018 and 2021."
+      },
+      {
+        "q": "Who won the 2025-26 EFL Cup (Carabao Cup)?",
+        "a": "Manchester City won the 2025-26 Carabao Cup, beating Arsenal 2-0 in the final at Wembley. It was City's ninth League Cup title and their first since the 2020-21 season."
+      },
+      {
+        "q": "Why does the EFL Cup keep changing its name?",
+        "a": "The trophy itself has not changed, but the competition takes the name of its sponsor. Over the years it has been the Milk Cup, Littlewoods Cup, Rumbelows Cup, Coca-Cola Cup, Worthington Cup, Carling Cup, Capital One Cup and, since 2017, the Carabao Cup."
+      },
+      {
+        "q": "What was the first League Cup final?",
+        "a": "The first final was played in 1961, when Aston Villa beat Rotherham United 3-2 on aggregate over two legs. The competition used a two-legged final until 1966, when it moved to a single match, later staged at Wembley."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the League Cup"
+  },
+  {
+    "slug": "copa-del-rey-winners",
+    "h1": "Copa del Rey Winners (1902–2026)",
+    "title": "Copa del Rey Winners: Every Champion by Season (1902–2026) | Ball IQ",
+    "description": "The complete list of Copa del Rey winners from 1902 to 2025-26 — every Spanish cup final's champion, runner-up and score in one table.",
+    "intro": [
+      "The Copa del Rey is Spanish football's oldest national competition, a single-elimination knockout open to clubs from every tier of the Spanish league system. First contested in 1903 — with a 1902 pre-tournament, the Copa de la Coronación, staged to mark the coronation of King Alfonso XIII — it predates La Liga by nearly three decades and has crowned a champion in all but a handful of interrupted years.",
+      "Barcelona are the most successful club in the tournament's history, extending their record to 32 titles with a dramatic extra-time win over Real Madrid in 2024-25. Athletic Bilbao sit second on 24, a tally swollen by their dominance of the early decades and topped up by their penalty-shootout triumph in 2023-24, while Real Madrid have lifted the trophy 20 times. The competition's romance, though, comes from the outsiders who have snatched it: Deportivo, Mallorca, Real Betis and Real Sociedad have all had their day.",
+      "The table below lists every final in chronological order, from the 1902 precursor through the 2025-26 edition, in which Real Sociedad beat Atlético Madrid on penalties in Seville. Where a final was settled from the spot the score column shows the result after extra time followed by \"(pen.)\"; the 1937 and 1938 editions are omitted as no competition was held during the Spanish Civil War."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1902",
+        "Club Bizcaya",
+        "Barcelona",
+        "2–1"
+      ],
+      [
+        "1903",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "3–2"
+      ],
+      [
+        "1904",
+        "Athletic Bilbao",
+        "Español de Madrid",
+        "Walkover"
+      ],
+      [
+        "1905",
+        "Real Madrid",
+        "Athletic Bilbao",
+        "1–0"
+      ],
+      [
+        "1906",
+        "Real Madrid",
+        "Athletic Bilbao",
+        "4–1"
+      ],
+      [
+        "1907",
+        "Real Madrid",
+        "Bizcaya",
+        "1–0"
+      ],
+      [
+        "1908",
+        "Real Madrid",
+        "Real Vigo Sporting",
+        "2–1"
+      ],
+      [
+        "1909",
+        "Club Ciclista",
+        "Español de Madrid",
+        "3–1"
+      ],
+      [
+        "1910 (UECF)",
+        "Athletic Bilbao",
+        "Vasconia",
+        "1–0"
+      ],
+      [
+        "1910 (FECF)",
+        "Barcelona",
+        "Español de Madrid",
+        "3–2"
+      ],
+      [
+        "1911",
+        "Athletic Bilbao",
+        "Español de Madrid",
+        "3–1"
+      ],
+      [
+        "1912",
+        "Barcelona",
+        "Gimnástica",
+        "2–0"
+      ],
+      [
+        "1913 (UECF)",
+        "Barcelona",
+        "Real Sociedad",
+        "2–1"
+      ],
+      [
+        "1913 (FECF)",
+        "Racing de Irún",
+        "Athletic Bilbao",
+        "1–0"
+      ],
+      [
+        "1914",
+        "Athletic Bilbao",
+        "España de Barcelona",
+        "2–1"
+      ],
+      [
+        "1915",
+        "Athletic Bilbao",
+        "Español de Madrid",
+        "5–0"
+      ],
+      [
+        "1916",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "4–0"
+      ],
+      [
+        "1917",
+        "Real Madrid",
+        "Arenas",
+        "2–1"
+      ],
+      [
+        "1918",
+        "Real Unión",
+        "Real Madrid",
+        "2–0"
+      ],
+      [
+        "1919",
+        "Arenas",
+        "Barcelona",
+        "5–2"
+      ],
+      [
+        "1920",
+        "Barcelona",
+        "Athletic Bilbao",
+        "2–0"
+      ],
+      [
+        "1921",
+        "Athletic Bilbao",
+        "Atlético Madrid",
+        "4–1"
+      ],
+      [
+        "1922",
+        "Barcelona",
+        "Real Unión",
+        "5–1"
+      ],
+      [
+        "1923",
+        "Athletic Bilbao",
+        "Europa",
+        "1–0"
+      ],
+      [
+        "1924",
+        "Real Unión",
+        "Real Madrid",
+        "1–0"
+      ],
+      [
+        "1925",
+        "Barcelona",
+        "Arenas",
+        "2–0"
+      ],
+      [
+        "1926",
+        "Barcelona",
+        "Atlético Madrid",
+        "3–2"
+      ],
+      [
+        "1927",
+        "Real Unión",
+        "Arenas",
+        "1–0"
+      ],
+      [
+        "1928",
+        "Barcelona",
+        "Real Sociedad",
+        "3–1"
+      ],
+      [
+        "1928-29",
+        "Espanyol",
+        "Real Madrid",
+        "2–1"
+      ],
+      [
+        "1930",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "3–2"
+      ],
+      [
+        "1931",
+        "Athletic Bilbao",
+        "Real Betis",
+        "3–1"
+      ],
+      [
+        "1932",
+        "Athletic Bilbao",
+        "Barcelona",
+        "1–0"
+      ],
+      [
+        "1933",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "2–1"
+      ],
+      [
+        "1934",
+        "Real Madrid",
+        "Valencia",
+        "2–1"
+      ],
+      [
+        "1935",
+        "Sevilla",
+        "Sabadell",
+        "3–0"
+      ],
+      [
+        "1936",
+        "Real Madrid",
+        "Barcelona",
+        "2–1"
+      ],
+      [
+        "1939",
+        "Sevilla",
+        "Racing de Ferrol",
+        "6–2"
+      ],
+      [
+        "1940",
+        "Espanyol",
+        "Real Madrid",
+        "3–2"
+      ],
+      [
+        "1941",
+        "Valencia",
+        "Espanyol",
+        "3–1"
+      ],
+      [
+        "1942",
+        "Barcelona",
+        "Athletic Bilbao",
+        "4–3"
+      ],
+      [
+        "1943",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "1–0"
+      ],
+      [
+        "1944",
+        "Athletic Bilbao",
+        "Valencia",
+        "2–0"
+      ],
+      [
+        "1944-45",
+        "Athletic Bilbao",
+        "Valencia",
+        "3–2"
+      ],
+      [
+        "1946",
+        "Real Madrid",
+        "Valencia",
+        "3–1"
+      ],
+      [
+        "1947",
+        "Real Madrid",
+        "Espanyol",
+        "2–0"
+      ],
+      [
+        "1947-48",
+        "Sevilla",
+        "Celta Vigo",
+        "4–1"
+      ],
+      [
+        "1948-49",
+        "Valencia",
+        "Athletic Bilbao",
+        "1–0"
+      ],
+      [
+        "1949-50",
+        "Athletic Bilbao",
+        "Valladolid",
+        "4–1"
+      ],
+      [
+        "1951",
+        "Barcelona",
+        "Real Sociedad",
+        "3–0"
+      ],
+      [
+        "1952",
+        "Barcelona",
+        "Valencia",
+        "4–2"
+      ],
+      [
+        "1952-53",
+        "Barcelona",
+        "Athletic Bilbao",
+        "2–1"
+      ],
+      [
+        "1954",
+        "Valencia",
+        "Barcelona",
+        "3–0"
+      ],
+      [
+        "1955",
+        "Athletic Bilbao",
+        "Sevilla",
+        "1–0"
+      ],
+      [
+        "1956",
+        "Athletic Bilbao",
+        "Atlético Madrid",
+        "2–1"
+      ],
+      [
+        "1957",
+        "Barcelona",
+        "Espanyol",
+        "1–0"
+      ],
+      [
+        "1958",
+        "Athletic Bilbao",
+        "Real Madrid",
+        "2–0"
+      ],
+      [
+        "1958-59",
+        "Barcelona",
+        "Granada",
+        "4–1"
+      ],
+      [
+        "1959-60",
+        "Atlético Madrid",
+        "Real Madrid",
+        "3–1"
+      ],
+      [
+        "1960-61",
+        "Atlético Madrid",
+        "Real Madrid",
+        "3–2"
+      ],
+      [
+        "1961-62",
+        "Real Madrid",
+        "Sevilla",
+        "2–1"
+      ],
+      [
+        "1962-63",
+        "Barcelona",
+        "Zaragoza",
+        "3–1"
+      ],
+      [
+        "1963-64",
+        "Zaragoza",
+        "Atlético Madrid",
+        "2–1"
+      ],
+      [
+        "1964-65",
+        "Atlético Madrid",
+        "Zaragoza",
+        "1–0"
+      ],
+      [
+        "1965-66",
+        "Zaragoza",
+        "Athletic Bilbao",
+        "2–0"
+      ],
+      [
+        "1966-67",
+        "Valencia",
+        "Athletic Bilbao",
+        "2–1"
+      ],
+      [
+        "1967-68",
+        "Barcelona",
+        "Real Madrid",
+        "1–0"
+      ],
+      [
+        "1969",
+        "Athletic Bilbao",
+        "Elche",
+        "1–0"
+      ],
+      [
+        "1969-70",
+        "Real Madrid",
+        "Valencia",
+        "3–1"
+      ],
+      [
+        "1970-71",
+        "Barcelona",
+        "Valencia",
+        "4–3"
+      ],
+      [
+        "1971-72",
+        "Atlético Madrid",
+        "Valencia",
+        "2–1"
+      ],
+      [
+        "1972-73",
+        "Athletic Bilbao",
+        "Castellón",
+        "2–0"
+      ],
+      [
+        "1973-74",
+        "Real Madrid",
+        "Barcelona",
+        "4–0"
+      ],
+      [
+        "1974-75",
+        "Real Madrid",
+        "Atlético Madrid",
+        "0–0 (pen.)"
+      ],
+      [
+        "1975-76",
+        "Atlético Madrid",
+        "Zaragoza",
+        "1–0"
+      ],
+      [
+        "1976-77",
+        "Real Betis",
+        "Athletic Bilbao",
+        "2–2 (pen.)"
+      ],
+      [
+        "1977-78",
+        "Barcelona",
+        "Las Palmas",
+        "3–1"
+      ],
+      [
+        "1978-79",
+        "Valencia",
+        "Real Madrid",
+        "2–0"
+      ],
+      [
+        "1979-80",
+        "Real Madrid",
+        "Castilla",
+        "6–1"
+      ],
+      [
+        "1980-81",
+        "Barcelona",
+        "Sporting Gijón",
+        "3–1"
+      ],
+      [
+        "1981-82",
+        "Real Madrid",
+        "Sporting Gijón",
+        "2–1"
+      ],
+      [
+        "1982-83",
+        "Barcelona",
+        "Real Madrid",
+        "2–1"
+      ],
+      [
+        "1983-84",
+        "Athletic Bilbao",
+        "Barcelona",
+        "1–0"
+      ],
+      [
+        "1984-85",
+        "Atlético Madrid",
+        "Athletic Bilbao",
+        "2–1"
+      ],
+      [
+        "1985-86",
+        "Zaragoza",
+        "Barcelona",
+        "1–0"
+      ],
+      [
+        "1986-87",
+        "Real Sociedad",
+        "Atlético Madrid",
+        "2–2 (pen.)"
+      ],
+      [
+        "1987-88",
+        "Barcelona",
+        "Real Sociedad",
+        "1–0"
+      ],
+      [
+        "1988-89",
+        "Real Madrid",
+        "Valladolid",
+        "1–0"
+      ],
+      [
+        "1989-90",
+        "Barcelona",
+        "Real Madrid",
+        "2–0"
+      ],
+      [
+        "1990-91",
+        "Atlético Madrid",
+        "Mallorca",
+        "1–0"
+      ],
+      [
+        "1991-92",
+        "Atlético Madrid",
+        "Real Madrid",
+        "2–0"
+      ],
+      [
+        "1992-93",
+        "Real Madrid",
+        "Zaragoza",
+        "2–0"
+      ],
+      [
+        "1993-94",
+        "Zaragoza",
+        "Celta Vigo",
+        "0–0 (pen.)"
+      ],
+      [
+        "1994-95",
+        "Deportivo La Coruña",
+        "Valencia",
+        "2–1"
+      ],
+      [
+        "1995-96",
+        "Atlético Madrid",
+        "Barcelona",
+        "1–0"
+      ],
+      [
+        "1996-97",
+        "Barcelona",
+        "Real Betis",
+        "3–2"
+      ],
+      [
+        "1997-98",
+        "Barcelona",
+        "Mallorca",
+        "1–1 (pen.)"
+      ],
+      [
+        "1998-99",
+        "Valencia",
+        "Atlético Madrid",
+        "3–0"
+      ],
+      [
+        "1999-2000",
+        "Espanyol",
+        "Atlético Madrid",
+        "2–1"
+      ],
+      [
+        "2000-01",
+        "Zaragoza",
+        "Celta Vigo",
+        "3–1"
+      ],
+      [
+        "2001-02",
+        "Deportivo La Coruña",
+        "Real Madrid",
+        "2–1"
+      ],
+      [
+        "2002-03",
+        "Mallorca",
+        "Recreativo",
+        "3–0"
+      ],
+      [
+        "2003-04",
+        "Zaragoza",
+        "Real Madrid",
+        "3–2"
+      ],
+      [
+        "2004-05",
+        "Real Betis",
+        "Osasuna",
+        "2–1"
+      ],
+      [
+        "2005-06",
+        "Espanyol",
+        "Zaragoza",
+        "4–1"
+      ],
+      [
+        "2006-07",
+        "Sevilla",
+        "Getafe",
+        "1–0"
+      ],
+      [
+        "2007-08",
+        "Valencia",
+        "Getafe",
+        "3–1"
+      ],
+      [
+        "2008-09",
+        "Barcelona",
+        "Athletic Bilbao",
+        "4–1"
+      ],
+      [
+        "2009-10",
+        "Sevilla",
+        "Atlético Madrid",
+        "2–0"
+      ],
+      [
+        "2010-11",
+        "Real Madrid",
+        "Barcelona",
+        "1–0"
+      ],
+      [
+        "2011-12",
+        "Barcelona",
+        "Athletic Bilbao",
+        "3–0"
+      ],
+      [
+        "2012-13",
+        "Atlético Madrid",
+        "Real Madrid",
+        "2–1"
+      ],
+      [
+        "2013-14",
+        "Real Madrid",
+        "Barcelona",
+        "2–1"
+      ],
+      [
+        "2014-15",
+        "Barcelona",
+        "Athletic Bilbao",
+        "3–1"
+      ],
+      [
+        "2015-16",
+        "Barcelona",
+        "Sevilla",
+        "2–0"
+      ],
+      [
+        "2016-17",
+        "Barcelona",
+        "Alavés",
+        "3–1"
+      ],
+      [
+        "2017-18",
+        "Barcelona",
+        "Sevilla",
+        "5–0"
+      ],
+      [
+        "2018-19",
+        "Valencia",
+        "Barcelona",
+        "2–1"
+      ],
+      [
+        "2019-20",
+        "Real Sociedad",
+        "Athletic Bilbao",
+        "1–0"
+      ],
+      [
+        "2020-21",
+        "Barcelona",
+        "Athletic Bilbao",
+        "4–0"
+      ],
+      [
+        "2021-22",
+        "Real Betis",
+        "Valencia",
+        "1–1 (pen.)"
+      ],
+      [
+        "2022-23",
+        "Real Madrid",
+        "Osasuna",
+        "2–1"
+      ],
+      [
+        "2023-24",
+        "Athletic Bilbao",
+        "Mallorca",
+        "1–1 (pen.)"
+      ],
+      [
+        "2024-25",
+        "Barcelona",
+        "Real Madrid",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "2025-26",
+        "Real Sociedad",
+        "Atlético Madrid",
+        "2–2 (pen.)"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Copa del Rey titles?",
+        "a": "Barcelona are the record holders with 32 Copa del Rey titles, most recently beating Real Madrid 3–2 after extra time in the 2024-25 final. Athletic Bilbao are second with 24 and Real Madrid third with 20."
+      },
+      {
+        "q": "How many Copa del Rey titles has Athletic Bilbao won?",
+        "a": "Athletic Bilbao have won the Copa del Rey 24 times, the second-highest total behind Barcelona. Their most recent triumph came in 2023-24, when they beat Mallorca on penalties in Seville to end a 40-year wait for a major trophy."
+      },
+      {
+        "q": "Who won the 2025-26 Copa del Rey?",
+        "a": "Real Sociedad won the 2025-26 Copa del Rey, defeating Atlético Madrid 4–3 on penalties after a 2–2 draw in the final at Estadio de La Cartuja in Seville on 18 April 2026. It was the Basque club's fourth cup title."
+      },
+      {
+        "q": "When was the first Copa del Rey held?",
+        "a": "The first officially recognised Copa del Rey was contested in 1903 and won by Athletic Bilbao. A precursor tournament, the 1902 Copa de la Coronación, was staged a year earlier and won by Club Bizcaya, but it is not counted in the official honours."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Copa del Rey"
+  },
+  {
+    "slug": "coppa-italia-winners",
+    "h1": "Coppa Italia Winners: Every Final From 1922 to 2025-26",
+    "title": "Coppa Italia Winners: Every Final 1922–2026 | Ball IQ",
+    "description": "The complete list of Coppa Italia winners from 1922 to 2025-26, with every final's runner-up and score. Juventus lead with 15 titles; Inter won the latest.",
+    "intro": [
+      "The Coppa Italia is Italian football's premier knockout cup, first contested in 1922 and run almost every season since 1935. Over that span it has crowned clubs from every corner of the peninsula, from tiny Ligurian side Vado, who won the very first edition, to the Serie A giants who dominate the modern honours list.",
+      "Juventus stand alone at the top with 15 triumphs, followed by Inter Milan and Roma. But the cup has always kept room for surprises: Napoli lifted it in 1962 while still a Serie B side, Vicenza stunned the country in 1997, and in 2025 Bologna ended a 51-year wait for a major trophy. The competition's format has shifted over the decades too — from a single final, to two-legged home-and-away deciders, to a final round-robin group in the late 1960s, before settling back into today's one-off showpiece.",
+      "Below is the full chronological roll of winners, runners-up and scores. Every recent final has been cross-checked, including Juventus' 2023-24 win, Bologna's 2024-25 breakthrough, and Inter Milan's 2025-26 victory that sealed a domestic double."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1922",
+        "Vado",
+        "Udinese",
+        "1–0 (a.e.t.)"
+      ],
+      [
+        "1935–36",
+        "Torino",
+        "Alessandria",
+        "5–1"
+      ],
+      [
+        "1936–37",
+        "Genoa",
+        "Roma",
+        "1–0"
+      ],
+      [
+        "1937–38",
+        "Juventus",
+        "Torino",
+        "5–2 (agg.)"
+      ],
+      [
+        "1938–39",
+        "Inter Milan",
+        "Novara",
+        "2–1"
+      ],
+      [
+        "1939–40",
+        "Fiorentina",
+        "Genoa",
+        "1–0"
+      ],
+      [
+        "1940–41",
+        "Venezia",
+        "Roma",
+        "4–3 (agg.)"
+      ],
+      [
+        "1941–42",
+        "Juventus",
+        "AC Milan",
+        "5–2 (agg.)"
+      ],
+      [
+        "1942–43",
+        "Torino",
+        "Venezia",
+        "4–0"
+      ],
+      [
+        "1958",
+        "Lazio",
+        "Fiorentina",
+        "1–0"
+      ],
+      [
+        "1958–59",
+        "Juventus",
+        "Inter Milan",
+        "4–1"
+      ],
+      [
+        "1959–60",
+        "Juventus",
+        "Fiorentina",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "1960–61",
+        "Fiorentina",
+        "Lazio",
+        "2–0"
+      ],
+      [
+        "1961–62",
+        "Napoli",
+        "SPAL",
+        "2–1"
+      ],
+      [
+        "1962–63",
+        "Atalanta",
+        "Torino",
+        "3–1"
+      ],
+      [
+        "1963–64",
+        "Roma",
+        "Torino",
+        "1–0 (replay)"
+      ],
+      [
+        "1964–65",
+        "Juventus",
+        "Inter Milan",
+        "1–0"
+      ],
+      [
+        "1965–66",
+        "Fiorentina",
+        "Catanzaro",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1966–67",
+        "AC Milan",
+        "Padova",
+        "1–0"
+      ],
+      [
+        "1967–68",
+        "Torino",
+        "AC Milan",
+        "Final round-robin group"
+      ],
+      [
+        "1968–69",
+        "Roma",
+        "Cagliari",
+        "Final round-robin group"
+      ],
+      [
+        "1969–70",
+        "Bologna",
+        "Torino",
+        "Final round-robin group"
+      ],
+      [
+        "1970–71",
+        "Torino",
+        "AC Milan",
+        "Final round-robin group"
+      ],
+      [
+        "1971–72",
+        "AC Milan",
+        "Napoli",
+        "2–0"
+      ],
+      [
+        "1972–73",
+        "AC Milan",
+        "Juventus",
+        "1–1 (pens)"
+      ],
+      [
+        "1973–74",
+        "Bologna",
+        "Palermo",
+        "1–1 (pens)"
+      ],
+      [
+        "1974–75",
+        "Fiorentina",
+        "AC Milan",
+        "3–2"
+      ],
+      [
+        "1975–76",
+        "Napoli",
+        "Hellas Verona",
+        "4–0"
+      ],
+      [
+        "1976–77",
+        "AC Milan",
+        "Inter Milan",
+        "2–0"
+      ],
+      [
+        "1977–78",
+        "Inter Milan",
+        "Napoli",
+        "2–1"
+      ],
+      [
+        "1978–79",
+        "Juventus",
+        "Palermo",
+        "2–1"
+      ],
+      [
+        "1979–80",
+        "Roma",
+        "Torino",
+        "0–0 (pens)"
+      ],
+      [
+        "1980–81",
+        "Roma",
+        "Torino",
+        "2–2 (agg., 4–2 pens)"
+      ],
+      [
+        "1981–82",
+        "Inter Milan",
+        "Torino",
+        "2–1 (agg.)"
+      ],
+      [
+        "1982–83",
+        "Juventus",
+        "Hellas Verona",
+        "3–2 (agg.)"
+      ],
+      [
+        "1983–84",
+        "Roma",
+        "Hellas Verona",
+        "2–1 (agg.)"
+      ],
+      [
+        "1984–85",
+        "Sampdoria",
+        "AC Milan",
+        "3–1 (agg.)"
+      ],
+      [
+        "1985–86",
+        "Roma",
+        "Sampdoria",
+        "3–2 (agg.)"
+      ],
+      [
+        "1986–87",
+        "Napoli",
+        "Atalanta",
+        "4–0 (agg.)"
+      ],
+      [
+        "1987–88",
+        "Sampdoria",
+        "Torino",
+        "3–2 (agg.)"
+      ],
+      [
+        "1988–89",
+        "Sampdoria",
+        "Napoli",
+        "4–1 (agg.)"
+      ],
+      [
+        "1989–90",
+        "Juventus",
+        "AC Milan",
+        "1–0 (agg.)"
+      ],
+      [
+        "1990–91",
+        "Roma",
+        "Sampdoria",
+        "4–2 (agg.)"
+      ],
+      [
+        "1991–92",
+        "Parma",
+        "Juventus",
+        "2–1 (agg.)"
+      ],
+      [
+        "1992–93",
+        "Torino",
+        "Roma",
+        "5–5 (agg., away goals)"
+      ],
+      [
+        "1993–94",
+        "Sampdoria",
+        "Ancona",
+        "6–1 (agg.)"
+      ],
+      [
+        "1994–95",
+        "Juventus",
+        "Parma",
+        "3–0 (agg.)"
+      ],
+      [
+        "1995–96",
+        "Fiorentina",
+        "Atalanta",
+        "3–0 (agg.)"
+      ],
+      [
+        "1996–97",
+        "Vicenza",
+        "Napoli",
+        "3–1 (agg.)"
+      ],
+      [
+        "1997–98",
+        "Lazio",
+        "AC Milan",
+        "3–2 (agg.)"
+      ],
+      [
+        "1998–99",
+        "Parma",
+        "Fiorentina",
+        "3–3 (agg., away goals)"
+      ],
+      [
+        "1999–2000",
+        "Lazio",
+        "Inter Milan",
+        "2–1 (agg.)"
+      ],
+      [
+        "2000–01",
+        "Fiorentina",
+        "Parma",
+        "2–1 (agg.)"
+      ],
+      [
+        "2001–02",
+        "Parma",
+        "Juventus",
+        "2–2 (agg., away goals)"
+      ],
+      [
+        "2002–03",
+        "AC Milan",
+        "Roma",
+        "6–3 (agg.)"
+      ],
+      [
+        "2003–04",
+        "Lazio",
+        "Juventus",
+        "4–2 (agg.)"
+      ],
+      [
+        "2004–05",
+        "Inter Milan",
+        "Roma",
+        "3–0 (agg.)"
+      ],
+      [
+        "2005–06",
+        "Inter Milan",
+        "Roma",
+        "4–2 (agg.)"
+      ],
+      [
+        "2006–07",
+        "Roma",
+        "Inter Milan",
+        "7–4 (agg.)"
+      ],
+      [
+        "2007–08",
+        "Roma",
+        "Inter Milan",
+        "2–1"
+      ],
+      [
+        "2008–09",
+        "Lazio",
+        "Sampdoria",
+        "1–1 (pens)"
+      ],
+      [
+        "2009–10",
+        "Inter Milan",
+        "Roma",
+        "1–0"
+      ],
+      [
+        "2010–11",
+        "Inter Milan",
+        "Palermo",
+        "3–1"
+      ],
+      [
+        "2011–12",
+        "Napoli",
+        "Juventus",
+        "2–0"
+      ],
+      [
+        "2012–13",
+        "Lazio",
+        "Roma",
+        "1–0"
+      ],
+      [
+        "2013–14",
+        "Napoli",
+        "Fiorentina",
+        "3–1"
+      ],
+      [
+        "2014–15",
+        "Juventus",
+        "Lazio",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "2015–16",
+        "Juventus",
+        "AC Milan",
+        "1–0 (a.e.t.)"
+      ],
+      [
+        "2016–17",
+        "Juventus",
+        "Lazio",
+        "2–0"
+      ],
+      [
+        "2017–18",
+        "Juventus",
+        "AC Milan",
+        "4–0"
+      ],
+      [
+        "2018–19",
+        "Lazio",
+        "Atalanta",
+        "2–0"
+      ],
+      [
+        "2019–20",
+        "Napoli",
+        "Juventus",
+        "0–0 (pens)"
+      ],
+      [
+        "2020–21",
+        "Juventus",
+        "Atalanta",
+        "2–1"
+      ],
+      [
+        "2021–22",
+        "Inter Milan",
+        "Juventus",
+        "4–2 (a.e.t.)"
+      ],
+      [
+        "2022–23",
+        "Inter Milan",
+        "Fiorentina",
+        "2–1"
+      ],
+      [
+        "2023–24",
+        "Juventus",
+        "Atalanta",
+        "1–0"
+      ],
+      [
+        "2024–25",
+        "Bologna",
+        "AC Milan",
+        "1–0"
+      ],
+      [
+        "2025–26",
+        "Inter Milan",
+        "Lazio",
+        "2–0"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Coppa Italia titles?",
+        "a": "Juventus have won the Coppa Italia a record 15 times, most recently in 2023-24. Inter Milan are next with 10, ahead of Roma on 9 and Lazio on 7."
+      },
+      {
+        "q": "Who won the 2025-26 Coppa Italia?",
+        "a": "Inter Milan won the 2025-26 Coppa Italia, beating Lazio 2–0 in the final on 13 May 2026 to complete a domestic double alongside their Serie A title."
+      },
+      {
+        "q": "Who won the 2024-25 Coppa Italia?",
+        "a": "Bologna won the 2024-25 Coppa Italia, defeating AC Milan 1–0 through a Dan Ndoye goal. It was their first major trophy since the 1973-74 edition, a 51-year wait."
+      },
+      {
+        "q": "When was the first Coppa Italia and who won it?",
+        "a": "The first Coppa Italia was held in 1922 and won by Vado, a small club from Liguria, who beat Udinese 1–0 after extra time. The competition then paused before becoming a regular fixture from 1935-36."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Coppa Italia"
+  },
+  {
+    "slug": "dfb-pokal-winners",
+    "h1": "DFB-Pokal Winners: Every German Cup Champion by Season (1935–2026)",
+    "title": "DFB-Pokal Winners: Every German Cup Champion by Season | Ball IQ",
+    "description": "Complete list of DFB-Pokal (German Cup) winners by season from 1935 to 2025-26, with runners-up and final scores. Bayern Munich lead with 21 titles.",
+    "intro": [
+      "The DFB-Pokal is Germany's premier knockout cup competition, and one of the toughest in Europe to win because every round is a single tie played at the lower-ranked club's ground. It began in 1935 as the Tschammerpokal, named after Reich sports leader Hans von Tschammer und Osten, ran until 1943, and was then dormant through the war years before returning under the German Football Association as the DFB-Pokal for the 1952-53 season. Since 1985 the final has been staged as a permanent showpiece at Berlin's Olympiastadion.",
+      "Bayern Munich are the record holders, sealing their 21st title in 2026 with a 3-0 win over VfB Stuttgart powered by a Harry Kane hat-trick. Behind them, Werder Bremen and a cluster of clubs including Borussia Dortmund, Schalke 04 and Eintracht Frankfurt make up the next tier. The cup has also been a stage for shocks and underdog runs, from Bayer Uerdingen's 1985 upset of Bayern to lower-division finalists like Kaiserslautern reaching the 2024 final.",
+      "The table below lists every winner by season, the beaten finalist, and the final score, including finals settled by a replay or penalty shootout. Where a competition year is missing, the tournament was not contested."
+    ],
+    "columns": [
+      "Season",
+      "Winner",
+      "Runner-up",
+      "Score"
+    ],
+    "rows": [
+      [
+        "1935",
+        "1. FC Nürnberg",
+        "Schalke 04",
+        "2–0"
+      ],
+      [
+        "1936",
+        "VfB Leipzig",
+        "Schalke 04",
+        "2–1"
+      ],
+      [
+        "1937",
+        "Schalke 04",
+        "Fortuna Düsseldorf",
+        "2–1"
+      ],
+      [
+        "1938",
+        "Rapid Wien",
+        "FSV Frankfurt",
+        "3–1"
+      ],
+      [
+        "1939",
+        "1. FC Nürnberg",
+        "Waldhof Mannheim",
+        "2–0"
+      ],
+      [
+        "1940",
+        "Dresdner SC",
+        "1. FC Nürnberg",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1941",
+        "Dresdner SC",
+        "Schalke 04",
+        "2–1"
+      ],
+      [
+        "1942",
+        "1860 Munich",
+        "Schalke 04",
+        "2–0"
+      ],
+      [
+        "1943",
+        "First Vienna",
+        "LSV Hamburg",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "1952–53",
+        "Rot-Weiss Essen",
+        "Alemannia Aachen",
+        "2–1"
+      ],
+      [
+        "1953–54",
+        "VfB Stuttgart",
+        "1. FC Köln",
+        "1–0 (a.e.t.)"
+      ],
+      [
+        "1954–55",
+        "Karlsruher SC",
+        "Schalke 04",
+        "3–2"
+      ],
+      [
+        "1955–56",
+        "Karlsruher SC",
+        "Hamburger SV",
+        "3–1"
+      ],
+      [
+        "1956–57",
+        "Bayern Munich",
+        "Fortuna Düsseldorf",
+        "1–0"
+      ],
+      [
+        "1957–58",
+        "VfB Stuttgart",
+        "Fortuna Düsseldorf",
+        "4–3 (a.e.t.)"
+      ],
+      [
+        "1958–59",
+        "Schwarz-Weiß Essen",
+        "Borussia Neunkirchen",
+        "5–2"
+      ],
+      [
+        "1959–60",
+        "Borussia Mönchengladbach",
+        "Karlsruher SC",
+        "3–2"
+      ],
+      [
+        "1960–61",
+        "Werder Bremen",
+        "1. FC Kaiserslautern",
+        "2–0"
+      ],
+      [
+        "1961–62",
+        "1. FC Nürnberg",
+        "Fortuna Düsseldorf",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1962–63",
+        "Hamburger SV",
+        "Borussia Dortmund",
+        "3–0"
+      ],
+      [
+        "1963–64",
+        "1860 Munich",
+        "Eintracht Frankfurt",
+        "2–0"
+      ],
+      [
+        "1964–65",
+        "Borussia Dortmund",
+        "Alemannia Aachen",
+        "2–0"
+      ],
+      [
+        "1965–66",
+        "Bayern Munich",
+        "Meidericher SV",
+        "4–2"
+      ],
+      [
+        "1966–67",
+        "Bayern Munich",
+        "Hamburger SV",
+        "4–0"
+      ],
+      [
+        "1967–68",
+        "1. FC Köln",
+        "VfL Bochum",
+        "4–1"
+      ],
+      [
+        "1968–69",
+        "Bayern Munich",
+        "Schalke 04",
+        "2–1"
+      ],
+      [
+        "1969–70",
+        "Kickers Offenbach",
+        "1. FC Köln",
+        "2–1"
+      ],
+      [
+        "1970–71",
+        "Bayern Munich",
+        "1. FC Köln",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1971–72",
+        "Schalke 04",
+        "1. FC Kaiserslautern",
+        "5–0"
+      ],
+      [
+        "1972–73",
+        "Borussia Mönchengladbach",
+        "1. FC Köln",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "1973–74",
+        "Eintracht Frankfurt",
+        "Hamburger SV",
+        "3–1 (a.e.t.)"
+      ],
+      [
+        "1974–75",
+        "Eintracht Frankfurt",
+        "MSV Duisburg",
+        "1–0"
+      ],
+      [
+        "1975–76",
+        "Hamburger SV",
+        "1. FC Kaiserslautern",
+        "2–0"
+      ],
+      [
+        "1976–77",
+        "1. FC Köln",
+        "Hertha BSC",
+        "1–1 (a.e.t.), 1–0 (replay)"
+      ],
+      [
+        "1977–78",
+        "1. FC Köln",
+        "Fortuna Düsseldorf",
+        "2–0"
+      ],
+      [
+        "1978–79",
+        "Fortuna Düsseldorf",
+        "Hertha BSC",
+        "1–0 (a.e.t.)"
+      ],
+      [
+        "1979–80",
+        "Fortuna Düsseldorf",
+        "1. FC Köln",
+        "2–1"
+      ],
+      [
+        "1980–81",
+        "Eintracht Frankfurt",
+        "1. FC Kaiserslautern",
+        "3–1"
+      ],
+      [
+        "1981–82",
+        "Bayern Munich",
+        "1. FC Nürnberg",
+        "4–2"
+      ],
+      [
+        "1982–83",
+        "1. FC Köln",
+        "Fortuna Köln",
+        "1–0"
+      ],
+      [
+        "1983–84",
+        "Bayern Munich",
+        "Borussia Mönchengladbach",
+        "1–1 (7–6 pen.)"
+      ],
+      [
+        "1984–85",
+        "Bayer Uerdingen",
+        "Bayern Munich",
+        "2–1"
+      ],
+      [
+        "1985–86",
+        "Bayern Munich",
+        "VfB Stuttgart",
+        "5–2"
+      ],
+      [
+        "1986–87",
+        "Hamburger SV",
+        "Stuttgarter Kickers",
+        "3–1"
+      ],
+      [
+        "1987–88",
+        "Eintracht Frankfurt",
+        "VfL Bochum",
+        "1–0"
+      ],
+      [
+        "1988–89",
+        "Borussia Dortmund",
+        "Werder Bremen",
+        "4–1"
+      ],
+      [
+        "1989–90",
+        "1. FC Kaiserslautern",
+        "Werder Bremen",
+        "3–2"
+      ],
+      [
+        "1990–91",
+        "Werder Bremen",
+        "1. FC Köln",
+        "1–1 (4–3 pen.)"
+      ],
+      [
+        "1991–92",
+        "Hannover 96",
+        "Borussia Mönchengladbach",
+        "0–0 (4–3 pen.)"
+      ],
+      [
+        "1992–93",
+        "Bayer Leverkusen",
+        "Hertha BSC Amateure",
+        "1–0"
+      ],
+      [
+        "1993–94",
+        "Werder Bremen",
+        "Rot-Weiss Essen",
+        "3–1"
+      ],
+      [
+        "1994–95",
+        "Borussia Mönchengladbach",
+        "VfL Wolfsburg",
+        "3–0"
+      ],
+      [
+        "1995–96",
+        "1. FC Kaiserslautern",
+        "Karlsruher SC",
+        "1–0"
+      ],
+      [
+        "1996–97",
+        "VfB Stuttgart",
+        "Energie Cottbus",
+        "2–0"
+      ],
+      [
+        "1997–98",
+        "Bayern Munich",
+        "MSV Duisburg",
+        "2–1"
+      ],
+      [
+        "1998–99",
+        "Werder Bremen",
+        "Bayern Munich",
+        "1–1 (5–4 pen.)"
+      ],
+      [
+        "1999–2000",
+        "Bayern Munich",
+        "Werder Bremen",
+        "3–0"
+      ],
+      [
+        "2000–01",
+        "Schalke 04",
+        "Union Berlin",
+        "2–0"
+      ],
+      [
+        "2001–02",
+        "Schalke 04",
+        "Bayer Leverkusen",
+        "4–2"
+      ],
+      [
+        "2002–03",
+        "Bayern Munich",
+        "1. FC Kaiserslautern",
+        "3–1"
+      ],
+      [
+        "2003–04",
+        "Werder Bremen",
+        "Alemannia Aachen",
+        "3–2"
+      ],
+      [
+        "2004–05",
+        "Bayern Munich",
+        "Schalke 04",
+        "2–1"
+      ],
+      [
+        "2005–06",
+        "Bayern Munich",
+        "Eintracht Frankfurt",
+        "1–0"
+      ],
+      [
+        "2006–07",
+        "1. FC Nürnberg",
+        "VfB Stuttgart",
+        "3–2 (a.e.t.)"
+      ],
+      [
+        "2007–08",
+        "Bayern Munich",
+        "Borussia Dortmund",
+        "2–1 (a.e.t.)"
+      ],
+      [
+        "2008–09",
+        "Werder Bremen",
+        "Bayer Leverkusen",
+        "1–0"
+      ],
+      [
+        "2009–10",
+        "Bayern Munich",
+        "Werder Bremen",
+        "4–0"
+      ],
+      [
+        "2010–11",
+        "Schalke 04",
+        "MSV Duisburg",
+        "5–0"
+      ],
+      [
+        "2011–12",
+        "Borussia Dortmund",
+        "Bayern Munich",
+        "5–2"
+      ],
+      [
+        "2012–13",
+        "Bayern Munich",
+        "VfB Stuttgart",
+        "3–2"
+      ],
+      [
+        "2013–14",
+        "Bayern Munich",
+        "Borussia Dortmund",
+        "2–0 (a.e.t.)"
+      ],
+      [
+        "2014–15",
+        "VfL Wolfsburg",
+        "Borussia Dortmund",
+        "3–1"
+      ],
+      [
+        "2015–16",
+        "Bayern Munich",
+        "Borussia Dortmund",
+        "0–0 (4–3 pen.)"
+      ],
+      [
+        "2016–17",
+        "Borussia Dortmund",
+        "Eintracht Frankfurt",
+        "2–1"
+      ],
+      [
+        "2017–18",
+        "Eintracht Frankfurt",
+        "Bayern Munich",
+        "3–1"
+      ],
+      [
+        "2018–19",
+        "Bayern Munich",
+        "RB Leipzig",
+        "3–0"
+      ],
+      [
+        "2019–20",
+        "Bayern Munich",
+        "Bayer Leverkusen",
+        "4–2"
+      ],
+      [
+        "2020–21",
+        "Borussia Dortmund",
+        "RB Leipzig",
+        "4–1"
+      ],
+      [
+        "2021–22",
+        "RB Leipzig",
+        "SC Freiburg",
+        "1–1 (4–2 pen.)"
+      ],
+      [
+        "2022–23",
+        "RB Leipzig",
+        "Eintracht Frankfurt",
+        "2–0"
+      ],
+      [
+        "2023–24",
+        "Bayer Leverkusen",
+        "1. FC Kaiserslautern",
+        "1–0"
+      ],
+      [
+        "2024–25",
+        "VfB Stuttgart",
+        "Arminia Bielefeld",
+        "4–2"
+      ],
+      [
+        "2025–26",
+        "Bayern Munich",
+        "VfB Stuttgart",
+        "3–0"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most DFB-Pokal titles?",
+        "a": "Bayern Munich are the record winners with 21 DFB-Pokal titles, the most recent coming in 2026 with a 3-0 win over VfB Stuttgart. No other club is close: Werder Bremen and Borussia Dortmund are the next most successful."
+      },
+      {
+        "q": "When did the DFB-Pokal start?",
+        "a": "The competition began in 1935 as the Tschammerpokal, won by 1. FC Nürnberg. It was suspended after 1943 during and after World War II, then relaunched by the German Football Association as the DFB-Pokal for the 1952-53 season."
+      },
+      {
+        "q": "Who won the DFB-Pokal in 2026?",
+        "a": "Bayern Munich won the 2025-26 DFB-Pokal, beating VfB Stuttgart 3-0 in the final at Berlin's Olympiastadion on 23 May 2026, with Harry Kane scoring a hat-trick. It was Bayern's record 21st title."
+      },
+      {
+        "q": "Where is the DFB-Pokal final played?",
+        "a": "Since 1985 the DFB-Pokal final has been held every year at the Olympiastadion in Berlin, giving the competition a fixed showpiece venue regardless of which clubs reach the final."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the DFB-Pokal"
+  },
+  {
+    "slug": "copa-libertadores-winners",
+    "h1": "Copa Libertadores Winners: Every Champion by Year (1960–2025)",
+    "title": "Copa Libertadores Winners by Year (1960–2025) | Ball IQ",
+    "description": "The complete list of Copa Libertadores winners from 1960 to 2025, with runner-up and country for every final. Independiente lead with seven titles.",
+    "intro": [
+      "The Copa Libertadores is South America's premier club competition, the continental equivalent of Europe's Champions League. Contested since 1960 and named after the liberators who freed Latin America from colonial rule, it pits the best sides from CONMEBOL's ten member nations against each other every year, with the champion earning a place at the FIFA Club World Cup.",
+      "For its first four decades the trophy was an Argentine and Uruguayan preserve. Independiente of Avellaneda turned dominance into an art form, winning seven titles including four in a row from 1972 to 1975, a run that has never been matched. Boca Juniors, Peñarol, Estudiantes and Nacional built the tournament's early mythology, and the fierce two-legged finals became notorious for their intensity.",
+      "The balance of power has shifted decisively toward Brazil in the modern era. Since 2019 every final has been won by a Brazilian club, and in 2025 Flamengo beat Palmeiras in Lima to claim a fourth crown. The table below lists every champion, runner-up and winning nation across the full history of the competition."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Country"
+    ],
+    "rows": [
+      [
+        "1960",
+        "Peñarol",
+        "Olimpia",
+        "Uruguay"
+      ],
+      [
+        "1961",
+        "Peñarol",
+        "Palmeiras",
+        "Uruguay"
+      ],
+      [
+        "1962",
+        "Santos",
+        "Peñarol",
+        "Brazil"
+      ],
+      [
+        "1963",
+        "Santos",
+        "Boca Juniors",
+        "Brazil"
+      ],
+      [
+        "1964",
+        "Independiente",
+        "Nacional",
+        "Argentina"
+      ],
+      [
+        "1965",
+        "Independiente",
+        "Peñarol",
+        "Argentina"
+      ],
+      [
+        "1966",
+        "Peñarol",
+        "River Plate",
+        "Uruguay"
+      ],
+      [
+        "1967",
+        "Racing",
+        "Nacional",
+        "Argentina"
+      ],
+      [
+        "1968",
+        "Estudiantes",
+        "Palmeiras",
+        "Argentina"
+      ],
+      [
+        "1969",
+        "Estudiantes",
+        "Nacional",
+        "Argentina"
+      ],
+      [
+        "1970",
+        "Estudiantes",
+        "Peñarol",
+        "Argentina"
+      ],
+      [
+        "1971",
+        "Nacional",
+        "Estudiantes",
+        "Uruguay"
+      ],
+      [
+        "1972",
+        "Independiente",
+        "Universitario",
+        "Argentina"
+      ],
+      [
+        "1973",
+        "Independiente",
+        "Colo-Colo",
+        "Argentina"
+      ],
+      [
+        "1974",
+        "Independiente",
+        "São Paulo",
+        "Argentina"
+      ],
+      [
+        "1975",
+        "Independiente",
+        "Unión Española",
+        "Argentina"
+      ],
+      [
+        "1976",
+        "Cruzeiro",
+        "River Plate",
+        "Brazil"
+      ],
+      [
+        "1977",
+        "Boca Juniors",
+        "Cruzeiro",
+        "Argentina"
+      ],
+      [
+        "1978",
+        "Boca Juniors",
+        "Deportivo Cali",
+        "Argentina"
+      ],
+      [
+        "1979",
+        "Olimpia",
+        "Boca Juniors",
+        "Paraguay"
+      ],
+      [
+        "1980",
+        "Nacional",
+        "Internacional",
+        "Uruguay"
+      ],
+      [
+        "1981",
+        "Flamengo",
+        "Cobreloa",
+        "Brazil"
+      ],
+      [
+        "1982",
+        "Peñarol",
+        "Cobreloa",
+        "Uruguay"
+      ],
+      [
+        "1983",
+        "Grêmio",
+        "Peñarol",
+        "Brazil"
+      ],
+      [
+        "1984",
+        "Independiente",
+        "Grêmio",
+        "Argentina"
+      ],
+      [
+        "1985",
+        "Argentinos Juniors",
+        "América de Cali",
+        "Argentina"
+      ],
+      [
+        "1986",
+        "River Plate",
+        "América de Cali",
+        "Argentina"
+      ],
+      [
+        "1987",
+        "Peñarol",
+        "América de Cali",
+        "Uruguay"
+      ],
+      [
+        "1988",
+        "Nacional",
+        "Newell's Old Boys",
+        "Uruguay"
+      ],
+      [
+        "1989",
+        "Atlético Nacional",
+        "Olimpia",
+        "Colombia"
+      ],
+      [
+        "1990",
+        "Olimpia",
+        "Barcelona",
+        "Paraguay"
+      ],
+      [
+        "1991",
+        "Colo-Colo",
+        "Olimpia",
+        "Chile"
+      ],
+      [
+        "1992",
+        "São Paulo",
+        "Newell's Old Boys",
+        "Brazil"
+      ],
+      [
+        "1993",
+        "São Paulo",
+        "Universidad Católica",
+        "Brazil"
+      ],
+      [
+        "1994",
+        "Vélez Sarsfield",
+        "São Paulo",
+        "Argentina"
+      ],
+      [
+        "1995",
+        "Grêmio",
+        "Atlético Nacional",
+        "Brazil"
+      ],
+      [
+        "1996",
+        "River Plate",
+        "América de Cali",
+        "Argentina"
+      ],
+      [
+        "1997",
+        "Cruzeiro",
+        "Sporting Cristal",
+        "Brazil"
+      ],
+      [
+        "1998",
+        "Vasco da Gama",
+        "Barcelona",
+        "Brazil"
+      ],
+      [
+        "1999",
+        "Palmeiras",
+        "Deportivo Cali",
+        "Brazil"
+      ],
+      [
+        "2000",
+        "Boca Juniors",
+        "Palmeiras",
+        "Argentina"
+      ],
+      [
+        "2001",
+        "Boca Juniors",
+        "Cruz Azul",
+        "Argentina"
+      ],
+      [
+        "2002",
+        "Olimpia",
+        "São Caetano",
+        "Paraguay"
+      ],
+      [
+        "2003",
+        "Boca Juniors",
+        "Santos",
+        "Argentina"
+      ],
+      [
+        "2004",
+        "Once Caldas",
+        "Boca Juniors",
+        "Colombia"
+      ],
+      [
+        "2005",
+        "São Paulo",
+        "Atlético Paranaense",
+        "Brazil"
+      ],
+      [
+        "2006",
+        "Internacional",
+        "São Paulo",
+        "Brazil"
+      ],
+      [
+        "2007",
+        "Boca Juniors",
+        "Grêmio",
+        "Argentina"
+      ],
+      [
+        "2008",
+        "LDU Quito",
+        "Fluminense",
+        "Ecuador"
+      ],
+      [
+        "2009",
+        "Estudiantes",
+        "Cruzeiro",
+        "Argentina"
+      ],
+      [
+        "2010",
+        "Internacional",
+        "Guadalajara",
+        "Brazil"
+      ],
+      [
+        "2011",
+        "Santos",
+        "Peñarol",
+        "Brazil"
+      ],
+      [
+        "2012",
+        "Corinthians",
+        "Boca Juniors",
+        "Brazil"
+      ],
+      [
+        "2013",
+        "Atlético Mineiro",
+        "Olimpia",
+        "Brazil"
+      ],
+      [
+        "2014",
+        "San Lorenzo",
+        "Nacional",
+        "Argentina"
+      ],
+      [
+        "2015",
+        "River Plate",
+        "Tigres UANL",
+        "Argentina"
+      ],
+      [
+        "2016",
+        "Atlético Nacional",
+        "Independiente del Valle",
+        "Colombia"
+      ],
+      [
+        "2017",
+        "Grêmio",
+        "Lanús",
+        "Brazil"
+      ],
+      [
+        "2018",
+        "River Plate",
+        "Boca Juniors",
+        "Argentina"
+      ],
+      [
+        "2019",
+        "Flamengo",
+        "River Plate",
+        "Brazil"
+      ],
+      [
+        "2020",
+        "Palmeiras",
+        "Santos",
+        "Brazil"
+      ],
+      [
+        "2021",
+        "Palmeiras",
+        "Flamengo",
+        "Brazil"
+      ],
+      [
+        "2022",
+        "Flamengo",
+        "Athletico Paranaense",
+        "Brazil"
+      ],
+      [
+        "2023",
+        "Fluminense",
+        "Boca Juniors",
+        "Brazil"
+      ],
+      [
+        "2024",
+        "Botafogo",
+        "Atlético Mineiro",
+        "Brazil"
+      ],
+      [
+        "2025",
+        "Flamengo",
+        "Palmeiras",
+        "Brazil"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most Copa Libertadores titles?",
+        "a": "Independiente of Argentina hold the record with seven titles (1964, 1965, 1972, 1973, 1974, 1975 and 1984), earning the nickname 'Rey de Copas' (King of Cups). Their four consecutive wins from 1972 to 1975 remain unmatched. Boca Juniors are second with six."
+      },
+      {
+        "q": "Who won the 2025 Copa Libertadores?",
+        "a": "Flamengo won the 2025 Copa Libertadores, beating fellow Brazilian side Palmeiras 1–0 in the final in Lima, Peru, on 29 November 2025. A Danilo header settled the match and gave Flamengo their fourth continental title."
+      },
+      {
+        "q": "Which country has produced the most Copa Libertadores winners?",
+        "a": "Argentina and Brazil are the two most successful nations. Argentine clubs led for decades, but Brazil has surged ahead in recent years — every final since 2019 has been won by a Brazilian club, including Flamengo, Palmeiras, Fluminense and Botafogo."
+      },
+      {
+        "q": "Has a club ever won the Copa Libertadores three years in a row?",
+        "a": "No. Independiente's four straight titles from 1972 to 1975 is the longest winning streak. Several clubs have gone back-to-back, including Peñarol, Estudiantes, Boca Juniors and, most recently, Palmeiras in 2020 and 2021, but no side has taken three consecutive editions."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Copa Libertadores"
+  },
+  {
+    "slug": "club-world-cup-winners",
+    "h1": "Every FIFA Club World Cup Winner (2000–2025)",
+    "title": "FIFA Club World Cup Winners by Year: Full List 2000–2025 | Ball IQ",
+    "description": "The complete list of FIFA Club World Cup winners from 2000 to 2025, with runner-up and host nation for every edition — including the new 32-team format.",
+    "intro": [
+      "The FIFA Club World Cup crowns the best club side on the planet by pitting the champions of each continent against one another. It began in 2000 with Corinthians lifting the inaugural trophy on home soil in Brazil, went dormant for four years, then returned in 2005 as an annual fixture that ran through 2023.",
+      "For most of its history the tournament was a compact, single-host event decided over a week or so, and it became a showcase for European dominance in particular — Real Madrid alone claimed five titles between 2014 and 2022. South American giants and the occasional underdog, like DR Congo's TP Mazembe reaching the 2010 final, added the drama.",
+      "In 2025 the competition was reborn in a radically expanded format: 32 clubs across a month-long tournament staged in the United States, a dry run for the following year's World Cup. Chelsea beat Paris Saint-Germain 3–0 in the New Jersey final to become the first champions of the new era. The table below lists every winner, runner-up and host from 2000 through 2025."
+    ],
+    "columns": [
+      "Year",
+      "Winner",
+      "Runner-up",
+      "Host"
+    ],
+    "rows": [
+      [
+        "2000",
+        "Corinthians",
+        "Vasco da Gama",
+        "Brazil"
+      ],
+      [
+        "2005",
+        "São Paulo",
+        "Liverpool",
+        "Japan"
+      ],
+      [
+        "2006",
+        "Internacional",
+        "Barcelona",
+        "Japan"
+      ],
+      [
+        "2007",
+        "AC Milan",
+        "Boca Juniors",
+        "Japan"
+      ],
+      [
+        "2008",
+        "Manchester United",
+        "LDU Quito",
+        "Japan"
+      ],
+      [
+        "2009",
+        "Barcelona",
+        "Estudiantes",
+        "United Arab Emirates"
+      ],
+      [
+        "2010",
+        "Inter Milan",
+        "TP Mazembe",
+        "United Arab Emirates"
+      ],
+      [
+        "2011",
+        "Barcelona",
+        "Santos",
+        "Japan"
+      ],
+      [
+        "2012",
+        "Corinthians",
+        "Chelsea",
+        "Japan"
+      ],
+      [
+        "2013",
+        "Bayern Munich",
+        "Raja Casablanca",
+        "Morocco"
+      ],
+      [
+        "2014",
+        "Real Madrid",
+        "San Lorenzo",
+        "Morocco"
+      ],
+      [
+        "2015",
+        "Barcelona",
+        "River Plate",
+        "Japan"
+      ],
+      [
+        "2016",
+        "Real Madrid",
+        "Kashima Antlers",
+        "Japan"
+      ],
+      [
+        "2017",
+        "Real Madrid",
+        "Grêmio",
+        "United Arab Emirates"
+      ],
+      [
+        "2018",
+        "Real Madrid",
+        "Al-Ain",
+        "United Arab Emirates"
+      ],
+      [
+        "2019",
+        "Liverpool",
+        "Flamengo",
+        "Qatar"
+      ],
+      [
+        "2020",
+        "Bayern Munich",
+        "Tigres UANL",
+        "Qatar"
+      ],
+      [
+        "2021",
+        "Chelsea",
+        "Palmeiras",
+        "United Arab Emirates"
+      ],
+      [
+        "2022",
+        "Real Madrid",
+        "Al-Hilal",
+        "Morocco"
+      ],
+      [
+        "2023",
+        "Manchester City",
+        "Fluminense",
+        "Saudi Arabia"
+      ],
+      [
+        "2025",
+        "Chelsea",
+        "Paris Saint-Germain",
+        "United States"
+      ]
+    ],
+    "faq": [
+      {
+        "q": "Which club has won the most FIFA Club World Cups?",
+        "a": "Real Madrid have won the most FIFA Club World Cups with five titles, claimed in 2014, 2016, 2017, 2018 and 2022. Barcelona are next with three."
+      },
+      {
+        "q": "Who won the first expanded 32-team Club World Cup in 2025?",
+        "a": "Chelsea won the first 32-team FIFA Club World Cup, beating Paris Saint-Germain 3–0 in the final at MetLife Stadium in New Jersey on 13 July 2025. It was Chelsea's second Club World Cup title."
+      },
+      {
+        "q": "Why was there no Club World Cup winner in 2024?",
+        "a": "The original annual format ended with Manchester City's win in 2023. FIFA then relaunched the competition as a month-long 32-team tournament, held for the first time in 2025, so no edition was contested in 2024."
+      },
+      {
+        "q": "Why is there a gap between 2000 and 2005 in the winners list?",
+        "a": "After the inaugural 2000 tournament, the competition was suspended amid the collapse of FIFA's marketing partner ISL and a fixture clash with the Intercontinental Cup. It returned in 2005 and ran annually until 2023."
+      }
+    ],
+    "updated": "2026-07-20",
+    "ctaName": "the Club World Cup"
   }
 ];
