@@ -1609,5 +1609,165 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about le Chaudron and the 1976 final to testing deep cuts on specific seasons, scorers and European nights."
       }
     ]
+  },
+  {
+    "club": "Sunderland",
+    "slug": "sunderland",
+    "name": "Sunderland",
+    "h1": "Sunderland Quiz",
+    "title": "Sunderland Quiz — Stadium of Light Trivia Questions & Answers | Ball IQ",
+    "description": "Free Sunderland quiz with explained answers — from six league titles and the 1973 FA Cup upset to Roker Park, the Stadium of Light and Kevin Phillips. Play free in your browser.",
+    "intro": [
+      "Sunderland, founded in 1879 and famous for their red-and-white stripes, are one of English football's grand old names with one of the game's most devoted followings. This free Sunderland quiz covers the whole story — the six league titles, the great cup days, the move from Roker Park to the Stadium of Light, and the modern rollercoaster made famous on Netflix.",
+      "The history runs deep. Sunderland have won the English league six times, the last in 1936, and lifted the FA Cup in 1937 (beating Preston North End) and again in 1973 — when, as a Second Division side, they stunned Leeds United in one of the competition's greatest upsets. Kevin Phillips won the European Golden Shoe in 1999-2000, and Peter Reid's side racked up a then-record 105 points to win the 1998-99 First Division. In 1997 the club left Roker Park for the Stadium of Light, built on the site of the former Wearmouth colliery.",
+      "Expect questions on the title-winning sides, the 1937 and 1973 cup runs, Roker Park and the Stadium of Light, Kevin Phillips, and the fierce Tyne–Wear derby with Newcastle United. Difficulty climbs from easy openers to genuinely hard deep cuts about record scorers and specific seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Sunderland quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Sunderland's greatest cup moment?",
+        "a": "The 1973 FA Cup final, when Sunderland — then a Second Division club — beat Leeds United to lift the trophy in one of the competition's most famous upsets. They had also won the FA Cup in 1937, beating Preston North End."
+      },
+      {
+        "q": "How many league titles have Sunderland won?",
+        "a": "Six English league championships, the most recent in 1936. Peter Reid's side also set a then-record 105 points winning the 1998-99 First Division, and Kevin Phillips won the European Golden Shoe in 1999-2000."
+      },
+      {
+        "q": "Is the Sunderland quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sunderland question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Sunderland quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Stadium of Light and the Tyne–Wear derby to testing deep cuts on record scorers and title-winning seasons."
+      }
+    ]
+  },
+  {
+    "club": "Ipswich Town",
+    "slug": "ipswich",
+    "name": "Ipswich Town",
+    "h1": "Ipswich Town Quiz",
+    "title": "Ipswich Town Quiz — Portman Road Trivia Questions & Answers | Ball IQ",
+    "description": "Free Ipswich Town quiz with explained answers — from Alf Ramsey's title and Bobby Robson's UEFA Cup to Portman Road and the Tractor Boys. Play free in your browser.",
+    "intro": [
+      "Ipswich Town, the pride of Suffolk and long-time residents of Portman Road, punch far above their size in English football history. This free Ipswich quiz covers the whole story — from two of the greatest managers the English game has produced to the blue of the Tractor Boys.",
+      "Both of Ipswich's defining eras were built by legendary bosses. Alf Ramsey led the club to the First Division title in 1961-62 — their only league championship — before taking England to the 1966 World Cup. Then Bobby Robson built a side that won the 1978 FA Cup and the 1981 UEFA Cup, powered by home-grown talents like Kevin Beattie. Portman Road has been home throughout.",
+      "Expect questions on Ramsey's champions, Robson's cup-winning teams, the 1981 European run, Portman Road, and the club's famous blue. Difficulty climbs from easy openers to hard deep cuts on specific finals and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Ipswich Town quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What are Ipswich Town's greatest achievements?",
+        "a": "The 1961-62 First Division title under Alf Ramsey, and the 1978 FA Cup and 1981 UEFA Cup won under Bobby Robson — an extraordinary record for a club of Ipswich's size."
+      },
+      {
+        "q": "Which famous managers made their name at Ipswich?",
+        "a": "Alf Ramsey, who won the title in 1961-62 before leading England to the 1966 World Cup, and Bobby Robson, who won the FA Cup in 1978 and the UEFA Cup in 1981."
+      },
+      {
+        "q": "Is the Ipswich Town quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Ipswich Town question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Ipswich Town quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Portman Road and Bobby Robson to testing deep cuts on the 1962 title and the 1981 UEFA Cup run."
+      }
+    ]
+  },
+  {
+    "club": "Crystal Palace",
+    "slug": "crystal-palace",
+    "name": "Crystal Palace",
+    "h1": "Crystal Palace Quiz",
+    "title": "Crystal Palace Quiz — Selhurst Park Trivia Questions & Answers | Ball IQ",
+    "description": "Free Crystal Palace quiz with explained answers — from the 2025 FA Cup and the 1990 final to Selhurst Park, Wright and Bright, and the Eagles. Play free in your browser.",
+    "intro": [
+      "Crystal Palace, the Eagles of south London, have long been one of English football's most colourful clubs, and this free Palace quiz covers the whole story — from the 1990 FA Cup final to the club's first-ever major trophy in 2025.",
+      "Palace reached the FA Cup final in 1990, taking Manchester United to a replay, in a side lit up by Ian Wright and Mark Bright. Decades later, at Selhurst Park, the club finally landed its first major honour by winning the 2025 FA Cup. More recently, home-grown talents like Wilfried Zaha and Eberechi Eze have carried the flame for the Eagles.",
+      "Expect questions on the 2025 cup triumph, the 1990 final, Wright and Bright, Selhurst Park, and Palace's south London identity. Difficulty climbs from easy openers to hard deep cuts on specific seasons and players.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Crystal Palace quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Crystal Palace's first major trophy?",
+        "a": "The 2025 FA Cup — the first major honour in the club's history. Palace had previously reached the FA Cup final in 1990, losing to Manchester United in a replay."
+      },
+      {
+        "q": "Where do Crystal Palace play?",
+        "a": "Selhurst Park in south London, the club's long-time home. Palace are nicknamed the Eagles and have produced home-grown talents such as Wilfried Zaha and Eberechi Eze."
+      },
+      {
+        "q": "Is the Crystal Palace quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Crystal Palace question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Crystal Palace quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Selhurst Park and the Eagles to testing deep cuts on the 1990 final and specific seasons."
+      }
+    ]
+  },
+  {
+    "club": "Fulham",
+    "slug": "fulham",
+    "name": "Fulham",
+    "h1": "Fulham Quiz",
+    "title": "Fulham Quiz — Craven Cottage Trivia Questions & Answers | Ball IQ",
+    "description": "Free Fulham quiz with explained answers — from Johnny Haynes and Craven Cottage to the 2010 Europa League final run. Play free in your browser.",
+    "intro": [
+      "Fulham, the Cottagers of west London, play at one of English football's most characterful grounds — Craven Cottage, on the banks of the Thames. This free Fulham quiz covers the whole story, from club legend Johnny Haynes to a remarkable run to a major European final.",
+      "Johnny Haynes remains the great figure of Fulham's history, an elegant playmaker who gave his name to a stand at the Cottage. The club's finest modern moment came in 2010, when Roy Hodgson led Fulham on a stirring run to the UEFA Europa League final, where they were beaten by Atlético Madrid. Through it all Craven Cottage, beside the river, has been home.",
+      "Expect questions on Johnny Haynes, Craven Cottage and the Thames, the 2010 European run, and the Cottagers' west London identity. Difficulty climbs from easy openers to hard deep cuts on specific seasons and players.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Fulham quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What was Fulham's best-ever run?",
+        "a": "Reaching the 2010 UEFA Europa League final under Roy Hodgson, where Fulham were beaten by Atlético Madrid — a remarkable European campaign for the west London club."
+      },
+      {
+        "q": "Who is Fulham's most famous player?",
+        "a": "Johnny Haynes, the elegant playmaker who is the great figure of Fulham's history and gave his name to a stand at Craven Cottage, the club's riverside home by the Thames."
+      },
+      {
+        "q": "Is the Fulham quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fulham question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Fulham quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Craven Cottage and Johnny Haynes to testing deep cuts on the 2010 Europa League run and specific seasons."
+      }
+    ]
+  },
+  {
+    "club": "Brighton",
+    "slug": "brighton",
+    "name": "Brighton",
+    "h1": "Brighton Quiz",
+    "title": "Brighton Quiz — Amex Stadium Trivia Questions & Answers | Ball IQ",
+    "description": "Free Brighton quiz with explained answers — from the Amex and Tony Bloom's data model to the 2023 European qualification and the Seagulls. Play free in your browser.",
+    "intro": [
+      "Brighton & Hove Albion, the Seagulls of the south coast, have risen from the lower leagues to become one of the Premier League's most admired clubs, and this free Brighton quiz covers the whole journey — from the wilderness years to the Amex and Europe.",
+      "The story is one of shrewd modern football. After leaving the Goldstone Ground, Brighton spent years at the Withdean Stadium (1999–2011) before moving to the American Express Community Stadium — the Amex. Under owner Tony Bloom's data-driven model, and managed by Roberto De Zerbi, Brighton qualified for European football for the first time in 2023, funding it by selling talents like Alexis Mac Allister, Moisés Caicedo and João Pedro for huge fees.",
+      "Expect questions on the Amex, the Withdean and Goldstone years, Tony Bloom's model, the 2023 European breakthrough, the big-money sales, and the M23 derby with Crystal Palace. Difficulty climbs from easy openers to hard deep cuts on specific signings and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Brighton quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Brighton's biggest achievement?",
+        "a": "Qualifying for European football for the first time in the club's history in 2023, under Roberto De Zerbi — the peak of a remarkable rise built on Tony Bloom's data-driven recruitment model."
+      },
+      {
+        "q": "Where do Brighton play?",
+        "a": "The American Express Community Stadium — the Amex — since 2011. Before that they spent years at the Withdean Stadium after leaving the Goldstone Ground. Brighton are nicknamed the Seagulls."
+      },
+      {
+        "q": "Is the Brighton quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brighton question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Brighton quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Amex and the Seagulls to testing deep cuts on the record sales and specific seasons."
+      }
+    ]
   }
 ];

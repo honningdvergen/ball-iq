@@ -172,6 +172,7 @@ const CLUB_BADGE = {
   'red-star-belgrade': 'CZ', 'dinamo-zagreb': 'DIN', basel: 'BAS',
   'nottingham-forest': 'NFO', 'aston-villa': 'AVL', everton: 'EVE',
   'leeds-united': 'LEE', 'west-ham': 'WHU',
+  sunderland: 'SUN', ipswich: 'IPS', 'crystal-palace': 'CRY', fulham: 'FUL', brighton: 'BHA',
   'athletic-bilbao': 'ATH', sevilla: 'SEV', 'real-betis': 'BET',
   'schalke-04': 'S04', 'hamburger-sv': 'HSV',
   fiorentina: 'FIO', lazio: 'LAZ', torino: 'TOR',
@@ -222,6 +223,7 @@ const CLUB_COLOR = {
   'red-star-belgrade': '#E4002B', 'dinamo-zagreb': '#1B458F', basel: '#002D62',
   'nottingham-forest': '#E53233', 'aston-villa': '#670E36', everton: '#003399',
   'leeds-united': '#1D428A', 'west-ham': '#7A263A',
+  sunderland: '#EB172B', ipswich: '#3A64A3', 'crystal-palace': '#1B458F', fulham: '#E6E6E6', brighton: '#0057B8',
   'athletic-bilbao': '#EE2523', sevilla: '#CB0007', 'real-betis': '#00954C',
   'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
@@ -1695,6 +1697,7 @@ const DIR_ALIAS = {
   'Athletic Club': 'Athletic Bilbao',
   'Dortmund': 'Borussia Dortmund',
   'PSG': 'Paris Saint-Germain',
+  'Ipswich': 'Ipswich Town',
 };
 // Built clubs whose league isn't among the directory's leagues yet (lower
 // tiers / countries pending). Rendered in a final "More clubs" section so no

@@ -696,6 +696,7 @@ const CLUB_PACK_TO_QB = {
   RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Basel: "Basel",
   Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
   Leeds: "Leeds United", WestHam: "West Ham",
+  Sunderland: "Sunderland", Ipswich: "Ipswich Town", Palace: "Crystal Palace", Fulham: "Fulham", Brighton: "Brighton",
   Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
   Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
@@ -722,6 +723,7 @@ const CLUB_LEAGUES = {
   // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
   RedStar: "other", DinamoZagreb: "other", Basel: "other",
   Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
+  Sunderland: "pl", Ipswich: "pl", Palace: "pl", Fulham: "pl", Brighton: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
@@ -772,6 +774,7 @@ const CLUB_ABBR = {
   Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
   RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
+  Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
   Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
 };
@@ -794,6 +797,7 @@ const CLUB_SLUG_TO_PACK = {
   "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "basel": "Basel",
   "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
   "leeds-united": "Leeds", "west-ham": "WestHam",
+  "sunderland": "Sunderland", "ipswich": "Ipswich", "crystal-palace": "Palace", "fulham": "Fulham", "brighton": "Brighton",
   "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
   "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
   "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
@@ -1152,6 +1156,26 @@ const CLUB_PACKS = {
   },
   WestHam: {
     name: "West Ham", icon: "⚒️", color: "#7A263A",
+    questions: [],
+  },
+  Sunderland: {
+    name: "Sunderland", icon: "🔴", color: "#EB172B",
+    questions: [],
+  },
+  Ipswich: {
+    name: "Ipswich Town", icon: "🔵", color: "#3A64A3",
+    questions: [],
+  },
+  Palace: {
+    name: "Crystal Palace", icon: "🦅", color: "#1B458F",
+    questions: [],
+  },
+  Fulham: {
+    name: "Fulham", icon: "⚪", color: "#E6E6E6",
+    questions: [],
+  },
+  Brighton: {
+    name: "Brighton", icon: "🔵", color: "#0057B8",
     questions: [],
   },
   Athletic: {
