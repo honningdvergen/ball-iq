@@ -377,9 +377,9 @@ const AD_SLOTS = {
   // Live 2026-07-20: one banner unit ("OLSEN", slot 4505987680) reused across all
   // three placements to go live fast. Reporting lumps them together — split into
   // named units (afterQA/afterFaq/listInline) later if per-placement data is wanted.
-  afterQA: '4505987680',
-  afterFaq: '4505987680',
-  listInline: '4505987680',
+  // DORMANT until AdSense is confirmed SERVING (site status "Klar"), so no empty
+  // ad boxes render before ads fill. Re-add the slot id to activate:
+  // afterQA: '4505987680', afterFaq: '4505987680', listInline: '4505987680',
 };
 
 // The loader is only emitted when real slots exist AND the page type carries
@@ -744,9 +744,10 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      on Core Web Vitals; an unreserved slot would trade search rank for ad pennies.
      The label keeps us the right side of AdSense's "clearly labelled" rule and
      stops a unit reading as our own content. */
-  .ad-slot{max-width:760px;margin:10px auto 26px;min-height:280px}
-  .ad-slot::before{content:"Advertisement";display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx4)}
-  .ad-slot .adsbygoogle{display:block;min-height:250px}
+  .ad-slot{max-width:760px;margin:0 auto;text-align:center}
+  .ad-slot .adsbygoogle{display:block}
+  .ad-slot:has(.adsbygoogle[data-ad-status="filled"]){margin:10px auto 26px}
+  .ad-slot:has(.adsbygoogle[data-ad-status="filled"])::before{content:"Advertisement";display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx4)}
   /* related tiles */
   .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
   .tile{display:flex;align-items:center;gap:11px;padding:14px;background:var(--card2);border:1px solid var(--bd);border-radius:14px;transition:border-color .16s,transform .16s}
@@ -1199,7 +1200,8 @@ ${bodyRows}
   .ltable tbody tr:last-child td{border-bottom:0}
   .ltable tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
   .ltable .lt-first{font-weight:700;color:#fff;white-space:nowrap}
-  .ltable-ad td{padding:12px 14px;background:rgba(255,255,255,.02)}
+  .ltable-ad td{padding:0;border:0}
+  .ltable-ad td:has(.adsbygoogle[data-ad-status="filled"]){padding:12px 14px;background:rgba(255,255,255,.02)}
   .ltable-ad td .ad-slot{margin:0}
   </style>`;
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
