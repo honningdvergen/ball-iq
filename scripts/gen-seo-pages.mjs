@@ -37,6 +37,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { NATIONS } from './seo/nations.mjs';
+import { LEAGUES } from './seo/leagues.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -253,10 +254,14 @@ function appStoreBadge() {
 </a>`;
 }
 
-const NAV = `<header class="nav"><div class="nav-in">
+// `active` marks the current section with the design's green underline
+// ('quizzes' | 'clubs' | 'records' | ''). NAV keeps every existing call site
+// working unchanged; the Clubs Directory passes 'clubs'.
+const navHtml = (active = '') => `<header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right"><a class="nav-link" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.appStore}" rel="noopener" target="_blank">Get the app</a></div>
+<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.appStore}" rel="noopener" target="_blank">Get the app</a></div>
 </div></header>`;
+const NAV = navHtml();
 
 function crumbs(items) {
   const trail = items
@@ -695,7 +700,9 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .nav-right{display:flex;align-items:center;gap:16px}
   .nav-link{color:var(--tx3);font-size:14px;font-weight:600}
   .nav-link:hover{color:#fff;text-decoration:none}
-  .nav-cta{display:inline-flex;align-items:center;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px;box-shadow:0 8px 22px -6px rgba(88,204,2,.5)}
+  .nav-link.active{color:#fff;border-bottom:2px solid var(--grn);padding-bottom:2px}
+  /* Flat per the 2026-07-21 Clubs Directory handoff — Alex: no 3D look. */
+  .nav-cta{display:inline-flex;align-items:center;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px}
   .nav-cta:hover{text-decoration:none;filter:brightness(1.04)}
   /* hero */
   .hero{padding:46px 0 40px;position:relative;overflow:hidden}
@@ -1668,6 +1675,232 @@ ${footer()}`;
 }
 
 // ── sitemap ───────────────────────────────────────────────────────────────────
+// ── Clubs Directory (/quiz/clubs/) ────────────────────────────────────────────
+// Implements the 2026-07-21 Claude Design handoff ("Clubs Directory.dc.html")
+// token-for-token: league rail → filter → popular pills → per-league card
+// grids → footer disclaimer. Rosters/codes/colours live in scripts/seo/
+// leagues.mjs — forge-verified against the current season (the design's own
+// draft was flagged "best guesses"). Clubs with a built quiz (a CLUBS entry)
+// render as live links; the rest as muted "coming soon" cards (Alex's call:
+// full rosters signal the roadmap). Colours are decorative identification
+// only — no crests/kits per the licensing rule.
+const cdSlug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+// Directory display name → CLUBS.name where they differ (design short forms).
+const DIR_ALIAS = {
+  'Man United': 'Manchester United',
+  'Man City': 'Manchester City',
+  "Nott'm Forest": 'Nottingham Forest',
+  'Tottenham': 'Tottenham Hotspur',
+  'Newcastle': 'Newcastle United',
+  'Athletic Club': 'Athletic Bilbao',
+  'Dortmund': 'Borussia Dortmund',
+  'PSG': 'Paris Saint-Germain',
+};
+// Built clubs whose league isn't among the directory's leagues yet (lower
+// tiers / countries pending). Rendered in a final "More clubs" section so no
+// live quiz is unreachable. code+colour hand-set (decorative).
+const MORE_META = {
+  'red-star-belgrade': { code: 'RSB', color: '#d0021b', name: 'Red Star Belgrade' },
+  'basel': { code: 'BSL', color: '#d0021b', name: 'Basel' },
+  'schalke-04': { code: 'S04', color: '#2e7dd1', name: 'Schalke 04' },
+  'saint-etienne': { code: 'STE', color: '#18a05a', name: 'Saint-Étienne' },
+};
+// League → existing league-quiz page slug (only rendered when that page is live).
+const LEAGUE_PAGE_SLUGS = {
+  'Premier League': 'premier-league', 'La Liga': 'la-liga', 'Serie A': 'serie-a',
+  'Bundesliga': 'bundesliga', 'Ligue 1': 'ligue-1', 'Süper Lig': 'super-lig',
+  'Primeira Liga': 'primeira-liga',
+};
+const DIR_POPULAR = ['Arsenal', 'Liverpool', 'Man United', 'Real Madrid', 'Barcelona', 'Bayern Munich', 'Man City', 'Chelsea', 'Juventus', 'PSG', 'Inter Milan', 'AC Milan'];
+
+function buildClubsDirectoryPage(catPages) {
+  const canonical = `${SITE.base}/quiz/clubs/`;
+  const clubByName = new Map(CLUBS.map((c) => [c.name, c]));
+  const resolve0 = (name) => clubByName.get(DIR_ALIAS[name] || name) || null;
+
+  // Guards — fail the build loud rather than ship a wrong directory.
+  const matched = new Set();
+  for (const L of LEAGUES) {
+    const codes = new Set();
+    for (const c of L.clubs) {
+      if (codes.has(c.code)) throw new Error(`[clubs-directory] duplicate code ${c.code} in ${L.league}`);
+      codes.add(c.code);
+      const hit = resolve0(c.name);
+      if (hit) matched.add(hit.slug);
+    }
+  }
+  const orphans = CLUBS.filter((c) => !matched.has(c.slug) && !MORE_META[c.slug]);
+  if (orphans.length) throw new Error(`[clubs-directory] built clubs unreachable (add DIR_ALIAS or MORE_META): ${orphans.map((c) => c.slug).join(', ')}`);
+  const moreClubs = CLUBS.filter((c) => !matched.has(c.slug) && MORE_META[c.slug]);
+
+  const total = LEAGUES.reduce((n, L) => n + L.clubs.length, 0);
+  const totalLabel = `${Math.floor(total / 10) * 10}+`;
+  const builtCount = matched.size + moreClubs.length;
+
+  const card = (c) => {
+    const hit = resolve0(c.name);
+    const inner = `<span class="cd-dot" style="background:${esc(c.color)}"></span><span class="cd-code">${esc(c.code)}</span><span class="cd-name">${esc(c.name)}</span>`;
+    const search = `${c.name} ${c.code}`.toLowerCase();
+    return hit
+      ? `<a class="cd-card" href="${SITE.base}/quiz/${hit.slug}/" data-s="${esc(search)}">${inner}</a>`
+      : `<span class="cd-card cd-soon" title="Quiz coming soon" aria-disabled="true" data-s="${esc(search)}">${inner}</span>`;
+  };
+
+  const section = (L) => {
+    const id = `lg-${cdSlug(L.league)}`;
+    const lpSlug = LEAGUE_PAGE_SLUGS[L.league];
+    const lpLive = lpSlug && catPages.some((p) => p.slug === lpSlug);
+    const link = lpLive ? `<a class="cd-lp" href="${SITE.base}/quiz/${lpSlug}/">League page →</a>` : '';
+    return `<section class="cd-sec" id="${id}" data-lg="${esc(L.league.toLowerCase())} ${esc(L.country.toLowerCase())}">
+<div class="cd-lh"><h2 class="cd-lt"><span class="cd-flag">${L.flag}</span>${esc(L.league)}<span class="cd-cnt">${L.clubs.length} CLUBS</span></h2>${link}</div>
+<div class="cd-grid">
+${L.clubs.map(card).join('\n')}
+</div>
+</section>`;
+  };
+
+  // Sidebar rail — countries in order, England's two leagues grouped.
+  const railGroups = [];
+  for (const L of LEAGUES) {
+    const last = railGroups[railGroups.length - 1];
+    if (last && last.country === L.country) last.leagues.push(L);
+    else railGroups.push({ country: L.country, flag: L.flag, leagues: [L] });
+  }
+  const rail = railGroups.map((g) => `<div class="cd-rg">
+<div class="cd-rc">${g.flag} ${esc(g.country)}</div>
+${g.leagues.map((L) => `<a class="cd-rl" href="#lg-${cdSlug(L.league)}"><span>${esc(L.league)}</span><span class="cd-rn">${L.clubs.length}</span></a>`).join('\n')}
+</div>`).join('\n');
+
+  const pills = DIR_POPULAR.map((name) => {
+    const hit = resolve0(name);
+    if (!hit) throw new Error(`[clubs-directory] popular pill has no built quiz: ${name}`);
+    let color = '#58cc02';
+    for (const L of LEAGUES) { const m = L.clubs.find((c) => c.name === name); if (m) { color = m.color; break; } }
+    return `<a class="cd-pill" href="${SITE.base}/quiz/${hit.slug}/"><span class="cd-dot" style="width:7px;height:7px;background:${esc(color)}"></span><span>${esc(name)}</span></a>`;
+  }).join('\n');
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+        { '@type': 'ListItem', position: 3, name: 'Clubs', item: canonical },
+      ] },
+      { '@type': 'ItemList', name: 'Football club quizzes by league', numberOfItems: LEAGUES.length,
+        itemListElement: LEAGUES.map((L, i) => ({ '@type': 'ListItem', position: i + 1, name: `${L.league} club quizzes`, url: `${canonical}#lg-${cdSlug(L.league)}` })) },
+    ],
+  });
+
+  // Design tokens verbatim from the handoff (computed-style extraction):
+  // card #1A1D27 / border #2A2D3A / text #F0F1F5 / muted #9BA0B8 / deep-muted
+  // #6E7180 / radius 12 / dot 8 / code JetBrains Mono 700 10px +.04em.
+  const style = `<style>
+  .cd-h1{font-size:28px;font-weight:800;letter-spacing:-.02em;color:#fff;margin:10px 0 4px}
+  .cd-sub{font-size:14px;font-weight:500;color:#9ba0b8;margin:0 0 22px}
+  .cd-wrap{display:grid;grid-template-columns:212px 1fr;gap:26px;align-items:start}
+  .cd-rail{position:sticky;top:76px}
+  .cd-rail-t{font:700 11px Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#6e7180;margin:0 0 10px}
+  .cd-rg{margin:0 0 14px}
+  .cd-rc{font:700 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9ba0b8;margin:0 0 6px}
+  .cd-rl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;color:#f0f1f5;font-size:13px;font-weight:600;text-decoration:none}
+  .cd-rl:hover{color:var(--grn);text-decoration:none}
+  .cd-rn{color:#6e7180;font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+  .cd-note{font-size:11px;color:#3c3f4c;margin:6px 0 0;line-height:1.5}
+  .cd-search{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#12141b;border:1px solid #2a2d3a;border-radius:14px;margin:0 0 16px}
+  .cd-search svg{flex:0 0 auto;color:#6e7180}
+  .cd-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;font:500 14px Inter,sans-serif;color:#fff}
+  .cd-search input::placeholder{color:#6e7180}
+  .cd-pop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 22px}
+  .cd-pop-t{font:700 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9ba0b8;margin-right:2px}
+  .cd-pill{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#1a1d27;border:1px solid #2a2d3a;border-radius:999px;text-decoration:none;font:600 12px Inter,sans-serif;color:#f0f1f5;white-space:nowrap}
+  .cd-pill:hover{border-color:#3a3f52;text-decoration:none}
+  .cd-sec{margin:0 0 26px}
+  .cd-lh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
+  .cd-lt{display:flex;align-items:baseline;gap:8px;font-size:16px;font-weight:800;letter-spacing:-.01em;color:#fff;margin:0}
+  .cd-flag{font-size:15px}
+  .cd-cnt{font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:#6e7180;margin-left:2px}
+  .cd-lp{font:700 12px Inter,sans-serif;color:var(--grn);white-space:nowrap;text-decoration:none}
+  .cd-lp:hover{text-decoration:underline}
+  .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px}
+  .cd-card{display:flex;align-items:center;min-width:0;gap:8px;padding:10px 11px;background:#1a1d27;border:1px solid #2a2d3a;border-radius:12px;text-decoration:none}
+  a.cd-card:hover{border-color:#3a3f52;text-decoration:none}
+  .cd-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .cd-code{font:700 10px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:#9ba0b8;letter-spacing:.04em;flex:0 0 auto}
+  .cd-name{flex:1;min-width:0;font:600 12.5px Inter,sans-serif;color:#f0f1f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cd-soon{opacity:.42;cursor:default}
+  #cd-none{color:#9ba0b8;font-size:14px;padding:8px 0 18px;display:none}
+  @media(max-width:960px){.cd-wrap{display:block}.cd-rail{display:none}}
+  </style>`;
+
+  const searchIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
+
+  const filterJs = `<script>(function(){
+var q=document.getElementById('cdq');if(!q)return;
+var cards=[].slice.call(document.querySelectorAll('.cd-card'));
+var secs=[].slice.call(document.querySelectorAll('.cd-sec'));
+var none=document.getElementById('cd-none');
+q.addEventListener('input',function(){
+  var v=q.value.trim().toLowerCase(),shown=0;
+  secs.forEach(function(s){
+    var lg=(s.getAttribute('data-lg')||'').indexOf(v)>-1;
+    var vis=0;
+    [].slice.call(s.querySelectorAll('.cd-card')).forEach(function(c){
+      var hit=!v||lg||(c.getAttribute('data-s')||'').indexOf(v)>-1;
+      c.style.display=hit?'':'none';if(hit)vis++;
+    });
+    s.style.display=vis?'':'none';shown+=vis;
+  });
+  none.style.display=(v&&!shown)?'block':'none';
+});
+})();</script>`;
+
+  const html = `${head({
+    title: `Club Quizzes by League — ${totalLabel} Football Clubs | Ball IQ`,
+    description: `Free football club quizzes organised by league — ${totalLabel} clubs across ${LEAGUES.length} leagues, from the Premier League to the Brasileirão. ${builtCount} club quizzes live, every answer explained, new clubs added weekly.`,
+    canonical, ld, ads: true,
+  })}
+<body>
+${navHtml('clubs')}
+<main>
+${style}
+<section class="sec">
+${crumbs([{ name: 'Home', url: `${SITE.base}/` }, { name: 'Quizzes', url: `${SITE.base}/quiz/` }, { name: 'Clubs' }])}
+<h1 class="cd-h1">Club quizzes</h1>
+<p class="cd-sub">${totalLabel} clubs across ${LEAGUES.length} leagues — every quiz free, every answer explained.</p>
+<div class="cd-wrap">
+<aside class="cd-rail">
+<div class="cd-rail-t">Leagues</div>
+${rail}
+<p class="cd-note">Coming soon: Segunda, 2. Bundesliga, Serie B, Ligue 2…</p>
+</aside>
+<div class="cd-main">
+<div class="cd-search">${searchIcon}<input id="cdq" type="search" placeholder="Type to filter ${totalLabel} clubs — name, code or league…" aria-label="Filter clubs" autocomplete="off" /></div>
+<div class="cd-pop"><span class="cd-pop-t">🔥 Popular</span>
+${pills}
+</div>
+<p id="cd-none">No clubs match that — try a club name, its 3-letter code, or a league.</p>
+${LEAGUES.map(section).join('\n')}
+${moreClubs.length ? `<section class="cd-sec" id="lg-more" data-lg="more clubs">
+<div class="cd-lh"><h2 class="cd-lt"><span class="cd-flag">⚽</span>More clubs<span class="cd-cnt">${moreClubs.length} CLUBS</span></h2></div>
+<div class="cd-grid">
+${moreClubs.map((c) => { const m = MORE_META[c.slug]; return `<a class="cd-card" href="${SITE.base}/quiz/${c.slug}/" data-s="${esc(`${m.name} ${m.code}`.toLowerCase())}"><span class="cd-dot" style="background:${m.color}"></span><span class="cd-code">${m.code}</span><span class="cd-name">${esc(m.name)}</span></a>`; }).join('\n')}
+</div>
+</section>` : ''}
+</div>
+</div>
+</section>
+${filterJs}
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, 'quiz', 'clubs');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  console.log(`  ✓ /quiz/clubs/ — ${total} clubs, ${LEAGUES.length} leagues (${builtCount} live, ${total + moreClubs.length - builtCount} coming soon)`);
+  return { total, leagues: LEAGUES.length };
+}
+
 function buildSitemap(livePages, listPages = []) {
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
@@ -1676,6 +1909,7 @@ function buildSitemap(livePages, listPages = []) {
   const urls = [
     { loc: `${SITE.base}/`, freq: 'daily', pri: '1.0' },
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/quiz/clubs/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     ...livePages
@@ -1828,6 +2062,7 @@ async function main() {
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages));
   buildListsHubPage(LISTS, clubPages, livePages);
+  buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildSimplePage(ABOUT);
