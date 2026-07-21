@@ -1011,16 +1011,16 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     statLine: `Free · ${all.length}+ ${cfg.name} questions · new ones added weekly`,
-    playHref: '#taster',
+    playHref: '#play',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
-${renderCovers(cfg.name, false)}
-${appCtaBand(cfg.name)}
-<section class="sec narrow">
-<h2>${esc(cfg.name)} sample questions &amp; answers</h2>
+<section class="sec narrow" id="play">
+<h2>Play the ${esc(cfg.name)} quiz</h2>
 <p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
+${renderCovers(cfg.name, false)}
+${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
