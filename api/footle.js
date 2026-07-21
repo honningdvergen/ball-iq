@@ -72,6 +72,12 @@ export default function handler() {
   const archive = [];
   for (let k = 1; k <= ARCHIVE_DAYS; k++) {
     const di = today - k;
+    // Floor at Footle #1 (2026-05-04). While the game is younger than
+    // ARCHIVE_DAYS, an unclamped loop walks past the start and fabricates
+    // pre-game puzzles (#0, #-1, …) whose "answer" is just the formula
+    // fallback — a nonexistent puzzle published on an indexed page. di
+    // decreases monotonically, so once we cross the start we're done.
+    if (footleNumber(di) < 1) break;
     const a = getWordleAnswerForDayIndex(di);
     archive.push({
       n: footleNumber(di),
