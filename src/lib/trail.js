@@ -39,7 +39,38 @@ export function getTrailNumber(date = new Date()) {
 //     clubs:["Watford","Aston Villa","Man Utd","Inter","Aston Villa","Everton"],
 //     loans:[false,false,false,false,false,false],   // parallel to clubs
 //     years:["2003–07", ...] }                        // assist-only, optional
-export const TRAIL_PLAYERS = [];
+export const TRAIL_PLAYERS = [
+  // Wave 1 — forge-generated (generate → independent web re-derivation vs
+  // Wikipedia/Transfermarkt, all verified:true high-confidence) + Alex spot-
+  // checked 2026-07-21. `display` corrected from the forge (a schema-wording
+  // slip had some agents emit clubs there). 4 others from the batch were
+  // rejected: Young(7)/Villa(8)/Pirlo(8) exceed the 6-rung max (not truncated,
+  // per the locked rules); Modrić dropped editorially (obscure loan openers).
+  { key: "TORRES", display: ["Fernando", "Torres"], nat: "Spain",
+    clubs: ["Atletico Madrid", "Liverpool", "Chelsea", "AC Milan", "Atletico Madrid", "Sagan Tosu"],
+    loans: [false, false, false, true, false, false] },
+  { key: "BALE", display: ["Gareth", "Bale"], nat: "Wales",
+    clubs: ["Southampton", "Tottenham", "Real Madrid", "Tottenham", "Real Madrid", "LAFC"],
+    loans: [false, false, false, true, false, false] },
+  { key: "VAN_PERSIE", display: ["Robin", "van Persie"], nat: "Netherlands",
+    clubs: ["Feyenoord", "Arsenal", "Man Utd", "Fenerbahce", "Feyenoord"],
+    loans: [false, false, false, false, false] },
+  { key: "ALONSO", display: ["Xabi", "Alonso"], nat: "Spain",
+    clubs: ["Real Sociedad", "Eibar", "Real Sociedad", "Liverpool", "Real Madrid", "Bayern Munich"],
+    loans: [false, true, false, false, false, false] },
+  { key: "HENRY", display: ["Thierry", "Henry"], nat: "France",
+    clubs: ["Monaco", "Juventus", "Arsenal", "Barcelona", "New York Red Bulls", "Arsenal"],
+    loans: [false, false, false, false, false, true] },
+  { key: "SNEIJDER", display: ["Wesley", "Sneijder"], nat: "Netherlands",
+    clubs: ["Ajax", "Real Madrid", "Inter", "Galatasaray", "Nice", "Al-Gharafa"],
+    loans: [false, false, false, false, false, false] },
+  { key: "OZIL", display: ["Mesut", "Özil"], nat: "Germany",
+    clubs: ["Schalke 04", "Werder Bremen", "Real Madrid", "Arsenal", "Fenerbahce", "Basaksehir"],
+    loans: [false, false, false, false, false, false] },
+  { key: "OWEN", display: ["Michael", "Owen"], nat: "England",
+    clubs: ["Liverpool", "Real Madrid", "Newcastle", "Man Utd", "Stoke City"],
+    loans: [false, false, false, false, false] },
+];
 
 // Frozen answer log: TRAIL_ANSWER_LOG[n] is the player `key` for day index
 // TRAIL_ANCHOR_DAY + n. Generated once at ship time (clone of
