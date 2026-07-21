@@ -9919,7 +9919,7 @@ function AppInner() {
             {/* 1.1: hide the global wordmark on screens that already have their
                 own page-header (Settings, the online MP setup + lobby) — it just
                 stacks a second identifier. (Broader sub-screen audit deferred.) */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
