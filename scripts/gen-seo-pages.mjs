@@ -447,24 +447,30 @@ function shuffleOptions(r) {
 }
 
 // Difficulty-spread sample Q&A block (answers revealed on click; text stays in DOM).
+// Playable sample Q&A: tap an option → instant ✓/✗ + the explanation, mirroring
+// the taster (reuses its .to button styles). Progressive enhancement — options
+// render as real buttons; QA_JS wires tap-to-check. Falls back to plain buttons
+// if JS is off (the answer/hint still ship in the DOM for crawlers).
 function renderQA(rows) {
   const items = rows
     .map((row) => {
       const r = shuffleOptions(row);
-      const answer = r.o[r.a];
-      const opts = r.o.map((o) => `<li>${esc(o)}</li>`).join('');
-      return `<li class="qa">
+      const opts = r.o
+        .map((o, k) => `<button class="to" type="button" data-i="${k}"><span class="tl">${'ABCD'[k] || ''}</span><span class="tt">${esc(o)}</span></button>`)
+        .join('');
+      return `<li class="qa" data-a="${r.a}">
 <p class="q">${esc(r.q)}</p>
-<ul class="opts">${opts}</ul>
-<details class="ans"><summary>Show answer</summary>
-<p class="a">Answer: ${esc(answer)}</p>
-<p class="why">${esc(r.hint)}</p>
-</details>
+<div class="qa-opts">${opts}</div>
+<p class="qa-why">${esc(r.hint)}</p>
 </li>`;
     })
     .join('\n');
-  return `<ol class="qa-list">\n${items}\n</ol>`;
+  return `<ol class="qa-list">\n${items}\n</ol>\n<script>${QA_JS}</script>`;
 }
+
+// Wires every .qa card independently: first tap locks the card, marks the picked
+// option right/wrong, reveals the correct one + the explanation. No deps.
+const QA_JS = `(function(){var cs=document.querySelectorAll('.qa[data-a]');for(var c=0;c<cs.length;c++){(function(card){var a=+card.getAttribute('data-a'),bs=card.querySelectorAll('.to'),w=card.querySelector('.qa-why'),done=false;if(w)w.hidden=true;function pick(ev){if(done)return;done=true;var k=+ev.currentTarget.getAttribute('data-i');for(var b=0;b<bs.length;b++){bs[b].disabled=true;if(b===a){bs[b].className='to correct';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2713</span>')}else if(b===k){bs[b].className='to wrong';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2717</span>')}else{bs[b].className='to dim'}}if(w)w.hidden=false}for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}})();`;
 
 // ── Interactive quiz taster (Claude Design website handoff) ───────────────────
 // A playable 5-question widget injected into every club/league landing page:
@@ -768,19 +774,14 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .prose p a{color:var(--grn-soft)}
   .stats{display:inline-block;font-family:var(--mono);font-size:13px;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
   /* sample Q&A */
-  .qa-list{list-style:none;counter-reset:qa}
-  .qa{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 16px 12px;margin-bottom:12px}
-  .qa .q{font-weight:700;color:#fff;font-size:16px;margin-bottom:10px}
+  .qa-list{list-style:none;counter-reset:qa;padding:0;margin:0}
+  .qa{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 16px 14px;margin-bottom:12px}
+  .qa .q{font-weight:700;color:#fff;font-size:16px;margin-bottom:12px;line-height:1.4}
   .qa .q::before{counter-increment:qa;content:counter(qa) ". ";color:var(--grn-soft);font-family:var(--mono)}
-  .opts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
-  .opts li{font-size:14px;color:var(--tx2);background:#0B0D13;border:1px solid var(--bd);border-radius:8px;padding:8px 11px}
-  details.ans{border-top:1px dashed var(--bd);padding-top:10px;margin-top:4px}
-  details.ans summary{cursor:pointer;color:var(--grn-soft);font-size:13px;font-weight:700;list-style:none}
-  details.ans summary::-webkit-details-marker{display:none}
-  details.ans summary::before{content:"▸ "}
-  details.ans[open] summary::before{content:"▾ "}
-  details.ans .a{color:#fff;font-weight:700;font-size:14px;margin:10px 0 4px}
-  details.ans .why{color:var(--tx3);font-size:14px;line-height:1.55}
+  .qa-opts{display:flex;flex-direction:column;gap:8px}
+  .qa-opts .to{padding:11px 13px;font-size:14px}
+  .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
+  .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
   /* footer */
   .foot{border-top:1px solid #16181F;background:var(--bg2);margin-top:36px}
   .foot-in{max-width:none;margin:0 auto;padding:40px clamp(20px,4vw,48px) 48px}
@@ -790,7 +791,6 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .foot-links a:hover{color:#fff;text-decoration:none}
   .foot-copy{color:var(--tx4);font-size:13px;margin-top:4px}
   .foot-disc{color:#5f6478;font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
-  @media(max-width:480px){.opts{grid-template-columns:1fr}}
   @media(max-width:420px){.nav-in{padding:10px 14px}.nav-right{gap:10px}.nav-link{font-size:13px}.nav-cta{padding:8px 13px;font-size:12.5px}.brand{font-size:16px}.brand img{width:24px;height:24px}}
 ${TASTER_CSS}
 </style>
@@ -925,7 +925,7 @@ ${renderCovers(catCfg.name, true)}
 ${appCtaBand(catCfg.name)}
 <section class="sec narrow">
 <h2>${esc(catCfg.name)} sample questions &amp; answers</h2>
-<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
@@ -1017,7 +1017,7 @@ ${renderCovers(cfg.name, false)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
-<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
@@ -1102,7 +1102,7 @@ ${renderCovers(cfg.name, false, true)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
-<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
@@ -1370,7 +1370,7 @@ ${renderCovers(cfg.name, false, true)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
-<p class="sub">Tap &ldquo;Show answer&rdquo; to reveal the answer and the story behind it.</p>
+<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
@@ -1458,7 +1458,7 @@ ${introHtml}
 </section>
 <section class="sec">
 <h2>${listRows.length} football trivia questions &amp; answers</h2>
-<p class="sub">Tap “Show answer” to reveal the answer and the story behind it.</p>
+<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
 ${renderQA(listRows)}
 </section>
 ${adSlot('afterQA')}
