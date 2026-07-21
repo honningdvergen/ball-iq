@@ -4651,6 +4651,10 @@ function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory
           </div>
         )}
       </div>
+      {/* Return-loop (1.4.0): web players finishing the Daily 7 are a prime
+          value moment to convert to an installed shell — install is web's only
+          path to the daily reminder. Renders nothing on native/installed. */}
+      <InstallBanner />
       <Mini7Strip history={dailyHistory} today={today} />
       {hasAll ? (
         <>
@@ -5382,13 +5386,13 @@ function InstallBanner() {
     <div className="install-banner" role="region" aria-label="Install Ball IQ">
       <span className="install-banner-icon" aria-hidden="true">⚽</span>
       <div className="install-banner-body">
-        <div className="install-banner-title">Add Ball IQ to your home screen</div>
+        <div className="install-banner-title">Never miss a day</div>
         <div className="install-banner-desc">
           {canPromptNative
-            ? "One tap — full-screen, offline-ready."
+            ? "Install for a daily reminder when new puzzles drop."
             : platform.isIOSSafari
-              ? "Tap Share → Add to Home Screen."
-              : "Quick access from your home screen."}
+              ? "Tap Share → Add to Home Screen for daily reminders."
+              : "Add to your home screen for daily reminders."}
         </div>
       </div>
       <div className="install-banner-actions">
@@ -8665,7 +8669,7 @@ function AppInner() {
         showToast('Turn on notifications for Ball IQ in iOS Settings to get reminders');
         return;
       }
-      try { localStorage.setItem('biq_notif_enabled', '1'); } catch {}
+      try { localStorage.setItem('biq_notif_enabled', '1'); localStorage.removeItem('biq_notif_disabled'); } catch {}
       setNotifEnabled(true);
       // Permission just granted (local + remote share one iOS grant) — register
       // for APNs push too, so the passive sign-in path picks up a token here on.
@@ -8675,7 +8679,10 @@ function AppInner() {
       scheduleReminderWindow({ skipToday: playedToday });
       showToast('Daily reminders on 🔔');
     } else {
-      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+      // Explicit opt-out. The 'disabled' marker distinguishes "user turned it
+      // off" from "flag never set / evicted" so the reconcile self-heal below
+      // won't silently re-enable someone who deliberately said no.
+      try { localStorage.removeItem('biq_notif_enabled'); localStorage.setItem('biq_notif_disabled', '1'); } catch {}
       setNotifEnabled(false);
       cancelAllReminders();
       showToast('Daily reminders off');
@@ -8814,12 +8821,27 @@ function AppInner() {
   useEffect(() => {
     let cancelled = false;
     const reconcile = async () => {
-      try { if (localStorage.getItem('biq_notif_enabled') !== '1') return; } catch { return; }
+      let enabledFlag, disabledFlag;
+      try {
+        enabledFlag = localStorage.getItem('biq_notif_enabled') === '1';
+        disabledFlag = localStorage.getItem('biq_notif_disabled') === '1';
+      } catch { return; }
       const perm = await getNotifPermission();
-      if (cancelled || perm === 'granted') return;
-      setNotifEnabled(false);
-      try { localStorage.removeItem('biq_notif_enabled'); } catch {}
-      cancelAllReminders();
+      if (cancelled) return;
+      if (enabledFlag && perm !== 'granted') {
+        // Revoked in OS Settings while the toggle read ON — turn it off.
+        setNotifEnabled(false);
+        try { localStorage.removeItem('biq_notif_enabled'); } catch {}
+        cancelAllReminders();
+      } else if (!enabledFlag && !disabledFlag && perm === 'granted') {
+        // Self-heal the other direction: OS permission is granted (only our
+        // prompt or iOS Settings can do that) and the user never explicitly
+        // opted out, but the local flag was lost (PWA storage eviction /
+        // reinstall). Re-enable — the notifEnabled effect reschedules the
+        // window — so a granted user never silently stops getting reminders.
+        try { localStorage.setItem('biq_notif_enabled', '1'); } catch {}
+        setNotifEnabled(true);
+      }
     };
     reconcile();
     const onVis = () => { if (document.visibilityState === 'visible') reconcile(); };
