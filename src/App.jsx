@@ -5170,7 +5170,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
   }, [history]);
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
-    <div className="screen online-hub">
+    <div className="screen tab-content online-hub">
       {/* Title + win-streak pill (no local gear — the global header has one) */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
         <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Online</div>
