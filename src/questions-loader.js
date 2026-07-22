@@ -8,7 +8,7 @@
 // is invisible to users on normal connections.
 //
 // Pattern:
-//   loadQuestions()    → returns { QB, TF_STATEMENTS, QB_WC2026, QB_CHAOS }
+//   loadQuestions()    → returns { QB, TF_STATEMENTS, QB_CHAOS }
 //                        async; resolves immediately if already cached
 //   prefetchQuestions() → fire-and-forget alias for AppInner mount
 //
@@ -17,8 +17,9 @@
 //     App.jsx module load (the for loop on QB) is performed once here
 //     when the cache is first populated. Cached object's QB has the
 //     normalized values.
-//   - QB_WC2026 / QB_CHAOS slices that USED to be computed at App.jsx
-//     module load are also computed once here on first cache miss.
+//   - The QB_CHAOS slice that USED to be computed at App.jsx module load
+//     is also computed once here on first cache miss. (The former QB_WC2026
+//     slice was retired with the World Cup event mode.)
 //     Same constant-after-load semantics, just deferred.
 //   - In-flight promise deduplication ensures concurrent loadQuestions()
 //     calls share a single network request.
@@ -44,10 +45,11 @@ export function loadQuestions() {
 
     // Pre-bucketed QB slices. Previously at App.jsx:86-87. Computed once
     // here so subsequent reads are O(1).
-    const QB_WC2026 = QB.filter(q => q && q.tag === "wc2026");
+    // (The former QB_WC2026 slice was retired with the World Cup event mode —
+    // those questions keep their cat and surface via the general pool.)
     const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
 
-    cache = { QB, TF_STATEMENTS, QB_WC2026, QB_CHAOS };
+    cache = { QB, TF_STATEMENTS, QB_CHAOS };
     inFlight = null;  // free the promise reference once resolved
     return cache;
   }).catch((err) => {

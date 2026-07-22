@@ -2103,7 +2103,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // math is inert on mobile — the mobile chrome (.q-top/.timer-row/.streak-bar/
   // .q-tag) stays byte-identical. quizLabel is the mode/club/league badge passed
   // from the mount site; the per-question category is the secondary label. ──
-  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", wc2026:"International", local:"Local" };
+  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", local:"Local" };
   const qdBadge = quizLabel || QD_MODE_BADGE[mode] || "Quiz";
   const qdCat = q ? (CAT_LABELS[q.cat] || q.cat || "") : "";
   const qdCounter = mode === "survival" ? `Q ${idx + 1}` : `Q ${String(idx + 1).padStart(2, "0")} / ${total}`;
@@ -3393,12 +3393,6 @@ function getXPForResult(score, total, mode) {
     const perfectBonus = score === total ? 40 : 0;
     return score * 6 + perfectBonus;
   }
-  if (mode === "wc2026") {
-    // WC2026: same as classic but with World Cup bonus
-    const pct = score / total;
-    const perfectBonus = score === total ? 60 : 0;
-    return Math.round(score * 10 + pct * 20) + perfectBonus;
-  }
   const base = score * 10;
   const bonus = mode === "survival" ? Math.floor(score * 1.5) * 10 : 0;
   const perfectBonus = score === total && mode !== "survival" ? 50 : 0;
@@ -4373,7 +4367,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
   //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
   //  (display:contents→none at desktop) so it stays byte-identical. ──
-  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos", wc2026:"International" };
+  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos" };
   const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
   const rdDots = (() => {
     const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
@@ -5663,7 +5657,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div className="settings-row">
             <div className="sr-left">
               <div className="sr-label">Timer</div>
-              <div className="sr-desc">Enable countdown timer in Standard, Speed and WC2026 modes</div>
+              <div className="sr-desc">Enable countdown timer in Standard and Speed modes</div>
             </div>
             <div className="sr-right">
               <SettingsToggle val={settings.timer} onChange={v => onUpdate({timer:v})} />
@@ -6772,7 +6766,6 @@ const HOW_TO_PLAY = {
   wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real player or manager surname","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
-  wc2026: { title:"🌍 International", steps:["15 questions on international football","National teams and their stars","Questions on history, players and format","No timer — test your knowledge","See how much you know!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
   balliq: { title:`🧠 ${APP_NAME} Test`, steps:["15 questions across all categories","Difficulty ramps up as you go","Your score maps to a 60–160 scale","Earn a football-culture rank label","Your history is saved for tracking"] },
 };
@@ -8412,7 +8405,7 @@ function AppInner() {
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       if (m === "leaguequiz") { setScreen("league-quiz"); return; }
       // Reset category for special modes that ignore it
-      if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "wc2026" || m === "truefalse" || m === "chaos") setCat("All");
+      if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
         showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
         return;
@@ -8425,15 +8418,6 @@ function AppInner() {
       else if (m === "legends") { qs = await getQs({ cat: "Legends", diff, n: 10 }); }
       else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff, n: 999 })) || []).filter(q => q.type !== "tf"); }
-      else if (m === "wc2026") {
-        const { QB_WC2026 } = await loadQuestions();
-        if (QB_WC2026.length < 5) {
-          showToast("Not enough questions available for this mode");
-          return;
-        }
-        const fresh = applySeenFilter(QB_WC2026, 15, qbHistKey);
-        qs = seededShuffle([...fresh], Date.now()).slice(0, 15).map(q => ({ ...q, _histKey: qbHistKey(q) }));
-      }
       else if (m === "truefalse") { qs = await getTrueFalseQs(); }
       else if (m === "chaos") {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
@@ -9181,7 +9165,6 @@ function AppInner() {
       hotstreak: `⚡🔥 ${APP_NAME} — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
       truefalse: `✅ ${APP_NAME} — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       legends:   `📜 ${APP_NAME} — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      wc2026:    `🌍 ${APP_NAME} — International\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       local:     `🤝 ${APP_NAME} — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
       chaos:     `🎭 ${APP_NAME} — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
     };
@@ -9221,7 +9204,6 @@ function AppInner() {
       balliq: `${APP_NAME} Test`,
       speed: "Speed Round",
       legends: "Legends & History",
-      wc2026: "International",
       local: "Local Multiplayer",
       chaos: "Chaos Quiz",
     };
