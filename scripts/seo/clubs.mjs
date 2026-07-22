@@ -1769,5 +1769,133 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the Amex and the Seagulls to testing deep cuts on the record sales and specific seasons."
       }
     ]
-  }
+  },
+  {
+    "club": "Bournemouth",
+    "slug": "bournemouth",
+    "name": "Bournemouth",
+    "h1": "Bournemouth Quiz",
+    "title": "Bournemouth Quiz — AFCB Trivia Questions & Answers | Ball IQ",
+    "description": "Free AFC Bournemouth quiz with explained answers — Ted MacDougall's nine goals, Eddie Howe's rise, the Great Escape. Play free in your browser.",
+    "intro": [
+      "AFC Bournemouth began life in 1899 as Boscombe FC, took the name Bournemouth & Boscombe Athletic on joining the Football League in 1923, and have long been known simply as the Cherries. Few clubs wear their identity so plainly: red-and-black striped shirts modelled on AC Milan's, introduced in the early 1970s; a crest showing a player heading a football; and a home ground everyone still calls by its traditional name, Dean Court. This free Bournemouth quiz covers the whole story — the FA Cup giant-killings, the Great Escape of 2009, and Eddie Howe's climb from League Two to the Premier League.",
+      "For most of their history the Cherries were a lower-league club with a habit of embarrassing bigger ones. The Third Division side of 1956-57 knocked out Wolves and Tottenham on the way to the FA Cup quarter-finals; Ted MacDougall scored nine goals in a single tie in 1971, an 11-0 rout of Margate that set an FA Cup record; and in January 1984 Harry Redknapp's team beat cup holders Manchester United 2-0. The Third Division title of 1986-87 was the first divisional championship in the club's history. Then came the hard road back: docked 17 points after exiting administration in 2008-09, Bournemouth were all but saved by Steve Fletcher — the much-loved striker who holds the club's all-time appearance record across two spells — scoring the decisive goal against Grimsby in April 2009. Eddie Howe, a former Bournemouth defender, took it from there, guiding the club from League Two all the way to the 2014-15 Championship title and a first-ever top-flight season in 2015-16.",
+      "The questions range across the eras. You'll meet the famous 4-3 at Dean Court in December 2016, when Bournemouth came from 3-1 down to beat Liverpool; the club-record fee of around £25m paid to Levante for Jefferson Lerma in 2018; Callum Wilson scoring on his England debut against the USA that November; and Ryan Fraser's 14 assists in 2018-19, one of the highest tallies in the division. The bruises are in here too — the 9-0 defeat by Liverpool in August 2022 that equalled the Premier League's record scoreline, and Scott Parker winning promotion back to the Premier League in 2022 only to be sacked early the following season. Difficulty climbs from easy openers about nicknames and famous wins to hard deep cuts about points deductions, name changes and Howe's brief 2011 spell at Burnley, so casual fans and lifelong Cherries both get a proper test.",
+      "Every question comes with a short explained answer, so even a miss leaves you knowing more — why the club began 2008-09 seventeen points down, or which club those red-and-black stripes were modelled on. Play the sample set below free in your browser, no sign-up needed. When you want the full Bournemouth quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is AFC Bournemouth's greatest achievement?",
+        "a": "Winning the 2014-15 Championship title to reach England's top flight for the first time in the club's history — the final step of Eddie Howe's climb from League Two. The 1986-87 Third Division title, the first divisional championship the club ever won, runs it close."
+      },
+      {
+        "q": "Who is AFC Bournemouth's most famous player?",
+        "a": "Ted MacDougall, whose nine goals in an 11-0 FA Cup win over Margate in 1971 set a record, is the most celebrated. At Dean Court itself, few are loved like Steve Fletcher, the striker whose two spells made him the club's all-time record appearance-maker."
+      },
+      {
+        "q": "Is the Bournemouth quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Bournemouth question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Bournemouth quiz?",
+        "a": "It runs from easy (what's the club's nickname?) to hard (how many points were Bournemouth docked in 2008-09?). The mix means casual fans and lifelong Cherries both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Brentford",
+    "slug": "brentford",
+    "name": "Brentford",
+    "h1": "Brentford Quiz",
+    "title": "Brentford Quiz — Bees Trivia Questions & Answers | Ball IQ",
+    "description": "Free Brentford quiz with explained answers — from Griffin Park and its four pubs to Thomas Frank's 2021 promotion. Play in your browser.",
+    "intro": [
+      "Brentford began with a show of hands: members of Brentford Rowing Club voted to take up football rather than rugby, and west London gained the club everyone knows as the Bees. From 1904 to 2020 the red-and-white vertical stripes played at Griffin Park, famously said to be the only English league ground with a pub on each of its four corners, before the move to the stadium that has carried the Gtech name since a 2022 naming-rights deal. This free Brentford quiz covers the whole story — the rowing-club origins, the Griffin Park decades, and the data-driven rise that ended 74 years outside the top flight.",
+      "The old days reward knowing. Brentford were founder members of the Third Division in 1920, one of 21 Southern League clubs who formed the new tier, and under Harry Curtis — manager for 23 years from 1926 to 1949 — climbed from the Third Division to the First, finishing fifth in 1935-36, still the club's highest-ever placing. Griffin Park's record crowd of 38,678 squeezed in for a 1949 FA Cup tie against Leicester City, and Jim Towers remains the record goalscorer with 163 goals between 1954 and 1961. The modern chapter belongs to Matthew Benham, the professional gambler whose analytics-first recruitment rebuilt the club: Dean Smith laid the foundations from 2015 until Aston Villa came calling in October 2018, and Thomas Frank absorbed the pain of losing the 2020 play-off final to Fulham at Wembley before beating Swansea City 2-0 a year later to end the 74-year wait. On the opening night of 2021-22, Sergi Canós scored the club's first Premier League goal in a 2-0 home win over Arsenal.",
+      "Expect the full spread — transfers, records, managers and cult heroes. The recruitment model is a quiz in itself: David Raya signed from Blackburn Rovers and Pontus Jansson from Leeds United in 2019, with Jansson later made club captain; Ivan Toney arrived from League One Peterborough United in 2020; Ollie Watkins left for Aston Villa the same year in a then-record sale reported around £28 million, after Neal Maupay's 2019 move to Brighton. And in January 2022, Christian Eriksen — months after his cardiac arrest at Euro 2020 — joined a Danish head coach at Brentford. Difficulty climbs from easy openers (the nickname, the pubs on Griffin Park's corners) to genuinely hard deep cuts about record crowds, Harry Curtis-era finishes and exact fees.",
+      "Every question comes with a short explained answer, so a miss still teaches you something — why the fifth-place finish of 1935-36 still stands, or how a rowing club ended up producing a Premier League football team. Play the sample set below free in your browser, no sign-up needed. When you want the full Brentford quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Brentford's greatest achievement?",
+        "a": "Their highest-ever top-flight finish is fifth, in 1935-36 under long-serving manager Harry Curtis. The modern landmark is the 2021 play-off final win over Swansea City, which ended a 74-year absence from English football's top division."
+      },
+      {
+        "q": "Who is Brentford's most famous player?",
+        "a": "Jim Towers is the all-time record goalscorer with 163 goals between 1954 and 1961. The best-known modern names are Ivan Toney, signed from Peterborough United in 2020, and Christian Eriksen, who joined in January 2022 months after his cardiac arrest at Euro 2020."
+      },
+      {
+        "q": "Is the Brentford quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brentford question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Brentford quiz?",
+        "a": "It runs from easy (what stood on each corner of Griffin Park?) to hard (the record attendance figure, Harry Curtis-era detail). The mix means casual fans and Bees obsessives both get a proper test."
+      }
+    ]
+  },
+  {
+    "club": "Burnley",
+    "slug": "burnley",
+    "name": "Burnley",
+    "h1": "Burnley Quiz",
+    "title": "Burnley Quiz — Clarets Trivia Questions & Answers | Ball IQ",
+    "description": "Free Burnley quiz with explained answers — from the 1914 FA Cup and Harry Potts' champions to Turf Moor and Sean Dyche. Play free in your browser.",
+    "intro": [
+      "Burnley were founded in 1882 and were one of the twelve founding members of the Football League in 1888. This free Burnley quiz covers the whole story: the claret and blue adopted in 1910 in imitation of the then-dominant Aston Villa, Turf Moor, two League Championships, and a modern era of promotions, European nights and a record-breaking Championship title. If you know your Clarets, this is your test.",
+      "The trophies came early. Tommy Boyle captained Burnley to the 1914 FA Cup — a 1-0 win over Liverpool, in the first final attended by a reigning monarch, King George V presenting the trophy — and then to a first League Championship in 1920-21. A second title followed under Harry Potts in 1959-60, clinched with a final-day win at Maine Road, and the champions entered the European Cup in 1960-61. Jimmy Adamson was named FWA Footballer of the Year in 1962, George Beel remains the club's record league goalscorer, and Scottish winger Willie Morgan was sold to Manchester United in 1968.",
+      "Expect questions on the golden eras and the modern climbs: Wade Elliott's winner against Sheffield United in the 2009 play-off final, Robbie Blake's strike to beat reigning champions Manchester United at Turf Moor, the Sean Dyche side that finished 7th in 2017-18 to reach the Europa League, and Vincent Kompany's 101-point Championship title in 2022-23. You'll be asked which manager Dyche replaced, who arrived from Leeds for a record fee, and where Danny Ings went on a free. Difficulty climbs from easy openers about Turf Moor and the nickname to genuinely hard deep cuts about specific finals, transfers and seasons.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Burnley quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Burnley's greatest achievement?",
+        "a": "Winning the League Championship twice — in 1920-21 under captain Tommy Boyle, and in 1959-60 under Harry Potts, clinched with a final-day win at Maine Road. The 1914 FA Cup, a 1-0 win over Liverpool, runs them close."
+      },
+      {
+        "q": "Who is Burnley's most famous player?",
+        "a": "Tommy Boyle has the strongest claim — the centre-half captained Burnley to both the 1914 FA Cup and the 1920-21 League title. Jimmy Adamson, the 1962 FWA Footballer of the Year, and record league goalscorer George Beel are close behind."
+      },
+      {
+        "q": "Is the Burnley quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Burnley question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Burnley quiz?",
+        "a": "It scales from easy to hard — from well-known facts about Turf Moor and the Clarets to testing deep cuts on specific finals, transfers and seasons."
+      }
+    ]
+  },
+  {
+    "club": "Wolves",
+    "slug": "wolves",
+    "name": "Wolves",
+    "h1": "Wolves Quiz",
+    "title": "Wolves Quiz — Old Gold Trivia Questions & Answers | Ball IQ",
+    "description": "Free Wolves quiz with explained answers — from the Honvéd floodlit night and Billy Wright to the Nuno era. Play in your browser, no sign-up.",
+    "intro": [
+      "Wolverhampton Wanderers were there at the very beginning — one of the twelve founder members of the Football League in 1888 — and they have called Molineux home since 1889, wearing old gold and black like nobody else in the game. This free Wolves quiz covers the whole story: the imperious Stan Cullis side of the 1950s, the famous floodlit nights, the fall and rise that followed, and the modern Premier League era shaped by Nuno Espírito Santo's promotion winners. If the old gold means something to you, this is your quiz.",
+      "The golden age arrived in the 1950s, when Stan Cullis's team won all three of the club's First Division titles, captained by Billy Wright — the one-club man who became the first footballer in the world to win 100 international caps. In 1954, under the Molineux floodlights, Wolves came from 2-0 down to beat the Hungarian side Budapest Honvéd 3-2, a friendly so celebrated it prompted 'Champions of the World' headlines. There were cups too: the FA Cup in 1949, won 3-1 against Leicester City, and the 1980 League Cup, when a 1-0 win toppled Nottingham Forest, the reigning European champions. In between, Bill McGarry's side reached the first UEFA Cup final in 1972 — the first all-English European final, lost to Tottenham Hotspur — and lifted the 1974 League Cup. The modern era has its landmarks as well: a 3-0 play-off final win over Sheffield United in 2003 took Wolves into the Premier League for the first time, and the 2019-20 team reached a Europa League quarter-final before falling 1-0 to Sevilla.",
+      "Expect the full spread — transfers, records, managers and cult heroes like Derek Dougan, 'The Doog', the Northern Ireland forward who became a Molineux favourite in the late 1960s. Transfers run from the British record Wolves broke in 1979 to sign Andy Gray from Aston Villa, through João Moutinho's arrival from Monaco in 2018, to Diogo Jota's 2020 move to Liverpool, Fábio Silva's club-record signing the same year and Rúben Neves's record sale to Al-Hilal in 2023. Records mean Steve Bull, the all-time leading goalscorer, and Derek Parkin's 609 appearances. Managers span Major Frank Buckley — the 1930s innovator famous for promoting young players and for his controversial 'monkey gland' treatments — through Cullis and McGarry to Mick McCarthy's 2008-09 Championship winners and Nuno's 2017-18 title side. Difficulty climbs from easy openers about the colours and the name of the ground to hard deep cuts: which division Wolves were in when they won the 1908 FA Cup, and just how far three straight relegations dropped them in the mid-1980s.",
+      "Every question comes with a short explained answer, so even a miss teaches you something — which country Raúl Jiménez plays his international football for, or how a 2-0 lead in the 2019 FA Cup semi-final against Watford became a 3-2 defeat. Play the sample set below free in your browser, no sign-up needed. When you want the full Wolves quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Wolves' greatest achievement?",
+        "a": "Three First Division titles, all won in the 1950s under Stan Cullis — the same era that produced the celebrated 1954 floodlit win over Budapest Honvéd, when Wolves came from 2-0 down to win 3-2 and earned 'Champions of the World' headlines."
+      },
+      {
+        "q": "Who is Wolves' most famous player?",
+        "a": "Billy Wright — the one-club captain who became the first footballer in the world to win 100 international caps, all for England. Steve Bull, the club's all-time leading goalscorer, runs him closest in Molineux affection."
+      },
+      {
+        "q": "Is the Wolves quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Wolves question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Wolves quiz?",
+        "a": "It runs from easy (which colour pairs with black on the shirt?) to hard (who holds the club record of 609 appearances?). Difficulty is mixed, so casual fans and Molineux regulars both get a proper test."
+      }
+    ]
+  },
 ];

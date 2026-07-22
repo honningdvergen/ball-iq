@@ -697,6 +697,7 @@ const CLUB_PACK_TO_QB = {
   Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
   Leeds: "Leeds United", WestHam: "West Ham",
   Sunderland: "Sunderland", Ipswich: "Ipswich Town", Palace: "Crystal Palace", Fulham: "Fulham", Brighton: "Brighton",
+  Bournemouth: "Bournemouth", Brentford: "Brentford", Burnley: "Burnley", Wolves: "Wolves",
   Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
   Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
@@ -724,6 +725,9 @@ const CLUB_LEAGUES = {
   RedStar: "other", DinamoZagreb: "other", Basel: "other",
   Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
   Sunderland: "pl", Ipswich: "pl", Palace: "pl", Fulham: "pl", Brighton: "pl",
+  // Wave J: Burnley/Wolves sit in the Championship for 2026-27, but the in-app
+  // sections have no Championship bucket — grouped under "pl" like West Ham.
+  Bournemouth: "pl", Brentford: "pl", Burnley: "pl", Wolves: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
@@ -775,6 +779,7 @@ const CLUB_ABBR = {
   RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
   Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
+  Bournemouth: "BOU", Brentford: "BRE", Burnley: "BUR", Wolves: "WOL",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
   Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
 };
@@ -798,6 +803,7 @@ const CLUB_SLUG_TO_PACK = {
   "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
   "leeds-united": "Leeds", "west-ham": "WestHam",
   "sunderland": "Sunderland", "ipswich": "Ipswich", "crystal-palace": "Palace", "fulham": "Fulham", "brighton": "Brighton",
+  "bournemouth": "Bournemouth", "brentford": "Brentford", "burnley": "Burnley", "wolves": "Wolves",
   "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
   "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
   "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
@@ -1176,6 +1182,22 @@ const CLUB_PACKS = {
   },
   Brighton: {
     name: "Brighton", icon: "🔵", color: "#0057B8",
+    questions: [],
+  },
+  Bournemouth: {
+    name: "Bournemouth", icon: "🍒", color: "#DA291C",
+    questions: [],
+  },
+  Brentford: {
+    name: "Brentford", icon: "🐝", color: "#E30613",
+    questions: [],
+  },
+  Burnley: {
+    name: "Burnley", icon: "🟣", color: "#6C1D45",
+    questions: [],
+  },
+  Wolves: {
+    name: "Wolves", icon: "🐺", color: "#FDB913",
     questions: [],
   },
   Athletic: {
