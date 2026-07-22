@@ -19,7 +19,7 @@ export const BADGE_DEFS = [
   ["scholar",     "📚", "Scholar",       "500 correct answers"],
   ["faithful",    "⚽", "Faithful",      "Play 50 games"],
   ["legend_xp",   "👑", "Legend",        "Reach 3000 XP"],
-  ["world_class", "🌍", "World Class",   "100 World Cup Qs"]
+  ["world_class", "🌍", "World Class",   "100 International Qs"]
 ];
 
 export const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","💎","🦁","🦅","🐺","🐉","🚀","⚡","🏅","🥇","🥈","🥉","🔮","🌟","💫","🌈","🎭","🎨","🦊","🐬","🦋","🎵","🌺","🏄"];

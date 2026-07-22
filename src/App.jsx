@@ -663,7 +663,7 @@ function generateCode() {
 
 export const LETTERS = ["A","B","C","D"];
 const CAT_LABELS = {
-  WorldCup:"World Cup", Euros:"Euros", UCL:"Champions League",
+  WorldCup:"International", Euros:"Euros", UCL:"Champions League",
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
   SerieA:"Serie A", Ligue1:"Ligue 1", SuperLig:"Süper Lig", Primeira:"Primeira Liga",
   Managers:"Managers", Records:"Records & Icons",
@@ -832,7 +832,7 @@ const LEAGUE_QUIZ_SECTIONS = [
   ]},
   { label: "Tournaments", items: [
     { cat: "UCL",      name: "Champions League", abbr: "UCL", color: "#123A8F" },
-    { cat: "WorldCup", name: "World Cup",        abbr: "WCP", color: "#8A6D1B" },
+    { cat: "WorldCup", name: "International",     abbr: "INT", color: "#8A6D1B" },
     { cat: "Euros",    name: "Euros",            abbr: "EUR", color: "#1F6FB2" },
   ]},
 ];
@@ -1238,7 +1238,7 @@ export const MP_TOPICS = {
   ],
   tournaments: [
     { id: "cat:UCL", label: "Champions League", icon: "⭐" },
-    { id: "cat:WorldCup", label: "World Cup", icon: "🌍" },
+    { id: "cat:WorldCup", label: "International", icon: "🌍" },
     { id: "cat:Euros", label: "Euros", icon: "🏆" },
   ],
   clubs: Object.entries(CLUB_PACK_TO_QB)
@@ -2103,7 +2103,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // math is inert on mobile — the mobile chrome (.q-top/.timer-row/.streak-bar/
   // .q-tag) stays byte-identical. quizLabel is the mode/club/league badge passed
   // from the mount site; the per-question category is the secondary label. ──
-  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", wc2026:"World Cup", local:"Local" };
+  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", wc2026:"International", local:"Local" };
   const qdBadge = quizLabel || QD_MODE_BADGE[mode] || "Quiz";
   const qdCat = q ? (CAT_LABELS[q.cat] || q.cat || "") : "";
   const qdCounter = mode === "survival" ? `Q ${idx + 1}` : `Q ${String(idx + 1).padStart(2, "0")} / ${total}`;
@@ -4373,7 +4373,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
   //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
   //  (display:contents→none at desktop) so it stays byte-identical. ──
-  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos", wc2026:"World Cup" };
+  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos", wc2026:"International" };
   const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
   const rdDots = (() => {
     const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
@@ -6772,7 +6772,7 @@ const HOW_TO_PLAY = {
   wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real player or manager surname","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
-  wc2026: { title:"🌍 World Cup 2026", steps:["15 questions about the 2026 World Cup","All 48 competing nations covered","Questions on history, players and format","No timer — test your knowledge","Great prep for the tournament!"] },
+  wc2026: { title:"🌍 International", steps:["15 questions on international football","National teams and their stars","Questions on history, players and format","No timer — test your knowledge","See how much you know!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
   balliq: { title:`🧠 ${APP_NAME} Test`, steps:["15 questions across all categories","Difficulty ramps up as you go","Your score maps to a 60–160 scale","Earn a football-culture rank label","Your history is saved for tracking"] },
 };
@@ -9181,7 +9181,7 @@ function AppInner() {
       hotstreak: `⚡🔥 ${APP_NAME} — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
       truefalse: `✅ ${APP_NAME} — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       legends:   `📜 ${APP_NAME} — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      wc2026:    `🌍 ${APP_NAME} — World Cup 2026\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
+      wc2026:    `🌍 ${APP_NAME} — International\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       local:     `🤝 ${APP_NAME} — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
       chaos:     `🎭 ${APP_NAME} — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
     };
@@ -9221,7 +9221,7 @@ function AppInner() {
       balliq: `${APP_NAME} Test`,
       speed: "Speed Round",
       legends: "Legends & History",
-      wc2026: "World Cup 2026",
+      wc2026: "International",
       local: "Local Multiplayer",
       chaos: "Chaos Quiz",
     };

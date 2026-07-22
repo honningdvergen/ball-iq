@@ -11,8 +11,6 @@ import { FootleHero } from "../components/FootleHero.jsx";
 import { APP_STORE_URL } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
-const DAY_MS = 24 * 60 * 60 * 1000;
-
 // ── Footle HERO card (DESKTOP web only) ──────────────────────────────────────
 // desktop-web-refresh: the Home hero is a compact GREEN hero card matching the
 // Claude Design handoff (reference screen 01), NOT a full playable board. It
@@ -486,52 +484,6 @@ function HomeScreenImpl({
             </span>
           </button>
         ))}
-        {/* World Cup 2026 — 7th tile, full-row event variant */}
-        {(() => {
-          // Pin both sides to the UTC frame so Math.floor(t/86400000)
-          // gives consistent days-to-go in any timezone. Previous
-          // mixed-frame version (local-midnight kickoff vs UTC-frame
-          // floor) produced 33-vs-34 off-by-one in TZs east of UTC.
-          const kickoff = new Date(Date.UTC(2026, 5, 11));
-          const finalDay = new Date(Date.UTC(2026, 6, 19)); // WC final: 19 Jul 2026
-          const dayNow = Math.floor(Date.now() / DAY_MS);
-          const dayKick = Math.floor(kickoff.getTime() / DAY_MS);
-          const dayFinal = Math.floor(finalDay.getTime() / DAY_MS);
-          const daysTo = dayKick - dayNow;
-          const daysToFinal = dayFinal - dayNow;
-          const started = daysTo <= 0;
-          // Final-week escalation (opportunity-scan #7): the biggest football
-          // week of the cycle deserves more than a static LIVE chip — and
-          // after the final, LIVE would be a lie. States: countdown → LIVE →
-          // 🏆 FINAL Nd (last week) → evergreen recap.
-          const finalWeek = started && daysToFinal >= 0 && daysToFinal <= 7;
-          const over = daysToFinal < 0;
-          return (
-            <button
-              className="play-card wc-tile"
-              onClick={() => startMode("wc2026")}
-              aria-label={over ? "World Cup 2026 quiz — relive the tournament"
-                : finalWeek ? `World Cup 2026 — final in ${daysToFinal} day${daysToFinal === 1 ? "" : "s"}, tap to play the tournament quiz`
-                : started ? "World Cup 2026 — tap to play the tournament quiz"
-                : `World Cup 2026 — ${daysTo} day${daysTo === 1 ? "" : "s"} to go`}
-            >
-              <span className="play-card-icon wc-tile-icon">
-                <Trophy size={20} strokeWidth={2.25} color="#FFC800" aria-hidden="true" />
-              </span>
-              <span className="play-card-body wc-tile-body">
-                <span className="play-card-name">World Cup 2026</span>
-                <span className="play-card-desc">{over ? "Relive the tournament" : finalWeek ? "Final week — test yourself" : "Tournament quiz"}</span>
-              </span>
-              <span className="wc-tile-meta" aria-hidden="true">
-                <span className="wc-tile-badge">★ Event</span>
-                {!started && <span className="wc-tile-chip">{daysTo}d</span>}
-                {finalWeek && <span className="wc-tile-chip wc-tile-chip-live">{daysToFinal === 0 ? "🏆 FINAL DAY" : `🏆 FINAL ${daysToFinal}d`}</span>}
-                {started && !finalWeek && !over && <span className="wc-tile-chip wc-tile-chip-live">LIVE</span>}
-                {over && <span className="wc-tile-chip">🏆</span>}
-              </span>
-            </button>
-          );
-        })()}
       </div>
       {/* Coming-Soon shelf — teaser line for modes that aren't ready yet.
           Section auto-hides if the array is empty. Only list a mode here once
