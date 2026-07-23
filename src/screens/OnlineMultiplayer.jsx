@@ -1016,13 +1016,24 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       border: `1.5px solid ${won ? 'rgba(88,204,2,0.5)' : 'var(--border)'}`,
       opacity: (!won && !boardDraw && !mine) ? 0.9 : 1,
     }}>
-      <span style={{
-        width: 62, height: 62, borderRadius: '50%', flex: '0 0 auto',
-        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 30,
-        background: 'var(--s2)',
-        border: `2.5px solid ${won ? 'var(--accent)' : mine ? 'rgba(88,204,2,0.4)' : 'var(--border)'}`,
-        boxShadow: won ? '0 0 0 5px rgba(88,204,2,0.12)' : 'none',
-      }}>{p?.avatar || '⚽'}</span>
+      <span style={{ position: 'relative', display: 'inline-flex', flex: '0 0 auto' }}>
+        {/* Crown the 1v1 winner — the headline says "You won!", but the board
+            itself should show WHO. Sits inside the card's 20px top padding. */}
+        {won && (
+          <span aria-hidden="true" style={{
+            position: 'absolute', top: -17, left: '50%',
+            transform: 'translateX(-50%) rotate(-12deg)', fontSize: 19,
+            filter: 'drop-shadow(0 1px 5px rgba(234,179,8,0.55))',
+          }}>👑</span>
+        )}
+        <span style={{
+          width: 62, height: 62, borderRadius: '50%',
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 30,
+          background: 'var(--s2)',
+          border: `2.5px solid ${won ? 'var(--accent)' : mine ? 'rgba(88,204,2,0.4)' : 'var(--border)'}`,
+          boxShadow: won ? '0 0 0 5px rgba(88,204,2,0.12)' : 'none',
+        }}>{p?.avatar || '⚽'}</span>
+      </span>
       <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {mine ? 'You' : (p?.name || 'Player')}
       </span>
