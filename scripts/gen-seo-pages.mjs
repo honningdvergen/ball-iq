@@ -174,6 +174,7 @@ const CLUB_BADGE = {
   'leeds-united': 'LEE', 'west-ham': 'WHU',
   sunderland: 'SUN', ipswich: 'IPS', 'crystal-palace': 'CRY', fulham: 'FUL', brighton: 'BHA',
   bournemouth: 'BOU', brentford: 'BRE', burnley: 'BUR', wolves: 'WOL',
+  coventry: 'COV', 'hull-city': 'HUL',
   'athletic-bilbao': 'ATH', sevilla: 'SEV', 'real-betis': 'BET',
   'schalke-04': 'S04', 'hamburger-sv': 'HSV',
   fiorentina: 'FIO', lazio: 'LAZ', torino: 'TOR',
@@ -226,6 +227,7 @@ const CLUB_COLOR = {
   'leeds-united': '#1D428A', 'west-ham': '#7A263A',
   sunderland: '#EB172B', ipswich: '#3A64A3', 'crystal-palace': '#1B458F', fulham: '#E6E6E6', brighton: '#0057B8',
   bournemouth: '#DA291C', brentford: '#E30613', burnley: '#6C1D45', wolves: '#FDB913',
+  coventry: '#059DD9', 'hull-city': '#F18A01',
   'athletic-bilbao': '#EE2523', sevilla: '#CB0007', 'real-betis': '#00954C',
   'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
@@ -636,7 +638,22 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <meta name="theme-color" content="${PAGE_BG}" />
 <meta name="color-scheme" content="dark" />
 <meta name="robots" content="max-image-preview:large" />
-<meta name="google-adsense-account" content="${ADSENSE_CLIENT}" />${ads && ADS_ENABLED ? `
+<meta name="google-adsense-account" content="${ADSENSE_CLIENT}" />
+<script>
+/* Microsoft Clarity — ALL web pages, WEB ONLY behind the same native guard as
+   the AdSense loader below (these pages ship inside the native bundle too). */
+(function(){try{
+  var native = location.protocol === 'capacitor:' ||
+    (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
+    document.documentElement.classList.contains('native-app');
+  if (native) return;
+  window.clarity = window.clarity || function(){(window.clarity.q = window.clarity.q || []).push(arguments);};
+  var c = document.createElement('script');
+  c.async = true;
+  c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
+  document.head.appendChild(c);
+}catch(e){}})();
+</script>${ads && ADS_ENABLED ? `
 <script>
 /* AdSense loader — WEB ONLY, injected behind a native guard mirroring index.html.
    These pages are authored for the web, but capacitor's webDir:"dist" copies the
@@ -1691,6 +1708,7 @@ ${footer()}`;
 const cdSlug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 // Directory display name → CLUBS.name where they differ (design short forms).
 const DIR_ALIAS = {
+  'Coventry': 'Coventry City',
   'Man United': 'Manchester United',
   'Man City': 'Manchester City',
   "Nott'm Forest": 'Nottingham Forest',

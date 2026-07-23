@@ -1898,4 +1898,68 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Coventry City",
+    "slug": "coventry",
+    "name": "Coventry City",
+    "h1": "Coventry City Quiz",
+    "title": "Coventry City Quiz — Sky Blues Trivia & Answers | Ball IQ",
+    "description": "Free Coventry City quiz with explained answers — from the 1987 FA Cup and 34 top-flight seasons to the Robins revival. Play free in your browser.",
+    "intro": [
+      "Coventry City began life in 1883 as Singers FC, a works team formed by employees of a local bicycle factory, and few English clubs wear their identity so distinctively: an elephant on the crest, borrowed from the city's coat of arms, and an anthem sung to the tune of the Eton Boating Song. Highfield Road was home for the glory years — in 1981 it became the first ground in England to go all-seater — and this free Coventry City quiz covers the lot: Jimmy Hill's Sky Blue Revolution, thirty-four unbroken seasons in the top flight, the 1987 FA Cup and the fall and rise that followed. If you can sing the Sky Blue Song from memory, this is your quiz.",
+      "The golden thread runs through the 1960s and the 1980s. Jimmy Hill's Sky Blue Revolution gave Coventry their famous sky blue kit and carried them from the Third Division to the top flight — 51,455 packed into Highfield Road in April 1967 for the promotion showdown with Wolverhampton Wanderers — and the stay that began that year lasted thirty-four consecutive seasons, taking in the club's only European campaign, a 1970-71 Inter-Cities Fairs Cup run ended in the second round by Bayern Munich. The peak came at Wembley in 1987: Keith Houchen's spectacular diving header, voted BBC Goal of the Season, levelled the FA Cup final at 2-2, John Sillett and managing director George Curtis guided the side to a 3-2 extra-time win over Tottenham Hotspur, and captain Brian Kilcline lifted the club's greatest trophy.",
+      "The questions range across transfers, managers, records and great escapes. Transfers run from Cyrille Regis arriving from West Bromwich Albion in 1984 to Robbie Keane joining Internazionale in 2000, James Maddison's sale to Norwich City and Viktor Gyökeres's club-record move to Sporting CP. Managers span Hill, Sillett, Terry Butcher's spell as player-manager, Gordon Strachan's relegation in 2001 — the end of the 34-season run — and Mark Robins, who returned in 2017, lifted the EFL Trophy at Wembley, and took Coventry from League Two back to the Championship with promotions in 2018 and 2020. Records mean Steve Ogrizovic, the goalkeeper whose service from 1984 to 2000 made him the club's all-time record appearance-maker. And the famous moments are all here: Peter Ndlovu's 1995 Anfield hat-trick — the first there by a visiting league player in over 30 years — Dion Dublin's shared 1997-98 Golden Boot, the final-day escape at Tottenham in 1997, penalties against Luton Town at Wembley in 2023 and the fightback from 3-0 down to 3-3 against Manchester United in the 2024 FA Cup semi-final. Difficulty climbs from easy openers to genuinely hard deep cuts, so casual fans and Sky Blue lifers both get a proper test.",
+      "Every question comes with a short explained answer, so a miss still teaches you something — the year Highfield Road went all-seater, or which German giants ended the club's only European adventure. Play the sample set below free in your browser, no sign-up needed. When you want the full Coventry City quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Coventry City's biggest achievement?",
+        "a": "The 1987 FA Cup — John Sillett and managing director George Curtis's side beat Tottenham Hotspur 3-2 after extra time at Wembley, with captain Brian Kilcline lifting the trophy. The thirty-four consecutive top-flight seasons from 1967 to 2001 run it close."
+      },
+      {
+        "q": "What is Coventry City's most famous moment?",
+        "a": "Keith Houchen's spectacular diving header to make it 2-2 in the 1987 FA Cup final, voted BBC Goal of the Season. The modern rival is the 2024 FA Cup semi-final, when Coventry fought back from 3-0 down to 3-3 against Manchester United before losing the shoot-out."
+      },
+      {
+        "q": "Is the Coventry City quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Coventry City question bank is in the Ball IQ app along with daily challenges and multiplayer."
+      },
+      {
+        "q": "How hard is the Coventry City quiz?",
+        "a": "It runs from easy (who captained the 1987 FA Cup winners?) to hard (which club knocked Coventry out of the 1970-71 Fairs Cup?). The mix means casual fans and Sky Blue obsessives both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Hull City",
+    "slug": "hull-city",
+    "name": "Hull City",
+    "h1": "Hull City Quiz",
+    "title": "Hull City Quiz — Tigers Trivia Questions & Answers | Ball IQ",
+    "description": "Free Hull City quiz with explained answers — from Dean Windass at Wembley to the 2014 FA Cup final and Boothferry Park. Play free in your browser.",
+    "intro": [
+      "Hull City were founded in 1904 and everyone knows them as the Tigers. For over half a century home was Boothferry Park — from 1946 until 2002, when the club moved into a newly built stadium whose original name came from the local firm Kingston Communications. This free Hull City quiz covers the whole story: Raich Carter and the post-war years, the long climb from the fourth tier to the Premier League, Dean Windass at Wembley and the club's first FA Cup final. If you're City till you die, this is your test.",
+      "The foundations were laid after the war. Raich Carter, the former England inside-forward, became player-manager in 1948 and led City to the Third Division North title, and in 1949 a record crowd of 55,019 packed in for an FA Cup quarter-final against Manchester United — a competition in which City's best run before 2014 had ended in a 1930 semi-final replay against Arsenal. The 1960s gave the club Chris Chilton, still the all-time record goalscorer, while Andy Davidson's 500-plus league appearances remain unmatched. The modern rise is the stuff of legend: Warren Joyce masterminded the 1998-99 'Great Escape' from relegation out of the Football League, Peter Taylor delivered back-to-back promotions in 2004 and 2005, and in 2008 Dean Windass's first-half volley beat Bristol City 1-0 in the Championship play-off final to send Hull into the top flight for the first time in their history — with Ian Ashbee captaining the club through all four divisions along the way.",
+      "Expect the full spread. The Phil Brown era alone is rich material — the manager who took City up in 2008, Geovanni's first-ever top-flight goal in the 2-1 win over Fulham and his long-range stunner in a famous 2-1 victory at Arsenal, and that Boxing Day half-time team talk delivered out on the pitch at Manchester City. Then there's Steve Bruce's 2014 side, 2-0 up inside eight minutes of the FA Cup final through James Chester's fourth-minute opener; the Europa League campaign that ended on away goals against Lokeren; Mohamed Diamé's winner against Sheffield Wednesday in the 2016 play-off final; and Marco Silva making Hull his first club in English football in January 2017. Transfers get a proper look too: Ryan Mason's record £13 million arrival from Tottenham, a young Harry Maguire from Sheffield United, Andrew Robertson from Dundee United, and Jarrod Bowen's sale to West Ham. Difficulty climbs from easy openers about the nickname and the grounds to hard deep cuts — like what the 'City Till We Die' campaign was actually protesting against.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick. Play the sample set below free in your browser, no sign-up needed. The full Hull City quiz — plus daily challenges, leaderboards and multiplayer — is in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Hull City's greatest achievement?",
+        "a": "Reaching the 2014 FA Cup final — the first in the club's history — under Steve Bruce, and racing into a 2-0 lead inside eight minutes against Arsenal through James Chester's fourth-minute opener. Dean Windass's volley in the 2008 play-off final, which beat Bristol City 1-0 and took City into the top flight for the first time, runs it close."
+      },
+      {
+        "q": "Who is Hull City's most famous player?",
+        "a": "Chris Chilton, the 1960s forward who remains the all-time record goalscorer, has the strongest historical claim — but Dean Windass owns the club's most famous moment, the Wembley volley that won the 2008 play-off final. Ian Ashbee, who captained City in all four divisions, is close behind."
+      },
+      {
+        "q": "Is the Hull City quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Hull City question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Hull City quiz?",
+        "a": "It scales from easy to hard — from well-known facts about the Tigers and Boothferry Park to testing deep cuts like Warren Joyce's 1998-99 'Great Escape' and the away-goals exit against Lokeren."
+      }
+    ]
+  }
 ];

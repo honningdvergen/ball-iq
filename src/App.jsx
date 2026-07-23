@@ -698,6 +698,7 @@ const CLUB_PACK_TO_QB = {
   Leeds: "Leeds United", WestHam: "West Ham",
   Sunderland: "Sunderland", Ipswich: "Ipswich Town", Palace: "Crystal Palace", Fulham: "Fulham", Brighton: "Brighton",
   Bournemouth: "Bournemouth", Brentford: "Brentford", Burnley: "Burnley", Wolves: "Wolves",
+  Coventry: "Coventry City", HullCity: "Hull City",
   Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
   Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
@@ -728,6 +729,7 @@ const CLUB_LEAGUES = {
   // Wave J: Burnley/Wolves sit in the Championship for 2026-27, but the in-app
   // sections have no Championship bucket — grouped under "pl" like West Ham.
   Bournemouth: "pl", Brentford: "pl", Burnley: "pl", Wolves: "pl",
+  Coventry: "pl", HullCity: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
@@ -780,6 +782,7 @@ const CLUB_ABBR = {
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
   Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
   Bournemouth: "BOU", Brentford: "BRE", Burnley: "BUR", Wolves: "WOL",
+  Coventry: "COV", HullCity: "HUL",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
   Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
 };
@@ -804,6 +807,7 @@ const CLUB_SLUG_TO_PACK = {
   "leeds-united": "Leeds", "west-ham": "WestHam",
   "sunderland": "Sunderland", "ipswich": "Ipswich", "crystal-palace": "Palace", "fulham": "Fulham", "brighton": "Brighton",
   "bournemouth": "Bournemouth", "brentford": "Brentford", "burnley": "Burnley", "wolves": "Wolves",
+  "coventry": "Coventry", "hull-city": "HullCity",
   "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
   "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
   "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
@@ -1198,6 +1202,14 @@ const CLUB_PACKS = {
   },
   Wolves: {
     name: "Wolves", icon: "🐺", color: "#FDB913",
+    questions: [],
+  },
+  Coventry: {
+    name: "Coventry City", icon: "🐘", color: "#059DD9",
+    questions: [],
+  },
+  HullCity: {
+    name: "Hull City", icon: "🐯", color: "#F18A01",
     questions: [],
   },
   Athletic: {
