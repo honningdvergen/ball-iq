@@ -774,6 +774,27 @@ function LobbyError({ error, onExit, onRetry }) {
   );
 }
 
+// Scoreboard count-up for the Game Over reveal — numbers tick 0→final like a
+// broadcast full-time graphic. Lands instantly for reduced-motion users.
+function useCountUp(target, { duration = 850, delay = 400 } = {}) {
+  const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  const [val, setVal] = useState(reduced ? target : 0);
+  useEffect(() => {
+    if (reduced) { setVal(target); return; }
+    let raf;
+    const t0 = performance.now() + delay;
+    const tick = (now) => {
+      if (now < t0) { raf = requestAnimationFrame(tick); return; }
+      const p = Math.min(1, (now - t0) / duration);
+      setVal(Math.round(target * (1 - Math.pow(1 - p, 3)))); // easeOutCubic
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, reduced, delay, duration]);
+  return val;
+}
+
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const isSurvival = room?.mode === 'survival';
   // Survival ranks by who lasted longest (alive > later elimination); Race
@@ -942,6 +963,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const boardDraw = twoPlayer && (survivalDraw || metricOf(meP) === metricOf(oppP));
   const iWonBoard = twoPlayer && !boardDraw && metricOf(meP) > metricOf(oppP);
 
+  // Count-up values (hooks stay unconditional; targets are 0 when the
+  // corresponding board isn't rendered). Survival metrics are non-numeric
+  // (❤️ / 💀 Qn) and render directly without a count.
+  const meCount = useCountUp(!isSurvival && twoPlayer ? (meP?.score || 0) : 0, { delay: 700 });
+  const oppCount = useCountUp(!isSurvival && twoPlayer ? (oppP?.score || 0) : 0, { delay: 700 });
+  const showPodium = !twoPlayer && sorted.length >= 3 && !survivalDraw;
+  const p1Count = useCountUp(!isSurvival && showPodium ? (sorted[0]?.score || 0) : 0, { delay: 950 });
+  const p2Count = useCountUp(!isSurvival && showPodium ? (sorted[1]?.score || 0) : 0, { delay: 750 });
+  const p3Count = useCountUp(!isSurvival && showPodium ? (sorted[2]?.score || 0) : 0, { delay: 550 });
+  const podiumCounts = [p1Count, p2Count, p3Count];
+
   // Margin line ("You won by 3") — numeric modes only; survival margins mix
   // question indexes with the alive-Infinity sentinel, so it gets a phrase.
   const boardMargin = (() => {
@@ -976,8 +1008,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       return { line: `${line} vs ${name}`, draws: d };
     } catch { return null; }
   }, [twoPlayer, oppP?.user_id, oppP?.name]);
-  const vsSide = (p, mine, won) => (
-    <div style={{
+  const vsSide = (p, mine, won, display, cls) => (
+    <div className={cls} style={{
       flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
       padding: '20px 10px', borderRadius: 16,
       background: won ? 'rgba(88,204,2,0.08)' : 'var(--s1)',
@@ -995,7 +1027,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         {mine ? 'You' : (p?.name || 'Player')}
       </span>
       <span style={{ fontFamily: MONO, fontSize: 40, fontWeight: 800, lineHeight: 1, color: won ? '#8AE042' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
-        {metricText(p)}
+        {display ?? metricText(p)}
       </span>
       <span style={{ fontSize: 10.5, color: 'var(--t3)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{metricUnit}</span>
     </div>
@@ -1012,16 +1044,16 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
         {/* Headline — winner / your-result framing */}
         <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>{survivalDraw ? '🤝' : isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
+          <div className={'mp-go-emoji' + (isWinner && !survivalDraw ? ' mp-go-winner' : '')} style={{ fontSize: 48, marginBottom: 8 }}>{survivalDraw ? '🤝' : isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
+          <div className="mp-go-headline" style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
             {survivalDraw ? "It's a draw!" : winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
           </div>
           {survivalDraw ? (
-            <div style={{ fontSize: 13, color: 'var(--t2)' }}>
+            <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
               Everyone knocked out on Q{(winner.eliminated_at_q ?? 0) + 1}
             </div>
           ) : myRank > 0 && !isWinner && (
-            <div style={{ fontSize: 13, color: 'var(--t2)' }}>
+            <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
               You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
             </div>
           )}
@@ -1031,14 +1063,14 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         {twoPlayer && meP && oppP && (
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'stretch', gap: 12 }}>
-              {vsSide(meP, true, iWonBoard)}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>
+              {vsSide(meP, true, iWonBoard, isSurvival ? undefined : meCount, 'mp-go-left')}
+              <div className="mp-go-vs" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>
                 <span style={{ fontFamily: MONO, fontSize: 16, fontWeight: 800, color: 'var(--t3)' }}>VS</span>
               </div>
-              {vsSide(oppP, false, !iWonBoard && !boardDraw)}
+              {vsSide(oppP, false, !iWonBoard && !boardDraw, isSurvival ? undefined : oppCount, 'mp-go-right')}
             </div>
             {(boardMargin || h2h) && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 12 }}>
+              <div className="mp-go-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 12 }}>
                 {boardMargin && (
                   <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--t2)' }}>{boardMargin}</div>
                 )}
@@ -1055,7 +1087,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
             )}
           </div>
         )}
-        {/* Final scores list (3+ players) */}
+        {/* Final scores (3+ players): stepped podium for the top 3, list for the rest.
+            Draws and tiny rooms keep the flat list — a podium implies separation. */}
         {!twoPlayer && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
           <div style={{
@@ -1070,7 +1103,45 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
               Knocked out later = ranked higher
             </div>
           )}
-          {sorted.map((p, idx) => {
+          {showPodium && (
+            <div className="mp-podium">
+              {[1, 0, 2].map((rank) => {
+                const p = sorted[rank];
+                if (!p) return <div key={rank} className="mp-podium-col" />;
+                const isMe = !!myUserId && p.user_id === myUserId;
+                return (
+                  <div key={`${p.room_id}:${p.user_id}`} className={`mp-podium-col mp-podium-${rank + 1}`}>
+                    <div className="mp-podium-who">
+                      <span style={{
+                        width: 40, height: 40, borderRadius: '50%', display: 'inline-flex',
+                        alignItems: 'center', justifyContent: 'center', fontSize: 20,
+                        background: 'var(--s2)', border: `2px solid ${rank === 0 ? 'rgba(234,179,8,0.55)' : isMe ? 'rgba(88,204,2,0.45)' : 'var(--border)'}`,
+                      }}>{p.avatar || '⚽'}</span>
+                      <span style={{
+                        fontSize: 12.5, fontWeight: 800, color: 'var(--text)', maxWidth: '100%',
+                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      }}>{p.name || 'Player'}{isMe ? ' (you)' : ''}</span>
+                      <span style={{ fontFamily: MONO, fontSize: 20, fontWeight: 800, lineHeight: 1, color: rank === 0 ? '#EAB308' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
+                        {isSurvival ? metricText(p) : podiumCounts[rank]}
+                      </span>
+                    </div>
+                    <div className="mp-podium-block">{['🥇', '🥈', '🥉'][rank]}</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {showPodium && sorted.length > 3 && (
+            <div style={{
+              fontSize: 11, color: 'var(--t3)',
+              letterSpacing: 0.4, textTransform: 'uppercase',
+              margin: '4px 0 2px', paddingLeft: 4,
+            }}>
+              The chasing pack
+            </div>
+          )}
+          {(showPodium ? sorted.slice(3) : sorted).map((p, i) => {
+            const idx = showPodium ? i + 3 : i;
             const isMe = !!myUserId && p.user_id === myUserId;
             return (
               <div key={`${p.room_id}:${p.user_id}`} style={rowStyle(p, idx)}>
@@ -1126,26 +1197,28 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         </div>
         )}
 
-        {onRematch && (
-          <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
-            {rematching ? 'Setting up the rematch…' : '🔄 Rematch — same crew, new room'}
+        <div className="mp-go-actions">
+          {onRematch && (
+            <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
+              {rematching ? 'Setting up the rematch…' : '🔄 Rematch — same crew, new room'}
+            </button>
+          )}
+          {rematchError && (
+            <div style={{ color: '#FF6B6B', fontSize: 13, textAlign: 'center', marginBottom: 10 }}>{rematchError}</div>
+          )}
+          <button
+            onClick={handleShareResult}
+            style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+          >
+            📣 Share result
           </button>
-        )}
-        {rematchError && (
-          <div style={{ color: '#FF6B6B', fontSize: 13, textAlign: 'center', marginBottom: 10 }}>{rematchError}</div>
-        )}
-        <button
-          onClick={handleShareResult}
-          style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
-        >
-          📣 Share result
-        </button>
-        <button
-          onClick={onExit}
-          style={{ width: '100%', padding: 13, borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
-        >
-          Back to Home
-        </button>
+          <button
+            onClick={onExit}
+            style={{ width: '100%', padding: 13, borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );

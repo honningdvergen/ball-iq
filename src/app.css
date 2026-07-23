@@ -2603,6 +2603,46 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      both !important — hover must win in the cascade). */
 }
 
+/* ── MP GAME-OVER payoff (frontend-design pass) ──
+   Broadcast "full-time graphics" choreography: one orchestrated entrance
+   (emoji pop → headline → board sides slide in → meta → actions), scoreboard
+   count-up (JS, LobbyEnded), and a stepped podium for 3+ rooms. Gold stays
+   reserved for the winner, silver/bronze mirror the old row accents. Base
+   styles only — nothing here touches the ≥1024 reflow or standalone mirror. */
+@keyframes mpGoPop { 0% { opacity:0; transform:scale(0.4); } 60% { opacity:1; transform:scale(1.12); } 100% { opacity:1; transform:scale(1); } }
+@keyframes mpGoRise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@keyframes mpGoSlideL { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:none; } }
+@keyframes mpGoSlideR { from { opacity:0; transform:translateX(18px); } to { opacity:1; transform:none; } }
+@keyframes mpGoBlock { from { transform:scaleY(0); } to { transform:scaleY(1); } }
+@keyframes mpGoGlow { 0%, 100% { opacity:0.45; } 50% { opacity:0.9; } }
+.mp-go-emoji { position:relative; display:inline-block; animation:mpGoPop 0.55s cubic-bezier(0.34,1.56,0.64,1) both; }
+.mp-go-emoji.mp-go-winner::before { content:""; position:absolute; inset:-26px; border-radius:50%; background:radial-gradient(circle, rgba(234,179,8,0.28), transparent 65%); animation:mpGoGlow 2.6s ease-in-out 0.6s infinite; pointer-events:none; }
+.mp-go-headline { animation:mpGoRise 0.45s ease-out 0.18s both; }
+.mp-go-sub { animation:mpGoRise 0.45s ease-out 0.30s both; }
+.mp-go-left { animation:mpGoSlideL 0.5s cubic-bezier(0.22,1,0.36,1) 0.35s both; }
+.mp-go-right { animation:mpGoSlideR 0.5s cubic-bezier(0.22,1,0.36,1) 0.35s both; }
+.mp-go-vs { animation:mpGoPop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.55s both; }
+.mp-go-meta { animation:mpGoRise 0.45s ease-out 0.85s both; }
+.mp-go-actions { animation:mpGoRise 0.5s ease-out 1.0s both; }
+.mp-go-rest { animation:mpGoRise 0.45s ease-out 0.95s both; }
+/* Stepped podium — columns render [2nd, 1st, 3rd]; blocks grow from the
+   baseline (3rd first, champion last) with the roster fading in on top. */
+.mp-podium { display:flex; align-items:flex-end; gap:10px; margin:4px 0 14px; border-bottom:2px solid var(--border); }
+.mp-podium-col { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:7px; }
+.mp-podium-who { display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0; max-width:100%; animation:mpGoRise 0.45s ease-out both; }
+.mp-podium-block { width:100%; border-radius:12px 12px 0 0; display:flex; align-items:flex-start; justify-content:center; padding-top:7px; font-size:22px; line-height:1; transform-origin:bottom; animation:mpGoBlock 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.mp-podium-1 .mp-podium-block { height:92px; background:linear-gradient(180deg, rgba(234,179,8,0.30), rgba(234,179,8,0.08)); border:1px solid rgba(234,179,8,0.45); border-bottom:none; animation-delay:0.65s; }
+.mp-podium-2 .mp-podium-block { height:64px; background:linear-gradient(180deg, rgba(148,163,184,0.26), rgba(148,163,184,0.07)); border:1px solid rgba(148,163,184,0.4); border-bottom:none; animation-delay:0.42s; }
+.mp-podium-3 .mp-podium-block { height:46px; background:linear-gradient(180deg, rgba(196,132,72,0.26), rgba(196,132,72,0.07)); border:1px solid rgba(196,132,72,0.4); border-bottom:none; animation-delay:0.22s; }
+.mp-podium-1 .mp-podium-who { animation-delay:0.82s; }
+.mp-podium-2 .mp-podium-who { animation-delay:0.58s; }
+.mp-podium-3 .mp-podium-who { animation-delay:0.38s; }
+@media (prefers-reduced-motion: reduce) {
+  .mp-go-emoji, .mp-go-headline, .mp-go-sub, .mp-go-left, .mp-go-right, .mp-go-vs,
+  .mp-go-meta, .mp-go-actions, .mp-go-rest, .mp-podium-block, .mp-podium-who { animation:none; }
+  .mp-go-emoji.mp-go-winner::before { animation:none; opacity:0.5; }
+}
+
 /* ── NARROW PHONES (≤360px: iPhone SE/13 mini class) — 344px sweep findings.
    Placed at END of file: these override same-specificity base rules, so
    cascade order is load-bearing. The install banner's fixed actions cluster
