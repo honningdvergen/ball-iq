@@ -138,6 +138,17 @@
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381';
             s.crossOrigin = 'anonymous';
             document.head.appendChild(s);
+            /* Microsoft Clarity (session replays / heatmaps) — WEB ONLY, same
+               native guard as AdSense above: the native app's privacy policy
+               and store listings declare no analytics, so the Capacitor app
+               must never load this. Project balliq.app / xqwevk9brq. */
+            window.clarity = window.clarity || function () {
+              (window.clarity.q = window.clarity.q || []).push(arguments);
+            };
+            var c = document.createElement('script');
+            c.async = true;
+            c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
+            document.head.appendChild(c);
           }
         } catch (e) { /* noop */ }
       })();
