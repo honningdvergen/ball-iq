@@ -1282,6 +1282,30 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // clients — first wins, others no-op silently.
   const [revealPhase, setRevealPhase] = useState('answering');
 
+  // Hold the scoreboard still until the reveal. The server credits a correct
+  // answer the moment it accepts it, so the strip used to tick upward WHILE
+  // everyone was still answering — silently confirming you were right before
+  // the correct answer appeared, and draining the reveal of its whole point.
+  // Alex: "your points instantly go up after you answer correctly, should it
+  // not wait until everyone has answered?" — yes.
+  //
+  // Scoring itself is untouched (speed bonuses still need instant server
+  // credit); only the DISPLAY is frozen. We snapshot at the start of each
+  // question and render that snapshot while answering, then switch back to
+  // live values from 'revealing' onward so the jump lands with the reveal.
+  const [frozenScores, setFrozenScores] = useState(null);
+  useEffect(() => {
+    setFrozenScores(Object.fromEntries(
+      (players || []).map(p => [p.user_id, { score: p.score, streak: p.streak, best_streak: p.best_streak }])
+    ));
+    // Snapshot per question only — re-running on every `players` update would
+    // defeat the freeze by re-capturing the already-credited score.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [room.current_question]);
+  const displayPlayers = (revealPhase === 'answering' && frozenScores)
+    ? (players || []).map(p => (frozenScores[p.user_id] ? { ...p, ...frozenScores[p.user_id] } : p))
+    : players;
+
   // R2: track whether 'advancing' phase has been active for >15s without
   // resolving. Likely cause is host session expired or host's network
   // silently dropped without leave_room firing — joiners would otherwise
@@ -1664,7 +1688,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
         )}
 
         <ScoreBar
-          players={players}
+          players={displayPlayers}
           myUserId={myPlayer?.user_id}
           hostId={room.host_id}
           mode={room.mode}
