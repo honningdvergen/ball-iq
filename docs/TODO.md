@@ -12,9 +12,9 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 - [x] Production-access form **step 1 filled by Claude** 2026-07-25 (all four
       answers; note every field caps at 300 chars). Alex reviews + clicks Neste.
-- [ ] **ALEX** — Read step 1, then continue through the form.
-- [ ] **BOTH** — Form steps 2 ("Om spillet ditt") + 3 ("Forberedelse til
-      produksjon"): Alex pastes the questions, Claude drafts the answers.
+- [x] **APPLICATION SUBMITTED 2026-07-25 21:33.** All 3 steps drafted by
+      Claude, reviewed and sent by Alex. Google: decision by e-mail to the
+      account owner, "typically max 7 days, sometimes longer".
 - [ ] **ALEX** — ⚠️ Settle the **Play name collision** before applying. Most
       likely thing to force a re-do.
 - [x] **Android build 6 cut** (`c8bac47`, 2026-07-25) — versionCode 6,
@@ -92,11 +92,16 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
 
 ## ⚪ CONTENT & BACKLOG
 
-- [ ] **Footle 4-letter names** — Alex wants a 5–8 letter range. 73 of 406
-      players are ≤4 letters. ⚠️ **BLOCKED** until Claude confirms the frozen
-      400-day answer log stores *names* and not *indices* — if indices,
-      deleting players silently rewrites 400 days of already-published
-      answers and the indexed /footle/answer archive.
+- [ ] **Footle 5-8 letter preference** — RESOLVED how, needs Alex's nod.
+      The frozen log stores NAME STRINGS (not indices), so days #1-400 can
+      never move. Past #400 a stride formula runs over the pool, and the pool
+      length is the modulo base with a gcd(stride, length)==1 requirement —
+      so DELETING 73 names is the risky path (breaks the coprime rule, and
+      would drop KANE/PELE/BEST from the game entirely).
+      **Better: extend WORDLE_ANSWER_LOG past #400 with hand-picked 5-8
+      letter names** — exactly what the file's own comment prescribes. No
+      pool change, no gcd risk, full control. #400 lands ~2027-06-07, so
+      there is ~10 months of runway; cheap to do any time.
 - [ ] Next club wave (Championship / Spain / Germany / niche gold).
 - [ ] Young-stars question wave (Bellingham, Vinícius, Saka, Foden, Yamal).
 - [ ] Plausibility + difficulty-honesty sweep of "hard"-graded questions.
