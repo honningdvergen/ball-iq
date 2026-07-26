@@ -47,11 +47,13 @@ Claude: update this file whenever something lands, and re-read it when asked
 ## 🟡 NEXT — Activation (the measured bottleneck: 38% → 15%)
 
 From the PrimeTestLab QA report #4470 — every one of these is an activation leak:
-- [ ] **S-01** Skip on the knowledge screen is less reliable than Finish.
-      In onboarding → treat as a bug, not a suggestion.
+- [x] **S-01** Skip tap target fixed (`93509a8`) — handlers were already
+      identical; the control was ~41x62px (under 44pt/48dp) and unstyled, so
+      near-misses read as dead. Now 48x88 with a pressed state.
 - [ ] **S-02** Stronger empty-grid preview before the first Footle guess.
-- [ ] **S-03** Keep the Daily 7 / Footle card above the fold after quitting a
-      quiz, so the daily habit is one tap.
+- [x] **S-03** Scroll now resets on every screen change (`93509a8`) — there
+      was no scrollTo anywhere in App.jsx, so returning from a quiz kept the
+      old scroll and pushed the daily cards below the fold.
 - [ ] **S-04** Guest "Set your name" inline instead of a full account wall —
       removes friction exactly at share time.
 - [ ] **CLAUDE** — Watch real Clarity sessions and locate the actual drop-off.
