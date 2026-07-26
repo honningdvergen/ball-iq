@@ -1311,7 +1311,20 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
     : "leagues");
   const meta = topicMeta(draft);
   const doneLabel = draft === "mixed" ? "Done — Mixed, all topics" : `Done — ${meta.label}`;
-  const items = MP_TOPICS[tab] || [];
+  // Clubs is 61 entries in a 2-column grid. The array IS alphabetical, but a
+  // row-major grid means scanning DOWN a column skips every second club
+  // (AC Milan, Anderlecht, Aston Villa, Atletico...), so it reads as random —
+  // exactly the "chaotic and shuffled" report. Sorting differently can't fix a
+  // scan-direction illusion; being able to type "man" can. Matches abbr too,
+  // so MUN/PSG/BVB work.
+  const [q, setQ] = useState("");
+  const allItems = MP_TOPICS[tab] || [];
+  const needle = q.trim().toLowerCase();
+  const items = needle
+    ? allItems.filter(it =>
+        it.label.toLowerCase().includes(needle) ||
+        (it.abbr || "").toLowerCase().includes(needle))
+    : allItems;
   return (
     <div style={{position:"fixed",inset:0,zIndex:999,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"calc(14px + env(safe-area-inset-top, 0px)) 20px 0",display:"flex",alignItems:"center",gap:12}}>
@@ -1329,10 +1342,33 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
         </button>
         <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
           {[{ id: "leagues", label: "Leagues" }, { id: "clubs", label: "Clubs" }, { id: "tournaments", label: "Tournaments" }].map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
+            <button key={t.id} onClick={() => { setTab(t.id); setQ(""); }} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
               ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3A3D4A",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
           ))}
         </div>
+        {allItems.length > 12 && (
+          <div style={{position:"relative",marginTop:12}}>
+            <span aria-hidden="true" style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.65,pointerEvents:"none"}}>🔍</span>
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={`Search ${tab}…`}
+              aria-label={`Search ${tab}`}
+              autoComplete="off"
+              spellCheck={false}
+              style={{width:"100%",boxSizing:"border-box",padding:"12px 38px",borderRadius:13,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:14.5,fontFamily:"inherit",outline:"none"}}
+            />
+            {q && (
+              <button onClick={() => setQ("")} aria-label="Clear search"
+                style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",width:30,height:30,borderRadius:9,background:"transparent",border:"none",color:"var(--t2)",fontSize:15,cursor:"pointer",fontFamily:"inherit"}}>✕</button>
+            )}
+          </div>
+        )}
+        {needle && items.length === 0 && (
+          <div style={{marginTop:18,textAlign:"center",color:"var(--t2)",fontSize:13.5}}>
+            No {tab} matching “{q.trim()}”
+          </div>
+        )}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginTop:14}}>
           {items.map(it => {
             const sel = draft === it.id;
