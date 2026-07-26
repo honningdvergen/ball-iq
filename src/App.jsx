@@ -7408,6 +7408,17 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // QA S-03: screens are full-page swaps, but nothing reset the scroll — so
+  // quitting a Classic quiz returned you to Home still scrolled wherever you
+  // had been, leaving the Daily 7 / Footle cards below the fold. The daily
+  // habit should cost one tap, not a scroll. Instant, never smooth: html sets
+  // scroll-behavior:smooth, which would otherwise animate a long scroll on
+  // every navigation ('instant' is a valid ScrollBehavior; the catch covers
+  // engines that reject the enum).
+  useEffect(() => {
+    try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+    catch { try { window.scrollTo(0, 0); } catch {} }
+  }, [screen]);
   // Deep-link recipients play BEFORE onboarding (opportunity-scan #6). A boot
   // that arrives via a share/SEO deep link (footle alias or ?game=footle,
   // ?stump=, ?club=/?quiz= slugs, /c/ Daily-7 challenge, /join/ invite) defers

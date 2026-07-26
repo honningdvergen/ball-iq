@@ -1190,8 +1190,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-btn:hover{filter:brightness(1.06);}
 .onboard-btn:active{opacity:0.85;}
 .onboard-btn-inline{max-width:180px;flex:1;}
-.onboard-skip{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;padding:12px 16px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
-.onboard-skip:hover{color:var(--t2);}
+/* QA S-01: Skip read as "less reliable than Finish" in the closed test. The
+   handlers are identical (both end in persistAndFinish) — the difference was
+   physical: a borderless text button in the most muted colour, ~41x62px, i.e.
+   under Apple's 44pt AND Android's 48dp minimum, sitting beside a large green
+   button. A tap landing a few px off did nothing and read as a dead control.
+   Now: a guideline-sized target with a real pressed state, still visually
+   secondary to Finish. Onboarding is where activation leaks, so this matters. */
+.onboard-skip{background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;padding:12px 18px;min-height:48px;min-width:88px;border-radius:12px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;-webkit-tap-highlight-color:transparent;transition:background .14s ease,color .14s ease,transform .1s ease;}
+.onboard-skip:hover{color:var(--text);}
+.onboard-skip:active{background:var(--s2);color:var(--text);transform:scale(0.97);}
 .onboard-actions{display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;}
 .onboard-club-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:360px;margin:8px 0 12px;}
 .onboard-club{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:var(--s1);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;color:var(--text);transition:border-color 0.15s,background 0.15s,transform 0.1s;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:currentColor;}
