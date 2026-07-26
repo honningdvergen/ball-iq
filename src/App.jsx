@@ -7127,18 +7127,18 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
       );
     } else if (r === state.guesses.length && state.status === "playing") {
       rows.push(
-        <div className={`wd-row${shake ? " wd-shake" : ""}`} key={r}>
+        <div className={`wd-row wd-row--active${shake ? " wd-shake" : ""}`} key={r}>
           {Array.from({ length: answer.length }, (_, i) => (
             <div
               key={i}
-              className={`wd-tile${current[i] ? " wd-filled" : ""}`}
+              className={`wd-tile${current[i] ? " wd-filled" : ""}${!current[i] && i === current.length ? " wd-tile--next" : ""}`}
             >{current[i] || ""}</div>
           ))}
         </div>
       );
     } else {
       rows.push(
-        <div className="wd-row" key={r}>
+        <div className="wd-row wd-row--future" key={r}>
           {Array.from({ length: answer.length }, (_, i) => (
             <div key={i} className="wd-tile" />
           ))}

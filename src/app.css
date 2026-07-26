@@ -1403,6 +1403,19 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    answers). Capacitor 6 targets iOS 13+ which has full aspect-ratio
    support; the fallback is no longer reachable. */
 .wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
+/* QA S-02: before the first guess all six rows rendered identically, so a
+   first-time Wordle-style player could not tell which row was live, where the
+   next letter would land, or how many tries were left. Structure now reads at
+   a glance: the active row is brighter, the next slot carries a soft accent
+   caret, and unplayed rows recede. Colour/size only — no layout change, so the
+   grid still fits every word length. */
+.wd-row--active .wd-tile{border-color:var(--border2);}
+.wd-row--future .wd-tile{opacity:0.45;}
+.wd-tile--next{border-color:rgba(88,204,2,0.55);box-shadow:inset 0 0 0 1px rgba(88,204,2,0.14);}
+@media (prefers-reduced-motion: no-preference){
+  .wd-tile--next{animation:wdNextPulse 1.9s ease-in-out infinite;}
+  @keyframes wdNextPulse{0%,100%{border-color:rgba(88,204,2,0.4);}50%{border-color:rgba(88,204,2,0.85);}}
+}
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
 .wd-tile.wd-grey{background:var(--s2);border-color:var(--s2);color:var(--text);}
