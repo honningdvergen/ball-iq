@@ -21,8 +21,11 @@ Claude: update this file whenever something lands, and re-read it when asked
       versionName 1.3.3, targetSdk 36, 7.5 MB. Content verified inside the
       bundle (Wave J + K clubs, MP podium). Ready at
       `~/Downloads/balliq-1.3.3-build6-api36.aab`.
-- [ ] **ALEX** — Upload build 6 to the closed track so testers hold current
-      code, and use it for the production release when access lands.
+- [x] **Build 6 uploaded + submitted 2026-07-26.** Alex dragged the AAB in;
+      Claude wrote the release notes, saved and sent it to Google. Console
+      shows "Endringer under gjennomgang". Verified in-console as version
+      6 (1.3.3), target SDK 36. Only warning was a missing R8 mapping file
+      (crash-report readability only, not a blocker).
 - [ ] **ALEX** — Apply for production access → then promote to production.
 - ℹ️ **Timeline:** ~1–2 weeks from applying (access review, then release review).
 
