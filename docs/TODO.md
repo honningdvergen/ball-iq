@@ -10,9 +10,9 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 ## 🔴 NOW — Google Play launch (time-critical, 14-day test is finished)
 
-- [ ] **ALEX** — Production-access form, step 1: paste the Q1/Q2/Q3 answers
-      (drafted 2026-07-25; Q1 = paid provider PrimeTestLab, order #P06886719,
-      25 testers. Answer truthfully — this section is fraud screening).
+- [x] Production-access form **step 1 filled by Claude** 2026-07-25 (all four
+      answers; note every field caps at 300 chars). Alex reviews + clicks Neste.
+- [ ] **ALEX** — Read step 1, then continue through the form.
 - [ ] **BOTH** — Form steps 2 ("Om spillet ditt") + 3 ("Forberedelse til
       produksjon"): Alex pastes the questions, Claude drafts the answers.
 - [ ] **ALEX** — ⚠️ Settle the **Play name collision** before applying. Most
@@ -37,9 +37,9 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 - [x] Invites + Google login landed on the marketing homepage — one root
       cause, fixed and live (`38542a4`). Also fixes Snapchat invites.
-- [ ] **ALEX** — Add `https://balliq.app/play` to Supabase → Authentication →
-      URL Configuration → Redirect URLs (a `https://balliq.app/**` wildcard
-      also works). **Google login on web stays broken until this is done.**
+- [x] Supabase redirect allow-list already contains `https://balliq.app/play`
+      (Alex confirmed 2026-07-25) → web Google login should now work.
+- [ ] **ALEX** — Sanity-test Google sign-in on balliq.app to confirm.
 - [ ] **ALEX** — Re-test "challenge a friend" now that /join is fixed. Its
       redirect target was already correct, so a failure there is a new cause.
 
