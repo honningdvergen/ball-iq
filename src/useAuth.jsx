@@ -706,11 +706,19 @@ export function AuthProvider({ children }) {
     // Web / PWA: full-page redirect. After consent, Supabase returns to
     // location.origin with tokens in the URL; the supabase-js client
     // auto-detects + calls onAuthStateChange.
+    // Come back to the GAME, not "/". main.jsx renders marketing for browser
+    // visitors on "/", so returning to bare origin dropped every successful
+    // web Google/Apple sign-in on the homepage. Preserve the path the user
+    // signed in from when it is already a game path; otherwise use /play.
+    let webRedirect
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname
+      const onGamePath = p !== '/' && !p.startsWith('/home-preview')
+      webRedirect = window.location.origin + (onGamePath ? p : '/play')
+    }
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: {
-        redirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
-      },
+      options: { redirectTo: webRedirect },
     })
     return { data, error }
   }

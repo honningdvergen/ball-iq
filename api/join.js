@@ -62,7 +62,13 @@ export default function handler(req) {
 
   // An invalid/absent code degrades to the app home rather than pushing a dead
   // code into the join flow (same fresh-code rule as api/c.js).
-  const appUrl = valid ? `${origin}/?join=${code}` : `${origin}/play`;
+  // ⚠️ Must target /play, NOT "/". main.jsx renders the MARKETING page for
+  // browser visitors on "/" — so `/?join=CODE` landed every non-native invite
+  // on the homepage and the join parser (inside the game bundle) never loaded.
+  // That broke every web invite and every in-app-webview invite (Snapchat et
+  // al), which is exactly where invites get shared. iOS/Android with the app
+  // installed never saw it: the /join/* Universal Link opens natively first.
+  const appUrl = valid ? `${origin}/play?join=${code}` : `${origin}/play`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">

@@ -141,7 +141,23 @@ const _isStandalonePWA =
   typeof window !== 'undefined' &&
   (window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true)
 const _isBrowser = !_isNativeApp && !_isStandalonePWA
-const showMarketing = _isBrowser && (_path === '/' || _path.startsWith('/home-preview'))
+// "/" normally means marketing — but NOT when the URL is carrying a live
+// hand-off. Two arrivals land on "/" and MUST reach the game instead:
+//   • ?join=CODE — invite links already shared in the wild (api/join.js now
+//     targets /play, but old links live forever in chat threads)
+//   • an OAuth return — Supabase comes back with ?code=&state= (PKCE) or
+//     #access_token= (implicit); rendering marketing here dropped the user on
+//     the homepage after a successful Google sign-in and stranded the session
+//     hand-off, because the auth listener lives inside the game bundle.
+// Cheap string checks only — this runs at module-eval before React mounts.
+const _search = (typeof window !== 'undefined' && window.location.search) || ''
+const _hash = (typeof window !== 'undefined' && window.location.hash) || ''
+const _hasHandoff =
+  /[?&]join=/.test(_search) ||
+  /[?&]code=/.test(_search) ||
+  /access_token=/.test(_hash)
+const showMarketing =
+  _isBrowser && !_hasHandoff && (_path === '/' || _path.startsWith('/home-preview'))
 
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
 // download the ~200KB-gz game bundle. React.lazy only fires its import() on
