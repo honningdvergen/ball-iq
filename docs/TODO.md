@@ -17,11 +17,12 @@ Claude: update this file whenever something lands, and re-read it when asked
       produksjon"): Alex pastes the questions, Claude drafts the answers.
 - [ ] **ALEX** — ⚠️ Settle the **Play name collision** before applying. Most
       likely thing to force a re-do.
-- [ ] **CLAUDE** — Cut Android **versionCode 6** (versionName stays 1.3.3).
-      The AAB on disk is from Jul 22 14:20 and is 7 commits stale — missing
-      Wave J + Wave K (6 clubs, 160 questions), the MP podium, the 1v1 crown.
-      Testers' QA report was against 1.3.1 / code 4.
-- [ ] **ALEX** — Upload build 6 to the closed track so testers hold current code.
+- [x] **Android build 6 cut** (`c8bac47`, 2026-07-25) — versionCode 6,
+      versionName 1.3.3, targetSdk 36, 7.5 MB. Content verified inside the
+      bundle (Wave J + K clubs, MP podium). Ready at
+      `~/Downloads/balliq-1.3.3-build6-api36.aab`.
+- [ ] **ALEX** — Upload build 6 to the closed track so testers hold current
+      code, and use it for the production release when access lands.
 - [ ] **ALEX** — Apply for production access → then promote to production.
 - ℹ️ **Timeline:** ~1–2 weeks from applying (access review, then release review).
 
