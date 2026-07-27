@@ -104,21 +104,27 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
       zero app changes) → **Phase 2** in-app i18n (large: App.jsx has
       hardcoded English throughout).
 
-## 🔬 BANK AUDIT — VERIFYING, first 79 fixes SHIPPED
+## 🔬 BANK AUDIT — VERIFY COMPLETE, 89 corrections applied
 
-**State 2026-07-27 (live): ~18/36 batches · 108/211 verdicts · 89% of screener
-flags CONFIRMED real · 79 fixes applied (`1ba5a07`) · 19 medium-confidence
-awaiting Alex.**
+**FINAL 2026-07-27: 36/36 batches, 0 errors, all 211 serious flags verified.**
+**89 corrections applied (`6689f00`) · 89 substitutions HELD for Alex ·
+19 medium-confidence + 3 no-clean-fix parked · 11 flags rejected as fine.**
 
-⚠️ The screener **under**-flagged, not over-flagged. I predicted lots of false
-positives; the real false-positive rate is ~8-11%. Nearly 9 in 10 flags are
-genuine defects.
+⚠️ **Screener false-positive rate: 5%.** 200 of 211 flags were real defects.
+I predicted the opposite — that the screener was over-flagging. It was not.
 
-**The dominant defect is a FALSE PREMISE IN THE STEM, not a wrong key** — 55 of
-79 had the right answer attached to an over-claiming stem ("the only side to…",
-"the first German since…"). These never fail a key-check, so no amount of
-answer-verification would have caught them. Worth building into the forge:
-*verify the stem's claims, not just the key.*
+**Two forge-level lessons — worth more than the 89 fixes themselves:**
+
+1. **The dominant defect is a FALSE PREMISE IN THE STEM, not a wrong key.**
+   66 of 89 had the right answer attached to an over-claiming stem ("the only
+   side to…", "the first German since…", "before joining PSG that year" when
+   he'd already joined). These never fail a key-check, so no amount of
+   answer-verification catches them. The forge must *verify the stem's
+   assertions, not just the key*.
+2. **42% of serious flags (89/211) are SELF-ANSWERING questions** — the stem
+   gives the answer away ("Italy's last appearance was 2014 — how many years
+   before 2026?"). Not wrong, just pointless: free points that make the app
+   feel easy. The forge needs a self-answering check before a question ships.
 
 **Applying:** `node scripts/audit-apply.mjs <journal.jsonl> [--write]`.
 Dry-run by default. Applies ONLY confirmed+high verdicts that carry a complete
@@ -136,9 +142,20 @@ runs. (Cost us a day of not applying fixes.)
 resume spent the budget finishing the screen and the verify agents at the tail
 died to the usage limit — three runs, zero verdicts. Fixed by splitting them.
 
-- [ ] Re-run the applier as the remaining ~18 batches land.
-- [ ] **ALEX** — 19 medium-confidence verdicts need editorial calls.
-- [ ] Re-forge the 13 hints dropped because the answer changed.
+- [ ] ⚠️ **ALEX — the one real decision: 89 held substitutions.**
+      These questions contain their own answer, so they can't be corrected,
+      only REPLACED with a different question. The replacements are written
+      and web-sourced (84 high-confidence), but applying them means an agent
+      authoring ~1.5% of your bank. Review `.audit/held-substitutions.json`,
+      then `node scripts/audit-apply.mjs <journal> --write
+      --include-substitutions`. My call: read a sample first — if they're
+      good, take them; leaving 89 pointless questions live is its own cost.
+- [ ] **ALEX** — 19 medium-confidence + 3 no-clean-fix verdicts need
+      editorial calls. See `.audit/needs-alex.json`.
+- [ ] Re-forge the 9 hints dropped because the answer genuinely changed.
+- [ ] **Screen the remaining ~470 questions** never reached by the screener.
+- [ ] **Verify the 500 cosmetic flags** — untouched so far.
+- [ ] Build the two forge lessons above into the question pipeline.
 
 ⚠️ **No question gets edited on screener output alone.** The screener has been
 caught inventing a defect (claimed Gerd Müller scored in a 1973 European Cup
