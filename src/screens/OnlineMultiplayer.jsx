@@ -1464,14 +1464,27 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   // reveal viewers — answerers, timeout players, eliminated spectators and
   // late joiners — none of whom can rely on submit_answer's response.
   const [revealCorrectIdx, setRevealCorrectIdx] = useState(null);
-  useEffect(() => { setRevealCorrectIdx(null); }, [currentQuestionIdx]);
+  // What each opponent picked, as {user_id: answer_idx}. Comes from the SAME
+  // gated RPC as the answer key, so a pick can never be learned earlier than
+  // the correct index already can. Stays null until v1_3_mp_reveal_picks is
+  // applied — the RPC simply omits `picks` and the UI renders nothing.
+  const [revealPicks, setRevealPicks] = useState(null);
+  useEffect(() => { setRevealCorrectIdx(null); setRevealPicks(null); }, [currentQuestionIdx]);
   useEffect(() => {
     if (revealPhase === 'answering') return;
-    if (!question || question.correct !== undefined) return;
+    // NOTE: deliberately NOT skipped when question.correct is embedded. That
+    // early-out meant pre-Phase-2 rooms — i.e. every room today — never called
+    // this at all, so picks would never arrive. The embedded key still wins for
+    // instant paint below; this call is now also the picks transport.
+    if (!question) return;
     let alive = true;
     mpRevealQuestion({ p_code: room.code, p_question_idx: currentQuestionIdx })
-      .then((r) => { if (alive && r?.revealed) setRevealCorrectIdx(r.correct); })
-      .catch(() => { /* best-effort — reveal renders without the highlight */ });
+      .then((r) => {
+        if (!alive || !r?.revealed) return;
+        if (question.correct === undefined) setRevealCorrectIdx(r.correct);
+        if (r.picks && typeof r.picks === 'object') setRevealPicks(r.picks);
+      })
+      .catch(() => { /* best-effort — reveal renders without highlight or picks */ });
     return () => { alive = false; };
   }, [revealPhase, question, currentQuestionIdx, room.code]);
 
@@ -1807,6 +1820,9 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
           revealing={revealing}
           questionIdx={currentQuestionIdx}
           revealCorrectIdx={revealCorrectIdx}
+          revealPicks={revealPicks}
+          players={players}
+          myUserId={myPlayer?.user_id || null}
         />
 
         {/* Elimination moment — one dramatic beat, then the persistent banner
@@ -2025,7 +2041,23 @@ const MP_WRONG_BG      = "rgba(239, 68, 68, 0.15)";
 // "your wrong" path fires → late joiner sees only the green-correct
 // highlight during reveal, no red anywhere. Same for timeout (-1):
 // `idx === -1` is false for all valid idx → no spurious red.
-function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx, revealCorrectIdx }) {
+function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, questionIdx, revealCorrectIdx, revealPicks, players, myUserId }) {
+  // Opponent avatars grouped by the option they chose. Built only during the
+  // reveal, and only once the gated RPC has actually returned picks — before
+  // the v1_3_mp_reveal_picks migration lands, revealPicks is null and every
+  // lookup below yields an empty list, so nothing renders.
+  const picksByOption = useMemo(() => {
+    if (!revealing || !revealPicks) return null;
+    const byId = new Map((players || []).map(p => [p.user_id, p]));
+    const out = {};
+    for (const [uid, idx] of Object.entries(revealPicks)) {
+      if (uid === myUserId) continue; // your own pick is already highlighted
+      const p = byId.get(uid);
+      if (!p) continue;              // player left the room mid-question
+      (out[idx] ||= []).push(p);
+    }
+    return out;
+  }, [revealing, revealPicks, players, myUserId]);
   // Stage 1C.7.5 + Stage 1F follow-up: suppress option-button color
   // transitions on the first frame after a question change. Stale color
   // transitions from the prior question's reveal state would bleed into
@@ -2163,6 +2195,36 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
                 {LETTERS[idx]}
               </span>
               <span style={{ flex: 1 }}>{opt}</span>
+              {/* Who else picked this. Renders only at reveal and only when the
+                  gated RPC supplied picks; the avatar itself carries the
+                  meaning, with the name in the title for a11y/hover. */}
+              {picksByOption?.[idx]?.length > 0 && (
+                <span
+                  style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0, marginLeft: 6 }}
+                  aria-label={`Also picked by ${picksByOption[idx].map(p => p.name).join(", ")}`}
+                >
+                  {picksByOption[idx].slice(0, 4).map(p => (
+                    <span
+                      key={p.user_id}
+                      title={p.name}
+                      style={{
+                        width: 22, height: 22, borderRadius: "50%",
+                        background: "var(--s2)",
+                        border: "1px solid var(--border)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: 12, lineHeight: 1,
+                      }}
+                    >
+                      {p.avatar || "⚽"}
+                    </span>
+                  ))}
+                  {picksByOption[idx].length > 4 && (
+                    <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", marginLeft: 2 }}>
+                      +{picksByOption[idx].length - 4}
+                    </span>
+                  )}
+                </span>
+              )}
               {marker && (
                 <span style={{
                   fontSize: 18, fontWeight: 700,
