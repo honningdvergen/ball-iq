@@ -30,8 +30,18 @@ is local, reversible, and build-green.
 - [x] **APPLICATION SUBMITTED 2026-07-25 21:33.** All 3 steps drafted by
       Claude, reviewed and sent by Alex. Google: decision by e-mail to the
       account owner, "typically max 7 days, sometimes longer".
-- [ ] **ALEX** — ⚠️ Settle the **Play name collision** before applying. Most
-      likely thing to force a re-do.
+- [x] ✅ **PRODUCTION ACCESS GRANTED** 2026-07-27 (email, 20:24). Name
+      collision never materialised — Google granted it as
+      "Ball IQ: Football Trivia (app.balliq)".
+- [x] 🚀 **PRODUCTION RELEASE SUBMITTED 2026-07-27** by Claude, on Alex's
+      explicit go-ahead. Build 6 (1.3.3, targetSdk 36, 5.65 MB install).
+      **177 countries + "rest of world"**, full rollout (100%).
+      Release notes written as a first-launch pitch, not a changelog.
+      ⚠️ **Managed publishing is OFF** → it goes LIVE automatically the
+      moment review passes. No second gate. Google says usually ≤7 days.
+      Undo while it lasts: Publiseringsoversikt → "Opphev endringene".
+      Only warning was the missing R8 mapping file (crash-report
+      readability, not a blocker).
 - [x] **Android build 6 cut** (`c8bac47`, 2026-07-25) — versionCode 6,
       versionName 1.3.3, targetSdk 36, 7.5 MB. Content verified inside the
       bundle (Wave J + K clubs, MP podium). Ready at
@@ -41,8 +51,13 @@ is local, reversible, and build-green.
       shows "Endringer under gjennomgang". Verified in-console as version
       6 (1.3.3), target SDK 36. Only warning was a missing R8 mapping file
       (crash-report readability only, not a blocker).
-- [ ] **ALEX** — Apply for production access → then promote to production.
-- ℹ️ **Timeline:** ~1–2 weeks from applying (access review, then release review).
+- [ ] ⚠️ **Build 6 does NOT contain the 89 bank corrections** (cut 25 July,
+      fixes landed 27 July). Claude flagged this twice and recommended
+      cutting build 7 first; Alex chose to ship for the platform launch.
+      **So 1.3.4 / 1.4.0 must carry the corrections to BOTH stores** — iOS
+      1.3.3 is live without them too.
+- [ ] **ALEX** — once live: wire the Play link into the site/CTAs, and the
+      Reddit club-sub push unblocks (it was gated on Play being clickable).
 
 ## 🔴 NOW — App Store
 
