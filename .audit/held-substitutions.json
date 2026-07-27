@@ -1,0 +1,785 @@
+[
+ {
+  "id": "q_33d8a3",
+  "kind": "self_answering",
+  "oldQ": "Which Argentina captain's mesmerising dribble past Croatia's Joško Gvardiol before a cut-back assist for Julián Álvarez was hailed as the moment of the 2022 World Cup — sealing a 3-0 semi-final win?",
+  "newQ": "Whose mesmerising dribble past Croatia's Joško Gvardiol, and cut-back for Julián Álvarez, sealed Argentina's 3-0 win in the 2022 World Cup semi-final?",
+  "newCorrect": "Lionel Messi",
+  "truth": "Lionel Messi was Argentina's captain throughout the 2022 World Cup and it was his run past Joško Gvardiol that set up Julián Álvarez's second goal in the 3-0 semi-final win over Croatia on 13 December 2022.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_40cd2c",
+  "kind": "self_answering",
+  "oldQ": "Which tournament did the USA host on its own in 1994 — before its 2026 co-hosting role with Canada and Mexico?",
+  "newQ": "Which major tournament did the United States host on its own in 1994?",
+  "newCorrect": "World Cup",
+  "truth": "The United States hosted the 1994 FIFA World Cup alone (17 June - 17 July 1994, Brazil beat Italy in the Rose Bowl final), and will co-host the 2026 World Cup with Canada and Mexico.",
+  "confidence": "medium"
+ },
+ {
+  "id": "q_2f3ac3",
+  "kind": "self_answering",
+  "oldQ": "Who scored the winning penalty in the Euro 2004 shootout as Portugal beat England — a goalkeeper stepping up to the spot himself?",
+  "newQ": "Who scored the winning penalty in the Euro 2004 quarter-final shootout as Portugal beat England?",
+  "newCorrect": "Ricardo",
+  "truth": "Ricardo, Portugal's goalkeeper, saved Darius Vassell's kick barehanded and then scored the winning penalty in the 6-5 shootout win over England in the Euro 2004 quarter-final (UEFA.com, GiveMeSport, BBC).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_5fbab6",
+  "kind": "self_answering",
+  "oldQ": "Arsenal's unbeaten 2003-04 season included 12 draws. How many wins did they get?",
+  "newQ": "Arsenal went unbeaten through the 2003-04 Premier League season. How many of their 38 league games did they win?",
+  "newCorrect": "26",
+  "truth": "Arsenal's 2003-04 Invincibles finished 26 W, 12 D, 0 L for 90 points (Premier League official season review, Arsenal.com).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_83113a",
+  "kind": "self_answering",
+  "oldQ": "Who won the World Cup Golden Boot in 2018 with 6 goals for England?",
+  "newQ": "Who won the World Cup Golden Boot in 2018 with 6 goals?",
+  "newCorrect": "Kane",
+  "truth": "Harry Kane won the 2018 World Cup Golden Boot with 6 goals; Griezmann, Mbappé and Lukaku all finished on 4 (BBC, ESPN, CBS Sports).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_2b1d9e",
+  "kind": "self_answering",
+  "oldQ": "Which Hungarian team is widely considered one of the greatest national sides never to win a World Cup — losing the 1954 final as favourites?",
+  "newQ": "Which national side lost the 1954 World Cup final as overwhelming favourites, having gone more than four years unbeaten?",
+  "newCorrect": "Hungary",
+  "truth": "Hungary's 'Golden Team' / Mighty Magyars, unbeaten for over four years, lost the 1954 World Cup final 3-2 to West Germany in Bern (FIFA, ESPN, Al Jazeera).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_7581fb",
+  "kind": "self_answering",
+  "oldQ": "Which Argentine legend scored 184 Serie A goals for Fiorentina (151), Roma (30+), and briefly Inter — nicknamed 'Batigol'?",
+  "newQ": "Which Argentine legend scored 184 Serie A goals across spells at Fiorentina, Roma and briefly Inter?",
+  "newCorrect": "Gabriel Batistuta",
+  "truth": "Gabriel Batistuta, nicknamed 'Batigol', scored 184 Serie A goals — a club-record 152 for Fiorentina, then 30 for Roma and 2 on loan at Inter (StatMuse, FBref, Britannica).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_612e6b",
+  "kind": "self_answering",
+  "oldQ": "Atlético Madrid lost the European Cup/Champions League final in 1974, 2014 and 2016. Up to and including 2016, how many finals had they reached?",
+  "newQ": "How many European Cup/Champions League finals had Atlético Madrid reached up to and including 2016?",
+  "newCorrect": "Three",
+  "truth": "Atlético Madrid had reached three European Cup/Champions League finals up to and including 2016 — 1974 (lost the replay to Bayern), 2014 and 2016 (both lost to Real Madrid), all defeats (UEFA.com, Wikipedia).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_2bcdeb",
+  "kind": "self_answering",
+  "oldQ": "Which club did Ronaldo R9 win the Copa del Rey with before his World Cup debut?",
+  "newQ": "Ronaldo (R9) won the Copa del Rey in 1997, during his single season at which Spanish club?",
+  "newCorrect": "Barcelona",
+  "truth": "Ronaldo (R9) won the Copa del Rey with Barcelona in 1996-97 (Barcelona beat Real Betis 3-2 aet at the Bernabéu, 28 June 1997) — his only season in Catalonia; the Copa del Rey is Spain's domestic cup, so of the four options only Barcelona is even eligible to have won it (Cruzeiro = Brazil, PSV = Netherlands, Inter = Italy).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_63e291",
+  "kind": "self_answering",
+  "oldQ": "Karl-Heinz Rummenigge captained which club in the 1982 European Cup final — a game Bayern lost 1-0 to English underdogs?",
+  "newQ": "Karl-Heinz Rummenigge's Bayern Munich lost the 1982 European Cup final 1-0 to which English club?",
+  "newCorrect": "Aston Villa",
+  "truth": "Aston Villa beat Bayern Munich 1-0 in the 1982 European Cup final (De Kuip, Rotterdam, 26 May 1982; Peter Withe 67'); Rummenigge started up front for Bayern but the captain's armband was worn by Paul Breitner, with Dennis Mortimer captaining Villa — Wikipedia's line-up marks Breitner (c), and Bayern/Bundesliga club histories describe Breitner as the appointed captain of that side.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_ad80d5",
+  "kind": "self_answering",
+  "oldQ": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club at Stamford Bridge?",
+  "newQ": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club?",
+  "newCorrect": "Chelsea",
+  "truth": "Chelsea beat Manchester City 2-1 at Stamford Bridge on 25 June 2020 (Pulisic; De Bruyne equalised; Willian penalty after Fernandinho's red card), confirming Liverpool as 2019-20 Premier League champions with a record seven games to spare.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_3ff8a6",
+  "kind": "self_answering",
+  "oldQ": "Which England player holds the record for most international goals (overtaking Wayne Rooney in March 2023)?",
+  "newQ": "Which player holds the record for most goals scored for the England men's national team?",
+  "newCorrect": "Harry Kane",
+  "truth": "Harry Kane is England's all-time leading scorer; he passed Wayne Rooney's 53 with his 54th goal, a penalty against Italy in Naples on 23 March 2023, and has extended the record since — Bobby Charlton (49) and Gary Lineker (48) sit below Rooney.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_91885b",
+  "kind": "self_answering",
+  "oldQ": "Which was the first World Cup to be jointly hosted by two nations?",
+  "newQ": "Which World Cup was the first to be jointly hosted by two nations?",
+  "newCorrect": "2002",
+  "truth": "The 2002 FIFA World Cup, held 31 May - 30 June 2002, was the first jointly hosted by two nations (South Korea and Japan) and the first held in Asia; 1998 (France), 2006 (Germany) and 2010 (South Africa) each had a single host.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_9237c6",
+  "kind": "self_answering",
+  "oldQ": "Which nation's 2022 World Cup debut ended with the unwanted record of being the first host country ever to lose all three group-stage matches?",
+  "newQ": "Which nation became the first World Cup host ever to lose all three of its group-stage matches?",
+  "newCorrect": "Qatar",
+  "truth": "Qatar, hosting and making its World Cup debut in 2022, lost all three group games (0-2 Ecuador, 1-3 Senegal, 0-2 Netherlands) for zero points — the first host nation ever to lose every group match, and the earliest host elimination in the tournament's history; South Africa 2010, the only other host to exit in the group stage, won one and drew one.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_2bf68d",
+  "kind": "self_answering",
+  "oldQ": "Atletico Madrid's 2013-14 La Liga title was secured on the final day with a 1-1 draw at the Camp Nou — against which opponent?",
+  "newQ": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 final-day draw away to Barcelona — which Atlético player headed the second-half equaliser?",
+  "newCorrect": "Diego Godín",
+  "truth": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 draw at the Camp Nou on 17 May 2014, Diego Godín heading the equaliser in the 49th minute from a Gabi corner after Alexis Sánchez had put Barcelona ahead (Wikipedia 'Barcelona 1-1 Atlético Madrid (May 2014)', UEFA.com, LaLiga.com).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_b64b9d",
+  "kind": "self_answering",
+  "oldQ": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning 2-0 at home thanks to an Andriy Shevchenko brace?",
+  "newQ": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning the second leg 2-0 at home?",
+  "newCorrect": "Dynamo Kyiv",
+  "truth": "Dynamo Kyiv eliminated holders Real Madrid in the 1998-99 Champions League quarter-finals, drawing 1-1 at the Bernabéu and winning the second leg 2-0 in Kyiv through an Andriy Shevchenko brace (63' and 79') — UEFA.com match records 56073 and 56074.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_7e6e97",
+  "kind": "self_answering",
+  "oldQ": "Bayer Leverkusen's pharmaceutical company connection — which company owns the club?",
+  "newQ": "Bayer Leverkusen were founded in 1904 as the works team of chemical and pharmaceutical giant Bayer AG. Which other Bundesliga club was founded as a company works team and holds the same legacy exemption from the 50+1 ownership rule?",
+  "newCorrect": "VfL Wolfsburg",
+  "truth": "Bayer 04 Leverkusen was founded on 1 July 1904 as a works club for employees of the chemical and pharmaceutical company Bayer AG, which still wholly owns it and holds a legacy exemption from the Bundesliga's 50+1 rule — the only other such corporate-works exemption being VfL Wolfsburg, owned by Volkswagen since 1945 (CityAM, Pace IP/Sports Law Forum, aktebundesliga 50+1 explainer).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_948b2e",
+  "kind": "self_answering",
+  "oldQ": "Roma's 2021-22 UEFA Europa Conference League win under José Mourinho ended their wait for European silverware — how many years since their previous European trophy (the 1961 Inter-Cities Fairs Cup)?",
+  "newQ": "Roma's 2021-22 UEFA Europa Conference League triumph under José Mourinho was the club's first European trophy since 1961 — which side did they beat 1-0 in the final in Tirana?",
+  "newCorrect": "Feyenoord",
+  "truth": "Roma beat Feyenoord 1-0 in the inaugural UEFA Europa Conference League final in Tirana on 25 May 2022 (Zaniolo, 32'), their first European trophy since the 1960-61 Inter-Cities Fairs Cup — a gap of 61 years (Wikipedia '2022 UEFA Europa Conference League final', UEFA.com).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_5c41dc",
+  "kind": "self_answering",
+  "oldQ": "Italy failed to qualify for both the 2018 and 2022 World Cups. Their last World Cup appearance was in 2014 — how many years is that before the 2026 tournament?",
+  "newQ": "Italy failed to qualify for both the 2018 and 2022 World Cups. Which nation eliminated them in the November 2017 European qualifying play-off for the 2018 tournament?",
+  "newCorrect": "Sweden",
+  "truth": "Italy's last World Cup appearance was 2014; they missed 2018 after losing the November 2017 European play-off to Sweden 1-0 on aggregate (Johansson 61' in Stockholm, 0-0 in Milan) and missed 2022 after losing to North Macedonia — 2014 to 2026 is 12 years (ESPN match reports, Al Jazeera).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_cb07da",
+  "kind": "self_answering",
+  "oldQ": "Who headed England's second goal from a Jack Grealish cross late on in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley — the captain's first goal of the tournament and England's first major knockout win over Germany since 1966?",
+  "newQ": "Who headed England's second goal from a Jack Grealish cross late on in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley — England's first major knockout win over Germany since 1966?",
+  "newCorrect": "Harry Kane",
+  "truth": "Harry Kane headed England's second goal in the 86th minute from a Jack Grealish cross in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley on 29 June 2021 — his first goal of that tournament, with Sterling having opened the scoring, and Kane was indeed England's captain (UEFA.com, Sky Sports, englandfootball.com).",
+  "confidence": "medium"
+ },
+ {
+  "id": "q_fdf6e7",
+  "kind": "self_answering",
+  "oldQ": "Which player scored the most goals in a single European Championship tournament?",
+  "newQ": "Which player scored the most goals in a single European Championship finals tournament?",
+  "newCorrect": "Michel Platini",
+  "truth": "Michel Platini's 9 goals at Euro 1984 is the single-tournament record (Guinness World Records, UEFA), but the other embedded tallies are false: Van Basten scored 5 at Euro 1988 (UEFA's own 'Van Basten's five EURO 1988 goals' video), Cristiano Ronaldo scored 2 at Euro 2004, and Torres scored 2 at Euro 2008 (Sweden group game + the final winner).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_bc284c",
+  "kind": "self_answering",
+  "oldQ": "Which West Germany striker held the all-time World Cup goalscoring record with 14 goals, before Ronaldo and then Klose later surpassed him?",
+  "newQ": "Which player held the all-time World Cup goalscoring record with 14 goals, a mark that stood for 32 years?",
+  "newCorrect": "Gerd Muller",
+  "truth": "Gerd Müller scored 14 World Cup goals (10 in 1970, 4 in 1974) and held the all-time record for 32 years until Ronaldo passed him in 2006; Klose then set the current mark of 16 in 2014.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_5c36e0",
+  "kind": "self_answering",
+  "oldQ": "Switzerland went the entire 2006 World Cup without conceding a single goal -- until they were eliminated how?",
+  "newQ": "Switzerland went the entire 2006 World Cup without conceding a single goal, yet still went out in the round of 16 — which team knocked them out on penalties?",
+  "newCorrect": "Ukraine",
+  "truth": "Switzerland exited the 2006 World Cup in the round of 16, losing 3-0 on penalties to Ukraine after a 0-0 draw, and became the first team ever to be eliminated from a World Cup without conceding a goal (shoot-out kicks are not counted as goals).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_7f18f9",
+  "kind": "self_answering",
+  "oldQ": "Jesse Marsch's appointment as Canada's head coach in May 2024 marked a 'first' in what sense?",
+  "newQ": "Jesse Marsch's appointment as Canada's head coach in May 2024 marked a first in what sense?",
+  "newCorrect": "He was the first American to coach Canada",
+  "truth": "Jesse Marsch was appointed Canada men's head coach in May 2024, and Wikipedia's list of Canada head coaches (Petrie, Dinsdale, Pike, Krautzun, Waiters, Lenarduzzi, Twamley, Osieck, Miller, Yallop, Hart, Floro, Findlay, Zambrano, Herdman, Biello) contains no prior American, so the 'first American' answer is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_84e649",
+  "kind": "self_answering",
+  "oldQ": "Which Chelsea legend is the club's all-time top scorer with 211 goals — astonishing given he played in central midfield, not up front?",
+  "newQ": "Who is Chelsea's all-time top scorer, with 211 goals in all competitions?",
+  "newCorrect": "Frank Lampard",
+  "truth": "Frank Lampard is Chelsea's all-time leading scorer with 211 goals in all competitions, ahead of Bobby Tambling (202), Kerry Dixon (193), Didier Drogba (164) and Peter Osgood (150).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_aa5976",
+  "kind": "self_answering",
+  "oldQ": "Who holds Chelsea's all-time appearance record, having beaten club legends John Terry and Frank Lampard to the top spot with 795 games?",
+  "newQ": "Who holds Chelsea's all-time appearance record with 795 games?",
+  "newCorrect": "Ron Harris",
+  "truth": "Ron Harris holds Chelsea's appearance record with 795 games (1961-1980), ahead of Peter Bonetti (729), John Terry (717) and Frank Lampard (648).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_76b1b2",
+  "kind": "self_answering",
+  "oldQ": "City fans adopted their bouncing, back-to-the-pitch 'Poznan' celebration after a 2010 European tie against which club?",
+  "newQ": "Manchester City fans adopted their bouncing, back-to-the-pitch celebration after a 2010 European tie against which club?",
+  "newCorrect": "Lech Poznan",
+  "truth": "The celebration originated with Lech Poznan supporters and was adopted by Manchester City fans after the Europa League group-stage meeting of 21 October 2010 — so the key is right, but the stem naming it 'the Poznan' next to the option 'Lech Poznan' hands over the answer.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_126aa8",
+  "kind": "self_answering",
+  "oldQ": "Giovanni Trapattoni is now best remembered abroad for his 'Ich habe fertig' meltdown at Bayern — but at Juventus he left a far bigger legacy. What is true of 'Il Trap' at Juve?",
+  "newQ": "Giovanni Trapattoni had two spells in charge of Juventus. Which of these is true of 'Il Trap' at the club?",
+  "newCorrect": "He remains the club's most decorated manager",
+  "truth": "Trapattoni is Juventus's most decorated manager with 14 trophies across two spells (1976-86, 1991-94) — six Serie A titles, two Coppa Italia, the 1985 European Cup, the 1984 Cup Winners' Cup, two UEFA Cups, the 1984 Super Cup and the 1985 Intercontinental Cup — ahead of Lippi (13) and Allegri (12).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_35edf5",
+  "kind": "self_answering",
+  "oldQ": "Dortmund reached an all-German Champions League final in 2013 at Wembley, only to lose 2-1 to a late winner. Which club beat them?",
+  "newQ": "Dortmund lost the 2013 Champions League final at Wembley 2-1 to an 89th-minute winner. Which club beat them?",
+  "newCorrect": "Bayern Munich",
+  "truth": "Bayern Munich beat Borussia Dortmund 2-1 in the 2013 Champions League final at Wembley, Arjen Robben scoring in the 89th minute — but 'all-German' in the stem leaves Bayern as the only German option.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_da1ac7",
+  "kind": "self_answering",
+  "oldQ": "Defender Mats Hummels first joined Dortmund from Bayern Munich in 2008 — which club did he then rejoin in 2016?",
+  "newQ": "Defender Mats Hummels left Borussia Dortmund in 2016 to sign a five-year contract with which club?",
+  "newCorrect": "Bayern Munich",
+  "truth": "Hummels joined Dortmund on loan from Bayern in January 2008 (permanent February 2009) and re-joined Bayern Munich on 1 July 2016 on a five-year contract — so the key is right, but 'rejoin' plus the only club named in the stem gives it away.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_c1e0e4",
+  "kind": "self_answering",
+  "oldQ": "Under Pep Guardiola, Barcelona achieved a historic 'sextuple' in the 2009 calendar year. How many trophies did they win?",
+  "newQ": "Under Pep Guardiola, Barcelona won every competition they entered in the 2009 calendar year. How many trophies did that add up to?",
+  "newCorrect": "Six",
+  "truth": "Barcelona won six trophies in the 2009 calendar year — La Liga, Copa del Rey, Champions League, Supercopa de Espana, UEFA Super Cup and the Club World Cup, completed with a 2-1 win over Estudiantes on 19 December 2009.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_d5cd46",
+  "kind": "self_answering",
+  "oldQ": "Juventus won a record run of consecutive Serie A titles from 2011-12 to 2019-20. How many in a row was that?",
+  "newQ": "Juventus won a record run of consecutive Serie A titles that ended in 2019-20. How many in a row was that?",
+  "newCorrect": "9",
+  "truth": "Juventus won nine consecutive Serie A titles, from 2011-12 through 2019-20, a run ended by Inter in 2020-21.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_fae405",
+  "kind": "self_answering",
+  "oldQ": "France have won the World Cup twice — who scored the opening goal of their 2018 final against Croatia (an own goal in the 18th minute)?",
+  "newQ": "Which Croatia player put through his own net to give France the lead in the 2018 World Cup final?",
+  "newCorrect": "Mario Mandžukić",
+  "truth": "Mario Mandžukić scored an own goal in the 18th minute of the 2018 World Cup final, glancing an Antoine Griezmann free kick past his own keeper — the first own goal in a World Cup final (Goal.com, India.com, Malay Mail).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_c2d9be",
+  "kind": "self_answering",
+  "oldQ": "Which Asian federation gets the most World Cup spots at 2026 — with 8 places?",
+  "newQ": "How many direct places does the AFC (Asia) receive at the 2026 World Cup?",
+  "newCorrect": "8",
+  "truth": "FIFA's ratified 2026 allocation gives the AFC 8 direct places (plus one inter-confederation playoff berth); CAF 9, UEFA 16, CONMEBOL 6, CONCACAF 6 incl. hosts, OFC 1 (FIFA media release).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_e8d2ff",
+  "kind": "self_answering",
+  "oldQ": "Which country beat England 2-1 at Euro 2004 with two late Zinedine Zidane goals after a David James error?",
+  "newQ": "Who scored both of France's goals in their 2-1 injury-time comeback against England at Euro 2004?",
+  "newCorrect": "Zinedine Zidane",
+  "truth": "France beat England 2-1 in their Euro 2004 group opener on 13 June 2004: Lampard 38', then Zidane with a 90+1' free kick and a 90+3' penalty after David James felled Thierry Henry (UEFA.com, Wikipedia Euro 2004 Group B).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_e409a4",
+  "kind": "self_answering",
+  "oldQ": "Jude Bellingham won the 2024 Champions League and La Liga in his debut season at a club in which country?",
+  "newQ": "Which club did Jude Bellingham join from Borussia Dortmund in 2023, winning the Champions League and the domestic league title in his first season there?",
+  "newCorrect": "Real Madrid",
+  "truth": "Jude Bellingham joined Real Madrid from Borussia Dortmund in 2023 and won the 2023-24 Champions League and La Liga in his debut season, also taking La Liga Player of the Season (Wikipedia).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_d3d089",
+  "kind": "self_answering",
+  "oldQ": "Which 15-time Champions League winners did Arsenal knock out in the 2024-25 quarter-finals?",
+  "newQ": "Which club did Arsenal knock out 5-1 on aggregate in the 2024-25 Champions League quarter-finals?",
+  "newCorrect": "Real Madrid",
+  "truth": "Arsenal knocked holders Real Madrid out of the 2024-25 Champions League quarter-finals, winning 3-0 at the Emirates and 2-1 at the Bernabéu for a 5-1 aggregate (Wikipedia, 2024-25 Real Madrid CF season).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_81306e",
+  "kind": "self_answering",
+  "oldQ": "Real Madrid beat Atletico Madrid in the 2016 UCL final — what was the result decided by, after a 1-1 draw across 120 minutes?",
+  "newQ": "Real Madrid beat Atlético Madrid in the 2016 Champions League final after a 1-1 draw — what was the penalty shootout score?",
+  "newCorrect": "5-3",
+  "truth": "The 2016 Champions League final in Milan finished 1-1 after extra time (Ramos 15', Carrasco 79') and Real Madrid beat Atlético Madrid 5-3 on penalties, Juanfran hitting the post before Ronaldo converted the winner (Wikipedia, 2016 UEFA Champions League final).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_3fb913",
+  "kind": "self_answering",
+  "oldQ": "Which country was the first Asian co-host of a World Cup, sharing the 64-match 2002 tournament with South Korea — and hosting the final?",
+  "newQ": "Which country hosted the final of the 2002 World Cup, the first tournament staged in Asia?",
+  "newCorrect": "Japan",
+  "truth": "Japan co-hosted the 2002 World Cup with South Korea and staged the final (Brazil 2-0 Germany, 30 June 2002, International Stadium Yokohama), while South Korea hosted the Seoul semi-final — the answer key is correct, but the stem names South Korea and says \"Asian\", which alone eliminates all three distractors.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_d228c8",
+  "kind": "self_answering",
+  "oldQ": "Who was the first South Korean player to score in the Premier League — joining Manchester United and playing alongside Rooney and Ronaldo?",
+  "newQ": "Who was the first South Korean player to score a goal in the Premier League?",
+  "newCorrect": "Park Ji-sung",
+  "truth": "Park Ji-sung did score the first Premier League goal by a South Korean — 9 April 2006, the second in Manchester United's 2-0 home win over Arsenal — ahead of Seol Ki-hyeon (first PL goal 16 September 2006 for Reading) and Lee Young-pyo (0 Premier League goals in 70 appearances for Spurs), so the answer key is sound.",
+  "confidence": "medium"
+ },
+ {
+  "id": "q_3d0ea4",
+  "kind": "self_answering",
+  "oldQ": "Which Manchester United teenager scored the second goal in the 2-0 win over Arsenal in October 2004 that ended the Gunners' 49-game unbeaten run?",
+  "newQ": "Which Manchester United player scored the second goal in the 2-0 win over Arsenal in October 2004 that ended the Gunners' 49-game unbeaten run?",
+  "newCorrect": "Wayne Rooney",
+  "truth": "Manchester United beat Arsenal 2-0 on 24 October 2004 to end the 49-game unbeaten run, with Van Nistelrooy scoring a 73rd-minute penalty and Rooney the second goal in the 90th minute on his 19th birthday — so the key is right, but \"teenager\" eliminates the other three options outright.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_6a444c",
+  "kind": "self_answering",
+  "oldQ": "Which Italian club has gone by three different names — most recently changing from Ambrosiana-Inter?",
+  "newQ": "Which Italian club was renamed 'Ambrosiana' during the Fascist era before reverting to its original name after World War II?",
+  "newCorrect": "Internazionale",
+  "truth": "Internazionale was renamed Società Sportiva Ambrosiana in 1928, became Associazione Sportiva Ambrosiana-Inter in 1931, and reverted to Internazionale after World War II — the key is correct, but the stem's clue literally contains the answer.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_612eee",
+  "kind": "self_answering",
+  "oldQ": "Real Madrid needed a stoppage-time Sergio Ramos header to beat Atletico in the 2014 UCL final — what was the score just before his equaliser?",
+  "newQ": "Real Madrid needed a stoppage-time Sergio Ramos header to force extra time in the 2014 UCL final — who had put Atletico 1-0 up?",
+  "newCorrect": "Diego Godin",
+  "truth": "Diego Godín headed Atlético in front in the 36th minute of the 2014 UCL final and Sergio Ramos equalised in the 93rd, so it was 1-0 Atlético before the header — correct key, but the word \"equaliser\" makes the other three options logically impossible.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_c3cb7f",
+  "kind": "self_answering",
+  "oldQ": "Alfredo Di Stefano set a European Cup record by scoring in how many consecutive finals for Real Madrid from 1956 to 1960?",
+  "newQ": "Alfredo Di Stéfano scored in how many consecutive European Cup finals for Real Madrid?",
+  "newCorrect": "Five",
+  "truth": "Wikipedia's Di Stéfano article states he \"scored in five consecutive European Cup finals for Real Madrid between 1956 and 1960, including a hat-trick in the last\" (1956 v Reims, 1957 v Fiorentina, 1958 v Milan, 1959 v Reims, 1960 v Eintracht Frankfurt) — so the keyed answer Five is factually correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_ef1120",
+  "kind": "self_answering",
+  "oldQ": "Fernando Torres sealed Chelsea's 2012 semi-final aggregate against Barcelona with a late solo goal, rounding the keeper at which ground?",
+  "newQ": "Fernando Torres sealed Chelsea's 2012 Champions League semi-final aggregate with a late solo goal, rounding the keeper at which ground?",
+  "newCorrect": "Camp Nou",
+  "truth": "Torres scored in the 90+1' minute of the second leg at Camp Nou on 24 April 2012 (2-2, Chelsea through 3-2 on aggregate after winning the Stamford Bridge first leg 1-0 via Drogba) — Camp Nou is the correct answer.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_06cd5f",
+  "kind": "self_answering",
+  "oldQ": "What colour are Tottenham's traditional home shirts, giving rise to the nickname 'Lilywhites'?",
+  "newQ": "What colour are Tottenham Hotspur's traditional home shirts?",
+  "newCorrect": "White",
+  "truth": "Tottenham's traditional home shirts are white (with navy shorts), which is the origin of the nickname 'the Lilywhites' — the keyed answer is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_312fb3",
+  "kind": "self_answering",
+  "oldQ": "Legendary Spurs goalkeeper Pat Jennings caused uproar in 1977 by moving to which North London rival?",
+  "newQ": "Legendary Spurs goalkeeper Pat Jennings caused uproar in 1977 by moving to which London rival?",
+  "newCorrect": "Arsenal",
+  "truth": "Wikipedia's Pat Jennings article: \"On 6 August 1977, he was transferred to Tottenham's arch-rivals, Arsenal\" — Arsenal is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_35ee33",
+  "kind": "self_answering",
+  "oldQ": "In the 1994 Champions League final, AC Milan produced a stunning performance to demolish Fabio Capello's opponents Barcelona. What was the score?",
+  "newCorrect": null,
+  "truth": "AC Milan beat Barcelona 4-0 in the 1994 Champions League final in Athens (Massaro 22', 45+2', Savićević 47', Desailly 58'; Capello v Cruyff) — the keyed 4-0 is correct, and the leak the screener describes exists verbatim in the bank.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_f75361",
+  "kind": "self_answering",
+  "oldQ": "How many consecutive Süper Lig titles did Galatasaray win under Fatih Terim from 1996-97 to 1999-2000?",
+  "newQ": "How many consecutive Süper Lig titles did Galatasaray win under Fatih Terim in his first spell as manager?",
+  "newCorrect": "Four",
+  "truth": "Wikipedia's Fatih Terim article confirms his first Galatasaray spell ran 1 July 1996 to 1 June 2000 and that the club won four consecutive Süper Lig titles in it — 1996-97, 1997-98, 1998-99, 1999-2000 — so Four is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_be0880",
+  "kind": "self_answering",
+  "oldQ": "Which European trophy did Rangers win in 1972?",
+  "newCorrect": null,
+  "truth": "Rangers won the 1972 European Cup Winners' Cup, beating Dynamo Moscow 3-2 at the Camp Nou (Wikipedia, 1972 European Cup Winners' Cup final) — so the keyed answer is factually correct, but I confirmed by grepping src/questions.js that three sibling Rangers questions print the answer verbatim in their stems: q_b4238e ('the 1972 European Cup Winners' Cup final'), q_54c648 ('the 1972 European Cup Winners' Cup final') and q_3ad4db ('their 1972 Cup Winners' Cup final win over Dynamo Moscow').",
+  "confidence": "high"
+ },
+ {
+  "id": "q_b4238e",
+  "kind": "self_answering",
+  "oldQ": "Which club did Rangers beat in the 1972 European Cup Winners' Cup final?",
+  "newCorrect": null,
+  "truth": "Rangers beat Dynamo Moscow 3-2 in the 1972 Cup Winners' Cup final in Barcelona (Wikipedia), so the key is right; the defect is that q_3ad4db's stem reads 'Who scored twice for Rangers in their 1972 Cup Winners' Cup final win over Dynamo Moscow?' — naming this question's answer verbatim in the same Rangers pack.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_fb8cf7",
+  "kind": "self_answering",
+  "oldQ": "Rangers lost the 2008 UEFA Cup final 2-0 to which club in Manchester?",
+  "newCorrect": null,
+  "truth": "Zenit Saint Petersburg beat Rangers 2-0 in the 2008 UEFA Cup final at the City of Manchester Stadium, Dick Advocaat managing Zenit (Wikipedia, 2008 UEFA Cup final) — the key is correct, but q_1d7c76's stem opens 'The Zenit side that beat Rangers in the 2008 UEFA Cup final...', stating this answer outright.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_a4dcc4",
+  "kind": "self_answering",
+  "oldQ": "Rangers reached the final of which competition in 2022, losing to Eintracht Frankfurt?",
+  "newCorrect": null,
+  "truth": "Rangers lost the 2022 UEFA Europa League final to Eintracht Frankfurt on penalties in Seville, so the key is correct; three sibling questions name the competition verbatim — q_835f75 ('Who scored Rangers' goal in the 2022 Europa League final?'), q_a1d4bd ('the 2022 Europa League final shoot-out') and q_2442e1 ('top scorer of the 2021-22 Europa League').",
+  "confidence": "high"
+ },
+ {
+  "id": "q_97f905",
+  "kind": "self_answering",
+  "oldQ": "After liquidation, the reformed Rangers began the 2012-13 season in which division?",
+  "newQ": "After liquidation, the reformed Rangers began the 2012-13 season in which division?",
+  "newCorrect": "Scottish Third Division",
+  "truth": "The Scottish Third Division was the fourth tier in 2012-13 and the newco Rangers were elected into it, finishing champions (Wikipedia, 2012-13 Scottish Third Division); the tiers above were the Scottish Premier League, First Division and Second Division. The keyed option's parenthetical '(fourth tier)' repeats the exact phrase used in q_1167a1's stem ('demoted to Scottish football's fourth tier in 2012') and q_89d488's ('began life in the fourth tier in 2012-13').",
+  "confidence": "high"
+ },
+ {
+  "id": "q_cf75e8",
+  "kind": "self_answering",
+  "oldQ": "PSV striker Mateja Kezman, nicknamed 'Batman', formed a lethal duo with which winger, prompting the 'Batman and Robben' tag?",
+  "newCorrect": null,
+  "truth": "Kezman played for PSV from 2000 to 2004 and his partnership with Arjen Robben was nicknamed 'Batman and Robben', a pun on Batman and Robin (Wikipedia, Mateja Kezman) — the fact and key are correct, but the stem prints the portmanteau, which contains the answer's surname.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_2c07a2",
+  "kind": "self_answering",
+  "oldQ": "West Ham lost the 2006 FA Cup final on penalties to which club, in a game dubbed 'The Gerrard Final'?",
+  "newQ": "West Ham lost the 2006 FA Cup final on penalties to which club, after a 3-3 draw?",
+  "newCorrect": "Liverpool",
+  "truth": "Liverpool beat West Ham 3-1 on penalties after a 3-3 draw in the 2006 FA Cup final, and en.wikipedia.org/wiki/2006_FA_Cup_final confirms the match is indeed known as 'The Gerrard Final' after Liverpool captain Steven Gerrard's volleys — so the nickname in the stem names the winning club's captain.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_7bb619",
+  "kind": "self_answering",
+  "oldQ": "Athletic Bilbao plays its home matches in which city?",
+  "newQ": "Athletic Club of Bilbao play their home matches at which stadium?",
+  "newCorrect": "San Mamés",
+  "truth": "Athletic Club are based in Bilbao and play at San Mamés (en.wikipedia.org/wiki/Athletic_Bilbao), so the city asked for is literally the second word of the club name given in the stem.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_c64db6",
+  "kind": "self_answering",
+  "oldQ": "As reigning Spanish league champions, Athletic Bilbao contested which European competition in the mid-1980s?",
+  "newQ": "",
+  "truth": "Athletic won La Liga in 1982-83 and 1983-84 (en.wikipedia.org/wiki/Athletic_Bilbao) and, as reigning champions in the pre-1992 format, entered the European Cup — which is exactly what the stem's own premise 'as reigning Spanish league champions' entails.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_c4eedb",
+  "kind": "self_answering",
+  "oldQ": "Sevilla FC was founded largely by expatriates of which nationality, including a Scottish vice-consul?",
+  "newQ": "Sevilla FC was founded in 1890 largely by expatriates of which nationality?",
+  "newCorrect": "British",
+  "truth": "Sevilla FC was founded in January 1890 by a group of young British residents, mainly Scots, and Edward Farquharson Johnston — born in Elgin, Scotland and serving as British vice-consul in Seville — was a founder and the club's first president (en.wikipedia.org/wiki/Sevilla_FC).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_094b75",
+  "kind": "self_answering",
+  "oldQ": "In which Spanish city does Sevilla FC play its home matches?",
+  "newQ": "Sevilla FC play their home matches at which stadium?",
+  "newCorrect": "Ramón Sánchez-Pizjuán",
+  "truth": "Sevilla FC play in Seville, Andalusia, at the Ramón Sánchez-Pizjuán (en.wikipedia.org/wiki/Sevilla_FC) — and 'Sevilla' is simply the Spanish spelling of the city named in the option.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_539dae",
+  "kind": "self_answering",
+  "oldQ": "The '04' in FC Schalke 04's name marks the year the club was founded — which year?",
+  "newQ": "FC Schalke 04 beat Inter Milan on penalties in 1997 to win which European competition?",
+  "newCorrect": "The UEFA Cup",
+  "truth": "FC Schalke 04 was founded on 4 May 1904 and the '04' in the name does denote that founding year (en.wikipedia.org/wiki/FC_Schalke_04), so the answer is printed in the club's name inside the stem.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_8182bb",
+  "kind": "self_answering",
+  "oldQ": "By reaching the 1978 European Cup final, Club Brugge became the first club from which country to do so?",
+  "newQ": "Which Belgian club reached the 1978 European Cup final, losing 1-0 to Liverpool at Wembley?",
+  "newCorrect": "Club Brugge",
+  "truth": "Club Brugge lost the 1978 European Cup final 1-0 to Liverpool at Wembley and were indeed the first Belgian side to reach a European Cup final (en.wikipedia.org/wiki/1978_European_Cup_final) — but Benfica (1961, 1962), Celtic (1967) and Feyenoord (1970) had all already reached and won European Cup finals, so Portugal, Scotland and the Netherlands are impossible answers.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_ef064a",
+  "kind": "self_answering",
+  "oldQ": "In which Belgian city is Club Brugge based?",
+  "newCorrect": null,
+  "truth": "Club Brugge are based in Bruges — 'Brugge' is simply the Dutch-language name of the city rendered 'Bruges' in English/French, so the key is a translation of a word already in the stem.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_6ba0a4",
+  "kind": "self_answering",
+  "oldQ": "Aston Villa were relegated from the Premier League in 2016, beginning a spell in which division?",
+  "newQ": "After their 2016 relegation, in which year did Aston Villa win the Championship play-off final to return to the Premier League?",
+  "newCorrect": "2019",
+  "truth": "Aston Villa finished 20th with 17 points and were relegated from the Premier League in 2015-16, dropping into the Championship — which is by definition the division immediately below the Premier League, so the stem entails its own answer.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_bd28cf",
+  "kind": "self_answering",
+  "oldQ": "Trabzonspor are based in which Turkish city?",
+  "newQ": "Which club became the first from outside Istanbul to win the Turkish top flight, in 1975-76?",
+  "newCorrect": "Trabzonspor",
+  "truth": "Trabzonspor are based in Trabzon in north-eastern Turkey (en.wikipedia.org/wiki/Trabzonspor) — the city name is the first two syllables of the club name in the stem.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_8cb0b2",
+  "kind": "self_answering",
+  "oldQ": "The nickname 'The Peacocks' comes from the original name of Elland Road. What was that ground called?",
+  "newQ": "Leeds United's Elland Road was originally known by which name?",
+  "newCorrect": "The Old Peacock Ground",
+  "truth": "Elland Road was originally the Old Peacock Ground, named after the Old Peacock pub facing the land when Bentley's Brewery owned it, which is where the Peacocks nickname for Leeds City and Leeds United comes from (en.wikipedia.org/wiki/Elland_Road).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_5f32aa",
+  "kind": "self_answering",
+  "oldQ": "The Boleyn Ground takes its name from a house linked by legend to which historical figure?",
+  "newQ": "West Ham United's former Upton Park home took its name from a nearby house linked by legend to which historical figure?",
+  "newCorrect": "Anne Boleyn",
+  "truth": "West Ham's Boleyn Ground took its name from Green Street House, known locally as Boleyn Castle, which legend links to Anne Boleyn — said to have stayed at or owned the house (en.wikipedia.org/wiki/Boleyn_Ground).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_414d07",
+  "kind": "self_answering",
+  "oldQ": "Anderlecht's fierce rivalry with Standard Liège is nicknamed the Belgian what?",
+  "newQ": "Anderlecht's fierce rivalry with Standard Liège is nicknamed the Belgian what?",
+  "newCorrect": "Clásico",
+  "truth": "The Anderlecht–Standard Liège fixture is genuinely dubbed the Belgian Clásico (Wikipedia's Standard Liège article: the rivalry is \"dubbed the Belgian 'Clasico'\"), so the answer key is factually right — but the option text repeats the stem's own word \"Belgian\".",
+  "confidence": "medium"
+ },
+ {
+  "id": "q_1957e9",
+  "kind": "self_answering",
+  "oldQ": "In which European competition did PSV win their first continental trophy in 1978?",
+  "newCorrect": null,
+  "truth": "PSV's first European trophy was the 1978 UEFA Cup (beating Bastia 3-0 on aggregate) — the answer key is correct, but sibling q_e2de99 in the same PSV pack opens \"PSV won their first European trophy, the 1978 UEFA Cup, by beating which French club in the final?\", stating this question's answer verbatim.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_201921",
+  "kind": "self_answering",
+  "oldQ": "Jef Mermans, 'The Bomber', signed for Anderlecht in 1942 from which club?",
+  "newQ": "Which club did Anderlecht's all-time top scorer Jef Mermans join them from in 1942?",
+  "newCorrect": "Tubantia",
+  "truth": "Jef Mermans joined Anderlecht from Tubantia F.A.C. in 1942 for a record 125,000 Belgian francs and was nicknamed \"The Bomber\" (Wikipedia, Jef Mermans) — the transfer answer is right, but the stem hands over the answer to q_5f922f.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_0d485d",
+  "kind": "self_answering",
+  "oldQ": "Which shirt number did Club Brugge retire in 2003 to honour their supporters, 'the twelfth man'?",
+  "newQ": "Which shirt number does Club Brugge no longer assign to any player, in honour of their supporters?",
+  "newCorrect": "12",
+  "truth": "Club Brugge no longer assign the number 12 to any player, in tribute to supporters as football's \"twelfth man\" (Wikipedia, Club Brugge KV) — the answer is right and the stem states it.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_6b2059",
+  "kind": "self_answering",
+  "oldQ": "Which league title did Ivan Leko win in his first spell as Club Brugge manager (2017–2019)?",
+  "newQ": "Which league title did Ivan Leko win in his first spell as Club Brugge manager?",
+  "newCorrect": "2017–18",
+  "truth": "Ivan Leko managed Club Brugge from 8 June 2017 to 2 June 2019 and won the 2017–18 Belgian title (Wikipedia, Ivan Leko) — correct answer, but the stem's stated 2017–2019 window eliminates all three distractors on dates alone.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_522cb2",
+  "kind": "self_answering",
+  "oldQ": "Red Star's crest and identity are built around which symbol, echoed in the club's name?",
+  "newCorrect": null,
+  "truth": "Red Star Belgrade's crest is a red five-pointed star (the petokraka), white-framed on a red-and-white ground, and the club's Serbian name Crvena zvezda literally means \"red star\" (Wikipedia, Red Star Belgrade) — the answer is correct and is contained in the club's name.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_bee28b",
+  "kind": "self_answering",
+  "oldQ": "Galatasaray beat Arsenal on penalties to win which 2000 European final, the first major European trophy for a Turkish club?",
+  "newCorrect": null,
+  "truth": "Galatasaray beat Arsenal 4-1 on penalties after a 0-0 draw at the Parken Stadium, Copenhagen, in the 2000 UEFA Cup final — the first European trophy won by a Turkish club (Wikipedia, 2000 UEFA Cup final).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_6a9fe2",
+  "kind": "self_answering",
+  "oldQ": "Which English club did Galatasaray beat on penalties in the 2000 UEFA Cup final in Copenhagen?",
+  "newCorrect": null,
+  "truth": "Arsenal were Galatasaray's opponents in the 2000 UEFA Cup final in Copenhagen, losing 4-1 on penalties after 0-0 (Wikipedia, 2000 UEFA Cup final).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_f05452",
+  "kind": "self_answering",
+  "oldQ": "Cliff Bastin's Arsenal goalscoring record stood for 58 years. Which striker finally overtook it in 1997?",
+  "newCorrect": null,
+  "truth": "Cliff Bastin's Arsenal record of 178 goals stood from 1939 until Ian Wright surpassed it in September 1997 (58 years); Thierry Henry later passed them both in 2005 (Wikipedia, Cliff Bastin).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_392c3c",
+  "kind": "self_answering",
+  "oldQ": "By the time they celebrated their 2013-14 triumph, how many Süper Lig titles had Fenerbahçe won in total?",
+  "newCorrect": null,
+  "truth": "Fenerbahçe won the 2013-14 Süper Lig, their 19th Turkish league championship and still their most recent (Wikipedia, 2013-14 Süper Lig: they \"matched their league title record of 19\"; the TFF counts 19 league titles, distinct from the club's claimed 28 national championships).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_506e85",
+  "kind": "self_answering",
+  "oldQ": "How many consecutive league titles did Jock Stein's Celtic win from 1966 to 1974?",
+  "newQ": "Jock Stein's Celtic won nine consecutive Scottish league titles. In which year did that run end?",
+  "newCorrect": "1974",
+  "truth": "Jock Stein's Celtic won nine consecutive Scottish league titles, from 1965-66 through 1973-74, equalling the then world record held by MTK Budapest and CSKA Sofia (Wikipedia, Jock Stein).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_74322a",
+  "kind": "self_answering",
+  "oldQ": "In which French city is Olympique de Marseille based?",
+  "newCorrect": null,
+  "truth": "Olympique de Marseille is based in Marseille, France's second-largest city and principal Mediterranean port — the answer is contained in the club's own name.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_12cd0f",
+  "kind": "self_answering",
+  "oldQ": "What does the club's Serbian name, 'Crvena zvezda', mean in English?",
+  "newCorrect": null,
+  "truth": "Wikipedia's lead reads: Fudbalski klub Crvena zvezda, lit. 'Red Star Football Club' — so the keyed answer Red Star is factually correct; the defect is the give-away, not the fact.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_6acdfd",
+  "kind": "self_answering",
+  "oldQ": "In which minute of every home match do Club Brugge fans traditionally sing for François Sterchele?",
+  "newCorrect": null,
+  "truth": "Wikipedia (Francois Sterchele) states that Club Brugge retired his number 23 and that fans 'started singing his name in the 23rd minute of every game their team plays' — both the keyed answer and the sibling's premise are correct.",
+  "confidence": "medium"
+ },
+ {
+  "id": "q_e3af0f",
+  "kind": "self_answering",
+  "oldQ": "Roman Yaremchuk, a 2022 Club Brugge signing, has represented which national team?",
+  "newCorrect": null,
+  "truth": "Wikipedia confirms Roman Yaremchuk is a Ukrainian striker who represents the Ukraine national team and joined Club Brugge from Benfica on 29 August 2022 — the keyed answer is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_734646",
+  "kind": "self_answering",
+  "oldQ": "Zdravko Mamić ran Dinamo Zagreb as executive director from 2003 to 2016. Which brother of his managed the club to three consecutive league titles from 2013-14?",
+  "newQ": "Which manager led Dinamo Zagreb to three consecutive Croatian league titles from 2013-14 to 2015-16?",
+  "newCorrect": "Zoran Mamić",
+  "truth": "Wikipedia confirms Zoran Mamic is Zdravko Mamic's younger brother and managed Dinamo Zagreb from 2013 to 2016, winning the Croatian league in 2013-14, 2014-15 and 2015-16 — every fact in the question is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_f64165",
+  "kind": "self_answering",
+  "oldQ": "Beşiktaş's former İnönü Stadium was named after which Turkish president?",
+  "newQ": "Beşiktaş's former home ground next to Dolmabahçe Palace, demolished in 2013, was named after which Turkish president?",
+  "newCorrect": "İsmet İnönü",
+  "truth": "Wikipedia (BJK Inonu Stadium) confirms it was named after Ismet Inonu, the second President of Turkey and a Besiktas fan, who inaugurated it on 19 May 1947; it opened as Dolmabahce Stadium and demolition began 2 June 2013 — the keyed answer is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_33a7c0",
+  "kind": "self_answering",
+  "oldQ": "Which nickname was given to Beşiktaş's celebrated attacking trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar?",
+  "newQ": "Which nickname was given to Beşiktaş's celebrated attacking trio of the late 1980s and early 1990s, who won three straight league titles?",
+  "newCorrect": "Metin-Ali-Feyyaz",
+  "truth": "Wikipedia's Metin-Ali-Feyyaz article confirms the nickname is a combination of the first names of Metin Tekin, Ali Gultiken and Feyyaz Ucar at Besiktas in the late 1980s and early 1990s, winning three consecutive league titles in 1989-90, 1990-91 and 1991-92 (the last unbeaten) — the keyed answer is correct.",
+  "confidence": "high"
+ },
+ {
+  "id": "q_e2322f",
+  "kind": "self_answering",
+  "oldQ": "By winning La Liga, Real Betis, based in Seville, became the first champions from which Spanish autonomous community?",
+  "newQ": "Real Betis won the 1934–35 La Liga title, making them the first champions from which Spanish autonomous community?",
+  "newCorrect": "Andalusia",
+  "truth": "Real Betis are based in Seville, Andalusia, and their sole top-flight title (28 April 1935, under Patrick O'Connell) made Andalusia's first — and to date only — La Liga champions (en.wikipedia.org/wiki/Real_Betis).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_51b4fb",
+  "kind": "self_answering",
+  "oldQ": "In which German city is Hamburger SV based?",
+  "newQ": "Which stadium is Hamburger SV's home ground?",
+  "newCorrect": "Volksparkstadion",
+  "truth": "Hamburger SV are based in Hamburg and play at the Volksparkstadion; Weserstadion is Werder Bremen's, Signal Iduna Park is Borussia Dortmund's and the RheinEnergieStadion is 1. FC Köln's (en.wikipedia.org/wiki/Volksparkstadion).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_17bbf4",
+  "kind": "self_answering",
+  "oldQ": "HSV's home city of Hamburg hosted matches at which men's World Cup, staged in West Germany?",
+  "newQ": "Which German city hosted East Germany's shock 1–0 win over West Germany at the 1974 World Cup?",
+  "newCorrect": "Hamburg",
+  "truth": "West Germany hosted exactly one men's World Cup, 1974, and Hamburg's Volksparkstadion staged three 1974 group matches — including East Germany's 1–0 win over West Germany on 22 June 1974 (Sparwasser, 77'); Hamburg also hosted five matches at the 2006 World Cup, including a quarter-final (en.wikipedia.org/wiki/1974_FIFA_World_Cup, en.wikipedia.org/wiki/Volksparkstadion).",
+  "confidence": "high"
+ },
+ {
+  "id": "q_719c2a",
+  "kind": "self_answering",
+  "oldQ": "Fiorentina legend Giancarlo Antognoni was part of which nation's 1982 World Cup-winning squad?",
+  "newQ": "Which midfielder in Italy's 1982 World Cup-winning squad spent his entire Serie A career at Fiorentina?",
+  "newCorrect": "Giancarlo Antognoni",
+  "truth": "Antognoni was in Italy's 1982 World Cup-winning squad (six appearances, missed the final through a semi-final injury) and was a Fiorentina one-club man in Serie A, 1972–1987, 341 league games (en.wikipedia.org/wiki/Giancarlo_Antognoni).",
+  "confidence": "high"
+ }
+]

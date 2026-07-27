@@ -33,8 +33,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// A `self_answering` question cannot be corrected — only REPLACED with a
+// different question. That is authorship, not fact-checking, so it is held by
+// default: Alex stays the editor of his own bank. Pass --include-substitutions
+// to apply them too, once that call has actually been made.
+const HELD_KINDS = new Set(['self_answering']);
+
 const [, , journalPath, ...flags] = process.argv;
 const WRITE = flags.includes('--write');
+const INCLUDE_SUBS = flags.includes('--include-substitutions');
 if (!journalPath) {
   console.error('usage: node scripts/audit-apply.mjs <journal.jsonl> [--write]');
   process.exit(1);
@@ -104,6 +111,21 @@ lines.forEach((l, i) => {
   if (m) lineOf.set(m[1], i);
 });
 
+// Is the corrected answer the SAME fact, just written differently?
+// Substring containment after normalising accents and punctuation catches the
+// two real patterns: surname -> full name ("Lewandowski" / "Robert
+// Lewandowski") and bare -> qualified ("2002" / "2002 Japan/Korea").
+// Deliberately conservative — anything that is not clearly the same answer is
+// treated as a change, so a genuinely stale hint is still dropped.
+const normAnswer = (s) => String(s).toLowerCase().normalize('NFD')
+  .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]/g, ' ')
+  .replace(/\s+/g, ' ').trim();
+const sameAnswer = (a, b) => {
+  const [x, y] = [normAnswer(a), normAnswer(b)];
+  if (!x || !y) return false;
+  return x === y || x.includes(y) || y.includes(x);
+};
+
 const str = (s) => JSON.stringify(String(s));
 const serialize = (o) => {
   const parts = [`id:${str(o.id)}`, `q:${str(o.q)}`, `o:[${o.o.map(str).join(',')}]`, `a:${o.a}`];
@@ -114,12 +136,18 @@ const serialize = (o) => {
   return `  { ${parts.join(', ')} },`;
 };
 
-const applied = [], skipped = [], hintsDropped = [];
+const applied = [], skipped = [], hintsDropped = [], held = [];
 
 for (const v of verdicts) {
   const why = (r) => skipped.push({ id: v.id, reason: r, kind: snapshots.get(v.id)?.kind });
 
   if (!v.confirmed) { why('verifier REJECTED the flag — question is fine'); continue; }
+  if (!INCLUDE_SUBS && HELD_KINDS.has(snapshots.get(v.id)?.kind)) {
+    held.push({ id: v.id, kind: snapshots.get(v.id)?.kind, oldQ: snapshots.get(v.id)?.q,
+                newQ: v.fix_q, newCorrect: Array.isArray(v.fix_o) ? v.fix_o[v.fix_a] : null,
+                truth: v.truth, confidence: v.confidence });
+    continue;
+  }
   if (v.confidence !== 'high') { why(`confirmed but confidence=${v.confidence} — Alex decides`); continue; }
   if (!v.fix_q || !Array.isArray(v.fix_o) || v.fix_o.length !== 4 || typeof v.fix_a !== 'number') {
     why('confirmed, no complete fix proposed — human editorial call'); continue;
@@ -146,7 +174,14 @@ for (const v of verdicts) {
   const newCorrect = v.fix_o[v.fix_a];
   const next = { ...cur, q: v.fix_q, o: v.fix_o, a: v.fix_a };
 
-  if (cur.hint && oldCorrect !== newCorrect) {
+  // Only drop the hint when the answer REALLY changed. An exact string
+  // compare treats "Lewandowski" -> "Robert Lewandowski" and "2002" ->
+  // "2002 Japan/Korea" as changes and bins a hint that is still perfectly
+  // accurate. That is not cosmetic: `playerHintRows` in gen-seo-pages.mjs
+  // requires x.hint to exist, so a needlessly dropped hint removes the
+  // question from an SEO page's pool and can push a page under MIN_HINTS —
+  // which is exactly how this rule broke the Lewandowski page build.
+  if (cur.hint && !sameAnswer(oldCorrect, newCorrect)) {
     delete next.hint;
     hintsDropped.push({ id: v.id, oldCorrect, newCorrect });
   }
@@ -157,7 +192,12 @@ for (const v of verdicts) {
 
 // ── report ──────────────────────────────────────────────────────────────────
 console.log(`\nVerdicts read: ${verdicts.length}`);
-console.log(`APPLIED: ${applied.length}   SKIPPED: ${skipped.length}   hints dropped: ${hintsDropped.length}`);
+console.log(`APPLIED: ${applied.length}   HELD (substitutions): ${held.length}   SKIPPED: ${skipped.length}   hints dropped: ${hintsDropped.length}`);
+if (held.length) {
+  console.log(`\nHELD — these questions contain their own answer and can only be REPLACED,`);
+  console.log(`not corrected. That is an editorial call. Review .audit/held-substitutions.json,`);
+  console.log(`then re-run with --include-substitutions to apply them.`);
+}
 
 const byReason = skipped.reduce((m, s) => { m[s.reason] = (m[s.reason] || 0) + 1; return m; }, {});
 console.log('\nSkip reasons:');
@@ -187,3 +227,6 @@ if (WRITE && applied.length) {
 
 fs.writeFileSync(path.join(ROOT, '.audit/applied.json'),
   JSON.stringify({ applied, skipped, hintsDropped }, null, 1));
+fs.writeFileSync(path.join(ROOT, '.audit/held-substitutions.json'), JSON.stringify(held, null, 1));
+fs.writeFileSync(path.join(ROOT, '.audit/needs-alex.json'), JSON.stringify(
+  skipped.filter(s => /confidence=/.test(s.reason) || /no complete fix/.test(s.reason)), null, 1));

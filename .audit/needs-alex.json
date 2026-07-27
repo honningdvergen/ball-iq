@@ -1,0 +1,112 @@
+[
+ {
+  "id": "q_747d9a",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "wrong_answer"
+ },
+ {
+  "id": "q_7f0e68",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "wrong_answer"
+ },
+ {
+  "id": "q_7a11dd",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "wrong_answer"
+ },
+ {
+  "id": "q_abcc4e",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "multiple_correct"
+ },
+ {
+  "id": "q_0ae8cd",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "multiple_correct"
+ },
+ {
+  "id": "q_c98851",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_63ac23",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "multiple_correct"
+ },
+ {
+  "id": "q_6b922e",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_a3c7e5",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_3bfb6b",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_5e6c56",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_1e9b93",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_a670f7",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_196e86",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_eaba3c",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_8b4eef",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_0c03d4",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_9f3f7e",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_b9f34d",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_07a911",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "stale"
+ },
+ {
+  "id": "q_1088b1",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "eliminable_distractor"
+ },
+ {
+  "id": "q_aff3f8",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "stale"
+ }
+]

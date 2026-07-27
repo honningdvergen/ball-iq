@@ -487,15 +487,6 @@
    "truth": "Carlo Ancelotti won the 2021-22 Champions League in his first season of his SECOND spell at Real Madrid; his actual first season in charge was 2013-14, when he also won the Champions League (La Décima). Zinedine Zidane, one of the options, did win the Champions League in his first season in charge (2015-16)."
   },
   {
-   "id": "q_33d8a3",
-   "kind": "self_answering",
-   "oldQ": "Which Argentina captain's mesmerising dribble past Croatia's Joško Gvardiol before a cut-back assist for Julián Álvarez was hailed as the moment of the 2022 World Cup — sealing a 3-0 semi-final win?",
-   "newQ": "Whose mesmerising dribble past Croatia's Joško Gvardiol, and cut-back for Julián Álvarez, sealed Argentina's 3-0 win in the 2022 World Cup semi-final?",
-   "oldCorrect": "Lionel Messi",
-   "newCorrect": "Lionel Messi",
-   "truth": "Lionel Messi was Argentina's captain throughout the 2022 World Cup and it was his run past Joško Gvardiol that set up Julián Álvarez's second goal in the 3-0 semi-final win over Croatia on 13 December 2022."
-  },
-  {
    "id": "q_fb51b8",
    "kind": "ambiguous_stem",
    "oldQ": "At the 2002 World Cup, which country's run to the semi-finals is widely considered the biggest overachievement in tournament history?",
@@ -559,157 +550,256 @@
    "truth": "Champions League winners since 2020 are Bayern (2019-20 final played August 2020), Chelsea (2020-21), Real Madrid (2021-22 and 2023-24), Man City (2022-23) and PSG (2024-25, 5-0 v Inter on 31 May 2025) — five distinct clubs by finals played in 2020-2025, but four if '2020s' is read as seasons from 2020-21 onward."
   },
   {
-   "id": "q_2f3ac3",
-   "kind": "self_answering",
-   "oldQ": "Who scored the winning penalty in the Euro 2004 shootout as Portugal beat England — a goalkeeper stepping up to the spot himself?",
-   "newQ": "Who scored the winning penalty in the Euro 2004 quarter-final shootout as Portugal beat England?",
-   "oldCorrect": "Ricardo",
-   "newCorrect": "Ricardo",
-   "truth": "Ricardo, Portugal's goalkeeper, saved Darius Vassell's kick barehanded and then scored the winning penalty in the 6-5 shootout win over England in the Euro 2004 quarter-final (UEFA.com, GiveMeSport, BBC)."
+   "id": "q_eebe13",
+   "kind": "eliminable_distractor",
+   "oldQ": "Atlético Madrid's famous 2013-14 La Liga title was clinched with a 1-1 draw at Camp Nou — which Atletico defender headed the equaliser?",
+   "newQ": "Atlético Madrid's famous 2013-14 La Liga title was clinched with a 1-1 draw at Camp Nou — which Atlético defender headed the equaliser?",
+   "oldCorrect": "Godín",
+   "newCorrect": "Godín",
+   "truth": "Diego Godín, a centre-back, headed the 1-1 equaliser at Camp Nou on 17 May 2014 to clinch Atlético Madrid's first La Liga title in 18 years — the answer key is right, but he is the only defender among the four options (Diego Costa was a striker, Arda Turan a midfielder, and Griezmann a forward who was still at Real Sociedad in 2013-14)."
   },
   {
-   "id": "q_5fbab6",
-   "kind": "self_answering",
-   "oldQ": "Arsenal's unbeaten 2003-04 season included 12 draws. How many wins did they get?",
-   "newQ": "Arsenal went unbeaten through the 2003-04 Premier League season. How many of their 38 league games did they win?",
-   "oldCorrect": "26",
-   "newCorrect": "26",
-   "truth": "Arsenal's 2003-04 Invincibles finished 26 W, 12 D, 0 L for 90 points (Premier League official season review, Arsenal.com)."
+   "id": "q_79d628",
+   "kind": "eliminable_distractor",
+   "oldQ": "When Cristiano Ronaldo signed for Juventus in 2018, which Colombian teammate gave up his #7 shirt to allow CR7 to keep his iconic number?",
+   "newQ": "When Cristiano Ronaldo signed for Juventus in 2018, which teammate gave up his #7 shirt to allow CR7 to keep his iconic number?",
+   "oldCorrect": "Juan Cuadrado",
+   "newCorrect": "Juan Cuadrado",
+   "truth": "Juan Cuadrado, a Colombian, wore Juventus' #7 and moved to #16 when Cristiano Ronaldo arrived in 2018 — but he is the only Colombian among the options, since Alex Sandro and Douglas Costa are Brazilian and Dybala is Argentine."
   },
   {
-   "id": "q_83113a",
-   "kind": "self_answering",
-   "oldQ": "Who won the World Cup Golden Boot in 2018 with 6 goals for England?",
-   "newQ": "Who won the World Cup Golden Boot in 2018 with 6 goals?",
-   "oldCorrect": "Kane",
-   "newCorrect": "Kane",
-   "truth": "Harry Kane won the 2018 World Cup Golden Boot with 6 goals; Griezmann, Mbappé and Lukaku all finished on 4 (BBC, ESPN, CBS Sports)."
+   "id": "q_8ae49c",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which goalkeeper holds the Premier League record for not conceding a goal — 1,311 minutes in 2008-09?",
+   "newQ": "Which goalkeeper holds the Premier League record for not conceding a goal — 1,311 minutes in 2008-09?",
+   "oldCorrect": "Van der Sar",
+   "newCorrect": "Van der Sar",
+   "truth": "Edwin van der Sar's 1,311 minutes without conceding in 2008-09 is the Premier League record, and Buffon, Casillas and Neuer never played a Premier League match, so the competition qualifier alone identifies the answer."
   },
   {
-   "id": "q_2b1d9e",
-   "kind": "self_answering",
-   "oldQ": "Which Hungarian team is widely considered one of the greatest national sides never to win a World Cup — losing the 1954 final as favourites?",
-   "newQ": "Which national side lost the 1954 World Cup final as overwhelming favourites, having gone more than four years unbeaten?",
-   "oldCorrect": "Hungary",
-   "newCorrect": "Hungary",
-   "truth": "Hungary's 'Golden Team' / Mighty Magyars, unbeaten for over four years, lost the 1954 World Cup final 3-2 to West Germany in Bern (FIFA, ESPN, Al Jazeera)."
+   "id": "q_3ab9b8",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which club has been runner-up in the Champions League / European Cup the most times without ever winning it?",
+   "newQ": "Which club has been runner-up in the Champions League / European Cup the most times without ever winning it?",
+   "oldCorrect": "Atlético",
+   "newCorrect": "Atlético",
+   "truth": "Atlético Madrid are the only club to reach three European Cup/Champions League finals (1974, 2014, 2016) without ever winning it — while Juventus, Benfica and Bayern Munich have all won the trophy, so none of them can satisfy the stem."
   },
   {
-   "id": "q_7581fb",
-   "kind": "self_answering",
-   "oldQ": "Which Argentine legend scored 184 Serie A goals for Fiorentina (151), Roma (30+), and briefly Inter — nicknamed 'Batigol'?",
-   "newQ": "Which Argentine legend scored 184 Serie A goals across spells at Fiorentina, Roma and briefly Inter?",
-   "oldCorrect": "Gabriel Batistuta",
-   "newCorrect": "Gabriel Batistuta",
-   "truth": "Gabriel Batistuta, nicknamed 'Batigol', scored 184 Serie A goals — a club-record 152 for Fiorentina, then 30 for Roma and 2 on loan at Inter (StatMuse, FBref, Britannica)."
+   "id": "q_9d6da9",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which cup did Jürgen Klopp win with Borussia Dortmund in 2012, beating Bayern Munich 5-2 in the final?",
+   "newQ": "Jürgen Klopp's Borussia Dortmund beat Bayern Munich in the 2012 DFB-Pokal final to seal a domestic double — what was the final score?",
+   "oldCorrect": "DFB Pokal",
+   "newCorrect": "5-2",
+   "truth": "Klopp's Dortmund beat Bayern Munich 5-2 in the 2012 DFB-Pokal final in Berlin to complete a domestic double — and since the stem names two German clubs, the Coppa Italia, Copa del Rey and FA Cup are competitions neither side can enter."
   },
   {
-   "id": "q_612e6b",
-   "kind": "self_answering",
-   "oldQ": "Atlético Madrid lost the European Cup/Champions League final in 1974, 2014 and 2016. Up to and including 2016, how many finals had they reached?",
-   "newQ": "How many European Cup/Champions League finals had Atlético Madrid reached up to and including 2016?",
-   "oldCorrect": "Three",
-   "newCorrect": "Three",
-   "truth": "Atlético Madrid had reached three European Cup/Champions League finals up to and including 2016 — 1974 (lost the replay to Bayern), 2014 and 2016 (both lost to Real Madrid), all defeats (UEFA.com, Wikipedia)."
+   "id": "q_b47cdf",
+   "kind": "eliminable_distractor",
+   "oldQ": "The 'Pizzagate' incident after Arsenal's defeat to Man United in 2004 involved which Arsenal manager?",
+   "newQ": "The 'Pizzagate' tunnel bust-up after Arsenal's 2004 defeat at Old Trafford ended with which manager hit by a slice of flying pizza?",
+   "oldCorrect": "Wenger",
+   "newCorrect": "Alex Ferguson",
+   "truth": "Arsène Wenger was Arsenal's manager for the October 2004 'Pizzagate' tunnel brawl at Old Trafford, but Vieira, Campbell and Edu were all players, so the stem's word 'manager' gives the answer away."
   },
   {
-   "id": "q_2bcdeb",
-   "kind": "self_answering",
-   "oldQ": "Which club did Ronaldo R9 win the Copa del Rey with before his World Cup debut?",
-   "newQ": "Ronaldo (R9) won the Copa del Rey in 1997, during his single season at which Spanish club?",
-   "oldCorrect": "Barcelona",
-   "newCorrect": "Barcelona",
-   "truth": "Ronaldo (R9) won the Copa del Rey with Barcelona in 1996-97 (Barcelona beat Real Betis 3-2 aet at the Bernabéu, 28 June 1997) — his only season in Catalonia; the Copa del Rey is Spain's domestic cup, so of the four options only Barcelona is even eligible to have won it (Cruzeiro = Brazil, PSV = Netherlands, Inter = Italy)."
+   "id": "q_a31656",
+   "kind": "eliminable_distractor",
+   "oldQ": "Who saved a penalty in the 2006 World Cup quarter-final shootout for Germany vs Argentina?",
+   "newQ": "Which Germany goalkeeper saved two penalties in the 2006 World Cup quarter-final shootout against Argentina?",
+   "oldCorrect": "Lehmann",
+   "newCorrect": "Jens Lehmann",
+   "truth": "Jens Lehmann saved two Argentina penalties — Roberto Ayala's and Esteban Cambiasso's — as Germany won the 2006 quarter-final shootout 4–2 after 1–1 (en.wikipedia.org/wiki/Jens_Lehmann)."
   },
   {
-   "id": "q_63e291",
-   "kind": "self_answering",
-   "oldQ": "Karl-Heinz Rummenigge captained which club in the 1982 European Cup final — a game Bayern lost 1-0 to English underdogs?",
-   "newQ": "Karl-Heinz Rummenigge's Bayern Munich lost the 1982 European Cup final 1-0 to which English club?",
-   "oldCorrect": "Bayern Munich",
-   "newCorrect": "Aston Villa",
-   "truth": "Aston Villa beat Bayern Munich 1-0 in the 1982 European Cup final (De Kuip, Rotterdam, 26 May 1982; Peter Withe 67'); Rummenigge started up front for Bayern but the captain's armband was worn by Paul Breitner, with Dennis Mortimer captaining Villa — Wikipedia's line-up marks Breitner (c), and Bayern/Bundesliga club histories describe Breitner as the appointed captain of that side."
+   "id": "q_c38f1b",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which legendary manager holds the record for most La Liga titles won as a coach — all with Real Madrid?",
+   "newQ": "Which Real Madrid coach holds the record for the most La Liga titles won by a manager?",
+   "oldCorrect": "Miguel Muñoz",
+   "newCorrect": "Miguel Muñoz",
+   "truth": "Miguel Muñoz won nine La Liga titles as Real Madrid coach between 1960 and 1972, including five in a row (1961–65) — the managerial record; Guardiola and Cruyff won theirs at Barcelona and Helenio Herrera his at Atlético Madrid and Barcelona, none of the three ever managing Real Madrid (en.wikipedia.org/wiki/Miguel_Muñoz)."
   },
   {
-   "id": "q_ad80d5",
-   "kind": "self_answering",
-   "oldQ": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club at Stamford Bridge?",
-   "newQ": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club?",
-   "oldCorrect": "Chelsea",
-   "newCorrect": "Chelsea",
-   "truth": "Chelsea beat Manchester City 2-1 at Stamford Bridge on 25 June 2020 (Pulisic; De Bruyne equalised; Willian penalty after Fernandinho's red card), confirming Liverpool as 2019-20 Premier League champions with a record seven games to spare."
+   "id": "q_874404",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Serbian manager holds the record for taking 5 different national teams to the World Cup — Mexico, Costa Rica, USA, Nigeria, and China?",
+   "newQ": "Which Serbian manager holds the record for taking 5 different national teams to the World Cup — Mexico, Costa Rica, USA, Nigeria, and China?",
+   "oldCorrect": "Bora Milutinović",
+   "newCorrect": "Bora Milutinović",
+   "truth": "Bora Milutinović is Serbian (born Bajina Bašta, 1944) and took Mexico 1986, Costa Rica 1990, USA 1994, Nigeria 1998 and China 2002 to the World Cup — five different nations, a feat shared only with Brazilian Carlos Alberto Parreira (Kuwait 1982, UAE 1990, Brazil 1994/2006, Saudi Arabia 1998, South Africa 2010), per en.wikipedia.org/wiki/Bora_Milutinović and /wiki/Carlos_Alberto_Parreira."
   },
   {
-   "id": "q_3ff8a6",
-   "kind": "self_answering",
-   "oldQ": "Which England player holds the record for most international goals (overtaking Wayne Rooney in March 2023)?",
-   "newQ": "Which player holds the record for most goals scored for the England men's national team?",
-   "oldCorrect": "Kane",
-   "newCorrect": "Harry Kane",
-   "truth": "Harry Kane is England's all-time leading scorer; he passed Wayne Rooney's 53 with his 54th goal, a penalty against Italy in Naples on 23 March 2023, and has extended the record since — Bobby Charlton (49) and Gary Lineker (48) sit below Rooney."
+   "id": "q_2aae12",
+   "kind": "eliminable_distractor",
+   "oldQ": "Messi scored his first Champions League goal at Camp Nou on 2 November 2005 — in a 5-0 group-stage win over which Greek club?",
+   "newQ": "Messi scored his first Champions League goal at Camp Nou on 2 November 2005 — in a 5-0 group-stage win over which Greek club?",
+   "oldCorrect": "Panathinaikos",
+   "newCorrect": "Panathinaikos",
+   "truth": "Barcelona beat Panathinaikos 5-0 at Camp Nou on 2 November 2005 in the 2005-06 Champions League Group C — Van Bommel 1', Eto'o 14'/40'/65' and Messi 34', Messi's first Champions League goal (en.wikipedia.org/wiki/2005–06_UEFA_Champions_League_group_stage)."
   },
   {
-   "id": "q_91885b",
-   "kind": "self_answering",
-   "oldQ": "Which was the first World Cup to be jointly hosted by two nations?",
-   "newQ": "Which World Cup was the first to be jointly hosted by two nations?",
-   "oldCorrect": "2002 Japan/Korea",
-   "newCorrect": "2002",
-   "truth": "The 2002 FIFA World Cup, held 31 May - 30 June 2002, was the first jointly hosted by two nations (South Korea and Japan) and the first held in Asia; 1998 (France), 2006 (Germany) and 2010 (South Africa) each had a single host."
+   "id": "q_01021e",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Kuwaiti player held the all-time international appearances record with 196 caps before Cristiano Ronaldo overtook him in 2023?",
+   "newQ": "Which player held the all-time international appearances record with 196 caps before Cristiano Ronaldo overtook him in 2023?",
+   "oldCorrect": "Bader Al-Mutawa",
+   "newCorrect": "Bader Al-Mutawa",
+   "truth": "Bader Al-Mutawa (Kuwait) held the men's all-time international appearance record, set at 196 caps, until Cristiano Ronaldo surpassed it in March 2023; Al-Mutawa finished on 202 caps (en.wikipedia.org/wiki/Bader_Al-Mutawa and the 100+ caps list)."
   },
   {
-   "id": "q_9237c6",
-   "kind": "self_answering",
-   "oldQ": "Which nation's 2022 World Cup debut ended with the unwanted record of being the first host country ever to lose all three group-stage matches?",
-   "newQ": "Which nation became the first World Cup host ever to lose all three of its group-stage matches?",
-   "oldCorrect": "Qatar",
-   "newCorrect": "Qatar",
-   "truth": "Qatar, hosting and making its World Cup debut in 2022, lost all three group games (0-2 Ecuador, 1-3 Senegal, 0-2 Netherlands) for zero points — the first host nation ever to lose every group match, and the earliest host elimination in the tournament's history; South Africa 2010, the only other host to exit in the group stage, won one and drew one."
+   "id": "q_7ba13f",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Swiss midfielder scored a memorable bicycle-kick goal vs Poland in the Euro 2016 round of 16?",
+   "newQ": "Which Swiss midfielder scored a memorable bicycle-kick goal vs Poland in the Euro 2016 round of 16?",
+   "oldCorrect": "Shaqiri",
+   "newCorrect": "Xherdan Shaqiri",
+   "truth": "Xherdan Shaqiri, a Swiss winger/attacking midfielder, equalised with a bicycle kick from the edge of the box in Switzerland's 1-1 draw with Poland in the Euro 2016 round of 16 at Saint-Étienne; Poland won the shootout (en.wikipedia.org/wiki/Xherdan_Shaqiri)."
   },
   {
-   "id": "q_2bf68d",
-   "kind": "self_answering",
-   "oldQ": "Atletico Madrid's 2013-14 La Liga title was secured on the final day with a 1-1 draw at the Camp Nou — against which opponent?",
-   "newQ": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 final-day draw away to Barcelona — which Atlético player headed the second-half equaliser?",
-   "oldCorrect": "Barcelona",
-   "newCorrect": "Diego Godín",
-   "truth": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 draw at the Camp Nou on 17 May 2014, Diego Godín heading the equaliser in the 49th minute from a Gabi corner after Alexis Sánchez had put Barcelona ahead (Wikipedia 'Barcelona 1-1 Atlético Madrid (May 2014)', UEFA.com, LaLiga.com)."
+   "id": "q_1063a5",
+   "kind": "eliminable_distractor",
+   "oldQ": "Ciro Immobile won the 2019-20 European Golden Shoe outright with 36 Serie A goals — beating which Bayern Munich striker into second place?",
+   "newQ": "Ciro Immobile won the 2019-20 European Golden Shoe outright with 36 Serie A goals — beating which striker into second place?",
+   "oldCorrect": "Lewandowski",
+   "newCorrect": "Robert Lewandowski",
+   "truth": "Ciro Immobile won the 2019-20 European Golden Shoe outright with 36 Serie A goals (72 points); Robert Lewandowski was second with 34 Bundesliga goals (68 points), ahead of Cristiano Ronaldo's 31 Serie A goals — per en.wikipedia.org/wiki/European_Golden_Shoe and /wiki/2019–20_Bundesliga (Lewandowski 34, Werner 28)."
   },
   {
-   "id": "q_b64b9d",
-   "kind": "self_answering",
-   "oldQ": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning 2-0 at home thanks to an Andriy Shevchenko brace?",
-   "newQ": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning the second leg 2-0 at home?",
-   "oldCorrect": "Dynamo Kyiv",
-   "newCorrect": "Dynamo Kyiv",
-   "truth": "Dynamo Kyiv eliminated holders Real Madrid in the 1998-99 Champions League quarter-finals, drawing 1-1 at the Bernabéu and winning the second leg 2-0 in Kyiv through an Andriy Shevchenko brace (63' and 79') — UEFA.com match records 56073 and 56074."
+   "id": "q_e39a0f",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Manchester City player scored 12 Premier League hat-tricks between 2011 and 2020?",
+   "newQ": "Which Manchester City player scored 12 Premier League hat-tricks between 2011 and 2020?",
+   "oldCorrect": "Sergio Agüero",
+   "newCorrect": "Sergio Agüero",
+   "truth": "Sergio Agüero holds the Premier League record with 12 hat-tricks, all for Manchester City; Alan Shearer is second with 11 and Robbie Fowler has 9 (en.wikipedia.org/wiki/List_of_Premier_League_hat-tricks)."
   },
   {
-   "id": "q_7e6e97",
-   "kind": "self_answering",
-   "oldQ": "Bayer Leverkusen's pharmaceutical company connection — which company owns the club?",
-   "newQ": "Bayer Leverkusen were founded in 1904 as the works team of chemical and pharmaceutical giant Bayer AG. Which other Bundesliga club was founded as a company works team and holds the same legacy exemption from the 50+1 ownership rule?",
-   "oldCorrect": "Bayer AG",
-   "newCorrect": "VfL Wolfsburg",
-   "truth": "Bayer 04 Leverkusen was founded on 1 July 1904 as a works club for employees of the chemical and pharmaceutical company Bayer AG, which still wholly owns it and holds a legacy exemption from the Bundesliga's 50+1 rule — the only other such corporate-works exemption being VfL Wolfsburg, owned by Volkswagen since 1945 (CityAM, Pace IP/Sports Law Forum, aktebundesliga 50+1 explainer)."
+   "id": "q_ca21e6",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which country beat England 1-0 at the 1950 World Cup group stage — one of football's all-time greatest upsets, scored by Haitian-American Joe Gaetjens?",
+   "newQ": "Which country beat England 1-0 in the group stage at the 1950 World Cup, in one of football's all-time greatest upsets?",
+   "oldCorrect": "USA",
+   "newCorrect": "USA",
+   "truth": "The USA beat England 1-0 on 29 June 1950 in Belo Horizonte (Joe Gaetjens). Wikipedia's 1950 World Cup page confirms the 13 participants were Brazil, Yugoslavia, Switzerland, Mexico, Spain, England, Chile, USA, Sweden, Italy, Paraguay, Bolivia and Uruguay — Germany was not readmitted to FIFA until September 1950, Slovenia was part of Yugoslavia, and Algeria was French territory, so all three distractors are impossible entrants."
   },
   {
-   "id": "q_948b2e",
-   "kind": "self_answering",
-   "oldQ": "Roma's 2021-22 UEFA Europa Conference League win under José Mourinho ended their wait for European silverware — how many years since their previous European trophy (the 1961 Inter-Cities Fairs Cup)?",
-   "newQ": "Roma's 2021-22 UEFA Europa Conference League triumph under José Mourinho was the club's first European trophy since 1961 — which side did they beat 1-0 in the final in Tirana?",
-   "oldCorrect": "61",
-   "newCorrect": "Feyenoord",
-   "truth": "Roma beat Feyenoord 1-0 in the inaugural UEFA Europa Conference League final in Tirana on 25 May 2022 (Zaniolo, 32'), their first European trophy since the 1960-61 Inter-Cities Fairs Cup — a gap of 61 years (Wikipedia '2022 UEFA Europa Conference League final', UEFA.com)."
+   "id": "q_bcdc90",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which legendary Brazilian goalkeeper is the only keeper to start and win two consecutive World Cups — 1958 and 1962?",
+   "newQ": "Which legendary Brazilian goalkeeper is the only keeper to start and win two consecutive World Cups — 1958 and 1962?",
+   "oldCorrect": "Gilmar",
+   "newCorrect": "Gilmar",
+   "truth": "Gilmar started in goal for Brazil's 1958 and 1962 World Cup wins and is described by Wikipedia as the only goalkeeper to win two consecutive World Cups as a starter; Yashin (USSR), Maier (West Germany) and Zoff (Italy) are all non-Brazilian, so the stem's own qualifier isolates the key."
   },
   {
-   "id": "q_5c41dc",
-   "kind": "self_answering",
-   "oldQ": "Italy failed to qualify for both the 2018 and 2022 World Cups. Their last World Cup appearance was in 2014 — how many years is that before the 2026 tournament?",
-   "newQ": "Italy failed to qualify for both the 2018 and 2022 World Cups. Which nation eliminated them in the November 2017 European qualifying play-off for the 2018 tournament?",
-   "oldCorrect": "12",
-   "newCorrect": "Sweden",
-   "truth": "Italy's last World Cup appearance was 2014; they missed 2018 after losing the November 2017 European play-off to Sweden 1-0 on aggregate (Johansson 61' in Stockholm, 0-0 in Milan) and missed 2022 after losing to North Macedonia — 2014 to 2026 is 12 years (ESPN match reports, Al Jazeera)."
+   "id": "q_d9c245",
+   "kind": "eliminable_distractor",
+   "oldQ": "Germany hosted Euro 2024 — which of their home stadiums was the largest venue used?",
+   "newQ": "Germany hosted Euro 2024 — which venue had the largest capacity for the tournament?",
+   "oldCorrect": "Olympiastadion Berlin",
+   "newCorrect": "Olympiastadion Berlin",
+   "truth": "Signal Iduna Park is the sponsored name of Dortmund's Westfalenstadion — one stadium listed twice; UEFA's Euro 2024 tournament capacities were Berlin 71,000, Munich 66,000, Dortmund 62,000, so Olympiastadion Berlin (which also hosted the final) was correctly the largest."
+  },
+  {
+   "id": "q_21b35c",
+   "kind": "eliminable_distractor",
+   "oldQ": "Federico Chiesa left Juventus in August 2024 for £12.5m — which Premier League club signed him?",
+   "newQ": "Federico Chiesa left Juventus in August 2024 for a fee reported at up to £12.5m — which Premier League club signed him?",
+   "oldCorrect": "Liverpool",
+   "newCorrect": "Liverpool",
+   "truth": "Chiesa joined Liverpool from Juventus on 29 August 2024 for a reported £10m plus £2.5m in add-ons; AC Milan, Inter and Roma are Serie A clubs and cannot satisfy a 'which Premier League club' stem."
+  },
+  {
+   "id": "q_d4becb",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which English club won the inaugural UEFA Cup in 1971-72, beating Wolves over two legs in the final?",
+   "newQ": "Which English club won the inaugural UEFA Cup in 1971-72, beating Wolves over two legs in the final?",
+   "oldCorrect": "Tottenham",
+   "newCorrect": "Tottenham",
+   "truth": "Tottenham won the inaugural 1971-72 UEFA Cup, beating Wolves 3-2 on aggregate in an all-English final; AC Milan, Fiorentina and Juventus are Italian and cannot answer 'which English club'."
+  },
+  {
+   "id": "q_a70965",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which goalkeeper played every single Champions League game for Real Madrid during their 2015-16 title run?",
+   "newQ": "Which goalkeeper started in goal for Real Madrid in the 2016 Champions League final win over Atlético Madrid?",
+   "oldCorrect": "Navas",
+   "newCorrect": "Keylor Navas",
+   "truth": "Navas did NOT play every Champions League game of the 2015-16 run: Real Madrid played 13 matches (6 group, 6 knockout, final), Wikipedia credits Navas with 12 appearances that campaign, and Kiko Casilla's page states he made two of his seven appearances 'in the group stage of the UEFA Champions League' — so the question's premise is factually false, even though Navas did start and win the final against Atlético."
+  },
+  {
+   "id": "q_73cf52",
+   "kind": "stale",
+   "oldQ": "What is the fastest goal ever scored in an international football match — 8.3 seconds for San Marino vs England in 1993?",
+   "newQ": "In 1993 San Marino scored against England after just 8.3 seconds — who scored it?",
+   "oldCorrect": "Davide Gualtieri",
+   "newCorrect": "Davide Gualtieri",
+   "truth": "Davide Gualtieri's goal for San Marino v England on 17 Nov 1993 was timed at 8.3 seconds and, per his Wikipedia article, 'remained the fastest World Cup goal scored in either qualifying or the finals, until Christian Benteke scored after 8.1 seconds for Belgium against Gibraltar on 10 October 2016' — Benteke's was also a full international, so the stem's 'fastest ever in an international match' premise is false."
+  },
+  {
+   "id": "q_73dd6b",
+   "kind": "stale",
+   "oldQ": "Which German striker scored 10 goals at a single World Cup (1970) — the last player to reach double digits in one tournament?",
+   "newQ": "Which German striker scored 10 goals at the 1970 World Cup?",
+   "oldCorrect": "Gerd Müller",
+   "newCorrect": "Gerd Müller",
+   "truth": "Gerd Müller did score 10 goals at the 1970 World Cup, but Kylian Mbappé scored 10 at the 2026 World Cup to win the Golden Boot (his second consecutive), so Müller is no longer the last player to reach double figures at a single tournament."
+  },
+  {
+   "id": "q_5f4126",
+   "kind": "eliminable_distractor",
+   "oldQ": "Who set a Champions League record by scoring in 9 consecutive group-stage matches for Manchester United in 2002-03?",
+   "newQ": "In 2002-03, which striker set a then-record by scoring in nine consecutive Champions League matches?",
+   "oldCorrect": "Ruud van Nistelrooy",
+   "newCorrect": "Ruud van Nistelrooy",
+   "truth": "Ruud van Nistelrooy did set the then-record by scoring in nine consecutive Champions League matches in 2002-03 (12 goals; UEFA's own '#UCLadvent' post says 'scored in a record 9 consecutive UCL games in 2002/03', and his Wikipedia article says '12 Champions League goals in nine consecutive matches'), but Manchester United's 2002-03 match tables show the nine scoring games included the two Real Madrid quarter-final legs, so 'group-stage matches' in the stem is inaccurate; the record has since been broken by Cristiano Ronaldo (11 consecutive, 2017-18)."
+  },
+  {
+   "id": "q_c03f53",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Canadian great finished as top scorer of the 2012 Olympic women's football tournament with 6 goals?",
+   "newQ": "Who finished as top scorer of the 2012 Olympic women's football tournament with 6 goals?",
+   "oldCorrect": "Christine Sinclair",
+   "newCorrect": "Christine Sinclair",
+   "truth": "Christine Sinclair (Canada) was the top scorer of the London 2012 Olympic women's tournament with 6 goals, ahead of Abby Wambach (USA, 5) and Melissa Tancredi (Canada, 4) / Carli Lloyd (USA, 4); Germany did not even qualify for the 2012 tournament, so Birgit Prinz was doubly impossible."
+  },
+  {
+   "id": "q_7db73d",
+   "kind": "eliminable_distractor",
+   "oldQ": "Which Amsterdam club is Feyenoord's great rival in 'De Klassieker'?",
+   "newQ": "Which club is Feyenoord's great rival in 'De Klassieker'?",
+   "oldCorrect": "Ajax",
+   "newCorrect": "Ajax",
+   "truth": "De Klassieker is the Ajax–Feyenoord fixture; Ajax are the Amsterdam club, Feyenoord from Rotterdam. PSV (Eindhoven), AZ (Alkmaar) and Twente (Enschede) are not Amsterdam clubs."
+  },
+  {
+   "id": "q_76c9b1",
+   "kind": "eliminable_distractor",
+   "oldQ": "Romario and Ronaldo both starred for PSV early in their careers. Which Brazilian, however, never played for the club?",
+   "newQ": "Which of these Brazilian stars never played for PSV Eindhoven?",
+   "oldCorrect": "Ronaldinho",
+   "newCorrect": "Ronaldinho",
+   "truth": "Ronaldinho never played for PSV — his senior clubs were Grêmio, Paris Saint-Germain, Barcelona, AC Milan, Flamengo, Atlético Mineiro, Querétaro and Fluminense. Romário (PSV 1988-93), Ronaldo (PSV 1994-96) and Alex (on loan at PSV from Chelsea, 2004-07, three Eredivisie titles) all did play there."
+  },
+  {
+   "id": "q_dcdb64",
+   "kind": "eliminable_distractor",
+   "oldQ": "Under which Swiss manager did Anderlecht win their 34th league title in 2017?",
+   "newQ": "Under which manager did Anderlecht win their 34th league title in 2017?",
+   "oldCorrect": "René Weiler",
+   "newCorrect": "René Weiler",
+   "truth": "Anderlecht won their record 34th Belgian league title in 2016-17 under Swiss coach René Weiler (Winterthur-born, appointed 1 July 2016, Belgian Manager of the Year 2016-17). Besnik Hasi (2014-16), Franky Vercauteren (2005-07 and 2019-20) and Vincent Kompany (2019-22) all managed Anderlecht but none won the 2017 title."
+  },
+  {
+   "id": "q_80c1c1",
+   "kind": "eliminable_distractor",
+   "oldQ": "Zvonimir Boban received a six-month ban in May 1990 that caused him to miss which tournament?",
+   "newQ": "Zvonimir Boban received a six-month ban from the Yugoslav FA for kicking a policeman during the Maksimir stadium riot. Which tournament did the ban cause him to miss?",
+   "oldCorrect": "1990 World Cup",
+   "newCorrect": "1990 World Cup",
+   "truth": "On 13 May 1990 at Maksimir, Boban kicked a policeman who was striking a Dinamo supporter; the Yugoslav FA gave him a six-month ban and he missed the 1990 World Cup in Italy (six-month figure corroborated by Football365, FourFourTwo and riot histories; Wikipedia confirms the suspension and the missed World Cup without stating a length)."
   }
  ],
  "skipped": [
@@ -794,11 +884,6 @@
    "kind": "ambiguous_stem"
   },
   {
-   "id": "q_40cd2c",
-   "reason": "confirmed but confidence=medium — Alex decides",
-   "kind": "self_answering"
-  },
-  {
    "id": "q_a3c7e5",
    "reason": "confirmed but confidence=medium — Alex decides",
    "kind": "ambiguous_stem"
@@ -854,9 +939,34 @@
    "kind": "ambiguous_stem"
   },
   {
-   "id": "q_cb07da",
-   "reason": "confirmed but confidence=medium — Alex decides",
+   "id": "q_ec870a",
+   "reason": "verifier REJECTED the flag — question is fine",
    "kind": "self_answering"
+  },
+  {
+   "id": "q_07a911",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "stale"
+  },
+  {
+   "id": "q_1088b1",
+   "reason": "confirmed, no complete fix proposed — human editorial call",
+   "kind": "eliminable_distractor"
+  },
+  {
+   "id": "q_aff3f8",
+   "reason": "confirmed, no complete fix proposed — human editorial call",
+   "kind": "stale"
+  },
+  {
+   "id": "q_9fc82a",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "stale"
+  },
+  {
+   "id": "q_37cbff",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "stale"
   }
  ],
  "hintsDropped": [
@@ -901,29 +1011,9 @@
    "newCorrect": "42"
   },
   {
-   "id": "q_63e291",
-   "oldCorrect": "Bayern Munich",
-   "newCorrect": "Aston Villa"
-  },
-  {
-   "id": "q_3ff8a6",
-   "oldCorrect": "Kane",
-   "newCorrect": "Harry Kane"
-  },
-  {
-   "id": "q_91885b",
-   "oldCorrect": "2002 Japan/Korea",
-   "newCorrect": "2002"
-  },
-  {
-   "id": "q_948b2e",
-   "oldCorrect": "61",
-   "newCorrect": "Feyenoord"
-  },
-  {
-   "id": "q_5c41dc",
-   "oldCorrect": "12",
-   "newCorrect": "Sweden"
+   "id": "q_9d6da9",
+   "oldCorrect": "DFB Pokal",
+   "newCorrect": "5-2"
   }
  ]
 }
