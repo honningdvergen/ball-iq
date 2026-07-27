@@ -8,6 +8,21 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 ---
 
+## ⏸️ WAITING ON ALEX — start here next session
+
+Nothing below was pushed. `main` is 6 commits ahead of origin; every change
+is local, reversible, and build-green.
+
+1. **Push to prod?** 6 commits: 89 bank corrections, 9 re-forged hints, the
+   MP reveal (inert), 2 doc updates. One word and they deploy.
+2. **89 held substitutions** — the one real editorial call. See the audit
+   section below.
+3. **Apply `v1_3_mp_reveal_picks.sql`** to light up the MP reveal.
+4. `VAPID_KEYS` still holds the truncated value — web push stays blocked.
+5. Play: name collision, then production access.
+
+---
+
 ## 🔴 NOW — Google Play launch (time-critical, 14-day test is finished)
 
 - [x] Production-access form **step 1 filled by Claude** 2026-07-25 (all four
@@ -69,9 +84,20 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
 
 - [x] **Scoreboard frozen until reveal** (`8af449a`) — scores no longer tick
       up mid-question and spoil the tension.
-- [ ] **Show what each opponent answered at reveal** — the other half of
-      Alex's reveal note, still open. The freeze landed; the per-opponent
-      answer display did not.
+- [x] **Show what each opponent answered at reveal** (`af7b7fc`) — BUILT,
+      LANDS INERT. Opponent avatars appear on the option they picked.
+- [ ] ⚠️ **ALEX — apply the migration to light it up:**
+      `supabase/migrations/v1_3_mp_reveal_picks.sql`. Until then the RPC
+      returns no `picks` and the UI renders exactly as before, so there is
+      no half-state. **This was never a UI job** — room_players stores
+      score/streak/answered_question (an INDEX), never the choice, so the
+      data did not exist. Picks go in a grant-less `room_answers` table
+      disclosed by the already-gated `reveal_question` RPC, because a
+      column on room_players would let a modified client poll opponents'
+      picks BEFORE answering.
+      Also fixed en route: `reveal_question` was skipped whenever
+      `question.correct` was embedded — i.e. in every room today — so that
+      RPC never actually fired in prod.
 - [ ] Rematch / Challenge buttons currently notify nobody.
 - [ ] MP stats robustness — needs a 2-device test first.
 - [x] Game-over payoff: podium, count-up, entrance choreography, 1v1 crown.
@@ -152,7 +178,8 @@ died to the usage limit — three runs, zero verdicts. Fixed by splitting them.
       good, take them; leaving 89 pointless questions live is its own cost.
 - [ ] **ALEX** — 19 medium-confidence + 3 no-clean-fix verdicts need
       editorial calls. See `.audit/needs-alex.json`.
-- [ ] Re-forge the 9 hints dropped because the answer genuinely changed.
+- [x] Re-forge the 9 hints dropped because the answer genuinely changed
+      (`9a526f2`) — rewritten from the verifiers' own sourced findings.
 - [ ] **Screen the remaining ~470 questions** never reached by the screener.
 - [ ] **Verify the 500 cosmetic flags** — untouched so far.
 - [ ] Build the two forge lessons above into the question pipeline.
