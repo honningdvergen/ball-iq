@@ -1,6 +1,6 @@
 # Ball IQ — the list
 
-**Last updated: 2026-07-25.** Single source of truth for what's in flight.
+**Last updated: 2026-07-27.** Single source of truth for what's in flight.
 `[ ]` = open · `[x]` = done · **ALEX** = needs you · **CLAUDE** = I do it.
 
 Claude: update this file whenever something lands, and re-read it when asked
@@ -54,20 +54,24 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
 - [x] **S-01** Skip tap target fixed (`93509a8`) — handlers were already
       identical; the control was ~41x62px (under 44pt/48dp) and unstyled, so
       near-misses read as dead. Now 48x88 with a pressed state.
-- [ ] **S-02** Stronger empty-grid preview before the first Footle guess.
+- [x] **S-02** Empty Footle grid made legible to first-timers (`f681a1f`).
 - [x] **S-03** Scroll now resets on every screen change (`93509a8`) — there
       was no scrollTo anywhere in App.jsx, so returning from a quiz kept the
       old scroll and pushed the daily cards below the fold.
-- [ ] **S-04** Guest "Set your name" inline instead of a full account wall —
-      removes friction exactly at share time.
+- [x] **S-04 CLOSED — no wall exists.** Verified end to end: Home's "Tap to
+      set your name" → Profile + nonce → the inline editor opens with no auth
+      check, and `saveName` handles guests explicitly ("Guests stay
+      local-only"). The only guest-specific UI is a *Save your progress*
+      promo card — a suggestion, not a gate. The tester read the promo as a
+      wall. Real signal about PERCEPTION, but nothing to fix in code.
 - [ ] **CLAUDE** — Watch real Clarity sessions and locate the actual drop-off.
-
 ## 🟡 NEXT — Multiplayer
 
-- [ ] **The reveal moment** (Alex's two notes are one job):
-      show what each opponent answered at reveal, and hold the score display
-      until reveal instead of ticking up instantly (it spoils the tension —
-      reuse the podium count-up).
+- [x] **Scoreboard frozen until reveal** (`8af449a`) — scores no longer tick
+      up mid-question and spoil the tension.
+- [ ] **Show what each opponent answered at reveal** — the other half of
+      Alex's reveal note, still open. The freeze landed; the per-opponent
+      answer display did not.
 - [ ] Rematch / Challenge buttons currently notify nobody.
 - [ ] MP stats robustness — needs a 2-device test first.
 - [x] Game-over payoff: podium, count-up, entrance choreography, 1v1 crown.
@@ -100,23 +104,41 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
       zero app changes) → **Phase 2** in-app i18n (large: App.jsx has
       hardcoded English throughout).
 
-## 🔬 BANK AUDIT — screening ~done, VERIFY IS THE NEXT RUN
+## 🔬 BANK AUDIT — VERIFYING, first 79 fixes SHIPPED
 
-**State 2026-07-27: 5,360 / 5,827 screened · 211 serious flags (35
-`wrong_answer`, 25 `multiple_correct`) · 500 cosmetic · 0 verified.**
+**State 2026-07-27 (live): ~18/36 batches · 108/211 verdicts · 89% of screener
+flags CONFIRMED real · 79 fixes applied (`1ba5a07`) · 19 medium-confidence
+awaiting Alex.**
 
-⚠️ **Structural lesson:** screen+verify were stages of ONE pipeline, so every
+⚠️ The screener **under**-flagged, not over-flagged. I predicted lots of false
+positives; the real false-positive rate is ~8-11%. Nearly 9 in 10 flags are
+genuine defects.
+
+**The dominant defect is a FALSE PREMISE IN THE STEM, not a wrong key** — 55 of
+79 had the right answer attached to an over-claiming stem ("the only side to…",
+"the first German since…"). These never fail a key-check, so no amount of
+answer-verification would have caught them. Worth building into the forge:
+*verify the stem's claims, not just the key.*
+
+**Applying:** `node scripts/audit-apply.mjs <journal.jsonl> [--write]`.
+Dry-run by default. Applies ONLY confirmed+high verdicts that carry a complete
+replacement AND whose live bank text still matches the snapshot they were
+judged from. Everything it refuses is printed with a reason.
+
+**Harvesting:** `node scripts/audit-harvest.mjs <journal.jsonl>` reconstructs
+findings from any run at any moment, so a limit kill can never waste the spend.
+
+⚠️ **The freeze was unnecessary** — verify agents read `.audit/vbatch/*.json`
+snapshots, never `src/questions.js`. The bank can be edited while the audit
+runs. (Cost us a day of not applying fixes.)
+
+**Structural lesson:** screen+verify were stages of ONE pipeline, so every
 resume spent the budget finishing the screen and the verify agents at the tail
 died to the usage limit — three runs, zero verdicts. Fixed by splitting them.
 
-**NEXT SESSION, RUN THIS FIRST:**
-`Workflow({ scriptPath: '.audit/verify-workflow.js' })` — a verify-only pass
-over the 211 serious flags, batched 6-up, ordered so `wrong_answer` and
-`multiple_correct` settle before stylistic flags. Input `.audit/vbatch/` is
-already built and committed.
-
-`node scripts/audit-harvest.mjs <journal.jsonl>` reconstructs findings from any
-run at any moment, so a limit kill can never waste the spend.
+- [ ] Re-run the applier as the remaining ~18 batches land.
+- [ ] **ALEX** — 19 medium-confidence verdicts need editorial calls.
+- [ ] Re-forge the 13 hints dropped because the answer changed.
 
 ⚠️ **No question gets edited on screener output alone.** The screener has been
 caught inventing a defect (claimed Gerd Müller scored in a 1973 European Cup
