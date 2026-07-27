@@ -32,6 +32,46 @@ This governs **how** new questions are generated (club expansion, forge runs, an
 - **Slower is correct.** Whatever agent count inline verification costs, spend it. Never trade the bar for speed. No club/batch ships until its questions are verified true — 25k football obsessives read these under the app's name, and wrong answers land in the App Store.
 - **Do NOT prioritise thin-history subjects** for volume (Saudi/US/expansion clubs founded post-2000): shallow genuine trivia forces the generator toward padding, which is where fabrication creeps in. History-rich subjects have real facts to draw on. See [[project_club_expansion]].
 
+## The two defects the forge does NOT catch (measured 2026-07-27)
+
+The full-bank audit web-verified all 211 serious flags. Only 5% were false
+positives — the screener was right, and these two classes were what it found.
+**Both pass every answer-key check, which is why they shipped.**
+
+1. **A FALSE PREMISE IN THE STEM, with the key correct.** 66 of 89 applied
+   corrections were this. The question asks the right thing and the keyed
+   answer is right — the *stem asserts something untrue on the way there*:
+   - "the only side to go unbeaten in the modern format" (Arsenal did it too)
+   - "the first German honoured since Beckenbauer" (Rummenigge '80/'81 and
+     Matthäus '90 came in between — Sammer was the first German DEFENDER)
+   - "before joining PSG that year" (he had joined four months earlier)
+   - "only the second time Bayern hadn't won it in a decade" (it was six)
+   **The examiner must fact-check every claim the stem MAKES, not just the
+   answer it asks for.** Superlatives ("only", "first", "biggest", "record")
+   and temporal clauses ("before joining", "since X") are where they hide.
+
+2. **SELF-ANSWERING questions.** 89 of 211 serious flags — 42%, the single
+   largest class. The stem gives the answer away: *"Italy's last appearance
+   was 2014 — how many years before 2026?"* Not wrong, just pointless: free
+   points that make the app feel cheap. **These cannot be corrected, only
+   REPLACED**, which makes them the most expensive class to ship. Add an
+   explicit gate: can this be answered from the stem alone, with no football
+   knowledge? If yes, reject before it reaches the bank.
+
+Tooling: `scripts/audit-harvest.mjs` reconstructs findings from a running
+workflow's journal; `scripts/audit-apply.mjs` applies only confirmed+high
+verdicts and refuses anything it cannot prove safe. Verify agents read
+`.audit/vbatch/*.json` SNAPSHOTS, not `src/questions.js` — so **the bank can
+be edited while an audit runs; no freeze is needed.**
+
+⚠️ **A hint is an eligibility criterion, not just UX.** `playerHintRows` in
+gen-seo-pages.mjs requires `x.hint`, so dropping one can push an SEO page
+under MIN_HINTS and fail the build (this actually happened — Lewandowski at
+14). When a correction changes the answer, re-forge the hint; don't just drop
+it. And compare answers by normalised containment, not string equality, or
+"Lewandowski" → "Robert Lewandowski" reads as a changed answer and bins a
+still-accurate hint.
+
 ## Standards
 
 - **Hints:** the SEO generator throws rather than emit a page for any category/club with fewer than `MIN_HINTS` (15) hint-bearing MCQs. Adding a club without hints breaks the build, by design.
