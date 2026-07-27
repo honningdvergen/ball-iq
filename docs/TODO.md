@@ -33,7 +33,8 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 - [x] 1.3.3 (48) submitted — FIFA/World Cup IP stripped, metadata scrubbed,
       reply sent to App Review.
-- [ ] Awaiting Apple's verdict.
+- [x] **1.3.3 APPROVED AND LIVE** (Alex confirmed 2026-07-27). The 5.2.1 /
+      FIFA saga is closed. Next version → call it **1.4.0**, not 1.3.4.
 - [ ] **ALEX** — Refresh screenshots once it clears (old ones predate the
       current home grid).
 
@@ -75,9 +76,13 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
 
 - [x] Native Footle reminders (7pm streak-saver + win-back tail) — riding
       the 1.3.3 review.
-- [ ] **ALEX** — Set `VAPID_KEYS` + `VAPID_SUBJECT` in Supabase → Edge
-      Functions → Secrets. Values are in `~/Desktop/vapid-setup.txt`.
-      Public key already known: `BE4CsPRg…FpY`. Unlocks web push.
+- [x] `VAPID_SUBJECT` saved correctly.
+- [ ] ⚠️ **ALEX** — `VAPID_KEYS` currently holds the WRONG value. Saved digest
+      is `f02568a4…` = the 158-char partial paste; the full 392-char key is
+      `1bcd0f4dee11eac3…`. Re-save under the same name to replace. ALWAYS
+      verify a secret by digest, never by eye — a truncated signing key fails
+      silently at SEND time, weeks later, as an opaque signature error.
+      (Claude cannot type secrets into fields; clipboard-arming is the assist.)
 - [ ] **CLAUDE** — Build web push once unlocked (table, edge function,
       client opt-in, sw handlers). Plan: `docs/growth/web-push-plan.md`.
 - [ ] **CLAUDE** — Transfer Trail screen. Logic + 8 verified careers are
@@ -94,6 +99,33 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
       hreflang + sitemap (big search volume, Spanish clubs already covered,
       zero app changes) → **Phase 2** in-app i18n (large: App.jsx has
       hardcoded English throughout).
+
+## 🔬 BANK AUDIT — screening ~done, VERIFY IS THE NEXT RUN
+
+**State 2026-07-27: 5,360 / 5,827 screened · 211 serious flags (35
+`wrong_answer`, 25 `multiple_correct`) · 500 cosmetic · 0 verified.**
+
+⚠️ **Structural lesson:** screen+verify were stages of ONE pipeline, so every
+resume spent the budget finishing the screen and the verify agents at the tail
+died to the usage limit — three runs, zero verdicts. Fixed by splitting them.
+
+**NEXT SESSION, RUN THIS FIRST:**
+`Workflow({ scriptPath: '.audit/verify-workflow.js' })` — a verify-only pass
+over the 211 serious flags, batched 6-up, ordered so `wrong_answer` and
+`multiple_correct` settle before stylistic flags. Input `.audit/vbatch/` is
+already built and committed.
+
+`node scripts/audit-harvest.mjs <journal.jsonl>` reconstructs findings from any
+run at any moment, so a limit kill can never waste the spend.
+
+⚠️ **No question gets edited on screener output alone.** The screener has been
+caught inventing a defect (claimed Gerd Müller scored in a 1973 European Cup
+final Bayern never played in). Only `confirmed_high` verdicts are safe to
+apply; everything else is Alex's call. The worst outcome is "fixing" a correct
+question into a wrong one.
+
+Alex's standing bar: question quality is EVERYTHING, target is a definitive
+ZERO wrong answers, resources authorised.
 
 ## ⚪ CONTENT & BACKLOG
 

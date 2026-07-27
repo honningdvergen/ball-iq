@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_fae405",
+  "kind": "self_answering",
+  "claim": "The stem states the opening goal of France's 2018 final was an own goal, and Mandžukić is the only Croatia player among four options (Griezmann, Pogba, Mbappé are all French), so an own goal credited to France can only be him — solvable by logic alone.",
+  "q": "France have won the World Cup twice — who scored the opening goal of their 2018 final against Croatia (an own goal in the 18th minute)?",
+  "o": [
+   "Griezmann",
+   "Pogba",
+   "Mbappé",
+   "Mandžukić"
+  ],
+  "answer": "Mandžukić",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2d9be",
+  "kind": "self_answering",
+  "claim": "The stem asks which ASIAN federation gets 8 spots, and AFC is the only Asian confederation among the four options (CAF=Africa, CONMEBOL=South America, UEFA=Europe), so the answer is forced by the stem's own qualifier without knowing the allocation.",
+  "q": "Which Asian federation gets the most World Cup spots at 2026 — with 8 places?",
+  "o": [
+   "AFC",
+   "CAF",
+   "CONMEBOL",
+   "UEFA"
+  ],
+  "answer": "AFC",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e8d2ff",
+  "kind": "self_answering",
+  "claim": "The stem credits the two late goals to Zinedine Zidane, so anyone who knows Zidane is French answers 'France' without knowing the Euro 2004 match at all.",
+  "q": "Which country beat England 2-1 at Euro 2004 with two late Zinedine Zidane goals after a David James error?",
+  "o": [
+   "Portugal",
+   "Switzerland",
+   "Croatia",
+   "France"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e409a4",
+  "kind": "self_answering",
+  "claim": "The stem says Bellingham won LA LIGA, which is by definition the Spanish league, so 'Spain' is entailed by the stem regardless of any knowledge of Bellingham.",
+  "q": "Jude Bellingham won the 2024 Champions League and La Liga in his debut season at a club in which country?",
+  "o": [
+   "England",
+   "Germany",
+   "Italy",
+   "Spain"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d3d089",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"15-time Champions League winners\" uniquely identifies Real Madrid, so the answer is derivable from the stem alone without knowing anything about Arsenal's 2024-25 quarter-final.",
+  "q": "Which 15-time Champions League winners did Arsenal knock out in the 2024-25 quarter-finals?",
+  "o": [
+   "PSG",
+   "Bayern Munich",
+   "Atlético",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_81306e",
+  "kind": "self_answering",
+  "claim": "The stem already states the 2016 final was 1-1 after 120 minutes, which by itself eliminates 'a golden goal', 'a late extra-time winner' and 'an away-goals ruling' (impossible in a single-leg neutral-venue final), leaving the penalty shootout as the only survivable option without knowing the fact.",
+  "q": "Real Madrid beat Atletico Madrid in the 2016 UCL final — what was the result decided by, after a 1-1 draw across 120 minutes?",
+  "o": [
+   "A penalty shootout",
+   "A golden goal",
+   "A late extra-time winner",
+   "An away-goals ruling"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

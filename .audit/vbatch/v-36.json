@@ -1,0 +1,17 @@
+[
+ {
+  "id": "q_07a911",
+  "kind": "stale",
+  "claim": "The Supercoppa Italiana stopped being a two-club match: from the January 2024 edition onward it is a four-team Final Four (league champion, league runner-up, Coppa Italia winner, Coppa Italia runner-up), so the stem's premise \"contested between which two clubs each year\" and the keyed answer are no longer true.",
+  "q": "The Supercoppa Italiana is contested between which two clubs each year?",
+  "o": [
+   "The two highest league finishers",
+   "The league champion and cup winner",
+   "The two cup finalists",
+   "The top two in the league"
+  ],
+  "answer": "The league champion and cup winner",
+  "cat": "SerieA",
+  "diff": "medium"
+ }
+]

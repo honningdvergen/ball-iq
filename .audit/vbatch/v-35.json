@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_1088b1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for the \"Swiss businessman\" who co-founded Torino, but all three distractors (Vittorio Pozzo, Edoardo Agnelli, Enrico Marone) are unmistakably Italian, so Alfred Dick is selectable purely on nationality without knowing the club's founding history.",
+  "q": "Torino was co-founded by which Swiss businessman?",
+  "o": [
+   "Vittorio Pozzo",
+   "Edoardo Agnelli",
+   "Alfred Dick",
+   "Enrico Marone"
+  ],
+  "answer": "Alfred Dick",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73cf52",
+  "kind": "stale",
+  "claim": "The stem asserts Gualtieri's 8.3s (San Marino v England, 1993) is 'the fastest goal ever scored in an international football match', but Christian Benteke scored after 8.1 seconds for Belgium v Gibraltar on 10 Oct 2016, which superseded it — the premise is already factually wrong.",
+  "q": "What is the fastest goal ever scored in an international football match — 8.3 seconds for San Marino vs England in 1993?",
+  "o": [
+   "Marcello Lippi",
+   "Davide Gualtieri",
+   "Luigi Gasperini",
+   "Marco Macina"
+  ],
+  "answer": "Davide Gualtieri",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aff3f8",
+  "kind": "stale",
+  "claim": "'Won the Bundesliga title seven times as players' reads as a record/uniqueness claim that is now false — Thomas Müller and Manuel Neuer have 12+ Bundesliga titles each and Philipp Lahm 8, so option 'Lahm and Müller' and 'Neuer and Müller' are players who have won it more than seven times, making the intended distinction unstated and outdated.",
+  "q": "Which two players have won the Bundesliga title seven times as players — both with Bayern Munich?",
+  "o": [
+   "Lahm and Müller",
+   "Augenthaler and Matthäus",
+   "Neuer and Müller",
+   "Kahn and Effenberg"
+  ],
+  "answer": "Augenthaler and Matthäus",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73dd6b",
+  "kind": "stale",
+  "claim": "The clause 'the last player to reach double digits in one tournament' is now factually wrong — Kylian Mbappé scored 10 goals at the 2026 World Cup to win the Golden Boot.",
+  "q": "Which German striker scored 10 goals at a single World Cup (1970) — the last player to reach double digits in one tournament?",
+  "o": [
+   "Uwe Seeler",
+   "Gerd Müller",
+   "Jürgen Klinsmann",
+   "Karl-Heinz Rummenigge"
+  ],
+  "answer": "Gerd Müller",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9fc82a",
+  "kind": "stale",
+  "claim": "Portman Road's Ipswich Town were relegated from the Premier League in May 2025, so the stem's 'Which Premier League club' qualifier is already factually wrong as of 2026 (and none of the four options is currently a PL club).",
+  "q": "Which Premier League club's ground is called Portman Road?",
+  "o": [
+   "Ipswich Town",
+   "Norwich City",
+   "Colchester United",
+   "Peterborough"
+  ],
+  "answer": "Ipswich Town",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_37cbff",
+  "kind": "stale",
+  "claim": "CONCACAF had 6 direct 2026 slots (USA, Canada, Mexico, Panama, Curaçao, Haiti) but also entered Jamaica and Suriname into the March 2026 inter-confederation playoffs — if either won a spot the true total is 7 or 8, so the keyed '6' must be re-verified against the final 48-team field.",
+  "q": "How many CONCACAF teams will compete at the 2026 World Cup including the three hosts?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "6",
+  "cat": "WorldCup",
+  "diff": "hard"
+ }
+]

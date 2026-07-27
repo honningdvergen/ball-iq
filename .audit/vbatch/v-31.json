@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_eebe13",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for an 'Atletico defender' but none of the three distractors is a defender — Diego Costa (striker), Arda Turan (midfielder) and Griezmann (forward, and not even an Atlético player in 2013-14, he was at Real Sociedad) — so Godín is the only option satisfying the stem's own qualifier and the question is solvable without knowing the goal.",
+  "q": "Atlético Madrid's famous 2013-14 La Liga title was clinched with a 1-1 draw at Camp Nou — which Atletico defender headed the equaliser?",
+  "o": [
+   "Diego Costa",
+   "Griezmann",
+   "Godín",
+   "Arda Turan"
+  ],
+  "answer": "Godín",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_79d628",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Colombian teammate' qualifier eliminates all three distractors (Alex Sandro and Douglas Costa are Brazilian, Dybala is Argentine), so Cuadrado is selectable purely from nationality without knowing the shirt-number story.",
+  "q": "When Cristiano Ronaldo signed for Juventus in 2018, which Colombian teammate gave up his #7 shirt to allow CR7 to keep his iconic number?",
+  "o": [
+   "Juan Cuadrado",
+   "Alex Sandro",
+   "Douglas Costa",
+   "Paulo Dybala"
+  ],
+  "answer": "Juan Cuadrado",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8ae49c",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a Premier League record but Buffon, Casillas and Neuer never played a single Premier League match, so Van der Sar is the only option that satisfies the competition qualifier.",
+  "q": "Which goalkeeper holds the Premier League record for not conceding a goal — 1,311 minutes in 2008-09?",
+  "o": [
+   "Van der Sar",
+   "Buffon",
+   "Casillas",
+   "Neuer"
+  ],
+  "answer": "Van der Sar",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3ab9b8",
+  "kind": "eliminable_distractor",
+  "claim": "The stem requires a club that has NEVER won the European Cup/Champions League, but all three distractors have won it (Juventus 1985/1996, Benfica 1961/1962, Bayern six times), so Atlético is reachable by elimination without knowing anything about runner-up counts.",
+  "q": "Which club has been runner-up in the Champions League / European Cup the most times without ever winning it?",
+  "o": [
+   "Juventus",
+   "Benfica",
+   "Atlético",
+   "Bayern Munich"
+  ],
+  "answer": "Atlético",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9d6da9",
+  "kind": "eliminable_distractor",
+  "claim": "The stem names Borussia Dortmund and Bayern Munich, so all three distractors (Coppa Italia, Copa del Rey, FA Cup) are non-German competitions the two clubs cannot enter — the DFB-Pokal is pickable purely by knowing Dortmund is German.",
+  "q": "Which cup did Jürgen Klopp win with Borussia Dortmund in 2012, beating Bayern Munich 5-2 in the final?",
+  "o": [
+   "DFB Pokal",
+   "Coppa Italia",
+   "Copa del Rey",
+   "FA Cup"
+  ],
+  "answer": "DFB Pokal",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b47cdf",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which Arsenal MANAGER was involved in Pizzagate, but three of the four options (Vieira, Campbell, Edu) are players, so Wenger is the only option satisfying the stem's own qualifier and the question can be answered with zero knowledge of the 2004 incident.",
+  "q": "The 'Pizzagate' incident after Arsenal's defeat to Man United in 2004 involved which Arsenal manager?",
+  "o": [
+   "Vieira",
+   "Campbell",
+   "Wenger",
+   "Edu"
+  ],
+  "answer": "Wenger",
+  "cat": "PL",
+  "diff": "easy"
+ }
+]

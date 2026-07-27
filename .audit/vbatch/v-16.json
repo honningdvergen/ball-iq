@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2bcdeb",
+  "kind": "self_answering",
+  "claim": "The Copa del Rey is the Spanish domestic cup, and Barcelona is the only Spanish club among the options (Cruzeiro, PSV, Inter), so the answer is deducible from the competition name alone without knowing anything about Ronaldo.",
+  "q": "Which club did Ronaldo R9 win the Copa del Rey with before his World Cup debut?",
+  "o": [
+   "Cruzeiro",
+   "PSV",
+   "Barcelona",
+   "Inter"
+  ],
+  "answer": "Barcelona",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_63e291",
+  "kind": "self_answering",
+  "claim": "The stem asks which club Rummenigge captained in the 1982 European Cup final while explicitly stating in the same sentence that 'Bayern lost 1-0 to English underdogs', so the answer 'Bayern Munich' is given away in the question text.",
+  "q": "Karl-Heinz Rummenigge captained which club in the 1982 European Cup final — a game Bayern lost 1-0 to English underdogs?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Mönchengladbach",
+   "Hamburg",
+   "Werder Bremen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ad80d5",
+  "kind": "self_answering",
+  "claim": "The stem says Man City lost 'at Stamford Bridge', which is Chelsea's home ground, so the keyed answer Chelsea is derivable from the stem alone without knowing anything about the 2019-20 title race.",
+  "q": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club at Stamford Bridge?",
+  "o": [
+   "Man City",
+   "Arsenal",
+   "Chelsea",
+   "Leicester"
+  ],
+  "answer": "Chelsea",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3ff8a6",
+  "kind": "self_answering",
+  "claim": "The stem says the record holder overtook Wayne Rooney in March 2023, which logically eliminates all three distractors (Rooney himself, plus Bobby Charlton and Gary Lineker, who both retired decades earlier and ranked below Rooney), leaving Kane as the only option consistent with the stem.",
+  "q": "Which England player holds the record for most international goals (overtaking Wayne Rooney in March 2023)?",
+  "o": [
+   "Bobby Charlton",
+   "Gary Lineker",
+   "Kane",
+   "Rooney"
+  ],
+  "answer": "Kane",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_91885b",
+  "kind": "self_answering",
+  "claim": "The correct option is the only one naming two nations ('2002 Japan/Korea' vs '1998 France', '2006 Germany', '2010 South Africa'), so a player with zero knowledge can pick the answer purely from the option formatting for a question about the first jointly hosted World Cup.",
+  "q": "Which was the first World Cup to be jointly hosted by two nations?",
+  "o": [
+   "1998 France",
+   "2002 Japan/Korea",
+   "2010 South Africa",
+   "2006 Germany"
+  ],
+  "answer": "2002 Japan/Korea",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9237c6",
+  "kind": "self_answering",
+  "claim": "The stem says \"host country\" of the 2022 World Cup and \"World Cup debut\" — only Qatar hosted 2022, and Saudi Arabia, UAE and Iran had all appeared at previous World Cups, so both qualifiers eliminate every distractor without the player knowing the lost-all-three record.",
+  "q": "Which nation's 2022 World Cup debut ended with the unwanted record of being the first host country ever to lose all three group-stage matches?",
+  "o": [
+   "Saudi Arabia",
+   "Qatar",
+   "UAE",
+   "Iran"
+  ],
+  "answer": "Qatar",
+  "cat": "WorldCup",
+  "diff": "easy"
+ }
+]

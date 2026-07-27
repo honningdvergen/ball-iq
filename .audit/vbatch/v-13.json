@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_8b4eef",
+  "kind": "ambiguous_stem",
+  "claim": "No documented \"Pepe elbows Fàbregas\" El Clásico incident exists — the well-known Pepe/Fàbregas flashpoint (March 2014) was a forehead-to-forehead nudge with both players booked for simulation, while the famous Clásico elbow is Marcelo's on Messi (2017, not an option); the stem's description doesn't match its keyed answer's actual incident and Ramos is equally defensible as \"the Real Madrid player in a major Clásico controversy\".",
+  "q": "Which Real Madrid player famously elbowed Cesc Fàbregas in El Clásico — leading to a major controversy?",
+  "o": [
+   "Ramos",
+   "Pepe",
+   "Arbeloa",
+   "Xabi Alonso"
+  ],
+  "answer": "Pepe",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c03d4",
+  "kind": "ambiguous_stem",
+  "claim": "Liverpool's only notable 'unbeaten home league run' is the 68-game run that Burnley (a listed distractor) ended in January 2021; the April 2017 Crystal Palace win at Anfield ended only a 6-match home run that itself began after Liverpool lost at home to Swansea in January 2017, so the stem's premise is inaccurate and points at the wrong famous fact.",
+  "q": "Liverpool's unbeaten home league run ended at Anfield in 2017 — which club ended it?",
+  "o": [
+   "Man City",
+   "Crystal Palace",
+   "Burnley",
+   "Chelsea"
+  ],
+  "answer": "Crystal Palace",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9f3f7e",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which manager famously refused to shake José Mourinho's hand after a match?\" gives no match, season or club anchor, and multiple managers (Wenger 2015 Community Shield, but also Benítez and others in various frosty post-match incidents) can be argued, so nothing pins Wenger as the unique answer.",
+  "q": "Which manager famously refused to shake José Mourinho's hand after a match?",
+  "o": [
+   "Benitez",
+   "Wenger",
+   "Guardiola",
+   "Pellegrini"
+  ],
+  "answer": "Wenger",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9f34d",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which player scored a famous rabona assist in a Coppa Italia game\" is self-contradictory (an assist is not scored) and names no year, club or opponent, so the moment cannot be pinned — Lamela and Del Piero have equally famous rabona moments and no stated qualifier rules them out.",
+  "q": "Which player scored a famous rabona assist in a Coppa Italia game — one of football's most technical moments?",
+  "o": [
+   "Del Piero",
+   "Erik Lamela",
+   "Pablo Aimar",
+   "Di María"
+  ],
+  "answer": "Di María",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08480c",
+  "kind": "ambiguous_stem",
+  "claim": "Tottenham did not sell White Hart Lane — they demolished and rebuilt on the same site — whereas West Ham genuinely sold the Boleyn Ground to developers, so the stem's 'sold their ground' clause points at a different option than the key.",
+  "q": "Which Premier League club sold their ground and moved into a temporary home for two seasons while building a new stadium?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "West Ham",
+   "Leicester"
+  ],
+  "answer": "Tottenham",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c842a2",
+  "kind": "ambiguous_stem",
+  "claim": "'During the 2020s' is undefined at the start: counting finals played in calendar years 2020-2025 gives 5 clubs (Bayern, Chelsea, Real Madrid, Man City, PSG) but counting seasons from 2020-21 gives 4, and both 5 and 4 are options.",
+  "q": "How many different clubs had won the Champions League during the 2020s through the 2024-25 final?",
+  "o": [
+   "2",
+   "3",
+   "5",
+   "4"
+  ],
+  "answer": "5",
+  "cat": "UCL",
+  "diff": "hard"
+ }
+]

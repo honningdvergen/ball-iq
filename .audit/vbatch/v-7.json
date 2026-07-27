@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_7da53e",
+  "kind": "multiple_correct",
+  "claim": "VfB Stuttgart is also commonly nicknamed 'Die Roten' in Germany (alongside 'Die Schwaben'), so the Stuttgart option is as defensible as Bayern Munich.",
+  "q": "Which club is nicknamed 'Die Roten' (The Reds) in Germany?",
+  "o": [
+   "RB Leipzig",
+   "Cologne",
+   "Bayern Munich",
+   "Stuttgart"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b70c07",
+  "kind": "multiple_correct",
+  "claim": "Stem asks which club Wenger managed \"before Arsenal\" but he managed Nancy (1984-87) and Monaco (1987-94) as well as Nagoya Grampus Eight (1995-96) — three of the four options are literally correct; the stem needs \"immediately before\" (as the near-duplicate q_7cd6ad does for Henry).",
+  "q": "Arsène Wenger managed which club before Arsenal?",
+  "o": [
+   "Strasbourg",
+   "Grampus Eight",
+   "Monaco",
+   "Nancy"
+  ],
+  "answer": "Grampus Eight",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_abcc4e",
+  "kind": "multiple_correct",
+  "claim": "Cruyff also signed Hristo Stoichkov (1990, CSKA Sofia) and Michael Laudrup (1989, Juventus) as Barcelona manager — both are forwards fitting the stem's 'legendary striker signed by Cruyff', so only the unsourced quote separates them from the keyed Romário.",
+  "q": "Which legendary striker did Johan Cruyff sign for Barcelona when he was manager — famously saying 'I always buy the player, not the name'?",
+  "o": [
+   "Romário",
+   "Ronaldo",
+   "Stoichkov",
+   "Laudrup"
+  ],
+  "answer": "Romário",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_127455",
+  "kind": "multiple_correct",
+  "claim": "Derby's 11-point 2007-08 season had two managers: Billy Davies was in charge from the opening day until 26 Nov 2007 (including Derby's only win of the season, 1-0 v Newcastle) and Paul Jewell took over from 28 Nov 2007, so \"who managed Derby County to their record-low 11-point season\" is defensibly answered by either name.",
+  "q": "Who managed Derby County to their record-low 11-point Premier League season in 2007-08?",
+  "o": [
+   "Paul Jewell",
+   "Billy Davies",
+   "Phil Brown",
+   "Steve Bruce"
+  ],
+  "answer": "Paul Jewell",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_20e363",
+  "kind": "multiple_correct",
+  "claim": "Two Spain players missed in the Euro 96 shootout — Hierro hit the crossbar with Spain's first penalty and Nadal was saved by Seaman — so 'Hierro' is also a defensible answer to 'which Spain player missed'.",
+  "q": "England and Spain drew 0-0 in their Euro 1996 quarter-final at Wembley — England won on penalties after which Spain player missed the crucial spot-kick?",
+  "o": [
+   "Hierro",
+   "Nadal",
+   "Amor",
+   "Belsué"
+  ],
+  "answer": "Nadal",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5172f7",
+  "kind": "multiple_correct",
+  "claim": "Real Madrid's 1,000th European Cup/Champions League goal is credited to Benzema (Nov 2021, count including qualifiers) by some outlets and to Toni Kroos vs Inter (count excluding qualifiers) by others — both are options.",
+  "q": "Real Madrid became the first club to reach 1,000 goals in European Cup / Champions League history in 2021 — who scored their landmark strike?",
+  "o": [
+   "Karim Benzema",
+   "Vinícius Júnior",
+   "Luka Modrić",
+   "Toni Kroos"
+  ],
+  "answer": "Karim Benzema",
+  "cat": "UCL",
+  "diff": "hard"
+ }
+]

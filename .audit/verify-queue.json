@@ -1,0 +1,3167 @@
+[
+ {
+  "id": "q_271809",
+  "kind": "wrong_answer",
+  "claim": "The key (Dortmund) is right, but the stem's premise is factually false: Bayern Munich failed to win the Bundesliga in six of the ten seasons before 2011-12 (Dortmund 2002, Werder 2004, Stuttgart 2007, Wolfsburg 2009, Dortmund 2011, Dortmund 2012), not once — so 2011-12 was not 'only the second time Bayern hadn't won it in a decade'.",
+  "q": "Which club won the Bundesliga in 2011-12 — only the second time Bayern Munich hadn't won it in a decade?",
+  "o": [
+   "Schalke",
+   "Dortmund",
+   "Leverkusen",
+   "RB Leipzig"
+  ],
+  "answer": "Dortmund",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a2960",
+  "kind": "wrong_answer",
+  "claim": "Messi's 2015 Copa del Rey final goal was a genuine solo run — he collected the ball himself near the halfway line and beat four Athletic players, so no assist is credited to anyone (FC Barcelona's and BBC's accounts describe it as an unassisted solo goal); keying 'Iniesta' as the assister is unsupported and contradicts the stem's own word 'solo'.",
+  "q": "Who assisted Lionel Messi's solo goal against Athletic Bilbao in the 2015 Copa del Rey final?",
+  "o": [
+   "Suárez",
+   "Neymar",
+   "Xavi",
+   "Iniesta"
+  ],
+  "answer": "Iniesta",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9d9713",
+  "kind": "wrong_answer",
+  "claim": "The 'El Niño' nickname at Atlético Madrid is documented for Fernando Torres, not for Kiko (Francisco Narváez), who was 23 in the 1995-96 double season and is not commonly recorded under that nickname — the keyed answer's defining qualifier appears to be misattributed.",
+  "q": "Atletico Madrid won La Liga in 1996 — who was their striker nicknamed 'El Niño' (The Kid)?",
+  "o": [
+   "José Luis Caminero",
+   "Kiko",
+   "Penev",
+   "Christian Vieri"
+  ],
+  "answer": "Kiko",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_07decd",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: 42 is only the record for a 38-game season — Crystal Palace were relegated with 49 points in 1992-93, the actual highest total for a relegated club in Premier League history, so taken literally the stem's qualifier does not describe West Ham (and Palace is not an option).",
+  "q": "Which club was relegated with the highest points total (42) in Premier League history in 2002-03?",
+  "o": [
+   "Sunderland",
+   "Bolton",
+   "West Ham",
+   "Leeds"
+  ],
+  "answer": "West Ham",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6580f7",
+  "kind": "wrong_answer",
+  "claim": "The stem asks which MANAGER said it, but the keyed answer Alan Hansen was never a manager — he was a BBC pundit and ex-player, while three of the four options (Atkinson, Clough, Hill) actually did manage clubs; the quote is also misrendered ('We will win nothing with kids' vs the actual 'You can't win anything with kids').",
+  "q": "Which manager famously said 'We will win nothing with kids' about Man United's 1995 youth team?",
+  "o": [
+   "Ron Atkinson",
+   "Alan Hansen",
+   "Brian Clough",
+   "Jimmy Hill"
+  ],
+  "answer": "Alan Hansen",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_55c5ab",
+  "kind": "wrong_answer",
+  "claim": "The Serie A record for most consecutive appearances belongs to Dino Zoff (332 straight league games for Juventus, 1972-83), not Javier Zanetti; Zanetti's actual Serie A record is most appearances by a foreign player (615).",
+  "q": "Javier Zanetti holds which record in Serie A?",
+  "o": [
+   "Most goals",
+   "Most red cards",
+   "Most consecutive appearances",
+   "Most assists"
+  ],
+  "answer": "Most consecutive appearances",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_06a281",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier is false: Diego Milito's two goals in the 2010 UCL final vs Bayern were both close-range finishes inside the box (a tap-in from Sneijder's pass on 35', and a one-on-one after beating van Buyten on 70') — neither was a 'stunning long-range goal', so the keyed answer contradicts the stem's own description.",
+  "q": "Who scored a stunning long-range goal for Inter Milan in the 2010 UCL final vs Bayern Munich?",
+  "o": [
+   "Sneijder",
+   "Milito",
+   "Zanetti",
+   "Eto'o"
+  ],
+  "answer": "Milito",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f097bb",
+  "kind": "wrong_answer",
+  "claim": "In Arsenal 2-4 Norwich on 15 August 1992 the Arsenal goals were Steve Bould (28') and Kevin Campbell (39') — one each, and Ian Wright did not score; the keyed answer 'Wright' is wrong and the stem's premise that an Arsenal striker 'scored twice' is also false (it was Mark Robins who scored twice, for Norwich). Bergkamp is additionally impossible (joined Arsenal 1995).",
+  "q": "Which striker scored twice on the Premier League's opening day for Arsenal in their 4-2 loss to Norwich on 15 August 1992?",
+  "o": [
+   "Wright",
+   "Bergkamp",
+   "Merson",
+   "Kevin Campbell"
+  ],
+  "answer": "Wright",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_24d934",
+  "kind": "wrong_answer",
+  "claim": "Andy Cole was not the second player to reach 100 Premier League goals — Les Ferdinand passed 100 late in 1996-97 (his final Newcastle season) and Ian Wright during 1997-98, and Cole's 100th is documented around the end of 1998-99 rather than February 1999, so the stem's premise is false and no listed option is the true 'second player'.",
+  "q": "Who was the second player (after Alan Shearer) to reach 100 Premier League career goals — doing so for Manchester United in February 1999?",
+  "o": [
+   "Andy Cole",
+   "Dwight Yorke",
+   "Sheringham",
+   "Giggs"
+  ],
+  "answer": "Andy Cole",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2b9731",
+  "kind": "wrong_answer",
+  "claim": "Togo was never disqualified from 2010 World Cup qualification for fielding an ineligible player — the only country excluded from that cycle was Ethiopia (option 3), and that was for FIFA suspending the Ethiopian FA over federation/government interference in Sept 2008, not player eligibility; the ineligible-player disqualifications (Cape Verde, Ethiopia) both belong to the 2014 cycle.",
+  "q": "Which country was disqualified from the 2010 World Cup qualification for fielding an ineligible player?",
+  "o": [
+   "Togo",
+   "Ivory Coast",
+   "Ethiopia",
+   "Bahrain"
+  ],
+  "answer": "Togo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_973343",
+  "kind": "wrong_answer",
+  "claim": "Jimmy Greaves was not the FIRST to score 100 top-flight goals for two different English clubs — David Jack scored 144 First Division goals for Bolton (1920-28) and 113 for Arsenal (1928-34), completing the feat roughly 30 years before Greaves (Chelsea 124, Spurs 220).",
+  "q": "Who was the first player to score 100 top-flight goals for two different English clubs?",
+  "o": [
+   "Jimmy Greaves",
+   "Alan Shearer",
+   "Les Ferdinand",
+   "Ian Rush"
+  ],
+  "answer": "Jimmy Greaves",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a03ae6",
+  "kind": "wrong_answer",
+  "claim": "No goalkeeper has ever won the Premier League Player of the Season award (winners run Shearer 1994-95 through Salah/Foden in the 2020s, with Van Dijk and Dias the only defenders), so the premise is false and Peter Schmeichel — who won Player of the Month awards but never the season award, nor the PFA/FWA equivalents — is not a correct key.",
+  "q": "Who was the first goalkeeper to be named Premier League Player of the Season?",
+  "o": [
+   "Schmeichel",
+   "Seaman",
+   "Van der Sar",
+   "David James"
+  ],
+  "answer": "Schmeichel",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ef7959",
+  "kind": "wrong_answer",
+  "claim": "Keyed answer 'Athletic Bilbao' is wrong — Wikipedia's La Liga records state the first team to score 100+ league goals in a season was Valencia in 1941-42 (111 in 34 matches); Athletic Bilbao's 1930-31 LEAGUE tally was 73 goals in 18 matches (their oft-quoted 126/137 figures are all-competitions totals including regional leagues), and Valencia is offered as a distractor.",
+  "q": "Which La Liga club was the first to score 100 league goals in a single season?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Valencia",
+   "Athletic Bilbao"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b13a4c",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false — Drogba did not score in Chelsea's 2011-12 quarter-final against Benfica (scorers: Kalou; Lampard pen, Meireles), so no player scored 'in every round' of that campaign; Drogba scored in the group stage, R16, semi-final and final only.",
+  "q": "Which player scored in every round of the 2011-12 Champions League for Chelsea — including the final?",
+  "o": [
+   "Lampard",
+   "Drogba",
+   "Torres",
+   "Ashley Cole"
+  ],
+  "answer": "Drogba",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_687da2",
+  "kind": "wrong_answer",
+  "claim": "The stem asks for the Italian club with the most players who won the Ballon d'Or while at the club, but Juventus (Sívori 1961, Rossi 1982, Platini 1983/84/85, Baggio 1993, Zidane 1998, Nedvěd 2003 — 6 players, 8 awards) at minimum equals AC Milan (Rivera, Gullit, Van Basten, Weah, Shevchenko, Kaká — 6 players, 8 awards) and Juventus is not even an option, so the keyed absolute superlative 'AC Milan' is not defensible.",
+  "q": "Which Italian club has produced the most players who won the Ballon d'Or while at the club?",
+  "o": [
+   "AC Milan",
+   "Torino",
+   "Inter",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_747d9a",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is wrong: Juventus's Conte-then-Allegri run from 2011-12 to 2018-19 is eight consecutive Serie A titles (Conte 3, Allegri 5), not 'seven consecutive titles from 2012 to 2019' — the wider run was nine in a row through 2019-20 under Sarri.",
+  "q": "Who managed Juventus to their seven consecutive Serie A titles from 2012 to 2019?",
+  "o": [
+   "Conte then Allegri",
+   "Allegri throughout",
+   "Lippi then Allegri",
+   "Conte throughout"
+  ],
+  "answer": "Conte then Allegri",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_898c57",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is factually false: Uruguay are 15-time Copa América champions (the all-time record holders), not four-time — the keyed answer '2 World Cups' is right but the question misinforms players about Uruguay's Copa América haul.",
+  "q": "Uruguay are four-time Copa América champions — how many World Cups have they won?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": "2",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4fbbe0",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: Kane's 36 goals in 2023-24 is NOT 'a Bayern Munich single-season record for a foreign player' — Robert Lewandowski (Polish, i.e. foreign) scored 41 Bundesliga goals for Bayern in 2020-21; Kane's actual record was most goals in a debut Bundesliga season.",
+  "q": "Which Englishman scored 36 Bundesliga goals in 2023-24 — a Bayern Munich single-season record for a foreign player and the European Golden Shoe, in his debut season in Germany?",
+  "o": [
+   "Kane",
+   "Jude Bellingham",
+   "Jadon Sancho",
+   "Kevin Keegan"
+  ],
+  "answer": "Kane",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_de1161",
+  "kind": "wrong_answer",
+  "claim": "The stem's claim that Girona beat Barcelona \"4-2 home and away\" in 2023-24 is false — Girona won 4-2 at Montjuïc but LOST the home fixture at Montilivi 2-4, so the question teaches an incorrect fact even though the keyed club (Girona) is right.",
+  "q": "Which Catalan club shocked Spanish football in 2023-24 by finishing third and qualifying for the Champions League for the first time, under manager Míchel — beating Barcelona 4-2 home and away that season?",
+  "o": [
+   "Girona",
+   "Las Palmas",
+   "Alavés",
+   "Granada"
+  ],
+  "answer": "Girona",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a2861",
+  "kind": "wrong_answer",
+  "claim": "Real Jaén played only three La Liga seasons (1953-54, 1956-57, 1957-58) and were in Segunda in 1962-63, so Atlético cannot have beaten them 9-0 in La Liga that season; the 9-0 on record is Atlético Madrid 9-0 Las Palmas, listed as the biggest home win of the 1957-58 La Liga season (Atlético beat Jaén 4-1 that year).",
+  "q": "Atletico Madrid's biggest ever La Liga victory was 9-0 — during the 1962-63 season against which opponent?",
+  "o": [
+   "Real Jaén",
+   "Real Oviedo",
+   "Real Valladolid",
+   "Celta Vigo"
+  ],
+  "answer": "Real Jaén",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5f2738",
+  "kind": "wrong_answer",
+  "claim": "Tottenham had no managerial vacancy in 2015 — Pochettino was appointed in May 2014 and stayed until 2019 — and no credible source supports Klopp nearly joining Spurs before Liverpool in October 2015; the documented near-miss Klopp has spoken about is a 'historic English club' widely reported as Manchester United, which is not even an option.",
+  "q": "Which club did Jurgen Klopp almost sign before choosing Liverpool in 2015?",
+  "o": [
+   "Arsenal",
+   "Man City",
+   "Tottenham",
+   "Everton"
+  ],
+  "answer": "Tottenham",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b1f7f4",
+  "kind": "wrong_answer",
+  "claim": "The keyed 'first player to score a hat-trick in a Champions League/European Cup final' is Di Stéfano, but in the same 1960 final (Real Madrid 7-3 Eintracht Frankfurt) Ferenc Puskás completed his hat-trick at 60' while Di Stéfano only completed his at 73', so Puskás was the first to complete a hat-trick in a European Cup final.",
+  "q": "Who was the first player to score a hat-trick in a Champions League final?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Pierino Prati",
+   "Alfredo Di Stéfano",
+   "Lionel Messi"
+  ],
+  "answer": "Alfredo Di Stéfano",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cc95f6",
+  "kind": "wrong_answer",
+  "claim": "The keyed answer 86 is correct for Real Madrid's 2021-22 La Liga total, but the stem's qualifier 'their lowest winning total since 2007' is factually false — Real Madrid won the 2007-08 title with 85 points, lower than 86, so the parenthetical claim misinforms the player.",
+  "q": "Real Madrid won La Liga in 2021-22 with how many points — their lowest winning total since 2007?",
+  "o": [
+   "82",
+   "95",
+   "91",
+   "86"
+  ],
+  "answer": "86",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_826a36",
+  "kind": "wrong_answer",
+  "claim": "The stem asks for the \"official name\" of the Milan stadium, but the official name is Stadio Giuseppe Meazza (renamed 1980); \"San Siro\" is the district/popular name — the stem's own qualifier contradicts the keyed answer, so as written the key is factually wrong.",
+  "q": "What is the official name of the stadium shared by AC Milan and Inter Milan?",
+  "o": [
+   "Stadio Olimpico",
+   "San Siro",
+   "Stadio delle Alpi",
+   "Marassi"
+  ],
+  "answer": "San Siro",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7f0e68",
+  "kind": "wrong_answer",
+  "claim": "No source can be found for Joey Barton saying \"He's not even that good\" about Messi in 2017; his documented 2017 comments about Messi were the opposite (he tweeted that Messi was still ahead of Ronaldo), so the attribution appears fabricated or badly garbled.",
+  "q": "Who said 'He's not even that good' about Lionel Messi in 2017?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Diego Maradona",
+   "Sergio Ramos",
+   "Joey Barton"
+  ],
+  "answer": "Joey Barton",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a11dd",
+  "kind": "wrong_answer",
+  "claim": "The keyed Oliver Kahn quote 'eat them alive' cannot be sourced — it appears on none of the standard Kahn quote collections (FC Bayern's own 'legendary quotes' list, AZQuotes, BrainyQuote), whose documented Kahn lines are 'Eier, wir brauchen Eier', 'Weiter, immer weiter' and 'Goalkeepers need an element of insanity'; the widely reported 'I'm going to eat you alive' taunt belongs to Emiliano Martínez (to Yerry Mina, 2021 Copa América shootout), so this looks like a misattribution.",
+  "q": "What did Bayern Munich goalkeeper Oliver Kahn famously say he was going to do to opponents before big matches?",
+  "o": [
+   "Eat them alive",
+   "Crush them like bugs",
+   "Destroy them",
+   "Show them mercy"
+  ],
+  "answer": "Eat them alive",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_192f68",
+  "kind": "wrong_answer",
+  "claim": "The stem calls West Bromwich Albion a \"Scottish side\" — WBA is an English club from West Bromwich in the West Midlands (Willie Groves was the Scot); the £100 key is right but the question states a falsehood that misinforms the player.",
+  "q": "In 1893, English club Aston Villa paid Scottish side West Bromwich Albion a fee for Willie Groves that is often cited as the first in football history to cross which threshold?",
+  "o": [
+   "£100",
+   "£1,000",
+   "£500",
+   "£10,000"
+  ],
+  "answer": "£100",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_14538b",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier \"even scored from his own half\" is false of the keyed answer Ederson — he has never scored a goal in his professional career (0 goals in 500+ appearances per Premier League/FBref/Transfermarkt); he holds a goalkeeper assist record, not a goal, so no option satisfies the stem as written.",
+  "q": "Which goalkeeper, signed by Pep Guardiola, became renowned for his pinpoint long-range passing and even scored from his own half?",
+  "o": [
+   "Joe Hart",
+   "Claudio Bravo",
+   "Ederson",
+   "Stefan Ortega"
+  ],
+  "answer": "Ederson",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e293c5",
+  "kind": "wrong_answer",
+  "claim": "The stem calls the 1958 Ballon d'Or 'the inaugural' one, but the award began in 1956 and was won by Stanley Matthews (Di Stefano won 1957); Kopa won the third edition, so the stem's qualifier is factually false.",
+  "q": "Which French winger, signed in the 1950s, formed a devastating partnership with Di Stefano and won the inaugural Ballon d'Or in 1958 while at Real Madrid?",
+  "o": [
+   "Raymond Kopa",
+   "Jean Vincent",
+   "Maryan Wisnieski",
+   "Roger Piantoni"
+  ],
+  "answer": "Raymond Kopa",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8253ba",
+  "kind": "wrong_answer",
+  "claim": "Lamine Yamal is NOT Barcelona's youngest player ever — Paulino Alcántara (15y 4m 18d, 1912), Arseni Comamala and Antoni Robert all debuted younger; Yamal (15y 9m 16d, Apr 2023) is only the youngest in over a century / youngest La Liga debutant, so the keyed option's 'ever' qualifier is factually false.",
+  "q": "Lamine Yamal, the prodigy who inherited Barça's No. 10 shirt, holds which club record?",
+  "o": [
+   "Youngest player ever to represent Barcelona",
+   "Most goals in a debut season",
+   "Fastest player ever timed at the club",
+   "Youngest captain in club history"
+  ],
+  "answer": "Youngest player ever to represent Barcelona",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_82c4d0",
+  "kind": "wrong_answer",
+  "claim": "The keyed reason for Inter's blue is wrong: the club's own founding account (Giorgio Muggiani and the 1908 founders' manifesto — 'il nero e l'azzurro sullo sfondo d'oro delle stelle') attributes black to the night and blue to the night sky, not to being 'the opposite of rivals Milan's red'; distractor D ('it matched the sky') is in fact closer to the documented reason. The stem's 'has always been blue and black' is also inaccurate, since under the Ambrosiana-Inter era (1928-1945) the club played in white with a red cross.",
+  "q": "Inter's badge has always been blue and black, but why did founder Giorgio Muggiani specifically pick blue?",
+  "o": [
+   "It was the opposite of rivals Milan's red",
+   "It was the colour of the city's flag",
+   "It was the founder's favourite colour",
+   "It matched the sky over San Siro"
+  ],
+  "answer": "It was the opposite of rivals Milan's red",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e1dbb4",
+  "kind": "wrong_answer",
+  "claim": "The stem's timeline is factually false: Ibrahimović's 30-yard bicycle kick for Sweden against England was on 14 November 2012, i.e. AFTER he signed for PSG (18 July 2012), so it was not scored 'before joining PSG that year' — the keyed answer Sweden is right but the stem misinforms.",
+  "q": "Zlatan Ibrahimović scored a famous long-range bicycle-kick goal in 2012 while playing for which national team, before joining PSG that year?",
+  "o": [
+   "Sweden",
+   "Norway",
+   "Denmark",
+   "Netherlands"
+  ],
+  "answer": "Sweden",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_14096d",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: it claims Juventus 2011-12 is \"the only side to go a full 38-game top-flight season without defeat in the modern format\", but Arsenal went unbeaten across all 38 games of the 2003-04 Premier League season (the keyed win total of 23 is itself correct, but the question misinforms).",
+  "q": "Juventus completed an unbeaten Serie A campaign in 2011-12 — the only side to go a full 38-game top-flight season without defeat in the modern format. How many of those games did they win?",
+  "o": [
+   "23",
+   "30",
+   "38",
+   "15"
+  ],
+  "answer": "23",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9ad088",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: Sammer's 1996 Ballon d'Or was NOT the first German win since Beckenbauer (1972, 1976) — Karl-Heinz Rummenigge won in 1980 and 1981 and Lothar Matthäus in 1990; Sammer was only the first German defender since Beckenbauer.",
+  "q": "Which Dortmund defender won the 1996 Ballon d'Or, the first German honoured since Franz Beckenbauer?",
+  "o": [
+   "Matthias Sammer",
+   "Jürgen Kohler",
+   "Stefan Reuter",
+   "Andreas Möller"
+  ],
+  "answer": "Matthias Sammer",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c18d1a",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier 'future England and Tottenham boss' is false for the keyed answer Harry Redknapp — he managed Tottenham (2008–12) but was never England manager — while two distractors, Glenn Hoddle (England 1996–99, Tottenham 2001–03) and Terry Venables (Tottenham 1987–91, England 1994–96), both satisfy the stated qualifier exactly, so the stem points away from the correct West Ham 1994 appointment.",
+  "q": "Which future England and Tottenham boss took charge of West Ham in 1994?",
+  "o": [
+   "Glenn Hoddle",
+   "Kevin Keegan",
+   "Terry Venables",
+   "Harry Redknapp"
+  ],
+  "answer": "Harry Redknapp",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6134f",
+  "kind": "multiple_correct",
+  "claim": "Pelé also scored in four different World Cups (1958, 1962, 1966 vs Bulgaria, 1970) and reached the milestone on the same day as Uwe Seeler — 3 June 1970 — so 'first' depends on disputed kickoff/goal times and Pelé is defensibly correct.",
+  "q": "Who was the first player to score in four different World Cups?",
+  "o": [
+   "Pelé",
+   "Uwe Seeler",
+   "Maradona",
+   "Ronaldo"
+  ],
+  "answer": "Uwe Seeler",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7da53e",
+  "kind": "multiple_correct",
+  "claim": "VfB Stuttgart is also commonly nicknamed 'Die Roten' in Germany (alongside 'Die Schwaben'), so the Stuttgart option is as defensible as Bayern Munich.",
+  "q": "Which club is nicknamed 'Die Roten' (The Reds) in Germany?",
+  "o": [
+   "RB Leipzig",
+   "Cologne",
+   "Bayern Munich",
+   "Stuttgart"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b70c07",
+  "kind": "multiple_correct",
+  "claim": "Stem asks which club Wenger managed \"before Arsenal\" but he managed Nancy (1984-87) and Monaco (1987-94) as well as Nagoya Grampus Eight (1995-96) — three of the four options are literally correct; the stem needs \"immediately before\" (as the near-duplicate q_7cd6ad does for Henry).",
+  "q": "Arsène Wenger managed which club before Arsenal?",
+  "o": [
+   "Strasbourg",
+   "Grampus Eight",
+   "Monaco",
+   "Nancy"
+  ],
+  "answer": "Grampus Eight",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_abcc4e",
+  "kind": "multiple_correct",
+  "claim": "Cruyff also signed Hristo Stoichkov (1990, CSKA Sofia) and Michael Laudrup (1989, Juventus) as Barcelona manager — both are forwards fitting the stem's 'legendary striker signed by Cruyff', so only the unsourced quote separates them from the keyed Romário.",
+  "q": "Which legendary striker did Johan Cruyff sign for Barcelona when he was manager — famously saying 'I always buy the player, not the name'?",
+  "o": [
+   "Romário",
+   "Ronaldo",
+   "Stoichkov",
+   "Laudrup"
+  ],
+  "answer": "Romário",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_127455",
+  "kind": "multiple_correct",
+  "claim": "Derby's 11-point 2007-08 season had two managers: Billy Davies was in charge from the opening day until 26 Nov 2007 (including Derby's only win of the season, 1-0 v Newcastle) and Paul Jewell took over from 28 Nov 2007, so \"who managed Derby County to their record-low 11-point season\" is defensibly answered by either name.",
+  "q": "Who managed Derby County to their record-low 11-point Premier League season in 2007-08?",
+  "o": [
+   "Paul Jewell",
+   "Billy Davies",
+   "Phil Brown",
+   "Steve Bruce"
+  ],
+  "answer": "Paul Jewell",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_20e363",
+  "kind": "multiple_correct",
+  "claim": "Two Spain players missed in the Euro 96 shootout — Hierro hit the crossbar with Spain's first penalty and Nadal was saved by Seaman — so 'Hierro' is also a defensible answer to 'which Spain player missed'.",
+  "q": "England and Spain drew 0-0 in their Euro 1996 quarter-final at Wembley — England won on penalties after which Spain player missed the crucial spot-kick?",
+  "o": [
+   "Hierro",
+   "Nadal",
+   "Amor",
+   "Belsué"
+  ],
+  "answer": "Nadal",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5172f7",
+  "kind": "multiple_correct",
+  "claim": "Real Madrid's 1,000th European Cup/Champions League goal is credited to Benzema (Nov 2021, count including qualifiers) by some outlets and to Toni Kroos vs Inter (count excluding qualifiers) by others — both are options.",
+  "q": "Real Madrid became the first club to reach 1,000 goals in European Cup / Champions League history in 2021 — who scored their landmark strike?",
+  "o": [
+   "Karim Benzema",
+   "Vinícius Júnior",
+   "Luka Modrić",
+   "Toni Kroos"
+  ],
+  "answer": "Karim Benzema",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2826a5",
+  "kind": "multiple_correct",
+  "claim": "Tim Howard also scored from inside his own penalty area in a Premier League match (Everton 1-2 Bolton, 4 Jan 2012 — a wind-assisted clearance struck about 5 yards inside his own box, ~100 yards), so both he and the keyed Asmir Begovic satisfy the stem 'famously scored from inside his own penalty area in a Premier League match'.",
+  "q": "Which goalkeeper famously scored from inside his own penalty area in a Premier League match?",
+  "o": [
+   "Paul Robinson",
+   "Brad Friedel",
+   "Tim Howard",
+   "Asmir Begovic"
+  ],
+  "answer": "Asmir Begovic",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2543a",
+  "kind": "multiple_correct",
+  "claim": "Raymond Kopa was Real Madrid's regular right winger from 1956-59 and won three European Cups in that same dynasty, so 'Kopa' is as defensibly correct as the keyed 'Gento' for 'legendary winger who played for Real Madrid in their 1950s-60s European Cup dynasty'.",
+  "q": "Which legendary winger played for Real Madrid in their famous 1950s-60s European Cup dynasty?",
+  "o": [
+   "Puskas",
+   "Di Stéfano",
+   "Kopa",
+   "Gento"
+  ],
+  "answer": "Gento",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63ac23",
+  "kind": "multiple_correct",
+  "claim": "Van Nistelrooy's consecutive-Champions-League scoring streak is cited as 9 (group stage onward) but as 10 when the 2002 qualifying-round win over Zalaegerszeg is included — Manchester United's own site headlines it a '10-game goalscoring run' — and 10 is offered as a distractor, so a well-informed player is marked wrong.",
+  "q": "Ruud van Nistelrooy scored in how many consecutive Champions League matches, a mark later beaten by Cristiano Ronaldo's 11?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "answer": "9",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2db7d9",
+  "kind": "multiple_correct",
+  "claim": "Eder was a Swansea City player on loan at Lille for 2015-16 (Lille only made the deal permanent in summer 2016, around/after the 10 July final), and UK media widely described him as Swansea's player when he scored — so 'Swansea City', also an option, is defensibly correct alongside the keyed 'Lille'.",
+  "q": "Eder scored the winner for Portugal in the 2016 Euro final — which club was he playing for at the time?",
+  "o": [
+   "Sporting CP",
+   "Lille",
+   "Braga",
+   "Swansea City"
+  ],
+  "answer": "Lille",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c5570c",
+  "kind": "multiple_correct",
+  "claim": "Eusébio's 1967-68 season is keyed at 50 goals (all competitions), but 42 — his Primeira Liga tally that season, the standing Portuguese top-flight single-season record and the figure most sources cite as 'the club record' — is also an option, and the stem never specifies league-only vs all-competitions.",
+  "q": "How many goals did Eusébio score in his best single season for Benfica (1967-68) — still a club record?",
+  "o": [
+   "42",
+   "62",
+   "55",
+   "50"
+  ],
+  "answer": "50",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_97fa12",
+  "kind": "multiple_correct",
+  "claim": "Option 'TSV München' is a shorthand for the same club as the keyed answer 'TSV 1860 Munich' (TSV München von 1860), so a player who knows the fact can still be marked wrong.",
+  "q": "Which Munich-based club, not Bayern, was selected as Munich's first Bundesliga representative when the league was founded in 1963?",
+  "o": [
+   "TSV München",
+   "FC Augsburg",
+   "TSV 1860 Munich",
+   "SpVgg Unterhaching"
+  ],
+  "answer": "TSV 1860 Munich",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3612b5",
+  "kind": "multiple_correct",
+  "claim": "The stem asks for Celtic's 'famous nickname' (not the 1967 team's), and 'The Bhoys' is Celtic FC's long-standing club nickname, so it is defensibly correct alongside the keyed 'The Lisbon Lions', which is specifically the name of the 1967 European Cup-winning XI.",
+  "q": "Celtic became the first British club to win the European Cup in 1967 — what was their famous nickname?",
+  "o": [
+   "The Bhoys",
+   "The Invincibles",
+   "The Lisbon Lions",
+   "The Celtic Tigers"
+  ],
+  "answer": "The Lisbon Lions",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0595e1",
+  "kind": "multiple_correct",
+  "claim": "Roberto Mancini won Serie A as a player with BOTH Sampdoria (1990-91) and Lazio (1999-2000, under Eriksson, before he moved into management), so the distractor 'Lazio' is equally correct under the stem's 'won Serie A with which Italian club before becoming a successful manager'.",
+  "q": "Roberto Mancini won Serie A with which Italian club before becoming a successful manager?",
+  "o": [
+   "Roma",
+   "Lazio",
+   "Fiorentina",
+   "Sampdoria"
+  ],
+  "answer": "Sampdoria",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84acf4",
+  "kind": "multiple_correct",
+  "claim": "Both 1991 and 1992 are defensible: the first group stage in the competition's history was the 1991-92 European Cup (group phase began 27 November 1991), while the 'UEFA Champions League' branding and its group stage arrived in 1992-93.",
+  "q": "In which year did the Champions League switch from two legs to a one-match group stage format?",
+  "o": [
+   "1991",
+   "1992",
+   "1994",
+   "1997"
+  ],
+  "answer": "1992",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a87d90",
+  "kind": "multiple_correct",
+  "claim": "Brazil lost 3-1 to both Hungary and Portugal in the 1966 group stage and finished third, so 'which country knocked out Brazil' is defensibly answerable as Hungary as well as the keyed Portugal (only the Portugal match was the mathematically decisive one, which the stem does not specify).",
+  "q": "Which country knocked out Brazil in the 1966 World Cup group stage — a massive shock?",
+  "o": [
+   "England",
+   "Portugal",
+   "Hungary",
+   "Soviet Union"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_edd7db",
+  "kind": "multiple_correct",
+  "claim": "Distractor 'They were unbeaten in the group stage' is also factually true of South Korea in 2002 (beat Poland 2-0, drew USA 1-1, beat Portugal 1-0), so two options correctly answer 'what was their remarkable achievement that year'.",
+  "q": "South Korea co-hosted the 2002 World Cup — what was their remarkable achievement that year?",
+  "o": [
+   "They reached the semi-finals",
+   "They won the tournament",
+   "They were unbeaten in the group stage",
+   "They scored the most goals"
+  ],
+  "answer": "They reached the semi-finals",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e20176",
+  "kind": "multiple_correct",
+  "claim": "Lee Carsley actually replaced Southgate as England manager in 2024 (interim from September 2024, took charge of every England match that autumn); Tuchel was appointed in October 2024 but did not take over until January 2025, so both listed names fit \"replaced Southgate in 2024\".",
+  "q": "Who replaced Gareth Southgate as England manager in 2024?",
+  "o": [
+   "Frank Lampard",
+   "Brendan Rodgers",
+   "Lee Carsley",
+   "Thomas Tuchel"
+  ],
+  "answer": "Thomas Tuchel",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8eb69a",
+  "kind": "multiple_correct",
+  "claim": "Belgium's best World Cup run (2018) was reaching the semi-final and then winning the third-place match, so the option \"Semi-final\" is as literally true as the keyed \"Third place\" (they also reached the semi-final in 1986).",
+  "q": "The golden generation of Belgium — what is their best World Cup result?",
+  "o": [
+   "Semi-final",
+   "Quarter-final",
+   "Third place",
+   "Runner-up"
+  ],
+  "answer": "Third place",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a32fc2",
+  "kind": "multiple_correct",
+  "claim": "The distractor \"It was his only goal that season\" is factually true — the May 2019 Leicester strike was Vincent Kompany's only goal of 2018-19 (his first since April 2018), so it is also a correct answer to \"What was notable about that strike?\"",
+  "q": "Vincent Kompany scored a thunderous long-range winner against Leicester in 2019 that all but sealed a title. What was notable about that strike?",
+  "o": [
+   "It was his only goal that season",
+   "It was a defender shooting from 25+ yards against teammates' advice",
+   "It was an own goal originally",
+   "It was scored with his weaker foot in stoppage time"
+  ],
+  "answer": "It was a defender shooting from 25+ yards against teammates' advice",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a159d5",
+  "kind": "multiple_correct",
+  "claim": "Buffon's 2001 fee (~€52m from Parma) also made him the most expensive Italian player ever, beating Christian Vieri's ~€46.5m 1999 record and standing until Jorginho's 2018 move, so the distractor \"Most expensive Italian player ever\" is defensibly correct alongside the keyed \"Most expensive goalkeeper in the world\" — and the stem's \"for over a decade\" is true of both.",
+  "q": "When Juventus signed Buffon from Parma in 2001, the fee made him something special for over a decade. What record did it set?",
+  "o": [
+   "Most expensive teenager ever",
+   "Most expensive goalkeeper in the world",
+   "Most expensive Italian player ever",
+   "First €100m goalkeeper"
+  ],
+  "answer": "Most expensive goalkeeper in the world",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df2e78",
+  "kind": "multiple_correct",
+  "claim": "Option 'László Kubala Jr.' is the keyed answer's own name in its native Hungarian form (Ladislao = Spanish for László) with 'Jr.' appended, so two of the four options plausibly name the same 1950s Barcelona star and a player can be wrong despite knowing the fact.",
+  "q": "Which Hungarian forward was Barcelona's biggest star of the 1950s, so popular that his crowds helped justify building the Camp Nou?",
+  "o": [
+   "Sándor Kocsis",
+   "Ladislao Kubala",
+   "László Kubala Jr.",
+   "Zoltán Czibor"
+  ],
+  "answer": "Ladislao Kubala",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7255b7",
+  "kind": "multiple_correct",
+  "claim": "Postecoglou also won trophies at Yokohama F. Marinos (J1 League 2019) and Brisbane Roar (A-League 2011, 2012) before joining Spurs in 2023, so 'after winning trophies at which club' admits three of the four options unless the stem says 'immediately before' or 'his previous club'.",
+  "q": "Ange Postecoglou joined Spurs as head coach in 2023 after winning trophies at which club?",
+  "o": [
+   "Celtic",
+   "Rangers",
+   "Yokohama Marinos",
+   "Brisbane Roar"
+  ],
+  "answer": "Celtic",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0ae8cd",
+  "kind": "multiple_correct",
+  "claim": "Stem asks where Everton played home games \"before moving to Goodison Park\" without saying \"immediately before\" — Everton's first home ground (1878-1882) was in Stanley Park, which is offered as a distractor, so Stanley Park is also defensibly correct alongside the keyed Anfield (1884-1892).",
+  "q": "At which ground did Everton play its home games before moving to Goodison Park?",
+  "o": [
+   "Anfield",
+   "Stanley Park",
+   "Bramley-Moore Dock",
+   "Sefton Park"
+  ],
+  "answer": "Anfield",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e15d6b",
+  "kind": "ambiguous_stem",
+  "claim": "Man City scored TWO stoppage-time goals in the 2012 QPR decider — Džeko's 92nd-minute equaliser (2-2) and Agüero's 94th-minute winner — and both were goals City 'needed'; since Dzeko is one of the four options, the stem needs 'the winning goal' to pin Agüero.",
+  "q": "In stoppage time of the 2012 PL title decider, Man City needed a goal — who scored it?",
+  "o": [
+   "Tevez",
+   "Dzeko",
+   "Balotelli",
+   "Agüero"
+  ],
+  "answer": "Agüero",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_84131f",
+  "kind": "ambiguous_stem",
+  "claim": "Real Madrid beat Dortmund 2-0 in the 2024 UCL final (Carvajal 74', Vinícius Jr 83'), so \"the winning goal\" admits two readings — the goal that put them ahead (Carvajal, the keyed answer) or the last/clinching goal many fans call the winner (Vinícius, an offered option); \"opening goal\" would pin it.",
+  "q": "Who scored the winning goal for Real Madrid in the 2024 UCL final vs Borussia Dortmund?",
+  "o": [
+   "Bellingham",
+   "Carvajal",
+   "Vinicius Jr",
+   "Modric"
+  ],
+  "answer": "Carvajal",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41205d",
+  "kind": "ambiguous_stem",
+  "claim": "Ten Premier League matches kicked off simultaneously at 3pm on 15 August 1992 — Highbury (Arsenal v Norwich), Selhurst Park (Palace v Blackburn) and Highfield Road (Coventry v Middlesbrough) all staged one, so all four options answer 'first ever match'; Bramall Lane is only unique for the first ever PL goal (Brian Deane).",
+  "q": "Which stadium hosted the first ever Premier League match in August 1992?",
+  "o": [
+   "Highbury",
+   "Bramall Lane",
+   "Selhurst Park",
+   "Highfield Road"
+  ],
+  "answer": "Bramall Lane",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c98851",
+  "kind": "ambiguous_stem",
+  "claim": "The stem (\"Plymouth Argyle share a distinction with just a handful of clubs — what is it?\") supplies no discriminating information, and the keyed answer \"One of England's biggest never to reach the top flight\" is a subjective judgement (\"biggest\") rather than a checkable fact — the question is only solvable by discarding three absurd distractors, not by knowing anything.",
+  "q": "Plymouth Argyle share a distinction with just a handful of clubs — what is it?",
+  "o": [
+   "One of England's biggest never to reach the top flight",
+   "Most FA Cup wins outside the top 10",
+   "Only non-league to win the League Cup",
+   "Only club to play in all 4 divisions"
+  ],
+  "answer": "One of England's biggest never to reach the top flight",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_575e2d",
+  "kind": "ambiguous_stem",
+  "claim": "Panenka's famous chipped penalty was scored for CZECHOSLOVAKIA (Euro 1976 final) and he never played for the Czech Republic national team, which did not exist until 1993 — the stem's present-tense \"which country does he represent\" invites the national-team reading, for which the correct answer (Czechoslovakia) is not among the options; only the nationality reading makes \"Czech Republic\" defensible.",
+  "q": "Antonín Panenka gave his name to a famous penalty technique — which country does he represent?",
+  "o": [
+   "Poland",
+   "Slovakia",
+   "Czech Republic",
+   "Hungary"
+  ],
+  "answer": "Czech Republic",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0391c7",
+  "kind": "ambiguous_stem",
+  "claim": "Man City's four straight titles were the 2020-21, 2021-22, 2022-23 and 2023-24 seasons; the shorthand options don't state whether the years are start-seasons or end-seasons, so '2020-23' (2020-21 → 2023-24) is as readable as the keyed '2021-24'.",
+  "q": "Pep Guardiola's Man City won four consecutive Premier League titles — in which seasons?",
+  "o": [
+   "2020-23",
+   "2021-24",
+   "2018-21",
+   "2019-22"
+  ],
+  "answer": "2021-24",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a3c7e5",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which legendary goalkeeper wore gloves unusually early in his career in the 1960s?\" is garbled — \"unusually early in his career\" reads as timing within the player's own career rather than early relative to the sport's history, and the underlying claim (Yashin as an early glove-wearer) is not a crisply documented fact; Banks, Jennings and Zoff were all 1960s keepers who also used gloves, so no option is cleanly excluded.",
+  "q": "Which legendary goalkeeper wore gloves unusually early in his career in the 1960s?",
+  "o": [
+   "Pat Jennings",
+   "Lev Yashin",
+   "Gordon Banks",
+   "Dino Zoff"
+  ],
+  "answer": "Lev Yashin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3bfb6b",
+  "kind": "ambiguous_stem",
+  "claim": "The most-cited figure for the largest foreign-nationality group in Bundesliga history is Austria (~230 players), which the stem excludes by fiat without offering it as an option; the 'Brazilian' key is not a settled, verifiable all-time statistic and the exclusion clause makes the intended reading unclear.",
+  "q": "What nationality is the largest group of foreign players in Bundesliga history — surprisingly not Austrian?",
+  "o": [
+   "Brazilian",
+   "Dutch",
+   "Czech",
+   "Polish"
+  ],
+  "answer": "Brazilian",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb51b8",
+  "kind": "ambiguous_stem",
+  "claim": "\"Widely considered the biggest overachievement\" is a subjective judgement and Turkey — also an option — reached the same 2002 semi-finals and finished third in only their second World Cup ever, so Turkey is defensibly correct under the stem's own criterion.",
+  "q": "At the 2002 World Cup, which country's run to the semi-finals is widely considered the biggest overachievement in tournament history?",
+  "o": [
+   "Japan",
+   "Senegal",
+   "Turkey",
+   "South Korea"
+  ],
+  "answer": "South Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_72e93d",
+  "kind": "ambiguous_stem",
+  "claim": "The stem asks which Asian country 'qualified for the World Cup for the first time in 2022' but the keyed answer is 'Qatar as hosts only', which contradicts the stem's own verb (Qatar never qualified — they entered automatically as hosts), and the four options are not parallel answers to the question asked ('All qualified normally' is not a country), so the question has no coherent reading.",
+  "q": "Which Asian country qualified for the World Cup for the first time in 2022 — a historic achievement?",
+  "o": [
+   "Qatar as hosts only",
+   "Saudi Arabia as regulars",
+   "Australia in the play-offs",
+   "All qualified normally"
+  ],
+  "answer": "Qatar as hosts only",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5e6c56",
+  "kind": "ambiguous_stem",
+  "claim": "'England's best European Championship result before 2020' is contested: England finished third at Euro 1968 (semi-final exit plus a won third-place play-off), which standard records list as their best pre-2020 finish, so pinning the answer to 'Semi-final at Euro 1996' asserts a claim the tournament record does not support.",
+  "q": "England's best European Championship result before 2020 was which round?",
+  "o": [
+   "Group stage in 1988",
+   "Runners-up in 1976",
+   "Semi-final at Euro 1996",
+   "Quarter-final in multiple years"
+  ],
+  "answer": "Semi-final at Euro 1996",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e9b93",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which club had he left to achieve this?\" does not specify \"immediately before joining Forest\" — Clough left Derby County (1973), Brighton (1974) and Leeds (44 days, 1974) all before Nottingham Forest, and Derby County is a defensible reading since that is the club he famously walked out on before the Forest era.",
+  "q": "Brian Clough won the European Cup with Nottingham Forest in two consecutive years — 1979 and 1980. Which club had he left to achieve this?",
+  "o": [
+   "Derby County",
+   "Leeds United",
+   "Brighton",
+   "Hartlepools"
+  ],
+  "answer": "Leeds United",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8b4eef",
+  "kind": "ambiguous_stem",
+  "claim": "No documented \"Pepe elbows Fàbregas\" El Clásico incident exists — the well-known Pepe/Fàbregas flashpoint (March 2014) was a forehead-to-forehead nudge with both players booked for simulation, while the famous Clásico elbow is Marcelo's on Messi (2017, not an option); the stem's description doesn't match its keyed answer's actual incident and Ramos is equally defensible as \"the Real Madrid player in a major Clásico controversy\".",
+  "q": "Which Real Madrid player famously elbowed Cesc Fàbregas in El Clásico — leading to a major controversy?",
+  "o": [
+   "Ramos",
+   "Pepe",
+   "Arbeloa",
+   "Xabi Alonso"
+  ],
+  "answer": "Pepe",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c03d4",
+  "kind": "ambiguous_stem",
+  "claim": "Liverpool's only notable 'unbeaten home league run' is the 68-game run that Burnley (a listed distractor) ended in January 2021; the April 2017 Crystal Palace win at Anfield ended only a 6-match home run that itself began after Liverpool lost at home to Swansea in January 2017, so the stem's premise is inaccurate and points at the wrong famous fact.",
+  "q": "Liverpool's unbeaten home league run ended at Anfield in 2017 — which club ended it?",
+  "o": [
+   "Man City",
+   "Crystal Palace",
+   "Burnley",
+   "Chelsea"
+  ],
+  "answer": "Crystal Palace",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9f3f7e",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which manager famously refused to shake José Mourinho's hand after a match?\" gives no match, season or club anchor, and multiple managers (Wenger 2015 Community Shield, but also Benítez and others in various frosty post-match incidents) can be argued, so nothing pins Wenger as the unique answer.",
+  "q": "Which manager famously refused to shake José Mourinho's hand after a match?",
+  "o": [
+   "Benitez",
+   "Wenger",
+   "Guardiola",
+   "Pellegrini"
+  ],
+  "answer": "Wenger",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9f34d",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which player scored a famous rabona assist in a Coppa Italia game\" is self-contradictory (an assist is not scored) and names no year, club or opponent, so the moment cannot be pinned — Lamela and Del Piero have equally famous rabona moments and no stated qualifier rules them out.",
+  "q": "Which player scored a famous rabona assist in a Coppa Italia game — one of football's most technical moments?",
+  "o": [
+   "Del Piero",
+   "Erik Lamela",
+   "Pablo Aimar",
+   "Di María"
+  ],
+  "answer": "Di María",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08480c",
+  "kind": "ambiguous_stem",
+  "claim": "Tottenham did not sell White Hart Lane — they demolished and rebuilt on the same site — whereas West Ham genuinely sold the Boleyn Ground to developers, so the stem's 'sold their ground' clause points at a different option than the key.",
+  "q": "Which Premier League club sold their ground and moved into a temporary home for two seasons while building a new stadium?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "West Ham",
+   "Leicester"
+  ],
+  "answer": "Tottenham",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c842a2",
+  "kind": "ambiguous_stem",
+  "claim": "'During the 2020s' is undefined at the start: counting finals played in calendar years 2020-2025 gives 5 clubs (Bayern, Chelsea, Real Madrid, Man City, PSG) but counting seasons from 2020-21 gives 4, and both 5 and 4 are options.",
+  "q": "How many different clubs had won the Champions League during the 2020s through the 2024-25 final?",
+  "o": [
+   "2",
+   "3",
+   "5",
+   "4"
+  ],
+  "answer": "5",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dadf7f",
+  "kind": "ambiguous_stem",
+  "claim": "'Best all-time World Cup record' is undefined: by best finish the USA wins (third place in 1930 vs Mexico's best of quarter-finals), while by appearances/total wins Mexico wins — both USA and Mexico are defensible.",
+  "q": "Among the three 2026 World Cup host nations, which has the best all-time World Cup record?",
+  "o": [
+   "USA",
+   "Canada",
+   "All equal",
+   "Mexico"
+  ],
+  "answer": "Mexico",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a670f7",
+  "kind": "ambiguous_stem",
+  "claim": "'How many times has the Champions League been won by a club from outside the big five leagues' does not say whether the pre-1992 European Cup counts: keyed answer 2 (Ajax 1995, Porto 2004) only holds for the post-rebrand Champions League era, whereas counting the European Cup gives many more (Celtic, Feyenoord, Benfica x2, Ajax x3, PSV, Steaua, Red Star), and 'big five leagues' is itself never defined.",
+  "q": "How many times has the Champions League been won by a club from outside the big five leagues?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": "2",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_101461",
+  "kind": "ambiguous_stem",
+  "claim": "The stem's two halves contradict: 2019-20 was the season interrupted BY the Covid lockdown (Liverpool), whereas 'the first season after Covid lockdowns' reads as 2020-21 (Man City) — and Man City is one of the options.",
+  "q": "Which club won the Premier League in the first season after Covid lockdowns — 2019-20?",
+  "o": [
+   "Man City",
+   "Chelsea",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Liverpool",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3e9381",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which club did Kevin De Bruyne join before moving to Manchester City?\" has four defensible answers because Genk, Chelsea and Werder Bremen are all clubs he joined before City (Genk 2008, Chelsea 2012, Werder Bremen loan 2012-13, Wolfsburg 2014) — the stem never says 'immediately before'.",
+  "q": "Which club did Kevin De Bruyne join before moving to Manchester City?",
+  "o": [
+   "Wolfsburg",
+   "Genk",
+   "Chelsea",
+   "Werder Bremen"
+  ],
+  "answer": "Wolfsburg",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_196e86",
+  "kind": "ambiguous_stem",
+  "claim": "The most-promotions-to-the-Bundesliga record is shared, not uniquely Nürnberg's: Arminia Bielefeld also has 8 promotions (1970, 1978, 1980, 1996, 1999, 2002, 2004, 2020) versus Nürnberg's 8 (1978, 1980, 1985, 1998, 2001, 2004, 2009, 2018), and Bielefeld — usually the club cited as 'Rekordaufsteiger' — is not among the options.",
+  "q": "Which Bundesliga club has been promoted to the top flight the most times?",
+  "o": [
+   "Cologne",
+   "Hamburg",
+   "Kaiserslautern",
+   "Nuremberg"
+  ],
+  "answer": "Nuremberg",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_eaba3c",
+  "kind": "ambiguous_stem",
+  "claim": "The quoted line is a loose paraphrase with no verbatim source; Sócrates' documented version is \"Beauty comes first, victory is secondary\", and Cruyff is equally famous for beauty-over-results aphorisms, so a knowledgeable player can defensibly answer Cruyff.",
+  "q": "Which legendary player is credited with the phrase 'football is not about winning, it's about playing beautifully'?",
+  "o": [
+   "Cruyff",
+   "Zico",
+   "Pele",
+   "Socrates"
+  ],
+  "answer": "Socrates",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_002ea8",
+  "kind": "ambiguous_stem",
+  "claim": "'How many different men took charge of Sunderland (including caretakers) in 2017-18' has no single defensible count: Grayson and Coleman plus Robbie Stockdale's caretaker spells give 3, and 4 only if the joint caretaker Billy McKinlay (Millwall, Nov 2017) is counted as a separate man.",
+  "q": "How many different men took charge of Sunderland (including caretakers) during the 2017-18 Championship season?",
+  "o": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": "4",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_19a7bd",
+  "kind": "ambiguous_stem",
+  "claim": "France were not the holders at Euro 2020 — Portugal were the defending European champions (France held the World Cup); the actual holders Portugal were eliminated in the last 16 by Belgium, which is one of the options, so the false 'holders' premise points a knowledgeable player to the wrong answer.",
+  "q": "Which country knocked out holders France in the last 16 at Euro 2020?",
+  "o": [
+   "Germany",
+   "Portugal",
+   "Switzerland",
+   "Belgium"
+  ],
+  "answer": "Switzerland",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d2325",
+  "kind": "ambiguous_stem",
+  "claim": "2021-22 was not Ancelotti's 'very first season in charge of Real Madrid' — he first managed the club in 2013-14 (also winning the Champions League); meanwhile Zidane, an option, genuinely did win the Champions League in his first season in charge (2015-16), so the stem's two clauses conflict.",
+  "q": "Which manager won the Champions League in his very first season in charge of Real Madrid in 2021-22?",
+  "o": [
+   "Zidane",
+   "Ancelotti",
+   "Mourinho",
+   "Benitez"
+  ],
+  "answer": "Ancelotti",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b922e",
+  "kind": "ambiguous_stem",
+  "claim": "\"How many consecutive Serie A titles had the Grande Torino won WHEN the 1949 disaster ended their era?\" is keyed \"Five\", but at the moment of the 4 May 1949 crash Torino had won four in a row (1942-43, 45-46, 46-47, 47-48) and the fifth (1948-49) was still unfinished — as the same pack's q_a30beb states, four league games remained; \"Four\" is a defensible answer sitting in the options.",
+  "q": "How many consecutive Serie A titles had the Grande Torino won when the 1949 disaster ended their era?",
+  "o": [
+   "Three",
+   "Four",
+   "Five",
+   "Seven"
+  ],
+  "answer": "Five",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_33d8a3",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"Which Argentina captain\" identifies Messi on its own — Di María, De Paul and Enzo Fernández were never Argentina's captain at the 2022 World Cup, so the question is solvable without knowing anything about the Gvardiol dribble or the assist.",
+  "q": "Which Argentina captain's mesmerising dribble past Croatia's Joško Gvardiol before a cut-back assist for Julián Álvarez was hailed as the moment of the 2022 World Cup — sealing a 3-0 semi-final win?",
+  "o": [
+   "Lionel Messi",
+   "Ángel Di María",
+   "Rodrigo De Paul",
+   "Enzo Fernández"
+  ],
+  "answer": "Lionel Messi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40cd2c",
+  "kind": "self_answering",
+  "claim": "The stem's own clause 'before its 2026 co-hosting role with Canada and Mexico' identifies the tournament as the World Cup, so the answer is stated inside the question rather than requiring knowledge of USA 1994.",
+  "q": "Which tournament did the USA host on its own in 1994 — before its 2026 co-hosting role with Canada and Mexico?",
+  "o": [
+   "Copa America",
+   "Gold Cup",
+   "World Cup",
+   "Confederations Cup"
+  ],
+  "answer": "World Cup",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2bcdeb",
+  "kind": "self_answering",
+  "claim": "The Copa del Rey is the Spanish domestic cup, and Barcelona is the only Spanish club among the options (Cruzeiro, PSV, Inter), so the answer is deducible from the competition name alone without knowing anything about Ronaldo.",
+  "q": "Which club did Ronaldo R9 win the Copa del Rey with before his World Cup debut?",
+  "o": [
+   "Cruzeiro",
+   "PSV",
+   "Barcelona",
+   "Inter"
+  ],
+  "answer": "Barcelona",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_63e291",
+  "kind": "self_answering",
+  "claim": "The stem asks which club Rummenigge captained in the 1982 European Cup final while explicitly stating in the same sentence that 'Bayern lost 1-0 to English underdogs', so the answer 'Bayern Munich' is given away in the question text.",
+  "q": "Karl-Heinz Rummenigge captained which club in the 1982 European Cup final — a game Bayern lost 1-0 to English underdogs?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Mönchengladbach",
+   "Hamburg",
+   "Werder Bremen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ad80d5",
+  "kind": "self_answering",
+  "claim": "The stem says Man City lost 'at Stamford Bridge', which is Chelsea's home ground, so the keyed answer Chelsea is derivable from the stem alone without knowing anything about the 2019-20 title race.",
+  "q": "Liverpool's 2019-20 Premier League title was mathematically clinched on 25 June 2020 when Man City lost 2-1 to which club at Stamford Bridge?",
+  "o": [
+   "Man City",
+   "Arsenal",
+   "Chelsea",
+   "Leicester"
+  ],
+  "answer": "Chelsea",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3ff8a6",
+  "kind": "self_answering",
+  "claim": "The stem says the record holder overtook Wayne Rooney in March 2023, which logically eliminates all three distractors (Rooney himself, plus Bobby Charlton and Gary Lineker, who both retired decades earlier and ranked below Rooney), leaving Kane as the only option consistent with the stem.",
+  "q": "Which England player holds the record for most international goals (overtaking Wayne Rooney in March 2023)?",
+  "o": [
+   "Bobby Charlton",
+   "Gary Lineker",
+   "Kane",
+   "Rooney"
+  ],
+  "answer": "Kane",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_91885b",
+  "kind": "self_answering",
+  "claim": "The correct option is the only one naming two nations ('2002 Japan/Korea' vs '1998 France', '2006 Germany', '2010 South Africa'), so a player with zero knowledge can pick the answer purely from the option formatting for a question about the first jointly hosted World Cup.",
+  "q": "Which was the first World Cup to be jointly hosted by two nations?",
+  "o": [
+   "1998 France",
+   "2002 Japan/Korea",
+   "2010 South Africa",
+   "2006 Germany"
+  ],
+  "answer": "2002 Japan/Korea",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9237c6",
+  "kind": "self_answering",
+  "claim": "The stem says \"host country\" of the 2022 World Cup and \"World Cup debut\" — only Qatar hosted 2022, and Saudi Arabia, UAE and Iran had all appeared at previous World Cups, so both qualifiers eliminate every distractor without the player knowing the lost-all-three record.",
+  "q": "Which nation's 2022 World Cup debut ended with the unwanted record of being the first host country ever to lose all three group-stage matches?",
+  "o": [
+   "Saudi Arabia",
+   "Qatar",
+   "UAE",
+   "Iran"
+  ],
+  "answer": "Qatar",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2f3ac3",
+  "kind": "self_answering",
+  "claim": "The stem says the scorer was 'a goalkeeper stepping up to the spot himself', and Ricardo is the only goalkeeper among the options (Cristiano Ronaldo, Deco and Rui Costa are all outfield players), so the fact is not needed.",
+  "q": "Who scored the winning penalty in the Euro 2004 shootout as Portugal beat England — a goalkeeper stepping up to the spot himself?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Deco",
+   "Rui Costa",
+   "Ricardo"
+  ],
+  "answer": "Ricardo",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5fbab6",
+  "kind": "self_answering",
+  "claim": "The stem states the season was unbeaten and contained 12 draws, so in a 38-game Premier League season the win total is fixed by arithmetic (38 - 12 - 0 = 26) and no knowledge of Arsenal's actual record is required.",
+  "q": "Arsenal's unbeaten 2003-04 season included 12 draws. How many wins did they get?",
+  "o": [
+   "24",
+   "25",
+   "26",
+   "27"
+  ],
+  "answer": "26",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_83113a",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"for England\" eliminates all three distractors on nationality alone — Griezmann and Mbappé are French, Lukaku is Belgian, so Kane is the only Englishman on the list and the 2018 Golden Boot fact is never actually tested.",
+  "q": "Who won the World Cup Golden Boot in 2018 with 6 goals for England?",
+  "o": [
+   "Griezmann",
+   "Mbappé",
+   "Kane",
+   "Lukaku"
+  ],
+  "answer": "Kane",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2b1d9e",
+  "kind": "self_answering",
+  "claim": "The stem asks \"Which Hungarian team...\" and the keyed answer is literally 'Hungary'; the three distractors (Romania, Czechoslovakia, Yugoslavia) all fail the stem's own nationality qualifier, so the question can be answered with zero football knowledge.",
+  "q": "Which Hungarian team is widely considered one of the greatest national sides never to win a World Cup — losing the 1954 final as favourites?",
+  "o": [
+   "Hungary",
+   "Romania",
+   "Czechoslovakia",
+   "Yugoslavia"
+  ],
+  "answer": "Hungary",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7581fb",
+  "kind": "self_answering",
+  "claim": "The stem ends with \"nicknamed 'Batigol'\", which contains the answer's surname stem (Batistuta) and is not shared by Crespo, Milito or Icardi, so the answer is readable off the clue itself.",
+  "q": "Which Argentine legend scored 184 Serie A goals for Fiorentina (151), Roma (30+), and briefly Inter — nicknamed 'Batigol'?",
+  "o": [
+   "Hernán Crespo",
+   "Gabriel Batistuta",
+   "Diego Milito",
+   "Mauro Icardi"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_612e6b",
+  "kind": "self_answering",
+  "claim": "The stem itself lists all three finals (1974, 2014, 2016) and then asks how many finals Atlético had reached up to 2016 — the answer 'Three' is obtained by counting the years in the stem, requiring no football knowledge.",
+  "q": "Atlético Madrid lost the European Cup/Champions League final in 1974, 2014 and 2016. Up to and including 2016, how many finals had they reached?",
+  "o": [
+   "One",
+   "Two",
+   "Three",
+   "Four"
+  ],
+  "answer": "Three",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3fb913",
+  "kind": "self_answering",
+  "claim": "The stem names South Korea as the co-host (eliminating that option) and specifies \"Asian\", which eliminates USA and Germany — Japan can be selected with zero knowledge of who hosted the final.",
+  "q": "Which country was the first Asian co-host of a World Cup, sharing the 64-match 2002 tournament with South Korea — and hosting the final?",
+  "o": [
+   "South Korea",
+   "Japan",
+   "USA",
+   "Germany"
+  ],
+  "answer": "Japan",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d228c8",
+  "kind": "self_answering",
+  "claim": "The stem's own clause 'joining Manchester United and playing alongside Rooney and Ronaldo' uniquely identifies Park Ji-sung among the four options (Son and Lee Young-pyo were Spurs, Ki Sung-yueng Swansea/Sunderland), so the intended fact — first South Korean to score in the Premier League — never has to be known.",
+  "q": "Who was the first South Korean player to score in the Premier League — joining Manchester United and playing alongside Rooney and Ronaldo?",
+  "o": [
+   "Park Ji-sung",
+   "Son Heung-min",
+   "Ki Sung-yueng",
+   "Lee Young-pyo"
+  ],
+  "answer": "Park Ji-sung",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d0ea4",
+  "kind": "self_answering",
+  "claim": "The qualifier 'teenager' eliminates all three distractors on its own — Scholes (29), Van Nistelrooy (28) and Saha (26) were nowhere near teenage in October 2004, so Rooney is forced without knowing anything about the match that ended the 49-game run.",
+  "q": "Which Manchester United teenager scored the second goal in the 2-0 win over Arsenal in October 2004 that ended the Gunners' 49-game unbeaten run?",
+  "o": [
+   "Scholes",
+   "Van Nistelrooy",
+   "Rooney",
+   "Louis Saha"
+  ],
+  "answer": "Rooney",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ec870a",
+  "kind": "self_answering",
+  "claim": "The stem already names Arrigo Sacchi, who managed only AC Milan among the four options in the 1980s, so the club is identifiable without knowing anything about 'Calcio champagne' — and that label is more commonly attached to Nils Liedholm's Roma/Milan than to Sacchi's pressing side, making the flavour claim itself shaky.",
+  "q": "Which Italian club was known for playing 'Calcio champagne' — a fluent, attacking style — in the 1980s under Arrigo Sacchi?",
+  "o": [
+   "Juventus",
+   "Inter",
+   "Napoli",
+   "AC Milan"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a444c",
+  "kind": "self_answering",
+  "claim": "The stem's own clue 'Ambrosiana-Inter' contains the answer — Internazionale is directly derivable from the hyphenated name without knowing anything about the club's name history.",
+  "q": "Which Italian club has gone by three different names — most recently changing from Ambrosiana-Inter?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Roma",
+   "Internazionale"
+  ],
+  "answer": "Internazionale",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_612eee",
+  "kind": "self_answering",
+  "claim": "The stem's word \"equaliser\" logically forces a one-goal deficit for Real Madrid, so \"0-0\" and \"1-1\" are impossible scorelines to equalise from and \"0-1 Real Madrid\" has Real ahead — only \"1-0 Atletico\" is coherent, making the question solvable with no knowledge of the 2014 final.",
+  "q": "Real Madrid needed a stoppage-time Sergio Ramos header to beat Atletico in the 2014 UCL final — what was the score just before his equaliser?",
+  "o": [
+   "0-0",
+   "1-0 Atletico",
+   "1-1",
+   "0-1 Real Madrid"
+  ],
+  "answer": "1-0 Atletico",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2bf68d",
+  "kind": "self_answering",
+  "claim": "The stem names the venue as the Camp Nou, which identifies Barcelona as the opponent without any knowledge of the 2013-14 title decider.",
+  "q": "Atletico Madrid's 2013-14 La Liga title was secured on the final day with a 1-1 draw at the Camp Nou — against which opponent?",
+  "o": [
+   "Valladolid",
+   "Barcelona",
+   "Valencia",
+   "Real Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b64b9d",
+  "kind": "self_answering",
+  "claim": "The stem asks for a 'Ukrainian side' and the three distractors are Italian (Juventus), German (Dortmund) and Russian (Lokomotiv Moscow), leaving Dynamo Kyiv as the only option satisfying the stem.",
+  "q": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning 2-0 at home thanks to an Andriy Shevchenko brace?",
+  "o": [
+   "Juventus",
+   "Dortmund",
+   "Dynamo Kyiv",
+   "Lokomotiv Moscow"
+  ],
+  "answer": "Dynamo Kyiv",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7e6e97",
+  "kind": "self_answering",
+  "claim": "The stem names the club 'Bayer Leverkusen' and specifies a pharmaceutical owner, so 'Bayer AG' is derivable from the club's own name and is the only pharma company among the options (Siemens = electronics, Volkswagen = cars, ThyssenKrupp = steel) — no football knowledge is required.",
+  "q": "Bayer Leverkusen's pharmaceutical company connection — which company owns the club?",
+  "o": [
+   "Siemens",
+   "Bayer AG",
+   "Volkswagen",
+   "ThyssenKrupp"
+  ],
+  "answer": "Bayer AG",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_948b2e",
+  "kind": "self_answering",
+  "claim": "The stem supplies both dates (2021-22 win and the 1961 Fairs Cup), so 61 is pure subtraction — no football knowledge is required and the other options are arithmetically impossible.",
+  "q": "Roma's 2021-22 UEFA Europa Conference League win under José Mourinho ended their wait for European silverware — how many years since their previous European trophy (the 1961 Inter-Cities Fairs Cup)?",
+  "o": [
+   "27",
+   "48",
+   "51",
+   "61"
+  ],
+  "answer": "61",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5c41dc",
+  "kind": "self_answering",
+  "claim": "The stem supplies both dates (2014 and 2026), so the answer is pure arithmetic requiring zero football knowledge.",
+  "q": "Italy failed to qualify for both the 2018 and 2022 World Cups. Their last World Cup appearance was in 2014 — how many years is that before the 2026 tournament?",
+  "o": [
+   "4",
+   "8",
+   "12",
+   "16"
+  ],
+  "answer": "12",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cb07da",
+  "kind": "self_answering",
+  "claim": "The stem describes the scorer as \"the captain\" — Harry Kane was England's captain at Euro 2020, so anyone who knows the captaincy picks Kane without knowing anything about the goal itself.",
+  "q": "Who headed England's second goal from a Jack Grealish cross late on in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley — the captain's first goal of the tournament and England's first major knockout win over Germany since 1966?",
+  "o": [
+   "Kane",
+   "Harry Maguire",
+   "Raheem Sterling",
+   "Luke Shaw"
+  ],
+  "answer": "Kane",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fae405",
+  "kind": "self_answering",
+  "claim": "The stem states the opening goal of France's 2018 final was an own goal, and Mandžukić is the only Croatia player among four options (Griezmann, Pogba, Mbappé are all French), so an own goal credited to France can only be him — solvable by logic alone.",
+  "q": "France have won the World Cup twice — who scored the opening goal of their 2018 final against Croatia (an own goal in the 18th minute)?",
+  "o": [
+   "Griezmann",
+   "Pogba",
+   "Mbappé",
+   "Mandžukić"
+  ],
+  "answer": "Mandžukić",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2d9be",
+  "kind": "self_answering",
+  "claim": "The stem asks which ASIAN federation gets 8 spots, and AFC is the only Asian confederation among the four options (CAF=Africa, CONMEBOL=South America, UEFA=Europe), so the answer is forced by the stem's own qualifier without knowing the allocation.",
+  "q": "Which Asian federation gets the most World Cup spots at 2026 — with 8 places?",
+  "o": [
+   "AFC",
+   "CAF",
+   "CONMEBOL",
+   "UEFA"
+  ],
+  "answer": "AFC",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e8d2ff",
+  "kind": "self_answering",
+  "claim": "The stem credits the two late goals to Zinedine Zidane, so anyone who knows Zidane is French answers 'France' without knowing the Euro 2004 match at all.",
+  "q": "Which country beat England 2-1 at Euro 2004 with two late Zinedine Zidane goals after a David James error?",
+  "o": [
+   "Portugal",
+   "Switzerland",
+   "Croatia",
+   "France"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e409a4",
+  "kind": "self_answering",
+  "claim": "The stem says Bellingham won LA LIGA, which is by definition the Spanish league, so 'Spain' is entailed by the stem regardless of any knowledge of Bellingham.",
+  "q": "Jude Bellingham won the 2024 Champions League and La Liga in his debut season at a club in which country?",
+  "o": [
+   "England",
+   "Germany",
+   "Italy",
+   "Spain"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d3d089",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"15-time Champions League winners\" uniquely identifies Real Madrid, so the answer is derivable from the stem alone without knowing anything about Arsenal's 2024-25 quarter-final.",
+  "q": "Which 15-time Champions League winners did Arsenal knock out in the 2024-25 quarter-finals?",
+  "o": [
+   "PSG",
+   "Bayern Munich",
+   "Atlético",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_81306e",
+  "kind": "self_answering",
+  "claim": "The stem already states the 2016 final was 1-1 after 120 minutes, which by itself eliminates 'a golden goal', 'a late extra-time winner' and 'an away-goals ruling' (impossible in a single-leg neutral-venue final), leaving the penalty shootout as the only survivable option without knowing the fact.",
+  "q": "Real Madrid beat Atletico Madrid in the 2016 UCL final — what was the result decided by, after a 1-1 draw across 120 minutes?",
+  "o": [
+   "A penalty shootout",
+   "A golden goal",
+   "A late extra-time winner",
+   "An away-goals ruling"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fdf6e7",
+  "kind": "self_answering",
+  "claim": "Every option embeds its goal tally (9/8/6/5) and the stem asks for the MOST goals, so a player just picks the largest number without knowing the fact; the numbers in two distractors are also false (Cristiano Ronaldo scored 2 at Euro 2004, not 6; Torres scored 1 at Euro 2008, not 5).",
+  "q": "Which player scored the most goals in a single European Championship tournament?",
+  "o": [
+   "Platini with 9 in 1984",
+   "Van Basten with 8 in 1988",
+   "Ronaldo with 6 in 2004",
+   "Torres with 5 in 2008"
+  ],
+  "answer": "Platini with 9 in 1984",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bc284c",
+  "kind": "self_answering",
+  "claim": "The stem both names Ronaldo as a later surpasser (eliminating him as an option) and specifies \"West Germany striker\", which disqualifies Just Fontaine (France) and Pelé (Brazil) — Gerd Müller is the only option left without knowing the 14-goal record.",
+  "q": "Which West Germany striker held the all-time World Cup goalscoring record with 14 goals, before Ronaldo and then Klose later surpassed him?",
+  "o": [
+   "Gerd Muller",
+   "Just Fontaine",
+   "Ronaldo",
+   "Pele"
+  ],
+  "answer": "Gerd Muller",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c36e0",
+  "kind": "self_answering",
+  "claim": "The stem states Switzerland went the whole 2006 World Cup 'without conceding a single goal', which logically eliminates 'Extra time', 'Golden goal' and 'Sudden death' (all require conceding a goal) and leaves only the penalty shoot-out, so the answer is deducible without knowing the match; 'Sudden death' is also a sub-phase of a penalty shoot-out, making two options overlap conceptually.",
+  "q": "Switzerland went the entire 2006 World Cup without conceding a single goal -- until they were eliminated how?",
+  "o": [
+   "Extra time",
+   "Penalty shoot-out",
+   "Golden goal",
+   "Sudden death"
+  ],
+  "answer": "Penalty shoot-out",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7f18f9",
+  "kind": "self_answering",
+  "claim": "The stem asks in what sense Marsch's appointment 'marked a first', and only one of the four options is phrased as a first ('He was the first American to coach Canada') — the other three describe non-firsts, so the answer is selectable purely from sentence form without knowing anything about Marsch or Canada.",
+  "q": "Jesse Marsch's appointment as Canada's head coach in May 2024 marked a 'first' in what sense?",
+  "o": [
+   "He had MLS coaching experience",
+   "He was the first American to coach Canada",
+   "He had no playing background",
+   "He was hired before a World Cup year"
+  ],
+  "answer": "He was the first American to coach Canada",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84e649",
+  "kind": "self_answering",
+  "claim": "The stem says the record-holder \"played in central midfield, not up front\", which eliminates all three distractors (Tambling, Drogba, Osgood were all forwards) and leaves Lampard as the only midfielder — the goalscoring record itself never has to be known.",
+  "q": "Which Chelsea legend is the club's all-time top scorer with 211 goals — astonishing given he played in central midfield, not up front?",
+  "o": [
+   "Frank Lampard",
+   "Bobby Tambling",
+   "Didier Drogba",
+   "Peter Osgood"
+  ],
+  "answer": "Frank Lampard",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_aa5976",
+  "kind": "self_answering",
+  "claim": "The stem states the answer \"beat club legends John Terry and Frank Lampard to the top spot\", yet Terry and Lampard are two of the four options, so the stem explicitly negates half the option set and reduces the question to a Harris/Bonetti coin flip.",
+  "q": "Who holds Chelsea's all-time appearance record, having beaten club legends John Terry and Frank Lampard to the top spot with 795 games?",
+  "o": [
+   "Ron Harris",
+   "Peter Bonetti",
+   "John Terry",
+   "Frank Lampard"
+  ],
+  "answer": "Ron Harris",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_76b1b2",
+  "kind": "self_answering",
+  "claim": "The stem names the celebration as the 'Poznan' and one option is Lech Poznan, so the answer can be read straight off the stem without knowing the 2010 Europa League tie.",
+  "q": "City fans adopted their bouncing, back-to-the-pitch 'Poznan' celebration after a 2010 European tie against which club?",
+  "o": [
+   "Lech Poznan",
+   "Dynamo Kyiv",
+   "Sporting Lisbon",
+   "Red Star Belgrade"
+  ],
+  "answer": "Lech Poznan",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_126aa8",
+  "kind": "self_answering",
+  "claim": "The stem states Trapattoni \"left a far bigger legacy\" at Juventus, which logically eliminates all three negative options (never won a title / sacked after one season / only managed the youth team), leaving the keyed positive statement as the only possible pick without knowing anything about him.",
+  "q": "Giovanni Trapattoni is now best remembered abroad for his 'Ich habe fertig' meltdown at Bayern — but at Juventus he left a far bigger legacy. What is true of 'Il Trap' at Juve?",
+  "o": [
+   "He never won a Serie A title there",
+   "He remains the club's most decorated manager",
+   "He was sacked after a single season",
+   "He only ever managed the youth team"
+  ],
+  "answer": "He remains the club's most decorated manager",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_35edf5",
+  "kind": "self_answering",
+  "claim": "The stem says it was 'an all-German Champions League final', which eliminates Real Madrid, Chelsea and Juventus outright and leaves Bayern Munich as the only German option, so no knowledge of the 2013 final is required.",
+  "q": "Dortmund reached an all-German Champions League final in 2013 at Wembley, only to lose 2-1 to a late winner. Which club beat them?",
+  "o": [
+   "Bayern Munich",
+   "Real Madrid",
+   "Chelsea",
+   "Juventus"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_da1ac7",
+  "kind": "self_answering",
+  "claim": "The stem states Hummels joined Dortmund 'from Bayern Munich' and then asks which club he 'rejoined' in 2016 — 'rejoin' plus the only prior club named makes Bayern Munich the answer by pure logic.",
+  "q": "Defender Mats Hummels first joined Dortmund from Bayern Munich in 2008 — which club did he then rejoin in 2016?",
+  "o": [
+   "Bayern Munich",
+   "Hamburg",
+   "1. FC Köln",
+   "VfB Stuttgart"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c1e0e4",
+  "kind": "self_answering",
+  "claim": "The stem names the achievement as a 'sextuple' and then asks how many trophies it was — the Latin prefix gives the answer 'Six' with zero football knowledge, eliminating Four/Five/Seven outright.",
+  "q": "Under Pep Guardiola, Barcelona achieved a historic 'sextuple' in the 2009 calendar year. How many trophies did they win?",
+  "o": [
+   "Four",
+   "Five",
+   "Six",
+   "Seven"
+  ],
+  "answer": "Six",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d5cd46",
+  "kind": "self_answering",
+  "claim": "The stem supplies the exact span '2011-12 to 2019-20', so counting the seasons inclusively yields 9 by arithmetic alone; no knowledge of Juventus is required and 7/8/11 are all impossible from the stem.",
+  "q": "Juventus won a record run of consecutive Serie A titles from 2011-12 to 2019-20. How many in a row was that?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "11"
+  ],
+  "answer": "9",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c3cb7f",
+  "kind": "self_answering",
+  "claim": "European Cup finals were annual, so the stem's '1956 to 1960' range arithmetically fixes the count at Five; the answer is derivable from the dates in the stem without knowing anything about Di Stefano.",
+  "q": "Alfredo Di Stefano set a European Cup record by scoring in how many consecutive finals for Real Madrid from 1956 to 1960?",
+  "o": [
+   "Three",
+   "Four",
+   "Five",
+   "Six"
+  ],
+  "answer": "Five",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ef1120",
+  "kind": "self_answering",
+  "claim": "The stem states the semi-final was against Barcelona, so the correct venue is fixed by knowing Barcelona plays at Camp Nou — no knowledge of Torres's goal is needed; it is further leaked by q_3b5416 in the same pack, whose stem says 'In the 2012 Champions League semi-final at Camp Nou'.",
+  "q": "Fernando Torres sealed Chelsea's 2012 semi-final aggregate against Barcelona with a late solo goal, rounding the keeper at which ground?",
+  "o": [
+   "Camp Nou",
+   "Santiago Bernabéu",
+   "Allianz Arena",
+   "San Siro"
+  ],
+  "answer": "Camp Nou",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_06cd5f",
+  "kind": "self_answering",
+  "claim": "The stem supplies the nickname 'Lilywhites', which directly names the answer colour (white), so the question is solvable with zero knowledge of Tottenham's kit.",
+  "q": "What colour are Tottenham's traditional home shirts, giving rise to the nickname 'Lilywhites'?",
+  "o": [
+   "White",
+   "Navy blue",
+   "Red",
+   "Sky blue"
+  ],
+  "answer": "White",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_312fb3",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier 'North London rival' uniquely identifies Arsenal (West Ham is east London, QPR and Chelsea west), so the Jennings transfer fact is never needed.",
+  "q": "Legendary Spurs goalkeeper Pat Jennings caused uproar in 1977 by moving to which North London rival?",
+  "o": [
+   "Arsenal",
+   "West Ham United",
+   "Queens Park Rangers",
+   "Chelsea"
+  ],
+  "answer": "Arsenal",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_35ee33",
+  "kind": "self_answering",
+  "claim": "The keyed answer (4-0) is stated verbatim in the stems of two other questions in the same AC Milan pack — q_d3fa59 ('AC Milan's 4-0 win over Barcelona in the 1994 Champions League final') and q_abec24 ('AC Milan won the 1994 Champions League final 4-0') — so if any of them is drawn alongside it the score question is free.",
+  "q": "In the 1994 Champions League final, AC Milan produced a stunning performance to demolish Fabio Capello's opponents Barcelona. What was the score?",
+  "o": [
+   "4-0",
+   "2-1",
+   "3-2",
+   "1-0"
+  ],
+  "answer": "4-0",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f75361",
+  "kind": "self_answering",
+  "claim": "The stem names the exact season range (\"from 1996-97 to 1999-2000\"), so a player simply counts 96-97, 97-98, 98-99, 99-00 = Four without knowing anything about Galatasaray or Fatih Terim.",
+  "q": "How many consecutive Süper Lig titles did Galatasaray win under Fatih Terim from 1996-97 to 1999-2000?",
+  "o": [
+   "Two",
+   "Three",
+   "Four",
+   "Five"
+  ],
+  "answer": "Four",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bee28b",
+  "kind": "self_answering",
+  "claim": "Three other questions in the same Galatasaray pack (q_6a9fe2, q_ef99a0, q_be65f3) all name \"the 2000 UEFA Cup final\" in their stems, handing over this answer; independently, the Cup Winners' Cup was abolished after 1999 and the Intertoto Cup had no single final, so only UEFA Cup and Champions League are era-valid.",
+  "q": "Galatasaray beat Arsenal on penalties to win which 2000 European final, the first major European trophy for a Turkish club?",
+  "o": [
+   "Champions League",
+   "UEFA Cup",
+   "Cup Winners' Cup",
+   "Intertoto Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a9fe2",
+  "kind": "self_answering",
+  "claim": "The answer \"Arsenal\" is stated outright in the stems of three sibling questions in the same pack — q_bee28b (\"Galatasaray beat Arsenal on penalties to win which 2000 European final\"), q_ef99a0 and q_be65f3 (both \"...shootout against Arsenal\").",
+  "q": "Which English club did Galatasaray beat on penalties in the 2000 UEFA Cup final in Copenhagen?",
+  "o": [
+   "Leeds United",
+   "Arsenal",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "answer": "Arsenal",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f05452",
+  "kind": "self_answering",
+  "claim": "Pair-leak with q_baff41 in the same pack: q_baff41's stem ('When Ian Wright broke Arsenal's all-time scoring record in 1997...') names the answer to q_f05452 (Ian Wright), and q_f05452's stem ('Cliff Bastin's Arsenal goalscoring record stood for 58 years') names the answer to q_baff41 (Cliff Bastin) — the two questions test the identical fact and give each other away if drawn in the same session.",
+  "q": "Cliff Bastin's Arsenal goalscoring record stood for 58 years. Which striker finally overtook it in 1997?",
+  "o": [
+   "Alan Smith",
+   "Ian Wright",
+   "Dennis Bergkamp",
+   "Thierry Henry"
+  ],
+  "answer": "Ian Wright",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_392c3c",
+  "kind": "self_answering",
+  "claim": "Pair-leak with q_c37d46: q_c37d46 asks in which season Fenerbahçe won the title that 'stood as their 19th' (answer 2013-14) while q_392c3c asks how many titles they had by the 2013-14 triumph (answer 19) — each stem contains the other's answer, so drawing both makes one free.",
+  "q": "By the time they celebrated their 2013-14 triumph, how many Süper Lig titles had Fenerbahçe won in total?",
+  "o": [
+   "17",
+   "18",
+   "19",
+   "21"
+  ],
+  "answer": "19",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_506e85",
+  "kind": "self_answering",
+  "claim": "The stem supplies the date range \"from 1966 to 1974\", from which the answer (Nine) can be derived by simple arithmetic (1966-74 inclusive = 9 seasons) without knowing anything about Jock Stein's Celtic.",
+  "q": "How many consecutive league titles did Jock Stein's Celtic win from 1966 to 1974?",
+  "o": [
+   "Seven",
+   "Nine",
+   "Five",
+   "Eleven"
+  ],
+  "answer": "Nine",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_74322a",
+  "kind": "self_answering",
+  "claim": "The stem \"In which French city is Olympique de Marseille based?\" contains the answer in the club's own name, and \"Marseille\" is one of the four options — solvable with zero football knowledge.",
+  "q": "In which French city is Olympique de Marseille based?",
+  "o": [
+   "Lyon",
+   "Marseille",
+   "Lille",
+   "Nantes"
+  ],
+  "answer": "Marseille",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_be0880",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak within the same Rangers pack: the keyed answer 'European Cup Winners' Cup' appears verbatim in the stems of q_b4238e ('Which club did Rangers beat in the 1972 European Cup Winners' Cup final?'), q_54c648 and q_3ad4db, so any session pairing them hands over the answer.",
+  "q": "Which European trophy did Rangers win in 1972?",
+  "o": [
+   "European Cup Winners' Cup",
+   "European Cup",
+   "UEFA Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "European Cup Winners' Cup",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b4238e",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_3ad4db's stem reads 'their 1972 Cup Winners' Cup final win over Dynamo Moscow', naming this question's keyed answer verbatim.",
+  "q": "Which club did Rangers beat in the 1972 European Cup Winners' Cup final?",
+  "o": [
+   "Dynamo Moscow",
+   "Bayern Munich",
+   "Fiorentina",
+   "Zenit St Petersburg"
+  ],
+  "answer": "Dynamo Moscow",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fb8cf7",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_1d7c76's stem ('The Zenit side that beat Rangers in the 2008 UEFA Cup final...') states this question's keyed answer, Zenit St Petersburg.",
+  "q": "Rangers lost the 2008 UEFA Cup final 2-0 to which club in Manchester?",
+  "o": [
+   "Zenit St Petersburg",
+   "CSKA Moscow",
+   "Sevilla",
+   "Porto"
+  ],
+  "answer": "Zenit St Petersburg",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a4dcc4",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: three other questions in this pack (q_835f75, q_a1d4bd, q_2442e1) name the '2022 Europa League final' in their stems, giving away the keyed answer 'Europa League'.",
+  "q": "Rangers reached the final of which competition in 2022, losing to Eintracht Frankfurt?",
+  "o": [
+   "Europa League",
+   "Champions League",
+   "Scottish Cup",
+   "Conference League"
+  ],
+  "answer": "Europa League",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_97f905",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_1167a1's stem ('Rangers were demoted to Scottish football's fourth tier in 2012...') and q_89d488's stem ('began life in the fourth tier in 2012-13') both state the keyed answer 'Scottish Third Division (fourth tier)'.",
+  "q": "After liquidation, the reformed Rangers began the 2012-13 season in which division?",
+  "o": [
+   "Scottish Third Division (fourth tier)",
+   "Scottish Premier League",
+   "Scottish Championship",
+   "English National League"
+  ],
+  "answer": "Scottish Third Division (fourth tier)",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf75e8",
+  "kind": "self_answering",
+  "claim": "The stem quotes the nickname 'Batman and Robben', which literally contains the surname of the keyed answer (Arjen Robben), so the question is solvable from the stem alone.",
+  "q": "PSV striker Mateja Kezman, nicknamed 'Batman', formed a lethal duo with which winger, prompting the 'Batman and Robben' tag?",
+  "o": [
+   "Arjen Robben",
+   "Robert Pires",
+   "Andrei Arshavin",
+   "Jesper Gronkjaer"
+  ],
+  "answer": "Arjen Robben",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_414d07",
+  "kind": "self_answering",
+  "claim": "The stem asks what the Anderlecht–Standard Liège rivalry is 'nicknamed the Belgian what?' and only one of the four options ('The Belgian Clásico') contains the word 'Belgian', so it can be picked without knowing the rivalry.",
+  "q": "Anderlecht's fierce rivalry with Standard Liège is nicknamed the Belgian what?",
+  "o": [
+   "The Old Firm",
+   "The Belgian Clásico",
+   "Derby della Madonnina",
+   "The Superclásico"
+  ],
+  "answer": "The Belgian Clásico",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1957e9",
+  "kind": "self_answering",
+  "claim": "Sibling question q_e2de99 in the same PSV pack opens \"PSV won their first European trophy, the 1978 UEFA Cup...\", which states verbatim the answer to q_1957e9 (\"In which European competition did PSV win their first continental trophy in 1978?\"); drawn in the same session, one gives the other away for free.",
+  "q": "In which European competition did PSV win their first continental trophy in 1978?",
+  "o": [
+   "UEFA Cup",
+   "European Cup",
+   "Cup Winners' Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_201921",
+  "kind": "self_answering",
+  "claim": "This stem quotes Mermans' nickname verbatim ('The Bomber'), which is the exact answer to q_5f922f in the same Anderlecht pack, giving that question away.",
+  "q": "Jef Mermans, 'The Bomber', signed for Anderlecht in 1942 from which club?",
+  "o": [
+   "Beerschot",
+   "Tubantia",
+   "Lierse",
+   "Union Saint-Gilloise"
+  ],
+  "answer": "Tubantia",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0d485d",
+  "kind": "self_answering",
+  "claim": "The stem's own phrase \"the twelfth man\" states the answer — 12 — so the question is solvable with zero knowledge of Club Brugge's 2003 shirt retirement.",
+  "q": "Which shirt number did Club Brugge retire in 2003 to honour their supporters, 'the twelfth man'?",
+  "o": [
+   "12",
+   "1",
+   "10",
+   "7"
+  ],
+  "answer": "12",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b2059",
+  "kind": "self_answering",
+  "claim": "The stem fixes Leko's spell as 2017–2019, and the three distractors (2011–12, 2015–16, 2023–24) all fall outside that window, so 2017–18 is the only date-compatible option.",
+  "q": "Which league title did Ivan Leko win in his first spell as Club Brugge manager (2017–2019)?",
+  "o": [
+   "2017–18",
+   "2011–12",
+   "2015–16",
+   "2023–24"
+  ],
+  "answer": "2017–18",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_522cb2",
+  "kind": "self_answering",
+  "claim": "The stem says the symbol is \"echoed in the club's name\" and the club is Red Star, so \"a red five-pointed star\" is derivable from the stem alone.",
+  "q": "Red Star's crest and identity are built around which symbol, echoed in the club's name?",
+  "o": [
+   "A red five-pointed star",
+   "A crescent moon",
+   "A golden eagle",
+   "A rampant lion"
+  ],
+  "answer": "A red five-pointed star",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_12cd0f",
+  "kind": "self_answering",
+  "claim": "The club pack is titled \"Red Star Belgrade\" and sibling stems in the same pack repeatedly say \"Red Star's...\", so the translation of 'Crvena zvezda' is given away by context rather than tested.",
+  "q": "What does the club's Serbian name, 'Crvena zvezda', mean in English?",
+  "o": [
+   "Red Star",
+   "Red Army",
+   "White Star",
+   "Red Eagle"
+  ],
+  "answer": "Red Star",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6acdfd",
+  "kind": "self_answering",
+  "claim": "Pack leak: sibling question q_5d7517 states that Club Brugge retired the number 23 shirt for François Sterchele, which hands over the 23rd-minute answer here.",
+  "q": "In which minute of every home match do Club Brugge fans traditionally sing for François Sterchele?",
+  "o": [
+   "23rd",
+   "12th",
+   "8th",
+   "90th"
+  ],
+  "answer": "23rd",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e3af0f",
+  "kind": "self_answering",
+  "claim": "Pack leak: sibling question q_1b01c8 opens with \"Club Brugge signed Ukraine striker Roman Yaremchuk\", explicitly stating the national team this question asks for.",
+  "q": "Roman Yaremchuk, a 2022 Club Brugge signing, has represented which national team?",
+  "o": [
+   "Ukraine",
+   "Poland",
+   "Romania",
+   "Croatia"
+  ],
+  "answer": "Ukraine",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_734646",
+  "kind": "self_answering",
+  "claim": "The stem asks which 'brother of his' (Zdravko Mamić) managed Dinamo, and Zoran Mamić is the only option sharing the Mamić surname — Vrbanović, Barišić and Čačić are dismissible on the name alone, so no knowledge of Dinamo's 2013-16 title run is required.",
+  "q": "Zdravko Mamić ran Dinamo Zagreb as executive director from 2003 to 2016. Which brother of his managed the club to three consecutive league titles from 2013-14?",
+  "o": [
+   "Zoran Mamić",
+   "Damir Vrbanović",
+   "Mirko Barišić",
+   "Ante Čačić"
+  ],
+  "answer": "Zoran Mamić",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f64165",
+  "kind": "self_answering",
+  "claim": "The stem names the venue as 'İnönü Stadium' and the correct option is 'İsmet İnönü' — a player picks it by pure name-matching without knowing any Turkish political or club history.",
+  "q": "Beşiktaş's former İnönü Stadium was named after which Turkish president?",
+  "o": [
+   "Mustafa Kemal Atatürk",
+   "Celâl Bayar",
+   "İsmet İnönü",
+   "Cemal Gürsel"
+  ],
+  "answer": "İsmet İnönü",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_33a7c0",
+  "kind": "self_answering",
+  "claim": "The stem lists the trio as Metin Tekin, Ali Gültiken and Feyyaz Uçar and the keyed answer is literally 'Metin-Ali-Feyyaz', so the answer is read straight off the stem's own words.",
+  "q": "Which nickname was given to Beşiktaş's celebrated attacking trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar?",
+  "o": [
+   "The Bosphorus Three",
+   "Metin-Ali-Feyyaz",
+   "The Black Eagles",
+   "The Serencebey Trio"
+  ],
+  "answer": "Metin-Ali-Feyyaz",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8182bb",
+  "kind": "self_answering",
+  "claim": "The stem asks which country Club Brugge — a Belgian club — is from, so 'Belgium' is derivable from the club's own name/identity; additionally Netherlands (Feyenoord 1970), Portugal (Benfica 1961) and Scotland (Celtic 1967) had all already reached European Cup finals well before 1978, so no distractor is even possible.",
+  "q": "By reaching the 1978 European Cup final, Club Brugge became the first club from which country to do so?",
+  "o": [
+   "Belgium",
+   "Netherlands",
+   "Portugal",
+   "Scotland"
+  ],
+  "answer": "Belgium",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef064a",
+  "kind": "self_answering",
+  "claim": "'Brugge' in the club's name is the Dutch spelling of the answer 'Bruges', so the stem contains its own answer and no football knowledge is required.",
+  "q": "In which Belgian city is Club Brugge based?",
+  "o": [
+   "Bruges",
+   "Ghent",
+   "Antwerp",
+   "Liège"
+  ],
+  "answer": "Bruges",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6ba0a4",
+  "kind": "self_answering",
+  "claim": "The stem states Villa were relegated from the Premier League, which in the English pyramid necessarily means the Championship — the answer follows from the stem itself and requires no knowledge of Villa.",
+  "q": "Aston Villa were relegated from the Premier League in 2016, beginning a spell in which division?",
+  "o": [
+   "League One",
+   "The Championship",
+   "National League",
+   "League Two"
+  ],
+  "answer": "The Championship",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd28cf",
+  "kind": "self_answering",
+  "claim": "\"Trabzonspor are based in which Turkish city?\" keys \"Trabzon\" — the club's own name in the stem contains the answer string, so the question is solvable with zero football knowledge (the other Black Sea cities Samsun/Rize/Ordu never need to be considered).",
+  "q": "Trabzonspor are based in which Turkish city?",
+  "o": [
+   "Trabzon",
+   "Samsun",
+   "Rize",
+   "Ordu"
+  ],
+  "answer": "Trabzon",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8cb0b2",
+  "kind": "self_answering",
+  "claim": "The stem states the nickname 'The Peacocks' derives from the ground's original name, and only one option ('The Old Peacock Ground') contains the word Peacock, so the answer is deducible from the stem alone without knowing Elland Road's history.",
+  "q": "The nickname 'The Peacocks' comes from the original name of Elland Road. What was that ground called?",
+  "o": [
+   "The Gelderd Ground",
+   "Salem Field",
+   "The Old Peacock Ground",
+   "Holbeck Park Avenue"
+  ],
+  "answer": "The Old Peacock Ground",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f32aa",
+  "kind": "self_answering",
+  "claim": "The stem names 'The Boleyn Ground' and the key is 'Anne Boleyn' — the surname in the stem hands the answer to anyone who has never heard of the Boleyn Castle legend, eliminating Victoria, Elizabeth I and Catherine of Aragon without any knowledge.",
+  "q": "The Boleyn Ground takes its name from a house linked by legend to which historical figure?",
+  "o": [
+   "Queen Victoria",
+   "Anne Boleyn",
+   "Elizabeth I",
+   "Catherine of Aragon"
+  ],
+  "answer": "Anne Boleyn",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2c07a2",
+  "kind": "self_answering",
+  "claim": "The stem's clue 'dubbed The Gerrard Final' identifies the opponent for anyone who knows Steven Gerrard played for Liverpool, so the question is solvable without knowing anything about the 2006 FA Cup final itself.",
+  "q": "West Ham lost the 2006 FA Cup final on penalties to which club, in a game dubbed 'The Gerrard Final'?",
+  "o": [
+   "Everton",
+   "Liverpool",
+   "Chelsea",
+   "Manchester United"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7bb619",
+  "kind": "self_answering",
+  "claim": "'Athletic Bilbao plays its home matches in which city?' with 'Bilbao' as the key — the club's own name in the stem gives the answer, testing no knowledge at all.",
+  "q": "Athletic Bilbao plays its home matches in which city?",
+  "o": [
+   "San Sebastián",
+   "Zaragoza",
+   "Valencia",
+   "Bilbao"
+  ],
+  "answer": "Bilbao",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c64db6",
+  "kind": "self_answering",
+  "claim": "The stem's own premise ('As reigning Spanish league champions') logically dictates the answer — domestic champions by definition entered the European Cup, so the Cup Winners' Cup, UEFA Cup and Intertoto Cup are eliminated by competition rules alone, with no Athletic-specific knowledge needed.",
+  "q": "As reigning Spanish league champions, Athletic Bilbao contested which European competition in the mid-1980s?",
+  "o": [
+   "The Cup Winners' Cup",
+   "The UEFA Cup",
+   "The European Cup",
+   "The Intertoto Cup"
+  ],
+  "answer": "The European Cup",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4eedb",
+  "kind": "self_answering",
+  "claim": "The stem says the founders included 'a Scottish vice-consul', and Scottish entails British, so the keyed answer follows from the stem itself and German/French/Italian are eliminated without knowing anything about Sevilla's 1890 founding.",
+  "q": "Sevilla FC was founded largely by expatriates of which nationality, including a Scottish vice-consul?",
+  "o": [
+   "British",
+   "German",
+   "French",
+   "Italian"
+  ],
+  "answer": "British",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_094b75",
+  "kind": "self_answering",
+  "claim": "'Sevilla FC' is the Spanish name of the city Seville, so the option 'Seville' is a restatement of the club's own name — the question cannot test any fact beyond reading the club name.",
+  "q": "In which Spanish city does Sevilla FC play its home matches?",
+  "o": [
+   "Seville",
+   "Valencia",
+   "Málaga",
+   "Zaragoza"
+  ],
+  "answer": "Seville",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_539dae",
+  "kind": "self_answering",
+  "claim": "The stem states that the '04' in FC Schalke 04 marks the founding year, so the answer 1904 is readable directly off the club's name with no football knowledge required.",
+  "q": "The '04' in FC Schalke 04's name marks the year the club was founded — which year?",
+  "o": [
+   "1904",
+   "1900",
+   "1912",
+   "1920"
+  ],
+  "answer": "1904",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e2322f",
+  "kind": "self_answering",
+  "claim": "The stem supplies 'based in Seville', and Seville is in Andalusia, so the keyed answer follows from Spanish geography alone without knowing Betis's 1934-35 title.",
+  "q": "By winning La Liga, Real Betis, based in Seville, became the first champions from which Spanish autonomous community?",
+  "o": [
+   "Catalonia",
+   "Valencia",
+   "Andalusia",
+   "Basque Country"
+  ],
+  "answer": "Andalusia",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_51b4fb",
+  "kind": "self_answering",
+  "claim": "The stem \"In which German city is Hamburger SV based?\" contains the answer in the club's own name, so Munich/Bremen/Cologne are eliminated without any football knowledge.",
+  "q": "In which German city is Hamburger SV based?",
+  "o": [
+   "Hamburg",
+   "Munich",
+   "Bremen",
+   "Cologne"
+  ],
+  "answer": "Hamburg",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_17bbf4",
+  "kind": "self_answering",
+  "claim": "The stem's own qualifier 'staged in West Germany' pins the answer without any Hamburg knowledge — West Germany hosted exactly one men's World Cup (1974), and the distractors 1990 (Italy), 2002 (Korea/Japan) and 2010 (South Africa) are all eliminated by that clause alone.",
+  "q": "HSV's home city of Hamburg hosted matches at which men's World Cup, staged in West Germany?",
+  "o": [
+   "1974",
+   "1990",
+   "2002",
+   "2010"
+  ],
+  "answer": "1974",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_719c2a",
+  "kind": "self_answering",
+  "claim": "The stem's own qualifier \"1982 World Cup-winning squad\" uniquely identifies Italy, so Argentina, Brazil and West Germany are eliminated by knowing who won the 1982 World Cup alone — the question can be answered with zero knowledge of Giancarlo Antognoni, the fact it purports to test.",
+  "q": "Fiorentina legend Giancarlo Antognoni was part of which nation's 1982 World Cup-winning squad?",
+  "o": [
+   "Italy",
+   "Argentina",
+   "Brazil",
+   "West Germany"
+  ],
+  "answer": "Italy",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a31656",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies the saver was playing 'for Germany' in the 2006 quarter-final, but all three distractors are non-German keepers (Buffon = Italy, Casillas = Spain, Dida = Brazil), so Lehmann is the only option satisfying the stem and the question can be solved with zero knowledge of the shootout.",
+  "q": "Who saved a penalty in the 2006 World Cup quarter-final shootout for Germany vs Argentina?",
+  "o": [
+   "Buffon",
+   "Lehmann",
+   "Casillas",
+   "Dida"
+  ],
+  "answer": "Lehmann",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c38f1b",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'all with Real Madrid' eliminates every distractor without knowing the record — Guardiola, Cruyff and Helenio Herrera never managed Real Madrid, leaving Miguel Muñoz as the only option that satisfies the stem.",
+  "q": "Which legendary manager holds the record for most La Liga titles won as a coach — all with Real Madrid?",
+  "o": [
+   "Miguel Muñoz",
+   "Pep Guardiola",
+   "Johan Cruyff",
+   "Helenio Herrera"
+  ],
+  "answer": "Miguel Muñoz",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eebe13",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for an 'Atletico defender' but none of the three distractors is a defender — Diego Costa (striker), Arda Turan (midfielder) and Griezmann (forward, and not even an Atlético player in 2013-14, he was at Real Sociedad) — so Godín is the only option satisfying the stem's own qualifier and the question is solvable without knowing the goal.",
+  "q": "Atlético Madrid's famous 2013-14 La Liga title was clinched with a 1-1 draw at Camp Nou — which Atletico defender headed the equaliser?",
+  "o": [
+   "Diego Costa",
+   "Griezmann",
+   "Godín",
+   "Arda Turan"
+  ],
+  "answer": "Godín",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_79d628",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Colombian teammate' qualifier eliminates all three distractors (Alex Sandro and Douglas Costa are Brazilian, Dybala is Argentine), so Cuadrado is selectable purely from nationality without knowing the shirt-number story.",
+  "q": "When Cristiano Ronaldo signed for Juventus in 2018, which Colombian teammate gave up his #7 shirt to allow CR7 to keep his iconic number?",
+  "o": [
+   "Juan Cuadrado",
+   "Alex Sandro",
+   "Douglas Costa",
+   "Paulo Dybala"
+  ],
+  "answer": "Juan Cuadrado",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8ae49c",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a Premier League record but Buffon, Casillas and Neuer never played a single Premier League match, so Van der Sar is the only option that satisfies the competition qualifier.",
+  "q": "Which goalkeeper holds the Premier League record for not conceding a goal — 1,311 minutes in 2008-09?",
+  "o": [
+   "Van der Sar",
+   "Buffon",
+   "Casillas",
+   "Neuer"
+  ],
+  "answer": "Van der Sar",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3ab9b8",
+  "kind": "eliminable_distractor",
+  "claim": "The stem requires a club that has NEVER won the European Cup/Champions League, but all three distractors have won it (Juventus 1985/1996, Benfica 1961/1962, Bayern six times), so Atlético is reachable by elimination without knowing anything about runner-up counts.",
+  "q": "Which club has been runner-up in the Champions League / European Cup the most times without ever winning it?",
+  "o": [
+   "Juventus",
+   "Benfica",
+   "Atlético",
+   "Bayern Munich"
+  ],
+  "answer": "Atlético",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9d6da9",
+  "kind": "eliminable_distractor",
+  "claim": "The stem names Borussia Dortmund and Bayern Munich, so all three distractors (Coppa Italia, Copa del Rey, FA Cup) are non-German competitions the two clubs cannot enter — the DFB-Pokal is pickable purely by knowing Dortmund is German.",
+  "q": "Which cup did Jürgen Klopp win with Borussia Dortmund in 2012, beating Bayern Munich 5-2 in the final?",
+  "o": [
+   "DFB Pokal",
+   "Coppa Italia",
+   "Copa del Rey",
+   "FA Cup"
+  ],
+  "answer": "DFB Pokal",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b47cdf",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which Arsenal MANAGER was involved in Pizzagate, but three of the four options (Vieira, Campbell, Edu) are players, so Wenger is the only option satisfying the stem's own qualifier and the question can be answered with zero knowledge of the 2004 incident.",
+  "q": "The 'Pizzagate' incident after Arsenal's defeat to Man United in 2004 involved which Arsenal manager?",
+  "o": [
+   "Vieira",
+   "Campbell",
+   "Wenger",
+   "Edu"
+  ],
+  "answer": "Wenger",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_874404",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Serbian manager' qualifier eliminates all three distractors outright (Eriksson is Swedish, Hiddink Dutch, Parreira Brazilian), so Bora Milutinović is the only nationality-valid option.",
+  "q": "Which Serbian manager holds the record for taking 5 different national teams to the World Cup — Mexico, Costa Rica, USA, Nigeria, and China?",
+  "o": [
+   "Sven-Göran Eriksson",
+   "Bora Milutinović",
+   "Guus Hiddink",
+   "Carlos Alberto Parreira"
+  ],
+  "answer": "Bora Milutinović",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2aae12",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a 'Greek club' but the three distractors are AC Milan (Italian), Chelsea (English) and PSG (French), so Panathinaikos is the only option satisfying the qualifier and the question is solvable with zero knowledge of the 2005 match.",
+  "q": "Messi scored his first Champions League goal at Camp Nou on 2 November 2005 — in a 5-0 group-stage win over which Greek club?",
+  "o": [
+   "AC Milan",
+   "Chelsea",
+   "Panathinaikos",
+   "PSG"
+  ],
+  "answer": "Panathinaikos",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_01021e",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies a Kuwaiti player, but all three distractors (Mohamed Al-Deayea, Saeed Al-Owairan, Salman Al-Faraj) are Saudi Arabian, so anyone who knows nationalities gets Bader Al-Mutawa without knowing the caps record.",
+  "q": "Which Kuwaiti player held the all-time international appearances record with 196 caps before Cristiano Ronaldo overtook him in 2023?",
+  "o": [
+   "Al-Deayea",
+   "Al-Owairan",
+   "Salman Al-Faraj",
+   "Bader Al-Mutawa"
+  ],
+  "answer": "Bader Al-Mutawa",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7ba13f",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a 'Swiss midfielder' but Payet, Griezmann and Gomis are all French internationals (Gomis a striker), so Shaqiri is the only option satisfying the qualifier and the question is solvable without knowing the goal.",
+  "q": "Which Swiss midfielder scored a memorable bicycle-kick goal vs Poland in the Euro 2016 round of 16?",
+  "o": [
+   "Shaqiri",
+   "Payet",
+   "Gomis",
+   "Griezmann"
+  ],
+  "answer": "Shaqiri",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1063a5",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which 'Bayern Munich striker' finished second, but Werner was at RB Leipzig, Kane at Tottenham and Mbappé at PSG in 2019-20 — Lewandowski is the only option that meets the club qualifier.",
+  "q": "Ciro Immobile won the 2019-20 European Golden Shoe outright with 36 Serie A goals — beating which Bayern Munich striker into second place?",
+  "o": [
+   "Lewandowski",
+   "Timo Werner",
+   "Kane",
+   "Kylian Mbappé"
+  ],
+  "answer": "Lewandowski",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e39a0f",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Manchester City player ... between 2011 and 2020' eliminates all three distractors without any knowledge of the fact: Shearer and Fowler never played for City, and Haaland did not join until 2022.",
+  "q": "Which Manchester City player scored 12 Premier League hat-tricks between 2011 and 2020?",
+  "o": [
+   "Alan Shearer",
+   "Sergio Agüero",
+   "Erling Haaland",
+   "Robbie Fowler"
+  ],
+  "answer": "Sergio Agüero",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ca21e6",
+  "kind": "eliminable_distractor",
+  "claim": "All three distractors are impossible at the 1950 World Cup (West Germany was banned, Slovenia was part of Yugoslavia, Algeria part of France), and naming the scorer as 'Haitian-American' additionally points straight to the USA, so the question is unanswerable-proof rather than knowledge-testing.",
+  "q": "Which country beat England 1-0 at the 1950 World Cup group stage — one of football's all-time greatest upsets, scored by Haitian-American Joe Gaetjens?",
+  "o": [
+   "Algeria",
+   "Germany",
+   "Slovenia",
+   "USA"
+  ],
+  "answer": "USA",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bcdc90",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies a \"legendary Brazilian goalkeeper\" but all three distractors are non-Brazilian (Yashin USSR, Sepp Maier West Germany, Zoff Italy), so Gilmar is reachable by nationality alone without knowing the 1958/1962 fact.",
+  "q": "Which legendary Brazilian goalkeeper is the only keeper to start and win two consecutive World Cups — 1958 and 1962?",
+  "o": [
+   "Yashin",
+   "Sepp Maier",
+   "Gilmar",
+   "Zoff"
+  ],
+  "answer": "Gilmar",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d9c245",
+  "kind": "eliminable_distractor",
+  "claim": "Two of the four options are the same stadium — Signal Iduna Park IS the Westfalenstadion (Dortmund) — so a player can dismiss both without knowing anything, leaving only Allianz Arena vs Olympiastadion Berlin.",
+  "q": "Germany hosted Euro 2024 — which of their home stadiums was the largest venue used?",
+  "o": [
+   "Allianz Arena",
+   "Signal Iduna Park",
+   "Westfalenstadion",
+   "Olympiastadion Berlin"
+  ],
+  "answer": "Olympiastadion Berlin",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_21b35c",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which PREMIER LEAGUE club signed Chiesa, but three of the four options (AC Milan, Inter, Roma) are Serie A clubs, so Liverpool is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge of the transfer.",
+  "q": "Federico Chiesa left Juventus in August 2024 for £12.5m — which Premier League club signed him?",
+  "o": [
+   "AC Milan",
+   "Inter",
+   "Liverpool",
+   "Roma"
+  ],
+  "answer": "Liverpool",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d4becb",
+  "kind": "eliminable_distractor",
+  "claim": "Stem asks 'Which English club won the inaugural UEFA Cup' but three of the four options (AC Milan, Fiorentina, Juventus) are Italian, so Tottenham is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge.",
+  "q": "Which English club won the inaugural UEFA Cup in 1971-72, beating Wolves over two legs in the final?",
+  "o": [
+   "AC Milan",
+   "Tottenham",
+   "Fiorentina",
+   "Juventus"
+  ],
+  "answer": "Tottenham",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a70965",
+  "kind": "eliminable_distractor",
+  "claim": "Stem qualifies 'for Real Madrid during their 2015-16 title run' but all three distractors fail that qualifier — Casillas left for Porto in July 2015, De Gea never played for Real Madrid, and Courtois was at Chelsea until 2018 — leaving Navas as the only possible answer.",
+  "q": "Which goalkeeper played every single Champions League game for Real Madrid during their 2015-16 title run?",
+  "o": [
+   "Navas",
+   "De Gea",
+   "Casillas",
+   "Courtois"
+  ],
+  "answer": "Navas",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f4126",
+  "kind": "eliminable_distractor",
+  "claim": "Stem specifies 'for Manchester United', yet Henry (Arsenal), Raúl (Real Madrid) and Shevchenko (Milan) never played for United, so all three distractors are dismissible without knowing the record.",
+  "q": "Who set a Champions League record by scoring in 9 consecutive group-stage matches for Manchester United in 2002-03?",
+  "o": [
+   "Ruud van Nistelrooy",
+   "Henry",
+   "Raúl",
+   "Andriy Shevchenko"
+  ],
+  "answer": "Ruud van Nistelrooy",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c03f53",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'Which Canadian great' eliminates all three distractors (Marta is Brazilian, Birgit Prinz German and retired in 2011, Alex Morgan American), leaving Christine Sinclair as the only Canadian and making the question solvable without knowing the 2012 Olympic top scorer.",
+  "q": "Which Canadian great finished as top scorer of the 2012 Olympic women's football tournament with 6 goals?",
+  "o": [
+   "Marta",
+   "Birgit Prinz",
+   "Alex Morgan",
+   "Christine Sinclair"
+  ],
+  "answer": "Christine Sinclair",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7db73d",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'Which Amsterdam club' eliminates all three distractors (PSV Eindhoven, AZ Alkmaar, FC Twente are not Amsterdam clubs), so Ajax is forced without knowing anything about De Klassieker.",
+  "q": "Which Amsterdam club is Feyenoord's great rival in 'De Klassieker'?",
+  "o": [
+   "PSV Eindhoven",
+   "Ajax",
+   "AZ Alkmaar",
+   "FC Twente"
+  ],
+  "answer": "Ajax",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_76c9b1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem itself asserts that Romario and Ronaldo starred for PSV, which eliminates two of the four options (Romario, Ronaldo) by the stem's own text, reducing the question to a coin flip between Ronaldinho and Alex.",
+  "q": "Romario and Ronaldo both starred for PSV early in their careers. Which Brazilian, however, never played for the club?",
+  "o": [
+   "Ronaldinho",
+   "Romario",
+   "Ronaldo",
+   "Alex"
+  ],
+  "answer": "Ronaldinho",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dcdb64",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Swiss manager' qualifier eliminates all three distractors — Besnik Hasi (Kosovar-Albanian/Belgian), Vincent Kompany (Belgian) and Franky Vercauteren (Belgian) are none of them Swiss — so René Weiler is pinned without knowing who won the 2017 title.",
+  "q": "Under which Swiss manager did Anderlecht win their 34th league title in 2017?",
+  "o": [
+   "Besnik Hasi",
+   "René Weiler",
+   "Vincent Kompany",
+   "Franky Vercauteren"
+  ],
+  "answer": "René Weiler",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_80c1c1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem supplies both the ban's start (May 1990) and its length (six months), so the window is May-Nov 1990 and all three distractors are excluded by arithmetic alone: Euro 1988 predates the ban entirely, while Euro 1992 and the 1992 Olympics fall long after a six-month suspension expires — the question is solvable without knowing anything about Boban.",
+  "q": "Zvonimir Boban received a six-month ban in May 1990 that caused him to miss which tournament?",
+  "o": [
+   "Euro 1988",
+   "1990 World Cup",
+   "Euro 1992",
+   "1992 Olympics"
+  ],
+  "answer": "1990 World Cup",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1088b1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for the \"Swiss businessman\" who co-founded Torino, but all three distractors (Vittorio Pozzo, Edoardo Agnelli, Enrico Marone) are unmistakably Italian, so Alfred Dick is selectable purely on nationality without knowing the club's founding history.",
+  "q": "Torino was co-founded by which Swiss businessman?",
+  "o": [
+   "Vittorio Pozzo",
+   "Edoardo Agnelli",
+   "Alfred Dick",
+   "Enrico Marone"
+  ],
+  "answer": "Alfred Dick",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73cf52",
+  "kind": "stale",
+  "claim": "The stem asserts Gualtieri's 8.3s (San Marino v England, 1993) is 'the fastest goal ever scored in an international football match', but Christian Benteke scored after 8.1 seconds for Belgium v Gibraltar on 10 Oct 2016, which superseded it — the premise is already factually wrong.",
+  "q": "What is the fastest goal ever scored in an international football match — 8.3 seconds for San Marino vs England in 1993?",
+  "o": [
+   "Marcello Lippi",
+   "Davide Gualtieri",
+   "Luigi Gasperini",
+   "Marco Macina"
+  ],
+  "answer": "Davide Gualtieri",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aff3f8",
+  "kind": "stale",
+  "claim": "'Won the Bundesliga title seven times as players' reads as a record/uniqueness claim that is now false — Thomas Müller and Manuel Neuer have 12+ Bundesliga titles each and Philipp Lahm 8, so option 'Lahm and Müller' and 'Neuer and Müller' are players who have won it more than seven times, making the intended distinction unstated and outdated.",
+  "q": "Which two players have won the Bundesliga title seven times as players — both with Bayern Munich?",
+  "o": [
+   "Lahm and Müller",
+   "Augenthaler and Matthäus",
+   "Neuer and Müller",
+   "Kahn and Effenberg"
+  ],
+  "answer": "Augenthaler and Matthäus",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73dd6b",
+  "kind": "stale",
+  "claim": "The clause 'the last player to reach double digits in one tournament' is now factually wrong — Kylian Mbappé scored 10 goals at the 2026 World Cup to win the Golden Boot.",
+  "q": "Which German striker scored 10 goals at a single World Cup (1970) — the last player to reach double digits in one tournament?",
+  "o": [
+   "Uwe Seeler",
+   "Gerd Müller",
+   "Jürgen Klinsmann",
+   "Karl-Heinz Rummenigge"
+  ],
+  "answer": "Gerd Müller",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9fc82a",
+  "kind": "stale",
+  "claim": "Portman Road's Ipswich Town were relegated from the Premier League in May 2025, so the stem's 'Which Premier League club' qualifier is already factually wrong as of 2026 (and none of the four options is currently a PL club).",
+  "q": "Which Premier League club's ground is called Portman Road?",
+  "o": [
+   "Ipswich Town",
+   "Norwich City",
+   "Colchester United",
+   "Peterborough"
+  ],
+  "answer": "Ipswich Town",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_37cbff",
+  "kind": "stale",
+  "claim": "CONCACAF had 6 direct 2026 slots (USA, Canada, Mexico, Panama, Curaçao, Haiti) but also entered Jamaica and Suriname into the March 2026 inter-confederation playoffs — if either won a spot the true total is 7 or 8, so the keyed '6' must be re-verified against the final 48-team field.",
+  "q": "How many CONCACAF teams will compete at the 2026 World Cup including the three hosts?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "6",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_07a911",
+  "kind": "stale",
+  "claim": "The Supercoppa Italiana stopped being a two-club match: from the January 2024 edition onward it is a four-team Final Four (league champion, league runner-up, Coppa Italia winner, Coppa Italia runner-up), so the stem's premise \"contested between which two clubs each year\" and the keyed answer are no longer true.",
+  "q": "The Supercoppa Italiana is contested between which two clubs each year?",
+  "o": [
+   "The two highest league finishers",
+   "The league champion and cup winner",
+   "The two cup finalists",
+   "The top two in the league"
+  ],
+  "answer": "The league champion and cup winner",
+  "cat": "SerieA",
+  "diff": "medium"
+ }
+]

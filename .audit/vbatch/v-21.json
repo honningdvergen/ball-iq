@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_fdf6e7",
+  "kind": "self_answering",
+  "claim": "Every option embeds its goal tally (9/8/6/5) and the stem asks for the MOST goals, so a player just picks the largest number without knowing the fact; the numbers in two distractors are also false (Cristiano Ronaldo scored 2 at Euro 2004, not 6; Torres scored 1 at Euro 2008, not 5).",
+  "q": "Which player scored the most goals in a single European Championship tournament?",
+  "o": [
+   "Platini with 9 in 1984",
+   "Van Basten with 8 in 1988",
+   "Ronaldo with 6 in 2004",
+   "Torres with 5 in 2008"
+  ],
+  "answer": "Platini with 9 in 1984",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bc284c",
+  "kind": "self_answering",
+  "claim": "The stem both names Ronaldo as a later surpasser (eliminating him as an option) and specifies \"West Germany striker\", which disqualifies Just Fontaine (France) and Pelé (Brazil) — Gerd Müller is the only option left without knowing the 14-goal record.",
+  "q": "Which West Germany striker held the all-time World Cup goalscoring record with 14 goals, before Ronaldo and then Klose later surpassed him?",
+  "o": [
+   "Gerd Muller",
+   "Just Fontaine",
+   "Ronaldo",
+   "Pele"
+  ],
+  "answer": "Gerd Muller",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c36e0",
+  "kind": "self_answering",
+  "claim": "The stem states Switzerland went the whole 2006 World Cup 'without conceding a single goal', which logically eliminates 'Extra time', 'Golden goal' and 'Sudden death' (all require conceding a goal) and leaves only the penalty shoot-out, so the answer is deducible without knowing the match; 'Sudden death' is also a sub-phase of a penalty shoot-out, making two options overlap conceptually.",
+  "q": "Switzerland went the entire 2006 World Cup without conceding a single goal -- until they were eliminated how?",
+  "o": [
+   "Extra time",
+   "Penalty shoot-out",
+   "Golden goal",
+   "Sudden death"
+  ],
+  "answer": "Penalty shoot-out",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7f18f9",
+  "kind": "self_answering",
+  "claim": "The stem asks in what sense Marsch's appointment 'marked a first', and only one of the four options is phrased as a first ('He was the first American to coach Canada') — the other three describe non-firsts, so the answer is selectable purely from sentence form without knowing anything about Marsch or Canada.",
+  "q": "Jesse Marsch's appointment as Canada's head coach in May 2024 marked a 'first' in what sense?",
+  "o": [
+   "He had MLS coaching experience",
+   "He was the first American to coach Canada",
+   "He had no playing background",
+   "He was hired before a World Cup year"
+  ],
+  "answer": "He was the first American to coach Canada",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84e649",
+  "kind": "self_answering",
+  "claim": "The stem says the record-holder \"played in central midfield, not up front\", which eliminates all three distractors (Tambling, Drogba, Osgood were all forwards) and leaves Lampard as the only midfielder — the goalscoring record itself never has to be known.",
+  "q": "Which Chelsea legend is the club's all-time top scorer with 211 goals — astonishing given he played in central midfield, not up front?",
+  "o": [
+   "Frank Lampard",
+   "Bobby Tambling",
+   "Didier Drogba",
+   "Peter Osgood"
+  ],
+  "answer": "Frank Lampard",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_aa5976",
+  "kind": "self_answering",
+  "claim": "The stem states the answer \"beat club legends John Terry and Frank Lampard to the top spot\", yet Terry and Lampard are two of the four options, so the stem explicitly negates half the option set and reduces the question to a Harris/Bonetti coin flip.",
+  "q": "Who holds Chelsea's all-time appearance record, having beaten club legends John Terry and Frank Lampard to the top spot with 795 games?",
+  "o": [
+   "Ron Harris",
+   "Peter Bonetti",
+   "John Terry",
+   "Frank Lampard"
+  ],
+  "answer": "Ron Harris",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

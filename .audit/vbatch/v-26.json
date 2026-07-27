@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_414d07",
+  "kind": "self_answering",
+  "claim": "The stem asks what the Anderlecht–Standard Liège rivalry is 'nicknamed the Belgian what?' and only one of the four options ('The Belgian Clásico') contains the word 'Belgian', so it can be picked without knowing the rivalry.",
+  "q": "Anderlecht's fierce rivalry with Standard Liège is nicknamed the Belgian what?",
+  "o": [
+   "The Old Firm",
+   "The Belgian Clásico",
+   "Derby della Madonnina",
+   "The Superclásico"
+  ],
+  "answer": "The Belgian Clásico",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1957e9",
+  "kind": "self_answering",
+  "claim": "Sibling question q_e2de99 in the same PSV pack opens \"PSV won their first European trophy, the 1978 UEFA Cup...\", which states verbatim the answer to q_1957e9 (\"In which European competition did PSV win their first continental trophy in 1978?\"); drawn in the same session, one gives the other away for free.",
+  "q": "In which European competition did PSV win their first continental trophy in 1978?",
+  "o": [
+   "UEFA Cup",
+   "European Cup",
+   "Cup Winners' Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_201921",
+  "kind": "self_answering",
+  "claim": "This stem quotes Mermans' nickname verbatim ('The Bomber'), which is the exact answer to q_5f922f in the same Anderlecht pack, giving that question away.",
+  "q": "Jef Mermans, 'The Bomber', signed for Anderlecht in 1942 from which club?",
+  "o": [
+   "Beerschot",
+   "Tubantia",
+   "Lierse",
+   "Union Saint-Gilloise"
+  ],
+  "answer": "Tubantia",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0d485d",
+  "kind": "self_answering",
+  "claim": "The stem's own phrase \"the twelfth man\" states the answer — 12 — so the question is solvable with zero knowledge of Club Brugge's 2003 shirt retirement.",
+  "q": "Which shirt number did Club Brugge retire in 2003 to honour their supporters, 'the twelfth man'?",
+  "o": [
+   "12",
+   "1",
+   "10",
+   "7"
+  ],
+  "answer": "12",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b2059",
+  "kind": "self_answering",
+  "claim": "The stem fixes Leko's spell as 2017–2019, and the three distractors (2011–12, 2015–16, 2023–24) all fall outside that window, so 2017–18 is the only date-compatible option.",
+  "q": "Which league title did Ivan Leko win in his first spell as Club Brugge manager (2017–2019)?",
+  "o": [
+   "2017–18",
+   "2011–12",
+   "2015–16",
+   "2023–24"
+  ],
+  "answer": "2017–18",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_522cb2",
+  "kind": "self_answering",
+  "claim": "The stem says the symbol is \"echoed in the club's name\" and the club is Red Star, so \"a red five-pointed star\" is derivable from the stem alone.",
+  "q": "Red Star's crest and identity are built around which symbol, echoed in the club's name?",
+  "o": [
+   "A red five-pointed star",
+   "A crescent moon",
+   "A golden eagle",
+   "A rampant lion"
+  ],
+  "answer": "A red five-pointed star",
+  "cat": "History",
+  "diff": "easy"
+ }
+]

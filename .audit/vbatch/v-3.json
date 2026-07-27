@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_ef7959",
+  "kind": "wrong_answer",
+  "claim": "Keyed answer 'Athletic Bilbao' is wrong — Wikipedia's La Liga records state the first team to score 100+ league goals in a season was Valencia in 1941-42 (111 in 34 matches); Athletic Bilbao's 1930-31 LEAGUE tally was 73 goals in 18 matches (their oft-quoted 126/137 figures are all-competitions totals including regional leagues), and Valencia is offered as a distractor.",
+  "q": "Which La Liga club was the first to score 100 league goals in a single season?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Valencia",
+   "Athletic Bilbao"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b13a4c",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false — Drogba did not score in Chelsea's 2011-12 quarter-final against Benfica (scorers: Kalou; Lampard pen, Meireles), so no player scored 'in every round' of that campaign; Drogba scored in the group stage, R16, semi-final and final only.",
+  "q": "Which player scored in every round of the 2011-12 Champions League for Chelsea — including the final?",
+  "o": [
+   "Lampard",
+   "Drogba",
+   "Torres",
+   "Ashley Cole"
+  ],
+  "answer": "Drogba",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_687da2",
+  "kind": "wrong_answer",
+  "claim": "The stem asks for the Italian club with the most players who won the Ballon d'Or while at the club, but Juventus (Sívori 1961, Rossi 1982, Platini 1983/84/85, Baggio 1993, Zidane 1998, Nedvěd 2003 — 6 players, 8 awards) at minimum equals AC Milan (Rivera, Gullit, Van Basten, Weah, Shevchenko, Kaká — 6 players, 8 awards) and Juventus is not even an option, so the keyed absolute superlative 'AC Milan' is not defensible.",
+  "q": "Which Italian club has produced the most players who won the Ballon d'Or while at the club?",
+  "o": [
+   "AC Milan",
+   "Torino",
+   "Inter",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_747d9a",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is wrong: Juventus's Conte-then-Allegri run from 2011-12 to 2018-19 is eight consecutive Serie A titles (Conte 3, Allegri 5), not 'seven consecutive titles from 2012 to 2019' — the wider run was nine in a row through 2019-20 under Sarri.",
+  "q": "Who managed Juventus to their seven consecutive Serie A titles from 2012 to 2019?",
+  "o": [
+   "Conte then Allegri",
+   "Allegri throughout",
+   "Lippi then Allegri",
+   "Conte throughout"
+  ],
+  "answer": "Conte then Allegri",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_898c57",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is factually false: Uruguay are 15-time Copa América champions (the all-time record holders), not four-time — the keyed answer '2 World Cups' is right but the question misinforms players about Uruguay's Copa América haul.",
+  "q": "Uruguay are four-time Copa América champions — how many World Cups have they won?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": "2",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4fbbe0",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: Kane's 36 goals in 2023-24 is NOT 'a Bayern Munich single-season record for a foreign player' — Robert Lewandowski (Polish, i.e. foreign) scored 41 Bundesliga goals for Bayern in 2020-21; Kane's actual record was most goals in a debut Bundesliga season.",
+  "q": "Which Englishman scored 36 Bundesliga goals in 2023-24 — a Bayern Munich single-season record for a foreign player and the European Golden Shoe, in his debut season in Germany?",
+  "o": [
+   "Kane",
+   "Jude Bellingham",
+   "Jadon Sancho",
+   "Kevin Keegan"
+  ],
+  "answer": "Kane",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_e2322f",
+  "kind": "self_answering",
+  "claim": "The stem supplies 'based in Seville', and Seville is in Andalusia, so the keyed answer follows from Spanish geography alone without knowing Betis's 1934-35 title.",
+  "q": "By winning La Liga, Real Betis, based in Seville, became the first champions from which Spanish autonomous community?",
+  "o": [
+   "Catalonia",
+   "Valencia",
+   "Andalusia",
+   "Basque Country"
+  ],
+  "answer": "Andalusia",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_51b4fb",
+  "kind": "self_answering",
+  "claim": "The stem \"In which German city is Hamburger SV based?\" contains the answer in the club's own name, so Munich/Bremen/Cologne are eliminated without any football knowledge.",
+  "q": "In which German city is Hamburger SV based?",
+  "o": [
+   "Hamburg",
+   "Munich",
+   "Bremen",
+   "Cologne"
+  ],
+  "answer": "Hamburg",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_17bbf4",
+  "kind": "self_answering",
+  "claim": "The stem's own qualifier 'staged in West Germany' pins the answer without any Hamburg knowledge — West Germany hosted exactly one men's World Cup (1974), and the distractors 1990 (Italy), 2002 (Korea/Japan) and 2010 (South Africa) are all eliminated by that clause alone.",
+  "q": "HSV's home city of Hamburg hosted matches at which men's World Cup, staged in West Germany?",
+  "o": [
+   "1974",
+   "1990",
+   "2002",
+   "2010"
+  ],
+  "answer": "1974",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_719c2a",
+  "kind": "self_answering",
+  "claim": "The stem's own qualifier \"1982 World Cup-winning squad\" uniquely identifies Italy, so Argentina, Brazil and West Germany are eliminated by knowing who won the 1982 World Cup alone — the question can be answered with zero knowledge of Giancarlo Antognoni, the fact it purports to test.",
+  "q": "Fiorentina legend Giancarlo Antognoni was part of which nation's 1982 World Cup-winning squad?",
+  "o": [
+   "Italy",
+   "Argentina",
+   "Brazil",
+   "West Germany"
+  ],
+  "answer": "Italy",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a31656",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies the saver was playing 'for Germany' in the 2006 quarter-final, but all three distractors are non-German keepers (Buffon = Italy, Casillas = Spain, Dida = Brazil), so Lehmann is the only option satisfying the stem and the question can be solved with zero knowledge of the shootout.",
+  "q": "Who saved a penalty in the 2006 World Cup quarter-final shootout for Germany vs Argentina?",
+  "o": [
+   "Buffon",
+   "Lehmann",
+   "Casillas",
+   "Dida"
+  ],
+  "answer": "Lehmann",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c38f1b",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'all with Real Madrid' eliminates every distractor without knowing the record — Guardiola, Cruyff and Helenio Herrera never managed Real Madrid, leaving Miguel Muñoz as the only option that satisfies the stem.",
+  "q": "Which legendary manager holds the record for most La Liga titles won as a coach — all with Real Madrid?",
+  "o": [
+   "Miguel Muñoz",
+   "Pep Guardiola",
+   "Johan Cruyff",
+   "Helenio Herrera"
+  ],
+  "answer": "Miguel Muñoz",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

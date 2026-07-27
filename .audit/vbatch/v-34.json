@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_5f4126",
+  "kind": "eliminable_distractor",
+  "claim": "Stem specifies 'for Manchester United', yet Henry (Arsenal), Raúl (Real Madrid) and Shevchenko (Milan) never played for United, so all three distractors are dismissible without knowing the record.",
+  "q": "Who set a Champions League record by scoring in 9 consecutive group-stage matches for Manchester United in 2002-03?",
+  "o": [
+   "Ruud van Nistelrooy",
+   "Henry",
+   "Raúl",
+   "Andriy Shevchenko"
+  ],
+  "answer": "Ruud van Nistelrooy",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c03f53",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'Which Canadian great' eliminates all three distractors (Marta is Brazilian, Birgit Prinz German and retired in 2011, Alex Morgan American), leaving Christine Sinclair as the only Canadian and making the question solvable without knowing the 2012 Olympic top scorer.",
+  "q": "Which Canadian great finished as top scorer of the 2012 Olympic women's football tournament with 6 goals?",
+  "o": [
+   "Marta",
+   "Birgit Prinz",
+   "Alex Morgan",
+   "Christine Sinclair"
+  ],
+  "answer": "Christine Sinclair",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7db73d",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's qualifier 'Which Amsterdam club' eliminates all three distractors (PSV Eindhoven, AZ Alkmaar, FC Twente are not Amsterdam clubs), so Ajax is forced without knowing anything about De Klassieker.",
+  "q": "Which Amsterdam club is Feyenoord's great rival in 'De Klassieker'?",
+  "o": [
+   "PSV Eindhoven",
+   "Ajax",
+   "AZ Alkmaar",
+   "FC Twente"
+  ],
+  "answer": "Ajax",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_76c9b1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem itself asserts that Romario and Ronaldo starred for PSV, which eliminates two of the four options (Romario, Ronaldo) by the stem's own text, reducing the question to a coin flip between Ronaldinho and Alex.",
+  "q": "Romario and Ronaldo both starred for PSV early in their careers. Which Brazilian, however, never played for the club?",
+  "o": [
+   "Ronaldinho",
+   "Romario",
+   "Ronaldo",
+   "Alex"
+  ],
+  "answer": "Ronaldinho",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dcdb64",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Swiss manager' qualifier eliminates all three distractors — Besnik Hasi (Kosovar-Albanian/Belgian), Vincent Kompany (Belgian) and Franky Vercauteren (Belgian) are none of them Swiss — so René Weiler is pinned without knowing who won the 2017 title.",
+  "q": "Under which Swiss manager did Anderlecht win their 34th league title in 2017?",
+  "o": [
+   "Besnik Hasi",
+   "René Weiler",
+   "Vincent Kompany",
+   "Franky Vercauteren"
+  ],
+  "answer": "René Weiler",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_80c1c1",
+  "kind": "eliminable_distractor",
+  "claim": "The stem supplies both the ban's start (May 1990) and its length (six months), so the window is May-Nov 1990 and all three distractors are excluded by arithmetic alone: Euro 1988 predates the ban entirely, while Euro 1992 and the 1992 Olympics fall long after a six-month suspension expires — the question is solvable without knowing anything about Boban.",
+  "q": "Zvonimir Boban received a six-month ban in May 1990 that caused him to miss which tournament?",
+  "o": [
+   "Euro 1988",
+   "1990 World Cup",
+   "Euro 1992",
+   "1992 Olympics"
+  ],
+  "answer": "1990 World Cup",
+  "cat": "WorldCup",
+  "diff": "medium"
+ }
+]

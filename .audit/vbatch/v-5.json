@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_7f0e68",
+  "kind": "wrong_answer",
+  "claim": "No source can be found for Joey Barton saying \"He's not even that good\" about Messi in 2017; his documented 2017 comments about Messi were the opposite (he tweeted that Messi was still ahead of Ronaldo), so the attribution appears fabricated or badly garbled.",
+  "q": "Who said 'He's not even that good' about Lionel Messi in 2017?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Diego Maradona",
+   "Sergio Ramos",
+   "Joey Barton"
+  ],
+  "answer": "Joey Barton",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a11dd",
+  "kind": "wrong_answer",
+  "claim": "The keyed Oliver Kahn quote 'eat them alive' cannot be sourced — it appears on none of the standard Kahn quote collections (FC Bayern's own 'legendary quotes' list, AZQuotes, BrainyQuote), whose documented Kahn lines are 'Eier, wir brauchen Eier', 'Weiter, immer weiter' and 'Goalkeepers need an element of insanity'; the widely reported 'I'm going to eat you alive' taunt belongs to Emiliano Martínez (to Yerry Mina, 2021 Copa América shootout), so this looks like a misattribution.",
+  "q": "What did Bayern Munich goalkeeper Oliver Kahn famously say he was going to do to opponents before big matches?",
+  "o": [
+   "Eat them alive",
+   "Crush them like bugs",
+   "Destroy them",
+   "Show them mercy"
+  ],
+  "answer": "Eat them alive",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_192f68",
+  "kind": "wrong_answer",
+  "claim": "The stem calls West Bromwich Albion a \"Scottish side\" — WBA is an English club from West Bromwich in the West Midlands (Willie Groves was the Scot); the £100 key is right but the question states a falsehood that misinforms the player.",
+  "q": "In 1893, English club Aston Villa paid Scottish side West Bromwich Albion a fee for Willie Groves that is often cited as the first in football history to cross which threshold?",
+  "o": [
+   "£100",
+   "£1,000",
+   "£500",
+   "£10,000"
+  ],
+  "answer": "£100",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_14538b",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier \"even scored from his own half\" is false of the keyed answer Ederson — he has never scored a goal in his professional career (0 goals in 500+ appearances per Premier League/FBref/Transfermarkt); he holds a goalkeeper assist record, not a goal, so no option satisfies the stem as written.",
+  "q": "Which goalkeeper, signed by Pep Guardiola, became renowned for his pinpoint long-range passing and even scored from his own half?",
+  "o": [
+   "Joe Hart",
+   "Claudio Bravo",
+   "Ederson",
+   "Stefan Ortega"
+  ],
+  "answer": "Ederson",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e293c5",
+  "kind": "wrong_answer",
+  "claim": "The stem calls the 1958 Ballon d'Or 'the inaugural' one, but the award began in 1956 and was won by Stanley Matthews (Di Stefano won 1957); Kopa won the third edition, so the stem's qualifier is factually false.",
+  "q": "Which French winger, signed in the 1950s, formed a devastating partnership with Di Stefano and won the inaugural Ballon d'Or in 1958 while at Real Madrid?",
+  "o": [
+   "Raymond Kopa",
+   "Jean Vincent",
+   "Maryan Wisnieski",
+   "Roger Piantoni"
+  ],
+  "answer": "Raymond Kopa",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8253ba",
+  "kind": "wrong_answer",
+  "claim": "Lamine Yamal is NOT Barcelona's youngest player ever — Paulino Alcántara (15y 4m 18d, 1912), Arseni Comamala and Antoni Robert all debuted younger; Yamal (15y 9m 16d, Apr 2023) is only the youngest in over a century / youngest La Liga debutant, so the keyed option's 'ever' qualifier is factually false.",
+  "q": "Lamine Yamal, the prodigy who inherited Barça's No. 10 shirt, holds which club record?",
+  "o": [
+   "Youngest player ever to represent Barcelona",
+   "Most goals in a debut season",
+   "Fastest player ever timed at the club",
+   "Youngest captain in club history"
+  ],
+  "answer": "Youngest player ever to represent Barcelona",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

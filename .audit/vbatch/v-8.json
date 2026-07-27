@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2826a5",
+  "kind": "multiple_correct",
+  "claim": "Tim Howard also scored from inside his own penalty area in a Premier League match (Everton 1-2 Bolton, 4 Jan 2012 — a wind-assisted clearance struck about 5 yards inside his own box, ~100 yards), so both he and the keyed Asmir Begovic satisfy the stem 'famously scored from inside his own penalty area in a Premier League match'.",
+  "q": "Which goalkeeper famously scored from inside his own penalty area in a Premier League match?",
+  "o": [
+   "Paul Robinson",
+   "Brad Friedel",
+   "Tim Howard",
+   "Asmir Begovic"
+  ],
+  "answer": "Asmir Begovic",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2543a",
+  "kind": "multiple_correct",
+  "claim": "Raymond Kopa was Real Madrid's regular right winger from 1956-59 and won three European Cups in that same dynasty, so 'Kopa' is as defensibly correct as the keyed 'Gento' for 'legendary winger who played for Real Madrid in their 1950s-60s European Cup dynasty'.",
+  "q": "Which legendary winger played for Real Madrid in their famous 1950s-60s European Cup dynasty?",
+  "o": [
+   "Puskas",
+   "Di Stéfano",
+   "Kopa",
+   "Gento"
+  ],
+  "answer": "Gento",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63ac23",
+  "kind": "multiple_correct",
+  "claim": "Van Nistelrooy's consecutive-Champions-League scoring streak is cited as 9 (group stage onward) but as 10 when the 2002 qualifying-round win over Zalaegerszeg is included — Manchester United's own site headlines it a '10-game goalscoring run' — and 10 is offered as a distractor, so a well-informed player is marked wrong.",
+  "q": "Ruud van Nistelrooy scored in how many consecutive Champions League matches, a mark later beaten by Cristiano Ronaldo's 11?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "answer": "9",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2db7d9",
+  "kind": "multiple_correct",
+  "claim": "Eder was a Swansea City player on loan at Lille for 2015-16 (Lille only made the deal permanent in summer 2016, around/after the 10 July final), and UK media widely described him as Swansea's player when he scored — so 'Swansea City', also an option, is defensibly correct alongside the keyed 'Lille'.",
+  "q": "Eder scored the winner for Portugal in the 2016 Euro final — which club was he playing for at the time?",
+  "o": [
+   "Sporting CP",
+   "Lille",
+   "Braga",
+   "Swansea City"
+  ],
+  "answer": "Lille",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c5570c",
+  "kind": "multiple_correct",
+  "claim": "Eusébio's 1967-68 season is keyed at 50 goals (all competitions), but 42 — his Primeira Liga tally that season, the standing Portuguese top-flight single-season record and the figure most sources cite as 'the club record' — is also an option, and the stem never specifies league-only vs all-competitions.",
+  "q": "How many goals did Eusébio score in his best single season for Benfica (1967-68) — still a club record?",
+  "o": [
+   "42",
+   "62",
+   "55",
+   "50"
+  ],
+  "answer": "50",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_97fa12",
+  "kind": "multiple_correct",
+  "claim": "Option 'TSV München' is a shorthand for the same club as the keyed answer 'TSV 1860 Munich' (TSV München von 1860), so a player who knows the fact can still be marked wrong.",
+  "q": "Which Munich-based club, not Bayern, was selected as Munich's first Bundesliga representative when the league was founded in 1963?",
+  "o": [
+   "TSV München",
+   "FC Augsburg",
+   "TSV 1860 Munich",
+   "SpVgg Unterhaching"
+  ],
+  "answer": "TSV 1860 Munich",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ }
+]

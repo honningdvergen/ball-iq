@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_82c4d0",
+  "kind": "wrong_answer",
+  "claim": "The keyed reason for Inter's blue is wrong: the club's own founding account (Giorgio Muggiani and the 1908 founders' manifesto — 'il nero e l'azzurro sullo sfondo d'oro delle stelle') attributes black to the night and blue to the night sky, not to being 'the opposite of rivals Milan's red'; distractor D ('it matched the sky') is in fact closer to the documented reason. The stem's 'has always been blue and black' is also inaccurate, since under the Ambrosiana-Inter era (1928-1945) the club played in white with a red cross.",
+  "q": "Inter's badge has always been blue and black, but why did founder Giorgio Muggiani specifically pick blue?",
+  "o": [
+   "It was the opposite of rivals Milan's red",
+   "It was the colour of the city's flag",
+   "It was the founder's favourite colour",
+   "It matched the sky over San Siro"
+  ],
+  "answer": "It was the opposite of rivals Milan's red",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e1dbb4",
+  "kind": "wrong_answer",
+  "claim": "The stem's timeline is factually false: Ibrahimović's 30-yard bicycle kick for Sweden against England was on 14 November 2012, i.e. AFTER he signed for PSG (18 July 2012), so it was not scored 'before joining PSG that year' — the keyed answer Sweden is right but the stem misinforms.",
+  "q": "Zlatan Ibrahimović scored a famous long-range bicycle-kick goal in 2012 while playing for which national team, before joining PSG that year?",
+  "o": [
+   "Sweden",
+   "Norway",
+   "Denmark",
+   "Netherlands"
+  ],
+  "answer": "Sweden",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_14096d",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: it claims Juventus 2011-12 is \"the only side to go a full 38-game top-flight season without defeat in the modern format\", but Arsenal went unbeaten across all 38 games of the 2003-04 Premier League season (the keyed win total of 23 is itself correct, but the question misinforms).",
+  "q": "Juventus completed an unbeaten Serie A campaign in 2011-12 — the only side to go a full 38-game top-flight season without defeat in the modern format. How many of those games did they win?",
+  "o": [
+   "23",
+   "30",
+   "38",
+   "15"
+  ],
+  "answer": "23",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9ad088",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: Sammer's 1996 Ballon d'Or was NOT the first German win since Beckenbauer (1972, 1976) — Karl-Heinz Rummenigge won in 1980 and 1981 and Lothar Matthäus in 1990; Sammer was only the first German defender since Beckenbauer.",
+  "q": "Which Dortmund defender won the 1996 Ballon d'Or, the first German honoured since Franz Beckenbauer?",
+  "o": [
+   "Matthias Sammer",
+   "Jürgen Kohler",
+   "Stefan Reuter",
+   "Andreas Möller"
+  ],
+  "answer": "Matthias Sammer",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c18d1a",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier 'future England and Tottenham boss' is false for the keyed answer Harry Redknapp — he managed Tottenham (2008–12) but was never England manager — while two distractors, Glenn Hoddle (England 1996–99, Tottenham 2001–03) and Terry Venables (Tottenham 1987–91, England 1994–96), both satisfy the stated qualifier exactly, so the stem points away from the correct West Ham 1994 appointment.",
+  "q": "Which future England and Tottenham boss took charge of West Ham in 1994?",
+  "o": [
+   "Glenn Hoddle",
+   "Kevin Keegan",
+   "Terry Venables",
+   "Harry Redknapp"
+  ],
+  "answer": "Harry Redknapp",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6134f",
+  "kind": "multiple_correct",
+  "claim": "Pelé also scored in four different World Cups (1958, 1962, 1966 vs Bulgaria, 1970) and reached the milestone on the same day as Uwe Seeler — 3 June 1970 — so 'first' depends on disputed kickoff/goal times and Pelé is defensibly correct.",
+  "q": "Who was the first player to score in four different World Cups?",
+  "o": [
+   "Pelé",
+   "Uwe Seeler",
+   "Maradona",
+   "Ronaldo"
+  ],
+  "answer": "Uwe Seeler",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

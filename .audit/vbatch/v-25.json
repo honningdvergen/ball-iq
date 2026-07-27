@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_be0880",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak within the same Rangers pack: the keyed answer 'European Cup Winners' Cup' appears verbatim in the stems of q_b4238e ('Which club did Rangers beat in the 1972 European Cup Winners' Cup final?'), q_54c648 and q_3ad4db, so any session pairing them hands over the answer.",
+  "q": "Which European trophy did Rangers win in 1972?",
+  "o": [
+   "European Cup Winners' Cup",
+   "European Cup",
+   "UEFA Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "European Cup Winners' Cup",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b4238e",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_3ad4db's stem reads 'their 1972 Cup Winners' Cup final win over Dynamo Moscow', naming this question's keyed answer verbatim.",
+  "q": "Which club did Rangers beat in the 1972 European Cup Winners' Cup final?",
+  "o": [
+   "Dynamo Moscow",
+   "Bayern Munich",
+   "Fiorentina",
+   "Zenit St Petersburg"
+  ],
+  "answer": "Dynamo Moscow",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fb8cf7",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_1d7c76's stem ('The Zenit side that beat Rangers in the 2008 UEFA Cup final...') states this question's keyed answer, Zenit St Petersburg.",
+  "q": "Rangers lost the 2008 UEFA Cup final 2-0 to which club in Manchester?",
+  "o": [
+   "Zenit St Petersburg",
+   "CSKA Moscow",
+   "Sevilla",
+   "Porto"
+  ],
+  "answer": "Zenit St Petersburg",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a4dcc4",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: three other questions in this pack (q_835f75, q_a1d4bd, q_2442e1) name the '2022 Europa League final' in their stems, giving away the keyed answer 'Europa League'.",
+  "q": "Rangers reached the final of which competition in 2022, losing to Eintracht Frankfurt?",
+  "o": [
+   "Europa League",
+   "Champions League",
+   "Scottish Cup",
+   "Conference League"
+  ],
+  "answer": "Europa League",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_97f905",
+  "kind": "self_answering",
+  "claim": "Cross-question answer leak: q_1167a1's stem ('Rangers were demoted to Scottish football's fourth tier in 2012...') and q_89d488's stem ('began life in the fourth tier in 2012-13') both state the keyed answer 'Scottish Third Division (fourth tier)'.",
+  "q": "After liquidation, the reformed Rangers began the 2012-13 season in which division?",
+  "o": [
+   "Scottish Third Division (fourth tier)",
+   "Scottish Premier League",
+   "Scottish Championship",
+   "English National League"
+  ],
+  "answer": "Scottish Third Division (fourth tier)",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf75e8",
+  "kind": "self_answering",
+  "claim": "The stem quotes the nickname 'Batman and Robben', which literally contains the surname of the keyed answer (Arjen Robben), so the question is solvable from the stem alone.",
+  "q": "PSV striker Mateja Kezman, nicknamed 'Batman', formed a lethal duo with which winger, prompting the 'Batman and Robben' tag?",
+  "o": [
+   "Arjen Robben",
+   "Robert Pires",
+   "Andrei Arshavin",
+   "Jesper Gronkjaer"
+  ],
+  "answer": "Arjen Robben",
+  "cat": "Legends",
+  "diff": "hard"
+ }
+]

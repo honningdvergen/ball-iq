@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_dadf7f",
+  "kind": "ambiguous_stem",
+  "claim": "'Best all-time World Cup record' is undefined: by best finish the USA wins (third place in 1930 vs Mexico's best of quarter-finals), while by appearances/total wins Mexico wins — both USA and Mexico are defensible.",
+  "q": "Among the three 2026 World Cup host nations, which has the best all-time World Cup record?",
+  "o": [
+   "USA",
+   "Canada",
+   "All equal",
+   "Mexico"
+  ],
+  "answer": "Mexico",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a670f7",
+  "kind": "ambiguous_stem",
+  "claim": "'How many times has the Champions League been won by a club from outside the big five leagues' does not say whether the pre-1992 European Cup counts: keyed answer 2 (Ajax 1995, Porto 2004) only holds for the post-rebrand Champions League era, whereas counting the European Cup gives many more (Celtic, Feyenoord, Benfica x2, Ajax x3, PSV, Steaua, Red Star), and 'big five leagues' is itself never defined.",
+  "q": "How many times has the Champions League been won by a club from outside the big five leagues?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": "2",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_101461",
+  "kind": "ambiguous_stem",
+  "claim": "The stem's two halves contradict: 2019-20 was the season interrupted BY the Covid lockdown (Liverpool), whereas 'the first season after Covid lockdowns' reads as 2020-21 (Man City) — and Man City is one of the options.",
+  "q": "Which club won the Premier League in the first season after Covid lockdowns — 2019-20?",
+  "o": [
+   "Man City",
+   "Chelsea",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Liverpool",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3e9381",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which club did Kevin De Bruyne join before moving to Manchester City?\" has four defensible answers because Genk, Chelsea and Werder Bremen are all clubs he joined before City (Genk 2008, Chelsea 2012, Werder Bremen loan 2012-13, Wolfsburg 2014) — the stem never says 'immediately before'.",
+  "q": "Which club did Kevin De Bruyne join before moving to Manchester City?",
+  "o": [
+   "Wolfsburg",
+   "Genk",
+   "Chelsea",
+   "Werder Bremen"
+  ],
+  "answer": "Wolfsburg",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_196e86",
+  "kind": "ambiguous_stem",
+  "claim": "The most-promotions-to-the-Bundesliga record is shared, not uniquely Nürnberg's: Arminia Bielefeld also has 8 promotions (1970, 1978, 1980, 1996, 1999, 2002, 2004, 2020) versus Nürnberg's 8 (1978, 1980, 1985, 1998, 2001, 2004, 2009, 2018), and Bielefeld — usually the club cited as 'Rekordaufsteiger' — is not among the options.",
+  "q": "Which Bundesliga club has been promoted to the top flight the most times?",
+  "o": [
+   "Cologne",
+   "Hamburg",
+   "Kaiserslautern",
+   "Nuremberg"
+  ],
+  "answer": "Nuremberg",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_eaba3c",
+  "kind": "ambiguous_stem",
+  "claim": "The quoted line is a loose paraphrase with no verbatim source; Sócrates' documented version is \"Beauty comes first, victory is secondary\", and Cruyff is equally famous for beauty-over-results aphorisms, so a knowledgeable player can defensibly answer Cruyff.",
+  "q": "Which legendary player is credited with the phrase 'football is not about winning, it's about playing beautifully'?",
+  "o": [
+   "Cruyff",
+   "Zico",
+   "Pele",
+   "Socrates"
+  ],
+  "answer": "Socrates",
+  "cat": "Legends",
+  "diff": "hard"
+ }
+]

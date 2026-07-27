@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_874404",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Serbian manager' qualifier eliminates all three distractors outright (Eriksson is Swedish, Hiddink Dutch, Parreira Brazilian), so Bora Milutinović is the only nationality-valid option.",
+  "q": "Which Serbian manager holds the record for taking 5 different national teams to the World Cup — Mexico, Costa Rica, USA, Nigeria, and China?",
+  "o": [
+   "Sven-Göran Eriksson",
+   "Bora Milutinović",
+   "Guus Hiddink",
+   "Carlos Alberto Parreira"
+  ],
+  "answer": "Bora Milutinović",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2aae12",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a 'Greek club' but the three distractors are AC Milan (Italian), Chelsea (English) and PSG (French), so Panathinaikos is the only option satisfying the qualifier and the question is solvable with zero knowledge of the 2005 match.",
+  "q": "Messi scored his first Champions League goal at Camp Nou on 2 November 2005 — in a 5-0 group-stage win over which Greek club?",
+  "o": [
+   "AC Milan",
+   "Chelsea",
+   "Panathinaikos",
+   "PSG"
+  ],
+  "answer": "Panathinaikos",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_01021e",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies a Kuwaiti player, but all three distractors (Mohamed Al-Deayea, Saeed Al-Owairan, Salman Al-Faraj) are Saudi Arabian, so anyone who knows nationalities gets Bader Al-Mutawa without knowing the caps record.",
+  "q": "Which Kuwaiti player held the all-time international appearances record with 196 caps before Cristiano Ronaldo overtook him in 2023?",
+  "o": [
+   "Al-Deayea",
+   "Al-Owairan",
+   "Salman Al-Faraj",
+   "Bader Al-Mutawa"
+  ],
+  "answer": "Bader Al-Mutawa",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7ba13f",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks for a 'Swiss midfielder' but Payet, Griezmann and Gomis are all French internationals (Gomis a striker), so Shaqiri is the only option satisfying the qualifier and the question is solvable without knowing the goal.",
+  "q": "Which Swiss midfielder scored a memorable bicycle-kick goal vs Poland in the Euro 2016 round of 16?",
+  "o": [
+   "Shaqiri",
+   "Payet",
+   "Gomis",
+   "Griezmann"
+  ],
+  "answer": "Shaqiri",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1063a5",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which 'Bayern Munich striker' finished second, but Werner was at RB Leipzig, Kane at Tottenham and Mbappé at PSG in 2019-20 — Lewandowski is the only option that meets the club qualifier.",
+  "q": "Ciro Immobile won the 2019-20 European Golden Shoe outright with 36 Serie A goals — beating which Bayern Munich striker into second place?",
+  "o": [
+   "Lewandowski",
+   "Timo Werner",
+   "Kane",
+   "Kylian Mbappé"
+  ],
+  "answer": "Lewandowski",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e39a0f",
+  "kind": "eliminable_distractor",
+  "claim": "The stem's 'Manchester City player ... between 2011 and 2020' eliminates all three distractors without any knowledge of the fact: Shearer and Fowler never played for City, and Haaland did not join until 2022.",
+  "q": "Which Manchester City player scored 12 Premier League hat-tricks between 2011 and 2020?",
+  "o": [
+   "Alan Shearer",
+   "Sergio Agüero",
+   "Erling Haaland",
+   "Robbie Fowler"
+  ],
+  "answer": "Sergio Agüero",
+  "cat": "PL",
+  "diff": "medium"
+ }
+]

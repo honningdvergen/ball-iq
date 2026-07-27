@@ -2788,5 +2788,215 @@
   "kind": "eliminable_distractor",
   "severity": "cosmetic",
   "claim": "All three distractors fail the stem's 'Republic of Ireland' qualifier — Paul Bracewell, Trevor Steven and John Ebbrell are English (Bracewell and Steven were England internationals) — so nationality alone yields Kevin Sheedy."
+ },
+ {
+  "id": "q_4c4961",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "All three distractors fail the stem's 1999/UEFA-Cup-qualification qualifier on their own terms: the Watney Cup ended in 1973, the Full Members Cup in 1992 and the Anglo-Italian Cup in 1996, and none was a UEFA competition capable of awarding UEFA Cup entry, leaving the Intertoto Cup as the only structurally possible option."
+ },
+ {
+  "id": "q_b9dc02",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Distractor Jan Koller is a famous centre-forward, not a goalkeeper, so he fails the stem's explicit 'Czech goalkeeper' qualifier and can be dismissed without knowing Ludek Miklosko."
+ },
+ {
+  "id": "q_7cde53",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Asking which country's top division 'Sevilla FC' plays in is answered by the club's own Spanish-language name plus the fact that all its distractors (Portugal, Italy, France) are foreign leagues, so no La Liga knowledge is required."
+ },
+ {
+  "id": "q_d8e3a5",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's qualifier 'city rival' eliminates all three distractors purely from their names — Real Madrid, Valencia and Villarreal are self-evidently from other cities — so the answer is reachable without knowing what El Gran Derbi is."
+ },
+ {
+  "id": "q_51d1f7",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's era qualifier ('throughout the 1990s') is failed by all three distractors: Susaeta (b. 1987), Iturraspe (b. 1989) and Muniain (b. 1992) were children in the 1990s and are also wingers/holding midfielders rather than attacking midfielders."
+ },
+ {
+  "id": "q_1e03be",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem specifies an 'Englishman', but distractor Ferdinand Daučík was Slovak (and is in fact the keyed answer of q_37f572 in the same pack), so he can be dismissed on nationality without knowing Fred Pentland."
+ },
+ {
+  "id": "q_3b5849",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem quotes the nickname 'Die Königsblauen', which literally translates as 'the royal blues', handing over the keyed answer 'Royal blue and white'."
+ },
+ {
+  "id": "q_a692ce",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's qualifier 'Chilean coach' is failed by all three distractors (Bielsa, Pizzi and Sampaoli are Argentine/Spanish), so Pellegrini can be picked on nationality alone without knowing Betis's July 2020 appointment."
+ },
+ {
+  "id": "q_2cc152",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem asks for a Madrid stadium, but La Romareda (Zaragoza) and Balaídos (Vigo) are not in Madrid, cutting the real choice to two options."
+ },
+ {
+  "id": "q_a91e9d",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem asks for a Seville stadium, yet the Santiago Bernabéu (Madrid) and La Rosaleda (Málaga) fail that qualifier, reducing the question to a coin flip between the two Seville grounds."
+ },
+ {
+  "id": "q_128cca",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "For a 2022 presentation, Alfonso XIII (died 1941) and Felipe V (18th century) are impossible and Juan Carlos I abdicated in 2014, so all three distractors fail the stem's own date."
+ },
+ {
+  "id": "q_c9337c",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The qualifier 'around the turn of the millennium' both excludes the 1990-91 distractor and points straight at 1999-2000 as the season literally spanning the millennium."
+ },
+ {
+  "id": "q_8020b9",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem asks for a Paris stadium in 1975, but Heysel Stadium is in Brussels and the Stade de France did not open until 1998, so two of the four options are dismissible without knowing the venue, leaving a coin-flip between Parc des Princes and Stade Colombes."
+ },
+ {
+  "id": "q_5681eb",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's qualifier 'West Ham midfielder' removes all three distractors on its own — Alan Ball (Blackpool/Everton) and Nobby Stiles (Man Utd) never played for West Ham, and Geoff Hurst was a striker — so Martin Peters can be reached without knowing who scored England's second goal in the 1966 final."
+ },
+ {
+  "id": "q_4e3a3a",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem specifies a French forward, but Frank Leboeuf was a centre-back, so that option fails the stem's own positional qualifier and can be dismissed without knowing Cantona joined Leeds in 1991-92."
+ },
+ {
+  "id": "q_e69cfc",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "All three distractors are famously other clubs'/nations' academies (La Masia = Barcelona, De Toekomst = Ajax, Clairefontaine = France), so the only German-language option can be picked without knowing 'Knappenschmiede'."
+ },
+ {
+  "id": "q_0b4350",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The distractors are each the well-known stand of a different club (Yellow Wall = Dortmund, The Kop = Liverpool, Curva Sud = Milan/Roma), leaving the lone German option as the only one that can belong to Schalke."
+ },
+ {
+  "id": "q_d7ba9a",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'Rothosen' literally translates as 'red trousers/shorts', so any German speaker can pick 'their red shorts' over socks/keeper shirt/armband without knowing HSV's kit."
+ },
+ {
+  "id": "q_9133c7",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's qualifier 'Malian international' is failed by all three distractors — Drogba (Ivory Coast), Eto'o (Cameroon) and Diouf (Senegal) — so Kanouté can be reached purely by nationality elimination without knowing the Sevilla or 2007 African Footballer of the Year fact."
+ },
+ {
+  "id": "q_1e78a5",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem cites wins in 2014 and 2020, but two distractors are competitions that no longer existed by then — the Cup Winners' Cup was abolished in 1999 and the Intertoto Cup in 2008 — so they are dismissible on era alone, leaving only a Champions League/Europa League coin-flip."
+ },
+ {
+  "id": "q_48c0b6",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem asks for the 'Austrian coach', but all three distractors fail that nationality qualifier — Branko Zebec was Yugoslav/Croatian, Kuno Klötzer and Hennes Weisweiler were German — so Happel can be picked without knowing who managed HSV in 1983."
+ },
+ {
+  "id": "q_5d7200",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Kevin Keegan had left HSV for Southampton in 1980 and was a forward, so he fails both the era and the 'HSV midfielder' qualifier of a 1983 European Cup final question (Georg Volkert had also left the club by then)."
+ },
+ {
+  "id": "q_793689",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Stem asks which \"other Turin club\" Torino's founders split from, but all three distractors (Pro Vercelli, Genoa, Alessandria) are not Turin clubs, so Juventus is the only option satisfying the stem's own qualifier."
+ },
+ {
+  "id": "q_5d93f9",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The three distractor goalkeepers all post-date the 1949 Superga disaster by career era (Zoff born 1942, Zenga 1960, Buffon 1978), so Bacigalupo is reachable purely by elimination despite the \"hard\" grading."
+ },
+ {
+  "id": "q_88e869",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Torino's first match came in 1906, but Internazionale (founded 1908), Napoli (1926) and Fiorentina (1926) did not yet exist, and only Pro Vercelli fits the stem's \"pioneering Italian club\" qualifier."
+ },
+ {
+  "id": "q_009da2",
+  "kind": "ambiguous_stem",
+  "severity": "cosmetic",
+  "claim": "The stem implies the stadium went directly from its original name to the 1991 Artemio Franchi renaming, but it was Stadio Giovanni Berta only until the post-war period, then Stadio Comunale di Firenze for roughly four decades before 1991; the keyed answer (Giovanni Berta) is still the only correct response to \"originally carried which name\", so no option is misresolved."
+ },
+ {
+  "id": "q_623bfa",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Stem specifies a \"striker\", but Marco Tardelli was a midfielder and Bruno Conti a winger, so both fail the stem's own positional qualifier and the choice collapses to Rossi vs Graziani."
+ },
+ {
+  "id": "q_590334",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Herbert Chapman died in January 1934 and never worked in Italy, so he cannot satisfy the stem's \"died in the 1949 Superga disaster\" qualifier and is eliminable on era alone."
+ },
+ {
+  "id": "q_7ff7f4",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The keyed answer \"Sportinguistas\" is derived from the club name in the stem while the three distractors (Culés, Merengues, Bhoys) are the well-known fan names of Barcelona, Real Madrid and Celtic, so the answer is reachable without knowing the Sporting-specific fact."
+ },
+ {
+  "id": "q_df14e2",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem contains the answer as a transparent cognate — 'A Catedral' → 'The Cathedral' is solvable by any English speaker with zero Benfica knowledge, so the question tests nothing about football."
+ },
+ {
+  "id": "q_235ee9",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'O Glorioso' → 'The Glorious One' is a direct cognate translation, and the distractors are English nicknames of other clubs (The Old Lady, The Lisbon Lions), so the answer is reachable without knowing anything about Benfica."
+ },
+ {
+  "id": "q_40c829",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem states Eusébio was born in Lourenço Marques, which is the colonial name of Maputo — anyone who knows that geography has the answer 'Mozambique' without knowing anything about his 1960 transfer, the fact the question intends to test."
+ },
+ {
+  "id": "q_44342e",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "The stem's qualifier 'Canadian businessman' eliminates all three distractors at once — Frank McCourt, John Textor and Todd Boehly are all well-known American owners — so Tanenbaum can be picked without knowing who bought Saint-Étienne."
+ },
+ {
+  "id": "q_5020fc",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Two of the three distractors fail the stem's 'centre-back' qualifier: Faouzi Ghoulam is a left-back and Josuha Guilavogui a defensive midfielder, leaving only Zouma and Bayal Sall as genuine options."
+ },
+ {
+  "id": "q_28424b",
+  "kind": "eliminable_distractor",
+  "severity": "cosmetic",
+  "claim": "Wim van Hanegem fails the stem's own qualifier 'a World Cup finalist in 1974 and 1978' — he was not in the Netherlands squad for Argentina 1978, so he can be dismissed without knowing the 1979 Saint-Étienne signing."
  }
 ]

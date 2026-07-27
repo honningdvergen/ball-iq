@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_76b1b2",
+  "kind": "self_answering",
+  "claim": "The stem names the celebration as the 'Poznan' and one option is Lech Poznan, so the answer can be read straight off the stem without knowing the 2010 Europa League tie.",
+  "q": "City fans adopted their bouncing, back-to-the-pitch 'Poznan' celebration after a 2010 European tie against which club?",
+  "o": [
+   "Lech Poznan",
+   "Dynamo Kyiv",
+   "Sporting Lisbon",
+   "Red Star Belgrade"
+  ],
+  "answer": "Lech Poznan",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_126aa8",
+  "kind": "self_answering",
+  "claim": "The stem states Trapattoni \"left a far bigger legacy\" at Juventus, which logically eliminates all three negative options (never won a title / sacked after one season / only managed the youth team), leaving the keyed positive statement as the only possible pick without knowing anything about him.",
+  "q": "Giovanni Trapattoni is now best remembered abroad for his 'Ich habe fertig' meltdown at Bayern — but at Juventus he left a far bigger legacy. What is true of 'Il Trap' at Juve?",
+  "o": [
+   "He never won a Serie A title there",
+   "He remains the club's most decorated manager",
+   "He was sacked after a single season",
+   "He only ever managed the youth team"
+  ],
+  "answer": "He remains the club's most decorated manager",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_35edf5",
+  "kind": "self_answering",
+  "claim": "The stem says it was 'an all-German Champions League final', which eliminates Real Madrid, Chelsea and Juventus outright and leaves Bayern Munich as the only German option, so no knowledge of the 2013 final is required.",
+  "q": "Dortmund reached an all-German Champions League final in 2013 at Wembley, only to lose 2-1 to a late winner. Which club beat them?",
+  "o": [
+   "Bayern Munich",
+   "Real Madrid",
+   "Chelsea",
+   "Juventus"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_da1ac7",
+  "kind": "self_answering",
+  "claim": "The stem states Hummels joined Dortmund 'from Bayern Munich' and then asks which club he 'rejoined' in 2016 — 'rejoin' plus the only prior club named makes Bayern Munich the answer by pure logic.",
+  "q": "Defender Mats Hummels first joined Dortmund from Bayern Munich in 2008 — which club did he then rejoin in 2016?",
+  "o": [
+   "Bayern Munich",
+   "Hamburg",
+   "1. FC Köln",
+   "VfB Stuttgart"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c1e0e4",
+  "kind": "self_answering",
+  "claim": "The stem names the achievement as a 'sextuple' and then asks how many trophies it was — the Latin prefix gives the answer 'Six' with zero football knowledge, eliminating Four/Five/Seven outright.",
+  "q": "Under Pep Guardiola, Barcelona achieved a historic 'sextuple' in the 2009 calendar year. How many trophies did they win?",
+  "o": [
+   "Four",
+   "Five",
+   "Six",
+   "Seven"
+  ],
+  "answer": "Six",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d5cd46",
+  "kind": "self_answering",
+  "claim": "The stem supplies the exact span '2011-12 to 2019-20', so counting the seasons inclusively yields 9 by arithmetic alone; no knowledge of Juventus is required and 7/8/11 are all impossible from the stem.",
+  "q": "Juventus won a record run of consecutive Serie A titles from 2011-12 to 2019-20. How many in a row was that?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "11"
+  ],
+  "answer": "9",
+  "cat": "SerieA",
+  "diff": "easy"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_ca21e6",
+  "kind": "eliminable_distractor",
+  "claim": "All three distractors are impossible at the 1950 World Cup (West Germany was banned, Slovenia was part of Yugoslavia, Algeria part of France), and naming the scorer as 'Haitian-American' additionally points straight to the USA, so the question is unanswerable-proof rather than knowledge-testing.",
+  "q": "Which country beat England 1-0 at the 1950 World Cup group stage — one of football's all-time greatest upsets, scored by Haitian-American Joe Gaetjens?",
+  "o": [
+   "Algeria",
+   "Germany",
+   "Slovenia",
+   "USA"
+  ],
+  "answer": "USA",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bcdc90",
+  "kind": "eliminable_distractor",
+  "claim": "The stem specifies a \"legendary Brazilian goalkeeper\" but all three distractors are non-Brazilian (Yashin USSR, Sepp Maier West Germany, Zoff Italy), so Gilmar is reachable by nationality alone without knowing the 1958/1962 fact.",
+  "q": "Which legendary Brazilian goalkeeper is the only keeper to start and win two consecutive World Cups — 1958 and 1962?",
+  "o": [
+   "Yashin",
+   "Sepp Maier",
+   "Gilmar",
+   "Zoff"
+  ],
+  "answer": "Gilmar",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d9c245",
+  "kind": "eliminable_distractor",
+  "claim": "Two of the four options are the same stadium — Signal Iduna Park IS the Westfalenstadion (Dortmund) — so a player can dismiss both without knowing anything, leaving only Allianz Arena vs Olympiastadion Berlin.",
+  "q": "Germany hosted Euro 2024 — which of their home stadiums was the largest venue used?",
+  "o": [
+   "Allianz Arena",
+   "Signal Iduna Park",
+   "Westfalenstadion",
+   "Olympiastadion Berlin"
+  ],
+  "answer": "Olympiastadion Berlin",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_21b35c",
+  "kind": "eliminable_distractor",
+  "claim": "The stem asks which PREMIER LEAGUE club signed Chiesa, but three of the four options (AC Milan, Inter, Roma) are Serie A clubs, so Liverpool is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge of the transfer.",
+  "q": "Federico Chiesa left Juventus in August 2024 for £12.5m — which Premier League club signed him?",
+  "o": [
+   "AC Milan",
+   "Inter",
+   "Liverpool",
+   "Roma"
+  ],
+  "answer": "Liverpool",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d4becb",
+  "kind": "eliminable_distractor",
+  "claim": "Stem asks 'Which English club won the inaugural UEFA Cup' but three of the four options (AC Milan, Fiorentina, Juventus) are Italian, so Tottenham is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge.",
+  "q": "Which English club won the inaugural UEFA Cup in 1971-72, beating Wolves over two legs in the final?",
+  "o": [
+   "AC Milan",
+   "Tottenham",
+   "Fiorentina",
+   "Juventus"
+  ],
+  "answer": "Tottenham",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a70965",
+  "kind": "eliminable_distractor",
+  "claim": "Stem qualifies 'for Real Madrid during their 2015-16 title run' but all three distractors fail that qualifier — Casillas left for Porto in July 2015, De Gea never played for Real Madrid, and Courtois was at Chelsea until 2018 — leaving Navas as the only possible answer.",
+  "q": "Which goalkeeper played every single Champions League game for Real Madrid during their 2015-16 title run?",
+  "o": [
+   "Navas",
+   "De Gea",
+   "Casillas",
+   "Courtois"
+  ],
+  "answer": "Navas",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

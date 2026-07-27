@@ -1180,5 +1180,89 @@
   "kind": "self_answering",
   "severity": "serious",
   "claim": "The stem states the nickname 'The Peacocks' derives from the ground's original name, and only one option ('The Old Peacock Ground') contains the word Peacock, so the answer is deducible from the stem alone without knowing Elland Road's history."
+ },
+ {
+  "id": "q_c18d1a",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's qualifier 'future England and Tottenham boss' is false for the keyed answer Harry Redknapp — he managed Tottenham (2008–12) but was never England manager — while two distractors, Glenn Hoddle (England 1996–99, Tottenham 2001–03) and Terry Venables (Tottenham 1987–91, England 1994–96), both satisfy the stated qualifier exactly, so the stem points away from the correct West Ham 1994 appointment."
+ },
+ {
+  "id": "q_5f32aa",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names 'The Boleyn Ground' and the key is 'Anne Boleyn' — the surname in the stem hands the answer to anyone who has never heard of the Boleyn Castle legend, eliminating Victoria, Elizabeth I and Catherine of Aragon without any knowledge."
+ },
+ {
+  "id": "q_2c07a2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's clue 'dubbed The Gerrard Final' identifies the opponent for anyone who knows Steven Gerrard played for Liverpool, so the question is solvable without knowing anything about the 2006 FA Cup final itself."
+ },
+ {
+  "id": "q_7bb619",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Athletic Bilbao plays its home matches in which city?' with 'Bilbao' as the key — the club's own name in the stem gives the answer, testing no knowledge at all."
+ },
+ {
+  "id": "q_c64db6",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own premise ('As reigning Spanish league champions') logically dictates the answer — domestic champions by definition entered the European Cup, so the Cup Winners' Cup, UEFA Cup and Intertoto Cup are eliminated by competition rules alone, with no Athletic-specific knowledge needed."
+ },
+ {
+  "id": "q_c4eedb",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says the founders included 'a Scottish vice-consul', and Scottish entails British, so the keyed answer follows from the stem itself and German/French/Italian are eliminated without knowing anything about Sevilla's 1890 founding."
+ },
+ {
+  "id": "q_094b75",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Sevilla FC' is the Spanish name of the city Seville, so the option 'Seville' is a restatement of the club's own name — the question cannot test any fact beyond reading the club name."
+ },
+ {
+  "id": "q_539dae",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states that the '04' in FC Schalke 04 marks the founding year, so the answer 1904 is readable directly off the club's name with no football knowledge required."
+ },
+ {
+  "id": "q_e2322f",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies 'based in Seville', and Seville is in Andalusia, so the keyed answer follows from Spanish geography alone without knowing Betis's 1934-35 title."
+ },
+ {
+  "id": "q_51b4fb",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem \"In which German city is Hamburger SV based?\" contains the answer in the club's own name, so Munich/Bremen/Cologne are eliminated without any football knowledge."
+ },
+ {
+  "id": "q_17bbf4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own qualifier 'staged in West Germany' pins the answer without any Hamburg knowledge — West Germany hosted exactly one men's World Cup (1974), and the distractors 1990 (Italy), 2002 (Korea/Japan) and 2010 (South Africa) are all eliminated by that clause alone."
+ },
+ {
+  "id": "q_6b922e",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"How many consecutive Serie A titles had the Grande Torino won WHEN the 1949 disaster ended their era?\" is keyed \"Five\", but at the moment of the 4 May 1949 crash Torino had won four in a row (1942-43, 45-46, 46-47, 47-48) and the fifth (1948-49) was still unfinished — as the same pack's q_a30beb states, four league games remained; \"Four\" is a defensible answer sitting in the options."
+ },
+ {
+  "id": "q_719c2a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own qualifier \"1982 World Cup-winning squad\" uniquely identifies Italy, so Argentina, Brazil and West Germany are eliminated by knowing who won the 1982 World Cup alone — the question can be answered with zero knowledge of Giancarlo Antognoni, the fact it purports to test."
+ },
+ {
+  "id": "q_1088b1",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks for the \"Swiss businessman\" who co-founded Torino, but all three distractors (Vittorio Pozzo, Edoardo Agnelli, Enrico Marone) are unmistakably Italian, so Alfred Dick is selectable purely on nationality without knowing the club's founding history."
  }
 ]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2bf68d",
+  "kind": "self_answering",
+  "claim": "The stem names the venue as the Camp Nou, which identifies Barcelona as the opponent without any knowledge of the 2013-14 title decider.",
+  "q": "Atletico Madrid's 2013-14 La Liga title was secured on the final day with a 1-1 draw at the Camp Nou — against which opponent?",
+  "o": [
+   "Valladolid",
+   "Barcelona",
+   "Valencia",
+   "Real Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b64b9d",
+  "kind": "self_answering",
+  "claim": "The stem asks for a 'Ukrainian side' and the three distractors are Italian (Juventus), German (Dortmund) and Russian (Lokomotiv Moscow), leaving Dynamo Kyiv as the only option satisfying the stem.",
+  "q": "Which Ukrainian side knocked out defending champions Real Madrid in the quarter-finals of the 1998-99 Champions League, winning 2-0 at home thanks to an Andriy Shevchenko brace?",
+  "o": [
+   "Juventus",
+   "Dortmund",
+   "Dynamo Kyiv",
+   "Lokomotiv Moscow"
+  ],
+  "answer": "Dynamo Kyiv",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7e6e97",
+  "kind": "self_answering",
+  "claim": "The stem names the club 'Bayer Leverkusen' and specifies a pharmaceutical owner, so 'Bayer AG' is derivable from the club's own name and is the only pharma company among the options (Siemens = electronics, Volkswagen = cars, ThyssenKrupp = steel) — no football knowledge is required.",
+  "q": "Bayer Leverkusen's pharmaceutical company connection — which company owns the club?",
+  "o": [
+   "Siemens",
+   "Bayer AG",
+   "Volkswagen",
+   "ThyssenKrupp"
+  ],
+  "answer": "Bayer AG",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_948b2e",
+  "kind": "self_answering",
+  "claim": "The stem supplies both dates (2021-22 win and the 1961 Fairs Cup), so 61 is pure subtraction — no football knowledge is required and the other options are arithmetically impossible.",
+  "q": "Roma's 2021-22 UEFA Europa Conference League win under José Mourinho ended their wait for European silverware — how many years since their previous European trophy (the 1961 Inter-Cities Fairs Cup)?",
+  "o": [
+   "27",
+   "48",
+   "51",
+   "61"
+  ],
+  "answer": "61",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5c41dc",
+  "kind": "self_answering",
+  "claim": "The stem supplies both dates (2014 and 2026), so the answer is pure arithmetic requiring zero football knowledge.",
+  "q": "Italy failed to qualify for both the 2018 and 2022 World Cups. Their last World Cup appearance was in 2014 — how many years is that before the 2026 tournament?",
+  "o": [
+   "4",
+   "8",
+   "12",
+   "16"
+  ],
+  "answer": "12",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cb07da",
+  "kind": "self_answering",
+  "claim": "The stem describes the scorer as \"the captain\" — Harry Kane was England's captain at Euro 2020, so anyone who knows the captaincy picks Kane without knowing anything about the goal itself.",
+  "q": "Who headed England's second goal from a Jack Grealish cross late on in the 2-0 Euro 2020 round-of-16 win over Germany at Wembley — the captain's first goal of the tournament and England's first major knockout win over Germany since 1966?",
+  "o": [
+   "Kane",
+   "Harry Maguire",
+   "Raheem Sterling",
+   "Luke Shaw"
+  ],
+  "answer": "Kane",
+  "cat": "Euros",
+  "diff": "medium"
+ }
+]

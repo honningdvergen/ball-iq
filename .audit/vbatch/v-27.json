@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_12cd0f",
+  "kind": "self_answering",
+  "claim": "The club pack is titled \"Red Star Belgrade\" and sibling stems in the same pack repeatedly say \"Red Star's...\", so the translation of 'Crvena zvezda' is given away by context rather than tested.",
+  "q": "What does the club's Serbian name, 'Crvena zvezda', mean in English?",
+  "o": [
+   "Red Star",
+   "Red Army",
+   "White Star",
+   "Red Eagle"
+  ],
+  "answer": "Red Star",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6acdfd",
+  "kind": "self_answering",
+  "claim": "Pack leak: sibling question q_5d7517 states that Club Brugge retired the number 23 shirt for François Sterchele, which hands over the 23rd-minute answer here.",
+  "q": "In which minute of every home match do Club Brugge fans traditionally sing for François Sterchele?",
+  "o": [
+   "23rd",
+   "12th",
+   "8th",
+   "90th"
+  ],
+  "answer": "23rd",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e3af0f",
+  "kind": "self_answering",
+  "claim": "Pack leak: sibling question q_1b01c8 opens with \"Club Brugge signed Ukraine striker Roman Yaremchuk\", explicitly stating the national team this question asks for.",
+  "q": "Roman Yaremchuk, a 2022 Club Brugge signing, has represented which national team?",
+  "o": [
+   "Ukraine",
+   "Poland",
+   "Romania",
+   "Croatia"
+  ],
+  "answer": "Ukraine",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_734646",
+  "kind": "self_answering",
+  "claim": "The stem asks which 'brother of his' (Zdravko Mamić) managed Dinamo, and Zoran Mamić is the only option sharing the Mamić surname — Vrbanović, Barišić and Čačić are dismissible on the name alone, so no knowledge of Dinamo's 2013-16 title run is required.",
+  "q": "Zdravko Mamić ran Dinamo Zagreb as executive director from 2003 to 2016. Which brother of his managed the club to three consecutive league titles from 2013-14?",
+  "o": [
+   "Zoran Mamić",
+   "Damir Vrbanović",
+   "Mirko Barišić",
+   "Ante Čačić"
+  ],
+  "answer": "Zoran Mamić",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f64165",
+  "kind": "self_answering",
+  "claim": "The stem names the venue as 'İnönü Stadium' and the correct option is 'İsmet İnönü' — a player picks it by pure name-matching without knowing any Turkish political or club history.",
+  "q": "Beşiktaş's former İnönü Stadium was named after which Turkish president?",
+  "o": [
+   "Mustafa Kemal Atatürk",
+   "Celâl Bayar",
+   "İsmet İnönü",
+   "Cemal Gürsel"
+  ],
+  "answer": "İsmet İnönü",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_33a7c0",
+  "kind": "self_answering",
+  "claim": "The stem lists the trio as Metin Tekin, Ali Gültiken and Feyyaz Uçar and the keyed answer is literally 'Metin-Ali-Feyyaz', so the answer is read straight off the stem's own words.",
+  "q": "Which nickname was given to Beşiktaş's celebrated attacking trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar?",
+  "o": [
+   "The Bosphorus Three",
+   "Metin-Ali-Feyyaz",
+   "The Black Eagles",
+   "The Serencebey Trio"
+  ],
+  "answer": "Metin-Ali-Feyyaz",
+  "cat": "Legends",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2f3ac3",
+  "kind": "self_answering",
+  "claim": "The stem says the scorer was 'a goalkeeper stepping up to the spot himself', and Ricardo is the only goalkeeper among the options (Cristiano Ronaldo, Deco and Rui Costa are all outfield players), so the fact is not needed.",
+  "q": "Who scored the winning penalty in the Euro 2004 shootout as Portugal beat England — a goalkeeper stepping up to the spot himself?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Deco",
+   "Rui Costa",
+   "Ricardo"
+  ],
+  "answer": "Ricardo",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5fbab6",
+  "kind": "self_answering",
+  "claim": "The stem states the season was unbeaten and contained 12 draws, so in a 38-game Premier League season the win total is fixed by arithmetic (38 - 12 - 0 = 26) and no knowledge of Arsenal's actual record is required.",
+  "q": "Arsenal's unbeaten 2003-04 season included 12 draws. How many wins did they get?",
+  "o": [
+   "24",
+   "25",
+   "26",
+   "27"
+  ],
+  "answer": "26",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_83113a",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"for England\" eliminates all three distractors on nationality alone — Griezmann and Mbappé are French, Lukaku is Belgian, so Kane is the only Englishman on the list and the 2018 Golden Boot fact is never actually tested.",
+  "q": "Who won the World Cup Golden Boot in 2018 with 6 goals for England?",
+  "o": [
+   "Griezmann",
+   "Mbappé",
+   "Kane",
+   "Lukaku"
+  ],
+  "answer": "Kane",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2b1d9e",
+  "kind": "self_answering",
+  "claim": "The stem asks \"Which Hungarian team...\" and the keyed answer is literally 'Hungary'; the three distractors (Romania, Czechoslovakia, Yugoslavia) all fail the stem's own nationality qualifier, so the question can be answered with zero football knowledge.",
+  "q": "Which Hungarian team is widely considered one of the greatest national sides never to win a World Cup — losing the 1954 final as favourites?",
+  "o": [
+   "Hungary",
+   "Romania",
+   "Czechoslovakia",
+   "Yugoslavia"
+  ],
+  "answer": "Hungary",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7581fb",
+  "kind": "self_answering",
+  "claim": "The stem ends with \"nicknamed 'Batigol'\", which contains the answer's surname stem (Batistuta) and is not shared by Crespo, Milito or Icardi, so the answer is readable off the clue itself.",
+  "q": "Which Argentine legend scored 184 Serie A goals for Fiorentina (151), Roma (30+), and briefly Inter — nicknamed 'Batigol'?",
+  "o": [
+   "Hernán Crespo",
+   "Gabriel Batistuta",
+   "Diego Milito",
+   "Mauro Icardi"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_612e6b",
+  "kind": "self_answering",
+  "claim": "The stem itself lists all three finals (1974, 2014, 2016) and then asks how many finals Atlético had reached up to 2016 — the answer 'Three' is obtained by counting the years in the stem, requiring no football knowledge.",
+  "q": "Atlético Madrid lost the European Cup/Champions League final in 1974, 2014 and 2016. Up to and including 2016, how many finals had they reached?",
+  "o": [
+   "One",
+   "Two",
+   "Three",
+   "Four"
+  ],
+  "answer": "Three",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

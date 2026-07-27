@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_06a281",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier is false: Diego Milito's two goals in the 2010 UCL final vs Bayern were both close-range finishes inside the box (a tap-in from Sneijder's pass on 35', and a one-on-one after beating van Buyten on 70') — neither was a 'stunning long-range goal', so the keyed answer contradicts the stem's own description.",
+  "q": "Who scored a stunning long-range goal for Inter Milan in the 2010 UCL final vs Bayern Munich?",
+  "o": [
+   "Sneijder",
+   "Milito",
+   "Zanetti",
+   "Eto'o"
+  ],
+  "answer": "Milito",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f097bb",
+  "kind": "wrong_answer",
+  "claim": "In Arsenal 2-4 Norwich on 15 August 1992 the Arsenal goals were Steve Bould (28') and Kevin Campbell (39') — one each, and Ian Wright did not score; the keyed answer 'Wright' is wrong and the stem's premise that an Arsenal striker 'scored twice' is also false (it was Mark Robins who scored twice, for Norwich). Bergkamp is additionally impossible (joined Arsenal 1995).",
+  "q": "Which striker scored twice on the Premier League's opening day for Arsenal in their 4-2 loss to Norwich on 15 August 1992?",
+  "o": [
+   "Wright",
+   "Bergkamp",
+   "Merson",
+   "Kevin Campbell"
+  ],
+  "answer": "Wright",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_24d934",
+  "kind": "wrong_answer",
+  "claim": "Andy Cole was not the second player to reach 100 Premier League goals — Les Ferdinand passed 100 late in 1996-97 (his final Newcastle season) and Ian Wright during 1997-98, and Cole's 100th is documented around the end of 1998-99 rather than February 1999, so the stem's premise is false and no listed option is the true 'second player'.",
+  "q": "Who was the second player (after Alan Shearer) to reach 100 Premier League career goals — doing so for Manchester United in February 1999?",
+  "o": [
+   "Andy Cole",
+   "Dwight Yorke",
+   "Sheringham",
+   "Giggs"
+  ],
+  "answer": "Andy Cole",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2b9731",
+  "kind": "wrong_answer",
+  "claim": "Togo was never disqualified from 2010 World Cup qualification for fielding an ineligible player — the only country excluded from that cycle was Ethiopia (option 3), and that was for FIFA suspending the Ethiopian FA over federation/government interference in Sept 2008, not player eligibility; the ineligible-player disqualifications (Cape Verde, Ethiopia) both belong to the 2014 cycle.",
+  "q": "Which country was disqualified from the 2010 World Cup qualification for fielding an ineligible player?",
+  "o": [
+   "Togo",
+   "Ivory Coast",
+   "Ethiopia",
+   "Bahrain"
+  ],
+  "answer": "Togo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_973343",
+  "kind": "wrong_answer",
+  "claim": "Jimmy Greaves was not the FIRST to score 100 top-flight goals for two different English clubs — David Jack scored 144 First Division goals for Bolton (1920-28) and 113 for Arsenal (1928-34), completing the feat roughly 30 years before Greaves (Chelsea 124, Spurs 220).",
+  "q": "Who was the first player to score 100 top-flight goals for two different English clubs?",
+  "o": [
+   "Jimmy Greaves",
+   "Alan Shearer",
+   "Les Ferdinand",
+   "Ian Rush"
+  ],
+  "answer": "Jimmy Greaves",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a03ae6",
+  "kind": "wrong_answer",
+  "claim": "No goalkeeper has ever won the Premier League Player of the Season award (winners run Shearer 1994-95 through Salah/Foden in the 2020s, with Van Dijk and Dias the only defenders), so the premise is false and Peter Schmeichel — who won Player of the Month awards but never the season award, nor the PFA/FWA equivalents — is not a correct key.",
+  "q": "Who was the first goalkeeper to be named Premier League Player of the Season?",
+  "o": [
+   "Schmeichel",
+   "Seaman",
+   "Van der Sar",
+   "David James"
+  ],
+  "answer": "Schmeichel",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

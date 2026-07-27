@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_c3cb7f",
+  "kind": "self_answering",
+  "claim": "European Cup finals were annual, so the stem's '1956 to 1960' range arithmetically fixes the count at Five; the answer is derivable from the dates in the stem without knowing anything about Di Stefano.",
+  "q": "Alfredo Di Stefano set a European Cup record by scoring in how many consecutive finals for Real Madrid from 1956 to 1960?",
+  "o": [
+   "Three",
+   "Four",
+   "Five",
+   "Six"
+  ],
+  "answer": "Five",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ef1120",
+  "kind": "self_answering",
+  "claim": "The stem states the semi-final was against Barcelona, so the correct venue is fixed by knowing Barcelona plays at Camp Nou — no knowledge of Torres's goal is needed; it is further leaked by q_3b5416 in the same pack, whose stem says 'In the 2012 Champions League semi-final at Camp Nou'.",
+  "q": "Fernando Torres sealed Chelsea's 2012 semi-final aggregate against Barcelona with a late solo goal, rounding the keeper at which ground?",
+  "o": [
+   "Camp Nou",
+   "Santiago Bernabéu",
+   "Allianz Arena",
+   "San Siro"
+  ],
+  "answer": "Camp Nou",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_06cd5f",
+  "kind": "self_answering",
+  "claim": "The stem supplies the nickname 'Lilywhites', which directly names the answer colour (white), so the question is solvable with zero knowledge of Tottenham's kit.",
+  "q": "What colour are Tottenham's traditional home shirts, giving rise to the nickname 'Lilywhites'?",
+  "o": [
+   "White",
+   "Navy blue",
+   "Red",
+   "Sky blue"
+  ],
+  "answer": "White",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_312fb3",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier 'North London rival' uniquely identifies Arsenal (West Ham is east London, QPR and Chelsea west), so the Jennings transfer fact is never needed.",
+  "q": "Legendary Spurs goalkeeper Pat Jennings caused uproar in 1977 by moving to which North London rival?",
+  "o": [
+   "Arsenal",
+   "West Ham United",
+   "Queens Park Rangers",
+   "Chelsea"
+  ],
+  "answer": "Arsenal",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_35ee33",
+  "kind": "self_answering",
+  "claim": "The keyed answer (4-0) is stated verbatim in the stems of two other questions in the same AC Milan pack — q_d3fa59 ('AC Milan's 4-0 win over Barcelona in the 1994 Champions League final') and q_abec24 ('AC Milan won the 1994 Champions League final 4-0') — so if any of them is drawn alongside it the score question is free.",
+  "q": "In the 1994 Champions League final, AC Milan produced a stunning performance to demolish Fabio Capello's opponents Barcelona. What was the score?",
+  "o": [
+   "4-0",
+   "2-1",
+   "3-2",
+   "1-0"
+  ],
+  "answer": "4-0",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f75361",
+  "kind": "self_answering",
+  "claim": "The stem names the exact season range (\"from 1996-97 to 1999-2000\"), so a player simply counts 96-97, 97-98, 98-99, 99-00 = Four without knowing anything about Galatasaray or Fatih Terim.",
+  "q": "How many consecutive Süper Lig titles did Galatasaray win under Fatih Terim from 1996-97 to 1999-2000?",
+  "o": [
+   "Two",
+   "Three",
+   "Four",
+   "Five"
+  ],
+  "answer": "Four",
+  "cat": "SuperLig",
+  "diff": "medium"
+ }
+]

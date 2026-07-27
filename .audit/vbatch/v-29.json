@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2c07a2",
+  "kind": "self_answering",
+  "claim": "The stem's clue 'dubbed The Gerrard Final' identifies the opponent for anyone who knows Steven Gerrard played for Liverpool, so the question is solvable without knowing anything about the 2006 FA Cup final itself.",
+  "q": "West Ham lost the 2006 FA Cup final on penalties to which club, in a game dubbed 'The Gerrard Final'?",
+  "o": [
+   "Everton",
+   "Liverpool",
+   "Chelsea",
+   "Manchester United"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7bb619",
+  "kind": "self_answering",
+  "claim": "'Athletic Bilbao plays its home matches in which city?' with 'Bilbao' as the key — the club's own name in the stem gives the answer, testing no knowledge at all.",
+  "q": "Athletic Bilbao plays its home matches in which city?",
+  "o": [
+   "San Sebastián",
+   "Zaragoza",
+   "Valencia",
+   "Bilbao"
+  ],
+  "answer": "Bilbao",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c64db6",
+  "kind": "self_answering",
+  "claim": "The stem's own premise ('As reigning Spanish league champions') logically dictates the answer — domestic champions by definition entered the European Cup, so the Cup Winners' Cup, UEFA Cup and Intertoto Cup are eliminated by competition rules alone, with no Athletic-specific knowledge needed.",
+  "q": "As reigning Spanish league champions, Athletic Bilbao contested which European competition in the mid-1980s?",
+  "o": [
+   "The Cup Winners' Cup",
+   "The UEFA Cup",
+   "The European Cup",
+   "The Intertoto Cup"
+  ],
+  "answer": "The European Cup",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4eedb",
+  "kind": "self_answering",
+  "claim": "The stem says the founders included 'a Scottish vice-consul', and Scottish entails British, so the keyed answer follows from the stem itself and German/French/Italian are eliminated without knowing anything about Sevilla's 1890 founding.",
+  "q": "Sevilla FC was founded largely by expatriates of which nationality, including a Scottish vice-consul?",
+  "o": [
+   "British",
+   "German",
+   "French",
+   "Italian"
+  ],
+  "answer": "British",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_094b75",
+  "kind": "self_answering",
+  "claim": "'Sevilla FC' is the Spanish name of the city Seville, so the option 'Seville' is a restatement of the club's own name — the question cannot test any fact beyond reading the club name.",
+  "q": "In which Spanish city does Sevilla FC play its home matches?",
+  "o": [
+   "Seville",
+   "Valencia",
+   "Málaga",
+   "Zaragoza"
+  ],
+  "answer": "Seville",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_539dae",
+  "kind": "self_answering",
+  "claim": "The stem states that the '04' in FC Schalke 04 marks the founding year, so the answer 1904 is readable directly off the club's name with no football knowledge required.",
+  "q": "The '04' in FC Schalke 04's name marks the year the club was founded — which year?",
+  "o": [
+   "1904",
+   "1900",
+   "1912",
+   "1920"
+  ],
+  "answer": "1904",
+  "cat": "History",
+  "diff": "easy"
+ }
+]

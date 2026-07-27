@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_3612b5",
+  "kind": "multiple_correct",
+  "claim": "The stem asks for Celtic's 'famous nickname' (not the 1967 team's), and 'The Bhoys' is Celtic FC's long-standing club nickname, so it is defensibly correct alongside the keyed 'The Lisbon Lions', which is specifically the name of the 1967 European Cup-winning XI.",
+  "q": "Celtic became the first British club to win the European Cup in 1967 — what was their famous nickname?",
+  "o": [
+   "The Bhoys",
+   "The Invincibles",
+   "The Lisbon Lions",
+   "The Celtic Tigers"
+  ],
+  "answer": "The Lisbon Lions",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0595e1",
+  "kind": "multiple_correct",
+  "claim": "Roberto Mancini won Serie A as a player with BOTH Sampdoria (1990-91) and Lazio (1999-2000, under Eriksson, before he moved into management), so the distractor 'Lazio' is equally correct under the stem's 'won Serie A with which Italian club before becoming a successful manager'.",
+  "q": "Roberto Mancini won Serie A with which Italian club before becoming a successful manager?",
+  "o": [
+   "Roma",
+   "Lazio",
+   "Fiorentina",
+   "Sampdoria"
+  ],
+  "answer": "Sampdoria",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84acf4",
+  "kind": "multiple_correct",
+  "claim": "Both 1991 and 1992 are defensible: the first group stage in the competition's history was the 1991-92 European Cup (group phase began 27 November 1991), while the 'UEFA Champions League' branding and its group stage arrived in 1992-93.",
+  "q": "In which year did the Champions League switch from two legs to a one-match group stage format?",
+  "o": [
+   "1991",
+   "1992",
+   "1994",
+   "1997"
+  ],
+  "answer": "1992",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a87d90",
+  "kind": "multiple_correct",
+  "claim": "Brazil lost 3-1 to both Hungary and Portugal in the 1966 group stage and finished third, so 'which country knocked out Brazil' is defensibly answerable as Hungary as well as the keyed Portugal (only the Portugal match was the mathematically decisive one, which the stem does not specify).",
+  "q": "Which country knocked out Brazil in the 1966 World Cup group stage — a massive shock?",
+  "o": [
+   "England",
+   "Portugal",
+   "Hungary",
+   "Soviet Union"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_edd7db",
+  "kind": "multiple_correct",
+  "claim": "Distractor 'They were unbeaten in the group stage' is also factually true of South Korea in 2002 (beat Poland 2-0, drew USA 1-1, beat Portugal 1-0), so two options correctly answer 'what was their remarkable achievement that year'.",
+  "q": "South Korea co-hosted the 2002 World Cup — what was their remarkable achievement that year?",
+  "o": [
+   "They reached the semi-finals",
+   "They won the tournament",
+   "They were unbeaten in the group stage",
+   "They scored the most goals"
+  ],
+  "answer": "They reached the semi-finals",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e20176",
+  "kind": "multiple_correct",
+  "claim": "Lee Carsley actually replaced Southgate as England manager in 2024 (interim from September 2024, took charge of every England match that autumn); Tuchel was appointed in October 2024 but did not take over until January 2025, so both listed names fit \"replaced Southgate in 2024\".",
+  "q": "Who replaced Gareth Southgate as England manager in 2024?",
+  "o": [
+   "Frank Lampard",
+   "Brendan Rodgers",
+   "Lee Carsley",
+   "Thomas Tuchel"
+  ],
+  "answer": "Thomas Tuchel",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

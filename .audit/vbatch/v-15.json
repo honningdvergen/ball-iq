@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_002ea8",
+  "kind": "ambiguous_stem",
+  "claim": "'How many different men took charge of Sunderland (including caretakers) in 2017-18' has no single defensible count: Grayson and Coleman plus Robbie Stockdale's caretaker spells give 3, and 4 only if the joint caretaker Billy McKinlay (Millwall, Nov 2017) is counted as a separate man.",
+  "q": "How many different men took charge of Sunderland (including caretakers) during the 2017-18 Championship season?",
+  "o": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": "4",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_19a7bd",
+  "kind": "ambiguous_stem",
+  "claim": "France were not the holders at Euro 2020 — Portugal were the defending European champions (France held the World Cup); the actual holders Portugal were eliminated in the last 16 by Belgium, which is one of the options, so the false 'holders' premise points a knowledgeable player to the wrong answer.",
+  "q": "Which country knocked out holders France in the last 16 at Euro 2020?",
+  "o": [
+   "Germany",
+   "Portugal",
+   "Switzerland",
+   "Belgium"
+  ],
+  "answer": "Switzerland",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d2325",
+  "kind": "ambiguous_stem",
+  "claim": "2021-22 was not Ancelotti's 'very first season in charge of Real Madrid' — he first managed the club in 2013-14 (also winning the Champions League); meanwhile Zidane, an option, genuinely did win the Champions League in his first season in charge (2015-16), so the stem's two clauses conflict.",
+  "q": "Which manager won the Champions League in his very first season in charge of Real Madrid in 2021-22?",
+  "o": [
+   "Zidane",
+   "Ancelotti",
+   "Mourinho",
+   "Benitez"
+  ],
+  "answer": "Ancelotti",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b922e",
+  "kind": "ambiguous_stem",
+  "claim": "\"How many consecutive Serie A titles had the Grande Torino won WHEN the 1949 disaster ended their era?\" is keyed \"Five\", but at the moment of the 4 May 1949 crash Torino had won four in a row (1942-43, 45-46, 46-47, 47-48) and the fifth (1948-49) was still unfinished — as the same pack's q_a30beb states, four league games remained; \"Four\" is a defensible answer sitting in the options.",
+  "q": "How many consecutive Serie A titles had the Grande Torino won when the 1949 disaster ended their era?",
+  "o": [
+   "Three",
+   "Four",
+   "Five",
+   "Seven"
+  ],
+  "answer": "Five",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_33d8a3",
+  "kind": "self_answering",
+  "claim": "The stem's qualifier \"Which Argentina captain\" identifies Messi on its own — Di María, De Paul and Enzo Fernández were never Argentina's captain at the 2022 World Cup, so the question is solvable without knowing anything about the Gvardiol dribble or the assist.",
+  "q": "Which Argentina captain's mesmerising dribble past Croatia's Joško Gvardiol before a cut-back assist for Julián Álvarez was hailed as the moment of the 2022 World Cup — sealing a 3-0 semi-final win?",
+  "o": [
+   "Lionel Messi",
+   "Ángel Di María",
+   "Rodrigo De Paul",
+   "Enzo Fernández"
+  ],
+  "answer": "Lionel Messi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40cd2c",
+  "kind": "self_answering",
+  "claim": "The stem's own clause 'before its 2026 co-hosting role with Canada and Mexico' identifies the tournament as the World Cup, so the answer is stated inside the question rather than requiring knowledge of USA 1994.",
+  "q": "Which tournament did the USA host on its own in 1994 — before its 2026 co-hosting role with Canada and Mexico?",
+  "o": [
+   "Copa America",
+   "Gold Cup",
+   "World Cup",
+   "Confederations Cup"
+  ],
+  "answer": "World Cup",
+  "cat": "WorldCup",
+  "diff": "easy"
+ }
+]

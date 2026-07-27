@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_8eb69a",
+  "kind": "multiple_correct",
+  "claim": "Belgium's best World Cup run (2018) was reaching the semi-final and then winning the third-place match, so the option \"Semi-final\" is as literally true as the keyed \"Third place\" (they also reached the semi-final in 1986).",
+  "q": "The golden generation of Belgium — what is their best World Cup result?",
+  "o": [
+   "Semi-final",
+   "Quarter-final",
+   "Third place",
+   "Runner-up"
+  ],
+  "answer": "Third place",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a32fc2",
+  "kind": "multiple_correct",
+  "claim": "The distractor \"It was his only goal that season\" is factually true — the May 2019 Leicester strike was Vincent Kompany's only goal of 2018-19 (his first since April 2018), so it is also a correct answer to \"What was notable about that strike?\"",
+  "q": "Vincent Kompany scored a thunderous long-range winner against Leicester in 2019 that all but sealed a title. What was notable about that strike?",
+  "o": [
+   "It was his only goal that season",
+   "It was a defender shooting from 25+ yards against teammates' advice",
+   "It was an own goal originally",
+   "It was scored with his weaker foot in stoppage time"
+  ],
+  "answer": "It was a defender shooting from 25+ yards against teammates' advice",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a159d5",
+  "kind": "multiple_correct",
+  "claim": "Buffon's 2001 fee (~€52m from Parma) also made him the most expensive Italian player ever, beating Christian Vieri's ~€46.5m 1999 record and standing until Jorginho's 2018 move, so the distractor \"Most expensive Italian player ever\" is defensibly correct alongside the keyed \"Most expensive goalkeeper in the world\" — and the stem's \"for over a decade\" is true of both.",
+  "q": "When Juventus signed Buffon from Parma in 2001, the fee made him something special for over a decade. What record did it set?",
+  "o": [
+   "Most expensive teenager ever",
+   "Most expensive goalkeeper in the world",
+   "Most expensive Italian player ever",
+   "First €100m goalkeeper"
+  ],
+  "answer": "Most expensive goalkeeper in the world",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df2e78",
+  "kind": "multiple_correct",
+  "claim": "Option 'László Kubala Jr.' is the keyed answer's own name in its native Hungarian form (Ladislao = Spanish for László) with 'Jr.' appended, so two of the four options plausibly name the same 1950s Barcelona star and a player can be wrong despite knowing the fact.",
+  "q": "Which Hungarian forward was Barcelona's biggest star of the 1950s, so popular that his crowds helped justify building the Camp Nou?",
+  "o": [
+   "Sándor Kocsis",
+   "Ladislao Kubala",
+   "László Kubala Jr.",
+   "Zoltán Czibor"
+  ],
+  "answer": "Ladislao Kubala",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7255b7",
+  "kind": "multiple_correct",
+  "claim": "Postecoglou also won trophies at Yokohama F. Marinos (J1 League 2019) and Brisbane Roar (A-League 2011, 2012) before joining Spurs in 2023, so 'after winning trophies at which club' admits three of the four options unless the stem says 'immediately before' or 'his previous club'.",
+  "q": "Ange Postecoglou joined Spurs as head coach in 2023 after winning trophies at which club?",
+  "o": [
+   "Celtic",
+   "Rangers",
+   "Yokohama Marinos",
+   "Brisbane Roar"
+  ],
+  "answer": "Celtic",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0ae8cd",
+  "kind": "multiple_correct",
+  "claim": "Stem asks where Everton played home games \"before moving to Goodison Park\" without saying \"immediately before\" — Everton's first home ground (1878-1882) was in Stanley Park, which is offered as a distractor, so Stanley Park is also defensibly correct alongside the keyed Anfield (1884-1892).",
+  "q": "At which ground did Everton play its home games before moving to Goodison Park?",
+  "o": [
+   "Anfield",
+   "Stanley Park",
+   "Bramley-Moore Dock",
+   "Sefton Park"
+  ],
+  "answer": "Anfield",
+  "cat": "History",
+  "diff": "medium"
+ }
+]

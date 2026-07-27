@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_bee28b",
+  "kind": "self_answering",
+  "claim": "Three other questions in the same Galatasaray pack (q_6a9fe2, q_ef99a0, q_be65f3) all name \"the 2000 UEFA Cup final\" in their stems, handing over this answer; independently, the Cup Winners' Cup was abolished after 1999 and the Intertoto Cup had no single final, so only UEFA Cup and Champions League are era-valid.",
+  "q": "Galatasaray beat Arsenal on penalties to win which 2000 European final, the first major European trophy for a Turkish club?",
+  "o": [
+   "Champions League",
+   "UEFA Cup",
+   "Cup Winners' Cup",
+   "Intertoto Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a9fe2",
+  "kind": "self_answering",
+  "claim": "The answer \"Arsenal\" is stated outright in the stems of three sibling questions in the same pack — q_bee28b (\"Galatasaray beat Arsenal on penalties to win which 2000 European final\"), q_ef99a0 and q_be65f3 (both \"...shootout against Arsenal\").",
+  "q": "Which English club did Galatasaray beat on penalties in the 2000 UEFA Cup final in Copenhagen?",
+  "o": [
+   "Leeds United",
+   "Arsenal",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "answer": "Arsenal",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f05452",
+  "kind": "self_answering",
+  "claim": "Pair-leak with q_baff41 in the same pack: q_baff41's stem ('When Ian Wright broke Arsenal's all-time scoring record in 1997...') names the answer to q_f05452 (Ian Wright), and q_f05452's stem ('Cliff Bastin's Arsenal goalscoring record stood for 58 years') names the answer to q_baff41 (Cliff Bastin) — the two questions test the identical fact and give each other away if drawn in the same session.",
+  "q": "Cliff Bastin's Arsenal goalscoring record stood for 58 years. Which striker finally overtook it in 1997?",
+  "o": [
+   "Alan Smith",
+   "Ian Wright",
+   "Dennis Bergkamp",
+   "Thierry Henry"
+  ],
+  "answer": "Ian Wright",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_392c3c",
+  "kind": "self_answering",
+  "claim": "Pair-leak with q_c37d46: q_c37d46 asks in which season Fenerbahçe won the title that 'stood as their 19th' (answer 2013-14) while q_392c3c asks how many titles they had by the 2013-14 triumph (answer 19) — each stem contains the other's answer, so drawing both makes one free.",
+  "q": "By the time they celebrated their 2013-14 triumph, how many Süper Lig titles had Fenerbahçe won in total?",
+  "o": [
+   "17",
+   "18",
+   "19",
+   "21"
+  ],
+  "answer": "19",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_506e85",
+  "kind": "self_answering",
+  "claim": "The stem supplies the date range \"from 1966 to 1974\", from which the answer (Nine) can be derived by simple arithmetic (1966-74 inclusive = 9 seasons) without knowing anything about Jock Stein's Celtic.",
+  "q": "How many consecutive league titles did Jock Stein's Celtic win from 1966 to 1974?",
+  "o": [
+   "Seven",
+   "Nine",
+   "Five",
+   "Eleven"
+  ],
+  "answer": "Nine",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_74322a",
+  "kind": "self_answering",
+  "claim": "The stem \"In which French city is Olympique de Marseille based?\" contains the answer in the club's own name, and \"Marseille\" is one of the four options — solvable with zero football knowledge.",
+  "q": "In which French city is Olympique de Marseille based?",
+  "o": [
+   "Lyon",
+   "Marseille",
+   "Lille",
+   "Nantes"
+  ],
+  "answer": "Marseille",
+  "cat": "Records",
+  "diff": "easy"
+ }
+]

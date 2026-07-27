@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_271809",
+  "kind": "wrong_answer",
+  "claim": "The key (Dortmund) is right, but the stem's premise is factually false: Bayern Munich failed to win the Bundesliga in six of the ten seasons before 2011-12 (Dortmund 2002, Werder 2004, Stuttgart 2007, Wolfsburg 2009, Dortmund 2011, Dortmund 2012), not once — so 2011-12 was not 'only the second time Bayern hadn't won it in a decade'.",
+  "q": "Which club won the Bundesliga in 2011-12 — only the second time Bayern Munich hadn't won it in a decade?",
+  "o": [
+   "Schalke",
+   "Dortmund",
+   "Leverkusen",
+   "RB Leipzig"
+  ],
+  "answer": "Dortmund",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a2960",
+  "kind": "wrong_answer",
+  "claim": "Messi's 2015 Copa del Rey final goal was a genuine solo run — he collected the ball himself near the halfway line and beat four Athletic players, so no assist is credited to anyone (FC Barcelona's and BBC's accounts describe it as an unassisted solo goal); keying 'Iniesta' as the assister is unsupported and contradicts the stem's own word 'solo'.",
+  "q": "Who assisted Lionel Messi's solo goal against Athletic Bilbao in the 2015 Copa del Rey final?",
+  "o": [
+   "Suárez",
+   "Neymar",
+   "Xavi",
+   "Iniesta"
+  ],
+  "answer": "Iniesta",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9d9713",
+  "kind": "wrong_answer",
+  "claim": "The 'El Niño' nickname at Atlético Madrid is documented for Fernando Torres, not for Kiko (Francisco Narváez), who was 23 in the 1995-96 double season and is not commonly recorded under that nickname — the keyed answer's defining qualifier appears to be misattributed.",
+  "q": "Atletico Madrid won La Liga in 1996 — who was their striker nicknamed 'El Niño' (The Kid)?",
+  "o": [
+   "José Luis Caminero",
+   "Kiko",
+   "Penev",
+   "Christian Vieri"
+  ],
+  "answer": "Kiko",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_07decd",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is false: 42 is only the record for a 38-game season — Crystal Palace were relegated with 49 points in 1992-93, the actual highest total for a relegated club in Premier League history, so taken literally the stem's qualifier does not describe West Ham (and Palace is not an option).",
+  "q": "Which club was relegated with the highest points total (42) in Premier League history in 2002-03?",
+  "o": [
+   "Sunderland",
+   "Bolton",
+   "West Ham",
+   "Leeds"
+  ],
+  "answer": "West Ham",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6580f7",
+  "kind": "wrong_answer",
+  "claim": "The stem asks which MANAGER said it, but the keyed answer Alan Hansen was never a manager — he was a BBC pundit and ex-player, while three of the four options (Atkinson, Clough, Hill) actually did manage clubs; the quote is also misrendered ('We will win nothing with kids' vs the actual 'You can't win anything with kids').",
+  "q": "Which manager famously said 'We will win nothing with kids' about Man United's 1995 youth team?",
+  "o": [
+   "Ron Atkinson",
+   "Alan Hansen",
+   "Brian Clough",
+   "Jimmy Hill"
+  ],
+  "answer": "Alan Hansen",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_55c5ab",
+  "kind": "wrong_answer",
+  "claim": "The Serie A record for most consecutive appearances belongs to Dino Zoff (332 straight league games for Juventus, 1972-83), not Javier Zanetti; Zanetti's actual Serie A record is most appearances by a foreign player (615).",
+  "q": "Javier Zanetti holds which record in Serie A?",
+  "o": [
+   "Most goals",
+   "Most red cards",
+   "Most consecutive appearances",
+   "Most assists"
+  ],
+  "answer": "Most consecutive appearances",
+  "cat": "SerieA",
+  "diff": "medium"
+ }
+]

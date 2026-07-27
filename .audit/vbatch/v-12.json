@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_a3c7e5",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which legendary goalkeeper wore gloves unusually early in his career in the 1960s?\" is garbled — \"unusually early in his career\" reads as timing within the player's own career rather than early relative to the sport's history, and the underlying claim (Yashin as an early glove-wearer) is not a crisply documented fact; Banks, Jennings and Zoff were all 1960s keepers who also used gloves, so no option is cleanly excluded.",
+  "q": "Which legendary goalkeeper wore gloves unusually early in his career in the 1960s?",
+  "o": [
+   "Pat Jennings",
+   "Lev Yashin",
+   "Gordon Banks",
+   "Dino Zoff"
+  ],
+  "answer": "Lev Yashin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3bfb6b",
+  "kind": "ambiguous_stem",
+  "claim": "The most-cited figure for the largest foreign-nationality group in Bundesliga history is Austria (~230 players), which the stem excludes by fiat without offering it as an option; the 'Brazilian' key is not a settled, verifiable all-time statistic and the exclusion clause makes the intended reading unclear.",
+  "q": "What nationality is the largest group of foreign players in Bundesliga history — surprisingly not Austrian?",
+  "o": [
+   "Brazilian",
+   "Dutch",
+   "Czech",
+   "Polish"
+  ],
+  "answer": "Brazilian",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb51b8",
+  "kind": "ambiguous_stem",
+  "claim": "\"Widely considered the biggest overachievement\" is a subjective judgement and Turkey — also an option — reached the same 2002 semi-finals and finished third in only their second World Cup ever, so Turkey is defensibly correct under the stem's own criterion.",
+  "q": "At the 2002 World Cup, which country's run to the semi-finals is widely considered the biggest overachievement in tournament history?",
+  "o": [
+   "Japan",
+   "Senegal",
+   "Turkey",
+   "South Korea"
+  ],
+  "answer": "South Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_72e93d",
+  "kind": "ambiguous_stem",
+  "claim": "The stem asks which Asian country 'qualified for the World Cup for the first time in 2022' but the keyed answer is 'Qatar as hosts only', which contradicts the stem's own verb (Qatar never qualified — they entered automatically as hosts), and the four options are not parallel answers to the question asked ('All qualified normally' is not a country), so the question has no coherent reading.",
+  "q": "Which Asian country qualified for the World Cup for the first time in 2022 — a historic achievement?",
+  "o": [
+   "Qatar as hosts only",
+   "Saudi Arabia as regulars",
+   "Australia in the play-offs",
+   "All qualified normally"
+  ],
+  "answer": "Qatar as hosts only",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5e6c56",
+  "kind": "ambiguous_stem",
+  "claim": "'England's best European Championship result before 2020' is contested: England finished third at Euro 1968 (semi-final exit plus a won third-place play-off), which standard records list as their best pre-2020 finish, so pinning the answer to 'Semi-final at Euro 1996' asserts a claim the tournament record does not support.",
+  "q": "England's best European Championship result before 2020 was which round?",
+  "o": [
+   "Group stage in 1988",
+   "Runners-up in 1976",
+   "Semi-final at Euro 1996",
+   "Quarter-final in multiple years"
+  ],
+  "answer": "Semi-final at Euro 1996",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e9b93",
+  "kind": "ambiguous_stem",
+  "claim": "\"Which club had he left to achieve this?\" does not specify \"immediately before joining Forest\" — Clough left Derby County (1973), Brighton (1974) and Leeds (44 days, 1974) all before Nottingham Forest, and Derby County is a defensible reading since that is the club he famously walked out on before the Forest era.",
+  "q": "Brian Clough won the European Cup with Nottingham Forest in two consecutive years — 1979 and 1980. Which club had he left to achieve this?",
+  "o": [
+   "Derby County",
+   "Leeds United",
+   "Brighton",
+   "Hartlepools"
+  ],
+  "answer": "Leeds United",
+  "cat": "Managers",
+  "diff": "hard"
+ }
+]

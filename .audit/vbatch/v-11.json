@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_e15d6b",
+  "kind": "ambiguous_stem",
+  "claim": "Man City scored TWO stoppage-time goals in the 2012 QPR decider — Džeko's 92nd-minute equaliser (2-2) and Agüero's 94th-minute winner — and both were goals City 'needed'; since Dzeko is one of the four options, the stem needs 'the winning goal' to pin Agüero.",
+  "q": "In stoppage time of the 2012 PL title decider, Man City needed a goal — who scored it?",
+  "o": [
+   "Tevez",
+   "Dzeko",
+   "Balotelli",
+   "Agüero"
+  ],
+  "answer": "Agüero",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_84131f",
+  "kind": "ambiguous_stem",
+  "claim": "Real Madrid beat Dortmund 2-0 in the 2024 UCL final (Carvajal 74', Vinícius Jr 83'), so \"the winning goal\" admits two readings — the goal that put them ahead (Carvajal, the keyed answer) or the last/clinching goal many fans call the winner (Vinícius, an offered option); \"opening goal\" would pin it.",
+  "q": "Who scored the winning goal for Real Madrid in the 2024 UCL final vs Borussia Dortmund?",
+  "o": [
+   "Bellingham",
+   "Carvajal",
+   "Vinicius Jr",
+   "Modric"
+  ],
+  "answer": "Carvajal",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41205d",
+  "kind": "ambiguous_stem",
+  "claim": "Ten Premier League matches kicked off simultaneously at 3pm on 15 August 1992 — Highbury (Arsenal v Norwich), Selhurst Park (Palace v Blackburn) and Highfield Road (Coventry v Middlesbrough) all staged one, so all four options answer 'first ever match'; Bramall Lane is only unique for the first ever PL goal (Brian Deane).",
+  "q": "Which stadium hosted the first ever Premier League match in August 1992?",
+  "o": [
+   "Highbury",
+   "Bramall Lane",
+   "Selhurst Park",
+   "Highfield Road"
+  ],
+  "answer": "Bramall Lane",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c98851",
+  "kind": "ambiguous_stem",
+  "claim": "The stem (\"Plymouth Argyle share a distinction with just a handful of clubs — what is it?\") supplies no discriminating information, and the keyed answer \"One of England's biggest never to reach the top flight\" is a subjective judgement (\"biggest\") rather than a checkable fact — the question is only solvable by discarding three absurd distractors, not by knowing anything.",
+  "q": "Plymouth Argyle share a distinction with just a handful of clubs — what is it?",
+  "o": [
+   "One of England's biggest never to reach the top flight",
+   "Most FA Cup wins outside the top 10",
+   "Only non-league to win the League Cup",
+   "Only club to play in all 4 divisions"
+  ],
+  "answer": "One of England's biggest never to reach the top flight",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_575e2d",
+  "kind": "ambiguous_stem",
+  "claim": "Panenka's famous chipped penalty was scored for CZECHOSLOVAKIA (Euro 1976 final) and he never played for the Czech Republic national team, which did not exist until 1993 — the stem's present-tense \"which country does he represent\" invites the national-team reading, for which the correct answer (Czechoslovakia) is not among the options; only the nationality reading makes \"Czech Republic\" defensible.",
+  "q": "Antonín Panenka gave his name to a famous penalty technique — which country does he represent?",
+  "o": [
+   "Poland",
+   "Slovakia",
+   "Czech Republic",
+   "Hungary"
+  ],
+  "answer": "Czech Republic",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0391c7",
+  "kind": "ambiguous_stem",
+  "claim": "Man City's four straight titles were the 2020-21, 2021-22, 2022-23 and 2023-24 seasons; the shorthand options don't state whether the years are start-seasons or end-seasons, so '2020-23' (2020-21 → 2023-24) is as readable as the keyed '2021-24'.",
+  "q": "Pep Guardiola's Man City won four consecutive Premier League titles — in which seasons?",
+  "o": [
+   "2020-23",
+   "2021-24",
+   "2018-21",
+   "2019-22"
+  ],
+  "answer": "2021-24",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

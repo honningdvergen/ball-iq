@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_8182bb",
+  "kind": "self_answering",
+  "claim": "The stem asks which country Club Brugge — a Belgian club — is from, so 'Belgium' is derivable from the club's own name/identity; additionally Netherlands (Feyenoord 1970), Portugal (Benfica 1961) and Scotland (Celtic 1967) had all already reached European Cup finals well before 1978, so no distractor is even possible.",
+  "q": "By reaching the 1978 European Cup final, Club Brugge became the first club from which country to do so?",
+  "o": [
+   "Belgium",
+   "Netherlands",
+   "Portugal",
+   "Scotland"
+  ],
+  "answer": "Belgium",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef064a",
+  "kind": "self_answering",
+  "claim": "'Brugge' in the club's name is the Dutch spelling of the answer 'Bruges', so the stem contains its own answer and no football knowledge is required.",
+  "q": "In which Belgian city is Club Brugge based?",
+  "o": [
+   "Bruges",
+   "Ghent",
+   "Antwerp",
+   "Liège"
+  ],
+  "answer": "Bruges",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6ba0a4",
+  "kind": "self_answering",
+  "claim": "The stem states Villa were relegated from the Premier League, which in the English pyramid necessarily means the Championship — the answer follows from the stem itself and requires no knowledge of Villa.",
+  "q": "Aston Villa were relegated from the Premier League in 2016, beginning a spell in which division?",
+  "o": [
+   "League One",
+   "The Championship",
+   "National League",
+   "League Two"
+  ],
+  "answer": "The Championship",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd28cf",
+  "kind": "self_answering",
+  "claim": "\"Trabzonspor are based in which Turkish city?\" keys \"Trabzon\" — the club's own name in the stem contains the answer string, so the question is solvable with zero football knowledge (the other Black Sea cities Samsun/Rize/Ordu never need to be considered).",
+  "q": "Trabzonspor are based in which Turkish city?",
+  "o": [
+   "Trabzon",
+   "Samsun",
+   "Rize",
+   "Ordu"
+  ],
+  "answer": "Trabzon",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8cb0b2",
+  "kind": "self_answering",
+  "claim": "The stem states the nickname 'The Peacocks' derives from the ground's original name, and only one option ('The Old Peacock Ground') contains the word Peacock, so the answer is deducible from the stem alone without knowing Elland Road's history.",
+  "q": "The nickname 'The Peacocks' comes from the original name of Elland Road. What was that ground called?",
+  "o": [
+   "The Gelderd Ground",
+   "Salem Field",
+   "The Old Peacock Ground",
+   "Holbeck Park Avenue"
+  ],
+  "answer": "The Old Peacock Ground",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f32aa",
+  "kind": "self_answering",
+  "claim": "The stem names 'The Boleyn Ground' and the key is 'Anne Boleyn' — the surname in the stem hands the answer to anyone who has never heard of the Boleyn Castle legend, eliminating Victoria, Elizabeth I and Catherine of Aragon without any knowledge.",
+  "q": "The Boleyn Ground takes its name from a house linked by legend to which historical figure?",
+  "o": [
+   "Queen Victoria",
+   "Anne Boleyn",
+   "Elizabeth I",
+   "Catherine of Aragon"
+  ],
+  "answer": "Anne Boleyn",
+  "cat": "History",
+  "diff": "hard"
+ }
+]

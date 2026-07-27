@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_3fb913",
+  "kind": "self_answering",
+  "claim": "The stem names South Korea as the co-host (eliminating that option) and specifies \"Asian\", which eliminates USA and Germany — Japan can be selected with zero knowledge of who hosted the final.",
+  "q": "Which country was the first Asian co-host of a World Cup, sharing the 64-match 2002 tournament with South Korea — and hosting the final?",
+  "o": [
+   "South Korea",
+   "Japan",
+   "USA",
+   "Germany"
+  ],
+  "answer": "Japan",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d228c8",
+  "kind": "self_answering",
+  "claim": "The stem's own clause 'joining Manchester United and playing alongside Rooney and Ronaldo' uniquely identifies Park Ji-sung among the four options (Son and Lee Young-pyo were Spurs, Ki Sung-yueng Swansea/Sunderland), so the intended fact — first South Korean to score in the Premier League — never has to be known.",
+  "q": "Who was the first South Korean player to score in the Premier League — joining Manchester United and playing alongside Rooney and Ronaldo?",
+  "o": [
+   "Park Ji-sung",
+   "Son Heung-min",
+   "Ki Sung-yueng",
+   "Lee Young-pyo"
+  ],
+  "answer": "Park Ji-sung",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d0ea4",
+  "kind": "self_answering",
+  "claim": "The qualifier 'teenager' eliminates all three distractors on its own — Scholes (29), Van Nistelrooy (28) and Saha (26) were nowhere near teenage in October 2004, so Rooney is forced without knowing anything about the match that ended the 49-game run.",
+  "q": "Which Manchester United teenager scored the second goal in the 2-0 win over Arsenal in October 2004 that ended the Gunners' 49-game unbeaten run?",
+  "o": [
+   "Scholes",
+   "Van Nistelrooy",
+   "Rooney",
+   "Louis Saha"
+  ],
+  "answer": "Rooney",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ec870a",
+  "kind": "self_answering",
+  "claim": "The stem already names Arrigo Sacchi, who managed only AC Milan among the four options in the 1980s, so the club is identifiable without knowing anything about 'Calcio champagne' — and that label is more commonly attached to Nils Liedholm's Roma/Milan than to Sacchi's pressing side, making the flavour claim itself shaky.",
+  "q": "Which Italian club was known for playing 'Calcio champagne' — a fluent, attacking style — in the 1980s under Arrigo Sacchi?",
+  "o": [
+   "Juventus",
+   "Inter",
+   "Napoli",
+   "AC Milan"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a444c",
+  "kind": "self_answering",
+  "claim": "The stem's own clue 'Ambrosiana-Inter' contains the answer — Internazionale is directly derivable from the hyphenated name without knowing anything about the club's name history.",
+  "q": "Which Italian club has gone by three different names — most recently changing from Ambrosiana-Inter?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Roma",
+   "Internazionale"
+  ],
+  "answer": "Internazionale",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_612eee",
+  "kind": "self_answering",
+  "claim": "The stem's word \"equaliser\" logically forces a one-goal deficit for Real Madrid, so \"0-0\" and \"1-1\" are impossible scorelines to equalise from and \"0-1 Real Madrid\" has Real ahead — only \"1-0 Atletico\" is coherent, making the question solvable with no knowledge of the 2014 final.",
+  "q": "Real Madrid needed a stoppage-time Sergio Ramos header to beat Atletico in the 2014 UCL final — what was the score just before his equaliser?",
+  "o": [
+   "0-0",
+   "1-0 Atletico",
+   "1-1",
+   "0-1 Real Madrid"
+  ],
+  "answer": "1-0 Atletico",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

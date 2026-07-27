@@ -2,13 +2,13 @@ Ball IQ bank audit — harvested from journal
 journal: /Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_9610f89a-0dc/journal.jsonl
 
 COVERAGE
-  agents started:            336
-  agents with a result:      123
-  questions screened:        4920
+  agents started:            565
+  agents with a result:      134
+  questions screened:        5360
 
 SCREENER FLAGS (not yet ground truth)
-  serious:                   197  {"multiple_correct":25,"ambiguous_stem":27,"self_answering":79,"eliminable_distractor":26,"wrong_answer":34,"stale":6}
-  cosmetic:                  465  {"eliminable_distractor":254,"ambiguous_stem":94,"stale":53,"self_answering":30,"multiple_correct":11,"wrong_answer":23}
+  serious:                   211  {"multiple_correct":25,"ambiguous_stem":28,"self_answering":90,"eliminable_distractor":27,"wrong_answer":35,"stale":6}
+  cosmetic:                  500  {"eliminable_distractor":282,"ambiguous_stem":95,"stale":53,"self_answering":36,"multiple_correct":11,"wrong_answer":23}
 
 VERIFIER VERDICTS (web-researched second opinion)
   confirmed, high confidence: 0   <- safe to act on

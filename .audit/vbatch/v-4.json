@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_de1161",
+  "kind": "wrong_answer",
+  "claim": "The stem's claim that Girona beat Barcelona \"4-2 home and away\" in 2023-24 is false — Girona won 4-2 at Montjuïc but LOST the home fixture at Montilivi 2-4, so the question teaches an incorrect fact even though the keyed club (Girona) is right.",
+  "q": "Which Catalan club shocked Spanish football in 2023-24 by finishing third and qualifying for the Champions League for the first time, under manager Míchel — beating Barcelona 4-2 home and away that season?",
+  "o": [
+   "Girona",
+   "Las Palmas",
+   "Alavés",
+   "Granada"
+  ],
+  "answer": "Girona",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a2861",
+  "kind": "wrong_answer",
+  "claim": "Real Jaén played only three La Liga seasons (1953-54, 1956-57, 1957-58) and were in Segunda in 1962-63, so Atlético cannot have beaten them 9-0 in La Liga that season; the 9-0 on record is Atlético Madrid 9-0 Las Palmas, listed as the biggest home win of the 1957-58 La Liga season (Atlético beat Jaén 4-1 that year).",
+  "q": "Atletico Madrid's biggest ever La Liga victory was 9-0 — during the 1962-63 season against which opponent?",
+  "o": [
+   "Real Jaén",
+   "Real Oviedo",
+   "Real Valladolid",
+   "Celta Vigo"
+  ],
+  "answer": "Real Jaén",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5f2738",
+  "kind": "wrong_answer",
+  "claim": "Tottenham had no managerial vacancy in 2015 — Pochettino was appointed in May 2014 and stayed until 2019 — and no credible source supports Klopp nearly joining Spurs before Liverpool in October 2015; the documented near-miss Klopp has spoken about is a 'historic English club' widely reported as Manchester United, which is not even an option.",
+  "q": "Which club did Jurgen Klopp almost sign before choosing Liverpool in 2015?",
+  "o": [
+   "Arsenal",
+   "Man City",
+   "Tottenham",
+   "Everton"
+  ],
+  "answer": "Tottenham",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b1f7f4",
+  "kind": "wrong_answer",
+  "claim": "The keyed 'first player to score a hat-trick in a Champions League/European Cup final' is Di Stéfano, but in the same 1960 final (Real Madrid 7-3 Eintracht Frankfurt) Ferenc Puskás completed his hat-trick at 60' while Di Stéfano only completed his at 73', so Puskás was the first to complete a hat-trick in a European Cup final.",
+  "q": "Who was the first player to score a hat-trick in a Champions League final?",
+  "o": [
+   "Cristiano Ronaldo",
+   "Pierino Prati",
+   "Alfredo Di Stéfano",
+   "Lionel Messi"
+  ],
+  "answer": "Alfredo Di Stéfano",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cc95f6",
+  "kind": "wrong_answer",
+  "claim": "The keyed answer 86 is correct for Real Madrid's 2021-22 La Liga total, but the stem's qualifier 'their lowest winning total since 2007' is factually false — Real Madrid won the 2007-08 title with 85 points, lower than 86, so the parenthetical claim misinforms the player.",
+  "q": "Real Madrid won La Liga in 2021-22 with how many points — their lowest winning total since 2007?",
+  "o": [
+   "82",
+   "95",
+   "91",
+   "86"
+  ],
+  "answer": "86",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_826a36",
+  "kind": "wrong_answer",
+  "claim": "The stem asks for the \"official name\" of the Milan stadium, but the official name is Stadio Giuseppe Meazza (renamed 1980); \"San Siro\" is the district/popular name — the stem's own qualifier contradicts the keyed answer, so as written the key is factually wrong.",
+  "q": "What is the official name of the stadium shared by AC Milan and Inter Milan?",
+  "o": [
+   "Stadio Olimpico",
+   "San Siro",
+   "Stadio delle Alpi",
+   "Marassi"
+  ],
+  "answer": "San Siro",
+  "cat": "SerieA",
+  "diff": "easy"
+ }
+]
