@@ -1,0 +1,1184 @@
+[
+ {
+  "id": "q_a6134f",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Pelé also scored in four different World Cups (1958, 1962, 1966 vs Bulgaria, 1970) and reached the milestone on the same day as Uwe Seeler — 3 June 1970 — so 'first' depends on disputed kickoff/goal times and Pelé is defensibly correct."
+ },
+ {
+  "id": "q_7da53e",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "VfB Stuttgart is also commonly nicknamed 'Die Roten' in Germany (alongside 'Die Schwaben'), so the Stuttgart option is as defensible as Bayern Munich."
+ },
+ {
+  "id": "q_e15d6b",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Man City scored TWO stoppage-time goals in the 2012 QPR decider — Džeko's 92nd-minute equaliser (2-2) and Agüero's 94th-minute winner — and both were goals City 'needed'; since Dzeko is one of the four options, the stem needs 'the winning goal' to pin Agüero."
+ },
+ {
+  "id": "q_33d8a3",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's qualifier \"Which Argentina captain\" identifies Messi on its own — Di María, De Paul and Enzo Fernández were never Argentina's captain at the 2022 World Cup, so the question is solvable without knowing anything about the Gvardiol dribble or the assist."
+ },
+ {
+  "id": "q_84131f",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Real Madrid beat Dortmund 2-0 in the 2024 UCL final (Carvajal 74', Vinícius Jr 83'), so \"the winning goal\" admits two readings — the goal that put them ahead (Carvajal, the keyed answer) or the last/clinching goal many fans call the winner (Vinícius, an offered option); \"opening goal\" would pin it."
+ },
+ {
+  "id": "q_a31656",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem specifies the saver was playing 'for Germany' in the 2006 quarter-final, but all three distractors are non-German keepers (Buffon = Italy, Casillas = Spain, Dida = Brazil), so Lehmann is the only option satisfying the stem and the question can be solved with zero knowledge of the shootout."
+ },
+ {
+  "id": "q_40cd2c",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own clause 'before its 2026 co-hosting role with Canada and Mexico' identifies the tournament as the World Cup, so the answer is stated inside the question rather than requiring knowledge of USA 1994."
+ },
+ {
+  "id": "q_b70c07",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Stem asks which club Wenger managed \"before Arsenal\" but he managed Nancy (1984-87) and Monaco (1987-94) as well as Nagoya Grampus Eight (1995-96) — three of the four options are literally correct; the stem needs \"immediately before\" (as the near-duplicate q_7cd6ad does for Henry)."
+ },
+ {
+  "id": "q_2bcdeb",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The Copa del Rey is the Spanish domestic cup, and Barcelona is the only Spanish club among the options (Cruzeiro, PSV, Inter), so the answer is deducible from the competition name alone without knowing anything about Ronaldo."
+ },
+ {
+  "id": "q_271809",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The key (Dortmund) is right, but the stem's premise is factually false: Bayern Munich failed to win the Bundesliga in six of the ten seasons before 2011-12 (Dortmund 2002, Werder 2004, Stuttgart 2007, Wolfsburg 2009, Dortmund 2011, Dortmund 2012), not once — so 2011-12 was not 'only the second time Bayern hadn't won it in a decade'."
+ },
+ {
+  "id": "q_c38f1b",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's qualifier 'all with Real Madrid' eliminates every distractor without knowing the record — Guardiola, Cruyff and Helenio Herrera never managed Real Madrid, leaving Miguel Muñoz as the only option that satisfies the stem."
+ },
+ {
+  "id": "q_63e291",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks which club Rummenigge captained in the 1982 European Cup final while explicitly stating in the same sentence that 'Bayern lost 1-0 to English underdogs', so the answer 'Bayern Munich' is given away in the question text."
+ },
+ {
+  "id": "q_abcc4e",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Cruyff also signed Hristo Stoichkov (1990, CSKA Sofia) and Michael Laudrup (1989, Juventus) as Barcelona manager — both are forwards fitting the stem's 'legendary striker signed by Cruyff', so only the unsourced quote separates them from the keyed Romário."
+ },
+ {
+  "id": "q_41205d",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Ten Premier League matches kicked off simultaneously at 3pm on 15 August 1992 — Highbury (Arsenal v Norwich), Selhurst Park (Palace v Blackburn) and Highfield Road (Coventry v Middlesbrough) all staged one, so all four options answer 'first ever match'; Bramall Lane is only unique for the first ever PL goal (Brian Deane)."
+ },
+ {
+  "id": "q_eebe13",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks for an 'Atletico defender' but none of the three distractors is a defender — Diego Costa (striker), Arda Turan (midfielder) and Griezmann (forward, and not even an Atlético player in 2013-14, he was at Real Sociedad) — so Godín is the only option satisfying the stem's own qualifier and the question is solvable without knowing the goal."
+ },
+ {
+  "id": "q_c98851",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The stem (\"Plymouth Argyle share a distinction with just a handful of clubs — what is it?\") supplies no discriminating information, and the keyed answer \"One of England's biggest never to reach the top flight\" is a subjective judgement (\"biggest\") rather than a checkable fact — the question is only solvable by discarding three absurd distractors, not by knowing anything."
+ },
+ {
+  "id": "q_73cf52",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "The stem asserts Gualtieri's 8.3s (San Marino v England, 1993) is 'the fastest goal ever scored in an international football match', but Christian Benteke scored after 8.1 seconds for Belgium v Gibraltar on 10 Oct 2016, which superseded it — the premise is already factually wrong."
+ },
+ {
+  "id": "q_ad80d5",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says Man City lost 'at Stamford Bridge', which is Chelsea's home ground, so the keyed answer Chelsea is derivable from the stem alone without knowing anything about the 2019-20 title race."
+ },
+ {
+  "id": "q_575e2d",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Panenka's famous chipped penalty was scored for CZECHOSLOVAKIA (Euro 1976 final) and he never played for the Czech Republic national team, which did not exist until 1993 — the stem's present-tense \"which country does he represent\" invites the national-team reading, for which the correct answer (Czechoslovakia) is not among the options; only the nationality reading makes \"Czech Republic\" defensible."
+ },
+ {
+  "id": "q_127455",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Derby's 11-point 2007-08 season had two managers: Billy Davies was in charge from the opening day until 26 Nov 2007 (including Derby's only win of the season, 1-0 v Newcastle) and Paul Jewell took over from 28 Nov 2007, so \"who managed Derby County to their record-low 11-point season\" is defensibly answered by either name."
+ },
+ {
+  "id": "q_7a2960",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Messi's 2015 Copa del Rey final goal was a genuine solo run — he collected the ball himself near the halfway line and beat four Athletic players, so no assist is credited to anyone (FC Barcelona's and BBC's accounts describe it as an unassisted solo goal); keying 'Iniesta' as the assister is unsupported and contradicts the stem's own word 'solo'."
+ },
+ {
+  "id": "q_20e363",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Two Spain players missed in the Euro 96 shootout — Hierro hit the crossbar with Spain's first penalty and Nadal was saved by Seaman — so 'Hierro' is also a defensible answer to 'which Spain player missed'."
+ },
+ {
+  "id": "q_0391c7",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Man City's four straight titles were the 2020-21, 2021-22, 2022-23 and 2023-24 seasons; the shorthand options don't state whether the years are start-seasons or end-seasons, so '2020-23' (2020-21 → 2023-24) is as readable as the keyed '2021-24'."
+ },
+ {
+  "id": "q_5172f7",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Real Madrid's 1,000th European Cup/Champions League goal is credited to Benzema (Nov 2021, count including qualifiers) by some outlets and to Toni Kroos vs Inter (count excluding qualifiers) by others — both are options."
+ },
+ {
+  "id": "q_9d9713",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The 'El Niño' nickname at Atlético Madrid is documented for Fernando Torres, not for Kiko (Francisco Narváez), who was 23 in the 1995-96 double season and is not commonly recorded under that nickname — the keyed answer's defining qualifier appears to be misattributed."
+ },
+ {
+  "id": "q_2826a5",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Tim Howard also scored from inside his own penalty area in a Premier League match (Everton 1-2 Bolton, 4 Jan 2012 — a wind-assisted clearance struck about 5 yards inside his own box, ~100 yards), so both he and the keyed Asmir Begovic satisfy the stem 'famously scored from inside his own penalty area in a Premier League match'."
+ },
+ {
+  "id": "q_3ff8a6",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says the record holder overtook Wayne Rooney in March 2023, which logically eliminates all three distractors (Rooney himself, plus Bobby Charlton and Gary Lineker, who both retired decades earlier and ranked below Rooney), leaving Kane as the only option consistent with the stem."
+ },
+ {
+  "id": "q_07decd",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is false: 42 is only the record for a 38-game season — Crystal Palace were relegated with 49 points in 1992-93, the actual highest total for a relegated club in Premier League history, so taken literally the stem's qualifier does not describe West Ham (and Palace is not an option)."
+ },
+ {
+  "id": "q_91885b",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The correct option is the only one naming two nations ('2002 Japan/Korea' vs '1998 France', '2006 Germany', '2010 South Africa'), so a player with zero knowledge can pick the answer purely from the option formatting for a question about the first jointly hosted World Cup."
+ },
+ {
+  "id": "q_e2543a",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Raymond Kopa was Real Madrid's regular right winger from 1956-59 and won three European Cups in that same dynasty, so 'Kopa' is as defensibly correct as the keyed 'Gento' for 'legendary winger who played for Real Madrid in their 1950s-60s European Cup dynasty'."
+ },
+ {
+  "id": "q_63ac23",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Van Nistelrooy's consecutive-Champions-League scoring streak is cited as 9 (group stage onward) but as 10 when the 2002 qualifying-round win over Zalaegerszeg is included — Manchester United's own site headlines it a '10-game goalscoring run' — and 10 is offered as a distractor, so a well-informed player is marked wrong."
+ },
+ {
+  "id": "q_79d628",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's 'Colombian teammate' qualifier eliminates all three distractors (Alex Sandro and Douglas Costa are Brazilian, Dybala is Argentine), so Cuadrado is selectable purely from nationality without knowing the shirt-number story."
+ },
+ {
+  "id": "q_8ae49c",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks for a Premier League record but Buffon, Casillas and Neuer never played a single Premier League match, so Van der Sar is the only option that satisfies the competition qualifier."
+ },
+ {
+  "id": "q_a3c7e5",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Which legendary goalkeeper wore gloves unusually early in his career in the 1960s?\" is garbled — \"unusually early in his career\" reads as timing within the player's own career rather than early relative to the sport's history, and the underlying claim (Yashin as an early glove-wearer) is not a crisply documented fact; Banks, Jennings and Zoff were all 1960s keepers who also used gloves, so no option is cleanly excluded."
+ },
+ {
+  "id": "q_9237c6",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says \"host country\" of the 2022 World Cup and \"World Cup debut\" — only Qatar hosted 2022, and Saudi Arabia, UAE and Iran had all appeared at previous World Cups, so both qualifiers eliminate every distractor without the player knowing the lost-all-three record."
+ },
+ {
+  "id": "q_6580f7",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem asks which MANAGER said it, but the keyed answer Alan Hansen was never a manager — he was a BBC pundit and ex-player, while three of the four options (Atkinson, Clough, Hill) actually did manage clubs; the quote is also misrendered ('We will win nothing with kids' vs the actual 'You can't win anything with kids')."
+ },
+ {
+  "id": "q_3ab9b8",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem requires a club that has NEVER won the European Cup/Champions League, but all three distractors have won it (Juventus 1985/1996, Benfica 1961/1962, Bayern six times), so Atlético is reachable by elimination without knowing anything about runner-up counts."
+ },
+ {
+  "id": "q_9d6da9",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem names Borussia Dortmund and Bayern Munich, so all three distractors (Coppa Italia, Copa del Rey, FA Cup) are non-German competitions the two clubs cannot enter — the DFB-Pokal is pickable purely by knowing Dortmund is German."
+ },
+ {
+  "id": "q_2f3ac3",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says the scorer was 'a goalkeeper stepping up to the spot himself', and Ricardo is the only goalkeeper among the options (Cristiano Ronaldo, Deco and Rui Costa are all outfield players), so the fact is not needed."
+ },
+ {
+  "id": "q_5fbab6",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states the season was unbeaten and contained 12 draws, so in a 38-game Premier League season the win total is fixed by arithmetic (38 - 12 - 0 = 26) and no knowledge of Arsenal's actual record is required."
+ },
+ {
+  "id": "q_83113a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's qualifier \"for England\" eliminates all three distractors on nationality alone — Griezmann and Mbappé are French, Lukaku is Belgian, so Kane is the only Englishman on the list and the 2018 Golden Boot fact is never actually tested."
+ },
+ {
+  "id": "q_2b1d9e",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks \"Which Hungarian team...\" and the keyed answer is literally 'Hungary'; the three distractors (Romania, Czechoslovakia, Yugoslavia) all fail the stem's own nationality qualifier, so the question can be answered with zero football knowledge."
+ },
+ {
+  "id": "q_7581fb",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem ends with \"nicknamed 'Batigol'\", which contains the answer's surname stem (Batistuta) and is not shared by Crespo, Milito or Icardi, so the answer is readable off the clue itself."
+ },
+ {
+  "id": "q_612e6b",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem itself lists all three finals (1974, 2014, 2016) and then asks how many finals Atlético had reached up to 2016 — the answer 'Three' is obtained by counting the years in the stem, requiring no football knowledge."
+ },
+ {
+  "id": "q_2db7d9",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Eder was a Swansea City player on loan at Lille for 2015-16 (Lille only made the deal permanent in summer 2016, around/after the 10 July final), and UK media widely described him as Swansea's player when he scored — so 'Swansea City', also an option, is defensibly correct alongside the keyed 'Lille'."
+ },
+ {
+  "id": "q_c5570c",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Eusébio's 1967-68 season is keyed at 50 goals (all competitions), but 42 — his Primeira Liga tally that season, the standing Portuguese top-flight single-season record and the figure most sources cite as 'the club record' — is also an option, and the stem never specifies league-only vs all-competitions."
+ },
+ {
+  "id": "q_55c5ab",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The Serie A record for most consecutive appearances belongs to Dino Zoff (332 straight league games for Juventus, 1972-83), not Javier Zanetti; Zanetti's actual Serie A record is most appearances by a foreign player (615)."
+ },
+ {
+  "id": "q_aff3f8",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "'Won the Bundesliga title seven times as players' reads as a record/uniqueness claim that is now false — Thomas Müller and Manuel Neuer have 12+ Bundesliga titles each and Philipp Lahm 8, so option 'Lahm and Müller' and 'Neuer and Müller' are players who have won it more than seven times, making the intended distinction unstated and outdated."
+ },
+ {
+  "id": "q_3bfb6b",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The most-cited figure for the largest foreign-nationality group in Bundesliga history is Austria (~230 players), which the stem excludes by fiat without offering it as an option; the 'Brazilian' key is not a settled, verifiable all-time statistic and the exclusion clause makes the intended reading unclear."
+ },
+ {
+  "id": "q_97fa12",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Option 'TSV München' is a shorthand for the same club as the keyed answer 'TSV 1860 Munich' (TSV München von 1860), so a player who knows the fact can still be marked wrong."
+ },
+ {
+  "id": "q_fb51b8",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Widely considered the biggest overachievement\" is a subjective judgement and Turkey — also an option — reached the same 2002 semi-finals and finished third in only their second World Cup ever, so Turkey is defensibly correct under the stem's own criterion."
+ },
+ {
+  "id": "q_3fb913",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names South Korea as the co-host (eliminating that option) and specifies \"Asian\", which eliminates USA and Germany — Japan can be selected with zero knowledge of who hosted the final."
+ },
+ {
+  "id": "q_3612b5",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "The stem asks for Celtic's 'famous nickname' (not the 1967 team's), and 'The Bhoys' is Celtic FC's long-standing club nickname, so it is defensibly correct alongside the keyed 'The Lisbon Lions', which is specifically the name of the 1967 European Cup-winning XI."
+ },
+ {
+  "id": "q_72e93d",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The stem asks which Asian country 'qualified for the World Cup for the first time in 2022' but the keyed answer is 'Qatar as hosts only', which contradicts the stem's own verb (Qatar never qualified — they entered automatically as hosts), and the four options are not parallel answers to the question asked ('All qualified normally' is not a country), so the question has no coherent reading."
+ },
+ {
+  "id": "q_d228c8",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own clause 'joining Manchester United and playing alongside Rooney and Ronaldo' uniquely identifies Park Ji-sung among the four options (Son and Lee Young-pyo were Spurs, Ki Sung-yueng Swansea/Sunderland), so the intended fact — first South Korean to score in the Premier League — never has to be known."
+ },
+ {
+  "id": "q_06a281",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's qualifier is false: Diego Milito's two goals in the 2010 UCL final vs Bayern were both close-range finishes inside the box (a tap-in from Sneijder's pass on 35', and a one-on-one after beating van Buyten on 70') — neither was a 'stunning long-range goal', so the keyed answer contradicts the stem's own description."
+ },
+ {
+  "id": "q_3d0ea4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The qualifier 'teenager' eliminates all three distractors on its own — Scholes (29), Van Nistelrooy (28) and Saha (26) were nowhere near teenage in October 2004, so Rooney is forced without knowing anything about the match that ended the 49-game run."
+ },
+ {
+  "id": "q_5e6c56",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "'England's best European Championship result before 2020' is contested: England finished third at Euro 1968 (semi-final exit plus a won third-place play-off), which standard records list as their best pre-2020 finish, so pinning the answer to 'Semi-final at Euro 1996' asserts a claim the tournament record does not support."
+ },
+ {
+  "id": "q_b47cdf",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks which Arsenal MANAGER was involved in Pizzagate, but three of the four options (Vieira, Campbell, Edu) are players, so Wenger is the only option satisfying the stem's own qualifier and the question can be answered with zero knowledge of the 2004 incident."
+ },
+ {
+  "id": "q_1e9b93",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Which club had he left to achieve this?\" does not specify \"immediately before joining Forest\" — Clough left Derby County (1973), Brighton (1974) and Leeds (44 days, 1974) all before Nottingham Forest, and Derby County is a defensible reading since that is the club he famously walked out on before the Forest era."
+ },
+ {
+  "id": "q_8b4eef",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "No documented \"Pepe elbows Fàbregas\" El Clásico incident exists — the well-known Pepe/Fàbregas flashpoint (March 2014) was a forehead-to-forehead nudge with both players booked for simulation, while the famous Clásico elbow is Marcelo's on Messi (2017, not an option); the stem's description doesn't match its keyed answer's actual incident and Ramos is equally defensible as \"the Real Madrid player in a major Clásico controversy\"."
+ },
+ {
+  "id": "q_0c03d4",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Liverpool's only notable 'unbeaten home league run' is the 68-game run that Burnley (a listed distractor) ended in January 2021; the April 2017 Crystal Palace win at Anfield ended only a 6-match home run that itself began after Liverpool lost at home to Swansea in January 2017, so the stem's premise is inaccurate and points at the wrong famous fact."
+ },
+ {
+  "id": "q_0595e1",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Roberto Mancini won Serie A as a player with BOTH Sampdoria (1990-91) and Lazio (1999-2000, under Eriksson, before he moved into management), so the distractor 'Lazio' is equally correct under the stem's 'won Serie A with which Italian club before becoming a successful manager'."
+ },
+ {
+  "id": "q_f097bb",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "In Arsenal 2-4 Norwich on 15 August 1992 the Arsenal goals were Steve Bould (28') and Kevin Campbell (39') — one each, and Ian Wright did not score; the keyed answer 'Wright' is wrong and the stem's premise that an Arsenal striker 'scored twice' is also false (it was Mark Robins who scored twice, for Norwich). Bergkamp is additionally impossible (joined Arsenal 1995)."
+ },
+ {
+  "id": "q_ec870a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem already names Arrigo Sacchi, who managed only AC Milan among the four options in the 1980s, so the club is identifiable without knowing anything about 'Calcio champagne' — and that label is more commonly attached to Nils Liedholm's Roma/Milan than to Sacchi's pressing side, making the flavour claim itself shaky."
+ },
+ {
+  "id": "q_874404",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's 'Serbian manager' qualifier eliminates all three distractors outright (Eriksson is Swedish, Hiddink Dutch, Parreira Brazilian), so Bora Milutinović is the only nationality-valid option."
+ },
+ {
+  "id": "q_24d934",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Andy Cole was not the second player to reach 100 Premier League goals — Les Ferdinand passed 100 late in 1996-97 (his final Newcastle season) and Ian Wright during 1997-98, and Cole's 100th is documented around the end of 1998-99 rather than February 1999, so the stem's premise is false and no listed option is the true 'second player'."
+ },
+ {
+  "id": "q_6a444c",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own clue 'Ambrosiana-Inter' contains the answer — Internazionale is directly derivable from the hyphenated name without knowing anything about the club's name history."
+ },
+ {
+  "id": "q_2b9731",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Togo was never disqualified from 2010 World Cup qualification for fielding an ineligible player — the only country excluded from that cycle was Ethiopia (option 3), and that was for FIFA suspending the Ethiopian FA over federation/government interference in Sept 2008, not player eligibility; the ineligible-player disqualifications (Cape Verde, Ethiopia) both belong to the 2014 cycle."
+ },
+ {
+  "id": "q_2aae12",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks for a 'Greek club' but the three distractors are AC Milan (Italian), Chelsea (English) and PSG (French), so Panathinaikos is the only option satisfying the qualifier and the question is solvable with zero knowledge of the 2005 match."
+ },
+ {
+  "id": "q_612eee",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's word \"equaliser\" logically forces a one-goal deficit for Real Madrid, so \"0-0\" and \"1-1\" are impossible scorelines to equalise from and \"0-1 Real Madrid\" has Real ahead — only \"1-0 Atletico\" is coherent, making the question solvable with no knowledge of the 2014 final."
+ },
+ {
+  "id": "q_9f3f7e",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Which manager famously refused to shake José Mourinho's hand after a match?\" gives no match, season or club anchor, and multiple managers (Wenger 2015 Community Shield, but also Benítez and others in various frosty post-match incidents) can be argued, so nothing pins Wenger as the unique answer."
+ },
+ {
+  "id": "q_b9f34d",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Which player scored a famous rabona assist in a Coppa Italia game\" is self-contradictory (an assist is not scored) and names no year, club or opponent, so the moment cannot be pinned — Lamela and Del Piero have equally famous rabona moments and no stated qualifier rules them out."
+ },
+ {
+  "id": "q_973343",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Jimmy Greaves was not the FIRST to score 100 top-flight goals for two different English clubs — David Jack scored 144 First Division goals for Bolton (1920-28) and 113 for Arsenal (1928-34), completing the feat roughly 30 years before Greaves (Chelsea 124, Spurs 220)."
+ },
+ {
+  "id": "q_01021e",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem specifies a Kuwaiti player, but all three distractors (Mohamed Al-Deayea, Saeed Al-Owairan, Salman Al-Faraj) are Saudi Arabian, so anyone who knows nationalities gets Bader Al-Mutawa without knowing the caps record."
+ },
+ {
+  "id": "q_a03ae6",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "No goalkeeper has ever won the Premier League Player of the Season award (winners run Shearer 1994-95 through Salah/Foden in the 2020s, with Van Dijk and Dias the only defenders), so the premise is false and Peter Schmeichel — who won Player of the Month awards but never the season award, nor the PFA/FWA equivalents — is not a correct key."
+ },
+ {
+  "id": "q_08480c",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "Tottenham did not sell White Hart Lane — they demolished and rebuilt on the same site — whereas West Ham genuinely sold the Boleyn Ground to developers, so the stem's 'sold their ground' clause points at a different option than the key."
+ },
+ {
+  "id": "q_2bf68d",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the venue as the Camp Nou, which identifies Barcelona as the opponent without any knowledge of the 2013-14 title decider."
+ },
+ {
+  "id": "q_b64b9d",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks for a 'Ukrainian side' and the three distractors are Italian (Juventus), German (Dortmund) and Russian (Lokomotiv Moscow), leaving Dynamo Kyiv as the only option satisfying the stem."
+ },
+ {
+  "id": "q_c842a2",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "'During the 2020s' is undefined at the start: counting finals played in calendar years 2020-2025 gives 5 clubs (Bayern, Chelsea, Real Madrid, Man City, PSG) but counting seasons from 2020-21 gives 4, and both 5 and 4 are options."
+ },
+ {
+  "id": "q_ef7959",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Keyed answer 'Athletic Bilbao' is wrong — Wikipedia's La Liga records state the first team to score 100+ league goals in a season was Valencia in 1941-42 (111 in 34 matches); Athletic Bilbao's 1930-31 LEAGUE tally was 73 goals in 18 matches (their oft-quoted 126/137 figures are all-competitions totals including regional leagues), and Valencia is offered as a distractor."
+ },
+ {
+  "id": "q_b13a4c",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is false — Drogba did not score in Chelsea's 2011-12 quarter-final against Benfica (scorers: Kalou; Lampard pen, Meireles), so no player scored 'in every round' of that campaign; Drogba scored in the group stage, R16, semi-final and final only."
+ },
+ {
+  "id": "q_84acf4",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Both 1991 and 1992 are defensible: the first group stage in the competition's history was the 1991-92 European Cup (group phase began 27 November 1991), while the 'UEFA Champions League' branding and its group stage arrived in 1992-93."
+ },
+ {
+  "id": "q_73dd6b",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "The clause 'the last player to reach double digits in one tournament' is now factually wrong — Kylian Mbappé scored 10 goals at the 2026 World Cup to win the Golden Boot."
+ },
+ {
+  "id": "q_7ba13f",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks for a 'Swiss midfielder' but Payet, Griezmann and Gomis are all French internationals (Gomis a striker), so Shaqiri is the only option satisfying the qualifier and the question is solvable without knowing the goal."
+ },
+ {
+  "id": "q_1063a5",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks which 'Bayern Munich striker' finished second, but Werner was at RB Leipzig, Kane at Tottenham and Mbappé at PSG in 2019-20 — Lewandowski is the only option that meets the club qualifier."
+ },
+ {
+  "id": "q_7e6e97",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the club 'Bayer Leverkusen' and specifies a pharmaceutical owner, so 'Bayer AG' is derivable from the club's own name and is the only pharma company among the options (Siemens = electronics, Volkswagen = cars, ThyssenKrupp = steel) — no football knowledge is required."
+ },
+ {
+  "id": "q_687da2",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem asks for the Italian club with the most players who won the Ballon d'Or while at the club, but Juventus (Sívori 1961, Rossi 1982, Platini 1983/84/85, Baggio 1993, Zidane 1998, Nedvěd 2003 — 6 players, 8 awards) at minimum equals AC Milan (Rivera, Gullit, Van Basten, Weah, Shevchenko, Kaká — 6 players, 8 awards) and Juventus is not even an option, so the keyed absolute superlative 'AC Milan' is not defensible."
+ },
+ {
+  "id": "q_9fc82a",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "Portman Road's Ipswich Town were relegated from the Premier League in May 2025, so the stem's 'Which Premier League club' qualifier is already factually wrong as of 2026 (and none of the four options is currently a PL club)."
+ },
+ {
+  "id": "q_747d9a",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is wrong: Juventus's Conte-then-Allegri run from 2011-12 to 2018-19 is eight consecutive Serie A titles (Conte 3, Allegri 5), not 'seven consecutive titles from 2012 to 2019' — the wider run was nine in a row through 2019-20 under Sarri."
+ },
+ {
+  "id": "q_e39a0f",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's 'Manchester City player ... between 2011 and 2020' eliminates all three distractors without any knowledge of the fact: Shearer and Fowler never played for City, and Haaland did not join until 2022."
+ },
+ {
+  "id": "q_ca21e6",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "All three distractors are impossible at the 1950 World Cup (West Germany was banned, Slovenia was part of Yugoslavia, Algeria part of France), and naming the scorer as 'Haitian-American' additionally points straight to the USA, so the question is unanswerable-proof rather than knowledge-testing."
+ },
+ {
+  "id": "q_948b2e",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies both dates (2021-22 win and the 1961 Fairs Cup), so 61 is pure subtraction — no football knowledge is required and the other options are arithmetically impossible."
+ },
+ {
+  "id": "q_a87d90",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Brazil lost 3-1 to both Hungary and Portugal in the 1966 group stage and finished third, so 'which country knocked out Brazil' is defensibly answerable as Hungary as well as the keyed Portugal (only the Portugal match was the mathematically decisive one, which the stem does not specify)."
+ },
+ {
+  "id": "q_898c57",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is factually false: Uruguay are 15-time Copa América champions (the all-time record holders), not four-time — the keyed answer '2 World Cups' is right but the question misinforms players about Uruguay's Copa América haul."
+ },
+ {
+  "id": "q_edd7db",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Distractor 'They were unbeaten in the group stage' is also factually true of South Korea in 2002 (beat Poland 2-0, drew USA 1-1, beat Portugal 1-0), so two options correctly answer 'what was their remarkable achievement that year'."
+ },
+ {
+  "id": "q_dadf7f",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "'Best all-time World Cup record' is undefined: by best finish the USA wins (third place in 1930 vs Mexico's best of quarter-finals), while by appearances/total wins Mexico wins — both USA and Mexico are defensible."
+ },
+ {
+  "id": "q_5c41dc",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies both dates (2014 and 2026), so the answer is pure arithmetic requiring zero football knowledge."
+ },
+ {
+  "id": "q_37cbff",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "CONCACAF had 6 direct 2026 slots (USA, Canada, Mexico, Panama, Curaçao, Haiti) but also entered Jamaica and Suriname into the March 2026 inter-confederation playoffs — if either won a spot the true total is 7 or 8, so the keyed '6' must be re-verified against the final 48-team field."
+ },
+ {
+  "id": "q_cb07da",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem describes the scorer as \"the captain\" — Harry Kane was England's captain at Euro 2020, so anyone who knows the captaincy picks Kane without knowing anything about the goal itself."
+ },
+ {
+  "id": "q_fae405",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states the opening goal of France's 2018 final was an own goal, and Mandžukić is the only Croatia player among four options (Griezmann, Pogba, Mbappé are all French), so an own goal credited to France can only be him — solvable by logic alone."
+ },
+ {
+  "id": "q_c2d9be",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks which ASIAN federation gets 8 spots, and AFC is the only Asian confederation among the four options (CAF=Africa, CONMEBOL=South America, UEFA=Europe), so the answer is forced by the stem's own qualifier without knowing the allocation."
+ },
+ {
+  "id": "q_e8d2ff",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem credits the two late goals to Zinedine Zidane, so anyone who knows Zidane is French answers 'France' without knowing the Euro 2004 match at all."
+ },
+ {
+  "id": "q_e409a4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says Bellingham won LA LIGA, which is by definition the Spanish league, so 'Spain' is entailed by the stem regardless of any knowledge of Bellingham."
+ },
+ {
+  "id": "q_a670f7",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "'How many times has the Champions League been won by a club from outside the big five leagues' does not say whether the pre-1992 European Cup counts: keyed answer 2 (Ajax 1995, Porto 2004) only holds for the post-rebrand Champions League era, whereas counting the European Cup gives many more (Celtic, Feyenoord, Benfica x2, Ajax x3, PSV, Steaua, Red Star), and 'big five leagues' is itself never defined."
+ },
+ {
+  "id": "q_bcdc90",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem specifies a \"legendary Brazilian goalkeeper\" but all three distractors are non-Brazilian (Yashin USSR, Sepp Maier West Germany, Zoff Italy), so Gilmar is reachable by nationality alone without knowing the 1958/1962 fact."
+ },
+ {
+  "id": "q_4fbbe0",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is false: Kane's 36 goals in 2023-24 is NOT 'a Bayern Munich single-season record for a foreign player' — Robert Lewandowski (Polish, i.e. foreign) scored 41 Bundesliga goals for Bayern in 2020-21; Kane's actual record was most goals in a debut Bundesliga season."
+ },
+ {
+  "id": "q_d3d089",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's qualifier \"15-time Champions League winners\" uniquely identifies Real Madrid, so the answer is derivable from the stem alone without knowing anything about Arsenal's 2024-25 quarter-final."
+ },
+ {
+  "id": "q_e20176",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Lee Carsley actually replaced Southgate as England manager in 2024 (interim from September 2024, took charge of every England match that autumn); Tuchel was appointed in October 2024 but did not take over until January 2025, so both listed names fit \"replaced Southgate in 2024\"."
+ },
+ {
+  "id": "q_d9c245",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "Two of the four options are the same stadium — Signal Iduna Park IS the Westfalenstadion (Dortmund) — so a player can dismiss both without knowing anything, leaving only Allianz Arena vs Olympiastadion Berlin."
+ },
+ {
+  "id": "q_101461",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The stem's two halves contradict: 2019-20 was the season interrupted BY the Covid lockdown (Liverpool), whereas 'the first season after Covid lockdowns' reads as 2020-21 (Man City) — and Man City is one of the options."
+ },
+ {
+  "id": "q_3e9381",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "\"Which club did Kevin De Bruyne join before moving to Manchester City?\" has four defensible answers because Genk, Chelsea and Werder Bremen are all clubs he joined before City (Genk 2008, Chelsea 2012, Werder Bremen loan 2012-13, Wolfsburg 2014) — the stem never says 'immediately before'."
+ },
+ {
+  "id": "q_81306e",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem already states the 2016 final was 1-1 after 120 minutes, which by itself eliminates 'a golden goal', 'a late extra-time winner' and 'an away-goals ruling' (impossible in a single-leg neutral-venue final), leaving the penalty shootout as the only survivable option without knowing the fact."
+ },
+ {
+  "id": "q_21b35c",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem asks which PREMIER LEAGUE club signed Chiesa, but three of the four options (AC Milan, Inter, Roma) are Serie A clubs, so Liverpool is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge of the transfer."
+ },
+ {
+  "id": "q_07a911",
+  "kind": "stale",
+  "severity": "serious",
+  "claim": "The Supercoppa Italiana stopped being a two-club match: from the January 2024 edition onward it is a four-team Final Four (league champion, league runner-up, Coppa Italia winner, Coppa Italia runner-up), so the stem's premise \"contested between which two clubs each year\" and the keyed answer are no longer true."
+ },
+ {
+  "id": "q_8eb69a",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Belgium's best World Cup run (2018) was reaching the semi-final and then winning the third-place match, so the option \"Semi-final\" is as literally true as the keyed \"Third place\" (they also reached the semi-final in 1986)."
+ },
+ {
+  "id": "q_196e86",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The most-promotions-to-the-Bundesliga record is shared, not uniquely Nürnberg's: Arminia Bielefeld also has 8 promotions (1970, 1978, 1980, 1996, 1999, 2002, 2004, 2020) versus Nürnberg's 8 (1978, 1980, 1985, 1998, 2001, 2004, 2009, 2018), and Bielefeld — usually the club cited as 'Rekordaufsteiger' — is not among the options."
+ },
+ {
+  "id": "q_eaba3c",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "The quoted line is a loose paraphrase with no verbatim source; Sócrates' documented version is \"Beauty comes first, victory is secondary\", and Cruyff is equally famous for beauty-over-results aphorisms, so a knowledgeable player can defensibly answer Cruyff."
+ },
+ {
+  "id": "q_fdf6e7",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Every option embeds its goal tally (9/8/6/5) and the stem asks for the MOST goals, so a player just picks the largest number without knowing the fact; the numbers in two distractors are also false (Cristiano Ronaldo scored 2 at Euro 2004, not 6; Torres scored 1 at Euro 2008, not 5)."
+ },
+ {
+  "id": "q_d4becb",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "Stem asks 'Which English club won the inaugural UEFA Cup' but three of the four options (AC Milan, Fiorentina, Juventus) are Italian, so Tottenham is the only option satisfying the stem's own qualifier and the question is solvable with zero knowledge."
+ },
+ {
+  "id": "q_a70965",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "Stem qualifies 'for Real Madrid during their 2015-16 title run' but all three distractors fail that qualifier — Casillas left for Porto in July 2015, De Gea never played for Real Madrid, and Courtois was at Chelsea until 2018 — leaving Navas as the only possible answer."
+ },
+ {
+  "id": "q_5f4126",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "Stem specifies 'for Manchester United', yet Henry (Arsenal), Raúl (Real Madrid) and Shevchenko (Milan) never played for United, so all three distractors are dismissible without knowing the record."
+ },
+ {
+  "id": "q_002ea8",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "'How many different men took charge of Sunderland (including caretakers) in 2017-18' has no single defensible count: Grayson and Coleman plus Robbie Stockdale's caretaker spells give 3, and 4 only if the joint caretaker Billy McKinlay (Millwall, Nov 2017) is counted as a separate man."
+ },
+ {
+  "id": "q_de1161",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's claim that Girona beat Barcelona \"4-2 home and away\" in 2023-24 is false — Girona won 4-2 at Montjuïc but LOST the home fixture at Montilivi 2-4, so the question teaches an incorrect fact even though the keyed club (Girona) is right."
+ },
+ {
+  "id": "q_bc284c",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem both names Ronaldo as a later surpasser (eliminating him as an option) and specifies \"West Germany striker\", which disqualifies Just Fontaine (France) and Pelé (Brazil) — Gerd Müller is the only option left without knowing the 14-goal record."
+ },
+ {
+  "id": "q_2a2861",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Real Jaén played only three La Liga seasons (1953-54, 1956-57, 1957-58) and were in Segunda in 1962-63, so Atlético cannot have beaten them 9-0 in La Liga that season; the 9-0 on record is Atlético Madrid 9-0 Las Palmas, listed as the biggest home win of the 1957-58 La Liga season (Atlético beat Jaén 4-1 that year)."
+ },
+ {
+  "id": "q_5f2738",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Tottenham had no managerial vacancy in 2015 — Pochettino was appointed in May 2014 and stayed until 2019 — and no credible source supports Klopp nearly joining Spurs before Liverpool in October 2015; the documented near-miss Klopp has spoken about is a 'historic English club' widely reported as Manchester United, which is not even an option."
+ },
+ {
+  "id": "q_19a7bd",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "France were not the holders at Euro 2020 — Portugal were the defending European champions (France held the World Cup); the actual holders Portugal were eliminated in the last 16 by Belgium, which is one of the options, so the false 'holders' premise points a knowledgeable player to the wrong answer."
+ },
+ {
+  "id": "q_1d2325",
+  "kind": "ambiguous_stem",
+  "severity": "serious",
+  "claim": "2021-22 was not Ancelotti's 'very first season in charge of Real Madrid' — he first managed the club in 2013-14 (also winning the Champions League); meanwhile Zidane, an option, genuinely did win the Champions League in his first season in charge (2015-16), so the stem's two clauses conflict."
+ },
+ {
+  "id": "q_5c36e0",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states Switzerland went the whole 2006 World Cup 'without conceding a single goal', which logically eliminates 'Extra time', 'Golden goal' and 'Sudden death' (all require conceding a goal) and leaves only the penalty shoot-out, so the answer is deducible without knowing the match; 'Sudden death' is also a sub-phase of a penalty shoot-out, making two options overlap conceptually."
+ },
+ {
+  "id": "q_b1f7f4",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The keyed 'first player to score a hat-trick in a Champions League/European Cup final' is Di Stéfano, but in the same 1960 final (Real Madrid 7-3 Eintracht Frankfurt) Ferenc Puskás completed his hat-trick at 60' while Di Stéfano only completed his at 73', so Puskás was the first to complete a hat-trick in a European Cup final."
+ },
+ {
+  "id": "q_c03f53",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's qualifier 'Which Canadian great' eliminates all three distractors (Marta is Brazilian, Birgit Prinz German and retired in 2011, Alex Morgan American), leaving Christine Sinclair as the only Canadian and making the question solvable without knowing the 2012 Olympic top scorer."
+ },
+ {
+  "id": "q_cc95f6",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The keyed answer 86 is correct for Real Madrid's 2021-22 La Liga total, but the stem's qualifier 'their lowest winning total since 2007' is factually false — Real Madrid won the 2007-08 title with 85 points, lower than 86, so the parenthetical claim misinforms the player."
+ },
+ {
+  "id": "q_7f18f9",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks in what sense Marsch's appointment 'marked a first', and only one of the four options is phrased as a first ('He was the first American to coach Canada') — the other three describe non-firsts, so the answer is selectable purely from sentence form without knowing anything about Marsch or Canada."
+ },
+ {
+  "id": "q_826a36",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem asks for the \"official name\" of the Milan stadium, but the official name is Stadio Giuseppe Meazza (renamed 1980); \"San Siro\" is the district/popular name — the stem's own qualifier contradicts the keyed answer, so as written the key is factually wrong."
+ },
+ {
+  "id": "q_7f0e68",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "No source can be found for Joey Barton saying \"He's not even that good\" about Messi in 2017; his documented 2017 comments about Messi were the opposite (he tweeted that Messi was still ahead of Ronaldo), so the attribution appears fabricated or badly garbled."
+ },
+ {
+  "id": "q_7a11dd",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The keyed Oliver Kahn quote 'eat them alive' cannot be sourced — it appears on none of the standard Kahn quote collections (FC Bayern's own 'legendary quotes' list, AZQuotes, BrainyQuote), whose documented Kahn lines are 'Eier, wir brauchen Eier', 'Weiter, immer weiter' and 'Goalkeepers need an element of insanity'; the widely reported 'I'm going to eat you alive' taunt belongs to Emiliano Martínez (to Yerry Mina, 2021 Copa América shootout), so this looks like a misattribution."
+ },
+ {
+  "id": "q_192f68",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem calls West Bromwich Albion a \"Scottish side\" — WBA is an English club from West Bromwich in the West Midlands (Willie Groves was the Scot); the £100 key is right but the question states a falsehood that misinforms the player."
+ },
+ {
+  "id": "q_84e649",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says the record-holder \"played in central midfield, not up front\", which eliminates all three distractors (Tambling, Drogba, Osgood were all forwards) and leaves Lampard as the only midfielder — the goalscoring record itself never has to be known."
+ },
+ {
+  "id": "q_aa5976",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states the answer \"beat club legends John Terry and Frank Lampard to the top spot\", yet Terry and Lampard are two of the four options, so the stem explicitly negates half the option set and reduces the question to a Harris/Bonetti coin flip."
+ },
+ {
+  "id": "q_14538b",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's qualifier \"even scored from his own half\" is false of the keyed answer Ederson — he has never scored a goal in his professional career (0 goals in 500+ appearances per Premier League/FBref/Transfermarkt); he holds a goalkeeper assist record, not a goal, so no option satisfies the stem as written."
+ },
+ {
+  "id": "q_a32fc2",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "The distractor \"It was his only goal that season\" is factually true — the May 2019 Leicester strike was Vincent Kompany's only goal of 2018-19 (his first since April 2018), so it is also a correct answer to \"What was notable about that strike?\""
+ },
+ {
+  "id": "q_76b1b2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the celebration as the 'Poznan' and one option is Lech Poznan, so the answer can be read straight off the stem without knowing the 2010 Europa League tie."
+ },
+ {
+  "id": "q_e293c5",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem calls the 1958 Ballon d'Or 'the inaugural' one, but the award began in 1956 and was won by Stanley Matthews (Di Stefano won 1957); Kopa won the third edition, so the stem's qualifier is factually false."
+ },
+ {
+  "id": "q_8253ba",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Lamine Yamal is NOT Barcelona's youngest player ever — Paulino Alcántara (15y 4m 18d, 1912), Arseni Comamala and Antoni Robert all debuted younger; Yamal (15y 9m 16d, Apr 2023) is only the youngest in over a century / youngest La Liga debutant, so the keyed option's 'ever' qualifier is factually false."
+ },
+ {
+  "id": "q_82c4d0",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The keyed reason for Inter's blue is wrong: the club's own founding account (Giorgio Muggiani and the 1908 founders' manifesto — 'il nero e l'azzurro sullo sfondo d'oro delle stelle') attributes black to the night and blue to the night sky, not to being 'the opposite of rivals Milan's red'; distractor D ('it matched the sky') is in fact closer to the documented reason. The stem's 'has always been blue and black' is also inaccurate, since under the Ambrosiana-Inter era (1928-1945) the club played in white with a red cross."
+ },
+ {
+  "id": "q_e1dbb4",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's timeline is factually false: Ibrahimović's 30-yard bicycle kick for Sweden against England was on 14 November 2012, i.e. AFTER he signed for PSG (18 July 2012), so it was not scored 'before joining PSG that year' — the keyed answer Sweden is right but the stem misinforms."
+ },
+ {
+  "id": "q_14096d",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is false: it claims Juventus 2011-12 is \"the only side to go a full 38-game top-flight season without defeat in the modern format\", but Arsenal went unbeaten across all 38 games of the 2003-04 Premier League season (the keyed win total of 23 is itself correct, but the question misinforms)."
+ },
+ {
+  "id": "q_126aa8",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states Trapattoni \"left a far bigger legacy\" at Juventus, which logically eliminates all three negative options (never won a title / sacked after one season / only managed the youth team), leaving the keyed positive statement as the only possible pick without knowing anything about him."
+ },
+ {
+  "id": "q_a159d5",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Buffon's 2001 fee (~€52m from Parma) also made him the most expensive Italian player ever, beating Christian Vieri's ~€46.5m 1999 record and standing until Jorginho's 2018 move, so the distractor \"Most expensive Italian player ever\" is defensibly correct alongside the keyed \"Most expensive goalkeeper in the world\" — and the stem's \"for over a decade\" is true of both."
+ },
+ {
+  "id": "q_9ad088",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "The stem's premise is false: Sammer's 1996 Ballon d'Or was NOT the first German win since Beckenbauer (1972, 1976) — Karl-Heinz Rummenigge won in 1980 and 1981 and Lothar Matthäus in 1990; Sammer was only the first German defender since Beckenbauer."
+ },
+ {
+  "id": "q_35edf5",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says it was 'an all-German Champions League final', which eliminates Real Madrid, Chelsea and Juventus outright and leaves Bayern Munich as the only German option, so no knowledge of the 2013 final is required."
+ },
+ {
+  "id": "q_da1ac7",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states Hummels joined Dortmund 'from Bayern Munich' and then asks which club he 'rejoined' in 2016 — 'rejoin' plus the only prior club named makes Bayern Munich the answer by pure logic."
+ },
+ {
+  "id": "q_c1e0e4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the achievement as a 'sextuple' and then asks how many trophies it was — the Latin prefix gives the answer 'Six' with zero football knowledge, eliminating Four/Five/Seven outright."
+ },
+ {
+  "id": "q_d5cd46",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies the exact span '2011-12 to 2019-20', so counting the seasons inclusively yields 9 by arithmetic alone; no knowledge of Juventus is required and 7/8/11 are all impossible from the stem."
+ },
+ {
+  "id": "q_c3cb7f",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "European Cup finals were annual, so the stem's '1956 to 1960' range arithmetically fixes the count at Five; the answer is derivable from the dates in the stem without knowing anything about Di Stefano."
+ },
+ {
+  "id": "q_df2e78",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Option 'László Kubala Jr.' is the keyed answer's own name in its native Hungarian form (Ladislao = Spanish for László) with 'Jr.' appended, so two of the four options plausibly name the same 1950s Barcelona star and a player can be wrong despite knowing the fact."
+ },
+ {
+  "id": "q_ef1120",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states the semi-final was against Barcelona, so the correct venue is fixed by knowing Barcelona plays at Camp Nou — no knowledge of Torres's goal is needed; it is further leaked by q_3b5416 in the same pack, whose stem says 'In the 2012 Champions League semi-final at Camp Nou'."
+ },
+ {
+  "id": "q_06cd5f",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies the nickname 'Lilywhites', which directly names the answer colour (white), so the question is solvable with zero knowledge of Tottenham's kit."
+ },
+ {
+  "id": "q_312fb3",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's qualifier 'North London rival' uniquely identifies Arsenal (West Ham is east London, QPR and Chelsea west), so the Jennings transfer fact is never needed."
+ },
+ {
+  "id": "q_7255b7",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Postecoglou also won trophies at Yokohama F. Marinos (J1 League 2019) and Brisbane Roar (A-League 2011, 2012) before joining Spurs in 2023, so 'after winning trophies at which club' admits three of the four options unless the stem says 'immediately before' or 'his previous club'."
+ },
+ {
+  "id": "q_35ee33",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The keyed answer (4-0) is stated verbatim in the stems of two other questions in the same AC Milan pack — q_d3fa59 ('AC Milan's 4-0 win over Barcelona in the 1994 Champions League final') and q_abec24 ('AC Milan won the 1994 Champions League final 4-0') — so if any of them is drawn alongside it the score question is free."
+ },
+ {
+  "id": "q_f75361",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the exact season range (\"from 1996-97 to 1999-2000\"), so a player simply counts 96-97, 97-98, 98-99, 99-00 = Four without knowing anything about Galatasaray or Fatih Terim."
+ },
+ {
+  "id": "q_bee28b",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Three other questions in the same Galatasaray pack (q_6a9fe2, q_ef99a0, q_be65f3) all name \"the 2000 UEFA Cup final\" in their stems, handing over this answer; independently, the Cup Winners' Cup was abolished after 1999 and the Intertoto Cup had no single final, so only UEFA Cup and Champions League are era-valid."
+ },
+ {
+  "id": "q_6a9fe2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The answer \"Arsenal\" is stated outright in the stems of three sibling questions in the same pack — q_bee28b (\"Galatasaray beat Arsenal on penalties to win which 2000 European final\"), q_ef99a0 and q_be65f3 (both \"...shootout against Arsenal\")."
+ },
+ {
+  "id": "q_f05452",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Pair-leak with q_baff41 in the same pack: q_baff41's stem ('When Ian Wright broke Arsenal's all-time scoring record in 1997...') names the answer to q_f05452 (Ian Wright), and q_f05452's stem ('Cliff Bastin's Arsenal goalscoring record stood for 58 years') names the answer to q_baff41 (Cliff Bastin) — the two questions test the identical fact and give each other away if drawn in the same session."
+ },
+ {
+  "id": "q_392c3c",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Pair-leak with q_c37d46: q_c37d46 asks in which season Fenerbahçe won the title that 'stood as their 19th' (answer 2013-14) while q_392c3c asks how many titles they had by the 2013-14 triumph (answer 19) — each stem contains the other's answer, so drawing both makes one free."
+ },
+ {
+  "id": "q_506e85",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies the date range \"from 1966 to 1974\", from which the answer (Nine) can be derived by simple arithmetic (1966-74 inclusive = 9 seasons) without knowing anything about Jock Stein's Celtic."
+ },
+ {
+  "id": "q_74322a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem \"In which French city is Olympique de Marseille based?\" contains the answer in the club's own name, and \"Marseille\" is one of the four options — solvable with zero football knowledge."
+ },
+ {
+  "id": "q_be0880",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Cross-question answer leak within the same Rangers pack: the keyed answer 'European Cup Winners' Cup' appears verbatim in the stems of q_b4238e ('Which club did Rangers beat in the 1972 European Cup Winners' Cup final?'), q_54c648 and q_3ad4db, so any session pairing them hands over the answer."
+ },
+ {
+  "id": "q_b4238e",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Cross-question answer leak: q_3ad4db's stem reads 'their 1972 Cup Winners' Cup final win over Dynamo Moscow', naming this question's keyed answer verbatim."
+ },
+ {
+  "id": "q_fb8cf7",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Cross-question answer leak: q_1d7c76's stem ('The Zenit side that beat Rangers in the 2008 UEFA Cup final...') states this question's keyed answer, Zenit St Petersburg."
+ },
+ {
+  "id": "q_a4dcc4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Cross-question answer leak: three other questions in this pack (q_835f75, q_a1d4bd, q_2442e1) name the '2022 Europa League final' in their stems, giving away the keyed answer 'Europa League'."
+ },
+ {
+  "id": "q_97f905",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Cross-question answer leak: q_1167a1's stem ('Rangers were demoted to Scottish football's fourth tier in 2012...') and q_89d488's stem ('began life in the fourth tier in 2012-13') both state the keyed answer 'Scottish Third Division (fourth tier)'."
+ },
+ {
+  "id": "q_7db73d",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's qualifier 'Which Amsterdam club' eliminates all three distractors (PSV Eindhoven, AZ Alkmaar, FC Twente are not Amsterdam clubs), so Ajax is forced without knowing anything about De Klassieker."
+ },
+ {
+  "id": "q_cf75e8",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem quotes the nickname 'Batman and Robben', which literally contains the surname of the keyed answer (Arjen Robben), so the question is solvable from the stem alone."
+ },
+ {
+  "id": "q_414d07",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks what the Anderlecht–Standard Liège rivalry is 'nicknamed the Belgian what?' and only one of the four options ('The Belgian Clásico') contains the word 'Belgian', so it can be picked without knowing the rivalry."
+ },
+ {
+  "id": "q_76c9b1",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem itself asserts that Romario and Ronaldo starred for PSV, which eliminates two of the four options (Romario, Ronaldo) by the stem's own text, reducing the question to a coin flip between Ronaldinho and Alex."
+ },
+ {
+  "id": "q_1957e9",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Sibling question q_e2de99 in the same PSV pack opens \"PSV won their first European trophy, the 1978 UEFA Cup...\", which states verbatim the answer to q_1957e9 (\"In which European competition did PSV win their first continental trophy in 1978?\"); drawn in the same session, one gives the other away for free."
+ },
+ {
+  "id": "q_dcdb64",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem's 'Swiss manager' qualifier eliminates all three distractors — Besnik Hasi (Kosovar-Albanian/Belgian), Vincent Kompany (Belgian) and Franky Vercauteren (Belgian) are none of them Swiss — so René Weiler is pinned without knowing who won the 2017 title."
+ },
+ {
+  "id": "q_201921",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "This stem quotes Mermans' nickname verbatim ('The Bomber'), which is the exact answer to q_5f922f in the same Anderlecht pack, giving that question away."
+ },
+ {
+  "id": "q_0d485d",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem's own phrase \"the twelfth man\" states the answer — 12 — so the question is solvable with zero knowledge of Club Brugge's 2003 shirt retirement."
+ },
+ {
+  "id": "q_6b2059",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem fixes Leko's spell as 2017–2019, and the three distractors (2011–12, 2015–16, 2023–24) all fall outside that window, so 2017–18 is the only date-compatible option."
+ },
+ {
+  "id": "q_522cb2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem says the symbol is \"echoed in the club's name\" and the club is Red Star, so \"a red five-pointed star\" is derivable from the stem alone."
+ },
+ {
+  "id": "q_12cd0f",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The club pack is titled \"Red Star Belgrade\" and sibling stems in the same pack repeatedly say \"Red Star's...\", so the translation of 'Crvena zvezda' is given away by context rather than tested."
+ },
+ {
+  "id": "q_6acdfd",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Pack leak: sibling question q_5d7517 states that Club Brugge retired the number 23 shirt for François Sterchele, which hands over the 23rd-minute answer here."
+ },
+ {
+  "id": "q_e3af0f",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Pack leak: sibling question q_1b01c8 opens with \"Club Brugge signed Ukraine striker Roman Yaremchuk\", explicitly stating the national team this question asks for."
+ },
+ {
+  "id": "q_80c1c1",
+  "kind": "eliminable_distractor",
+  "severity": "serious",
+  "claim": "The stem supplies both the ban's start (May 1990) and its length (six months), so the window is May-Nov 1990 and all three distractors are excluded by arithmetic alone: Euro 1988 predates the ban entirely, while Euro 1992 and the 1992 Olympics fall long after a six-month suspension expires — the question is solvable without knowing anything about Boban."
+ },
+ {
+  "id": "q_734646",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks which 'brother of his' (Zdravko Mamić) managed Dinamo, and Zoran Mamić is the only option sharing the Mamić surname — Vrbanović, Barišić and Čačić are dismissible on the name alone, so no knowledge of Dinamo's 2013-16 title run is required."
+ },
+ {
+  "id": "q_f64165",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem names the venue as 'İnönü Stadium' and the correct option is 'İsmet İnönü' — a player picks it by pure name-matching without knowing any Turkish political or club history."
+ },
+ {
+  "id": "q_33a7c0",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem lists the trio as Metin Tekin, Ali Gültiken and Feyyaz Uçar and the keyed answer is literally 'Metin-Ali-Feyyaz', so the answer is read straight off the stem's own words."
+ },
+ {
+  "id": "q_8182bb",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks which country Club Brugge — a Belgian club — is from, so 'Belgium' is derivable from the club's own name/identity; additionally Netherlands (Feyenoord 1970), Portugal (Benfica 1961) and Scotland (Celtic 1967) had all already reached European Cup finals well before 1978, so no distractor is even possible."
+ },
+ {
+  "id": "q_ef064a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Brugge' in the club's name is the Dutch spelling of the answer 'Bruges', so the stem contains its own answer and no football knowledge is required."
+ },
+ {
+  "id": "q_0ae8cd",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "Stem asks where Everton played home games \"before moving to Goodison Park\" without saying \"immediately before\" — Everton's first home ground (1878-1882) was in Stanley Park, which is offered as a distractor, so Stanley Park is also defensibly correct alongside the keyed Anfield (1884-1892)."
+ },
+ {
+  "id": "q_6ba0a4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states Villa were relegated from the Premier League, which in the English pyramid necessarily means the Championship — the answer follows from the stem itself and requires no knowledge of Villa."
+ },
+ {
+  "id": "q_bd28cf",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Trabzonspor are based in which Turkish city?\" keys \"Trabzon\" — the club's own name in the stem contains the answer string, so the question is solvable with zero football knowledge (the other Black Sea cities Samsun/Rize/Ordu never need to be considered)."
+ },
+ {
+  "id": "q_8cb0b2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem states the nickname 'The Peacocks' derives from the ground's original name, and only one option ('The Old Peacock Ground') contains the word Peacock, so the answer is deducible from the stem alone without knowing Elland Road's history."
+ }
+]
