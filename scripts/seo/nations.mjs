@@ -346,8 +346,8 @@ export const NATIONS = [
     ],
     "name": "USA",
     "initials": "USA",
-    "h1": "USA Football Quiz",
-    "title": "USA Football Quiz — World Cup Trivia | Ball IQ",
+    "h1": "USA Soccer Quiz",
+    "title": "USA Soccer Quiz — USMNT & World Cup Trivia | Ball IQ",
     "description": "Test your USA soccer knowledge — from the USWNT's four World Cups to the men's 2026 home tournament. Explained answers, play free in your browser.",
     "intro": [
       "American soccer tells two stories at once, and both belong on the same quiz. On the women's side, the United States is the most decorated team the sport has ever produced — four World Cups, five Olympic golds, and a run of dominance no other nation has come close to matching. On the men's side, the tale is one of stubborn, steady climb: from a shock third place at the very first World Cup in 1930 to a modern generation now co-hosting the biggest tournament football has ever staged. In the summer of 2026 the United States opens its doors to the World Cup alongside Canada and Mexico, and home crowds will carry a program that has waited its entire history for this stage. This quiz walks through all of it — the legends, the upsets, the heartbreaks and the icons who built the American game.",
@@ -382,8 +382,8 @@ export const NATIONS = [
     ],
     "name": "Mexico",
     "initials": "MEX",
-    "h1": "Mexico Football Quiz",
-    "title": "Mexico Football Quiz — World Cup Trivia | Ball IQ",
+    "h1": "Mexico Soccer Quiz",
+    "title": "Mexico Soccer Quiz — El Tri & World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of El Tri — Mexico's World Cups, the 1999 Confederations Cup and their icons. Trivia with explained answers, play free in your browser.",
     "intro": [
       "Mexico — El Tri — is the heartbeat of CONCACAF and one of the most fervent footballing nations on earth, its green shirts and the roar of the Estadio Azteca instantly recognisable across the game. Few countries carry a longer World Cup pedigree: Mexico has reached 18 finals tournaments and qualified for every edition since 1994, a run of consistency matched by only a handful of nations. Yet the story is defined as much by a ceiling as by the appearances — seven times running between 1994 and 2018, El Tri reached the last sixteen and seven times went out, the elusive 'quinto partido', the fifth game and a quarter-final place, becoming a national obsession. In 2026 the wait takes on a new charge: Mexico co-hosts the World Cup alongside the United States and Canada, chasing history on home soil once again.",
