@@ -1,4 +1,57 @@
-# Clarity findings — 2026-07-28
+# Clarity findings
+
+## ⚡ 2026-07-28 (later) — THE DIAGNOSIS WAS WRONG. It is not bounce, it is bimodal.
+
+Per-page scroll depth and active time overturn the earlier read on this page:
+
+| Page | Avg scroll | Avg active time |
+|---|---|---|
+| /quiz/hull-city/ | **96%** | **368s (6+ min)** |
+| /play | 95% | 103s |
+| /lists/serie-a-top-scorers/ | 93% | 72s |
+| /lists/serie-a-champions/ | 84% | 42s |
+| /quiz/sporting-cp/ | 81.5% | 80s |
+
+**The "50% average scroll depth" was a bimodal average** — instant bouncers plus a
+real cohort reading nearly the whole page. The mean described nobody.
+
+**People do NOT find the site unappealing.** Six minutes and 96% scroll on a Hull
+City quiz page is devouring, not tolerating.
+
+### The actual problem
+
+**Deep engagement converts to nothing.** The six-minute Hull City reader still
+left without a second pageview (entry 16 = exit 16). We take someone's total
+attention for minutes and ask them for nothing at the end.
+
+### What this KILLS (do not spend time here)
+
+- ❌ **"Add cross-links so people can browse on."** The Everton page already has
+  **114 internal links to 98 unique pages.** The mesh is built. Nobody uses it.
+- ❌ **"The site looks bad / needs a premium facelift to stop bounces."** The
+  engaged cohort scrolls 80-96%. Aesthetics are not what is stopping them.
+- ❌ **"Nobody scrolls, so move everything above the fold."** True for the
+  bouncers, false for the cohort that actually matters.
+
+### What this POINTS AT
+
+1. **A single, well-timed ask at the point of peak engagement** — end of the
+   quiz/list, where attention is proven — beats any amount of passive linking.
+2. **The two populations need different treatment.** Bouncers need a reason to
+   stay in the first 3 seconds; the engaged cohort needs a next step at minute
+   five. One design cannot serve both, and today neither is served.
+3. Segment every future metric by these two groups. Site-wide averages here are
+   actively misleading — this is the second time an average sent us the wrong way
+   (see the CLS/interaction-shift note below).
+
+⚠️ **METHOD NOTE.** Three consecutive theories died to one query each: dead
+buttons (synthetic-click artefact), missing cross-links (98 already exist), ugly
+design (96% scroll). Query before building. Every one of those would have been
+days of wasted work.
+
+---
+
+## 2026-07-28 (earlier) — first read
 
 Live behavioural data from Microsoft Clarity (project `xqwevk9brq`), read via
 the MCP connector. **This is the first time real user behaviour has been read
