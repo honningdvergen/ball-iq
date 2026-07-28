@@ -1,82 +1,222 @@
 [
  {
-  "id": "q_2f6810",
-  "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
- },
- {
-  "id": "q_5b843e",
-  "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
- },
- {
-  "id": "q_1f8c19",
-  "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "multiple_correct"
- },
- {
-  "id": "q_3ffbe5",
-  "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
- },
- {
-  "id": "q_487a08",
+  "id": "q_747d9a",
   "reason": "confirmed but confidence=medium — Alex decides",
   "kind": "wrong_answer"
  },
  {
-  "id": "q_5f19df",
+  "id": "q_7f0e68",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "wrong_answer"
  },
  {
-  "id": "q_ec5bad",
+  "id": "q_7a11dd",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "wrong_answer"
  },
  {
-  "id": "q_3f5a10",
+  "id": "q_abcc4e",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "multiple_correct"
  },
  {
-  "id": "q_304b5b",
+  "id": "q_0ae8cd",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "multiple_correct"
  },
  {
-  "id": "q_7bebf1",
-  "reason": "confirmed but confidence=low — Alex decides",
-  "kind": "false_premise"
+  "id": "q_c98851",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
  },
  {
-  "id": "q_bf8f9d",
+  "id": "q_63ac23",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "multiple_correct"
  },
  {
-  "id": "q_deb74e",
+  "id": "q_6b922e",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "ambiguous_stem"
  },
  {
-  "id": "q_1de130",
+  "id": "q_40cd2c",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "self_answering"
  },
  {
-  "id": "q_c0f2bf",
+  "id": "q_a3c7e5",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "ambiguous_stem"
  },
  {
-  "id": "q_c3fcce",
-  "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "id": "q_3bfb6b",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "ambiguous_stem"
  },
  {
-  "id": "q_f7fcc5",
+  "id": "q_5e6c56",
   "reason": "confirmed but confidence=medium — Alex decides",
-  "kind": "false_premise"
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_1e9b93",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_a670f7",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_196e86",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_eaba3c",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_8b4eef",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_0c03d4",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_9f3f7e",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_b9f34d",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "ambiguous_stem"
+ },
+ {
+  "id": "q_cb07da",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_d228c8",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_35ee33",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_be0880",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_b4238e",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_fb8cf7",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_a4dcc4",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_cf75e8",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_c64db6",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_ef064a",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_414d07",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_1957e9",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_522cb2",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_bee28b",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_6a9fe2",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_f05452",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_392c3c",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_74322a",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_12cd0f",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_6acdfd",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_e3af0f",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "self_answering"
+ },
+ {
+  "id": "q_07a911",
+  "reason": "confirmed but confidence=medium — Alex decides",
+  "kind": "stale"
+ },
+ {
+  "id": "q_1088b1",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "eliminable_distractor"
+ },
+ {
+  "id": "q_aff3f8",
+  "reason": "confirmed, no complete fix proposed — human editorial call",
+  "kind": "stale"
  }
 ]
