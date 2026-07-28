@@ -310,7 +310,13 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
               </button>
               <button type="button" className="biql-guest" onClick={guestContinue}
                 style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.border}`, background: 'transparent', color: C.t2, fontSize: 15 }}>
-                {prompt?.hardGate ? 'Not now' : 'Continue as guest'}
+                {/* NOT "Continue as guest" on a hard gate. At the front door that
+                    label is an ACTION — it creates the guest session. Here the
+                    user is already a guest, so it describes no change, and under
+                    the heading "Sign up to play online" it reads as an offer to
+                    play online as a guest, which is the one thing it can't do.
+                    "Maybe later" is honest without being a brush-off. */}
+                {prompt?.hardGate ? 'Maybe later' : 'Continue as guest'}
               </button>
               <div style={{ textAlign: 'center', fontSize: 11.5, lineHeight: 1.5, color: C.legal, marginTop: 4 }}>
                 By continuing you agree to our <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Terms</a> &amp; <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Privacy Policy</a>.
