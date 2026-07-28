@@ -2516,7 +2516,18 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
             }
             const icon = answered && isCorrect ? "✓" : answered && isChosen ? "✗" : LETTERS[i];
             return (
-              <button key={i} className={cls} onClick={() => handleMCQ(i)} disabled={answered}
+              // Measured 2026-07-28: after answering, all four options became
+              // `disabled`, and a disabled button is a guaranteed dead click —
+              // one of the two sources behind Clarity's 176 dead clicks (149 in
+              // /play). Users tap the answered card expecting it to advance, so
+              // now it does. aria-disabled (not `disabled`) keeps the control
+              // focusable and clickable while still announcing it as unavailable
+              // for answering; the paired CSS rules key off it for cursor/hover.
+              <button key={i} className={cls} aria-disabled={answered || undefined}
+                onClick={() => {
+                  if (!answered) { handleMCQ(i); return; }
+                  if (showNext) doAdvance(showNext.ns, showNext.nb, showNext.correct);
+                }}
                 onPointerDown={e => { if (!answered) e.currentTarget.style.transform = "scale(0.97)"; }}
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
                 onPointerLeave={e => { e.currentTarget.style.transform = ""; }}
