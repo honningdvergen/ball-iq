@@ -36,6 +36,7 @@ import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from '.
 import { CLUBS } from './seo/clubs.mjs';
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
+import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
 
@@ -2018,6 +2019,86 @@ ${footer()}`;
 // SERP even though Footle IS the product. Shared chrome; the green CTA
 // deep-links into the playable no-login game (src/App.jsx's deep-link handler
 // reads ?game=footle at /play).
+// ── data study (/study/<slug>/) ──────────────────────────────────────────────
+// A LINKABLE ASSET, not a quiz page. Our measured ceiling is authority — near
+// zero external links — and football desks link to data, not to quizzes.
+//
+// Every figure is recomputed from QB here at build time and substituted into
+// {{tokens}}. Nothing is transcribed. An earlier draft hardcoded the numbers
+// and they were falsified within the hour when a club wave landed; for a page
+// whose whole purpose is to be fact-checked, that is the one unacceptable
+// failure. See the header of scripts/seo/study.mjs.
+function buildStudyPage(cfg) {
+  const s = studyStats(QB);
+  const num = (v) => (typeof v === 'number' ? v.toLocaleString('en-GB') : v);
+  const fill = (t) => t.replace(/\{\{(\w+)\}\}/g, (_, k) => num(s[k]));
+
+  const canonical = `${SITE.base}/study/${cfg.slug}/`;
+  const max = Math.max(...s.decades.map(([, n]) => n));
+  const chart = s.decades.map(([label, n]) => `<tr><th scope="row">${esc(label)}</th><td><span class="bar" style="width:${((n / max) * 100).toFixed(1)}%"></span></td><td class="n">${num(n)}</td></tr>`).join('');
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
+        ],
+      },
+      {
+        '@type': 'Article',
+        headline: cfg.h1,
+        description: fill(cfg.description),
+        author: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+        mainEntityOfPage: canonical,
+        isAccessibleForFree: true,
+      },
+    ],
+  });
+
+  const sections = cfg.body.map(([h, paras]) =>
+    `<section class="sec narrow"><h2>${esc(h)}</h2>${paras.map((p) => `<p>${esc(fill(p))}</p>`).join('\n')}</section>`).join('\n');
+
+  const style = `<style>
+  .sbar{width:100%;border-collapse:collapse;margin:6px 0 4px}
+  .sbar th[scope=row]{text-align:left;font-weight:700;color:var(--tx2);font-size:14px;padding:5px 12px 5px 0;white-space:nowrap;width:1%}
+  .sbar td{padding:5px 0}
+  .sbar .bar{display:block;height:15px;border-radius:3px;background:linear-gradient(90deg,var(--grn),var(--grn-soft))}
+  .sbar .n{text-align:right;font-family:var(--mono);font-size:13px;color:var(--tx3);padding-left:12px;width:1%;white-space:nowrap}
+  .standfirst{font-size:17px;line-height:1.6;color:var(--tx2)}
+  .method{margin-top:22px;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
+  </style>`;
+
+  const html = `${head({ title: cfg.title, description: fill(cfg.description), canonical, ld })}
+<body>
+${NAV}
+<main id="main">
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> <span class="sep" aria-hidden="true">›</span> <span>${esc(cfg.h1)}</span></nav>
+<h1 style="font-size:clamp(27px,4.6vw,42px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 12px">${esc(cfg.h1)}</h1>
+<p class="standfirst">${esc(cfg.standfirst)}</p>
+</section>
+<section class="sec narrow">
+<h2>Questions by the decade they reference</h2>
+<table class="sbar">${chart}</table>
+<p class="sub" style="color:var(--tx3)">Ball IQ question bank, ${num(s.bank)} questions. A question spanning two decades counts for both.</p>
+</section>
+${sections}
+<section class="sec narrow"><p class="method">${esc(fill(cfg.method))}</p></section>
+${appCtaBand('football')}
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, 'study', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, canonical };
+}
+
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;
@@ -2365,6 +2446,8 @@ function buildSitemap(livePages, listPages = []) {
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
     ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
+    { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
+    { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
@@ -2515,6 +2598,7 @@ async function main() {
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
+  buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages);

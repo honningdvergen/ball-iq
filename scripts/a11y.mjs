@@ -33,6 +33,7 @@ const PAGES = [
   { name: 'list', url: '/lists/ballon-dor-winners/' },
   { name: 'hub', url: '/quiz/' },
   { name: 'footle', url: '/football-wordle/' },
+  { name: 'study', url: '/study/football-trivia-memory/' },
 ];
 
 const AUDIT = () => {
