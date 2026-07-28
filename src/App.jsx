@@ -703,6 +703,8 @@ const CLUB_PACK_TO_QB = {
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
   Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
   Sporting: "Sporting CP", SaintEtienne: "Saint-Étienne",
+  Valencia: "Valencia", Leverkusen: "Bayer Leverkusen", Lyon: "Olympique Lyonnais",
+  Parma: "Parma", Monaco: "AS Monaco",
 };
 
 // League grouping for the club-quiz picker.
@@ -734,6 +736,10 @@ const CLUB_LEAGUES = {
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
   Sporting: "primeira", SaintEtienne: "ligue1",
+  // Wave K: Parma were in Serie A for 2025-26; Valencia/Leverkusen/Lyon/Monaco
+  // all sit in their country's top flight, so each lands in its real section.
+  Valencia: "laliga", Leverkusen: "bundesliga", Lyon: "ligue1",
+  Parma: "seriea", Monaco: "ligue1",
 };
 const CLUB_LEAGUE_SECTIONS = [
   { key: "pl", label: "Premier League" },
@@ -785,6 +791,7 @@ const CLUB_ABBR = {
   Coventry: "COV", HullCity: "HUL",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
   Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
+  Valencia: "VAL", Leverkusen: "B04", Lyon: "OL", Parma: "PAR", Monaco: "ASM",
 };
 
 // SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
@@ -812,6 +819,8 @@ const CLUB_SLUG_TO_PACK = {
   "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
   "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
   "sporting-cp": "Sporting", "saint-etienne": "SaintEtienne",
+  "valencia": "Valencia", "bayer-leverkusen": "Leverkusen", "lyon": "Lyon",
+  "parma": "Parma", "monaco": "Monaco",
 };
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
@@ -1250,6 +1259,26 @@ const CLUB_PACKS = {
   },
   SaintEtienne: {
     name: "Saint-Étienne", icon: "🟢", color: "#009E60",
+    questions: [],
+  },
+  Valencia: {
+    name: "Valencia", icon: "🦇", color: "#F18E00",
+    questions: [],
+  },
+  Leverkusen: {
+    name: "Bayer Leverkusen", icon: "🔴", color: "#E32221",
+    questions: [],
+  },
+  Lyon: {
+    name: "Olympique Lyonnais", icon: "🦁", color: "#3D74C4",
+    questions: [],
+  },
+  Parma: {
+    name: "Parma", icon: "🟡", color: "#F5D800",
+    questions: [],
+  },
+  Monaco: {
+    name: "AS Monaco", icon: "🔺", color: "#DA291C",
     questions: [],
   },
 };

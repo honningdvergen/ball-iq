@@ -187,6 +187,7 @@ const CLUB_BADGE = {
   'schalke-04': 'S04', 'hamburger-sv': 'HSV',
   fiorentina: 'FIO', lazio: 'LAZ', torino: 'TOR',
   'sporting-cp': 'SCP', 'saint-etienne': 'ASSE',
+  valencia: 'VAL', 'bayer-leverkusen': 'B04', lyon: 'OL', parma: 'PAR', monaco: 'ASM',
 };
 const CAT_EMOJI = {
   'world-cup': '🌍', 'premier-league': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'champions-league': '⭐',
@@ -240,6 +241,8 @@ const CLUB_COLOR = {
   'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
   'sporting-cp': '#008056', 'saint-etienne': '#009E60',
+  valencia: '#F18E00', 'bayer-leverkusen': '#E32221', lyon: '#3D74C4',
+  parma: '#F5D800', monaco: '#DA291C',
 };
 // ── badge legibility (WCAG 1.4.3) ────────────────────────────────────────────
 // This used to pick white/black by YIQ brightness with a 0.6 threshold, which
@@ -2133,6 +2136,11 @@ const DIR_ALIAS = {
   'Dortmund': 'Borussia Dortmund',
   'PSG': 'Paris Saint-Germain',
   'Ipswich': 'Ipswich Town',
+  // Wave K — the directory carries the short broadcast names, the pages the
+  // full club names.
+  'Leverkusen': 'Bayer Leverkusen',
+  'Lyon': 'Olympique Lyonnais',
+  'Monaco': 'AS Monaco',
 };
 // Built clubs whose league isn't among the directory's leagues yet (lower
 // tiers / countries pending). Rendered in a final "More clubs" section so no

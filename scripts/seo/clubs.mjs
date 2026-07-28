@@ -1961,5 +1961,165 @@ export const CLUBS = [
         "a": "It scales from easy to hard — from well-known facts about the Tigers and Boothferry Park to testing deep cuts like Warren Joyce's 1998-99 'Great Escape' and the away-goals exit against Lokeren."
       }
     ]
+  },
+  {
+    "club": "Valencia",
+    "slug": "valencia",
+    "name": "Valencia",
+    "h1": "Valencia Quiz",
+    "title": "Valencia CF Quiz — Los Che Trivia & Answers | Ball IQ",
+    "description": "Free Valencia CF quiz with explained answers — from Kempes and the Fairs Cup to Cúper's two European finals and Benítez's champions. Play in your browser.",
+    "intro": [
+      "Valencia CF were founded in March 1919, moved into Mestalla in 1923 and have been there ever since — a steep, loud, old-fashioned ground pressed right up against the pitch, and one of the most intimidating in Spain. This free Valencia quiz covers the whole story: the bat on the crest, borrowed from the coat of arms of the city itself, the six league titles won in 1942, 1944, 1947, 1971, 2002 and 2004, and the European nights that made Los Che a name across the continent. The city derby against Levante and the regional rivalry with Villarreal are in here too. If Mestalla means something to you, this is your quiz.",
+      "The European story starts early and never really stops. Valencia won the Inter-Cities Fairs Cup in 1962 and retained it in 1963, then beat Arsenal in Brussels to lift the 1980 Cup Winners' Cup after a goalless 120 minutes. Under Héctor Cúper the club reached back-to-back Champions League finals and lost both — 3-0 to Real Madrid in Paris in 2000, the first all-Spanish European Cup final, and then on penalties to Bayern Munich at the San Siro in 2001, where Oliver Kahn saved three spot-kicks and Mauricio Pellegrino's was the last of them. Redemption came under Rafael Benítez in 2003-04: the league title and the UEFA Cup in the same season, Marseille beaten 2-0 in the Gothenburg final through a Vicente Rodríguez penalty and a Mista finish. Claudio Ranieri, back for a second spell, then added the UEFA Super Cup against Porto.",
+      "Expect the full spread — transfers, managers, records and cult heroes. Mario Kempes scored both goals to beat Real Madrid in the 1979 Copa del Rey final; Alfredo Di Stéfano took charge at Mestalla in 1970 and won the league in his first season; Fernando Gómez made more than 550 appearances between 1983 and 1998, a club record nobody has touched. The trophy years were built on Santiago Cañizares in goal, Roberto Ayala at the back and the Rubén Baraja-David Albelda double pivot in midfield, with Pablo Aimar arriving from River Plate in 2001 to provide the imagination. Transfers run from Gaizka Mendieta's 2001 move to Lazio and John Carew's arrival from Rosenborg, to David Villa's 129 goals after signing from Real Zaragoza in 2005 and David Silva's 2010 departure for Manchester City. The modern era is here as well: Unai Emery's three consecutive third-place finishes, Ronald Koeman's 2008 Copa del Rey, Peter Lim's 2014 takeover, and the 2-1 win over Barcelona in Seville that won the 2019 Copa del Rey in the club's centenary season.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — why the ground is called Mestalla, or what happened to the last penalty in Milan. Play the sample set below free in your browser, no sign-up needed. When you want the full Valencia quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "What is Valencia's greatest achievement?",
+        "a": "The 2003-04 double under Rafael Benítez — a sixth La Liga title alongside the UEFA Cup, won 2-0 against Marseille in Gothenburg. The two Inter-Cities Fairs Cups of 1962 and 1963 and the 1980 Cup Winners' Cup win over Arsenal run it close."
+      },
+      {
+        "q": "Have Valencia ever won the Champions League?",
+        "a": "No — they reached the final in both 2000 and 2001 under Héctor Cúper and lost each time, 3-0 to Real Madrid in Paris and then on penalties to Bayern Munich at the San Siro, where Oliver Kahn saved three."
+      },
+      {
+        "q": "Is the Valencia quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Valencia question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Valencia quiz?",
+        "a": "It runs from easy (which animal is on the crest?) to hard (who holds the club appearance record?). The mix means casual fans and Mestalla regulars both get a proper test."
+      }
+    ]
+  },
+  {
+    "club": "Bayer Leverkusen",
+    "slug": "bayer-leverkusen",
+    "name": "Bayer Leverkusen",
+    "h1": "Bayer Leverkusen Quiz",
+    "title": "Bayer Leverkusen Quiz — Werkself Trivia | Ball IQ",
+    "description": "Free Bayer Leverkusen quiz with explained answers — from 'Neverkusen' and the 2002 final to Xabi Alonso's unbeaten double. Play free in your browser.",
+    "intro": [
+      "Bayer 04 Leverkusen were founded in 1904 by employees of the Bayer chemical works, which is why everyone still calls them Die Werkself — the works eleven. They play in red and black at the BayArena, known as the Ulrich-Haberland-Stadion until the 1998 renaming, and for most of their history they were German football's great nearly men. Then came 2023-24. This free Bayer Leverkusen quiz covers both halves of that story: the seasons that earned the 'Neverkusen' nickname, and the one that finally buried it.",
+      "The near-misses are legendary. On the final day of 1999-2000 Leverkusen lost 2-0 at newly promoted SpVgg Unterhaching — Michael Ballack scoring an own goal — and handed Bayern Munich the title on goal difference. Two years later, Klaus Toppmöller's side finished second in the Bundesliga, second in the DFB-Pokal and second in Europe: at Hampden Park in May 2002, Raúl put Real Madrid ahead, Lúcio headed the equaliser, and Zinedine Zidane volleyed in Roberto Carlos's cross on the stroke of half-time to win it 2-1. Captain Jens Nowotny had torn his cruciate in the semi-final second leg against Manchester United — a tie Leverkusen won on away goals — and watched the final from the sidelines, with Hans-Jörg Butt in goal. The silverware that did arrive came in 1988, when Erich Ribbeck's team overturned a 3-0 first-leg deficit against Espanyol and won the UEFA Cup shootout, and in the 1993 DFB-Pokal final against the Hertha BSC amateur side.",
+      "Then Xabi Alonso, appointed in October 2022 in place of Gerardo Seoane after coaching Real Sociedad B, built something unprecedented. Leverkusen went through the entire 2023-24 Bundesliga season unbeaten — 28 wins, six draws, 90 points — sealing the club's first German championship on 14 April with a 5-0 win over Werder Bremen in which Florian Wirtz scored a hat-trick, five games still to play. The double followed in Berlin, Granit Xhaka's early goal beating Kaiserslautern 1-0 in the DFB-Pokal final. The unbeaten run reached 51 matches across all competitions, a record for a European top-flight club, before Atalanta won the Europa League final 3-0 in Dublin through an Ademola Lookman hat-trick. Around all of it runs Leverkusen's real speciality — talent. Ulf Kirsten arrived from Dynamo Dresden in 1990 and became the club's all-time leading Bundesliga scorer; Ballack came from Kaiserslautern in 1999 and left for Bayern in 2002 alongside Zé Roberto; Dimitar Berbatov, Arturo Vidal, Bernd Schneider, a loaned Toni Kroos, Son Heung-min and Kai Havertz all passed through.",
+      "Every question comes with a short explained answer, so even a miss teaches you something — what the BayArena used to be called, or exactly how long that unbeaten run lasted. Play the sample set below free in your browser, no sign-up needed. When you want the full Bayer Leverkusen quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "Have Bayer Leverkusen ever won the Bundesliga?",
+        "a": "Yes — once, in 2023-24 under Xabi Alonso, and they did it unbeaten: 28 wins, six draws and 90 points. The title was sealed on 14 April 2024 with a 5-0 win over Werder Bremen, Florian Wirtz scoring a hat-trick."
+      },
+      {
+        "q": "Why are Leverkusen called 'Neverkusen'?",
+        "a": "For the near-misses. They lost the 1999-2000 title on the final day at Unterhaching, then in 2001-02 finished runners-up in the Bundesliga, the DFB-Pokal and the Champions League — beaten 2-1 by Real Madrid at Hampden Park."
+      },
+      {
+        "q": "Is the Bayer Leverkusen quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leverkusen question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Bayer Leverkusen quiz?",
+        "a": "It runs from easy (who scored the winner in the 2002 final?) to hard (who started in goal that night?). Difficulty is mixed, so casual fans and BayArena regulars both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Olympique Lyonnais",
+    "slug": "lyon",
+    "name": "Olympique Lyonnais",
+    "h1": "Olympique Lyonnais Quiz",
+    "title": "Lyon Quiz — Olympique Lyonnais Trivia | Ball IQ",
+    "description": "Free Olympique Lyonnais quiz with explained answers — seven straight titles, Juninho, Benzema, Lacazette and Lisbon 2020. Play free in your browser.",
+    "intro": [
+      "Olympique Lyonnais were a second-division side when Jean-Michel Aulas arrived as president in 1987 with a plan he called 'OL – Europe'. Fourteen years later they won the first league title in the club's history, and then six more in a row. This free Lyon quiz covers the lot: Les Gones in their white shirts, the move from Gerland to the purpose-built Groupama Stadium in January 2016, the fiercest derby in France against Saint-Étienne 60km down the road, and the women's team whose eight UEFA Women's Champions League titles are more than any other club has won.",
+      "The dynasty is the heart of it. Lyon's first championship came in 2001-02, clinched on the final day at Gerland with a 3-1 win over RC Lens, who needed only a draw to be champions themselves — Jacques Santini's side took it instead. Seven consecutive titles followed, a Ligue 1 record, and the run ended with a domestic double: Alain Perrin's 2007-08 team added the Coupe de France, Karim Benzema's goal beating Paris Saint-Germain 1-0 at the Stade de France. The launchpad had come in 2001, when Lyon beat Monaco 2-1 after extra time to win the Coupe de la Ligue, their first major trophy in decades. Juninho Pernambucano, signed from Vasco da Gama that same year, captained the side through all of it and turned the dipping free-kick into a Lyon trademark; Grégory Coupet kept goal for every one of the seven titles before joining Atlético Madrid in 2008.",
+      "Europe brought the near-misses and the great upsets. PSV Eindhoven knocked Lyon out on penalties in the 2004-05 quarter-finals; in 2009-10 they beat Real Madrid 2-1 on aggregate before Bayern Munich, with an Ivica Olić hat-trick in the second leg, ended the run in the semi-finals; Ajax edged them out of the 2016-17 Europa League at the same stage. Then came Lisbon in 2020, where Rudi Garcia's side beat Manchester City 3-1 in the one-legged quarter-final with Moussa Dembélé scoring twice off the bench, before losing another semi-final to Bayern. The academy and the trading are just as much a part of the identity: Karim Benzema left for Real Madrid in 2009, Alexandre Lacazette scored 27 league goals to win the 2014-15 golden boot before joining Arsenal, Hugo Lloris went to Tottenham in 2012 and Tanguy Ndombele followed for a then club-record fee in 2019. Coming the other way were Sonny Anderson from Barcelona in 1999, Michael Essien from Bastia in 2003, Lisandro López from Porto and Memphis Depay from Manchester United. And the club's all-time leading scorer still belongs to an earlier age: Fleury Di Nallo, 222 goals, 'le Petit Prince de Gerland'.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — who was in charge for the first title, or which club Juninho arrived from. Play the sample set below free in your browser, no sign-up needed. When you want the full Lyon quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many Ligue 1 titles have Lyon won in a row?",
+        "a": "Seven, from 2001-02 to 2007-08 — a Ligue 1 record for consecutive championships. The first was clinched on the final day with a 3-1 win over Lens at Gerland; the last came with a Coupe de France double under Alain Perrin."
+      },
+      {
+        "q": "Which famous players came through Lyon?",
+        "a": "Karim Benzema is the standout — an academy graduate who won the league at Lyon before joining Real Madrid in 2009. Alexandre Lacazette went on to Arsenal after a 27-goal season, and Hugo Lloris and Tanguy Ndombele both left for Tottenham."
+      },
+      {
+        "q": "Is the Lyon quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Olympique Lyonnais question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Lyon quiz?",
+        "a": "It runs from easy (what colour is the home shirt?) to hard (who is the club's all-time leading goalscorer?). The mix means casual fans and OL obsessives both get a real test."
+      }
+    ]
+  },
+  {
+    "club": "Parma",
+    "slug": "parma",
+    "name": "Parma",
+    "h1": "Parma Quiz",
+    "title": "Parma Quiz — Crociati Trivia & Answers | Ball IQ",
+    "description": "Free Parma quiz with explained answers — Scala's European nights, Buffon and Cannavaro, the Parmalat crash and the climb back from Serie D.",
+    "intro": [
+      "Parma play at the Stadio Ennio Tardini, their home since 1923, in the Emilia-Romagna city famous for its ham and its cheese — and for a decade in the 1990s they were one of the best teams in Europe. This free Parma quiz covers the whole arc: the Nevio Scala sides that won the club's first major trophies, the Parmalat money that funded them, the 2003 accounting scandal and the 2015 bankruptcy that sent the Crociati all the way down to Serie D, and the three straight promotions that brought them back to Serie A.",
+      "The trophies came in a rush. Scala, in charge from 1989 to 1996, won the 1992 Coppa Italia and then the 1993 European Cup Winners' Cup, beating Royal Antwerp 3-1 in the final at Wembley — and later that year Parma took the European Super Cup, facing AC Milan after holders Marseille were barred from taking part. The 1995 UEFA Cup was an all-Italian final against Juventus, settled by Dino Baggio scoring in both legs. Alberto Malesani then delivered a UEFA Cup and Coppa Italia double in his first season, 1999, Marseille beaten 3-0 in the final with Hernán Crespo, Enrico Chiesa and full-back Paolo Vanoli among the scorers. The one prize that never came was the league: Carlo Ancelotti's 1996-97 side finished second, still the best placing in Parma's history.",
+      "The squads were extraordinary. Gianluigi Buffon came through the youth system and made his Serie A debut in November 1995, aged 17, in a goalless draw with AC Milan; Fabio Cannavaro arrived from Napoli that same year and stayed seven seasons; Lilian Thuram came from Monaco in 1996. Add Faustino Asprilla — whose finish ended AC Milan's record unbeaten league run in March 1993 before he left for Newcastle United — Crespo, signed from River Plate and sold to Lazio in 2000 for what was then a world-record fee, Gianfranco Zola's mid-season move to Chelsea in 1996, a season of Hristo Stoichkov between two spells at Barcelona, and Hidetoshi Nakata, part of the 2002 Coppa Italia-winning squad. Arrigo Sacchi had managed here in the mid-1980s before Silvio Berlusconi took him to Milan. Then Parmalat collapsed, and in 2015 so did the club: refounded in Serie D with Scala as president, Serie D champions under former defender Luigi Apolloni, and back-to-back promotions under Roberto D'Aversa in 2017 and 2018 — captain Alessandro Lucarelli, who had stayed through the bankruptcy, wearing the armband for all three.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which company bankrolled the golden era, or where the 1993 final was played. Play the sample set below free in your browser, no sign-up needed. When you want the full Parma quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "Have Parma ever won Serie A?",
+        "a": "No. Their best league finish is second, in 1996-97 under Carlo Ancelotti. The trophy cabinet is European and domestic-cup instead: two UEFA Cups (1995 and 1999), the 1993 Cup Winners' Cup and three Coppa Italias."
+      },
+      {
+        "q": "Why did Parma restart in Serie D?",
+        "a": "The club went bankrupt in 2015 and was refounded, which meant re-entering the game in Serie D, Italy's fourth tier. Three promotions in three years — under Luigi Apolloni and then Roberto D'Aversa — took them back to Serie A by 2018."
+      },
+      {
+        "q": "Is the Parma quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Parma question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the Parma quiz?",
+        "a": "It runs from easy (which trophy have Parma never won?) to hard (who scored in both legs of the 1995 UEFA Cup final?). Casual fans and Tardini regulars both get a proper test."
+      }
+    ]
+  },
+  {
+    "club": "AS Monaco",
+    "slug": "monaco",
+    "name": "AS Monaco",
+    "h1": "AS Monaco Quiz",
+    "title": "AS Monaco Quiz — Monégasques Trivia | Ball IQ",
+    "description": "Free AS Monaco quiz with explained answers — Wenger and Tigana, the run to the 2004 final, Mbappé's breakthrough and the 2017 title.",
+    "intro": [
+      "AS Monaco were founded on 23 August 1924 and are unlike anyone else in European football: a club from a sovereign principality of barely two square kilometres that has spent its entire history competing in the French league system. Home since January 1985 has been the Stade Louis II, built on land reclaimed from the sea, and the diagonal red-and-white shirt is one of the game's most recognisable. This free AS Monaco quiz covers all of it — eight French championships in 1961, 1963, 1978, 1982, 1988, 1997, 2000 and 2017, the 1960 Coupe de France win over Saint-Étienne that brought the club's first major trophy, and the double completed in 1962-63.",
+      "The managers alone make a quiz. Lucien Leduc took a newly promoted side straight to the 1977-78 title. Arsène Wenger won the championship in his first season in 1987-88 and stayed until 1994, bringing George Weah over from Tonnerre Yaoundé in 1988 and Jürgen Klinsmann from Internazionale in 1992. Jean Tigana's 1996-97 champions had Fabien Barthez in goal and Thierry Henry, David Trezeguet and Emmanuel Petit in front of him. Then Didier Deschamps, in charge from 2001 to 2005, won the 2003 Coupe de la Ligue 4-1 against Sochaux and took Monaco to the 2004 Champions League final, knocking Real Madrid out on away goals along the way — Fernando Morientes, on loan from the very club he eliminated, finishing as the competition's top scorer with nine — before José Mourinho's Porto won the final 3-0 in Gelsenkirchen. Europe had come close before too: a 2-0 defeat to Werder Bremen in the 1992 Cup Winners' Cup final, and a 1997-98 Champions League semi-final lost to Juventus after Alessandro Del Piero's hat-trick in Turin.",
+      "The modern era is a story of collapse and reinvention. Monaco were relegated to Ligue 2 in 2010-11, their first drop out of the top flight in 35 years, and were bottom of the second division when Dmitry Rybolovlev bought a two-thirds stake in December 2011. Claudio Ranieri won the Ligue 2 title at the first attempt in 2012-13, Radamel Falcao arrived from Atlético Madrid as the marquee signing of the spending that followed, and by 2016-17 Leonardo Jardim's team were champions of France — 107 goals, 95 points, eight clear of Paris Saint-Germain, with Manchester City beaten on away goals and Borussia Dortmund 6-3 on the way to a Champions League semi-final. At the centre of it was a teenager who had broken Thierry Henry's club record as Monaco's youngest first-team player in December 2015, aged 16 years and 347 days, and who left for Paris Saint-Germain the summer the title was won. Older heroes hold up the other end: Jean-Luc Ettori made 755 appearances between 1975 and 1994 without ever playing for another club.",
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which club Trezeguet arrived from, or how many goals the 2017 champions scored. Play the sample set below free in your browser, no sign-up needed. When you want the full AS Monaco quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+    ],
+    "faq": [
+      {
+        "q": "How many French league titles have Monaco won?",
+        "a": "Eight — in 1961, 1963, 1978, 1982, 1988, 1997, 2000 and 2017. The most recent came under Leonardo Jardim, whose side scored 107 goals and finished eight points clear of Paris Saint-Germain."
+      },
+      {
+        "q": "Which famous players made their name at Monaco?",
+        "a": "Thierry Henry and David Trezeguet both broke through under Jean Tigana in the 1996-97 title season, George Weah's European career began there in 1988, and Kylian Mbappé became the club's youngest ever first-team player in December 2015."
+      },
+      {
+        "q": "Is the AS Monaco quiz free to play?",
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full AS Monaco question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+      },
+      {
+        "q": "How hard is the AS Monaco quiz?",
+        "a": "It runs from easy (which country's league do Monaco play in?) to hard (who managed the 1977-78 champions?). The mix means casual fans and Louis II regulars both get a real test."
+      }
+    ]
   }
 ];

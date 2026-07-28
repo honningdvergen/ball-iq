@@ -564,6 +564,11 @@ const QUIZ_CLUBS = [
   { slug: 'torino', label: 'Torino', badge: 'TOR' },
   { slug: 'sporting-cp', label: 'Sporting CP', badge: 'SCP' },
   { slug: 'saint-etienne', label: 'Saint-Étienne', badge: 'ASSE' },
+  { slug: 'valencia', label: 'Valencia', badge: 'VAL' },
+  { slug: 'bayer-leverkusen', label: 'Bayer Leverkusen', badge: 'B04' },
+  { slug: 'lyon', label: 'Lyon', badge: 'OL' },
+  { slug: 'parma', label: 'Parma', badge: 'PAR' },
+  { slug: 'monaco', label: 'AS Monaco', badge: 'ASM' },
 ];
 const QUIZ_LEAGUES = [
   { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
@@ -602,6 +607,8 @@ const CLUB_COLOR = {
   'schalke-04': '#004E9E', 'hamburger-sv': '#0A3A7A',
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
   'sporting-cp': '#008056', 'saint-etienne': '#009E60',
+  valencia: '#F18E00', 'bayer-leverkusen': '#E32221', lyon: '#3D74C4',
+  parma: '#F5D800', monaco: '#DA291C',
 };
 // Mirrors badgeColors() in scripts/gen-seo-pages.mjs — keep the two in step.
 // A YIQ brightness test used to pick the text colour here and got 11 of 61
