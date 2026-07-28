@@ -1,5 +1,62 @@
 # Clarity findings
 
+## 🔬 2026-07-28 (session recordings) — CORRECTING THE PREVIOUS ENTRY
+
+Read 8 real session recordings. Two of the earlier conclusions do not survive.
+
+### ❌ CORRECTION: "six minutes of undivided attention" was OVERSTATED
+
+**Three of the eight longest sessions had ZERO clicks:**
+
+| Duration | Pages | Clicks | Entry |
+|---|---|---|---|
+| 1390s (23 min) | 2 | **0** | balliq.app/ |
+| 1085s (18 min) | 1 | **0** | /quiz/everton/ |
+| 899s (15 min) | 1 | **0** | /play# |
+
+Those are **abandoned tabs, not engagement.** Clarity's "active time" and scroll
+depth are inflated by them, so the earlier read — "people are devouring the
+content, the site is not unappealing" — is **not supported at the strength it
+was stated.** Some of that cohort simply left the tab open.
+
+⚠️ **Never conclude engagement from duration alone on this site. Require clicks.**
+
+### ✅ CONFIRMED: the full funnel WORKS when someone takes it
+
+The 5-page session, end to end:
+
+```
+/quiz/tottenham/      66s, 11 clicks  (played the taster: answers + "Next →")
+   ↓  clicked through
+/play?club=tottenham   1s              (deep link fires correctly)
+   ↓
+/play                101s, 22 clicks  (played the REAL quiz in the app)
+```
+
+SEO page → taster → club deep link → real gameplay. **Every link in that chain
+works.** The machinery is not broken; it is simply rarely traversed.
+
+Compare the Newcastle session: 2135s, **1 page, 15 clicks**, entry from Google,
+last click an answer option. Same content, same page type — played and then
+stopped dead. Whatever separates that from the Tottenham journey is the actual
+conversion question.
+
+### 🚨 NEW LEAD — possible post-Google-login dead end
+
+One session: entry `**/play#**`, referrer `**accounts.google.com**`, duration
+**899s, ZERO clicks.** Someone completed Google sign-in, landed on `/play#`, and
+did nothing for 15 minutes.
+
+Either they abandoned, or **the post-OAuth landing is broken** — note the bare
+`#` fragment. This is adjacent to the "Google login lands on the marketing
+homepage" bug fixed in 38542a4, so a residual redirect fault is plausible.
+
+**Test next: complete a real Google sign-in on balliq.app and watch where it
+lands and whether the app is interactive afterwards.** Highest-value open lead.
+
+---
+
+
 ## ⚡ 2026-07-28 (later) — THE DIAGNOSIS WAS WRONG. It is not bounce, it is bimodal.
 
 Per-page scroll depth and active time overturn the earlier read on this page:
