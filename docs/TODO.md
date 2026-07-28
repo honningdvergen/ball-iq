@@ -305,6 +305,34 @@ ZERO wrong answers, resources authorised.
 
 ## ✅ RECENTLY LANDED
 
+### 2026-07-28 evening — 1.4.0 cut + six items closed
+
+- [x] **1.4.0 built** — iOS 1.4.0 (49), Android 1.4.0 (versionCode 7). Bundles
+      verified fresh. NOT uploaded. Store metadata fixed and SAVED in both
+      consoles (Play short+full description, App Store description/promo/
+      what's-new); **submitting for review is Alex's step in both.**
+- [x] **#21 MP Rematch** — Challenge was already wired; Rematch created a room
+      and told nobody. Both paths now fire a play_invite to every opponent.
+- [x] **#40 difficulty-honesty** — `scripts/difficulty-honesty.mjs`. 111 hard
+      MCQs where the ANSWER is the naming-format outlier (3 mononyms + 1 full
+      name) → guessable with zero football knowledge. In
+      `.audit/difficulty-honesty.json`. **Not auto-fixed** — most want the
+      answer expanded to a full name, which must stay factually correct.
+- [x] **#52 lists staleness** — now checked at the end of every build. 50/50
+      current today. openfootball evaluated and REJECTED: match results only,
+      no player data, and half our lists are player-based.
+- [x] **#53 Footle keyboard** — full-width bleed + tighter gaps, keys 35.1 →
+      37.2px at 390. That is the arithmetic ceiling for 10 keys in a row.
+- [x] **App accessibility** — the app itself had never been audited (only the
+      website). 6 real defects fixed; app now 0 AA issues on all six screens.
+
+⚠️ **Three detectors I wrote this session produced false positives that I only
+caught by verifying against real data** (gradient-alpha in the a11y checker,
+entity-typing in the difficulty sweep, aggregate tables in the staleness
+check). Each is documented in its own file. **Treat a new detector's first run
+as a hypothesis, not a result.**
+
+
 - 20/20 Premier League complete — every current PL club has a verified quiz
   and SEO page (61 live club pages, bank 5,834 questions).
 - Waves J + K: Bournemouth, Brentford, Burnley, Wolves, Coventry, Hull City.
