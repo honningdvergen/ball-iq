@@ -360,9 +360,19 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref
     : badge.emoji
       ? `<span class="badge-chip emoji">${badge.text}</span>`
       : `<span class="badge-chip"${chipStyle}>${esc(badge.text)}</span>`;
+  // The green CTA is the single most-clicked thing on a club page and Clarity
+  // recorded it as a DEAD CLICK in 12 of 15 engaged sessions (Sporting CP,
+  // Bayern ×3, Everton ×2, Liverpool, Beşiktaş, Rangers ×2, Chelsea, West Ham,
+  // Arsenal). Cause: it anchors to #taster, which on a phone is ALREADY on
+  // screen, so the browser scrolls nowhere and nothing visibly happens. People
+  // tap it first, get no feedback, and some tap it again.
+  //
+  // Fix: when the target is an in-page anchor, scroll it into view AND focus
+  // its first option, so there is always a visible response. Plain-anchor
+  // behaviour is preserved if JS is off, and real hrefs are untouched.
   const ctaRow = playHref
     ? `<div class="cta-row">
-<a class="btn-green" href="${playHref}">${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
+<a class="btn-green" href="${playHref}"${playHref.startsWith('#') ? ' data-scrollto="1"' : ''}>${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
 ${mini ? storeBadgesMini() : storeBadges()}
 </div>`
     : '';
@@ -672,10 +682,19 @@ const PLAYER_COVERS = (n) => [
   ['Iconic moments', 'The goals and games fans will never forget.'],
   ['Awards', "Ballon d'Ors, Golden Boots and individual honours."],
 ];
-function renderCovers(name, isLeague, isPlayer) {
+// These were plain <div>s, and Clarity session recordings show people TAPPING
+// them — one visitor answered correctly for six minutes, then hit
+// "Players & legends" twice, "Iconic moments" and "Records & stats" in four
+// seconds and left. That is the engaged cohort asking "what else have you got?"
+// and finding a wall, at the precise moment of peak intent. They are now links
+// to the full quiz: same reassurance for a scanner, a real destination for
+// anyone who taps.
+function renderCovers(name, isLeague, isPlayer, href) {
   const set = isPlayer ? PLAYER_COVERS(name) : isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name);
   const cards = set
-    .map(([t, d]) => `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`)
+    .map(([t, d]) => (href
+      ? `<a class="cov" href="${href}"><h3>${esc(t)}</h3><p>${esc(d)}</p></a>`
+      : `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`))
     .join('\n');
   return `<section class="sec">
 <h2>What the ${esc(name)} quiz covers</h2>
@@ -816,7 +835,12 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   }
   /* "What the <club> quiz covers" topic grid */
   .covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:6px}
-  .cov{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 16px}
+  /* .cov is now an <a> (people were tapping these as divs). display:block +
+     colour reset stop it rendering as an underlined default-blue link; the
+     hover/focus state gives it the affordance it always lacked. */
+  .cov{display:block;color:inherit;text-decoration:none;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 16px;transition:border-color .15s,background .15s,transform .15s}
+  a.cov:hover{border-color:var(--grn);background:var(--card2);transform:translateY(-2px)}
+  a.cov:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
   .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
   .cov p{font-size:13.5px;color:var(--tx3);line-height:1.5;margin:0}
   .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
@@ -925,8 +949,14 @@ ${TASTER_CSS}
 </head>`;
 }
 
+// Guarantees the hero CTA produces a visible response. See the dead-click note
+// on ctaRow: anchoring to an element already in view is a no-op, so we scroll
+// it in AND focus its first option. Lives in the footer so every page gets it.
+const CTA_JS = `(function(){var a=document.querySelector('a[data-scrollto]');if(!a)return;a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});var o=t.querySelector('.to');if(o)setTimeout(function(){o.focus({preventScroll:true})},420)})})();`;
+
 function footer() {
-  return `<footer class="foot"><div class="foot-in">
+  return `<script>${CTA_JS}</script>
+<footer class="foot"><div class="foot-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="26" height="26" />Ball&nbsp;<b>IQ</b></a>
 <div class="foot-links">
 <a href="${SITE.base}/quiz/premier-league/">Premier League quiz</a>
@@ -1056,7 +1086,7 @@ ${heroTwoCol({
     statLine: `Free · ${all.length}+ ${catCfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, catCfg.name, deepPlay))}
-${renderCovers(catCfg.name, true)}
+${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
 <section class="sec narrow">
 <h2>${esc(catCfg.name)} sample questions &amp; answers</h2>
@@ -1163,7 +1193,7 @@ ${heroTwoCol({
 ${renderQA(sample)}
 </section>
 ${adSlot('afterQA')}
-${renderCovers(cfg.name, false)}
+${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
 ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -1251,7 +1281,7 @@ ${heroTwoCol({
     statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
-${renderCovers(cfg.name, false, true)}
+${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
@@ -1436,16 +1466,25 @@ ${style}
 <p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · from the Ball IQ football team</p>
 ${cfg.intro.map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
 </section>
+${/* The taster sits ABOVE the table. It was below it first, and the viewport
+      harness caught that on /lists/ballon-dor-winners/ (70+ rows) it landed
+      5,088px past the fold — unreachable on a page whose average scroll is 14%.
+      A taster nobody can see is not a fix.
+
+      The trade-off is real: someone searching "Ballon d'Or winners" wants the
+      table. So this stays deliberately small — one line and five questions —
+      and the full table follows immediately below, still the first <h2>-level
+      block of substance. ctaName is not used in the heading: it is phrased for
+      "…quizzes about the Bundesliga" and carries its own article, which read as
+      "Know your the Bundesliga". */ ''}
+${taster.length ? `<section class="sec narrow">
+<h2>Think you know this? Five questions</h2>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. The full list is right below.</p>
+${renderQA(taster)}
+</section>` : ''}
 <section class="sec narrow">
 ${table}
 </section>
-${taster.length ? `<section class="sec narrow">
-${/* ctaName is phrased for "…quizzes about the Bundesliga", so it already
-      carries its article and reads as "Know your the Bundesliga" here. */ ''}
-<h2>Think you know this? Five questions</h2>
-<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Five questions, tap to answer. No sign-up.</p>
-${renderQA(taster)}
-</section>` : ''}
 ${adSlot('afterQA')}
 ${appCtaBand(cfg.ctaName || 'football')}
 <section class="sec">
@@ -1618,7 +1657,7 @@ ${heroTwoCol({
     statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#taster',
   }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
-${renderCovers(cfg.name, false, true)}
+${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
