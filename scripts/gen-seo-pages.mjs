@@ -1909,6 +1909,17 @@ ${footer()}`;
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;
+  // Footle is our most-played mode and carried only a BreadcrumbList — the
+  // thinnest markup of any page type, on the page most likely to be searched
+  // for by name ("football wordle").
+  //
+  // Not expecting a Google rich result from this: SoftwareApplication results
+  // need an aggregateRating or offers to render, and we will not invent a
+  // rating we have not earned. The reason to ship it is machine comprehension
+  // by AI answer engines, which is a channel we now have EVIDENCE for —
+  // chatgpt.com referred a real session on 2026-07-28, the first return on the
+  // llms.txt / lists bet. A named Game entity with a genre, a free-to-play
+  // flag and a publisher is what those engines read.
   const ld = jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -1918,6 +1929,30 @@ function buildFootlePage(cfg) {
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
           { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
         ],
+      },
+      {
+        '@type': 'Game',
+        name: 'Footle',
+        alternateName: ['Football Wordle', 'Soccer Wordle'],
+        url: canonical,
+        description: cfg.description,
+        genre: ['Puzzle', 'Word game', 'Sports trivia'],
+        gamePlatform: ['Web browser', 'iOS', 'Android'],
+        numberOfPlayers: { '@type': 'QuantitativeValue', value: 1 },
+        isAccessibleForFree: true,
+        inLanguage: 'en',
+        playMode: 'SinglePlayer',
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+      },
+      {
+        '@type': 'WebApplication',
+        name: 'Footle — the daily football word game',
+        url: canonical,
+        applicationCategory: 'GameApplication',
+        operatingSystem: 'Any',
+        browserRequirements: 'Requires JavaScript',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
     ],
   });
