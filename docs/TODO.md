@@ -8,18 +8,64 @@ Claude: update this file whenever something lands, and re-read it when asked
 
 ---
 
-## ⏸️ WAITING ON ALEX — start here next session
+## 🔴🔴 THE WEEK'S WORK — CONVERSION (from real Clarity data, 2026-07-28)
 
-Nothing below was pushed. `main` is 6 commits ahead of origin; every change
-is local, reversible, and build-green.
+**Full evidence: [CLARITY-FINDINGS.md](CLARITY-FINDINGS.md). Read it first.**
 
-1. **Push to prod?** 6 commits: 89 bank corrections, 9 re-forged hints, the
-   MP reveal (inert), 2 doc updates. One word and they deploy.
-2. **89 held substitutions** — the one real editorial call. See the audit
-   section below.
-3. **Apply `v1_3_mp_reveal_picks.sql`** to light up the MP reveal.
-4. `VAPID_KEYS` still holds the truncated value — web push stays blocked.
-5. Play: name collision, then production access.
+**111 sessions → 6 played → 2 signed up. A 5.4% play rate.**
+1.05 pages/session. 97.3% new / 2.7% returning. And **0 JavaScript errors**,
+performance 83/100, every Core Web Vital green.
+
+**Nothing is broken. 94.6% of visitors just never press play.** That reframes
+the whole backlog: this is conversion, not defects.
+
+- [ ] **1. Fix the 5.4% play rate.** 60 Google visitors/day land and leave.
+      Worth more than everything else on this list combined.
+- [ ] **2. Dead clicks — 25% of sessions.** `Next →` = 176 (149 in /play).
+      Leading hypothesis: **answering expands the card ~115px**, so the next
+      tap lands where the old layout was. CLS 0.017 does NOT disprove this —
+      that metric only measures LOAD shift, not interaction shift.
+      ⚠️ **Untested and important:** at mobile width, does a double-tap on
+      `Next →` land on the NEXT question's option D? If yes that is a
+      **scoring bug**, not cosmetic.
+      Already ruled out (don't redo): timer auto-advance (timer freezes),
+      dead Classic card, dead taster options, fault in `doAdvance`.
+- [ ] **3. Retention: 2.7% returning.** No loop fires. Web push still blocked
+      on `VAPID_KEYS`.
+- [ ] **4. ~10% of sessions are in-app webviews** (FacebookApp 9%,
+      InstagramApp 0.9%) where install/share misbehave.
+- [ ] **5. Design signals:** users tap explanations, question text and
+      already-answered (disabled) options. They expect the card to advance on
+      tap. A `disabled` button is a guaranteed dead click.
+
+⚠️ **~66% of traffic is mobile** (MobileSafari 35% + ChromeMobile 31.5%).
+Test at 390×844, not desktop — and VERIFY the viewport actually changed before
+trusting a result; `resize_window` silently no-opped once in this session.
+
+⚠️ **A failed synthetic click looks exactly like a dead button.** A `ref`-based
+click reported success but did not dispatch; the coordinate click worked. Two
+false "dead button" findings came from this. Always confirm with a second
+method before declaring something broken.
+
+---
+
+## ⏸️ WAITING ON ALEX
+
+1. **89 held substitutions** — the one real editorial call. Self-answering
+   questions can only be REPLACED, so applying them means an agent authoring
+   ~1.5% of the bank. `.audit/held-substitutions.json`.
+2. **19 medium-confidence + 3 no-clean-fix verdicts** — `.audit/needs-alex.json`.
+3. `VAPID_KEYS` still holds the truncated value — web push stays blocked.
+4. **App Store screenshots** — predate the current home grid.
+5. **Android emulator**: SDK tools exist but there is NO AVD and no system
+   image (~1–2 GB download), and `bundletool` is absent so an AAB can't be
+   installed directly. Claude's simulator panel is iOS-only. Best signal is
+   installing from Play on a real Android device.
+
+ℹ️ **AdSense "ads.txt: Ikke funnet" is a FALSE ALARM** (checked 2026-07-28):
+`/ads.txt` returns 200 `text/plain` with the correct `pub-7467890219483381`,
+5/5 fetches, matching index.html. It's Google's crawl status lagging while the
+site sits in "Klargjøres". Only worth chasing if it persists past ~48h.
 
 ---
 
@@ -56,8 +102,21 @@ is local, reversible, and build-green.
       cutting build 7 first; Alex chose to ship for the platform launch.
       **So 1.3.4 / 1.4.0 must carry the corrections to BOTH stores** — iOS
       1.3.3 is live without them too.
-- [ ] **ALEX** — once live: wire the Play link into the site/CTAs, and the
-      Reddit club-sub push unblocks (it was gated on Play being clickable).
+- [x] ✅ **LIVE ON GOOGLE PLAY 2026-07-27** — review took ~15 minutes, not the
+      7 days Google quotes. Production track "Aktiv", 177 countries.
+      https://play.google.com/store/apps/details?id=app.balliq
+- [x] **Play link wired across every surface** (`b4db171`) — BiqNav, marketing
+      home, in-app banner, ~161 SEO pages, index.html + schema.org. Verified
+      164/164 generated pages have an Android path, 0 say "coming soon".
+      **NEW: `/get`** (api/get.js) redirects by platform — iOS→App Store,
+      Android→Play, desktop→web app. Static pages can't sniff the platform, so
+      any single "Get the app" CTA used to dead-end half its visitors.
+      **Use `balliq.app/get` for bios, Reddit and socials.**
+      Biggest fix: `FootleGetAppCTA` was gated on `IS_IOS_WEB`, so Android
+      users finishing Footle on web — the exact social-funnel moment — saw
+      NOTHING. Now platform-aware.
+- [ ] **The Reddit club-sub push is now UNBLOCKED** (it was gated on Play
+      being clickable). Both stores are live.
 
 ## 🔴 NOW — App Store
 
@@ -101,15 +160,18 @@ From the PrimeTestLab QA report #4470 — every one of these is an activation le
       up mid-question and spoil the tension.
 - [x] **Show what each opponent answered at reveal** (`af7b7fc`) — BUILT,
       LANDS INERT. Opponent avatars appear on the option they picked.
-- [ ] ⚠️ **ALEX — apply the migration to light it up:**
-      `supabase/migrations/v1_3_mp_reveal_picks.sql`. Until then the RPC
-      returns no `picks` and the UI renders exactly as before, so there is
-      no half-state. **This was never a UI job** — room_players stores
-      score/streak/answered_question (an INDEX), never the choice, so the
-      data did not exist. Picks go in a grant-less `room_answers` table
-      disclosed by the already-gated `reveal_question` RPC, because a
-      column on room_players would let a modified client poll opponents'
-      picks BEFORE answering.
+- [ ] ⚠️ **Migration written but NOT YET APPLIED:**
+      `supabase/migrations/v1_3_mp_reveal_picks.sql`. Until it runs, the RPC
+      returns no `picks` and the UI renders exactly as before — no half-state.
+      (An apply attempt on 2026-07-27 failed on a transient tool error, not a
+      SQL problem. Prod function bodies were byte-verified against the
+      snapshot first — 3588/3588 and 2314/2314 — so the verbatim copies in the
+      migration are safe to re-run.)
+      **This was never a UI job** — room_players stores score/streak/
+      answered_question (an INDEX), never the choice, so the data did not
+      exist. Picks go in a grant-less `room_answers` table disclosed by the
+      already-gated `reveal_question` RPC, because a column on room_players
+      would let a modified client poll opponents' picks BEFORE answering.
       Also fixed en route: `reveal_question` was skipped whenever
       `question.correct` was embedded — i.e. in every room today — so that
       RPC never actually fired in prod.
