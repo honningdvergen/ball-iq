@@ -374,3 +374,24 @@ correct — people play on trains.
   Saka 28, Vinícius 27, Foden 24) in the session scratchpad as `p-*.json`.
   Verify independently before integrating, as with Wave K. Content, so it
   should NOT gate the build.
+
+### Also for tomorrow (Alex, 2026-07-29 ~01:10)
+
+**Play Store build too.** Same web bundle → `npx cap sync android` → prune →
+**bump `versionCode`** (Play rejects a re-upload of a code already on file) →
+`./android/gradlew -p android bundleRelease`. Needs nvm node + JBR java on
+PATH; see the android-signing memory for the exact exports.
+
+**Store screenshots from the simulator — YES, and no logins needed.**
+The right way is to make the state REAL rather than faked: set a display
+name, actually play a Footle and a Daily 7 so the streak/rating/stats are
+genuine, and use the existing App Review demo accounts (balliqdev1 /
+balliqdev2) for anything needing a signed-in user. A second booted simulator
+signed in as balliqdev2 gives a genuine 2-device multiplayer shot.
+
+⚠️ Do NOT composite or fabricate UI — both stores prohibit screenshots that
+misrepresent the app, and a faked opponent/leaderboard is exactly that. Every
+shot must be the app really doing the thing. Seeding real local state is not
+faking; drawing a match that never happened is.
+
+Supersedes/absorbs task #37 (refresh App Store screenshots with grid cards).
