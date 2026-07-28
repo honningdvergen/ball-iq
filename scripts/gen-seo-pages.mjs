@@ -860,7 +860,24 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .foot-links a:hover{color:#fff;text-decoration:none}
   .foot-copy{color:var(--tx4);font-size:13px;margin-top:4px}
   .foot-disc{color:#5f6478;font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
-  @media(max-width:420px){.nav-in{padding:10px 14px}.nav-right{gap:10px}.nav-link{font-size:13px}.nav-cta{padding:8px 13px;font-size:12.5px}.brand{font-size:16px}.brand img{width:24px;height:24px}}
+  /* PHONE NAV. At 375px the old rule only shrank type, so five items still
+     fought over ~347px of usable width: the brand collided with "All quizzes"
+     and BOTH the link and the CTA wrapped onto two lines. It was the first
+     thing a visitor saw and it looked broken.
+     Below 560px the three text links are hidden — they are duplicated in the
+     footer of every page and remain in the DOM, so internal linking and
+     crawlability are unaffected — leaving a clean brand + one green CTA.
+     nowrap on both is the actual guard against the two-line wrap. */
+  .nav-cta{white-space:nowrap}
+  .brand{white-space:nowrap;flex:0 0 auto}
+  @media(max-width:560px){
+    .nav-link{display:none}
+    .nav-in{padding:11px 14px}
+    .nav-right{gap:10px}
+    .nav-cta{padding:9px 15px;font-size:13.5px}
+    .brand{font-size:17px}
+    .brand img{width:25px;height:25px}
+  }
 ${TASTER_CSS}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
