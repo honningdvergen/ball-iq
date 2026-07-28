@@ -31,35 +31,29 @@ const TARGET_DIRS = [
   join(repoRoot, 'android', 'app', 'src', 'main', 'assets', 'public'),
 ]
 
-// Exact top-level entries (files or dirs) that are web-only.
-const PRUNE_EXACT = [
-  // SEO landing pages (static HTML dirs; the native shell is SPA-only)
-  'quiz',
-  'lists',
-  'football-wordle',
-  'about',
-  'contact',
-  // Search-engine / crawler surface
-  'robots.txt',
-  'sitemap.xml',
-  'llms.txt',
-  'ads.txt',
-  // Social-share image (og:/twitter: meta point at the absolute https URL)
-  'og-image.png',
-  // PWA-install icons — native uses the binary's own icons; manifest.json is
-  // never consumed by WKWebView/Android WebView. icon-192.png is NOT listed:
-  // Login.jsx renders it.
-  'icon-1024.png',
-  'icon-512.png',
-  'icon-maskable-512.png',
-]
-
-// Pattern-matched top-level entries.
-const PRUNE_PATTERNS = [
-  /^apple-splash-.*\.png$/, // Safari-PWA startup images (~2MB)
-  /^google[0-9a-f]+\.html$/, // Google site verification
-  /^[0-9a-f]{32}\.txt$/, // Bing/IndexNow verification
-]
+// ALLOWLIST, not a denylist. This used to enumerate what to prune ('quiz',
+// 'lists', 'football-wordle', …), which meant every NEW web-only content type
+// had to be remembered here or it silently shipped inside the app. It wasn't:
+// the /study data-study page rode into the binary untouched, and the next
+// content type would have too. Same failure the AdSense note above describes —
+// a rule that lives in someone's memory instead of in code.
+//
+// Now: anything at the top level that isn't on this list is web-only and goes.
+// Adding a native-reachable asset means adding it HERE, which is a change you
+// have to make deliberately rather than one you can forget to make.
+const KEEP_EXACT = new Set([
+  'assets',            // the app bundle itself
+  'index.html',
+  'cordova.js',
+  'cordova_plugins.js',
+  'marketing',         // filtered further below — only ball.png survives
+  'icon-192.png',      // Login.jsx renders it
+  'privacy.html',      // Login.jsx links /privacy.html (Terms & Privacy)
+  'manifest.json',     // tiny; referenced from index.html
+  'sw.js',
+  'version.json',
+  '.well-known',       // deep-link association files; harmless, tiny
+])
 
 // Inside marketing/: delete everything EXCEPT these (BiqNav.jsx nav logo).
 const MARKETING_KEEP = new Set(['ball.png'])
@@ -91,7 +85,7 @@ for (const dir of TARGET_DIRS) {
   let dirTotal = 0
   const entries = readdirSync(dir)
   for (const entry of entries) {
-    const hit = PRUNE_EXACT.includes(entry) || PRUNE_PATTERNS.some((re) => re.test(entry))
+    const hit = !KEEP_EXACT.has(entry)
     if (!hit) continue
     const bytes = prune(join(dir, entry))
     dirTotal += bytes
