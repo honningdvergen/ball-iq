@@ -1464,7 +1464,12 @@ ${style}
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/lists/">Football lists</a> › <span>${esc(cfg.h1)}</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 6px">${esc(cfg.h1)}</h1>
 <p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · from the Ball IQ football team</p>
-${cfg.intro.map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
+${/* Only the FIRST intro paragraph sits above the taster. The full intro ran
+      ~990px, which pushed the taster to 15.1% of the page against a ~14%
+      average scroll — technically reachable, practically not. The remaining
+      paragraphs move below the table (see introRest), so no SEO prose is lost
+      and the reader still gets oriented before the quiz. */ ''}
+${cfg.intro.slice(0, 1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
 </section>
 ${/* The taster sits ABOVE the table. It was below it first, and the viewport
       harness caught that on /lists/ballon-dor-winners/ (70+ rows) it landed
@@ -1485,6 +1490,9 @@ ${renderQA(taster)}
 <section class="sec narrow">
 ${table}
 </section>
+${cfg.intro.length > 1 ? `<section class="sec narrow">
+${cfg.intro.slice(1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
+</section>` : ''}
 ${adSlot('afterQA')}
 ${appCtaBand(cfg.ctaName || 'football')}
 <section class="sec">
