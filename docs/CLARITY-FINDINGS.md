@@ -374,3 +374,39 @@ Page 12,418px = 14.7 screens. Taster 10.4%→46.8% · **app CTA 54.1%** ·
 tiles are at more than double the read depth. And since the 10-question taster
 alone spans a third of the page, users are abandoning the taster around Q3-4,
 not scrolling past it. Moving the CTA up alone will not fix this. See task #59.
+
+---
+
+## 🔁 RECONCILIATION — the 21-25% scroll figure is a MEAN, and the mean describes nobody
+
+Two entries above conflict, and the older one is right. Correcting mine.
+
+**What I wrote:** club-page scroll "stops at 21-25%", so the app CTA (54.1%) and
+the related-quiz tiles (57.2%) are "never rendered into view."
+
+**Why that is overstated:** the "bimodal" entry already established that scroll
+depth on this site is two populations, not one — and it measured
+`/quiz/hull-city/` at **96% scroll, 368s active** and `/quiz/sporting-cp/` at
+81.5%. My 21-25% came from rangers/man-utd **means**. The same entry warns in
+its own words that the mean "described nobody." I quoted a mean and drew a
+population-wide conclusion from it. That is the exact error it was written to
+prevent.
+
+**What survives:**
+- The *bouncer* half never reaches the CTA or tiles. True.
+- The *engaged* cohort does reach them — **and still converts to nothing.**
+  That is the older, harder finding and it is unaffected by anything I measured.
+- Section positions are facts, not means: CTA 54.1%, tiles 57.2%, taster
+  10.4-46.8%, page 12,418px. Those stand.
+
+**What this does to task #59:** "move the CTA above the 25% line" targets the
+bouncers — who by definition are not engaged enough to act on a CTA. The older
+entry explicitly kills "nobody scrolls, so move everything above the fold" as a
+half-truth for exactly this reason. The live question is still its point 3:
+**two populations need two different treatments**, and today neither gets one.
+Do not treat #59 as a settled reflow. It is a design decision, and the bouncer
+fix and the engaged-cohort fix are not the same change.
+
+⚠️ **Standing rule for this file: never quote a Clarity mean as a population
+fact.** Scroll depth and active time are both bimodal here. Split the cohorts or
+say nothing.
