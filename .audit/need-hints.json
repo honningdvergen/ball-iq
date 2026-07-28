@@ -1,0 +1,158 @@
+[
+ {
+  "id": "q_83113a",
+  "q": "Who won the World Cup Golden Boot in 2018 with 6 goals?",
+  "ans": "Kane",
+  "truth": "Harry Kane won the 2018 World Cup Golden Boot with 6 goals; Griezmann, Mbappé and Lukaku all finished on 4 (BBC, ESPN, CBS Sports)."
+ },
+ {
+  "id": "q_2b1d9e",
+  "q": "Which national side lost the 1954 World Cup final as overwhelming favourites, having gone more than four years unbeaten?",
+  "ans": "Hungary",
+  "truth": "Hungary's 'Golden Team' / Mighty Magyars, unbeaten for over four years, lost the 1954 World Cup final 3-2 to West Germany in Bern (FIFA, ESPN, Al Jazeera)."
+ },
+ {
+  "id": "q_63e291",
+  "q": "Karl-Heinz Rummenigge's Bayern Munich lost the 1982 European Cup final 1-0 to which English club?",
+  "ans": "Aston Villa",
+  "truth": "Aston Villa beat Bayern Munich 1-0 in the 1982 European Cup final (De Kuip, Rotterdam, 26 May 1982; Peter Withe 67'); Rummenigge started up front for Bayern but the captain's armband was worn by Paul Breitner, with Dennis Mortimer captaining Villa — Wikipedia's line-up marks Breitner (c), and Bayern/Bundesliga club histories describe Breitner as the appointed captain of that side."
+ },
+ {
+  "id": "q_2bf68d",
+  "q": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 final-day draw away to Barcelona — which Atlético player headed the second-half equaliser?",
+  "ans": "Diego Godín",
+  "truth": "Atlético Madrid clinched the 2013-14 La Liga title with a 1-1 draw at the Camp Nou on 17 May 2014, Diego Godín heading the equaliser in the 49th minute from a Gabi corner after Alexis Sánchez had put Barcelona ahead (Wikipedia 'Barcelona 1-1 Atlético Madrid (May 2014)', UEFA.com, LaLiga.com)."
+ },
+ {
+  "id": "q_7e6e97",
+  "q": "Bayer Leverkusen were founded in 1904 as the works team of chemical and pharmaceutical giant Bayer AG. Which other Bundesliga club was founded as a company works team and holds the same legacy exemption from the 50+1 ownership rule?",
+  "ans": "VfL Wolfsburg",
+  "truth": "Bayer 04 Leverkusen was founded on 1 July 1904 as a works club for employees of the chemical and pharmaceutical company Bayer AG, which still wholly owns it and holds a legacy exemption from the Bundesliga's 50+1 rule — the only other such corporate-works exemption being VfL Wolfsburg, owned by Volkswagen since 1945 (CityAM, Pace IP/Sports Law Forum, aktebundesliga 50+1 explainer)."
+ },
+ {
+  "id": "q_948b2e",
+  "q": "Roma's 2021-22 UEFA Europa Conference League triumph under José Mourinho was the club's first European trophy since 1961 — which side did they beat 1-0 in the final in Tirana?",
+  "ans": "Feyenoord",
+  "truth": "Roma beat Feyenoord 1-0 in the inaugural UEFA Europa Conference League final in Tirana on 25 May 2022 (Zaniolo, 32'), their first European trophy since the 1960-61 Inter-Cities Fairs Cup — a gap of 61 years (Wikipedia '2022 UEFA Europa Conference League final', UEFA.com)."
+ },
+ {
+  "id": "q_5c41dc",
+  "q": "Italy failed to qualify for both the 2018 and 2022 World Cups. Which nation eliminated them in the November 2017 European qualifying play-off for the 2018 tournament?",
+  "ans": "Sweden",
+  "truth": "Italy's last World Cup appearance was 2014; they missed 2018 after losing the November 2017 European play-off to Sweden 1-0 on aggregate (Johansson 61' in Stockholm, 0-0 in Milan) and missed 2022 after losing to North Macedonia — 2014 to 2026 is 12 years (ESPN match reports, Al Jazeera)."
+ },
+ {
+  "id": "q_fdf6e7",
+  "q": "Which player scored the most goals in a single European Championship finals tournament?",
+  "ans": "Michel Platini",
+  "truth": "Michel Platini's 9 goals at Euro 1984 is the single-tournament record (Guinness World Records, UEFA), but the other embedded tallies are false: Van Basten scored 5 at Euro 1988 (UEFA's own 'Van Basten's five EURO 1988 goals' video), Cristiano Ronaldo scored 2 at Euro 2004, and Torres scored 2 at Euro 2008 (Sweden group game + the final winner)."
+ },
+ {
+  "id": "q_5c36e0",
+  "q": "Switzerland went the entire 2006 World Cup without conceding a single goal, yet still went out in the round of 16 — which team knocked them out on penalties?",
+  "ans": "Ukraine",
+  "truth": "Switzerland exited the 2006 World Cup in the round of 16, losing 3-0 on penalties to Ukraine after a 0-0 draw, and became the first team ever to be eliminated from a World Cup without conceding a goal (shoot-out kicks are not counted as goals)."
+ },
+ {
+  "id": "q_7f18f9",
+  "q": "Jesse Marsch's appointment as Canada's head coach in May 2024 marked a first in what sense?",
+  "ans": "He was the first American to coach Canada",
+  "truth": "Jesse Marsch was appointed Canada men's head coach in May 2024, and Wikipedia's list of Canada head coaches (Petrie, Dinsdale, Pike, Krautzun, Waiters, Lenarduzzi, Twamley, Osieck, Miller, Yallop, Hart, Floro, Findlay, Zambrano, Herdman, Biello) contains no prior American, so the 'first American' answer is correct."
+ },
+ {
+  "id": "q_c2d9be",
+  "q": "How many direct places does the AFC (Asia) receive at the 2026 World Cup?",
+  "ans": "8",
+  "truth": "FIFA's ratified 2026 allocation gives the AFC 8 direct places (plus one inter-confederation playoff berth); CAF 9, UEFA 16, CONMEBOL 6, CONCACAF 6 incl. hosts, OFC 1 (FIFA media release)."
+ },
+ {
+  "id": "q_e8d2ff",
+  "q": "Who scored both of France's goals in their 2-1 injury-time comeback against England at Euro 2004?",
+  "ans": "Zinedine Zidane",
+  "truth": "France beat England 2-1 in their Euro 2004 group opener on 13 June 2004: Lampard 38', then Zidane with a 90+1' free kick and a 90+3' penalty after David James felled Thierry Henry (UEFA.com, Wikipedia Euro 2004 Group B)."
+ },
+ {
+  "id": "q_e409a4",
+  "q": "Which club did Jude Bellingham join from Borussia Dortmund in 2023, winning the Champions League and the domestic league title in his first season there?",
+  "ans": "Real Madrid",
+  "truth": "Jude Bellingham joined Real Madrid from Borussia Dortmund in 2023 and won the 2023-24 Champions League and La Liga in his debut season, also taking La Liga Player of the Season (Wikipedia)."
+ },
+ {
+  "id": "q_81306e",
+  "q": "Real Madrid beat Atlético Madrid in the 2016 Champions League final after a 1-1 draw — what was the penalty shootout score?",
+  "ans": "5-3",
+  "truth": "The 2016 Champions League final in Milan finished 1-1 after extra time (Ramos 15', Carrasco 79') and Real Madrid beat Atlético Madrid 5-3 on penalties, Juanfran hitting the post before Ronaldo converted the winner (Wikipedia, 2016 UEFA Champions League final)."
+ },
+ {
+  "id": "q_3fb913",
+  "q": "Which country hosted the final of the 2002 World Cup, the first tournament staged in Asia?",
+  "ans": "Japan",
+  "truth": "Japan co-hosted the 2002 World Cup with South Korea and staged the final (Brazil 2-0 Germany, 30 June 2002, International Stadium Yokohama), while South Korea hosted the Seoul semi-final — the answer key is correct, but the stem names South Korea and says \"Asian\", which alone eliminates all three distractors."
+ },
+ {
+  "id": "q_6a444c",
+  "q": "Which Italian club was renamed 'Ambrosiana' during the Fascist era before reverting to its original name after World War II?",
+  "ans": "Internazionale",
+  "truth": "Internazionale was renamed Società Sportiva Ambrosiana in 1928, became Associazione Sportiva Ambrosiana-Inter in 1931, and reverted to Internazionale after World War II — the key is correct, but the stem's clue literally contains the answer."
+ },
+ {
+  "id": "q_612eee",
+  "q": "Real Madrid needed a stoppage-time Sergio Ramos header to force extra time in the 2014 UCL final — who had put Atletico 1-0 up?",
+  "ans": "Diego Godin",
+  "truth": "Diego Godín headed Atlético in front in the 36th minute of the 2014 UCL final and Sergio Ramos equalised in the 93rd, so it was 1-0 Atlético before the header — correct key, but the word \"equaliser\" makes the other three options logically impossible."
+ },
+ {
+  "id": "q_7bb619",
+  "q": "Athletic Club of Bilbao play their home matches at which stadium?",
+  "ans": "San Mamés",
+  "truth": "Athletic Club are based in Bilbao and play at San Mamés (en.wikipedia.org/wiki/Athletic_Bilbao), so the city asked for is literally the second word of the club name given in the stem."
+ },
+ {
+  "id": "q_094b75",
+  "q": "Sevilla FC play their home matches at which stadium?",
+  "ans": "Ramón Sánchez-Pizjuán",
+  "truth": "Sevilla FC play in Seville, Andalusia, at the Ramón Sánchez-Pizjuán (en.wikipedia.org/wiki/Sevilla_FC) — and 'Sevilla' is simply the Spanish spelling of the city named in the option."
+ },
+ {
+  "id": "q_539dae",
+  "q": "FC Schalke 04 beat Inter Milan on penalties in 1997 to win which European competition?",
+  "ans": "The UEFA Cup",
+  "truth": "FC Schalke 04 was founded on 4 May 1904 and the '04' in the name does denote that founding year (en.wikipedia.org/wiki/FC_Schalke_04), so the answer is printed in the club's name inside the stem."
+ },
+ {
+  "id": "q_8182bb",
+  "q": "Which Belgian club reached the 1978 European Cup final, losing 1-0 to Liverpool at Wembley?",
+  "ans": "Club Brugge",
+  "truth": "Club Brugge lost the 1978 European Cup final 1-0 to Liverpool at Wembley and were indeed the first Belgian side to reach a European Cup final (en.wikipedia.org/wiki/1978_European_Cup_final) — but Benfica (1961, 1962), Celtic (1967) and Feyenoord (1970) had all already reached and won European Cup finals, so Portugal, Scotland and the Netherlands are impossible answers."
+ },
+ {
+  "id": "q_6ba0a4",
+  "q": "After their 2016 relegation, in which year did Aston Villa win the Championship play-off final to return to the Premier League?",
+  "ans": "2019",
+  "truth": "Aston Villa finished 20th with 17 points and were relegated from the Premier League in 2015-16, dropping into the Championship — which is by definition the division immediately below the Premier League, so the stem entails its own answer."
+ },
+ {
+  "id": "q_506e85",
+  "q": "Jock Stein's Celtic won nine consecutive Scottish league titles. In which year did that run end?",
+  "ans": "1974",
+  "truth": "Jock Stein's Celtic won nine consecutive Scottish league titles, from 1965-66 through 1973-74, equalling the then world record held by MTK Budapest and CSKA Sofia (Wikipedia, Jock Stein)."
+ },
+ {
+  "id": "q_51b4fb",
+  "q": "Which stadium is Hamburger SV's home ground?",
+  "ans": "Volksparkstadion",
+  "truth": "Hamburger SV are based in Hamburg and play at the Volksparkstadion; Weserstadion is Werder Bremen's, Signal Iduna Park is Borussia Dortmund's and the RheinEnergieStadion is 1. FC Köln's (en.wikipedia.org/wiki/Volksparkstadion)."
+ },
+ {
+  "id": "q_17bbf4",
+  "q": "Which German city hosted East Germany's shock 1–0 win over West Germany at the 1974 World Cup?",
+  "ans": "Hamburg",
+  "truth": "West Germany hosted exactly one men's World Cup, 1974, and Hamburg's Volksparkstadion staged three 1974 group matches — including East Germany's 1–0 win over West Germany on 22 June 1974 (Sparwasser, 77'); Hamburg also hosted five matches at the 2006 World Cup, including a quarter-final (en.wikipedia.org/wiki/1974_FIFA_World_Cup, en.wikipedia.org/wiki/Volksparkstadion)."
+ },
+ {
+  "id": "q_719c2a",
+  "q": "Which midfielder in Italy's 1982 World Cup-winning squad spent his entire Serie A career at Fiorentina?",
+  "ans": "Giancarlo Antognoni",
+  "truth": "Antognoni was in Italy's 1982 World Cup-winning squad (six appearances, missed the final through a semi-final injury) and was a Fiorentina one-club man in Serie A, 1972–1987, 341 league games (en.wikipedia.org/wiki/Giancarlo_Antognoni)."
+ }
+]
