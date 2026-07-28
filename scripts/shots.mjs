@@ -74,13 +74,25 @@ const AUDIT = () => {
   }
 
   // 4. Tap targets under Apple's 44pt / Android's 48dp minimum.
+  //
+  // This is a NOTE, not an issue. Two corrections after measuring properly:
+  //   - It is not a WCAG AA failure. 2.5.5 Target Size (44x44) is Level AAA;
+  //     under 2.1 AA there is no minimum target size at all. This is platform
+  //     ergonomics guidance, so it must not fail the run.
+  //   - 2.5.5 exempts links inline in a sentence. Counting every footer and
+  //     body link is what produced the meaningless "13-20 per page" number.
+  // scripts/a11y.mjs is the conformance check; this stays a smell test.
   const small = [...document.querySelectorAll('a,button')].filter(el => {
     const r = el.getBoundingClientRect();
-    return r.width > 0 && r.height > 0 && r.height < 40 && el.offsetParent !== null;
+    if (!r.width || !r.height || el.offsetParent === null) return false;
+    const p = el.parentElement;
+    const inline = el.tagName === 'A' && p && /^(P|LI|SPAN|SMALL|EM|STRONG)$/.test(p.tagName)
+      && getComputedStyle(el).display.startsWith('inline');
+    return !inline && r.height < 40;
   });
-  if (small.length) issues.push(`${small.length} tap target(s) under 40px tall`);
+  const notes = small.length ? [`${small.length} standalone tap target(s) under 40px tall (ergonomics, not WCAG AA)`] : [];
 
-  return { issues, docHeight: document.body.scrollHeight };
+  return { issues, notes, docHeight: document.body.scrollHeight };
 };
 
 const run = async () => {
@@ -99,7 +111,7 @@ const run = async () => {
     for (const p of PAGES) {
       const page = await ctx.newPage();
       const file = `${p.name}-${dev.name}.png`;
-      let audit = { issues: ['PAGE FAILED TO LOAD'], docHeight: 0 };
+      let audit = { issues: ['PAGE FAILED TO LOAD'], notes: [], docHeight: 0 };
       try {
         await page.goto(BASE + p.url, { waitUntil: 'networkidle', timeout: 30000 });
         await page.waitForTimeout(400);
@@ -122,7 +134,8 @@ const run = async () => {
   for (const r of results) {
     const tag = r.issues.length ? '⚠️ ' : '✅';
     if (r.issues.length) bad++;
-    console.log(`${tag} ${r.page.padEnd(8)} ${r.device.padEnd(8)} ${r.issues.join(' · ') || 'clean'}`);
+    const note = (r.notes || []).length ? `  · note: ${r.notes.join(' · ')}` : '';
+    console.log(`${tag} ${r.page.padEnd(8)} ${r.device.padEnd(8)} ${r.issues.join(' · ') || 'clean'}${note}`);
   }
   console.log(`\n${results.length - bad}/${results.length} clean.`);
 

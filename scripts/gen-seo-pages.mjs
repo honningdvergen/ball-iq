@@ -209,7 +209,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 
 // Club brand colours — mirror the app's CLUB_PACKS so the web badges read the
 // same as the in-app club list. Light shirts (Real Madrid white, Dortmund
-// yellow) get dark text via readableOn(); a hairline border keeps very dark
+// yellow) get dark text via badgeColors(); a hairline border keeps very dark
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
@@ -233,13 +233,43 @@ const CLUB_COLOR = {
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
   'sporting-cp': '#008056', 'saint-etienne': '#009E60',
 };
-const readableOn = (hex) => {
-  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? '#0A0A0A' : '#fff';
+// ── badge legibility (WCAG 1.4.3) ────────────────────────────────────────────
+// This used to pick white/black by YIQ brightness with a 0.6 threshold, which
+// is NOT perceptual contrast and got 11 of 61 clubs wrong. Saturated mid-blues
+// were the worst: Napoli #12A0D7 took white at 2.98:1 when black gives 6.63:1.
+// The badge text is 12px, so it needs the full 4.5:1.
+const srgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const relLum = ([r, g, b]) => {
+  const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 };
+const contrast = (a, b) => {
+  const [hi, lo] = [relLum(a), relLum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const toHex = (rgb) => '#' + rgb.map((c) => Math.round(c).toString(16).padStart(2, '0')).join('');
+
+const WHITE = [255, 255, 255], INK = [10, 10, 10];
+
+// Returns [background, foreground] that clears 4.5:1. Club colours are brand
+// data, so we keep the hue and move only lightness — and only for the handful
+// (Arsenal #EF0107, Sunderland #EB172B) whose mid-luminance red clears neither
+// white nor black at any text colour.
+function badgeColors(hex) {
+  let bg = srgb(hex);
+  const fg = contrast(bg, WHITE) >= contrast(bg, INK) ? WHITE : INK;
+  const target = fg === WHITE ? 0 : 255;   // push bg away from the text colour
+  for (let i = 0; i < 40 && contrast(bg, fg) < 4.5; i++) {
+    bg = bg.map((v) => v + (target - v) * 0.04);
+  }
+  return [toHex(bg), toHex(fg)];
+}
+
 const clubBadgeStyle = (slug) => {
   const c = CLUB_COLOR[slug];
-  return c ? `background:${c};color:${readableOn(c)};border:1px solid rgba(255,255,255,.16)` : '';
+  if (!c) return '';
+  const [bg, fg] = badgeColors(c);
+  return `background:${bg};color:${fg};border:1px solid rgba(255,255,255,.16)`;
 };
 
 // Badge for a related-quiz tile, keyed by slug.
@@ -276,7 +306,10 @@ function storeBadges() {
 // `active` marks the current section with the design's green underline
 // ('quizzes' | 'clubs' | 'records' | ''). NAV keeps every existing call site
 // working unchanged; the Clubs Directory passes 'clubs'.
-const navHtml = (active = '') => `<header class="nav"><div class="nav-in">
+// The skip link is WCAG 2.4.1 (Level A): four nav links plus a breadcrumb trail
+// sit before the content on every one of these ~180 pages. Visible on focus only.
+const navHtml = (active = '') => `<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
 <div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
 </div></header>`;
@@ -287,7 +320,7 @@ function crumbs(items) {
     .map((c, i) =>
       i === items.length - 1
         ? `<span>${esc(c.name)}</span>`
-        : `<a href="${c.url}">${esc(c.name)}</a><span class="sep">›</span>`,
+        : `<a href="${c.url}">${esc(c.name)}</a><span class="sep" aria-hidden="true">›</span>`,
     )
     .join('');
   return `<nav class="crumbs" aria-label="Breadcrumb">${trail}</nav>`;
@@ -317,11 +350,16 @@ function storeBadgesMini() {
 // Inner hero content (breadcrumb → stat), shared by the single-column heroSection
 // (Footle landing, listicles) and the two-column quiz hero (heroTwoCol).
 function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref, playLabel, mini }) {
+  let chipStyle = '';
+  if (badge && !badge.emoji && badge.color) {
+    const [bg, fg] = badgeColors(badge.color);
+    chipStyle = ` style="background:${bg};color:${fg};border:1px solid rgba(255,255,255,.16)"`;
+  }
   const chip = !badge
     ? ''
     : badge.emoji
       ? `<span class="badge-chip emoji">${badge.text}</span>`
-      : `<span class="badge-chip"${badge.color ? ` style="background:${badge.color};color:${readableOn(badge.color)};border:1px solid rgba(255,255,255,.16)"` : ''}>${esc(badge.text)}</span>`;
+      : `<span class="badge-chip"${chipStyle}>${esc(badge.text)}</span>`;
   const ctaRow = playHref
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}">${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
@@ -519,10 +557,10 @@ const TASTER_CSS = `  .taster{text-align:left}
   .taster .eyebrow{display:block;margin-bottom:8px}
   .taster h2{margin:8px 0 16px;text-align:left;font-size:clamp(21px,2.4vw,28px)}
   .tcard{max-width:none;margin:0;text-align:left;background:#0F1117;border:1px solid #242836;border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
-  .taster-note{margin:14px 0 0;font-size:13px;color:#6E7180}
+  .taster-note{margin:14px 0 0;font-size:13px;color:var(--tx4)}
   .tph{font-size:15px;font-weight:600;color:#9BA0B8;margin:0;line-height:1.5}
   .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .th .tq{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6E7180}
+  .th .tq{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4)}
   .th .ts{font-family:var(--mono);font-size:12px;font-weight:700;color:#8AE042;background:rgba(88,204,2,.1);border-radius:999px;padding:4px 11px}
   .tbar{height:6px;border-radius:999px;background:#08090E;overflow:hidden;margin-bottom:18px}
   .tbf{height:100%;background:#58CC02;border-radius:999px;transition:width .3s ease}
@@ -724,7 +762,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
 <style>
-  :root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#6E7180;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+  :root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:${PAGE_FG};line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -784,7 +822,9 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
   .crumbs a{color:var(--tx3)}
   .crumbs a:hover{color:#fff;text-decoration:none}
-  .crumbs .sep{color:var(--bd3);margin:0 7px}
+  .crumbs .sep{color:var(--tx4);margin:0 7px}
+  .skip{position:absolute;left:-9999px;top:0;z-index:200;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;border-radius:0 0 12px 0}
+  .skip:focus{left:0}
   .kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px}
   .badge-chip{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:32px;padding:0 10px;border-radius:10px;background:#1F2430;font-family:var(--mono);font-weight:800;font-size:13px;letter-spacing:.03em;color:#fff}
   .badge-chip.emoji{background:rgba(255,255,255,.04);font-size:22px;padding:0 8px}
@@ -859,7 +899,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .foot-links a{color:var(--tx3);font-size:14px}
   .foot-links a:hover{color:#fff;text-decoration:none}
   .foot-copy{color:var(--tx4);font-size:13px;margin-top:4px}
-  .foot-disc{color:#5f6478;font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
+  .foot-disc{color:var(--tx4);font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
   /* PHONE NAV. At 375px the old rule only shrank type, so five items still
      fought over ~347px of usable width: the brand collided with "All quizzes"
      and BOTH the link and the CTA wrapped onto two lines. It was the first
@@ -1001,7 +1041,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true, ogImage })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1102,7 +1142,7 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1196,7 +1236,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1320,7 +1360,7 @@ ${bodyRows}
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${style}
 <section class="sec narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/lists/">Football lists</a> › <span>${esc(cfg.h1)}</span></nav>
@@ -1392,7 +1432,7 @@ function buildListsHubPage(lists, clubPages, catPages) {
   const html = `${head({ title: 'Football Lists: Winners, Records & Top Scorers | Ball IQ', description: 'Complete, fact-checked football reference lists — every World Cup and Ballon d\'Or winner, league champions and top scorers, year by year. Free to browse.', canonical, ld, ads: true })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${style}
 <section class="sec narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football lists</span></nav>
@@ -1488,7 +1528,7 @@ function buildNationPage(cfg, catPages, nationPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroTwoCol({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1560,7 +1600,7 @@ function buildListiclePage(cfg, livePages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroSection({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1637,7 +1677,7 @@ function buildHubPage(livePages, clubPages, playerPages = []) {
   const html = `${head({ title: HUB.title, description: HUB.description, canonical, ld })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroSection({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1713,7 +1753,7 @@ function buildSimplePage(cfg) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroSection({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1766,7 +1806,7 @@ function buildFootlePage(cfg) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
 <body>
 ${NAV}
-<main>
+<main id="main">
 ${heroSection({
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -1927,22 +1967,24 @@ ${g.leagues.map((L) => `<a class="cd-rl" href="#lg-${cdSlug(L.league)}"><span>${
   // Design tokens verbatim from the handoff (computed-style extraction):
   // card #1A1D27 / border #2A2D3A / text #F0F1F5 / muted #9BA0B8 / deep-muted
   // #6E7180 / radius 12 / dot 8 / code JetBrains Mono 700 10px +.04em.
+  // NOTE: deep-muted ships as --tx4 #7E828C, not the handoff's #6E7180 — the
+  // latter is 4.09:1 on this canvas and fails WCAG AA. Same lift the app made.
   const style = `<style>
   .cd-h1{font-size:28px;font-weight:800;letter-spacing:-.02em;color:#fff;margin:10px 0 4px}
   .cd-sub{font-size:14px;font-weight:500;color:#9ba0b8;margin:0 0 22px}
   .cd-wrap{display:grid;grid-template-columns:212px 1fr;gap:26px;align-items:start}
   .cd-rail{position:sticky;top:76px}
-  .cd-rail-t{font:700 11px Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#6e7180;margin:0 0 10px}
+  .cd-rail-t{font:700 11px Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);margin:0 0 10px}
   .cd-rg{margin:0 0 14px}
   .cd-rc{font:700 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9ba0b8;margin:0 0 6px}
   .cd-rl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;color:#f0f1f5;font-size:13px;font-weight:600;text-decoration:none}
   .cd-rl:hover{color:var(--grn);text-decoration:none}
-  .cd-rn{color:#6e7180;font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+  .cd-rn{color:var(--tx4);font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
   .cd-note{font-size:11px;color:#3c3f4c;margin:6px 0 0;line-height:1.5}
   .cd-search{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#12141b;border:1px solid #2a2d3a;border-radius:14px;margin:0 0 16px}
-  .cd-search svg{flex:0 0 auto;color:#6e7180}
+  .cd-search svg{flex:0 0 auto;color:var(--tx4)}
   .cd-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;font:500 14px Inter,sans-serif;color:#fff}
-  .cd-search input::placeholder{color:#6e7180}
+  .cd-search input::placeholder{color:var(--tx4)}
   .cd-pop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 22px}
   .cd-pop-t{font:700 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9ba0b8;margin-right:2px}
   .cd-pill{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#1a1d27;border:1px solid #2a2d3a;border-radius:999px;text-decoration:none;font:600 12px Inter,sans-serif;color:#f0f1f5;white-space:nowrap}
@@ -1951,7 +1993,7 @@ ${g.leagues.map((L) => `<a class="cd-rl" href="#lg-${cdSlug(L.league)}"><span>${
   .cd-lh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
   .cd-lt{display:flex;align-items:baseline;gap:8px;font-size:16px;font-weight:800;letter-spacing:-.01em;color:#fff;margin:0}
   .cd-flag{font-size:15px}
-  .cd-cnt{font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:#6e7180;margin-left:2px}
+  .cd-cnt{font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx4);margin-left:2px}
   .cd-lp{font:700 12px Inter,sans-serif;color:var(--grn);white-space:nowrap;text-decoration:none}
   .cd-lp:hover{text-decoration:underline}
   .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px}
@@ -1994,7 +2036,7 @@ q.addEventListener('input',function(){
   })}
 <body>
 ${navHtml('clubs')}
-<main>
+<main id="main">
 ${style}
 <section class="sec">
 ${crumbs([{ name: 'Home', url: `${SITE.base}/` }, { name: 'Quizzes', url: `${SITE.base}/quiz/` }, { name: 'Clubs' }])}

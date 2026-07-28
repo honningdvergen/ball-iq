@@ -59,7 +59,11 @@ const STYLE = `
 .mkt-cta-app:hover { transform:translateY(-2px); border-color:#3A3D4A; }
 .mkt-cta-black { transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; }
 .mkt-cta-black:hover { transform:translateY(-2px); box-shadow:0 16px 34px -8px rgba(0,0,0,0.72); }
-.mkt-mode { transition:transform .18s, border-color .18s; }
+.mkt-skip { position:absolute; left:-9999px; top:0; z-index:200; padding:12px 20px; background:#58CC02; color:#06230C; font-weight:800; border-radius:0 0 12px 0; }
+.mkt-skip:focus { left:0; }
+/* Without this the anchor inherits the UA's default link blue, so any child
+   without an explicit colour renders bright blue on a dark card. */
+.mkt-mode { color:inherit; transition:transform .18s, border-color .18s; }
 .mkt-mode:hover { transform:translateY(-4px); border-color:#3A3D4A; }
 .mkt-opt { transition:transform .15s, border-color .15s, background .15s; }
 .mkt-opt:hover { transform:translateY(-1px); border-color:#3A3D4A; background:#161922; }
@@ -406,7 +410,7 @@ function QuizTaster() {
     <div>
       {head}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16 }}>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180', whiteSpace: 'nowrap' }}>Q {idx + 1} / {total}</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7E828C', whiteSpace: 'nowrap' }}>Q {idx + 1} / {total}</span>
         {/* nowrap + flex-shrink:0 — the pill was being squeezed and CLIPPED at
             the card's right edge on a 375px phone (caught in a Playwright
             screenshot of the live site, invisible at desktop width). */}
@@ -486,7 +490,7 @@ function PlayNow() {
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
-        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>100% free · no ads in the app · iOS &amp; Android</p>
+        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#7E828C' }}>100% free · no ads in the app · iOS &amp; Android</p>
       </div>
     </section>
   );
@@ -599,16 +603,37 @@ const CLUB_COLOR = {
   fiorentina: '#592C82', lazio: '#87D8F7', torino: '#8A1E12',
   'sporting-cp': '#008056', 'saint-etienne': '#009E60',
 };
-const readableOn = (hex) => {
-  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? '#0A0A0A' : '#fff';
+// Mirrors badgeColors() in scripts/gen-seo-pages.mjs — keep the two in step.
+// A YIQ brightness test used to pick the text colour here and got 11 of 61
+// clubs wrong (Napoli's blue took white at 2.98:1). The badge text is 12px, so
+// WCAG 1.4.3 wants 4.5:1; club colours are brand data, so only lightness moves.
+const srgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const relLum = ([r, g, b]) => {
+  const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 };
+const contrastRatio = (a, b) => {
+  const [hi, lo] = [relLum(a), relLum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const WHITE = [255, 255, 255], INK = [10, 10, 10];
+const toHex = (rgb) => '#' + rgb.map((c) => Math.round(c).toString(16).padStart(2, '0')).join('');
+
+function badgeColors(hex) {
+  let bg = srgb(hex);
+  const fg = contrastRatio(bg, WHITE) >= contrastRatio(bg, INK) ? WHITE : INK;
+  const target = fg === WHITE ? 0 : 255;
+  for (let i = 0; i < 40 && contrastRatio(bg, fg) < 4.5; i++) {
+    bg = bg.map((v) => v + (target - v) * 0.04);
+  }
+  return { background: toHex(bg), color: toHex(fg) };
+}
 
 function QuizTile({ href, badge, emoji, label, color }) {
   const badgeStyle = emoji
     ? { background: 'transparent', fontSize: 22 }
     : color
-      ? { background: color, color: readableOn(color), border: '1px solid rgba(255,255,255,0.16)' }
+      ? { ...badgeColors(color), border: '1px solid rgba(255,255,255,0.16)' }
       : undefined;
   return (
     <a href={href} className="mkt-qtile">
@@ -626,11 +651,11 @@ function QuizGrid() {
         <h2 style={{ ...h2Style, textAlign: 'center' }}>A quiz for every team and league.</h2>
         <p style={{ ...bodyStyle, maxWidth: '52ch', margin: '12px auto 0', textAlign: 'center' }}>Pick your club or competition and test your knowledge — from the Premier League to the World Cup. New quizzes added every week.</p>
       </div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '0 2px 12px' }}>Clubs</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', margin: '0 2px 12px' }}>Clubs</div>
       <div className="mkt-qgrid">
         {QUIZ_CLUBS.map((c) => <QuizTile key={c.slug} href={`/quiz/${c.slug}/`} badge={c.badge} label={c.label} color={CLUB_COLOR[c.slug]} />)}
       </div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
       <div className="mkt-qgrid">
         {QUIZ_LEAGUES.map((l) => <QuizTile key={l.slug} href={`/quiz/${l.slug}/`} emoji={l.emoji} label={l.label} />)}
         <a href="/quiz/" className="mkt-qtile mkt-qtile-all"><span style={{ fontSize: 14, fontWeight: 800, color: '#8AE042' }}>All quizzes →</span></a>
@@ -683,6 +708,10 @@ export default function MarketingHome() {
     <div className="mkt">
       <style>{STYLE}</style>
 
+      {/* WCAG 2.4.1 (Level A) — six nav controls sit before the content on every
+          load; a keyboard user had no way past them. Visible only on focus. */}
+      <a href="#mkt-main" className="mkt-skip">Skip to content</a>
+
       {/* ── NAV ── */}
       <nav className="mkt-nav" style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(10,10,10,0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderBottom: '1px solid #16181F' }}>
         <a href="/"><Brand /></a>
@@ -696,6 +725,9 @@ export default function MarketingHome() {
         </div>
       </nav>
 
+      {/* WCAG 1.3.1 — the SEO pages all have <main>; this one never did. */}
+      <main id="mkt-main">
+
       {/* ── HERO — the playable Footle + quiz taster ARE the front door ── */}
       <PlayNow />
 
@@ -704,7 +736,7 @@ export default function MarketingHome() {
 
       {/* ── TICKER ── */}
       <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: '#0C0E13', padding: '16px 0' }}>
-        <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180', whiteSpace: 'nowrap' }}>
+        <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7E828C', whiteSpace: 'nowrap' }}>
           {[0, 1].map((i) => (
             <span key={i}>
               {[`${QB_ROUND.toLocaleString('en-US')}+ Questions`, '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
@@ -801,7 +833,7 @@ export default function MarketingHome() {
         <Reveal style={{ position: 'relative', overflow: 'hidden', borderRadius: 28, padding: 'clamp(32px,5vw,56px)', background: 'linear-gradient(120deg,#FF6A00 0%,#FFC107 100%)' }}>
           <div style={{ position: 'absolute', right: -30, bottom: -50, fontSize: 240, opacity: 0.18, pointerEvents: 'none' }} aria-hidden="true">🔥</div>
           <div style={{ position: 'relative', maxWidth: '30ch' }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.6)' }}>Daily 7</div>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.85)' }}>Daily 7</div>
             <div style={{ marginTop: 12, fontSize: 'clamp(26px,3.4vw,38px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', color: '#0A0A0A' }}>Seven questions. Three minutes. Everyone plays the same set.</div>
             <a href={PLAY} className="mkt-cta-black" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24, padding: '14px 26px', background: '#0A0A0A', color: '#fff', fontWeight: 800, fontSize: 15, borderRadius: 12, boxShadow: '0 10px 26px -8px rgba(0,0,0,0.6)' }}>Play today's set →</a>
           </div>
@@ -833,17 +865,19 @@ export default function MarketingHome() {
         </div>
       </section>
 
+      </main>
+
       {/* ── FOOTER ── */}
       <footer style={{ borderTop: '1px solid #16181F', background: '#0C0E13' }}>
         <div style={{ maxWidth: 1140, margin: '0 auto', padding: '56px 24px 40px', display: 'flex', flexWrap: 'wrap', gap: 40, justifyContent: 'space-between' }}>
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
-            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#6E7180' }}>{`The ultimate football quiz. ${QB_ROUND.toLocaleString('en-US')}+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.`}</p>
+            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#7E828C' }}>{`The ultimate football quiz. ${QB_ROUND.toLocaleString('en-US')}+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.`}</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', marginBottom: 16 }}>Quizzes</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Quizzes</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/quiz/" className="mkt-foot-link">Football quizzes</a>
                 <a href="/quiz/world-cup/" className="mkt-foot-link">World Cup quiz</a>
@@ -852,7 +886,7 @@ export default function MarketingHome() {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', marginBottom: 16 }}>Club quizzes</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Club quizzes</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/quiz/arsenal/" className="mkt-foot-link">Arsenal quiz</a>
                 <a href="/quiz/liverpool/" className="mkt-foot-link">Liverpool quiz</a>
@@ -862,7 +896,7 @@ export default function MarketingHome() {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6E7180', marginBottom: 16 }}>Company</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Company</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/about/" className="mkt-foot-link">About</a>
                 <a href="/contact/" className="mkt-foot-link">Contact</a>
@@ -871,7 +905,7 @@ export default function MarketingHome() {
             </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 24px 36px', borderTop: '1px solid #16181F', fontSize: 13, color: '#6E7180' }}>© 2026 Ball IQ. The ultimate football quiz.</div>
+        <div style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 24px 36px', borderTop: '1px solid #16181F', fontSize: 13, color: '#7E828C' }}>© 2026 Ball IQ. The ultimate football quiz.</div>
       </footer>
     </div>
   );
