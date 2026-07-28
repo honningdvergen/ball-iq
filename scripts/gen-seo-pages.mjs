@@ -72,6 +72,14 @@ const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 const eduQuizLd = (name, rows) => ({
   '@type': 'Quiz',
   name: `${name} quiz`,
+  // US visitors convert at ~0 (Clarity 2026-07-28: US Mobile 12.7s, US PC 3.6s
+  // active, and every Google-referred US session recorded ZERO clicks, against
+  // 61.7s for UK Mobile). Part of that is vocabulary: "soccer" appeared 13
+  // times on the hub after #46 and ZERO times on any of the ~120 club pages,
+  // so a search for "arsenal soccer quiz" had nothing to match and the page
+  // read entirely British on arrival. alternateName carries the US term without
+  // touching the visible British copy the UK majority reads.
+  alternateName: [`${name} soccer quiz`, `${name} trivia`],
   about: { '@type': 'Thing', name },
   hasPart: rows.slice(0, 20).map((r) => ({
     '@type': 'Question',
@@ -698,7 +706,12 @@ function renderCovers(name, isLeague, isPlayer, href) {
     .join('\n');
   return `<section class="sec">
 <h2>What the ${esc(name)} quiz covers</h2>
-<p class="sub">Every question is written and checked by football fans, across the topics that decide a real ${esc(name)} expert:</p>
+${/* One visible use of "soccer" per page, in the shared covers subtitle so a
+      single edit reaches all ~120 club/league/player pages. Kept as an aside
+      rather than a rewrite: "football" stays the primary term for the UK
+      majority (50 sessions vs 17 US), and rewriting ~180 pages into US English
+      would trade a converting audience for a non-converting one. */ ''}
+<p class="sub">Every question is written and checked by football fans — soccer, if you're reading this in the US — across the topics that decide a real ${esc(name)} expert:</p>
 <div class="covers">${cards}</div>
 </section>`;
 }
