@@ -56,29 +56,38 @@ const AUDIT = () => {
   // Daily 7 band as 1:1 (its bg-color is transparent over the near-black page)
   // when the real text sits on #FF6A00→#FFC107. So a gradient contributes ALL
   // its colour stops as candidates and the caller scores against the worst one.
+  // Gradient stops carry alpha and MUST be composited, not read raw. Reading
+  // the raw triple out of `linear-gradient(135deg, rgba(88,204,2,0.10), …)`
+  // scores text against OPAQUE green when the pixel is really a near-black
+  // tint — that invented 10 phantom failures on the app's home screen before
+  // it was caught. Layers are collected top-down, flattened bottom-up.
   const bgOf = (el) => {
-    let n = el, stack = [], stops = null;
+    const layers = [];
+    let n = el;
     while (n) {
       const cs = getComputedStyle(n);
-      if (!stops && cs.backgroundImage.includes('gradient')) {
-        const found = [...cs.backgroundImage.matchAll(/rgba?\(([^)]+)\)/g)]
-          .map((m) => m[1].split(',').slice(0, 3).map(Number));
-        if (found.length) stops = found;
+      if (cs.backgroundImage.includes('gradient')) {
+        const stops = [...cs.backgroundImage.matchAll(/rgba?\(([^)]+)\)/g)].map((m) => {
+          const v = m[1].split(',').map(Number);
+          return { rgb: v.slice(0, 3), a: v.length > 3 ? v[3] : 1 };
+        });
+        if (stops.length) layers.push({ stops });
       }
       const { rgb, a } = parse(cs.backgroundColor);
-      if (a > 0) { stack.push({ rgb, a }); if (a === 1) break; }
-      if (stops) break;                      // gradient is the painted layer
+      if (a > 0) {
+        layers.push({ stops: [{ rgb, a }] });
+        if (a === 1) break;                    // opaque: nothing below shows
+      }
       n = n.parentElement;
     }
-    let flat = [10, 10, 10];
-    if (stack.length) {
-      flat = stack[stack.length - 1].rgb;
-      for (let i = stack.length - 2; i >= 0; i--) {
-        const { rgb, a } = stack[i];
-        flat = flat.map((c, j) => rgb[j] * a + c * (1 - a));
-      }
+    const over = (top, under) => top.rgb.map((c, i) => c * top.a + under[i] * (1 - top.a));
+    let bases = [[10, 10, 10]];                // page canvas
+    for (let i = layers.length - 1; i >= 0; i--) {
+      const next = [];
+      for (const base of bases) for (const s of layers[i].stops) next.push(over(s, base));
+      bases = next.slice(0, 8);
     }
-    return stops || [flat];
+    return bases;
   };
 
   const contrast = [], small = [], noName = [], noFocus = [];

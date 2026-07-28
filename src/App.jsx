@@ -5463,9 +5463,19 @@ function ResetPasswordOverlay() {
   );
 }
 
-function SettingsToggle({ val, onChange }) {
+// The visible label lives in a sibling .sr-label div, so to a screen reader
+// this button was an unnamed control with no state — five of them in a row,
+// all announced as just "button" (WCAG 4.1.2). role=switch + aria-checked
+// makes the on/off state readable, and `label` names it.
+function SettingsToggle({ val, onChange, label }) {
   return (
-    <button className={`toggle ${val ? "on" : "off"}`} onClick={() => onChange(!val)}>
+    <button
+      className={`toggle ${val ? "on" : "off"}`}
+      role="switch"
+      aria-checked={val}
+      aria-label={label}
+      onClick={() => onChange(!val)}
+    >
       <div className="toggle-knob" />
     </button>
   );
@@ -5750,7 +5760,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">First-letter hints on typed questions (Easy mode)</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle val={settings.hints} onChange={v => onUpdate({hints:v})} />
+              <SettingsToggle label="Show Hints" val={settings.hints} onChange={v => onUpdate({hints:v})} />
             </div>
           </div>
           <div className="settings-row">
@@ -5759,7 +5769,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">Enable countdown timer in Standard and Speed modes</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle val={settings.timer} onChange={v => onUpdate({timer:v})} />
+              <SettingsToggle label="Timer" val={settings.timer} onChange={v => onUpdate({timer:v})} />
             </div>
           </div>
           <div className="settings-row">
@@ -5768,7 +5778,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">Audio feedback on correct and wrong answers</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle val={settings.sound} onChange={v => onUpdate({sound:v})} />
+              <SettingsToggle label="Sound Effects" val={settings.sound} onChange={v => onUpdate({sound:v})} />
             </div>
           </div>
           <div className="settings-row">
@@ -5777,7 +5787,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-desc">Taps and vibrations on answers, streaks, and button presses</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
+              <SettingsToggle label="Haptics" val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
             </div>
           </div>
         </div>
@@ -5796,7 +5806,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 <div className="sr-desc">An evening nudge if you haven't played yet — keeps your streak alive</div>
               </div>
               <div className="sr-right">
-                <SettingsToggle val={notifEnabled} onChange={onToggleNotif} />
+                <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} />
               </div>
             </div>
           </div>
@@ -10092,7 +10102,7 @@ function AppInner() {
                 <div style={{fontSize:14,fontWeight:800,marginBottom:2}}>Welcome to {APP_NAME}!</div>
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Footle — one puzzle, everyone gets the same player.</div>
               </div>
-              <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#fff",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
+              <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#0a1a00",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
             </div>
           </div>
         )}
