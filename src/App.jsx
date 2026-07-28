@@ -10686,7 +10686,16 @@ function AppInner() {
               code={stage1RoomCode}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={authProfile?.username || profile?.name || ""}
-              onRematch={(c) => setStage1RoomCode(c)}
+              // Rematch used to spin up a room and leave the opponent unaware —
+              // you sat alone in a lobby they had no way of knowing existed,
+              // and the only route back was manually sharing a link at the
+              // exact moment the adrenaline drops. Challenge already fires a
+              // play_invite (see challengeFriend/onLobbyEnter); this gives
+              // Rematch the same reach, to everyone who was in the match.
+              onRematch={(c, opponentIds) => {
+                setStage1RoomCode(c);
+                (opponentIds || []).forEach((id) => { if (id) sendPlayInvite(id, c); });
+              }}
             />
           </React.Suspense>
           </div>

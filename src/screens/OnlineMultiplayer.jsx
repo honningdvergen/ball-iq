@@ -859,7 +859,14 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
       setRematching(false);
       return;
     }
-    onRematch?.(result.code);
+    // Hand the parent everyone else who was in the match so it can fire a
+    // play_invite to each. Without this the rematch room existed but nobody
+    // was told, so the challenger sat alone in a lobby. Guests have no user_id
+    // and simply get skipped — they still have the shareable link.
+    const opponentIds = players
+      .map((p) => p.user_id)
+      .filter((id) => id && id !== myUserId);
+    onRematch?.(result.code, opponentIds);
   };
   const handleShareResult = async () => {
     if (rematching) return; // a rematch room is already being created via the other button
@@ -894,7 +901,13 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
     // Land the sharer in the lobby they just advertised — even on a cancelled
     // sheet: the room exists and they're its host; stranding it leaves a
     // zombie room and a share link pointing at a lobby nobody is waiting in.
-    const enterRematch = () => { if (rematchCode) onRematch?.(rematchCode); };
+    // Same as handleRematch: whoever was in the match gets a play_invite, so
+    // the share sheet is a bonus rather than the only way anyone finds out.
+    const enterRematch = () => {
+      if (!rematchCode) return;
+      const opponentIds = players.map((p) => p.user_id).filter((id) => id && id !== myUserId);
+      onRematch?.(rematchCode, opponentIds);
+    };
     try {
       if (Capacitor.isNativePlatform?.()) {
         await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share result" });
