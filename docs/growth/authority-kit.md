@@ -1,11 +1,34 @@
 # Ball IQ — Authority Kit (backlink / domain-authority playbook)
 
-**Why this exists.** GSC (2026-07-21) proved Ball IQ has a *ranking*, not indexing or demand,
-problem: 349 queries pulling 2.65k impressions, but stuck at avg **position 21.8** — page 2.
-55/56 pages are indexed. Content is being *seen*, not clicked. The one lever that moves *every*
-page off page 2 at once is **domain authority**, and Ball IQ has almost no inbound links. This is
-the untouched growth lever. Only Alex can pull it (submissions + outreach), so this is the
+**Why this exists.** Domain authority is the one lever that lifts every page at once, and Ball
+IQ has almost no inbound links. Only Alex can pull it (submissions + outreach), so this is the
 ready-to-execute list.
+
+> ⚠️ **PREMISE CORRECTED 2026-07-28.** The original version of this doc said Ball IQ was "stuck
+> at avg position 21.8 — page 2". That reading was wrong, and it changes the target.
+>
+> **21.3 is a site-wide MEAN**, dragged down by ~160 pages catching stray impressions at deep
+> ranks. The pages that carry traffic are **already on page 1**:
+>
+> | Page | Impressions (7d) | Position |
+> |---|---|---|
+> | balliq.app/ | 119 | **5.7** |
+> | /quiz/rangers/ | 108 | **8.4** |
+> | /quiz/tottenham/ | 175 | **9.8** |
+> | /quiz/everton/ | 71 | **9.2** |
+> | **/quiz/arsenal/** | **268** | **10.9** |
+>
+> So this is NOT "escape page 2". It is **"climb from 8-11 to 4-6"** — the steepest part of the
+> CTR curve, where the same impressions roughly triple their clicks.
+>
+> **Aim links at the pages that are already close.** `/quiz/arsenal/` carries the most
+> impressions of any page on the site and sits at 10.9 — one rung off page 1 proper. It is the
+> single best link target we have. Then Tottenham (175 @ 9.8) and Liverpool (144 @ 16.5).
+>
+> ⚠️ **Volume caveat, so this is not over-invested in:** club-quiz queries are LOW volume.
+> `everton quiz` drew 23 impressions in 7 days — even ranking #1 at 30% CTR that is ~7 clicks.
+> Winning these outright is worth tens of clicks a week, not hundreds. The real volume sits in
+> the long tail (~7,000 of 7,910 weekly impressions) and in head terms like `football quiz`.
 
 **The rule that governs all of it:** *relevance beats volume.* One link from a football site or a
 Wordle-spinoff directory is worth more than fifty from a generic "500+ free directory" list —
