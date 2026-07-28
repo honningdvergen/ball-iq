@@ -860,6 +860,15 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .crumbs a{color:var(--tx3)}
   .crumbs a:hover{color:#fff;text-decoration:none}
   .crumbs .sep{color:var(--tx4);margin:0 7px}
+  /* clubs/players/nations -> /lists/. See listsMentioning(): every list page
+     had exactly ONE inbound internal link before this, against 163 for a club
+     page, so we were signalling the whole reference surface as unimportant. */
+  .llinks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .llinks li{background:var(--card);border:1px solid var(--bd);border-radius:12px}
+  .llinks a{display:block;padding:13px 15px;color:var(--tx);text-decoration:none;font-weight:700;font-size:15px}
+  .llinks li:hover{border-color:var(--grn);background:var(--card2)}
+  .llinks a:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
+  .llink-n{display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--tx4)}
   .skip{position:absolute;left:-9999px;top:0;z-index:200;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;border-radius:0 0 12px 0}
   .skip:focus{left:0}
   .kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -1110,6 +1119,7 @@ ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
+${renderListLinks(catCfg.name)}
 </section>
 <section class="sec narrow">
 <h2>${esc(catCfg.name)} quiz — FAQ</h2>
@@ -1211,6 +1221,7 @@ ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
+${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
@@ -1305,6 +1316,7 @@ ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
+${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
@@ -1440,6 +1452,39 @@ function renderListLinks(name) {
 </section>`;
 }
 
+// LIST -> SIBLING LISTS. listsMentioning() only reaches lists whose rows name a
+// club or player, which left 11 stranded on a single inbound link: the
+// aggregates ("most-* titles") and the national-team competitions (AFCON,
+// Asian Cup, Copa América, Club World Cup) contain neither. They are also the
+// pages a reader most wants paired — if you are looking at winners by season,
+// the all-time count is the obvious next question, and vice versa.
+const LIST_FAMILY = [
+  [/premier-league/, 'the Premier League'], [/champions-league|european-cup/, 'the Champions League'],
+  [/la-liga/, 'La Liga'], [/serie-a/, 'Serie A'], [/bundesliga/, 'the Bundesliga'],
+  [/ligue-1|coupe-de-france/, 'French football'], [/world-cup/, 'the World Cup'],
+  [/\beuro/, 'the Euros'], [/copa-america/, 'the Copa América'], [/afcon|african/, 'AFCON'],
+  [/asian-cup/, 'the Asian Cup'], [/libertadores/, 'the Copa Libertadores'],
+  [/ballon-dor/, "the Ballon d'Or"], [/fa-cup/, 'the FA Cup'],
+  [/eredivisie/, 'the Eredivisie'], [/primeira|liga-portugal/, 'Primeira Liga'],
+  [/super-lig/, 'the Süper Lig'], [/scottish/, 'Scottish football'],
+];
+function siblingLists(slug, limit = 4) {
+  const fam = LIST_FAMILY.find(([re]) => re.test(slug));
+  if (!fam) return null;
+  const [re, label] = fam;
+  const sibs = LISTS.filter((l) => l.slug !== slug && re.test(l.slug))
+    .sort((a, b) => b.rows.length - a.rows.length).slice(0, limit);
+  return sibs.length ? { label, sibs } : null;
+}
+function renderSiblingLists(slug) {
+  const r = siblingLists(slug);
+  if (!r) return '';
+  return `<section class="sec narrow">
+<h2>More on ${esc(r.label)}</h2>
+<ul class="llinks">${r.sibs.map((s) => `<li><a href="${SITE.base}/lists/${s.slug}/">${esc(s.h1)}</a> <span class="llink-n">${s.rows.length} entries</span></li>`).join('')}</ul>
+</section>`;
+}
+
 function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
   const canonical = `${SITE.base}/lists/${cfg.slug}/`;
   const cols = cfg.columns;
@@ -1542,6 +1587,7 @@ ${cfg.intro.slice(1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${e
 </section>` : ''}
 ${adSlot('afterQA')}
 ${appCtaBand(cfg.ctaName || 'football')}
+${renderSiblingLists(cfg.slug)}
 <section class="sec">
 <h2>Quizzes to test yourself</h2>
 ${renderTiles(tiles)}
@@ -1723,6 +1769,7 @@ ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
+${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
 <h2>${esc(cfg.name)} quiz — FAQ</h2>
