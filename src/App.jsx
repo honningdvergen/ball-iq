@@ -5277,7 +5277,7 @@ export function recordMpResult(entry) {
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji, onChallenge }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji, onChallenge, needsAccount }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -5380,10 +5380,21 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
 
       </div>{/* /.online-col-a */}
       <div className="online-col-b">
-      {/* Flat green CTA (no 3D rim per design spec) + secondary join */}
+      {/* Flat green CTA (no 3D rim per design spec) + secondary join.
+          Signed out, this button used to read "Create Room" and then hit a
+          sign-up wall AFTER the tap — the tab advertised a game it wouldn't
+          let you start. Say it before the tap instead: the label now matches
+          the wall's own heading, so the account step is expected rather than
+          a bait-and-switch. The gate itself is correct and stays — a room
+          needs a real user id to host or join. */}
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{fontSize:16}}>🎮</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>Create Room</span>
+        <span style={{fontSize:16}}>{needsAccount ? "⚡" : "🎮"}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
       </button>
+      {needsAccount && (
+        <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>
+          Free, takes seconds — then challenge anyone with a link.
+        </div>
+      )}
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
       <div style={{display:"flex",gap:9,marginTop:10}}>
@@ -8816,8 +8827,17 @@ function AppInner() {
   // AppGate, so it signals via a window event — same pattern as reminders/pushes.
   useEffect(() => {
     const goHome = () => { setScreen("home"); setTab("home"); };
+    // Hard-gate dismissal ("Not now" on the online/friends wall) returns to the
+    // tab the user was actually on. Home discarded their intent: they tapped
+    // Create Room, got walled, and landed somewhere with no trace of the thing
+    // they'd asked for — the single worst step in the online funnel.
+    const goTab = (e) => { setScreen("home"); setTab(e?.detail?.tab || "home"); };
     window.addEventListener("biq:go-home", goHome);
-    return () => window.removeEventListener("biq:go-home", goHome);
+    window.addEventListener("biq:auth-dismissed", goTab);
+    return () => {
+      window.removeEventListener("biq:go-home", goHome);
+      window.removeEventListener("biq:auth-dismissed", goTab);
+    };
   }, []);
 
   // ─── 1.3 Native push (APNs) ────────────────────────────────────────────────
@@ -10517,6 +10537,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "online" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="online">
             <OnlineHubTab
+              needsAccount={!user || isGuest}
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
               onChallenge={challengeFriend}

@@ -75,9 +75,16 @@ function authErrorCopy(error, fallback) {
 // Sprint #100 guest-first: reward-framed hero copy shown when the Login overlay
 // is opened from a specific gated feature. Keeps the "what's in it for me" front
 // and centre instead of a bare wall.
+// `hardGate` marks a feature a guest genuinely CANNOT use — online rooms and
+// friends both need a real user id. On those walls "Continue as guest" was a
+// false affordance: it sat under the heading "Sign up to play online" offering
+// exactly the thing it cannot deliver, and tapping it dropped you on Home with
+// your intent silently discarded. It now reads "Not now" and returns you where
+// you were. Soft gates ('save', 'leaderboard') keep the guest wording, because
+// there continuing as a guest really does work.
 const PROMPT_COPY = {
-  online:      { title: 'Sign up to play online', sub: 'Create a free account to challenge friends in real-time 1v1 — and keep your stats and streak.' },
-  friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.' },
+  online:      { title: 'Sign up to play online', sub: 'Create a free account to challenge friends in real-time 1v1 — and keep your stats and streak.', hardGate: true, back: 'online' },
+  friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
   leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
   save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device.' },
 }
@@ -185,7 +192,14 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   // biq:go-home (the overlay is its sibling in AppGate).
   const guestContinue = () => {
     if (asOverlay) {
-      try { window.dispatchEvent(new CustomEvent('biq:go-home')) } catch {}
+      // Hard gates return you to the tab you were on — you came here WANTING
+      // to play online, so Home is a dead end that forgets what you asked for.
+      // Soft gates keep the tested "just let me play" landing on Home.
+      try {
+        window.dispatchEvent(prompt?.back
+          ? new CustomEvent('biq:auth-dismissed', { detail: { tab: prompt.back } })
+          : new CustomEvent('biq:go-home'))
+      } catch {}
       onClose?.()
     } else {
       continueAsGuest()
@@ -296,7 +310,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
               </button>
               <button type="button" className="biql-guest" onClick={guestContinue}
                 style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.border}`, background: 'transparent', color: C.t2, fontSize: 15 }}>
-                Continue as guest
+                {prompt?.hardGate ? 'Not now' : 'Continue as guest'}
               </button>
               <div style={{ textAlign: 'center', fontSize: 11.5, lineHeight: 1.5, color: C.legal, marginTop: 4 }}>
                 By continuing you agree to our <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Terms</a> &amp; <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Privacy Policy</a>.
