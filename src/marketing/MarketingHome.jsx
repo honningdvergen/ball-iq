@@ -66,7 +66,22 @@ const STYLE = `
 .mkt-try-again:hover { border-color:#3A3D4A !important; color:#fff !important; }
 .mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
 .mkt-play-card { background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
-@media (max-width:760px) { .mkt-play-grid { grid-template-columns:1fr; } }
+/* MOBILE: stack to one column AND put the quiz taster FIRST.
+   Measured 2026-07-28 against a ~100% homepage bounce: the MiniFootle card is
+   ~636px tall, so stacked after ~200px of badge + headline + subtitle it fills
+   an entire 844px iPhone screen on its own — and the first thing a visitor
+   meets is an EMPTY 7x6 letter grid with its keyboard and instructions below
+   the fold. The QuizTaster then starts ~1074px down and is never seen on a
+   first screen.
+   The taster is both shorter and the hook the H1 actually promises ("How good
+   is your football knowledge?"), so on phones it leads. Order is swapped in
+   CSS only — the DOM keeps Footle first, so desktop's left-to-right reading
+   order (Footle | Taster) is untouched and no markup moves. */
+@media (max-width:760px) {
+  .mkt-play-grid { grid-template-columns:1fr; }
+  .mkt-play-card:nth-child(1) { order:2; }  /* MiniFootle  -> second */
+  .mkt-play-card:nth-child(2) { order:1; }  /* QuizTaster  -> first  */
+}
 /* Wide-desktop scale: the page is authored in px around a ~1280–1440
    composition, so at 1920+ it floats in dark space and the nav/logo read
    small. zoom (not transform) keeps layout, sticky nav, and hit targets
