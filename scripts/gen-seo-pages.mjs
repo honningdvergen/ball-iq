@@ -2102,7 +2102,7 @@ function buildLlmsTxt(livePages, clubPages, playerPages = [], listPages = []) {
     .join('\n');
   const txt = `# Ball IQ
 
-> Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes, plus fact-checked football reference lists. Play free in any browser at ${SITE.base} or on iPhone.
+> Ball IQ is a free football (soccer) trivia game with thousands of fact-checked questions across 10 game modes, plus fact-checked football reference lists. Play free in any browser at ${SITE.base}, or download the free app on iPhone and Android.
 
 Every question is human-curated and every answer carries an explained, fact-checked hint. Topics span the World Cup, Premier League, Champions League, La Liga, Serie A, Bundesliga, club legends, managers and records. Game modes include the Daily 7, Footle (a Wordle-style daily footballer guess), live multiplayer for up to 8 players, Survival, Hot Streak and Legends.
 
