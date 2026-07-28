@@ -340,3 +340,37 @@ as a hypothesis, not a result.**
 - Microsoft Clarity live on the web (native-guarded).
 - Android targets API 36 — Google's Aug 31 requirement met.
 - App Store 5.2.1 rejection resolved: World Cup mode + metadata stripped.
+
+## Tomorrow — finish the design pass, THEN submit (2026-07-29, ~01:05)
+
+Six commits sit on local `main`, **unpushed** (`0237d42`..`a8aeea6`). Working
+tree clean. Nothing is live on web and nothing is submitted to App Store.
+
+⚠️ **Build 50 in Xcode is STALE.** It was synced before the last three
+commits, so the greeting / score-chip / "Maybe later" fixes are NOT in the
+binary. Before archiving, re-run:
+
+    rm -rf dist && npm run build && npx cap sync ios
+    node scripts/prune-native-web-assets.mjs
+
+(`MARKETING_VERSION` 1.4.0, `CURRENT_PROJECT_VERSION` already bumped to 50.)
+
+### Remaining design items (from the simulator audit)
+1. **Home has three competing Play CTAs** — green Footle, amber Daily 7,
+   green Online. Needs a hierarchy call. Recommendation: Footle is the
+   measured most-played mode, so it should be the only GREEN one.
+2. **"Set your name" appears three ways** with three wordings (Home banner,
+   Profile text, pencil badge on the avatar). Pick one.
+3. **Promote Local pass & play for signed-out users** — now that the Online
+   CTA honestly says "sign up", Local is the only thing a guest can do there.
+4. **Footle's NEXT countdown** is prominent before you've played, when it is
+   the least useful thing on screen. Consider showing it only once solved.
+
+Deliberately NOT changing: Sound off / Haptics on. Looks inconsistent, is
+correct — people play on trains.
+
+### Also waiting
+- **Wave I**: 177 forged questions (Bellingham 32, Musiala 36, Yamal 30,
+  Saka 28, Vinícius 27, Foden 24) in the session scratchpad as `p-*.json`.
+  Verify independently before integrating, as with Wave K. Content, so it
+  should NOT gate the build.
