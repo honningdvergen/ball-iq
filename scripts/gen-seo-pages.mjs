@@ -1466,8 +1466,23 @@ function buildNationPage(cfg, catPages, nationPages) {
     ],
   });
   // Nation-to-nation mesh + the tournament categories (World Cup / Euros).
+  //
+  // ROTATE, don't slice from the front. `slice(0, 8)` always picked the FIRST
+  // eight nations, so any nation past index 8 in NATIONS received no internal
+  // link from anywhere — /quiz/mexico/, /quiz/uruguay/ and /quiz/usa/ were true
+  // ORPHANS: present in sitemap.xml, linked from zero pages. Orphans are close
+  // to invisible to crawlers, which is why Argentina and Brazil (early in the
+  // array) had 12 incoming links each while those three had none.
+  // Starting the window just after the current nation and wrapping means every
+  // nation appears in some page's list, and the mesh stays evenly spread as
+  // more nations are added.
+  const others = nationPages.filter((p) => p.slug !== cfg.slug);
+  const start = Math.max(0, nationPages.findIndex((p) => p.slug === cfg.slug));
+  const rotated = others.length
+    ? Array.from({ length: others.length }, (_, i) => others[(start + i) % others.length])
+    : [];
   const related = [
-    ...nationPages.filter((p) => p.slug !== cfg.slug).slice(0, 8),
+    ...rotated.slice(0, 8),
     ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4),
   ];
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
