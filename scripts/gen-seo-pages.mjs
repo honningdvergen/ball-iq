@@ -758,7 +758,24 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* two-column quiz hero: intro/CTA left, playable taster right */
   .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,0.98fr);gap:clamp(28px,4vw,52px);align-items:center}
   .hero-left,.hero-right{min-width:0}
-  @media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  /* MOBILE: stack to one column AND lift the playable taster ABOVE the
+     marketing column.
+     Measured on a real 375x812 viewport, 2026-07-28 (a container-width probe
+     is NOT valid here — @media keys off the VIEWPORT, so a narrow wrapper
+     still renders desktop styles):
+        h1 212 · lead 304 · [CTA buttons ~403-729] · taster 729
+        first tappable option 926  ->  114px BELOW the 812px fold
+     hero-left carries the headline, the prose AND three stacked download
+     buttons (Play the quiz / App Store / Google Play) — roughly 326px of
+     column that a phone must scroll past before reaching a single question.
+     So a Google visitor was asked to install an app before answering anything.
+     Order is swapped in CSS only: the DOM keeps hero-left first, so desktop's
+     left-to-right layout and the heading order for crawlers are untouched. */
+  @media(max-width:940px){
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .hero-left{order:2}
+    .hero-right{order:1}
+  }
   /* "What the <club> quiz covers" topic grid */
   .covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:6px}
   .cov{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 16px}
