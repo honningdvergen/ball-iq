@@ -17,7 +17,7 @@ export const PLAYERS = [
     name: 'Cristiano Ronaldo',
     initials: 'CR7',
     h1: 'Cristiano Ronaldo Quiz',
-    title: 'Cristiano Ronaldo Quiz — CR7 Trivia Questions & Answers | Ball IQ',
+    title: 'Cristiano Ronaldo Quiz — CR7 Trivia | Ball IQ',
     description: "Free Cristiano Ronaldo quiz with explained answers — Sporting to Al-Nassr, five Ballon d'Ors, and the all-time goal records. Play in your browser.",
     intro: [
       "Cristiano Ronaldo is football's great record-hunter — the man who turned relentless self-improvement into the longest sustained peak the game has seen. This free Ronaldo quiz runs the whole arc: the skinny Sporting Lisbon winger Alex Ferguson signed in 2003, the Manchester United treble-chaser who left as a Ballon d'Or winner, the Real Madrid machine who scored 450 goals in nine seasons, the Juventus gamble, the emotional 2021 return to Old Trafford, and the move to Al-Nassr that opened Saudi football to the world. Five Ballon d'Ors, a European Championship with Portugal in 2016, and — as of 2026 — the status of the all-time top scorer in both men's international football and the recognised game. If you can name the club he scored his 900th goal against, this quiz is for you.",
@@ -201,7 +201,7 @@ export const PLAYERS = [
     "name": "Zlatan Ibrahimović",
     "initials": "IZ",
     "h1": "Zlatan Ibrahimović Quiz",
-    "title": "Zlatan Ibrahimović Quiz — Trivia Questions & Answers | Ball IQ",
+    "title": "Zlatan Ibrahimović Quiz — Trivia | Ball IQ",
     "description": "Free Zlatan Ibrahimović quiz: Malmö to Milan, the bicycle kick, 62 Sweden goals and 34 trophies. Play the sample set in your browser, no sign-up.",
     "intro": [
       "Zlatan Ibrahimović is football's great swaggering nomad — the striker who treated every dressing room in Europe as his own and left most of them with a title on the wall. This free Zlatan quiz runs the whole arc: the teenage Malmö FF forward who left for Ajax in 2001, the Juventus and Inter years where he became a Serie A monster, the single crackling season under Guardiola at Barcelona, the return to AC Milan, the four-year reign at PSG, the Manchester United gamble, the Hollywood swansong at LA Galaxy, and the improbable second act back at Milan that ended with him retiring in 2023 at 41. Thirty-four trophies, Sweden's all-time top scorer, and yet — famously — never a Champions League winner. If you can name the club that swapped Samuel Eto'o and a pile of cash to sign him in 2009, this quiz is for you.",

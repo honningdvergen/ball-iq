@@ -19,7 +19,7 @@ export const NATIONS = [
     "name": "England",
     "initials": "ENG",
     "h1": "England Football Quiz",
-    "title": "England Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "England Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your England football knowledge: 1966 World Cup glory, Euro final heartbreaks, Kane and the Three Lions. Explained answers, play free in your browser.",
     "intro": [
       "England gave the world football — the first international, the oldest laws of the game, the sport's deepest club culture — yet the national team's story is one long ache for a second act. The Three Lions have lifted the World Cup exactly once, on home soil in 1966, and have spent the six decades since chasing that summer down. There have been golden generations that flattered and faded, penalty shootouts that broke a nation's heart, and, lately, a fearless young side that has dragged England back to the sport's biggest stages. It is a history measured in \"so close\": semi-finals lost on spot-kicks, finals surrendered late, a country that sings \"it's coming home\" and means it every single time. This quiz walks that whole arc, from Wembley 1966 to a squad chasing history at the 2026 World Cup.",
@@ -55,7 +55,7 @@ export const NATIONS = [
     "name": "Brazil",
     "initials": "BRA",
     "h1": "Brazil Football Quiz",
-    "title": "Brazil Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Brazil Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of Brazil's five World Cups, from Pelé to Vinícius Júnior. Football trivia with explained answers — play free in your browser on Ball IQ.",
     "intro": [
       "Brazil are football's crown jewel — the only nation to play at every World Cup and the most decorated of them all. The Seleção turned the game into art: the jogo bonito, the yellow shirt, the samba rhythm that made neutrals fall in love. From Pelé bursting onto the world stage as a teenager to the peerless side of 1970, from Romário and Ronaldo to Ronaldinho, Kaká and now Vinícius Júnior, Brazil has produced more icons than any country on earth. Five stars sit above the badge, and each one is a story. This quiz walks the whole arc — the triumphs and the traumas, the Maracanazo and the Mineirazo included — because Brazilian football is defined as much by its heartbreaks as by its glory. If you think you know the Seleção, this is where you prove it.",
@@ -92,7 +92,7 @@ export const NATIONS = [
     "name": "Argentina",
     "initials": "ARG",
     "h1": "Argentina Football Quiz",
-    "title": "Argentina Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Argentina Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Free Argentina football quiz with explained answers — three World Cups, Maradona, Messi and a record 16 Copa Américas. Play free in your browser, no sign-up.",
     "intro": [
       "Argentina is football's nation of romance and torment — the sky-blue-and-white that has produced two of the greatest players who ever lived and turned every World Cup into a national drama. This free Argentina quiz runs the whole arc: the host-nation triumph of 1978, Diego Maradona dragging the country to glory almost single-handedly in 1986, the decades of near-misses and heartbreak that followed, and the perfect ending in Qatar in 2022, when Lionel Messi finally lifted the trophy that had eluded him for four tournaments. Add a world-record 16 Copa América titles, back-to-back Olympic golds and a golden production line of strikers, and you have one of the sport's true superpowers. If you know the two captains — Maradona and Messi — who led the Albiceleste to World Cup glory, this quiz is for you.",
@@ -128,7 +128,7 @@ export const NATIONS = [
     "name": "France",
     "initials": "FRA",
     "h1": "France Football Quiz",
-    "title": "France Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "France Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of France football — World Cup winners in 1998 and 2018, Zidane, Mbappé and more. Explained answers, play free in your browser.",
     "intro": [
       "France — Les Bleus — sit among the true heavyweights of world football, a nation whose story swings between silk and steel. It runs from the champagne passing of Michel Platini's mid-1980s side, through the multicultural 1998 team that finally delivered the trophy at home, to a modern machine that reached the World Cup final in 2006, 2018 and 2022. No country produces talent quite like France: the Clairefontaine academy and the suburbs of Paris feed an endless conveyor of forwards, and the national side has spent three decades either winning tournaments or losing them by the width of a crossbar. This quiz traces the whole arc — the golden generations, the icons, the heartbreaks and the comebacks. If you can name the goalscorers, the managers and the famous finals, Les Bleus have a place waiting for you.",
@@ -165,7 +165,7 @@ export const NATIONS = [
     "name": "Germany",
     "initials": "GER",
     "h1": "Germany Football Quiz",
-    "title": "Germany Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Germany Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of German football — four World Cups, the Euros and icons like Klose and Beckenbauer. Explained answers, play free in your browser.",
     "intro": [
       "Few nations have turned football into a science quite like Germany. Four-time world champions and relentless in the moments that matter, Die Mannschaft built a reputation for arriving at every major tournament and refusing to leave early — the team you never counted out until the final whistle. From the black-and-white era of the 1950s to the sky-blue brilliance of the 2010s, Germany has reached a record eight World Cup finals and lifted the trophy in four different decades. Theirs is a story of engineering and nerve: penalty shootouts won on cold logic, comebacks conjured from nothing, and a production line of talent that never seems to run dry. This quiz walks the full arc — the miracles, the dynasties, the golden goals and the humbling exits. If you think you know German football, here is where you prove it.",
@@ -201,7 +201,7 @@ export const NATIONS = [
     "name": "Spain",
     "initials": "ESP",
     "h1": "Spain Football Quiz",
-    "title": "Spain Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Spain Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of Spain's football — the 2010 World Cup, four European titles and La Roja's icons — with explained answers. Play free in your browser.",
     "intro": [
       "Spain's football story is one of the great transformations in the sport — from nearly-men who flattered to deceive at tournament after tournament to the most dominant international side of a generation. Known as La Roja, they perfected a passing philosophy, tiki-taka, that mesmerised opponents and rewrote how the game could be won. For decades their gifted club players never translated to the national stage; then, in the span of four years, they collected everything worth collecting. This is a nation whose golden era set records that still stand, whose academies keep producing generational talent, and whose 2024 European crown proved the well has not run dry. From the Santiago Bernabéu to Soccer City to Berlin, few countries offer a richer, more quizzable arc — triumph, philosophy, and a conveyor belt of icons from Iniesta to Lamine Yamal.",
@@ -237,7 +237,7 @@ export const NATIONS = [
     "name": "Italy",
     "initials": "ITA",
     "h1": "Italy Football Quiz",
-    "title": "Italy Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Italy Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your Azzurri knowledge — Italy's four World Cups, Euro glory and legends, every question with an explained answer. Play free in your browser, no sign-up.",
     "intro": [
       "Few nations wear football history like Italy. The Azzurri — the Blues — sit second only to Brazil on the all-time World Cup roll, four gold stars stitched above the badge and a defensive tradition, catenaccio, that shaped how the game is coached everywhere. From the 1930s dynasties to the ice-cool champions of Berlin, Italy has turned tournament football into an art of patience, timing and nerve. They have lifted the World Cup across seven decades — every one of their four titles won on European soil — produced some of the greatest goalkeepers and defenders who ever lived, and made a habit of peaking exactly when they have been written off. This quiz walks that whole arc — the triumphs, the heartbreaks and the icons — one question at a time. Whether you grew up on Baggio or on Buffon, it will find the edges of what you think you know.",
@@ -273,7 +273,7 @@ export const NATIONS = [
     "name": "Portugal",
     "initials": "POR",
     "h1": "Portugal Football Quiz",
-    "title": "Portugal Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Portugal Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Free Portugal football quiz with explained answers — Euro 2016, Eusébio, Ronaldo and every World Cup. Play free in your browser, no sign-up.",
     "intro": [
       "Portugal are football's great late bloomers — a nation that produced sublime footballers for half a century before it finally learned how to win. This free Portugal quiz runs the whole arc: Eusébio, the Mozambique-born 'Black Panther', dragging a debutant side to third place at the 1966 World Cup; the 'Golden Generation' of Luís Figo and Rui Costa who reached a home European Championship final in 2004 only to be stunned; and the Cristiano Ronaldo era that at last turned all that flair into silverware. It is a story of near-misses redeemed — of a proud football country long called the best team never to win anything, until one night in Paris it wasn't. If you can name the substitute whose extra-time thunderbolt won Euro 2016, this quiz is for you.",
@@ -310,7 +310,7 @@ export const NATIONS = [
     "name": "Netherlands",
     "initials": "NED",
     "h1": "Netherlands Football Quiz",
-    "title": "Netherlands Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Netherlands Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of Netherlands football — World Cup finals, Euro 1988, Cruyff and Van Dijk — with explained answers. Play free in your browser on Ball IQ.",
     "intro": [
       "No nation has shaped the way football is played more than the Netherlands, and none has come closer to the World Cup without ever lifting it. In the 1970s, Rinus Michels and Johan Cruyff unleashed Total Football, a fluid, positionless revolution in bright Oranje that dazzled the planet and reached back-to-back World Cup finals in 1974 and 1978. Both ended in defeat, the first losses in a trilogy of final heartbreaks. Yet the Dutch remain one of the sport's great romantic powers: a country of barely eighteen million that has out-thought and out-played giants for half a century. From Cruyff to Van Basten, Bergkamp to Robben, Van Dijk to Gakpo, few nations produce icons at this rate. This quiz walks the whole arc — the genius, the near-misses, and the one golden summer when the Netherlands finally got its trophy.",
@@ -347,7 +347,7 @@ export const NATIONS = [
     "name": "USA",
     "initials": "USA",
     "h1": "USA Football Quiz",
-    "title": "USA Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "USA Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your USA soccer knowledge — from the USWNT's four World Cups to the men's 2026 home tournament. Explained answers, play free in your browser.",
     "intro": [
       "American soccer tells two stories at once, and both belong on the same quiz. On the women's side, the United States is the most decorated team the sport has ever produced — four World Cups, five Olympic golds, and a run of dominance no other nation has come close to matching. On the men's side, the tale is one of stubborn, steady climb: from a shock third place at the very first World Cup in 1930 to a modern generation now co-hosting the biggest tournament football has ever staged. In the summer of 2026 the United States opens its doors to the World Cup alongside Canada and Mexico, and home crowds will carry a program that has waited its entire history for this stage. This quiz walks through all of it — the legends, the upsets, the heartbreaks and the icons who built the American game.",
@@ -383,7 +383,7 @@ export const NATIONS = [
     "name": "Mexico",
     "initials": "MEX",
     "h1": "Mexico Football Quiz",
-    "title": "Mexico Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Mexico Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of El Tri — Mexico's World Cups, the 1999 Confederations Cup and their icons. Trivia with explained answers, play free in your browser.",
     "intro": [
       "Mexico — El Tri — is the heartbeat of CONCACAF and one of the most fervent footballing nations on earth, its green shirts and the roar of the Estadio Azteca instantly recognisable across the game. Few countries carry a longer World Cup pedigree: Mexico has reached 18 finals tournaments and qualified for every edition since 1994, a run of consistency matched by only a handful of nations. Yet the story is defined as much by a ceiling as by the appearances — seven times running between 1994 and 2018, El Tri reached the last sixteen and seven times went out, the elusive 'quinto partido', the fifth game and a quarter-final place, becoming a national obsession. In 2026 the wait takes on a new charge: Mexico co-hosts the World Cup alongside the United States and Canada, chasing history on home soil once again.",
@@ -419,7 +419,7 @@ export const NATIONS = [
     "name": "Uruguay",
     "initials": "URU",
     "h1": "Uruguay Football Quiz",
-    "title": "Uruguay Football Quiz — World Cup Trivia Questions & Answers | Ball IQ",
+    "title": "Uruguay Football Quiz — World Cup Trivia | Ball IQ",
     "description": "Test your knowledge of Uruguay's football story — two World Cups, the Maracanazo, Suárez and Bielsa's Celeste. Explained answers, play free in your browser.",
     "intro": [
       "No country tells a bigger football story from a smaller footprint than Uruguay. A nation of barely three and a half million people, La Celeste stand among the game's founding royalty — the four stars above their crest marking two World Cups and two Olympic golds from an era when the Games crowned the world's best. This is the birthplace of garra charrúa, the never-say-die grit that turns underdogs into champions, and the home of the Estadio Centenario, the arena built to host the very first World Cup in 1930. From the Montevideo docks that produced their early stars to the silence they once forced on the Maracanã, Uruguay has spent a century proving that heart, organisation and sheer bloody-mindedness can topple giants many times their size. No one has ever punched further above their weight.",

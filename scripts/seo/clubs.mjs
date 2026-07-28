@@ -79,7 +79,7 @@ export const CLUBS = [
     "slug": "manchester-united",
     "name": "Manchester United",
     "h1": "Manchester United Quiz",
-    "title": "Manchester United Quiz — Man Utd Trivia Questions & Answers | Ball IQ",
+    "title": "Manchester United Quiz — Man Utd Trivia | Ball IQ",
     "description": "Free Manchester United quiz with explained answers — from the Busby Babes and the 1999 treble to the Carrick era. Every answer tells the story behind it.",
     "intro": [
       "Manchester United are the club English football measures itself against — from Sir Matt Busby's post-war rebuilding through the Munich air disaster of 1958, redemption at Wembley a decade later, and the twenty-six trophy-laden years of Sir Alex Ferguson. This free Manchester United quiz covers the whole sweep: the Busby Babes, the Ferguson dynasty, the 1999 treble, and the modern era under Michael Carrick. Twenty English league titles, a record thirteen of them in the Premier League, and three European Cups give you plenty to be tested on. Old Trafford calls itself the Theatre of Dreams, and this quiz is built on the moments that earned the name.",
@@ -111,7 +111,7 @@ export const CLUBS = [
     "slug": "manchester-city",
     "name": "Manchester City",
     "h1": "Manchester City Quiz",
-    "title": "Manchester City Quiz — Man City Trivia Questions & Answers | Ball IQ",
+    "title": "Manchester City Quiz — Man City Trivia | Ball IQ",
     "description": "Free Manchester City quiz with explained answers — from Agüero 93:20 and the Istanbul treble to Pep Guardiola's decade. Test your City knowledge.",
     "intro": [
       "Manchester City are the club that has lived both extremes of English football. This free Manchester City quiz spans the whole arc — from the Joe Mercer and Malcolm Allison side that won the league in 1968, through the wilderness years that bottomed out in English football's third tier in 1998-99, to the Abu Dhabi takeover of 2008 and the Guardiola dynasty that redefined how the game is played in England. For decades City were Manchester's fallible, much-loved underdogs; now they are one of the defining superpowers of the modern game. The quiz covers both lives, because a real City fan knows Shaun Goater as well as they know Erling Haaland.",
@@ -143,7 +143,7 @@ export const CLUBS = [
     "slug": "tottenham",
     "name": "Tottenham Hotspur",
     "h1": "Tottenham Hotspur Quiz",
-    "title": "Tottenham Hotspur Quiz — Spurs Trivia Questions & Answers | Ball IQ",
+    "title": "Tottenham Hotspur Quiz — Spurs Trivia | Ball IQ",
     "description": "Free Tottenham Hotspur quiz with explained answers — from the 1961 Double and Gazza to the 2025 Europa League win in Bilbao. How well do you know Spurs?",
     "intro": [
       "Tottenham Hotspur have chased glory their own stylish way since 1882 — this is the club of \"To Dare Is to Do\", of Danny Blanchflower's insistence that the game is about glory. This free Tottenham quiz covers the full sweep: from the 1901 FA Cup, when Spurs became the only non-League club to win it since the Football League was formed, to Bilbao in May 2025, when Brennan Johnson's goal against Manchester United ended a seventeen-year wait for a trophy. In between sit Arthur Rowe's push-and-run champions of 1951, the Glory Glory European nights at White Hart Lane, and the move into the vast new Tottenham Hotspur Stadium in 2019. If you know your Spurs, this is where you prove it.",
@@ -207,7 +207,7 @@ export const CLUBS = [
     "slug": "newcastle",
     "name": "Newcastle United",
     "h1": "Newcastle United Quiz",
-    "title": "Newcastle United Quiz — Magpies & Toon Trivia Questions & Answers | Ball IQ",
+    "title": "Newcastle United Quiz — Magpies & Toon Trivia | Ball IQ",
     "description": "Free Newcastle United quiz with explained answers — from Jackie Milburn and Keegan's Entertainers to the 2025 Carabao Cup win. Test your Toon knowledge.",
     "intro": [
       "Newcastle United are one of football's great romantic causes — a one-club city, St James' Park perched above it, and black-and-white stripes worn with a devotion that never depended on silverware. This free Newcastle United quiz covers the full sweep of that story, from the Edwardian side that won three league titles in five seasons to Dan Burn's thumping header at Wembley in 2025. In between sit the FA Cup years of the fifties, the Entertainers, the agonising near-misses and two relegations that never emptied the ground. If you know your Gallowgate from your Leazes, this is your quiz.",
@@ -271,7 +271,7 @@ export const CLUBS = [
     "slug": "real-madrid",
     "name": "Real Madrid",
     "h1": "Real Madrid Quiz",
-    "title": "Real Madrid Quiz — Los Blancos Trivia Questions & Answers | Ball IQ",
+    "title": "Real Madrid Quiz — Los Blancos Trivia | Ball IQ",
     "description": "Free Real Madrid quiz with explained answers — from Di Stéfano's five straight European Cups to La Décima and the 2024 Wembley final. Test your knowledge.",
     "intro": [
       "No club in football carries more weight than Real Madrid: a record fifteen European Cups, a record 36 Spanish league titles, and a self-image built on winning the biggest games in white. This free Real Madrid quiz spans the whole story — from the club's founding in 1902 and the presidency of Santiago Bernabéu that turned it into Europe's first superpower, through Alfredo Di Stéfano's 1950s dynasty, all the way to Kylian Mbappé and the modern side. It covers the finals, the Galácticos, the Clásicos and the records that make Madrid the reference point for everyone else. If it happened at the Bernabéu, it's fair game.",
@@ -367,7 +367,7 @@ export const CLUBS = [
     "slug": "psg",
     "name": "Paris Saint-Germain",
     "h1": "Paris Saint-Germain Quiz",
-    "title": "Paris Saint-Germain Quiz — PSG Trivia Questions & Answers | Ball IQ",
+    "title": "Paris Saint-Germain Quiz — PSG Trivia | Ball IQ",
     "description": "Test your PSG knowledge with free trivia questions and explained answers — from Weah and Ronaldinho to back-to-back Champions League wins in 2025 and 2026.",
     "intro": [
       "Paris Saint-Germain are football's great modern superpower — a club founded only in 1970 that now sits at the very top of the European game. This free PSG quiz covers the whole journey: the merger that created the club, the cup-fighting decades at the Parc des Princes, the Qatari takeover of 2011 that changed everything, and the Luis Enrique side that won back-to-back Champions Leagues in 2025 and 2026. Few clubs have packed so much drama into so little history — world-record transfers, a galáctico front three, painful European collapses and, finally, total triumph. If you can tell your Raí from your Rothen, this is your quiz.",
@@ -495,7 +495,7 @@ export const CLUBS = [
     "slug": "borussia-dortmund",
     "name": "Borussia Dortmund",
     "h1": "Borussia Dortmund Quiz",
-    "title": "Borussia Dortmund Quiz — BVB Trivia Questions & Answers | Ball IQ",
+    "title": "Borussia Dortmund Quiz — BVB Trivia | Ball IQ",
     "description": "Free Borussia Dortmund quiz with explained answers — from the 1997 Champions League win to Klopp, Haaland and the Yellow Wall. Test your BVB knowledge.",
     "intro": [
       "Borussia Dortmund are German football's great romantics — a black-and-yellow institution built on 80,000 roaring fans, breakneck attacking football and a knack for producing the next superstar before anyone else spots him. This free Borussia Dortmund quiz spans the whole story, from the club's post-war German championships of the 1950s and 60s to the modern BVB of pressing and counter-attacks, all played out in front of the Südtribüne, the 'Yellow Wall' that is the largest standing terrace in European club football.",
@@ -559,7 +559,7 @@ export const CLUBS = [
     "slug": "napoli",
     "name": "Napoli",
     "h1": "Napoli Quiz",
-    "title": "Napoli Quiz — Partenopei Trivia Questions & Answers | Ball IQ",
+    "title": "Napoli Quiz — Partenopei Trivia | Ball IQ",
     "description": "Free Napoli quiz with explained answers — Maradona's scudetti, the 1989 UEFA Cup, Spalletti's 2023 title and Conte's 2025 triumph. Play in your browser.",
     "intro": [
       "Napoli were founded in 1926 and have spent a century carrying an entire city on their back — the one club that matters in Naples, playing in the sky blue of the bay beneath Vesuvius. This free Napoli quiz spans the whole story: the decades of longing, the seven seasons when Diego Maradona made the San Paolo the centre of the football world, the 33-year wait that followed him out the door, and the astonishing modern run that delivered two more scudetti in three seasons under Luciano Spalletti and Antonio Conte. Four league titles as of 2026, a UEFA Cup, a number 10 shirt retired in Maradona's honour and a stadium renamed after him — few clubs compress this much drama into one history, and none celebrate quite like Naples does. If you know why the ground is no longer called the San Paolo, this is your quiz.",
@@ -591,7 +591,7 @@ export const CLUBS = [
     "slug": "galatasaray",
     "name": "Galatasaray",
     "h1": "Galatasaray Quiz",
-    "title": "Galatasaray Quiz — Cimbom Trivia Questions & Answers | Ball IQ",
+    "title": "Galatasaray Quiz — Cimbom Trivia | Ball IQ",
     "description": "Free Galatasaray quiz with explained answers — from the 2000 UEFA Cup win and Hagi to Osimhen and a record 26th title. Play free in your browser.",
     "intro": [
       "Galatasaray were founded in October 1905 by Ali Sami Yen and his fellow students at Galatasaray High School, and no Turkish club has won more — a record 26 Süper Lig titles as of 2026, the last four of them in a row. This free Galatasaray quiz runs the full length of the story: the Fatih Terim sides that won four straight championships between 1996 and 2000 and then conquered Europe, the Gheorghe Hagi and Hakan Şükür years, the Didier Drogba and Wesley Sneijder team of the 2010s, and the Okan Buruk era of Mauro Icardi and Victor Osimhen. It takes in the Intercontinental Derby against Fenerbahçe — Europe against Asia across the Bosphorus — the old Ali Sami Yen and today's RAMS Park, and the 'Welcome to Hell' nights that once made Istanbul the away trip every European side dreaded. If you call the club Cimbom, this is your quiz.",
@@ -623,7 +623,7 @@ export const CLUBS = [
     "slug": "benfica",
     "name": "Benfica",
     "h1": "Benfica Quiz",
-    "title": "Benfica Quiz — O Glorioso Trivia Questions & Answers | Ball IQ",
+    "title": "Benfica Quiz — O Glorioso Trivia | Ball IQ",
     "description": "Free Benfica quiz with explained answers — from Eusébio's European Cups to Enzo's €121m exit. Sample questions in your browser, full bank in the app.",
     "intro": [
       "Benfica were founded in Lisbon in 1904 and have spent the 122 years since setting the standard in Portuguese football: a record 38 Primeira Liga titles as of 2026, two European Cups, and a production line of talent the rest of Europe shops from every summer. Home is the Estádio da Luz, rebuilt for Euro 2004 and still the loudest ground in Portugal on derby night. This quiz covers the lot — the Béla Guttmann and Eusébio years, the curse that supposedly followed them, the record title hauls, the €100m-plus sales, and the strange 2025-26 campaign in which Benfica went all 34 league games unbeaten and somehow still finished third. Whether you stand with the ultras in the Curva Sul or admire O Glorioso from a distance, there's a run of questions here with your name on it.",
@@ -655,7 +655,7 @@ export const CLUBS = [
     "slug": "fenerbahce",
     "name": "Fenerbahçe",
     "h1": "Fenerbahçe Quiz",
-    "title": "Fenerbahçe Quiz — Yellow Canaries Trivia Questions & Answers | Ball IQ",
+    "title": "Fenerbahçe Quiz — Yellow Canaries Trivia | Ball IQ",
     "description": "Free Fenerbahçe quiz with explained answers — from Lefter and Alex de Souza to Bolić at Old Trafford and Zico's 2008 run. Play in your browser.",
     "intro": [
       "Fenerbahçe were founded in 1907 in Kadıköy, on the Asian shore of Istanbul, and have spent well over a century as one of the great institutions of Turkish football. This free Fenerbahçe quiz covers the whole arc — from the Ottoman-era beginnings under founders Ziya Songülen, Ayetullah Bey and Necip Okaner, through the club's dominance of the Istanbul league and the professional Süper Lig era that began in 1959, to the modern sides that keep chasing an elusive league title. Few clubs carry an identity this vivid: the yellow-and-navy of the Sarı-Lacivertliler, the roar of the Şükrü Saracoğlu, and the badge worn like a crest of the city's Anatolian side. They are the Sarı Kanaryalar — the Yellow Canaries. If you bleed sarı-lacivert, this quiz is for you.",
@@ -847,7 +847,7 @@ export const CLUBS = [
     "slug": "feyenoord",
     "name": "Feyenoord",
     "h1": "Feyenoord Quiz",
-    "title": "Feyenoord Quiz — De Kuip Trivia Questions & Answers | Ball IQ",
+    "title": "Feyenoord Quiz — De Kuip Trivia | Ball IQ",
     "description": "Free Feyenoord quiz with explained answers — from the 1970 European Cup and De Kuip to De Klassieker and two UEFA Cups. Play free in your browser.",
     "intro": [
       "Feyenoord were founded in Rotterdam in 1908 and have played at Stadion Feijenoord — known to everyone simply as De Kuip, 'the tub' — since 1937. This free Feyenoord quiz covers the whole story of the club: the red-and-white halved shirt, the black shorts, and a working-class identity summed up by the motto Rotterdam and the club share, 'Geen woorden maar daden' — no words but deeds. If you know your Feyenoord, this is your test.",
@@ -879,7 +879,7 @@ export const CLUBS = [
     "slug": "psv",
     "name": "PSV",
     "h1": "PSV Quiz",
-    "title": "PSV Quiz — PSV Eindhoven Trivia Questions & Answers | Ball IQ",
+    "title": "PSV Quiz — PSV Eindhoven Trivia | Ball IQ",
     "description": "Free PSV Eindhoven quiz with explained answers — from the 1988 European Cup and treble to Romário, Ronaldo and Philips Stadion. Play free in your browser.",
     "intro": [
       "PSV were founded in Eindhoven in 1913 as the sports club of the Philips electronics company, and still play at the Philips Stadion in the heart of the city. This free PSV quiz covers the whole story: the red-and-white stripes, the Eindhoven roots, and a reputation as one of the great talent factories in European football. If you know your PSV, this is your test.",
@@ -911,7 +911,7 @@ export const CLUBS = [
     "slug": "anderlecht",
     "name": "Anderlecht",
     "h1": "Anderlecht Quiz",
-    "title": "Anderlecht Quiz — RSC Anderlecht Trivia Questions & Answers | Ball IQ",
+    "title": "Anderlecht Quiz — RSC Anderlecht Trivia | Ball IQ",
     "description": "Free RSC Anderlecht quiz with explained answers — from two Cup Winners' Cups and the 1983 UEFA Cup to Paul Van Himst and the purple and white. Play free in your browser.",
     "intro": [
       "RSC Anderlecht were founded in 1908 in the Brussels borough that gives them their name, and the purple and white have been Belgian football's defining colours ever since. This free Anderlecht quiz covers the whole story: the Brussels roots, the trophy-laden decades, and a run of European nights that made a Belgian club genuinely feared on the continent. If you know your Anderlecht, this is your test.",
@@ -943,7 +943,7 @@ export const CLUBS = [
     "slug": "besiktas",
     "name": "Beşiktaş",
     "h1": "Beşiktaş Quiz",
-    "title": "Beşiktaş Quiz — Black Eagles Trivia Questions & Answers | Ball IQ",
+    "title": "Beşiktaş Quiz — Black Eagles Trivia | Ball IQ",
     "description": "Free Beşiktaş quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies. Play free in your browser.",
     "intro": [
       "Beşiktaş were founded in 1903, making them the oldest club of Istanbul's big three — the football branch followed in 1911 — and they have played in the shadow of the Dolmabahçe Palace on the European shore of the Bosphorus for most of their history. This free Beşiktaş quiz covers the whole story: the black-and-white stripes, the Kara Kartallar — the Black Eagles — and a support that treats the club as a birthright rather than a hobby. If you know your Beşiktaş, this is your test.",
@@ -975,7 +975,7 @@ export const CLUBS = [
     "slug": "trabzonspor",
     "name": "Trabzonspor",
     "h1": "Trabzonspor Quiz",
-    "title": "Trabzonspor Quiz — Black Sea Storm Trivia Questions & Answers | Ball IQ",
+    "title": "Trabzonspor Quiz — Black Sea Storm Trivia | Ball IQ",
     "description": "Free Trabzonspor quiz with explained answers — from breaking Istanbul's monopoly in 1976 to Şenol Güneş and the 2022 title. Play free in your browser.",
     "intro": [
       "Trabzonspor were founded in 1967 on the Black Sea coast, and within a decade they had done something no club had managed before them. This free Trabzonspor quiz covers the whole story: the burgundy and blue, the Karadeniz Fırtınası — the Black Sea Storm — and a city that treats the club as its answer to Istanbul. If you know your Trabzonspor, this is your test.",
@@ -1007,7 +1007,7 @@ export const CLUBS = [
     "slug": "club-brugge",
     "name": "Club Brugge",
     "h1": "Club Brugge Quiz",
-    "title": "Club Brugge Quiz — Blauw-Zwart Trivia Questions & Answers | Ball IQ",
+    "title": "Club Brugge Quiz — Blauw-Zwart Trivia | Ball IQ",
     "description": "Free Club Brugge quiz with explained answers — from the 1978 European Cup final and Ernst Happel to Jan Ceulemans and the Bruges derby. Play free in your browser.",
     "intro": [
       "Club Brugge were founded in 1891, which makes them one of the oldest clubs in Belgium, and the blauw-zwart — blue and black — have spent the century since making a medieval tourist town into a serious football address. This free Club Brugge quiz covers the whole story: the Jan Breydel Stadium — opened in 1975 as the Olympiastadion — which Club moved into that year and shared for decades with local rivals Cercle Brugge, the Belgian Clásico with Anderlecht, and the European run that took a Belgian club closer to the continent's biggest prize than any had gone before. If you know your Club, this is your test.",
@@ -1039,7 +1039,7 @@ export const CLUBS = [
     "slug": "red-star-belgrade",
     "name": "Red Star Belgrade",
     "h1": "Red Star Belgrade Quiz",
-    "title": "Red Star Belgrade Quiz — Crvena Zvezda Trivia Questions & Answers | Ball IQ",
+    "title": "Red Star Belgrade Quiz — Crvena Zvezda Trivia | Ball IQ",
     "description": "Free Red Star Belgrade quiz with explained answers — from the 1991 European Cup in Bari to the Marakana, the Eternal Derby and Dragan Džajić. Play free in your browser.",
     "intro": [
       "Red Star Belgrade — Crvena zvezda — were founded in 1945 and have spent the decades since turning their corner of Belgrade into the loudest address in Balkan football. This free Red Star quiz covers the whole story: the red-and-white shirts, the Marakana rocking under the Delije, and the Eternal Derby against Partizan that stops the city. If you know your Zvezda, this is your test.",
@@ -1071,7 +1071,7 @@ export const CLUBS = [
     "slug": "dinamo-zagreb",
     "name": "Dinamo Zagreb",
     "h1": "Dinamo Zagreb Quiz",
-    "title": "Dinamo Zagreb Quiz — Modri Trivia Questions & Answers | Ball IQ",
+    "title": "Dinamo Zagreb Quiz — Modri Trivia | Ball IQ",
     "description": "Free Dinamo Zagreb quiz with explained answers — from the 1967 Fairs Cup and Maksimir to Luka Modrić, the Bad Blue Boys and the Eternal Derby. Play free in your browser.",
     "intro": [
       "Dinamo Zagreb were established in 1945 and have long been the standard-bearers of Croatian football, playing in blue at Maksimir Stadium in front of the Bad Blue Boys. This free Dinamo quiz covers the whole story: the modri — the blues — the Eternal Derby against Hajduk Split, the European nights, and a talent factory that has fed the biggest clubs in the world. If you know your Dinamo, this is your test.",
@@ -1135,7 +1135,7 @@ export const CLUBS = [
     "slug": "nottingham-forest",
     "name": "Nottingham Forest",
     "h1": "Nottingham Forest Quiz",
-    "title": "Nottingham Forest Quiz — Garibaldi Red Trivia Questions & Answers | Ball IQ",
+    "title": "Nottingham Forest Quiz — Garibaldi Red Trivia | Ball IQ",
     "description": "Free Nottingham Forest quiz with explained answers — from Brian Clough and back-to-back European Cups to the City Ground, Stuart Pearce and Trevor Francis. Play free in your browser.",
     "intro": [
       "Nottingham Forest were founded in 1865, making them one of the oldest football clubs in the world, and have played beside the River Trent at the City Ground since 1898. This free Forest quiz covers the whole story: the Garibaldi red they were among the first clubs ever to wear, the Trent End, and one of the most improbable rises in the history of the European game. If you know your Forest, this is your test.",
@@ -1167,7 +1167,7 @@ export const CLUBS = [
     "slug": "aston-villa",
     "name": "Aston Villa",
     "h1": "Aston Villa Quiz",
-    "title": "Aston Villa Quiz — Claret & Blue Trivia Questions & Answers | Ball IQ",
+    "title": "Aston Villa Quiz — Claret & Blue Trivia | Ball IQ",
     "description": "Free Aston Villa quiz with explained answers — from the 1982 European Cup and Peter Withe to Villa Park, the Second City derby and Unai Emery. Play free in your browser.",
     "intro": [
       "Aston Villa were founded in 1874 and were one of the twelve founding members of the Football League in 1888. This free Villa quiz covers the whole story: the claret and blue, Villa Park, a proud Victorian and Edwardian dominance, and the night in 1982 when Villa conquered Europe. If you know your Villa, this is your test.",
@@ -1199,7 +1199,7 @@ export const CLUBS = [
     "slug": "everton",
     "name": "Everton",
     "h1": "Everton Quiz",
-    "title": "Everton Quiz — The Toffees Trivia Questions & Answers | Ball IQ",
+    "title": "Everton Quiz — The Toffees Trivia | Ball IQ",
     "description": "Free Everton quiz with explained answers — from Dixie Dean's 60 goals and the 1985 Cup Winners' Cup to Goodison Park, the School of Science and the Merseyside derby. Play free in your browser.",
     "intro": [
       "Everton were founded in 1878 and were one of the twelve founding members of the Football League in 1888. This free Everton quiz covers the whole story: the royal blue, the 'School of Science' reputation for stylish football, the great Goodison Park sides, and a proud place among the most successful clubs in English history. If you know your Everton, this is your test.",
@@ -1231,7 +1231,7 @@ export const CLUBS = [
     "slug": "leeds-united",
     "name": "Leeds United",
     "h1": "Leeds United Quiz",
-    "title": "Leeds United Quiz — Elland Road Trivia Questions & Answers | Ball IQ",
+    "title": "Leeds United Quiz — Elland Road Trivia | Ball IQ",
     "description": "Free Leeds United quiz with explained answers — from Don Revie's champions and the Fairs Cup to Elland Road, Billy Bremner and Marcelo Bielsa. Play free in your browser.",
     "intro": [
       "Leeds United were formed in 1919 to take the place of the disbanded Leeds City, and have played at Elland Road ever since. This free Leeds quiz covers the whole story: the white shirts, the fierce Elland Road atmosphere, the great Don Revie side, and a modern revival that captured neutrals' hearts. If you know your Leeds, this is your test.",
@@ -1263,7 +1263,7 @@ export const CLUBS = [
     "slug": "west-ham",
     "name": "West Ham",
     "h1": "West Ham Quiz",
-    "title": "West Ham Quiz — The Hammers Trivia Questions & Answers | Ball IQ",
+    "title": "West Ham Quiz — The Hammers Trivia | Ball IQ",
     "description": "Free West Ham quiz with explained answers — from Bobby Moore and 1966 to the 1965 Cup Winners' Cup, the Academy of Football and the 2023 Conference League. Play free in your browser.",
     "intro": [
       "West Ham United were founded in 1895 as Thames Ironworks, becoming West Ham United in 1900, and are known across the game as 'the Academy of Football'. This free West Ham quiz covers the whole story: the claret and blue, 'I'm Forever Blowing Bubbles', the move from the Boleyn Ground to the London Stadium in 2016, and a claim on the greatest day in English football. If you know your Hammers, this is your test.",
@@ -1295,7 +1295,7 @@ export const CLUBS = [
     "slug": "athletic-bilbao",
     "name": "Athletic Bilbao",
     "h1": "Athletic Bilbao Quiz",
-    "title": "Athletic Bilbao Quiz — Los Leones Trivia Questions & Answers | Ball IQ",
+    "title": "Athletic Bilbao Quiz — Los Leones Trivia | Ball IQ",
     "description": "Free Athletic Bilbao quiz with explained answers — from the Basque-only cantera and San Mamés to Telmo Zarra, the 2024 Copa del Rey and the Basque derby. Play free in your browser.",
     "intro": [
       "Athletic Club — Athletic Bilbao — were founded in 1898 and are one of the most distinctive institutions in world football. This free Athletic quiz covers the whole story: the red-and-white stripes, San Mamés (La Catedral), Los Leones, and the famous cantera philosophy of fielding only players with Basque roots or developed in the Basque region. If you know your Athletic, this is your test.",
@@ -1327,7 +1327,7 @@ export const CLUBS = [
     "slug": "sevilla",
     "name": "Sevilla",
     "h1": "Sevilla Quiz",
-    "title": "Sevilla Quiz — Sevilla FC Trivia Questions & Answers | Ball IQ",
+    "title": "Sevilla Quiz — Sevilla FC Trivia | Ball IQ",
     "description": "Free Sevilla quiz with explained answers — from a record run of UEFA Cup and Europa League triumphs to the Sánchez-Pizjuán, Monchi and the Seville derby. Play free in your browser.",
     "intro": [
       "Sevilla FC were founded in 1890, one of the oldest clubs in Spain, and play in red and white at the Estadio Ramón Sánchez-Pizjuán. This free Sevilla quiz covers the whole story: the fervent Nervión atmosphere, a golden age of European cup football, and a recruitment model that became the envy of the continent. If you know your Sevilla, this is your test.",
@@ -1359,7 +1359,7 @@ export const CLUBS = [
     "slug": "real-betis",
     "name": "Real Betis",
     "h1": "Real Betis Quiz",
-    "title": "Real Betis Quiz — Béticos Trivia Questions & Answers | Ball IQ",
+    "title": "Real Betis Quiz — Béticos Trivia | Ball IQ",
     "description": "Free Real Betis quiz with explained answers — from the 1935 title and the green-and-white to the 2022 Copa del Rey, Joaquín and the Seville derby. Play free in your browser.",
     "intro": [
       "Real Betis Balompié were founded in 1907 and play in green-and-white stripes at the Estadio Benito Villamarín. This free Betis quiz covers the whole story: the passionate Béticos, the unmistakable chant '¡Viva el Betis manque pierda!' — long live Betis even when they lose — and one of the most loyal supports in Spanish football. If you know your Betis, this is your test.",
@@ -1391,7 +1391,7 @@ export const CLUBS = [
     "slug": "schalke-04",
     "name": "Schalke 04",
     "h1": "Schalke 04 Quiz",
-    "title": "Schalke 04 Quiz — Die Knappen Trivia Questions & Answers | Ball IQ",
+    "title": "Schalke 04 Quiz — Die Knappen Trivia | Ball IQ",
     "description": "Free Schalke 04 quiz with explained answers — from the miners' club and the 1997 UEFA Cup Eurofighters to the Revierderby with Dortmund and the Royal Blues. Play free in your browser.",
     "intro": [
       "FC Schalke 04 were founded in 1904 in Gelsenkirchen, in the heart of the Ruhr coalfield, and play in royal blue and white. This free Schalke quiz covers the whole story: Die Knappen — the miners — the enormous, devoted support, and one of the great rivalries in world football. If you know your Schalke, this is your test.",
@@ -1455,7 +1455,7 @@ export const CLUBS = [
     "slug": "fiorentina",
     "name": "Fiorentina",
     "h1": "Fiorentina Quiz",
-    "title": "Fiorentina Quiz — La Viola Trivia Questions & Answers | Ball IQ",
+    "title": "Fiorentina Quiz — La Viola Trivia | Ball IQ",
     "description": "Free Fiorentina quiz with explained answers — from Batistuta and Antognoni to the purple shirts, the Artemio Franchi and the Derby dell'Appennino. Play free in your browser.",
     "intro": [
       "Fiorentina were founded in 1926 from the merger of two Florentine clubs, and by 1929 they wore the purple that made them La Viola — legend says the original red-and-white kit came out purple after a botched wash. This free Fiorentina quiz covers the whole story: the Giglio of Florence on the crest, the Curva Fiesole in full voice, and the Stadio Artemio Franchi with its concrete Marathon Tower, designed by Pier Luigi Nervi in the 1930s. If you know your Viola, this is your test.",
@@ -1487,7 +1487,7 @@ export const CLUBS = [
     "slug": "lazio",
     "name": "Lazio",
     "h1": "Lazio Quiz",
-    "title": "Lazio Quiz — Biancocelesti Trivia Questions & Answers | Ball IQ",
+    "title": "Lazio Quiz — Biancocelesti Trivia | Ball IQ",
     "description": "Free Lazio quiz with explained answers — from the 1999 Cup Winners' Cup and the 2000 Scudetto to the eagle, the Derby della Capitale and Ciro Immobile. Play free in your browser.",
     "intro": [
       "Lazio were founded in 1900 as a running club, took white and sky blue as a tribute to Greece — home of the Olympic ideal — and carry the eagle on the badge that makes them le Aquile. This free Lazio quiz covers the whole story: the Stadio Olimpico shared with Roma since 1953, the Curva Nord, and the fiercest fixture in the capital. When Rome's clubs were merged to create AS Roma in 1927, Lazio refused — the Derby della Capitale has carried that edge ever since.",
@@ -1519,7 +1519,7 @@ export const CLUBS = [
     "slug": "torino",
     "name": "Torino",
     "h1": "Torino Quiz",
-    "title": "Torino Quiz — Il Grande Torino Trivia Questions & Answers | Ball IQ",
+    "title": "Torino Quiz — Il Grande Torino Trivia | Ball IQ",
     "description": "Free Torino quiz with explained answers — from the Grande Torino and the Superga disaster to Valentino Mazzola, the granata and the Derby della Mole. Play free in your browser.",
     "intro": [
       "Torino were founded in 1906 by dissidents who split from Juventus, and the maroon shirts made them the granata — Il Toro, the bull, on the crest. This free Torino quiz covers the whole story: the Derby della Mole against the old enemy, the fortress Filadelfia, and the greatest and most tragic team in Italian history. If you know your Toro, this is your test.",
@@ -1551,7 +1551,7 @@ export const CLUBS = [
     "slug": "sporting-cp",
     "name": "Sporting CP",
     "h1": "Sporting CP Quiz",
-    "title": "Sporting CP Quiz — Os Leões Trivia Questions & Answers | Ball IQ",
+    "title": "Sporting CP Quiz — Os Leões Trivia | Ball IQ",
     "description": "Free Sporting CP quiz with explained answers — from the 1964 Cup Winners' Cup and the Cinco Violinos to Cristiano Ronaldo's academy and Figo. Play free in your browser.",
     "intro": [
       "Sporting Clube de Portugal were founded in 1906 in Lisbon, wear the green-and-white hoops, and carry the lion — Os Leões — on the crest. This free Sporting quiz covers the whole story: the Estádio José Alvalade, rebuilt in 2003 for Euro 2004, the Lisbon derby against Benfica, and a place alongside Benfica and Porto in Portugal's Três Grandes. If you know your Sporting, this is your test.",
@@ -1583,7 +1583,7 @@ export const CLUBS = [
     "slug": "saint-etienne",
     "name": "Saint-Étienne",
     "h1": "Saint-Étienne Quiz",
-    "title": "Saint-Étienne Quiz — Les Verts Trivia Questions & Answers | Ball IQ",
+    "title": "Saint-Étienne Quiz — Les Verts Trivia | Ball IQ",
     "description": "Free Saint-Étienne quiz with explained answers — from the golden era and the poteaux carrés of 1976 to le Chaudron, Rocheteau and Platini. Play free in your browser.",
     "intro": [
       "AS Saint-Étienne were founded in 1919 by employees of the Casino grocery company, turned professional in 1933, and became Les Verts — the Greens — the most romantic name in French football. This free Saint-Étienne quiz covers the whole story: the Stade Geoffroy-Guichard, built 'à l'anglaise' with four separate stands and nicknamed le Chaudron for its ferocious atmosphere, the Kop Nord, and the derby with Lyon. If you know your Verts, this is your test.",
@@ -1615,7 +1615,7 @@ export const CLUBS = [
     "slug": "sunderland",
     "name": "Sunderland",
     "h1": "Sunderland Quiz",
-    "title": "Sunderland Quiz — Stadium of Light Trivia Questions & Answers | Ball IQ",
+    "title": "Sunderland Quiz — Stadium of Light Trivia | Ball IQ",
     "description": "Free Sunderland quiz with explained answers — from six league titles and the 1973 FA Cup upset to Roker Park, the Stadium of Light and Kevin Phillips. Play free in your browser.",
     "intro": [
       "Sunderland, founded in 1879 and famous for their red-and-white stripes, are one of English football's grand old names with one of the game's most devoted followings. This free Sunderland quiz covers the whole story — the six league titles, the great cup days, the move from Roker Park to the Stadium of Light, and the modern rollercoaster made famous on Netflix.",
@@ -1647,7 +1647,7 @@ export const CLUBS = [
     "slug": "ipswich",
     "name": "Ipswich Town",
     "h1": "Ipswich Town Quiz",
-    "title": "Ipswich Town Quiz — Portman Road Trivia Questions & Answers | Ball IQ",
+    "title": "Ipswich Town Quiz — Portman Road Trivia | Ball IQ",
     "description": "Free Ipswich Town quiz with explained answers — from Alf Ramsey's title and Bobby Robson's UEFA Cup to Portman Road and the Tractor Boys. Play free in your browser.",
     "intro": [
       "Ipswich Town, the pride of Suffolk and long-time residents of Portman Road, punch far above their size in English football history. This free Ipswich quiz covers the whole story — from two of the greatest managers the English game has produced to the blue of the Tractor Boys.",
@@ -1679,7 +1679,7 @@ export const CLUBS = [
     "slug": "crystal-palace",
     "name": "Crystal Palace",
     "h1": "Crystal Palace Quiz",
-    "title": "Crystal Palace Quiz — Selhurst Park Trivia Questions & Answers | Ball IQ",
+    "title": "Crystal Palace Quiz — Selhurst Park Trivia | Ball IQ",
     "description": "Free Crystal Palace quiz with explained answers — from the 2025 FA Cup and the 1990 final to Selhurst Park, Wright and Bright, and the Eagles. Play free in your browser.",
     "intro": [
       "Crystal Palace, the Eagles of south London, have long been one of English football's most colourful clubs, and this free Palace quiz covers the whole story — from the 1990 FA Cup final to the club's first-ever major trophy in 2025.",
@@ -1711,7 +1711,7 @@ export const CLUBS = [
     "slug": "fulham",
     "name": "Fulham",
     "h1": "Fulham Quiz",
-    "title": "Fulham Quiz — Craven Cottage Trivia Questions & Answers | Ball IQ",
+    "title": "Fulham Quiz — Craven Cottage Trivia | Ball IQ",
     "description": "Free Fulham quiz with explained answers — from Johnny Haynes and Craven Cottage to the 2010 Europa League final run. Play free in your browser.",
     "intro": [
       "Fulham, the Cottagers of west London, play at one of English football's most characterful grounds — Craven Cottage, on the banks of the Thames. This free Fulham quiz covers the whole story, from club legend Johnny Haynes to a remarkable run to a major European final.",
@@ -1743,7 +1743,7 @@ export const CLUBS = [
     "slug": "brighton",
     "name": "Brighton",
     "h1": "Brighton Quiz",
-    "title": "Brighton Quiz — Amex Stadium Trivia Questions & Answers | Ball IQ",
+    "title": "Brighton Quiz — Amex Stadium Trivia | Ball IQ",
     "description": "Free Brighton quiz with explained answers — from the Amex and Tony Bloom's data model to the 2023 European qualification and the Seagulls. Play free in your browser.",
     "intro": [
       "Brighton & Hove Albion, the Seagulls of the south coast, have risen from the lower leagues to become one of the Premier League's most admired clubs, and this free Brighton quiz covers the whole journey — from the wilderness years to the Amex and Europe.",

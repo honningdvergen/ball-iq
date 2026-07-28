@@ -50,7 +50,7 @@ export const SITE = {
 export const HUB = {
   slug: 'quiz',
   h1: 'Football Quizzes',
-  title: 'Football (Soccer) Quiz — Free Trivia Questions & Answers | Ball IQ',
+  title: 'Football (Soccer) Quiz — Free Trivia | Ball IQ',
   description:
     'Play free football and soccer quizzes covering the World Cup, Premier League, Champions League and more. Thousands of soccer trivia questions with explained answers — no sign-up needed.',
   intro: [
@@ -101,7 +101,7 @@ export const CATEGORIES = [
     slug: 'world-cup',
     name: 'World Cup',
     h1: 'World Cup Quiz',
-    title: 'World Cup Quiz — FIFA World Cup Trivia Questions & Answers | Ball IQ',
+    title: 'World Cup Quiz — FIFA World Cup Trivia | Ball IQ',
     description:
       'Test your FIFA World Cup knowledge with free trivia questions and explained answers — from 1930 to Qatar 2022. Every answer comes with the story behind it.',
     about: 'FIFA World Cup',
@@ -137,7 +137,7 @@ export const CATEGORIES = [
     slug: 'premier-league',
     name: 'Premier League',
     h1: 'Premier League Quiz',
-    title: 'Premier League Quiz — Football Trivia Questions & Answers | Ball IQ',
+    title: 'Premier League Quiz — Football Trivia | Ball IQ',
     description:
       'Free Premier League quiz with explained answers — from the 1992 breakaway and the Invincibles to City’s 100-point season. Test your English football knowledge.',
     about: 'Premier League',
@@ -173,7 +173,7 @@ export const CATEGORIES = [
     slug: 'champions-league',
     name: 'Champions League',
     h1: 'Champions League Quiz',
-    title: 'Champions League Quiz — UEFA Trivia Questions & Answers | Ball IQ',
+    title: 'Champions League Quiz — UEFA Trivia | Ball IQ',
     description:
       'Free UEFA Champions League quiz with explained answers — from Real Madrid’s European Cup dynasty to Istanbul 2005 and Liverpool’s comeback against Barcelona.',
     about: 'UEFA Champions League',
