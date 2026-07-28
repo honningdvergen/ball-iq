@@ -402,12 +402,23 @@ function PlayNow() {
   return (
     <section style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px,5vw,56px) 20px 22px', overflow: 'hidden' }}>
       <div className="mkt-glow" style={{ position: 'absolute', top: '20%', left: '50%', width: 'min(760px,120vw)', height: 'min(760px,120vw)', background: 'radial-gradient(circle, rgba(88,204,2,0.16) 0%, rgba(88,204,2,0.05) 38%, transparent 64%)', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginBottom: 30 }}>
+      {/* VERTICAL BUDGET IS THE CONSTRAINT, not the copy length.
+          66% of traffic is phones. `.mkt-play-grid` stacks to one column below
+          760px, and the MiniFootle card alone is ~636px tall — so on an 844px
+          iPhone screen every pixel spent here pushes the playable card further
+          out of view, and the QuizTaster (~1074px down) is never seen at all.
+          Measured 2026-07-28 against a 100% homepage bounce rate.
+          Keep this block TIGHT. Margins here cost conversions. */}
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginBottom: 20 }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 15px', border: '1px solid #2A2D3A', borderRadius: 999, background: 'rgba(26,29,39,0.6)', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.04em', color: '#9BA0B8' }}>
-          <span>⚽</span> Play free — no download needed
+          <span>⚽</span> Free · no sign-up · no download
         </div>
-        <h1 style={{ margin: '18px auto 0', maxWidth: '16ch', fontSize: 'clamp(34px,6vw,60px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff' }}>Pick your challenge.</h1>
-        <p style={{ margin: '16px auto 0', maxWidth: '46ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.55, color: '#9BA0B8' }}>Crack today&apos;s Footle, or rate your Ball IQ in five questions. Both free, right here.</p>
+        {/* "Pick your challenge." named no sport, no stake and no reward — on a
+            page whose visitors overwhelmingly leave without clicking, the H1 is
+            the highest-leverage string on the site. Lead with the question the
+            visitor already wants answered about themselves. */}
+        <h1 style={{ margin: '14px auto 0', maxWidth: '15ch', fontSize: 'clamp(34px,6vw,60px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff' }}>How good is your football knowledge, really?</h1>
+        <p style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
       </div>
       <div className="mkt-play-grid" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mkt-play-card"><MiniFootle /></div>
