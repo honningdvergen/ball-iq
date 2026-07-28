@@ -324,3 +324,53 @@ Ranked by expected value:
 
 ⚠️ **Nothing in this file is a fix. It is evidence.** Fixes must be verified by
 exercising the app at a mobile viewport, not by reading the diff.
+
+---
+
+## 🇺🇸 2026-07-28 (US session recordings) — WHY US TRAFFIC CONVERTS AT ZERO
+
+12 US sessions, longest-first. **Every Google-referred one had ZERO clicks:**
+
+| Page | Referrer | Duration | Clicks | Load |
+|---|---|---|---|---|
+| `/quiz/psg/` | Google | 48s | **0** | 1,639ms |
+| `/quiz/psg/` | Google | 4s | **0** | 1,951ms |
+| `/quiz/champions-league/` | Google | 7s | **0** | 2,393ms |
+| `/quiz/champions-league/` | — | 2s | **0** | 1,473ms |
+| `/lists/ballon-dor-winners/` | — | 8s | **0** | 562ms |
+| `/` homepage | — | 14s | **0** | **4,538ms, LCP 7.1s** |
+
+One visitor spent **48 seconds on the PSG page and never tapped anything**, with
+the first taster option at y=349 — well above the fold.
+
+### Ruled out (do not redo)
+
+- **Page weight.** Club pages are 68KB raw HTML (14KB inline CSS, 11KB JS,
+  12 Q&A cards). `/lists` 45KB, homepage 36KB. Not a payload problem.
+- **"The answers are already visible so there's nothing to tap."** Checked in a
+  real browser: `.qa-why` computes to `display:none` before interaction. A grep
+  of the inline `<style>` suggested otherwise — the rule lives elsewhere. The
+  taster genuinely requires a tap.
+
+### Still open
+
+US visitors see a working, above-the-fold, interactive taster and don't touch
+it. That points at intent or content fit (British-English framing, club choice),
+not mechanics. See TODO 2c / task #60.
+
+### Two side findings
+
+- **The homepage is the slow entry**: LCP 7.1s / 4,538ms in one session, versus
+  1.5-2.4s for the static club pages. It is the SPA; the club pages are static
+  HTML. Worst-engaging entry (51.9s) AND slowest.
+- **Footle is what actually holds people.** The one high-engagement US session
+  was 86s with **18 clicks** — someone typing C-O-L-E, ENTER, C-E-N-A, ENTER.
+  Every other engaged session was onboarding or an abandoned tab.
+
+### Section positions on a club page (390×844, /quiz/psg/)
+
+Page 12,418px = 14.7 screens. Taster 10.4%→46.8% · **app CTA 54.1%** ·
+**tiles 57.2%** · FAQ 92.5%. **Clarity scroll stops at 21-25%** — the CTA and
+tiles are at more than double the read depth. And since the 10-question taster
+alone spans a third of the page, users are abandoning the taster around Q3-4,
+not scrolling past it. Moving the CTA up alone will not fix this. See task #59.
