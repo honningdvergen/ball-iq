@@ -20,6 +20,12 @@ import {
 // entire point of the freeze) but every other invariant still runs.
 const FROZEN_POOL_LENGTH = 406;
 
+// Last log index that had already been served to players when the 4-letter
+// purge ran — index 86 = Footle #87 = 2026-07-29. Everything at or below this
+// is public record and must never change; everything above it is ours to
+// curate. Advance it ONLY alongside another deliberate rewrite of the tail.
+const PUBLISHED_THROUGH_IDX = 86;
+
 // The pre-freeze algorithm, verbatim: pure stride over a given pool.
 function strideFormula(dayIndex, pool) {
   const offset = (dayIndex - WORDLE_ANCHOR_DAY) * WORDLE_STRIDE;
@@ -32,20 +38,28 @@ describe("WORDLE_ANSWER_LOG freeze", () => {
   it("covers #1..#400 with real pool entries of valid Footle lengths", () => {
     expect(WORDLE_ANSWER_LOG).toHaveLength(400);
     const pool = new Set(WORDLE_PLAYERS);
-    for (const answer of WORDLE_ANSWER_LOG) {
+    WORDLE_ANSWER_LOG.forEach((answer, n) => {
       expect(pool.has(answer)).toBe(true);
-      expect(answer.length).toBeGreaterThanOrEqual(4);
+      // 5-8 from #88 on. The published prefix keeps its 4-letter answers:
+      // rewriting a day that real players already solved would falsify the
+      // public archive (api/footle.js, /footle/answer).
+      expect(answer.length).toBeGreaterThanOrEqual(n > PUBLISHED_THROUGH_IDX ? 5 : 4);
       expect(answer.length).toBeLessThanOrEqual(8);
-    }
+    });
   });
 
-  it("matches the old stride formula for every logged day (zero behavior change)", () => {
+  it("no already-published day ever moves", () => {
     if (WORDLE_PLAYERS.length !== FROZEN_POOL_LENGTH) {
       // Pool has grown since the freeze — the formula is EXPECTED to
       // disagree now; the log is the source of truth. Nothing to verify.
       return;
     }
-    for (let n = 0; n < WORDLE_ANSWER_LOG.length; n++) {
+    // Only the PUBLISHED prefix is checked against the generating formula.
+    // Beyond it the log is deliberately hand-curated (the 4-letter purge of
+    // 2026-07-29), which is exactly what the freeze exists to permit — the
+    // invariant that matters is that no answer a player has already seen
+    // changes, not that unplayed future days still match a formula.
+    for (let n = 0; n <= PUBLISHED_THROUGH_IDX; n++) {
       expect(WORDLE_ANSWER_LOG[n]).toBe(strideFormula(WORDLE_ANCHOR_DAY + n, WORDLE_PLAYERS));
     }
   });

@@ -2579,6 +2579,25 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         }} />
       )}
 
+      {/* Verdict BEFORE explanation. These two used to be the other way round
+          here while TrueFalseScreen rendered verdict-then-explanation — the
+          same two pieces of information in opposite orders in one app. Verdict
+          first is also the right reading order: the outcome, then the reason
+          for it, then the way forward.
+
+          role="status" is polite by implication — NOT assertive, which the quiz
+          timer already owns; two assertive regions would clobber each other. */}
+      {answered && (
+        <div role="status" className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
+          <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct"))
+            ? "✓ Correct!"
+            : isTyped
+              ? `✗ ${q.typed_a}`
+              : "✗ Incorrect"
+          }</span>
+        </div>
+      )}
+
       {answered && q?.hint && (() => {
         const isCorrect = isTF
           ? ((selected === 1) === (q?.a === true || q?.a === 1))
@@ -2601,19 +2620,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           </div>
         );
       })()}
-
-      {/* role="status" is polite by implication — NOT assertive, which the quiz
-          timer already owns; two assertive regions would clobber each other. */}
-      {answered && (
-        <div role="status" className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
-          <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct"))
-            ? "✓ Correct!"
-            : isTyped
-              ? `✗ ${q.typed_a}`
-              : "✗ Incorrect"
-          }</span>
-        </div>
-      )}
       {answered && showNext && (
         <button
           className="next-btn-primary"
@@ -6913,8 +6919,12 @@ const HOW_TO_PLAY = {
 const HIDDEN_STYLE = { display: "none" };
 
 // ─── FOOTBALL WORDLE ──────────────────────────────────────────────────────────
-// Surnames are stored uppercase, ASCII-only, 4–8 letters. Daily seed picks one
-// by index so every player gets the same answer until midnight local time.
+// Surnames are stored uppercase, ASCII-only. The POOL still holds 4-letter
+// names (they remain valid guesses), but ANSWERS are 5–8 letters from Footle
+// #88 on — a 4-wide board looked wrong next to the keyboard. Days #1–87 keep
+// the 4-letter answers they were published with. See WORDLE_ANSWER_POOL.
+// Daily seed picks one by index so every player gets the same answer until
+// midnight local time.
 // WORDLE_PLAYERS + anchor constants + getWordleDayIndex/AnswerForDayIndex/
 // Answer extracted to ./lib/wordle.js (Sprint #17 Stage 3).
 function dateToDateKey(d) {

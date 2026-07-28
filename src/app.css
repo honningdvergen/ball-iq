@@ -1231,8 +1231,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .modal-body{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px;}
 .modal-btns{display:flex;gap:10px;}
 .modal-btn{flex:1;padding:13px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.15s;}
-.modal-cancel{background:var(--s2);color:var(--text);}
-.modal-confirm{background:var(--red);color:#fff;}
+/* Quit-dialog emphasis. Was: grey "Keep playing" beside a full-width filled
+   red "Quit" — so the brightest, widest, most thumb-reachable control on a
+   dialog whose entire job is to PREVENT an accidental exit was the exit.
+   Activation is the app's measured bottleneck; the safe action gets the
+   primary treatment and the destructive one shrinks to its content width.
+   White on --red (#FF4B4B) also measured 3.30:1 — an AA failure at 14px.
+   Both fills are fixed colours so the ratios hold in either theme
+   (#0A0A0A on #58CC02 = 9.48:1, on #FF4B4B = 6.00:1). */
+.modal-cancel{background:var(--accent);color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
+.modal-confirm{flex:0 0 auto;padding-left:20px;padding-right:20px;background:var(--red);color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
 .modal-cancel:hover{opacity:0.85;}
 .modal-confirm:hover{opacity:0.85;}
 
