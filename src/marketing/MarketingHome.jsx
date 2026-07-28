@@ -14,6 +14,10 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 
 // Country-coded canonical URL — single source of truth in lib/links.js.
 import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
+// Single-button 'Get the app' CTAs must NOT hardcode one store — /get (api/get.js)
+// redirects iOS->App Store, Android->Play, desktop->the web app. The App Store and
+// Play BADGES below stay as direct links, because there the platform is the label.
+const GET_APP = '/get';
 const PLAY = '/play';
 // Build-time question-bank count (vite define, re-derived every deploy so it
 // never drifts stale). Fallback keeps dev servers / edge cases safe.
@@ -123,6 +127,9 @@ const AppleGlyph = ({ size = 22 }) => (
   </svg>
 );
 
+// Stays a DIRECT App Store link — on a badge showing the Apple logo the
+// platform IS the label, so routing it through /get would be wrong.
+// Only the unlabelled "Get the app" buttons are platform-aware.
 const AppStoreBadge = ({ small }) => (
   <a href={APP_STORE} target="_blank" rel="noopener" className="mkt-cta-app"
      style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#000', border: '1px solid #2A2D3A', borderRadius: small ? 12 : 14 }}>
@@ -434,7 +441,7 @@ function PlayNow() {
         <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>📱 Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
-        <GreenCTA href={APP_STORE} target="_blank">Get {QB_ROUND.toLocaleString('en-US')}+ questions in the app →</GreenCTA>
+        <GreenCTA href={GET_APP}>Get {QB_ROUND.toLocaleString('en-US')}+ questions in the app →</GreenCTA>
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
@@ -644,7 +651,7 @@ export default function MarketingHome() {
           <a href="#modes" className="mkt-link mkt-nav-sec">Modes</a>
           <a href="#faq" className="mkt-link mkt-nav-sec">FAQ</a>
           <a href={PLAY} className="mkt-nav-play mkt-nav-cta">Play free</a>
-          <GreenCTA href={APP_STORE} target="_blank" className="mkt-nav-cta">Get the app</GreenCTA>
+          <GreenCTA href={GET_APP} className="mkt-nav-cta">Get the app</GreenCTA>
         </div>
       </nav>
 
