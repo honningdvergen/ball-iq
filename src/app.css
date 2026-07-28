@@ -1410,14 +1410,22 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    (visible in the Capacitor iPhone 17 Pro simulator with 8-letter
    answers). Capacitor 6 targets iOS 13+ which has full aspect-ratio
    support; the fallback is no longer reachable. */
-.wd-tile.wd-filled{border-color:var(--border2);transform:scale(1.04);}
+/* WCAG 1.4.11 (non-text contrast, 3:1) — an empty tile's border is the ONLY
+   thing identifying it, and --border2 measured 1.45:1 on the page, so the
+   board you are meant to be reading was effectively invisible in daylight.
+   #5A5E6E is 3.07:1. Applied to the row you are actually typing into and to
+   filled tiles; .wd-row--future stays dim under the standard's explicit
+   exception for INACTIVE components. (Reference point: Wordle's own dark
+   board measures 1.65:1, so this is us clearing a bar they don't.) */
+:root{--wd-edge:#5A5E6E;}
+.wd-tile.wd-filled{border-color:var(--wd-edge);transform:scale(1.04);}
 /* QA S-02: before the first guess all six rows rendered identically, so a
    first-time Wordle-style player could not tell which row was live, where the
    next letter would land, or how many tries were left. Structure now reads at
    a glance: the active row is brighter, the next slot carries a soft accent
    caret, and unplayed rows recede. Colour/size only — no layout change, so the
    grid still fits every word length. */
-.wd-row--active .wd-tile{border-color:var(--border2);}
+.wd-row--active .wd-tile{border-color:var(--wd-edge);}
 .wd-row--future .wd-tile{opacity:0.45;}
 .wd-tile--next{border-color:rgba(88,204,2,0.55);box-shadow:inset 0 0 0 1px rgba(88,204,2,0.14);}
 @media (prefers-reduced-motion: no-preference){

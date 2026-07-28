@@ -1460,13 +1460,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
 
             <div style={{ height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
 
-            {/* Six competition ratings */}
+            {/* Six competition ratings. An unplayed competition shows "—", not
+                its prior-seeded number: computeCard seeds every unplayed comp
+                from `overall`, so a fresh account rendered the SAME value six
+                times under a six-times-repeated heading. Six identical numbers
+                as the largest element on the card named after the app's core
+                metric doesn't read as "unplayed", it reads as broken. The
+                desktop rating grid above (`pd-league-rating`) has always done
+                this; the mobile card never got it. */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 12, columnGap: 18 }}>
               {_card.ratings.map(r => (
                 <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0 }}>{r.icon}</div>
-                  <div style={{ fontSize: 19, fontWeight: 900, color: t.accent, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.rating}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: 0.8, letterSpacing: 0.5 }}>{r.abbr}</div>
+                  <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0, opacity: r.answered > 0 ? 1 : 0.45 }}>{r.icon}</div>
+                  <div style={{ fontSize: 19, fontWeight: 900, color: r.answered > 0 ? t.accent : t.text, opacity: r.answered > 0 ? 1 : 0.4, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.answered > 0 ? r.rating : "—"}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: r.answered > 0 ? 0.8 : 0.45, letterSpacing: 0.5 }}>{r.abbr}</div>
                 </div>
               ))}
             </div>

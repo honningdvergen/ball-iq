@@ -2078,7 +2078,10 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
           {picked.correct ? '✓ Correct!' : '✗ Incorrect'}
         </div>
       )}
-      {picked && !picked.correct && q.hint && (
+      {/* Right or wrong — see the QuizEngine explanation block. NOT applied to
+          HotStreakEngine: that mode runs a 60-second clock, so a paragraph on
+          every correct answer would break the thing it is for. */}
+      {picked && q.hint && (
         <div style={{
           marginTop:10,
           padding:"10px 14px",
@@ -2598,28 +2601,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         </div>
       )}
 
-      {answered && q?.hint && (() => {
-        const isCorrect = isTF
-          ? ((selected === 1) === (q?.a === true || q?.a === 1))
-          : (selected === q?.a || typedResult === "correct");
-        if (isCorrect) return null;
-        return (
-          <div style={{
-            marginTop:10,
-            padding:"10px 14px",
-            background:"var(--s1)",
-            border:"1px solid var(--border)",
-            borderRadius:10,
-            fontSize:13,
-            lineHeight:1.5,
-            color:"var(--t2)",
-            animation:"fadeIn 0.4s ease-out"
-          }}>
-            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
-            <div>{q.hint}</div>
-          </div>
-        );
-      })()}
+      {/* Shown whether they got it right or wrong. It used to be wrong-only —
+          so the hand-written explanations that are the whole differentiator
+          only ever appeared as a consolation prize, and a player on a good run
+          never saw one. 75% of the bank carries an explanation; getting it
+          right is exactly when someone wants the story behind it. */}
+      {answered && q?.hint && (
+        <div style={{
+          marginTop:10,
+          padding:"10px 14px",
+          background:"var(--s1)",
+          border:"1px solid var(--border)",
+          borderRadius:10,
+          fontSize:13,
+          lineHeight:1.5,
+          color:"var(--t2)",
+          animation:"fadeIn 0.4s ease-out"
+        }}>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div>{q.hint}</div>
+        </div>
+      )}
       {answered && showNext && (
         <button
           className="next-btn-primary"
@@ -5349,6 +5351,14 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
           </div>
         </div>
+        {/* Before a first match this row read "0 · 0 · —" in 24px — an empty
+            scoreboard posing as a record, and the biggest thing on the card.
+            Say what to do instead; the scoreboard appears once there's one. */}
+        {(stats.wins + stats.losses) === 0 ? (
+          <div style={{marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14,textAlign:"center",fontSize:13,fontWeight:600,color:"var(--t2)",lineHeight:1.5}}>
+            No matches yet — win one and your record starts here.
+          </div>
+        ) : (
         <div style={{display:"flex",alignItems:"stretch",marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14}}>
           {[
             { v: stats.wins, label: "Wins", color: "#8AE042" },
@@ -5365,6 +5375,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             </React.Fragment>
           ))}
         </div>
+        )}
       </div>
 
       </div>{/* /.online-col-a */}
@@ -5502,14 +5513,16 @@ function ResetPasswordOverlay() {
 // this button was an unnamed control with no state — five of them in a row,
 // all announced as just "button" (WCAG 4.1.2). role=switch + aria-checked
 // makes the on/off state readable, and `label` names it.
-function SettingsToggle({ val, onChange, label }) {
+function SettingsToggle({ val, onChange, label, disabled }) {
   return (
     <button
       className={`toggle ${val ? "on" : "off"}`}
       role="switch"
       aria-checked={val}
       aria-label={label}
-      onClick={() => onChange(!val)}
+      disabled={disabled}
+      style={disabled ? { opacity: 0.4, cursor: "default" } : undefined}
+      onClick={() => { if (!disabled) onChange(!val); }}
     >
       <div className="toggle-knob" />
     </button>
@@ -5617,7 +5630,7 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported, notifBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -5838,10 +5851,14 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <div className="settings-row">
               <div className="sr-left">
                 <div className="sr-label">Daily reminders</div>
-                <div className="sr-desc">An evening nudge if you haven't played yet — keeps your streak alive</div>
+                <div className="sr-desc">
+                  {notifBlocked
+                    ? "Blocked — open iOS Settings › Ball IQ › Notifications and allow them, then come back"
+                    : "An evening nudge if you haven't played yet — keeps your streak alive"}
+                </div>
               </div>
               <div className="sr-right">
-                <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} />
+                <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} disabled={notifBlocked} />
               </div>
             </div>
           </div>
@@ -8784,6 +8801,7 @@ function AppInner() {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
   const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+  const [notifBlocked, setNotifBlocked] = useState(false);
 
   // Tapping a reminder deep-links to the Daily tab — the notification's whole
   // point is "play today's puzzles", so land the user on them.
@@ -8995,6 +9013,11 @@ function AppInner() {
       } catch { return; }
       const perm = await getNotifPermission();
       if (cancelled) return;
+      // Surface a hard denial in Settings. iOS only ever shows its permission
+      // sheet ONCE — after a denial requestNotifPermission() resolves false
+      // instantly, so the toggle became a dead control: flip it, get a toast,
+      // watch it snap back, with no clue that the fix lives in iOS Settings.
+      setNotifBlocked(perm === 'denied');
       if (enabledFlag && perm !== 'granted') {
         // Revoked in OS Settings while the toggle read ON — turn it off.
         setNotifEnabled(false);
@@ -10523,7 +10546,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} notifBlocked={notifBlocked} />}
         {!inGame && screen === "blocked-users" && (
           <React.Suspense fallback={<div className="tab-pane" />}>
             <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />
