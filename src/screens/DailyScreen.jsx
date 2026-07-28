@@ -29,8 +29,10 @@ function formatKO(ms) {
   if (h === 0) return `${m}m`;
   return `${h}h ${m}m`;
 }
+// Kept in step with HomeScreen's greeting — 00:00-04:59 is not "morning".
 function timeOfDayGreeting(d = new Date()) {
   const h = d.getHours();
+  if (h < 5) return "Still up";
   if (h < 12) return "Good morning";
   if (h < 18) return "Good afternoon";
   return "Good evening";

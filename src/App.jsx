@@ -2437,7 +2437,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           <div className="prog-wrap"><div className="prog-bar" style={{ width: `${((idx + (answered ? 1 : 0)) / total) * 100}%` }} /></div>
         )}
         <div className="q-top-right">
-          {score > 0 && <span className="q-score-live">{score}<span className="q-score-tick"> ✓</span></span>}
+          {/* Rendered even at 0, just invisible. Mounting it on the first
+              correct answer shrank the progress track mid-quiz — the bar
+              visibly jumped sideways at exactly the moment the user was
+              watching it for feedback. Reserve the space instead. */}
+          <span className="q-score-live" aria-hidden={score === 0 || undefined} style={score === 0 ? {visibility:"hidden"} : undefined}>{score}<span className="q-score-tick"> ✓</span></span>
           <span className="q-ctr">{mode === "survival" ? `Q${idx + 1}` : `${idx + 1}/${total}`}</span>
           {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
         </div>

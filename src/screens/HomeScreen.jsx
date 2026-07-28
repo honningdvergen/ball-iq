@@ -166,6 +166,10 @@ function HomeScreenImpl({
         const homeGreetingBase = (() => {
           const now = new Date();
           const h = now.getHours();
+          // Small hours are NOT morning. `h < 12` greeted someone playing at
+          // 00:38 with "Good morning", which reads as a broken clock rather
+          // than a greeting. 00:00-04:59 belongs to the night before.
+          if (h < 5) return "Still up";
           if (h < 12) return "Good morning";
           if (h < 18) return "Good afternoon";
           // Easter egg: ~1 in 5 evenings, swap in the "Good ebening" football-
