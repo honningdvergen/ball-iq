@@ -5574,14 +5574,27 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
     try { CapApp.getInfo?.().then(i => { if (alive && i?.version) setAppVer(i.version); }).catch(() => {}); } catch {}
     return () => { alive = false; };
   }, []);
+  // Share the PLATFORM-AWARE link, never a store-specific one. The recipient
+  // is a different person on a different device than the sender — an Android
+  // user was previously sharing an App Store URL with every friend, and half
+  // of any sender's contacts are on the other platform regardless.
+  // balliq.app/get (api/get.js) resolves per RECIPIENT: iOS -> App Store,
+  // Android -> Play, desktop -> the web app.
   const shareApp = async () => {
-    const url = APP_STORE_ID ? APP_STORE_URL : "balliq.app";
-    const text = `⚽ Ball IQ — the football quiz for real fans. ${url}`;
+    const text = `⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get`;
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
   };
+  // Rating is inherently store-specific — send each platform to its OWN store's
+  // review flow. Android used to be sent to the App Store, where it could not
+  // leave a review at all.
   const rateApp = () => {
-    if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'App Store rating opens once we’re live 🙌' })); return; }
+    const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
+    if (/Android/i.test(ua) && !/Windows Phone/i.test(ua)) {
+      try { window.open(PLAY_STORE_URL, '_blank'); } catch {}
+      return;
+    }
+    if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Store rating opens once we’re live 🙌' })); return; }
     try { window.open(`${APP_STORE_URL}?action=write-review`, '_blank'); } catch {}
   };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
