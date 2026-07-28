@@ -95,7 +95,7 @@ for (const line of fs.readFileSync(journalPath, 'utf8').trim().split('\n')) {
 // Both are frozen copies of what a verifier actually judged, so both feed the
 // same staleness gate below.
 const snapshots = new Map();
-for (const dir of ['.audit/vbatch', '.audit/cbatch']) {
+for (const dir of ['.audit/vbatch', '.audit/cbatch', '.audit/nbatch']) {
   const snapDir = path.join(ROOT, dir);
   if (!fs.existsSync(snapDir)) continue;
   for (const f of fs.readdirSync(snapDir)) {

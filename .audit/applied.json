@@ -1,441 +1,1150 @@
 {
- "applied": [],
- "skipped": [
+ "applied": [
   {
-   "id": "q_7a4200",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_8ab0e1",
+   "kind": "false_premise",
+   "oldQ": "Which iconic Italian club was declared bankrupt in August 2004 under new president Aurelio De Laurentiis, starting from Serie C1 before climbing back to Serie A?",
+   "newQ": "Which iconic Italian club went bankrupt in August 2004 and was refounded weeks later by film producer Aurelio De Laurentiis, restarting in Serie C1 before climbing back to Serie A?",
+   "oldCorrect": "Napoli",
+   "newCorrect": "Napoli",
+   "truth": "Napoli were declared bankrupt by the Naples court on 3 August 2004. Aurelio De Laurentiis was not involved at that point: he registered the new company 'Napoli Soccer S.p.A.' on 26 August 2004 and completed the purchase of the old S.S.C. Napoli's assets on 10 September 2004, registering the new club in Serie C1 for 2004-05. So he became president AFTER the bankruptcy, not during it. Everything else in the stem (August 2004 bankruptcy, Serie C1 restart, climb back to Serie A, answer Napoli) is correct."
   },
   {
-   "id": "q_c07ae5",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_385a4a",
+   "kind": "false_premise",
+   "oldQ": "Which club did Franz Beckenbauer manage to the 1990 World Cup title?",
+   "newQ": "Which national team did Franz Beckenbauer manage to the 1990 World Cup title?",
+   "oldCorrect": "West Germany",
+   "newCorrect": "West Germany",
+   "truth": "Franz Beckenbauer was West Germany's team boss (Teamchef) from 1984, losing the 1986 final and winning the 1990 World Cup with a 1-0 win over Argentina. West Germany is a national team, not a club — and all four options are national teams, so the stem's category word is simply wrong."
   },
   {
-   "id": "q_2598ad",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_c98b4f",
+   "kind": "false_premise",
+   "oldQ": "Which Italian club won the first-ever Serie A title in 1898?",
+   "newQ": "Which Italian club won the first-ever Italian football championship, held in a single day in 1898?",
+   "oldCorrect": "Genoa",
+   "newCorrect": "Genoa",
+   "truth": "The 1898 Italian Football Championship was won by Genoa — all matches played in one day, 8 May 1898, at the Velodromo Umberto I in Turin. It is regarded as a predecessor of Serie A, but Serie A itself was not created until the 1929-30 rebrand, and the inaugural Serie A title was won by Ambrosiana (Internazionale). So 'the first-ever Serie A title in 1898' is false on both the competition name and the implied date."
   },
   {
-   "id": "q_ebeed9",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_311927",
+   "kind": "false_premise",
+   "oldQ": "Which La Liga season did Messi score 50 league goals — breaking his own record?",
+   "newQ": "In which La Liga season did Messi score a record 50 league goals?",
+   "oldCorrect": "2011-12",
+   "newCorrect": "2011-12",
+   "truth": "Messi scored 50 La Liga goals in 37 games in 2011-12, still the single-season record. The record he broke was Cristiano Ronaldo's 40, set the previous season (2010-11). Messi's own previous La Liga best was 31. So 'breaking his own record' is false — he broke Ronaldo's."
   },
   {
-   "id": "q_e7f32a",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
+   "id": "q_5b918a",
+   "kind": "false_premise",
+   "oldQ": "Who was the first English player to play in La Liga, joining Real Madrid in 1979?",
+   "newQ": "Who was the first English player to play for Real Madrid, joining the club in 1979?",
+   "oldCorrect": "Laurie Cunningham",
+   "newCorrect": "Laurie Cunningham",
+   "truth": "Laurie Cunningham was the first ENGLISHMAN TO PLAY FOR REAL MADRID (signed July 1979), not the first English player in La Liga. Harry Lowe, Real Sociedad's English manager, played a Primera Division match away to Valencia at the Mestalla on 24 March 1935 aged 48 years 226 days (still the oldest player in La Liga history) — 44 years before Cunningham. Every source that touches the Cunningham superlative (LaLiga.com, Real Madrid's own legends page, SI) says 'first Englishman to play for Real Madrid', never 'first in La Liga'."
   },
   {
-   "id": "q_94a74b",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_8e2001",
+   "kind": "false_premise",
+   "oldQ": "Who scored England's fourth goal in their 4-2 win over West Germany in the 1966 World Cup final — with a controversial shot?",
+   "newQ": "Who scored England's third goal in the 1966 World Cup final against West Germany — the controversial shot off the underside of the crossbar?",
+   "oldCorrect": "Geoff Hurst",
+   "newCorrect": "Geoff Hurst",
+   "truth": "The controversial goal in the 1966 final was England's THIRD, scored by Geoff Hurst in the 101st minute — the shot off the underside of the crossbar awarded after referee Gottfried Dienst consulted linesman Tofiq Bahramov (later film/computer analysis at Imperial College and Oxford concluded the ball did not fully cross the line). England's fourth goal, Hurst again in the 120th minute, was clean and uncontested — the 'they think it's all over' strike that completed the first hat-trick in a World Cup final."
   },
   {
-   "id": "q_7af792",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_f6ad15",
+   "kind": "false_premise",
+   "oldQ": "Liverpool have won the European Cup 6 times — who are England's third most successful club with 2 titles?",
+   "newQ": "Liverpool have won the European Cup six times — which English club won it in back-to-back years, 1979 and 1980?",
+   "oldCorrect": "Forest",
+   "newCorrect": "Forest",
+   "truth": "English European Cup/Champions League wins: Liverpool 6 (1977, 1978, 1981, 1984, 2005, 2019), Manchester United 3 (1968, 1999, 2008), Nottingham Forest 2 (1979, 1980), Chelsea 2 (2012, 2021), Aston Villa 1 (1982). Forest and Chelsea are level on two, so there is no unique 'third most successful' club. (Checked current: Arsenal still have none — they lost the 2026 final to PSG on penalties in Budapest, and lost 2006.)"
   },
   {
-   "id": "q_3433df",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_bed37f",
+   "kind": "false_premise",
+   "oldQ": "Which club did George Weah play for in England before returning to France?",
+   "newQ": "Which English club did George Weah join on loan from AC Milan in January 2000?",
+   "oldCorrect": "Chelsea",
+   "newCorrect": "Chelsea",
+   "truth": "George Weah's order after AC Milan was: Chelsea on loan from January 2000 (league debut 12 January 2000 v Tottenham, part of the FA Cup-winning side), then Manchester City on a free transfer signed 1 August 2000 (league debut 19 August at Charlton), and only then Marseille, whom he left in May 2001 for Al-Jazira. The English club he played for immediately before returning to France was Manchester City, not Chelsea."
   },
   {
-   "id": "q_103de5",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_01ca10",
+   "kind": "multiple_correct",
+   "oldQ": "Who is the only player to win the World Cup as player and manager for the same country twice?",
+   "newQ": "Who is the only man to win the World Cup twice as a player and then win it again as his country's head coach?",
+   "oldCorrect": "Zagallo",
+   "newCorrect": "Zagallo",
+   "truth": "Exactly three men have won the World Cup as both player and manager, each for the same country: Mario Zagallo (Brazil — player 1958 and 1962, manager 1970), Franz Beckenbauer (West Germany — player 1974, manager 1990) and Didier Deschamps (France — player 1998, manager 2018). Zagallo is distinguished only by having won it TWICE as a player."
   },
   {
-   "id": "q_0a9a1a",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_d2e0f1",
+   "kind": "false_premise",
+   "oldQ": "Which club holds the unwanted record of being relegated from the Premier League with the highest points total — 42 points in 2002-03?",
+   "newQ": "Which club was relegated from the Premier League in 2002-03 with 42 points — the highest total by any side relegated from a 38-game Premier League season?",
+   "oldCorrect": "West Ham United",
+   "newCorrect": "West Ham United",
+   "truth": "West Ham were relegated in 2002-03 with 42 points from 38 games — the highest total by a side relegated from a 38-game Premier League season. But Crystal Palace were relegated from the Premier League in 1992-93 with 49 points (42-game season), and Sheffield United went down with 42 in 1993-94. So 42 is not the all-time PL record for a relegated side."
   },
   {
-   "id": "q_3e3e0c",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_7dad9a",
+   "kind": "false_premise",
+   "oldQ": "Who beat Germany 1-0 in Group F at Euro 2020 (played 2021) thanks to a Mats Hummels own goal — the Group F opener dubbed one of the tournament's Group of Death matches?",
+   "newQ": "Who beat Germany 1-0 in Munich in Group F at Euro 2020 (played 2021), thanks to a Mats Hummels own goal, in one of the tournament's Group of Death matches?",
+   "oldCorrect": "France",
+   "newCorrect": "France",
+   "truth": "On 15 June 2021 Group F opened with Hungary 0-3 Portugal in Budapest (18:00 CEST); France beat Germany 1-0 in Munich later the same day (21:00 CEST) via a Mats Hummels own goal in the 20th minute. Hungary-Portugal was the group's first match."
   },
   {
-   "id": "q_ed91a6",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_2d7a04",
+   "kind": "false_premise",
+   "oldQ": "Which player scored a then-record 32 Premier League goals for Liverpool in the 2017-18 season?",
+   "newQ": "Which player scored a record 32 goals in a 38-game Premier League season for Liverpool in 2017-18?",
+   "oldCorrect": "Salah",
+   "newCorrect": "Salah",
+   "truth": "Salah scored 32 Premier League goals in 2017-18, a record for a 38-game PL season (beating the 31 shared by Shearer 1995-96, Ronaldo 2007-08 and Suárez 2013-14). It was NOT a Premier League record outright: Andy Cole (Newcastle, 1993-94) and Alan Shearer (Blackburn, 1994-95) each scored 34 in 42-game PL seasons, both before 2018. The unqualified 'then-record 32' is therefore false."
   },
   {
-   "id": "q_2db639",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_3fcad5",
+   "kind": "false_premise",
+   "oldQ": "Nwankwo Kanu won the Champions League with Ajax before representing which country at international level?",
+   "newQ": "Nwankwo Kanu won the 1995 Champions League with Ajax and later starred for Arsenal — which country did he represent at international level?",
+   "oldCorrect": "Nigeria",
+   "newCorrect": "Nigeria",
+   "truth": "Kanu won the Champions League with Ajax on 24 May 1995 (on for Seedorf around the 53rd minute in the 1-0 win over AC Milan). But he had already represented Nigeria before that: his senior debut was 5 May 1994 against Sweden, aged 17, and he had won the 1993 U-17 World Championship with Nigeria. The stem's 'before representing which country' is a false temporal claim — the international debut preceded the European Cup by over a year."
   },
   {
-   "id": "q_965a28",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_7cb21d",
+   "kind": "false_premise",
+   "oldQ": "Who scored the dramatic last-minute winner for Real Madrid vs Man City in the 2022 UCL semi-final?",
+   "newQ": "Who scored the extra-time penalty that sent Real Madrid past Man City in the 2022 UCL semi-final?",
+   "oldCorrect": "Benzema",
+   "newCorrect": "Benzema",
+   "truth": "In the second leg at the Bernabéu on 4 May 2022, Real Madrid trailed 5-3 on aggregate before Rodrygo scored in the 90th and 91st minutes to force extra time. Benzema's winner was a penalty in the 95th minute — the first half of extra time, not the last minute of normal time. The 'last-minute' goals of that tie were Rodrygo's, so the stem attaches the wrong moment to the right scorer."
   },
   {
-   "id": "q_b19c90",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_c33142",
+   "kind": "false_premise",
+   "oldQ": "What squad number did Nicolas Anelka wear at Arsenal during his debut Premier League season?",
+   "newQ": "What squad number did Nicolas Anelka wear at Arsenal during the 1997-98 double-winning season?",
+   "oldCorrect": "9",
+   "newCorrect": "9",
+   "truth": "Anelka joined Arsenal in February 1997 and wore the No 11 shirt for his four substitute appearances in 1996-97 — his debut Premier League season. Paul Merson wore Arsenal's No 9 that season; Merson left for Middlesbrough in July 1997 and Wenger handed Anelka the 9 for 1997-98, his first full season and Arsenal's Double year. So the keyed answer 9 is right for his Arsenal spell but wrong for the season the stem's temporal clause names."
   },
   {
-   "id": "q_151b4f",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "multiple_correct"
+   "id": "q_d42708",
+   "kind": "false_premise",
+   "oldQ": "Gianluigi Buffon spent 17 of his 23 Italian top-flight seasons at which club before joining PSG in 2018?",
+   "newQ": "Gianluigi Buffon spent 17 of his 23 seasons in Italian club football at which club before joining PSG in 2018?",
+   "oldCorrect": "Juventus",
+   "newCorrect": "Juventus",
+   "truth": "Buffon played 6 seasons at Parma (1995-96 to 2000-01) and 17 at Juventus (2001-02 to 2017-18) before joining PSG — 23 Italian seasons, 17 of them at Juventus. But 2006-07 was Serie B for Juventus after Calciopoli, so his top-flight totals are 16 at Juventus out of 22 in Italy. The word 'top-flight' is what makes the 17/23 split untrue."
   },
   {
-   "id": "q_ef0f10",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_307d1c",
+   "kind": "false_premise",
+   "oldQ": "Who scored a stunning long-range goal in the 2014 FA Cup final for Arsenal to win 3-2 vs Hull?",
+   "newQ": "Who scored Arsenal's extra-time winner in the 2014 FA Cup final, poking in Olivier Giroud's backheel to beat Hull 3-2?",
+   "oldCorrect": "Ramsey",
+   "newCorrect": "Ramsey",
+   "truth": "Ramsey's 109th-minute winner in the 2014 FA Cup final was a first-time close-range finish, poked/side-footed in from around the penalty spot after Olivier Giroud's backheel flick (Wilshere started the move). The FA's own match report describes him latching onto Giroud's backheel to 'poke home'. It was not a long-range strike."
   },
   {
-   "id": "q_a46f5b",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_af0446",
+   "kind": "false_premise",
+   "oldQ": "Which manager guided Nottingham Forest to promotion from the second division and then won the European Cup the following season?",
+   "newQ": "Which manager took Nottingham Forest up from the second division, then won the First Division title in 1978 and the European Cup in 1979?",
+   "oldCorrect": "Brian Clough",
+   "newCorrect": "Brian Clough",
+   "truth": "Nottingham Forest were promoted from the Second Division in third place at the end of 1976-77, won the First Division title in 1977-78, and won the European Cup in 1978-79 (1-0 v Malmo in Munich), retaining it in 1979-80. The European Cup came two seasons after promotion, with the league title in between."
   },
   {
-   "id": "q_53e107",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_74e8fe",
+   "kind": "false_premise",
+   "oldQ": "What is Atletico Madrid's nickname, referencing their old mattress-making sponsors?",
+   "newQ": "What is Atletico Madrid's nickname, which began as a jibe from rival fans about their red-and-white striped shirts?",
+   "oldCorrect": "Los Colchoneros",
+   "newCorrect": "Los Colchoneros",
+   "truth": "'Los Colchoneros' (the mattress makers) began as a taunt from rival fans because Atletico's red-and-white vertical stripes resembled the striped ticking of traditional Spanish mattresses, commonplace when Madrid was Spain's textile hub. Atletico never had a mattress-making sponsor; the association is purely visual, and the club's fans later adopted the jibe as their own."
   },
   {
-   "id": "q_5784eb",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_7823be",
+   "kind": "multiple_correct",
+   "oldQ": "Cristiano Ronaldo scored his 700th career goal in October 2019 — for which team was he playing at the time?",
+   "newQ": "Cristiano Ronaldo scored his 700th career goal in October 2019 - for which team did he score it?",
+   "oldCorrect": "Portugal",
+   "newCorrect": "Portugal",
+   "truth": "Ronaldo's 700th career goal was a 72nd-minute penalty for Portugal in a 2-1 Euro 2020 qualifying defeat away to Ukraine on 14 October 2019. He was at that time a Juventus player, having joined in July 2018; the goal itself was scored for Portugal."
   },
   {
-   "id": "q_cb171c",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_b2e29b",
+   "kind": "false_premise",
+   "oldQ": "Which American goalkeeper played Premier League football until age 43 for Blackburn, Aston Villa and Tottenham, holding the PL record for consecutive games played (310)?",
+   "newQ": "Which American goalkeeper played Premier League football until the age of 42 for Blackburn, Aston Villa and Tottenham, holding the PL record for consecutive games played (310)?",
+   "oldCorrect": "Brad Friedel",
+   "newCorrect": "Brad Friedel",
+   "truth": "Brad Friedel (b. 18 May 1971) made his final Premier League appearance for Tottenham on 10 November 2013, a 1-0 home defeat to Newcastle, aged 42 years 176 days. He stayed at Spurs until retiring in May 2015 but never played another PL match, so he never appeared in the competition aged 43 - he remains second to John Burridge (43y 162d) as the oldest PL player. The 310 consecutive appearances record and the Blackburn/Aston Villa/Tottenham clubs are correct."
   },
   {
-   "id": "q_8fb2af",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_d564c9",
+   "kind": "false_premise",
+   "oldQ": "Which manager masterminded Chelsea's record 86-game unbeaten home run in the Premier League (2004-2008)?",
+   "newQ": "Which manager was in charge for the majority of Chelsea's record 86-game unbeaten home run in the Premier League, which ended in October 2008?",
+   "oldCorrect": "José Mourinho",
+   "newCorrect": "José Mourinho",
+   "truth": "Chelsea's 86-game unbeaten home league run ran from March 2004 to 26 October 2008, when Xabi Alonso's deflected strike gave Liverpool a 1-0 win at Stamford Bridge. It spanned four managers: Claudio Ranieri started it with six unbeaten home games at the end of 2003-04, Mourinho oversaw roughly 60 of the 86, Avram Grant took about 16 after Mourinho's September 2007 exit, and Luiz Felipe Scolari was in charge when it ended. No single manager 'masterminded' the whole run."
   },
   {
-   "id": "q_688b2c",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
+   "id": "q_1c3425",
+   "kind": "false_premise",
+   "oldQ": "Which player won the Golden Ball at the 2014 World Cup, scoring four goals across the group stage and the round of 16 before Argentina were beaten by Germany in the final?",
+   "newQ": "Which player won the Golden Ball at the 2014 World Cup, scoring four goals in the group stage before Argentina were beaten by Germany in the final?",
+   "oldCorrect": "Messi",
+   "newCorrect": "Messi",
+   "truth": "Messi won the Golden Ball at Brazil 2014 and scored four goals — one v Bosnia-Herzegovina, one v Iran, two v Nigeria. All four came in the group stage. He did not score in the round of 16 against Switzerland (he set up Di María's extra-time winner), nor in the quarter-final, semi-final or the final, which Argentina lost 1-0 to Germany after extra time."
   },
   {
-   "id": "q_cc414e",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_ba88ec",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_8270f9",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_31fd33",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_875a76",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_4f7aa5",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_f9a2ec",
-   "reason": "confirmed but confidence=medium — Alex decides",
-   "kind": "stale"
-  },
-  {
-   "id": "q_5408ed",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_d1bd70",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_21aec1",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_31f5ae",
-   "reason": "confirmed but confidence=medium — Alex decides",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_1ea17d",
-   "reason": "confirmed but confidence=medium — Alex decides",
-   "kind": "stale"
-  },
-  {
-   "id": "q_c12d8e",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_e0ce8a",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_5cbea6",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_594a37",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_cf02ef",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_d2f8ac",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_514149",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_9f9be7",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_6c24dd",
+   "kind": "false_premise",
+   "oldQ": "Which Bundesliga club has been in the top flight for every single season since the league's second year in 1965?",
+   "newQ": "Which Bundesliga club has been in the top flight for every single season since joining the league in 1965?",
+   "oldCorrect": "Bayern Munich",
+   "newCorrect": "Bayern Munich",
+   "truth": "The Bundesliga launched on 24 August 1963; its second season was 1963-64's successor, 1964-65. Bayern were excluded at founding (1860 Munich took the Munich place) and won promotion in 1965, entering for 1965-66 — the league's THIRD season. So 'the league's second year in 1965' is wrong: 1965-66 was the third campaign, and Bayern were not in the top flight in the second (1964-65)."
   },
   {
    "id": "q_cfb22a",
+   "kind": "multiple_correct",
+   "oldQ": "Which club did Johan Cruyff manage — revolutionising their style and setting up their famous academy?",
+   "newQ": "Which club did Johan Cruyff manage from 1988 to 1996, winning four straight league titles and their first European Cup in 1992?",
+   "oldCorrect": "Barcelona",
+   "newCorrect": "Barcelona",
+   "truth": "Cruyff managed Ajax 1985–88 (winning the 1987 Cup Winners' Cup and reshaping their playing style/youth setup) and Barcelona 1988–96. With Ajax on the option list, two options satisfy the stem 'which club did Johan Cruyff manage'. Separately, La Masia opened as a residence/academy in 1979, nine years before Cruyff became Barça coach — he transformed its philosophy, he did not set it up."
+  },
+  {
+   "id": "q_fd0299",
+   "kind": "false_premise",
+   "oldQ": "West Germany appeared in three consecutive European Championship finals during the 1970s — which of those did they WIN?",
+   "newQ": "West Germany appeared in three consecutive European Championship finals between 1972 and 1980 — which of those did they WIN?",
+   "oldCorrect": "1972 and 1980",
+   "newCorrect": "1972 and 1980",
+   "truth": "West Germany's three consecutive Euro finals were 1972 (beat USSR 3–0), 1976 (lost to Czechoslovakia on penalties after 2–2) and 1980 (beat Belgium 2–1). The run spans 1972–1980, not 'the 1970s' — and the keyed answer '1972 and 1980' names a year outside the decade the stem asserts."
+  },
+  {
+   "id": "q_9f410a",
+   "kind": "multiple_correct",
+   "oldQ": "Which continent has never qualified a team for the knockout stages of a Women's World Cup?",
+   "newQ": "Which continent has never qualified a team for the knockout stages of a Women's World Cup?",
+   "oldCorrect": "Oceania",
+   "newCorrect": "Oceania",
+   "truth": "Oceania has never had a team in a Women's World Cup knockout round: New Zealand exited the group stage in all six appearances (1991, 2007, 2011, 2015, 2019, 2023), and Australia's knockout runs (2007 QF, 2015 R16, 2019 R16, 2023 4th) all came after it left the OFC for the AFC in 2006 — as an OFC member it went out in the groups in 1995, 1999 and 2003. Africa (Nigeria QF 1999, R16 2015/2023, Cameroon R16 2015) and Asia (Japan champions 2011) both qualify teams for knockouts."
+  },
+  {
+   "id": "q_761523",
+   "kind": "false_premise",
+   "oldQ": "Which Premier League club is nicknamed 'The Hornets' and plays in yellow and black?",
+   "newQ": "Which English club is nicknamed 'The Hornets' and plays in yellow and black?",
+   "oldCorrect": "Watford",
+   "newCorrect": "Watford",
+   "truth": "Watford were relegated from the Premier League at the end of 2021-22 and have been in the Championship ever since. 2025-26 was their fourth consecutive Championship season; they finished 16th, so they are a Championship club going into 2026-27. Of the four options only Brentford is currently a Premier League club, so the 'Premier League' qualifier actively points away from the keyed answer. Watford's nickname (The Hornets) and yellow-and-black kit are correct."
+  },
+  {
+   "id": "q_f389a1",
+   "kind": "false_premise",
+   "oldQ": "Which club holds the record for the longest unbeaten run in domestic top-flight football, with 104 consecutive league games?",
+   "newQ": "Which club holds the European record for the longest unbeaten run in domestic top-flight football, with 104 consecutive league games?",
+   "oldCorrect": "Steaua Bucharest 1986-89",
+   "newCorrect": "Steaua Bucharest 1986-89",
+   "truth": "Steaua Bucharest went 104 consecutive Romanian top-flight league games unbeaten from June 1986 to September 1989 (119 including cup ties) — that is the EUROPEAN record. The world record is ASEC Mimosas of Ivory Coast, 108 consecutive top-flight league matches unbeaten from the final day of 1989 until a 1-2 defeat away to SO Armée on 19 June 1994, covering the entire 1990, 1991, 1992 and 1993 seasons (RSSSF; recognised by Guinness)."
+  },
+  {
+   "id": "q_82f8d8",
+   "kind": "false_premise",
+   "oldQ": "Which country lost the World Cup final on home soil in 1950 — known as the Maracanazo?",
+   "newQ": "Which country lost the decisive final-pool match on home soil at the 1950 World Cup — the game known as the Maracanazo?",
+   "oldCorrect": "Brazil",
+   "newCorrect": "Brazil",
+   "truth": "The 1950 World Cup had NO final. The title was decided by a four-team final round-robin pool (Uruguay, Brazil, Sweden, Spain). Uruguay's 2-1 win over Brazil at the Maracanã on 16 July 1950 was the decisive pool match — Brazil needed only a draw. Brazil is still the correct answer."
+  },
+  {
+   "id": "q_0b4366",
+   "kind": "false_premise",
+   "oldQ": "Which legendary player was banned from football for a year after testing positive for cocaine while at Napoli?",
+   "newQ": "Which legendary player was banned from football for 15 months after testing positive for cocaine while at Napoli?",
+   "oldCorrect": "Maradona",
+   "newCorrect": "Maradona",
+   "truth": "Maradona tested positive for cocaine after Napoli's 1-0 win over Bari on 17 March 1991 and was banned for 15 MONTHS (until 30 June 1992), not a year. The Italian federation's disciplinary committee handed down the 15-month suspension on 6 April 1991 and FIFA extended it worldwide."
+  },
+  {
+   "id": "q_1425b8",
+   "kind": "false_premise",
+   "oldQ": "Which Spanish club came remarkably close to their first La Liga title in 2023-24 before Real Madrid pipped them?",
+   "newQ": "Which Spanish club finished third in 2023-24 to qualify for the Champions League for the first time in their history?",
+   "oldCorrect": "Girona",
+   "newCorrect": "Girona",
+   "truth": "Girona finished THIRD in 2023-24 on 81 points — behind Real Madrid (95) and Barcelona (85), i.e. 14 points off the title. Real Madrid were confirmed champions on 4 May 2024 with four rounds to spare. Girona were never 'pipped' to the title; their real achievement was a first-ever Champions League qualification."
+  },
+  {
+   "id": "q_7d61bd",
+   "kind": "false_premise",
+   "oldQ": "What is the record for the most goals in a Premier League season by a single player — set in 2022-23 by Erling Haaland in 38 games?",
+   "newQ": "What is the record for the most goals in a Premier League season by a single player — set by Erling Haaland in 2022-23?",
+   "oldCorrect": "36",
+   "newCorrect": "36",
+   "truth": "Erling Haaland's record 36 Premier League goals in 2022-23 came in 35 appearances, not 38 — he missed three of Manchester City's 38 league fixtures. The previous record was 34, shared by Alan Shearer and Andrew Cole in 42-game seasons."
+  },
+  {
+   "id": "q_31033e",
+   "kind": "false_premise",
+   "oldQ": "Arbroath's 36-0 win over Bon Accord in 1885 remains the biggest scoreline in professional football — where did it take place?",
+   "newQ": "Arbroath's 36-0 win over Bon Accord in 1885 remains the record margin of victory in a first-class football match — in which country was it played?",
+   "oldCorrect": "Scotland",
+   "newCorrect": "Scotland",
+   "truth": "Arbroath 36-0 Bon Accord (12 Sep 1885, Scottish Cup first round, Gayfield Park) is the record margin of victory in an unrigged first-class football match. It is NOT the biggest scoreline in professional football: AS Adema beat SO l'Emyrne 149-0 in Madagascar's professional top flight on 31 Oct 2002 (a protest match of deliberate own goals, but recognised as the record score in a professional match). Separately, Scottish football was still officially amateur in 1885 — professionalism was not legalised in Scotland until 1893 — so neither Arbroath nor Bon Accord were professional clubs."
+  },
+  {
+   "id": "q_ab748c",
+   "kind": "false_premise",
+   "oldQ": "Who scored the 79th-minute winning header for Arsenal in their 2-1 win over Chelsea in the 2017 FA Cup final — from a Giroud cross just a minute after coming on?",
+   "newQ": "Who scored the 79th-minute winning header for Arsenal in their 2-1 win over Chelsea in the 2017 FA Cup final?",
+   "oldCorrect": "Aaron Ramsey",
+   "newCorrect": "Aaron Ramsey",
+   "truth": "Aaron Ramsey STARTED the 2017 FA Cup final (Arsenal 2-1 Chelsea, 27 May 2017, Wembley) in central midfield alongside Granit Xhaka. Olivier Giroud was the substitute — he replaced Danny Welbeck in the 78th minute and crossed for Ramsey's 79th-minute winning header roughly 38 seconds after coming on. Sánchez scored Arsenal's 4th-minute opener; Diego Costa equalised on 76."
+  },
+  {
+   "id": "q_e08bb9",
+   "kind": "false_premise",
+   "oldQ": "The longest-serving captain to lift the European Championship trophy — lifting it at Euro 2020 — was who?",
+   "newQ": "The oldest captain ever to lift the European Championship trophy — doing so at 36 at Euro 2020 — was who?",
+   "oldCorrect": "Chiellini",
+   "newCorrect": "Chiellini",
+   "truth": "Chiellini's real distinction is OLDEST EURO-winning captain, not longest-serving: UEFA records him lifting the trophy at 36 years 331 days on 11 July 2021, the oldest player ever to start a EURO final as captain (previous: Buffon, 34y154d in 2012). He only took the Italy armband in 2018 after Buffon's international retirement — roughly three years' service. Didier Deschamps (France captain from 1996, lifted Euro 2000) and Iker Casillas (Spain captain from 2008, lifted Euro 2012) both served longer before lifting the trophy, so 'longest-serving' is untrue."
+  },
+  {
+   "id": "q_df94c4",
+   "kind": "false_premise",
+   "oldQ": "Which club has been involved in the highest-scoring professional match ever — a 36-0 game in 1885?",
+   "newQ": "The record scoreline in British senior football is a 36-0 Scottish Cup tie from 1885. Which two clubs contested it?",
+   "oldCorrect": "Arbroath vs Bon Accord",
+   "newCorrect": "Arbroath vs Bon Accord",
+   "truth": "Arbroath 36-0 Bon Accord (Scottish Cup first round, 12 September 1885, John 'Jocky' Petrie scoring 13) is the record win in British senior football and the biggest margin in an unrigged first-class match — it is NOT the highest-scoring match ever. Guinness World Records recognises AS Adema 149-0 SO l'Emyrne (Madagascar, 31 October 2002) as the highest score, and that game beat Arbroath's mark explicitly. 'Professional' is wrong on a second count: professionalism was not legalised in Scottish football until 1893, so the 1885 Scottish Cup was an amateur competition. The stem also asks 'which club' while every option is a pair of clubs."
+  },
+  {
+   "id": "q_ace0b5",
+   "kind": "false_premise",
+   "oldQ": "How many Scottish clubs have managed 9 consecutive league titles — a European record?",
+   "newQ": "How many Scottish clubs have managed 9 consecutive league titles?",
+   "oldCorrect": "Two — both Rangers and Celtic",
+   "newCorrect": "Two — both Rangers and Celtic",
+   "truth": "Nine consecutive league titles is a Scottish/British landmark, not a European record. Celtic won nine in a row twice (1965-66 to 1973-74 under Jock Stein, and 2011-12 to 2019-20) and Rangers once (1988-89 to 1996-97), so two Scottish clubs have done it — the keyed answer is correct. But far longer European runs exist: Skonto Riga won 14 straight Latvian titles (1991-2004), Lincoln Red Imps 14 straight in Gibraltar, Rosenborg 13 straight in Norway (1992-2004), BATE Borisov 13 straight in Belarus (2006-2018), and Ludogorets 13+ straight in Bulgaria."
+  },
+  {
+   "id": "q_3090ab",
+   "kind": "false_premise",
+   "oldQ": "Which player has scored the most goals in a single UEFA competition match — netting 5 in the Europa League?",
+   "newQ": "Which player set the Europa League record by scoring five goals in a single match, against Genk in 2016?",
+   "oldCorrect": "Aritz Aduriz",
+   "newCorrect": "Aritz Aduriz",
+   "truth": "Aritz Aduriz's five goals for Athletic Club against Genk on 3 November 2016 are the Europa League record for a single match (the previous best was four, by Falcao in 2010-11 and Cavani in 2012-13). It is not the record across UEFA competitions: Mascarenhas scored six for Sporting CP in their 16-1 win over APOEL in the 1963-64 Cup Winners' Cup, and Lionel Messi (Barcelona 7-1 Bayer Leverkusen, March 2012) and Luiz Adriano (Shakhtar 7-0 BATE, September 2014) both scored five in Champions League matches."
+  },
+  {
+   "id": "q_e8341f",
+   "kind": "false_premise",
+   "oldQ": "Bayer Leverkusen's never-relegated status earned them which nickname from other fans?",
+   "newQ": "Bayer Leverkusen finished runners-up in the Bundesliga, DFB-Pokal and Champions League all in 2001-02 — what nickname did that habit of falling short earn them?",
+   "oldCorrect": "Neverkusen",
+   "newCorrect": "Neverkusen",
+   "truth": "\"Neverkusen\" (German: \"Vizekusen\", i.e. runners-up-kusen) comes from Leverkusen's serial near-misses, above all 2001-02, when over eleven days in May they lost the Bundesliga on the final day to Dortmund, lost the DFB-Pokal final 4-2 to Schalke and lost the Champions League final 2-1 to Real Madrid — a treble of runners-up finishes. Bundesliga.com's own explainer traces the nickname to exactly this. It has nothing to do with never being relegated (which is separately true — Leverkusen have been in the Bundesliga continuously since 1979 — but is not the etymology)."
+  },
+  {
+   "id": "q_d4a880",
+   "kind": "false_premise",
+   "oldQ": "Which Bundesliga club sold Robert Lewandowski to Bayern Munich in 2014?",
+   "newQ": "Which Bundesliga club did Robert Lewandowski leave on a free transfer to join Bayern Munich in 2014?",
+   "oldCorrect": "Dortmund",
+   "newCorrect": "Dortmund",
+   "truth": "Lewandowski's Dortmund contract ran out on 30 June 2014; he agreed a five-year Bayern deal in January 2014 and joined on a FREE TRANSFER effective 1 July 2014. Dortmund received no fee — they had refused to sell him in summer 2013 and then lost him for nothing. The answer (Dortmund) is correct; the verb 'sold' is factually wrong."
+  },
+  {
+   "id": "q_14779a",
+   "kind": "false_premise",
+   "oldQ": "Bologna qualified for the Champions League in 2023-24 for the first time ever — who was their manager?",
+   "newQ": "Bologna qualified for the Champions League in 2023-24, their first time in Europe's top club competition since 1964-65 — who was their manager?",
+   "oldCorrect": "Motta",
+   "newCorrect": "Motta",
+   "truth": "Bologna won Serie A in 1963-64 and entered the 1964-65 European Cup, where they were eliminated by Anderlecht (2-2 on aggregate, 0-0 play-off, decided on a coin toss). So 2023-24 was their first qualification for Europe's top club competition in ~60 years, not 'the first time ever'. Thiago Motta was indeed the manager, so the answer is right."
+  },
+  {
+   "id": "q_fde526",
+   "kind": "false_premise",
+   "oldQ": "Which Brazilian goalkeeper joined Liverpool from Roma for a then world-record £66.8m fee in 2018?",
+   "newQ": "Which Brazilian goalkeeper joined Liverpool from Roma in 2018 for £66.8m, then a world-record fee for a goalkeeper?",
+   "oldCorrect": "Alisson",
+   "newCorrect": "Alisson",
+   "truth": "Alisson joined Liverpool from Roma in July 2018 for a reported £66.8m — a world record FOR A GOALKEEPER only. The outright world transfer record at the time was Neymar's £198m/€222m move to PSG in 2017. Alisson's goalkeeper record also stood only three weeks, until Kepa's ~£71m move to Chelsea in August 2018."
+  },
+  {
+   "id": "q_413fa7",
+   "kind": "false_premise",
+   "oldQ": "Which nation has won Euro qualification every time they entered — never missing a tournament since 1972?",
+   "newQ": "Which nation has appeared at every European Championship finals since 1972?",
+   "oldCorrect": "West Germany and Germany",
+   "newCorrect": "West Germany and Germany",
+   "truth": "West Germany ENTERED Euro 1968 qualifying and failed to qualify — finishing a point behind Yugoslavia in Group 4 after the notorious 0-0 draw in Albania (Dec 1967). It is the only time a West German or unified German side has failed to qualify for a Euro or World Cup. So 'won Euro qualification every time they entered' is false. The second clause is true — Germany has appeared at all 14 tournaments since 1972 — though 1988 and 2024 were as automatic hosts, not via qualification."
+  },
+  {
+   "id": "q_a1c7b4",
+   "kind": "false_premise",
+   "oldQ": "Which Bundesliga (or 2.Bundesliga) club was founded in 1887 through a merger — making them one of Germany's oldest clubs — and plays at Volksparkstadion?",
+   "newQ": "Which German club traces its founding back to 1887 — making it one of the country's oldest — and plays at the Volksparkstadion?",
+   "oldCorrect": "Hamburger SV",
+   "newCorrect": "Hamburger SV",
+   "truth": "Hamburger SV officially dates its founding to 29 September 1887 (SC Germania von 1887), but that 1887 club was NOT created by a merger. The merger that formed the modern HSV happened on 2/3 June 1919, joining SC Germania 1887, Hamburger FC 1888 and FC Falke 06. HSV carries Germania's 1887 date and colours. Volksparkstadion and the keyed answer are correct; the other options are 1904 (Schalke), 1899 (Werder) and 1896 (Hannover), none at Volksparkstadion."
+  },
+  {
+   "id": "q_63fbe6",
+   "kind": "false_premise",
+   "oldQ": "AC Milan was founded in what year by Swiss and British expats — originally called Milan Cricket and Football Club?",
+   "newQ": "AC Milan was founded in what year by English expatriates — originally called Milan Foot-Ball and Cricket Club?",
+   "oldCorrect": "1899",
+   "newCorrect": "1899",
+   "truth": "AC Milan was founded in December 1899 as Milan Foot-Ball and Cricket Club by English expatriates — Alfred Edwards (first president, former British vice-consul) and Herbert Kilpin, with Samuel Davies, David Allison and Edward Berra, alongside Italians. There were no Swiss founders; the Swiss element (Hernst Marktl and the Swiss painters in the 1908 breakaway) belongs to Internazionale. The original name is also 'Foot-Ball and Cricket Club', not 'Cricket and Football Club'. Keyed year 1899 is correct."
+  },
+  {
+   "id": "q_745812",
+   "kind": "false_premise",
+   "oldQ": "Which club did Liverpool beat 4-0 to win the title in 2019-20 — sealing it with a game in hand?",
+   "newQ": "Which club did Liverpool beat 4-0 at Anfield in June 2020, the day before they were confirmed as 2019-20 Premier League champions?",
+   "oldCorrect": "Crystal Palace",
+   "newCorrect": "Crystal Palace",
+   "truth": "Liverpool beat Crystal Palace 4-0 at Anfield on 24 June 2020 (Alexander-Arnold, Salah, Fabinho, Mané), which moved them within two points of the title but did NOT clinch it. The title was mathematically confirmed the next day, 25 June 2020, when Manchester City lost 2-1 to Chelsea. Nor did Liverpool have a game in hand: after the Palace win both Liverpool and City had played 31 matches. Liverpool clinched with seven games remaining — the earliest by games played in PL history."
+  },
+  {
+   "id": "q_670f76",
+   "kind": "false_premise",
+   "oldQ": "Antonio Conte won league titles with Juventus, Chelsea and which other club?",
+   "newQ": "Antonio Conte has won league titles with Juventus, Chelsea and Napoli. With which other club did he also win a league title?",
+   "oldCorrect": "Inter",
+   "newCorrect": "Inter",
+   "truth": "Antonio Conte has won top-flight league titles with FOUR clubs: Juventus (2011-12, 2012-13, 2013-14), Chelsea (2016-17), Inter (2020-21) and Napoli (2024-25, sealed 23 May 2025 with a 2-0 win over Cagliari — making him the first manager to win the Scudetto with three different clubs)."
+  },
+  {
+   "id": "q_6ed577",
+   "kind": "false_premise",
+   "oldQ": "What is the release clause on Lamine Yamal's Barcelona contract — a record-setting figure?",
+   "newQ": "What is the release clause in Lamine Yamal's Barcelona contract?",
+   "oldCorrect": "€1 billion",
+   "newCorrect": "€1 billion",
+   "truth": "Lamine Yamal's May 2025 Barcelona renewal (to 2031) carries a €1 billion buyout clause — but €1bn is Barcelona's standing ceiling, not a new record. Pedri set the €1bn club record in October 2021 (up from €400m), and Gavi, Ansu Fati, Ronald Araújo and Ferran Torres all carry the identical €1bn figure. Yamal's own previous (minor's) deal already had €1bn, so the renewal did not even raise his own clause."
+  },
+  {
+   "id": "q_3f53a6",
+   "kind": "false_premise",
+   "oldQ": "Which manager won the Champions League with Porto in 2004 — his first major job?",
+   "newQ": "Which manager won the Champions League with Porto in 2004?",
+   "oldCorrect": "Mourinho",
+   "newCorrect": "Mourinho",
+   "truth": "Mourinho won the 2003-04 Champions League with Porto, whom he joined in January 2002. Porto was his third senior club, not his first: he was appointed Benfica head coach on 20 September 2000 (nine matches, resigned December 2000) and then managed União de Leiria in 2001-02. Benfica is one of Portugal's biggest clubs, so 'first major job' is untrue."
+  },
+  {
+   "id": "q_4befc5",
+   "kind": "false_premise",
+   "oldQ": "Fabio Capello won Serie A with which clubs during his career — a record 3 different Italian clubs?",
+   "newQ": "Fabio Capello won Serie A titles as manager of which three Italian clubs?",
+   "oldCorrect": "Milan, Roma, Juventus",
+   "newCorrect": "Milan, Roma, Juventus",
+   "truth": "Capello won four Scudetti with Milan (1991-92, 92-93, 93-94, 95-96), one with Roma (2000-01), and two with Juventus (2004-05, 2005-06) that were both revoked by the FIGC in July 2006 — 2004-05 left unassigned, 2005-06 reassigned to Inter. Officially he therefore has titles with two clubs. Decisive corroboration: Antonio Conte was widely reported in May 2025 as 'the first manager in Serie A history to win the Scudetto with three different teams' (Juventus, Inter, Napoli) — which only holds because Capello's Juventus titles no longer count."
+  },
+  {
+   "id": "q_31e128",
+   "kind": "false_premise",
+   "oldQ": "German football introduced the Video Assistant Referee (VAR) in which Bundesliga season — making it the first top league to do so?",
+   "newQ": "German football introduced the Video Assistant Referee (VAR) in which Bundesliga season?",
+   "oldCorrect": "2017-18",
+   "newCorrect": "2017-18",
+   "truth": "The Bundesliga did introduce VAR in 2017-18, first used in the opening match, Bayern 3-1 Leverkusen on 18 August 2017. But it was not first: Australia's A-League ran VAR from 7 April 2017 (the world's first competitive use in a professional league), MLS implemented it league-wide from the 5-6 August 2017 weekend, and Serie A launched it on its own 2017-18 opening weekend, 19-20 August 2017. Bundesliga and Serie A are normally described jointly as the first major European leagues."
+  },
+  {
+   "id": "q_cc7579",
+   "kind": "false_premise",
+   "oldQ": "In 2005, which Italian club was stripped of their 2004-05 Serie A title due to the 'Calciopoli' match-fixing scandal?",
+   "newQ": "In 2006, which Italian club was stripped of their 2004-05 Serie A title due to the 'Calciopoli' match-fixing scandal?",
+   "oldCorrect": "Juventus",
+   "newCorrect": "Juventus",
+   "truth": "Calciopoli surfaced in May 2006 when wiretaps between club officials and refereeing bodies were published. The FIGC verdicts came in July 2006: Juventus were stripped of the 2004-05 Scudetto (left unassigned), had the 2005-06 title revoked (later awarded to Inter) and were relegated to Serie B. Nothing was stripped in 2005 — the 2004-05 season had only just finished and Juventus were the recognised champions throughout 2005."
+  },
+  {
+   "id": "q_353417",
+   "kind": "false_premise",
+   "oldQ": "Which legendary player returned from exile to play for Napoli in the 1980s and transformed the club?",
+   "newQ": "Which legendary player joined Napoli from Barcelona in 1984 for a then world-record fee and transformed the club?",
+   "oldCorrect": "Maradona",
+   "newCorrect": "Maradona",
+   "truth": "Maradona joined Napoli from Barcelona on 1 July 1984 for a then world-record fee (~£6.9m), presented to 75,000 fans on 5 July. He had never played in Italy before and was never 'in exile' — he left Barcelona after two injury-hit seasons and the violent 1984 Copa del Rey final. Nothing to 'return' from."
+  },
+  {
+   "id": "q_3555e9",
+   "kind": "false_premise",
+   "oldQ": "Which club won the first ever Premier League title with a record 84 points?",
+   "newQ": "Which club won the first ever Premier League title in 1992-93, finishing ten points clear?",
+   "oldCorrect": "Man Utd",
+   "newCorrect": "Man Utd",
+   "truth": "Manchester United won the inaugural 1992-93 Premier League with 84 points (W24 D12 L6), ten clear of Aston Villa on 74. That was not an English top-flight record: with three points for a win, Everton took 90 in 1984-85 and Liverpool 90 in 1987-88, both over 42 games."
+  },
+  {
+   "id": "q_510946",
+   "kind": "false_premise",
+   "oldQ": "Which manager famously said his team would 'park the bus' — now a common football phrase?",
+   "newQ": "Which manager introduced 'park the bus' to English football in 2004, using it to criticise Tottenham's defensive display at Stamford Bridge?",
+   "oldCorrect": "Jose Mourinho",
+   "newCorrect": "Jose Mourinho",
+   "truth": "After Chelsea 0-0 Tottenham at Stamford Bridge in September 2004, Mourinho criticised the visitors: 'As we say in Portugal, they brought the bus and they left the bus in front of the goal.' The phrase was an attack on Tottenham's negativity, not a description of his own tactics; the expression already existed in Portugal and Spain."
+  },
+  {
+   "id": "q_e37de7",
+   "kind": "false_premise",
+   "oldQ": "In 2011, Fernando Torres became the most expensive British transfer ever at £50m. What did he do nine months later at Old Trafford that became iconic for all the wrong reasons?",
+   "newQ": "In January 2011, Fernando Torres became the most expensive British transfer ever at £50m. What did he do later that year at Old Trafford that became iconic for all the wrong reasons?",
+   "oldCorrect": "Missed an open goal from two metres",
+   "newCorrect": "Missed an open goal from two metres",
+   "truth": "Torres joined Chelsea on deadline day, 31 January 2011, for £50m — then the record fee paid by a British club. The open-goal miss came at Old Trafford on 18 September 2011 (Manchester United 3-1 Chelsea), after he had rounded De Gea. That is 7 months and 18 days, not nine months. The keyed answer (missed an open goal from two metres) is correct."
+  },
+  {
+   "id": "q_2ebb4d",
+   "kind": "false_premise",
+   "oldQ": "In January 2011 Newcastle sold striker Andy Carroll to Liverpool for what was then a British-record fee. How much?",
+   "newQ": "In January 2011 Newcastle sold striker Andy Carroll to Liverpool for what was then a record fee for a British player. How much?",
+   "oldCorrect": "£35 million",
+   "newCorrect": "£35 million",
+   "truth": "Andy Carroll's £35m move from Newcastle to Liverpool on 31 January 2011 was a record fee for a BRITISH PLAYER, not a British transfer record. The British transfer record was set the very same deadline day by Fernando Torres's £50m move from Liverpool to Chelsea (UEFA's own report: 'Chelsea break British record to land Torres'). The keyed answer (£35 million) is correct."
+  },
+  {
+   "id": "q_258c48",
+   "kind": "false_premise",
+   "oldQ": "Bruno Guimaraes, a midfield talisman signed for a club-record fee in January 2022, arrived from which club?",
+   "newQ": "Bruno Guimaraes, Newcastle's midfield talisman signed in January 2022, arrived from which club?",
+   "oldCorrect": "Lyon",
+   "newCorrect": "Lyon",
+   "truth": "Newcastle signed Bruno Guimarães from Lyon in January 2022 for an initial ~£33.3m plus ~£6.5m in add-ons (Lyon's own statement: €50.1m including €8m in clauses, 20% sell-on). Newcastle's club record at that moment was Joelinton's £40m from Hoffenheim (July 2019), which stood until Alexander Isak's ~£63m arrival in August 2022. Bruno was not a club-record signing. The keyed answer (Lyon) is correct."
+  },
+  {
+   "id": "q_07548f",
+   "kind": "false_premise",
+   "oldQ": "In the 2006 Calciopoli scandal, Juventus suffered a punishment no other Italian giant had ever endured. What was it?",
+   "newQ": "In the 2006 Calciopoli scandal, what punishment was handed down to Juventus?",
+   "oldCorrect": "Relegation to Serie B",
+   "newCorrect": "Relegation to Serie B",
+   "truth": "Juventus were relegated to Serie B (with a points deduction) after Calciopoli in 2006, but this was not unprecedented for an Italian giant: AC Milan and Lazio were both relegated to Serie B by the FIGC over the 1980 Totonero match-fixing scandal. The keyed answer (Relegation to Serie B) is correct."
+  },
+  {
+   "id": "q_98091a",
+   "kind": "false_premise",
+   "oldQ": "Which one-club captain holds Inter's all-time appearance record with a staggering 858 official games over nearly two decades?",
+   "newQ": "Which captain holds Inter's all-time appearance record with a staggering 858 official games over nearly two decades?",
+   "oldCorrect": "Javier Zanetti",
+   "newCorrect": "Javier Zanetti",
+   "truth": "Javier Zanetti holds Inter's all-time appearance record with 858 official games across 19 seasons, but he was not a one-club player: he played for Talleres (Remedios de Escalada) from 1991 and Banfield from 1993 before joining Inter in the summer of 1995. Beppe Bergomi, listed as a distractor, is the genuine one-club Inter captain."
+  },
+  {
+   "id": "q_a56162",
+   "kind": "false_premise",
+   "oldQ": "As of 2025, who is Juventus's all-time leading goalscorer and record appearance-maker, a one-club legend across 19 years?",
+   "newQ": "As of 2025, who is Juventus's all-time leading goalscorer and record appearance-maker, with 290 goals in 705 games across 19 seasons?",
+   "oldCorrect": "Alessandro Del Piero",
+   "newCorrect": "Alessandro Del Piero",
+   "truth": "Alessandro Del Piero is Juventus's all-time leading scorer (290 goals) and record appearance-maker (705 games) over 19 seasons, but he was not a one-club player: he made his professional debut for Padova in Serie B in March 1992 and played there until moving to Juventus in summer 1993, and after leaving in 2012 he played for Sydney FC and Delhi Dynamos. Giampiero Boniperti, a listed distractor, is the true one-club Juventus man."
+  },
+  {
+   "id": "q_1fd1b9",
+   "kind": "false_premise",
+   "oldQ": "Which La Liga club famously sold Cesc Fabregas to Arsenal as a teenager — then bought him back from Arsenal years later?",
+   "newQ": "Which La Liga club lost 16-year-old Cesc Fabregas to Arsenal from its academy in 2003 without a transfer fee — then paid tens of millions to buy him back years later?",
+   "oldCorrect": "Barcelona",
+   "newCorrect": "Barcelona",
+   "truth": "Fàbregas joined Arsenal's academy on 11 September 2003 as a 16-year-old out of La Masia. He had no professional contract (Spanish law barred one before 18), so no transfer fee was paid — Barcelona received at most a nominal/disputed training compensation. Barcelona then bought him back in August 2011 for an initial €29m plus €5m in variables (~€34m). The whole point of the story is that Barça got nothing and later paid a fortune."
+  },
+  {
+   "id": "q_602cbf",
+   "kind": "false_premise",
+   "oldQ": "What is the scoreline of Manchester United's record top-flight win, achieved against Ipswich in 1995 and matched against Southampton in 2021?",
+   "newQ": "What is the scoreline of Manchester United's record Premier League win, achieved against Ipswich in 1995 and matched against Southampton in 2021?",
+   "oldCorrect": "9-0",
+   "newCorrect": "9-0",
+   "truth": "Manchester United's record top-flight win is 10-1, as Newton Heath v Wolverhampton Wanderers in the First Division on 15 October 1892 (scorers Donaldson 3, Stewart 3, Carson, Farman, Hendry, Hood). Their record win in all competitions is 10-0 v Anderlecht, European Cup 1956. 9-0 (Ipswich 1995, Southampton 2021) is only their record PREMIER LEAGUE win."
+  },
+  {
+   "id": "q_f04ce8",
+   "kind": "false_premise",
+   "oldQ": "Mohamed Salah's debut Premier League season (2017-18) set a scoring record with how many goals in a 38-game campaign?",
+   "newQ": "In 2017-18, his first season at Liverpool, Mohamed Salah scored how many Premier League goals — a then-record haul for a 38-game campaign?",
+   "oldCorrect": "32",
+   "newCorrect": "32",
+   "truth": "Salah signed for Chelsea in January 2014 and played in the Premier League across 2013-14 and 2014-15 (13 PL appearances, 2 goals, per StatMuse) before loans to Fiorentina and Roma. So 2017-18 was his first season at Liverpool, not his debut PL season. Separately, his 32 goals were a record for a 38-game campaign at the time, but Erling Haaland scored 36 in 2022-23 and now holds that record."
+  },
+  {
+   "id": "q_a6db24",
+   "kind": "false_premise",
+   "oldQ": "Which manager did Liverpool appoint in October 2015, luring him from Borussia Dortmund to begin a trophy-laden era?",
+   "newQ": "Which manager did Liverpool appoint in October 2015, four months after he had left Borussia Dortmund, to begin a trophy-laden era?",
+   "oldCorrect": "Jurgen Klopp",
+   "newCorrect": "Jurgen Klopp",
+   "truth": "Klopp announced in April 2015 that he would leave Borussia Dortmund at the end of 2014-15; his last match was the DFB-Pokal final defeat on 30 May 2015. He was then out of work on a sabbatical. Liverpool sacked Brendan Rodgers on 4 October 2015 and announced Klopp on 8 October 2015 — roughly four months after he had already left Dortmund."
+  },
+  {
+   "id": "q_68b0d2",
+   "kind": "false_premise",
+   "oldQ": "The 1985 European Cup final, Juventus's first, is forever overshadowed by the Heysel Stadium disaster. Who scored the decisive (and hugely controversial) penalty to beat Liverpool 1-0?",
+   "newQ": "The 1985 European Cup final, which brought Juventus their first European Cup triumph, is forever overshadowed by the Heysel Stadium disaster. Who scored the decisive (and hugely controversial) penalty to beat Liverpool 1-0?",
+   "oldCorrect": "Michel Platini",
+   "newCorrect": "Michel Platini",
+   "truth": "Juventus lost the 1973 European Cup final to Ajax (1-0, Rep) and the 1983 final to Hamburg (1-0, Magath). The 1985 Heysel final was their THIRD European Cup final and their first WIN. Platini's 56th-minute penalty (awarded for a foul on Boniek, widely judged to be outside the box) is the correct answer."
+  },
+  {
+   "id": "q_1f70df",
+   "kind": "false_premise",
+   "oldQ": "In January 2018 Dortmund sold captain and top scorer Pierre-Emerick Aubameyang to which Premier League club?",
+   "newQ": "In January 2018 Dortmund sold their top scorer Pierre-Emerick Aubameyang to which Premier League club?",
+   "oldCorrect": "Arsenal",
+   "newCorrect": "Arsenal",
+   "truth": "Aubameyang was Dortmund's top scorer in 2017-18 (21 goals in all competitions) but was never club captain. Marcel Schmelzer was captain that season, with Marco Reus as vice-captain."
+  },
+  {
+   "id": "q_f15e7f",
+   "kind": "false_premise",
+   "oldQ": "In 1974 a famous backheeled goal by a former Manchester United star, then playing for City, contributed to United's relegation. Who scored it?",
+   "newQ": "In 1974 a former Manchester United star, by then playing for City, backheeled a famous goal at Old Trafford on the day United's relegation was confirmed — though results elsewhere meant they were going down regardless. Who scored it?",
+   "oldCorrect": "Denis Law",
+   "newCorrect": "Denis Law",
+   "truth": "Denis Law's 81st-minute backheel for Manchester City at Old Trafford on 27 April 1974 is correctly keyed, but it did not contribute to United's relegation. Other results that afternoon (Birmingham City's win) meant United went down regardless of the derby result — Wikipedia's Denis Law article states plainly: results of the day's other matches meant United were relegated whatever their result, though Law did not know it at the time. The match was also abandoned in the 85th minute after a pitch invasion (result allowed to stand), and United still had one fixture left (Stoke, 29 April)."
+  },
+  {
+   "id": "q_c7173d",
+   "kind": "false_premise",
+   "oldQ": "Edwin van der Sar, Ajax's legendary goalkeeper, returned to the club in 2016 in which off-pitch capacity?",
+   "newQ": "Edwin van der Sar, Ajax's legendary goalkeeper, rejoined the club in 2012 as marketing director and was promoted in 2016 to which role?",
+   "oldCorrect": "General director (CEO)",
+   "newCorrect": "General director (CEO)",
+   "truth": "Van der Sar returned to Ajax on 19 November 2012 as marketing director, and was promoted to general director/CEO in late 2016. He resigned in May 2023. So 2016 is the promotion year, not the return year."
+  },
+  {
+   "id": "q_a330a8",
+   "kind": "false_premise",
+   "oldQ": "Newcastle's last trophy before 2025 came in 1969 — which competition did they win in their very first European campaign?",
+   "newQ": "Newcastle's last major trophy before 2025 came in 1969 — which competition did they win in their very first European campaign?",
+   "oldCorrect": "Inter-Cities Fairs Cup",
+   "newCorrect": "Inter-Cities Fairs Cup",
+   "truth": "Newcastle's 1969 Inter-Cities Fairs Cup (6-2 agg vs Újpest, in their first European campaign, 1968-69) was their last MAJOR trophy before the 2025 EFL Cup — but not their last trophy full stop. UEFA awarded Newcastle the 2006 UEFA Intertoto Cup outright, and they lifted second-tier league titles in 1993, 2010 and 2017."
+  },
+  {
+   "id": "q_15d531",
+   "kind": "false_premise",
+   "oldQ": "Which one-club academy graduate, nicknamed 'Mr West Ham,' captained the side for over a decade until retiring in 2022?",
+   "newQ": "Which one-club academy graduate, nicknamed 'Mr West Ham,' captained the side from 2015 until retiring in 2022?",
+   "oldCorrect": "Mark Noble",
+   "newCorrect": "Mark Noble",
+   "truth": "Mark Noble was named West Ham club captain on 14 September 2015, following Kevin Nolan's departure, and retired at the end of 2021-22 (final appearance 22 May 2022 v Brighton). That is six years and eight months as captain — not 'over a decade'. He was at the club as a player from 2004, so the decade-plus figure conflates his overall service with his captaincy. Answer 'Mark Noble' stays correct; the temporal clause is false."
+  },
+  {
+   "id": "q_73c5c2",
+   "kind": "false_premise",
+   "oldQ": "In 1977-78 Forest set a then-English top-flight record with an unbeaten league run of how many games?",
+   "newQ": "Between November 1977 and November 1978, Forest set a then-English top-flight record with an unbeaten league run of how many games?",
+   "oldCorrect": "42",
+   "newCorrect": "42",
+   "truth": "Forest's 42-match unbeaten league run did not happen within 1977-78. They lost three First Division games that season — 0-3 at Arsenal (3 September 1977), 0-1 at Chelsea (5 November 1977) and 0-1 at Leeds (19 November 1977) — and only then went unbeaten in their remaining 26 fixtures. The run continued through 1978-79: the 1-0 win at Bolton on 28 November 1978 was game 42 and set the record, which was finally ended by Liverpool on 9 December 1978. 26 + 16 = 42, spanning two seasons. So the record was set in 1978-79, not 1977-78, and the number 42 coinciding with a full 42-game season makes the false dating actively misleading."
+  },
+  {
+   "id": "q_2118ad",
+   "kind": "false_premise",
+   "oldQ": "Salah's record-breaking debut Liverpool campaign saw him win the 2017-18 Premier League Golden Boot. How many league goals did he score, a record for a 38-game season?",
+   "newQ": "Salah's debut Liverpool campaign saw him win the 2017-18 Premier League Golden Boot. How many league goals did he score, then a record for a 38-game season?",
+   "oldCorrect": "32",
+   "newCorrect": "32",
+   "truth": "Salah scored 32 Premier League goals in 2017-18, which was then the record for a 38-game season. Erling Haaland broke it with 36 in 2022-23, also a 38-game season."
+  },
+  {
+   "id": "q_10c4a4",
+   "kind": "false_premise",
+   "oldQ": "Which coach led Sporting to a league-and-cup double in 2001-02, with a young Cristiano Ronaldo breaking into the squad?",
+   "newQ": "Which coach led Sporting to a league-and-cup double in 2001-02, then handed a teenage Cristiano Ronaldo his first-team debut the following season?",
+   "oldCorrect": "László Bölöni",
+   "newCorrect": "László Bölöni",
+   "truth": "László Bölöni managed Sporting CP from 2001 to 2003 and won the Primeira Liga, Taça de Portugal and Supertaça in 2001-02. Cristiano Ronaldo's first official first-team match was on 14 August 2002 (Champions League qualifier v Inter Milan) — the 2002-03 season. His league debut followed weeks later, and he scored twice against Moreirense on 7 October 2002. Wikipedia records 25 Sporting appearances in 2002-03 and none before."
+  },
+  {
+   "id": "q_afbca2",
+   "kind": "false_premise",
+   "oldQ": "Club Brugge's Latin motto means 'a healthy mind in a healthy body.' What is it?",
+   "newQ": "Club Brugge reached their only European Cup final in 1978, losing 1-0 at Wembley to which club?",
+   "oldCorrect": "Mens sana in corpore sano",
+   "newCorrect": "Liverpool",
+   "truth": "The stem supplies the English translation ('a healthy mind in a healthy body') and one of the four options is the literal, universally known Latin rendering of exactly that phrase. The other three options translate to 'through hardship to the stars', 'I came, I saw, I conquered' and 'strong and faithful' — none of which mean anything close. No football knowledge is exercised."
+  },
+  {
+   "id": "q_9232b2",
+   "kind": "false_premise",
+   "oldQ": "On 4 May 1949, Torino's entire team died when their plane crashed into a hillside basilica near Turin. This tragedy is known as the...",
+   "newQ": "On 4 May 1949, the aircraft carrying Torino's squad home from Lisbon crashed into the hillside basilica of Superga near Turin, killing all 31 people on board. This tragedy is known as the...",
+   "oldCorrect": "Superga air disaster",
+   "newCorrect": "Superga air disaster",
+   "truth": "The Superga crash of 4 May 1949 killed all 31 people on board, including 18 Torino players. Three squad members did not travel and survived: defender Sauro Tomà (injured meniscus), reserve goalkeeper Renato Gandolfi, and Luigi Giuliano. Club president Ferruccio Novo also stayed behind, ill with influenza."
+  },
+  {
+   "id": "q_23447c",
+   "kind": "false_premise",
+   "oldQ": "Which former Fulham player, as PFA chairman, campaigned to abolish the maximum wage in 1961?",
+   "newQ": "Which manager did Fulham appoint in 2003, making him the youngest boss in the Premier League at the time?",
+   "oldCorrect": "Jimmy Hill",
+   "newCorrect": "Chris Coleman",
+   "truth": "Chris Coleman (b. 10 June 1970) was appointed Fulham caretaker in April 2003 and permanent manager in May 2003, aged 32 — making him the youngest manager then working in the Premier League, not the youngest in its history. Ryan Mason (b. 13 June 1991) holds the historical record, appointed by Tottenham on 20 April 2021 aged 29; the previous record holder was Attilio Lombardo of Crystal Palace at 32 (b. 6 January 1966, appointed March 1998 at 32y2m, younger than Coleman's 32y10m)."
+  }
+ ],
+ "skipped": [
+  {
+   "id": "q_261508",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_7b7d5d",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_2f6810",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_5b843e",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_f33641",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_7af792",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_824289",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_1f8c19",
    "reason": "confirmed but confidence=medium — Alex decides",
    "kind": "multiple_correct"
   },
   {
-   "id": "q_37991d",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
+   "id": "q_3ffbe5",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
   },
   {
-   "id": "q_af7b9a",
+   "id": "q_706842",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_9e3d3d",
-   "reason": "confirmed, no complete fix proposed — human editorial call",
-   "kind": "stale"
-  },
-  {
-   "id": "q_cb47fe",
+   "id": "q_196dc4",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_3433df",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_1a4ac7",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_487a08",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_3a08f4",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "multiple_correct"
+  },
+  {
+   "id": "q_ba88ec",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_53e107",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_02e4e2",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_3e3e0c",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_ab696e",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_5020a8",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_c5a25c",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_8fb2af",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_cb171c",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_5f19df",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_64bc8e",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_ec5bad",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_3f5a10",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
   },
   {
    "id": "q_ebe0f9",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_9edc78",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_ccd687",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_311a30",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_3c5e0b",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "id": "q_304b5b",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
   },
   {
-   "id": "q_640ca0",
+   "id": "q_792c78",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_6374f7",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_afa57a",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
-  },
-  {
-   "id": "q_0fe2e9",
-   "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "self_answering"
   },
   {
    "id": "q_5d7a09",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_7bebf1",
+   "reason": "confirmed but confidence=low — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_11cdf7",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_5cbea6",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
   },
   {
    "id": "q_d505e7",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_e52cdf",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_7c4b52",
+   "id": "q_4519a6",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_2f3fd9",
+   "id": "q_bf8f9d",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_9edc78",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_81a321",
+   "id": "q_f6d451",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_ea8bbc",
+   "id": "q_deb74e",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_1de130",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_b11d1f",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_e649d5",
+   "id": "q_c0f2bf",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_47cf6b",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "multiple_correct"
   },
   {
-   "id": "q_e1f434",
+   "id": "q_b41bdd",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_b24955",
+   "id": "q_d6a4c5",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_bda0d8",
+   "id": "q_24d9f1",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_6e0e62",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_236cd2",
-   "reason": "confirmed, no complete fix proposed — human editorial call",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_727865",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_ea8bbc",
+   "id": "q_4e6d69",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_90eb83",
+   "id": "q_a6fe03",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_0aecfa",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "id": "q_ad8754",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_435417",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_e53c04",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_c3fcce",
+   "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_8b0ba9",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_96ffa8",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_cf5e43",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_49d48f",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_fe219e",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_1f03e0",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_87f4da",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_479d63",
+   "reason": "verifier REJECTED the flag — question is fine",
    "kind": "wrong_answer"
   },
   {
    "id": "q_9d1ab4",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "reason": "verifier REJECTED the flag — question is fine",
    "kind": "multiple_correct"
   },
   {
-   "id": "q_b4680d",
+   "id": "q_44f66e",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "wrong_answer"
+   "kind": "self_answering"
   },
   {
-   "id": "q_4e6d69",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_ea846b",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
   },
   {
-   "id": "q_ad8754",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
+   "id": "q_83ad37",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
   },
   {
-   "id": "q_c431ea",
+   "id": "q_7b2721",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_e01ca9",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_126484",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_f7fcc5",
    "reason": "confirmed but confidence=medium — Alex decides",
-   "kind": "multiple_correct"
+   "kind": "false_premise"
   },
   {
-   "id": "q_a6fe03",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "stale"
-  },
-  {
-   "id": "q_cf5e43",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_fe219e",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_e1dd54",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_d36b79",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "wrong_answer"
-  },
-  {
-   "id": "q_788245",
-   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
-   "kind": "multiple_correct"
-  },
-  {
-   "id": "q_ea8088",
+   "id": "q_e7fff3",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
   },
   {
-   "id": "q_1e241d",
+   "id": "q_afbca2",
    "reason": "verifier REJECTED the flag — question is fine",
-   "kind": "stale"
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_b71675",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_1c723f",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_fe4907",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_146702",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_0aecfa",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_a8ce10",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_49e58f",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_123cdd",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_7a744d",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_56bd55",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_009da2",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_d4dd13",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
+  },
+  {
+   "id": "q_d8aced",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "self_answering"
+  },
+  {
+   "id": "q_e4c57c",
+   "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "false_premise"
   }
  ],
- "hintsDropped": []
+ "hintsDropped": [
+  {
+   "id": "q_afbca2",
+   "oldCorrect": "Mens sana in corpore sano",
+   "newCorrect": "Liverpool"
+  },
+  {
+   "id": "q_23447c",
+   "oldCorrect": "Jimmy Hill",
+   "newCorrect": "Chris Coleman"
+  }
+ ]
 }
