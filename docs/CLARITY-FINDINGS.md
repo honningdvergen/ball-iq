@@ -1,5 +1,87 @@
 # Clarity findings
 
+## 📊 2026-07-28 (dashboard API, 3-day window) — THE PAGE-TYPE READ
+
+Pulled by entry URL, channel/source, and country/device. Four cuts, ~130
+sessions. **Read the abandoned-tab caveat below before quoting any absolute
+number from this section.**
+
+### The finding: engagement tracks whether a page is PLAYABLE
+
+| Entry | Active | Scroll | Playable? |
+|---|---|---|---|
+| `/quiz/everton/` | 144.8s | 45.9% | ✅ taster |
+| `/quiz/manchester-united/` | 139.6s | 21.1% | ✅ |
+| `/play` (the app) | 121.9s | 96% | ✅ |
+| `/quiz/rangers/` | 109.2s | 23.5% | ✅ |
+| `/` homepage | 51.9s | 55.8% | ✅ |
+| `/lists/ballon-dor-winners/` | **2.3s** | 14% | ❌ **none** |
+
+The absolute values are soft (see caveat), but a ~60× gap is not an artefact,
+and the list pages were the only type with nothing to do. **Fixed same day**
+(c58d82d): 37 of 50 lists now carry the 5-question taster; 13 are deliberately
+left blank rather than given off-topic filler.
+
+### ⚠️ This also corrects "94.6% of visitors never press play"
+
+That counts **app** plays. Club-page visitors ARE playing — the on-page taster
+is the play for them. A club page holds a stranger from Google longer than the
+app holds a user. This is not a bounce problem.
+
+### Structural findings
+
+- **Pages/session = 1.0 on EVERY entry URL.** Not 1.2 — exactly 1.0. The
+  10,486-link internal mesh gets zero human traversal.
+- **Why: club pages are 12,200px — 14.5 phone screens.** Average scroll is
+  21–25%, so nobody reaches screen 4. The related-quiz tiles and the app CTA
+  both sit *below* that line: not ignored, never rendered into view. Moving
+  them above the 25% mark is one fix for both link traversal and app install.
+- **Zero rage clicks, zero quick-backs, zero excessive scrolls, every URL.**
+  Nothing is broken. We are fighting attention, not defects.
+- **INP 220ms** is the only non-green vital (LCP 2.2s, CLS 0.02 both good).
+
+### Audience
+
+| Country / device | Sessions | Active |
+|---|---|---|
+| UK Mobile | 50 | 61.7s |
+| Norway PC | 33 | 155.5s ← **Alex + testers, exclude from averages** |
+| US Mobile | 10 | **12.7s** |
+| US PC | 7 | **3.6s** |
+| Egypt Mobile | 6 | **5.7s** |
+| Portugal Mobile | 4 | 101.6s |
+
+- **`IsReturningUser: 0` on all ten rows.** Retention is not weak, it is absent.
+- **The US soccer-term gap, quantified: 3.6–12.7s.** They leave before reading a
+  sentence. Egypt (our #1 GSC clicks country) is 5.7s. Both are traffic we rank
+  for and instantly lose — a content/localisation problem, not a traffic one.
+- Norway PC at 155s is **us**; it inflates every site-wide average.
+
+### Channels
+
+| Channel | Sessions | Active |
+|---|---|---|
+| Organic / google | 72 | 96.0s |
+| Direct | 58 | 76.1s |
+| balliq.app (self-ref) | 20 | 134.0s |
+| **Social / ig** | **3** | **17.6s** |
+| **chatgpt.com** | 1 | 14.5s |
+| reddit.com | 1 | 9.1s |
+
+- **Instagram returns 3 sessions at 17.6s.** The daily card is near-worthless as
+  traffic. Worth reconsidering the cost of posting it daily.
+- **ChatGPT referred a real session.** The llms.txt / `/lists` AI-answer bet is
+  starting to register. First evidence it works.
+
+### ⚠️ Carry-forward caveat
+
+The entry below (session recordings, same day) found **3 of the 8 longest
+sessions had ZERO clicks** — abandoned tabs inflate active time and scroll
+depth. So treat the absolute seconds above as directional. **Ratios between
+page types are the trustworthy signal; the raw numbers are not.**
+
+---
+
 ## 🔬 2026-07-28 (session recordings) — CORRECTING THE PREVIOUS ENTRY
 
 Read 8 real session recordings. Two of the earlier conclusions do not survive.

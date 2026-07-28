@@ -19,17 +19,30 @@ performance 83/100, every Core Web Vital green.
 **Nothing is broken. 94.6% of visitors just never press play.** That reframes
 the whole backlog: this is conversion, not defects.
 
-- [ ] **1. Fix the 5.4% play rate.** 60 Google visitors/day land and leave.
-      Worth more than everything else on this list combined.
-- [ ] **2. Dead clicks — 25% of sessions.** `Next →` = 176 (149 in /play).
-      Leading hypothesis: **answering expands the card ~115px**, so the next
-      tap lands where the old layout was. CLS 0.017 does NOT disprove this —
-      that metric only measures LOAD shift, not interaction shift.
-      ⚠️ **Untested and important:** at mobile width, does a double-tap on
-      `Next →` land on the NEXT question's option D? If yes that is a
-      **scoring bug**, not cosmetic.
-      Already ruled out (don't redo): timer auto-advance (timer freezes),
-      dead Classic card, dead taster options, fault in `doAdvance`.
+- [ ] **1. Fix the 5.4% play rate.** ⚠️ **REFRAMED 2026-07-28** — that number
+      counts APP plays. Club-page visitors are already playing the on-page
+      taster and give it 2+ min; a club page holds a stranger longer than the
+      app holds a user. The real gaps are (a) taster → app, (b) 1.0 pages per
+      session. See CLARITY-FINDINGS.md "THE PAGE-TYPE READ".
+- [x] **2. Dead clicks — RESOLVED 2026-07-28** (82f237a). The scoring-bug
+      hypothesis is **dead**: measured at 390×844, options do NOT shift when you
+      answer (y=303/372/441/510 before and after) and a double-tap on `Next →`
+      lands on an inert header div, 206px from the nearest live option. The real
+      mechanism is the inverse — `Next →` doesn't exist until you answer, then
+      **vanishes** after advancing, so the second tap hits nothing. Second cause
+      was answered options being `disabled` (a guaranteed dead click). Both
+      fixed: tapping an answered option now advances. Re-test any time with
+      `node scripts/probe-doubletap.mjs`.
+- [ ] **2b. NEW — club pages are 12,200px (14.5 screens), scroll stops at
+      21–25%.** The related-quiz tiles and app CTA sit below that line, so they
+      are never rendered into view. This is why pages/session = **1.0 on every
+      single entry URL** despite 10,486 internal links. Moving them above the
+      25% mark is one fix for both link traversal and app installs. **Highest
+      remaining ROI on this list.**
+- [ ] **2c. NEW — US and Egypt traffic converts at ~0.** US Mobile 12.7s, US PC
+      3.6s, Egypt 5.7s active (vs UK Mobile 61.7s). We rank for this traffic and
+      lose it before they read a sentence — a localisation/content problem.
+      Egypt is our #1 GSC clicks country.
 - [ ] **3. Retention: 2.7% returning.** No loop fires. Web push still blocked
       on `VAPID_KEYS`.
 - [ ] **4. ~10% of sessions are in-app webviews** (FacebookApp 9%,
