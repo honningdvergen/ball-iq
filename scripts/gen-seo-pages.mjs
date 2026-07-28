@@ -948,7 +948,16 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
       `[gen-seo] "${catCfg.cat}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const tasterRows = tasterPick(hints, 5);
+  // TASTER LENGTH — 10, not 5.
+  // The page carried TWO quiz widgets: a 5-question scored taster in the hero
+  // and a separate unscored Q&A block below, drawn from disjoint pools. Neither
+  // continued into the other, so a visitor who finished the taster was invited
+  // to "play the full quiz" — which, from their seat, is the same thing again.
+  // Session recordings back this: one visitor spent 2,135 SECONDS and 15 clicks
+  // on a club page and never crossed over.
+  // A longer single run means more investment before the ask, and one
+  // continuous experience instead of two half-ones.
+  const tasterRows = tasterPick(hints, 10);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), catCfg.sample);
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
@@ -1044,9 +1053,18 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
       `[gen-seo] club "${cfg.club}" has only ${hints.length} hint-bearing MCQs (< ${MIN_HINTS}). Refusing to emit a thin page.`,
     );
   }
-  const tasterRows = tasterPick(hints, 5);
+  // TASTER LENGTH — 10, not 5.
+  // The page carried TWO quiz widgets: a 5-question scored taster in the hero
+  // and a separate unscored Q&A block below, drawn from disjoint pools. Neither
+  // continued into the other, so a visitor who finished the taster was invited
+  // to "play the full quiz" — which, from their seat, is the same thing again.
+  // Session recordings back this: one visitor spent 2,135 SECONDS and 15 clicks
+  // on a club page and never crossed over.
+  // A longer single run means more investment before the ask, and one
+  // continuous experience instead of two half-ones.
+  const tasterRows = tasterPick(hints, 10);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
-  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(12, hints.length - 5));
+  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(12, Math.max(0, hints.length - 10)));
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
   const ld = jsonLd({
@@ -1145,7 +1163,16 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   if (hints.length < MIN_HINTS) {
     throw new Error(`[gen-seo] player "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
   }
-  const tasterRows = tasterPick(hints, 5);
+  // TASTER LENGTH — 10, not 5.
+  // The page carried TWO quiz widgets: a 5-question scored taster in the hero
+  // and a separate unscored Q&A block below, drawn from disjoint pools. Neither
+  // continued into the other, so a visitor who finished the taster was invited
+  // to "play the full quiz" — which, from their seat, is the same thing again.
+  // Session recordings back this: one visitor spent 2,135 SECONDS and 15 clicks
+  // on a club page and never crossed over.
+  // A longer single run means more investment before the ask, and one
+  // continuous experience instead of two half-ones.
+  const tasterRows = tasterPick(hints, 10);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   // Visible sample Q&A (same pattern as category/club pages) — also anchors
   // the flashcard Quiz node below. MIN_HINTS guard above guarantees ≥10 left.
@@ -1411,7 +1438,16 @@ function buildNationPage(cfg, catPages, nationPages) {
   if (hints.length < MIN_HINTS) {
     throw new Error(`[gen-seo] nation "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
   }
-  const tasterRows = tasterPick(hints, 5);
+  // TASTER LENGTH — 10, not 5.
+  // The page carried TWO quiz widgets: a 5-question scored taster in the hero
+  // and a separate unscored Q&A block below, drawn from disjoint pools. Neither
+  // continued into the other, so a visitor who finished the taster was invited
+  // to "play the full quiz" — which, from their seat, is the same thing again.
+  // Session recordings back this: one visitor spent 2,135 SECONDS and 15 clicks
+  // on a club page and never crossed over.
+  // A longer single run means more investment before the ask, and one
+  // continuous experience instead of two half-ones.
+  const tasterRows = tasterPick(hints, 10);
   const tasterIds = new Set(tasterRows.map((r) => r.id));
   const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(10, hints.length - 5));
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
