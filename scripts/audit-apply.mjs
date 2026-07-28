@@ -91,12 +91,18 @@ for (const line of fs.readFileSync(journalPath, 'utf8').trim().split('\n')) {
 }
 
 // ── snapshots: what the verifier actually judged ────────────────────────────
-const snapDir = path.join(ROOT, '.audit/vbatch');
+// vbatch = round 1 (serious flags), cbatch = round 2 (mis-rated "cosmetic").
+// Both are frozen copies of what a verifier actually judged, so both feed the
+// same staleness gate below.
 const snapshots = new Map();
-for (const f of fs.readdirSync(snapDir)) {
-  if (!f.endsWith('.json')) continue;
-  for (const e of JSON.parse(fs.readFileSync(path.join(snapDir, f), 'utf8'))) {
-    snapshots.set(e.id, e);
+for (const dir of ['.audit/vbatch', '.audit/cbatch']) {
+  const snapDir = path.join(ROOT, dir);
+  if (!fs.existsSync(snapDir)) continue;
+  for (const f of fs.readdirSync(snapDir)) {
+    if (!f.endsWith('.json')) continue;
+    for (const e of JSON.parse(fs.readFileSync(path.join(snapDir, f), 'utf8'))) {
+      snapshots.set(e.id, e);
+    }
   }
 }
 
