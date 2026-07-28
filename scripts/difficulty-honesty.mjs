@@ -40,14 +40,31 @@ const norm = (s) => String(s).toLowerCase().trim();
 //
 // Only fires when the ANSWER is the format outlier. A distractor that looks
 // different is untidy; an ANSWER that looks different is a free point.
-const shape = (o) => {
+// REFINED after running this against wave K, where all 10 hits were false
+// positives. The first version flagged any token-count difference, which
+// conflates two unrelated things:
+//
+//   REAL TELL — inconsistent naming STYLE. "McManaman" beside "Ian Rush",
+//   "Robbie Fowler", "John Barnes" is a surname among full names; you can pick
+//   it knowing nothing.
+//
+//   NOT A TELL — natural length variation. "Real Madrid" beside "Sevilla",
+//   "Valencia", "Barcelona" is four clubs written identically, one of which
+//   happens to be two words. Same for "AC Milan" among Italian clubs, and for
+//   surnames carrying a particle ("Alfredo Di Stéfano", "Fleury Di Nallo").
+//
+// So: only PERSON options are judged, only mononym-vs-full-name counts, and
+// club questions are skipped entirely — clubs have no consistent word count to
+// be inconsistent with.
+const CLUB_STEM = /\bwhich (club|team|side)\b|\bwhat club\b/i;
+const CLUBBY = /\b(fc|cf|ac|sc|afc|united|city|real|inter|milan|juventus|roma|lazio|ajax|psv|porto|benfica|celtic|rangers|arsenal|chelsea|liverpool|napoli|sevilla|valencia|barcelona|madrid|bayern|dortmund|plate|juniors|boca|river|stuttgart|schalke|hamburger|kaiserslautern|rostock)\b/i;
+
+// mononym (Pelé, Juninho) vs full name (Uwe Seeler). Particles and extra
+// forenames do NOT change the class.
+const nameClass = (o) => {
   const s = String(o).trim();
-  if (/^(19|20)\d{2}/.test(s)) return 'year';
-  if (/^[\d.,]/.test(s)) return 'number';
-  const words = s.split(/\s+/).length;
-  if (words === 1) return 'one-word';
-  if (words === 2) return 'two-word';
-  return 'many-word';
+  if (/^(19|20)\d{2}/.test(s) || /^[\d.,]/.test(s)) return null;   // years/numbers: not names
+  return s.split(/\s+/).length === 1 ? 'mononym' : 'full-name';
 };
 
 // Stem qualifiers that a distractor can visibly flunk.
@@ -59,15 +76,21 @@ const hard = QB.filter((r) => r.diff === 'hard' && r.type === 'mcq' && Array.isA
 
 for (const r of hard) {
   const reasons = [];
-  const shapes = r.o.map(shape);
   const answer = r.o[r.a];
 
-  // 1. ANSWER IS THE FORMAT OUTLIER — the other three are written alike and
-  //    the answer is not. Pickable with zero knowledge.
-  const counts = shapes.reduce((m, t) => ((m[t] = (m[t] || 0) + 1), m), {});
-  if (counts[shapes[r.a]] === 1 && Object.values(counts).some((n) => n === 3)) {
-    const others = shapes.filter((_, i) => i !== r.a);
-    reasons.push(`answer is the format outlier: 3×${others[0]} vs answer "${answer}" (${shapes[r.a]})`);
+  // 1. ANSWER IS THE NAMING-STYLE OUTLIER — three options written one way, the
+  //    answer written another. Pickable with zero football knowledge.
+  //    Skipped for club questions: club names have no natural word count.
+  const isClubQ = CLUB_STEM.test(r.q) || r.o.filter((o) => CLUBBY.test(o)).length >= 2;
+  if (!isClubQ) {
+    const classes = r.o.map(nameClass);
+    if (classes.every(Boolean)) {
+      const mine = classes[r.a];
+      const others = classes.filter((_, i) => i !== r.a);
+      if (others.every((c) => c !== mine)) {
+        reasons.push(`answer is the naming-style outlier: 3×${others[0]} vs answer "${answer}" (${mine})`);
+      }
+    }
   }
 
   // 2. LENGTH OUTLIER — the correct answer is conspicuously the longest.

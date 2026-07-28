@@ -1406,6 +1406,40 @@ function listTasterRows(cfg, usedIds) {
   return rows.length === 5 ? rows : [];
 }
 
+// ── clubs/players/categories → LISTS (the missing half of the mesh) ──────────
+// Measured 2026-07-28: every one of the 50 /lists/ pages had exactly ONE
+// inbound internal link — the /lists hub — while /quiz/manchester-united/ and
+// even /contact/ had 163. The lists link OUT generously (18-25 each via
+// listRelatedPages) and got nothing back, so we were signalling to Google that
+// our entire reference-list surface is unimportant. Median inbound across the
+// site was 64; these sat at 1.
+//
+// This is the reverse edge. Given an entity name, find the lists whose own
+// rows mention it — the same containment test listRelatedPages uses, run the
+// other way, so the two directions stay consistent by construction.
+function listsMentioning(name, limit = 4) {
+  const needle = String(name).replace(/ (quiz|fc)$/i, '').toLowerCase();
+  if (needle.length < 4) return [];
+  const hits = [];
+  for (const l of LISTS) {
+    const hay = l.rows.flat().join(' | ').toLowerCase();
+    if (hay.includes(needle)) hits.push({ slug: l.slug, h1: l.h1, n: l.rows.length });
+  }
+  // Prefer the meatier tables — a 100-row list is a better destination than a
+  // 16-row one, and passes more of its own equity onward.
+  return hits.sort((a, b) => b.n - a.n).slice(0, limit);
+}
+
+function renderListLinks(name) {
+  const hits = listsMentioning(name);
+  if (!hits.length) return '';
+  return `<section class="sec narrow">
+<h2>${esc(name)} in the record books</h2>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 14px">Free reference tables — every winner, every top scorer, checked and dated.</p>
+<ul class="llinks">${hits.map((h) => `<li><a href="${SITE.base}/lists/${h.slug}/">${esc(h.h1)}</a> <span class="llink-n">${h.n} entries</span></li>`).join('')}</ul>
+</section>`;
+}
+
 function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
   const canonical = `${SITE.base}/lists/${cfg.slug}/`;
   const cols = cfg.columns;
