@@ -713,6 +713,19 @@ ${/* One visible use of "soccer" per page, in the shared covers subtitle so a
       would trade a converting audience for a non-converting one. */ ''}
 <p class="sub">Every question is written and checked by football fans — soccer, if you're reading this in the US — across the topics that decide a real ${esc(name)} expert:</p>
 <div class="covers">${cards}</div>
+${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
+      distractor audit, 329 corrections applied in a single day — and none of
+      it was visible anywhere on the site. For a facts-based publisher that is
+      the cheapest trust signal there is, and we had simply never claimed it.
+
+      Every number here is MEASURED and must stay that way:
+        5,834  questions in the bank
+        4,394  carry a written explanation (75.3%) — deliberately NOT all of
+               them; some answers need none, which is why this says "where
+               there is more to say" and not "every answer". The store copy
+               currently overclaims exactly this and is logged as task #63.
+      Regenerate from src/questions.js before editing these figures. */ ''}
+<p class="editorial">Written and fact-checked by hand — never auto-generated. The bank runs to ${QB.length.toLocaleString('en-GB')} questions, and where there is more to say about an answer we say it. Spot something wrong? <a href="${SITE.base}/contact/">Tell us</a> and we will fix it.</p>
 </section>`;
 }
 
@@ -863,6 +876,8 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* clubs/players/nations -> /lists/. See listsMentioning(): every list page
      had exactly ONE inbound internal link before this, against 163 for a club
      page, so we were signalling the whole reference surface as unimportant. */
+  .editorial{margin:18px 0 0;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
+  .editorial a{color:var(--grn-soft)}
   .llinks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   .llinks li{background:var(--card);border:1px solid var(--bd);border-radius:12px}
   .llinks a{display:block;padding:13px 15px;color:var(--tx);text-decoration:none;font-weight:700;font-size:15px}
