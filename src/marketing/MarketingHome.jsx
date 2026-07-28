@@ -65,7 +65,17 @@ const STYLE = `
 .mkt-opt:hover { transform:translateY(-1px); border-color:#3A3D4A; background:#161922; }
 .mkt-try-again:hover { border-color:#3A3D4A !important; color:#fff !important; }
 .mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
-.mkt-play-card { background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
+/* box-sizing is NOT optional here. Without it the 20px padding + 1px border are
+   ADDED to the grid column's width, so on a 375px phone the card measured 376px
+   inside a 335px column — 21px off-screen, which clipped the "0 correct" pill at
+   the card's right edge. Measured with Playwright; invisible at desktop width,
+   where the column is wide enough to absorb the overflow. */
+/* min-width:0 is the ACTUAL fix. Grid items default to min-width:auto, which
+   lets an item exceed its track — the card measured 376px inside a 335px
+   column on a 375px phone, hanging 21px off-screen and clipping the
+   "0 correct" pill. box-sizing alone did not solve it (verified: computed
+   box-sizing was already border-box while the card was still 376px). */
+.mkt-play-card { min-width:0; box-sizing:border-box; background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
 /* MOBILE: stack to one column AND put the quiz taster FIRST.
    Measured 2026-07-28 against a ~100% homepage bounce: the MiniFootle card is
    ~636px tall, so stacked after ~200px of badge + headline + subtitle it fills
@@ -396,15 +406,31 @@ function QuizTaster() {
     <div>
       {head}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16 }}>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180' }}>Q {idx + 1} / {total}</span>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: '#8AE042', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px' }}>{score} correct</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6E7180', whiteSpace: 'nowrap' }}>Q {idx + 1} / {total}</span>
+        {/* nowrap + flex-shrink:0 — the pill was being squeezed and CLIPPED at
+            the card's right edge on a 375px phone (caught in a Playwright
+            screenshot of the live site, invisible at desktop width). */}
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: '#8AE042', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px', whiteSpace: 'nowrap', flex: '0 0 auto' }}>{score} correct</span>
       </div>
       <div style={{ height: 5, borderRadius: 999, background: '#1A1D27', marginTop: 10, overflow: 'hidden' }}><div style={{ width: pct + '%', height: '100%', background: '#58CC02', borderRadius: 999, transition: 'width .3s ease' }} /></div>
       <div style={{ marginTop: 12, fontSize: 17, fontWeight: 800, lineHeight: 1.3, color: '#fff' }}>{cur.q}</div>
       <div style={{ display: 'grid', gap: 9, marginTop: 14 }} onMouseMove={hoverArmed ? undefined : () => setHoverArmed(true)}>
         {cur.opts.map((o, i) => (
           <button key={i} disabled={answered} onClick={() => pick(i)} className={!answered && hoverArmed ? 'mkt-opt' : undefined} style={optStyle(i)}>
-            <span style={{ flex: 1 }}>{o}</span>
+            {/* A/B/C/D badge. The club pages have carried these since launch;
+                the homepage taster never did, so four identical grey slabs read
+                as a disabled LIST rather than four buttons — at the exact
+                moment we are asking a first-time visitor to tap something.
+                The badge is the affordance: it says "these are choices". */}
+            <span aria-hidden style={{
+              flex: '0 0 auto', width: 24, height: 24, borderRadius: 7,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: answered && i === cur.a ? 'rgba(88,204,2,0.9)'
+                : answered && i === picked ? 'rgba(255,71,71,0.85)' : '#1A1D27',
+              color: answered && (i === cur.a || i === picked) ? '#06230C' : '#8B90A6',
+              fontSize: 11.5, fontWeight: 800, fontFamily: "'JetBrains Mono',monospace",
+            }}>{'ABCD'[i]}</span>
+            <span style={{ flex: 1, minWidth: 0 }}>{o}</span>
             {answered && i === cur.a && <span aria-hidden>✓</span>}
             {answered && i === picked && i !== cur.a && <span aria-hidden>✕</span>}
           </button>
