@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_df14e2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Benfica's stadium has long carried the nickname 'A Catedral'. What does it mean?\" — answer \"The Cathedral\" is a transparent cognate of the Portuguese word printed in the stem. Zero football knowledge required; it is a vocabulary question, not a quiz question.",
+  "q": "Benfica's stadium has long carried the nickname 'A Catedral'. What does it mean?",
+  "o": [
+   "The Cathedral",
+   "The Lighthouse",
+   "The Nest",
+   "The Furnace"
+  ],
+  "answer": "The Cathedral",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_235ee9",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Benfica's nickname 'O Glorioso' translates into English as what?\" — \"The Glorious One\" is a direct cognate of \"Glorioso\" in the stem, and no other option is even loosely related. Answerable by anyone who has never watched football.",
+  "q": "Benfica's nickname 'O Glorioso' translates into English as what?",
+  "o": [
+   "The Unbeaten",
+   "The Glorious One",
+   "The Old Lady",
+   "The Lisbon Lions"
+  ],
+  "answer": "The Glorious One",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d39bd9",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Geoffroy-Guichard is famously built 'à l'anglaise'. What does that mean?\" — the phrase means \"in the English style\" and the correct option is the only one of the four that mentions England (\"like classic English grounds\"). The stem gives the answer away by word-match.",
+  "q": "Geoffroy-Guichard is famously built 'à l'anglaise'. What does that mean?",
+  "o": [
+   "The pitch sits below street level",
+   "Four separate stands with no filled-in corners, like classic English grounds",
+   "A running track circles the pitch",
+   "Every stand is standing-room only"
+  ],
+  "answer": "Four separate stands with no filled-in corners, like classic English grounds",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_56bd55",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem dates Sporting's renaming of its academy in honour of Cristiano Ronaldo to 2020. The Academia Sporting was renamed \"Academia Cristiano Ronaldo\" later than that (reported around Dec 2021 / 2022). The keyed answer is unaffected; verify and correct the year.",
+  "q": "In 2020, Sporting renamed their youth academy in honour of which former player?",
+  "o": [
+   "Luís Figo",
+   "Cristiano Ronaldo",
+   "Paulo Futre",
+   "Fernando Peyroteo"
+  ],
+  "answer": "Cristiano Ronaldo",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f31f4d",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Galatasaray SK was founded in 1905 by students of which Istanbul institution?\" — the correct option is \"Galatasaray High School\", a literal repeat of the club name in the stem. A player with no football knowledge picks it by name-matching alone.",
+  "q": "Galatasaray SK was founded in 1905 by students of which Istanbul institution?",
+  "o": [
+   "Robert College",
+   "Galatasaray High School",
+   "Darüşşafaka Lisesi",
+   "Istanbul Technical University"
+  ],
+  "answer": "Galatasaray High School",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bd6d70",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Fatih Terim's nickname 'İmparator' translates to what?\" — \"İmparator\"/\"Emperor\" is a recognisable cognate, so the stem largely supplies its own answer; no football knowledge needed beyond basic word association.",
+  "q": "Fatih Terim's famous Turkish nickname 'İmparator' translates to what in English?",
+  "o": [
+   "The Professor",
+   "The Emperor",
+   "The General",
+   "The Lion"
+  ],
+  "answer": "The Emperor",
+  "cat": "Managers",
+  "diff": "easy"
+ }
+]

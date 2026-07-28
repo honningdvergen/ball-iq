@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_353417",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Which legendary player RETURNED FROM EXILE to play for Napoli in the 1980s?\" Maradona was never in exile; he transferred to Napoli from Barcelona in July 1984 for a then world-record fee. The \"exile\" clause is an invented biographical premise.",
+  "q": "Which legendary player returned from exile to play for Napoli in the 1980s and transformed the club?",
+  "o": [
+   "Platini",
+   "Zico",
+   "Maradona",
+   "Gullit"
+  ],
+  "answer": "Maradona",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a7deca",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem names the \"Battle of SANTIAGO\" in 1962, and \"Chile vs Italy\" is the only option containing Chile. Anyone who knows Santiago is Chile's capital — no football knowledge required — picks it by elimination.",
+  "q": "The 'Battle of Santiago' in 1962 saw two players sent off and police on the pitch — between which nations?",
+  "o": [
+   "Brazil vs Argentina",
+   "Chile vs Italy",
+   "Uruguay vs England",
+   "West Germany vs France"
+  ],
+  "answer": "Chile vs Italy",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_385af7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem says the record was set \"under ROBERTO MANCINI\" and the options are Brazil, France, Spain, Italy. Recognising an Italian name — not football knowledge — is enough to answer.",
+  "q": "Which nation holds the world record for the longest unbeaten run in international football — 37 games, under Roberto Mancini?",
+  "o": [
+   "Brazil",
+   "France",
+   "Spain",
+   "Italy"
+  ],
+  "answer": "Italy",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3555e9",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Man Utd won the first Premier League title \"with a record 84 points\". 84 was not a record in the English top flight: under three-points-for-a-win, Liverpool (1987-88) and Everton (1984-85) both finished on 90 points, and Arsenal had 83 in 1990-91 after a 2-point deduction. Being the first PL season, any total was trivially a 'PL record' — but as written the stem asserts a points record that is false.",
+  "q": "Which club won the first ever Premier League title with a record 84 points?",
+  "o": [
+   "Arsenal",
+   "Blackburn",
+   "Leeds",
+   "Man Utd"
+  ],
+  "answer": "Man Utd",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_510946",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Mourinho \"famously said his team would 'park the bus'\". He said the opposite: after Chelsea 0-0 Tottenham in Sept 2004 he complained that TOTTENHAM \"brought the bus and left the bus in front of the goal\". The phrase was a criticism of the opponent, not a description of his own side. The keyed answer (Mourinho) is right, but the stem reverses the meaning of the quote.",
+  "q": "Which manager famously said his team would 'park the bus' — now a common football phrase?",
+  "o": [
+   "Sam Allardyce",
+   "Tony Pulis",
+   "Jose Mourinho",
+   "Rafael Benitez"
+  ],
+  "answer": "Jose Mourinho",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1de130",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem claims Immobile \"holds the record for most Serie A Capocannoniere wins as a Lazio player — three times\". Giuseppe Signori also won three Capocannoniere titles as a Lazio player (1992-93, 1993-94, 1995-96), so the record is shared, not held. Immobile's three (2017-18, 2019-20, 2021-22) is correct as a count; the exclusivity claim is not.",
+  "q": "Which Italian striker holds the record for most Serie A Capocannoniere (top scorer) wins as a Lazio player — three times?",
+  "o": [
+   "Immobile",
+   "Simone Inzaghi",
+   "Di Canio",
+   "Rocchi"
+  ],
+  "answer": "Immobile",
+  "cat": "SerieA",
+  "diff": "medium"
+ }
+]

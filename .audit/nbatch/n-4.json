@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_8ab0e1",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: 'declared bankrupt in August 2004 under new president Aurelio De Laurentiis'. Temporal inversion — Napoli's bankruptcy (August 2004) preceded De Laurentiis, who bought the assets and founded Napoli Soccer in September 2004. He did not preside over the club when it went bankrupt; he arrived after it.",
+  "q": "Which iconic Italian club was declared bankrupt in August 2004 under new president Aurelio De Laurentiis, starting from Serie C1 before climbing back to Serie A?",
+  "o": [
+   "Fiorentina",
+   "Napoli",
+   "Parma",
+   "Lazio"
+  ],
+  "answer": "Napoli",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_385a4a",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: 'Which CLUB did Franz Beckenbauer manage to the 1990 World Cup title?' West Germany is a national team, not a club, and all four options are countries. The stem asserts a category that is simply wrong; it should read 'which national team'.",
+  "q": "Which club did Franz Beckenbauer manage to the 1990 World Cup title?",
+  "o": [
+   "Austria",
+   "East Germany",
+   "West Germany",
+   "Switzerland"
+  ],
+  "answer": "West Germany",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_261508",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Options are Right / Left / 'Both equally' / 'He was ambidextrous'. The last two are synonyms, so both are necessarily wrong — no answer key can accept two identical options. A player with zero football knowledge eliminates half the field on logic alone and is left with a 50/50 between Right and Left.",
+  "q": "Roberto Carlos was famous for his free kicks — but which foot did he primarily use?",
+  "o": [
+   "Right",
+   "Left",
+   "Both equally",
+   "He was ambidextrous"
+  ],
+  "answer": "Left",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7b7d5d",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Cross-question answer leak inside this same 150-question set: q_a49601's stem reads 'Which Dutch philosophy of football, PIONEERED BY RINUS MICHELS...' while q_7b7d5d asks 'Which legendary Dutch manager is credited with inventing Total Football?' (answer: Michels). Anyone who has seen q_a49601 answers q_7b7d5d with zero football knowledge; the pair leaks in both directions.",
+  "q": "Which legendary Dutch manager is credited with inventing Total Football?",
+  "o": [
+   "Van Gaal",
+   "Advocaat",
+   "Michels",
+   "Cruyff"
+  ],
+  "answer": "Michels",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c98b4f",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Genoa won \"the first-ever Serie A title in 1898\". Serie A did not exist until 1929-30 — the 1898 competition was the Campionato Italiano di Football (a one-day tournament in Turin). The first actual Serie A title (1929-30) was won by Ambrosiana-Inter, which is one of the four options, so a well-informed player can reasonably pick Inter and be marked wrong. Fix by saying \"the first-ever Italian championship in 1898\".",
+  "q": "Which Italian club won the first-ever Serie A title in 1898?",
+  "o": [
+   "Juventus",
+   "AC Milan",
+   "Inter",
+   "Genoa"
+  ],
+  "answer": "Genoa",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_311927",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Messi's 50 La Liga goals in 2011-12 came \"breaking his own record\". He broke Cristiano Ronaldo's record of 40, set the previous season (2010-11); Messi's own previous La Liga best was 31 (2009-10 and 2010-11). The stem teaches a false fact about who held the record.",
+  "q": "Which La Liga season did Messi score 50 league goals — breaking his own record?",
+  "o": [
+   "2009-10",
+   "2010-11",
+   "2011-12",
+   "2012-13"
+  ],
+  "answer": "2011-12",
+  "cat": "LaLiga",
+  "diff": "medium"
+ }
+]

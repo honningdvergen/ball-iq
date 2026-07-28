@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_a3d289",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem already specifies the club is \"from the Belgian capital, Brussels\", and three of the four options name their own non-Brussels home city in the club name (Standard Liège, KAA Gent, Racing Genk). Anderlecht is reachable by reading city names off the options, with no football knowledge.",
+  "q": "Club Brugge's biggest national title rivalry is with which club from the Belgian capital, Brussels?",
+  "o": [
+   "Anderlecht",
+   "Standard Liège",
+   "KAA Gent",
+   "Racing Genk"
+  ],
+  "answer": "Anderlecht",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fc2cae",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"FC Basel are based in which country?\" — the club name is the city name, so the answer (Switzerland) follows from basic geography with zero football knowledge. Options Austria/Germany/Belgium are eliminated by knowing where Basel is, nothing else.",
+  "q": "FC Basel are based in which country?",
+  "o": [
+   "Switzerland",
+   "Austria",
+   "Germany",
+   "Belgium"
+  ],
+  "answer": "Switzerland",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bb68d7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem says \"the Belgian top division\", and the three distractors are the actual names of three other countries' top divisions (Eredivisie = Dutch, Bundesliga = German, Ligue 1 = French). Elimination is trivial without knowing anything about Belgian football or its sponsor. (The keyed answer itself is correct — the league is still branded Jupiler Pro League in 2025-26.)",
+  "q": "As of the 2025–26 season, the Belgian top division in which Club Brugge play was sponsor-branded as what?",
+  "o": [
+   "Jupiler Pro League",
+   "Eredivisie",
+   "Bundesliga",
+   "Ligue 1"
+  ],
+  "answer": "Jupiler Pro League",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e01ca9",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem asserts Arkan \"led the Delije at the 1990 Maksimir riot\" (13 May 1990). Arkan's formal takeover of the Delije is generally dated to 1990 but after the Maksimir riot — accounts of whether he led, or was even present at, that specific match are contested rather than settled. The keyed answer is the only plausible option regardless, so the defect is in the stem's asserted timing, not the key.",
+  "q": "Which Red Star Belgrade fan leader, later a notorious paramilitary commander, led the Delije at the 1990 Maksimir riot?",
+  "o": [
+   "Vojislav Šešelj",
+   "Radovan Karadžić",
+   "Ratko Mladić",
+   "Željko Ražnatović 'Arkan'"
+  ],
+  "answer": "Željko Ražnatović 'Arkan'",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_126484",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Rafael Gordillo \"played at two World Cups\" for Spain. Gordillo was in Spain's squad at three — 1982, 1986 and 1990 (he featured in Italia '90 aged 33). The keyed answer (Spain) is unaffected, but the count in the stem appears wrong. The second clause (\"five straight La Liga titles at Real Madrid\", 1986-1990) does check out. Verifier should confirm whether Gordillo made an appearance at the 1990 finals; if yes, the stem should read \"three World Cups\" or drop the count.",
+  "q": "Real Betis great Rafael Gordillo, who later won five straight La Liga titles at Real Madrid, played at two World Cups for which country?",
+  "o": [
+   "Portugal",
+   "Argentina",
+   "Spain",
+   "Mexico"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3b5849",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem hands over the answer: it quotes the nickname 'Die Königsblauen' and asks for the colours, and the keyed option is the only one containing blue (\"Royal blue and white\" vs red/black-yellow/green). 'König' + 'blau' reads as royal blue to anyone with no football knowledge at all. Contrast the well-built q_d7ba9a ('Die Rothosen'), where all four options are red-something so the German gives nothing away.",
+  "q": "What are Schalke's traditional club colours, reflected in the nickname 'Die Königsblauen'?",
+  "o": [
+   "Royal blue and white",
+   "Red and white",
+   "Black and yellow",
+   "Green and white"
+  ],
+  "answer": "Royal blue and white",
+  "cat": "History",
+  "diff": "easy"
+ }
+]

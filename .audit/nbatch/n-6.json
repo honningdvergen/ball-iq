@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_5b843e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"Which manager led Inter Milan to the 2010 Champions League final, beating Bayern Munich?\" Inter did not beat Bayern on the way to the final — they beat Barcelona in the semi and met Bayern in the final itself. As written the stem misstates the route; it should read \"to the 2010 Champions League title, beating Bayern in the final\".",
+  "q": "Which manager led Inter Milan to the 2010 Champions League final, beating Bayern Munich?",
+  "o": [
+   "Mancini",
+   "Benitez",
+   "Capello",
+   "Mourinho"
+  ],
+  "answer": "Mourinho",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1ea17d",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem asks 'What is the name of the Italian Super Cup' and the keyed answer is 'Supercoppa Italiana' — a literal word-for-word translation of the phrase already given in the stem. Any speaker of a Romance language, with zero football knowledge, can pick it from the stem alone; the remaining distractors ('Trofeo Bravo', 'Scudetto Cup') do not contain 'Super'. Only 'Coppa Supernazionale' offers any resistance.",
+  "q": "What is the name of the Italian Super Cup — contested between the Serie A winner and Coppa Italia winner?",
+  "o": [
+   "Trofeo Bravo",
+   "Supercoppa Italiana",
+   "Coppa Supernazionale",
+   "Scudetto Cup"
+  ],
+  "answer": "Supercoppa Italiana",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f33641",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Kane 'scored 213 Premier League goals for Tottenham between 2011 and 2023'. The 213 total and the Bayern move are right, but the temporal window is wrong: Kane's Premier League debut was in 2012-13 (his 2011 Spurs debut was a Europa League tie) and his first PL goal came in April 2014. No PL goals were scored in 2011 or 2012.",
+  "q": "Which player scored 213 Premier League goals for Tottenham between 2011 and 2023 before joining Bayern Munich?",
+  "o": [
+   "Harry Kane",
+   "Mohamed Salah",
+   "Sergio Aguero",
+   "Wayne Rooney"
+  ],
+  "answer": "Harry Kane",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d2e0f1",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts West Ham \"holds the unwanted record of being relegated from the Premier League with the highest points total — 42 points in 2002-03\". As a raw points total that is false: Crystal Palace were relegated from the Premier League in 1992-93 with 49 points (and Sheffield United went down with 42 in 1993-94, tying it). West Ham's 42 is only the record for the 20-team/38-game era; the stem states it as an unqualified record.",
+  "q": "Which club holds the unwanted record of being relegated from the Premier League with the highest points total — 42 points in 2002-03?",
+  "o": [
+   "Leicester City",
+   "Sheffield United",
+   "Birmingham City",
+   "West Ham United"
+  ],
+  "answer": "West Ham United",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7af792",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Totti wore the number \"throughout his entire Roma career\". False: when Serie A introduced fixed squad numbers in 1995-96 Totti wore 20, then 17, and only took the No. 10 from 1997. The keyed answer (10) is right; the \"entire career\" clause is not.",
+  "q": "Which squad number did Francesco Totti wear at Roma from 1997 until his retirement in 2017?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "answer": "10",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7dad9a",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls France 1-0 Germany \"the Group F opener\" at Euro 2020. It was not: Hungary vs Portugal kicked off at 17:00 CET in Budapest on 15 June 2021, three hours before France vs Germany (21:00 CET, Munich). Hungary-Portugal was the Group F opener.",
+  "q": "Who beat Germany 1-0 in Group F at Euro 2020 (played 2021) thanks to a Mats Hummels own goal — the Group F opener dubbed one of the tournament's Group of Death matches?",
+  "o": [
+   "France",
+   "Portugal",
+   "Hungary",
+   "Italy"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "medium"
+ }
+]

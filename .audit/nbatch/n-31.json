@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_1c723f",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts the 2020-21 Super Lig title 'was decided on goal difference'. The Turkish federation's tiebreaker for level points is head-to-head record, not goal difference — as this batch's own q_cdd0ed correctly states for the identical 2010-11 situation ('edging them on head-to-head record'). The keyed answer (Galatasaray, level on 84 points) is unaffected, but the stem misstates the mechanism.",
+  "q": "The 2020-21 Süper Lig title was decided on goal difference, with Beşiktaş edging which club after both finished on 84 points?",
+  "o": [
+   "Fenerbahçe",
+   "Trabzonspor",
+   "Başakşehir",
+   "Galatasaray"
+  ],
+  "answer": "Galatasaray",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe4907",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says 'The English top-flight record of seven goals by one player in a single match was set in 1935' by Ted Drake. Drake equalled rather than set it: James Ross scored seven for Preston North End against Stoke in the First Division in October 1888. Seven is the joint top-flight record, first achieved in 1888, so the temporal claim 'set in 1935' is untrue.",
+  "q": "The English top-flight record of seven goals by one player in a single match was set in 1935 by which Arsenal forward?",
+  "o": [
+   "Ted Drake",
+   "Cliff Bastin",
+   "Jack Lambert",
+   "David Jack"
+  ],
+  "answer": "Ted Drake",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e32b44",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem asks which nickname Fenerbahce fans gave Lefter Kucukandonyadis, 'a title normally reserved for distinguished professors', with options Ordinaryus / Imparator / Sultan / Efsane. 'Ordinaryus' is literally the Turkish academic rank (ordinarius professor); the qualifier hands the answer to anyone with no football knowledge. Also leaked by q_6268ce in this batch, whose stem states the nickname 'Ordinaryus' outright.",
+  "q": "Fenerbahçe fans gave legend Lefter Küçükandonyadis which nickname, a title normally reserved for distinguished professors?",
+  "o": [
+   "Ordinaryüs",
+   "İmparator",
+   "Sultan",
+   "Efsane"
+  ],
+  "answer": "Ordinaryüs",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_146702",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts that on being handed the Roma captaincy in 1998 Totti 'became the youngest club captain in Serie A history'. The documented record is that he became the youngest captain in ROMA's history; the league-wide superlative is almost certainly false — Franco Baresi was made Milan captain in 1982 aged 22 (b. May 1960), i.e. no older, and several pre-war/1950s captains were younger still. The keyed age (22) is right, but the stem invents a Serie A record.",
+  "q": "When Roma handed Totti the captaincy in 1998, he became the youngest club captain in Serie A history, at what age?",
+  "o": [
+   "19",
+   "20",
+   "22",
+   "24"
+  ],
+  "answer": "22",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0aecfa",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Juary scored Porto's '84th-minute winner' in the 1987 European Cup final. Juary's goal came in the 80th minute (Kögl 25', Madjer 77', Juary 80'). The keyed answer (Juary) is correct but the minute stated in the stem is wrong.",
+  "q": "Who scored Porto's 80th-minute winner in the 1987 European Cup final to beat Bayern Munich 2-1?",
+  "o": [
+   "Paulo Futre",
+   "Fernando Gomes",
+   "Juary",
+   "Rabah Madjer"
+  ],
+  "answer": "Juary",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a8ce10",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem describes João Pinto (Porto 1981-1997, record appearance-maker) as a 'right-back'. He played as a left-back — that is how he is listed for both Porto and Portugal. The keyed answer (~587 appearances) is unaffected, but the positional claim in the stem is wrong and would mislead.",
+  "q": "Right-back João Pinto, Porto's record appearance-maker (1981-1997), played roughly how many competitive games?",
+  "o": [
+   "About 450",
+   "About 587",
+   "About 700",
+   "About 400"
+  ],
+  "answer": "About 587",
+  "cat": "Primeira",
+  "diff": "hard"
+ }
+]

@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_87f4da",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Mancini \"guided Inter to three consecutive Scudetti in 2006, 2007 and 2008\". Inter finished third on the pitch in 2005-06; that title was awarded by the FIGC after Juventus and Milan were sanctioned in Calciopoli. Presenting it as a title Mancini's side won is contested — the on-field run of consecutive titles is two (2007, 2008).",
+  "q": "Before Mourinho, which manager guided Inter to three consecutive Scudetti in 2006, 2007 and 2008?",
+  "o": [
+   "Roberto Mancini",
+   "Marcello Lippi",
+   "Roberto Donadoni",
+   "Cesare Prandelli"
+  ],
+  "answer": "Roberto Mancini",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d7021f",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem supplies the date range (\"from 2011 to 2014\") and then asks how many consecutive titles that is. A player with zero football knowledge counts the seasons 2010-11 through 2013-14 and reads off \"Four\" — no football knowledge is exercised. (The only residual doubt is inclusive-vs-exclusive arithmetic, i.e. Three vs Four.)",
+  "q": "As Ajax manager, Frank de Boer won how many consecutive Eredivisie titles from 2011 to 2014?",
+  "o": [
+   "Four",
+   "Three",
+   "Five",
+   "Two"
+  ],
+  "answer": "Four",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_285ea0",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The nickname quoted in the stem, 'Kvaradona', is literally the first syllables of the answer's surname — 'Kvara'-tskhelia. It is the only option beginning with those letters, and also the only Georgian-looking surname among Zielinski/Elmas/Politano, which the stem's word \"Georgian\" points at. Answerable purely by string matching.",
+  "q": "Which Georgian winger nicknamed 'Kvaradona' was a breakout star of Napoli's 2022-23 title win?",
+  "o": [
+   "Khvicha Kvaratskhelia",
+   "Piotr Zielinski",
+   "Eljif Elmas",
+   "Matteo Politano"
+  ],
+  "answer": "Khvicha Kvaratskhelia",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2ad3fd",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem quotes the nickname 'Nerazzurri' and asks which two shirt colours it refers to. The word is a literal Italian compound — nero (black) + azzurro (blue) — so the answer 'Black and blue' is a translation exercise, not a football question, for anyone with any Italian or Romance-language exposure.",
+  "q": "Inter's popular nickname 'Nerazzurri' refers to which two shirt colours?",
+  "o": [
+   "Black and blue",
+   "Red and black",
+   "Black and white",
+   "Blue and white"
+  ],
+  "answer": "Black and blue",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9ba9f0",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem ('Galatasaray's fierce rivalry with Fenerbahce, spanning Istanbul's European and Asian sides, is known as what?') describes two continents and the keyed answer is 'The Intercontinental Derby'. A person with zero football knowledge picks it purely from the word 'intercontinental' matching 'European and Asian sides' — the other options (Bosphorus/Eternal/Marmara) are eliminated by the stem's own wording. Compounded by q_c658ea in this same batch, whose stem states outright that the fixture 'is known as the Intercontinental Derby'.",
+  "q": "Galatasaray's fierce rivalry with Fenerbahçe, spanning Istanbul's European and Asian sides, is known as what?",
+  "o": [
+   "The Bosphorus Derby",
+   "The Eternal Derby",
+   "The Intercontinental Derby",
+   "The Marmara Derby"
+  ],
+  "answer": "The Intercontinental Derby",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_479d63",
+  "kind": "wrong_answer",
+  "severity": "serious",
+  "claim": "Keys Sebastiao Lazaroni as Fenerbahce's Brazilian head coach for the October 1996 Champions League win at Old Trafford. Carlos Alberto Parreira (also listed as an option) is widely recorded as Fenerbahce manager across the mid-1990s including the 1996-97 European campaign; Lazaroni's Fenerbahce stint is usually dated to a different period. Needs verification of who was in charge on 16 October 1996 — if it was Parreira the answer key is wrong and two options are plausible.",
+  "q": "Who was Fenerbahçe's Brazilian head coach for the famous 1996 Champions League win at Old Trafford?",
+  "o": [
+   "Sebastião Lazaroni",
+   "Zico",
+   "Carlos Alberto Parreira",
+   "Vanderlei Luxemburgo"
+  ],
+  "answer": "Sebastião Lazaroni",
+  "cat": "SuperLig",
+  "diff": "hard"
+ }
+]

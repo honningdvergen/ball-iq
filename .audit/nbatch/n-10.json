@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_3e341e",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names 'Medellín' — a city general knowledge places in Colombia — while the options are Peru, Colombia, Venezuela, Bolivia. A player with zero football knowledge answers from the stem's own geography. The 1994 facts are all correct (Escobar's own goal in the 2-1 loss to the USA on 22 June, murdered 2 July = ten days). Secondary clumsiness: 'and was tragically murdered ten days later' grammatically attaches to the nation, not to Escobar. Fix: drop 'in Medellín'.",
+  "q": "Which nation was eliminated in the group stage of the 1994 World Cup after Andrés Escobar scored an own goal in a 2-1 loss to the USA — and was tragically murdered ten days later in Medellín?",
+  "o": [
+   "Peru",
+   "Colombia",
+   "Venezuela",
+   "Bolivia"
+  ],
+  "answer": "Colombia",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8b3973",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The nickname given in the stem, 'The Mengão', is a transparent contraction of the answer 'Flamengo' (Fla-MENGO → Mengão), and Flamengo is one of the four options alongside Santos, Palmeiras and Corinthians — none of which contain the string. A non-fan matches it on spelling alone with no football knowledge. The factual claims (nickname, biggest fanbase in South America) are sound; only the giveaway is the issue. Fix: ask about the 'biggest fanbase' claim alone, or use a nickname that isn't derived from the club name (e.g. 'Rubro-Negro').",
+  "q": "Which Brazilian club is nicknamed 'The Mengão' and has the biggest fanbase in South America?",
+  "o": [
+   "Santos",
+   "Palmeiras",
+   "Corinthians",
+   "Flamengo"
+  ],
+  "answer": "Flamengo",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ba88ec",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem states the 1998 Copa del Rey final was won '1-1 (4-2 pens)'. Barcelona beat Mallorca 5-4 on penalties after the 1-1 draw at the Mestalla on 29 April 1998, not 4-2. Van Gaal is still the right answer, but the shootout score asserted in the stem is wrong (verified: en.wikipedia.org/wiki/1998_Copa_del_Rey_final, livefutbol.com match report).",
+  "q": "Who was Barcelona's manager when they won the 1997-98 Copa del Rey final 1-1 (5-4 pens) over Mallorca?",
+  "o": [
+   "Johan Cruyff",
+   "Louis van Gaal",
+   "Bobby Robson",
+   "Carles Rexach"
+  ],
+  "answer": "Louis van Gaal",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_53e107",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem says Piola's 274 Serie A goals were 'spread across Pro Vercelli, Lazio, Torino and Novara'. His official Serie A clubs were Pro Vercelli (51), Lazio (143), Juventus (10 in 1946-47) and Novara (70) — Juventus is omitted and Torino is included, but his Torino spell was the 1943-44 wartime championship, which is not counted in Serie A records.",
+  "q": "Who is Serie A's all-time top scorer with 274 goals — spread across Pro Vercelli, Lazio, Juventus and Novara?",
+  "o": [
+   "Filippo Inzaghi",
+   "Silvio Piola",
+   "Alessandro Del Piero",
+   "Ciro Immobile"
+  ],
+  "answer": "Silvio Piola",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d564c9",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem credits one manager with having 'masterminded Chelsea's record 86-game unbeaten home run (2004-2008)'. The run ran 20 March 2004 to 26 October 2008 and spanned four managers — Ranieri started it (six games at the end of 2003-04), Mourinho took the bulk, then Grant and Scolari, under whom it ended (Liverpool 1-0, Xabi Alonso). Mourinho did not oversee the whole run.",
+  "q": "Which manager masterminded Chelsea's record 86-game unbeaten home run in the Premier League (2004-2008)?",
+  "o": [
+   "Carlo Ancelotti",
+   "Guus Hiddink",
+   "Claudio Ranieri",
+   "José Mourinho"
+  ],
+  "answer": "José Mourinho",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1c3425",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem says Messi scored his four 2014 World Cup goals 'across the group stage and the round of 16'. All four came in the group stage (Bosnia 1, Iran 1, Nigeria 2); he did not score in the round of 16 against Switzerland. The temporal clause asserts goals in a phase where he scored none.",
+  "q": "Which player won the Golden Ball at the 2014 World Cup, scoring four goals across the group stage and the round of 16 before Argentina were beaten by Germany in the final?",
+  "o": [
+   "Müller",
+   "Messi",
+   "Neymar",
+   "Klose"
+  ],
+  "answer": "Messi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ }
+]

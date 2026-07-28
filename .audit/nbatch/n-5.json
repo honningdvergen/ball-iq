@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_c33142",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asks what number Anelka wore \"during his debut Premier League season\", keyed 9. Anelka's debut PL season was 1996-97 (he signed in Feb/March 1997 and made a handful of appearances); Arsenal's No.9 that season was Paul Merson. Anelka only took the 9 shirt from 1997-98, after Merson left for Middlesbrough. The keyed answer is right for his Arsenal spell but wrong for the season the temporal clause names.",
+  "q": "What squad number did Nicolas Anelka wear at Arsenal during his debut Premier League season?",
+  "o": [
+   "7",
+   "23",
+   "14",
+   "9"
+  ],
+  "answer": "9",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d42708",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Buffon \"spent 17 of his 23 Italian top-flight seasons\" at Juventus. The 17/23 split only works if you count 2006-07, when Juventus (and Buffon) played in Serie B. His actual top-flight totals are 16 at Juventus out of 22 in Italy. Either drop \"top-flight\" or change the numbers.",
+  "q": "Gianluigi Buffon spent 17 of his 23 Italian top-flight seasons at which club before joining PSG in 2018?",
+  "o": [
+   "AC Milan",
+   "Inter",
+   "Roma",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a37107",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Which team did Pep Guardiola win his first ever managerial trophy with — promoting them to Segunda División B in 2008?\" Options are Barcelona B, Man City, Bayern Munich, Santpedor. The stem's mention of a Spanish fourth/third-tier promotion eliminates Man City and Bayern outright, and Santpedor is Guardiola's birthplace, not a club — leaving the only B-team as the answer with no football knowledge required.",
+  "q": "Which team did Pep Guardiola win his first ever managerial trophy with — promoting them to Segunda División B in 2008?",
+  "o": [
+   "Barcelona B",
+   "Man City",
+   "Bayern Munich",
+   "Santpedor"
+  ],
+  "answer": "Barcelona B",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f8c19",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "\"Barcelona holds the record for most Copa del Rey titles — approximately how many as of 2025?\" with options 28/31/32/38, keyed 32. Barcelona stood on 31 from 2021 until they beat Real Madrid in the final on 26 April 2025 to reach 32. \"As of 2025\" is therefore satisfied by both 31 and 32 depending on the month; the qualifier should be \"as of mid-2025\" or \"after the 2025 final\".",
+  "q": "Barcelona holds the record for most Copa del Rey titles won — approximately how many as of 2025?",
+  "o": [
+   "28",
+   "31",
+   "32",
+   "38"
+  ],
+  "answer": "32",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3ffbe5",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Bale's goal in the 2014 UCL final came \"early in extra time\". He scored in the 110th minute — the second period of extra time, 20 minutes in. It was the first extra-time goal but not an early one; the answer is unaffected.",
+  "q": "Who scored Real Madrid's go-ahead goal early in extra time of the 2014 UCL final against Atlético?",
+  "o": [
+   "Ramos",
+   "Bale",
+   "Modric",
+   "Marcelo"
+  ],
+  "answer": "Bale",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_706842",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Ronaldo's 2017 brace made him \"the first player to score in three UCL finals\". True only for the post-1992 Champions League era: Alfredo Di Stéfano scored in five consecutive European Cup finals (1956-60) and Puskás scored in three, and this question sits in the UCL category where the competition is treated as continuous. Needs \"in three Champions League finals (since 1992)\" or similar.",
+  "q": "Which Real Madrid player scored a brace in the 4-1 win over Juventus in the 2017 Champions League final in Cardiff — becoming the first player to score in three UCL finals?",
+  "o": [
+   "Karim Benzema",
+   "Cristiano Ronaldo",
+   "Marco Asensio",
+   "Gareth Bale"
+  ],
+  "answer": "Cristiano Ronaldo",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

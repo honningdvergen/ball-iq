@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_d505e7",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Luton Town were founded in 1885, so their 2023-24 top-flight debut came in their 138-year history, not \"130-year\" — the widely reported line at the time was \"138-year history\". The keyed club is right; the stem's figure is off by eight years.",
+  "q": "Which club played Premier League football for the first time in their history in 2023-24?",
+  "o": [
+   "Luton Town",
+   "Sheffield Wednesday",
+   "Burnley",
+   "Brentford"
+  ],
+  "answer": "Luton Town",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4519a6",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"The Serie A record scorer in a single match\" implies a unique holder, but the six-in-a-game record is shared — Omar Sívori also scored six (Juventus v Inter, 1961), as did Piola. No competing option is listed so the key holds, but the definite article is false.",
+  "q": "Who is the Serie A record scorer in a single match — scoring six goals in one game?",
+  "o": [
+   "Inzaghi",
+   "Nordahl",
+   "Silvio Piola",
+   "Toni"
+  ],
+  "answer": "Silvio Piola",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bf8f9d",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The 1970 Northampton Town match is famous because Best scored SIX goals in an 8-2 FA Cup win, not for a single solo dribbling goal \"often voted greatest ever\" — that superlative is normally attached to other Best goals (e.g. his 1981 San Jose Earthquakes goal). The keyed opponent is right; the framing superlative is invented.",
+  "q": "George Best scored his famous dribbling solo goal against which club in 1970 — often voted greatest ever?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Northampton Town",
+   "Liverpool"
+  ],
+  "answer": "Northampton Town",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9edc78",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Milton Keynes is roughly 56 miles north-north-west of Wimbledon, not \"70 miles north\". Minor, but it is a hard number the stem asserts, and the distance clue is doing eliminative work against the other options.",
+  "q": "An FA commission's controversial 2002 ruling allowed Wimbledon FC to relocate — to which town did the club move in 2003?",
+  "o": [
+   "Milton Keynes",
+   "Manchester",
+   "Leeds",
+   "Birmingham"
+  ],
+  "answer": "Milton Keynes",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e8341f",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "The stem asserts that Leverkusen's 'never-relegated status earned them' the nickname Neverkusen. That is not the origin: 'Neverkusen' (German equivalent 'Vizekusen', i.e. runners-up-kusen) came from their serial near-misses — losing the 1999-2000 Bundesliga on the final day and the 2001-02 'treble of runners-up' (2nd in the league, lost the DFB-Pokal final to Schalke, lost the Champions League final to Real Madrid). It has nothing to do with relegation. The keyed answer is right but the stem teaches a false etymology.",
+  "q": "Bayer Leverkusen's never-relegated status earned them which nickname from other fans?",
+  "o": [
+   "Never Down",
+   "Bayer Never",
+   "The Unbeatable",
+   "Neverkusen"
+  ],
+  "answer": "Neverkusen",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2c22fd",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Iran qualified for the 2026 World Cup — how many consecutive World Cups (from 2014 onwards) will that be for them?' The stem supplies both endpoints, so the answer is pure arithmetic on the four-year cycle (2014, 2018, 2022, 2026 = 4). Zero football knowledge required; the only fact needed — that Iran qualified — is stated in the stem.",
+  "q": "Iran qualified for the 2026 World Cup — how many consecutive World Cups (from 2014 onwards) will that be for them?",
+  "o": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": "4",
+  "cat": "WorldCup",
+  "diff": "medium"
+ }
+]

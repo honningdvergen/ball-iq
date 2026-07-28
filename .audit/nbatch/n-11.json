@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_e08bb9",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem's superlative 'the longest-serving captain to lift the European Championship trophy' is not a real Chiellini record — he only became Italy's captain in 2018 (roughly three years before Euro 2020). The genuine, widely-cited distinction is that he was the OLDEST captain to lift the trophy (36). Verifier should confirm and reword to 'oldest'.",
+  "q": "The longest-serving captain to lift the European Championship trophy — lifting it at Euro 2020 — was who?",
+  "o": [
+   "Bonucci",
+   "Verratti",
+   "Jorginho",
+   "Chiellini"
+  ],
+  "answer": "Chiellini",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7bebf1",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem asserts Pelé 'created 7 chances' in Brazil 1-0 England (1970) and calls it 'a single-game tournament record'. Chance-creation is a modern opta-era metric with no authoritative contemporaneous record for 1970; the superlative is unverifiable as stated and should be either sourced or dropped.",
+  "q": "Which player created 7 chances in Brazil's 1-0 win over England at the 1970 World Cup — a single-game tournament record?",
+  "o": [
+   "Pelé",
+   "Rivelino",
+   "Tostão",
+   "Jairzinho"
+  ],
+  "answer": "Pelé",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_990b63",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem supplies the nickname 'Batigol' and the option list contains 'Gabriel Batistuta'. The nickname is an orthographic contraction of the answer, so the question is solvable by string matching with zero football knowledge (the other options are Crespo, Milito, Bertoni).",
+  "q": "Which Argentine striker — nicknamed Batigol — scored 152 Serie A goals for Fiorentina and won the 2000-01 Scudetto with Roma?",
+  "o": [
+   "Gabriel Batistuta",
+   "Hernán Crespo",
+   "Diego Milito",
+   "Daniel Bertoni"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_43c6af",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names Eusébio ('on the back of Eusébio's goals'), who played for the answer, Portugal — giving it away without needing to know the 1966 result. Compounding this, one option is 'Brazil', which the stem itself logically excludes ('knocked out defending champions Brazil'), so the real choice is narrowed to two.",
+  "q": "Which nation knocked out defending champions Brazil in the group stage of the 1966 World Cup — before reaching the semi-finals on the back of Eusébio's goals?",
+  "o": [
+   "England",
+   "Brazil",
+   "Portugal",
+   "North Korea"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_11cdf7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem asks for a 'disciplinary distinction', which eliminates two options that are not disciplinary at all ('never lost while wearing the captain's armband', 'never on the losing side in a Bundesliga match'), and the remaining wrong option ('never received a single yellow card' in 500+ games) is implausible on its face. A player with no football knowledge can reach 'never sent off' by elimination alone.",
+  "q": "Philipp Lahm played over 500 senior games for Bayern Munich and 113 for Germany, yet earned a rare disciplinary distinction across his entire professional career. What was it?",
+  "o": [
+   "He was never sent off in his entire senior career",
+   "He never received a single yellow card",
+   "He never lost a match while wearing the Germany captain's armband",
+   "He was never on the losing side in a Bundesliga match"
+  ],
+  "answer": "He was never sent off in his entire senior career",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_df94c4",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "The stem asserts Arbroath 36-0 Bon Accord (1885) is 'the highest-scoring professional match ever'. That is false: the recognised world record is AS Adema 149-0 SO l'Emyrne (Madagascar's top professional division, 31 Oct 2002), and Guinness lists that as the highest score in a senior/professional match. Arbroath 36-0 holds only the record for a British first-class/senior match, and even then it was an amateur-era Scottish Cup tie (1885 predates professionalism in Scotland, legalised 1893) — so 'professional' is doubly wrong. Secondary clumsiness: the stem asks 'which club' but every option is a fixture (a pair of clubs).",
+  "q": "Which club has been involved in the highest-scoring professional match ever — a 36-0 game in 1885?",
+  "o": [
+   "Arbroath vs Bon Accord",
+   "Preston vs Hyde",
+   "Aston Villa vs Walsall Town",
+   "Stoke vs Liverpool"
+  ],
+  "answer": "Arbroath vs Bon Accord",
+  "cat": "Legends",
+  "diff": "medium"
+ }
+]

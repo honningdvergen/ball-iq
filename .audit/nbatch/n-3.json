@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_487a08",
+  "kind": "wrong_answer",
+  "severity": "cosmetic",
+  "claim": "Keyed answer \"No, only European clubs qualify\" is factually inexact. UEFA membership, not European geography, is the criterion: Israeli clubs (Maccabi Haifa reached the 2022-23 group stage, Maccabi Tel Aviv the 2015-16 one) and Kazakh clubs (Astana) have played in the Champions League proper, and neither country is in Europe. A knowledgeable player can legitimately dispute the key. Also weak as a question — three options begin \"Yes, ...\" with implausible mechanisms and one says \"No\", so it is answerable by option-shape alone without football knowledge.",
+  "q": "Can a club from outside Europe participate in the UEFA Champions League?",
+  "o": [
+   "Yes, if invited as guests",
+   "No, only European clubs qualify",
+   "Yes, one South American team each year",
+   "Yes, via the Club World Cup qualifier"
+  ],
+  "answer": "No, only European clubs qualify",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3a08f4",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "\"Which club knocked out Barcelona in the 2022-23 Champions League group stage?\" — keyed Inter. Bayern Munich is defensible on the same wording: in Group C Bayern finished 1st (18 pts) and beat Barcelona home and away, while Inter finished 2nd (10 pts) to Barcelona's 3rd (7 pts). Inter is the team that took the qualifying place, but \"knocked out\" does not disambiguate, and Bayern inflicted both of the defeats that eliminated them.",
+  "q": "Which club knocked out Barcelona in the 2022-23 Champions League group stage?",
+  "o": [
+   "Inter",
+   "Bayern Munich",
+   "Juventus",
+   "Porto"
+  ],
+  "answer": "Inter",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af0446",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem: 'guided Nottingham Forest to promotion from the second division and then won the European Cup the following season'. False timeline. Forest were promoted in 1976-77, won the FIRST DIVISION TITLE in 1977-78, and won the European Cup in 1978-79 — two seasons after promotion, with a league title in between. The keyed answer (Brian Clough) is right, but the stem teaches a wrong sequence and erases the famous league title.",
+  "q": "Which manager guided Nottingham Forest to promotion from the second division and then won the European Cup the following season?",
+  "o": [
+   "Bob Paisley",
+   "Brian Clough",
+   "Ron Greenwood",
+   "Bobby Robson"
+  ],
+  "answer": "Brian Clough",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_74e8fe",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem: 'Atletico Madrid's nickname, referencing their old mattress-making sponsors'. Atletico never had mattress-making sponsors. 'Los Colchoneros' arose in the 1930s-40s as a rival taunt because the red-and-white striped shirts resembled the red-and-white striped ticking of traditional Spanish mattresses — an appearance association, not a sponsor. The stem's only explanatory clause is fabricated.",
+  "q": "What is Atletico Madrid's nickname, referencing their old mattress-making sponsors?",
+  "o": [
+   "Los Blancos",
+   "Los Colchoneros",
+   "Los Che",
+   "Los Azulones"
+  ],
+  "answer": "Los Colchoneros",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7823be",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "Stem: 'Cristiano Ronaldo scored his 700th career goal in October 2019 — for which team was he playing at the time?' with Juventus and Portugal both offered. He scored it for Portugal (v Ukraine, 14 Oct 2019) but he WAS a Juventus player at the time, and 'at the time' points at club affiliation. A player who knows the fact perfectly can reasonably pick Juventus and be marked wrong. Should read 'for which team did he score it'.",
+  "q": "Cristiano Ronaldo scored his 700th career goal in October 2019 — for which team was he playing at the time?",
+  "o": [
+   "Juventus",
+   "Portugal",
+   "Real Madrid",
+   "Man Utd"
+  ],
+  "answer": "Portugal",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b2e29b",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: 'played Premier League football until age 43'. Friedel (b. 18 May 1971) made his last Premier League appearance for Tottenham in November 2013, aged 42; he never played a PL game after turning 43 in May 2014 and retired in 2015 without adding one. The 310-consecutive-games record and the three clubs are correct; the age claim is off by a year.",
+  "q": "Which American goalkeeper played Premier League football until age 43 for Blackburn, Aston Villa and Tottenham, holding the PL record for consecutive games played (310)?",
+  "o": [
+   "Tim Howard",
+   "Brad Friedel",
+   "Kasey Keller",
+   "Marcus Hahnemann"
+  ],
+  "answer": "Brad Friedel",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

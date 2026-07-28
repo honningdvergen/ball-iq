@@ -1,321 +1,5 @@
 {
- "applied": [
-  {
-   "id": "q_e7f32a",
-   "kind": "stale",
-   "oldQ": "Which country will host the 2026 World Cup alongside Canada and Mexico?",
-   "newQ": "Which country hosted the 2026 World Cup alongside Canada and Mexico?",
-   "oldCorrect": "USA",
-   "newCorrect": "USA",
-   "truth": "The 2026 World Cup was co-hosted by the USA, Canada and Mexico and CONCLUDED on 19 July 2026 (Spain 1–0 Argentina aet, MetLife Stadium). The answer 'USA' is factually correct; the defect is purely the future tense 'will host' describing a finished tournament."
-  },
-  {
-   "id": "q_7af792",
-   "kind": "wrong_answer",
-   "oldQ": "What squad number did Francesco Totti wear throughout his entire Roma career?",
-   "newQ": "Which squad number did Francesco Totti wear at Roma from 1997 until his retirement in 2017?",
-   "oldCorrect": "10",
-   "newCorrect": "10",
-   "truth": "Serie A squad numbers began in 1995-96. AS Roma's own club history states Totti chose No. 20 for 1995/96 and No. 17 for 1996/97, taking the No. 10 only in summer 1997 (first worn 22 Aug 1997 vs Inter, after captain Giuseppe Giannini left). He then wore 10 for twenty years until 2017."
-  },
-  {
-   "id": "q_3433df",
-   "kind": "wrong_answer",
-   "oldQ": "Andrés Iniesta wore which squad number for Barcelona throughout his career?",
-   "newQ": "Which squad number did Andrés Iniesta wear for Barcelona from 2007-08 until he left in 2018?",
-   "oldCorrect": "8",
-   "newCorrect": "8",
-   "truth": "Iniesta made his Barcelona debut on 29 October 2002 away at Club Brugge wearing No. 34, wore No. 24 from 2003/04 through 2006/07, and switched to No. 8 ahead of the 2007-08 season, keeping it until he left in 2018."
-  },
-  {
-   "id": "q_3e3e0c",
-   "kind": "wrong_answer",
-   "oldQ": "Which club won the League Cup a record four times in a row from 2018 to 2021?",
-   "newQ": "Which club won the League Cup four times in a row from 2018 to 2021, equalling Liverpool's record?",
-   "oldCorrect": "Man City",
-   "newCorrect": "Man City",
-   "truth": "Liverpool won the League Cup four seasons in a row in 1981, 1982, 1983 and 1984. Manchester City's 2018-2021 run equalled that mark — contemporary coverage, including Manchester City's own site, described it as a 'record-equalling' fourth successive title (Guardiola's distinction was being the first single manager to do it; Liverpool's four spanned Paisley and Fagan)."
-  },
-  {
-   "id": "q_53e107",
-   "kind": "wrong_answer",
-   "oldQ": "Who is Serie A's all-time top scorer with 274 goals — spread across Pro Vercelli, Lazio, Torino and Novara?",
-   "newQ": "Who is Serie A's all-time top scorer with 274 goals — spread across Pro Vercelli, Lazio, Juventus and Novara?",
-   "oldCorrect": "Silvio Piola",
-   "newCorrect": "Silvio Piola",
-   "truth": "Piola's 274 Serie A goals came at Pro Vercelli (51), Lazio (143), Juventus (10, 1946-47) and Novara (70) — those four sum to exactly 274. His Torino spell (1943-44, 27 goals in 23 games) was in the wartime Campionato Alta Italia, which is NOT counted as Serie A. So the stem's club list is wrong twice over: it includes a club whose goals are not in the 274, and omits the club that is."
-  },
-  {
-   "id": "q_cb171c",
-   "kind": "wrong_answer",
-   "oldQ": "Which Belgian striker became Napoli's all-time top scorer with 148 goals in 2020, surpassing Marek Hamšík and Diego Maradona?",
-   "newQ": "Which Belgian striker became Napoli's all-time top scorer in 2020, overtaking Marek Hamšík, and left in 2022 with a club-record 148 goals?",
-   "oldCorrect": "Dries Mertens",
-   "newCorrect": "Dries Mertens",
-   "truth": "Mertens equalled Hamšík's Napoli record at 121 goals (v Barcelona, Feb 2020) and broke it with his 122nd (Coppa Italia semi v Inter, May 2020). 148 was his final tally when he left in 2022. He had passed Maradona earlier, in Oct 2019 at Salzburg. The stem welds the 2020 date to the 2022 number."
-  },
-  {
-   "id": "q_8fb2af",
-   "kind": "wrong_answer",
-   "oldQ": "Which Juventus legend made his Juventus debut aged 19 in 1993 — later becoming their all-time leading scorer with 290 goals?",
-   "newQ": "Which Juventus legend made his club debut aged 18 in 1993 — later becoming their all-time leading scorer with 290 goals?",
-   "oldCorrect": "Alessandro Del Piero",
-   "newCorrect": "Alessandro Del Piero",
-   "truth": "Del Piero was 18, not 19. He debuted for Juventus on 12 September 1993 away at Foggia (1-1), on as a substitute for Fabrizio Ravanelli; born 9 November 1974, he turned 19 two months later. The 290-goal club record is correct."
-  },
-  {
-   "id": "q_688b2c",
-   "kind": "stale",
-   "oldQ": "Three countries will co-host the 2026 World Cup — which three?",
-   "newQ": "Which three countries co-hosted the 2026 World Cup?",
-   "oldCorrect": "USA, Canada, Mexico",
-   "newCorrect": "USA, Canada, Mexico",
-   "truth": "The 2026 World Cup is over: Spain beat Argentina 1-0 after extra time at MetLife Stadium on 19 July 2026 (Ferran Torres, 106'). The hosts were indeed USA, Canada and Mexico, so the keyed answer is right — but 'will co-host' is now false as written."
-  },
-  {
-   "id": "q_ba88ec",
-   "kind": "wrong_answer",
-   "oldQ": "Who was Barcelona's manager when they won the 1997-98 Copa del Rey final 1-1 (4-2 pens) over Mallorca?",
-   "newQ": "Who was Barcelona's manager when they won the 1997-98 Copa del Rey final 1-1 (5-4 pens) over Mallorca?",
-   "oldCorrect": "Louis van Gaal",
-   "newCorrect": "Louis van Gaal",
-   "truth": "The 1997-98 Copa del Rey final (Barcelona 1-1 Mallorca, 29 April 1998, Mestalla, Valencia) was decided 5-4 on penalties, not 4-2. Mallorca keeper Carlos Roa saved three penalties and scored one; Rivaldo and Figo missed for Barcelona. Louis van Gaal was Barcelona's manager (Héctor Cúper managed Mallorca), so the keyed answer is correct — only the parenthetical scoreline is wrong."
-  },
-  {
-   "id": "q_c12d8e",
-   "kind": "stale",
-   "oldQ": "Elton John has been chairman of which Premier League club on two separate occasions?",
-   "newQ": "Elton John has been chairman of which English football club on two separate occasions?",
-   "oldCorrect": "Watford",
-   "newCorrect": "Watford",
-   "truth": "Elton John was Watford chairman from 1976 to 1987 and again from 1997 to 2002, so the answer is right — but Watford is not a Premier League club. It was relegated in 2021-22 and was not promoted in 2025-26, so it starts 2026-27 in the Championship."
-  },
-  {
-   "id": "q_e0ce8a",
-   "kind": "multiple_correct",
-   "oldQ": "What is Portugal's best ever finish at a World Cup?",
-   "newQ": "What is Portugal's best ever finish at a World Cup?",
-   "oldCorrect": "Third place",
-   "newCorrect": "Third place",
-   "truth": "Portugal's best World Cup finish is third place (1966, beat the USSR 2-1 in the third-place match after losing the semi-final 2-1 to England at Wembley). Second best is fourth (2006). At the 2026 World Cup Portugal went out in the round of 16 to Spain, so third place still stands as of today."
-  },
-  {
-   "id": "q_5cbea6",
-   "kind": "wrong_answer",
-   "oldQ": "Which manager won La Liga in his first season in charge at Barcelona in 2022-23?",
-   "newQ": "Which manager led Barcelona to the La Liga title in 2022-23?",
-   "oldCorrect": "Xavi",
-   "newCorrect": "Xavi",
-   "truth": "Xavi was presented as Barcelona head coach on 8 November 2021 and won La Liga in 2022-23 — his SECOND season in charge, his first FULL season. Luis Enrique did win La Liga in his actual first season in charge (2014-15)."
-  },
-  {
-   "id": "q_594a37",
-   "kind": "multiple_correct",
-   "oldQ": "What is the name of the trophy awarded to the Bundesliga champions each season?",
-   "newQ": "What is the name of the trophy awarded to the Bundesliga champions each season?",
-   "oldCorrect": "Die Meisterschale",
-   "newCorrect": "Die Meisterschale",
-   "truth": "The Bundesliga championship trophy is the Meisterschale (officially 'Deutsche Meisterschale'), awarded to German champions since 1949 and to Bundesliga champions since 1963-64. German media and fans routinely shorten it to 'die Schale' ('die Schale holen'); the other common nickname is 'Salatschüssel'."
-  },
-  {
-   "id": "q_cf02ef",
-   "kind": "stale",
-   "oldQ": "How many teams will compete at the 2026 World Cup — the most ever?",
-   "newQ": "How many teams competed at the 2026 World Cup — the most ever?",
-   "oldCorrect": "48",
-   "newCorrect": "48",
-   "truth": "The 2026 World Cup ran 11 June - 19 July 2026 across Canada, Mexico and the USA with 48 teams (12 groups of 4, 104 matches) — the largest field ever. Spain beat Argentina 1-0 aet in the final. The tournament is over as of today, 28 July 2026."
-  },
-  {
-   "id": "q_d2f8ac",
-   "kind": "stale",
-   "oldQ": "Which stadium will host the 2026 World Cup final — with a capacity of over 82,000?",
-   "newQ": "Which stadium hosted the 2026 World Cup final?",
-   "oldCorrect": "MetLife Stadium",
-   "newCorrect": "MetLife Stadium",
-   "truth": "MetLife Stadium in East Rutherford, New Jersey hosted the 2026 World Cup final on 19 July 2026 (Spain 1-0 Argentina aet, Ferran Torres 106'). Capacity ~82,500."
-  },
-  {
-   "id": "q_514149",
-   "kind": "stale",
-   "oldQ": "The Puskas Award has been won most times by players from which country?",
-   "newQ": "Who won the inaugural FIFA Puskás Award in 2009?",
-   "oldCorrect": "Brazil",
-   "newCorrect": "Cristiano Ronaldo",
-   "truth": "Puskás Award winners by country as of today: Brazil 3 (Neymar 2011, Wendell Lira 2015, Guilherme Madruga 2023) and Argentina 3 (Erik Lamela 2021, Alejandro Garnacho 2024, Santiago Montiel 2025 — Independiente, overhead kick). Every other nation has 1 or 0. Brazil and Argentina are now TIED on three."
-  },
-  {
-   "id": "q_9f9be7",
-   "kind": "wrong_answer",
-   "oldQ": "Erling Haaland scored 15 Champions League goals in 21 apps for which Bundesliga club before joining Man City in 2022?",
-   "newQ": "Erling Haaland scored 15 Champions League goals for which Bundesliga club before joining Man City in 2022?",
-   "oldCorrect": "Dortmund",
-   "newCorrect": "Dortmund",
-   "truth": "Erling Haaland scored 15 Champions League goals in 13 appearances for Borussia Dortmund (2019-20 to 2021-22), after 8 goals in 6 group games for RB Salzburg — 23 CL goals in 19 apps total before joining Man City in July 2022. No source supports 21 Dortmund appearances."
-  },
-  {
-   "id": "q_37991d",
-   "kind": "stale",
-   "oldQ": "Which La Liga club plays at the Estadio de Gran Canaria?",
-   "newQ": "Which Spanish club plays at the Estadio de Gran Canaria?",
-   "oldCorrect": "Las Palmas",
-   "newCorrect": "Las Palmas",
-   "truth": "UD Las Palmas were relegated from La Liga in 2024-25 (19th, 32 pts) and failed to return: they lost the 2026 Segunda Division promotion play-off semi-final to Malaga (2-1 agg), with Racing Santander, Deportivo La Coruna and Malaga going up. Las Palmas play in Segunda Division in 2026-27. The Estadio de Gran Canaria is still their ground."
-  },
-  {
-   "id": "q_ebe0f9",
-   "kind": "wrong_answer",
-   "oldQ": "The world's oldest professional football club is Sheffield FC — founded in which year?",
-   "newQ": "The world's oldest football club, recognised by FIFA, is Sheffield FC — founded in which year?",
-   "oldCorrect": "1857",
-   "newCorrect": "1857",
-   "truth": "Sheffield FC (founded 24 October 1857) is recognised by FIFA as the world's oldest existing football club, but it is and always has been an AMATEUR club. The oldest professional club is generally cited as Notts County (1862) (Crystal Palace have a rival claim). So the keyed year 1857 is right, but the stem's word 'professional' makes the premise false — Sheffield FC is not the oldest professional club."
-  },
-  {
-   "id": "q_9edc78",
-   "kind": "wrong_answer",
-   "oldQ": "Which controversial 2002 relocation saw Wimbledon FC move 70 miles north to become a new club?",
-   "newQ": "An FA commission's controversial 2002 ruling allowed Wimbledon FC to relocate — to which town did the club move in 2003?",
-   "oldCorrect": "Milton Keynes",
-   "newCorrect": "Milton Keynes",
-   "truth": "The FA-appointed independent commission approved the move by 2-1 on 28 May 2002, but Wimbledon FC did not actually relocate until September 2003 (they played at the National Hockey Stadium, and only renamed to Milton Keynes Dons in June 2004). The distance is about 56 miles (90 km) north-WEST of Wimbledon, not 70 miles north. Also, the relocated club was not 'a new club' — the new club was AFC Wimbledon, founded by fans on 30 May 2002."
-  },
-  {
-   "id": "q_ccd687",
-   "kind": "wrong_answer",
-   "oldQ": "Which La Liga club won the Copa del Rey in April 2024 — ending a 40-year trophy drought?",
-   "newQ": "Which La Liga club won the Copa del Rey in April 2024 — their first Copa del Rey triumph since 1984?",
-   "oldCorrect": "Athletic Bilbao",
-   "newCorrect": "Athletic Bilbao",
-   "truth": "Athletic Club beat Mallorca 4-2 on penalties (1-1 aet) in the Copa del Rey final on 6 April 2024 — their first Copa del Rey since 1984, a 40-year gap. But it was NOT a 40-year trophy drought: Athletic won the Supercopa de España on 17 January 2021, beating Barcelona 3-2 aet in the final (Villalibre 90', I. Williams 93'), their third Supercopa. So the drought was 40 years for the Copa del Rey, and only ~3 years for silverware of any kind."
-  },
-  {
-   "id": "q_5d7a09",
-   "kind": "wrong_answer",
-   "oldQ": "Dennis Bergkamp famously had a fear of flying. Despite this, he DID fly for which World Cup where he scored his famous goal vs Argentina?",
-   "newQ": "Dennis Bergkamp famously refused to fly, so he travelled overland to which World Cup, where he scored a last-minute winner against Argentina?",
-   "oldCorrect": "1998",
-   "newCorrect": "1998",
-   "truth": "Bergkamp did NOT fly to the 1998 World Cup. He stopped flying entirely after the 1994 World Cup (mid-air engine trouble on the flight to the USA, plus a bomb-joke incident) and told his agent and coaches he would only play matches he could reach by car. For France 1998 he travelled overland by car/train, which is exactly why a European-hosted tournament was possible for him. He then scored the 89th-minute winner against Argentina in the Marseille quarter-final on 4 July 1998."
-  },
-  {
-   "id": "q_d505e7",
-   "kind": "wrong_answer",
-   "oldQ": "Which club played Premier League football for the first time in their 130-year history in 2023-24?",
-   "newQ": "Which club played Premier League football for the first time in their history in 2023-24?",
-   "oldCorrect": "Luton Town",
-   "newCorrect": "Luton Town",
-   "truth": "Luton Town were founded on 11 April 1885, so their first-ever Premier League season (2023-24) came in their 138th year, not their 130th. The keyed answer, Luton Town, is correct — 2023-24 was their first season in the Premier League era, their first top-flight campaign since 1991-92."
-  },
-  {
-   "id": "q_6e0e62",
-   "kind": "multiple_correct",
-   "oldQ": "Which La Liga club has the nickname El Submarino Amarillo — The Yellow Submarine?",
-   "newQ": "Which La Liga club has the nickname El Submarino Amarillo — The Yellow Submarine?",
-   "oldCorrect": "Villarreal",
-   "newCorrect": "Villarreal",
-   "truth": "Cádiz CF is genuinely nicknamed 'Submarino Amarillo' — English Wikipedia lists it as one of the club's two nicknames (alongside 'Limoneros'), adopted in the late 1980s. Villarreal's claim predates Cádiz's in the contemporary press (their version dates to 1967-68 and the Beatles song), but both clubs carry the nickname. The 'La Liga club' qualifier is a weak disambiguator and is itself decaying: Cádiz are in the Segunda División, and the distractor Las Palmas is also outside La Liga for 2026-27 (2026-27 La Liga: Alavés, Athletic, Atlético, Barcelona, Celta, Deportivo, Elche, Espanyol, Getafe, Levante, Málaga, Osasuna, Racing Santander, Rayo, Betis, Real Madrid, Real Sociedad, Sevilla, Valencia, Villarreal)."
-  },
-  {
-   "id": "q_727865",
-   "kind": "stale",
-   "oldQ": "Which Premier League club is known as The Saints?",
-   "newQ": "Which English club is known as The Saints?",
-   "oldCorrect": "Southampton",
-   "newCorrect": "Southampton",
-   "truth": "Southampton were relegated from the Premier League at the end of 2024-25 and played 2025-26 in the Championship, finishing 4th but being expelled from the play-offs (and given a four-point deduction to be applied to the 2026-27 Championship table) over training-ground spying breaches. They are therefore a Championship club in 2026-27, not a Premier League club. The nickname fact is untouched — Southampton have been 'The Saints' since their St Mary's Church origins."
-  },
-  {
-   "id": "q_0aecfa",
-   "kind": "wrong_answer",
-   "oldQ": "Who scored Porto's 84th-minute winner in the 1987 European Cup final to beat Bayern Munich 2-1?",
-   "newQ": "Who scored Porto's 80th-minute winner in the 1987 European Cup final to beat Bayern Munich 2-1?",
-   "oldCorrect": "Juary",
-   "newCorrect": "Juary",
-   "truth": "Juary scored Porto's winner in the 1987 European Cup final, but in the 80th minute, not the 84th. Wikipedia's match details for the 27 May 1987 final at the Praterstadion give Kögl 25' (Bayern), Madjer 77' and Juary 80' (Porto). The keyed answer 'Juary' is correct; the stem's stated minute is wrong."
-  },
-  {
-   "id": "q_9d1ab4",
-   "kind": "multiple_correct",
-   "oldQ": "Bruce Grobbelaar's 'spaghetti legs' antics are credited with unsettling which Roma player into blazing his penalty over the bar in the 1984 final shootout?",
-   "newQ": "Roma's fourth penalty in the 1984 European Cup final shootout, taken right after Bruce Grobbelaar's 'spaghetti legs' routine, was blazed over the bar by which player?",
-   "oldCorrect": "Francesco Graziani",
-   "newCorrect": "Francesco Graziani",
-   "truth": "Two Roma players blazed penalties over the bar in the 1984 shootout and both are credited as victims of Grobbelaar's antics: Bruno Conti (Roma's second kick) and Francesco Graziani (Roma's fourth). Grobbelaar's own account: 'I picked out two players – Italy stars Bruno Conti and Francesco Graziani.' Contemporary retellings describe him talking to himself and biting the net before Conti's miss, and the specific 'spaghetti legs' wobble before Graziani's."
-  },
-  {
-   "id": "q_4e6d69",
-   "kind": "wrong_answer",
-   "oldQ": "Weeks after their 1997 European Cup win, Dortmund beat which South American side to lift the Intercontinental Cup in Tokyo?",
-   "newQ": "Months after their 1997 European Cup win, Dortmund beat which South American side to lift the Intercontinental Cup in Tokyo?",
-   "oldCorrect": "Cruzeiro",
-   "newCorrect": "Cruzeiro",
-   "truth": "Dortmund won the 1996-97 Champions League final 3-1 over Juventus on 28 May 1997 in Munich, and beat Cruzeiro 2-0 in the Intercontinental Cup at Tokyo's National Stadium on 2 December 1997 — a gap of just over six months, not 'weeks'. The keyed answer Cruzeiro is correct."
-  },
-  {
-   "id": "q_ad8754",
-   "kind": "wrong_answer",
-   "oldQ": "Which one-club defender captained Chelsea for over a decade and is the club's record goalscoring defender?",
-   "newQ": "Which defender captained Chelsea for over a decade and is the club's record goalscoring defender?",
-   "oldCorrect": "John Terry",
-   "newCorrect": "John Terry",
-   "truth": "John Terry was loaned to Nottingham Forest in March 2000 (six appearances) and played the whole 2017-18 Championship season for Aston Villa (around 35 appearances, one goal), so he is not a one-club player. He is otherwise correctly described: 717 Chelsea appearances, 67 goals, Chelsea's record-scoring defender and captain from 2004 until 2017."
-  },
-  {
-   "id": "q_a6fe03",
-   "kind": "stale",
-   "oldQ": "Chelsea set a Premier League record during their 2016-17 title run with a streak of how many consecutive league wins?",
-   "newQ": "Chelsea won how many consecutive Premier League games during their 2016-17 title run?",
-   "oldCorrect": "13",
-   "newCorrect": "13",
-   "truth": "Chelsea won 13 consecutive Premier League games in 2016-17 (ended by a 2-0 defeat at Tottenham on 4 January 2017). That equalled Arsenal's 13 straight in 2001-02 rather than setting a new mark, and Arsenal's cross-season run reached 14. Manchester City then won 18 in a row between 26 August and 27 December 2017; Liverpool matched 18 in 2019-20. The keyed answer 13 remains correct."
-  },
-  {
-   "id": "q_cf5e43",
-   "kind": "wrong_answer",
-   "oldQ": "Which Ivorian striker and Chelsea great played for Galatasaray between 2013 and 2015?",
-   "newQ": "Which Ivorian striker and Chelsea great played for Galatasaray between 2013 and 2014?",
-   "oldCorrect": "Didier Drogba",
-   "newCorrect": "Didier Drogba",
-   "truth": "Drogba signed for Galatasaray from Shanghai Shenhua in January 2013 on an 18-month deal, won the 2013 Turkish Super Cup and the 2012-13 Super Lig title with them, and left in July 2014 — he rejoined Chelsea on 25 July 2014 and played the 2014-15 season there. He was never a Galatasaray player during 2015."
-  },
-  {
-   "id": "q_fe219e",
-   "kind": "wrong_answer",
-   "oldQ": "Whose emotional stoppage-time penalty at Stamford Bridge sent Chelsea past Liverpool into their first-ever Champions League final in 2008?",
-   "newQ": "Whose emotional extra-time penalty at Stamford Bridge helped send Chelsea past Liverpool into their first-ever Champions League final in 2008?",
-   "oldCorrect": "Frank Lampard",
-   "newCorrect": "Frank Lampard",
-   "truth": "Chelsea 3-2 Liverpool, 30 April 2008, CL semi-final 2nd leg (4-3 agg). Goals: Drogba 33', Torres 64', Lampard pen 98', Drogba 105', Babel 117'. Lampard's penalty came in the FIRST PERIOD OF EXTRA TIME (98'), not in stoppage time of normal time. The penalty was won by Salomon Kalou (fouled by Hyypia). Lampard played days after his mother's death, so 'emotional' is accurate; 2008 was indeed Chelsea's first CL final."
-  },
-  {
-   "id": "q_e1dd54",
-   "kind": "wrong_answer",
-   "oldQ": "Finish Kevin Keegan's infamous live TV rant during the 1996 title run-in: \"I would love it if we beat them. _____!\"",
-   "newQ": "Finish Kevin Keegan's infamous live TV rant during the 1996 title run-in: \"I will love it if we beat them. _____!\"",
-   "oldCorrect": "Love it",
-   "newCorrect": "Love it",
-   "truth": "Keegan's 29 April 1996 Sky Sports outburst, verbatim: \"...he's got to go to Middlesbrough and get something, and I'll tell you honestly, I WILL love it if we beat them. Love it.\" Sky Sports' own anniversary pieces and Goal's full transcript both render it 'I will love it', not 'I would love it'."
-  },
-  {
-   "id": "q_d36b79",
-   "kind": "wrong_answer",
-   "oldQ": "José Mourinho famously introduced himself to England in 2004 with which now-legendary self-description?",
-   "newQ": "At his 2004 Chelsea unveiling, José Mourinho said: \"Please don't call me arrogant, but I'm European champion... I think I'm ___\". How did he finish the line?",
-   "oldCorrect": "\"I am a special one\"",
-   "newCorrect": "a special one",
-   "truth": "Mourinho, Chelsea unveiling, 2 June 2004: \"Please don't call me arrogant, but I'm European champion and I think I'm a special one.\" He said 'I THINK I'm A special one' — not 'I am a special one', and not 'the Special One' (the nickname the press coined afterwards)."
-  },
-  {
-   "id": "q_788245",
-   "kind": "multiple_correct",
-   "oldQ": "In January 2026, Manchester United sacked manager Ruben Amorim and put which club legend in interim charge for the rest of the 2025-26 season?",
-   "newQ": "In January 2026, Manchester United sacked Ruben Amorim and — after Darren Fletcher's brief spell in interim charge — appointed which other former United player as interim manager for the rest of the 2025-26 season?",
-   "oldCorrect": "Michael Carrick",
-   "newCorrect": "Michael Carrick",
-   "truth": "Amorim was sacked on 5 January 2026 (after a 1-1 at Leeds on 4 Jan) and Darren Fletcher — academy coach, 342 United appearances, 5 PL titles — was named interim manager with immediate effect; Al Jazeera's 5 Jan report said Fletcher was 'likely to stay as interim boss until the end of the season'. United then signed Michael Carrick on 13 January, confirmed 14 January as interim manager until the end of the 2025-26 season. Carrick got the permanent job on 22 May 2026 and is still in charge in July 2026."
-  }
- ],
+ "applied": [],
  "skipped": [
   {
    "id": "q_7a4200",
@@ -338,9 +22,24 @@
    "kind": "stale"
   },
   {
+   "id": "q_e7f32a",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
    "id": "q_94a74b",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "stale"
+  },
+  {
+   "id": "q_7af792",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_3433df",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
   },
   {
    "id": "q_103de5",
@@ -351,6 +50,11 @@
    "id": "q_0a9a1a",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "stale"
+  },
+  {
+   "id": "q_3e3e0c",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
   },
   {
    "id": "q_ed91a6",
@@ -388,14 +92,39 @@
    "kind": "stale"
   },
   {
+   "id": "q_53e107",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
    "id": "q_5784eb",
    "reason": "verifier REJECTED the flag — question is fine",
+   "kind": "stale"
+  },
+  {
+   "id": "q_cb171c",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_8fb2af",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_688b2c",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
    "kind": "stale"
   },
   {
    "id": "q_cc414e",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "stale"
+  },
+  {
+   "id": "q_ba88ec",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
   },
   {
    "id": "q_8270f9",
@@ -448,9 +177,54 @@
    "kind": "stale"
   },
   {
+   "id": "q_c12d8e",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
+   "id": "q_e0ce8a",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "multiple_correct"
+  },
+  {
+   "id": "q_5cbea6",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_594a37",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "multiple_correct"
+  },
+  {
+   "id": "q_cf02ef",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
+   "id": "q_d2f8ac",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
+   "id": "q_514149",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
+   "id": "q_9f9be7",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
    "id": "q_cfb22a",
    "reason": "confirmed but confidence=medium — Alex decides",
    "kind": "multiple_correct"
+  },
+  {
+   "id": "q_37991d",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
   },
   {
    "id": "q_af7b9a",
@@ -466,6 +240,21 @@
    "id": "q_cb47fe",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "stale"
+  },
+  {
+   "id": "q_ebe0f9",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_9edc78",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_ccd687",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
   },
   {
    "id": "q_311a30",
@@ -496,6 +285,16 @@
    "id": "q_0fe2e9",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "stale"
+  },
+  {
+   "id": "q_5d7a09",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_d505e7",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
   },
   {
    "id": "q_e52cdf",
@@ -543,9 +342,19 @@
    "kind": "stale"
   },
   {
+   "id": "q_6e0e62",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "multiple_correct"
+  },
+  {
    "id": "q_236cd2",
    "reason": "confirmed, no complete fix proposed — human editorial call",
    "kind": "multiple_correct"
+  },
+  {
+   "id": "q_727865",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
   },
   {
    "id": "q_ea8bbc",
@@ -558,13 +367,63 @@
    "kind": "stale"
   },
   {
+   "id": "q_0aecfa",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_9d1ab4",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "multiple_correct"
+  },
+  {
    "id": "q_b4680d",
    "reason": "verifier REJECTED the flag — question is fine",
    "kind": "wrong_answer"
   },
   {
+   "id": "q_4e6d69",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_ad8754",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
    "id": "q_c431ea",
    "reason": "confirmed but confidence=medium — Alex decides",
+   "kind": "multiple_correct"
+  },
+  {
+   "id": "q_a6fe03",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "stale"
+  },
+  {
+   "id": "q_cf5e43",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_fe219e",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_e1dd54",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_d36b79",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
+   "kind": "wrong_answer"
+  },
+  {
+   "id": "q_788245",
+   "reason": "bank text CHANGED since it was flagged — verdict is stale, re-verify",
    "kind": "multiple_correct"
   },
   {

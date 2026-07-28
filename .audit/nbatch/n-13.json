@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_cfb22a",
+  "kind": "multiple_correct",
+  "severity": "serious",
+  "claim": "\"Which club did Johan Cruyff manage — revolutionising their style and setting up their famous academy?\" keys Barcelona, but Ajax is also an option and Cruyff managed Ajax (1985–88), where he equally revolutionised the playing style and reshaped the (famous) youth setup. Compounding it, the \"setting up their famous academy\" clause is itself shaky for Barcelona: La Masia was opened in 1979, nine years before Cruyff became Barça coach — he overhauled it, he did not set it up. A player who knows the Ajax spell is penalised for knowing more.",
+  "q": "Which club did Johan Cruyff manage — revolutionising their style and setting up their famous academy?",
+  "o": [
+   "Ajax",
+   "PSV",
+   "Feyenoord",
+   "Barcelona"
+  ],
+  "answer": "Barcelona",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fd0299",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"West Germany appeared in three consecutive European Championship finals during the 1970s\" — the three consecutive finals were 1972, 1976 and 1980. 1980 is not in the 1970s, and the keyed answer (\"1972 and 1980\") contradicts the stem's own decade framing. Fix: \"three consecutive European Championship finals in the 1970s and 1980\" or \"between 1972 and 1980\".",
+  "q": "West Germany appeared in three consecutive European Championship finals during the 1970s — which of those did they WIN?",
+  "o": [
+   "Only 1972",
+   "Only 1980",
+   "All three",
+   "1972 and 1980"
+  ],
+  "answer": "1972 and 1980",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_64bc8e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"the biggest World Cup shock of all time\" is asserted as fact for North Korea 1-0 Italy (1966). It is a contested superlative — USA 1-0 England (1950) is at least as commonly cited as the biggest World Cup upset, and 1950 was a first-round group game between a debutant amateur side and the tournament favourites. Soften to \"one of the biggest World Cup shocks\".",
+  "q": "Which nation produced the biggest World Cup shock of all time by beating Italy 1-0 in 1966?",
+  "o": [
+   "North Korea",
+   "South Korea",
+   "Algeria",
+   "Morocco"
+  ],
+  "answer": "North Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cdb89e",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Answerable with zero football knowledge by pure logic. The stem's rhetorical \"but was he the first to do so?\" signals \"no\", and of the two \"No\" options only one actually answers a first-ness question — \"No — Mário Zagallo did it first\". The other (\"No — Deschamps also achieved this in 2018\") is chronologically incoherent as a rebuttal to \"first\", and \"Yes — until Deschamps in 2018\" is self-contradictory. No football fact is being tested.",
+  "q": "Franz Beckenbauer won the World Cup as both player and manager — but was he the first to do so?",
+  "o": [
+   "Yes — no one else has done both",
+   "No — Didier Deschamps also achieved this in 2018",
+   "Yes — until Deschamps in 2018",
+   "No — Mário Zagallo did it first"
+  ],
+  "answer": "No — Mário Zagallo did it first",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ec2cb5",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem hands over the answer lexically: \"formed by a 1927 merger of three ROMAN clubs\" with \"Roma\" among the options. A player with no football knowledge maps Roman → Roma. (Lazio is also a Roman club, so only someone WITH knowledge could be tempted away from the correct answer — the question inverts the difficulty it intends.)",
+  "q": "Which Italian club was formed by a 1927 merger of three Roman clubs and is nicknamed 'I Lupi' — The Wolves?",
+  "o": [
+   "Lazio",
+   "Napoli",
+   "Fiorentina",
+   "Roma"
+  ],
+  "answer": "Roma",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9f410a",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "\"Which continent has never qualified a team for the knockout stages of a Women's World Cup?\" — Antarctica is offered as an option and literally satisfies the stem (no Antarctic team has ever qualified, having no member association). Keyed answer Oceania is the intended one and factually right, but the joke distractor is technically also true, so the stem's uniqueness fails on its own wording.",
+  "q": "Which continent has never qualified a team for the knockout stages of a Women's World Cup?",
+  "o": [
+   "Africa",
+   "Asia",
+   "Oceania",
+   "Antarctica"
+  ],
+  "answer": "Oceania",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_2ebb4d",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Andy Carroll's £35m move to Liverpool (31 January 2011) was \"then a British-record fee\". It was not: Fernando Torres moved to Chelsea for £50m on the SAME deadline day, which was the British record. Carroll's £35m was a record fee for a BRITISH PLAYER, not a British transfer record. The keyed answer (£35m) is right; the superlative in the stem is wrong.",
+  "q": "In January 2011 Newcastle sold striker Andy Carroll to Liverpool for what was then a British-record fee. How much?",
+  "o": [
+   "£15 million",
+   "£22 million",
+   "£35 million",
+   "£50 million"
+  ],
+  "answer": "£35 million",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_258c48",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem states Bruno Guimarães was \"signed for a club-record fee in January 2022\". The reported initial fee was around £35m (rising with add-ons to roughly £41.5m); Newcastle's club record at that moment was Joelinton at £40m (2019), and the outright record signing became Alexander Isak (~£63m) later in 2022. At the time of signing it was not a club record — reports only said it COULD rise to one.",
+  "q": "Bruno Guimaraes, a midfield talisman signed for a club-record fee in January 2022, arrived from which club?",
+  "o": [
+   "Lyon",
+   "Marseille",
+   "Porto",
+   "Athletico Paranaense"
+  ],
+  "answer": "Lyon",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_69f688",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem asks which \"fellow Turin club\" contests the Derby della Mole; the keyed answer is literally \"Torino\", the Italian name of Turin. A reader with zero football knowledge picks it straight off the city name in the stem, with the other three options (Novara, Alessandria, Pro Vercelli) named after different towns. Compounded in-batch: q_fec56e asks which city Juventus are based in, and this stem answers it.",
+  "q": "The 'Derby della Mole' pits Juventus against which fellow Turin club?",
+  "o": [
+   "Torino",
+   "Novara",
+   "Alessandria",
+   "Pro Vercelli"
+  ],
+  "answer": "Torino",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_07548f",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Juventus's 2006 Calciopoli relegation to Serie B was \"a punishment no other Italian giant had ever endured\". False: AC Milan and Lazio were both relegated to Serie B in 1980 over the Totonero match-fixing scandal (Milan were relegated again on merit in 1982), and Fiorentina/Napoli were later dissolved-and-relegated. The keyed answer (relegation to Serie B) is right; the uniqueness claim in the stem is not.",
+  "q": "In the 2006 Calciopoli scandal, Juventus suffered a punishment no other Italian giant had ever endured. What was it?",
+  "o": [
+   "A two-year ban from European football",
+   "Relegation to Serie B",
+   "A permanent points cap for five seasons",
+   "Dissolution and forced re-founding"
+  ],
+  "answer": "Relegation to Serie B",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_98091a",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem calls Javier Zanetti a \"one-club captain\". Zanetti played for Talleres (RE) and Banfield in Argentina before joining Inter in 1995 — he was never a one-club player. The distractor Beppe Bergomi IS the genuine one-club Inter captain (entire career at Inter, ~20 seasons, also a captain), so the false descriptor actively pulls a knowledgeable player toward the wrong option. The 858-appearance figure for Zanetti is correct.",
+  "q": "Which one-club captain holds Inter's all-time appearance record with a staggering 858 official games over nearly two decades?",
+  "o": [
+   "Javier Zanetti",
+   "Giacinto Facchetti",
+   "Beppe Bergomi",
+   "Walter Zenga"
+  ],
+  "answer": "Javier Zanetti",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a56162",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Del Piero \"a one-club legend across 19 years\". He played 14 Serie B games for Padova before Juventus and later played for Sydney FC, Delhi Dynamos. Distractor Giampiero Boniperti is the true one-club Juventus man (whole career at Juve), so the descriptor points away from the keyed answer. The scoring/appearance records (290 goals, 705 apps) are correctly Del Piero.",
+  "q": "As of 2025, who is Juventus's all-time leading goalscorer and record appearance-maker, a one-club legend across 19 years?",
+  "o": [
+   "Giampiero Boniperti",
+   "Roberto Bettega",
+   "Alessandro Del Piero",
+   "David Trezeguet"
+  ],
+  "answer": "Alessandro Del Piero",
+  "cat": "Legends",
+  "diff": "easy"
+ }
+]

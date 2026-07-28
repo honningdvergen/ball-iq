@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_7998ab",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies the exact range — 'consecutive league titles from 2021 to 2024' — so the answer (Four) is obtained by counting 2021, 2022, 2023, 2024. No football knowledge required; a reader with zero knowledge gets it from arithmetic on the stem alone.",
+  "q": "City set a men's English top-flight record by winning how many consecutive league titles from 2021 to 2024?",
+  "o": [
+   "Four",
+   "Three",
+   "Five",
+   "Six"
+  ],
+  "answer": "Four",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5e3ffe",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The nickname 'Gre-No-Li' is given in the stem and literally encodes the three surnames in order (Gre=Gren, No=Nordahl, Li=Liedholm). Only option A matches that syllable pattern; B is Gre-Ha-Li, C is No-Sk-Gre, D is Li-No-Si. Pure decoding, no football knowledge needed — and it is rated 'hard'.",
+  "q": "AC Milan's celebrated 1950s Swedish trio was nicknamed 'Gre-No-Li'. Which three players made it up?",
+  "o": [
+   "Gren, Nordahl and Liedholm",
+   "Gren, Hamrin and Liedholm",
+   "Nordahl, Skoglund and Gren",
+   "Liedholm, Nordahl and Simonsson"
+  ],
+  "answer": "Gren, Nordahl and Liedholm",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1f70df",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Aubameyang Dortmund's 'captain'. He was never Dortmund's club captain — Marcel Schmelzer was captain throughout 2017-18 (Aubameyang was in fact repeatedly disciplined/dropped that season). 'Top scorer' is correct; 'captain' is a false assertion in the stem.",
+  "q": "In January 2018 Dortmund sold captain and top scorer Pierre-Emerick Aubameyang to which Premier League club?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Tottenham",
+   "Liverpool"
+  ],
+  "answer": "Arsenal",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4e6d69",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Weeks after their 1997 European Cup win' is false. Dortmund won the Champions League final on 28 May 1997 and beat Cruzeiro in the Intercontinental Cup on 2 December 1997 — a gap of roughly six months, not weeks. Temporal clause asserts something untrue on the way to a correct answer.",
+  "q": "Months after their 1997 European Cup win, Dortmund beat which South American side to lift the Intercontinental Cup in Tokyo?",
+  "o": [
+   "Cruzeiro",
+   "River Plate",
+   "Boca Juniors",
+   "São Paulo"
+  ],
+  "answer": "Cruzeiro",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a6fe03",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Set a Premier League record ... 13 consecutive league wins' overstates it. Arsenal had already won 13 straight to end 2001-02, so Chelsea's December 2016 run equalled rather than set the PL record (and Man City took it outright with 18 in 2017). The keyed number 13 is right; the superlative framing is not.",
+  "q": "Chelsea won how many consecutive Premier League games during their 2016-17 title run?",
+  "o": [
+   "13",
+   "11",
+   "9",
+   "15"
+  ],
+  "answer": "13",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ad8754",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'One-club defender' is untrue of John Terry: he was loaned to Nottingham Forest in 2000 and played a full season for Aston Villa in 2017-18 after leaving Chelsea. The captaincy and record-goalscoring-defender claims are correct; the one-club claim is not.",
+  "q": "Which defender captained Chelsea for over a decade and is the club's record goalscoring defender?",
+  "o": [
+   "John Terry",
+   "Ashley Cole",
+   "Ricardo Carvalho",
+   "Marcel Desailly"
+  ],
+  "answer": "John Terry",
+  "cat": "Legends",
+  "diff": "easy"
+ }
+]

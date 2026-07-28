@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_9d1ab4",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "Stem asks which Roma player Grobbelaar's 'spaghetti legs' unsettled 'into blazing his penalty over the bar' in the 1984 shootout. Two of the four options fit the description: Bruno Conti (2nd Roma kick) and Francesco Graziani (4th) BOTH ballooned their penalties over the bar in that shootout, and Grobbelaar's wobble routine is attributed to both kicks in different accounts. Graziani is the canonical answer, but Conti is defensible on the stem as written.",
+  "q": "Roma's fourth penalty in the 1984 European Cup final shootout, taken right after Bruce Grobbelaar's 'spaghetti legs' routine, was blazed over the bar by which player?",
+  "o": [
+   "Bruno Conti",
+   "Francesco Graziani",
+   "Agostino Di Bartolomei",
+   "Ubaldo Righetti"
+  ],
+  "answer": "Francesco Graziani",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_44f66e",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'The Celtic v Rangers derby is universally known as the…?' with options Old Firm / Merseyside Derby / North London Derby / El Clasico. The three distractors are each named after a different city or country (Liverpool, London, Spain), so anyone who knows Celtic and Rangers are Scottish can eliminate them without any football knowledge. No question knowledge is tested.",
+  "q": "The Celtic v Rangers derby is universally known as the...?",
+  "o": [
+   "Old Firm",
+   "Merseyside Derby",
+   "North London Derby",
+   "El Clasico"
+  ],
+  "answer": "Old Firm",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2cc923",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Stem: 'By which two-letter abbreviation is Olympique de Marseille widely known?' with options OM / OL / AS / RC. The stem spells out the club's full name, so the initials O-M are read straight off it; no other option matches those initials. Zero football knowledge required — this is pure letter-matching.",
+  "q": "By which two-letter abbreviation is Olympique de Marseille widely known?",
+  "o": [
+   "OM",
+   "OL",
+   "AS",
+   "RC"
+  ],
+  "answer": "OM",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_73c7bf",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem names the 'Rotterdam derby' and the only option containing the word Rotterdam is the keyed answer, Sparta Rotterdam (others: Vitesse, Ajax, PSV Eindhoven). Answerable from the stem alone by string match.",
+  "q": "Which club is Feyenoord's local rival in the Rotterdam derby?",
+  "o": [
+   "Sparta Rotterdam",
+   "Vitesse",
+   "Ajax",
+   "PSV Eindhoven"
+  ],
+  "answer": "Sparta Rotterdam",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea846b",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem asks what the Ajax v Feyenoord fixture is called; options are The Old Firm, El Clásico, De Klassieker, Der Klassiker. Only one option is in Dutch, for a fixture between two Dutch clubs — solvable by language-matching rather than football knowledge.",
+  "q": "By what name is the Ajax versus Feyenoord fixture known?",
+  "o": [
+   "The Old Firm",
+   "El Clásico",
+   "De Klassieker",
+   "Der Klassiker"
+  ],
+  "answer": "De Klassieker",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_83ad37",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Ronaldo's 1996 PSV-to-Barcelona move was 'then a world-record transfer'. The keyed answer (Barcelona) is right, but the world record in the summer of 1996 was Alan Shearer's £15m Blackburn-to-Newcastle move (July 1996); Barcelona paid roughly £13.2m for Ronaldo. Ronaldo's genuine world-record transfer was the following year, Barcelona to Inter in 1997. Sources conflict on whether the Barcelona fee briefly counted as a record, so this needs verification, but as written the record claim is at best contested and at worst plainly false.",
+  "q": "Ronaldo left PSV in 1996 for which club, in what was then a world-record transfer?",
+  "o": [
+   "Barcelona",
+   "Inter Milan",
+   "Real Madrid",
+   "AC Milan"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "medium"
+ }
+]

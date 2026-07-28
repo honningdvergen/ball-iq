@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_1fd1b9",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Barcelona \"famously sold Cesc Fabregas to Arsenal as a teenager\". Barcelona did not sell him — Arsenal signed the 16-year-old out of La Masia in September 2003 with no transfer fee (he had no professional contract; only a nominal/disputed training compensation was ever involved). The famous point of the story is precisely that Barcelona got nothing for him and then paid roughly €34m to buy him back in 2011. The keyed answer (Barcelona) is right, but the stem misstates the transfer.",
+  "q": "Which La Liga club famously sold Cesc Fabregas to Arsenal as a teenager — then bought him back from Arsenal years later?",
+  "o": [
+   "Real Madrid",
+   "Valencia",
+   "Atlético",
+   "Barcelona"
+  ],
+  "answer": "Barcelona",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b41bdd",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"When did Ivory Coast finally win it?\" implies 2015 was Ivory Coast's first Africa Cup of Nations title. Ivory Coast had already won AFCON in 1992 (beating Ghana on penalties), and won again in 2023. The Drogba clause is accurate (he never won it), but \"finally win it\" leaves a player believing 2015 was the country's first title.",
+  "q": "Despite being one of Africa's greatest ever players, Didier Drogba never won the Africa Cup of Nations. When did Ivory Coast finally win it?",
+  "o": [
+   "2012",
+   "2013",
+   "2015",
+   "2017"
+  ],
+  "answer": "2015",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c43521",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem specifies \"a domestic league match\", but three of the four options are international fixtures between countries (Hungary vs El Salvador, Brazil vs Bolivia, Australia vs American Samoa). Only AS Adema vs SO l'Emyrne is a club/league pairing, so the stem's own qualifier eliminates every distractor without any football knowledge.",
+  "q": "Which team scored a staggering 149-0 in a domestic league match, setting the record for the highest-scoring professional game?",
+  "o": [
+   "Hungary vs El Salvador",
+   "Brazil vs Bolivia",
+   "Australia vs American Samoa",
+   "AS Adema vs SO l'Emyrne"
+  ],
+  "answer": "AS Adema vs SO l'Emyrne",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_602cbf",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem calls 9-0 Manchester United's \"record top-flight win\". It is their record PREMIER LEAGUE win only — United's record top-flight victory is 10-1 as Newton Heath v Wolverhampton Wanderers, First Division, 15 October 1892. The error is compounded because \"10-0\" is offered as a distractor, so the question actively teaches a false record. Should read \"record Premier League win\".",
+  "q": "What is the scoreline of Manchester United's record top-flight win, achieved against Ipswich in 1995 and matched against Southampton in 2021?",
+  "o": [
+   "9-0",
+   "8-1",
+   "7-0",
+   "10-0"
+  ],
+  "answer": "9-0",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f04ce8",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem calls 2017-18 \"Mohamed Salah's debut Premier League season\". It was his debut season AT LIVERPOOL; Salah had already played in the Premier League for Chelsea after signing in January 2014 (19 PL appearances across 2013-14 and 2014-15). The 32-goal record itself is correct; the temporal claim is not.",
+  "q": "Mohamed Salah's debut Premier League season (2017-18) set a scoring record with how many goals in a 38-game campaign?",
+  "o": [
+   "30",
+   "32",
+   "28",
+   "34"
+  ],
+  "answer": "32",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6db24",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Liverpool appointed Klopp in October 2015 by \"luring him from Borussia Dortmund\". Klopp had already left Dortmund — he announced his departure in April 2015 and his final match was the DFB-Pokal final on 30 May 2015. He was out of work for roughly four months before Liverpool hired him on 8 October 2015, so nobody was lured from anywhere. Same defect pattern as the known \"before joining PSG that year\" case.",
+  "q": "Which manager did Liverpool appoint in October 2015, luring him from Borussia Dortmund to begin a trophy-laden era?",
+  "o": [
+   "Rafael Benitez",
+   "Jurgen Klopp",
+   "Brendan Rodgers",
+   "Arne Slot"
+  ],
+  "answer": "Jurgen Klopp",
+  "cat": "Managers",
+  "diff": "easy"
+ }
+]

@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_a1c7b4",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Founded in 1887 through a merger' conflates two separate events. Hamburger SV dates its founding to 29 September 1887 (SC Germania, via Der Hohenfelder SC); the merger that actually created HSV — Germania 1887, Hamburger FC 1888 and FC Falke 1906 — happened in June 1919. The club was not founded by a merger in 1887.",
+  "q": "Which Bundesliga (or 2.Bundesliga) club was founded in 1887 through a merger — making them one of Germany's oldest clubs — and plays at Volksparkstadion?",
+  "o": [
+   "Hamburger SV",
+   "Schalke 04",
+   "Werder Bremen",
+   "Hannover 96"
+  ],
+  "answer": "Hamburger SV",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_63fbe6",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Founded... by Swiss and British expats' is wrong for AC Milan: the 1899 founders were Englishmen Alfred Edwards and Herbert Kilpin (with Italians). The Swiss-founder element belongs to Internazionale's 1908 breakaway story. The original name is also usually rendered 'Milan Foot-Ball and Cricket Club', not 'Milan Cricket and Football Club'. Keyed year 1899 is correct.",
+  "q": "AC Milan was founded in what year by Swiss and British expats — originally called Milan Cricket and Football Club?",
+  "o": [
+   "1889",
+   "1899",
+   "1908",
+   "1915"
+  ],
+  "answer": "1899",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_745812",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Sealing it with a game in hand' is untrue. Liverpool did beat Crystal Palace 4-0 (24 June 2020), but the 2019-20 title was not sealed by that result — it was mathematically confirmed the following day when Manchester City lost 2-1 to Chelsea. Liverpool also did not hold a game in hand at that point; both sides had played the same number of matches.",
+  "q": "Which club did Liverpool beat 4-0 to win the title in 2019-20 — sealing it with a game in hand?",
+  "o": [
+   "Crystal Palace",
+   "Chelsea",
+   "Burnley",
+   "Brighton"
+  ],
+  "answer": "Crystal Palace",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_670f76",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Won league titles with Juventus, Chelsea and which other club' presupposes exactly one other club, which is now stale: Conte has won league titles with Inter (2020-21) AND Napoli (2024-25 Scudetto). Only Inter appears in the options so the key still resolves, but the stem's premise is no longer true.",
+  "q": "Antonio Conte won league titles with Juventus, Chelsea and which other club?",
+  "o": [
+   "Tottenham",
+   "Inter",
+   "AC Milan",
+   "Sevilla"
+  ],
+  "answer": "Inter",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7ac4b2",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'Which 2026 host city will use the historic Azteca stadium?' The options are Los Angeles, Dallas, New York and Mexico City — 'Azteca' is transparently a Mexican name and only one option is a Mexican city. Answerable with zero football knowledge.",
+  "q": "Which 2026 host city will use the historic Azteca stadium?",
+  "o": [
+   "Los Angeles",
+   "Dallas",
+   "New York",
+   "Mexico City"
+  ],
+  "answer": "Mexico City",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bf9ad5",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem defines the rule as one where clubs 'must be majority fan-owned', and the only option that expresses a majority numerically is '50+1 Rule'. The stem hands over the answer's meaning; no football knowledge needed.",
+  "q": "What is the name of the Bundesliga fan initiative where clubs must be majority fan-owned?",
+  "o": [
+   "Fan First Rule",
+   "Bundesliga Charter",
+   "Fan Ownership Law",
+   "50+1 Rule"
+  ],
+  "answer": "50+1 Rule",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ }
+]

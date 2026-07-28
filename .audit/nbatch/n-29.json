@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_f15e7f",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'Contributed to United's relegation' repeats a well-known myth. Denis Law's 1974 backheel for City did not send United down — results elsewhere that afternoon meant United were relegated regardless of the outcome of that match. The keyed scorer is correct; the causal claim in the stem is the standard false version of the story.",
+  "q": "In 1974 a famous backheeled goal by a former Manchester United star, then playing for City, contributed to United's relegation. Who scored it?",
+  "o": [
+   "Denis Law",
+   "Francis Lee",
+   "Rodney Marsh",
+   "Mike Summerbee"
+  ],
+  "answer": "Denis Law",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_496aa3",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem already says it is 'a record for the fastest-ever goal' and then offers 10s / 30s / 45s / 90s. A reader with zero football knowledge picks the most extreme option by superlative logic alone, without knowing anything about Makaay or the Champions League.",
+  "q": "In 2007 Bayern's Roy Makaay set a record for the fastest-ever goal in a Champions League match. Roughly how quick was it?",
+  "o": [
+   "About 10 seconds",
+   "About 30 seconds",
+   "About 45 seconds",
+   "About 90 seconds"
+  ],
+  "answer": "About 10 seconds",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7dacca",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names the duo 'LuLa' and names Lukaku as one half, so the other half must begin 'La' — Lautaro Martinez is the only option starting with those letters (Icardi, Dybala, Correa do not). Decodable from the stem without football knowledge.",
+  "q": "Which Argentine striker has captained Inter and formed the prolific 'LuLa' strike duo with Romelu Lukaku?",
+  "o": [
+   "Lautaro Martinez",
+   "Mauro Icardi",
+   "Paulo Dybala",
+   "Joaquin Correa"
+  ],
+  "answer": "Lautaro Martinez",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6d0d48",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem asks which 'city rival' AC Milan shares the San Siro with; Inter Milan is the only option whose name contains 'Milan'. A reader with zero football knowledge picks it on name-matching alone.",
+  "q": "AC Milan share their San Siro home stadium with which city rival?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "Torino",
+   "Monza"
+  ],
+  "answer": "Inter Milan",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c7173d",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Edwin van der Sar \"returned to the club in 2016\". He actually rejoined Ajax in 2012 as marketing director; 2016 is when he was promoted to general director (CEO). The keyed answer (General director/CEO) is right, but the stated return year is wrong by four years and a player learns a false fact.",
+  "q": "Edwin van der Sar, Ajax's legendary goalkeeper, returned to the club in 2016 in which off-pitch capacity?",
+  "o": [
+   "General director (CEO)",
+   "Head coach",
+   "Goalkeeping coach",
+   "Youth academy director"
+  ],
+  "answer": "General director (CEO)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf5e43",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Drogba \"played for Galatasaray between 2013 and 2015\". He signed in January 2013 and left in July 2014 to rejoin Chelsea — he never played a 2014-15 match for Galatasaray. The window should be 2013-2014.",
+  "q": "Which Ivorian striker and Chelsea great played for Galatasaray between 2013 and 2014?",
+  "o": [
+   "Didier Drogba",
+   "Wilfried Bony",
+   "Salomon Kalou",
+   "Gervinho"
+  ],
+  "answer": "Didier Drogba",
+  "cat": "Transfers",
+  "diff": "easy"
+ }
+]

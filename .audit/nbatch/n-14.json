@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_8ca4b6",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"The Puskas Award is given annually for the most beautiful goal — who was it named after?\" with the key \"A famous Hungarian player\". The surname Puskás is transparently Hungarian, and a goal-of-the-year award being named for a player rather than an administrator or a referee is inferable from the stem alone. No football knowledge required.",
+  "q": "The Puskas Award is given annually for the most beautiful goal — who was it named after?",
+  "o": [
+   "A football administrator",
+   "A famous Hungarian player",
+   "A Brazilian striker",
+   "A Spanish referee"
+  ],
+  "answer": "A famous Hungarian player",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ace0b5",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts 9 consecutive league titles is 'a European record'. It is not: Skonto Riga won 14 straight Latvian titles (1991-2004), Rosenborg 13 straight Norwegian titles (1992-2004), BATE Borisov 13 straight (2006-2018), and Lincoln Red Imps 20+ straight in Gibraltar. Celtic/Rangers' nine-in-a-row is a British/Scottish landmark, not a European record. The keyed answer ('Two — both Rangers and Celtic') is right, but the stem teaches a false fact.",
+  "q": "How many Scottish clubs have managed 9 consecutive league titles — a European record?",
+  "o": [
+   "One — Rangers only",
+   "One — Celtic only",
+   "Two — both Rangers and Celtic",
+   "Three — including Aberdeen"
+  ],
+  "answer": "Two — both Rangers and Celtic",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5cbea6",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Xavi 'won La Liga in his first season in charge at Barcelona in 2022-23'. Xavi was appointed on 5 November 2021, so 2021-22 was his first season in charge (Barcelona finished 2nd); 2022-23 was his second season and only his first FULL one. The false 'first season' framing also actively pushes a knowledgeable player toward Luis Enrique, who genuinely won La Liga in his true first season (2014-15) and is an option.",
+  "q": "Which manager led Barcelona to the La Liga title in 2022-23?",
+  "o": [
+   "Xavi",
+   "Luis Enrique",
+   "Valverde",
+   "Koeman"
+  ],
+  "answer": "Xavi",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_30e0a5",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Napoli ended a 33-year wait ... their first since 1989-90 — in which year?' The stem supplies both the baseline (1989-90) and the interval (33 years); 1990 + 33 = 2023, and only one option (2023) fits. Zero football knowledge required — pure arithmetic. Note the batch also contains q_0da49b using the same 33-year fact.",
+  "q": "Napoli ended a 33-year wait for the Serie A title — their first since 1989-90 — in which year?",
+  "o": [
+   "2019",
+   "2020",
+   "2023",
+   "2024"
+  ],
+  "answer": "2023",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7c5495",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'How many European Cups did Real Madrid win in a row from 1956 to 1960?' 'In a row' plus an inclusive five-year range means counting the years 1956, 57, 58, 59, 60 = 5, which is one of the options. Answerable with no football knowledge at all.",
+  "q": "How many European Cups did Real Madrid win in a row from 1956 to 1960?",
+  "o": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": "5",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3090ab",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Aduriz's 5 goals are 'the most goals in a single UEFA competition match'. Five is a shared mark at best — Messi scored 5 for Barcelona v Bayer Leverkusen (Champions League, March 2012) and Luiz Adriano scored 5 for Shakhtar v BATE (Champions League, 2014) — and older European ties (e.g. Sporting CP 16-1 APOEL, 1963) produced higher individual tallies. The 'Europa League' qualifier only partly rescues the superlative.",
+  "q": "Which player has scored the most goals in a single UEFA competition match — netting 5 in the Europa League?",
+  "o": [
+   "Aritz Aduriz",
+   "Mertens",
+   "Lewandowski",
+   "Salah"
+  ],
+  "answer": "Aritz Aduriz",
+  "cat": "UCL",
+  "diff": "hard"
+ }
+]

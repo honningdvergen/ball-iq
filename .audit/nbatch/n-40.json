@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_0a8514",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"What were the cursed 'poteaux carrés' of the 1976 final?\" — \"poteaux carrés\" literally translates as \"square posts\", and the correct option is the only one describing square goalposts; the three distractors (concrete pillars, back four, steel gates) are implausible. Solvable from the French phrase in the stem alone.",
+  "q": "In Saint-Étienne folklore, what were the cursed 'poteaux carrés' of the 1976 final?",
+  "o": [
+   "The square-section goalposts and crossbar that twice denied Les Verts",
+   "The concrete pillars blocking views in the away end",
+   "A nickname for the opposition's back four",
+   "The steel gates the team bus got stuck behind"
+  ],
+  "answer": "The square-section goalposts and crossbar that twice denied Les Verts",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9232b2",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts \"Torino's entire team died\" at Superga. Not literally true: defender Sauro Tomà was left behind injured, reserve keeper Renato Gandolfi was dropped from the trip, and Luigi Giuliano also did not travel — all survived, and Tomà's survival is a well-known part of the story. The travelling first-team squad died, not the entire team. Answer (Superga air disaster) is unaffected.",
+  "q": "On 4 May 1949, Torino's entire team died when their plane crashed into a hillside basilica near Turin. This tragedy is known as the...",
+  "o": [
+   "Munich air disaster",
+   "Turin fire",
+   "Basilica collapse",
+   "Superga air disaster"
+  ],
+  "answer": "Superga air disaster",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_009da2",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Temporal clause implies a direct rename: \"originally carried which name, before being renamed after a football administrator in 1991\". The stadium was Stadio Giovanni Berta (1932-1945), then Stadio Comunale for 46 years (1945-1991), and only then Stadio Artemio Franchi. The stem omits the intervening name and reads as if Berta ran to 1991.",
+  "q": "Fiorentina's 1931-built home stadium originally carried which name, before being renamed after a football administrator in 1991?",
+  "o": [
+   "Stadio Giovanni Berta",
+   "Stadio del Littorio",
+   "Stadio della Vittoria",
+   "Stadio Firenze"
+  ],
+  "answer": "Stadio Giovanni Berta",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d4dd13",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Marcelo Salas \"came off the bench\" to score Lazio's winner in the 1999 UEFA Super Cup. The goal came on 35 minutes, which is early for a substitute appearance, so the bench claim needs checking against the Monaco line-up — if Salas started, the stem's added detail is false while the keyed answer stays correct. Could not verify (web-search budget exhausted).",
+  "q": "Who came off the bench to score the only goal for Lazio in the 1999 UEFA Super Cup?",
+  "o": [
+   "Roberto Mancini",
+   "Marcelo Salas",
+   "Alen Bokšić",
+   "Christian Vieri"
+  ],
+  "answer": "Marcelo Salas",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0805ee",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem gratuitously supplies the nickname 'Il Toro' and then asks which animal is on the crest; 'toro' means bull in Italian/Spanish/Portuguese and is widely known in English (bullfighting, Taurus). Zero football knowledge required — options are wolf/eagle/bull/lion. The question works fine without quoting the nickname.",
+  "q": "Which animal features on Torino's crest and inspires the nickname 'Il Toro'?",
+  "o": [
+   "A wolf",
+   "An eagle",
+   "A bull",
+   "A lion"
+  ],
+  "answer": "A bull",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec851e",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem quotes the nickname 'le Aquile' and asks which bird is on Lazio's badge. 'Aquila' = eagle, transparent to anyone with romance-language or 'aquiline' exposure; options are falcon/eagle/hawk/condor. The giveaway is unnecessary to the question.",
+  "q": "Which bird features on Lazio's badge and gives them the nickname 'le Aquile'?",
+  "o": [
+   "A falcon",
+   "An eagle",
+   "A hawk",
+   "A condor"
+  ],
+  "answer": "An eagle",
+  "cat": "History",
+  "diff": "easy"
+ }
+]

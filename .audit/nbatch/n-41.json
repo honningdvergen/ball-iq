@@ -1,0 +1,82 @@
+[
+ {
+  "id": "q_813e29",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"What does Lazio's nickname 'Biancocelesti' refer to?\" with keyed answer \"Their white and sky blue colours\" — bianco = white, celeste = sky blue, so the word itself is the answer. A player with no football knowledge answers from the stem alone.",
+  "q": "What does Lazio's nickname 'Biancocelesti' refer to?",
+  "o": [
+   "Their white and sky blue colours",
+   "Their all-white away kit",
+   "The blue skies of Rome",
+   "Their heavenly patron saint"
+  ],
+  "answer": "Their white and sky blue colours",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d8aced",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names the campaign 'City Till We Die', whose slogan encodes its own answer: a player with zero football knowledge can reason that a campaign insisting on the word 'City' was fighting a name change, and pick 'The owner's attempt to rename the club Hull Tigers' over colours/groundshare. Only the 'relocation away from the city' distractor offers any competing pull, so the question tests slogan-parsing rather than knowledge of the 2013-14 Assem Allam renaming row.",
+  "q": "What were Hull City fans protesting against with the 'City Till We Die' campaign in 2013-14?",
+  "o": [
+   "A proposed relocation away from the city",
+   "The owner's attempt to rename the club Hull Tigers",
+   "Plans to change the amber-and-black home colours",
+   "A proposed groundshare with Hull Kingston Rovers"
+  ],
+  "answer": "The owner's attempt to rename the club Hull Tigers",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3aecd1",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks for the Amex Stadium's \"full official name\" and the three distractors are Falmer Community Stadium / Sussex Community Stadium / Brighton Community Stadium — all four options end in \"Community Stadium\", so the ONLY discriminating token is \"American Express\", which the stem hands over in the word \"Amex\". Anyone who knows Amex is short for American Express — general knowledge, no football required — answers this from the stem alone.",
+  "q": "What is the Amex Stadium's full official name?",
+  "o": [
+   "Falmer Community Stadium",
+   "American Express Community Stadium",
+   "Sussex Community Stadium",
+   "Brighton Community Stadium"
+  ],
+  "answer": "American Express Community Stadium",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e4c57c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem asserts Chris Coleman \"became the youngest manager in Premier League history\" on his 2003 Fulham appointment. Coleman (b. 10 June 1970, appointed April 2003) was 32y10m; Attilio Lombardo (b. 6 January 1966) took charge at Crystal Palace in March 1998 aged 32y2m, and Ryan Mason was 29 when appointed by Tottenham in April 2021, so Mason — not Coleman — is the youngest in Premier League history. The contemporary claim is \"youngest manager in the Premier League\" (i.e. youngest then serving), not \"in history\". The keyed answer is still right.",
+  "q": "Who became the youngest manager in Premier League history when Fulham appointed him in 2003?",
+  "o": [
+   "Roy Hodgson",
+   "Lawrie Sanchez",
+   "Chris Coleman",
+   "Chris Hughton"
+  ],
+  "answer": "Chris Coleman",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_23447c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem calls Jimmy Hill a \"former Fulham player\" at the time he campaigned as PFA chairman to abolish the maximum wage in 1961. Hill was a serving Fulham player throughout the campaign — he played for Fulham from 1952 until he retired in 1961, and led the PFA strike threat while still on Fulham's books. The temporal framing implies he had already left the club.",
+  "q": "Which former Fulham player, as PFA chairman, campaigned to abolish the maximum wage in 1961?",
+  "o": [
+   "Johnny Haynes",
+   "Alan Mullery",
+   "Jimmy Hill",
+   "Bobby Robson"
+  ],
+  "answer": "Jimmy Hill",
+  "cat": "Legends",
+  "diff": "hard"
+ }
+]

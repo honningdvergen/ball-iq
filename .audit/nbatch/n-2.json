@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_5b918a",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Laurie Cunningham was 'the first English player to play in La Liga'. He was the first Englishman to play for REAL MADRID (July 1979). The first English player in La Liga was Harry Lowe, the Real Sociedad player-manager who turned out against Valencia in 1930 — 49 years earlier. The keyed answer is right; the superlative in the stem is not.",
+  "q": "Who was the first English player to play in La Liga, joining Real Madrid in 1979?",
+  "o": [
+   "McManaman",
+   "David Beckham",
+   "Laurie Cunningham",
+   "Michael Owen"
+  ],
+  "answer": "Laurie Cunningham",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8e2001",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts England's FOURTH goal in the 1966 final was 'a controversial shot'. The controversial goal was the THIRD (Hurst, 101', the shot off the crossbar that the linesman gave). The fourth (Hurst, 120', 'they think it's all over') was clean and uncontested. Hurst is still the answer to both, so the key survives, but the stem teaches a wrong fact about the most-discussed goal in English football.",
+  "q": "Who scored England's fourth goal in their 4-2 win over West Germany in the 1966 World Cup final — with a controversial shot?",
+  "o": [
+   "Roger Hunt",
+   "Geoff Hurst",
+   "Martin Peters",
+   "Bobby Charlton"
+  ],
+  "answer": "Geoff Hurst",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f6ad15",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts a unique 'England's third most successful club with 2 titles'. Nottingham Forest (1979, 1980) and Chelsea (2012, 2021) are level on two European Cups, so there is no unique third-placed club on 2. Chelsea is not among the options, so the key is unspoiled, but the ranking claim in the stem is false.",
+  "q": "Liverpool have won the European Cup 6 times — who are England's third most successful club with 2 titles?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "Aston Villa",
+   "Forest"
+  ],
+  "answer": "Forest",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bed37f",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Temporal clause 'before returning to France' is wrong for Chelsea. George Weah's order was AC Milan → Chelsea (loan, Jan–May 2000) → Manchester City (Aug–Oct 2000) → Marseille (France). The English club he played for immediately before returning to France was Man City, not Chelsea. Classic 'before joining X' tell.",
+  "q": "Which club did George Weah play for in England before returning to France?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "Chelsea",
+   "West Ham"
+  ],
+  "answer": "Chelsea",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_01ca10",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "Stem reads 'the only player to win the World Cup as player and manager for the same country twice'. Beckenbauer (West Germany 1974 player, 1990 manager) and Deschamps (France 1998 player, 2018 manager) both satisfy 'won it as player and manager for the same country' and are both offered as options. Only the dangling 'twice' — meaning Zagallo won twice as a player — discriminates, and it is attached to 'the same country' rather than to the feat, so two distractors are defensible answers.",
+  "q": "Who is the only player to win the World Cup as player and manager for the same country twice?",
+  "o": [
+   "Beckenbauer",
+   "Deschamps",
+   "Zagallo",
+   "Alf Ramsey"
+  ],
+  "answer": "Zagallo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2f6810",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Simeone guided Atletico Madrid to \"their first Champions League final in 2014\". Atletico reached the European Cup final in 1974, losing to Bayern Munich after a replay — 2014 was their first final only under a strict post-1992-rebrand reading. The bank contradicts itself on this: q_4e56f5 in the same batch states Atletico \"have lost three Champions League finals\", a count that only reaches three by including 1974. One of the two stems is wrong; this is the one making the absolute 'first' claim.",
+  "q": "Which manager guided Atletico Madrid to their first Champions League final in 2014?",
+  "o": [
+   "Luis Aragones",
+   "Quique Sanchez Flores",
+   "Raddy Antic",
+   "Diego Simeone"
+  ],
+  "answer": "Diego Simeone",
+  "cat": "Managers",
+  "diff": "easy"
+ }
+]

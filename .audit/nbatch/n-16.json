@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_3f5a10",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"Australia's best World Cup finish was in 2006\" is untrue as stated — Australia equalled that round of 16 in 2022 (lost 2-1 to Argentina). Their best finish was reached in 2006 AND 2022, so the temporal claim singling out 2006 misleads. Verified via FIFA/World Soccer Talk histories.",
+  "q": "Australia's best World Cup finish was in 2006 — what round did they reach?",
+  "o": [
+   "Group stage",
+   "Round of 16",
+   "Quarter-final",
+   "Semi-final"
+  ],
+  "answer": "Round of 16",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_82f8d8",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"Lost the World Cup final on home soil in 1950\" — the 1950 World Cup had no final; it was decided by a final round-robin pool of four, and the Maracanazo was the decisive pool match, not a final. The same batch contains q_7feadc, which explicitly teaches that 1950 used \"a final round-robin pool of four teams\", so the bank contradicts itself.",
+  "q": "Which country lost the World Cup final on home soil in 1950 — known as the Maracanazo?",
+  "o": [
+   "Argentina",
+   "Brazil",
+   "Mexico",
+   "Chile"
+  ],
+  "answer": "Brazil",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ebe0f9",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Sheffield FC is the world's oldest football club (FIFA/FA recognised, founded 1857) but it is NOT professional — it has always been amateur/non-League. The oldest professional club is generally cited as Notts County (1862). The keyed year 1857 is correct; the word \"professional\" in the stem is the error.",
+  "q": "The world's oldest football club, recognised by FIFA, is Sheffield FC — founded in which year?",
+  "o": [
+   "1857",
+   "1863",
+   "1871",
+   "1875"
+  ],
+  "answer": "1857",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b4366",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Maradona's 1991 cocaine ban at Napoli was 15 months, not \"a year\". The keyed player is right but the stated duration is wrong; another question in the bank could legitimately key 15 months and contradict this one.",
+  "q": "Which legendary player was banned from football for a year after testing positive for cocaine while at Napoli?",
+  "o": [
+   "Maradona",
+   "Caniggia",
+   "Higuita",
+   "Valderrama"
+  ],
+  "answer": "Maradona",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1425b8",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"Came remarkably close to their first La Liga title before Real Madrid pipped them\" overstates 2023-24 — Girona finished THIRD on 81 points, behind Barcelona (85) and 14 points behind Real Madrid (95). They led early in the season but were not pipped to the title; the stem invents a title race that did not go to the wire.",
+  "q": "Which Spanish club came remarkably close to their first La Liga title in 2023-24 before Real Madrid pipped them?",
+  "o": [
+   "Atlético",
+   "Athletic Bilbao",
+   "Girona",
+   "Villarreal"
+  ],
+  "answer": "Girona",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7d61bd",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"Set in 2022-23 by Erling Haaland in 38 games\" — Haaland scored his 36 in 35 Premier League appearances, not 38. If \"38 games\" is meant as the season length the wording still reads as his appearance count, and it is wrong either way.",
+  "q": "What is the record for the most goals in a Premier League season by a single player — set in 2022-23 by Erling Haaland in 38 games?",
+  "o": [
+   "32",
+   "34",
+   "36",
+   "40"
+  ],
+  "answer": "36",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

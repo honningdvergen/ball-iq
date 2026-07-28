@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_49d48f",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Answer-leak within the same batch: q_56f322 refers to Zarra as 'the Athletic Bilbao striker' in its stem. This question then asks which club Zarra spent his entire top-flight career with, keyed 'Athletic Bilbao'. The pair cannot both be served in one session without the first handing over the second.",
+  "q": "Telmo Zarra, whose name graces the trophy for La Liga's top Spanish-born scorer, spent his entire top-flight career with which club?",
+  "o": [
+   "Athletic Bilbao",
+   "Real Sociedad",
+   "Valencia",
+   "Espanyol"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_53d79d",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks \"Despite losing that 1974 European Cup final, Atlético still won which intercontinental trophy that campaign?\" and the keyed answer is \"The Intercontinental Cup\" — the stem's own noun ('intercontinental trophy') word-matches exactly one option. A player with zero football knowledge picks it by string matching; the three distractors (European Super Cup, Latin Cup, Mitropa Cup) are all eliminated by the stem itself. Marked 'hard' but requires no knowledge.",
+  "q": "Despite losing that 1974 European Cup final, Atlético still won which intercontinental trophy that campaign?",
+  "o": [
+   "The Intercontinental Cup",
+   "The European Super Cup",
+   "The Latin Cup",
+   "The Mitropa Cup"
+  ],
+  "answer": "The Intercontinental Cup",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a330a8",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts \"Newcastle's last trophy before 2025 came in 1969\". Newcastle won the UEFA Intertoto Cup in 2006 (beating Lillestrøm) and the Anglo-Italian Cup in 1973, plus Second Division/Championship titles in 1993, 2010 and 2017. The true claim requires the qualifier 'major' (or 'major European'); as written the superlative is false. The keyed answer (Inter-Cities Fairs Cup) and the rest of the stem ('their very first European campaign', 1968-69) are correct.",
+  "q": "Newcastle's last trophy before 2025 came in 1969 — which competition did they win in their very first European campaign?",
+  "o": [
+   "European Cup",
+   "UEFA Cup",
+   "Inter-Cities Fairs Cup",
+   "Cup Winners' Cup"
+  ],
+  "answer": "Inter-Cities Fairs Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe219e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Lampard's goal an \"emotional stoppage-time penalty\". In the 2008 semi-final second leg (Chelsea 3-2 Liverpool, 30 April 2008) Lampard's penalty came in the 98th minute — i.e. in EXTRA TIME, after the tie had already gone past 90+stoppage. Chelsea's other extra-time goals (Drogba 105', Babel 117') confirm the period. The keyed answer (Lampard) and 'first-ever Champions League final in 2008' are both correct.",
+  "q": "Whose emotional extra-time penalty at Stamford Bridge helped send Chelsea past Liverpool into their first-ever Champions League final in 2008?",
+  "o": [
+   "Frank Lampard",
+   "Didier Drogba",
+   "Michael Ballack",
+   "Salomon Kalou"
+  ],
+  "answer": "Frank Lampard",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f03e0",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says \"On his Champions League debut night in 1997\". The Barcelona game (17 Sept 1997) was Newcastle's first CHAMPIONS LEAGUE GROUP game, but the club had already played the 1997-98 Champions League qualifying round against Croatia Zagreb in August 1997, in which Asprilla featured — so it was not his competition debut. The stem's own temporal superlative is the defect; the keyed answer (Asprilla, hat-trick, 3-2) is correct. Verifier should confirm Asprilla's appearance in the Zagreb ties.",
+  "q": "On his Champions League debut night in 1997, which Newcastle striker scored a stunning hat-trick to beat Barcelona 3-2 at St James' Park?",
+  "o": [
+   "Les Ferdinand",
+   "Faustino Asprilla",
+   "Alan Shearer",
+   "Temuri Ketsbaia"
+  ],
+  "answer": "Faustino Asprilla",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_993fcc",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Barcelona's famous motto 'Més que un club' translates to what?\" — answer \"More than a club\". The Catalan is a word-for-word cognate of the English answer (més→more, que→than, un club→a club); any speaker of any Romance language, with zero football knowledge, answers from the stem alone. Distractors ('Always forward', 'Pride of Catalonia', 'One team, one dream') share no lexical structure with the phrase, so even non-speakers can pattern-match.",
+  "q": "Barcelona's famous motto 'Més que un club' translates to what?",
+  "o": [
+   "Always forward",
+   "More than a club",
+   "Pride of Catalonia",
+   "One team, one dream"
+  ],
+  "answer": "More than a club",
+  "cat": "Records",
+  "diff": "easy"
+ }
+]

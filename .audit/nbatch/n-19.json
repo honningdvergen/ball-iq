@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_d4a880",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem: \"Which Bundesliga club SOLD Robert Lewandowski to Bayern Munich in 2014?\" Dortmund did not sell him — his contract expired and he joined Bayern on a FREE TRANSFER (agreed Jan 2014, effective 1 July 2014); Dortmund received no fee. The free move is itself one of the most famous facts about the transfer, so the stem contradicts the very thing a knowledgeable player knows. Answer (Dortmund) is right; the verb is false.",
+  "q": "Which Bundesliga club sold Robert Lewandowski to Bayern Munich in 2014?",
+  "o": [
+   "Schalke",
+   "Hamburg",
+   "Cologne",
+   "Dortmund"
+  ],
+  "answer": "Dortmund",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_14779a",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Bologna qualified for the Champions League in 2023-24 for the first time ever.\" Bologna won Serie A in 1963-64 and competed in the 1964-65 European Cup (eliminated by Anderlecht in a play-off), so 2023-24 was their first qualification for Europe's top club competition in ~60 years, not ever. Only defensible under a strict post-1992 \"Champions League\" branding reading.",
+  "q": "Bologna qualified for the Champions League in 2023-24 for the first time ever — who was their manager?",
+  "o": [
+   "Pioli",
+   "Motta",
+   "Sarri",
+   "Dionisi"
+  ],
+  "answer": "Motta",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f6d451",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Which club went unbeaten for the FIRST 29 GAMES of a Premier League season?\" Arsenal 2003-04 went unbeaten for all 38 games (the Invincibles), and their unbeaten league run reached 49 matches across seasons. The \"first 29\" framing implies the run ended at game 29, which is untrue and understates the actual record.",
+  "q": "Which club went unbeaten for the first 29 games of a Premier League season?",
+  "o": [
+   "Arsenal 2003-04",
+   "Man City 2017-18",
+   "Chelsea 2004-05",
+   "Liverpool 2019-20"
+  ],
+  "answer": "Arsenal 2003-04",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_deb74e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Which club won the FA Cup in 2024 — their FIRST MAJOR TROPHY IN YEARS?\" Manchester United won the EFL/Carabao Cup in February 2023, only 15 months before the May 2024 FA Cup final. \"First major trophy in years\" is false as written.",
+  "q": "Which club won the FA Cup in 2024 — their first major trophy in years?",
+  "o": [
+   "Tottenham",
+   "Wolves",
+   "Newcastle",
+   "Man United"
+  ],
+  "answer": "Man United",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fde526",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"joined Liverpool from Roma for a THEN WORLD-RECORD £66.8m fee in 2018.\" The 2018 world transfer record was Neymar's £198m/€222m (2017). £66.8m was only a world record FOR A GOALKEEPER, and even that stood barely three weeks before Kepa's £71m move to Chelsea in August 2018. The qualifier is missing.",
+  "q": "Which Brazilian goalkeeper joined Liverpool from Roma for a then world-record £66.8m fee in 2018?",
+  "o": [
+   "Júlio César",
+   "Ederson",
+   "Alisson",
+   "Dida"
+  ],
+  "answer": "Alisson",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_413fa7",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Which nation has WON EURO QUALIFICATION EVERY TIME THEY ENTERED — never missing a tournament since 1972?\" West Germany entered and failed to qualify for Euro 1968, so the first clause is false; and Germany reached two of the tournaments in the \"since 1972\" span (1988, 2024) as automatic hosts rather than by winning qualification.",
+  "q": "Which nation has won Euro qualification every time they entered — never missing a tournament since 1972?",
+  "o": [
+   "West Germany and Germany",
+   "Netherlands",
+   "Spain",
+   "France"
+  ],
+  "answer": "West Germany and Germany",
+  "cat": "Euros",
+  "diff": "hard"
+ }
+]

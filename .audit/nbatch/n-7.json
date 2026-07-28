@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_196dc4",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem describes the 1987-88 expansion from 18 to 20 clubs as \"its current format\". La Liga did not stay at 20: it expanded to 22 clubs for 1995-96 and 1996-97 and only returned to 20 for 1997-98, which is where the current format actually dates from.",
+  "q": "In which season did La Liga expand from 18 to 20 clubs — its current format?",
+  "o": [
+   "1985-86",
+   "1987-88",
+   "1995-96",
+   "1999-2000"
+  ],
+  "answer": "1987-88",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3433df",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Iniesta wore the number \"for Barcelona throughout his career\". He did not wear 8 from the start — he wore high squad numbers (34, then 24) in his first seasons in the first team before inheriting the No. 8 around 2004-05. Answer (8) is right, the \"throughout\" clause is not.",
+  "q": "Which squad number did Andrés Iniesta wear for Barcelona from 2007-08 until he left in 2018?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "10"
+  ],
+  "answer": "8",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_307d1c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem describes Aaron Ramsey's 2014 FA Cup final winner as \"a stunning long-range goal\". It was a first-time side-footed finish from inside the six-to-twelve-yard area off Olivier Giroud's backheel — not long range. (Also miscategorised as PL for an FA Cup final.)",
+  "q": "Who scored a stunning long-range goal in the 2014 FA Cup final for Arsenal to win 3-2 vs Hull?",
+  "o": [
+   "Walcott",
+   "Ramsey",
+   "Özil",
+   "Giroud"
+  ],
+  "answer": "Ramsey",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4880ac",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The nickname quoted in the stem, 'Vizekusen', literally contains the answer 'Leverkusen' — the only option that string-matches. Zero football knowledge required; pure pattern match on the stem.",
+  "q": "Which club was nicknamed 'Vizekusen' for finishing as Bundesliga runners-up five times without ever winning it — until they finally did in 2023-24?",
+  "o": [
+   "Stuttgart",
+   "Schalke",
+   "Hamburger SV",
+   "Leverkusen"
+  ],
+  "answer": "Leverkusen",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_009bbd",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem rules out one option ('losing to the eventual champions Netherlands') and then places the semi-final 'at Hamburg', which identifies the host as Germany by geography alone. Answerable with no football knowledge.",
+  "q": "Which country hosted Euro 1988 — losing to the eventual champions Netherlands in a famous semi-final at Hamburg?",
+  "o": [
+   "Netherlands",
+   "West Germany",
+   "Italy",
+   "Spain"
+  ],
+  "answer": "West Germany",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1a4ac7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names Cesc Fàbregas as the scorer of the decisive penalty for the winning side, which hands over the answer (Spain) to anyone who knows Fàbregas's nationality — the shootout result itself is never tested.",
+  "q": "In the Euro 2012 semi-final, which country beat Portugal on penalties 4-2 after a 0-0 draw — with Cesc Fàbregas scoring the decisive kick?",
+  "o": [
+   "Germany",
+   "France",
+   "Italy",
+   "Spain"
+  ],
+  "answer": "Spain",
+  "cat": "Euros",
+  "diff": "medium"
+ }
+]

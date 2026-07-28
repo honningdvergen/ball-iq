@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_7cde53",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Sevilla FC competes in the top division of which country's league system?' with options Spain/Portugal/Italy/France. The club's name IS the Spanish city of Seville; anyone with basic geography and no football knowledge answers correctly from the stem alone. Pointless as a quiz item.",
+  "q": "Sevilla FC competes in the top division of which country's league system?",
+  "o": [
+   "Spain",
+   "Portugal",
+   "Italy",
+   "France"
+  ],
+  "answer": "Spain",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c23bb4",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem asks which forward the Pichichi Trophy is named after, and the keyed option is literally written as \"Rafael 'Pichichi' Moreno\" — the nickname appears inside the answer option while the other three options (Gorostiza, 'Bata' Sauto, Chirri II) do not contain it. Answerable by pure string matching with zero football knowledge. Fix by rendering the option as 'Rafael Moreno'.",
+  "q": "The Pichichi Trophy for La Liga's overall top scorer is named after which early Athletic forward, who scored the first competitive goal at the original San Mamés stadium?",
+  "o": [
+   "Guillermo Gorostiza",
+   "Rafael 'Pichichi' Moreno",
+   "Agustín 'Bata' Sauto",
+   "Chirri II"
+  ],
+  "answer": "Rafael 'Pichichi' Moreno",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_15d531",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Mark Noble 'captained the side for over a decade until retiring in 2022'. Noble became West Ham club captain in 2015, on Kevin Nolan's departure, and retired in May 2022 — roughly seven years, not over a decade. The keyed answer is still right; the temporal claim in the stem is not.",
+  "q": "Which one-club academy graduate, nicknamed 'Mr West Ham,' captained the side for over a decade until retiring in 2022?",
+  "o": [
+   "Scott Parker",
+   "Kevin Nolan",
+   "Jack Collison",
+   "Mark Noble"
+  ],
+  "answer": "Mark Noble",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7b2721",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Eddie Gray 'spent his entire playing career at Leeds United'. Gray played for Leeds 1965-1983 but subsequently made playing appearances for Rochdale as player-manager (1986-88), so 'entire playing career' is inaccurate. Note the distractor Paul Madeley genuinely did spend his whole career at Leeds — only the 'later managed the club' clause rescues uniqueness. Verifier should confirm the Rochdale appearances.",
+  "q": "Which winger spent his entire playing career at Leeds United and later managed the club?",
+  "o": [
+   "Terry Cooper",
+   "Eddie Gray",
+   "Paul Madeley",
+   "Mick Jones"
+  ],
+  "answer": "Eddie Gray",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_540302",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"'Marching on Together' is the name of what associated with Leeds United?\" — options are club anthem / training ground / matchday programme / main stand. The stem's subject is plainly a song title, so a person with zero football knowledge picks 'the club anthem' by form alone. Weak rather than wrong.",
+  "q": "'Marching on Together' is the name of what associated with Leeds United?",
+  "o": [
+   "The club anthem",
+   "The training ground",
+   "The matchday programme",
+   "The main stand"
+  ],
+  "answer": "The club anthem",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_73c5c2",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says \"In 1977-78 Forest set a then-English top-flight record with an unbeaten league run of how many games?\" — the 42-match unbeaten league run did NOT happen in 1977-78. It ran from 26 November 1977 to 9 December 1978, spanning two seasons, and was completed (and the record set) in 1978-79. Forest lost three league games during 1977-78 itself. The defect is compounded by the keyed answer being 42, which is exactly the number of games in a 1970s First Division season, so the question actively teaches a player that Forest went unbeaten through an entire season.",
+  "q": "In 1977-78 Forest set a then-English top-flight record with an unbeaten league run of how many games?",
+  "o": [
+   "42",
+   "29",
+   "49",
+   "35"
+  ],
+  "answer": "42",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

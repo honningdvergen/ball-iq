@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_49e58f",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts 'As of 2026, Beşiktaş had named only two honorary presidents.' The 'only two' count is an unverified superlative — Beşiktaş has awarded honorary/lifetime titles to other figures (e.g. Şeref Bey is commonly described in club literature as an honorary figure). If the count is higher than two the stem misleads even though Süleyman Seba is a correct honorary president.",
+  "q": "As of 2026, Beşiktaş had named only two honorary presidents. One is Hakkı Yeten — who is the other?",
+  "o": [
+   "Fikret Orman",
+   "Süleyman Seba",
+   "Şeref Bey",
+   "Yıldırım Demirören"
+  ],
+  "answer": "Süleyman Seba",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_123cdd",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Sergen Yalçın is 'the first person to win the Süper Lig with Beşiktaş' as both player and manager. Beşiktaş won national titles in 1957-58, 1959-60, 1965-66 and 1966-67 under Turkish coaches, several of whom were former Beşiktaş title-winning players; the 'first' claim needs checking against those. The two-roles answer itself is fine.",
+  "q": "Sergen Yalçın holds the distinction of being the first person to win the Süper Lig with Beşiktaş in which two roles?",
+  "o": [
+   "As a player and as club president",
+   "As a player and as manager",
+   "As manager and as club president",
+   "As a goalkeeper and as an outfield player"
+  ],
+  "answer": "As a player and as manager",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0d78b8",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Anderlecht are nicknamed 'Les Mauves' after which colour?\" with options Blue / Purple / Red / Green — 'mauve' is an English word for a shade of purple, so the stem translates itself. No football knowledge needed.",
+  "q": "Anderlecht are nicknamed 'Les Mauves' after which colour?",
+  "o": [
+   "Blue",
+   "Purple",
+   "Red",
+   "Green"
+  ],
+  "answer": "Purple",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_83c1be",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"As of the 2025-26 season, which club shared the Jan Breydel Stadium with Club Brugge?\" — options are Cercle Brugge / Anderlecht / Standard Liège / KAA Gent. A ground-share is by definition in the same city, and only one option carries the city name 'Brugge'. Answerable by name-matching alone.",
+  "q": "As of the 2025-26 season, which club shared the Jan Breydel Stadium with Club Brugge?",
+  "o": [
+   "Cercle Brugge",
+   "Anderlecht",
+   "Standard Liège",
+   "KAA Gent"
+  ],
+  "answer": "Cercle Brugge",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7a744d",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Which Bruges stadium, later renamed after a medieval folk hero, did Club Brugge move into in 1975?\" — the stem states the ground was renamed after a medieval folk hero, and the only option that is a medieval-sounding personal name is 'Jan Breydel Stadium' (the others are Bosuilstadion, Constant Vanden Stock — a 20th-century name — and Ghelamco Arena). The clue in the stem selects the answer without football knowledge.",
+  "q": "Which Bruges stadium, later renamed after a medieval folk hero, did Club Brugge move into in 1975?",
+  "o": [
+   "Jan Breydel Stadium",
+   "Bosuilstadion",
+   "Constant Vanden Stock Stadium",
+   "Ghelamco Arena"
+  ],
+  "answer": "Jan Breydel Stadium",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_138f36",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem already says Iñaki Williams was 'born in Bilbao to Ghanaian parents' and then asks which nation he chose to represent — answer 'Ghana'. Zero football knowledge is required; the parental nationality hands over the keyed option. The genuinely interesting fact (he had already been capped by Spain and switched) is not tested at all. Rewrite as 'born in Bilbao and previously capped by Spain, he switched allegiance in 2022 to which nation?'",
+  "q": "Athletic Bilbao forward Iñaki Williams, born in Bilbao to Ghanaian parents, chose to represent which nation from 2022, playing at that year's World Cup?",
+  "o": [
+   "Nigeria",
+   "Spain",
+   "Ghana",
+   "Equatorial Guinea"
+  ],
+  "answer": "Ghana",
+  "cat": "WorldCup",
+  "diff": "medium"
+ }
+]

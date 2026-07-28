@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_6ed577",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Lamine Yamal's €1 billion release clause \"a record-setting figure\". €1bn is Barcelona's standard maximum buyout clause, already carried by Ansu Fati, Pedri, Gavi and Ronald Araújo among others — Yamal matched the ceiling, he did not set a record. The keyed answer (€1 billion) is correct.",
+  "q": "What is the release clause on Lamine Yamal's Barcelona contract — a record-setting figure?",
+  "o": [
+   "€500 million",
+   "€750 million",
+   "€1 billion",
+   "€2 billion"
+  ],
+  "answer": "€1 billion",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3f53a6",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem describes Porto (2004 UCL win) as Mourinho's \"first major job\". Porto was his fourth managerial post: Benfica (Sept–Dec 2000), União de Leiria (2001-02), then Porto from Jan 2002. Benfica is unambiguously a major job, so the temporal/superlative clause is untrue.",
+  "q": "Which manager won the Champions League with Porto in 2004 — his first major job?",
+  "o": [
+   "Benitez",
+   "Mourinho",
+   "Villas-Boas",
+   "Conceicao"
+  ],
+  "answer": "Mourinho",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4befc5",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Capello won Serie A with \"a record 3 different Italian clubs\" including Juventus. Both of his Juventus titles (2004-05, 2005-06) were revoked in the Calciopoli ruling — 2004-05 unassigned, 2005-06 awarded to Inter — so officially he has Milan and Roma only. The 'record 3 clubs' superlative rests on titles that no longer exist in the record books.",
+  "q": "Fabio Capello won Serie A with which clubs during his career — a record 3 different Italian clubs?",
+  "o": [
+   "Milan, Roma, Juventus",
+   "Milan, Inter, Juventus",
+   "Milan, Lazio, Juventus",
+   "Roma, Inter, Milan"
+  ],
+  "answer": "Milan, Roma, Juventus",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_31e128",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says the Bundesliga's 2017-18 VAR introduction made it \"the first top league to do so\". Serie A introduced VAR in the same 2017-18 season (opening weekend 19-20 Aug 2017, one day after the Bundesliga's), and Australia's A-League had already used VAR from April 2017. 'First' is at best a one-day technicality and is commonly stated as Bundesliga and Serie A jointly.",
+  "q": "German football introduced the Video Assistant Referee (VAR) in which Bundesliga season — making it the first top league to do so?",
+  "o": [
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19"
+  ],
+  "answer": "2017-18",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_66a414",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem's own wording eliminates half the option set without any football knowledge: \"didn't reach the final\" rules out \"2nd (runners-up)\", and \"went unbeaten through the entire 1978 World Cup\" rules out \"Eliminated in group stage\". A zero-knowledge player is left with a straight 3rd/4th coin flip.",
+  "q": "Brazil famously went unbeaten through the entire 1978 World Cup but didn't reach the final — where did they finish?",
+  "o": [
+   "2nd (runners-up)",
+   "3rd",
+   "4th",
+   "Eliminated in group stage"
+  ],
+  "answer": "3rd",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cc7579",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says \"In 2005, which Italian club was stripped of their 2004-05 Serie A title due to the 'Calciopoli' match-fixing scandal?\" The scandal broke in May 2006 and the FIGC stripped Juventus of the 2004-05 title (and revoked 2005-06) in July 2006 — nothing was stripped in 2005. The keyed answer (Juventus) is right, but the stem dates the whole affair a year early.",
+  "q": "In 2005, which Italian club was stripped of their 2004-05 Serie A title due to the 'Calciopoli' match-fixing scandal?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "AS Roma",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "chaos",
+  "diff": "easy"
+ }
+]

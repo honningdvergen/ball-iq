@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_761523",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Watford a 'Premier League club'. Watford were relegated from the Premier League at the end of 2021-22 and have been a Championship club ever since — the question is stale as of 2026. Worse, of the four options the only club actually in the Premier League now is Brentford, so a player reasoning from the 'Premier League' qualifier is pushed away from the keyed answer. The nickname + colours still identify Watford uniquely, hence cosmetic.",
+  "q": "Which Premier League club is nicknamed 'The Hornets' and plays in yellow and black?",
+  "o": [
+   "Brentford",
+   "Norwich City",
+   "Burton Albion",
+   "Watford"
+  ],
+  "answer": "Watford",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec5bad",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "'ending their dream run in the group stage' misdescribes what happened. South Africa had no 'dream run' — they drew their opener with Mexico, then lost 3-0 to Uruguay in match two, and were still alive going into the final group game, which they won 2-1 against France; they went out on goal difference after that match, not because of the Uruguay defeat. So Uruguay's win neither ended a run nor eliminated them. The answer (Uruguay were the only side to beat the hosts) is unaffected.",
+  "q": "Which country beat hosts South Africa at the 2010 World Cup — ending their dream run in the group stage?",
+  "o": [
+   "Uruguay",
+   "France",
+   "Mexico",
+   "USA"
+  ],
+  "answer": "Uruguay",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_084894",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names 'Inter Milan' and the correct option is 'AC Milan' — the shared city name hands the answer to anyone with zero football knowledge, since the other options (Juventus, Genoa, Torino) carry no Milan association. Also duplicates q_6f8669 in the same batch, which asks the same 1908 breakaway fact from the other direction.",
+  "q": "Inter Milan were founded in 1908 by players who left which club — because they wanted more foreign players?",
+  "o": [
+   "Juventus",
+   "AC Milan",
+   "Genoa",
+   "Torino"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e12af1",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names 'Bodo Illgner' as the goalkeeper of the team that knocked England out. The name is transparently German, and 'West Germany' is one of only four options (Belgium, Cameroon, West Germany, Yugoslavia) — a player who knows no football can pick it on name-nationality alone. The Stuart Pearce / Chris Waddle details add no discrimination.",
+  "q": "Which country knocked England out of the 1990 World Cup on penalties in the semi-final — Bodo Illgner saving Stuart Pearce's spot kick before Chris Waddle skied his?",
+  "o": [
+   "Belgium",
+   "Cameroon",
+   "West Germany",
+   "Yugoslavia"
+  ],
+  "answer": "West Germany",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6cb42f",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'Which of these is the top division of football in Portugal?' — the correct option 'Primeira Liga' is the only Portuguese-language name among Eredivisie (Dutch), Jupiler Pro League (Belgian) and Superliga. The question tests language recognition, not football knowledge; no stem fact is needed beyond the word 'Portugal'.",
+  "q": "Which of these is the top division of football in Portugal?",
+  "o": [
+   "Primeira Liga",
+   "Eredivisie",
+   "Jupiler Pro League",
+   "Superliga"
+  ],
+  "answer": "Primeira Liga",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f389a1",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Steaua Bucharest's 104 games is \"the record for the longest unbeaten run in domestic top-flight football\". It is not the world record — ASEC Mimosas of Ivory Coast went 108 consecutive league games unbeaten (1989–1994, ended by a defeat to SO de l'Armée). Steaua's 104 (June 1986 – Sept 1989) is the EUROPEAN record. The keyed option is fine; the superlative in the stem is false and teaches a wrong fact. Fix: qualify as \"in European domestic football\".",
+  "q": "Which club holds the record for the longest unbeaten run in domestic top-flight football, with 104 consecutive league games?",
+  "o": [
+   "Celtic 1965-67",
+   "Steaua Bucharest 1986-89",
+   "Juventus 2015-17",
+   "Benfica 2013-16"
+  ],
+  "answer": "Steaua Bucharest 1986-89",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

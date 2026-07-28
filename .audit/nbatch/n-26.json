@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_707cac",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem names the side 'the Invincibles' and the keyed answer is 'Went the entire 38-game league season unbeaten'. 'Invincible' means unbeaten in plain English, so a person with zero football knowledge picks the correct option straight from the stem's own nickname. The other three options require no elimination.",
+  "q": "Arsenal's famous 2003-04 'Invincibles' achieved what unprecedented feat in the Premier League?",
+  "o": [
+   "Went the entire 38-game league season unbeaten",
+   "Won every single home game",
+   "Scored in all 38 league matches",
+   "Kept a clean sheet in over half their games"
+  ],
+  "answer": "Went the entire 38-game league season unbeaten",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_435417",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem attributes Arsenal's 'red shirts WITH WHITE SLEEVES' to the Nottingham Forest shirt-donation story. The Forest story (1886, Fred Beardsley's old Forest kit) explains only the red; the white sleeves were a Herbert Chapman innovation introduced in 1933, ~47 years later and with no Forest connection. The stem's hedge '(if exaggerated)' covers the donation legend, not the sleeve anachronism.",
+  "q": "Arsenal's iconic red shirts with white sleeves are linked to a famous (if exaggerated) story involving shirts from which other club?",
+  "o": [
+   "Sunderland",
+   "Nottingham Forest",
+   "Aston Villa",
+   "Preston North End"
+  ],
+  "answer": "Nottingham Forest",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e53c04",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Temporal error: the stem says Ferguson 'sold Ince, Hughes and Kanchelskis' and that this prompted Hansen's line. Hansen said 'you can't win anything with kids' on Match of the Day on 19 August 1995, after the 3-1 defeat at Aston Villa. Kanchelskis was not sold to Everton until 25 August 1995 — six days AFTER the quote. Only Ince (June) and Hughes (July) had left.",
+  "q": "In 1995, Ferguson sold Ince, Hughes and Kanchelskis and trusted youth, prompting a pundit's infamous line. Complete it: 'You can't win anything with...'",
+  "o": [
+   "'...this lot'",
+   "'...kids'",
+   "'...babies'",
+   "'...children'"
+  ],
+  "answer": "'...kids'",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c3fcce",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The stem dates the ban to 25 January 1995 ('On 25 January 1995, Eric Cantona was banned for eight months...'). 25 January was the date of the kick at Selhurst Park; United suspended him on 27 January (to end of season) and the FA extended it to eight months (to 30 September 1995) on 24 February 1995. No eight-month ban existed on the stated date.",
+  "q": "On 25 January 1995, Eric Cantona was banned for eight months after doing what to a Crystal Palace supporter at Selhurst Park?",
+  "o": [
+   "A kung-fu kick",
+   "Throwing his boot",
+   "Spitting at him",
+   "Headbutting a steward"
+  ],
+  "answer": "A kung-fu kick",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8b0ba9",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "The stem already says the 1986 final was 'all-Merseyside' and asks which 'neighbour' Liverpool beat. Two of the four options (Manchester United, Wimbledon) are eliminated by the word Merseyside alone and a zero-knowledge reader lands on Everton as the obvious Liverpool neighbour without needing to know anything about the 1985-86 season or the Double.",
+  "q": "Liverpool's 1985-86 side achieved the club's first-ever League and FA Cup 'Double' — and beat which neighbour in that year's all-Merseyside FA Cup final?",
+  "o": [
+   "Everton",
+   "Tranmere Rovers",
+   "Manchester United",
+   "Wimbledon"
+  ],
+  "answer": "Everton",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_96ffa8",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Answer-leak within the same batch: q_c6c3ca states outright that 'Liverpool clinched their record-equalling 20th English league title in 2024-25'. This stem then asks for United's total while telling the reader it is 'level with Liverpool at the top of the all-time list' — so anyone who has seen q_c6c3ca (or knows Liverpool's 20) answers with no United knowledge at all.",
+  "q": "As of 2025, how many top-flight English league titles had Manchester United won in total, level with Liverpool at the top of the all-time list?",
+  "o": [
+   "18",
+   "19",
+   "20",
+   "22"
+  ],
+  "answer": "20",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

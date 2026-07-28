@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_02e4e2",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem calls Edgar Davids 'the centrepiece of Ajax's 1995 UCL win'. Davids was a 21-year-old squad regular in that side; the team's central figures were Rijkaard, Litmanen, Overmars and Kluivert (who scored the winning goal in the final). The 'went on to star at Juventus' half is true and is what actually isolates the answer, but the centrepiece claim is not supportable.",
+  "q": "Which Dutch player was the centrepiece of Ajax's 1995 UCL win and went on to star at Juventus?",
+  "o": [
+   "Davids",
+   "Kluivert",
+   "Overmars",
+   "Seedorf"
+  ],
+  "answer": "Davids",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d388d4",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'Italy's Euro 2020 win ended a 53-year wait since their last European Championship — when was that?' The stem hands over the gap; the tournament was played in 2021, so 2021 − 53 = 1968, and even the naive 2020 − 53 = 1967 points at the 1968 option over 1964/1966/1972. Answerable by subtraction with no football knowledge.",
+  "q": "Italy's Euro 2020 win ended a 53-year wait since their last European Championship — when was that?",
+  "o": [
+   "1964",
+   "1966",
+   "1972",
+   "1968"
+  ],
+  "answer": "1968",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9b8c99",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'Olympique Lyon won how many consecutive French league titles between 2002 and 2008?' The stem gives both endpoints of the streak, so counting inclusively (2002…2008) yields the keyed answer 7 without any football knowledge. Weaker than the Messi case only because 'between' could be read exclusively (6).",
+  "q": "Olympique Lyon won how many consecutive French league titles between 2002 and 2008?",
+  "o": [
+   "5",
+   "6",
+   "7",
+   "8"
+  ],
+  "answer": "7",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3e3e0c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Man City 'won the League Cup a record four times in a row from 2018 to 2021'. Four consecutive League Cups is NOT a City-exclusive record — Liverpool won it four years running in 1981, 1982, 1983 and 1984 (verified via LFC/Wikipedia final records). City equalled the record, they did not set it, and Liverpool is one of the four options, so the stem's superlative actively misinforms a player who knows the 1981-84 run. The '2018 to 2021' dates still make the keyed answer unambiguous, hence cosmetic. Fix: 'four seasons in a row from 2018 to 2021' (drop 'a record'), or 'equalling the record of four in a row'.",
+  "q": "Which club won the League Cup four times in a row from 2018 to 2021, equalling Liverpool's record?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Man City"
+  ],
+  "answer": "Man City",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ab696e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asks 'which goalkeeper held the World Cup record for most clean sheets with 10' — implying a sole holder. FIFA's own record page confirms the 10-clean-sheet record is SHARED by Peter Shilton (4 in 1982, 3 in 1986, 3 in 1990) and Fabien Barthez (5 in 1998, 1 in 2002, 4 in 2006), both across 17 matches. Barthez is not among the options so no player is misled into a wrong pick; the defect is the stem asserting a unique holder. Fix: 'which goalkeeper SHARES the World Cup record…' or add 'English'.",
+  "q": "As of the 2022 World Cup, which goalkeeper held the World Cup record for most clean sheets with 10?",
+  "o": [
+   "Buffon",
+   "Schmeichel",
+   "Kahn",
+   "Peter Shilton"
+  ],
+  "answer": "Peter Shilton",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5020a8",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says 'Who HOLDS the record for most goals at a single Copa América — 9 goals in 1949?'. The single-tournament record of 9 is held jointly by three players: Jair da Rosa Pinto (Brazil, 1949), Humberto Maschio (Argentina, 1957) and Javier Ambrois (Uruguay, 1957) — per Guinness World Records. The '9 goals in 1949' clause does disambiguate to Jair and no co-holder appears among the distractors, so the keyed answer is safe; the sole-holder framing is the only fault. Fix: 'Who shares the record… setting his mark in 1949?'",
+  "q": "Who holds the record for most goals at a single Copa América — 9 goals in 1949?",
+  "o": [
+   "Pelé",
+   "Norberto Méndez",
+   "Jair",
+   "Zizinho"
+  ],
+  "answer": "Jair",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

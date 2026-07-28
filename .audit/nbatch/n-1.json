@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_93b0c7",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "Stem: \"What squad number did David Beckham wear at Real Madrid (2003-07) — a tribute to basketball legend Michael Jordan?\" Options include 23. Michael Jordan's number 23 is universal general knowledge outside football, so the stem hands over the answer: anyone with zero football knowledge picks 23 from the Jordan reference alone. Secondary issue: the Jordan-tribute framing is itself disputed — Beckham took 23 mainly because Raúl held 7.",
+  "q": "What squad number did David Beckham wear at Real Madrid (2003-07) — a tribute to basketball legend Michael Jordan?",
+  "o": [
+   "7",
+   "10",
+   "17",
+   "23"
+  ],
+  "answer": "23",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2d7a04",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Salah's 32 goals in 2017-18 were a \"then-record\" for the Premier League. False as written: Andy Cole (1993-94) and Alan Shearer (1994-95) each scored 34 PL goals, both before 2018. Salah's 32 was only a record for a 38-game PL season — the stem drops that qualifier and so states something untrue.",
+  "q": "Which player scored a then-record 32 Premier League goals for Liverpool in the 2017-18 season?",
+  "o": [
+   "Firmino",
+   "Mané",
+   "Coutinho",
+   "Salah"
+  ],
+  "answer": "Salah",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3fcad5",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Kanu \"won the Champions League with Ajax BEFORE representing\" Nigeria. False temporal claim: Kanu made his Nigeria senior debut in 1994 (friendly v Sweden) and had already won the 1993 U-17 World Championship with Nigeria; the Ajax Champions League final win came in May 1995, i.e. after he had represented Nigeria, not before.",
+  "q": "Nwankwo Kanu won the Champions League with Ajax before representing which country at international level?",
+  "o": [
+   "Ghana",
+   "Cameroon",
+   "Nigeria",
+   "Ivory Coast"
+  ],
+  "answer": "Nigeria",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7cb21d",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem describes Benzema's goal as \"the dramatic last-minute winner for Real Madrid vs Man City in the 2022 UCL semi-final\". The last-minute goals in that tie were Rodrygo's two (90' and 90+1') which forced extra time; Benzema's winner was a penalty in the 95th minute, i.e. in extra time, not the last minute of normal time. The stem conflates the two moments.",
+  "q": "Who scored the dramatic last-minute winner for Real Madrid vs Man City in the 2022 UCL semi-final?",
+  "o": [
+   "Benzema",
+   "Vinicius Jr",
+   "Modric",
+   "Ramos"
+  ],
+  "answer": "Benzema",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_824289",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts \"Cristiano Ronaldo joined Al Nassr in 2023\". He signed for Al Nassr on 30 December 2022 (announced by the club that day); only his unveiling and debut fell in 2023. The year in the stem is wrong by a few days on the signing date.",
+  "q": "Cristiano Ronaldo joined Al Nassr in 2023 — which Saudi city is Al Nassr based in?",
+  "o": [
+   "Jeddah",
+   "Riyadh",
+   "Dammam",
+   "Mecca"
+  ],
+  "answer": "Riyadh",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_910f3c",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem: \"Owen Hargreaves was born in Canada and raised in Germany — which country did he play for?\" Options: Canada / Germany / USA / England. The stem names Canada and Germany, which the question's own twist framing marks as the decoys; USA is unconnected to anything in the stem, leaving England derivable by elimination with zero football knowledge.",
+  "q": "Owen Hargreaves was born in Canada and raised in Germany — which country did he play for?",
+  "o": [
+   "Canada",
+   "Germany",
+   "USA",
+   "England"
+  ],
+  "answer": "England",
+  "cat": "Records",
+  "diff": "medium"
+ }
+]

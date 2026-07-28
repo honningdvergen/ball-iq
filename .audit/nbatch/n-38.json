@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_f7fcc5",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Schalke \"won seven German championships in a golden era\" and asks for the last. Their seven titles are 1934, 1935, 1937, 1939, 1940, 1942 and 1958 — the keyed seventh came sixteen years after the 1934-42 run and was not part of that golden era, so the stem's framing of all seven as one era is untrue.",
+  "q": "Schalke won seven German championships in a golden era — the last of them came in which year?",
+  "o": [
+   "1958",
+   "1965",
+   "1949",
+   "1972"
+  ],
+  "answer": "1958",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41b41d",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem specifies the 1997 UEFA Cup — a European campaign — and \"The Eurofighters\" is the only option referencing Europe (others: The Miners' XI, The Blue Wall, The Ruhr Kings). Derivable from the stem with zero football knowledge.",
+  "q": "The Schalke squad that won the 1997 UEFA Cup is fondly remembered by which nickname?",
+  "o": [
+   "The Eurofighters",
+   "The Miners' XI",
+   "The Blue Wall",
+   "The Ruhr Kings"
+  ],
+  "answer": "The Eurofighters",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_aa0587",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem asks about \"Schalke's 1930s team\" and the keyed option is the only one carrying the club's own name, \"The Schalker Kreisel\" (others: Tiki-taka, The W-M, Catenaccio). No football knowledge needed — just match the club name in the stem to the club name in the option.",
+  "q": "The celebrated short-passing style of Schalke's 1930s team was known by what name?",
+  "o": [
+   "The Schalker Kreisel",
+   "Tiki-taka",
+   "The W-M",
+   "Catenaccio"
+  ],
+  "answer": "The Schalker Kreisel",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_593fe7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem states Schalke and Dortmund are \"fierce rivals\", and the options are 30 km / 200 km / 500 km / 800 km. \"Fierce rivals\" implies proximity, so the smallest figure is the obvious pick without knowing anything about either club; the three distractors are implausible for a derby by construction.",
+  "q": "Schalke 04 and Borussia Dortmund, fierce rivals, are separated by roughly what distance?",
+  "o": [
+   "About 30 km",
+   "About 200 km",
+   "About 500 km",
+   "About 800 km"
+  ],
+  "answer": "About 30 km",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2118ad",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Salah's 32 goals in 2017-18 are \"a record for a 38-game season\". That is stale: Erling Haaland scored 36 Premier League goals in 2022-23, also a 38-game season. The keyed answer (32) is still right, but the superlative in the stem is now false and teaches a wrong fact. Fix: \"then a record for a 38-game season\".",
+  "q": "Salah's record-breaking debut Liverpool campaign saw him win the 2017-18 Premier League Golden Boot. How many league goals did he score, a record for a 38-game season?",
+  "o": [
+   "32",
+   "30",
+   "34",
+   "28"
+  ],
+  "answer": "32",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_10c4a4",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem places Cristiano Ronaldo's breakthrough in the 2001-02 double season: \"led Sporting to a league-and-cup double in 2001-02, with a young Cristiano Ronaldo breaking into the squad\". Ronaldo did not break into Bölöni's first team until the following season — his senior/league debut came in 2002-03 (autumn 2002). He was not part of the 2001-02 title-winning squad.",
+  "q": "Which coach led Sporting to a league-and-cup double in 2001-02, with a young Cristiano Ronaldo breaking into the squad?",
+  "o": [
+   "José Mourinho",
+   "László Bölöni",
+   "Carlos Queiroz",
+   "Fernando Santos"
+  ],
+  "answer": "László Bölöni",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

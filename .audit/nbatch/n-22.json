@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_b11d1f",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem says Raúl Jiménez joined Fulham \"in 2023 after leaving Wolves\". Jiménez played the whole 2023-24 season for Wolves and signed for Fulham in July 2024. The keyed answer (Fulham) is correct; the year is wrong. Secondary issue: \"Wolves\" is listed as an option even though the stem states he left Wolves, so that distractor is dead on arrival.",
+  "q": "Which Premier League club did Mexico striker Raúl Jiménez join in 2023 after leaving Wolves?",
+  "o": [
+   "Wolves",
+   "Newcastle",
+   "Fulham",
+   "Brentford"
+  ],
+  "answer": "Fulham",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e37de7",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Torres signed in \"2011\" and \"nine months later\" missed the open goal at Old Trafford. He signed 31 January 2011 and the miss was 18 September 2011 vs Manchester United — roughly seven and a half months, not nine.",
+  "q": "In 2011, Fernando Torres became the most expensive British transfer ever at £50m. What did he do nine months later at Old Trafford that became iconic for all the wrong reasons?",
+  "o": [
+   "Got sent off after 3 minutes",
+   "Refused to come off as a substitute",
+   "Scored an own goal",
+   "Missed an open goal from two metres"
+  ],
+  "answer": "Missed an open goal from two metres",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c0f2bf",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem identifies the scorer of Italy's winning 2006 penalty as the man who \"tied his shirt around his head\" after scoring. Fabio Grosso is unambiguously the scorer, but the shirt-round-the-head detail does not match the well-documented celebration (arms out, sprinting, mobbed by teammates) and appears to be invented or misattributed — worth verifying since it is the stem's only descriptive claim.",
+  "q": "In 2006, who tied his shirt around his head after scoring Italy's winning penalty against France in the World Cup final?",
+  "o": [
+   "Fabio Grosso",
+   "Alessandro Del Piero",
+   "Francesco Totti",
+   "Andrea Pirlo"
+  ],
+  "answer": "Fabio Grosso",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_47cf6b",
+  "kind": "multiple_correct",
+  "severity": "cosmetic",
+  "claim": "\"In which year did Australia officially join the AFC?\" lists both 2005 and 2006. The AFC executive approved Australia's transfer in June 2005 and membership took effect 1 January 2006; many sources state \"joined in 2005\". Only the word \"officially\" separates the keyed 2006 from the equally citable 2005.",
+  "q": "In which year did Australia officially join the AFC (Asian confederation), leaving the OFC behind?",
+  "o": [
+   "2004",
+   "2005",
+   "2006",
+   "2008"
+  ],
+  "answer": "2006",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1ad2bd",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"CF Montréal plays its home games in which Canadian province?\" — the club's name contains the city, and Montréal being in Quebec is general geography. No football knowledge of any kind is required to answer.",
+  "q": "CF Montréal plays its home games in which Canadian province?",
+  "o": [
+   "Ontario",
+   "Quebec",
+   "British Columbia",
+   "Alberta"
+  ],
+  "answer": "Quebec",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7150f7",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Uruguay won the inaugural World Cup in 1930, beating Argentina 4-2 in the final. Where was the final held?\" — the stem names Uruguay, and Montevideo is the only Uruguayan city among the four options (Buenos Aires, São Paulo, Lima are all foreign). Answerable by process of elimination from geography alone.",
+  "q": "Uruguay won the inaugural World Cup in 1930, beating Argentina 4-2 in the final. Where was the final held?",
+  "o": [
+   "Buenos Aires",
+   "Montevideo",
+   "São Paulo",
+   "Lima"
+  ],
+  "answer": "Montevideo",
+  "cat": "WorldCup",
+  "diff": "medium"
+ }
+]

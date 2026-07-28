@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_31033e",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Arbroath 36-0 Bon Accord (1885) 'remains the biggest scoreline in professional football'. AS Adema beat Stade Olympique L'Emyrne 149-0 in Madagascar's professional top flight in 2002. Arbroath's win is the record for a British/senior first-class match, and it was played in the amateur era, so 'professional football' is doubly wrong.",
+  "q": "Arbroath's 36-0 win over Bon Accord in 1885 remains the biggest scoreline in professional football — where did it take place?",
+  "o": [
+   "England",
+   "Scotland",
+   "Wales",
+   "Ireland"
+  ],
+  "answer": "Scotland",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ab748c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "The clause 'from a Giroud cross just a minute after coming on' reads as describing the scorer, but Aaron Ramsey started the 2017 FA Cup final — it was Giroud who came on (78th minute) and delivered the cross. As written the stem asserts the goalscorer was a substitute, which is false and nudges the player toward the option 'Olivier Giroud'.",
+  "q": "Who scored the 79th-minute winning header for Arsenal in their 2-1 win over Chelsea in the 2017 FA Cup final — from a Giroud cross just a minute after coming on?",
+  "o": [
+   "Alexis Sánchez",
+   "Aaron Ramsey",
+   "Mesut Özil",
+   "Olivier Giroud"
+  ],
+  "answer": "Aaron Ramsey",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_304b5b",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Mexico 'have qualified for most World Cups since 1982, with only one notable absence'. Read inclusively that is false: Mexico failed to qualify for the 1982 World Cup itself on the pitch, in addition to the 1990 ban, so there are two absences from 1982 onward. Only the reading 'since after 1982' makes the claim true.",
+  "q": "Mexico have qualified for most World Cups since 1982, with only one notable absence — what caused them to miss Italia '90?",
+  "o": [
+   "Political boycott",
+   "A ban over the 'Cachirules' age-fraud scandal",
+   "Failed to qualify on the pitch",
+   "Earthquake damage prevented qualifying"
+  ],
+  "answer": "A ban over the 'Cachirules' age-fraud scandal",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_792c78",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "'The Netherlands have reached the World Cup final three times — winning how many?' The quiz framing itself gives it away (the question is only interesting if the answer is zero), and q_8231b5 earlier in this same batch states outright that the Netherlands reached three finals 'without ever winning the tournament'. Little football knowledge is exercised.",
+  "q": "The Netherlands have reached the World Cup final three times — winning how many?",
+  "o": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": "0",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5d7a09",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts Bergkamp \"DID fly\" for the 1998 World Cup. This inverts the well-documented fact: after the 1994 bomb-hoax flight he stopped flying entirely, and he reached France 1998 overland (car/train) — France being drivable is precisely why he could play that tournament at all. The keyed year (1998, the Argentina goal) is right, but the stem teaches the opposite of the famous 'Non-Flying Dutchman' story.",
+  "q": "Dennis Bergkamp famously refused to fly, so he travelled overland to which World Cup, where he scored a last-minute winner against Argentina?",
+  "o": [
+   "1994",
+   "1998",
+   "2002",
+   "2006"
+  ],
+  "answer": "1998",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dfa54b",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "The stem supplies both endpoints — relegated 2018, promoted back 2025 — so the answer (7 seasons: 2018-19 through 2024-25) is pure subtraction. Zero football knowledge required; this is the exact 'Italy's last appearance was 2014 — how many years before 2026?' pattern. Graded 'hard', which makes it worse.",
+  "q": "Hamburger SV — once known as Bundesliga's 'der Dino' — spent how many consecutive seasons in 2. Bundesliga after their first-ever relegation in 2018 before returning to the top flight in 2025?",
+  "o": [
+   "5",
+   "6",
+   "8",
+   "7"
+  ],
+  "answer": "7",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ }
+]

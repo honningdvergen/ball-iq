@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_c5a25c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asks for the last club \"outside Madrid and Barcelona\" to win the title \"before Atletico in 2014\" — but Atlético Madrid is a Madrid club, so the stem contradicts its own qualifier. It means 'other than Real Madrid and Barcelona'; as written the framing is false.",
+  "q": "Which was the last La Liga club outside Madrid and Barcelona to win the title before Atletico in 2014?",
+  "o": [
+   "Valencia in 2004",
+   "Deportivo La Coruna in 2000",
+   "Real Sociedad in 2003",
+   "Valencia in 2002"
+  ],
+  "answer": "Valencia in 2004",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0ffe92",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "'Lionel Messi was born on 24 June 1987 — how old will he turn during the 2026 World Cup?' The stem supplies the birth year and the tournament year; 2026 − 1987 = 39 is pure arithmetic. Zero football knowledge is required, so the question tests nothing.",
+  "q": "Lionel Messi was born on 24 June 1987 — how old will he turn during the 2026 World Cup?",
+  "o": [
+   "36",
+   "37",
+   "38",
+   "39"
+  ],
+  "answer": "39",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8fb2af",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem asserts Del Piero 'made his Juventus debut aged 19 in 1993'. He was born 9 November 1974 and made his Juventus/Serie A debut on 12 September 1993 — aged 18, not 19. The 290-goal figure and the keyed answer are correct; only the age claim is false.",
+  "q": "Which Juventus legend made his club debut aged 18 in 1993 — later becoming their all-time leading scorer with 290 goals?",
+  "o": [
+   "Alessandro Del Piero",
+   "Roberto Baggio",
+   "Fabrizio Ravanelli",
+   "David Trezeguet"
+  ],
+  "answer": "Alessandro Del Piero",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6c24dd",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Bayern have been in the top flight 'every single season since the league's second year in 1965'. The Bundesliga began in 1963-64, so its second season was 1964-65; Bayern were promoted for 1965-66, the league's THIRD season. The year 1965 is right, the ordinal is wrong.",
+  "q": "Which Bundesliga club has been in the top flight for every single season since the league's second year in 1965?",
+  "o": [
+   "Dortmund",
+   "Hamburger SV",
+   "Bayern Munich",
+   "Werder Bremen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cb171c",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Mertens 'became Napoli's all-time top scorer with 148 goals in 2020'. He broke Hamsik's record of 121 in June 2020 with his 122nd goal; 148 is his FINAL career total, reached in 2022 before leaving. The stem conflates two dates, asserting a goal count he did not have in 2020.",
+  "q": "Which Belgian striker became Napoli's all-time top scorer in 2020, overtaking Marek Hamšík, and left in 2022 with a club-record 148 goals?",
+  "o": [
+   "Christian Benteke",
+   "Romelu Lukaku",
+   "Michy Batshuayi",
+   "Dries Mertens"
+  ],
+  "answer": "Dries Mertens",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f19df",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem says Sheffield United 'holds the record for the most draws in a single Premier League season with 18'. The 18-draw mark is shared, not held: Sheffield United and Manchester City (1993-94), Southampton (1994-95), Newcastle (2003-04), Aston Villa (2006-07) and Sunderland (2014-15) all drew 18. None of the distractors is a co-holder so the keyed answer survives, but 'holds the record' asserts a uniqueness that does not exist.",
+  "q": "Which club holds the record for the most draws in a single Premier League season with 18?",
+  "o": [
+   "Stoke City",
+   "Bolton",
+   "Wimbledon",
+   "Sheffield United"
+  ],
+  "answer": "Sheffield United",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

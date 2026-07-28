@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_68b0d2",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"The 1985 European Cup final, Juventus's first\" — read as their first European Cup FINAL this is false: Juventus lost the 1973 final to Ajax and the 1983 final to Hamburg. It is only true if \"first\" is read as first European Cup won. Ambiguous phrasing that teaches a wrong fact; the Platini penalty answer is correct.",
+  "q": "The 1985 European Cup final, Juventus's first, is forever overshadowed by the Heysel Stadium disaster. Who scored the decisive (and hugely controversial) penalty to beat Liverpool 1-0?",
+  "o": [
+   "Zbigniew Boniek",
+   "Michel Platini",
+   "Paolo Rossi",
+   "Marco Tardelli"
+  ],
+  "answer": "Michel Platini",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d6a4c5",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "\"A future African head of state starred for PSG in the mid-1990s and won the Ballon d'Or in 1995\" implies Weah won the award as a PSG player. He left PSG for AC Milan in the summer of 1995 and won the December 1995 Ballon d'Or as a Milan player — which the same batch states in q_b14574 (\"scored... for Milan... and in 1995 became the first African to win the Ballon d'Or\"). The two questions contradict each other on attribution.",
+  "q": "A future African head of state starred for PSG in the mid-1990s and won the Ballon d'Or in 1995. Who was he?",
+  "o": [
+   "George Weah",
+   "Jay-Jay Okocha",
+   "Roger Milla",
+   "Abedi Pelé"
+  ],
+  "answer": "George Weah",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0522d8",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem says Beckenbauer was known by a \"regal nickname\" and the options are Der Bomber, Der Kaiser, Der Titan, Der General. \"Kaiser\" is a common English loanword for emperor, so anyone with zero football knowledge picks it purely from the word \"regal\" — none of the other three is regal.",
+  "q": "Franz Beckenbauer, Bayern's greatest figure, was known across world football by a regal nickname. What was it?",
+  "o": [
+   "Der Bomber",
+   "Der Kaiser",
+   "Der Titan",
+   "Der General"
+  ],
+  "answer": "Der Kaiser",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e440aa",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"What was 'De Mistwedstrijd'?\" with options Mud/Fog/Night/Miracle Match. Dutch \"mist\" is a direct cognate of English \"mist\", so a player with zero football knowledge reads the answer straight out of the stem's own Dutch word.",
+  "q": "Ajax's 1966 home demolition of Bill Shankly's Liverpool earned a famous Dutch nickname. What was 'De Mistwedstrijd'?",
+  "o": [
+   "The Mud Match",
+   "The Fog Match",
+   "The Night Match",
+   "The Miracle Match"
+  ],
+  "answer": "The Fog Match",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a3a089",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "Stem states the name came from \"a sign hanging in the pub where they were founded\", and the options are a brewery's beer, a bicycle shop, a railway company, a tobacco merchant. A pub sign advertising beer is the obvious zero-knowledge inference; the stem supplies the discriminating context itself.",
+  "q": "Borussia Dortmund got their name not from the Latin word for Prussia directly, but from a sign hanging in the pub where they were founded in 1909. What was that sign advertising?",
+  "o": [
+   "A brewery's beer",
+   "A bicycle shop",
+   "A railway company",
+   "A tobacco merchant"
+  ],
+  "answer": "A brewery's beer",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_24d9f1",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Two stem assertions look wrong. (1) Date: the 'This Is Anfield' sign is almost universally dated to 1974, not 1972 — Shankly had it erected shortly before/around his departure, and club-published accounts say 1974. (2) The premise that there was an 'original suggested wording' that Shankly 'toughened up' appears to be invented — no standard account of the sign records a rejected first draft, and the keyed answer 'Welcome to Anfield' is not a documented prior version. If (2) is fabricated the whole question is unanswerable on fact and the keyed answer is only correct by construction.",
+  "q": "The famous 'This Is Anfield' sign was installed by Bill Shankly in 1972 to intimidate opponents. What did the original suggested wording say before he toughened it up?",
+  "o": [
+   "'Welcome to Anfield'",
+   "'Abandon Hope All Ye Who Enter'",
+   "'You'll Never Walk Alone'",
+   "'Enter the Fortress'"
+  ],
+  "answer": "'Welcome to Anfield'",
+  "cat": "Legends",
+  "diff": "hard"
+ }
+]

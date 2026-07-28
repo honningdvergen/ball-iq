@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_734f34",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Nottingham Forest's stand nearest the River Trent is known by what name?\" with options The Trent End / The Kop / The Kippax / The Shed End. The stem contains the word \"Trent\" and exactly one option contains \"Trent\". Zero football knowledge required — pure word-match.",
+  "q": "Nottingham Forest's stand nearest the River Trent is known by what name?",
+  "o": [
+   "The Trent End",
+   "The Kop",
+   "The Kippax",
+   "The Shed End"
+  ],
+  "answer": "The Trent End",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5736d0",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Everton's nickname 'The Toffees' is linked to what kind of local business?\" with options A sweet shop / brewery / dockyard / textile mill. Toffee is a confectionery, so anyone who knows the English word — regardless of football knowledge — picks \"sweet shop\" from the stem alone.",
+  "q": "Everton's nickname 'The Toffees' is linked to what kind of local business?",
+  "o": [
+   "A sweet shop",
+   "A brewery",
+   "A dockyard",
+   "A textile mill"
+  ],
+  "answer": "A sweet shop",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec7989",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"Aston Villa goalkeeper Emiliano Martinez won which individual award at the 2022 World Cup?\" with options Golden Boot / Golden Ball / Golden Glove / Bronze Ball. The stem states he is a goalkeeper and exactly one option is the glove award; the semantic match gives it away without any football knowledge.",
+  "q": "Aston Villa goalkeeper Emiliano Martinez won which individual award at the 2022 World Cup?",
+  "o": [
+   "Golden Boot",
+   "Golden Ball",
+   "Golden Glove",
+   "Bronze Ball"
+  ],
+  "answer": "Golden Glove",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b9d156",
+  "kind": "self_answering",
+  "severity": "cosmetic",
+  "claim": "\"By which nickname are Aston Villa most commonly known?\" with options The Villans / The Baggies / The Blues / The Hornets. \"Villans\" is a direct morphological derivation of \"Villa\" in the stem; the club name is handed to the player in the question.",
+  "q": "By which nickname are Aston Villa most commonly known?",
+  "o": [
+   "The Villans",
+   "The Baggies",
+   "The Blues",
+   "The Hornets"
+  ],
+  "answer": "The Villans",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f665dd",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Dinamo Zagreb's 1967 Inter-Cities Fairs Cup win made them the first club from which country to win one of the major European club competitions?\" — the options are countries (Hungary / Czechoslovakia / Yugoslavia / Romania), so the answer is fixed by where Dinamo Zagreb is from, not by the 'first club' fact the stem pretends to test. Anyone who knows Zagreb was in Yugoslavia answers it with zero football knowledge; the 'first to win' clause contributes nothing.",
+  "q": "Dinamo Zagreb's 1967 Inter-Cities Fairs Cup win made them the first club from which country to win one of the major European club competitions?",
+  "o": [
+   "Hungary",
+   "Czechoslovakia",
+   "Yugoslavia",
+   "Romania"
+  ],
+  "answer": "Yugoslavia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0a113a",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Zlatko Kranjčar ... was the father of which Croatia international?\" — the only option sharing the surname is Niko Kranjčar (others: Rakitić, Badelj, Vukojević). Pure surname matching; no football knowledge required to answer from the stem alone.",
+  "q": "Zlatko Kranjčar, a Dinamo Zagreb great, was the father of which Croatia international?",
+  "o": [
+   "Niko Kranjčar",
+   "Ivan Rakitić",
+   "Milan Badelj",
+   "Ognjen Vukojević"
+  ],
+  "answer": "Niko Kranjčar",
+  "cat": "Legends",
+  "diff": "easy"
+ }
+]

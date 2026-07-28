@@ -1,0 +1,98 @@
+[
+ {
+  "id": "q_e7fff3",
+  "kind": "false_premise",
+  "severity": "cosmetic",
+  "claim": "Stem dates Feyenoord's famous 9-5 league win over Ajax to 1960. The keyed answer (Ajax) is correct — that scoreline is the highest-scoring Klassieker — but I believe the match was played in the mid-1960s (1963-64 season), not 1960. Verifier should settle the date; if it is 1964 the stem asserts a false fact on the way to a correct answer.",
+  "q": "Feyenoord recorded a famous 9-5 league win in 1960 over which rival?",
+  "o": [
+   "PSV Eindhoven",
+   "Ajax",
+   "ADO Den Haag",
+   "Sparta Rotterdam"
+  ],
+  "answer": "Ajax",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_afbca2",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Club Brugge's Latin motto means 'a healthy mind in a healthy body.' What is it?\" — the stem supplies the English translation and the options are four famous Latin tags (Mens sana in corpore sano / Per aspera ad astra / Veni vidi vici / Fortis et fidelis). Anyone who has ever seen the phrase 'a healthy mind in a healthy body' picks it with zero football knowledge; nothing club-specific is being tested.",
+  "q": "Club Brugge's Latin motto means 'a healthy mind in a healthy body.' What is it?",
+  "o": [
+   "Mens sana in corpore sano",
+   "Per aspera ad astra",
+   "Veni vidi vici",
+   "Fortis et fidelis"
+  ],
+  "answer": "Mens sana in corpore sano",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_afbca2",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "The stem asserts 'Mens sana in corpore sano' is CLUB BRUGGE's motto. That motto belongs to RSC Anderlecht — q_1600fe in this same batch keys it as the Latin motto on Anderlecht's badge. Club Brugge's club motto is 'No sweat, no glory'. If Anderlecht's attribution is the correct one, this stem misattributes it and the keyed answer is wrong.",
+  "q": "Club Brugge's Latin motto means 'a healthy mind in a healthy body.' What is it?",
+  "o": [
+   "Mens sana in corpore sano",
+   "Per aspera ad astra",
+   "Veni vidi vici",
+   "Fortis et fidelis"
+  ],
+  "answer": "Mens sana in corpore sano",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d48c15",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Which forward, nicknamed 'Baba Hakkı', scored 382 goals for Beşiktaş between 1931 and 1948?\" — the nickname quoted in the stem contains the player's own first name, and only one option (Hakkı Yeten) is a Hakkı. Zero football knowledge required. Graded 'medium' but it is a free point.",
+  "q": "Which forward, nicknamed 'Baba Hakkı', scored 382 goals for Beşiktaş between 1931 and 1948?",
+  "o": [
+   "Şeref Bey",
+   "Rıza Çalımbay",
+   "Hakkı Yeten",
+   "Feyyaz Uçar"
+  ],
+  "answer": "Hakkı Yeten",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9664d7",
+  "kind": "self_answering",
+  "severity": "serious",
+  "claim": "\"Hakkı Yeten ... was known by which affectionate nickname?\" — the keyed answer 'Baba Hakkı' is the only option containing the subject's name, which is stated in the stem. Pure name-matching; no knowledge needed. (It is also the exact inverse of q_d48c15 in the same batch, so the two give each other away.)",
+  "q": "Hakkı Yeten, Beşiktaş's great pre-war forward, was known by which affectionate nickname?",
+  "o": [
+   "Baba Hakkı",
+   "Kara Kartal",
+   "Atom Karınca",
+   "Şeref Bey"
+  ],
+  "answer": "Baba Hakkı",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b71675",
+  "kind": "false_premise",
+  "severity": "serious",
+  "claim": "Stem asserts 'In 2017-18, Beşiktaş became the first Turkish club to win a Champions League group.' Galatasaray topped their first group-stage group in the 2000-01 Champions League (Group H, ahead of Rangers, Monaco and Sturm Graz) and advanced as group winners, which would make the 'first Turkish club' superlative false. Needs verification of the 2000-01 first-group-stage final table; the keyed answer (Porto, 2nd in Group G 2017-18) is itself correct.",
+  "q": "In 2017-18, Beşiktaş became the first Turkish club to win a Champions League group. Which club finished second in that group behind them?",
+  "o": [
+   "Sevilla",
+   "RB Leipzig",
+   "Porto",
+   "Monaco"
+  ],
+  "answer": "Porto",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]
