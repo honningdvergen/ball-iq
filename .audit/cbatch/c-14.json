@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_b4680d",
+  "kind": "wrong_answer",
+  "claim": "The keyed answer (De Toekomst = 'The Future') is correct, but the stem's premise is false: the De Toekomst complex opened in 1996, so it did not produce Cruyff (1960s) or Bergkamp (1980s), who came through Ajax's earlier youth setup.",
+  "q": "Ajax's youth academy, the conveyor belt that produced Cruyff, Bergkamp, the De Boers and more, is named 'De Toekomst'. What does that mean?",
+  "o": [
+   "The Factory",
+   "The Future",
+   "The Garden",
+   "The Foundation"
+  ],
+  "answer": "The Future",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4e6d69",
+  "kind": "wrong_answer",
+  "claim": "'Weeks after their 1997 European Cup win' is wrong: the final was 28 May 1997 and the Intercontinental Cup win over Cruzeiro was 2 December 1997, more than six months later (the keyed answer Cruzeiro is correct).",
+  "q": "Weeks after their 1997 European Cup win, Dortmund beat which South American side to lift the Intercontinental Cup in Tokyo?",
+  "o": [
+   "Cruzeiro",
+   "River Plate",
+   "Boca Juniors",
+   "São Paulo"
+  ],
+  "answer": "Cruzeiro",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ad8754",
+  "kind": "wrong_answer",
+  "claim": "The stem calls John Terry a \"one-club defender\", but Terry was loaned to Nottingham Forest in 2000 and played 34 games for Aston Villa in 2017-18, so the qualifier is factually inaccurate even though Terry is still the only defensible answer.",
+  "q": "Which one-club defender captained Chelsea for over a decade and is the club's record goalscoring defender?",
+  "o": [
+   "John Terry",
+   "Ashley Cole",
+   "Ricardo Carvalho",
+   "Marcel Desailly"
+  ],
+  "answer": "John Terry",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c431ea",
+  "kind": "multiple_correct",
+  "claim": "Beckham's 2013 PSG deal is reported both as \"donated his entire salary to a local children's charity\" (the key) and as taking no wages at all, so the distractor \"Waived it entirely\" is a defensible description of the same arrangement.",
+  "q": "When David Beckham had a short spell at PSG in 2013, what did he famously do with his salary?",
+  "o": [
+   "Donated it to a children's charity",
+   "Invested it in the club's academy",
+   "Waived it entirely",
+   "Split it among teammates"
+  ],
+  "answer": "Donated it to a children's charity",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6fe03",
+  "kind": "stale",
+  "claim": "The stem's claim that Chelsea 'set a Premier League record' with the 13-game run is inaccurate — Arsenal had already won 13 straight to end 2001-02, so Chelsea equalled it, and Manchester City broke it with 18 in 2017-18; the keyed answer 13 is still correct.",
+  "q": "Chelsea set a Premier League record during their 2016-17 title run with a streak of how many consecutive league wins?",
+  "o": [
+   "13",
+   "11",
+   "9",
+   "15"
+  ],
+  "answer": "13",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf5e43",
+  "kind": "wrong_answer",
+  "claim": "The key (Drogba) is right but the stem's date range is wrong: Drogba was a Galatasaray player from January 2013 to July 2014, when he rejoined Chelsea — he never played for the club in 2015.",
+  "q": "Which Ivorian striker and Chelsea great played for Galatasaray between 2013 and 2015?",
+  "o": [
+   "Didier Drogba",
+   "Wilfried Bony",
+   "Salomon Kalou",
+   "Gervinho"
+  ],
+  "answer": "Didier Drogba",
+  "cat": "Transfers",
+  "diff": "easy"
+ }
+]

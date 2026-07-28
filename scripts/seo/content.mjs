@@ -32,7 +32,18 @@ export const SITE = {
   tagline: 'The ultimate football quiz',
   ogImage: 'https://balliq.app/og-image.png',
   appStore: 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961',
+  // Google Play listing — LIVE since 2026-07-27. Package is app.balliq
+  // (build.gradle applicationId); the reversed com.balliq.app form 404s.
+  playStore: 'https://play.google.com/store/apps/details?id=app.balliq',
+  // NOTE: `playUrl` is the PLAY-IN-BROWSER url, not the Play Store. Badly
+  // named, kept for call-site compatibility. Use `playStore` for the store.
   playUrl: 'https://balliq.app/',
+  // Platform-aware store redirect (api/get.js). Sends iOS → App Store,
+  // Android → Play, everything else → the web app. Use this for any SINGLE
+  // "Get the app" CTA, where showing two badges would be clutter — a static
+  // page cannot sniff the platform, and hardcoding one store dead-ends half
+  // the visitors now that both platforms are live.
+  getApp: 'https://balliq.app/get',
 };
 
 // ── HUB PAGE ────────────────────────────────────────────────────────────────

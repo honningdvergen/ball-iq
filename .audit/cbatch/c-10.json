@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_ebe0f9",
+  "kind": "wrong_answer",
+  "claim": "The stem's premise is wrong: Sheffield FC (1857) is the world's oldest football club but is amateur, not professional — the oldest professional club is generally cited as Notts County (1862); the keyed year 1857 is otherwise correct.",
+  "q": "The world's oldest professional football club is Sheffield FC — founded in which year?",
+  "o": [
+   "1857",
+   "1863",
+   "1871",
+   "1875"
+  ],
+  "answer": "1857",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9edc78",
+  "kind": "wrong_answer",
+  "claim": "The stem's factual detail is off: the FA arbitration panel approved the move in May 2002 but Wimbledon FC actually relocated in September 2003, and the distance to Milton Keynes is roughly 56 miles, not 70.",
+  "q": "Which controversial 2002 relocation saw Wimbledon FC move 70 miles north to become a new club?",
+  "o": [
+   "Milton Keynes",
+   "Manchester",
+   "Leeds",
+   "Birmingham"
+  ],
+  "answer": "Milton Keynes",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ccd687",
+  "kind": "wrong_answer",
+  "claim": "The stem says the April 2024 Copa del Rey ended a '40-year trophy drought', but Athletic Bilbao won the Supercopa de España in January 2021 — the 40-year gap applies only if the Supercopa is excluded as a major trophy.",
+  "q": "Which La Liga club won the Copa del Rey in April 2024 — ending a 40-year trophy drought?",
+  "o": [
+   "Osasuna",
+   "Real Betis",
+   "Getafe",
+   "Athletic Bilbao"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_311a30",
+  "kind": "stale",
+  "claim": "\"How many Premier League titles has Liverpool won since 1992\" is an open-ended running count (2 as of 2024-25) that silently becomes wrong the next time Liverpool win the league; the '19' distractor is itself a stale relic of Liverpool's pre-2025 all-time English title count (now 20).",
+  "q": "How many Premier League titles has Liverpool won since the Premier League began in 1992?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "19"
+  ],
+  "answer": "2",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3c5e0b",
+  "kind": "stale",
+  "claim": "Present-tense \"does Joshua Kimmich represent at club level\" rots the moment he leaves Bayern Munich; a transfer would make the keyed answer wrong with no edit.",
+  "q": "Which Bundesliga team does Joshua Kimmich represent at club level?",
+  "o": [
+   "RB Leipzig",
+   "Dortmund",
+   "Leverkusen",
+   "Bayern Munich"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_640ca0",
+  "kind": "stale",
+  "claim": "\"Has been Atletico Madrid manager since what year\" is phrased as an ongoing tenure; once Simeone departs the stem's premise is false even though 2011 was his start year.",
+  "q": "Diego Simeone has been Atletico Madrid manager since what year?",
+  "o": [
+   "2009",
+   "2010",
+   "2011",
+   "2012"
+  ],
+  "answer": "2011",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

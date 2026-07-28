@@ -13,7 +13,7 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 // equivalent, per the README). All ambient motion respects prefers-reduced-motion.
 
 // Country-coded canonical URL — single source of truth in lib/links.js.
-import { APP_STORE_URL as APP_STORE } from '../lib/links.js';
+import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
 const PLAY = '/play';
 // Build-time question-bank count (vite define, re-derived every deploy so it
 // never drifts stale). Fallback keeps dev servers / edge cases safe.
@@ -138,32 +138,32 @@ const AppStoreBadge = ({ small }) => (
   </a>
 );
 
-// Canonical single-colour Google Play glyph (simple-icons outline), tinted
-// muted grey to read as "not yet live".
+// Canonical single-colour Google Play glyph (simple-icons outline). Tinted to
+// full white since the listing went live — it was muted grey while unshipped.
 const GooglePlayGlyph = ({ size = 22 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="#9BA0B8" aria-hidden="true">
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
     <path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z" />
   </svg>
 );
 
-// Google Play badge — intentionally NOT a link. Android isn't shipped yet, and a
-// dead store link is worse than none. Muted styling + "Coming soon" eyebrow
-// signals the platform is on the way; the hero's green "Play free in browser"
-// CTA is what gives Android visitors an immediate action TODAY (the web app runs
-// fine on Android Chrome and installs as a PWA).
+// Google Play badge — a REAL link since the listing went live 2026-07-27.
+// Was deliberately a non-link <div> with a "Coming soon to" eyebrow while
+// Android was unshipped; now mirrors the App Store badge exactly so Android
+// visitors get the same first-class path iOS visitors have always had.
 const PlayStoreBadge = ({ small }) => (
-  <div className="mkt-cta-play" aria-label="Google Play — coming soon"
-       style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#0A0A0A', border: '1px solid #242836', borderRadius: small ? 12 : 14, opacity: 0.72 }}>
+  <a className="mkt-cta-play" href={PLAY_STORE_URL} target="_blank" rel="noopener"
+     aria-label="Get Ball IQ on Google Play"
+     style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#0A0A0A', border: '1px solid #242836', borderRadius: small ? 12 : 14 }}>
     <GooglePlayGlyph size={small ? 18 : 22} />
     {small ? (
-      <span style={{ fontSize: 13, color: '#9BA0B8', fontWeight: 700 }}>Android soon</span>
+      <span style={{ fontSize: 13, color: '#fff', fontWeight: 700 }}>Google Play</span>
     ) : (
       <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, textAlign: 'left' }}>
-        <span style={{ fontSize: 10, color: '#6E7180', letterSpacing: '0.02em' }}>Coming soon to</span>
-        <span style={{ fontSize: 16, color: '#9BA0B8', fontWeight: 700 }}>Google Play</span>
+        <span style={{ fontSize: 10, color: '#9BA0B8', letterSpacing: '0.02em' }}>Get it on</span>
+        <span style={{ fontSize: 16, color: '#fff', fontWeight: 700 }}>Google Play</span>
       </span>
     )}
-  </div>
+  </a>
 );
 
 const GreenCTA = ({ href, children, big, target, className }) => (
@@ -427,7 +427,7 @@ function PlayNow() {
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
-        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>100% free · no ads in the app · Android coming soon</p>
+        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#6E7180' }}>100% free · no ads in the app · iOS &amp; Android</p>
       </div>
     </section>
   );

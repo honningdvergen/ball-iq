@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_1f5560",
+  "q": "At which Brazilian club did Neymar begin his senior professional career?",
+  "o": [
+   "Santos",
+   "Flamengo",
+   "Corinthians",
+   "São Paulo"
+  ],
+  "answer": "Santos",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_187e59",
+  "q": "Neymar overtook which Brazilian legend to become the men's national team's all-time top scorer in 2023?",
+  "o": [
+   "Pelé",
+   "Ronaldo",
+   "Romário",
+   "Zico"
+  ],
+  "answer": "Pelé",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a36c0a",
+  "q": "Neymar converted the decisive penalty to win Olympic gold for Brazil at Rio 2016 in the final against which nation?",
+  "o": [
+   "Germany",
+   "Argentina",
+   "Mexico",
+   "Nigeria"
+  ],
+  "answer": "Germany",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7f9c22",
+  "q": "At Barcelona, Neymar formed the famous 'MSN' attacking trio with Lionel Messi and which other forward?",
+  "o": [
+   "Luis Suárez",
+   "David Villa",
+   "Pedro",
+   "Alexis Sánchez"
+  ],
+  "answer": "Luis Suárez",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f29c85",
+  "q": "Neymar's 2014 World Cup with Brazil ended early after he suffered what injury against Colombia?",
+  "o": [
+   "A fractured vertebra",
+   "A torn ACL",
+   "A broken metatarsal",
+   "A ruptured hamstring"
+  ],
+  "answer": "A fractured vertebra",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_00520c",
+  "q": "After leaving PSG in 2023, which Saudi Pro League club did Neymar join?",
+  "o": [
+   "Al-Hilal",
+   "Al-Nassr",
+   "Al-Ittihad",
+   "Al-Ahli"
+  ],
+  "answer": "Al-Hilal",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cfde99",
+  "q": "Neymar scored Barcelona's third goal in the 2015 Champions League final, a 3-1 win over which club?",
+  "o": [
+   "Juventus",
+   "Bayern Munich",
+   "Atlético Madrid",
+   "Real Madrid"
+  ],
+  "answer": "Juventus",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fc6add",
+  "q": "Which national team does Luka Modrić captain?",
+  "o": [
+   "Croatia",
+   "Serbia",
+   "Slovenia",
+   "Bosnia and Herzegovina"
+  ],
+  "answer": "Croatia",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d1f8be",
+  "q": "From which Premier League club did Real Madrid sign Luka Modrić in 2012?",
+  "o": [
+   "Manchester United",
+   "Chelsea",
+   "Tottenham Hotspur",
+   "Liverpool"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5456ae",
+  "q": "Luka Modrić's 2018 Ballon d'Or made him the first winner other than Messi or Ronaldo since which player?",
+  "o": [
+   "Ronaldinho",
+   "Kaká",
+   "Andriy Shevchenko",
+   "Fabio Cannavaro"
+  ],
+  "answer": "Kaká",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_306bed",
+  "q": "Who won the Golden Ball as the best player of the 2018 World Cup, despite his team losing the final?",
+  "o": [
+   "Eden Hazard",
+   "Antoine Griezmann",
+   "Luka Modrić",
+   "Kylian Mbappé"
+  ],
+  "answer": "Luka Modrić",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3221e0",
+  "q": "In July 2025, after leaving Real Madrid, Luka Modrić joined which Serie A club on a free transfer?",
+  "o": [
+   "Inter Milan",
+   "AC Milan",
+   "Juventus",
+   "Napoli"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_249267",
+  "q": "How many Champions League titles did Luka Modrić win during his 13 years at Real Madrid?",
+  "o": [
+   "Four",
+   "Five",
+   "Six",
+   "Three"
+  ],
+  "answer": "Six",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_559eeb",
+  "q": "At which club did Luka Modrić begin his senior professional career before moving to Tottenham?",
+  "o": [
+   "Hajduk Split",
+   "HNK Rijeka",
+   "Dinamo Zagreb",
+   "NK Osijek"
+  ],
+  "answer": "Dinamo Zagreb",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2dd1a3",
+  "q": "How many seasons did Luka Modrić spend at Real Madrid before departing in 2025?",
+  "o": [
+   "Ten",
+   "Thirteen",
+   "Fifteen",
+   "Eight"
+  ],
+  "answer": "Thirteen",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d0d381",
+  "q": "What is Sunderland's traditional home kit design?",
+  "o": [
+   "Blue and white stripes",
+   "Red and white stripes",
+   "Red and black stripes",
+   "All white"
+  ],
+  "answer": "Red and white stripes",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0c2649",
+  "q": "In which year did Sunderland win their most recent English league title?",
+  "o": [
+   "1936",
+   "1926",
+   "1948",
+   "1955"
+  ],
+  "answer": "1936",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ee995d",
+  "q": "Which side did Sunderland famously beat in the 1973 FA Cup Final?",
+  "o": [
+   "Arsenal",
+   "Everton",
+   "Leeds United",
+   "Liverpool"
+  ],
+  "answer": "Leeds United",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a723ba",
+  "q": "Sunderland's fierce Tyne–Wear derby is contested against which club?",
+  "o": [
+   "Middlesbrough",
+   "Newcastle United",
+   "Hartlepool United",
+   "Leeds United"
+  ],
+  "answer": "Newcastle United",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9425f1",
+  "q": "Whom did Sunderland defeat to lift their first FA Cup in 1937?",
+  "o": [
+   "Preston North End",
+   "Huddersfield Town",
+   "Arsenal",
+   "Sheffield United"
+  ],
+  "answer": "Preston North End",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d6453e",
+  "q": "Which Sunderland striker won the European Golden Shoe in 1999–2000?",
+  "o": [
+   "Niall Quinn",
+   "Kevin Phillips",
+   "Marcus Stewart",
+   "Michael Bridges"
+  ],
+  "answer": "Kevin Phillips",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6526a7",
+  "q": "Sunderland set a divisional points record in 1998–99 with how many points?",
+  "o": [
+   "100",
+   "102",
+   "105",
+   "106"
+  ],
+  "answer": "105",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e88412",
+  "q": "Who managed Sunderland to the 1998–99 First Division title?",
+  "o": [
+   "Mick McCarthy",
+   "Peter Reid",
+   "Howard Wilkinson",
+   "Roy Keane"
+  ],
+  "answer": "Peter Reid",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_401274",
+  "q": "Roy Keane led Sunderland to which title in 2006–07?",
+  "o": [
+   "The FA Cup",
+   "The Championship",
+   "League One",
+   "The Premier League"
+  ],
+  "answer": "The Championship",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_43764d",
+  "q": "Who is recognised as Sunderland's all-time leading goalscorer?",
+  "o": [
+   "Bobby Gurney",
+   "Charlie Buchan",
+   "Len Shackleton",
+   "Kevin Phillips"
+  ],
+  "answer": "Bobby Gurney",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5ab092",
+  "q": "Which forward set Sunderland's single-season league scoring record of 43 goals in 1928–29?",
+  "o": [
+   "Raich Carter",
+   "Charlie Buchan",
+   "Dave Halliday",
+   "Bobby Gurney"
+  ],
+  "answer": "Dave Halliday",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_22b1ef",
+  "q": "In 2009, a Darren Bent goal against Liverpool was deflected past the keeper by what object?",
+  "o": [
+   "A defender's heel",
+   "A beach ball",
+   "The base of the post",
+   "A divot"
+  ],
+  "answer": "A beach ball",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d1450e",
+  "q": "The Stadium of Light was built on the former site of which industry?",
+  "o": [
+   "A shipyard",
+   "A glassworks",
+   "A coal mine",
+   "A steelworks"
+  ],
+  "answer": "A coal mine",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_903fb5",
+  "q": "Which Republic of Ireland striker later served as Sunderland's chairman?",
+  "o": [
+   "Roy Keane",
+   "Niall Quinn",
+   "Kevin Kilbane",
+   "Robbie Keane"
+  ],
+  "answer": "Niall Quinn",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e2a5f2",
+  "q": "When Sunderland won the 1973 FA Cup, which division were they playing in?",
+  "o": [
+   "Second Division",
+   "Third Division",
+   "First Division",
+   "Fourth Division"
+  ],
+  "answer": "Second Division",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_15900a",
+  "q": "Sunderland reached the 2014 League Cup Final, losing to which club?",
+  "o": [
+   "Manchester United",
+   "Manchester City",
+   "Chelsea",
+   "Liverpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2d6d54",
+  "q": "Who managed Sunderland in the 2014 League Cup Final?",
+  "o": [
+   "Steve Bruce",
+   "Martin O'Neill",
+   "Gus Poyet",
+   "Dick Advocaat"
+  ],
+  "answer": "Gus Poyet",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3a5efa",
+  "q": "Sunderland won the 2021 EFL Trophy, beating which club in the final?",
+  "o": [
+   "Portsmouth",
+   "Tranmere Rovers",
+   "Lincoln City",
+   "Rotherham United"
+  ],
+  "answer": "Tranmere Rovers",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fa6d69",
+  "q": "Sunderland won the 2022 League One play-off final against which side?",
+  "o": [
+   "Wigan Athletic",
+   "Sheffield Wednesday",
+   "Wycombe Wanderers",
+   "Milton Keynes Dons"
+  ],
+  "answer": "Wycombe Wanderers",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b559a",
+  "q": "In what year was Sunderland AFC founded?",
+  "o": [
+   "1879",
+   "1881",
+   "1888",
+   "1892"
+  ],
+  "answer": "1879",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0be71b",
+  "q": "The first season of 'Sunderland 'Til I Die' documented relegation to which division?",
+  "o": [
+   "The Championship",
+   "League One",
+   "League Two",
+   "the National League"
+  ],
+  "answer": "League One",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ae44c1",
+  "q": "Academy graduate Jordan Pickford was sold in 2017 to which club?",
+  "o": [
+   "Manchester City",
+   "Everton",
+   "Arsenal",
+   "Tottenham Hotspur"
+  ],
+  "answer": "Everton",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f90842",
+  "q": "Sunderland's record home attendance of 75,118 at Roker Park in 1933 came against which club?",
+  "o": [
+   "Newcastle United",
+   "Derby County",
+   "Aston Villa",
+   "Portsmouth"
+  ],
+  "answer": "Derby County",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_65d234",
+  "q": "Popular goalkeeper Thomas Sørensen represented which country?",
+  "o": [
+   "Norway",
+   "Denmark",
+   "Sweden",
+   "Netherlands"
+  ],
+  "answer": "Denmark",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7b6726",
+  "q": "In their 1973–74 European Cup Winners' Cup run, Sunderland were eliminated by which Portuguese club?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "FC Porto",
+   "Vitória de Setúbal"
+  ],
+  "answer": "Sporting CP",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6e936e",
+  "q": "Which Ghanaian striker became Sunderland's club-record signing in 2010?",
+  "o": [
+   "Sulley Muntari",
+   "Asamoah Gyan",
+   "Michael Essien",
+   "Kevin-Prince Boateng"
+  ],
+  "answer": "Asamoah Gyan",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_286c63",
+  "q": "Kevin Phillips joined Sunderland in 1997 from which club?",
+  "o": [
+   "Bury",
+   "Watford",
+   "Gillingham",
+   "Wycombe Wanderers"
+  ],
+  "answer": "Watford",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9446fa",
+  "q": "Who captained Sunderland's 1937 FA Cup-winning side and was a celebrated creative inside-forward?",
+  "o": [
+   "Bobby Gurney",
+   "Raich Carter",
+   "Len Shackleton",
+   "Charlie Buchan"
+  ],
+  "answer": "Raich Carter",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fdd23c",
+  "q": "Which flamboyant post-war Sunderland forward was nicknamed the 'Clown Prince of Soccer'?",
+  "o": [
+   "Raich Carter",
+   "Trevor Ford",
+   "Len Shackleton",
+   "Charlie Hurley"
+  ],
+  "answer": "Len Shackleton",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66e094",
+  "q": "Sam Allardyce left Sunderland in 2016 to take which job?",
+  "o": [
+   "Everton",
+   "England",
+   "Crystal Palace",
+   "West Ham United"
+  ],
+  "answer": "England",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6a4529",
+  "q": "David Moyes's 2016–17 season at Sunderland ended in what?",
+  "o": [
+   "An FA Cup final",
+   "A top-half finish",
+   "Relegation from the Premier League",
+   "A League Cup final"
+  ],
+  "answer": "Relegation from the Premier League",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8461aa",
+  "q": "Sunderland won the league in 1913 but lost the FA Cup Final that year to which club, narrowly missing the Double?",
+  "o": [
+   "Newcastle United",
+   "Aston Villa",
+   "Sheffield Wednesday",
+   "Barnsley"
+  ],
+  "answer": "Aston Villa",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_21f051",
+  "q": "Who scored the only goal as Sunderland won the 2021 EFL Trophy final?",
+  "o": [
+   "Aiden McGeady",
+   "Lynden Gooch",
+   "Charlie Wyke",
+   "Chris Maguire"
+  ],
+  "answer": "Lynden Gooch",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e51e9b",
+  "q": "In which city is the Stadium of Light located?",
+  "o": [
+   "Newcastle",
+   "Sunderland",
+   "Durham",
+   "Middlesbrough"
+  ],
+  "answer": "Sunderland",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4a0f5c",
+  "q": "Sunderland's record top-flight away win, 9–1 in December 1908, came at which club's ground?",
+  "o": [
+   "Newcastle United",
+   "Middlesbrough",
+   "Sheffield United",
+   "Aston Villa"
+  ],
+  "answer": "Newcastle United",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_81c930",
+  "q": "Which French coach was appointed Sunderland head coach in 2024, arriving from Ligue 1's Lorient?",
+  "o": [
+   "Tony Mowbray",
+   "Régis Le Bris",
+   "Michael Beale",
+   "Alex Neil"
+  ],
+  "answer": "Régis Le Bris",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_341828",
+  "q": "Which early-20th-century Sunderland and England forward later became a famous football journalist with his own monthly magazine?",
+  "o": [
+   "Charlie Buchan",
+   "Raich Carter",
+   "Len Shackleton",
+   "Bobby Gurney"
+  ],
+  "answer": "Charlie Buchan",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_351158",
+  "q": "Sunderland's great side of which decade was dubbed the 'Team of All the Talents'?",
+  "o": [
+   "The 1870s",
+   "The 1890s",
+   "The 1910s",
+   "The 1930s"
+  ],
+  "answer": "The 1890s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6ea208",
+  "q": "Club great Charlie Hurley played international football for which nation?",
+  "o": [
+   "Northern Ireland",
+   "Republic of Ireland",
+   "England",
+   "Wales"
+  ],
+  "answer": "Republic of Ireland",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_917c1e",
+  "q": "Which long-serving Sunderland midfielder and captain of the 1990s was nicknamed 'Bally'?",
+  "o": [
+   "Gary Bennett",
+   "Kevin Ball",
+   "Michael Gray",
+   "Julio Arca"
+  ],
+  "answer": "Kevin Ball",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_188fba",
+  "q": "Which manager led Ipswich Town to the 1961-62 First Division title?",
+  "o": [
+   "Bobby Robson",
+   "Alf Ramsey",
+   "George Burley",
+   "Kieran McKenna"
+  ],
+  "answer": "Alf Ramsey",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9bc075",
+  "q": "Which club did Ipswich beat 1-0 in the 1978 FA Cup final?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "West Ham United",
+   "Everton"
+  ],
+  "answer": "Arsenal",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_400058",
+  "q": "Which Dutch club did Ipswich beat in the 1981 UEFA Cup final?",
+  "o": [
+   "Ajax",
+   "AZ Alkmaar",
+   "PSV Eindhoven",
+   "Feyenoord"
+  ],
+  "answer": "AZ Alkmaar",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5e0723",
+  "q": "What are Ipswich Town's traditional home colours?",
+  "o": [
+   "Blue and white",
+   "Red and white",
+   "Claret and blue",
+   "Green and white"
+  ],
+  "answer": "Blue and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fad6e8",
+  "q": "By which nickname are Ipswich Town commonly known?",
+  "o": [
+   "The Canaries",
+   "The Hammers",
+   "The Tractor Boys",
+   "The Toffees"
+  ],
+  "answer": "The Tractor Boys",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c1e06d",
+  "q": "Which manager led Ipswich to back-to-back promotions in 2023 and 2024?",
+  "o": [
+   "Kieran McKenna",
+   "Mick McCarthy",
+   "Paul Lambert",
+   "George Burley"
+  ],
+  "answer": "Kieran McKenna",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c1f8d5",
+  "q": "Ipswich were promoted to the Premier League in 2024 after finishing where in the Championship?",
+  "o": [
+   "1st",
+   "2nd",
+   "4th",
+   "6th"
+  ],
+  "answer": "2nd",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e421f9",
+  "q": "Sir Bobby Robson later became manager of which national team?",
+  "o": [
+   "Scotland",
+   "Wales",
+   "Republic of Ireland",
+   "England"
+  ],
+  "answer": "England",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_959171",
+  "q": "Who scored the only goal in Ipswich's 1978 FA Cup final win?",
+  "o": [
+   "Paul Mariner",
+   "John Wark",
+   "Roger Osborne",
+   "Mick Mills"
+  ],
+  "answer": "Roger Osborne",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a2e5c6",
+  "q": "Which Ipswich midfielder scored 14 goals during the 1980-81 UEFA Cup campaign?",
+  "o": [
+   "John Wark",
+   "Frans Thijssen",
+   "Arnold Muhren",
+   "Eric Gates"
+  ],
+  "answer": "John Wark",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f71d59",
+  "q": "Who are Ipswich Town's fierce East Anglian rivals?",
+  "o": [
+   "Colchester United",
+   "Cambridge United",
+   "Peterborough United",
+   "Norwich City"
+  ],
+  "answer": "Norwich City",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c861b5",
+  "q": "Alongside Arnold Muhren, which other Dutch international starred in Robson's great Ipswich side?",
+  "o": [
+   "Ruud Krol",
+   "Frans Thijssen",
+   "Johnny Rep",
+   "Wim Kieft"
+  ],
+  "answer": "Frans Thijssen",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_325d65",
+  "q": "Who holds Ipswich Town's record for most appearances?",
+  "o": [
+   "Mick Mills",
+   "John Wark",
+   "Kevin Beattie",
+   "Allan Hunter"
+  ],
+  "answer": "Mick Mills",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_626b4d",
+  "q": "Who is Ipswich Town's all-time record goalscorer?",
+  "o": [
+   "Ted Phillips",
+   "Paul Mariner",
+   "Ray Crawford",
+   "Alan Brazil"
+  ],
+  "answer": "Ray Crawford",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_838fe0",
+  "q": "In which decade was Ipswich Town founded?",
+  "o": [
+   "1860s",
+   "1870s",
+   "1890s",
+   "1900s"
+  ],
+  "answer": "1870s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d0cf3",
+  "q": "In which season did Ipswich achieve their highest Premier League finish of 5th?",
+  "o": [
+   "2000-01",
+   "1999-2000",
+   "2001-02",
+   "1998-99"
+  ],
+  "answer": "2000-01",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5dad6d",
+  "q": "Which striker scored five goals in a single game for Ipswich against Southampton in 1982?",
+  "o": [
+   "Paul Mariner",
+   "Eric Gates",
+   "John Wark",
+   "Alan Brazil"
+  ],
+  "answer": "Alan Brazil",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_012d4a",
+  "q": "Kevin Beattie was the inaugural winner in 1974 of which award?",
+  "o": [
+   "Ballon d'Or",
+   "PFA Young Player of the Year",
+   "European Golden Boot",
+   "FWA Footballer of the Year"
+  ],
+  "answer": "PFA Young Player of the Year",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c705cd",
+  "q": "Which family were the long-serving chairmen associated with Ipswich Town through much of the 20th century?",
+  "o": [
+   "Cobbold",
+   "Cearns",
+   "Moores",
+   "Edwards"
+  ],
+  "answer": "Cobbold",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2db995",
+  "q": "Which England striker led Ipswich's line in both the 1978 FA Cup and 1981 UEFA Cup triumphs?",
+  "o": [
+   "Kevin Keegan",
+   "Trevor Francis",
+   "Paul Mariner",
+   "Tony Woodcock"
+  ],
+  "answer": "Paul Mariner",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_81c912",
+  "q": "Terry Butcher, who came through Ipswich's youth ranks, won international caps for which country?",
+  "o": [
+   "England",
+   "Scotland",
+   "Wales",
+   "Northern Ireland"
+  ],
+  "answer": "England",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f6f10",
+  "q": "The main stands at Portman Road are named after which two legendary managers?",
+  "o": [
+   "Ramsey and Robson",
+   "Ramsey and Burley",
+   "Robson and McCarthy",
+   "Cobbold and Robson"
+  ],
+  "answer": "Ramsey and Robson",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3cbb2d",
+  "q": "How did Ipswich Town fare in the 2024-25 Premier League season?",
+  "o": [
+   "Relegated",
+   "Champions",
+   "Comfortable mid-table",
+   "European qualifiers"
+  ],
+  "answer": "Relegated",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e9de02",
+  "q": "Who was Ipswich's leading scorer in the 2000-01 Premier League season?",
+  "o": [
+   "Marcus Stewart",
+   "Titus Bramble",
+   "Matt Holland",
+   "Kieron Dyer"
+  ],
+  "answer": "Marcus Stewart",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_697f70",
+  "q": "In which decade did Ipswich Town first join the Football League?",
+  "o": [
+   "1900s",
+   "1920s",
+   "1930s",
+   "1950s"
+  ],
+  "answer": "1930s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf5cb3",
+  "q": "Which long-serving Ipswich full-back captained England at the 1982 World Cup?",
+  "o": [
+   "Terry Butcher",
+   "Mick Mills",
+   "Paul Mariner",
+   "Russell Osman"
+  ],
+  "answer": "Mick Mills",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0125cb",
+  "q": "Which Ipswich goalkeeper later joined Arsenal and won an England cap around 2000?",
+  "o": [
+   "Richard Wright",
+   "David Seaman",
+   "Nigel Martyn",
+   "Tim Flowers"
+  ],
+  "answer": "Richard Wright",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_30e5fc",
+  "q": "Which midfielder was voted PFA Players' Player of the Year in 1981 while at Ipswich?",
+  "o": [
+   "Arnold Muhren",
+   "Eric Gates",
+   "John Wark",
+   "Mick Mills"
+  ],
+  "answer": "John Wark",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cefc84",
+  "q": "What is the approximate capacity of Portman Road?",
+  "o": [
+   "Around 12,000",
+   "Around 30,000",
+   "Around 45,000",
+   "Around 60,000"
+  ],
+  "answer": "Around 30,000",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_53a6f5",
+  "q": "Ipswich's 1961-62 league title was remarkable because it came in their first-ever season in which division?",
+  "o": [
+   "First Division (top flight)",
+   "Second Division",
+   "Third Division",
+   "Fourth Division"
+  ],
+  "answer": "First Division (top flight)",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0fc2bd",
+  "q": "Which 1970s Ipswich defender, rated by Robson among the finest he coached, was nicknamed 'The Beat'?",
+  "o": [
+   "Kevin Beattie",
+   "Allan Hunter",
+   "Mick Mills",
+   "Terry Butcher"
+  ],
+  "answer": "Kevin Beattie",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b1272",
+  "q": "Which Ipswich striker, famed for a ferociously powerful shot, partnered Ray Crawford under Alf Ramsey?",
+  "o": [
+   "Ted Phillips",
+   "Paul Mariner",
+   "Alan Brazil",
+   "Eric Gates"
+  ],
+  "answer": "Ted Phillips",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7d2737",
+  "q": "What is Crystal Palace's nickname?",
+  "o": [
+   "The Eagles",
+   "The Hammers",
+   "The Terriers",
+   "The Bees"
+  ],
+  "answer": "The Eagles",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_798b34",
+  "q": "In which year was Crystal Palace FC founded?",
+  "o": [
+   "1905",
+   "1885",
+   "1919",
+   "1932"
+  ],
+  "answer": "1905",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_709b6a",
+  "q": "Which club did Crystal Palace beat in the 2025 FA Cup Final to win the first major trophy in their history?",
+  "o": [
+   "Manchester United",
+   "Manchester City",
+   "Chelsea",
+   "Liverpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2d1d75",
+  "q": "Who scored the winning goal for Crystal Palace in the 2025 FA Cup Final?",
+  "o": [
+   "Jean-Philippe Mateta",
+   "Eberechi Eze",
+   "Ismaila Sarr",
+   "Jordan Ayew"
+  ],
+  "answer": "Eberechi Eze",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f545ff",
+  "q": "Which club did Crystal Palace face in the 1990 FA Cup Final?",
+  "o": [
+   "Manchester United",
+   "Everton",
+   "Liverpool",
+   "Tottenham Hotspur"
+  ],
+  "answer": "Manchester United",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f5d229",
+  "q": "What was the score in the first match of the 1990 FA Cup Final, after extra time?",
+  "o": [
+   "1-1",
+   "2-2",
+   "3-3",
+   "4-4"
+  ],
+  "answer": "3-3",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bb5c17",
+  "q": "Which substitute scored twice for Palace in the drawn 1990 FA Cup Final?",
+  "o": [
+   "Mark Bright",
+   "Ian Wright",
+   "Geoff Thomas",
+   "Gary O'Reilly"
+  ],
+  "answer": "Ian Wright",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0e723a",
+  "q": "Ian Wright's celebrated strike partner at Crystal Palace in the late 1980s was:",
+  "o": [
+   "Mark Bright",
+   "Andrew Johnson",
+   "Clinton Morrison",
+   "Dougie Freedman"
+  ],
+  "answer": "Mark Bright",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3d614f",
+  "q": "Who managed Crystal Palace in the 1990 FA Cup Final?",
+  "o": [
+   "Malcolm Allison",
+   "Terry Venables",
+   "Steve Coppell",
+   "Alan Smith"
+  ],
+  "answer": "Steve Coppell",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b7b1dc",
+  "q": "Who managed Crystal Palace to victory in the 2025 FA Cup?",
+  "o": [
+   "Roy Hodgson",
+   "Patrick Vieira",
+   "Oliver Glasner",
+   "Frank de Boer"
+  ],
+  "answer": "Oliver Glasner",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6947ce",
+  "q": "Who scored Crystal Palace's goal in the 2016 FA Cup Final?",
+  "o": [
+   "Yannick Bolasie",
+   "Jason Puncheon",
+   "Connor Wickham",
+   "Wilfried Zaha"
+  ],
+  "answer": "Jason Puncheon",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_57ec29",
+  "q": "Which man scored Palace's extra-time winner in the 1990 FA Cup semi-final and later managed the club in the 2016 final?",
+  "o": [
+   "Geoff Thomas",
+   "Alan Pardew",
+   "Andy Gray",
+   "Mark Bright"
+  ],
+  "answer": "Alan Pardew",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_adbb90",
+  "q": "Which winger is Crystal Palace's all-time leading goalscorer in the Premier League?",
+  "o": [
+   "Andros Townsend",
+   "Wilfried Zaha",
+   "Yannick Bolasie",
+   "Jason Puncheon"
+  ],
+  "answer": "Wilfried Zaha",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_91b388",
+  "q": "In 2013 Palace sold Wilfried Zaha to which club, before he returned on loan?",
+  "o": [
+   "Manchester United",
+   "Chelsea",
+   "Arsenal",
+   "Everton"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d483fe",
+  "q": "Michael Olise left Crystal Palace in 2024 to join which club?",
+  "o": [
+   "Paris Saint-Germain",
+   "Real Madrid",
+   "Bayern Munich",
+   "Chelsea"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f0dc8f",
+  "q": "Eberechi Eze joined which club in the summer of 2025?",
+  "o": [
+   "Tottenham Hotspur",
+   "Arsenal",
+   "Chelsea",
+   "Liverpool"
+  ],
+  "answer": "Arsenal",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_37569f",
+  "q": "In which year did Selhurst Park first open?",
+  "o": [
+   "1924",
+   "1905",
+   "1938",
+   "1951"
+  ],
+  "answer": "1924",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_df03b9",
+  "q": "Selhurst Park's record attendance of 51,801 was set in 1979 against which club?",
+  "o": [
+   "Chelsea",
+   "Burnley",
+   "Brighton & Hove Albion",
+   "Fulham"
+  ],
+  "answer": "Burnley",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2472aa",
+  "q": "Crystal Palace's highest-ever top-flight finish, third place, came in which season?",
+  "o": [
+   "1979-80",
+   "1990-91",
+   "2015-16",
+   "1969-70"
+  ],
+  "answer": "1990-91",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6e9a4a",
+  "q": "What are Crystal Palace's traditional home colours?",
+  "o": [
+   "Claret and blue",
+   "Red and blue",
+   "Blue and white",
+   "Red and white"
+  ],
+  "answer": "Red and blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6a1c09",
+  "q": "Which flamboyant manager rebranded Crystal Palace with a new nickname and red-and-blue colours in 1973?",
+  "o": [
+   "Malcolm Allison",
+   "Terry Venables",
+   "Bert Head",
+   "Dick Graham"
+  ],
+  "answer": "Malcolm Allison",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7c62bb",
+  "q": "Terry Venables dubbed his promising late-1970s Palace side the 'Team of the ___'.",
+  "o": [
+   "Seventies",
+   "Eighties",
+   "Future",
+   "Decade"
+  ],
+  "answer": "Eighties",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40e590",
+  "q": "Which trophy did Palace win in 1991, beating Everton 4-1 at Wembley?",
+  "o": [
+   "Zenith Data Systems Cup",
+   "League Cup",
+   "FA Charity Shield",
+   "Anglo-Italian Cup"
+  ],
+  "answer": "Zenith Data Systems Cup",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb14f9",
+  "q": "Which goalkeeper became Britain's first £1 million goalkeeper when Palace signed him in 1989?",
+  "o": [
+   "David Seaman",
+   "Nigel Martyn",
+   "Tony Coton",
+   "Chris Woods"
+  ],
+  "answer": "Nigel Martyn",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_451acb",
+  "q": "Which long-serving Argentine goalkeeper became a Selhurst Park cult hero across the 2000s and 2010s?",
+  "o": [
+   "Julian Speroni",
+   "Willy Caballero",
+   "Roberto Bonano",
+   "Sergio Romero"
+  ],
+  "answer": "Julian Speroni",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a0a353",
+  "q": "Which striker scored 21 Premier League goals for Palace in the 2004-05 season?",
+  "o": [
+   "Clinton Morrison",
+   "Andrew Johnson",
+   "Dougie Freedman",
+   "Mark Hughes"
+  ],
+  "answer": "Andrew Johnson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_51fc32",
+  "q": "In 2016 Palace broke their transfer record to sign which striker from Liverpool?",
+  "o": [
+   "Christian Benteke",
+   "Loic Remy",
+   "Connor Wickham",
+   "Fraizer Campbell"
+  ],
+  "answer": "Christian Benteke",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dee605",
+  "q": "Which Italian winger, formerly of Juventus, joined Palace in 1997 and briefly took charge as player-manager?",
+  "o": [
+   "Attilio Lombardo",
+   "Gianfranco Zola",
+   "Roberto Di Matteo",
+   "Benito Carbone"
+  ],
+  "answer": "Attilio Lombardo",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_333eb5",
+  "q": "Who has been Crystal Palace's chairman since 2010, having led the consortium that rescued the club?",
+  "o": [
+   "Simon Jordan",
+   "Steve Parish",
+   "Ron Noades",
+   "Mark Goldberg"
+  ],
+  "answer": "Steve Parish",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_473d9a",
+  "q": "Which manager kept Palace up in 2013-14 and was named the season's best top-flight manager?",
+  "o": [
+   "Alan Pardew",
+   "Tony Pulis",
+   "Neil Warnock",
+   "Ian Holloway"
+  ],
+  "answer": "Tony Pulis",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ed6954",
+  "q": "Which manager coined the word 'bouncebackability' during Palace's 2004 promotion run?",
+  "o": [
+   "Iain Dowie",
+   "Steve Bruce",
+   "Steve Coppell",
+   "Trevor Francis"
+  ],
+  "answer": "Iain Dowie",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_69de9e",
+  "q": "Who scored the only goal as Palace won the 2004 play-off final 1-0 against West Ham?",
+  "o": [
+   "Andrew Johnson",
+   "Neil Shipperley",
+   "Dougie Freedman",
+   "Aki Riihilahti"
+  ],
+  "answer": "Neil Shipperley",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_17af10",
+  "q": "Who scored the decisive extra-time penalty in Palace's 2013 play-off final win over Watford?",
+  "o": [
+   "Glenn Murray",
+   "Kevin Phillips",
+   "Wilfried Zaha",
+   "Mile Jedinak"
+  ],
+  "answer": "Kevin Phillips",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b5266e",
+  "q": "In their first Premier League season (1992-93), Palace were relegated despite finishing with how many points?",
+  "o": [
+   "40",
+   "49",
+   "52",
+   "45"
+  ],
+  "answer": "49",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1a6c5b",
+  "q": "Crystal Palace are based in which part of London?",
+  "o": [
+   "South London",
+   "East London",
+   "West London",
+   "North London"
+  ],
+  "answer": "South London",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0fb927",
+  "q": "What was Crystal Palace's original nickname before their 1970s rebrand?",
+  "o": [
+   "The Glaziers",
+   "The Robins",
+   "The Gunners",
+   "The Palace Boys"
+  ],
+  "answer": "The Glaziers",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_978d20",
+  "q": "Who scored Palace's opening goal in the 1990 FA Cup Final?",
+  "o": [
+   "Geoff Thomas",
+   "Gary O'Reilly",
+   "Mark Bright",
+   "Andy Gray"
+  ],
+  "answer": "Gary O'Reilly",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8a88a0",
+  "q": "At which stadium was the 2025 FA Cup Final played?",
+  "o": [
+   "Old Trafford",
+   "Wembley Stadium",
+   "Villa Park",
+   "Selhurst Park"
+  ],
+  "answer": "Wembley Stadium",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2cb09c",
+  "q": "Who saved a penalty for Palace in the 2025 FA Cup Final?",
+  "o": [
+   "Sam Johnstone",
+   "Dean Henderson",
+   "Vicente Guaita",
+   "Jack Butland"
+  ],
+  "answer": "Dean Henderson",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_418fdf",
+  "q": "Palace's 2025 FA Cup-winning manager had previously won the 2022 Europa League with which club?",
+  "o": [
+   "Sevilla",
+   "Eintracht Frankfurt",
+   "Villarreal",
+   "Atalanta"
+  ],
+  "answer": "Eintracht Frankfurt",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f7f38b",
+  "q": "In August 2025 Palace won the Community Shield by beating which team on penalties?",
+  "o": [
+   "Manchester City",
+   "Liverpool",
+   "Arsenal",
+   "Manchester United"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_847c37",
+  "q": "Palace's recent captain, centre-back Marc Guehi, plays international football for which country?",
+  "o": [
+   "Ivory Coast",
+   "England",
+   "France",
+   "Ghana"
+  ],
+  "answer": "England",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0eef7e",
+  "q": "Which club did Palace beat 3-0 in the 2025 FA Cup semi-final?",
+  "o": [
+   "Nottingham Forest",
+   "Aston Villa",
+   "Fulham",
+   "Brighton & Hove Albion"
+  ],
+  "answer": "Aston Villa",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_75e114",
+  "q": "Which manager lost his first four league games in charge of Palace in 2017 without the team scoring, and was sacked after 77 days?",
+  "o": [
+   "Alan Pardew",
+   "Frank de Boer",
+   "Sam Allardyce",
+   "Roy Hodgson"
+  ],
+  "answer": "Frank de Boer",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_908185",
+  "q": "Which former England manager took charge of Palace in 2017 and returned again in 2023?",
+  "o": [
+   "Sam Allardyce",
+   "Roy Hodgson",
+   "Steve Bruce",
+   "Sven-Goran Eriksson"
+  ],
+  "answer": "Roy Hodgson",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_411a6f",
+  "q": "Which French great managed Palace from 2021 to 2023 in his first Premier League job?",
+  "o": [
+   "Thierry Henry",
+   "Patrick Vieira",
+   "Marcel Desailly",
+   "Emmanuel Petit"
+  ],
+  "answer": "Patrick Vieira",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8adb7f",
+  "q": "Craven Cottage sits on the bank of which river?",
+  "o": [
+   "Thames",
+   "Mersey",
+   "Tyne",
+   "Severn"
+  ],
+  "answer": "Thames",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_412531",
+  "q": "What is Fulham's traditional nickname?",
+  "o": [
+   "The Cottagers",
+   "The Hammers",
+   "The Gunners",
+   "The Toffees"
+  ],
+  "answer": "The Cottagers",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_90aa4a",
+  "q": "Which club did Fulham face in the 2010 UEFA Europa League final?",
+  "o": [
+   "Sevilla",
+   "Valencia",
+   "Atletico Madrid",
+   "Real Madrid"
+  ],
+  "answer": "Atletico Madrid",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_337392",
+  "q": "Which manager led Fulham on their 2010 European run?",
+  "o": [
+   "Chris Coleman",
+   "Mark Hughes",
+   "Roy Hodgson",
+   "Martin Jol"
+  ],
+  "answer": "Roy Hodgson",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9fab39",
+  "q": "In which position did the legendary Johnny Haynes make his name?",
+  "o": [
+   "Goalkeeper",
+   "Full-back",
+   "Centre-half",
+   "Playmaking inside-forward"
+  ],
+  "answer": "Playmaking inside-forward",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_724ba7",
+  "q": "Who bought Fulham in 1997, transforming the club's fortunes?",
+  "o": [
+   "Mohamed Al-Fayed",
+   "Shahid Khan",
+   "Roman Abramovich",
+   "Stan Kroenke"
+  ],
+  "answer": "Mohamed Al-Fayed",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dcbab5",
+  "q": "What colour is Fulham's traditional home shirt?",
+  "o": [
+   "White",
+   "Red",
+   "Blue",
+   "Claret"
+  ],
+  "answer": "White",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_34374b",
+  "q": "Fulham won which trophy in 2002, earning a route into Europe?",
+  "o": [
+   "FA Cup",
+   "UEFA Intertoto Cup",
+   "League Cup",
+   "Community Shield"
+  ],
+  "answer": "UEFA Intertoto Cup",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c6b3b7",
+  "q": "In which part of London is Fulham based?",
+  "o": [
+   "North London",
+   "East London",
+   "South-west London",
+   "South-east London"
+  ],
+  "answer": "South-west London",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_14e5fc",
+  "q": "Which Italian giant did Fulham famously beat in the 2010 Europa League round of 16?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "Juventus",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fa1e18",
+  "q": "Al-Fayed controversially erected a statue of which entertainer at the ground?",
+  "o": [
+   "Elvis Presley",
+   "Michael Jackson",
+   "Freddie Mercury",
+   "David Bowie"
+  ],
+  "answer": "Michael Jackson",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_867461",
+  "q": "In which decade was Fulham founded?",
+  "o": [
+   "1900s",
+   "1870s",
+   "1920s",
+   "1890s"
+  ],
+  "answer": "1870s",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4c3232",
+  "q": "Shahid Khan, who bought Fulham in 2013, also owns which NFL franchise?",
+  "o": [
+   "Miami Dolphins",
+   "Jacksonville Jaguars",
+   "New York Jets",
+   "Buffalo Bills"
+  ],
+  "answer": "Jacksonville Jaguars",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_84d0a6",
+  "q": "Which manager won the Second Division title with Fulham in 1998-99?",
+  "o": [
+   "Jean Tigana",
+   "Roy Hodgson",
+   "Chris Coleman",
+   "Kevin Keegan"
+  ],
+  "answer": "Kevin Keegan",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6093a",
+  "q": "Fulham's all-time leading goalscorer is which Welsh striker?",
+  "o": [
+   "Trevor Ford",
+   "Ian Rush",
+   "Gordon Davies",
+   "John Toshack"
+  ],
+  "answer": "Gordon Davies",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d5945",
+  "q": "Fulham signed striker Aleksandar Mitrovic from which club?",
+  "o": [
+   "Anderlecht",
+   "Partizan Belgrade",
+   "Newcastle United",
+   "Sunderland"
+  ],
+  "answer": "Newcastle United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_defb23",
+  "q": "Which manager guided Fulham to the 2021-22 Championship title?",
+  "o": [
+   "Scott Parker",
+   "Slavisa Jokanovic",
+   "Claudio Ranieri",
+   "Marco Silva"
+  ],
+  "answer": "Marco Silva",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

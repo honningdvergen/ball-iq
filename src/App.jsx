@@ -1783,19 +1783,24 @@ if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } c
 // banner never renders inside Threads/IG/X in-app webviews — exactly where
 // social traffic lands — and InstallBanner needs a PWA install affordance
 // those webviews don't expose. So the social funnel finished Footle with NO
-// visible path to the app. iOS-web-gated: desktop can't install an iOS app
-// and the Play listing isn't live yet (Android keeps the PWA InstallBanner).
+// visible path to the app. Desktop still gets nothing (you cannot install a
+// phone app there) — it keeps the PWA InstallBanner.
 // iPadOS 13+ reports "Mac" + touch, hence the maxTouchPoints branch.
 const IS_IOS_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
   (/iPad|iPhone|iPod/.test(navigator.userAgent || "") ||
     ((navigator.userAgent || "").includes("Mac") && navigator.maxTouchPoints > 1));
+// Google Play went live 2026-07-27. Until then this CTA was iOS-only, so every
+// Android visitor finishing Footle on the web — the exact social-funnel moment
+// this component exists for — saw nothing at all.
+const IS_ANDROID_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
+  /Android/i.test(navigator.userAgent || "") && !/Windows Phone/i.test(navigator.userAgent || "");
 function FootleGetAppCTA({ style }) {
-  if (!IS_IOS_WEB) return null;
+  if (!IS_IOS_WEB && !IS_ANDROID_WEB) return null;
   return (
     <>
       <a
         className="wd-share"
-        href={APP_STORE_URL}
+        href={IS_ANDROID_WEB ? PLAY_STORE_URL : APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
         style={{ background: "var(--accent)", color: "#0a0a0a", fontWeight: 800, textDecoration: "none", ...style }}

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_e0ce8a",
+  "kind": "multiple_correct",
+  "claim": "Portugal's third place in 1966 necessarily involved losing a semi-final, so the option 'Semi-final loss' is also a true description of that run and overlaps with the keyed 'Third place'.",
+  "q": "What is Portugal's best ever finish at a World Cup?",
+  "o": [
+   "Runners-up",
+   "Quarter-final",
+   "Semi-final loss",
+   "Third place"
+  ],
+  "answer": "Third place",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5cbea6",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier \"in his first season in charge at Barcelona\" is false: Xavi took over in November 2021, so 2022-23 was his second season (first full season) — and Luis Enrique, listed as a distractor, genuinely did win La Liga in his actual first season (2014-15).",
+  "q": "Which manager won La Liga in his first season in charge at Barcelona in 2022-23?",
+  "o": [
+   "Xavi",
+   "Enrique",
+   "Valverde",
+   "Koeman"
+  ],
+  "answer": "Xavi",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_594a37",
+  "kind": "multiple_correct",
+  "claim": "\"Die Schale\" is the everyday German shorthand for the very same trophy as \"Die Meisterschale\", so a player who knows the trophy can pick the option marked wrong.",
+  "q": "What is the name of the trophy awarded to the Bundesliga champions each season?",
+  "o": [
+   "Die Schale",
+   "Die Trophäe",
+   "Die Meisterschale",
+   "Der Pokal"
+  ],
+  "answer": "Die Meisterschale",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cf02ef",
+  "kind": "stale",
+  "claim": "Phrased in the future tense (\"will compete\") about a tournament that concluded on 19 July 2026; the 48-team figure is correct but the framing has already rotted.",
+  "q": "How many teams will compete at the 2026 World Cup — the most ever?",
+  "o": [
+   "40",
+   "44",
+   "52",
+   "48"
+  ],
+  "answer": "48",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d2f8ac",
+  "kind": "stale",
+  "claim": "Phrased in the future tense (\"will host\") — MetLife Stadium already hosted the 2026 final (Spain 1-0 Argentina, 19 July 2026); the keyed answer is right but the tense is now wrong.",
+  "q": "Which stadium will host the 2026 World Cup final — with a capacity of over 82,000?",
+  "o": [
+   "Rose Bowl",
+   "AT&T Stadium",
+   "Allegiant Stadium",
+   "MetLife Stadium"
+  ],
+  "answer": "MetLife Stadium",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_514149",
+  "kind": "stale",
+  "claim": "The Puskas Award is handed out annually and Argentina (Lamela 2021, Garnacho 2024, plus recent winners) sits within one of Brazil's tally (Neymar 2011, Wendell Lira 2015, Madruga 2023), so 'most times' can be tied or overtaken at the next ceremony.",
+  "q": "The Puskas Award has been won most times by players from which country?",
+  "o": [
+   "Brazil",
+   "Argentina",
+   "Spain",
+   "Portugal"
+  ],
+  "answer": "Brazil",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

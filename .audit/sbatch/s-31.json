@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_833a31",
+  "q": "Alexander Frei returned to Switzerland to sign for Basel in 2009 from which club?",
+  "o": [
+   "Borussia Dortmund",
+   "Rennes",
+   "Schalke 04",
+   "Hamburger SV"
+  ],
+  "answer": "Borussia Dortmund",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_24c074",
+  "q": "Xherdan Shaqiri rejoined Basel in August 2024 from which club?",
+  "o": [
+   "Chicago Fire",
+   "Lyon",
+   "Liverpool",
+   "Inter Miami"
+  ],
+  "answer": "Chicago Fire",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_140c6a",
+  "q": "In which country was Ivan Rakitic born?",
+  "o": [
+   "Switzerland",
+   "Croatia",
+   "Germany",
+   "Austria"
+  ],
+  "answer": "Switzerland",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5cea6c",
+  "q": "Massimo Ceccaroni, who spent virtually his whole career at Basel, played mainly in which position?",
+  "o": [
+   "Defender",
+   "Goalkeeper",
+   "Winger",
+   "Striker"
+  ],
+  "answer": "Defender",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e0ddcf",
+  "q": "Which club ended Basel's run of consecutive Swiss league titles by winning the 2017-18 championship?",
+  "o": [
+   "Young Boys",
+   "FC Zürich",
+   "Servette",
+   "Lugano"
+  ],
+  "answer": "Young Boys",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dfde98",
+  "q": "Which manager led Basel to the 2024-25 Swiss championship?",
+  "o": [
+   "Fabio Celestini",
+   "Alex Frei",
+   "Marcel Koller",
+   "Patrick Rahmen"
+  ],
+  "answer": "Fabio Celestini",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dbce78",
+  "q": "Christian Gross, appointed Basel manager in 1999, had earlier become the first Swiss to manage in which league?",
+  "o": [
+   "The Premier League",
+   "La Liga",
+   "Serie A",
+   "The Bundesliga"
+  ],
+  "answer": "The Premier League",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2e8f59",
+  "q": "In which year did Gigi Oeri become president of FC Basel?",
+  "o": [
+   "2006",
+   "1999",
+   "2002",
+   "2010"
+  ],
+  "answer": "2006",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_35394c",
+  "q": "Who took over the majority of shares in FC Basel Holding AG from Bernhard Burgener in May 2021?",
+  "o": [
+   "David Degen",
+   "Marco Streller",
+   "Alex Frei",
+   "Bernhard Heusler"
+  ],
+  "answer": "David Degen",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_590d73",
+  "q": "FC Basel was founded after a newspaper advertisement calling for a football team was placed by whom?",
+  "o": [
+   "Roland Geldner",
+   "René Bader",
+   "Hans Huber",
+   "Josef Hügi"
+  ],
+  "answer": "Roland Geldner",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_29cd04",
+  "q": "Who was Basel's player-coach when they won their first Swiss championship?",
+  "o": [
+   "René Bader",
+   "Helmut Benthaus",
+   "Karl Rappan",
+   "Georges Sobotka"
+  ],
+  "answer": "René Bader",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6a0d85",
+  "q": "Basel's 2002 championship was the club's first league title since which year?",
+  "o": [
+   "1980",
+   "1977",
+   "1986",
+   "1973"
+  ],
+  "answer": "1980",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_02e680",
+  "q": "Which country beat Switzerland 1-0 in the opening match of UEFA Euro 2008?",
+  "o": [
+   "Czech Republic",
+   "Portugal",
+   "Turkey",
+   "Austria"
+  ],
+  "answer": "Czech Republic",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b3b1de",
+  "q": "What was the name of FC Basel's home ground in the club's early decades, before the move to St. Jakob?",
+  "o": [
+   "Landhof",
+   "Rankhof",
+   "Schützenmatte",
+   "Gundeldinger Feld"
+  ],
+  "answer": "Landhof",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b78da",
+  "q": "Which defender scored the 93rd-minute goal at St. Jakob-Park on 13 May 2006 that decided the Swiss title and sparked a pitch invasion?",
+  "o": [
+   "Iulian Filipescu",
+   "Florian Stahel",
+   "Blerim Dzemaili",
+   "Alhassane Keita"
+  ],
+  "answer": "Iulian Filipescu",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b2e014",
+  "q": "Who scored the 89th-minute winner as Basel beat Manchester United 1-0 at St. Jakob-Park in November 2017?",
+  "o": [
+   "Michael Lang",
+   "Mohamed Elyounoussi",
+   "Dimitri Oberlin",
+   "Renato Steffen"
+  ],
+  "answer": "Michael Lang",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_607474",
+  "q": "Basel first watched Mohamed Salah in the flesh in a March 2012 friendly against which side?",
+  "o": [
+   "Egypt's under-23 team",
+   "Zamalek",
+   "Egypt's senior team",
+   "Al Ahly"
+  ],
+  "answer": "Egypt's under-23 team",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_982ccb",
+  "q": "Yann Sommer's 2014 move from Basel to the Bundesliga saw him replace which player who had just left for Barcelona?",
+  "o": [
+   "Marc-André ter Stegen",
+   "Roman Bürki",
+   "Ron-Robert Zieler",
+   "Bernd Leno"
+  ],
+  "answer": "Marc-André ter Stegen",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b63e2a",
+  "q": "Fabian Frei returned to Basel in 2018 after a spell at which German club?",
+  "o": [
+   "Mainz 05",
+   "Werder Bremen",
+   "Hoffenheim",
+   "FC Augsburg"
+  ],
+  "answer": "Mainz 05",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_949b9c",
+  "q": "At the end of which season did Marco Streller retire from professional football?",
+  "o": [
+   "2014-15",
+   "2011-12",
+   "2016-17",
+   "2018-19"
+  ],
+  "answer": "2014-15",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aa998e",
+  "q": "Basel striker Josef Hügi scored a hat-trick in Switzerland's 7-5 defeat in the 1954 World Cup quarter-final against which country?",
+  "o": [
+   "Austria",
+   "West Germany",
+   "Hungary",
+   "Uruguay"
+  ],
+  "answer": "Austria",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_efe3cc",
+  "q": "Thorsten Fink left Basel in October 2011 to take charge of which club?",
+  "o": [
+   "Hamburger SV",
+   "VfB Stuttgart",
+   "Austria Wien",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Hamburger SV",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_201066",
+  "q": "What nationality was Helmut Benthaus, who arrived at Basel in 1965 as player-coach and stayed for seventeen years?",
+  "o": [
+   "German",
+   "Austrian",
+   "Swiss",
+   "Dutch"
+  ],
+  "answer": "German",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d6bd9a",
+  "q": "What is the name of Nottingham Forest's home ground, situated on the banks of the River Trent?",
+  "o": [
+   "City Ground",
+   "Meadow Lane",
+   "Trent Bridge",
+   "Forest Park"
+  ],
+  "answer": "City Ground",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_69d3b2",
+  "q": "In 1979 Trevor Francis joined Forest and became Britain's first footballer transferred for a fee of around how much?",
+  "o": [
+   "£1 million",
+   "£250,000",
+   "£5 million",
+   "£500,000"
+  ],
+  "answer": "£1 million",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b229a7",
+  "q": "Since their founding, Nottingham Forest have traditionally worn shirts of which colour?",
+  "o": [
+   "Red",
+   "Blue",
+   "Green",
+   "White"
+  ],
+  "answer": "Red",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f8e188",
+  "q": "Which East Midlands club, also managed to glory by Brian Clough, are Forest's fiercest rivals?",
+  "o": [
+   "Derby County",
+   "Leicester City",
+   "Notts County",
+   "Mansfield Town"
+  ],
+  "answer": "Derby County",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_44dc26",
+  "q": "Which Swedish club did Forest defeat in the 1979 European Cup final?",
+  "o": [
+   "Malmö FF",
+   "IFK Göteborg",
+   "AIK",
+   "Djurgården"
+  ],
+  "answer": "Malmö FF",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_23eb6f",
+  "q": "Which German club did Forest beat in the 1980 European Cup final in Madrid?",
+  "o": [
+   "Hamburg",
+   "Bayern Munich",
+   "Borussia Mönchengladbach",
+   "Cologne"
+  ],
+  "answer": "Hamburg",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b60b4d",
+  "q": "Who scored Forest's winning goal in the 1980 European Cup final in Madrid?",
+  "o": [
+   "John Robertson",
+   "Garry Birtles",
+   "Trevor Francis",
+   "Kenny Burns"
+  ],
+  "answer": "John Robertson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_896b3d",
+  "q": "In which year did Forest win their only top-flight league title, the old First Division?",
+  "o": [
+   "1978",
+   "1980",
+   "1972",
+   "1984"
+  ],
+  "answer": "1978",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_da167d",
+  "q": "In roughly which decade were Nottingham Forest founded?",
+  "o": [
+   "1860s",
+   "1900s",
+   "1920s",
+   "1880s"
+  ],
+  "answer": "1860s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_52df3b",
+  "q": "Which goalkeeper, signed from Stoke City in 1977, was between the posts for Forest's two European Cup triumphs?",
+  "o": [
+   "Peter Shilton",
+   "Ray Clemence",
+   "Gordon Banks",
+   "Pat Jennings"
+  ],
+  "answer": "Peter Shilton",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_00cbf6",
+  "q": "Which combative defender was named FWA Footballer of the Year in 1977-78 after Clough converted him from striker to centre-back?",
+  "o": [
+   "Kenny Burns",
+   "Larry Lloyd",
+   "Viv Anderson",
+   "Colin Todd"
+  ],
+  "answer": "Kenny Burns",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5db09a",
+  "q": "Which uncompromising left-back, nicknamed 'Psycho,' became a long-serving Forest captain and fan favourite?",
+  "o": [
+   "Stuart Pearce",
+   "Des Walker",
+   "Viv Anderson",
+   "Kenny Burns"
+  ],
+  "answer": "Stuart Pearce",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5e3157",
+  "q": "In 1993 Forest sold midfielder Roy Keane for a then-British record fee to which club?",
+  "o": [
+   "Manchester United",
+   "Liverpool",
+   "Arsenal",
+   "Blackburn Rovers"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ff2226",
+  "q": "In 1995 Forest sold striker Stan Collymore for a then-club-record fee to which club?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Aston Villa",
+   "Newcastle United"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de9671",
+  "q": "Forest sold England centre-back Des Walker to which Italian club in 1992?",
+  "o": [
+   "Sampdoria",
+   "Juventus",
+   "Internazionale",
+   "Lazio"
+  ],
+  "answer": "Sampdoria",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73c5c2",
+  "q": "In 1977-78 Forest set a then-English top-flight record with an unbeaten league run of how many games?",
+  "o": [
+   "42",
+   "29",
+   "49",
+   "35"
+  ],
+  "answer": "42",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c74216",
+  "q": "As European champions, Forest won which additional continental trophy in 1979-80, beating Barcelona?",
+  "o": [
+   "European Super Cup",
+   "UEFA Cup",
+   "Cup Winners' Cup",
+   "Intercontinental Cup"
+  ],
+  "answer": "European Super Cup",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9fc0c2",
+  "q": "Which forward was Forest's top scorer during their victorious 1978-79 European Cup campaign?",
+  "o": [
+   "Garry Birtles",
+   "Tony Woodcock",
+   "Trevor Francis",
+   "Peter Withe"
+  ],
+  "answer": "Garry Birtles",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e440ef",
+  "q": "Whom did Forest beat in the 1978 League Cup final, after a replay, to lift the trophy?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Southampton",
+   "Manchester City"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5a517b",
+  "q": "In the 1979 League Cup final Forest retained the trophy by beating which club 3-2?",
+  "o": [
+   "Southampton",
+   "West Ham United",
+   "Ipswich Town",
+   "Wolves"
+  ],
+  "answer": "Southampton",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a0a63b",
+  "q": "Forest won the League Cup again in 1990, beating which club 1-0 in the final?",
+  "o": [
+   "Oldham Athletic",
+   "Luton Town",
+   "Manchester United",
+   "Sheffield Wednesday"
+  ],
+  "answer": "Oldham Athletic",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de4fca",
+  "q": "Who scored the only goal of the 1990 League Cup final?",
+  "o": [
+   "Nigel Jemson",
+   "Nigel Clough",
+   "Stuart Pearce",
+   "Garry Parker"
+  ],
+  "answer": "Nigel Jemson",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d0a0bd",
+  "q": "Who is recognised as Nottingham Forest's all-time leading goalscorer, with 217 goals in the early 20th century?",
+  "o": [
+   "Grenville Morris",
+   "Wally Ardron",
+   "Nigel Clough",
+   "Ian Storey-Moore"
+  ],
+  "answer": "Grenville Morris",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_686da2",
+  "q": "Forest's record victory, a 14-0 rout in 1891, came in the FA Cup against which side?",
+  "o": [
+   "Clapton",
+   "Corinthians",
+   "Clapham Rovers",
+   "Casuals"
+  ],
+  "answer": "Clapton",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_14f88e",
+  "q": "Who captained Nottingham Forest through both of their European Cup triumphs?",
+  "o": [
+   "John McGovern",
+   "Kenny Burns",
+   "Viv Anderson",
+   "Ian Bowyer"
+  ],
+  "answer": "John McGovern",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_78fff0",
+  "q": "Who was Brian Clough's long-time assistant, credited as the shrewd talent-spotter behind Forest's success?",
+  "o": [
+   "Peter Taylor",
+   "Jimmy Gordon",
+   "Ron Fenton",
+   "Archie Gemmill"
+  ],
+  "answer": "Peter Taylor",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e03794",
+  "q": "Which manager guided Nottingham Forest to promotion to the Premier League in 2022?",
+  "o": [
+   "Steve Cooper",
+   "Sabri Lamouchi",
+   "Chris Hughton",
+   "Aitor Karanka"
+  ],
+  "answer": "Steve Cooper",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8f3c4b",
+  "q": "Whom did Forest beat in the 2022 Championship play-off final at Wembley?",
+  "o": [
+   "Huddersfield Town",
+   "Luton Town",
+   "Sheffield United",
+   "Coventry City"
+  ],
+  "answer": "Huddersfield Town",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f2a84b",
+  "q": "In 2022 Forest broke their transfer record to sign which attacking midfielder from Wolves?",
+  "o": [
+   "Morgan Gibbs-White",
+   "Jesse Lingard",
+   "Jack Colback",
+   "Ryan Yates"
+  ],
+  "answer": "Morgan Gibbs-White",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3913a1",
+  "q": "The 1979 European Cup final was staged in which city?",
+  "o": [
+   "Munich",
+   "Madrid",
+   "Barcelona",
+   "Rome"
+  ],
+  "answer": "Munich",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c0ad75",
+  "q": "Forest's 2022 promotion ended an absence from England's top division of how many years?",
+  "o": [
+   "23 years",
+   "10 years",
+   "15 years",
+   "30 years"
+  ],
+  "answer": "23 years",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_db2f85",
+  "q": "Which Forest full-back became the first black footballer to play a full England international, in 1978?",
+  "o": [
+   "Viv Anderson",
+   "Des Walker",
+   "Stuart Pearce",
+   "John Barnes"
+  ],
+  "answer": "Viv Anderson",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2ad905",
+  "q": "Who succeeded Brian Clough as Forest manager in 1993 and led them straight back to the Premier League in 1994?",
+  "o": [
+   "Frank Clark",
+   "Dave Bassett",
+   "Stuart Pearce",
+   "Ron Atkinson"
+  ],
+  "answer": "Frank Clark",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_734f34",
+  "q": "Nottingham Forest's stand nearest the River Trent is known by what name?",
+  "o": [
+   "The Trent End",
+   "The Kop",
+   "The Kippax",
+   "The Shed End"
+  ],
+  "answer": "The Trent End",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3a492b",
+  "q": "In which year did Brian Clough become manager of Nottingham Forest?",
+  "o": [
+   "1975",
+   "1969",
+   "1980",
+   "1972"
+  ],
+  "answer": "1975",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_245881",
+  "q": "What made Forest's 1979 European Cup win especially remarkable?",
+  "o": [
+   "They had been promoted to the top flight only two years earlier",
+   "They had never won a match in Europe before",
+   "They were still a fourth-tier club",
+   "They played the final with ten men"
+  ],
+  "answer": "They had been promoted to the top flight only two years earlier",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c23290",
+  "q": "Which Forest and England forward of the late 1980s was the son of the club's European Cup-winning manager?",
+  "o": [
+   "Nigel Clough",
+   "Garry Birtles",
+   "Steve Hodge",
+   "Neil Webb"
+  ],
+  "answer": "Nigel Clough",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aa8f52",
+  "q": "Which Forest player famously broke his leg during the 1959 FA Cup final win over Luton Town, yet was a cousin of Elton John?",
+  "o": [
+   "Roy Dwight",
+   "Tommy Wilson",
+   "Jack Burkitt",
+   "Stewart Imlach"
+  ],
+  "answer": "Roy Dwight",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9361f2",
+  "q": "Which defender holds Forest's record for most appearances, turning out well over 600 times between 1951 and 1970?",
+  "o": [
+   "Bob McKinlay",
+   "Ian Bowyer",
+   "Steve Chettle",
+   "Stuart Pearce"
+  ],
+  "answer": "Bob McKinlay",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_92669b",
+  "q": "Which England striker came through at Forest and won the League Cup before joining Cologne in Germany in 1979?",
+  "o": [
+   "Tony Woodcock",
+   "Garry Birtles",
+   "Trevor Francis",
+   "Peter Withe"
+  ],
+  "answer": "Tony Woodcock",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_db6e3d",
+  "q": "Forest's record home attendance, set in 1967, was for a First Division match against which club?",
+  "o": [
+   "Manchester United",
+   "Liverpool",
+   "Arsenal",
+   "Derby County"
+  ],
+  "answer": "Manchester United",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_355b29",
+  "q": "Nottingham Forest take their name from which open space where the club's earliest games were played?",
+  "o": [
+   "The Forest Recreation Ground",
+   "Trent Bridge Meadows",
+   "Wollaton Park",
+   "Sherwood Forest"
+  ],
+  "answer": "The Forest Recreation Ground",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e0c5be",
+  "q": "In which year was Aston Villa founded?",
+  "o": [
+   "1872",
+   "1874",
+   "1878",
+   "1888"
+  ],
+  "answer": "1874",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_523ed2",
+  "q": "Aston Villa were one of the twelve founding members of the Football League in which year?",
+  "o": [
+   "1885",
+   "1888",
+   "1892",
+   "1901"
+  ],
+  "answer": "1888",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_376d76",
+  "q": "Which Aston Villa committee member is credited as the founder of the Football League?",
+  "o": [
+   "William McGregor",
+   "Charles Alcock",
+   "Herbert Chapman",
+   "Ebenezer Cobb Morley"
+  ],
+  "answer": "William McGregor",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_24a353",
+  "q": "Which stadium has been Aston Villa's home ground since 1897?",
+  "o": [
+   "The Hawthorns",
+   "Molineux",
+   "Villa Park",
+   "St Andrew's"
+  ],
+  "answer": "Villa Park",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b9d156",
+  "q": "By which nickname are Aston Villa most commonly known?",
+  "o": [
+   "The Villans",
+   "The Baggies",
+   "The Blues",
+   "The Hornets"
+  ],
+  "answer": "The Villans",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_df7a75",
+  "q": "What are Aston Villa's traditional home colours?",
+  "o": [
+   "Red and white",
+   "Claret and blue",
+   "Blue and white",
+   "Green and white"
+  ],
+  "answer": "Claret and blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cb1910",
+  "q": "In 1897 Aston Villa won the league title together with which other major trophy in the same season?",
+  "o": [
+   "FA Cup",
+   "League Cup",
+   "European Cup",
+   "Charity Shield"
+  ],
+  "answer": "FA Cup",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_538382",
+  "q": "Aston Villa's Second City derby is contested against which club?",
+  "o": [
+   "West Bromwich Albion",
+   "Wolverhampton Wanderers",
+   "Birmingham City",
+   "Coventry City"
+  ],
+  "answer": "Birmingham City",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8b263b",
+  "q": "Which famous stand at Villa Park is one of the largest single-tier ends in English football?",
+  "o": [
+   "The Kop",
+   "The Holte End",
+   "The Shed End",
+   "The Stretford End"
+  ],
+  "answer": "The Holte End",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_81dac9",
+  "q": "Which German club did Aston Villa defeat in the 1982 European Cup final?",
+  "o": [
+   "Hamburg",
+   "Bayern Munich",
+   "Borussia Moenchengladbach",
+   "1. FC Koeln"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7e0655",
+  "q": "In which city was the 1982 European Cup final played?",
+  "o": [
+   "Madrid",
+   "Munich",
+   "Paris",
+   "Rotterdam"
+  ],
+  "answer": "Rotterdam",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9e7953",
+  "q": "Who scored Aston Villa's winning goal in the 1982 European Cup final?",
+  "o": [
+   "Peter Withe",
+   "Andy Gray",
+   "Dennis Mortimer",
+   "Tony Morley"
+  ],
+  "answer": "Peter Withe",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_978645",
+  "q": "After keeper Jimmy Rimmer went off injured early in the 1982 European Cup final, which young substitute goalkeeper starred for Villa?",
+  "o": [
+   "Nigel Spink",
+   "Mark Bosnich",
+   "David James",
+   "Neville Southall"
+  ],
+  "answer": "Nigel Spink",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_66de23",
+  "q": "Who was Aston Villa's manager when they won the 1982 European Cup?",
+  "o": [
+   "Ron Saunders",
+   "Tony Barton",
+   "Graham Taylor",
+   "Ron Atkinson"
+  ],
+  "answer": "Tony Barton",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f4e6ae",
+  "q": "Who captained Aston Villa and lifted the trophy when they won the 1982 European Cup?",
+  "o": [
+   "Allan Evans",
+   "Gordon Cowans",
+   "Dennis Mortimer",
+   "Ken McNaught"
+  ],
+  "answer": "Dennis Mortimer",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a8f9b9",
+  "q": "In the 1982 European Super Cup, Aston Villa beat which Spanish club over two legs?",
+  "o": [
+   "Real Madrid",
+   "Valencia",
+   "Barcelona",
+   "Atletico Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_58bed3",
+  "q": "Aston Villa's 2024-25 Champions League campaign was their first in Europe's top club competition since which season?",
+  "o": [
+   "1982-83",
+   "1990-91",
+   "2001-02",
+   "2010-11"
+  ],
+  "answer": "1982-83",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a598c4",
+  "q": "Which manager guided Aston Villa back into the Champions League for the 2024-25 season?",
+  "o": [
+   "Steven Gerrard",
+   "Dean Smith",
+   "Unai Emery",
+   "Brendan Rodgers"
+  ],
+  "answer": "Unai Emery",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_43ff6c",
+  "q": "Which Republic of Ireland defender, nicknamed 'God' by supporters, was a cult hero at Aston Villa in the early 1990s?",
+  "o": [
+   "Paul McGrath",
+   "Steve Staunton",
+   "Andy Townsend",
+   "Kevin Moran"
+  ],
+  "answer": "Paul McGrath",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20b173",
+  "q": "Which Trinidad and Tobago striker was a prolific fan favourite for Aston Villa in the 1990s?",
+  "o": [
+   "Dwight Yorke",
+   "Savo Milosevic",
+   "Stan Collymore",
+   "Julian Joachim"
+  ],
+  "answer": "Dwight Yorke",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0d9cea",
+  "q": "Which midfielder, nicknamed 'Sid', had three spells at Aston Villa and won the European Cup with the club?",
+  "o": [
+   "Des Bremner",
+   "Gordon Cowans",
+   "Gary Williams",
+   "Allan Evans"
+  ],
+  "answer": "Gordon Cowans",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_285824",
+  "q": "Which future England manager captained Aston Villa in the mid-1990s after signing from Crystal Palace?",
+  "o": [
+   "Stuart Pearce",
+   "Tony Adams",
+   "Gareth Southgate",
+   "Steve Bruce"
+  ],
+  "answer": "Gareth Southgate",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3640d7",
+  "q": "Aston Villa sold England midfielder David Platt in 1991 to which Italian club?",
+  "o": [
+   "Bari",
+   "Juventus",
+   "Sampdoria",
+   "Internazionale"
+  ],
+  "answer": "Bari",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_70ff76",
+  "q": "Under which manager did Aston Villa win the 1980-81 First Division title?",
+  "o": [
+   "Tony Barton",
+   "Ron Saunders",
+   "Ron Atkinson",
+   "Graham Turner"
+  ],
+  "answer": "Ron Saunders",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_74022d",
+  "q": "Which manager led Aston Villa to First Division runners-up in 1989-90 before leaving to manage England?",
+  "o": [
+   "Bobby Robson",
+   "Graham Taylor",
+   "Terry Venables",
+   "Ron Greenwood"
+  ],
+  "answer": "Graham Taylor",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a3bf3",
+  "q": "Which former Villa player managed the club to their 1996 League Cup triumph?",
+  "o": [
+   "John Gregory",
+   "Brian Little",
+   "David O'Leary",
+   "Josef Venglos"
+  ],
+  "answer": "Brian Little",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2242ad",
+  "q": "Which former Liverpool captain managed Aston Villa from 2021 until October 2022?",
+  "o": [
+   "Steven Gerrard",
+   "Jamie Carragher",
+   "John Terry",
+   "Roy Keane"
+  ],
+  "answer": "Steven Gerrard",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f4d640",
+  "q": "Which boyhood Villa supporter managed the club to promotion via the 2019 Championship play-offs?",
+  "o": [
+   "Tim Sherwood",
+   "Dean Smith",
+   "Nigel Pearson",
+   "Steve Bruce"
+  ],
+  "answer": "Dean Smith",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5d2bb2",
+  "q": "Under which manager did Aston Villa record three consecutive sixth-place Premier League finishes from 2008 to 2010?",
+  "o": [
+   "Gerard Houllier",
+   "Martin O'Neill",
+   "Paul Lambert",
+   "David O'Leary"
+  ],
+  "answer": "Martin O'Neill",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_25273e",
+  "q": "Which manager led Aston Villa to victory in the 1994 League Cup final?",
+  "o": [
+   "Josef Venglos",
+   "Ron Atkinson",
+   "Brian Little",
+   "Graham Taylor"
+  ],
+  "answer": "Ron Atkinson",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4b5fbd",
+  "q": "In 2021 Aston Villa sold which academy graduate to Manchester City for 100 million pounds?",
+  "o": [
+   "John McGinn",
+   "Jack Grealish",
+   "Ross Barkley",
+   "Anwar El Ghazi"
+  ],
+  "answer": "Jack Grealish",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a486eb",
+  "q": "Aston Villa signed striker Ollie Watkins in 2020 from which club?",
+  "o": [
+   "Brentford",
+   "Bournemouth",
+   "Norwich City",
+   "Fulham"
+  ],
+  "answer": "Brentford",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1952f4",
+  "q": "From which club did Aston Villa sign goalkeeper Emiliano Martinez in 2020?",
+  "o": [
+   "Chelsea",
+   "Reading",
+   "Arsenal",
+   "Sheffield United"
+  ],
+  "answer": "Arsenal",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_76c2c7",
+  "q": "Aston Villa signed winger Moussa Diaby in 2023 from which German club?",
+  "o": [
+   "RB Leipzig",
+   "Bayer Leverkusen",
+   "Wolfsburg",
+   "Borussia Dortmund"
+  ],
+  "answer": "Bayer Leverkusen",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4a2d42",
+  "q": "Aston Villa broke their transfer record in 2021 to sign Emiliano Buendia from which club?",
+  "o": [
+   "Watford",
+   "Leeds United",
+   "Norwich City",
+   "Brentford"
+  ],
+  "answer": "Norwich City",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ec7989",
+  "q": "Aston Villa goalkeeper Emiliano Martinez won which individual award at the 2022 World Cup?",
+  "o": [
+   "Golden Boot",
+   "Golden Ball",
+   "Golden Glove",
+   "Bronze Ball"
+  ],
+  "answer": "Golden Glove",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ea0cb3",
+  "q": "Villa striker Ollie Watkins scored a stoppage-time winner against which country in the Euro 2024 semi-final?",
+  "o": [
+   "France",
+   "Spain",
+   "Germany",
+   "Netherlands"
+  ],
+  "answer": "Netherlands",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7b428f",
+  "q": "Which club did Aston Villa beat 2-1 in the 1957 FA Cup final?",
+  "o": [
+   "Manchester United",
+   "Everton",
+   "Preston North End",
+   "Bolton Wanderers"
+  ],
+  "answer": "Manchester United",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0d2e30",
+  "q": "Who scored both of Aston Villa's goals in the 1957 FA Cup final?",
+  "o": [
+   "Johnny Dixon",
+   "Peter McParland",
+   "Nat Lofthouse",
+   "Billy Myerscough"
+  ],
+  "answer": "Peter McParland",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7e7926",
+  "q": "How many top-flight English league titles had Aston Villa won in total by 1981?",
+  "o": [
+   "Three",
+   "Five",
+   "Seven",
+   "Ten"
+  ],
+  "answer": "Seven",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_664847",
+  "q": "In which season did Aston Villa win the very first Football League Cup?",
+  "o": [
+   "1960-61",
+   "1957-58",
+   "1966-67",
+   "1970-71"
+  ],
+  "answer": "1960-61",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_492293",
+  "q": "Which Aston Villa striker was named PFA Young Player of the Year for the 1980-81 season?",
+  "o": [
+   "Andy Gray",
+   "Gary Shaw",
+   "Dalian Atkinson",
+   "Dean Saunders"
+  ],
+  "answer": "Gary Shaw",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d4f67f",
+  "q": "Which animal features on Aston Villa's club crest?",
+  "o": [
+   "An eagle",
+   "A lion",
+   "A ram",
+   "A bear"
+  ],
+  "answer": "A lion",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_24c256",
+  "q": "Aston Villa signed midfielder John McGinn in 2018 from which Scottish club?",
+  "o": [
+   "Celtic",
+   "Hibernian",
+   "Aberdeen",
+   "Rangers"
+  ],
+  "answer": "Hibernian",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3a3ccd",
+  "q": "In October 2020 Aston Villa produced a shock home thrashing of reigning champions Liverpool by what scoreline?",
+  "o": [
+   "3-0",
+   "4-1",
+   "7-2",
+   "5-3"
+  ],
+  "answer": "7-2",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_32047b",
+  "q": "Aston Villa were knocked out of the 2024-25 Champions League in the quarter-finals by which eventual winners?",
+  "o": [
+   "Real Madrid",
+   "Paris Saint-Germain",
+   "Internazionale",
+   "Barcelona"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0cb6ed",
+  "q": "Everton were originally founded in 1878 under what name?",
+  "o": [
+   "St Domingo's FC",
+   "Christ Church Rovers",
+   "Everton Villa",
+   "Anfield Rovers"
+  ],
+  "answer": "St Domingo's FC",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d7ee19",
+  "q": "Everton was one of the twelve founding members of which competition in 1888?",
+  "o": [
+   "The Football League",
+   "The Premier League",
+   "The FA Cup",
+   "The Football Alliance"
+  ],
+  "answer": "The Football League",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1297d3",
+  "q": "What is the Latin motto that appears on Everton's club crest?",
+  "o": [
+   "Nil Satis Nisi Optimum",
+   "Vincit Omnia Veritas",
+   "Superbia In Proelio",
+   "Arte et Labore"
+  ],
+  "answer": "Nil Satis Nisi Optimum",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20a558",
+  "q": "Which former lock-up building in the Everton district features on the club's crest?",
+  "o": [
+   "Prince Rupert's Tower",
+   "The Royal Liver Building",
+   "Liverpool Cathedral",
+   "St George's Hall"
+  ],
+  "answer": "Prince Rupert's Tower",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_72f623",
+  "q": "Praised for a scientific playing style in the 1920s, Everton earned which enduring nickname?",
+  "o": [
+   "The School of Science",
+   "The Blue Machine",
+   "The Merseyside Masters",
+   "The Academy"
+  ],
+  "answer": "The School of Science",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5736d0",
+  "q": "Everton's nickname 'The Toffees' is linked to what kind of local business?",
+  "o": [
+   "A sweet shop",
+   "A brewery",
+   "A dockyard",
+   "A textile mill"
+  ],
+  "answer": "A sweet shop",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_690e2d",
+  "q": "What is the traditional home shirt colour Everton adopted in the early 1900s?",
+  "o": [
+   "Royal blue",
+   "Claret",
+   "Salmon pink",
+   "Black"
+  ],
+  "answer": "Royal blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f7ef19",
+  "q": "By what affectionate nickname was Goodison Park long known?",
+  "o": [
+   "The Grand Old Lady",
+   "The Theatre of Dreams",
+   "The Cathedral",
+   "Fortress Park"
+  ],
+  "answer": "The Grand Old Lady",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88ccd2",
+  "q": "The Merseyside derby between Everton and Liverpool has traditionally been known as what?",
+  "o": [
+   "The Friendly Derby",
+   "The Steel City Derby",
+   "The Old Firm",
+   "The North West Derby"
+  ],
+  "answer": "The Friendly Derby",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8683c6",
+  "q": "Goodison Park and Anfield sit less than a mile apart, separated by which park?",
+  "o": [
+   "Stanley Park",
+   "Sefton Park",
+   "Newsham Park",
+   "Wavertree Park"
+  ],
+  "answer": "Stanley Park",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f5bccd",
+  "q": "Everton's new stadium, opened for the 2025-26 season, was built at which Liverpool dockside site?",
+  "o": [
+   "Bramley-Moore Dock",
+   "Kings Dock",
+   "Albert Dock",
+   "Stanley Dock"
+  ],
+  "answer": "Bramley-Moore Dock",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a8336",
+  "q": "Which end of Goodison Park was traditionally the home of Everton's most vocal supporters?",
+  "o": [
+   "The Gwladys Street End",
+   "The Kop",
+   "The Stretford End",
+   "The Shed End"
+  ],
+  "answer": "The Gwladys Street End",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_67b635",
+  "q": "Everton won their first-ever English league title in which season?",
+  "o": [
+   "1890-91",
+   "1902-03",
+   "1905-06",
+   "1927-28"
+  ],
+  "answer": "1890-91",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b5c82f",
+  "q": "Everton won the last First Division title before league football was suspended for the First World War. Which season was it?",
+  "o": [
+   "1914-15",
+   "1912-13",
+   "1918-19",
+   "1919-20"
+  ],
+  "answer": "1914-15",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c67dd1",
+  "q": "Which Everton centre-forward set the English top-flight record of 60 league goals in the 1927-28 season?",
+  "o": [
+   "Dixie Dean",
+   "Tommy Lawton",
+   "Bob Latchford",
+   "Graeme Sharp"
+  ],
+  "answer": "Dixie Dean",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a860bd",
+  "q": "Goodison Park's record attendance of 78,299, set in 1948, came against which club?",
+  "o": [
+   "Liverpool",
+   "Manchester United",
+   "Arsenal",
+   "Manchester City"
+  ],
+  "answer": "Liverpool",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5ee136",
+  "q": "Between 1891 and 1987, how many English top-flight league titles did Everton win?",
+  "o": [
+   "Nine",
+   "Six",
+   "Seven",
+   "Eleven"
+  ],
+  "answer": "Nine",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d976e7",
+  "q": "The 1933 FA Cup final, won by Everton, was the first English cup final in which players wore what?",
+  "o": [
+   "Numbered shirts",
+   "Names on their shirts",
+   "Sponsor logos",
+   "All-white kits"
+  ],
+  "answer": "Numbered shirts",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_51fc76",
+  "q": "Which Welsh goalkeeper set Everton's club record for most league appearances?",
+  "o": [
+   "Neville Southall",
+   "Dai Davies",
+   "Jack Kelsey",
+   "Wayne Hennessey"
+  ],
+  "answer": "Neville Southall",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_34a5c8",
+  "q": "Which Scottish striker was Everton's leading post-war goalscorer, netting 159 goals from 1980?",
+  "o": [
+   "Graeme Sharp",
+   "Andy Gray",
+   "Ally McCoist",
+   "Duncan Ferguson"
+  ],
+  "answer": "Graeme Sharp",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c723d0",
+  "q": "Which 16-year-old academy graduate scored a famous last-minute winner against Arsenal in October 2002?",
+  "o": [
+   "Wayne Rooney",
+   "Ross Barkley",
+   "Francis Jeffers",
+   "Michael Ball"
+  ],
+  "answer": "Wayne Rooney",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0537ef",
+  "q": "Which Welsh centre-back captained Everton through their trophy-winning peak in the mid-1980s?",
+  "o": [
+   "Kevin Ratcliffe",
+   "Ashley Williams",
+   "Mike England",
+   "James Collins"
+  ],
+  "answer": "Kevin Ratcliffe",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_814680",
+  "q": "Which Scottish striker, signed from Rangers, became a cult hero at Everton in the 1990s for his powerful headers?",
+  "o": [
+   "Duncan Ferguson",
+   "Ally McCoist",
+   "Gordon Durie",
+   "Billy Dodds"
+  ],
+  "answer": "Duncan Ferguson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8fd0a5",
+  "q": "Which striker scored 30 league goals in 1977-78 to claim a national newspaper's £10,000 prize?",
+  "o": [
+   "Bob Latchford",
+   "Andy King",
+   "Duncan McKenzie",
+   "Joe Royle"
+  ],
+  "answer": "Bob Latchford",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_24461a",
+  "q": "Which stylish 1960s Everton forward was nicknamed 'The Golden Vision'?",
+  "o": [
+   "Alex Young",
+   "Roy Vernon",
+   "Fred Pickering",
+   "Jimmy Gabriel"
+  ],
+  "answer": "Alex Young",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b3162",
+  "q": "Which one-club Everton centre-half, nicknamed 'Mr Everton', captained the 1970 title win and played at the 1970 World Cup?",
+  "o": [
+   "Brian Labone",
+   "John Hurst",
+   "Tommy Wright",
+   "Jimmy Gabriel"
+  ],
+  "answer": "Brian Labone",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_176570",
+  "q": "Which Australian midfielder, signed from Millwall in 2004, was famous for his headers and corner-flag celebration at Everton?",
+  "o": [
+   "Tim Cahill",
+   "Mark Schwarzer",
+   "Lee Carsley",
+   "Marouane Fellaini"
+  ],
+  "answer": "Tim Cahill",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_17d3aa",
+  "q": "Which centre-forward top-scored as Everton won the 1938-39 First Division title?",
+  "o": [
+   "Tommy Lawton",
+   "Joe Mercer",
+   "T.G. Jones",
+   "Wally Fielding"
+  ],
+  "answer": "Tommy Lawton",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_27a34c",
+  "q": "Which member of Everton's late-1960s 'Holy Trinity' midfield went on to manage the club from 1987?",
+  "o": [
+   "Colin Harvey",
+   "Jimmy Gabriel",
+   "Tommy Wright",
+   "John Hurst"
+  ],
+  "answer": "Colin Harvey",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b64c8b",
+  "q": "Which former Everton midfielder managed the club to its greatest successes in the mid-1980s?",
+  "o": [
+   "Howard Kendall",
+   "Harry Catterick",
+   "Colin Harvey",
+   "Joe Royle"
+  ],
+  "answer": "Howard Kendall",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3943da",
+  "q": "Which manager led Everton to First Division titles in 1963 and 1970?",
+  "o": [
+   "Harry Catterick",
+   "Cliff Britton",
+   "Johnny Carey",
+   "Billy Bingham"
+  ],
+  "answer": "Harry Catterick",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b50b4",
+  "q": "Which former Everton striker managed the 'Dogs of War' side that won the 1995 FA Cup?",
+  "o": [
+   "Joe Royle",
+   "Mike Walker",
+   "Colin Harvey",
+   "Walter Smith"
+  ],
+  "answer": "Joe Royle",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_56bba3",
+  "q": "Which Scottish manager led Everton for eleven years from 2002, delivering regular top-half finishes?",
+  "o": [
+   "David Moyes",
+   "Walter Smith",
+   "Gordon Strachan",
+   "Graeme Souness"
+  ],
+  "answer": "David Moyes",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a7d9b9",
+  "q": "Which Everton full-back started for England in their 1966 World Cup final victory?",
+  "o": [
+   "Ray Wilson",
+   "Tommy Wright",
+   "Sandy Brown",
+   "Gary Stevens"
+  ],
+  "answer": "Ray Wilson",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1a177a",
+  "q": "Which 1966 World Cup winner did Everton sign from Blackpool for a British record fee that August, weeks after the final?",
+  "o": [
+   "Alan Ball",
+   "Fred Pickering",
+   "Howard Kendall",
+   "Alan Whittle"
+  ],
+  "answer": "Alan Ball",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8332b7",
+  "q": "Which Belgian striker did Everton sell to a Premier League rival in 2017 after four prolific seasons at Goodison?",
+  "o": [
+   "Romelu Lukaku",
+   "Christian Benteke",
+   "Divock Origi",
+   "Michy Batshuayi"
+  ],
+  "answer": "Romelu Lukaku",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e6b50c",
+  "q": "Which European trophy did Everton win in 1985, the club's only major continental honour?",
+  "o": [
+   "European Cup Winners' Cup",
+   "UEFA Cup",
+   "European Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "European Cup Winners' Cup",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9a1b2b",
+  "q": "In 1985, Everton won their only major European final by beating which Austrian club 3-1 in Rotterdam?",
+  "o": [
+   "Rapid Vienna",
+   "Austria Vienna",
+   "Sturm Graz",
+   "Red Bull Salzburg"
+  ],
+  "answer": "Rapid Vienna",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5c2ee4",
+  "q": "The post-Heysel ban on English clubs in 1985 denied Everton entry to which competition they had qualified for?",
+  "o": [
+   "European Cup",
+   "Cup Winners' Cup",
+   "UEFA Cup",
+   "Intercontinental Cup"
+  ],
+  "answer": "European Cup",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ }
+]

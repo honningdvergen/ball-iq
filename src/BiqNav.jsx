@@ -14,7 +14,7 @@
 // dark-only chrome and must read correctly regardless of the runtime theme.
 // The visible display gating + hover/active states live in app.css (.biq-nav
 // *), so this file is pure structure.
-import { APP_STORE_URL } from './lib/links.js';
+import { APP_STORE_URL, PLAY_STORE_URL } from './lib/links.js';
 
 // Shared attrs for the 20px 2px-stroke line icons.
 const ICON = {
@@ -127,14 +127,19 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
           </svg>
           <span>App Store</span>
         </a>
-        {/* Google Play — not shipped on Android yet, so a disabled placeholder. */}
-        <div className="bn-store is-disabled" title="Coming soon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#9BA0B8" aria-hidden="true">
+        {/* Google Play — LIVE since 2026-07-27, real link (was a disabled
+            "Soon" placeholder). Same treatment as the App Store link above. */}
+        <a
+          className="bn-store"
+          href={PLAY_STORE_URL}
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#E8EAF0" aria-hidden="true">
             <path d="M4 3.5 20 12 4 20.5z" />
           </svg>
           <span>Google Play</span>
-          <span className="bn-store-soon">Soon</span>
-        </div>
+        </a>
       </div>
     </aside>
   );

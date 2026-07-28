@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_9f9be7",
+  "kind": "wrong_answer",
+  "claim": "The stem's stat is wrong: Haaland made roughly 13-14 Champions League appearances for Dortmund (15 goals), not 21 apps; the keyed club Dortmund is still correct.",
+  "q": "Erling Haaland scored 15 Champions League goals in 21 apps for which Bundesliga club before joining Man City in 2022?",
+  "o": [
+   "Bayern Munich",
+   "Dortmund",
+   "RB Leipzig",
+   "Leverkusen"
+  ],
+  "answer": "Dortmund",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cfb22a",
+  "kind": "multiple_correct",
+  "claim": "Cruyff managed Ajax (1985-88) as well as Barcelona and Ajax's youth academy is world-famous, so \"which club did Johan Cruyff manage\" admits Ajax; only the \"setting up their famous academy\" clause resolves it to Barcelona.",
+  "q": "Which club did Johan Cruyff manage — revolutionising their style and setting up their famous academy?",
+  "o": [
+   "Ajax",
+   "PSV",
+   "Feyenoord",
+   "Barcelona"
+  ],
+  "answer": "Barcelona",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_37991d",
+  "kind": "stale",
+  "claim": "Las Palmas were relegated from La Liga at the end of 2024-25, so the stem's \"Which La Liga club\" qualifier no longer holds; the stadium pairing is still correct.",
+  "q": "Which La Liga club plays at the Estadio de Gran Canaria?",
+  "o": [
+   "Celta Vigo",
+   "Osasuna",
+   "Las Palmas",
+   "Espanyol"
+  ],
+  "answer": "Las Palmas",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_af7b9a",
+  "kind": "stale",
+  "claim": "The streak is a rolling counter — \"29 in a row from 1997-98 to 2025-26\" becomes wrong the moment Real Madrid extend it in 2026-27, and the option text would need editing every season.",
+  "q": "Which club holds the record for most consecutive seasons reaching the Champions League knockout phase — 29 in a row from 1997-98 to 2025-26?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Bayern Munich",
+   "Man Utd"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9e3d3d",
+  "kind": "stale",
+  "claim": "The stem asks 'Which Bundesliga club' but the correct answer, 1. FC Nürnberg, has played in 2. Bundesliga since 2019, so the stem's own qualifier points a knowledgeable player away from the keyed answer.",
+  "q": "Which Bundesliga club won the very first DFB-Pokal in 1935?",
+  "o": [
+   "Bayern Munich",
+   "Nuremberg",
+   "Schalke",
+   "Dortmund"
+  ],
+  "answer": "Nuremberg",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cb47fe",
+  "kind": "stale",
+  "claim": "DR Congo beating Nigeria in the CAF playoff final only sent them to the March 2026 inter-confederation playoff, so the added clause 'returning to the World Cup after 52 years' depends on an outcome the stem asserts but does not establish; separately, Morocco had already qualified directly and could not have been in the CAF playoffs, making it eliminable.",
+  "q": "Nigeria failed to qualify for the 2026 World Cup — who eliminated them in the final match of the CAF playoffs, returning to the World Cup after 52 years?",
+  "o": [
+   "Cameroon",
+   "Gabon",
+   "Morocco",
+   "DR Congo"
+  ],
+  "answer": "DR Congo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ }
+]

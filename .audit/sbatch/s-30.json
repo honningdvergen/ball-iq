@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_67d52d",
+  "q": "In which season did Club Brugge win their first Belgian league championship?",
+  "o": [
+   "1919–20",
+   "1911–12",
+   "1937–38",
+   "1952–53"
+  ],
+  "answer": "1919–20",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2e1068",
+  "q": "The Bruges derby pits Club Brugge against which local rival?",
+  "o": [
+   "Cercle Brugge",
+   "Anderlecht",
+   "KV Mechelen",
+   "Standard Liège"
+  ],
+  "answer": "Cercle Brugge",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a3d289",
+  "q": "Club Brugge's biggest national title rivalry is with which club from the Belgian capital, Brussels?",
+  "o": [
+   "Anderlecht",
+   "Standard Liège",
+   "KAA Gent",
+   "Racing Genk"
+  ],
+  "answer": "Anderlecht",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b01253",
+  "q": "Club Brugge won their first Belgian Cup in 1968, beating which club on penalties?",
+  "o": [
+   "Beerschot",
+   "Anderlecht",
+   "Standard Liège",
+   "Cercle Brugge"
+  ],
+  "answer": "Beerschot",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bb68d7",
+  "q": "As of the 2025–26 season, the Belgian top division in which Club Brugge play was sponsor-branded as what?",
+  "o": [
+   "Jupiler Pro League",
+   "Eredivisie",
+   "Bundesliga",
+   "Ligue 1"
+  ],
+  "answer": "Jupiler Pro League",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c2c1c6",
+  "q": "Under what name was Club Brugge originally founded in 1891?",
+  "o": [
+   "Brugsche Football Club",
+   "Royal Bruges United",
+   "Vlaamsche Sport Vereeniging",
+   "Union Bruges"
+  ],
+  "answer": "Brugsche Football Club",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_daeef2",
+  "q": "Roughly what is the seating capacity of the Jan Breydel Stadium?",
+  "o": [
+   "About 29,000",
+   "About 12,000",
+   "About 52,000",
+   "About 75,000"
+  ],
+  "answer": "About 29,000",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4ca12f",
+  "q": "Club Brugge lost the 1978 European Cup final to which English club?",
+  "o": [
+   "Liverpool",
+   "Nottingham Forest",
+   "Aston Villa",
+   "Manchester United"
+  ],
+  "answer": "Liverpool",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7d6757",
+  "q": "At which stadium was the 1978 European Cup final, lost by Club Brugge, played?",
+  "o": [
+   "Wembley Stadium, London",
+   "Parc des Princes, Paris",
+   "Santiago Bernabéu, Madrid",
+   "Heysel Stadium, Brussels"
+  ],
+  "answer": "Wembley Stadium, London",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d74383",
+  "q": "Who scored the only goal as Liverpool beat Club Brugge in the 1978 European Cup final?",
+  "o": [
+   "Kenny Dalglish",
+   "Kevin Keegan",
+   "Ian Rush",
+   "Graeme Souness"
+  ],
+  "answer": "Kenny Dalglish",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9dcf3b",
+  "q": "Two years before the 1978 final, Club Brugge lost another European final to Liverpool. Which competition?",
+  "o": [
+   "UEFA Cup",
+   "European Cup Winners' Cup",
+   "Intercontinental Cup",
+   "Inter-Cities Fairs Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_39f705",
+  "q": "Liverpool won the 1976 UEFA Cup final against Club Brugge by what aggregate score?",
+  "o": [
+   "4–3",
+   "3–0",
+   "5–1",
+   "2–1"
+  ],
+  "answer": "4–3",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d6dc5b",
+  "q": "Which Club Brugge striker scored the very first goal in UEFA Champions League history in 1992?",
+  "o": [
+   "Daniel Amokachi",
+   "Lorenzo Staelens",
+   "Gert Verheyen",
+   "Franky Van der Elst"
+  ],
+  "answer": "Daniel Amokachi",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_809b67",
+  "q": "Daniel Amokachi's historic first Champions League goal in November 1992 came against which club?",
+  "o": [
+   "CSKA Moscow",
+   "Dynamo Kyiv",
+   "Spartak Moscow",
+   "Steaua Bucharest"
+  ],
+  "answer": "CSKA Moscow",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3f2800",
+  "q": "During their 2022–23 Champions League run, Club Brugge stunned Europe with a 4–0 away win over which side?",
+  "o": [
+   "Porto",
+   "Atlético Madrid",
+   "Bayer Leverkusen",
+   "Sevilla"
+  ],
+  "answer": "Porto",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a5f7d5",
+  "q": "In the 2022–23 group stage, Club Brugge beat which Spanish club 2–0 at home and drew 0–0 away?",
+  "o": [
+   "Atlético Madrid",
+   "Real Madrid",
+   "Barcelona",
+   "Villarreal"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aad2e6",
+  "q": "Club Brugge reached the Champions League round of 16 in 2022–23 for the first time in the modern era; who knocked them out?",
+  "o": [
+   "Benfica",
+   "Real Madrid",
+   "Manchester City",
+   "Inter Milan"
+  ],
+  "answer": "Benfica",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_94990a",
+  "q": "Club Brugge reached the semi-finals of which European competition in 2024, losing to Fiorentina?",
+  "o": [
+   "UEFA Europa Conference League",
+   "UEFA Europa League",
+   "UEFA Champions League",
+   "UEFA Cup Winners' Cup"
+  ],
+  "answer": "UEFA Europa Conference League",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ede562",
+  "q": "Which Club Brugge forward scored twice at the Bernabéu in a 2–2 Champions League draw with Real Madrid in 2019?",
+  "o": [
+   "Emmanuel Dennis",
+   "Krépin Diatta",
+   "David Okereke",
+   "Mbaye Diagne"
+  ],
+  "answer": "Emmanuel Dennis",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e7be6b",
+  "q": "Jan Ceulemans, a Club Brugge icon, captained which nation to fourth place at the 1986 World Cup?",
+  "o": [
+   "Belgium",
+   "Netherlands",
+   "Austria",
+   "Denmark"
+  ],
+  "answer": "Belgium",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dee6fa",
+  "q": "Jan Ceulemans joined Club Brugge in 1978 and stayed until retiring in which year?",
+  "o": [
+   "1992",
+   "1985",
+   "1998",
+   "2003"
+  ],
+  "answer": "1992",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f44520",
+  "q": "Which Belgium playmaker, sold to AC Milan in 2022, came through Club Brugge's own youth academy?",
+  "o": [
+   "Charles De Ketelaere",
+   "Youri Tielemans",
+   "Leandro Trossard",
+   "Dennis Praet"
+  ],
+  "answer": "Charles De Ketelaere",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_15ecd5",
+  "q": "After starring for Club Brugge, Daniel Amokachi joined which English club in 1994?",
+  "o": [
+   "Everton",
+   "Liverpool",
+   "Arsenal",
+   "Aston Villa"
+  ],
+  "answer": "Everton",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_129807",
+  "q": "Attacking midfielder Hans Vanaken has won which individual Belgian honour multiple times at Club Brugge?",
+  "o": [
+   "Belgian Golden Shoe",
+   "Ballon d'Or",
+   "Puskás Award",
+   "Bravo Award"
+  ],
+  "answer": "Belgian Golden Shoe",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_72c24d",
+  "q": "Which position does long-serving Club Brugge star Hans Vanaken play?",
+  "o": [
+   "Attacking midfielder",
+   "Goalkeeper",
+   "Centre-back",
+   "Right-back"
+  ],
+  "answer": "Attacking midfielder",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5d7517",
+  "q": "Club Brugge retired the number 23 shirt in memory of which striker, who died in a 2008 car crash?",
+  "o": [
+   "François Sterchele",
+   "Wesley Sonck",
+   "Emile Mpenza",
+   "Jelle Vossen"
+  ],
+  "answer": "François Sterchele",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_15e9c9",
+  "q": "Which prolific Belgian striker scored close to 200 goals for Club Brugge between 1992 and 2006?",
+  "o": [
+   "Gert Verheyen",
+   "Marc Degryse",
+   "Luc Nilis",
+   "Wesley Sonck"
+  ],
+  "answer": "Gert Verheyen",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a9ed94",
+  "q": "Which Austrian coach led Club Brugge to both the 1976 UEFA Cup final and the 1978 European Cup final?",
+  "o": [
+   "Ernst Happel",
+   "Helmut Schön",
+   "Hugo Meisl",
+   "Otto Rehhagel"
+  ],
+  "answer": "Ernst Happel",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9827b7",
+  "q": "Under Ernst Happel, Club Brugge won three consecutive Belgian league titles in which decade?",
+  "o": [
+   "1970s",
+   "1960s",
+   "1980s",
+   "1990s"
+  ],
+  "answer": "1970s",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6fb68",
+  "q": "Which coach led Club Brugge to the 2015–16 league title, ending an 11-year drought?",
+  "o": [
+   "Michel Preud'homme",
+   "Philippe Clement",
+   "Ivan Leko",
+   "Trond Sollied"
+  ],
+  "answer": "Michel Preud'homme",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2701de",
+  "q": "Michel Preud'homme, a Club Brugge title-winning coach, was a celebrated Belgian player in which position?",
+  "o": [
+   "Goalkeeper",
+   "Striker",
+   "Centre-back",
+   "Winger"
+  ],
+  "answer": "Goalkeeper",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9a0642",
+  "q": "Which coach won back-to-back Club Brugge league titles before leaving for Monaco in January 2022?",
+  "o": [
+   "Philippe Clement",
+   "Ivan Leko",
+   "Nicky Hayen",
+   "Carl Hoefkens"
+  ],
+  "answer": "Philippe Clement",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8dcfa6",
+  "q": "Which coach, promoted mid-season, steered Club Brugge to the 2023–24 Belgian title?",
+  "o": [
+   "Nicky Hayen",
+   "Scott Parker",
+   "Ronny Deila",
+   "Carl Hoefkens"
+  ],
+  "answer": "Nicky Hayen",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5817e7",
+  "q": "Which Norwegian manager led Club Brugge to the 2003 and 2005 Belgian league titles?",
+  "o": [
+   "Trond Sollied",
+   "Ståle Solbakken",
+   "Ronny Deila",
+   "Kjetil Rekdal"
+  ],
+  "answer": "Trond Sollied",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_86a756",
+  "q": "Club Brugge sold Charles De Ketelaere in 2022 to which Italian club?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "Juventus",
+   "Napoli"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3726b9",
+  "q": "In 2025, Club Brugge sold Swiss midfielder Ardon Jashari, a Belgian transfer record, to which club?",
+  "o": [
+   "AC Milan",
+   "Manchester United",
+   "Bayern Munich",
+   "RB Leipzig"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5a3e7c",
+  "q": "Club Brugge signed Ardon Jashari in 2024 from which Swiss club?",
+  "o": [
+   "Lucerne",
+   "Basel",
+   "Young Boys",
+   "Zürich"
+  ],
+  "answer": "Lucerne",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b01c8",
+  "q": "Club Brugge signed Ukraine striker Roman Yaremchuk in 2022 from which club?",
+  "o": [
+   "Benfica",
+   "Dynamo Kyiv",
+   "Shakhtar Donetsk",
+   "Gent"
+  ],
+  "answer": "Benfica",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dafb36",
+  "q": "Aston Villa broke their transfer record in 2019 to sign which Brazilian striker from Club Brugge?",
+  "o": [
+   "Wesley",
+   "Wellington",
+   "Gabriel Jesus",
+   "Richarlison"
+  ],
+  "answer": "Wesley",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_39d921",
+  "q": "Nigerian midfielder Raphael Onyedika joined Club Brugge in 2022 from which Danish club?",
+  "o": [
+   "Midtjylland",
+   "Copenhagen",
+   "Brøndby",
+   "Nordsjælland"
+  ],
+  "answer": "Midtjylland",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8bb2bc",
+  "q": "Which Belgium goalkeeper did Club Brugge sign from Liverpool in 2019?",
+  "o": [
+   "Simon Mignolet",
+   "Thibaut Courtois",
+   "Koen Casteels",
+   "Jean-François Gillet"
+  ],
+  "answer": "Simon Mignolet",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4ca88e",
+  "q": "In which year was Red Star Belgrade founded?",
+  "o": [
+   "1945",
+   "1935",
+   "1950",
+   "1963"
+  ],
+  "answer": "1945",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d1b328",
+  "q": "Which club are Red Star's great city rivals in the 'Eternal Derby'?",
+  "o": [
+   "Partizan",
+   "Rad",
+   "OFK Beograd",
+   "Vojvodina"
+  ],
+  "answer": "Partizan",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_91f7fb",
+  "q": "What are Red Star's traditional club colours?",
+  "o": [
+   "Red and white",
+   "Black and white",
+   "Blue and white",
+   "Red and black"
+  ],
+  "answer": "Red and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b82668",
+  "q": "Which French club did Red Star beat in the 1991 European Cup final?",
+  "o": [
+   "Marseille",
+   "Monaco",
+   "Paris Saint-Germain",
+   "Lyon"
+  ],
+  "answer": "Marseille",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40ef13",
+  "q": "By what nickname is Red Star's stadium popularly known?",
+  "o": [
+   "Marakana",
+   "La Bombonera",
+   "Anfield",
+   "San Siro"
+  ],
+  "answer": "Marakana",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_beaa0f",
+  "q": "Red Star's organised supporters, officially formed in 1989, go by which name?",
+  "o": [
+   "Delije",
+   "Grobari",
+   "Ultras Sur",
+   "Fossa dei Leoni"
+  ],
+  "answer": "Delije",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_63e915",
+  "q": "In which Italian city was the 1991 European Cup final staged?",
+  "o": [
+   "Bari",
+   "Rome",
+   "Milan",
+   "Naples"
+  ],
+  "answer": "Bari",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8be864",
+  "q": "Who managed Red Star to their 1991 European Cup triumph?",
+  "o": [
+   "Ljupko Petrović",
+   "Miljan Miljanić",
+   "Vujadin Boškov",
+   "Branko Stanković"
+  ],
+  "answer": "Ljupko Petrović",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e0637",
+  "q": "Who converted the decisive final penalty that won Red Star the 1991 European Cup?",
+  "o": [
+   "Darko Pančev",
+   "Robert Prosinečki",
+   "Siniša Mihajlović",
+   "Vladimir Jugović"
+  ],
+  "answer": "Darko Pančev",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7808fe",
+  "q": "In the 1991 Intercontinental Cup, Red Star beat which South American champions?",
+  "o": [
+   "Colo-Colo",
+   "River Plate",
+   "São Paulo",
+   "Peñarol"
+  ],
+  "answer": "Colo-Colo",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_17b9d3",
+  "q": "Which Red Star striker was Europe's top league scorer in 1990-91, with 34 goals?",
+  "o": [
+   "Darko Pančev",
+   "Dejan Savićević",
+   "Robert Prosinečki",
+   "Dragan Stojković"
+  ],
+  "answer": "Darko Pančev",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3e257",
+  "q": "Darko Pančev joined which Italian club in 1992?",
+  "o": [
+   "Inter Milan",
+   "AC Milan",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cb5c16",
+  "q": "Dejan Savićević left Red Star for which Italian club in 1992?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "Roma",
+   "Sampdoria"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c35747",
+  "q": "Robert Prosinečki moved from Red Star to which Spanish club in 1991?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Valencia",
+   "Atlético Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9f29be",
+  "q": "Which Red Star great became famous as a free-kick specialist, later setting a Serie A record for direct free-kick goals?",
+  "o": [
+   "Siniša Mihajlović",
+   "Vladimir Jugović",
+   "Dejan Stanković",
+   "Dragan Stojković"
+  ],
+  "answer": "Siniša Mihajlović",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_548254",
+  "q": "Dejan Savićević was given which nickname by the Italian press?",
+  "o": [
+   "Il Genio (The Genius)",
+   "Il Fenomeno",
+   "Il Divino",
+   "Il Capitano"
+  ],
+  "answer": "Il Genio (The Genius)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bec05f",
+  "q": "In 2014, Red Star's stadium was officially renamed after which club legend?",
+  "o": [
+   "Rajko Mitić",
+   "Dragan Džajić",
+   "Dragoslav Šekularac",
+   "Vladimir Beara"
+  ],
+  "answer": "Rajko Mitić",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c90285",
+  "q": "What does the name of Red Star's organised supporters translate to?",
+  "o": [
+   "Heroes",
+   "Warriors",
+   "Devils",
+   "Eagles"
+  ],
+  "answer": "Heroes",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e42ea3",
+  "q": "Which coach led the French side that lost the 1991 European Cup final to Red Star?",
+  "o": [
+   "Raymond Goethals",
+   "Arsène Wenger",
+   "Aimé Jacquet",
+   "Gérard Houllier"
+  ],
+  "answer": "Raymond Goethals",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_764027",
+  "q": "What was the scoreline of the 1991 European Cup final after extra time, before penalties?",
+  "o": [
+   "0-0",
+   "1-1",
+   "1-0",
+   "2-1"
+  ],
+  "answer": "0-0",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d52c39",
+  "q": "Nemanja Vidić left Red Star in 2004 to join which club, before later starring for Manchester United?",
+  "o": [
+   "Spartak Moscow",
+   "Manchester United",
+   "Chelsea",
+   "Zenit"
+  ],
+  "answer": "Spartak Moscow",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_46faac",
+  "q": "In which position did Nemanja Vidić, a Red Star academy product, make his name?",
+  "o": [
+   "Centre-back",
+   "Striker",
+   "Goalkeeper",
+   "Right winger"
+  ],
+  "answer": "Centre-back",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8bd785",
+  "q": "Red Star was founded by members of a youth organisation of what character?",
+  "o": [
+   "Antifascist youth",
+   "A monarchist league",
+   "A trade union",
+   "A church group"
+  ],
+  "answer": "Antifascist youth",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2992de",
+  "q": "Dejan Stanković, once Red Star's youngest captain, was sold to which Italian club in 1998?",
+  "o": [
+   "Lazio",
+   "Inter Milan",
+   "Roma",
+   "Parma"
+  ],
+  "answer": "Lazio",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a5333f",
+  "q": "At which Italian club did Dejan Stanković win the Champions League treble in 2010?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "AC Milan",
+   "Napoli"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4c94a4",
+  "q": "Which Italian club did Vladimir Jugović join first after leaving Red Star?",
+  "o": [
+   "Sampdoria",
+   "Juventus",
+   "Inter Milan",
+   "Lazio"
+  ],
+  "answer": "Sampdoria",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c486d1",
+  "q": "Vladimir Jugović scored the decisive penalty in the 1996 Champions League final for which club, five years after his Red Star triumph?",
+  "o": [
+   "Juventus",
+   "AC Milan",
+   "Lazio",
+   "Ajax"
+  ],
+  "answer": "Juventus",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_765a38",
+  "q": "Who scored twice for Red Star in the 1991 Intercontinental Cup final?",
+  "o": [
+   "Vladimir Jugović",
+   "Darko Pančev",
+   "Dejan Savićević",
+   "Dragan Stojković"
+  ],
+  "answer": "Vladimir Jugović",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_560d8a",
+  "q": "In which city was the 1991 Intercontinental Cup final played?",
+  "o": [
+   "Tokyo",
+   "Buenos Aires",
+   "Montevideo",
+   "Rio de Janeiro"
+  ],
+  "answer": "Tokyo",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_beb073",
+  "q": "Red Star played much of the 1991 Intercontinental Cup final a man down after which player was sent off?",
+  "o": [
+   "Dejan Savićević",
+   "Darko Pančev",
+   "Vladimir Jugović",
+   "Refik Šabanadžović"
+  ],
+  "answer": "Dejan Savićević",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2fb51e",
+  "q": "Which Red Star great, a left winger nicknamed 'Magic Dragan', is regarded as one of the finest in the club's history?",
+  "o": [
+   "Dragan Džajić",
+   "Dragan Stojković",
+   "Dragoslav Šekularac",
+   "Dragan Mance"
+  ],
+  "answer": "Dragan Džajić",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_644bf6",
+  "q": "In which year did Red Star's famous Marakana stadium open?",
+  "o": [
+   "1963",
+   "1945",
+   "1975",
+   "1989"
+  ],
+  "answer": "1963",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e6b9e0",
+  "q": "In which year was the first-ever Eternal Derby played?",
+  "o": [
+   "1947",
+   "1945",
+   "1951",
+   "1960"
+  ],
+  "answer": "1947",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e2eae8",
+  "q": "In which year did Red Star win their first Yugoslav league championship?",
+  "o": [
+   "1951",
+   "1945",
+   "1959",
+   "1968"
+  ],
+  "answer": "1951",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e11ada",
+  "q": "Red Star reached the 1991 European Cup final after a semi-final against which German club?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Hamburg",
+   "Werder Bremen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3356f3",
+  "q": "Red Star finished runners-up in the 1979 UEFA Cup final, losing to which German club?",
+  "o": [
+   "Borussia Mönchengladbach",
+   "Bayern Munich",
+   "Hamburg",
+   "Cologne"
+  ],
+  "answer": "Borussia Mönchengladbach",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_499173",
+  "q": "Which long-serving Red Star coach went on to win back-to-back La Liga titles in Spain in 1975 and 1976?",
+  "o": [
+   "Miljan Miljanić",
+   "Ljupko Petrović",
+   "Vujadin Boškov",
+   "Radomir Antić"
+  ],
+  "answer": "Miljan Miljanić",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0e02df",
+  "q": "In which country was Robert Prosinečki born, to Yugoslav guest-worker parents?",
+  "o": [
+   "West Germany",
+   "Switzerland",
+   "Austria",
+   "France"
+  ],
+  "answer": "West Germany",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_af91d9",
+  "q": "At which World Cup was Robert Prosinečki, then of Red Star, named the tournament's Best Young Player?",
+  "o": [
+   "1990",
+   "1986",
+   "1994",
+   "1982"
+  ],
+  "answer": "1990",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb1e32",
+  "q": "Robert Prosinečki was named best player of which tournament that Yugoslavia won in 1987?",
+  "o": [
+   "FIFA World Youth Championship",
+   "European U-19 Championship",
+   "Olympic football tournament",
+   "Toulon Tournament"
+  ],
+  "answer": "FIFA World Youth Championship",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2460b4",
+  "q": "Dinamo Zagreb won the 1967 Inter-Cities Fairs Cup by beating which English club in the final?",
+  "o": [
+   "Newcastle United",
+   "Leeds United",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Leeds United",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e7389b",
+  "q": "Marijan Čerček scored one of Dinamo Zagreb's goals in the 2-0 first-leg home win in the 1967 Inter-Cities Fairs Cup final. Who scored the other?",
+  "o": [
+   "Slaven Zambata",
+   "Rudolf Belin",
+   "Krasnodar Rora",
+   "Zlatko Škorić"
+  ],
+  "answer": "Krasnodar Rora",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d7dbd5",
+  "q": "What was the aggregate score when Dinamo Zagreb won the 1967 Inter-Cities Fairs Cup final?",
+  "o": [
+   "1-0",
+   "2-0",
+   "3-1",
+   "4-2"
+  ],
+  "answer": "2-0",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f665dd",
+  "q": "Dinamo Zagreb's 1967 Inter-Cities Fairs Cup win made them the first club from which country to win one of the major European club competitions?",
+  "o": [
+   "Hungary",
+   "Czechoslovakia",
+   "Yugoslavia",
+   "Romania"
+  ],
+  "answer": "Yugoslavia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aadebe",
+  "q": "Dinamo Zagreb reached the 1963 Inter-Cities Fairs Cup final, where they were beaten by which Spanish club?",
+  "o": [
+   "Valencia",
+   "Real Madrid",
+   "Barcelona",
+   "Atlético Madrid"
+  ],
+  "answer": "Valencia",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cb150d",
+  "q": "Davor Šuker left Dinamo Zagreb in 1991 to join which Spanish club?",
+  "o": [
+   "Real Madrid",
+   "Sevilla",
+   "Valencia",
+   "Real Zaragoza"
+  ],
+  "answer": "Sevilla",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_72a06e",
+  "q": "Who scored a hat-trick as Dinamo Zagreb beat Tottenham Hotspur 3-0 in the 2021 Europa League round of 16?",
+  "o": [
+   "Bruno Petković",
+   "Mario Gavranović",
+   "Mislav Oršić",
+   "Dani Olmo"
+  ],
+  "answer": "Mislav Oršić",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_63e667",
+  "q": "Which manager was in charge of Tottenham Hotspur when they lost 3-0 at Dinamo Zagreb in March 2021?",
+  "o": [
+   "Antonio Conte",
+   "Mauricio Pochettino",
+   "Nuno Espírito Santo",
+   "José Mourinho"
+  ],
+  "answer": "José Mourinho",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f92faa",
+  "q": "Dinamo Zagreb won 4-0 in the 2019-20 Champions League group stage against which Italian club, who were making their debut in the competition?",
+  "o": [
+   "Napoli",
+   "Atalanta",
+   "Roma",
+   "Lazio"
+  ],
+  "answer": "Atalanta",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_04fdd6",
+  "q": "Dinamo Zagreb opened their 2022-23 Champions League campaign with a 1-0 home win over which English club?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Chelsea",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cedc03",
+  "q": "Which Arsenal forward was sent off as Dinamo Zagreb won 2-1 in the 2015-16 Champions League group stage?",
+  "o": [
+   "Theo Walcott",
+   "Alexis Sánchez",
+   "Olivier Giroud",
+   "Danny Welbeck"
+  ],
+  "answer": "Olivier Giroud",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_834a89",
+  "q": "In 1998-99 the Zagreb club reached the group stage of which competition for the first time in their history?",
+  "o": [
+   "UEFA Cup",
+   "Cup Winners' Cup",
+   "Champions League",
+   "Intertoto Cup"
+  ],
+  "answer": "Champions League",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ee7a78",
+  "q": "Which Scottish club did the Zagreb side knock out in European qualifying in August 1998?",
+  "o": [
+   "Rangers",
+   "Aberdeen",
+   "Celtic",
+   "Heart of Midlothian"
+  ],
+  "answer": "Celtic",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9297d6",
+  "q": "Dinamo Zagreb reached the 2020-21 Europa League quarter-finals, where they were knocked out by which Spanish club?",
+  "o": [
+   "Sevilla",
+   "Granada",
+   "Villarreal",
+   "Valencia"
+  ],
+  "answer": "Villarreal",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_efdf50",
+  "q": "Which future Ballon d'Or winner left Dinamo Zagreb for Tottenham Hotspur in 2008?",
+  "o": [
+   "Mateo Kovačić",
+   "Luka Modrić",
+   "Vedran Ćorluka",
+   "Niko Kranjčar"
+  ],
+  "answer": "Luka Modrić",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bedbb4",
+  "q": "Luka Modrić spent a 2003-04 loan spell at which Bosnian club, where he was named the league's player of the year?",
+  "o": [
+   "Željezničar",
+   "FK Sarajevo",
+   "Zrinjski Mostar",
+   "Široki Brijeg"
+  ],
+  "answer": "Zrinjski Mostar",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3fe276",
+  "q": "Both Luka Modrić and Vedran Ćorluka spent the 2004-05 season on loan from Dinamo at which Croatian club?",
+  "o": [
+   "NK Zagreb",
+   "Inter Zaprešić",
+   "Lokomotiva",
+   "Varteks"
+  ],
+  "answer": "Inter Zaprešić",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ad4ef4",
+  "q": "Which Dinamo Zagreb captain kicked a policeman during the 1990 riot at Maksimir, becoming a Croatian folk hero?",
+  "o": [
+   "Robert Prosinečki",
+   "Davor Šuker",
+   "Zvonimir Boban",
+   "Dražen Ladić"
+  ],
+  "answer": "Zvonimir Boban",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e01ca9",
+  "q": "Which Red Star Belgrade fan leader, later a notorious paramilitary commander, led the Delije at the 1990 Maksimir riot?",
+  "o": [
+   "Vojislav Šešelj",
+   "Radovan Karadžić",
+   "Ratko Mladić",
+   "Željko Ražnatović 'Arkan'"
+  ],
+  "answer": "Željko Ražnatović 'Arkan'",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_92d817",
+  "q": "Zvonimir Boban left Dinamo Zagreb in 1991 to join which Italian club?",
+  "o": [
+   "Inter Milan",
+   "AC Milan",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_138c95",
+  "q": "Which Dinamo Zagreb youth product left for Red Star Belgrade in 1987 after a coach declared he would eat his coaching diploma if the player ever made it?",
+  "o": [
+   "Robert Prosinečki",
+   "Zvonimir Boban",
+   "Davor Šuker",
+   "Zlatko Kranjčar"
+  ],
+  "answer": "Robert Prosinečki",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3f00c8",
+  "q": "Dinamo Zagreb won the 1981-82 Yugoslav First League under which manager?",
+  "o": [
+   "Josip Kuže",
+   "Branko Zebec",
+   "Miroslav Blažević",
+   "Ivica Horvat"
+  ],
+  "answer": "Miroslav Blažević",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_acb3c2",
+  "q": "Which Brazilian-born Croatia international left Dinamo Zagreb for Arsenal in 2007?",
+  "o": [
+   "Eduardo",
+   "Sammir",
+   "Dado Pršo",
+   "Ivica Olić"
+  ],
+  "answer": "Eduardo",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0e5930",
+  "q": "Dinamo Zagreb signed Mario Mandžukić in 2007 from which Croatian club?",
+  "o": [
+   "NK Osijek",
+   "NK Zagreb",
+   "Lokomotiva",
+   "Varteks"
+  ],
+  "answer": "NK Zagreb",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bbdefc",
+  "q": "Mario Mandžukić left Dinamo Zagreb in 2010 to join which German club?",
+  "o": [
+   "Bayern Munich",
+   "Schalke 04",
+   "VfL Wolfsburg",
+   "Hamburger SV"
+  ],
+  "answer": "VfL Wolfsburg",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_620cf3",
+  "q": "Mateo Kovačić left Dinamo Zagreb in January 2013 to join which Italian club?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Inter Milan",
+   "Roma"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3dbbc9",
+  "q": "Which Spanish player left Barcelona's La Masia academy in 2014 to join Dinamo Zagreb at the age of 16?",
+  "o": [
+   "Sergi Roberto",
+   "Dani Olmo",
+   "Carles Aleñá",
+   "Marc Cucurella"
+  ],
+  "answer": "Dani Olmo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_476000",
+  "q": "Which Dinamo Zagreb defender agreed a transfer in September 2020 but spent the whole 2020-21 season back at the club on loan before leaving?",
+  "o": [
+   "Joško Gvardiol",
+   "Dejan Lovren",
+   "Domagoj Vida",
+   "Šime Vrsaljko"
+  ],
+  "answer": "Joško Gvardiol",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f56339",
+  "q": "Vedran Ćorluka left Dinamo Zagreb in 2007 to join which English club?",
+  "o": [
+   "Tottenham Hotspur",
+   "Everton",
+   "Manchester City",
+   "Manchester United"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dfd3b6",
+  "q": "Dominik Livaković left Dinamo Zagreb in 2023 to join which Turkish club?",
+  "o": [
+   "Galatasaray",
+   "Beşiktaş",
+   "Trabzonspor",
+   "Fenerbahçe"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_be8e30",
+  "q": "Which goalkeeper, signed from Varteks in 1984, went on to make a club-record 802 official appearances for Dinamo Zagreb and was Croatia's first choice at the 1998 World Cup?",
+  "o": [
+   "Stipe Pletikosa",
+   "Tomislav Butina",
+   "Dražen Ladić",
+   "Vladimir Vasilj"
+  ],
+  "answer": "Dražen Ladić",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b24093",
+  "q": "Which supporters' group, founded in 1986, follows Dinamo Zagreb?",
+  "o": [
+   "Torcida",
+   "Bad Blue Boys",
+   "Delije",
+   "Armada"
+  ],
+  "answer": "Bad Blue Boys",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_237739",
+  "q": "Dinamo Zagreb's main ultras group took their name from a 1983 film starring which actor?",
+  "o": [
+   "Mickey Rourke",
+   "Al Pacino",
+   "Sean Penn",
+   "Robert De Niro"
+  ],
+  "answer": "Sean Penn",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_308dad",
+  "q": "Hajduk Split's famous supporters' group, founded in 1950, is known as what?",
+  "o": [
+   "Torcida",
+   "Delije",
+   "Grobari",
+   "Armada"
+  ],
+  "answer": "Torcida",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_37b4a2",
+  "q": "Dinamo Zagreb's fiercest domestic rivalry, the Eternal Derby, is contested against which club?",
+  "o": [
+   "HNK Rijeka",
+   "NK Osijek",
+   "Hajduk Split",
+   "NK Zagreb"
+  ],
+  "answer": "Hajduk Split",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d80a6d",
+  "q": "Which former Dinamo Zagreb forward captained Croatia in their first match of the modern era, against the USA in October 1990?",
+  "o": [
+   "Zvonimir Boban",
+   "Zlatko Kranjčar",
+   "Davor Šuker",
+   "Dražen Ladić"
+  ],
+  "answer": "Zlatko Kranjčar",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0a113a",
+  "q": "Zlatko Kranjčar, a Dinamo Zagreb great, was the father of which Croatia international?",
+  "o": [
+   "Niko Kranjčar",
+   "Ivan Rakitić",
+   "Milan Badelj",
+   "Ognjen Vukojević"
+  ],
+  "answer": "Niko Kranjčar",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2a8b8d",
+  "q": "Dinamo Zagreb's youth academy, founded in 1967, has traditionally been known by which name?",
+  "o": [
+   "Hitrec-Kacian",
+   "La Masia",
+   "Maksimir Academy",
+   "Građanski Academy"
+  ],
+  "answer": "Hitrec-Kacian",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f4b967",
+  "q": "Dinamo Zagreb, established in 1945, inherited the blue colours and nickname of which Zagreb club disbanded by the communist authorities?",
+  "o": [
+   "HAŠK",
+   "1. HŠK Građanski",
+   "Concordia Zagreb",
+   "NK Zagreb"
+  ],
+  "answer": "1. HŠK Građanski",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9a497",
+  "q": "From February 1993 until 2000, Dinamo Zagreb played under which politically imposed name, never accepted by its fans?",
+  "o": [
+   "HAŠK Građanski",
+   "Croatia Zagreb",
+   "NK Zagreb",
+   "Dinamo Croatia"
+  ],
+  "answer": "Croatia Zagreb",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8fac79",
+  "q": "On 14 February 2000 the Zagreb club officially restored which name?",
+  "o": [
+   "Građanski",
+   "HAŠK",
+   "Dinamo",
+   "Croatia"
+  ],
+  "answer": "Dinamo",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ac9913",
+  "q": "Which Croatian president's government drove the 1990s renaming of Dinamo Zagreb, seeking a club name that reflected the new state?",
+  "o": [
+   "Stjepan Mesić",
+   "Franjo Tuđman",
+   "Ivo Sanader",
+   "Ante Marković"
+  ],
+  "answer": "Franjo Tuđman",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_15c7b5",
+  "q": "Maksimir Stadium, later Dinamo Zagreb's home, was opened in 1912 by which Zagreb sports club?",
+  "o": [
+   "HAŠK",
+   "1. HŠK Građanski",
+   "Concordia Zagreb",
+   "Dinamo"
+  ],
+  "answer": "HAŠK",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dad964",
+  "q": "Dinamo Zagreb have traditionally played in which colour, giving rise to their nickname 'Modri'?",
+  "o": [
+   "Red",
+   "Blue",
+   "White",
+   "Green"
+  ],
+  "answer": "Blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e0e506",
+  "q": "Which Dinamo Zagreb striker scored Croatia's late equaliser against Brazil in the 2022 World Cup quarter-final?",
+  "o": [
+   "Andrej Kramarić",
+   "Bruno Petković",
+   "Ante Budimir",
+   "Marko Livaja"
+  ],
+  "answer": "Bruno Petković",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_86d7b7",
+  "q": "Dinamo Zagreb goalkeeper Dominik Livaković saved three penalties in a 2022 World Cup shootout against which team?",
+  "o": [
+   "Brazil",
+   "Japan",
+   "Morocco",
+   "Argentina"
+  ],
+  "answer": "Japan",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d7a158",
+  "q": "In which year was FC Basel founded?",
+  "o": [
+   "1893",
+   "1873",
+   "1908",
+   "1921"
+  ],
+  "answer": "1893",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dfbd26",
+  "q": "Which pair of colours has FC Basel worn since its founding?",
+  "o": [
+   "Red and blue",
+   "Green and white",
+   "Black and yellow",
+   "Claret and sky blue"
+  ],
+  "answer": "Red and blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cab1e4",
+  "q": "By which Swiss-German nickname is FC Basel known?",
+  "o": [
+   "RotBlau",
+   "Rossoneri",
+   "Die Knappen",
+   "Les Rouges"
+  ],
+  "answer": "RotBlau",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fc2cae",
+  "q": "FC Basel are based in which country?",
+  "o": [
+   "Switzerland",
+   "Austria",
+   "Germany",
+   "Belgium"
+  ],
+  "answer": "Switzerland",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b6ffe8",
+  "q": "What is the official name of the stadium FC Basel moved into in 2001?",
+  "o": [
+   "St. Jakob-Park",
+   "Stade de Suisse",
+   "Letzigrund",
+   "Wankdorf Stadium"
+  ],
+  "answer": "St. Jakob-Park",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d43ad5",
+  "q": "By what affectionate nickname do locals know FC Basel's stadium?",
+  "o": [
+   "Joggeli",
+   "Tourbillon",
+   "Espenmoos",
+   "Brügglifeld"
+  ],
+  "answer": "Joggeli",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d2494a",
+  "q": "Xherdan Shaqiri left Basel in 2012 to join which club?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Internazionale",
+   "Liverpool"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bfd9e4",
+  "q": "Basel academy graduate Ivan Rakitic represented which national team at senior level?",
+  "o": [
+   "Croatia",
+   "Switzerland",
+   "Serbia",
+   "Bosnia and Herzegovina"
+  ],
+  "answer": "Croatia",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ff1f1e",
+  "q": "Basel's 2-1 win over Manchester United on 7 December 2011 eliminated United at which stage of the Champions League?",
+  "o": [
+   "The group stage",
+   "The round of 16",
+   "The quarter-finals",
+   "The semi-finals"
+  ],
+  "answer": "The group stage",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cc001b",
+  "q": "Which section of St. Jakob-Park is the traditional home of Basel's ultras?",
+  "o": [
+   "The Muttenzerkurve",
+   "The Südkurve",
+   "The Yellow Wall",
+   "The Kop"
+  ],
+  "answer": "The Muttenzerkurve",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b81060",
+  "q": "Who scored the late winner as Basel beat Chelsea 1-0 at St. Jakob-Park in November 2013?",
+  "o": [
+   "Mohamed Salah",
+   "Marco Streller",
+   "Fabian Frei",
+   "Valentin Stocker"
+  ],
+  "answer": "Mohamed Salah",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_78432c",
+  "q": "In which year did FC Basel win their first Swiss championship?",
+  "o": [
+   "1953",
+   "1933",
+   "1967",
+   "1980"
+  ],
+  "answer": "1953",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a989c7",
+  "q": "Which architecture firm designed St. Jakob-Park?",
+  "o": [
+   "Herzog & de Meuron",
+   "Foster + Partners",
+   "Populous",
+   "Zaha Hadid Architects"
+  ],
+  "answer": "Herzog & de Meuron",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ee9a19",
+  "q": "On 13 May 2006, which club won the Swiss title with a 93rd-minute goal at St. Jakob-Park, triggering a pitch invasion by Basel fans?",
+  "o": [
+   "FC Zürich",
+   "Young Boys",
+   "Grasshopper",
+   "Servette"
+  ],
+  "answer": "FC Zürich",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_436b96",
+  "q": "Which two players scored Basel's goals in the 2-1 win over Manchester United on 7 December 2011?",
+  "o": [
+   "Marco Streller and Alexander Frei",
+   "Xherdan Shaqiri and Fabian Frei",
+   "Valentin Stocker and Benjamin Huggel",
+   "Alexander Frei and Granit Xhaka"
+  ],
+  "answer": "Marco Streller and Alexander Frei",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c904a7",
+  "q": "Basel's 2-1 win at Stamford Bridge in September 2013 came in the first Champions League game of whose second spell as Chelsea manager?",
+  "o": [
+   "José Mourinho",
+   "Rafael Benítez",
+   "Roberto Di Matteo",
+   "André Villas-Boas"
+  ],
+  "answer": "José Mourinho",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_902df2",
+  "q": "Basel led Liverpool 3-0 at half-time at home in November 2002. How did the Champions League match finish?",
+  "o": [
+   "3-3",
+   "3-0 to Basel",
+   "4-3 to Basel",
+   "3-2 to Liverpool"
+  ],
+  "answer": "3-3",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_093d9a",
+  "q": "Which Scottish club did Basel eliminate in Champions League qualifying in 2002?",
+  "o": [
+   "Celtic",
+   "Rangers",
+   "Hearts",
+   "Aberdeen"
+  ],
+  "answer": "Celtic",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bf0b14",
+  "q": "Basel knocked out which English club on penalties in the 2013 Europa League quarter-final?",
+  "o": [
+   "Tottenham Hotspur",
+   "Newcastle United",
+   "Everton",
+   "Fulham"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e03659",
+  "q": "Which manager led Basel to the 2013 Europa League semi-final?",
+  "o": [
+   "Murat Yakin",
+   "Heiko Vogel",
+   "Thorsten Fink",
+   "Christian Gross"
+  ],
+  "answer": "Murat Yakin",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a36ce",
+  "q": "Basel signed Mohamed Salah in 2012 from which club?",
+  "o": [
+   "El Mokawloon",
+   "Zamalek",
+   "Al Ahly",
+   "ENPPI"
+  ],
+  "answer": "El Mokawloon",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a3eb69",
+  "q": "Granit Xhaka left Basel in 2012 to join which club?",
+  "o": [
+   "Borussia Mönchengladbach",
+   "Bayer Leverkusen",
+   "Arsenal",
+   "VfB Stuttgart"
+  ],
+  "answer": "Borussia Mönchengladbach",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_561ded",
+  "q": "Breel Embolo left Basel in 2016 to join which club?",
+  "o": [
+   "Schalke 04",
+   "Werder Bremen",
+   "Wolfsburg",
+   "Monaco"
+  ],
+  "answer": "Schalke 04",
+  "cat": "Transfers",
+  "diff": "medium"
+ }
+]

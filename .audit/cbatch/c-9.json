@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_6374f7",
+  "kind": "stale",
+  "claim": "'Most Premier League goals by a foreign player' is a live record — Salah only overtook Henry's 175 during 2024-25 and is still adding to it, so the keyed answer changed once already and the framing has no season cut-off.",
+  "q": "Which foreign player has scored the most Premier League goals overall?",
+  "o": [
+   "Henry",
+   "Drogba",
+   "Agüero",
+   "Salah"
+  ],
+  "answer": "Salah",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_afa57a",
+  "kind": "stale",
+  "claim": "'Highest average home attendance in world football' is a live, season-by-season superlative that can rot (Barcelona at a full Camp Nou has exceeded Dortmund's ~81k in some seasons); the phrasing also conflates 'highest among Bundesliga clubs' with 'highest in the world'.",
+  "q": "Which Bundesliga club has the highest average home attendance in world football?",
+  "o": [
+   "Bayern Munich",
+   "Hamburger SV",
+   "Cologne",
+   "Dortmund"
+  ],
+  "answer": "Dortmund",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0fe2e9",
+  "kind": "stale",
+  "claim": "'is the star striker for which Serie A club' is a present-tense club affiliation for an active player — true today, silently wrong the day Lautaro Martínez leaves Inter.",
+  "q": "Lautaro Martinez is the star striker for which Serie A club?",
+  "o": [
+   "Juventus",
+   "AC Milan",
+   "Inter",
+   "Napoli"
+  ],
+  "answer": "Inter",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5d7a09",
+  "kind": "wrong_answer",
+  "claim": "The keyed year (1998) is right, but the stem's premise is false: Bergkamp did not fly to France 1998 — he travelled overland (car/train), which is why a European-hosted tournament was manageable for him.",
+  "q": "Dennis Bergkamp famously had a fear of flying. Despite this, he DID fly for which World Cup where he scored his famous goal vs Argentina?",
+  "o": [
+   "1994",
+   "1998",
+   "2002",
+   "2006"
+  ],
+  "answer": "1998",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d505e7",
+  "kind": "wrong_answer",
+  "claim": "The key (Luton Town) is right but the stem's '130-year history' is wrong — Luton were founded in 1885, so 2023-24 came in their 138th/139th year.",
+  "q": "Which club played Premier League football for the first time in their 130-year history in 2023-24?",
+  "o": [
+   "Luton Town",
+   "Sheffield Wednesday",
+   "Burnley",
+   "Brentford"
+  ],
+  "answer": "Luton Town",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e52cdf",
+  "kind": "stale",
+  "claim": "'Under current UEFA rules' pins the answer to a rule that UEFA periodically revises (bench size moved from 7 to 12 in 2018-19), so the keyed 12 will silently rot if the regulation changes.",
+  "q": "How many substitutes can be named in the matchday squad for a Champions League match (under current UEFA rules)?",
+  "o": [
+   "5",
+   "7",
+   "12",
+   "9"
+  ],
+  "answer": "12",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_d2ff04",
+  "q": "Who scored the only goal in Fulham's 2018 playoff final win over Aston Villa?",
+  "o": [
+   "Tom Cairney",
+   "Ryan Sessegnon",
+   "Aleksandar Mitrovic",
+   "Kevin McDonald"
+  ],
+  "answer": "Tom Cairney",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b4c08",
+  "q": "Which World Cup-winning defender wound down his career at Fulham in the mid-1970s?",
+  "o": [
+   "Billy Wright",
+   "Jack Charlton",
+   "Bobby Moore",
+   "Ron Harris"
+  ],
+  "answer": "Bobby Moore",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0e1bee",
+  "q": "Fulham lost the 1975 FA Cup final to which club?",
+  "o": [
+   "Arsenal",
+   "Leeds United",
+   "Southampton",
+   "West Ham United"
+  ],
+  "answer": "West Ham United",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a4d8c",
+  "q": "Louis Saha left Fulham in January 2004 to join which club?",
+  "o": [
+   "Chelsea",
+   "Manchester United",
+   "Arsenal",
+   "Everton"
+  ],
+  "answer": "Manchester United",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9f4cd2",
+  "q": "Which two ageing superstars famously joined Fulham in the mid-1970s?",
+  "o": [
+   "George Best and Rodney Marsh",
+   "Denis Law and Jimmy Greaves",
+   "Bobby Charlton and Alan Ball",
+   "Stan Bowles and Trevor Brooking"
+  ],
+  "answer": "George Best and Rodney Marsh",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b3c08",
+  "q": "Fulham's highest-ever top-flight finish came in 2008-09 — where did they finish?",
+  "o": [
+   "4th",
+   "9th",
+   "7th",
+   "11th"
+  ],
+  "answer": "7th",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c4d16a",
+  "q": "Which engineer designed Craven Cottage's historic pavilion and main stand?",
+  "o": [
+   "Owen Williams",
+   "Herbert Baker",
+   "Edwin Lutyens",
+   "Archibald Leitch"
+  ],
+  "answer": "Archibald Leitch",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20dd5f",
+  "q": "During Craven Cottage's early-2000s redevelopment, Fulham groundshared at which stadium?",
+  "o": [
+   "Loftus Road",
+   "Stamford Bridge",
+   "The Valley",
+   "Griffin Park"
+  ],
+  "answer": "Loftus Road",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_985d19",
+  "q": "Joe Bryan scored both Fulham goals in the 2020 playoff final against which club?",
+  "o": [
+   "Cardiff City",
+   "Aston Villa",
+   "Brentford",
+   "Barnsley"
+  ],
+  "answer": "Brentford",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_536707",
+  "q": "Joao Palhinha, a standout Fulham midfielder signed in 2022, plays for which nation?",
+  "o": [
+   "Brazil",
+   "Portugal",
+   "Spain",
+   "France"
+  ],
+  "answer": "Portugal",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f64035",
+  "q": "How many points did Tigana's Fulham amass winning the 2000-01 First Division title?",
+  "o": [
+   "88",
+   "96",
+   "101",
+   "91"
+  ],
+  "answer": "101",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e9b61a",
+  "q": "How many league goals did Mitrovic score in the record-breaking 2021-22 Championship season?",
+  "o": [
+   "35",
+   "40",
+   "43",
+   "38"
+  ],
+  "answer": "43",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c95a15",
+  "q": "Which Fulham teenager became the Premier League's youngest-ever player in May 2019?",
+  "o": [
+   "Ryan Sessegnon",
+   "Harvey Elliott",
+   "Matthew Briggs",
+   "Patrick Roberts"
+  ],
+  "answer": "Harvey Elliott",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e4c57c",
+  "q": "Who became the youngest manager in Premier League history when Fulham appointed him in 2003?",
+  "o": [
+   "Roy Hodgson",
+   "Lawrie Sanchez",
+   "Chris Coleman",
+   "Chris Hughton"
+  ],
+  "answer": "Chris Coleman",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a60d5b",
+  "q": "On the final day of 2007-08, whose header secured Fulham's 'Great Escape' survival at Portsmouth?",
+  "o": [
+   "Brian McBride",
+   "Danny Murphy",
+   "Jimmy Bullard",
+   "Simon Davies"
+  ],
+  "answer": "Danny Murphy",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_23447c",
+  "q": "Which former Fulham player, as PFA chairman, campaigned to abolish the maximum wage in 1961?",
+  "o": [
+   "Johnny Haynes",
+   "Alan Mullery",
+   "Jimmy Hill",
+   "Bobby Robson"
+  ],
+  "answer": "Jimmy Hill",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_70a3e1",
+  "q": "After the wage cap was lifted, which Fulham man became English football's first 100-pounds-a-week player in 1961?",
+  "o": [
+   "Jimmy Hill",
+   "Johnny Haynes",
+   "Alan Mullery",
+   "Bobby Robson"
+  ],
+  "answer": "Johnny Haynes",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_399f4f",
+  "q": "Which one-club Fulham right-back won the World Cup with England in 1966?",
+  "o": [
+   "Ray Wilson",
+   "George Cohen",
+   "Jimmy Armfield",
+   "Keith Newton"
+  ],
+  "answer": "George Cohen",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7f4abe",
+  "q": "What colours are Brighton's traditional home shirts?",
+  "o": [
+   "Blue and white stripes",
+   "Red and white stripes",
+   "Claret and blue",
+   "Sky blue"
+  ],
+  "answer": "Blue and white stripes",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_67da80",
+  "q": "Brighton & Hove Albion are based in which English county?",
+  "o": [
+   "Hampshire",
+   "East Sussex",
+   "Kent",
+   "Surrey"
+  ],
+  "answer": "East Sussex",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a3040e",
+  "q": "To which club was Moisés Caicedo sold in 2023?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Liverpool",
+   "Manchester City"
+  ],
+  "answer": "Chelsea",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_927e1c",
+  "q": "Alexis Mac Allister left Brighton in 2023 to join which club?",
+  "o": [
+   "Chelsea",
+   "Tottenham",
+   "Liverpool",
+   "Manchester United"
+  ],
+  "answer": "Liverpool",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6df671",
+  "q": "What nationality is former Brighton head coach Roberto De Zerbi?",
+  "o": [
+   "Italian",
+   "Spanish",
+   "Portuguese",
+   "Argentine"
+  ],
+  "answer": "Italian",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3da95f",
+  "q": "Graham Potter left Brighton in 2022 to manage which club?",
+  "o": [
+   "Everton",
+   "Aston Villa",
+   "Tottenham",
+   "Chelsea"
+  ],
+  "answer": "Chelsea",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9bb27c",
+  "q": "Who is Brighton's long-serving club captain, an academy-graduate defender?",
+  "o": [
+   "Shane Duffy",
+   "Lewis Dunk",
+   "Adam Webster",
+   "Joël Veltman"
+  ],
+  "answer": "Lewis Dunk",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3f7c3",
+  "q": "What nationality is Brighton winger Kaoru Mitoma?",
+  "o": [
+   "South Korean",
+   "Chinese",
+   "Japanese",
+   "Australian"
+  ],
+  "answer": "Japanese",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b4ba93",
+  "q": "Which manager led Brighton to promotion to the Premier League in 2017?",
+  "o": [
+   "Gus Poyet",
+   "Chris Hughton",
+   "Sami Hyypiä",
+   "Óscar García"
+  ],
+  "answer": "Chris Hughton",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_26c8f4",
+  "q": "Brighton reached the 1983 FA Cup Final, losing a replay to which club?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Manchester United",
+   "Tottenham"
+  ],
+  "answer": "Manchester United",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_16d999",
+  "q": "What is Brighton's highest ever league finish?",
+  "o": [
+   "8th",
+   "6th",
+   "4th",
+   "10th"
+  ],
+  "answer": "6th",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4fea19",
+  "q": "Who became Brighton's club-record signing when he joined from Leeds United in 2024?",
+  "o": [
+   "João Pedro",
+   "Georginio Rutter",
+   "Evan Ferguson",
+   "Danny Welbeck"
+  ],
+  "answer": "Georginio Rutter",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fb5eb6",
+  "q": "In which year was Brighton & Hove Albion founded?",
+  "o": [
+   "1878",
+   "1889",
+   "1901",
+   "1919"
+  ],
+  "answer": "1901",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cd3db4",
+  "q": "Which club did Brighton sell Ben White to in 2021?",
+  "o": [
+   "Arsenal",
+   "Manchester City",
+   "Leeds United",
+   "Newcastle United"
+  ],
+  "answer": "Arsenal",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c6895f",
+  "q": "Midfielder Yves Bissouma left Brighton in 2022 for which London club?",
+  "o": [
+   "Arsenal",
+   "Tottenham Hotspur",
+   "Chelsea",
+   "West Ham United"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d8408",
+  "q": "Bobby Zamora's goals drove Brighton to back-to-back promotions in which era?",
+  "o": [
+   "mid-1990s",
+   "early 2000s",
+   "late 1980s",
+   "mid-2010s"
+  ],
+  "answer": "early 2000s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_597fed",
+  "q": "Which manager won Brighton the League One title in 2010-11?",
+  "o": [
+   "Chris Hughton",
+   "Micky Adams",
+   "Gus Poyet",
+   "Mark McGhee"
+  ],
+  "answer": "Gus Poyet",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_161449",
+  "q": "What was Brighton's nickname before 'The Seagulls'?",
+  "o": [
+   "The Mariners",
+   "The Dolphins",
+   "The Shrimpers",
+   "The Gulls"
+  ],
+  "answer": "The Dolphins",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08b13f",
+  "q": "What is the approximate capacity of the Amex Stadium?",
+  "o": [
+   "24,500",
+   "31,800",
+   "42,000",
+   "52,000"
+  ],
+  "answer": "31,800",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5a81f4",
+  "q": "Which national team did Moisés Caicedo represent at the 2022 World Cup?",
+  "o": [
+   "Colombia",
+   "Ecuador",
+   "Argentina",
+   "Uruguay"
+  ],
+  "answer": "Ecuador",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a088b7",
+  "q": "Brighton reached the Europa League knockout stage in 2023-24, where they were eliminated by which club?",
+  "o": [
+   "Ajax",
+   "Marseille",
+   "Roma",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Roma",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e5e04a",
+  "q": "Which long-serving Brighton midfielder joined in 2017 and later left for Borussia Dortmund?",
+  "o": [
+   "Davy Pröpper",
+   "Pascal Groß",
+   "Steven Alzate",
+   "Dale Stephens"
+  ],
+  "answer": "Pascal Groß",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b26900",
+  "q": "On the final day of 1996-97, Brighton avoided relegation from the Football League with a draw at which club?",
+  "o": [
+   "Doncaster Rovers",
+   "Hereford United",
+   "Exeter City",
+   "Carlisle United"
+  ],
+  "answer": "Hereford United",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fbc8d6",
+  "q": "After leaving the Goldstone Ground, Brighton groundshared for two seasons at which distant club's stadium?",
+  "o": [
+   "Portsmouth",
+   "Gillingham",
+   "Fulham",
+   "Millwall"
+  ],
+  "answer": "Gillingham",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_52ea0c",
+  "q": "Which temporary home did Brighton use from 1999 until 2011?",
+  "o": [
+   "Withdean Stadium",
+   "Boundary Park",
+   "The Dell",
+   "Vicarage Road"
+  ],
+  "answer": "Withdean Stadium",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fb981a",
+  "q": "Which player scored a spectacular long-range goal for Brighton against Manchester City in 2023?",
+  "o": [
+   "Solly March",
+   "Julio Enciso",
+   "Kaoru Mitoma",
+   "Tariq Lamptey"
+  ],
+  "answer": "Julio Enciso",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bc198c",
+  "q": "Which experienced England striker joined Brighton on a free transfer in 2020?",
+  "o": [
+   "Jamie Vardy",
+   "Troy Deeney",
+   "Danny Welbeck",
+   "Andy Carroll"
+  ],
+  "answer": "Danny Welbeck",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_352642",
+  "q": "In which position does Brighton's Bart Verbruggen, signed in 2023, play?",
+  "o": [
+   "Goalkeeper",
+   "Centre-back",
+   "Striker",
+   "Winger"
+  ],
+  "answer": "Goalkeeper",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e037bf",
+  "q": "Adam Lallana joined Brighton in 2020 from which club?",
+  "o": [
+   "Southampton",
+   "Liverpool",
+   "Everton",
+   "Bournemouth"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_630b4a",
+  "q": "Tony Bloom, Brighton's owner, also owns which Belgian football club?",
+  "o": [
+   "Anderlecht",
+   "Union Saint-Gilloise",
+   "Club Brugge",
+   "Standard Liège"
+  ],
+  "answer": "Union Saint-Gilloise",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ceb305",
+  "q": "Brighton first reached English football's top division in 1979 under which manager?",
+  "o": [
+   "Brian Clough",
+   "Alan Mullery",
+   "Jimmy Melia",
+   "Peter Taylor"
+  ],
+  "answer": "Alan Mullery",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bcc7fa",
+  "q": "In 2022-23 Brighton reached the semi-final of which cup, losing to Manchester United on penalties at Wembley?",
+  "o": [
+   "EFL Cup",
+   "FA Cup",
+   "Community Shield",
+   "Football League Trophy"
+  ],
+  "answer": "FA Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8453fd",
+  "q": "Which national team did former Brighton goalkeeper Robert Sánchez represent?",
+  "o": [
+   "Argentina",
+   "Spain",
+   "Colombia",
+   "Mexico"
+  ],
+  "answer": "Spain",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3aecd1",
+  "q": "What is the Amex Stadium's full official name?",
+  "o": [
+   "Falmer Community Stadium",
+   "American Express Community Stadium",
+   "Sussex Community Stadium",
+   "Brighton Community Stadium"
+  ],
+  "answer": "American Express Community Stadium",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2d6f8c",
+  "q": "Which Brazilian forward did Brighton sign from Watford in 2023 before selling him to Chelsea in 2025?",
+  "o": [
+   "Richarlison",
+   "João Pedro",
+   "Gabriel Martinelli",
+   "Antony"
+  ],
+  "answer": "João Pedro",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_496468",
+  "q": "Which pacy defender did Brighton sign from Chelsea's academy in January 2020?",
+  "o": [
+   "Reece James",
+   "Tariq Lamptey",
+   "Trevoh Chalobah",
+   "Ola Aina"
+  ],
+  "answer": "Tariq Lamptey",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_467d1b",
+  "q": "Who are Brighton's fiercest rivals, contested in the so-called M23 derby?",
+  "o": [
+   "Southampton",
+   "Crystal Palace",
+   "Portsmouth",
+   "Charlton Athletic"
+  ],
+  "answer": "Crystal Palace",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5059cb",
+  "q": "In which country was Brighton head coach Fabian Hürzeler born?",
+  "o": [
+   "Germany",
+   "United States",
+   "Austria",
+   "Switzerland"
+  ],
+  "answer": "United States",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4a65f0",
+  "q": "AFC Bournemouth was founded in 1899 under what original name?",
+  "o": [
+   "Bournemouth Rovers",
+   "Southbourne FC",
+   "Boscombe FC",
+   "Dean Court Rovers"
+  ],
+  "answer": "Boscombe FC",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_07281f",
+  "q": "When the club joined the Football League in 1923, what name did it adopt?",
+  "o": [
+   "Bournemouth Town",
+   "Bournemouth & Boscombe Athletic",
+   "Boscombe United",
+   "Bournemouth Athletic"
+  ],
+  "answer": "Bournemouth & Boscombe Athletic",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fab122",
+  "q": "What is AFC Bournemouth's long-standing nickname?",
+  "o": [
+   "The Cherries",
+   "The Seagulls",
+   "The Shrimpers",
+   "The Robins"
+  ],
+  "answer": "The Cherries",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e78b4a",
+  "q": "Bournemouth's famous red-and-black striped shirts, introduced in the early 1970s, were modelled on which club?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "AS Roma",
+   "AC Milan"
+  ],
+  "answer": "AC Milan",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d26ab2",
+  "q": "By what traditional name is AFC Bournemouth's home stadium known?",
+  "o": [
+   "Deepdale",
+   "Dean Court",
+   "Gay Meadow",
+   "Edgar Street"
+  ],
+  "answer": "Dean Court",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_08418b",
+  "q": "In their celebrated 1956-57 FA Cup run, Third Division Bournemouth knocked out Wolves and Tottenham to reach which stage?",
+  "o": [
+   "The fifth round",
+   "The quarter-finals",
+   "The semi-finals",
+   "The final"
+  ],
+  "answer": "The quarter-finals",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_36658d",
+  "q": "Who managed Bournemouth for their shock 2-0 FA Cup win over cup holders Manchester United in January 1984?",
+  "o": [
+   "Harry Redknapp",
+   "John Bond",
+   "Freddie Cox",
+   "Sean O'Driscoll"
+  ],
+  "answer": "Harry Redknapp",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ed61a",
+  "q": "In 1986-87, Bournemouth won the first divisional championship in their history. Which division did they win?",
+  "o": [
+   "The Second Division",
+   "The Fourth Division",
+   "The First Division",
+   "The Third Division"
+  ],
+  "answer": "The Third Division",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef6bfd",
+  "q": "Which striker scored nine goals in a single FA Cup tie for Bournemouth, an 11-0 rout of Margate in 1971?",
+  "o": [
+   "Dickie Dowsett",
+   "Ted MacDougall",
+   "Phil Boyer",
+   "Ron Eyre"
+  ],
+  "answer": "Ted MacDougall",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4175d6",
+  "q": "Which manager, a former Bournemouth defender, guided the club from League Two all the way to the Premier League?",
+  "o": [
+   "Sean O'Driscoll",
+   "Kevin Bond",
+   "Eddie Howe",
+   "Harry Redknapp"
+  ],
+  "answer": "Eddie Howe",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2bf4d0",
+  "q": "In which season did AFC Bournemouth play in England's top division for the very first time?",
+  "o": [
+   "2015-16",
+   "2011-12",
+   "2013-14",
+   "2016-17"
+  ],
+  "answer": "2015-16",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b38738",
+  "q": "Bournemouth began the 2008-09 season with a points deduction after exiting administration. How many points were they docked?",
+  "o": [
+   "10",
+   "17",
+   "5",
+   "20"
+  ],
+  "answer": "17",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_48628b",
+  "q": "Who holds AFC Bournemouth's all-time record for most appearances, across two spells as a much-loved striker?",
+  "o": [
+   "Sean O'Driscoll",
+   "Ron Eyre",
+   "Dickie Dowsett",
+   "Steve Fletcher"
+  ],
+  "answer": "Steve Fletcher",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b0d9f8",
+  "q": "The AFC Bournemouth club crest famously depicts a player doing what?",
+  "o": [
+   "Heading a football",
+   "Taking a free-kick",
+   "Lifting a trophy",
+   "Making a save"
+  ],
+  "answer": "Heading a football",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_830b64",
+  "q": "In which season did AFC Bournemouth win the Championship title to reach the top flight for the first time in the club's history?",
+  "o": [
+   "2012-13",
+   "2013-14",
+   "2014-15",
+   "2016-17"
+  ],
+  "answer": "2014-15",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bcf2df",
+  "q": "AFC Bournemouth began the 2008-09 season with a points deduction for their administration troubles, setting up the 'Great Escape'. How many points were they docked?",
+  "o": [
+   "10 points",
+   "17 points",
+   "12 points",
+   "20 points"
+  ],
+  "answer": "17 points",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bc4780",
+  "q": "Which veteran forward, in his second spell at the club, scored the decisive goal against Grimsby Town in April 2009 that all but secured Bournemouth's Football League survival?",
+  "o": [
+   "Steve Fletcher",
+   "Brett Pitman",
+   "Lewis Grabban",
+   "Yann Kermorgant"
+  ],
+  "answer": "Steve Fletcher",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4bc6e0",
+  "q": "In 2018, Bournemouth broke their transfer record to sign a combative holding midfielder from Levante for a fee of around £25m. Who was he?",
+  "o": [
+   "Jefferson Lerma",
+   "Harry Arter",
+   "Andrew Surman",
+   "Dan Gosling"
+  ],
+  "answer": "Jefferson Lerma",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8be293",
+  "q": "Which Bournemouth striker scored on his senior England debut against the USA in November 2018?",
+  "o": [
+   "Dominic Solanke",
+   "Callum Wilson",
+   "Jordon Ibe",
+   "Junior Stanislas"
+  ],
+  "answer": "Callum Wilson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_482826",
+  "q": "In a famous December 2016 home comeback, Bournemouth recovered from 3-1 down to beat Liverpool. What was the final score?",
+  "o": [
+   "3-2",
+   "4-3",
+   "4-2",
+   "2-1"
+  ],
+  "answer": "4-3",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_48e2b0",
+  "q": "In August 2022, Bournemouth suffered a 9-0 defeat that equalled the Premier League's record scoreline. Which club inflicted it?",
+  "o": [
+   "Manchester City",
+   "Manchester United",
+   "Liverpool",
+   "Tottenham Hotspur"
+  ],
+  "answer": "Liverpool",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_83c7f0",
+  "q": "Which manager led Bournemouth to promotion back to the Premier League in 2022 before being sacked early the following season?",
+  "o": [
+   "Jason Tindall",
+   "Scott Parker",
+   "Gary O'Neil",
+   "Jonathan Woodgate"
+  ],
+  "answer": "Scott Parker",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c6e46b",
+  "q": "In the 2018-19 Premier League season, which Bournemouth winger recorded 14 assists, one of the highest tallies in the division?",
+  "o": [
+   "David Brooks",
+   "Marc Pugh",
+   "Ryan Fraser",
+   "Junior Stanislas"
+  ],
+  "answer": "Ryan Fraser",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_59e1c1",
+  "q": "Bournemouth played their first-ever Premier League match in August 2015, losing 1-0 at home to which club?",
+  "o": [
+   "Watford",
+   "Norwich City",
+   "Aston Villa",
+   "Leicester City"
+  ],
+  "answer": "Aston Villa",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_13b6a2",
+  "q": "Brentford FC was formed by members of which local sporting club, whose members voted to play football rather than rugby?",
+  "o": [
+   "Brentford Rowing Club",
+   "Brentford Cricket Club",
+   "Brentford Cycling Club",
+   "Brentford Athletic Club"
+  ],
+  "answer": "Brentford Rowing Club",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28217f",
+  "q": "What is Brentford FC's traditional nickname?",
+  "o": [
+   "The Bees",
+   "The Hornets",
+   "The Robins",
+   "The Wasps"
+  ],
+  "answer": "The Bees",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dac14d",
+  "q": "At which ground did Brentford play their home matches from 1904 until 2020?",
+  "o": [
+   "Griffin Park",
+   "Craven Cottage",
+   "Loftus Road",
+   "The Den"
+  ],
+  "answer": "Griffin Park",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1f1289",
+  "q": "Brentford's historic home ground was famously said to be the only English league ground with what on each of its four corners?",
+  "o": [
+   "A pub",
+   "A church",
+   "A railway station",
+   "A chip shop"
+  ],
+  "answer": "A pub",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_42a86d",
+  "q": "Who was Brentford's long-serving manager from 1926 to 1949, guiding the club from the third tier up to the First Division?",
+  "o": [
+   "Harry Curtis",
+   "Herbert Chapman",
+   "Frank Buckley",
+   "Charlie Paynter"
+  ],
+  "answer": "Harry Curtis",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b4556a",
+  "q": "What was Brentford's highest-ever finish in the top division of English football, reached in the 1935-36 season?",
+  "o": [
+   "5th",
+   "2nd",
+   "8th",
+   "11th"
+  ],
+  "answer": "5th",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c7903a",
+  "q": "Brentford's record home attendance of 38,678 was set at their old West London ground in a 1949 FA Cup tie against which club?",
+  "o": [
+   "Leicester City",
+   "Preston North End",
+   "Portsmouth",
+   "Blackpool"
+  ],
+  "answer": "Leicester City",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dbc1a5",
+  "q": "In 1920 Brentford, along with 20 other Southern League clubs, became founder members of which newly-created tier of the Football League?",
+  "o": [
+   "Third Division",
+   "Second Division",
+   "First Division",
+   "Fourth Division"
+  ],
+  "answer": "Third Division",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_90d5f2",
+  "q": "Brentford's traditional home kit displays red and white in what pattern?",
+  "o": [
+   "Vertical stripes",
+   "Hoops",
+   "Halves",
+   "Quarters"
+  ],
+  "answer": "Vertical stripes",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b53612",
+  "q": "Who is Brentford's all-time record goalscorer, with 163 goals between 1954 and 1961?",
+  "o": [
+   "Jim Towers",
+   "George Francis",
+   "John Holliday",
+   "Dai Hopkins"
+  ],
+  "answer": "Jim Towers",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_03da0c",
+  "q": "Brentford ended a 74-year absence from English football's top flight when they won promotion to the Premier League in which year?",
+  "o": [
+   "2021",
+   "2019",
+   "2023",
+   "2016"
+  ],
+  "answer": "2021",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b295f7",
+  "q": "Brentford secured their first-ever Premier League promotion by winning the Championship play-off final against which club?",
+  "o": [
+   "Swansea City",
+   "Fulham",
+   "Barnsley",
+   "Bournemouth"
+  ],
+  "answer": "Swansea City",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d6c8b0",
+  "q": "Which Danish manager led Brentford to their first Premier League promotion?",
+  "o": [
+   "Thomas Frank",
+   "Kasper Hjulmand",
+   "Michael Laudrup",
+   "Morten Wieghorst"
+  ],
+  "answer": "Thomas Frank",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_043c3b",
+  "q": "Which manager led Brentford from 2015 to 2018 before leaving to take charge of Aston Villa?",
+  "o": [
+   "Dean Smith",
+   "Mark Warburton",
+   "Uwe Rosler",
+   "Andy Scott"
+  ],
+  "answer": "Dean Smith",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d8f55a",
+  "q": "Brentford's analytics-led, statistics-driven recruitment model is most associated with which owner?",
+  "o": [
+   "Matthew Benham",
+   "Tony Bloom",
+   "Roman Abramovich",
+   "Mike Ashley"
+  ],
+  "answer": "Matthew Benham",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_998c45",
+  "q": "Brentford lost the 2020 Championship play-off final at Wembley to which club?",
+  "o": [
+   "Fulham",
+   "Cardiff City",
+   "Nottingham Forest",
+   "Bristol City"
+  ],
+  "answer": "Fulham",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fa10c3",
+  "q": "From which League One club did Brentford sign striker Ivan Toney in 2020?",
+  "o": [
+   "Peterborough United",
+   "Portsmouth",
+   "Charlton Athletic",
+   "Sunderland"
+  ],
+  "answer": "Peterborough United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3449f3",
+  "q": "Brentford's then-record sale came in 2020 when which striker joined Aston Villa for a fee reported around £28 million?",
+  "o": [
+   "Ollie Watkins",
+   "Neal Maupay",
+   "Saïd Benrahma",
+   "Bryan Mbeumo"
+  ],
+  "answer": "Ollie Watkins",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_39c95f",
+  "q": "Brentford sold striker Neal Maupay in 2019 to which Premier League club?",
+  "o": [
+   "Brighton & Hove Albion",
+   "Burnley",
+   "Southampton",
+   "Crystal Palace"
+  ],
+  "answer": "Brighton & Hove Albion",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_798f95",
+  "q": "Brentford signed goalkeeper David Raya in 2019 from which Championship club?",
+  "o": [
+   "Blackburn Rovers",
+   "Preston North End",
+   "Reading",
+   "Millwall"
+  ],
+  "answer": "Blackburn Rovers",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_37de4e",
+  "q": "Which Danish playmaker joined Brentford in January 2022, months after suffering a cardiac arrest at Euro 2020?",
+  "o": [
+   "Christian Eriksen",
+   "Christian Nørgaard",
+   "Mathias Jensen",
+   "Thomas Delaney"
+  ],
+  "answer": "Christian Eriksen",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_791e88",
+  "q": "Which Sweden international did Brentford sign from Leeds United in 2019 and later appoint club captain?",
+  "o": [
+   "Pontus Jansson",
+   "Andreas Granqvist",
+   "Filip Helander",
+   "Robin Olsen"
+  ],
+  "answer": "Pontus Jansson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9bf526",
+  "q": "In 2022, Brentford's stadium was renamed after which company acquired the naming rights?",
+  "o": [
+   "Gtech",
+   "Vitality",
+   "Emirates",
+   "AMEX"
+  ],
+  "answer": "Gtech",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9906ed",
+  "q": "Brentford marked their Premier League debut on 13 August 2021 with a 2-0 home win over which club?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Tottenham Hotspur",
+   "West Ham United"
+  ],
+  "answer": "Arsenal",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bad6c0",
+  "q": "Who scored Brentford's first-ever Premier League goal, on the opening night of the 2021-22 season?",
+  "o": [
+   "Sergi Canós",
+   "Christian Nørgaard",
+   "Ivan Toney",
+   "Bryan Mbeumo"
+  ],
+  "answer": "Sergi Canós",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_837610",
+  "q": "In which year was Burnley Football Club founded?",
+  "o": [
+   "1878",
+   "1882",
+   "1886",
+   "1889"
+  ],
+  "answer": "1882",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1a587b",
+  "q": "What is the name of Burnley's home ground?",
+  "o": [
+   "Gigg Lane",
+   "Turf Moor",
+   "Ewood Park",
+   "Deepdale"
+  ],
+  "answer": "Turf Moor",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_96492e",
+  "q": "By what nickname are Burnley best known?",
+  "o": [
+   "The Trotters",
+   "The Clarets",
+   "The Shakers",
+   "The Latics"
+  ],
+  "answer": "The Clarets",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_24f28f",
+  "q": "Burnley were one of the twelve founder members of which competition, launched in 1888?",
+  "o": [
+   "The FA Cup",
+   "The Football League",
+   "The Football Alliance",
+   "The Premier League"
+  ],
+  "answer": "The Football League",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b3fd2",
+  "q": "In which year did Burnley win the FA Cup?",
+  "o": [
+   "1909",
+   "1914",
+   "1947",
+   "1962"
+  ],
+  "answer": "1914",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_07e32b",
+  "q": "Which club did Burnley beat 1–0 in the FA Cup final that gave them the trophy?",
+  "o": [
+   "Everton",
+   "Aston Villa",
+   "Liverpool",
+   "Sheffield United"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4698a3",
+  "q": "Burnley's 1914 FA Cup final was the first attended by a reigning monarch — which king presented the trophy?",
+  "o": [
+   "Edward VII",
+   "George V",
+   "George VI",
+   "Edward VIII"
+  ],
+  "answer": "George V",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_30a3db",
+  "q": "Which centre-half captained Burnley to both the 1914 FA Cup and their first League title?",
+  "o": [
+   "George Halley",
+   "Tommy Boyle",
+   "William Watson",
+   "Jerry Dawson"
+  ],
+  "answer": "Tommy Boyle",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_06be70",
+  "q": "In which season did Burnley win their first top-flight League Championship?",
+  "o": [
+   "1913–14",
+   "1920–21",
+   "1925–26",
+   "1946–47"
+  ],
+  "answer": "1920–21",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8efa70",
+  "q": "Who was the manager when Burnley won the League Championship in 1959–60?",
+  "o": [
+   "Alan Brown",
+   "Harry Potts",
+   "John Haworth",
+   "Frank Hill"
+  ],
+  "answer": "Harry Potts",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d8ebd",
+  "q": "Burnley clinched the 1959–60 League title with a final-day win at which ground?",
+  "o": [
+   "Old Trafford",
+   "Molineux",
+   "Maine Road",
+   "Highbury"
+  ],
+  "answer": "Maine Road",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7d05f0",
+  "q": "Which Burnley player was named FWA Footballer of the Year in 1962?",
+  "o": [
+   "Jimmy McIlroy",
+   "Ray Pointer",
+   "Jimmy Adamson",
+   "John Connelly"
+  ],
+  "answer": "Jimmy Adamson",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_88f2a9",
+  "q": "When Burnley adopted claret and blue in 1910, they copied the colours of which then-dominant club?",
+  "o": [
+   "West Ham United",
+   "Aston Villa",
+   "Sunderland",
+   "Newcastle United"
+  ],
+  "answer": "Aston Villa",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_55ff1a",
+  "q": "As reigning champions, which European competition did Burnley enter in 1960–61?",
+  "o": [
+   "Inter-Cities Fairs Cup",
+   "European Cup",
+   "European Cup Winners' Cup",
+   "UEFA Cup"
+  ],
+  "answer": "European Cup",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8b7062",
+  "q": "Who is Burnley's all-time record league goalscorer?",
+  "o": [
+   "Ray Pointer",
+   "George Beel",
+   "Willie Irvine",
+   "Andy Lochhead"
+  ],
+  "answer": "George Beel",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_593fed",
+  "q": "Which Scottish winger did Burnley sell to Manchester United in 1968?",
+  "o": [
+   "Ralph Coates",
+   "Willie Morgan",
+   "Steve Kindon",
+   "Dave Thomas"
+  ],
+  "answer": "Willie Morgan",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_29589e",
+  "q": "Under Sean Dyche, Burnley qualified for the Europa League by finishing 7th in which Premier League season?",
+  "o": [
+   "2015–16",
+   "2016–17",
+   "2017–18",
+   "2018–19"
+  ],
+  "answer": "2017–18",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4ce122",
+  "q": "Who scored the winning goal in Burnley's 1-0 victory over Sheffield United in the 2009 Championship play-off final, sealing promotion to the Premier League?",
+  "o": [
+   "Steven Thompson",
+   "Martin Paterson",
+   "Wade Elliott",
+   "Chris McCann"
+  ],
+  "answer": "Wade Elliott",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ce6850",
+  "q": "Which player scored the winner as newly-promoted Burnley beat reigning champions Manchester United 1-0 at home in August 2009?",
+  "o": [
+   "Robbie Blake",
+   "Steven Fletcher",
+   "Graham Alexander",
+   "Martin Paterson"
+  ],
+  "answer": "Robbie Blake",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_85ccac",
+  "q": "Sean Dyche was appointed Burnley manager in October 2012, replacing which boss who had just left to return to Bournemouth?",
+  "o": [
+   "Stan Ternent",
+   "Eddie Howe",
+   "Steve Cotterill",
+   "Brian Laws"
+  ],
+  "answer": "Eddie Howe",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dfbb18",
+  "q": "Burnley's 2018-19 Europa League run ended in the play-off round, denying them a group-stage place, at the hands of which club?",
+  "o": [
+   "Sparta Prague",
+   "PAOK",
+   "Ludogorets",
+   "Olympiacos"
+  ],
+  "answer": "Olympiacos",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_790e8c",
+  "q": "Which Burnley goalkeeper captained the club and earned England caps during the Dyche era?",
+  "o": [
+   "Nick Pope",
+   "Joe Hart",
+   "Tom Heaton",
+   "Adam Legzdins"
+  ],
+  "answer": "Tom Heaton",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c4d642",
+  "q": "Which striker did Burnley sign from Leeds United in 2017 for a then club-record fee?",
+  "o": [
+   "Sam Vokes",
+   "Ashley Barnes",
+   "Jay Rodriguez",
+   "Chris Wood"
+  ],
+  "answer": "Chris Wood",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a090ff",
+  "q": "Which centre-back did Burnley sell to Everton in 2017 for a club-record fee of around £25 million?",
+  "o": [
+   "James Tarkowski",
+   "Ben Mee",
+   "Michael Keane",
+   "Kevin Long"
+  ],
+  "answer": "Michael Keane",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c817b",
+  "q": "Danny Ings left Burnley in 2015, moving on a free transfer to which club?",
+  "o": [
+   "Liverpool",
+   "Tottenham Hotspur",
+   "Newcastle United",
+   "Everton"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c79134",
+  "q": "Which academy-developed winger did Burnley sell to Everton in 2022, having brought him through their own youth system?",
+  "o": [
+   "Johann Berg Gudmundsson",
+   "Robbie Brady",
+   "Dwight McNeil",
+   "Aaron Lennon"
+  ],
+  "answer": "Dwight McNeil",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_83e36d",
+  "q": "How many points did Vincent Kompany's Burnley amass in winning the 2022-23 Championship title?",
+  "o": [
+   "98",
+   "101",
+   "96",
+   "100"
+  ],
+  "answer": "101",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7d0df3",
+  "q": "Owen Coyle guided Burnley to promotion in 2009 but left in January 2010 to take charge of which club?",
+  "o": [
+   "Bolton Wanderers",
+   "Sunderland",
+   "Stoke City",
+   "West Bromwich Albion"
+  ],
+  "answer": "Bolton Wanderers",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ff4f34",
+  "q": "Which striker was the leading scorer in the 2015-16 Championship as Burnley won the title, before joining Watford in 2017?",
+  "o": [
+   "Sam Vokes",
+   "Ashley Barnes",
+   "Andre Gray",
+   "Rouwen Hennings"
+  ],
+  "answer": "Andre Gray",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9ad199",
+  "q": "Vincent Kompany left Burnley in 2024 to become head coach of which club?",
+  "o": [
+   "Bayer Leverkusen",
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "RB Leipzig"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_69b23b",
+  "q": "Wolves were one of the twelve founder members of the Football League in which year?",
+  "o": [
+   "1885",
+   "1888",
+   "1878",
+   "1892"
+  ],
+  "answer": "1888",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3a336",
+  "q": "What is the name of Wolves' home stadium, their home since 1889?",
+  "o": [
+   "Molineux",
+   "The Hawthorns",
+   "Bramall Lane",
+   "Loftus Road"
+  ],
+  "answer": "Molineux",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_53bea6",
+  "q": "Wolves' traditional home kit pairs black with which other colour?",
+  "o": [
+   "Blue",
+   "Red",
+   "Old gold",
+   "Green"
+  ],
+  "answer": "Old gold",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5974f5",
+  "q": "Which manager led Wolves to their three First Division titles in the 1950s?",
+  "o": [
+   "Ted Vizard",
+   "Ronnie Allen",
+   "Sammy Chung",
+   "Stan Cullis"
+  ],
+  "answer": "Stan Cullis",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_06d82b",
+  "q": "Which Wolves captain became the first footballer to win 100 caps for England?",
+  "o": [
+   "Billy Wright",
+   "Ron Flowers",
+   "Bert Williams",
+   "Peter Broadbent"
+  ],
+  "answer": "Billy Wright",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8f42fb",
+  "q": "Who is Wolves' all-time leading goalscorer?",
+  "o": [
+   "John Richards",
+   "Roy Swinbourne",
+   "Steve Bull",
+   "Jimmy Murray"
+  ],
+  "answer": "Steve Bull",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c726b2",
+  "q": "In a celebrated 1954 floodlit friendly, Wolves came from 2-0 down to beat which Hungarian club 3-2?",
+  "o": [
+   "Ferencvaros",
+   "Budapest Honved",
+   "MTK Budapest",
+   "Ujpest Dozsa"
+  ],
+  "answer": "Budapest Honved",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_151adf",
+  "q": "Wolves reached the first UEFA Cup final in 1972, losing to which English club?",
+  "o": [
+   "Liverpool",
+   "Leeds United",
+   "Arsenal",
+   "Tottenham Hotspur"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6d784",
+  "q": "Wolves won the 1949 FA Cup final 3-1 against which club?",
+  "o": [
+   "Leicester City",
+   "Manchester United",
+   "Portsmouth",
+   "Huddersfield Town"
+  ],
+  "answer": "Leicester City",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4ed389",
+  "q": "When Wolves won the 1908 FA Cup by beating Newcastle United, in which division were they playing?",
+  "o": [
+   "The First Division",
+   "The Southern League",
+   "The Second Division",
+   "The Third Division"
+  ],
+  "answer": "The Second Division",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_448878",
+  "q": "Wolves won the 1980 League Cup final 1-0 against the reigning European champions - which club?",
+  "o": [
+   "Liverpool",
+   "Nottingham Forest",
+   "Aston Villa",
+   "Ipswich Town"
+  ],
+  "answer": "Nottingham Forest",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_13858d",
+  "q": "In 1979 Wolves broke the British transfer record to sign which striker from Aston Villa?",
+  "o": [
+   "Andy Gray",
+   "Trevor Francis",
+   "Peter Withe",
+   "Bob Latchford"
+  ],
+  "answer": "Andy Gray",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_605549",
+  "q": "In the mid-1980s Wolves were relegated in three consecutive seasons, falling from the First Division down to which division?",
+  "o": [
+   "The Second Division",
+   "The Third Division",
+   "The Football Conference",
+   "The Fourth Division"
+  ],
+  "answer": "The Fourth Division",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_47872b",
+  "q": "Which innovative 1930s Wolves manager was famous for promoting young players and controversial 'monkey gland' treatments?",
+  "o": [
+   "Major Frank Buckley",
+   "Ted Vizard",
+   "John Barnwell",
+   "Sammy Chung"
+  ],
+  "answer": "Major Frank Buckley",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d81ef7",
+  "q": "Who managed Wolves to the 1972 UEFA Cup final and the 1974 League Cup triumph?",
+  "o": [
+   "Ronnie Allen",
+   "Bill McGarry",
+   "John Barnwell",
+   "Sammy Chung"
+  ],
+  "answer": "Bill McGarry",
+  "cat": "Managers",
+  "diff": "hard"
+ }
+]

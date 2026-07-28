@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_63bf6c",
+  "q": "\"Le Classique\", the biggest rivalry in French football, is contested between PSG and which club?",
+  "o": [
+   "Marseille",
+   "Lyon",
+   "Monaco",
+   "Lille"
+  ],
+  "answer": "Marseille",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0d0abb",
+  "q": "Which Ligue 1 club plays its home matches at the Allianz Riviera?",
+  "o": [
+   "Nice",
+   "Monaco",
+   "Rennes",
+   "Lens"
+  ],
+  "answer": "Nice",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2252a6",
+  "q": "Roazhon Park is the home stadium of which Ligue 1 club?",
+  "o": [
+   "Rennes",
+   "Nantes",
+   "Lorient",
+   "Brest"
+  ],
+  "answer": "Rennes",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f01883",
+  "q": "The Stade Louis II is the home ground of which Ligue 1 club?",
+  "o": [
+   "Monaco",
+   "Nice",
+   "Lyon",
+   "Lille"
+  ],
+  "answer": "Monaco",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c2f78",
+  "q": "What is the traditional nickname of FC Nantes?",
+  "o": [
+   "Les Canaris",
+   "Les Dogues",
+   "Les Aiglons",
+   "Les Verts"
+  ],
+  "answer": "Les Canaris",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6d8ae0",
+  "q": "RC Lens play their home games at which famous stadium?",
+  "o": [
+   "Bollaert-Delelis",
+   "Roazhon Park",
+   "Geoffroy-Guichard",
+   "Matmut Atlantique"
+  ],
+  "answer": "Bollaert-Delelis",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bb23ab",
+  "q": "Before moving to the Groupama Stadium in 2016, Olympique Lyon played their home games at which historic ground?",
+  "o": [
+   "Stade de Gerland",
+   "La Beaujoire",
+   "Geoffroy-Guichard",
+   "Stade Bollaert"
+  ],
+  "answer": "Stade de Gerland",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6f065",
+  "q": "Saint-Étienne hold the record for most French top-flight titles by any club other than PSG — how many have they won?",
+  "o": [
+   "10",
+   "7",
+   "8",
+   "5"
+  ],
+  "answer": "10",
+  "cat": "Ligue1",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6c0e1b",
+  "q": "Which club, managed by Laurent Blanc, won the 2008-09 Ligue 1 title to end Lyon's run of dominance?",
+  "o": [
+   "Bordeaux",
+   "Lille",
+   "Montpellier",
+   "Marseille"
+  ],
+  "answer": "Bordeaux",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c07e05",
+  "q": "Which club paid a world-record €222 million to sign Neymar from Barcelona in 2017?",
+  "o": [
+   "Paris Saint-Germain",
+   "Real Madrid",
+   "Manchester United",
+   "Chelsea"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_642df6",
+  "q": "Jean-Pierre Papin won the 1991 Ballon d'Or while playing for which French club?",
+  "o": [
+   "Olympique de Marseille",
+   "AS Monaco",
+   "Olympique Lyon",
+   "Girondins de Bordeaux"
+  ],
+  "answer": "Olympique de Marseille",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9db248",
+  "q": "Radamel Falcao signed for which Ligue 1 club in 2013, becoming its marquee striker?",
+  "o": [
+   "AS Monaco",
+   "Paris Saint-Germain",
+   "Olympique de Marseille",
+   "Lille"
+  ],
+  "answer": "AS Monaco",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c8ba9b",
+  "q": "Brazilian playmaker Ronaldinho played in Ligue 1 for which club before moving to Barcelona in 2003?",
+  "o": [
+   "Paris Saint-Germain",
+   "Olympique de Marseille",
+   "AS Monaco",
+   "Olympique Lyon"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6c7d4a",
+  "q": "Dimitri Payet returned to which club in 2017, where he became a fan-favourite captain and free-kick specialist?",
+  "o": [
+   "Olympique de Marseille",
+   "AS Saint-Étienne",
+   "Lille",
+   "Olympique Lyon"
+  ],
+  "answer": "Olympique de Marseille",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b22ec1",
+  "q": "Alexandre Lacazette returned to which boyhood club in 2022 after five years at Arsenal?",
+  "o": [
+   "Olympique Lyon",
+   "AS Saint-Étienne",
+   "Paris Saint-Germain",
+   "Olympique de Marseille"
+  ],
+  "answer": "Olympique Lyon",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_78f402",
+  "q": "Which club won Ligue 1 in the 2023-24 season, Kylian Mbappé's final campaign before leaving?",
+  "o": [
+   "Paris Saint-Germain",
+   "AS Monaco",
+   "Marseille",
+   "Lille"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a149bf",
+  "q": "Which manager led Lille to their surprise Ligue 1 title in the 2020-21 season?",
+  "o": [
+   "Christophe Galtier",
+   "Rudi Garcia",
+   "Claude Puel",
+   "Marcelo Bielsa"
+  ],
+  "answer": "Christophe Galtier",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3e738b",
+  "q": "Which manager led PSG to the Ligue 1 title in both 2023-24 and 2024-25?",
+  "o": [
+   "Luis Enrique",
+   "Christophe Galtier",
+   "Mauricio Pochettino",
+   "Thomas Tuchel"
+  ],
+  "answer": "Luis Enrique",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_184bb1",
+  "q": "Which Argentine coach managed PSG during the 2021-22 season?",
+  "o": [
+   "Mauricio Pochettino",
+   "Diego Simeone",
+   "Marcelo Gallardo",
+   "Gerardo Martino"
+  ],
+  "answer": "Mauricio Pochettino",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d2cbb",
+  "q": "Which forward did PSG sign from Barcelona in 2023?",
+  "o": [
+   "Ousmane Dembélé",
+   "Raphinha",
+   "Ferran Torres",
+   "Ansu Fati"
+  ],
+  "answer": "Ousmane Dembélé",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a2ac1a",
+  "q": "Kylian Mbappé left PSG in 2024 as a free agent to join which club?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Liverpool",
+   "Manchester City"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fee0dc",
+  "q": "Before joining PSG in 2022, Christophe Galtier managed which other Ligue 1 club?",
+  "o": [
+   "Nice",
+   "Monaco",
+   "Marseille",
+   "Rennes"
+  ],
+  "answer": "Nice",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_afb7af",
+  "q": "Luis Enrique won a treble as manager of which club in 2015, years before joining PSG?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Roma",
+   "Celta Vigo"
+  ],
+  "answer": "Barcelona",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_076613",
+  "q": "Neymar left PSG in 2023 to join which Saudi Pro League club?",
+  "o": [
+   "Al-Hilal",
+   "Al-Nassr",
+   "Al-Ittihad",
+   "Al-Ahli"
+  ],
+  "answer": "Al-Hilal",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_385a10",
+  "q": "In 2024-25 Luis Enrique's PSG completed a historic season by winning their first-ever which trophy?",
+  "o": [
+   "UEFA Champions League",
+   "UEFA Europa League",
+   "FIFA Club World Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "UEFA Champions League",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_afec62",
+  "q": "Cristiano Ronaldo first joined Manchester United in 2003 from which club?",
+  "o": [
+   "Benfica",
+   "Porto",
+   "Sporting CP",
+   "Real Madrid"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6d4ed6",
+  "q": "By what nickname is Manchester United most commonly known?",
+  "o": [
+   "The Red Devils",
+   "The Citizens",
+   "The Blues",
+   "The Hammers"
+  ],
+  "answer": "The Red Devils",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_288abe",
+  "q": "What is the name of Manchester United's home stadium?",
+  "o": [
+   "Anfield",
+   "Old Trafford",
+   "Elland Road",
+   "Etihad Stadium"
+  ],
+  "answer": "Old Trafford",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_42a3cd",
+  "q": "Manchester United signed a teenage Wayne Rooney in 2004 from which club?",
+  "o": [
+   "Liverpool",
+   "Newcastle United",
+   "Aston Villa",
+   "Everton"
+  ],
+  "answer": "Everton",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bbf4e8",
+  "q": "Which manager led Manchester United for over 26 years before retiring in 2013?",
+  "o": [
+   "Sir Alex Ferguson",
+   "Sir Matt Busby",
+   "Ron Atkinson",
+   "David Moyes"
+  ],
+  "answer": "Sir Alex Ferguson",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_533a6b",
+  "q": "Manchester United beat which English club on penalties in the 2008 Champions League final in Moscow?",
+  "o": [
+   "Arsenal",
+   "Liverpool",
+   "Chelsea",
+   "Tottenham"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8eb32d",
+  "q": "Manchester United won the very first Premier League title in which season?",
+  "o": [
+   "1991-92",
+   "1992-93",
+   "1993-94",
+   "1994-95"
+  ],
+  "answer": "1992-93",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_709115",
+  "q": "Which striker signed from Arsenal in 2012 and fired Manchester United to Sir Alex Ferguson's final league title?",
+  "o": [
+   "Robin van Persie",
+   "Dimitar Berbatov",
+   "Radamel Falcao",
+   "Zlatan Ibrahimovic"
+  ],
+  "answer": "Robin van Persie",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_825e9a",
+  "q": "Which goalkeeper, nicknamed 'The Great Dane', was a cornerstone of Manchester United's 1990s title-winning sides?",
+  "o": [
+   "Edwin van der Sar",
+   "Fabien Barthez",
+   "Mark Bosnich",
+   "Peter Schmeichel"
+  ],
+  "answer": "Peter Schmeichel",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b53ba7",
+  "q": "Manchester United broke the world transfer record in 2016 to re-sign which midfielder from Juventus?",
+  "o": [
+   "Ander Herrera",
+   "Nemanja Matic",
+   "Paul Pogba",
+   "Marouane Fellaini"
+  ],
+  "answer": "Paul Pogba",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fc8d55",
+  "q": "Wayne Rooney scored a spectacular overhead kick to beat which rival at Old Trafford in February 2011?",
+  "o": [
+   "Manchester City",
+   "Liverpool",
+   "Chelsea",
+   "Arsenal"
+  ],
+  "answer": "Manchester City",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_614995",
+  "q": "Louis van Gaal's only trophy as Manchester United manager was which competition in 2016?",
+  "o": [
+   "League Cup",
+   "FA Cup",
+   "Europa League",
+   "Community Shield"
+  ],
+  "answer": "FA Cup",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ceae6",
+  "q": "The 'United Trinity' statue outside Old Trafford honours George Best, Denis Law and which other legend?",
+  "o": [
+   "Bobby Charlton",
+   "Bryan Robson",
+   "Duncan Edwards",
+   "Ryan Giggs"
+  ],
+  "answer": "Bobby Charlton",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_653362",
+  "q": "Which three trophies made up Manchester United's 1999 Treble?",
+  "o": [
+   "Premier League, FA Cup and Champions League",
+   "Premier League, League Cup and UEFA Cup",
+   "FA Cup, League Cup and Champions League",
+   "Premier League, FA Cup and UEFA Cup"
+  ],
+  "answer": "Premier League, FA Cup and Champions League",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3f3565",
+  "q": "José Mourinho ended a barren European run by winning which trophy with Manchester United in 2017?",
+  "o": [
+   "Champions League",
+   "FA Cup",
+   "Europa League",
+   "UEFA Super Cup"
+  ],
+  "answer": "Europa League",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ceb7a4",
+  "q": "In the 2008 Champions League final shootout, which Chelsea captain slipped and struck the post with a penalty that would have won the trophy?",
+  "o": [
+   "John Terry",
+   "Frank Lampard",
+   "Michael Ballack",
+   "Ricardo Carvalho"
+  ],
+  "answer": "John Terry",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_691392",
+  "q": "Which Manchester United winger won the Ballon d'Or (European Footballer of the Year) in 1968?",
+  "o": [
+   "Bobby Charlton",
+   "George Best",
+   "Denis Law",
+   "Nobby Stiles"
+  ],
+  "answer": "George Best",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dc4939",
+  "q": "In which year did Manchester United first play at Old Trafford?",
+  "o": [
+   "1902",
+   "1878",
+   "1936",
+   "1910"
+  ],
+  "answer": "1910",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cdfb09",
+  "q": "Manchester United were relegated from the top flight in 1974 on a day made infamous by a backheeled goal from which former United great, then playing for Manchester City?",
+  "o": [
+   "Denis Law",
+   "Bobby Charlton",
+   "George Best",
+   "Nobby Stiles"
+  ],
+  "answer": "Denis Law",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_251e27",
+  "q": "Tommy Docherty's Manchester United won the 1977 FA Cup final, denying which side a historic Treble that year?",
+  "o": [
+   "Everton",
+   "Leeds United",
+   "Liverpool",
+   "Arsenal"
+  ],
+  "answer": "Liverpool",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9faa95",
+  "q": "Manchester United broke the British transfer record in January 1995 to sign which striker from Newcastle United?",
+  "o": [
+   "Dwight Yorke",
+   "Andy Cole",
+   "Teddy Sheringham",
+   "Ole Gunnar Solskjaer"
+  ],
+  "answer": "Andy Cole",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_602cbf",
+  "q": "What is the scoreline of Manchester United's record top-flight win, achieved against Ipswich in 1995 and matched against Southampton in 2021?",
+  "o": [
+   "9-0",
+   "8-1",
+   "7-0",
+   "10-0"
+  ],
+  "answer": "9-0",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6db24",
+  "q": "Which manager did Liverpool appoint in October 2015, luring him from Borussia Dortmund to begin a trophy-laden era?",
+  "o": [
+   "Rafael Benitez",
+   "Jurgen Klopp",
+   "Brendan Rodgers",
+   "Arne Slot"
+  ],
+  "answer": "Jurgen Klopp",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_350d2c",
+  "q": "From which Italian club did Liverpool sign Mohamed Salah in 2017, a deal that proved one of the best in Premier League history?",
+  "o": [
+   "Fiorentina",
+   "AS Roma",
+   "Inter Milan",
+   "Napoli"
+  ],
+  "answer": "AS Roma",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_310612",
+  "q": "At which stadium do Liverpool play their home matches?",
+  "o": [
+   "Goodison Park",
+   "Anfield",
+   "Elland Road",
+   "St James' Park"
+  ],
+  "answer": "Anfield",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d3e977",
+  "q": "Liverpool controversially sold Fernando Torres to which club for £50m in January 2011?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Arsenal",
+   "Real Madrid"
+  ],
+  "answer": "Chelsea",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dfe3c2",
+  "q": "Which Merseyside neighbour do Liverpool face in the local derby?",
+  "o": [
+   "Everton",
+   "Tranmere Rovers",
+   "Manchester United",
+   "Blackburn Rovers"
+  ],
+  "answer": "Everton",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3b24ef",
+  "q": "When Liverpool won the Premier League in 2019-20, it ended a wait of how many years for an English league title?",
+  "o": [
+   "15 years",
+   "30 years",
+   "25 years",
+   "20 years"
+  ],
+  "answer": "30 years",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3ac0b7",
+  "q": "Which manager led Liverpool to a 2001 cup treble of the FA Cup, League Cup and UEFA Cup?",
+  "o": [
+   "Roy Evans",
+   "Gerard Houllier",
+   "Rafael Benitez",
+   "Graeme Souness"
+  ],
+  "answer": "Gerard Houllier",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_832778",
+  "q": "From which Spanish club did Liverpool hire Rafael Benitez in 2004, a year before the Istanbul triumph?",
+  "o": [
+   "Real Madrid",
+   "Valencia",
+   "Sevilla",
+   "Villarreal"
+  ],
+  "answer": "Valencia",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41cdf7",
+  "q": "Liverpool sold Philippe Coutinho in January 2018 to which club in a deal worth around £142m?",
+  "o": [
+   "Bayern Munich",
+   "Barcelona",
+   "Paris Saint-Germain",
+   "Real Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_25981f",
+  "q": "Roberto Firmino was signed in 2015 from which Bundesliga club?",
+  "o": [
+   "Hoffenheim",
+   "Bayer Leverkusen",
+   "Wolfsburg",
+   "Schalke"
+  ],
+  "answer": "Hoffenheim",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ddad59",
+  "q": "Which Liverpool striker won the Ballon d'Or (European Footballer of the Year) in 2001?",
+  "o": [
+   "Robbie Fowler",
+   "Michael Owen",
+   "Emile Heskey",
+   "Steven Gerrard"
+  ],
+  "answer": "Michael Owen",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9a634a",
+  "q": "Which striker scored 31 league goals for Liverpool in 2013-14, winning the Golden Boot and PFA Player of the Year?",
+  "o": [
+   "Daniel Sturridge",
+   "Luis Suarez",
+   "Fernando Torres",
+   "Mohamed Salah"
+  ],
+  "answer": "Luis Suarez",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3c7361",
+  "q": "Liverpool won their fourth European Cup in 1984 by beating Roma in a final decided how?",
+  "o": [
+   "A last-minute goal",
+   "On penalties",
+   "In extra time",
+   "A Grobbelaar own goal"
+  ],
+  "answer": "On penalties",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af602a",
+  "q": "Sadio Mane joined Liverpool in 2016 from which Premier League club?",
+  "o": [
+   "Southampton",
+   "Tottenham",
+   "Newcastle United",
+   "Leicester City"
+  ],
+  "answer": "Southampton",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_56d06c",
+  "q": "How many points did Liverpool amass in winning the 2019-20 Premier League, a club record?",
+  "o": [
+   "92",
+   "99",
+   "97",
+   "106"
+  ],
+  "answer": "99",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_425a5a",
+  "q": "In which year did Liverpool win their very first English league championship?",
+  "o": [
+   "1901",
+   "1892",
+   "1906",
+   "1922"
+  ],
+  "answer": "1901",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_56ff91",
+  "q": "A famous Steven Gerrard slip in April 2014 led to a defeat that badly dented Liverpool's title bid. Which club punished it?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Arsenal",
+   "Manchester United"
+  ],
+  "answer": "Chelsea",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ba3af",
+  "q": "Robbie Fowler scored the then-fastest hat-trick in Premier League history (4 min 33 sec) in 1994 against which club?",
+  "o": [
+   "Everton",
+   "Arsenal",
+   "Manchester United",
+   "Aston Villa"
+  ],
+  "answer": "Arsenal",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f04ce8",
+  "q": "Mohamed Salah's debut Premier League season (2017-18) set a scoring record with how many goals in a 38-game campaign?",
+  "o": [
+   "30",
+   "32",
+   "28",
+   "34"
+  ],
+  "answer": "32",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9763b",
+  "q": "Who scored Liverpool's winning goal in the 1981 European Cup final against Real Madrid in Paris?",
+  "o": [
+   "Terry McDermott",
+   "Alan Kennedy",
+   "Graeme Souness",
+   "Kenny Dalglish"
+  ],
+  "answer": "Alan Kennedy",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8f0cbf",
+  "q": "The 1985 Heysel Stadium disaster occurred before a European Cup final between Liverpool and which club?",
+  "o": [
+   "Juventus",
+   "AS Roma",
+   "Bayern Munich",
+   "Barcelona"
+  ],
+  "answer": "Juventus",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2e3b60",
+  "q": "Who succeeded Bob Paisley as Liverpool manager in 1983 and immediately won a treble including the 1984 European Cup?",
+  "o": [
+   "Joe Fagan",
+   "Kenny Dalglish",
+   "Ronnie Moran",
+   "Roy Evans"
+  ],
+  "answer": "Joe Fagan",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_98ba8f",
+  "q": "What is the name of Newcastle United's iconic home stadium, in the heart of the city since 1892?",
+  "o": [
+   "Villa Park",
+   "St James' Park",
+   "Elland Road",
+   "Stadium of Light"
+  ],
+  "answer": "St James' Park",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9c6a8a",
+  "q": "In 2005 Newcastle signed England striker Michael Owen for a then club-record fee. Which club did he join from?",
+  "o": [
+   "Liverpool",
+   "Manchester United",
+   "Real Madrid",
+   "Chelsea"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5a4528",
+  "q": "Newcastle legend Alan Shearer holds which all-time Premier League record?",
+  "o": [
+   "Most goals scored",
+   "Most appearances",
+   "Most goals in a single season",
+   "Most assists"
+  ],
+  "answer": "Most goals scored",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_441ab1",
+  "q": "Which Spanish manager took charge of Newcastle in 2016 and guided them straight back up as Championship title winners in 2017?",
+  "o": [
+   "Roberto Martinez",
+   "Unai Emery",
+   "Rafael Benitez",
+   "Pep Guardiola"
+  ],
+  "answer": "Rafael Benitez",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_14bf8b",
+  "q": "Newcastle sealed a return to the Champions League by finishing where in the 2022-23 Premier League?",
+  "o": [
+   "4th",
+   "2nd",
+   "6th",
+   "7th"
+  ],
+  "answer": "4th",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8cb4a6",
+  "q": "Newcastle United was formed in 1892 through the merger of which two local clubs?",
+  "o": [
+   "North End and South End",
+   "City and County",
+   "East End and West End",
+   "Rovers and Rangers"
+  ],
+  "answer": "East End and West End",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_258c48",
+  "q": "Bruno Guimaraes, a midfield talisman signed for a club-record fee in January 2022, arrived from which club?",
+  "o": [
+   "Lyon",
+   "Marseille",
+   "Porto",
+   "Athletico Paranaense"
+  ],
+  "answer": "Lyon",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5671fd",
+  "q": "Midfielder Sandro Tonali, signed from AC Milan in 2023, was hit early in his Newcastle career by what kind of lengthy ban?",
+  "o": [
+   "A doping ban",
+   "A betting ban",
+   "A racism ban",
+   "A violent-conduct ban"
+  ],
+  "answer": "A betting ban",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c01fff",
+  "q": "Alexander Isak, later Newcastle's record sale, was originally signed by the club in 2022 from which Spanish side?",
+  "o": [
+   "Athletic Bilbao",
+   "Sevilla",
+   "Villarreal",
+   "Real Sociedad"
+  ],
+  "answer": "Real Sociedad",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_31a1ab",
+  "q": "In their 2023-24 Champions League group stage, Newcastle produced a stunning 4-1 home win over which side?",
+  "o": [
+   "Barcelona",
+   "Paris Saint-Germain",
+   "AC Milan",
+   "Borussia Dortmund"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de8a59",
+  "q": "Newcastle last lifted the FA Cup in 1955, beating which side 3-1 in the final?",
+  "o": [
+   "Manchester City",
+   "Arsenal",
+   "Bolton Wanderers",
+   "Blackpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2ebb4d",
+  "q": "In January 2011 Newcastle sold striker Andy Carroll to Liverpool for what was then a British-record fee. How much?",
+  "o": [
+   "£15 million",
+   "£22 million",
+   "£35 million",
+   "£50 million"
+  ],
+  "answer": "£35 million",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_180d07",
+  "q": "Kevin Keegan returned to Newcastle as MANAGER in 1992 and immediately delivered what in 1993?",
+  "o": [
+   "The FA Cup",
+   "Promotion as First Division champions",
+   "A UEFA Cup place",
+   "The League Cup"
+  ],
+  "answer": "Promotion as First Division champions",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_79be03",
+  "q": "Under Sir Bobby Robson, Newcastle famously reached the second group stage of which competition in 2002-03?",
+  "o": [
+   "UEFA Cup",
+   "Champions League",
+   "FA Cup",
+   "Cup Winners' Cup"
+  ],
+  "answer": "Champions League",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dc5dcc",
+  "q": "Winger Nolberto 'Nobby' Solano, a Newcastle cult hero from 1998, holds what Premier League distinction?",
+  "o": [
+   "First Peruvian to play in it",
+   "First South American captain",
+   "First to score in it",
+   "Oldest goalscorer in it"
+  ],
+  "answer": "First Peruvian to play in it",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_180b26",
+  "q": "Newcastle's record victory is a 13-0 rout in 1946. Which club were the victims?",
+  "o": [
+   "Northampton Town",
+   "Notts County",
+   "Newport County",
+   "Nelson"
+  ],
+  "answer": "Newport County",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_901fcf",
+  "q": "Newcastle's record home attendance of 68,386, set in 1930, came against which opponent?",
+  "o": [
+   "Sunderland",
+   "Arsenal",
+   "Everton",
+   "Chelsea"
+  ],
+  "answer": "Chelsea",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9690c6",
+  "q": "Which striker scored a spectacular long-range winner at Stamford Bridge in May 2012, one of two goals that day against Chelsea?",
+  "o": [
+   "Papiss Cisse",
+   "Demba Ba",
+   "Shola Ameobi",
+   "Loic Remy"
+  ],
+  "answer": "Papiss Cisse",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c89368",
+  "q": "Chilean-born forward George Robledo scored the winning goal in which Newcastle FA Cup final triumph?",
+  "o": [
+   "1952",
+   "1951",
+   "1955",
+   "1932"
+  ],
+  "answer": "1952",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6d467c",
+  "q": "Which former player managed Newcastle to their 1969 Inter-Cities Fairs Cup triumph?",
+  "o": [
+   "Stan Seymour",
+   "Joe Harvey",
+   "Charlie Mitten",
+   "Norman Smith"
+  ],
+  "answer": "Joe Harvey",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_59fd3f",
+  "q": "Which Dutch manager controversially benched Alan Shearer for a Tyne-Wear derby shortly before resigning in 1999?",
+  "o": [
+   "Louis van Gaal",
+   "Guus Hiddink",
+   "Ruud Gullit",
+   "Dick Advocaat"
+  ],
+  "answer": "Ruud Gullit",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d62da3",
+  "q": "How many times have Newcastle United won the FA Cup?",
+  "o": [
+   "4",
+   "6",
+   "8",
+   "3"
+  ],
+  "answer": "6",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0a308b",
+  "q": "Real Madrid's 2018 Champions League final win over Liverpool in Kyiv was lit up by a stunning overhead kick off the bench. Who scored it?",
+  "o": [
+   "Karim Benzema",
+   "Cristiano Ronaldo",
+   "Gareth Bale",
+   "Marco Asensio"
+  ],
+  "answer": "Gareth Bale",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7661e2",
+  "q": "Which former Galactico midfielder coached Real Madrid to three consecutive Champions Leagues from 2016 to 2018?",
+  "o": [
+   "Carlo Ancelotti",
+   "Zinedine Zidane",
+   "Rafael Benitez",
+   "Santiago Solari"
+  ],
+  "answer": "Zinedine Zidane",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_89bdc8",
+  "q": "In 2009 Real Madrid broke the world transfer record to sign Cristiano Ronaldo. Which club did he arrive from?",
+  "o": [
+   "Sporting CP",
+   "Manchester United",
+   "Juventus",
+   "Manchester City"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6d6fe3",
+  "q": "By the end of 2024, how many European Cup / Champions League titles had Real Madrid won — a competition record?",
+  "o": [
+   "13",
+   "14",
+   "15",
+   "16"
+  ],
+  "answer": "15",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_04c278",
+  "q": "Which Real Madrid midfielder won the 2018 Ballon d'Or, ending a decade of Messi and Ronaldo dominance?",
+  "o": [
+   "Toni Kroos",
+   "Luka Modric",
+   "Isco",
+   "Marco Asensio"
+  ],
+  "answer": "Luka Modric",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fb15de",
+  "q": "Which club had won the most LaLiga titles in the competition's history as of 2024?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Atletico Madrid",
+   "Athletic Bilbao"
+  ],
+  "answer": "Real Madrid",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f2ec53",
+  "q": "Real Madrid smashed the world transfer record in 2001 to sign Zinedine Zidane. Which club sold him?",
+  "o": [
+   "Bordeaux",
+   "Juventus",
+   "Marseille",
+   "Inter Milan"
+  ],
+  "answer": "Juventus",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d57e8",
+  "q": "Real Madrid's seventh European Cup in 1998 ended a 32-year wait, beating Juventus 1-0. Who scored the winning goal?",
+  "o": [
+   "Raul",
+   "Predrag Mijatovic",
+   "Fernando Morientes",
+   "Fernando Hierro"
+  ],
+  "answer": "Predrag Mijatovic",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3f3f42",
+  "q": "Real Madrid beat which fellow Spanish side 3-0 in an all-Spanish Champions League final in 2000?",
+  "o": [
+   "Valencia",
+   "Barcelona",
+   "Deportivo La Coruna",
+   "Atletico Madrid"
+  ],
+  "answer": "Valencia",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4ea02d",
+  "q": "'La Quinta del Buitre', Madrid's celebrated homegrown group of the 1980s, was named after which forward's nickname?",
+  "o": [
+   "Hugo Sanchez",
+   "Emilio Butragueno",
+   "Santillana",
+   "Michel"
+  ],
+  "answer": "Emilio Butragueno",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20922e",
+  "q": "In the 2003 Galacticos era Real Madrid signed which England midfielder from Manchester United?",
+  "o": [
+   "Steve McManaman",
+   "David Beckham",
+   "Michael Owen",
+   "Jonathan Woodgate"
+  ],
+  "answer": "David Beckham",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ef7e13",
+  "q": "Which coach guided Real Madrid to Champions League titles in both 2000 and 2002?",
+  "o": [
+   "Vicente del Bosque",
+   "John Toshack",
+   "Jupp Heynckes",
+   "Fabio Capello"
+  ],
+  "answer": "Vicente del Bosque",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df738c",
+  "q": "Which flying winger won six European Cups with Real Madrid across their first golden era (1956-1966)?",
+  "o": [
+   "Francisco Gento",
+   "Amancio",
+   "Raymond Kopa",
+   "Jose Santamaria"
+  ],
+  "answer": "Francisco Gento",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2f1f5c",
+  "q": "Which Mexican striker, famed for his acrobatic bicycle-kick finishes, won multiple Pichichi awards at Real Madrid in the late 1980s?",
+  "o": [
+   "Hugo Sanchez",
+   "Jorge Valdano",
+   "Ivan Zamorano",
+   "Emilio Butragueno"
+  ],
+  "answer": "Hugo Sanchez",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4011d1",
+  "q": "Real Madrid signed teenage winger Vinicius Junior from which Brazilian club?",
+  "o": [
+   "Santos",
+   "Flamengo",
+   "Palmeiras",
+   "Corinthians"
+  ],
+  "answer": "Flamengo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_29a348",
+  "q": "Real Madrid's all-Spanish 'Yé-yé' team won the 1966 European Cup, beating which club 2-1 in the final?",
+  "o": [
+   "Benfica",
+   "Partizan Belgrade",
+   "Inter Milan",
+   "Celtic"
+  ],
+  "answer": "Partizan Belgrade",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_09d08c",
+  "q": "In which year did Real Madrid win their first LaLiga title?",
+  "o": [
+   "1929",
+   "1932",
+   "1936",
+   "1954"
+  ],
+  "answer": "1932",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7dd95e",
+  "q": "Who was the first man to win the European Cup with Real Madrid as both a player and their manager?",
+  "o": [
+   "Jose Villalonga",
+   "Luis Molowny",
+   "Miguel Munoz",
+   "Santiago Bernabeu"
+  ],
+  "answer": "Miguel Munoz",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8d27c1",
+  "q": "Hungarian great Ferenc Puskas, nicknamed the 'Galloping Major', won LaLiga's Pichichi top-scorer award how many times at Real Madrid?",
+  "o": [
+   "Two",
+   "Four",
+   "Six",
+   "One"
+  ],
+  "answer": "Four",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6f967e",
+  "q": "In their record-setting 2011-12 LaLiga title season under Jose Mourinho, how many points did Real Madrid amass?",
+  "o": [
+   "96",
+   "100",
+   "92",
+   "104"
+  ],
+  "answer": "100",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2c3b79",
+  "q": "Alongside Cristiano Ronaldo in 2009, Real Madrid also signed which Brazilian Ballon d'Or winner from AC Milan?",
+  "o": [
+   "Robinho",
+   "Kaka",
+   "Ronaldinho",
+   "Alexandre Pato"
+  ],
+  "answer": "Kaka",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4ccaed",
+  "q": "In the 2006 Champions League final in Paris, Barcelona came from behind to win 2-1 and lift their second European Cup. Which English club did they beat?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Manchester United",
+   "Liverpool"
+  ],
+  "answer": "Arsenal",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f40cc1",
+  "q": "Which Brazilian playmaker revived Barcelona in the mid-2000s and was named FIFA World Player of the Year in both 2004 and 2005?",
+  "o": [
+   "Rivaldo",
+   "Ronaldinho",
+   "Kaká",
+   "Juninho Pernambucano"
+  ],
+  "answer": "Ronaldinho",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e355c3",
+  "q": "When Neymar left Barcelona in 2017 for a world-record €222m fee, which club did he join?",
+  "o": [
+   "Real Madrid",
+   "Manchester City",
+   "Paris Saint-Germain",
+   "Juventus"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_255610",
+  "q": "Which centre-back, a one-club man, captained Barcelona from 2004 to 2014 and led them through the Guardiola golden era?",
+  "o": [
+   "Carles Puyol",
+   "Gerard Piqué",
+   "Rafael Márquez",
+   "Éric Abidal"
+  ],
+  "answer": "Carles Puyol",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d4019e",
+  "q": "Barcelona signed striker Luis Suárez in 2014 from which club, forming the MSN trio alongside Messi and Neymar?",
+  "o": [
+   "Ajax",
+   "Atlético Madrid",
+   "Inter Milan",
+   "Liverpool"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_61b861",
+  "q": "Which midfielder, a La Masia graduate who spent his whole senior Barcelona career from 2002 to 2018, later scored Spain's winning goal in the 2010 World Cup final?",
+  "o": [
+   "Xavi",
+   "Sergio Busquets",
+   "Andrés Iniesta",
+   "Cesc Fàbregas"
+  ],
+  "answer": "Andrés Iniesta",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_de5ee6",
+  "q": "In the 2009 Champions League final in Rome, Barcelona beat Manchester United 2-0. Who scored the second goal with a leaping header?",
+  "o": [
+   "Samuel Eto'o",
+   "Thierry Henry",
+   "Lionel Messi",
+   "Andrés Iniesta"
+  ],
+  "answer": "Lionel Messi",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c8f8b",
+  "q": "Barcelona beat Manchester United 3-1 in a Champions League final for the second time in three years in 2011. At which stadium was that final played?",
+  "o": [
+   "Wembley",
+   "Old Trafford",
+   "Stadio Olimpico",
+   "San Siro"
+  ],
+  "answer": "Wembley",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_edc6a6",
+  "q": "Which Dutchman coached Barcelona to their 2006 Champions League triumph over Arsenal?",
+  "o": [
+   "Louis van Gaal",
+   "Frank Rijkaard",
+   "Ronald Koeman",
+   "Johan Cruyff"
+  ],
+  "answer": "Frank Rijkaard",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_13c6ac",
+  "q": "Who was Barcelona's manager when they completed the 2015 treble of La Liga, Copa del Rey and Champions League?",
+  "o": [
+   "Pep Guardiola",
+   "Tata Martino",
+   "Luis Enrique",
+   "Tito Vilanova"
+  ],
+  "answer": "Luis Enrique",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3b74b1",
+  "q": "When Zlatan Ibrahimović joined Barcelona from Inter in 2009, which striker moved to Inter as part of the deal?",
+  "o": [
+   "Samuel Eto'o",
+   "Thierry Henry",
+   "Bojan Krkić",
+   "Alexander Hleb"
+  ],
+  "answer": "Samuel Eto'o",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8f2b32",
+  "q": "Lionel Messi set a single-season La Liga scoring record in 2011-12. How many league goals did he score that campaign?",
+  "o": [
+   "43",
+   "46",
+   "50",
+   "54"
+  ],
+  "answer": "50",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f8de76",
+  "q": "In 2012-13, Barcelona equalled the La Liga points record. How many points did they finish with?",
+  "o": [
+   "96",
+   "99",
+   "100",
+   "102"
+  ],
+  "answer": "100",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1b1233",
+  "q": "Which Brazilian, playing for Barcelona, sealed a Champions League qualifying spot in 2001 with a last-minute overhead bicycle kick against Valencia?",
+  "o": [
+   "Ronaldinho",
+   "Rivaldo",
+   "Sonny Anderson",
+   "Giovanni"
+  ],
+  "answer": "Rivaldo",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d8f3d4",
+  "q": "In the 2009 Champions League semi-final, who scored a dramatic injury-time away goal at Stamford Bridge to send Barcelona through past Chelsea?",
+  "o": [
+   "Andrés Iniesta",
+   "Xavi",
+   "Lionel Messi",
+   "Samuel Eto'o"
+  ],
+  "answer": "Andrés Iniesta",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b16c9",
+  "q": "Which Englishman managed Barcelona for the 1996-97 season, winning the Cup Winners' Cup and signing the Brazilian Ronaldo?",
+  "o": [
+   "Terry Venables",
+   "Bobby Robson",
+   "Vic Buckingham",
+   "Kevin Keegan"
+  ],
+  "answer": "Bobby Robson",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a72e8",
+  "q": "Who managed Barcelona for a single season in 2012-13, guiding them to the La Liga title with 100 points before ill health ended his tenure?",
+  "o": [
+   "Tata Martino",
+   "Tito Vilanova",
+   "Luis Enrique",
+   "Ernesto Valverde"
+  ],
+  "answer": "Tito Vilanova",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_307e1f",
+  "q": "Lionel Messi set a world record for goals in a single calendar year while at Barcelona in 2012. How many did he score for club and country?",
+  "o": [
+   "79",
+   "85",
+   "91",
+   "96"
+  ],
+  "answer": "91",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4b3f68",
+  "q": "The Brazilian Ronaldo scored 47 goals in his single 1996-97 season at Barcelona before a world-record transfer to which club?",
+  "o": [
+   "Real Madrid",
+   "AC Milan",
+   "Inter Milan",
+   "PSV Eindhoven"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0cc96d",
+  "q": "Johan Cruyff joined Barcelona as a player in 1973 for a then world-record fee. From which club did he sign?",
+  "o": [
+   "Ajax",
+   "Feyenoord",
+   "PSV Eindhoven",
+   "Real Madrid"
+  ],
+  "answer": "Ajax",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fec56e",
+  "q": "In which northern Italian city is Juventus based?",
+  "o": [
+   "Milan",
+   "Turin",
+   "Genoa",
+   "Bologna"
+  ],
+  "answer": "Turin",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_604e72",
+  "q": "Juventus's fierce rivalry with which non-city club is known as the 'Derby d'Italia'?",
+  "o": [
+   "Torino",
+   "AC Milan",
+   "Inter Milan",
+   "Roma"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_69f688",
+  "q": "The 'Derby della Mole' pits Juventus against which fellow Turin club?",
+  "o": [
+   "Torino",
+   "Novara",
+   "Alessandria",
+   "Pro Vercelli"
+  ],
+  "answer": "Torino",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_55775a",
+  "q": "Juventus signed which French midfielder on a free transfer from Manchester United in 2012, before selling him back for a huge fee in 2016?",
+  "o": [
+   "N'Golo Kante",
+   "Paul Pogba",
+   "Blaise Matuidi",
+   "Adrien Rabiot"
+  ],
+  "answer": "Paul Pogba",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9e57c3",
+  "q": "Which striker, nicknamed 'Pablito' and Golden Boot winner at the 1982 World Cup, was a Juventus player at the time?",
+  "o": [
+   "Paolo Rossi",
+   "Roberto Bettega",
+   "Franco Causio",
+   "Bruno Conti"
+  ],
+  "answer": "Paolo Rossi",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_44d13f",
+  "q": "Which Juventus playmaker won three consecutive Ballon d'Or awards in 1983, 1984 and 1985?",
+  "o": [
+   "Michel Platini",
+   "Zinedine Zidane",
+   "Roberto Baggio",
+   "Pavel Nedved"
+  ],
+  "answer": "Michel Platini",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c47489",
+  "q": "Who managed Juventus to their 1996 Champions League triumph and later won the 2006 World Cup with Italy?",
+  "o": [
+   "Giovanni Trapattoni",
+   "Marcello Lippi",
+   "Fabio Capello",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Marcello Lippi",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fb20d4",
+  "q": "Which former Juventus captain returned as manager and won the first three of the club's nine consecutive Serie A titles (2012-2014)?",
+  "o": [
+   "Antonio Conte",
+   "Massimiliano Allegri",
+   "Didier Deschamps",
+   "Andrea Pirlo"
+  ],
+  "answer": "Antonio Conte",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c0928e",
+  "q": "Under Massimiliano Allegri, Juventus reached two Champions League finals in three years but lost both, in 2015 and which other year?",
+  "o": [
+   "2016",
+   "2017",
+   "2018",
+   "2019"
+  ],
+  "answer": "2017",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e39699",
+  "q": "Argentine forward Paulo Dybala earned which nickname during his Juventus career?",
+  "o": [
+   "El Pibe",
+   "La Joya",
+   "El Flaco",
+   "La Pulga"
+  ],
+  "answer": "La Joya",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2b609",
+  "q": "Which Argentine-born forward won the 1961 Ballon d'Or while starring for Juventus?",
+  "o": [
+   "Omar Sivori",
+   "Alfredo Di Stefano",
+   "Luis Monti",
+   "Raimundo Orsi"
+  ],
+  "answer": "Omar Sivori",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_328def",
+  "q": "Juventus signed which striker from Ajax in the summer of 2004?",
+  "o": [
+   "Zlatan Ibrahimovic",
+   "Patrick Kluivert",
+   "Nwankwo Kanu",
+   "Marco van Basten"
+  ],
+  "answer": "Zlatan Ibrahimovic",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_04acea",
+  "q": "In 2016 Juventus paid Napoli around €90m for which striker, a then-record fee for a transfer within Italian football?",
+  "o": [
+   "Gonzalo Higuain",
+   "Carlos Tevez",
+   "Mauro Icardi",
+   "Edinson Cavani"
+  ],
+  "answer": "Gonzalo Higuain",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_101735",
+  "q": "Juventus lost the 2015 Champions League final in Berlin to which Spanish club?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Atletico Madrid",
+   "Sevilla"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2aff3",
+  "q": "In what year was Juventus founded?",
+  "o": [
+   "1897",
+   "1905",
+   "1910",
+   "1923"
+  ],
+  "answer": "1897",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8141f3",
+  "q": "Juventus won five consecutive Serie A titles in the 1930s, an era of dominance known by what Italian name?",
+  "o": [
+   "Il Triennio",
+   "Il Quinquennio d'Oro",
+   "La Grande Juve",
+   "Il Decennio"
+  ],
+  "answer": "Il Quinquennio d'Oro",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_28a965",
+  "q": "Juventus won their first UEFA Cup in 1977, a triumph notable for being achieved with a squad made up entirely of what?",
+  "o": [
+   "Teenagers",
+   "Italian players",
+   "Academy graduates",
+   "Free transfers"
+  ],
+  "answer": "Italian players",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b555ff",
+  "q": "Which elegant Juventus libero and 1982 World Cup winner is remembered as one of football's greatest sweepers before his death in a 1989 car crash?",
+  "o": [
+   "Gaetano Scirea",
+   "Claudio Gentile",
+   "Antonio Cabrini",
+   "Sergio Brio"
+  ],
+  "answer": "Gaetano Scirea",
+  "cat": "Legends",
+  "diff": "hard"
+ }
+]

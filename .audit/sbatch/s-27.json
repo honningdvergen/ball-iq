@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_170e7e",
+  "q": "The heated Fenerbahçe-Galatasaray rivalry is popularly known by which name?",
+  "o": [
+   "The Intercontinental Derby",
+   "The Eternal Derby",
+   "The Old Firm",
+   "The Bosphorus Clásico"
+  ],
+  "answer": "The Intercontinental Derby",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_021447",
+  "q": "In the 1987 European Cup final against Bayern Munich, Rabah Madjer scored his iconic equaliser with what kind of finish?",
+  "o": [
+   "Header",
+   "Backheel",
+   "Bicycle kick",
+   "Diving header"
+  ],
+  "answer": "Backheel",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0aecfa",
+  "q": "Who scored Porto's 84th-minute winner in the 1987 European Cup final to beat Bayern Munich 2-1?",
+  "o": [
+   "Paulo Futre",
+   "Fernando Gomes",
+   "Juary",
+   "Rabah Madjer"
+  ],
+  "answer": "Juary",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_36b7e9",
+  "q": "Porto beat which South American side to win the 1987 Intercontinental Cup on a snow-covered Tokyo pitch?",
+  "o": [
+   "River Plate",
+   "Peñarol",
+   "Nacional",
+   "Independiente"
+  ],
+  "answer": "Peñarol",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7750ae",
+  "q": "A week after Porto's 2004 Champions League triumph, José Mourinho left to manage which club?",
+  "o": [
+   "Real Madrid",
+   "Inter Milan",
+   "Chelsea",
+   "Tottenham"
+  ],
+  "answer": "Chelsea",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b93383",
+  "q": "Whose injury-time goal at Old Trafford in 2004 knocked Manchester United out and sparked Mourinho's touchline sprint?",
+  "o": [
+   "Costinha",
+   "Deco",
+   "Benni McCarthy",
+   "Maniche"
+  ],
+  "answer": "Costinha",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c81e9e",
+  "q": "In which city did Porto beat Celtic 3-2 after extra time to win the 2003 UEFA Cup final?",
+  "o": [
+   "Rotterdam",
+   "Seville",
+   "Gothenburg",
+   "Basel"
+  ],
+  "answer": "Seville",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f6d8d2",
+  "q": "Who scored Porto's decisive extra-time goal in the 2003 UEFA Cup final against Celtic?",
+  "o": [
+   "Deco",
+   "Dmitri Alenichev",
+   "Derlei",
+   "Capucho"
+  ],
+  "answer": "Derlei",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b43106",
+  "q": "Porto's 2011 Europa League final was the first all-Portuguese European final; which club did they beat 1-0?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "Braga",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Braga",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a8ad48",
+  "q": "Who scored the winning goal in Porto's 2011 Europa League final victory over Braga?",
+  "o": [
+   "Hulk",
+   "Radamel Falcao",
+   "Fredy Guarín",
+   "Silvestre Varela"
+  ],
+  "answer": "Radamel Falcao",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_156eff",
+  "q": "How many goals did Radamel Falcao score in Porto's victorious 2010-11 Europa League campaign?",
+  "o": [
+   "12",
+   "14",
+   "17",
+   "20"
+  ],
+  "answer": "17",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bcaeb5",
+  "q": "What did André Villas-Boas's 2010-11 Porto side achieve in the domestic Primeira Liga?",
+  "o": [
+   "Won every match",
+   "Went unbeaten all season",
+   "Scored 100 league goals",
+   "Kept a clean sheet in every home game"
+  ],
+  "answer": "Went unbeaten all season",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bcd71e",
+  "q": "Which manager led Porto to a 2010-11 quadruple of league, cup, Supertaça and Europa League?",
+  "o": [
+   "André Villas-Boas",
+   "José Mourinho",
+   "Sérgio Conceição",
+   "Jesualdo Ferreira"
+  ],
+  "answer": "André Villas-Boas",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_493de0",
+  "q": "Who is Porto's all-time top scorer, with 355 goals for the club?",
+  "o": [
+   "Mário Jardel",
+   "Fernando Gomes",
+   "Radamel Falcao",
+   "Hulk"
+  ],
+  "answer": "Fernando Gomes",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c0d116",
+  "q": "In which two seasons did Fernando Gomes win the European Golden Boot for Porto?",
+  "o": [
+   "1979-80 & 1981-82",
+   "1982-83 & 1984-85",
+   "1985-86 & 1987-88",
+   "1983-84 & 1986-87"
+  ],
+  "answer": "1982-83 & 1984-85",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b358d1",
+  "q": "In which season did Mário Jardel score a remarkable 54 goals in all competitions for Porto?",
+  "o": [
+   "1996-97",
+   "1998-99",
+   "1999-2000",
+   "2001-02"
+  ],
+  "answer": "1999-2000",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d5fbad",
+  "q": "Porto are the only Portuguese club to win five consecutive league titles; over which span did this 'pentacampeonato' run?",
+  "o": [
+   "1985-1989",
+   "1995-1999",
+   "2006-2010",
+   "2011-2015"
+  ],
+  "answer": "1995-1999",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ece329",
+  "q": "Which Englishman won back-to-back Porto titles in 1995 and 1996 and was nicknamed 'Bobby Five-O'?",
+  "o": [
+   "Terry Venables",
+   "Roy Hodgson",
+   "Bobby Robson",
+   "Bobby Charlton"
+  ],
+  "answer": "Bobby Robson",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cd8978",
+  "q": "Who worked as Bobby Robson's assistant and interpreter at Porto before his own rise to management?",
+  "o": [
+   "Carlos Queiroz",
+   "José Mourinho",
+   "André Villas-Boas",
+   "Sérgio Conceição"
+  ],
+  "answer": "José Mourinho",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_746d86",
+  "q": "Porto's record sale sent which forward to Zenit St Petersburg for around €60m in 2012?",
+  "o": [
+   "Hulk",
+   "Radamel Falcao",
+   "James Rodríguez",
+   "Lisandro López"
+  ],
+  "answer": "Hulk",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3d1f1",
+  "q": "Radamel Falcao was sold by Porto in 2011 to which club?",
+  "o": [
+   "Manchester United",
+   "Atlético Madrid",
+   "Chelsea",
+   "Monaco"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a482ca",
+  "q": "James Rodríguez left Porto in 2013 to sign for which club?",
+  "o": [
+   "Real Madrid",
+   "Monaco",
+   "Bayern Munich",
+   "Everton"
+  ],
+  "answer": "Monaco",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_089b03",
+  "q": "Deco left Porto in 2004, shortly after the Champions League win, to join which club?",
+  "o": [
+   "Chelsea",
+   "Real Madrid",
+   "Barcelona",
+   "Inter Milan"
+  ],
+  "answer": "Barcelona",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8241fb",
+  "q": "Deco finished runner-up in the 2004 Ballon d'Or behind which player?",
+  "o": [
+   "Ronaldinho",
+   "Andriy Shevchenko",
+   "Thierry Henry",
+   "Ronaldo"
+  ],
+  "answer": "Andriy Shevchenko",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9fc260",
+  "q": "Which then-16-year-old made his Barcelona debut in the 2003 friendly that inaugurated the Estádio do Dragão?",
+  "o": [
+   "Andrés Iniesta",
+   "Cesc Fàbregas",
+   "Lionel Messi",
+   "Bojan Krkić"
+  ],
+  "answer": "Lionel Messi",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a1c08c",
+  "q": "The Estádio do Dragão, opened in 2003, replaced which former Porto home ground?",
+  "o": [
+   "Estádio das Antas",
+   "Estádio do Bessa",
+   "Estádio do Restelo",
+   "Estádio da Luz"
+  ],
+  "answer": "Estádio das Antas",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c4c75d",
+  "q": "Jorge Costa, captain of Porto's 2004 Champions League-winning side, was famously nicknamed what?",
+  "o": [
+   "O Maestro",
+   "Bicho",
+   "O Rei",
+   "O Anjo"
+  ],
+  "answer": "Bicho",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f7f74f",
+  "q": "How did Porto beat Colombia's Once Caldas to win the 2004 Intercontinental Cup?",
+  "o": [
+   "A 3-1 win",
+   "A golden goal",
+   "A penalty shootout",
+   "An extra-time header"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_db57b8",
+  "q": "The 2004 edition Porto won was the final Intercontinental Cup before it was absorbed into which tournament?",
+  "o": [
+   "FIFA Confederations Cup",
+   "FIFA Club World Cup",
+   "UEFA Super Cup",
+   "Copa Libertadores"
+  ],
+  "answer": "FIFA Club World Cup",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dc786e",
+  "q": "Porto's record 58-match unbeaten Primeira Liga run took place between which years?",
+  "o": [
+   "1994-1996",
+   "2003-2005",
+   "2010-2012",
+   "2020-2022"
+  ],
+  "answer": "2020-2022",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7424ca",
+  "q": "Porto legend and goalkeeper Vítor Baía had a spell at which club before returning to Porto?",
+  "o": [
+   "Marseille",
+   "Barcelona",
+   "Roma",
+   "Deportivo"
+  ],
+  "answer": "Barcelona",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c34d76",
+  "q": "Which Porto centre-back followed Mourinho to Chelsea in 2004 and later joined Real Madrid?",
+  "o": [
+   "Jorge Costa",
+   "Ricardo Carvalho",
+   "Pepe",
+   "Bruno Alves"
+  ],
+  "answer": "Ricardo Carvalho",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a5e74b",
+  "q": "Who scored Porto's only goal, a penalty, in the 2004 Champions League semifinal second leg at Deportivo's Riazor?",
+  "o": [
+   "Deco",
+   "Maniche",
+   "Derlei",
+   "Benni McCarthy"
+  ],
+  "answer": "Derlei",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_93cd47",
+  "q": "Who scored Porto's second goal and was named man of the match in the 2004 Champions League final?",
+  "o": [
+   "Carlos Alberto",
+   "Deco",
+   "Dmitri Alenichev",
+   "Costinha"
+  ],
+  "answer": "Deco",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_116593",
+  "q": "Porto's biggest-ever competitive win was a 19-1 rout of which side in a 1932-33 match?",
+  "o": [
+   "Académica",
+   "Coimbrões",
+   "Leixões",
+   "Vitória"
+  ],
+  "answer": "Coimbrões",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a8ce10",
+  "q": "Right-back João Pinto, Porto's record appearance-maker (1981-1997), played roughly how many competitive games?",
+  "o": [
+   "About 450",
+   "About 587",
+   "About 700",
+   "About 400"
+  ],
+  "answer": "About 587",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1badc7",
+  "q": "Which winger moved from Barcelona to Porto as part of Deco's 2004 transfer deal?",
+  "o": [
+   "Anderson",
+   "Ricardo Quaresma",
+   "Pepe",
+   "Lucho González"
+  ],
+  "answer": "Ricardo Quaresma",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b7fe90",
+  "q": "Falcao's winning header in the 2011 Europa League final came from a cross by which midfielder?",
+  "o": [
+   "João Moutinho",
+   "Fredy Guarín",
+   "Hulk",
+   "James Rodríguez"
+  ],
+  "answer": "Fredy Guarín",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4060a8",
+  "q": "Which backup goalkeeper, who later managed clubs in England, came on for Vítor Baía in the 2004 Intercontinental Cup final?",
+  "o": [
+   "Helton",
+   "Beto",
+   "Nuno Espírito Santo",
+   "Rui Patrício"
+  ],
+  "answer": "Nuno Espírito Santo",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4d945c",
+  "q": "Porto's 2017-18 league title under Sérgio Conceição ended a run of four straight championships by which rival?",
+  "o": [
+   "Sporting CP",
+   "Benfica",
+   "Braga",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Benfica",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_75ed0c",
+  "q": "Roma sealed the 2000-01 Scudetto on the final day with a 3-1 home win at the Stadio Olimpico. Which side did they beat that afternoon?",
+  "o": [
+   "Juventus",
+   "Parma",
+   "Lecce",
+   "Napoli"
+  ],
+  "answer": "Parma",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_586557",
+  "q": "Ahead of the 2000-01 title season, Roma broke the world transfer record for a player over 30 to sign which striker?",
+  "o": [
+   "Marco Delvecchio",
+   "Vincenzo Montella",
+   "Gabriel Batistuta",
+   "Abel Balbo"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fd0766",
+  "q": "Which Argentine centre-back did Roma sign in 2000 to anchor the defence of their 2000-01 Scudetto-winning side?",
+  "o": [
+   "Walter Samuel",
+   "Roberto Ayala",
+   "Mauricio Pochettino",
+   "Fabricio Coloccini"
+  ],
+  "answer": "Walter Samuel",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b495d8",
+  "q": "The captain of Roma's 1982-83 Scudetto side was nicknamed 'Er Capitano'. Who was he?",
+  "o": [
+   "Bruno Conti",
+   "Roberto Pruzzo",
+   "Agostino Di Bartolomei",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Agostino Di Bartolomei",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fcc703",
+  "q": "Which Brazilian playmaker of Roma's early-1980s golden era was dubbed 'the Eighth King of Rome'?",
+  "o": [
+   "Toninho Cerezo",
+   "Paulo Roberto Falcão",
+   "Zico",
+   "Dirceu"
+  ],
+  "answer": "Paulo Roberto Falcão",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b00f8b",
+  "q": "Which manager led Roma to their 1982-83 Scudetto, their first league title in 41 years?",
+  "o": [
+   "Nils Liedholm",
+   "Sven-Göran Eriksson",
+   "Vujadin Boškov",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Nils Liedholm",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_353922",
+  "q": "The infamous 'Turone goal', ruled out for offside in 1981, was disallowed in a title-deciding away match against which club?",
+  "o": [
+   "Inter",
+   "Juventus",
+   "Napoli",
+   "Fiorentina"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6bb112",
+  "q": "Roma reached the 1984 European Cup final, held at their own Stadio Olimpico, but lost on penalties to which club?",
+  "o": [
+   "Hamburg",
+   "Nottingham Forest",
+   "Aston Villa",
+   "Liverpool"
+  ],
+  "answer": "Liverpool",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_93474a",
+  "q": "Who scored Roma's equalising goal in the 1984 European Cup final before the game went to penalties?",
+  "o": [
+   "Bruno Conti",
+   "Roberto Pruzzo",
+   "Paulo Roberto Falcão",
+   "Agostino Di Bartolomei"
+  ],
+  "answer": "Roberto Pruzzo",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9d1ab4",
+  "q": "Bruce Grobbelaar's 'spaghetti legs' antics are credited with unsettling which Roma player into blazing his penalty over the bar in the 1984 final shootout?",
+  "o": [
+   "Bruno Conti",
+   "Francesco Graziani",
+   "Paulo Roberto Falcão",
+   "Agostino Di Bartolomei"
+  ],
+  "answer": "Francesco Graziani",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9df566",
+  "q": "Roma's famous 3-0 win over Barcelona in the 2018 Champions League quarter-final overturned what first-leg defeat at Camp Nou?",
+  "o": [
+   "4-1",
+   "3-0",
+   "2-0",
+   "4-2"
+  ],
+  "answer": "4-1",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_915058",
+  "q": "Which player scored the late header that completed Roma's 3-0 comeback win over Barcelona in April 2018?",
+  "o": [
+   "Edin Dzeko",
+   "Federico Fazio",
+   "Kostas Manolas",
+   "Daniele De Rossi"
+  ],
+  "answer": "Kostas Manolas",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_143cfb",
+  "q": "In that 3-0 win over Barcelona, who converted Roma's penalty to make it 2-0 on the night?",
+  "o": [
+   "Diego Perotti",
+   "Edin Dzeko",
+   "Radja Nainggolan",
+   "Daniele De Rossi"
+  ],
+  "answer": "Daniele De Rossi",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_112c7e",
+  "q": "Roma won the inaugural UEFA Europa Conference League in 2022 by beating Feyenoord 1-0 in which city?",
+  "o": [
+   "Prague",
+   "Tirana",
+   "Gdansk",
+   "Budapest"
+  ],
+  "answer": "Tirana",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_07a990",
+  "q": "Who scored the only goal of the 2022 Conference League final for Roma against Feyenoord?",
+  "o": [
+   "Nicolò Zaniolo",
+   "Tammy Abraham",
+   "Lorenzo Pellegrini",
+   "Nicola Zalewski"
+  ],
+  "answer": "Nicolò Zaniolo",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_60f7a4",
+  "q": "José Mourinho's 2022 Conference League triumph made him the first manager to win a major European trophy with how many different clubs?",
+  "o": [
+   "Three",
+   "Four",
+   "Five",
+   "Six"
+  ],
+  "answer": "Four",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_495f31",
+  "q": "Francesco Totti played his final competitive match for Roma in May 2017. Against which club was it?",
+  "o": [
+   "Torino",
+   "Juventus",
+   "Genoa",
+   "Lazio"
+  ],
+  "answer": "Genoa",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_24b96b",
+  "q": "Totti won the 2007 European Golden Shoe after scoring how many Serie A goals in 2006-07?",
+  "o": [
+   "24",
+   "26",
+   "30",
+   "32"
+  ],
+  "answer": "26",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_146702",
+  "q": "When Roma handed Totti the captaincy in 1998, he became the youngest club captain in Serie A history, at what age?",
+  "o": [
+   "19",
+   "20",
+   "22",
+   "24"
+  ],
+  "answer": "22",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9cce96",
+  "q": "Which player is Roma's second-most-capped ever, behind only Totti, with 616 appearances across 18 seasons?",
+  "o": [
+   "Aldair",
+   "Daniele De Rossi",
+   "Giuseppe Giannini",
+   "Bruno Conti"
+  ],
+  "answer": "Daniele De Rossi",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_92b465",
+  "q": "In the 2006 World Cup final, De Rossi came on as a substitute for which Roma teammate?",
+  "o": [
+   "Francesco Totti",
+   "Simone Perrotta",
+   "Christian Panucci",
+   "Vincenzo Iaquinta"
+  ],
+  "answer": "Francesco Totti",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aeef12",
+  "q": "In 1937, aged 15, Amedeo Amadei became the youngest player ever to do what in Serie A?",
+  "o": [
+   "Score a goal",
+   "Captain a side",
+   "Score a hat-trick",
+   "Save a penalty"
+  ],
+  "answer": "Score a goal",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_57fa71",
+  "q": "Roma won their first Scudetto under Hungarian coach Alfréd Schäffer in which season?",
+  "o": [
+   "1937-38",
+   "1941-42",
+   "1946-47",
+   "1951-52"
+  ],
+  "answer": "1941-42",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3b9b6d",
+  "q": "Roma's only major European trophy of the 20th century came in 1961. Which competition was it?",
+  "o": [
+   "European Cup Winners' Cup",
+   "UEFA Cup",
+   "Latin Cup",
+   "Inter-Cities Fairs Cup"
+  ],
+  "answer": "Inter-Cities Fairs Cup",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_13feb9",
+  "q": "Roma won the 1961 Fairs Cup final against which English club?",
+  "o": [
+   "Birmingham City",
+   "Aston Villa",
+   "Leeds United",
+   "West Ham United"
+  ],
+  "answer": "Birmingham City",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_931e94",
+  "q": "In the March 2002 Rome derby, which Roma striker scored four goals in a 5-1 rout of Lazio?",
+  "o": [
+   "Marco Delvecchio",
+   "Francesco Totti",
+   "Vincenzo Montella",
+   "Gabriel Batistuta"
+  ],
+  "answer": "Vincenzo Montella",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b40012",
+  "q": "Roma's long-serving Brazilian centre-back Aldair was affectionately nicknamed after which Disney character?",
+  "o": [
+   "Goofy",
+   "Dumbo",
+   "Donald",
+   "Pluto"
+  ],
+  "answer": "Pluto",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28efad",
+  "q": "How many times did Roberto Pruzzo finish as Serie A's top scorer (capocannoniere)?",
+  "o": [
+   "Three",
+   "Two",
+   "One",
+   "Four"
+  ],
+  "answer": "Three",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_728183",
+  "q": "Under Rudi Garcia, Roma set a Serie A record in 2013-14 by winning how many consecutive games to open the season?",
+  "o": [
+   "Eight",
+   "Nine",
+   "Ten",
+   "Twelve"
+  ],
+  "answer": "Ten",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b55f06",
+  "q": "In 2016-17 which striker set Roma's single-season club goalscoring record with 39 goals in all competitions?",
+  "o": [
+   "Edin Dzeko",
+   "Francesco Totti",
+   "Gabriel Batistuta",
+   "Vincenzo Montella"
+  ],
+  "answer": "Edin Dzeko",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2a3432",
+  "q": "Roma was founded in 1927 through a merger of three clubs, orchestrated by which figure?",
+  "o": [
+   "Renato Sacerdoti",
+   "Dino Viola",
+   "Franco Sensi",
+   "Italo Foschi"
+  ],
+  "answer": "Italo Foschi",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9ded34",
+  "q": "Which Rome club refused to take part in the 1927 merger that formed AS Roma?",
+  "o": [
+   "Alba-Audace",
+   "Roman FC",
+   "Lazio",
+   "Fortitudo-Pro Roma"
+  ],
+  "answer": "Lazio",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e7fcbe",
+  "q": "Which historic wooden ground in a working-class district served as Roma's home for much of the 1930s?",
+  "o": [
+   "Campo Testaccio",
+   "Stadio Flaminio",
+   "Motovelodromo Appio",
+   "Stadio Nazionale"
+  ],
+  "answer": "Campo Testaccio",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_263e1d",
+  "q": "During the 2000-01 title run, Batistuta famously refused to celebrate a thunderous volley he scored against which of his former clubs?",
+  "o": [
+   "Inter",
+   "Boca Juniors",
+   "River Plate",
+   "Fiorentina"
+  ],
+  "answer": "Fiorentina",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c78e3a",
+  "q": "Roma's record-breaking 2013-14 side went unbeaten from the opening day until a January defeat at which club?",
+  "o": [
+   "Napoli",
+   "Juventus",
+   "Inter",
+   "Milan"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b1a3f8",
+  "q": "Roma's 1982-83 title midfield included a player who would later win the Champions League as a manager. Who?",
+  "o": [
+   "Fabio Capello",
+   "Carlo Ancelotti",
+   "Sven-Göran Eriksson",
+   "Vincenzo Montella"
+  ],
+  "answer": "Carlo Ancelotti",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_623805",
+  "q": "Which goalkeeper started for Roma throughout the 2000-01 Scudetto-winning campaign?",
+  "o": [
+   "Ivan Pelizzoli",
+   "Angelo Peruzzi",
+   "Francesco Antonioli",
+   "Gianluca Curci"
+  ],
+  "answer": "Francesco Antonioli",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dd85ff",
+  "q": "After stunning Barcelona in 2018, Roma were knocked out in the Champions League semi-final by which club?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Manchester City",
+   "Liverpool"
+  ],
+  "answer": "Liverpool",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_eeb086",
+  "q": "Celtic played their very first match in which year?",
+  "o": [
+   "1878",
+   "1888",
+   "1898",
+   "1908"
+  ],
+  "answer": "1888",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_abfb33",
+  "q": "In which Scottish city are Celtic based?",
+  "o": [
+   "Edinburgh",
+   "Aberdeen",
+   "Glasgow",
+   "Dundee"
+  ],
+  "answer": "Glasgow",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_51d99b",
+  "q": "What is the design of Celtic's traditional home shirt?",
+  "o": [
+   "Green and white hoops",
+   "Red and white stripes",
+   "All blue",
+   "Black and white stripes"
+  ],
+  "answer": "Green and white hoops",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_228e50",
+  "q": "Which Marist Brother is credited as the founder of Celtic?",
+  "o": [
+   "Brother Aloysius",
+   "Brother Walfrid",
+   "Brother Ignatius",
+   "Brother Dominic"
+  ],
+  "answer": "Brother Walfrid",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4c704",
+  "q": "What is the name of Celtic's home stadium?",
+  "o": [
+   "Celtic Park",
+   "Ibrox",
+   "Hampden Park",
+   "Pittodrie"
+  ],
+  "answer": "Celtic Park",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f8c84d",
+  "q": "Celtic's fierce Glasgow rivals, with whom they contest the Old Firm, are which club?",
+  "o": [
+   "Hearts",
+   "Rangers",
+   "Hibernian",
+   "Aberdeen"
+  ],
+  "answer": "Rangers",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_eea98b",
+  "q": "In 1967 Celtic became the first British club to win which trophy?",
+  "o": [
+   "The UEFA Cup",
+   "The Cup Winners' Cup",
+   "The European Cup",
+   "The Intercontinental Cup"
+  ],
+  "answer": "The European Cup",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e1ccb1",
+  "q": "Which Swedish striker became a Celtic idol, scoring 242 goals between 1997 and 2004?",
+  "o": [
+   "Zlatan Ibrahimovic",
+   "Henrik Larsson",
+   "Marcus Berg",
+   "Tomas Brolin"
+  ],
+  "answer": "Henrik Larsson",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d58720",
+  "q": "By what nickname is Celtic's 1967 European Cup-winning team known?",
+  "o": [
+   "The Busby Babes",
+   "The Lisbon Lions",
+   "The Entertainers",
+   "The Galacticos"
+  ],
+  "answer": "The Lisbon Lions",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1cd103",
+  "q": "Who was the manager of Celtic's 1967 European Cup winners?",
+  "o": [
+   "Jock Stein",
+   "Willie Maley",
+   "Martin O'Neill",
+   "Brendan Rodgers"
+  ],
+  "answer": "Jock Stein",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_051792",
+  "q": "Henrik Larsson left Celtic in 2004 to join which club?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Manchester United",
+   "Ajax"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b5947b",
+  "q": "Which manager led Celtic to an unbeaten domestic 'Invincible' treble in 2016-17?",
+  "o": [
+   "Neil Lennon",
+   "Gordon Strachan",
+   "Brendan Rodgers",
+   "Ronny Deila"
+  ],
+  "answer": "Brendan Rodgers",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_44f66e",
+  "q": "The Celtic v Rangers derby is universally known as the...?",
+  "o": [
+   "Old Firm",
+   "Merseyside Derby",
+   "North London Derby",
+   "El Clasico"
+  ],
+  "answer": "Old Firm",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c12870",
+  "q": "Which of these is a traditional nickname for Celtic?",
+  "o": [
+   "The Bhoys",
+   "The Gunners",
+   "The Toffees",
+   "The Baggies"
+  ],
+  "answer": "The Bhoys",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_237b41",
+  "q": "Along with white, which colour makes up Celtic's famous hooped shirt?",
+  "o": [
+   "Blue",
+   "Red",
+   "Green",
+   "Yellow"
+  ],
+  "answer": "Green",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_56ec59",
+  "q": "Celtic's first-ever match, in May 1888, was a friendly against which club?",
+  "o": [
+   "Rangers",
+   "Hibernian",
+   "Hearts",
+   "Queen's Park"
+  ],
+  "answer": "Rangers",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_00ca5b",
+  "q": "What was the final score of the 1967 European Cup final?",
+  "o": [
+   "Celtic 2-1 Inter Milan",
+   "Celtic 1-0 Inter Milan",
+   "Celtic 3-1 Inter Milan",
+   "Celtic 2-0 Inter Milan"
+  ],
+  "answer": "Celtic 2-1 Inter Milan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7828d1",
+  "q": "Which Celtic full-back scored the equalising goal in the 1967 European Cup final?",
+  "o": [
+   "Tommy Gemmell",
+   "Billy McNeill",
+   "Bobby Lennox",
+   "Jimmy Johnstone"
+  ],
+  "answer": "Tommy Gemmell",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8020aa",
+  "q": "Who captained the Lisbon Lions, becoming the first Briton to lift the European Cup?",
+  "o": [
+   "Bertie Auld",
+   "Billy McNeill",
+   "Bobby Murdoch",
+   "Ronnie Simpson"
+  ],
+  "answer": "Billy McNeill",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6e1ef6",
+  "q": "From which Dutch club did Celtic sign Henrik Larsson in 1997?",
+  "o": [
+   "Ajax",
+   "PSV Eindhoven",
+   "Feyenoord",
+   "AZ Alkmaar"
+  ],
+  "answer": "Feyenoord",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0e86dc",
+  "q": "Celtic reached the 2003 UEFA Cup final, losing to which Portuguese club?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "Porto",
+   "Braga"
+  ],
+  "answer": "Porto",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6dd905",
+  "q": "In which Spanish city was the 2003 UEFA Cup final held, watched by a huge Celtic support?",
+  "o": [
+   "Barcelona",
+   "Seville",
+   "Madrid",
+   "Valencia"
+  ],
+  "answer": "Seville",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2747fc",
+  "q": "Who scored both of Celtic's goals in the 2003 UEFA Cup final?",
+  "o": [
+   "Chris Sutton",
+   "John Hartson",
+   "Henrik Larsson",
+   "Stiliyan Petrov"
+  ],
+  "answer": "Henrik Larsson",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c7eaf2",
+  "q": "Which manager delivered Celtic's 2001 domestic treble, their first treble since 1969?",
+  "o": [
+   "Wim Jansen",
+   "Gordon Strachan",
+   "Martin O'Neill",
+   "Neil Lennon"
+  ],
+  "answer": "Martin O'Neill",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d21b6f",
+  "q": "Celtic's 1998 league title famously halted Rangers' bid for how many titles in a row?",
+  "o": [
+   "Ten",
+   "Nine",
+   "Eight",
+   "Twelve"
+  ],
+  "answer": "Ten",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_27b488",
+  "q": "Which Dutch manager led Celtic to the 1998 title that stopped Rangers' 'ten-in-a-row'?",
+  "o": [
+   "Dick Advocaat",
+   "Wim Jansen",
+   "Ronald Koeman",
+   "Guus Hiddink"
+  ],
+  "answer": "Wim Jansen",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_000800",
+  "q": "Celtic completed a second 'nine-in-a-row' run of league titles that ended in which year?",
+  "o": [
+   "2016",
+   "2018",
+   "2020",
+   "2022"
+  ],
+  "answer": "2020",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de8ffa",
+  "q": "Which club stopped Celtic from winning a historic tenth successive league title in 2021?",
+  "o": [
+   "Aberdeen",
+   "Hearts",
+   "Rangers",
+   "Hibernian"
+  ],
+  "answer": "Rangers",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a1c8d4",
+  "q": "Who is Celtic's all-time leading goalscorer?",
+  "o": [
+   "Bobby Lennox",
+   "Jimmy McGrory",
+   "Henrik Larsson",
+   "Kenny Dalglish"
+  ],
+  "answer": "Jimmy McGrory",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b48ff8",
+  "q": "Which businessman rescued Celtic from near-bankruptcy in 1994 and rebuilt Celtic Park?",
+  "o": [
+   "Fergus McCann",
+   "David Murray",
+   "Jack Walker",
+   "Peter Lawwell"
+  ],
+  "answer": "Fergus McCann",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bb25df",
+  "q": "Celtic sold Kenny Dalglish in 1977 to which English club for a British record fee?",
+  "o": [
+   "Everton",
+   "Liverpool",
+   "Manchester United",
+   "Nottingham Forest"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_59cbbe",
+  "q": "In November 2012 Celtic recorded a famous 2-1 Champions League win over which club?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_041042",
+  "q": "Celtic sold Kieran Tierney in 2019 to which English club?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Everton"
+  ],
+  "answer": "Arsenal",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5bcb65",
+  "q": "Who became Celtic manager in 2021, the first Australian to lead a major European club?",
+  "o": [
+   "Ange Postecoglou",
+   "Brendan Rodgers",
+   "Neil Lennon",
+   "Ronny Deila"
+  ],
+  "answer": "Ange Postecoglou",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c3a665",
+  "q": "Celtic's record 7-1 cup final win over Rangers in 1957 is remembered as 'Hampden in the...'?",
+  "o": [
+   "Rain",
+   "Sun",
+   "Snow",
+   "Fog"
+  ],
+  "answer": "Sun",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a58bc0",
+  "q": "Celtic sold striker Moussa Dembele in 2018 to which French club?",
+  "o": [
+   "Marseille",
+   "Monaco",
+   "Lyon",
+   "Paris Saint-Germain"
+  ],
+  "answer": "Lyon",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_338928",
+  "q": "Who scored Celtic's winning goal in the 1967 European Cup final?",
+  "o": [
+   "Stevie Chalmers",
+   "Bobby Lennox",
+   "Willie Wallace",
+   "Tommy Gemmell"
+  ],
+  "answer": "Stevie Chalmers",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9bf00c",
+  "q": "Celtic lost the 1970 European Cup final after extra time to which club?",
+  "o": [
+   "Ajax",
+   "Feyenoord",
+   "Bayern Munich",
+   "Benfica"
+  ],
+  "answer": "Feyenoord",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ba4261",
+  "q": "In which city was the 1970 European Cup final, which Celtic lost, played?",
+  "o": [
+   "Rome",
+   "Brussels",
+   "Milan",
+   "Lisbon"
+  ],
+  "answer": "Milan",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_43a06e",
+  "q": "What was the British record fee Liverpool paid Celtic for Kenny Dalglish in 1977?",
+  "o": [
+   "£440,000",
+   "£1 million",
+   "£200,000",
+   "£750,000"
+  ],
+  "answer": "£440,000",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bbae07",
+  "q": "How many league goals did Henrik Larsson score in 2000-01 to win the European Golden Boot?",
+  "o": [
+   "25",
+   "29",
+   "35",
+   "42"
+  ],
+  "answer": "35",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_762a9d",
+  "q": "What was the score in Celtic's record league victory, over Dundee in 1895?",
+  "o": [
+   "8-0",
+   "9-0",
+   "11-0",
+   "7-1"
+  ],
+  "answer": "11-0",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8848f6",
+  "q": "Across how many domestic matches did Brendan Rodgers' Celtic go unbeaten in 2016-17?",
+  "o": [
+   "38",
+   "42",
+   "47",
+   "50"
+  ],
+  "answer": "47",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8c47bd",
+  "q": "Which teenage substitute scored Celtic's winner in their 2-1 defeat of Barcelona in 2012?",
+  "o": [
+   "Tony Watt",
+   "Gary Hooper",
+   "Georgios Samaras",
+   "James Forrest"
+  ],
+  "answer": "Tony Watt",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fc5f96",
+  "q": "Celtic goalkeeper John Thomson died in 1931 after a collision during a match against which club?",
+  "o": [
+   "Aberdeen",
+   "Rangers",
+   "Hearts",
+   "Queen's Park"
+  ],
+  "answer": "Rangers",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3af941",
+  "q": "What fee did Celtic pay Feyenoord for Henrik Larsson in 1997?",
+  "o": [
+   "£650,000",
+   "£1.2 million",
+   "£3.5 million",
+   "£250,000"
+  ],
+  "answer": "£650,000",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b7c468",
+  "q": "Who was Celtic's first-ever manager, serving from 1897 to 1940?",
+  "o": [
+   "Jimmy McStay",
+   "Willie Waddell",
+   "Willie Maley",
+   "Jock Stein"
+  ],
+  "answer": "Willie Maley",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d58cec",
+  "q": "Celtic's 2019 sale of Kieran Tierney to Arsenal was worth roughly how much?",
+  "o": [
+   "£10 million",
+   "£15 million",
+   "£25 million",
+   "£40 million"
+  ],
+  "answer": "£25 million",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c891d4",
+  "q": "Which Porto striker scored the extra-time winner against Celtic in the 2003 UEFA Cup final?",
+  "o": [
+   "Deco",
+   "Derlei",
+   "Dmitri Alenichev",
+   "Benni McCarthy"
+  ],
+  "answer": "Derlei",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d8fc47",
+  "q": "In which year were Rangers founded?",
+  "o": [
+   "1872",
+   "1888",
+   "1867",
+   "1901"
+  ],
+  "answer": "1872",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_389482",
+  "q": "In which city do Rangers play their home matches?",
+  "o": [
+   "Glasgow",
+   "Edinburgh",
+   "Aberdeen",
+   "Dundee"
+  ],
+  "answer": "Glasgow",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d4c643",
+  "q": "What is the name of Rangers' home stadium?",
+  "o": [
+   "Ibrox Stadium",
+   "Hampden Park",
+   "Celtic Park",
+   "Pittodrie"
+  ],
+  "answer": "Ibrox Stadium",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_736ea3",
+  "q": "What is the main colour of Rangers' home shirt?",
+  "o": [
+   "Royal blue",
+   "Green and white hoops",
+   "Red",
+   "Maroon"
+  ],
+  "answer": "Royal blue",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_32365a",
+  "q": "Rangers' fierce rivalry with which club is known as the 'Old Firm'?",
+  "o": [
+   "Celtic",
+   "Aberdeen",
+   "Hearts",
+   "Hibernian"
+  ],
+  "answer": "Celtic",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d0a252",
+  "q": "In which country do Rangers compete domestically?",
+  "o": [
+   "Scotland",
+   "England",
+   "Wales",
+   "Republic of Ireland"
+  ],
+  "answer": "Scotland",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_43b656",
+  "q": "Who is Rangers' all-time record goalscorer?",
+  "o": [
+   "Ally McCoist",
+   "Paul Gascoigne",
+   "Brian Laudrup",
+   "Mark Hateley"
+  ],
+  "answer": "Ally McCoist",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_135288",
+  "q": "Which of these is a common nickname for Rangers?",
+  "o": [
+   "The Gers",
+   "The Hoops",
+   "The Toffees",
+   "The Gunners"
+  ],
+  "answer": "The Gers",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a1cc07",
+  "q": "Which manager led Rangers to an unbeaten league title in 2020-21?",
+  "o": [
+   "Steven Gerrard",
+   "Walter Smith",
+   "Graeme Souness",
+   "Giovanni van Bronckhorst"
+  ],
+  "answer": "Steven Gerrard",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5715a3",
+  "q": "Which country did Rangers icon Brian Laudrup represent?",
+  "o": [
+   "Denmark",
+   "Sweden",
+   "Netherlands",
+   "Germany"
+  ],
+  "answer": "Denmark",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1167a1",
+  "q": "Rangers were demoted to Scottish football's fourth tier in 2012 following what event?",
+  "o": [
+   "Liquidation of the club's company",
+   "Relegation on points",
+   "A match-fixing ban",
+   "Losing a play-off"
+  ],
+  "answer": "Liquidation of the club's company",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_57c717",
+  "q": "Roughly how many spectators does Rangers' Ibrox Stadium hold?",
+  "o": [
+   "About 50,000",
+   "About 20,000",
+   "About 75,000",
+   "About 95,000"
+  ],
+  "answer": "About 50,000",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2347ea",
+  "q": "Paul Gascoigne joined Rangers in 1995 from which Italian club?",
+  "o": [
+   "Lazio",
+   "Roma",
+   "Napoli",
+   "Fiorentina"
+  ],
+  "answer": "Lazio",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_54c648",
+  "q": "In which city did Rangers win the 1972 European Cup Winners' Cup final?",
+  "o": [
+   "Barcelona",
+   "Madrid",
+   "Lisbon",
+   "Rome"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_35b5dc",
+  "q": "Which manager completed Rangers' famous 'nine-in-a-row' run of league titles?",
+  "o": [
+   "Walter Smith",
+   "Graeme Souness",
+   "Dick Advocaat",
+   "Alex McLeish"
+  ],
+  "answer": "Walter Smith",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aed49a",
+  "q": "Rangers won nine consecutive league titles ending in which year?",
+  "o": [
+   "1997",
+   "1994",
+   "2000",
+   "1990"
+  ],
+  "answer": "1997",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_48c1ff",
+  "q": "Rangers' 1989 signing of Maurice 'Mo' Johnston was hugely controversial mainly because he was...",
+  "o": [
+   "a high-profile Catholic and former Celtic player",
+   "over 35 years old",
+   "a goalkeeper",
+   "banned by UEFA"
+  ],
+  "answer": "a high-profile Catholic and former Celtic player",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_13be60",
+  "q": "Graeme Souness became Rangers' first player-manager in 1986, arriving from which club?",
+  "o": [
+   "Sampdoria",
+   "Liverpool",
+   "Juventus",
+   "Tottenham"
+  ],
+  "answer": "Sampdoria",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_43f7ae",
+  "q": "Which England international defender was one of Graeme Souness's marquee signings in 1986?",
+  "o": [
+   "Terry Butcher",
+   "Tony Adams",
+   "Stuart Pearce",
+   "Des Walker"
+  ],
+  "answer": "Terry Butcher",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4b6a19",
+  "q": "Who holds Rangers' record for most appearances?",
+  "o": [
+   "John Greig",
+   "Sandy Jardine",
+   "Richard Gough",
+   "Barry Ferguson"
+  ],
+  "answer": "John Greig",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_09b5e0",
+  "q": "The 1971 Ibrox disaster, in which 66 fans died in a stairway crush, occurred during a match against which club?",
+  "o": [
+   "Celtic",
+   "Aberdeen",
+   "Hearts",
+   "Dundee"
+  ],
+  "answer": "Celtic",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7bc986",
+  "q": "Rangers' record home attendance of 118,567 — a British league record — was set in 1939 against which club?",
+  "o": [
+   "Celtic",
+   "Aberdeen",
+   "Everton",
+   "Arsenal"
+  ],
+  "answer": "Celtic",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fa729d",
+  "q": "Rangers' first Scottish league title, in 1890-91, was uniquely shared with which club?",
+  "o": [
+   "Dumbarton",
+   "Celtic",
+   "Hearts",
+   "Third Lanark"
+  ],
+  "answer": "Dumbarton",
+  "cat": "Records",
+  "diff": "hard"
+ }
+]

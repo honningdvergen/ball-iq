@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_bbb52a",
+  "q": "Everton reached the Champions League qualifying round after finishing fourth in the Premier League in which season?",
+  "o": [
+   "2004-05",
+   "2002-03",
+   "2007-08",
+   "2009-10"
+  ],
+  "answer": "2004-05",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_630291",
+  "q": "Which television police-drama theme tune has traditionally accompanied Everton's players onto the pitch at Goodison?",
+  "o": [
+   "Z-Cars",
+   "The Sweeney",
+   "Dixon of Dock Green",
+   "The Bill"
+  ],
+  "answer": "Z-Cars",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c9a07c",
+  "q": "Which combative midfielder won the PFA Players' Player of the Year award during Everton's title-winning 1984-85 season?",
+  "o": [
+   "Peter Reid",
+   "Paul Bracewell",
+   "Trevor Steven",
+   "Kevin Sheedy"
+  ],
+  "answer": "Peter Reid",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dcaf6e",
+  "q": "Which centre-back captained Everton when they lifted the 1995 FA Cup?",
+  "o": [
+   "Dave Watson",
+   "Kevin Ratcliffe",
+   "Gary Ablett",
+   "Earl Barrett"
+  ],
+  "answer": "Dave Watson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e39e8b",
+  "q": "Which Republic of Ireland midfielder was renowned for his left-footed free kicks in Everton's 1980s team?",
+  "o": [
+   "Kevin Sheedy",
+   "Paul Bracewell",
+   "Trevor Steven",
+   "John Ebbrell"
+  ],
+  "answer": "Kevin Sheedy",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_89ef63",
+  "q": "Which Brazilian forward did Everton sell to Tottenham Hotspur in 2022?",
+  "o": [
+   "Richarlison",
+   "Antony",
+   "Raphinha",
+   "Bernard"
+  ],
+  "answer": "Richarlison",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_252b1a",
+  "q": "In what year was Leeds United founded?",
+  "o": [
+   "1904",
+   "1919",
+   "1888",
+   "1936"
+  ],
+  "answer": "1919",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_703ca1",
+  "q": "Leeds United was formed in 1919 to take the place of which disbanded club?",
+  "o": [
+   "Holbeck Rangers",
+   "Leeds City",
+   "Hunslet Town",
+   "Leeds Amateurs"
+  ],
+  "answer": "Leeds City",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2239d8",
+  "q": "In 1961 Leeds United adopted their now-iconic all-white home kit, inspired by which European club?",
+  "o": [
+   "Juventus",
+   "Real Madrid",
+   "Ajax",
+   "Benfica"
+  ],
+  "answer": "Real Madrid",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a80f03",
+  "q": "The Leeds United v Manchester United rivalry is nicknamed the 'War of the ___'?",
+  "o": [
+   "Roses",
+   "Pennines",
+   "Rivers",
+   "North"
+  ],
+  "answer": "Roses",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_adee13",
+  "q": "After a financial collapse, Leeds United were relegated from the Premier League in which year?",
+  "o": [
+   "2001",
+   "2004",
+   "2007",
+   "2010"
+  ],
+  "answer": "2004",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_886f40",
+  "q": "After their predecessor folded, Yorkshire Amateurs bought Elland Road and sold it to the new Leeds United for what nominal sum?",
+  "o": [
+   "£25",
+   "£250",
+   "£2,500",
+   "£5,000"
+  ],
+  "answer": "£250",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b3e2b",
+  "q": "Leeds United won the Inter-Cities Fairs Cup twice; that trophy was a forerunner of which modern UEFA competition?",
+  "o": [
+   "The Champions League",
+   "The Cup Winners' Cup",
+   "The Europa League",
+   "The Conference League"
+  ],
+  "answer": "The Europa League",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e34c7b",
+  "q": "Leeds United won their first major trophy in the 1968 League Cup final, beating which London club 1-0?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "West Ham"
+  ],
+  "answer": "Arsenal",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4ca0a5",
+  "q": "Who scored the only goal of the 1972 FA Cup final, giving Leeds United their first FA Cup?",
+  "o": [
+   "Mick Jones",
+   "Peter Lorimer",
+   "Allan Clarke",
+   "Johnny Giles"
+  ],
+  "answer": "Allan Clarke",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7d9212",
+  "q": "Leeds United's 1972 FA Cup win came in a final billed as which milestone edition of the competition?",
+  "o": [
+   "The 50th final",
+   "The centenary final",
+   "The first Wembley final",
+   "The Coronation final"
+  ],
+  "answer": "The centenary final",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dd868e",
+  "q": "Leeds United reached their first FA Cup final in 1965, losing after extra time to which club?",
+  "o": [
+   "Everton",
+   "Manchester United",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "answer": "Liverpool",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_006d15",
+  "q": "Leeds United won the Inter-Cities Fairs Cup for the first time in 1968, beating which Hungarian club in the final?",
+  "o": [
+   "Újpest",
+   "Ferencváros",
+   "Honvéd",
+   "MTK Budapest"
+  ],
+  "answer": "Ferencváros",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b905c8",
+  "q": "In the 1971 Inter-Cities Fairs Cup final, Leeds beat which Italian club on the away-goals rule?",
+  "o": [
+   "Torino",
+   "Internazionale",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "Juventus",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f1eb4f",
+  "q": "Leeds United lost the 1973 European Cup Winners' Cup final 1-0 to which Italian club, in a match whose referee was later banned for life?",
+  "o": [
+   "Inter Milan",
+   "AC Milan",
+   "Fiorentina",
+   "Juventus"
+  ],
+  "answer": "AC Milan",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_749aaf",
+  "q": "In which season did Leeds United win their first-ever Football League title?",
+  "o": [
+   "1963-64",
+   "1968-69",
+   "1971-72",
+   "1973-74"
+  ],
+  "answer": "1968-69",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bc295e",
+  "q": "Leeds United's title-winning 1968-69 side lost how many of their 42 league games?",
+  "o": [
+   "Zero",
+   "Two",
+   "Five",
+   "Seven"
+  ],
+  "answer": "Two",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1511e5",
+  "q": "Leeds United's record competitive win, 10-0, came in 1969 against which visiting European side?",
+  "o": [
+   "Rosenborg",
+   "Vålerenga",
+   "Lyn Oslo",
+   "SK Brann"
+  ],
+  "answer": "Lyn Oslo",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_048bad",
+  "q": "Which player holds Leeds United's all-time appearance record, with 773 games?",
+  "o": [
+   "Billy Bremner",
+   "Paul Reaney",
+   "Jack Charlton",
+   "Peter Lorimer"
+  ],
+  "answer": "Jack Charlton",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1905ca",
+  "q": "Who is Leeds United's all-time leading goalscorer, with 238 goals?",
+  "o": [
+   "Allan Clarke",
+   "Peter Lorimer",
+   "John Charles",
+   "Mick Jones"
+  ],
+  "answer": "Peter Lorimer",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1985ee",
+  "q": "Leeds United won automatic promotion back to the Premier League by winning which division in 2019-20?",
+  "o": [
+   "League One",
+   "The Championship",
+   "The First Division",
+   "The Conference"
+  ],
+  "answer": "The Championship",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_49440e",
+  "q": "Which manager built Leeds United's dominant side of the 1960s and early 70s before leaving to manage England in 1974?",
+  "o": [
+   "Brian Clough",
+   "Don Revie",
+   "Jimmy Armfield",
+   "Howard Wilkinson"
+  ],
+  "answer": "Don Revie",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_50558d",
+  "q": "Who managed Leeds United in the 1975 European Cup final?",
+  "o": [
+   "Jimmy Armfield",
+   "Jock Stein",
+   "Bobby Collins",
+   "Syd Owen"
+  ],
+  "answer": "Jimmy Armfield",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6b1df2",
+  "q": "Which manager notoriously lasted just 44 days in charge of Leeds United in 1974?",
+  "o": [
+   "Jimmy Armfield",
+   "Brian Clough",
+   "Jock Stein",
+   "Allan Clarke"
+  ],
+  "answer": "Brian Clough",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7abd1e",
+  "q": "Who was Leeds United's manager when they won the 1991-92 First Division title?",
+  "o": [
+   "George Graham",
+   "Howard Wilkinson",
+   "David O'Leary",
+   "Terry Venables"
+  ],
+  "answer": "Howard Wilkinson",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c67d3f",
+  "q": "Which Argentine manager led Leeds United back to the Premier League with promotion in 2020?",
+  "o": [
+   "Mauricio Pochettino",
+   "Marcelo Bielsa",
+   "Diego Simeone",
+   "Jorge Sampaoli"
+  ],
+  "answer": "Marcelo Bielsa",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_53bcff",
+  "q": "Who was Leeds United's manager during their run to the 2001 Champions League semi-final?",
+  "o": [
+   "George Graham",
+   "David O'Leary",
+   "Peter Reid",
+   "Terry Venables"
+  ],
+  "answer": "David O'Leary",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ed140f",
+  "q": "In which season did Leeds United reach the semi-finals of the Champions League?",
+  "o": [
+   "1998-99",
+   "2000-01",
+   "2003-04",
+   "1995-96"
+  ],
+  "answer": "2000-01",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_abf252",
+  "q": "Which Spanish club knocked Leeds United out of the 2001 Champions League semi-final?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Valencia",
+   "Deportivo La Coruña"
+  ],
+  "answer": "Valencia",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cd0710",
+  "q": "Leeds United reached the 1975 European Cup final, losing to which German club?",
+  "o": [
+   "Hamburg",
+   "Bayern Munich",
+   "Borussia Mönchengladbach",
+   "Cologne"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8020b9",
+  "q": "In which Paris stadium did Leeds United lose the 1975 European Cup final?",
+  "o": [
+   "Stade de France",
+   "Parc des Princes",
+   "Stade Colombes",
+   "Heysel Stadium"
+  ],
+  "answer": "Parc des Princes",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ea0403",
+  "q": "In the 1975 European Cup final, who scored the second goal for the victorious West German club?",
+  "o": [
+   "Franz Beckenbauer",
+   "Uli Hoeneß",
+   "Gerd Müller",
+   "Karl-Heinz Rummenigge"
+  ],
+  "answer": "Gerd Müller",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3cc22b",
+  "q": "Which combative Leeds United defender was nicknamed 'Bites Yer Legs'?",
+  "o": [
+   "Paul Reaney",
+   "Norman Hunter",
+   "Terry Cooper",
+   "Jack Charlton"
+  ],
+  "answer": "Norman Hunter",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd56e9",
+  "q": "South African defender Lucas Radebe, a beloved Leeds United captain, was known by which nickname?",
+  "o": [
+   "The Rock",
+   "The General",
+   "The Chief",
+   "The Wall"
+  ],
+  "answer": "The Chief",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e6b4b7",
+  "q": "Which Scottish midfielder, Leeds United's captain during the golden era, has a statue outside Elland Road?",
+  "o": [
+   "Bobby Collins",
+   "Billy Bremner",
+   "Peter Lorimer",
+   "Eddie Gray"
+  ],
+  "answer": "Billy Bremner",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1ae6d6",
+  "q": "Which Welsh forward, 'The Gentle Giant', was a Leeds United star of the 1950s before a record transfer to Italy?",
+  "o": [
+   "Ivor Allchurch",
+   "John Charles",
+   "Trevor Ford",
+   "Cliff Jones"
+  ],
+  "answer": "John Charles",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7b2721",
+  "q": "Which winger spent his entire playing career at Leeds United and later managed the club?",
+  "o": [
+   "Terry Cooper",
+   "Eddie Gray",
+   "Paul Madeley",
+   "Mick Jones"
+  ],
+  "answer": "Eddie Gray",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_540302",
+  "q": "'Marching on Together' is the name of what associated with Leeds United?",
+  "o": [
+   "The club anthem",
+   "The training ground",
+   "The matchday programme",
+   "The main stand"
+  ],
+  "answer": "The club anthem",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d6dde1",
+  "q": "Reflecting their kit, Leeds United are commonly nicknamed which of the following?",
+  "o": [
+   "The Reds",
+   "The Whites",
+   "The Blues",
+   "The Gunners"
+  ],
+  "answer": "The Whites",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0da866",
+  "q": "In 2002 Leeds United sold Rio Ferdinand to which club for a then-British record £30m?",
+  "o": [
+   "Chelsea",
+   "Manchester United",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4e3a3a",
+  "q": "Which mercurial French forward joined Leeds United midway through the 1991-92 title-winning season?",
+  "o": [
+   "David Ginola",
+   "Eric Cantona",
+   "Youri Djorkaeff",
+   "Frank Leboeuf"
+  ],
+  "answer": "Eric Cantona",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a6ee12",
+  "q": "In January 2023 Leeds United broke their club transfer record to sign which forward from Hoffenheim?",
+  "o": [
+   "Wilfried Gnonto",
+   "Georginio Rutter",
+   "Patrick Bamford",
+   "Rodrigo"
+  ],
+  "answer": "Georginio Rutter",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0356a7",
+  "q": "Which Leeds United chairman's era of overspending is remembered by the phrase 'living the dream'?",
+  "o": [
+   "Ken Bates",
+   "Peter Ridsdale",
+   "Massimo Cellino",
+   "Andrea Radrizzani"
+  ],
+  "answer": "Peter Ridsdale",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_463280",
+  "q": "Under what name was West Ham United originally founded in 1895?",
+  "o": [
+   "Thames Ironworks",
+   "Woolwich Arsenal",
+   "Millwall Rovers",
+   "Clapton Orient"
+  ],
+  "answer": "Thames Ironworks",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_811952",
+  "q": "In what year did the club reform under the name West Ham United?",
+  "o": [
+   "1895",
+   "1900",
+   "1904",
+   "1923"
+  ],
+  "answer": "1900",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_31169b",
+  "q": "What are West Ham's traditional home colours?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "Claret and blue",
+   "Green and white"
+  ],
+  "answer": "Claret and blue",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c45cb9",
+  "q": "Which song is West Ham's long-standing club anthem?",
+  "o": [
+   "Blue Moon",
+   "You'll Never Walk Alone",
+   "Glad All Over",
+   "I'm Forever Blowing Bubbles"
+  ],
+  "answer": "I'm Forever Blowing Bubbles",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dd2e3d",
+  "q": "West Ham's crest features two crossed what, reflecting the club's shipbuilding roots?",
+  "o": [
+   "Hammers",
+   "Swords",
+   "Anchors",
+   "Keys"
+  ],
+  "answer": "Hammers",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9b9506",
+  "q": "By what nickname, referencing its homegrown talent, did West Ham become known from the late 1950s?",
+  "o": [
+   "The School of Science",
+   "The Academy of Football",
+   "The Theatre of Dreams",
+   "The Crazy Gang"
+  ],
+  "answer": "The Academy of Football",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_079700",
+  "q": "Which club did West Ham beat 3-2 to win their first FA Cup in 1964?",
+  "o": [
+   "Blackpool",
+   "Arsenal",
+   "Fulham",
+   "Preston North End"
+  ],
+  "answer": "Preston North End",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_01310d",
+  "q": "West Ham won the 1965 European Cup Winners' Cup by beating which German side 2-0 at Wembley?",
+  "o": [
+   "1860 Munich",
+   "Bayern Munich",
+   "Hamburg",
+   "Borussia Dortmund"
+  ],
+  "answer": "1860 Munich",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_93104a",
+  "q": "Which West Ham player captained England to victory in the 1966 World Cup?",
+  "o": [
+   "Geoff Hurst",
+   "Bobby Moore",
+   "Martin Peters",
+   "Billy Bonds"
+  ],
+  "answer": "Bobby Moore",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a83c34",
+  "q": "Which West Ham forward scored a hat-trick in the 1966 World Cup final?",
+  "o": [
+   "Martin Peters",
+   "Johnny Byrne",
+   "Geoff Hurst",
+   "Bobby Moore"
+  ],
+  "answer": "Geoff Hurst",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5681eb",
+  "q": "Which West Ham midfielder scored England's second goal in the 1966 World Cup final before later joining Tottenham?",
+  "o": [
+   "Geoff Hurst",
+   "Alan Ball",
+   "Nobby Stiles",
+   "Martin Peters"
+  ],
+  "answer": "Martin Peters",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4e356d",
+  "q": "Alan Taylor scored both goals as West Ham won the 1975 FA Cup against which London rival?",
+  "o": [
+   "Fulham",
+   "Chelsea",
+   "Arsenal",
+   "Tottenham"
+  ],
+  "answer": "Fulham",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d12599",
+  "q": "Which club did West Ham beat 1-0 to win the 1980 FA Cup?",
+  "o": [
+   "Liverpool",
+   "Arsenal",
+   "Everton",
+   "Manchester United"
+  ],
+  "answer": "Arsenal",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_892e23",
+  "q": "Which one-club West Ham legend scored the winning goal in the 1980 FA Cup final?",
+  "o": [
+   "Billy Bonds",
+   "Alan Devonshire",
+   "Trevor Brooking",
+   "Alvin Martin"
+  ],
+  "answer": "Trevor Brooking",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0a68fe",
+  "q": "Which player holds West Ham's record for most competitive appearances, with 799?",
+  "o": [
+   "Bobby Moore",
+   "Trevor Brooking",
+   "Mark Noble",
+   "Billy Bonds"
+  ],
+  "answer": "Billy Bonds",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_346500",
+  "q": "How many goals did Vic Watson, West Ham's all-time record scorer, net for the club?",
+  "o": [
+   "326",
+   "254",
+   "200",
+   "401"
+  ],
+  "answer": "326",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_98c661",
+  "q": "Which Italian scored a famous scissor-kick volley against Wimbledon in 2000 that won the BBC Goal of the Season?",
+  "o": [
+   "Gianfranco Zola",
+   "Paolo Di Canio",
+   "Fabrizio Ravanelli",
+   "Benito Carbone"
+  ],
+  "answer": "Paolo Di Canio",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af2ae9",
+  "q": "Which combative left-back was nicknamed 'The Terminator' during his West Ham career?",
+  "o": [
+   "Stuart Pearce",
+   "Nigel Winterburn",
+   "Julian Dicks",
+   "Kenny Sansom"
+  ],
+  "answer": "Julian Dicks",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fab995",
+  "q": "Which academy-graduate defender joined Leeds United in 2000 for a then British record fee for a defender?",
+  "o": [
+   "John Terry",
+   "Sol Campbell",
+   "Jaap Stam",
+   "Rio Ferdinand"
+  ],
+  "answer": "Rio Ferdinand",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c861b3",
+  "q": "Which midfielder came through West Ham's academy before becoming Chelsea's all-time top scorer?",
+  "o": [
+   "Frank Lampard",
+   "Joe Cole",
+   "Michael Carrick",
+   "Steven Gerrard"
+  ],
+  "answer": "Frank Lampard",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_836966",
+  "q": "In 2022 West Ham broke their transfer record to sign which Brazilian playmaker from Lyon?",
+  "o": [
+   "Willian",
+   "Lucas Paqueta",
+   "Philippe Coutinho",
+   "Anderson"
+  ],
+  "answer": "Lucas Paqueta",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4775c2",
+  "q": "In 2023 which academy-graduate midfielder was sold to Arsenal in West Ham's biggest-ever sale?",
+  "o": [
+   "Michael Carrick",
+   "Mark Noble",
+   "Declan Rice",
+   "Tomas Soucek"
+  ],
+  "answer": "Declan Rice",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ba77a8",
+  "q": "Under which manager did West Ham win both the 1964 FA Cup and the 1965 Cup Winners' Cup?",
+  "o": [
+   "John Lyall",
+   "Ted Fenton",
+   "Malcolm Allison",
+   "Ron Greenwood"
+  ],
+  "answer": "Ron Greenwood",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0fd687",
+  "q": "Which manager led West Ham to their 1975 and 1980 FA Cup triumphs?",
+  "o": [
+   "John Lyall",
+   "Ron Greenwood",
+   "Lou Macari",
+   "Billy Bonds"
+  ],
+  "answer": "John Lyall",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b55aea",
+  "q": "Under which manager did West Ham win the 2023 UEFA Europa Conference League?",
+  "o": [
+   "Slaven Bilic",
+   "David Moyes",
+   "Manuel Pellegrini",
+   "Sam Allardyce"
+  ],
+  "answer": "David Moyes",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0cc5bf",
+  "q": "Which club did West Ham beat 2-1 in the 2023 Conference League final?",
+  "o": [
+   "Roma",
+   "Lazio",
+   "Napoli",
+   "Fiorentina"
+  ],
+  "answer": "Fiorentina",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c30279",
+  "q": "Who scored West Ham's stoppage-time winner in the 2023 Conference League final?",
+  "o": [
+   "Jarrod Bowen",
+   "Michail Antonio",
+   "Said Benrahma",
+   "Tomas Soucek"
+  ],
+  "answer": "Jarrod Bowen",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_43c995",
+  "q": "In 2016 West Ham moved to which Stratford stadium originally built for the 2012 Olympics?",
+  "o": [
+   "Wembley Stadium",
+   "Emirates Stadium",
+   "Tottenham Hotspur Stadium",
+   "London Stadium"
+  ],
+  "answer": "London Stadium",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6bb409",
+  "q": "West Ham's final competitive match at the Boleyn Ground in 2016 was a 3-2 win over which club?",
+  "o": [
+   "Manchester United",
+   "Manchester City",
+   "Tottenham Hotspur",
+   "Chelsea"
+  ],
+  "answer": "Manchester United",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4c4961",
+  "q": "By winning which competition in 1999 did West Ham qualify for the UEFA Cup for the first time?",
+  "o": [
+   "The Anglo-Italian Cup",
+   "The UEFA Intertoto Cup",
+   "The Full Members Cup",
+   "The Watney Cup"
+  ],
+  "answer": "The UEFA Intertoto Cup",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a4eb6d",
+  "q": "In 2021 which striker became West Ham's record Premier League goalscorer?",
+  "o": [
+   "Marko Arnautovic",
+   "Andy Carroll",
+   "Michail Antonio",
+   "Sebastien Haller"
+  ],
+  "answer": "Michail Antonio",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e344dd",
+  "q": "Which Croatian, a former West Ham player, returned to manage the club from 2015?",
+  "o": [
+   "Slaven Bilic",
+   "Igor Stimac",
+   "Zvonimir Boban",
+   "Robert Prosinecki"
+  ],
+  "answer": "Slaven Bilic",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_43a897",
+  "q": "West Ham broke their transfer record in 2019 to sign which striker from Eintracht Frankfurt?",
+  "o": [
+   "Michy Batshuayi",
+   "Sebastien Haller",
+   "Wilfried Bony",
+   "Salomon Rondon"
+  ],
+  "answer": "Sebastien Haller",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f5654c",
+  "q": "Which striker came through West Ham's academy around 2000 before starring for Tottenham and England?",
+  "o": [
+   "Teddy Sheringham",
+   "Darren Bent",
+   "Jermain Defoe",
+   "Emile Heskey"
+  ],
+  "answer": "Jermain Defoe",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_15d531",
+  "q": "Which one-club academy graduate, nicknamed 'Mr West Ham,' captained the side for over a decade until retiring in 2022?",
+  "o": [
+   "Scott Parker",
+   "Kevin Nolan",
+   "Jack Collison",
+   "Mark Noble"
+  ],
+  "answer": "Mark Noble",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_014f19",
+  "q": "West Ham are traditionally based in which part of London?",
+  "o": [
+   "East London",
+   "North London",
+   "South London",
+   "West London"
+  ],
+  "answer": "East London",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7a7d77",
+  "q": "Before moving to the Boleyn Ground, West Ham played their early home games at which venue?",
+  "o": [
+   "The Den",
+   "The Memorial Grounds",
+   "White Hart Lane",
+   "Griffin Park"
+  ],
+  "answer": "The Memorial Grounds",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9dc02",
+  "q": "Which Czech goalkeeper, known to fans as 'Ludo,' was a popular West Ham figure through the 1990s?",
+  "o": [
+   "Petr Cech",
+   "Jan Koller",
+   "Ludek Miklosko",
+   "Pavel Srnicek"
+  ],
+  "answer": "Ludek Miklosko",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_16ae7b",
+  "q": "Which country did England beat in the 1966 World Cup final, a game featuring three West Ham players?",
+  "o": [
+   "Brazil",
+   "Argentina",
+   "Portugal",
+   "West Germany"
+  ],
+  "answer": "West Germany",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e0eac1",
+  "q": "Which Argentine forward's goals helped West Ham avoid relegation in 2007 amid an ownership controversy?",
+  "o": [
+   "Carlos Tevez",
+   "Hernán Crespo",
+   "Sergio Aguero",
+   "Diego Milito"
+  ],
+  "answer": "Carlos Tevez",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c8229",
+  "q": "The 1923 FA Cup final that West Ham contested is popularly remembered by what name?",
+  "o": [
+   "The Matthews Final",
+   "The Cockney Cup Final",
+   "The White Horse Final",
+   "The Khaki Final"
+  ],
+  "answer": "The White Horse Final",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d3f414",
+  "q": "West Ham's fiercest local rivalry, rooted in East London's dockworker communities, is with which club?",
+  "o": [
+   "Tottenham Hotspur",
+   "Charlton Athletic",
+   "Leyton Orient",
+   "Millwall"
+  ],
+  "answer": "Millwall",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_49a5a7",
+  "q": "In what year was Athletic Club (Athletic Bilbao) founded?",
+  "o": [
+   "1912",
+   "1878",
+   "1898",
+   "1928"
+  ],
+  "answer": "1898",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b19250",
+  "q": "What is Athletic Bilbao's nickname?",
+  "o": [
+   "The Bulls",
+   "The Lions (Los Leones)",
+   "The Eagles",
+   "The Wolves"
+  ],
+  "answer": "The Lions (Los Leones)",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec0a38",
+  "q": "What are Athletic Bilbao's traditional home colours?",
+  "o": [
+   "Blue-and-white stripes",
+   "All red",
+   "Black-and-white stripes",
+   "Red-and-white vertical stripes"
+  ],
+  "answer": "Red-and-white vertical stripes",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a501aa",
+  "q": "Athletic Bilbao's distinctive recruitment philosophy restricts signings to players with what characteristic?",
+  "o": [
+   "Spanish nationality only",
+   "Basque roots or developed in the Basque region",
+   "Academy graduates only",
+   "Under-23 players only"
+  ],
+  "answer": "Basque roots or developed in the Basque region",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bf668b",
+  "q": "Athletic Bilbao was a founding member of Spain's top division when it launched in which year?",
+  "o": [
+   "1929",
+   "1902",
+   "1945",
+   "1953"
+  ],
+  "answer": "1929",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b87434",
+  "q": "The original San Mamés stadium first opened in which year?",
+  "o": [
+   "1898",
+   "1927",
+   "1913",
+   "1950"
+  ],
+  "answer": "1913",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9b259e",
+  "q": "The current, rebuilt San Mamés stadium opened in which year?",
+  "o": [
+   "2004",
+   "2013",
+   "2016",
+   "2009"
+  ],
+  "answer": "2013",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_02d6ec",
+  "q": "During the Franco era, Athletic was forced to adopt which Spanish-language version of its name?",
+  "o": [
+   "Atlético de Bilbao",
+   "Real Bilbao",
+   "Bilbao Club de Fútbol",
+   "Deportivo Bilbao"
+  ],
+  "answer": "Atlético de Bilbao",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_df92a5",
+  "q": "Athletic Bilbao's youth academy and training complex is located in which village near Bilbao?",
+  "o": [
+   "Zubieta",
+   "Valdebebas",
+   "Lezama",
+   "Sant Joan Despí"
+  ],
+  "answer": "Lezama",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe937c",
+  "q": "How does Athletic Bilbao traditionally celebrate major trophies in the city?",
+  "o": [
+   "On a barge (La Gabarra) along the river",
+   "On open-top buses",
+   "On horseback through the old town",
+   "With a torch-lit mountain procession"
+  ],
+  "answer": "On a barge (La Gabarra) along the river",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_78bdfa",
+  "q": "Athletic Bilbao's fiercely contested 'Basque derby' is played against which neighbouring club?",
+  "o": [
+   "Real Sociedad",
+   "Osasuna",
+   "Deportivo Alavés",
+   "SD Eibar"
+  ],
+  "answer": "Real Sociedad",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cf44a2",
+  "q": "In the mid-1940s Athletic won the Copa in three consecutive years, starting in which year?",
+  "o": [
+   "1943",
+   "1930",
+   "1950",
+   "1958"
+  ],
+  "answer": "1943",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_646173",
+  "q": "Athletic Bilbao won their first La Liga title in which season?",
+  "o": [
+   "1934–35",
+   "1929–30",
+   "1942–43",
+   "1955–56"
+  ],
+  "answer": "1929–30",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ae203f",
+  "q": "Athletic Bilbao won the second of their back-to-back early-1980s La Liga titles in which season?",
+  "o": [
+   "1983–84",
+   "1955–56",
+   "1997–98",
+   "2020–21"
+  ],
+  "answer": "1983–84",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_19d0f3",
+  "q": "By the mid-1980s, how many La Liga titles had Athletic Bilbao won?",
+  "o": [
+   "Three",
+   "Five",
+   "Eight",
+   "Twelve"
+  ],
+  "answer": "Eight",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e8d4db",
+  "q": "Athletic Bilbao won the 2024 Copa del Rey final on penalties against which club?",
+  "o": [
+   "Sevilla",
+   "Real Betis",
+   "Valencia",
+   "Mallorca"
+  ],
+  "answer": "Mallorca",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_804c9b",
+  "q": "The 2024 Copa del Rey final was staged at which stadium?",
+  "o": [
+   "La Cartuja, Seville",
+   "Santiago Bernabéu",
+   "Metropolitano",
+   "Mestalla"
+  ],
+  "answer": "La Cartuja, Seville",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d2a557",
+  "q": "Athletic Bilbao lost the 2021 Copa del Rey final heavily to which club?",
+  "o": [
+   "Sevilla",
+   "Real Madrid",
+   "Barcelona",
+   "Valencia"
+  ],
+  "answer": "Barcelona",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a601fe",
+  "q": "The La Liga award for the top-scoring Spanish player is named after which Athletic Bilbao striker?",
+  "o": [
+   "Telmo Zarra",
+   "José Ángel Iribar",
+   "Julen Guerrero",
+   "Dani"
+  ],
+  "answer": "Telmo Zarra",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c23bb4",
+  "q": "The Pichichi Trophy for La Liga's overall top scorer is named after which early Athletic forward, who scored the first competitive goal at the original San Mamés stadium?",
+  "o": [
+   "Guillermo Gorostiza",
+   "Rafael 'Pichichi' Moreno",
+   "Agustín 'Bata' Sauto",
+   "Chirri II"
+  ],
+  "answer": "Rafael 'Pichichi' Moreno",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_10ff30",
+  "q": "Which Athletic Bilbao captain helped carry the then-banned Basque flag onto the pitch before a December 1976 derby?",
+  "o": [
+   "Andoni Goikoetxea",
+   "Dani",
+   "Manuel Sarabia",
+   "José Ángel Iribar"
+  ],
+  "answer": "José Ángel Iribar",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_51d1f7",
+  "q": "Which one-club attacking midfielder was Athletic Bilbao's talisman and fan idol throughout the 1990s?",
+  "o": [
+   "Julen Guerrero",
+   "Markel Susaeta",
+   "Ander Iturraspe",
+   "Iker Muniain"
+  ],
+  "answer": "Julen Guerrero",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bb623a",
+  "q": "Defender Andoni Goikoetxea earned the nickname 'The Butcher of Bilbao' after a 1983 challenge that broke whose ankle?",
+  "o": [
+   "Johan Cruyff",
+   "Michel Platini",
+   "Diego Maradona",
+   "Zico"
+  ],
+  "answer": "Diego Maradona",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_774246",
+  "q": "Which veteran striker scored a hat-trick in the first leg of Athletic Bilbao's 2015 Spanish Super Cup triumph?",
+  "o": [
+   "Iker Muniain",
+   "Aritz Aduriz",
+   "Iñaki Williams",
+   "Markel Susaeta"
+  ],
+  "answer": "Aritz Aduriz",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d74071",
+  "q": "Which Athletic Bilbao-developed winger won UEFA Euro 2024 with Spain?",
+  "o": [
+   "Nico Williams",
+   "Iker Muniain",
+   "Óscar de Marcos",
+   "Unai Gómez"
+  ],
+  "answer": "Nico Williams",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9f86b8",
+  "q": "In January 2018 Athletic Bilbao sold defender Aymeric Laporte, then a club-record sale, to which club?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Paris Saint-Germain",
+   "Bayern Munich"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_833ae4",
+  "q": "In 2018 Chelsea paid a then world-record fee for a goalkeeper to sign which Athletic Bilbao academy product?",
+  "o": [
+   "Unai Simón",
+   "Gorka Iraizoz",
+   "Iago Herrerín",
+   "Kepa Arrizabalaga"
+  ],
+  "answer": "Kepa Arrizabalaga",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_11edea",
+  "q": "Midfielder Ander Herrera left Athletic Bilbao in 2014 to join which English club?",
+  "o": [
+   "Manchester United",
+   "Manchester City",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_606b66",
+  "q": "In 2012 Athletic Bilbao sold midfielder Javi Martínez to which German club?",
+  "o": [
+   "Borussia Dortmund",
+   "Bayern Munich",
+   "Schalke 04",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_09e658",
+  "q": "Which coach led Athletic Bilbao's dominant, title-winning side of the early 1980s?",
+  "o": [
+   "Javier Clemente",
+   "Marcelo Bielsa",
+   "Ernesto Valverde",
+   "Luis Fernández"
+  ],
+  "answer": "Javier Clemente",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_03d003",
+  "q": "Which Argentine coach guided Athletic Bilbao to the 2012 Europa League and Copa del Rey finals?",
+  "o": [
+   "Diego Simeone",
+   "Mauricio Pochettino",
+   "Marcelo Bielsa",
+   "Jorge Sampaoli"
+  ],
+  "answer": "Marcelo Bielsa",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_37f572",
+  "q": "Which Slovak coach guided Athletic Bilbao to a league-and-cup double in 1955–56?",
+  "o": [
+   "Ferdinand Daučík",
+   "Fred Pentland",
+   "Ronnie Allen",
+   "Rafael Iriondo"
+  ],
+  "answer": "Ferdinand Daučík",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1e03be",
+  "q": "Which bowler-hatted Englishman built Athletic Bilbao's dominant side of the late 1920s and early 1930s?",
+  "o": [
+   "Ronnie Allen",
+   "Fred Pentland",
+   "Howard Kendall",
+   "Ferdinand Daučík"
+  ],
+  "answer": "Fred Pentland",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ca8878",
+  "q": "Which manager led Athletic Bilbao to their 2024 Copa del Rey triumph?",
+  "o": [
+   "Ernesto Valverde",
+   "Marcelo Bielsa",
+   "Gaizka Garitano",
+   "Joaquín Caparrós"
+  ],
+  "answer": "Ernesto Valverde",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9ca91",
+  "q": "Athletic Bilbao reached the 1977 UEFA Cup final, losing on away goals to which Italian club?",
+  "o": [
+   "AC Milan",
+   "Internazionale",
+   "Torino",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0b79ab",
+  "q": "In the 2012 Europa League final Athletic Bilbao lost 3–0 to which fellow Spanish club?",
+  "o": [
+   "Atlético Madrid",
+   "Real Madrid",
+   "Sevilla",
+   "Valencia"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_948b2b",
+  "q": "To reach the 2014–15 Champions League group stage, Athletic Bilbao won a qualifying play-off against which Italian club?",
+  "o": [
+   "Roma",
+   "Napoli",
+   "Lazio",
+   "Fiorentina"
+  ],
+  "answer": "Napoli",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a1a881",
+  "q": "Athletic Bilbao qualified for the Champions League by finishing La Liga runners-up in which season under Luis Fernández?",
+  "o": [
+   "1997–98",
+   "1983–84",
+   "2009–10",
+   "2020–21"
+  ],
+  "answer": "1997–98",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b481d5",
+  "q": "Which Athletic Bilbao striker was part of Spain's 2010 World Cup-winning squad?",
+  "o": [
+   "Aritz Aduriz",
+   "Fernando Llorente",
+   "Iñaki Williams",
+   "Julen Guerrero"
+  ],
+  "answer": "Fernando Llorente",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b82be1",
+  "q": "Which goalkeeper, a title-winner with Athletic Bilbao in the 1980s, went on to play at four World Cups for Spain (1986, 1990, 1994, 1998)?",
+  "o": [
+   "Andoni Zubizarreta",
+   "José Ángel Iribar",
+   "Carmelo Cedrún",
+   "Unai Simón"
+  ],
+  "answer": "Andoni Zubizarreta",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_138f36",
+  "q": "Athletic Bilbao forward Iñaki Williams, born in Bilbao to Ghanaian parents, chose to represent which nation from 2022, playing at that year's World Cup?",
+  "o": [
+   "Nigeria",
+   "Spain",
+   "Ghana",
+   "Equatorial Guinea"
+  ],
+  "answer": "Ghana",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f47bcc",
+  "q": "In which year was Sevilla FC founded, making it one of Spain's oldest football clubs?",
+  "o": [
+   "1890",
+   "1905",
+   "1878",
+   "1923"
+  ],
+  "answer": "1890",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ee7066",
+  "q": "What are Sevilla FC's traditional home shirt colours?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "All red",
+   "Sky blue"
+  ],
+  "answer": "Red and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d8e3a5",
+  "q": "El Gran Derbi pits Sevilla against which fierce city rival?",
+  "o": [
+   "Real Betis",
+   "Real Madrid",
+   "Valencia",
+   "Villarreal"
+  ],
+  "answer": "Real Betis",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7cde53",
+  "q": "Sevilla FC competes in the top division of which country's league system?",
+  "o": [
+   "Spain",
+   "Portugal",
+   "Italy",
+   "France"
+  ],
+  "answer": "Spain",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4055f6",
+  "q": "Sevilla's home stadium, opened in 1958, is named after which former club president?",
+  "o": [
+   "Ramón Sánchez-Pizjuán",
+   "Santiago Bernabéu",
+   "Luis Casanova",
+   "José Zorrilla"
+  ],
+  "answer": "Ramón Sánchez-Pizjuán",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_869605",
+  "q": "In which season did Sevilla win their first La Liga championship?",
+  "o": [
+   "1945-46",
+   "1955-56",
+   "1963-64",
+   "1935-36"
+  ],
+  "answer": "1945-46",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af6698",
+  "q": "Sevilla's stadium and one of the club's nicknames come from which neighbourhood of Seville?",
+  "o": [
+   "Nervión",
+   "Triana",
+   "Macarena",
+   "Los Remedios"
+  ],
+  "answer": "Nervión",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c2057",
+  "q": "Sevilla won the 2006 UEFA Cup final 4-0 against which English club?",
+  "o": [
+   "Middlesbrough",
+   "Newcastle United",
+   "Bolton Wanderers",
+   "Charlton Athletic"
+  ],
+  "answer": "Middlesbrough",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_934b13",
+  "q": "The 2007 UEFA Cup final was an all-Spanish affair in which Sevilla won on penalties against which club?",
+  "o": [
+   "Espanyol",
+   "Valencia",
+   "Real Zaragoza",
+   "Villarreal"
+  ],
+  "answer": "Espanyol",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_274120",
+  "q": "Sevilla beat which English club 3-1 in the 2016 Europa League final?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Tottenham Hotspur",
+   "Aston Villa"
+  ],
+  "answer": "Liverpool",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3dc3b4",
+  "q": "In the 2015 Europa League final, Sevilla defeated which Ukrainian club 3-2?",
+  "o": [
+   "Dnipro",
+   "Shakhtar Donetsk",
+   "Dynamo Kyiv",
+   "Metalist Kharkiv"
+  ],
+  "answer": "Dnipro",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fc5174",
+  "q": "In the 2020 Europa League final, Sevilla beat which Italian club 3-2?",
+  "o": [
+   "Inter Milan",
+   "AC Milan",
+   "Juventus",
+   "Napoli"
+  ],
+  "answer": "Inter Milan",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5ca90b",
+  "q": "Sevilla won the 2023 Europa League final against which Italian club, decided on penalties?",
+  "o": [
+   "Roma",
+   "Atalanta",
+   "Lazio",
+   "Fiorentina"
+  ],
+  "answer": "Roma",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dda111",
+  "q": "Sevilla won the 2014 Europa League final on penalties against which Portuguese club?",
+  "o": [
+   "Benfica",
+   "Porto",
+   "Sporting CP",
+   "Braga"
+  ],
+  "answer": "Benfica",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dd9354",
+  "q": "Sevilla won the 2006 UEFA Super Cup 3-0 against which club, in Monaco?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Valencia",
+   "Chelsea"
+  ],
+  "answer": "Barcelona",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5d5dd2",
+  "q": "The 2006 UEFA Cup final, which Sevilla won 4-0, was played in which Dutch city?",
+  "o": [
+   "Eindhoven",
+   "Amsterdam",
+   "Rotterdam",
+   "Utrecht"
+  ],
+  "answer": "Eindhoven",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_22b18a",
+  "q": "The 2007 UEFA Cup final that Sevilla won on penalties was held at Hampden Park in which city?",
+  "o": [
+   "Glasgow",
+   "Manchester",
+   "Cardiff",
+   "Dublin"
+  ],
+  "answer": "Glasgow",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_51c6ba",
+  "q": "The 2016 Europa League final won by Sevilla was staged in which Swiss city?",
+  "o": [
+   "Basel",
+   "Geneva",
+   "Zurich",
+   "Bern"
+  ],
+  "answer": "Basel",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_18e4de",
+  "q": "The 2015 Europa League final won by Sevilla was played in which capital city?",
+  "o": [
+   "Warsaw",
+   "Kyiv",
+   "Bucharest",
+   "Prague"
+  ],
+  "answer": "Warsaw",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ }
+]

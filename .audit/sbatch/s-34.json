@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_7bb6ea",
+  "q": "Fiorentina's fierce rivalry with Juventus was inflamed in 1990 by the sale of which player to Turin?",
+  "o": [
+   "Roberto Baggio",
+   "Gabriel Batistuta",
+   "Giancarlo Antognoni",
+   "Rui Costa"
+  ],
+  "answer": "Roberto Baggio",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_439d79",
+  "q": "Fiorentina's most passionate ultras occupy which end (curva) of the club's stadium?",
+  "o": [
+   "Curva Sud",
+   "Curva Fiesole",
+   "Curva Ferrovia",
+   "Curva Nord"
+  ],
+  "answer": "Curva Fiesole",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_06dc84",
+  "q": "Which Florence stadium, opened in 1931, became Fiorentina's home ground?",
+  "o": [
+   "San Siro",
+   "Stadio Olimpico",
+   "Stadio Artemio Franchi",
+   "Stadio Luigi Ferraris"
+  ],
+  "answer": "Stadio Artemio Franchi",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_001940",
+  "q": "Fiorentina's home stadium, with its striking concrete 'Marathon Tower,' was designed by which pioneering Italian architect?",
+  "o": [
+   "Renzo Piano",
+   "Pier Luigi Nervi",
+   "Gio Ponti",
+   "Aldo Rossi"
+  ],
+  "answer": "Pier Luigi Nervi",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_009da2",
+  "q": "Fiorentina's 1931-built home stadium originally carried which name, before being renamed after a football administrator in 1991?",
+  "o": [
+   "Stadio Giovanni Berta",
+   "Stadio del Littorio",
+   "Stadio della Vittoria",
+   "Stadio Firenze"
+  ],
+  "answer": "Stadio Giovanni Berta",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0536ec",
+  "q": "In which season did Fiorentina win their first-ever Serie A title?",
+  "o": [
+   "1948-49",
+   "1955-56",
+   "1960-61",
+   "1938-39"
+  ],
+  "answer": "1955-56",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_670d83",
+  "q": "Fiorentina's youthful 1968-69 title-winning side earned which nickname?",
+  "o": [
+   "The Golden Boys",
+   "The Purple Machine",
+   "Fiorentina Ye-Ye",
+   "I Ragazzi Terribili"
+  ],
+  "answer": "Fiorentina Ye-Ye",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dabc58",
+  "q": "As of 2025, how many Serie A titles had Fiorentina won?",
+  "o": [
+   "One",
+   "Two",
+   "Three",
+   "Five"
+  ],
+  "answer": "Two",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ab25ea",
+  "q": "In which year did Fiorentina win their first Coppa Italia?",
+  "o": [
+   "1940",
+   "1938",
+   "1955",
+   "1961"
+  ],
+  "answer": "1940",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2311f0",
+  "q": "Fiorentina won which international trophy, once contested by Central European clubs, in 1966?",
+  "o": [
+   "The Latin Cup",
+   "The Mitropa Cup",
+   "The Alpine Cup",
+   "The Balkans Cup"
+  ],
+  "answer": "The Mitropa Cup",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dcf173",
+  "q": "Which player set Fiorentina's all-time appearance record of 429 official matches between 1972 and 1987?",
+  "o": [
+   "Gabriel Batistuta",
+   "Giancarlo Antognoni",
+   "Manuel Pasqual",
+   "Kurt Hamrin"
+  ],
+  "answer": "Giancarlo Antognoni",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5b6465",
+  "q": "At the start of the 1994-95 Serie A season, Gabriel Batistuta set a record by scoring in how many consecutive opening matches?",
+  "o": [
+   "The first 6",
+   "The first 8",
+   "The first 11",
+   "The first 14"
+  ],
+  "answer": "The first 11",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3b6043",
+  "q": "Which Swedish winger, nicknamed 'Uccellino' (Little Bird), scored 150 Serie A goals for Fiorentina between 1958 and 1967?",
+  "o": [
+   "Gunnar Gren",
+   "Kurt Hamrin",
+   "Nils Liedholm",
+   "Glenn Hysen"
+  ],
+  "answer": "Kurt Hamrin",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0ab079",
+  "q": "Which Argentine striker, nicknamed 'Batigol,' scored over 200 goals in all competitions for Fiorentina?",
+  "o": [
+   "Hernan Crespo",
+   "Gabriel Batistuta",
+   "Diego Milito",
+   "Mario Kempes"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d34f49",
+  "q": "After Fiorentina were relegated to Serie B in 1993, what did star striker Gabriel Batistuta do?",
+  "o": [
+   "Stayed and helped win promotion back",
+   "Forced a transfer to AC Milan",
+   "Retired temporarily",
+   "Returned to Argentina"
+  ],
+  "answer": "Stayed and helped win promotion back",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d6a2bb",
+  "q": "Which attacking midfielder, who wore Fiorentina's number 10 and spent his entire prime at the club, is revered as their one-club idol?",
+  "o": [
+   "Roberto Baggio",
+   "Kurt Hamrin",
+   "Giancarlo Antognoni",
+   "Rui Costa"
+  ],
+  "answer": "Giancarlo Antognoni",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e24919",
+  "q": "Which Portuguese playmaker was Fiorentina's creative star from 1994 to 2001?",
+  "o": [
+   "Luis Figo",
+   "Rui Costa",
+   "Deco",
+   "Nuno Gomes"
+  ],
+  "answer": "Rui Costa",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_961219",
+  "q": "In 2018, Fiorentina retired the number 13 shirt to honour which captain, who died suddenly that year?",
+  "o": [
+   "Riccardo Montolivo",
+   "Davide Astori",
+   "Manuel Pasqual",
+   "Marco Donadel"
+  ],
+  "answer": "Davide Astori",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0b2962",
+  "q": "Which Brazilian winger, signed after the 1954 World Cup, was the star of Fiorentina's first title-winning team?",
+  "o": [
+   "Julinho",
+   "Garrincha",
+   "Didi",
+   "Vava"
+  ],
+  "answer": "Julinho",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2ccec4",
+  "q": "Which goalkeeper starred for Fiorentina through the 1990s before becoming an Italy hero at Euro 2000?",
+  "o": [
+   "Gianluigi Buffon",
+   "Angelo Peruzzi",
+   "Francesco Toldo",
+   "Luca Marchegiani"
+  ],
+  "answer": "Francesco Toldo",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2f53ec",
+  "q": "Which Argentine-Italian forward was a key attacker, alongside Giuseppe Virgili, in Fiorentina's first Scudetto-winning side?",
+  "o": [
+   "Omar Sivori",
+   "Miguel Montuori",
+   "Antonio Angelillo",
+   "Humberto Maschio"
+  ],
+  "answer": "Miguel Montuori",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e12c6e",
+  "q": "From which club did Fiorentina sign Gabriel Batistuta in 1991?",
+  "o": [
+   "River Plate",
+   "Boca Juniors",
+   "Newell's Old Boys",
+   "Independiente"
+  ],
+  "answer": "Boca Juniors",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_97c44c",
+  "q": "Roberto Baggio joined Fiorentina in 1985 from which club?",
+  "o": [
+   "Hellas Verona",
+   "Brescia",
+   "Vicenza",
+   "Cesena"
+  ],
+  "answer": "Vicenza",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1321b3",
+  "q": "In 2001, Fiorentina sold Rui Costa to which club?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Juventus",
+   "Barcelona"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84b673",
+  "q": "Which Serbian striker did Fiorentina sell to Juventus in January 2022?",
+  "o": [
+   "Dusan Vlahovic",
+   "Luka Jovic",
+   "Aleksandar Mitrovic",
+   "Nikola Milenkovic"
+  ],
+  "answer": "Dusan Vlahovic",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_06853c",
+  "q": "Which academy-raised winger, son of former striker Enrico Chiesa, moved from Fiorentina to Juventus in 2020?",
+  "o": [
+   "Federico Bernardeschi",
+   "Federico Chiesa",
+   "Gaetano Castrovilli",
+   "Riccardo Sottil"
+  ],
+  "answer": "Federico Chiesa",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_45795e",
+  "q": "Fiorentina signed prolific striker Luca Toni in 2005 from which Italian club?",
+  "o": [
+   "Brescia",
+   "Genoa",
+   "Palermo",
+   "Vicenza"
+  ],
+  "answer": "Palermo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_26e250",
+  "q": "Which coach masterminded Fiorentina's first-ever Serie A championship?",
+  "o": [
+   "Nereo Rocco",
+   "Fulvio Bernardini",
+   "Nils Liedholm",
+   "Gipo Viani"
+  ],
+  "answer": "Fulvio Bernardini",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cdbc7a",
+  "q": "Which manager led Fiorentina to consecutive UEFA Conference League finals in 2023 and 2024?",
+  "o": [
+   "Cesare Prandelli",
+   "Vincenzo Italiano",
+   "Vincenzo Montella",
+   "Stefano Pioli"
+  ],
+  "answer": "Vincenzo Italiano",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b8735",
+  "q": "Which coach, in charge from 2005 to 2010, led Fiorentina to back-to-back Champions League qualifications?",
+  "o": [
+   "Cesare Prandelli",
+   "Delio Rossi",
+   "Sinisa Mihajlovic",
+   "Paulo Sousa"
+  ],
+  "answer": "Cesare Prandelli",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_94cc91",
+  "q": "Which veteran Italian coach managed Fiorentina from 1998 to 2000, leading them into the Champions League?",
+  "o": [
+   "Marcello Lippi",
+   "Giovanni Trapattoni",
+   "Fabio Capello",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Giovanni Trapattoni",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_174d30",
+  "q": "Which manager, later famous for Leicester City's 2016 Premier League title, won the 1996 Coppa Italia with Fiorentina?",
+  "o": [
+   "Sven-Goran Eriksson",
+   "Roberto Mancini",
+   "Claudio Ranieri",
+   "Luciano Spalletti"
+  ],
+  "answer": "Claudio Ranieri",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dae854",
+  "q": "In 1957, Fiorentina became the first Italian club to reach a European Cup final, losing 2-0 to which club?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Benfica",
+   "Stade de Reims"
+  ],
+  "answer": "Real Madrid",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e7e8ab",
+  "q": "Fiorentina won the inaugural European Cup Winners' Cup in 1961, beating which British club over two legs?",
+  "o": [
+   "Celtic",
+   "Rangers",
+   "Everton",
+   "Wolverhampton Wanderers"
+  ],
+  "answer": "Rangers",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9795ea",
+  "q": "Fiorentina lost the 1990 UEFA Cup final, the first all-Italian European final, to which club?",
+  "o": [
+   "Inter",
+   "Napoli",
+   "Juventus",
+   "AS Roma"
+  ],
+  "answer": "Juventus",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3616d9",
+  "q": "In the 1999-2000 Champions League, Fiorentina beat which English club 2-0 in Florence, with Batistuta scoring?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Manchester United",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f3796",
+  "q": "Fiorentina lost the 2023 UEFA Europa Conference League final to which English club?",
+  "o": [
+   "West Ham United",
+   "Aston Villa",
+   "Brighton",
+   "Crystal Palace"
+  ],
+  "answer": "West Ham United",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dde857",
+  "q": "Which Fiorentina striker scored hat-tricks at two different World Cups (1994 and 1998)?",
+  "o": [
+   "Hernan Crespo",
+   "Ronaldo",
+   "Gabriel Batistuta",
+   "Marco van Basten"
+  ],
+  "answer": "Gabriel Batistuta",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ca8d32",
+  "q": "Which Argentina captain, who lifted the 1978 World Cup, joined Fiorentina in 1982?",
+  "o": [
+   "Mario Kempes",
+   "Daniel Passarella",
+   "Osvaldo Ardiles",
+   "Ubaldo Fillol"
+  ],
+  "answer": "Daniel Passarella",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dbc6e6",
+  "q": "Which future Brazil captain, who lifted the 1994 World Cup, anchored Fiorentina's midfield from 1988 to 1992?",
+  "o": [
+   "Cafu",
+   "Dunga",
+   "Mauro Silva",
+   "Leonardo"
+  ],
+  "answer": "Dunga",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bb935b",
+  "q": "Which striker won the 2006 World Cup with Italy while playing his club football for Fiorentina?",
+  "o": [
+   "Alberto Gilardino",
+   "Vincenzo Iaquinta",
+   "Luca Toni",
+   "Filippo Inzaghi"
+  ],
+  "answer": "Luca Toni",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8982bc",
+  "q": "In which year was Lazio founded?",
+  "o": [
+   "1897",
+   "1900",
+   "1910",
+   "1927"
+  ],
+  "answer": "1900",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c1d224",
+  "q": "Lazio began life as 'Società Podistica Lazio' — what kind of sports club was it originally?",
+  "o": [
+   "A rowing club",
+   "A cycling club",
+   "A running club",
+   "A fencing society"
+  ],
+  "answer": "A running club",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a5925",
+  "q": "Lazio's white and sky blue colours were chosen as a tribute to which country?",
+  "o": [
+   "Argentina",
+   "Uruguay",
+   "France",
+   "Greece"
+  ],
+  "answer": "Greece",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_813e29",
+  "q": "What does Lazio's nickname 'Biancocelesti' refer to?",
+  "o": [
+   "Their white and sky blue colours",
+   "Their all-white away kit",
+   "The blue skies of Rome",
+   "Their heavenly patron saint"
+  ],
+  "answer": "Their white and sky blue colours",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec851e",
+  "q": "Which bird features on Lazio's badge and gives them the nickname 'le Aquile'?",
+  "o": [
+   "A falcon",
+   "An eagle",
+   "A hawk",
+   "A condor"
+  ],
+  "answer": "An eagle",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2e9335",
+  "q": "What is the name of the live bird of prey that began flying over the stadium before Lazio home games in 2010?",
+  "o": [
+   "Vittoria",
+   "Celeste",
+   "Olimpia",
+   "Augusta"
+  ],
+  "answer": "Olimpia",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4448c4",
+  "q": "What name is given to the derby between Lazio and Roma?",
+  "o": [
+   "Derby d'Italia",
+   "Derby della Madonnina",
+   "Derby del Sole",
+   "Derby della Capitale"
+  ],
+  "answer": "Derby della Capitale",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_daa95f",
+  "q": "In 1927, when Rome's clubs were merged to create AS Roma, what did Lazio do?",
+  "o": [
+   "Refused to join and stayed independent",
+   "Became a founding member",
+   "Merged, then broke away in 1929",
+   "Moved to another city in protest"
+  ],
+  "answer": "Refused to join and stayed independent",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5b1b94",
+  "q": "Which Rome stadium, opened in 1953, became the shared home of both Lazio and Roma?",
+  "o": [
+   "Stadio Flaminio",
+   "Stadio Olimpico",
+   "Stadio dei Marmi",
+   "Stadio Nazionale"
+  ],
+  "answer": "Stadio Olimpico",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d0613c",
+  "q": "Which end of their home stadium is traditionally the home of Lazio's ultras?",
+  "o": [
+   "Curva Sud",
+   "Tribuna Tevere",
+   "Curva Nord",
+   "Distinti Est"
+  ],
+  "answer": "Curva Nord",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9af7a9",
+  "q": "Lazio won their first major trophy in 1958 by beating Fiorentina 1-0 in which competition?",
+  "o": [
+   "Serie A",
+   "Cup Winners' Cup",
+   "Supercoppa Italiana",
+   "Coppa Italia"
+  ],
+  "answer": "Coppa Italia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3a911b",
+  "q": "Which song became famous as Lazio's club anthem?",
+  "o": [
+   "Grazie Roma",
+   "Vola Lazio Vola",
+   "Alè Aquila Alè",
+   "Cuore Celeste"
+  ],
+  "answer": "Vola Lazio Vola",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea1532",
+  "q": "The club name 'Lazio' refers to what?",
+  "o": [
+   "The founder's surname",
+   "A Roman emperor",
+   "The region surrounding Rome",
+   "The district where it was founded"
+  ],
+  "answer": "The region surrounding Rome",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_74b8fe",
+  "q": "Which president's heavy spending powered Lazio's trophy-laden era around the turn of the millennium?",
+  "o": [
+   "Claudio Lotito",
+   "Sergio Cragnotti",
+   "Massimo Moratti",
+   "Franco Sensi"
+  ],
+  "answer": "Sergio Cragnotti",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2f0bf0",
+  "q": "Lazio's 2000 Scudetto was sealed on the final day when Juventus lost 1-0 at which club's rain-soaked ground?",
+  "o": [
+   "Perugia",
+   "Verona",
+   "Bari",
+   "Piacenza"
+  ],
+  "answer": "Perugia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_33759f",
+  "q": "What distinction does Lazio's 1999 Cup Winners' Cup triumph hold?",
+  "o": [
+   "It was decided by a golden goal",
+   "They won it without conceding a goal",
+   "It was the last ever edition of the competition",
+   "It was the first final played outside Europe"
+  ],
+  "answer": "It was the last ever edition of the competition",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5d9ee4",
+  "q": "Which Spanish club did Lazio beat 2-1 in the 1999 Cup Winners' Cup final?",
+  "o": [
+   "Valencia",
+   "Mallorca",
+   "Celta Vigo",
+   "Real Betis"
+  ],
+  "answer": "Mallorca",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_43c225",
+  "q": "Who scored Lazio's 81st-minute winner in the 1999 Cup Winners' Cup final?",
+  "o": [
+   "Alen Bokšić",
+   "Roberto Mancini",
+   "Dejan Stanković",
+   "Pavel Nedvěd"
+  ],
+  "answer": "Pavel Nedvěd",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_11b112",
+  "q": "Lazio lifted the 1999 Cup Winners' Cup at which English stadium?",
+  "o": [
+   "Wembley",
+   "Old Trafford",
+   "Villa Park",
+   "Highbury"
+  ],
+  "answer": "Villa Park",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_706131",
+  "q": "Lazio beat which club 1-0 to win the 1999 UEFA Super Cup?",
+  "o": [
+   "Manchester United",
+   "Barcelona",
+   "Real Madrid",
+   "Bayern Munich"
+  ],
+  "answer": "Manchester United",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d4dd13",
+  "q": "Who came off the bench to score the only goal for Lazio in the 1999 UEFA Super Cup?",
+  "o": [
+   "Roberto Mancini",
+   "Marcelo Salas",
+   "Alen Bokšić",
+   "Christian Vieri"
+  ],
+  "answer": "Marcelo Salas",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d49d4c",
+  "q": "Who beat Lazio 3-0 in the 1998 UEFA Cup final in Paris?",
+  "o": [
+   "Parma",
+   "Juventus",
+   "Inter",
+   "Atlético Madrid"
+  ],
+  "answer": "Inter",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ebb8f3",
+  "q": "Which Lazio striker scored four goals in a single Champions League match against Marseille in March 2000?",
+  "o": [
+   "Marcelo Salas",
+   "Alen Bokšić",
+   "Fabrizio Ravanelli",
+   "Simone Inzaghi"
+  ],
+  "answer": "Simone Inzaghi",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_083596",
+  "q": "Silvio Piola scored twice in the 1938 World Cup final as Italy beat which nation 4-2?",
+  "o": [
+   "Czechoslovakia",
+   "Hungary",
+   "Brazil",
+   "Austria"
+  ],
+  "answer": "Hungary",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_57a10b",
+  "q": "Which striker, then a Lazio player, broke the World Cup's all-time scoring record at the 2014 tournament?",
+  "o": [
+   "Gonzalo Higuaín",
+   "Edinson Cavani",
+   "Miroslav Klose",
+   "Edin Džeko"
+  ],
+  "answer": "Miroslav Klose",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ca6272",
+  "q": "Two years before joining Lazio, Paul Gascoigne became a global star at which World Cup?",
+  "o": [
+   "Mexico 1986",
+   "Italia 1990",
+   "USA 1994",
+   "France 1998"
+  ],
+  "answer": "Italia 1990",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_af8581",
+  "q": "Who was Lazio's head coach for the 1999-2000 Scudetto-winning season?",
+  "o": [
+   "Fabio Capello",
+   "Marcello Lippi",
+   "Alberto Zaccheroni",
+   "Sven-Göran Eriksson"
+  ],
+  "answer": "Sven-Göran Eriksson",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_faccba",
+  "q": "Who coached Lazio to their first ever Scudetto in 1973-74?",
+  "o": [
+   "Tommaso Maestrelli",
+   "Nereo Rocco",
+   "Fulvio Bernardini",
+   "Giovanni Trapattoni"
+  ],
+  "answer": "Tommaso Maestrelli",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fd42c7",
+  "q": "Simone Inzaghi ended his five-year spell as Lazio boss in 2021 to take charge of which club?",
+  "o": [
+   "Juventus",
+   "Inter",
+   "Paris Saint-Germain",
+   "Tottenham"
+  ],
+  "answer": "Inter",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_75b637",
+  "q": "Which 1982 World Cup-winning captain coached Lazio from 1990 to 1994 and again in 2001?",
+  "o": [
+   "Marco Tardelli",
+   "Claudio Gentile",
+   "Dino Zoff",
+   "Antonio Cabrini"
+  ],
+  "answer": "Dino Zoff",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_397e06",
+  "q": "Which striker's 24 goals made him Serie A capocannoniere as Lazio won the 1973-74 title?",
+  "o": [
+   "Roberto Boninsegna",
+   "Paolo Pulici",
+   "Beppe Savoldi",
+   "Giorgio Chinaglia"
+  ],
+  "answer": "Giorgio Chinaglia",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6ae732",
+  "q": "Which forward won three Serie A top-scorer titles with Lazio during the 1990s?",
+  "o": [
+   "Giuseppe Signori",
+   "Pierluigi Casiraghi",
+   "Ruben Sosa",
+   "Alen Bokšić"
+  ],
+  "answer": "Giuseppe Signori",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4b4f07",
+  "q": "Which Lazio player scored a hat-trick of free kicks in a single Serie A match against Sampdoria in December 1998?",
+  "o": [
+   "Dejan Stanković",
+   "Siniša Mihajlović",
+   "Giuseppe Favalli",
+   "Matías Almeyda"
+  ],
+  "answer": "Siniša Mihajlović",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2f5521",
+  "q": "Which Rome-born defender rose through Lazio's academy to captain the 2000 double winners?",
+  "o": [
+   "Giuseppe Favalli",
+   "Paolo Negro",
+   "Fernando Couto",
+   "Alessandro Nesta"
+  ],
+  "answer": "Alessandro Nesta",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0d49e6",
+  "q": "Whose 71st-minute goal won the 2013 Coppa Italia final for Lazio against Roma?",
+  "o": [
+   "Hernanes",
+   "Antonio Candreva",
+   "Senad Lulić",
+   "Miroslav Klose"
+  ],
+  "answer": "Senad Lulić",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f3dfc3",
+  "q": "Which Rome-born forward, a boyhood Lazio fan, took a big pay cut to return to the club from Charlton in 2004?",
+  "o": [
+   "Bernardo Corradi",
+   "Paolo Di Canio",
+   "Tommaso Rocchi",
+   "Marco Di Vaio"
+  ],
+  "answer": "Paolo Di Canio",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f86db9",
+  "q": "Which striker did Lazio sign from Parma in 2000 for a then-world-record £35.5 million?",
+  "o": [
+   "Gabriel Batistuta",
+   "David Trezeguet",
+   "Mário Jardel",
+   "Hernán Crespo"
+  ],
+  "answer": "Hernán Crespo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fa5ce5",
+  "q": "Which Lazio midfielder became British football's record signing when he joined Manchester United in 2001?",
+  "o": [
+   "Juan Sebastián Verón",
+   "Diego Simeone",
+   "Dejan Stanković",
+   "Matías Almeyda"
+  ],
+  "answer": "Juan Sebastián Verón",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c362f",
+  "q": "Pavel Nedvěd left Lazio in 2001 to join which club, where he later won the Ballon d'Or?",
+  "o": [
+   "Milan",
+   "Real Madrid",
+   "Juventus",
+   "Bayern Munich"
+  ],
+  "answer": "Juventus",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0c0a48",
+  "q": "Financial crisis forced Lazio to sell Alessandro Nesta in 2002 to which club?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Juventus",
+   "Real Madrid"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7aba55",
+  "q": "From which English club did Lazio sign Paul Gascoigne in 1992?",
+  "o": [
+   "Newcastle United",
+   "Everton",
+   "Middlesbrough",
+   "Tottenham Hotspur"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d95576",
+  "q": "After eight seasons at Lazio, Sergej Milinković-Savić joined which Saudi club in 2023?",
+  "o": [
+   "Al-Hilal",
+   "Al-Nassr",
+   "Al-Ittihad",
+   "Al-Ahli"
+  ],
+  "answer": "Al-Hilal",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_09fe8e",
+  "q": "From which Spanish club did Lazio sign Ciro Immobile in 2016?",
+  "o": [
+   "Valencia",
+   "Villarreal",
+   "Sevilla",
+   "Real Betis"
+  ],
+  "answer": "Sevilla",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_29b29d",
+  "q": "Which striker did Lazio sell to Inter in 1999 for a then-world-record fee?",
+  "o": [
+   "Alen Bokšić",
+   "Marcelo Salas",
+   "Simone Inzaghi",
+   "Christian Vieri"
+  ],
+  "answer": "Christian Vieri",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3721f5",
+  "q": "Which striker left Lazio in 2024 as the club's all-time leading goalscorer?",
+  "o": [
+   "Luis Alberto",
+   "Ciro Immobile",
+   "Felipe Anderson",
+   "Pedro"
+  ],
+  "answer": "Ciro Immobile",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e76078",
+  "q": "Ciro Immobile won the 2019-20 European Golden Shoe with how many Serie A goals?",
+  "o": [
+   "30",
+   "33",
+   "36",
+   "39"
+  ],
+  "answer": "36",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eb0367",
+  "q": "Which forward, a Lazio star from 1934 to 1943, set Serie A's all-time career scoring record of 274 goals?",
+  "o": [
+   "Silvio Piola",
+   "Giuseppe Meazza",
+   "Gunnar Nordahl",
+   "José Altafini"
+  ],
+  "answer": "Silvio Piola",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1fafff",
+  "q": "Who scored the stoppage-time winner when Lazio beat Juventus 3-2 in the 2017 Supercoppa Italiana?",
+  "o": [
+   "Marco Parolo",
+   "Luis Alberto",
+   "Felipe Anderson",
+   "Alessandro Murgia"
+  ],
+  "answer": "Alessandro Murgia",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_afc799",
+  "q": "In which year was Torino founded?",
+  "o": [
+   "1897",
+   "1906",
+   "1919",
+   "1927"
+  ],
+  "answer": "1906",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_504e8c",
+  "q": "Torino's traditional maroon shirts give the club and its supporters which nickname?",
+  "o": [
+   "I Bianconeri",
+   "I Rossoneri",
+   "I Nerazzurri",
+   "I Granata"
+  ],
+  "answer": "I Granata",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0805ee",
+  "q": "Which animal features on Torino's crest and inspires the nickname 'Il Toro'?",
+  "o": [
+   "A wolf",
+   "An eagle",
+   "A bull",
+   "A lion"
+  ],
+  "answer": "A bull",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_793689",
+  "q": "Torino was founded by a group of dissidents who had split from which other Turin club?",
+  "o": [
+   "Juventus",
+   "Pro Vercelli",
+   "Genoa",
+   "Alessandria"
+  ],
+  "answer": "Juventus",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_329dfc",
+  "q": "What is the name of the Turin derby contested between Torino and Juventus?",
+  "o": [
+   "Derby della Madonnina",
+   "Derby d'Italia",
+   "Derby della Lanterna",
+   "Derby della Mole"
+  ],
+  "answer": "Derby della Mole",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_aa858b",
+  "q": "Torino were stripped of the 1926-27 Italian title after a match-fixing affair. By what name is that scandal known?",
+  "o": [
+   "Calciopoli",
+   "The Allemandi Case",
+   "Totonero",
+   "The Rossi Affair"
+  ],
+  "answer": "The Allemandi Case",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d90600",
+  "q": "After the annulled 1926-27 crown, Torino claimed their first officially recognised Italian title in which season?",
+  "o": [
+   "1913-14",
+   "1922-23",
+   "1927-28",
+   "1934-35"
+  ],
+  "answer": "1927-28",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_62e658",
+  "q": "After financial collapse in 2005, the club was refounded and continued its history under which name?",
+  "o": [
+   "Torino Calcio",
+   "AC Torino",
+   "Nuovo Torino Calcio",
+   "Torino Football Club"
+  ],
+  "answer": "Torino Football Club",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88e869",
+  "q": "Torino won the very first match in the club's history against which pioneering Italian club?",
+  "o": [
+   "Internazionale",
+   "Napoli",
+   "Pro Vercelli",
+   "Fiorentina"
+  ],
+  "answer": "Pro Vercelli",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9232b2",
+  "q": "On 4 May 1949, Torino's entire team died when their plane crashed into a hillside basilica near Turin. This tragedy is known as the...",
+  "o": [
+   "Munich air disaster",
+   "Turin fire",
+   "Basilica collapse",
+   "Superga air disaster"
+  ],
+  "answer": "Superga air disaster",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_093662",
+  "q": "The Grande Torino played its home matches at which Turin ground, where it built a famous unbeaten record?",
+  "o": [
+   "Stadio Filadelfia",
+   "San Siro",
+   "Stadio delle Alpi",
+   "Stadio San Paolo"
+  ],
+  "answer": "Stadio Filadelfia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6bfd5c",
+  "q": "From 1990 until the mid-2000s, Torino shared which Turin stadium, built for the 1990 World Cup, with rivals Juventus?",
+  "o": [
+   "Stadio Olimpico",
+   "Stadio Filadelfia",
+   "Stadio delle Alpi",
+   "Arena Garibaldi"
+  ],
+  "answer": "Stadio delle Alpi",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a30beb",
+  "q": "When the Superga disaster struck in May 1949, how many league games remained in the season Torino went on to win?",
+  "o": [
+   "Four",
+   "One",
+   "Eight",
+   "None — it was already secured"
+  ],
+  "answer": "Four",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2008e8",
+  "q": "Grande Torino's run of consecutive Italian titles equalled a record set in the 1930s by which club?",
+  "o": [
+   "Bologna",
+   "Genoa",
+   "Ambrosiana-Inter",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3a5f69",
+  "q": "In 1993 Torino won the Coppa Italia, prevailing on away goals after a two-legged final against which club?",
+  "o": [
+   "Roma",
+   "Lazio",
+   "Sampdoria",
+   "Parma"
+  ],
+  "answer": "Roma",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2c7075",
+  "q": "Torino sealed the 1975-76 Serie A title after which club beat their rivals Juventus late in the run-in?",
+  "o": [
+   "Cagliari",
+   "Cesena",
+   "Perugia",
+   "Verona"
+  ],
+  "answer": "Perugia",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b39e12",
+  "q": "Who was the captain and creative leader of Il Grande Torino, an attacking No. 10 killed at Superga?",
+  "o": [
+   "Silvio Piola",
+   "Valentino Mazzola",
+   "Giuseppe Meazza",
+   "Gigi Riva"
+  ],
+  "answer": "Valentino Mazzola",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5d93f9",
+  "q": "Which Torino goalkeeper, also an Italy international, was among the players killed in the 1949 Superga disaster?",
+  "o": [
+   "Dino Zoff",
+   "Gianluigi Buffon",
+   "Walter Zenga",
+   "Valerio Bacigalupo"
+  ],
+  "answer": "Valerio Bacigalupo",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4d6e04",
+  "q": "Which winger, nicknamed 'La Farfalla Granata' (the Maroon Butterfly), died aged 24 after being struck by a car in Turin in 1967?",
+  "o": [
+   "Gigi Meroni",
+   "Gigi Riva",
+   "Franco Causio",
+   "Bruno Conti"
+  ],
+  "answer": "Gigi Meroni",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d0c84",
+  "q": "Which striker was crowned Serie A capocannoniere (top scorer) three times while at Torino in the 1970s?",
+  "o": [
+   "Roberto Bettega",
+   "Paolo Pulici",
+   "Pietro Anastasi",
+   "Giorgio Chinaglia"
+  ],
+  "answer": "Paolo Pulici",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d28eae",
+  "q": "Which midfielder, nicknamed 'La Diga' (The Dam), made a club-record 566 appearances for Torino between 1959 and 1975?",
+  "o": [
+   "Claudio Sala",
+   "Aldo Agroppi",
+   "Eraldo Pecci",
+   "Giorgio Ferrini"
+  ],
+  "answer": "Giorgio Ferrini",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9735ff",
+  "q": "The prolific Torino striker of the 2010s Andrea Belotti was known by which nickname?",
+  "o": [
+   "Il Gallo (The Rooster)",
+   "Il Cigno (The Swan)",
+   "Il Lupo (The Wolf)",
+   "Il Falco (The Falcon)"
+  ],
+  "answer": "Il Gallo (The Rooster)",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_16a64d",
+  "q": "In 1961 Torino signed Scotland forward Denis Law for a British-record fee. From which English club did he arrive?",
+  "o": [
+   "Huddersfield Town",
+   "Manchester City",
+   "Leeds United",
+   "Blackpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9fcb56",
+  "q": "After a single season in Italy, Torino sold Denis Law in 1962 to which club, where he became a legend?",
+  "o": [
+   "Celtic",
+   "Liverpool",
+   "Arsenal",
+   "Manchester United"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0d7b02",
+  "q": "Joe Baker, who arrived at Torino in 1961 alongside Denis Law, was signed from which club?",
+  "o": [
+   "Hibernian",
+   "Celtic",
+   "Rangers",
+   "Aberdeen"
+  ],
+  "answer": "Hibernian",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cff6f0",
+  "q": "Which striker did Torino sell to Borussia Dortmund in 2014, the season after he won the Serie A top-scorer award with the Granata?",
+  "o": [
+   "Fabio Quagliarella",
+   "Rolando Bianchi",
+   "Ciro Immobile",
+   "Alessandro Rosina"
+  ],
+  "answer": "Ciro Immobile",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_11a926",
+  "q": "Which winger left Torino to join Atlético Madrid in 2014 after a standout campaign?",
+  "o": [
+   "Bruno Peres",
+   "Alessio Cerci",
+   "Matteo Darmian",
+   "Iago Falque"
+  ],
+  "answer": "Alessio Cerci",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_319f9d",
+  "q": "Which Torino winger was sold to AC Milan in 1992 to become, briefly, the world's most expensive player?",
+  "o": [
+   "Roberto Mussi",
+   "Enzo Scifo",
+   "Gianluca Sordo",
+   "Gianluigi Lentini"
+  ],
+  "answer": "Gianluigi Lentini",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_91f755",
+  "q": "Under which coach did Torino win the Serie A title in 1975-76?",
+  "o": [
+   "Gigi Radice",
+   "Nereo Rocco",
+   "Enzo Bearzot",
+   "Giovanni Trapattoni"
+  ],
+  "answer": "Gigi Radice",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_777215",
+  "q": "Which coach led Torino to the 1992 UEFA Cup final and, in fury at a denied penalty, hoisted a bench above his head towards the sky?",
+  "o": [
+   "Giovanni Trapattoni",
+   "Emiliano Mondonico",
+   "Arrigo Sacchi",
+   "Marcello Lippi"
+  ],
+  "answer": "Emiliano Mondonico",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_435f3f",
+  "q": "The Grande Torino was masterminded by a Hungarian coach who also perished at Superga. Who was he?",
+  "o": [
+   "Béla Guttmann",
+   "Gusztáv Sebes",
+   "Vittorio Pozzo",
+   "Ernő Egri Erbstein"
+  ],
+  "answer": "Ernő Egri Erbstein",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_590334",
+  "q": "Which Englishman was the trainer of the Grande Torino and died in the 1949 Superga disaster?",
+  "o": [
+   "Leslie Lievesley",
+   "William Garbutt",
+   "Jesse Carver",
+   "Herbert Chapman"
+  ],
+  "answer": "Leslie Lievesley",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_023bef",
+  "q": "Which manager won promotion with Torino in 2012 and later became head coach of the Italy national team in 2016?",
+  "o": [
+   "Walter Mazzarri",
+   "Siniša Mihajlović",
+   "Giampiero Ventura",
+   "Ivan Jurić"
+  ],
+  "answer": "Giampiero Ventura",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f64abe",
+  "q": "Torino reached the 1992 UEFA Cup final but lost on away goals to which Dutch club?",
+  "o": [
+   "PSV Eindhoven",
+   "Ajax",
+   "Feyenoord",
+   "AZ Alkmaar"
+  ],
+  "answer": "Ajax",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_172d36",
+  "q": "On their run to the 1992 UEFA Cup final, Torino eliminated which Spanish giant in the semi-finals?",
+  "o": [
+   "Barcelona",
+   "Valencia",
+   "Atlético Madrid",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_50211a",
+  "q": "Torino's run to the 1992 UEFA Cup final was all the more surprising because, only two seasons earlier, the club had been playing in which division?",
+  "o": [
+   "Serie B",
+   "Serie C",
+   "Serie A",
+   "Serie D"
+  ],
+  "answer": "Serie B",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28ed27",
+  "q": "Torino won which historic competition for Central European clubs in 1991?",
+  "o": [
+   "The Cup Winners' Cup",
+   "The Mitropa Cup",
+   "The Intertoto Cup",
+   "The Latin Cup"
+  ],
+  "answer": "The Mitropa Cup",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7c5de0",
+  "q": "In the 1976-77 European Cup, reigning Italian champions Torino were knocked out by which German club that went on to reach the final?",
+  "o": [
+   "Bayern Munich",
+   "Hamburger SV",
+   "1. FC Köln",
+   "Borussia Mönchengladbach"
+  ],
+  "answer": "Borussia Mönchengladbach",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c5c5d5",
+  "q": "During Torino's 2014-15 Europa League campaign, they earned a famous away win in the round of 32 against which Spanish club?",
+  "o": [
+   "Athletic Bilbao",
+   "Sevilla",
+   "Villarreal",
+   "Real Betis"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a570b4",
+  "q": "In a 1947 international, the Italy national team fielded an extraordinary number of Torino players in a single match. How many?",
+  "o": [
+   "Six",
+   "Ten",
+   "Eight",
+   "Four"
+  ],
+  "answer": "Ten",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_623bfa",
+  "q": "Which former Torino striker of the 1970s went on to win the 1982 World Cup with Italy?",
+  "o": [
+   "Paolo Rossi",
+   "Francesco Graziani",
+   "Marco Tardelli",
+   "Bruno Conti"
+  ],
+  "answer": "Francesco Graziani",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f6be3",
+  "q": "Which club president, appointed in 1939, assembled the legendary Grande Torino side?",
+  "o": [
+   "Ferruccio Novo",
+   "Orfeo Pianelli",
+   "Urbano Cairo",
+   "Enrico Marone"
+  ],
+  "answer": "Ferruccio Novo",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_22ae6d",
+  "q": "In which year was Sporting CP founded?",
+  "o": [
+   "1898",
+   "1902",
+   "1906",
+   "1911"
+  ],
+  "answer": "1906",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1103cc",
+  "q": "In which city is Sporting CP based?",
+  "o": [
+   "Porto",
+   "Braga",
+   "Lisbon",
+   "Coimbra"
+  ],
+  "answer": "Lisbon",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c5e82f",
+  "q": "Sporting CP are traditionally nicknamed after which animal, taken from their crest?",
+  "o": [
+   "The Dragons",
+   "The Lions",
+   "The Eagles",
+   "The Wolves"
+  ],
+  "answer": "The Lions",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dc5fd1",
+  "q": "What are Sporting CP's traditional home shirt colours?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "Green and white",
+   "Green and black"
+  ],
+  "answer": "Green and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c1a8f5",
+  "q": "What is the name of Sporting CP's stadium, opened in 2003?",
+  "o": [
+   "Estádio da Luz",
+   "Estádio José Alvalade",
+   "Estádio do Dragão",
+   "Estádio do Bessa"
+  ],
+  "answer": "Estádio José Alvalade",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e330e2",
+  "q": "Sporting's stadium, opened in 2003, was built largely to host matches at which tournament?",
+  "o": [
+   "1998 World Cup",
+   "Euro 2004",
+   "2004 Olympics",
+   "2006 World Cup"
+  ],
+  "answer": "Euro 2004",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a951a9",
+  "q": "Along with Benfica and Porto, Sporting CP form which grouping in Portuguese football?",
+  "o": [
+   "The Old Firm",
+   "The Big Three",
+   "The Grand Slam",
+   "The Iron Trio"
+  ],
+  "answer": "The Big Three",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_de09b7",
+  "q": "The Lisbon derby (Derby de Lisboa) pits Sporting CP against which rival?",
+  "o": [
+   "Porto",
+   "Benfica",
+   "Braga",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Benfica",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c2c54e",
+  "q": "In 2018, a group of ultras stormed and attacked Sporting's players at which training complex?",
+  "o": [
+   "Seixal",
+   "Olival",
+   "Alcochete",
+   "Luz"
+  ],
+  "answer": "Alcochete",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9dd62d",
+  "q": "Sporting CP's previous stadium, replaced by the current one in 2003, first opened in which decade?",
+  "o": [
+   "1930s",
+   "1950s",
+   "1960s",
+   "1970s"
+  ],
+  "answer": "1950s",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7ff7f4",
+  "q": "What are Sporting CP's supporters commonly called?",
+  "o": [
+   "Culés",
+   "Sportinguistas",
+   "Merengues",
+   "Bhoys"
+  ],
+  "answer": "Sportinguistas",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_60bfb4",
+  "q": "Which European trophy did Sporting CP win in 1964?",
+  "o": [
+   "European Cup",
+   "Cup Winners' Cup",
+   "UEFA Cup",
+   "Inter-Cities Fairs Cup"
+  ],
+  "answer": "Cup Winners' Cup",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2fa4cf",
+  "q": "Sporting beat which Hungarian club in the 1964 European final, after a replay?",
+  "o": [
+   "Ferencváros",
+   "MTK Budapest",
+   "Honvéd",
+   "Újpest"
+  ],
+  "answer": "MTK Budapest",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ca3380",
+  "q": "The winning goal in Sporting's 1964 European final replay came from what set piece by João Morais?",
+  "o": [
+   "A penalty",
+   "A free kick",
+   "A direct corner",
+   "A bicycle kick"
+  ],
+  "answer": "A direct corner",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7b9266",
+  "q": "In their 1963-64 European campaign, Sporting recorded a 16-1 win over which club?",
+  "o": [
+   "Atalanta",
+   "Anderlecht",
+   "APOEL",
+   "Panathinaikos"
+  ],
+  "answer": "APOEL",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28d9d0",
+  "q": "Sporting reached the 2005 UEFA Cup final at their own stadium; who beat them 3-1?",
+  "o": [
+   "Zenit",
+   "CSKA Moscow",
+   "Shakhtar Donetsk",
+   "Sevilla"
+  ],
+  "answer": "CSKA Moscow",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a133c",
+  "q": "In their 1963-64 European run, Sporting knocked out which English club, winning the home leg 5-0?",
+  "o": [
+   "Tottenham",
+   "Leeds United",
+   "Manchester United",
+   "Everton"
+  ],
+  "answer": "Manchester United",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f4985a",
+  "q": "Sporting lost the first leg of their 2021-22 Champions League last-16 tie 5-0 at home to which club?",
+  "o": [
+   "Chelsea",
+   "Manchester City",
+   "Liverpool",
+   "Arsenal"
+  ],
+  "answer": "Manchester City",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c23240",
+  "q": "Who is Sporting CP's all-time leading goalscorer?",
+  "o": [
+   "Eusébio",
+   "Fernando Peyroteo",
+   "Mário Jardel",
+   "Liédson"
+  ],
+  "answer": "Fernando Peyroteo",
+  "cat": "Legends",
+  "diff": "medium"
+ }
+]

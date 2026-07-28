@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_42a43a",
+  "q": "What nickname was given to Sporting's devastating forward line of the 1940s?",
+  "o": [
+   "The Golden Trio",
+   "The Five Violins (Cinco Violinos)",
+   "The Green Machine",
+   "The Lisbon Lions"
+  ],
+  "answer": "The Five Violins (Cinco Violinos)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66a7a3",
+  "q": "Which shirt number did Cristiano Ronaldo wear at Sporting CP?",
+  "o": [
+   "7",
+   "9",
+   "17",
+   "28"
+  ],
+  "answer": "28",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6ee95a",
+  "q": "Which winger came through Sporting's academy before joining Barcelona in 2003?",
+  "o": [
+   "Simão",
+   "Nani",
+   "Ricardo Quaresma",
+   "Luís Figo"
+  ],
+  "answer": "Ricardo Quaresma",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_98b0c2",
+  "q": "Which goalkeeper rose through Sporting's academy and later won Euro 2016 with Portugal?",
+  "o": [
+   "Ricardo",
+   "Rui Patrício",
+   "Beto",
+   "Eduardo"
+  ],
+  "answer": "Rui Patrício",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d95ed5",
+  "q": "Which Portuguese forward began his professional career at Sporting in 1983 before winning the European Cup with Porto?",
+  "o": [
+   "Rui Costa",
+   "Paulo Futre",
+   "Fernando Chalana",
+   "Luís Figo"
+  ],
+  "answer": "Paulo Futre",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f8058a",
+  "q": "Manchester United signed Cristiano Ronaldo from Sporting in 2003 for a fee of roughly how much?",
+  "o": [
+   "£6m",
+   "£12.24m",
+   "£20m",
+   "£30m"
+  ],
+  "answer": "£12.24m",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bbb47c",
+  "q": "Which club did Luís Figo join from Sporting in 1995?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Juventus",
+   "Inter Milan"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_db95d5",
+  "q": "Nani left Sporting in 2007 to join which club?",
+  "o": [
+   "Real Madrid",
+   "Manchester United",
+   "Chelsea",
+   "Valencia"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2fcf0d",
+  "q": "Which midfielder did Sporting sell to rivals Porto in 2010?",
+  "o": [
+   "Bruno Fernandes",
+   "João Moutinho",
+   "William Carvalho",
+   "Adrien Silva"
+  ],
+  "answer": "João Moutinho",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8a1dd8",
+  "q": "Bruno Fernandes moved from Sporting to which club in January 2020?",
+  "o": [
+   "Manchester City",
+   "Manchester United",
+   "Tottenham",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_377820",
+  "q": "Striker Islam Slimani left Sporting in 2016 to become the record signing of which English club?",
+  "o": [
+   "Everton",
+   "Leicester City",
+   "Newcastle United",
+   "Southampton"
+  ],
+  "answer": "Leicester City",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_975eee",
+  "q": "Sweden striker Viktor Gyökeres joined Sporting in 2023 from which English club?",
+  "o": [
+   "Brighton",
+   "Coventry City",
+   "Norwich City",
+   "Middlesbrough"
+  ],
+  "answer": "Coventry City",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cc76ca",
+  "q": "William Carvalho left Sporting in 2018 to join which Spanish club?",
+  "o": [
+   "Sevilla",
+   "Real Betis",
+   "Valencia",
+   "Villarreal"
+  ],
+  "answer": "Real Betis",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d28d2e",
+  "q": "Which manager led Sporting to the 2020-21 league title, their first in 19 years, before later joining Manchester United?",
+  "o": [
+   "Jorge Jesus",
+   "Rúben Amorim",
+   "José Peseiro",
+   "Leonardo Jardim"
+  ],
+  "answer": "Rúben Amorim",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_be89dc",
+  "q": "English manager Malcolm Allison ('Big Mal') won a league-and-cup double with Sporting in which season?",
+  "o": [
+   "1976-77",
+   "1981-82",
+   "1986-87",
+   "1990-91"
+  ],
+  "answer": "1981-82",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_10c4a4",
+  "q": "Which coach led Sporting to a league-and-cup double in 2001-02, with a young Cristiano Ronaldo breaking into the squad?",
+  "o": [
+   "José Mourinho",
+   "László Bölöni",
+   "Carlos Queiroz",
+   "Fernando Santos"
+  ],
+  "answer": "László Bölöni",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8fbafc",
+  "q": "Under which Hungarian manager did Sporting win their first-ever league title, in 1941?",
+  "o": [
+   "Béla Guttmann",
+   "József Szabó",
+   "Jenő Kalmár",
+   "Malcolm Allison"
+  ],
+  "answer": "József Szabó",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5a82b9",
+  "q": "Jorge Jesus, who managed Sporting from 2015 to 2018, is most associated with which fierce rival he coached before and after?",
+  "o": [
+   "Porto",
+   "Benfica",
+   "Braga",
+   "Boavista"
+  ],
+  "answer": "Benfica",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_05d936",
+  "q": "Which striker won the European Golden Boot while at Sporting in 2001-02, scoring 42 league goals?",
+  "o": [
+   "Liédson",
+   "Mário Jardel",
+   "Bas Dost",
+   "Islam Slimani"
+  ],
+  "answer": "Mário Jardel",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f15ee",
+  "q": "In which period did Sporting CP win seven league titles in eight seasons during a spell of dominance?",
+  "o": [
+   "1927-1934",
+   "1947-1954",
+   "1962-1969",
+   "1978-1985"
+  ],
+  "answer": "1947-1954",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4252e4",
+  "q": "Which trophy did Sporting win in 2015, beating Braga on penalties in the final?",
+  "o": [
+   "Primeira Liga",
+   "Taça de Portugal",
+   "Champions League",
+   "UEFA Cup"
+  ],
+  "answer": "Taça de Portugal",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_56bd55",
+  "q": "In 2020, Sporting renamed their youth academy in honour of which former player?",
+  "o": [
+   "Luís Figo",
+   "Cristiano Ronaldo",
+   "Paulo Futre",
+   "Fernando Peyroteo"
+  ],
+  "answer": "Cristiano Ronaldo",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8a3237",
+  "q": "Who finished as top scorer in Sporting's 2020-21 title-winning league season?",
+  "o": [
+   "Bruno Fernandes",
+   "Pedro Gonçalves",
+   "Paulinho",
+   "Islam Slimani"
+  ],
+  "answer": "Pedro Gonçalves",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2cc801",
+  "q": "Which Dutch striker scored 34 Primeira Liga goals for Sporting in the 2016-17 season?",
+  "o": [
+   "Klaas-Jan Huntelaar",
+   "Bas Dost",
+   "Memphis Depay",
+   "Ruud van Nistelrooy"
+  ],
+  "answer": "Bas Dost",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_987562",
+  "q": "Cristiano Ronaldo, who began his career at Sporting, made his World Cup debut at which tournament?",
+  "o": [
+   "2002",
+   "2006",
+   "2010",
+   "2014"
+  ],
+  "answer": "2006",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_017ebf",
+  "q": "Liédson, who scored over 100 league goals for Sporting, represented which nation at the 2010 World Cup?",
+  "o": [
+   "Brazil",
+   "Portugal",
+   "Angola",
+   "Cape Verde"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2f2f38",
+  "q": "Ricardo Quaresma, scored a famous 'trivela' goal for Portugal at which World Cup?",
+  "o": [
+   "2010",
+   "2014",
+   "2018",
+   "2022"
+  ],
+  "answer": "2018",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e5e217",
+  "q": "Nani, who left Sporting for Manchester United in 2007, played for which national team at the 2014 World Cup?",
+  "o": [
+   "Portugal",
+   "Cape Verde",
+   "Brazil",
+   "France"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_644a32",
+  "q": "Employees of which Saint-Étienne-based company founded the club in 1919?",
+  "o": [
+   "Michelin",
+   "The Casino grocery group",
+   "Peugeot",
+   "Manufrance"
+  ],
+  "answer": "The Casino grocery group",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e76a08",
+  "q": "In which year did the club turn professional and adopt the name Association Sportive de Saint-Étienne?",
+  "o": [
+   "1927",
+   "1919",
+   "1933",
+   "1946"
+  ],
+  "answer": "1933",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ffe8a5",
+  "q": "What nickname did the Stade Geoffroy-Guichard earn for its ferocious atmosphere?",
+  "o": [
+   "Le Vélodrome",
+   "La Fosse aux Lions",
+   "Le Fortin",
+   "Le Chaudron (the Cauldron)"
+  ],
+  "answer": "Le Chaudron (the Cauldron)",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_01b646",
+  "q": "In which year did the Stade Geoffroy-Guichard first open?",
+  "o": [
+   "1931",
+   "1923",
+   "1937",
+   "1946"
+  ],
+  "answer": "1931",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d39bd9",
+  "q": "Geoffroy-Guichard is famously built 'à l'anglaise'. What does that mean?",
+  "o": [
+   "The pitch sits below street level",
+   "Four separate stands with no filled-in corners, like classic English grounds",
+   "A running track circles the pitch",
+   "Every stand is standing-room only"
+  ],
+  "answer": "Four separate stands with no filled-in corners, like classic English grounds",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2617ff",
+  "q": "Which club beat Saint-Étienne in the 1976 European Cup final?",
+  "o": [
+   "Liverpool",
+   "Ajax",
+   "Bayern Munich",
+   "Borussia Mönchengladbach"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_96cf3f",
+  "q": "The 1976 European Cup final was staged at which stadium?",
+  "o": [
+   "Wembley",
+   "Hampden Park",
+   "Heysel",
+   "Parc des Princes"
+  ],
+  "answer": "Hampden Park",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0a8514",
+  "q": "In Saint-Étienne folklore, what were the cursed 'poteaux carrés' of the 1976 final?",
+  "o": [
+   "The square-section goalposts and crossbar that twice denied Les Verts",
+   "The concrete pillars blocking views in the away end",
+   "A nickname for the opposition's back four",
+   "The steel gates the team bus got stuck behind"
+  ],
+  "answer": "The square-section goalposts and crossbar that twice denied Les Verts",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9798d2",
+  "q": "In the 1975-76 European Cup quarter-final, Saint-Étienne lost the first leg 2-0 away, then won 3-0 after extra time at Geoffroy-Guichard to knock out which side?",
+  "o": [
+   "Spartak Moscow",
+   "Dynamo Dresden",
+   "Dynamo Kyiv",
+   "Górnik Zabrze"
+  ],
+  "answer": "Dynamo Kyiv",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_67aca0",
+  "q": "Which Liverpool substitute scored the late goal that eliminated Saint-Étienne in their 1977 European Cup quarter-final at Anfield?",
+  "o": [
+   "Terry McDermott",
+   "David Johnson",
+   "Jimmy Case",
+   "David Fairclough"
+  ],
+  "answer": "David Fairclough",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2f3ea",
+  "q": "In the 1974-75 European Cup, Saint-Étienne lost a first leg 4-1 away yet advanced with a 5-1 extra-time win at home. Who was the opponent?",
+  "o": [
+   "Hajduk Split",
+   "Red Star Belgrade",
+   "Partizan Belgrade",
+   "Dinamo Zagreb"
+  ],
+  "answer": "Hajduk Split",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_16ca21",
+  "q": "Saint-Étienne reached the 1976 European Cup final by edging which Dutch club 1-0 on aggregate in the semi-final?",
+  "o": [
+   "Ajax",
+   "Feyenoord",
+   "PSV Eindhoven",
+   "FC Twente"
+  ],
+  "answer": "PSV Eindhoven",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_abe15e",
+  "q": "The day after losing the 1976 European Cup final, the squad was celebrated by roughly 100,000 people. Where?",
+  "o": [
+   "On Place Bellecour in Lyon",
+   "Down the Champs-Élysées in Paris",
+   "Along the Canebière in Marseille",
+   "On the Promenade des Anglais in Nice"
+  ],
+  "answer": "Down the Champs-Élysées in Paris",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b21cb4",
+  "q": "Which 1976 record became the supporters' anthem during the European run, selling millions of copies?",
+  "o": [
+   "'Allez les Verts'",
+   "'Vert de Gloire'",
+   "'Verts toujours'",
+   "'Le Chant de Sainté'"
+  ],
+  "answer": "'Allez les Verts'",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7ff794",
+  "q": "How many French league titles did Saint-Étienne win during their golden era, from the late 1950s to the early 1980s?",
+  "o": [
+   "6",
+   "8",
+   "12",
+   "10"
+  ],
+  "answer": "10",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4f39a0",
+  "q": "How many times did Saint-Étienne lift the Coupe de France between 1962 and 1977?",
+  "o": [
+   "6",
+   "4",
+   "5",
+   "7"
+  ],
+  "answer": "6",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_42f420",
+  "q": "Saint-Étienne's last league title of the golden era came in which year?",
+  "o": [
+   "1979",
+   "1983",
+   "1982",
+   "1981"
+  ],
+  "answer": "1981",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_382546",
+  "q": "Which Saint-Étienne forward scored an astonishing 68-metre goal away at Metz in October 2021?",
+  "o": [
+   "Denis Bouanga",
+   "Wahbi Khazri",
+   "Romain Hamouma",
+   "Ryad Boudebouz"
+  ],
+  "answer": "Wahbi Khazri",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8e7c48",
+  "q": "In which year did Saint-Étienne complete the first league-and-Coupe de France double in club history?",
+  "o": [
+   "1962",
+   "1974",
+   "1968",
+   "1970"
+  ],
+  "answer": "1968",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f8fa4f",
+  "q": "By what nickname was 1970s Saint-Étienne forward Dominique Rocheteau known?",
+  "o": [
+   "Le Magicien",
+   "La Flèche Verte",
+   "Le Prince du Forez",
+   "L'Ange Vert (the Green Angel)"
+  ],
+  "answer": "L'Ange Vert (the Green Angel)",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cf65df",
+  "q": "Which future three-time Ballon d'Or winner joined Saint-Étienne from Nancy in 1979?",
+  "o": [
+   "Michel Platini",
+   "Alain Giresse",
+   "Jean Tigana",
+   "Didier Six"
+  ],
+  "answer": "Michel Platini",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8e3718",
+  "q": "Who won the first African Footballer of the Year award in 1970 while starring for Saint-Étienne?",
+  "o": [
+   "Laurent Pokou",
+   "Salif Keïta",
+   "Rachid Mekhloufi",
+   "Roger Milla"
+  ],
+  "answer": "Salif Keïta",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dc2b3f",
+  "q": "Which striker of the golden era finished as Saint-Étienne's all-time record goalscorer?",
+  "o": [
+   "Georges Bereta",
+   "Patrick Revelli",
+   "Hervé Revelli",
+   "Rachid Mekhloufi"
+  ],
+  "answer": "Hervé Revelli",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_80c07a",
+  "q": "Who captained Saint-Étienne in the 1976 European Cup final?",
+  "o": [
+   "Dominique Bathenay",
+   "Oswaldo Piazza",
+   "Gérard Janvion",
+   "Jean-Michel Larqué"
+  ],
+  "answer": "Jean-Michel Larqué",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3547b1",
+  "q": "Which Yugoslav goalkeeper was Saint-Étienne's number one in the 1976 European Cup final?",
+  "o": [
+   "Ivan Ćurković",
+   "Enver Marić",
+   "Ognjen Petrović",
+   "Ilija Pantelić"
+  ],
+  "answer": "Ivan Ćurković",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_81af83",
+  "q": "Which defender spent his entire 17-season professional career at Saint-Étienne, captaining the club for over a decade before retiring in 2020?",
+  "o": [
+   "Jérémy Clément",
+   "Loïc Perrin",
+   "François Clerc",
+   "Fabien Lemoine"
+  ],
+  "answer": "Loïc Perrin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_92a627",
+  "q": "Who managed Saint-Étienne to the 1976 European Cup final, having taken charge in 1972 aged just 33?",
+  "o": [
+   "Albert Batteux",
+   "Jean Snella",
+   "Robert Herbin",
+   "Michel Hidalgo"
+  ],
+  "answer": "Robert Herbin",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3875b5",
+  "q": "Which coach delivered Saint-Étienne's first French championship, in 1956-57?",
+  "o": [
+   "Jean Snella",
+   "Albert Batteux",
+   "Robert Herbin",
+   "José Arribas"
+  ],
+  "answer": "Jean Snella",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4569cc",
+  "q": "Which coach, who had earlier masterminded Stade de Reims' golden generation, took charge of Saint-Étienne in 1967?",
+  "o": [
+   "Robert Herbin",
+   "Jean Snella",
+   "Kader Firoud",
+   "Albert Batteux"
+  ],
+  "answer": "Albert Batteux",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_84aebe",
+  "q": "Which manager led Saint-Étienne to the 2013 Coupe de la Ligue, the club's first major trophy since the golden era?",
+  "o": [
+   "Claude Puel",
+   "Christophe Galtier",
+   "Alain Perrin",
+   "Jean-Louis Gasset"
+  ],
+  "answer": "Christophe Galtier",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5fe0d2",
+  "q": "Who scored the only goal as Saint-Étienne beat Rennes in the 2013 Coupe de la Ligue final?",
+  "o": [
+   "Romain Hamouma",
+   "Max Gradel",
+   "Pierre-Emerick Aubameyang",
+   "Brandão"
+  ],
+  "answer": "Brandão",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0810c8",
+  "q": "Which teenage centre-back did Saint-Étienne sell to Arsenal in 2019 for around £27 million?",
+  "o": [
+   "William Saliba",
+   "Wesley Fofana",
+   "Kurt Zouma",
+   "Timothée Kolodziejczak"
+  ],
+  "answer": "William Saliba",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5020fc",
+  "q": "Which centre-back joined Chelsea from Saint-Étienne in January 2014, staying on loan at ASSE for the rest of that season?",
+  "o": [
+   "Faouzi Ghoulam",
+   "Josuha Guilavogui",
+   "Kurt Zouma",
+   "Moustapha Bayal Sall"
+  ],
+  "answer": "Kurt Zouma",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_78a681",
+  "q": "Which striker left Saint-Étienne for Borussia Dortmund in July 2013?",
+  "o": [
+   "Max Gradel",
+   "Brandão",
+   "Bafétimbi Gomis",
+   "Pierre-Emerick Aubameyang"
+  ],
+  "answer": "Pierre-Emerick Aubameyang",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7761bd",
+  "q": "In 1980, Saint-Étienne sold which star forward to Paris Saint-Germain?",
+  "o": [
+   "Dominique Rocheteau",
+   "Patrick Revelli",
+   "Christian Sarramagna",
+   "Jacques Santini"
+  ],
+  "answer": "Dominique Rocheteau",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28424b",
+  "q": "Which Dutchman, a World Cup finalist in 1974 and 1978, signed for Saint-Étienne in 1979?",
+  "o": [
+   "Arie Haan",
+   "Johnny Rep",
+   "Rob Rensenbrink",
+   "Wim van Hanegem"
+  ],
+  "answer": "Johnny Rep",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d68325",
+  "q": "The scandal that erupted in April 1982 and ended Roger Rocher's 21-year presidency involved what?",
+  "o": [
+   "A plot to fix derby matches",
+   "A hidden 'caisse noire' fund making undeclared payments to players",
+   "Forged player passports",
+   "An illegal betting ring run from the club shop"
+  ],
+  "answer": "A hidden 'caisse noire' fund making undeclared payments to players",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c6f98b",
+  "q": "Saint-Étienne's 18-year stay in the top flight ended in 2022 after a play-off shoot-out defeat at Geoffroy-Guichard against which club?",
+  "o": [
+   "Toulouse",
+   "Sochaux",
+   "Lorient",
+   "Auxerre"
+  ],
+  "answer": "Auxerre",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_44342e",
+  "q": "Which Canadian businessman's Kilmer Sports Ventures bought Saint-Étienne in June 2024?",
+  "o": [
+   "Frank McCourt",
+   "John Textor",
+   "Larry Tanenbaum",
+   "Todd Boehly"
+  ],
+  "answer": "Larry Tanenbaum",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_14aebe",
+  "q": "Which club became Saint-Étienne's fierce derby rivals after the sides first met in 1951?",
+  "o": [
+   "Olympique de Marseille",
+   "Olympique Lyonnais",
+   "OGC Nice",
+   "Grenoble"
+  ],
+  "answer": "Olympique Lyonnais",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b791d4",
+  "q": "Which ultras group, founded in 1991, made Geoffroy-Guichard's Kop Nord its home?",
+  "o": [
+   "Green Angels",
+   "Ultramarines",
+   "Magic Fans",
+   "Bad Gones"
+  ],
+  "answer": "Magic Fans",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e91cdc",
+  "q": "When Saint-Étienne opened the Musée des Verts in December 2013, it became France's first what?",
+  "o": [
+   "National football museum",
+   "Museum dedicated to a single football club",
+   "Stadium with a listed-heritage stand",
+   "Football hall of fame"
+  ],
+  "answer": "Museum dedicated to a single football club",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0ec715",
+  "q": "Geoffroy-Guichard hosted a famous 1998 World Cup round-of-16 tie in which David Beckham was sent off. Who were the two teams?",
+  "o": [
+   "England and Germany",
+   "Argentina and Netherlands",
+   "France and Paraguay",
+   "England and Argentina"
+  ],
+  "answer": "England and Argentina",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_181c65",
+  "q": "Which Saint-Étienne defender was knocked unconscious by Harald Schumacher's challenge in France's 1982 World Cup semi-final?",
+  "o": [
+   "Patrick Battiston",
+   "Christian Lopez",
+   "Gérard Janvion",
+   "Maxime Bossis"
+  ],
+  "answer": "Patrick Battiston",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_34b0fb",
+  "q": "Before coaching France to 1998 World Cup glory, which manager had won five league titles as a Saint-Étienne player?",
+  "o": [
+   "Roger Lemerre",
+   "Aimé Jacquet",
+   "Michel Hidalgo",
+   "Guy Roux"
+  ],
+  "answer": "Aimé Jacquet",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d613c",
+  "q": "Eusébio won the Golden Boot at which World Cup, scoring nine goals including four in one quarter-final comeback?",
+  "o": [
+   "1958",
+   "1962",
+   "1966",
+   "1970"
+  ],
+  "answer": "1966",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40c829",
+  "q": "Eusébio was born in Lourenço Marques and joined Benfica in 1960 from a club in which then-Portuguese territory?",
+  "o": [
+   "Angola",
+   "Cape Verde",
+   "Mozambique",
+   "Guinea-Bissau"
+  ],
+  "answer": "Mozambique",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7ddda5",
+  "q": "Which club signed goalkeeper Ederson from Benfica in 2017?",
+  "o": [
+   "Chelsea",
+   "Manchester City",
+   "Liverpool",
+   "Arsenal"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_844bdf",
+  "q": "Renato Sanches left Benfica in 2016, aged 18, to join which club?",
+  "o": [
+   "Juventus",
+   "Borussia Dortmund",
+   "Bayern Munich",
+   "Milan"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_69900e",
+  "q": "Gonçalo Ramos left Benfica in August 2023 for which club?",
+  "o": [
+   "Milan",
+   "Chelsea",
+   "Paris Saint-Germain",
+   "Atlético Madrid"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_df14e2",
+  "q": "Benfica's stadium has long carried the nickname 'A Catedral'. What does it mean?",
+  "o": [
+   "The Cathedral",
+   "The Lighthouse",
+   "The Nest",
+   "The Furnace"
+  ],
+  "answer": "The Cathedral",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_235ee9",
+  "q": "Benfica's nickname 'O Glorioso' translates into English as what?",
+  "o": [
+   "The Unbeaten",
+   "The Glorious One",
+   "The Old Lady",
+   "The Lisbon Lions"
+  ],
+  "answer": "The Glorious One",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_27645a",
+  "q": "In which year did Eusébio win the Ballon d'Or as European Footballer of the Year?",
+  "o": [
+   "1962",
+   "1965",
+   "1968",
+   "1972"
+  ],
+  "answer": "1965",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28dd1c",
+  "q": "Eusébio was the first player to win which award, claiming its inaugural edition in 1968?",
+  "o": [
+   "The FIFA World Player of the Year",
+   "The Bravo Award",
+   "The UEFA Club Footballer of the Year",
+   "The European Golden Boot"
+  ],
+  "answer": "The European Golden Boot",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_effb59",
+  "q": "Benfica retained the European Cup in 1962, beating Real Madrid 5-3 despite which opponent scoring a hat-trick?",
+  "o": [
+   "Alfredo Di Stéfano",
+   "Ferenc Puskás",
+   "Francisco Gento",
+   "Amancio Amaro"
+  ],
+  "answer": "Ferenc Puskás",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63f817",
+  "q": "As European champions, Benfica lost the 1962 Intercontinental Cup to which Brazilian club?",
+  "o": [
+   "Santos",
+   "Flamengo",
+   "Palmeiras",
+   "Botafogo"
+  ],
+  "answer": "Santos",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_01f39b",
+  "q": "Which coach led Benfica to the club's first-ever fourth consecutive league title, in 2016-17?",
+  "o": [
+   "Jesualdo Ferreira",
+   "Bruno Lage",
+   "Rui Vitória",
+   "Toni"
+  ],
+  "answer": "Rui Vitória",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4fc452",
+  "q": "In 2013-14 Benfica became the first Portuguese club to win the domestic treble of league, Taça de Portugal and Taça da Liga. Who was the coach?",
+  "o": [
+   "Jorge Jesus",
+   "Rui Vitória",
+   "Fernando Santos",
+   "Quique Sánchez Flores"
+  ],
+  "answer": "Jorge Jesus",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d037f0",
+  "q": "José Mourinho took his first head coach job at Benfica in September 2000, replacing which German?",
+  "o": [
+   "Otto Rehhagel",
+   "Christoph Daum",
+   "Bernd Schuster",
+   "Jupp Heynckes"
+  ],
+  "answer": "Jupp Heynckes",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cb5101",
+  "q": "Bernardo Silva left Benfica in 2014 for which club, initially on a season-long loan?",
+  "o": [
+   "Monaco",
+   "Valencia",
+   "Lyon",
+   "Sevilla"
+  ],
+  "answer": "Monaco",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2dce5a",
+  "q": "Nuno Gomes left Benfica in 2000 for a €17m move to which Italian club, after starring at Euro 2000?",
+  "o": [
+   "Lazio",
+   "Fiorentina",
+   "Parma",
+   "Roma"
+  ],
+  "answer": "Fiorentina",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_81d7da",
+  "q": "Benfica's training centre and youth academy, opened in 2006, sits in which town across the Tagus from Lisbon?",
+  "o": [
+   "Sintra",
+   "Cascais",
+   "Setúbal",
+   "Seixal"
+  ],
+  "answer": "Seixal",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7c9eb5",
+  "q": "In the 2005-06 Champions League, Benfica knocked out which reigning European champions in the round of 16?",
+  "o": [
+   "Real Madrid",
+   "AC Milan",
+   "Liverpool",
+   "Porto"
+  ],
+  "answer": "Liverpool",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c8f126",
+  "q": "Which Brazilian centre-back joined Benfica from Cruzeiro in 2003 and stayed until 2018, playing over 500 official games?",
+  "o": [
+   "Jardel",
+   "Luisão",
+   "Sidnei",
+   "Anderson Talisca"
+  ],
+  "answer": "Luisão",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8d5ec9",
+  "q": "Benfica lost the 1988 European Cup final on penalties after a goalless draw in Stuttgart. Who beat them?",
+  "o": [
+   "Steaua Bucharest",
+   "Red Star Belgrade",
+   "PSV Eindhoven",
+   "Ajax"
+  ],
+  "answer": "PSV Eindhoven",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb9e04",
+  "q": "Ahead of the 1990 European Cup final, Eusébio prayed at Béla Guttmann's grave to plead for the curse to be lifted. In which city is that grave?",
+  "o": [
+   "Budapest",
+   "Vienna",
+   "Lisbon",
+   "Zurich"
+  ],
+  "answer": "Vienna",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1a1a9e",
+  "q": "Benfica went through the entire 1972-73 league season unbeaten under which English manager?",
+  "o": [
+   "Bobby Robson",
+   "Ronnie Allen",
+   "Jimmy Hagan",
+   "Malcolm Allison"
+  ],
+  "answer": "Jimmy Hagan",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c7cd06",
+  "q": "Goalkeeper Jan Oblak left Benfica in 2014 to join which club?",
+  "o": [
+   "Sevilla",
+   "Real Madrid",
+   "Valencia",
+   "Atlético Madrid"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a0618c",
+  "q": "When David Luiz joined Chelsea from Benfica in January 2011, which midfielder went to Benfica as part of the deal?",
+  "o": [
+   "Nemanja Matić",
+   "Ljubomir Fejsa",
+   "Axel Witsel",
+   "Ramires"
+  ],
+  "answer": "Nemanja Matić",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f09cc9",
+  "q": "Benfica's founding in 1904 was led by which man, whose name the club's museum now carries?",
+  "o": [
+   "José Águas",
+   "Cosme Damião",
+   "Otto Glória",
+   "Vítor Baptista"
+  ],
+  "answer": "Cosme Damião",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f31f4d",
+  "q": "Galatasaray SK was founded in 1905 by students of which Istanbul institution?",
+  "o": [
+   "Robert College",
+   "Galatasaray High School",
+   "Darüşşafaka Lisesi",
+   "Istanbul Technical University"
+  ],
+  "answer": "Galatasaray High School",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bd6d70",
+  "q": "Fatih Terim's famous Turkish nickname 'İmparator' translates to what in English?",
+  "o": [
+   "The Professor",
+   "The Emperor",
+   "The General",
+   "The Lion"
+  ],
+  "answer": "The Emperor",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dc1c98",
+  "q": "UltrAslan, the Galatasaray supporters' group founded in 2001, blends the word 'Ultras' with the Turkish word 'aslan', meaning what?",
+  "o": [
+   "Eagle",
+   "Lion",
+   "Fire",
+   "Storm"
+  ],
+  "answer": "Lion",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1d7f7d",
+  "q": "How did the 2000 UEFA Cup final between Galatasaray and Arsenal stand after 120 minutes, before the shootout?",
+  "o": [
+   "0-0",
+   "1-1",
+   "2-2",
+   "1-0 Galatasaray"
+  ],
+  "answer": "0-0",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a5dbad",
+  "q": "In December 2013, Galatasaray's home Champions League match against Juventus was abandoned after about half an hour for what reason?",
+  "o": [
+   "A floodlight failure",
+   "Heavy snowfall",
+   "Crowd trouble",
+   "A waterlogged pitch"
+  ],
+  "answer": "Heavy snowfall",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9f4452",
+  "q": "Galatasaray won the inaugural Turkish Cup in 1962-63, beating which club in the two-legged final?",
+  "o": [
+   "Beşiktaş",
+   "Fenerbahçe",
+   "Trabzonspor",
+   "Göztepe"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cf6c74",
+  "q": "Which Colombian striker joined Galatasaray on a free transfer from Monaco in September 2019?",
+  "o": [
+   "Carlos Bacca",
+   "Duván Zapata",
+   "Radamel Falcao",
+   "Jackson Martínez"
+  ],
+  "answer": "Radamel Falcao",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b05416",
+  "q": "Which German World Cup winner scored the only goal as Galatasaray beat Fenerbahçe in the 2016 Turkish Cup final?",
+  "o": [
+   "Miroslav Klose",
+   "Lukas Podolski",
+   "Bastian Schweinsteiger",
+   "Mario Gómez"
+  ],
+  "answer": "Lukas Podolski",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aa60d6",
+  "q": "In the 2012-13 Champions League quarter-finals, Galatasaray won 3-2 at home against which club but still went out on aggregate?",
+  "o": [
+   "Bayern Munich",
+   "Real Madrid",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Real Madrid",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_702fb8",
+  "q": "Galatasaray beat which English club in the semi-finals of the 1999-2000 UEFA Cup?",
+  "o": [
+   "Leeds United",
+   "Aston Villa",
+   "Newcastle United",
+   "Liverpool"
+  ],
+  "answer": "Leeds United",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_334a72",
+  "q": "Which German club did Galatasaray knock out on their run to the 2000 UEFA Cup final?",
+  "o": [
+   "Bayer Leverkusen",
+   "Werder Bremen",
+   "Borussia Dortmund",
+   "VfB Stuttgart"
+  ],
+  "answer": "Borussia Dortmund",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9334b3",
+  "q": "Galatasaray signed Brazilian striker Mário Jardel in July 2000 from which club?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "Porto",
+   "Vasco da Gama"
+  ],
+  "answer": "Porto",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ad994f",
+  "q": "Which former West Germany manager, a European Championship winner in 1980, took charge of Galatasaray in 1984 and led them to the 1986-87 Turkish title?",
+  "o": [
+   "Helmut Schön",
+   "Jupp Derwall",
+   "Berti Vogts",
+   "Franz Beckenbauer"
+  ],
+  "answer": "Jupp Derwall",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5bfb69",
+  "q": "Which club eliminated Galatasaray in the semi-finals of the 1988-89 European Cup?",
+  "o": [
+   "Steaua București",
+   "Real Madrid",
+   "AC Milan",
+   "PSV Eindhoven"
+  ],
+  "answer": "Steaua București",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ba1efd",
+  "q": "In which season did Galatasaray win their first Turkish national league (Süper Lig) championship?",
+  "o": [
+   "1959",
+   "1961-62",
+   "1968-69",
+   "1974-75"
+  ],
+  "answer": "1961-62",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9b9168",
+  "q": "Galatasaray dropped into the 1999-2000 UEFA Cup after finishing third in a Champions League group alongside AC Milan, Chelsea and which German club?",
+  "o": [
+   "Bayern Munich",
+   "Hertha BSC",
+   "Kaiserslautern",
+   "Hamburger SV"
+  ],
+  "answer": "Hertha BSC",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7908d9",
+  "q": "Which manager led Galatasaray to the semi-finals of the 1988-89 European Cup?",
+  "o": [
+   "Mustafa Denizli",
+   "Fatih Terim",
+   "Jupp Derwall",
+   "Gordon Milne"
+  ],
+  "answer": "Mustafa Denizli",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_78b8cc",
+  "q": "Which Galatasaray captain played on with a dislocated shoulder in the 2000 UEFA Cup final and then lifted the trophy?",
+  "o": [
+   "Ergün Penbe",
+   "Bülent Korkmaz",
+   "Ümit Davala",
+   "Suat Kaya"
+  ],
+  "answer": "Bülent Korkmaz",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e97b81",
+  "q": "Before switching to yellow and red in 1908, Galatasaray originally played in which colours?",
+  "o": [
+   "Black and white",
+   "Red and white",
+   "Blue and yellow",
+   "Green and white"
+  ],
+  "answer": "Red and white",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_af9311",
+  "q": "Mohamed Salah signed for Liverpool in the summer of 2017. Which club did he join them from?",
+  "o": [
+   "Roma",
+   "Fiorentina",
+   "Chelsea",
+   "Basel"
+  ],
+  "answer": "Roma",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2118ad",
+  "q": "Salah's record-breaking debut Liverpool campaign saw him win the 2017-18 Premier League Golden Boot. How many league goals did he score, a record for a 38-game season?",
+  "o": [
+   "32",
+   "30",
+   "34",
+   "28"
+  ],
+  "answer": "32",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_50f761",
+  "q": "Before moving to Europe, Mohamed Salah began his senior career at which Egyptian club?",
+  "o": [
+   "Al Mokawloon (Arab Contractors)",
+   "Al Ahly",
+   "Zamalek",
+   "Ismaily"
+  ],
+  "answer": "Al Mokawloon (Arab Contractors)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_79e758",
+  "q": "Salah scored an early penalty in the 2019 Champions League final as Liverpool lifted the trophy. Which club did they beat in that all-English final in Madrid?",
+  "o": [
+   "Tottenham Hotspur",
+   "Arsenal",
+   "Chelsea",
+   "Manchester City"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ddcc7",
+  "q": "Salah has twice finished runner-up at the Africa Cup of Nations with Egypt. His side lost the 2021 final (played in 2022) on penalties to which nation?",
+  "o": [
+   "Senegal",
+   "Cameroon",
+   "Ivory Coast",
+   "Algeria"
+  ],
+  "answer": "Senegal",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f4fc84",
+  "q": "Salah won a third Premier League Golden Boot in 2021-22, finishing level on 23 goals with which fellow forward, who thereby became the first Asian player to win the award?",
+  "o": [
+   "Son Heung-min",
+   "Sadio Mane",
+   "Harry Kane",
+   "Cristiano Ronaldo"
+  ],
+  "answer": "Son Heung-min",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fd2192",
+  "q": "Thierry Henry is the all-time leading goalscorer for which club?",
+  "o": [
+   "Arsenal",
+   "Monaco",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Arsenal",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c49307",
+  "q": "At which club did Thierry Henry begin his senior career, given his debut by Arsène Wenger?",
+  "o": [
+   "Monaco",
+   "Marseille",
+   "Lyon",
+   "Paris Saint-Germain"
+  ],
+  "answer": "Monaco",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_51d26f",
+  "q": "Thierry Henry won his only Champions League title in 2009 with which club?",
+  "o": [
+   "Barcelona",
+   "Arsenal",
+   "Monaco",
+   "Juventus"
+  ],
+  "answer": "Barcelona",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3dccb5",
+  "q": "Henry's controversial handball in a November 2009 World Cup qualifying playoff helped France eliminate which nation?",
+  "o": [
+   "Republic of Ireland",
+   "Bosnia and Herzegovina",
+   "Ukraine",
+   "Russia"
+  ],
+  "answer": "Republic of Ireland",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_df1dc2",
+  "q": "When he retired from international football, Thierry Henry was France's all-time leading goalscorer with how many goals?",
+  "o": [
+   "51",
+   "44",
+   "48",
+   "56"
+  ],
+  "answer": "51",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_efc590",
+  "q": "How many Premier League goals did Thierry Henry score during Arsenal's unbeaten 2003-04 'Invincibles' season?",
+  "o": [
+   "30",
+   "24",
+   "27",
+   "34"
+  ],
+  "answer": "30",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dcc0ee",
+  "q": "Which 18-year-old England star announced himself with four goals at Euro 2004 before a broken metatarsal ended his tournament in the quarter-final?",
+  "o": [
+   "Wayne Rooney",
+   "Michael Owen",
+   "Steven Gerrard",
+   "Frank Lampard"
+  ],
+  "answer": "Wayne Rooney",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3eaf70",
+  "q": "Which club gave Wayne Rooney his first permanent managerial job, where he kept them in the Championship during 2020-21?",
+  "o": [
+   "Derby County",
+   "Birmingham City",
+   "Plymouth Argyle",
+   "DC United"
+  ],
+  "answer": "Derby County",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b8f18f",
+  "q": "Wayne Rooney retired from England duty in 2018 holding the record for most caps by an outfield player. How many did he win?",
+  "o": [
+   "120",
+   "115",
+   "106",
+   "98"
+  ],
+  "answer": "120",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0e40dd",
+  "q": "In which year did Wayne Rooney win the Champions League with Manchester United, beating Chelsea on penalties in Moscow?",
+  "o": [
+   "2008",
+   "2007",
+   "2009",
+   "2011"
+  ],
+  "answer": "2008",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b7481",
+  "q": "After leaving Everton for a second time in 2018, which MLS club did Wayne Rooney join as a Designated Player?",
+  "o": [
+   "DC United",
+   "LA Galaxy",
+   "New York City FC",
+   "Inter Miami"
+  ],
+  "answer": "DC United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d99798",
+  "q": "How many Premier League title winner's medals did Wayne Rooney collect during his Manchester United career?",
+  "o": [
+   "5",
+   "3",
+   "4",
+   "6"
+  ],
+  "answer": "5",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a80dd1",
+  "q": "In which campaign did Wayne Rooney win the PFA Players' Player of the Year award?",
+  "o": [
+   "2009-10",
+   "2007-08",
+   "2011-12",
+   "2005-06"
+  ],
+  "answer": "2009-10",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08015f",
+  "q": "Whose goal capitalised on Steven Gerrard's infamous slip at Anfield in April 2014, effectively ending Liverpool's Premier League title bid?",
+  "o": [
+   "Demba Ba",
+   "Willian",
+   "Fernando Torres",
+   "Samuel Eto'o"
+  ],
+  "answer": "Demba Ba",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_05325f",
+  "q": "After leaving Liverpool in 2015, which Major League Soccer club did Steven Gerrard join?",
+  "o": [
+   "New York City FC",
+   "LA Galaxy",
+   "Orlando City",
+   "Toronto FC"
+  ],
+  "answer": "LA Galaxy",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3051d7",
+  "q": "Steven Gerrard won his first trophy as a manager by leading which club to the 2020-21 Scottish Premiership title, ending Celtic's bid for ten titles in a row?",
+  "o": [
+   "Hibernian",
+   "Rangers",
+   "Aberdeen",
+   "Heart of Midlothian"
+  ],
+  "answer": "Rangers",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_442509",
+  "q": "In the 2006 'Gerrard Final', Steven Gerrard's long-range stoppage-time strike forced extra time before Liverpool won the FA Cup on penalties. Who were the opponents?",
+  "o": [
+   "Arsenal",
+   "West Ham United",
+   "Chelsea",
+   "Everton"
+  ],
+  "answer": "West Ham United",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eb2a52",
+  "q": "Steven Gerrard scored in the 2001 UEFA Cup final as Liverpool completed a cup treble, winning a nine-goal thriller. Which Spanish side did Liverpool beat 5-4 after extra time?",
+  "o": [
+   "Deportivo La Coruña",
+   "Alavés",
+   "Celta Vigo",
+   "Real Betis"
+  ],
+  "answer": "Alavés",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aa615d",
+  "q": "After which tournament did Steven Gerrard retire from international football, ending a 114-cap England career?",
+  "o": [
+   "2006 World Cup",
+   "Euro 2012",
+   "2014 World Cup",
+   "2010 World Cup"
+  ],
+  "answer": "2014 World Cup",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_32fbc8",
+  "q": "Which Brazilian club did Ronaldinho lead to Copa Libertadores glory in 2013?",
+  "o": [
+   "Grêmio",
+   "Flamengo",
+   "Atlético Mineiro",
+   "Fluminense"
+  ],
+  "answer": "Atlético Mineiro",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de97b5",
+  "q": "Which squad number did Ronaldinho famously wear at AC Milan?",
+  "o": [
+   "10",
+   "70",
+   "80",
+   "49"
+  ],
+  "answer": "80",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_230ace",
+  "q": "Ronaldinho announced himself on his Camp Nou home debut in September 2003 with a thunderous 30-yard strike off the crossbar against which club?",
+  "o": [
+   "Sevilla",
+   "Valencia",
+   "Espanyol",
+   "Villarreal"
+  ],
+  "answer": "Sevilla",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e5335f",
+  "q": "After leaving AC Milan early in 2011, Ronaldinho returned to Brazilian football with which club?",
+  "o": [
+   "Corinthians",
+   "Flamengo",
+   "São Paulo",
+   "Palmeiras"
+  ],
+  "answer": "Flamengo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d917a9",
+  "q": "Which dribbling trick, revived from 1970s Brazilian great Rivelino, became Ronaldinho's signature move?",
+  "o": [
+   "The rabona",
+   "The rainbow flick",
+   "The elastico (flip-flap)",
+   "The Cruyff turn"
+  ],
+  "answer": "The elastico (flip-flap)",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8fbde7",
+  "q": "Ronaldinho lifted the Champions League once in his career, in 2006. With which club?",
+  "o": [
+   "Paris Saint-Germain",
+   "AC Milan",
+   "Barcelona",
+   "Grêmio"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_47eb84",
+  "q": "Ronaldinho captained Brazil's football team to which medal at the 2008 Beijing Olympics?",
+  "o": [
+   "Gold",
+   "Silver",
+   "Bronze",
+   "No medal"
+  ],
+  "answer": "Bronze",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b6ef4b",
+  "q": "Which club signed Neymar in 2017 for a then-world-record fee of €222 million?",
+  "o": [
+   "Paris Saint-Germain",
+   "Manchester City",
+   "Chelsea",
+   "Real Madrid"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Transfers",
+  "diff": "easy"
+ }
+]

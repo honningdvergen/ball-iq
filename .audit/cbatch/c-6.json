@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_ba88ec",
+  "kind": "wrong_answer",
+  "claim": "The stem's scoreline is wrong: the 1998 Copa del Rey final (Barcelona 1-1 Mallorca at Mestalla, 29 April 1998) was decided 5-4 on penalties, not 4-2; the keyed manager answer (Van Gaal) is correct.",
+  "q": "Who was Barcelona's manager when they won the 1997-98 Copa del Rey final 1-1 (4-2 pens) over Mallorca?",
+  "o": [
+   "Johan Cruyff",
+   "Louis van Gaal",
+   "Bobby Robson",
+   "Carles Rexach"
+  ],
+  "answer": "Louis van Gaal",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8270f9",
+  "kind": "stale",
+  "claim": "Currently correct (Germany 6 final appearances vs Spain 5 after Euro 2024), but the margin is a single final — if Spain reach the Euro 2028 final the \"most\" becomes a tie and the question silently breaks.",
+  "q": "Which country has appeared in the most European Championship finals?",
+  "o": [
+   "Germany",
+   "Spain",
+   "France",
+   "Italy"
+  ],
+  "answer": "Germany",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_31fd33",
+  "kind": "stale",
+  "claim": "'Has played in the Champions League every season since 1997-98' and 'nearly 30 consecutive editions' is a live running streak that silently rots each season and breaks the moment Real Madrid fails to qualify.",
+  "q": "Which club has played in the Champions League every season since 1997-98 — an unbroken run of nearly 30 consecutive editions?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Bayern Munich",
+   "Man Utd"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_875a76",
+  "kind": "stale",
+  "claim": "The stem asserts the 9-0 record win has been 'achieved four times' — a count that silently rots the next time a Premier League side wins 9-0 (the keyed answer itself stays correct because it is pinned to 2022).",
+  "q": "The Premier League's record biggest win is 9-0 — achieved four times. Which 2022 result was the most recent?",
+  "o": [
+   "Man City vs Watford",
+   "Liverpool vs Bournemouth",
+   "Man City vs Fulham",
+   "Leicester vs Southampton"
+  ],
+  "answer": "Liverpool vs Bournemouth",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4f7aa5",
+  "kind": "stale",
+  "claim": "The stem calls Schalke 04 a \"Bundesliga club\", but Schalke have played in the 2. Bundesliga since relegation in 2023, so the qualifier is currently inaccurate (the Gelsenkirchen fact itself is right).",
+  "q": "Which Bundesliga club plays in the city of Gelsenkirchen?",
+  "o": [
+   "Leverkusen",
+   "Cologne",
+   "Schalke 04",
+   "Dortmund"
+  ],
+  "answer": "Schalke 04",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f9a2ec",
+  "kind": "stale",
+  "claim": "\"Most red cards in Champions League history\" is an all-time record (Ramos, 4) that can be equalled or beaten by an active player, so the keyed answer can silently rot.",
+  "q": "Which player has the most red cards in Champions League history?",
+  "o": [
+   "Ramos",
+   "Pepe",
+   "Vidić",
+   "Materazzi"
+  ],
+  "answer": "Ramos",
+  "cat": "UCL",
+  "diff": "medium"
+ }
+]

@@ -251,8 +251,7 @@ function badgeFor(slug, name) {
 }
 
 // ── shared chrome ─────────────────────────────────────────────────────────────
-// Reusable black App Store badge — the KNOWN-GOOD inline Apple glyph. Never
-// links to Google Play (Android isn't shipped).
+// Reusable black App Store badge — the KNOWN-GOOD inline Apple glyph.
 function appStoreBadge() {
   return `<a class="store-badge" href="${SITE.appStore}" rel="noopener" target="_blank">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.56-1.702"/></svg>
@@ -260,12 +259,26 @@ function appStoreBadge() {
 </a>`;
 }
 
+// Google Play badge — LIVE since 2026-07-27. Shown beside the App Store badge
+// so an Android visitor sees a first-class path, not an iOS-only page.
+function playStoreBadge() {
+  return `<a class="store-badge" href="${SITE.playStore}" rel="noopener" target="_blank">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+<span class="store-badge-tx"><small>Get it on</small><strong>Google Play</strong></span>
+</a>`;
+}
+
+// Both badges, for anywhere with room for a pair.
+function storeBadges() {
+  return `${appStoreBadge()}\n${playStoreBadge()}`;
+}
+
 // `active` marks the current section with the design's green underline
 // ('quizzes' | 'clubs' | 'records' | ''). NAV keeps every existing call site
 // working unchanged; the Clubs Directory passes 'clubs'.
 const navHtml = (active = '') => `<header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.appStore}" rel="noopener" target="_blank">Get the app</a></div>
+<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
 </div></header>`;
 const NAV = navHtml();
 
@@ -290,6 +303,17 @@ function appStoreBadgeMini() {
 </a>`;
 }
 
+function playStoreBadgeMini() {
+  return `<a class="store-badge mini" href="${SITE.playStore}" rel="noopener" target="_blank">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+<span class="mini-tx">Google Play</span>
+</a>`;
+}
+
+function storeBadgesMini() {
+  return `${appStoreBadgeMini()}\n${playStoreBadgeMini()}`;
+}
+
 // Inner hero content (breadcrumb → stat), shared by the single-column heroSection
 // (Footle landing, listicles) and the two-column quiz hero (heroTwoCol).
 function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref, playLabel, mini }) {
@@ -301,7 +325,7 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref
   const ctaRow = playHref
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}">${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
-${mini ? appStoreBadgeMini() : appStoreBadge()}
+${mini ? storeBadgesMini() : storeBadges()}
 </div>`
     : '';
   const stat = statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
@@ -342,7 +366,7 @@ function appCtaBand(name) {
 <div class="appband-in">
 <h2>Think you know ${esc(name)}? Prove it in the app.</h2>
 <p>Streaks, live 1v1, a rating out of 99 — and every quiz in one app.</p>
-${appStoreBadge()}
+${storeBadges()}
 </div>
 </div></section>`;
 }
@@ -574,7 +598,7 @@ function renderTaster(rows, name, playHref) {
   return `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">Free taster · No sign-up</div>
 <h2 id="taster-h">How well do you know ${esc(name)}?</h2>
-<div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.appStore}">
+<div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.getApp}">
 <p class="tph">Five quick questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
 </div>
 <p class="taster-note">Sample questions shown — the full quiz has many more.</p>
@@ -2025,6 +2049,7 @@ ${playerPages.length ? `\n## Player quizzes\n${playerLinks}\n` : ''}${listPages.
 ## Play
 - [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a Ball IQ player rating and multiplayer.
 - [Ball IQ on the App Store](https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961): Free iPhone app.
+- [Ball IQ on Google Play](https://play.google.com/store/apps/details?id=app.balliq): Free Android app.
 `;
   writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');
 }

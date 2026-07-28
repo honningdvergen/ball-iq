@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_fe219e",
+  "kind": "wrong_answer",
+  "claim": "Lampard's penalty in the 2008 semi-final second leg against Liverpool was scored in the 98th minute (extra time), not in \"stoppage time\", and it was Drogba's 105th-minute goal that actually completed the 3-2 win — the keyed answer (Lampard) is right but the stem's detail misinforms.",
+  "q": "Whose emotional stoppage-time penalty at Stamford Bridge sent Chelsea past Liverpool into their first-ever Champions League final in 2008?",
+  "o": [
+   "Frank Lampard",
+   "Didier Drogba",
+   "Michael Ballack",
+   "Salomon Kalou"
+  ],
+  "answer": "Frank Lampard",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e1dd54",
+  "kind": "wrong_answer",
+  "claim": "Keegan's actual April 1996 line was \"I will love it if we beat them, love it!\" — the stem renders the popular misquote \"I would love it\", and the option \"I'd love it\" mirrors that misquoted stem wording, muddying a verbatim-quote question.",
+  "q": "Finish Kevin Keegan's infamous live TV rant during the 1996 title run-in: \"I would love it if we beat them. _____!\"",
+  "o": [
+   "Love it",
+   "Just love it",
+   "Really love it",
+   "I'd love it"
+  ],
+  "answer": "Love it",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d36b79",
+  "kind": "wrong_answer",
+  "claim": "Mourinho's 2004 unveiling quote was \"I think I'm a special one\", not \"I am a special one\" as the keyed option renders it inside quotation marks.",
+  "q": "José Mourinho famously introduced himself to England in 2004 with which now-legendary self-description?",
+  "o": [
+   "\"I am a special one\"",
+   "\"I am the chosen one\"",
+   "\"I am the best in the world\"",
+   "\"I am a winner, nothing else\""
+  ],
+  "answer": "\"I am a special one\"",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_788245",
+  "kind": "multiple_correct",
+  "claim": "Darren Fletcher, also an option, was named Manchester United's interim manager on 5 January 2026 immediately after Amorim's sacking (headlines that day read 'Amorim sacked; Fletcher named interim manager'); Michael Carrick only took over on 14 January for the rest of the season, so only the stem's 'for the rest of the 2025-26 season' clause separates the two and a fan recalling the sacking-day news can defensibly answer Fletcher.",
+  "q": "In January 2026, Manchester United sacked manager Ruben Amorim and put which club legend in interim charge for the rest of the 2025-26 season?",
+  "o": [
+   "Michael Carrick",
+   "Darren Fletcher",
+   "Ole Gunnar Solskjaer",
+   "Wayne Rooney"
+  ],
+  "answer": "Michael Carrick",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea8088",
+  "kind": "stale",
+  "claim": "'How many times have Barcelona won the European Cup/Champions League' is a rolling count that silently rots each May — the keyed 'Five' is still correct today (PSG won the 2026 final, so Barça remain on 1992/2006/2009/2011/2015), but it needs re-verification every season.",
+  "q": "How many times have Barcelona won the European Cup / Champions League in their history?",
+  "o": [
+   "Three",
+   "Five",
+   "Seven",
+   "Four"
+  ],
+  "answer": "Five",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e241d",
+  "kind": "stale",
+  "claim": "Phrasing 'As of 2026, who is the manager that engineered...' reads as naming Dortmund's current manager; if Niko Kovac leaves the club the stem's present tense goes wrong even though the 2024-25 turnaround fact is permanent — rewrite as 'which manager engineered'.",
+  "q": "As of 2026, who is the manager that engineered Borussia Dortmund's dramatic 2024-25 turnaround — taking over with the club 11th and dragging them to a final-day fourth place and Champions League qualification?",
+  "o": [
+   "Niko Kovac",
+   "Edin Terzic",
+   "Nuri Sahin",
+   "Marco Rose"
+  ],
+  "answer": "Niko Kovac",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

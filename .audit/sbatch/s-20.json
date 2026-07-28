@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_b8418b",
+  "q": "Which manager guided Chile to their 2015 Copa América home triumph — their first ever Copa title?",
+  "o": [
+   "Jorge Sampaoli",
+   "Marcelo Bielsa",
+   "Reinaldo Rueda",
+   "Juan Pizzi"
+  ],
+  "answer": "Jorge Sampaoli",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_865de4",
+  "q": "Which Chilean midfielder, nicknamed 'King Arturo,' played for Bayern Munich, Juventus, Inter Milan AND Barcelona?",
+  "o": [
+   "Alexis Sánchez",
+   "Arturo Vidal",
+   "Eduardo Vargas",
+   "Charles Aránguiz"
+  ],
+  "answer": "Arturo Vidal",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5a4947",
+  "q": "Which Colombian playmaker won the Golden Boot at the 2014 World Cup with 6 goals?",
+  "o": [
+   "James Rodríguez",
+   "Carlos Bacca",
+   "Juan Cuadrado",
+   "Radamel Falcao"
+  ],
+  "answer": "James Rodríguez",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_83fc67",
+  "q": "Colombia lost the 2024 Copa América final 1-0 to which team in extra time?",
+  "o": [
+   "Brazil",
+   "Argentina",
+   "Uruguay",
+   "USA"
+  ],
+  "answer": "Argentina",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3827b5",
+  "q": "Which USMNT winger joined AC Milan in 2023, having previously played for Borussia Dortmund and Chelsea?",
+  "o": [
+   "Tim Weah",
+   "Christian Pulisic",
+   "Brenden Aaronson",
+   "Gio Reyna"
+  ],
+  "answer": "Christian Pulisic",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_149194",
+  "q": "At the 2022 World Cup, the USMNT exited in the Round of 16 — to which team?",
+  "o": [
+   "Netherlands",
+   "Argentina",
+   "France",
+   "Brazil"
+  ],
+  "answer": "Netherlands",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b91857",
+  "q": "Which legendary US goalkeeper made a record 16 saves in a single 2014 World Cup match against Belgium?",
+  "o": [
+   "Brad Friedel",
+   "Kasey Keller",
+   "Tim Howard",
+   "Tony Meola"
+  ],
+  "answer": "Tim Howard",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_81cada",
+  "q": "What is the name of the top professional men's football league in the United States, founded in 1993 and beginning play in 1996?",
+  "o": [
+   "NASL",
+   "USL Championship",
+   "MLS",
+   "United Soccer Association"
+  ],
+  "answer": "MLS",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a1996c",
+  "q": "Lionel Messi joined which MLS club in 2023?",
+  "o": [
+   "LA Galaxy",
+   "Inter Miami CF",
+   "Atlanta United",
+   "NYCFC"
+  ],
+  "answer": "Inter Miami CF",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a63e58",
+  "q": "The USA famously beat which side 1-0 at the 1950 World Cup in Brazil — considered one of football's greatest upsets?",
+  "o": [
+   "Brazil",
+   "Italy",
+   "England",
+   "Spain"
+  ],
+  "answer": "England",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c14773",
+  "q": "Which US-born forward, son of a Liberian Ballon d'Or winner, spent two seasons at Juventus from 2023 to 2025?",
+  "o": [
+   "Brenden Aaronson",
+   "Tim Weah",
+   "Folarin Balogun",
+   "Yunus Musah"
+  ],
+  "answer": "Tim Weah",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_45a35e",
+  "q": "Which English club did US international Brenden Aaronson play for during the 2022-23 Premier League season?",
+  "o": [
+   "Leeds United",
+   "Everton",
+   "Crystal Palace",
+   "Fulham"
+  ],
+  "answer": "Leeds United",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_05402a",
+  "q": "What is the nickname of Mexico's men's national football team?",
+  "o": [
+   "El Tri",
+   "Los Aztecas",
+   "Verde Y Blanco",
+   "La Selección"
+  ],
+  "answer": "El Tri",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_eb44fc",
+  "q": "Which striker holds the record for most international goals for Mexico, with over 50 goals?",
+  "o": [
+   "Cuauhtémoc Blanco",
+   "Hugo Sánchez",
+   "Javier 'Chicharito' Hernández",
+   "Jared Borgetti"
+  ],
+  "answer": "Javier 'Chicharito' Hernández",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_167a08",
+  "q": "Mexico had reached seven consecutive World Cup Round of 16s before — at which tournament did they fail to escape the group stage, snapping the streak?",
+  "o": [
+   "2022",
+   "2018",
+   "2014",
+   "2010"
+  ],
+  "answer": "2022",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_beecf1",
+  "q": "Mexican defender Rafael Márquez won two UEFA Champions League titles with which club?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Barcelona",
+   "Monaco"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_943548",
+  "q": "Which Mexican club holds the record for most Liga MX championships?",
+  "o": [
+   "Cruz Azul",
+   "Chivas Guadalajara",
+   "Club América",
+   "Pumas UNAM"
+  ],
+  "answer": "Club América",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4db7dd",
+  "q": "In the very first World Cup final in 1930, what unusual compromise did the two teams reach before kickoff?",
+  "o": [
+   "A different match ball was used in each half",
+   "Each half was refereed by a different country's official",
+   "Players swapped shirts at half-time as a goodwill gesture",
+   "The match was paused for a coin-toss after every goal"
+  ],
+  "answer": "A different match ball was used in each half",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_19199c",
+  "q": "In the decisive 1950 World Cup match, which Brazil goalkeeper was unfairly blamed for the rest of his life after conceding the goal that handed Uruguay the title?",
+  "o": [
+   "Gilmar",
+   "Moacir Barbosa",
+   "Roque Maspoli",
+   "Carlos Castilho"
+  ],
+  "answer": "Moacir Barbosa",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_81abc9",
+  "q": "Deportivo La Coruña pulled off one of the great comebacks in the 2003-04 Champions League quarter-final, overturning a 4-1 first-leg loss by winning the home leg by what score?",
+  "o": [
+   "4-0",
+   "3-0",
+   "5-1",
+   "2-0"
+  ],
+  "answer": "4-0",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bc2916",
+  "q": "In the 2005 Champions League final shoot-out, which Liverpool player scored the penalty that put them 3-2 ahead — immediately before Dudek's save on Shevchenko clinched the win over AC Milan?",
+  "o": [
+   "Djibril Cissé",
+   "Dietmar Hamann",
+   "John Arne Riise",
+   "Vladimír Šmicer"
+  ],
+  "answer": "Vladimír Šmicer",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9e830d",
+  "q": "Bayern Munich romped to a 7-1 aggregate win in the 2019-20 Champions League round of 16 (3-0 away, 4-1 at home), with Robert Lewandowski and Serge Gnabry starring — which English club did they thrash?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Liverpool"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_93ce37",
+  "q": "Southampton cult hero Matt Le Tissier was famously deadly from the spot; who was the one goalkeeper to save a league penalty from him?",
+  "o": [
+   "Mark Crossley",
+   "David Seaman",
+   "Tim Flowers",
+   "Neville Southall"
+  ],
+  "answer": "Mark Crossley",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_56f322",
+  "q": "Telmo Zarra held the record for most Pichichi (La Liga top scorer) awards for decades — how many times did the Athletic Bilbao striker win it in the 1940s and 50s?",
+  "o": [
+   "4",
+   "5",
+   "6",
+   "8"
+  ],
+  "answer": "6",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_103627",
+  "q": "In the famous 2010-11 season, Real Madrid and Barcelona met four times in 18 days across three competitions — which trophy did Real Madrid actually win in that run?",
+  "o": [
+   "La Liga",
+   "Supercopa",
+   "Copa del Rey",
+   "Champions League"
+  ],
+  "answer": "Copa del Rey",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0da4b2",
+  "q": "The term 'Derby d'Italia' was coined by journalist Gianni Brera to describe matches between which two clubs?",
+  "o": [
+   "Milan and Inter",
+   "Juventus and Inter",
+   "Roma and Lazio",
+   "Juventus and Milan"
+  ],
+  "answer": "Juventus and Inter",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d64b4",
+  "q": "Cagliari won their first and only Serie A title in 1969-70, inspired by which legendary striker known as 'Rombo di Tuono'?",
+  "o": [
+   "Gigi Riva",
+   "Sandro Mazzola",
+   "Roberto Boninsegna",
+   "Pietro Anastasi"
+  ],
+  "answer": "Gigi Riva",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_abd71f",
+  "q": "In the 1991-92 Serie A season, which club won the title without losing a single match?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Inter",
+   "Napoli"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2e0ec",
+  "q": "What was the scoreline of Bayern Munich's record Bundesliga win over Borussia Dortmund in November 1971, the most lopsided result in Der Klassiker history?",
+  "o": [
+   "11-1",
+   "7-0",
+   "6-2",
+   "9-2"
+  ],
+  "answer": "11-1",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1338d8",
+  "q": "Which country won the 1964 European Championship, beating the USSR 2-1 in the final on home soil in Madrid?",
+  "o": [
+   "Italy",
+   "Spain",
+   "Hungary",
+   "Portugal"
+  ],
+  "answer": "Spain",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_386af9",
+  "q": "Which striker holds the record for most goals scored in a single Copa Libertadores tournament, with 17 in one edition?",
+  "o": [
+   "Alberto Spencer",
+   "Antony de Ávila",
+   "Juan Carlos Garré",
+   "Daniel Onega"
+  ],
+  "answer": "Daniel Onega",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aa50b1",
+  "q": "Lothar Matthaus captained West Germany to victory in which World Cup final?",
+  "o": [
+   "1990",
+   "1986",
+   "1994",
+   "1982"
+  ],
+  "answer": "1990",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fd560e",
+  "q": "Eusebio finished as the top scorer of the 1966 World Cup with nine goals while playing for which national team?",
+  "o": [
+   "Portugal",
+   "Brazil",
+   "Mozambique",
+   "Spain"
+  ],
+  "answer": "Portugal",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eff787",
+  "q": "Which goalkeeper, famous for his eccentric 'scorpion kick' clearance against England in 1995, played for Colombia in the 1990s?",
+  "o": [
+   "Rene Higuita",
+   "Oscar Cordoba",
+   "Faryd Mondragon",
+   "Carlos Valderrama"
+  ],
+  "answer": "Rene Higuita",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b3cd1d",
+  "q": "Before his long, trophy-laden spell at Manchester United, Sir Alex Ferguson won the European Cup Winners' Cup in 1983 with which club?",
+  "o": [
+   "Aberdeen",
+   "Dundee United",
+   "Celtic",
+   "St Mirren"
+  ],
+  "answer": "Aberdeen",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de0c07",
+  "q": "What was the name of the official mascot of the 1966 World Cup in England?",
+  "o": [
+   "World Cup Willie",
+   "Footix",
+   "Juanito",
+   "Naranjito"
+  ],
+  "answer": "World Cup Willie",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e9b266",
+  "q": "Nottingham Forest won back-to-back European Cups in 1979 and 1980 under Brian Clough. What unusual domestic-status fact applied to them when they first lifted the trophy?",
+  "o": [
+   "They had been in England's second division just two years earlier",
+   "They had never won the English league title",
+   "They had been relegated the season before qualifying",
+   "They entered as the FA Cup holders, not league champions"
+  ],
+  "answer": "They had been in England's second division just two years earlier",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dcd03f",
+  "q": "The 1985 European Cup final between Juventus and Liverpool is remembered far less for the football than for what?",
+  "o": [
+   "The Heysel Stadium disaster, in which a wall collapsed and dozens of fans died",
+   "A floodlight failure that abandoned the match at half-time",
+   "A pitch invasion that forced the final to be replayed days later",
+   "Both managers being sent to the stands before kickoff"
+  ],
+  "answer": "The Heysel Stadium disaster, in which a wall collapsed and dozens of fans died",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e7341f",
+  "q": "In the 1976 European Cup final, Bayern Munich beat Saint-Étienne 1-0 in a match the French still recall bitterly for which feature of the Hampden Park goals?",
+  "o": [
+   "The square goalposts, which twice repelled French shots that might have gone in",
+   "A waterlogged pitch that nullified their passing game",
+   "A disallowed goal in the final minute for offside",
+   "The referee adding only seconds of stoppage time"
+  ],
+  "answer": "The square goalposts, which twice repelled French shots that might have gone in",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ff2989",
+  "q": "Which club won the very last Cup Winners' Cup in 1999 before the competition was abolished?",
+  "o": [
+   "Lazio",
+   "Mallorca",
+   "Chelsea",
+   "Lokomotiv Moscow"
+  ],
+  "answer": "Lazio",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6af744",
+  "q": "Sevilla won three consecutive UEFA Cup / Europa League titles in which span of years?",
+  "o": [
+   "2006, 2007, 2014",
+   "2014, 2015, 2016",
+   "2010, 2011, 2012",
+   "2015, 2016, 2020"
+  ],
+  "answer": "2014, 2015, 2016",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_45ac63",
+  "q": "Eintracht Frankfurt won the 2022 Europa League final on penalties against which club?",
+  "o": [
+   "Rangers",
+   "Roma",
+   "West Ham",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Rangers",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_318ef8",
+  "q": "Parma's 1999 UEFA Cup-winning side, which beat Marseille 3-0 in the final, featured which goalkeeper?",
+  "o": [
+   "Gianluigi Buffon",
+   "Francesco Toldo",
+   "Angelo Peruzzi",
+   "Christian Abbiati"
+  ],
+  "answer": "Gianluigi Buffon",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_46fcb2",
+  "q": "Paolo Di Canio won a 2001 Fair Play Award for catching a cross instead of scoring into an empty net, after spotting an injured opposition goalkeeper sprawled on the ground. Which keeper was lying hurt?",
+  "o": [
+   "Paul Gerrard (Everton)",
+   "Neil Sullivan (Wimbledon)",
+   "Shaka Hislop (West Ham)",
+   "David James (Aston Villa)"
+  ],
+  "answer": "Paul Gerrard (Everton)",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2bb900",
+  "q": "Matt Le Tissier, a one-club man for Southampton, fittingly scored the very last competitive goal at their old stadium The Dell in May 2001 — a late winner against which club?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Leeds United",
+   "Tottenham"
+  ],
+  "answer": "Arsenal",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8a6b9b",
+  "q": "Tony Adams, a one-club man at Arsenal, holds the distinction of having captained a top-flight title-winning side across how many different decades?",
+  "o": [
+   "Three (1980s, 1990s, 2000s)",
+   "Two (1980s, 1990s)",
+   "Four (1980s through 2010s)",
+   "Two (1990s, 2000s)"
+  ],
+  "answer": "Three (1980s, 1990s, 2000s)",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3c3f79",
+  "q": "Which mercurial Georgian cult hero scored a celebrated mazy solo goal for Manchester City against Southampton in March 1996, weaving past several defenders before chipping the keeper?",
+  "o": [
+   "Georgi Kinkladze",
+   "Andrei Kanchelskis",
+   "Tugay Kerimoglu",
+   "Muzzy Izzet"
+  ],
+  "answer": "Georgi Kinkladze",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_49d48f",
+  "q": "Telmo Zarra, whose name graces the trophy for La Liga's top Spanish-born scorer, spent his entire top-flight career with which club?",
+  "o": [
+   "Athletic Bilbao",
+   "Real Sociedad",
+   "Valencia",
+   "Espanyol"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a6a5d1",
+  "q": "Hamburger SV held a famous unbeaten run in the Bundesliga between 1982 and 1983 that stood as a league record for decades — roughly how many consecutive matches without defeat did it span?",
+  "o": [
+   "36 matches",
+   "21 matches",
+   "48 matches",
+   "29 matches"
+  ],
+  "answer": "36 matches",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d070ca",
+  "q": "Borussia Mönchengladbach's golden era under Hennes Weisweiler in the 1970s was built around which legendary midfield playmaker, nicknamed for his elegance?",
+  "o": [
+   "Günter Netzer",
+   "Paul Breitner",
+   "Wolfgang Overath",
+   "Berti Vogts"
+  ],
+  "answer": "Günter Netzer",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_49f666",
+  "q": "Borussia Dortmund won the Champions League for the first time in 1997, beating Juventus 3-1 in the final. Who scored twice for Dortmund in that match?",
+  "o": [
+   "Karl-Heinz Riedle",
+   "Stéphane Chapuisat",
+   "Andreas Möller",
+   "Lars Ricken"
+  ],
+  "answer": "Karl-Heinz Riedle",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_18aa3d",
+  "q": "Cienciano's victory in the 2003 Copa Sudamericana was the first major CONMEBOL trophy ever won by a club from which country?",
+  "o": [
+   "Bolivia",
+   "Peru",
+   "Venezuela",
+   "Ecuador"
+  ],
+  "answer": "Peru",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7f579a",
+  "q": "At the 2021 Copa América, which goalkeeper saved three penalties in the semi-final shootout to send Argentina past Colombia?",
+  "o": [
+   "Franco Armani",
+   "Emiliano Martínez",
+   "Agustín Marchesín",
+   "Juan Musso"
+  ],
+  "answer": "Emiliano Martínez",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5a2b7c",
+  "q": "At the 1970 Africa Cup of Nations, Ivory Coast's Laurent Pokou scored five goals in a single match against Ethiopia — a feat no one has matched at the tournament since. How did Ivory Coast win that game?",
+  "o": [
+   "6-1",
+   "5-0",
+   "8-3",
+   "6-3"
+  ],
+  "answer": "6-1",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ea43f9",
+  "q": "When Zambia won their only AFCON title in 2012, the final was staged in Libreville, Gabon — emotionally resonant because of a 1993 tragedy near that city. Who did Zambia beat in the final?",
+  "o": [
+   "Ivory Coast",
+   "Ghana",
+   "Nigeria",
+   "Egypt"
+  ],
+  "answer": "Ivory Coast",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5345bd",
+  "q": "In the 2017 AFCON final, Cameroon came from behind to beat Egypt 2-1. Who scored Cameroon's late winning goal with a deft flick over the defender?",
+  "o": [
+   "Vincent Aboubakar",
+   "Christian Bassogog",
+   "Nicolas Nkoulou",
+   "Benjamin Moukandjo"
+  ],
+  "answer": "Vincent Aboubakar",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6384f1",
+  "q": "A Zambian side rebuilt almost from scratch after losing most of its players in the 1993 Gabon air disaster stunned everyone by reaching the very next AFCON final in 1994. Who denied them the title?",
+  "o": [
+   "Nigeria",
+   "Tunisia",
+   "South Africa",
+   "Algeria"
+  ],
+  "answer": "Nigeria",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e75bc1",
+  "q": "At the 2012 London Olympics, which player scored a stoppage-time winner in the USA's dramatic 4-3 semi-final victory over Canada?",
+  "o": [
+   "Abby Wambach",
+   "Alex Morgan",
+   "Megan Rapinoe",
+   "Carli Lloyd"
+  ],
+  "answer": "Alex Morgan",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c88e5",
+  "q": "Canada's Christine Sinclair set a milestone in January 2020 by surpassing Abby Wambach's tally to become the all-time leading scorer in senior international football. What was the previous record she broke?",
+  "o": [
+   "158 goals",
+   "184 goals",
+   "127 goals",
+   "209 goals"
+  ],
+  "answer": "184 goals",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1caadf",
+  "q": "At the 2019 Women's World Cup in France, the USA's opening 13-0 win set a tournament record for the largest margin of victory. Which opponent did they defeat?",
+  "o": [
+   "Chile",
+   "Thailand",
+   "Jamaica",
+   "New Zealand"
+  ],
+  "answer": "Thailand",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_66070a",
+  "q": "Raymond Kopa became the first Frenchman to win the Ballon d'Or in 1958, but he did it while playing his club football for which team?",
+  "o": [
+   "Real Madrid",
+   "Stade de Reims",
+   "Olympique de Marseille",
+   "Saint-Étienne"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_44fd2c",
+  "q": "Just Fontaine set a single-World-Cup scoring record of 13 goals in 1958, a tournament in which he played for France at how many matches?",
+  "o": [
+   "6 matches",
+   "10 matches",
+   "4 matches",
+   "7 matches"
+  ],
+  "answer": "6 matches",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_981051",
+  "q": "When Marseille beat AC Milan to win the 1993 Champions League, who scored the only goal of the final?",
+  "o": [
+   "Basile Boli, with a header",
+   "Jean-Pierre Papin, from the penalty spot",
+   "Rudi Völler, on the volley",
+   "Abedi Pelé, from a free-kick"
+  ],
+  "answer": "Basile Boli, with a header",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5468ed",
+  "q": "Before PSG overtook them, which club held the record for the most French top-flight titles, racking up their haul mostly in the 1960s and 70s?",
+  "o": [
+   "Saint-Étienne",
+   "Olympique de Marseille",
+   "Nantes",
+   "Olympique Lyonnais"
+  ],
+  "answer": "Saint-Étienne",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_be4d8c",
+  "q": "At the 1974 World Cup final, the Netherlands kicked off and scored a penalty before West Germany had even touched the ball. Who converted that spot-kick after Cruyff was fouled?",
+  "o": [
+   "Johan Neeskens",
+   "Johnny Rep",
+   "Rob Rensenbrink",
+   "Wim van Hanegem"
+  ],
+  "answer": "Johan Neeskens",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3fcdbf",
+  "q": "Diego Maradona made his senior club debut in 1976, ten days before turning 16, for which Argentine club?",
+  "o": [
+   "Boca Juniors",
+   "Argentinos Juniors",
+   "River Plate",
+   "Newell's Old Boys"
+  ],
+  "answer": "Argentinos Juniors",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_501a99",
+  "q": "Which manager pioneered the high-pressing, position-swapping system at FC Dynamo Kyiv in the 1970s, using scientific data and conditioning years before it became fashionable?",
+  "o": [
+   "Valeriy Lobanovskyi",
+   "Boris Arkadiev",
+   "Gusztáv Sebes",
+   "Karl Rappan"
+  ],
+  "answer": "Valeriy Lobanovskyi",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_437c3e",
+  "q": "The defensive 'verrou' (door-bolt) system, an early ancestor of catenaccio, was devised in the 1930s–40s by which Austrian coach working in Switzerland?",
+  "o": [
+   "Karl Rappan",
+   "Helenio Herrera",
+   "Nereo Rocco",
+   "Hugo Meisl"
+  ],
+  "answer": "Karl Rappan",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_21cf3a",
+  "q": "Béla Guttmann, the wandering coach who won back-to-back European Cups with Benfica in 1961 and 1962, reputedly left which 'curse' on the club after a pay dispute?",
+  "o": [
+   "That Benfica would not win a European trophy for 100 years",
+   "That Benfica would never beat Sporting again",
+   "That Benfica would lose every final on penalties",
+   "That Benfica would be relegated within a decade"
+  ],
+  "answer": "That Benfica would not win a European trophy for 100 years",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_06d3f2",
+  "q": "When Brazilian forward Denílson moved from São Paulo to Real Betis in 1998, his fee made him the world's most expensive player at the time. Roughly how much was it?",
+  "o": [
+   "£21.5 million",
+   "£8 million",
+   "£45 million",
+   "£60 million"
+  ],
+  "answer": "£21.5 million",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1f06fe",
+  "q": "Before joining Real Madrid, Luís Figo's controversial 2000 transfer from Barcelona was enabled by a release clause that presidential candidate Florentino Pérez exploited. What was that buy-out clause set at?",
+  "o": [
+   "10 billion pesetas (about €60m)",
+   "2 billion pesetas (about €12m)",
+   "25 billion pesetas (about €150m)",
+   "5 billion pesetas (about €30m)"
+  ],
+  "answer": "10 billion pesetas (about €60m)",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a52765",
+  "q": "After 22 years of waiting (and three straight runner-up finishes), Arsenal were finally crowned Premier League champions in which season?",
+  "o": [
+   "2024-25",
+   "2025-26",
+   "2023-24",
+   "2022-23"
+  ],
+  "answer": "2025-26",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_707cac",
+  "q": "Arsenal's famous 2003-04 'Invincibles' achieved what unprecedented feat in the Premier League?",
+  "o": [
+   "Went the entire 38-game league season unbeaten",
+   "Won every single home game",
+   "Scored in all 38 league matches",
+   "Kept a clean sheet in over half their games"
+  ],
+  "answer": "Went the entire 38-game league season unbeaten",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fa63f7",
+  "q": "Who is Arsenal's all-time leading goalscorer?",
+  "o": [
+   "Ian Wright",
+   "Dennis Bergkamp",
+   "Thierry Henry",
+   "Robin van Persie"
+  ],
+  "answer": "Thierry Henry",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_18aa78",
+  "q": "What was the very first name of the club that would become Arsenal, when it was founded by munitions workers in 1886?",
+  "o": [
+   "Royal Arsenal",
+   "Woolwich United",
+   "Dial Square",
+   "Plumstead Rovers"
+  ],
+  "answer": "Dial Square",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c46593",
+  "q": "Arsenal hold the outright record for winning which major English competition the most times?",
+  "o": [
+   "League Cup",
+   "FA Cup",
+   "Charity/Community Shield",
+   "First Division/Premier League"
+  ],
+  "answer": "FA Cup",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4ea4c9",
+  "q": "In a piece of marketing genius, Arsenal manager Herbert Chapman successfully lobbied for what to be renamed after the club in 1932?",
+  "o": [
+   "A London bus route",
+   "A London Underground station",
+   "A street near Highbury",
+   "A local newspaper"
+  ],
+  "answer": "A London Underground station",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_435417",
+  "q": "Arsenal's iconic red shirts with white sleeves are linked to a famous (if exaggerated) story involving shirts from which other club?",
+  "o": [
+   "Sunderland",
+   "Nottingham Forest",
+   "Aston Villa",
+   "Preston North End"
+  ],
+  "answer": "Nottingham Forest",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_adf964",
+  "q": "Which player holds Arsenal's all-time record for most appearances, with 722 between 1975 and 1993?",
+  "o": [
+   "David O'Leary",
+   "Tony Adams",
+   "George Armstrong",
+   "Pat Rice"
+  ],
+  "answer": "David O'Leary",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d22a26",
+  "q": "On 7 May 2006, Arsenal played their final ever match at Highbury. How did Thierry Henry sign off the 93-year-old stadium?",
+  "o": [
+   "A last-minute winning penalty",
+   "A hat-trick in a 4-2 win over Wigan",
+   "A goal direct from a corner",
+   "An assist for the winning goal"
+  ],
+  "answer": "A hat-trick in a 4-2 win over Wigan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_303ba4",
+  "q": "Which Dutchman, nicknamed the 'Non-Flying Dutchman' for his fear of flying, became one of Arsenal's most beloved playmakers?",
+  "o": [
+   "Marc Overmars",
+   "Dennis Bergkamp",
+   "Robin van Persie",
+   "Giovanni van Bronckhorst"
+  ],
+  "answer": "Dennis Bergkamp",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_87b067",
+  "q": "In 2023, Arsenal broke their transfer record to sign which midfielder for a club-record fee of around £105m?",
+  "o": [
+   "Martin Ødegaard",
+   "Kai Havertz",
+   "Declan Rice",
+   "Jorginho"
+  ],
+  "answer": "Declan Rice",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a0dee",
+  "q": "Arsenal's dominant 1930s side, known for its lavish spending, earned which nickname?",
+  "o": [
+   "The Gunners' Galacticos",
+   "The Bank of England Club",
+   "The Money Marines",
+   "The Highbury Aristocrats"
+  ],
+  "answer": "The Bank of England Club",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_50418a",
+  "q": "Who scored the goal that clinched Arsenal's dramatic 1988-89 title at Anfield, in the last seconds of the final game of the season?",
+  "o": [
+   "Alan Smith",
+   "Michael Thomas",
+   "Paul Merson",
+   "David Rocastle"
+  ],
+  "answer": "Michael Thomas",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3012d",
+  "q": "Arsène Wenger arrived at Arsenal in 1996 from a club in which country, leading some fans and press to ask 'Arsène Who?'",
+  "o": [
+   "France",
+   "Japan",
+   "Spain",
+   "Italy"
+  ],
+  "answer": "Japan",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d88843",
+  "q": "What is the name of the stadium Arsenal moved into in 2006, leaving Highbury behind?",
+  "o": [
+   "Emirates Stadium",
+   "Ashburton Grove Arena",
+   "Gunners Park",
+   "Holloway Stadium"
+  ],
+  "answer": "Emirates Stadium",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5a2cac",
+  "q": "Goalkeeper David Seaman produced one of Arsenal's most iconic saves — an acrobatic flying stop late in a 2003 FA Cup semi-final — against which player?",
+  "o": [
+   "Paul Peschisolido",
+   "Dwight Yorke",
+   "Robbie Fowler",
+   "Kevin Phillips"
+  ],
+  "answer": "Paul Peschisolido",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8ef287",
+  "q": "Arsenal's nickname, 'The Gunners', and the cannon on their crest both derive from what?",
+  "o": [
+   "A famous fan with a cannon collection",
+   "The club's munitions-factory origins in Woolwich",
+   "A military victory celebrated by founders",
+   "An old Highbury pub called The Cannon"
+  ],
+  "answer": "The club's munitions-factory origins in Woolwich",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fa4bbc",
+  "q": "In the 2003-04 Invincibles season, who finished as the Premier League's top scorer, powering Arsenal's unbeaten title?",
+  "o": [
+   "Robert Pirès",
+   "Thierry Henry",
+   "Freddie Ljungberg",
+   "Dennis Bergkamp"
+  ],
+  "answer": "Thierry Henry",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bdba50",
+  "q": "Arsenal's George Graham side won the 1993-94 European Cup Winners' Cup with a famous 1-0 final win over Parma, courtesy of a goal from whom?",
+  "o": [
+   "Ian Wright",
+   "Alan Smith",
+   "Kevin Campbell",
+   "Paul Merson"
+  ],
+  "answer": "Alan Smith",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d32828",
+  "q": "Which centre-back, signed from Lille in 2020, became a defensive cornerstone of Arsenal's 2025/26 title-winning side, regularly partnering William Saliba at the back?",
+  "o": [
+   "Jakub Kiwior",
+   "Gabriel Magalhães",
+   "Ben White",
+   "Rob Holding"
+  ],
+  "answer": "Gabriel Magalhães",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef1601",
+  "q": "Liverpool's all-red kit is now iconic, but they didn't always wear it. Which legendary manager switched the team to an all-red strip in 1964 for psychological impact?",
+  "o": [
+   "Bob Paisley",
+   "Bill Shankly",
+   "Joe Fagan",
+   "Phil Taylor"
+  ],
+  "answer": "Bill Shankly",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e19af8",
+  "q": "In the 2005 'Miracle of Istanbul' final, who scored Liverpool's FIRST goal to spark the comeback from 3-0 down against AC Milan?",
+  "o": [
+   "Xabi Alonso",
+   "Vladimir Smicer",
+   "Steven Gerrard",
+   "Djibril Cisse"
+  ],
+  "answer": "Steven Gerrard",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d7a7f",
+  "q": "Who is Liverpool's all-time record goalscorer, with 346 goals across two spells at the club?",
+  "o": [
+   "Roger Hunt",
+   "Kenny Dalglish",
+   "Ian Rush",
+   "Robbie Fowler"
+  ],
+  "answer": "Ian Rush",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b6d017",
+  "q": "Which player holds Liverpool's all-time appearance record, turning out 857 times over 18 years?",
+  "o": [
+   "Jamie Carragher",
+   "Steven Gerrard",
+   "Ian Callaghan",
+   "Emlyn Hughes"
+  ],
+  "answer": "Ian Callaghan",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c6c3ca",
+  "q": "Liverpool clinched their record-equalling 20th English league title in 2024-25. Which manager pulled it off in his very FIRST season in charge?",
+  "o": [
+   "Arne Slot",
+   "Jurgen Klopp",
+   "Brendan Rodgers",
+   "Roberto De Zerbi"
+  ],
+  "answer": "Arne Slot",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e1a784",
+  "q": "Mohamed Salah set a new record for goal involvements in a 38-game Premier League season in 2024-25. How many did he rack up?",
+  "o": [
+   "41",
+   "44",
+   "47",
+   "52"
+  ],
+  "answer": "47",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_24d9f1",
+  "q": "The famous 'This Is Anfield' sign was installed by Bill Shankly in 1972 to intimidate opponents. What did the original suggested wording say before he toughened it up?",
+  "o": [
+   "'Welcome to Anfield'",
+   "'Abandon Hope All Ye Who Enter'",
+   "'You'll Never Walk Alone'",
+   "'Enter the Fortress'"
+  ],
+  "answer": "'Welcome to Anfield'",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_601f95",
+  "q": "Liverpool have won the European Cup/Champions League six times. In which city did they lift their very FIRST one, in 1977?",
+  "o": [
+   "Paris",
+   "London",
+   "Rome",
+   "Istanbul"
+  ],
+  "answer": "Rome",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c53635",
+  "q": "Kenny Dalglish was famously bought to replace which departing No. 7 in 1977, going on to become 'King Kenny'?",
+  "o": [
+   "Ian St John",
+   "Kevin Keegan",
+   "Steve Heighway",
+   "Terry McDermott"
+  ],
+  "answer": "Kevin Keegan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2ad7e5",
+  "q": "In the 2019 Champions League semi-final, Liverpool overturned a 3-0 first-leg deficit by beating Barcelona 4-0 at Anfield. Who scored TWICE off the bench that night?",
+  "o": [
+   "Divock Origi",
+   "Georginio Wijnaldum",
+   "Sadio Mane",
+   "Roberto Firmino"
+  ],
+  "answer": "Georginio Wijnaldum",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d2f4c0",
+  "q": "Who scored Liverpool's late, decisive second goal in the 2019 Champions League final win over Tottenham in Madrid?",
+  "o": [
+   "Sadio Mane",
+   "Mohamed Salah",
+   "Divock Origi",
+   "Roberto Firmino"
+  ],
+  "answer": "Divock Origi",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0e6c5c",
+  "q": "Which Liverpool manager won THREE European Cups (1977, 1978, 1981), the most by any Liverpool boss?",
+  "o": [
+   "Bill Shankly",
+   "Joe Fagan",
+   "Bob Paisley",
+   "Rafael Benitez"
+  ],
+  "answer": "Bob Paisley",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4a1b84",
+  "q": "Liverpool's anthem 'You'll Never Walk Alone' came from a 1960s recording by which Liverpudlian band that made it a Kop staple?",
+  "o": [
+   "The Beatles",
+   "Gerry and the Pacemakers",
+   "The Searchers",
+   "The Merseybeats"
+  ],
+  "answer": "Gerry and the Pacemakers",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_158784",
+  "q": "Three Liverpool players were in England's 1966 World Cup-winning squad. Which Reds striker started every game and scored three times in the tournament?",
+  "o": [
+   "Ian St John",
+   "Roger Hunt",
+   "Ian Callaghan",
+   "Tommy Smith"
+  ],
+  "answer": "Roger Hunt",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1a53a5",
+  "q": "How did Kenny Dalglish settle the 1978 European Cup final against Club Brugge at Wembley?",
+  "o": [
+   "A long-range screamer",
+   "A delicate chip over the keeper",
+   "A diving header",
+   "A penalty"
+  ],
+  "answer": "A delicate chip over the keeper",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_71ff00",
+  "q": "Liverpool won their FIRST-ever FA Cup in 1965, ending decades of waiting. Which side did they beat 2-1 after extra time in that final?",
+  "o": [
+   "Leeds United",
+   "Arsenal",
+   "Newcastle United",
+   "Leicester City"
+  ],
+  "answer": "Leeds United",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_417699",
+  "q": "Liverpool fans who stand (and now sit) at the famous end of Anfield are nicknamed what?",
+  "o": [
+   "The Toffees",
+   "Kopites",
+   "The Gwladys Street",
+   "The Holte Enders"
+  ],
+  "answer": "Kopites",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a9627",
+  "q": "In the 2005 final, AC Milan's captain scored the fastest-ever goal in a Champions League final — inside the first minute against Liverpool. Who was he?",
+  "o": [
+   "Paolo Maldini",
+   "Andrea Pirlo",
+   "Cafu",
+   "Alessandro Nesta"
+  ],
+  "answer": "Paolo Maldini",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a67556",
+  "q": "Steven Gerrard delivered an iconic FA Cup final performance in 2006, with a last-gasp equaliser forcing penalties. Which club did Liverpool beat in that 'Gerrard Final'?",
+  "o": [
+   "Cardiff City",
+   "West Ham United",
+   "Chelsea",
+   "Arsenal"
+  ],
+  "answer": "West Ham United",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_01eaad",
+  "q": "Which defender did Liverpool sign in 2018 for a then world-record fee for a defender, transforming their backline and helping win the Champions League and Premier League?",
+  "o": [
+   "Joel Matip",
+   "Virgil van Dijk",
+   "Joe Gomez",
+   "Dejan Lovren"
+  ],
+  "answer": "Virgil van Dijk",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8b0ba9",
+  "q": "Liverpool's 1985-86 side achieved the club's first-ever League and FA Cup 'Double' — and beat which neighbour in that year's all-Merseyside FA Cup final?",
+  "o": [
+   "Everton",
+   "Tranmere Rovers",
+   "Manchester United",
+   "Wimbledon"
+  ],
+  "answer": "Everton",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ca69ea",
+  "q": "Which goalkeeper, signed in 2018, is widely credited alongside Van Dijk with fixing Liverpool's defence and is regarded as one of the best in the club's history?",
+  "o": [
+   "Loris Karius",
+   "Alisson Becker",
+   "Simon Mignolet",
+   "Adrian"
+  ],
+  "answer": "Alisson Becker",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_80e5cb",
+  "q": "By what name was Manchester United originally founded in 1878, before adopting its current identity in 1902?",
+  "o": [
+   "Newton Heath LYR",
+   "Manchester Central",
+   "Heaton Park Rovers",
+   "Ardwick FC"
+  ],
+  "answer": "Newton Heath LYR",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3723f9",
+  "q": "Which disaster on 6 February 1958 claimed the lives of eight of the 'Busby Babes'?",
+  "o": [
+   "The Munich air disaster",
+   "The Hillsborough disaster",
+   "The Heysel disaster",
+   "The Bradford fire"
+  ],
+  "answer": "The Munich air disaster",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9d23bf",
+  "q": "Who was the first manager to lead Manchester United to a European Cup, in 1968?",
+  "o": [
+   "Sir Matt Busby",
+   "Tommy Docherty",
+   "Sir Alex Ferguson",
+   "Wilf McGuinness"
+  ],
+  "answer": "Sir Matt Busby",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_42d3ad",
+  "q": "Which combative captain, signed from West Brom in 1981, became known as 'Captain Marvel' through the 1980s?",
+  "o": [
+   "Steve Bruce",
+   "Bryan Robson",
+   "Roy Keane",
+   "Norman Whiteside"
+  ],
+  "answer": "Bryan Robson",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63516b",
+  "q": "Norman Whiteside set a record at the 1982 World Cup that still stands. What was it?",
+  "o": [
+   "Youngest player to appear at a World Cup finals",
+   "Youngest World Cup goalscorer",
+   "Fastest World Cup goal",
+   "First substitute to score at a World Cup"
+  ],
+  "answer": "Youngest player to appear at a World Cup finals",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b41587",
+  "q": "Sir Alex Ferguson nearly lost his job early in his United reign before a 1990 FA Cup run saved him. Who scored the famous third-round winner at Nottingham Forest that legend says rescued his tenure?",
+  "o": [
+   "Mark Robins",
+   "Brian McClair",
+   "Lee Sharpe",
+   "Mark Hughes"
+  ],
+  "answer": "Mark Robins",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fe34a1",
+  "q": "Eric Cantona arrived at United in 1992 in a surprise deal from which rival, having just helped them win the title?",
+  "o": [
+   "Leeds United",
+   "Sheffield Wednesday",
+   "Aston Villa",
+   "Nottingham Forest"
+  ],
+  "answer": "Leeds United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c3fcce",
+  "q": "On 25 January 1995, Eric Cantona was banned for eight months after doing what to a Crystal Palace supporter at Selhurst Park?",
+  "o": [
+   "A kung-fu kick",
+   "Throwing his boot",
+   "Spitting at him",
+   "Headbutting a steward"
+  ],
+  "answer": "A kung-fu kick",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e53c04",
+  "q": "In 1995, Ferguson sold Ince, Hughes and Kanchelskis and trusted youth, prompting a pundit's infamous line. Complete it: 'You can't win anything with...'",
+  "o": [
+   "'...this lot'",
+   "'...kids'",
+   "'...babies'",
+   "'...children'"
+  ],
+  "answer": "'...kids'",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_eb8687",
+  "q": "Which winger scored directly from the halfway line against Wimbledon in 1996, announcing himself to the nation?",
+  "o": [
+   "Ryan Giggs",
+   "David Beckham",
+   "Lee Sharpe",
+   "Andrei Kanchelskis"
+  ],
+  "answer": "David Beckham",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_15548d",
+  "q": "In the 1999 Champions League final, who scored United's stoppage-time winner against Bayern Munich to complete the Treble?",
+  "o": [
+   "Teddy Sheringham",
+   "Dwight Yorke",
+   "Ole Gunnar Solskjaer",
+   "Andy Cole"
+  ],
+  "answer": "Ole Gunnar Solskjaer",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_89d02c",
+  "q": "Roy Keane produced one of football's great captain's performances in the 1999 Champions League semi-final at Juventus, despite knowing what?",
+  "o": [
+   "He was being sold that summer",
+   "A booking ruled him out of the final",
+   "He had a broken foot",
+   "Ferguson was about to drop him"
+  ],
+  "answer": "A booking ruled him out of the final",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e00b64",
+  "q": "'Football, bloody hell!' was Sir Alex Ferguson's reaction in the moments after which match?",
+  "o": [
+   "The 1999 Champions League final",
+   "The 4-3 win over Real Madrid",
+   "The 8-2 win over Arsenal",
+   "The 1996 FA Cup final"
+  ],
+  "answer": "The 1999 Champions League final",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a9c3a0",
+  "q": "Sir Alex Ferguson famously coined which phrase, later added to the Oxford English Dictionary, to describe the tense run-in of a title race?",
+  "o": [
+   "Squeaky bum time",
+   "Park the bus",
+   "Rotation policy",
+   "Total football"
+  ],
+  "answer": "Squeaky bum time",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_860d8d",
+  "q": "Manchester City pipped United to the 2011-12 title in stoppage time of the final day. Whose goal won City the title that afternoon?",
+  "o": [
+   "Edin Dzeko",
+   "Sergio Aguero",
+   "Mario Balotelli",
+   "Yaya Toure"
+  ],
+  "answer": "Sergio Aguero",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_50030f",
+  "q": "Whose record did Wayne Rooney overtake in 2017 to become United's all-time leading goalscorer?",
+  "o": [
+   "Denis Law",
+   "Bobby Charlton",
+   "Jack Rowley",
+   "Ruud van Nistelrooy"
+  ],
+  "answer": "Bobby Charlton",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5749fd",
+  "q": "Which player holds Manchester United's all-time appearance record with 963 games?",
+  "o": [
+   "Bobby Charlton",
+   "Paul Scholes",
+   "Ryan Giggs",
+   "Gary Neville"
+  ],
+  "answer": "Ryan Giggs",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_96ffa8",
+  "q": "As of 2025, how many top-flight English league titles had Manchester United won in total, level with Liverpool at the top of the all-time list?",
+  "o": [
+   "18",
+   "19",
+   "20",
+   "22"
+  ],
+  "answer": "20",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_788245",
+  "q": "In January 2026, Manchester United sacked manager Ruben Amorim and put which club legend in interim charge for the rest of the 2025-26 season?",
+  "o": [
+   "Michael Carrick",
+   "Darren Fletcher",
+   "Ole Gunnar Solskjaer",
+   "Wayne Rooney"
+  ],
+  "answer": "Michael Carrick",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_408631",
+  "q": "Which Manchester City goalkeeper famously played the final 17 minutes of the 1956 FA Cup final win with a broken neck?",
+  "o": [
+   "Bert Trautmann",
+   "Joe Corrigan",
+   "Frank Swift",
+   "Nicky Weaver"
+  ],
+  "answer": "Bert Trautmann",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e7e02a",
+  "q": "At exactly which minute and second did Sergio Aguero score the title-winning goal against QPR in May 2012?",
+  "o": [
+   "90:00",
+   "91:15",
+   "93:20",
+   "94:45"
+  ],
+  "answer": "93:20",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f14d7e",
+  "q": "Who scored the stoppage-time equaliser in the 1999 Division Two play-off final against Gillingham, a goal credited with saving the modern club?",
+  "o": [
+   "Shaun Goater",
+   "Paul Dickov",
+   "Kevin Horlock",
+   "Nicky Weaver"
+  ],
+  "answer": "Paul Dickov",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c7f403",
+  "q": "Robinho was City's first marquee signing on the day of the 2008 Abu Dhabi takeover. Which club did he join from?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "AC Milan",
+   "Santos"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d951e5",
+  "q": "Sergio Aguero broke City's all-time goalscoring record in 2017, surpassing a mark that had stood for 78 years. Whose record did he beat?",
+  "o": [
+   "Tommy Johnson",
+   "Eric Brook",
+   "Joe Hayes",
+   "Francis Lee"
+  ],
+  "answer": "Eric Brook",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_38e2bb",
+  "q": "In the 2023 Champions League final, who scored the only goal as City beat Inter Milan to complete the Treble?",
+  "o": [
+   "Erling Haaland",
+   "Kevin De Bruyne",
+   "Rodri",
+   "Ilkay Gundogan"
+  ],
+  "answer": "Rodri",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ffadce",
+  "q": "Erling Haaland set a new single-season Premier League goal record in his debut 2022-23 campaign. How many league goals did he score?",
+  "o": [
+   "32",
+   "34",
+   "36",
+   "40"
+  ],
+  "answer": "36",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_011097",
+  "q": "City's 2017-18 side earned a nickname for setting an English top-flight record. What were they called?",
+  "o": [
+   "The Invincibles",
+   "The Centurions",
+   "The Galacticos",
+   "The Immortals"
+  ],
+  "answer": "The Centurions",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_116d91",
+  "q": "City won their first major European trophy back in 1970. Which competition was it?",
+  "o": [
+   "European Cup",
+   "UEFA Cup",
+   "European Cup Winners' Cup",
+   "Inter-Cities Fairs Cup"
+  ],
+  "answer": "European Cup Winners' Cup",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a83384",
+  "q": "Before the 2011-12 triumph, when had City last won the English top-flight league title?",
+  "o": [
+   "1956",
+   "1968",
+   "1976",
+   "1981"
+  ],
+  "answer": "1968",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5884c1",
+  "q": "Which two managers shared the dugout during City's celebrated late-1960s golden era?",
+  "o": [
+   "Joe Mercer and Malcolm Allison",
+   "Tony Book and Ron Saunders",
+   "Les McDowall and George Poyser",
+   "Mel Machin and Howard Kendall"
+  ],
+  "answer": "Joe Mercer and Malcolm Allison",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cf3809",
+  "q": "Roberto Mancini's first trophy as City manager came in 2011. Which competition was it?",
+  "o": [
+   "League Cup",
+   "FA Cup",
+   "Premier League",
+   "Community Shield"
+  ],
+  "answer": "FA Cup",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7acfe7",
+  "q": "Cult hero Shaun Goater, a fan favourite around the turn of the millennium, hailed from which unusual footballing nation?",
+  "o": [
+   "Bermuda",
+   "Jamaica",
+   "Trinidad and Tobago",
+   "Guyana"
+  ],
+  "answer": "Bermuda",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_394986",
+  "q": "City's home before the Etihad was Maine Road. For how long was it the club's home ground?",
+  "o": [
+   "About 35 years",
+   "About 80 years",
+   "About 50 years",
+   "About 100 years"
+  ],
+  "answer": "About 80 years",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_14a837",
+  "q": "Which City striker scored the goal at Southampton that took the 2017-18 side to their historic 100th point?",
+  "o": [
+   "Sergio Aguero",
+   "Raheem Sterling",
+   "Gabriel Jesus",
+   "Leroy Sane"
+  ],
+  "answer": "Gabriel Jesus",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b676df",
+  "q": "Pep Guardiola won his first trophy at City in February 2018. Which one was it?",
+  "o": [
+   "FA Cup",
+   "League Cup",
+   "Community Shield",
+   "Premier League"
+  ],
+  "answer": "League Cup",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_93c49e",
+  "q": "City's round crest, reintroduced in 2016, features a ship and a red rose. What does the ship represent?",
+  "o": [
+   "Manchester's seafaring past",
+   "The Manchester Ship Canal",
+   "A Viking invasion legend",
+   "The club's first sponsor"
+  ],
+  "answer": "The Manchester Ship Canal",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_09d031",
+  "q": "Yaya Toure, a midfield colossus of City's first title era, joined the club in 2010 from which side?",
+  "o": [
+   "Olympiacos",
+   "Barcelona",
+   "Monaco",
+   "AS Roma"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_7c4b52",
+  "kind": "stale",
+  "claim": "\"How many times has Brazil won the Copa América since 2000?\" keys 3 (2004, 2007, 2019) — accurate now, but the count increments and the key becomes wrong if Brazil win the 2028 edition.",
+  "q": "How many times has Brazil won the Copa América since 2000?",
+  "o": [
+   "2",
+   "3",
+   "1",
+   "4"
+  ],
+  "answer": "3",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2f3fd9",
+  "kind": "stale",
+  "claim": "Egypt's lead in AFCON appearances over Ivory Coast is only about one tournament, so an edition Egypt misses and Ivory Coast reaches would tie or flip this unqualified 'record' claim.",
+  "q": "Which country has the record for the most appearances at the African Cup of Nations?",
+  "o": [
+   "Nigeria",
+   "Ivory Coast",
+   "Ghana",
+   "Egypt"
+  ],
+  "answer": "Egypt",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_81a321",
+  "kind": "stale",
+  "claim": "'Most UEFA Super Cup titles' is a live record — Ancelotti has 5 (Milan 2003/2007, Real Madrid 2014/2022/2024) but Guardiola has 4 (Barcelona 2009/2011, Bayern 2013, Man City 2023) and is still managing in Europe, so the keyed answer can be overtaken.",
+  "q": "Which manager has won the most UEFA Super Cup titles?",
+  "o": [
+   "Pep Guardiola",
+   "Carlo Ancelotti",
+   "Alex Ferguson",
+   "Zidane"
+  ],
+  "answer": "Carlo Ancelotti",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea8bbc",
+  "kind": "stale",
+  "claim": "\"Germany won their LAST European Championship title in which year?\" keys 1996, which is correct today but is a moving claim — a German win at Euro 2028 silently makes the keyed answer wrong; rephrase to a fixed fact (e.g. \"Germany beat the Czech Republic in the final of which European Championship?\").",
+  "q": "Germany won their last European Championship title in which year?",
+  "o": [
+   "1996",
+   "2000",
+   "2004",
+   "2008"
+  ],
+  "answer": "1996",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e649d5",
+  "kind": "multiple_correct",
+  "claim": "Bayern Munich 2020 is widely reported as a sextuple too (Bundesliga, DFB-Pokal, UCL, DFL-Supercup, UEFA Super Cup, Club World Cup); Barcelona 2009 is only uniquely correct because Bayern's sixth trophy came in Feb 2021 (not one calendar year) and theirs was not 'unprecedented' — a fan may reasonably pick Bayern.",
+  "q": "Which club won an unprecedented six trophies in a single calendar year — known as the sextuple?",
+  "o": [
+   "Real Madrid 2022",
+   "Man City 2023",
+   "Bayern Munich 2020",
+   "Barcelona 2009"
+  ],
+  "answer": "Barcelona 2009",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e1f434",
+  "kind": "stale",
+  "claim": "'Which club was the last to stop Real Madrid and Barcelona winning the title' is a rolling claim — verified still true (Barcelona won 2025-26), but the stem silently becomes false the next time a third club wins La Liga, even though Atlético would remain the keyed answer.",
+  "q": "Which La Liga club was the last to stop Real Madrid and Barcelona winning the title — in 2020-21?",
+  "o": [
+   "Sevilla",
+   "Real Sociedad",
+   "Villarreal",
+   "Atlético"
+  ],
+  "answer": "Atlético",
+  "cat": "LaLiga",
+  "diff": "easy"
+ }
+]

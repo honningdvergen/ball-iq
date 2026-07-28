@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_7a4200",
+  "kind": "stale",
+  "claim": "\"How many Ballon d'Or awards has Messi won in total\" has no \"as of\" qualifier (unlike q_816738 in the same batch), and the option list already contains 9, so the key silently rots if he ever wins another.",
+  "q": "How many Ballon d'Or awards has Lionel Messi won in total?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "8",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c07ae5",
+  "kind": "stale",
+  "claim": "\"How many times has Liverpool won the European Cup or Champions League\" is a running count (currently 6) that silently becomes wrong the next time Liverpool win it; it needs an \"as of\" anchor like q_1a3fc0 uses.",
+  "q": "How many times has Liverpool won the European Cup or Champions League?",
+  "o": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": "6",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2598ad",
+  "kind": "stale",
+  "claim": "\"Reached the furthest in any men's World Cup\" is an open-ended superlative (currently South Korea's 2002 semi-final) that silently rots if any AFC nation ever goes further.",
+  "q": "Which Asian country has reached the furthest in any men's World Cup?",
+  "o": [
+   "Japan",
+   "China",
+   "Saudi Arabia",
+   "South Korea"
+  ],
+  "answer": "South Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ebeed9",
+  "kind": "stale",
+  "claim": "The count of men who have won the World Cup as both player and manager is currently three but is a live tally that changes with future tournaments; the \"Four or more\" option makes the rot explicit, and the correct option is also the only one that lists three names, a length/specificity tell.",
+  "q": "How many men have won the World Cup both as a player and as a manager?",
+  "o": [
+   "Three — Zagallo, Beckenbauer, Deschamps",
+   "Two — Zagallo and Beckenbauer",
+   "One — only Beckenbauer",
+   "Four or more"
+  ],
+  "answer": "Three — Zagallo, Beckenbauer, Deschamps",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e7f32a",
+  "kind": "stale",
+  "claim": "The stem is written in future tense ('will host') but the 2026 World Cup concluded in July 2026, so the wording is already out of date.",
+  "q": "Which country will host the 2026 World Cup alongside Canada and Mexico?",
+  "o": [
+   "USA",
+   "Brazil",
+   "Japan",
+   "England"
+  ],
+  "answer": "USA",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_94a74b",
+  "kind": "stale",
+  "claim": "Arsenal lead on FA Cups by a single title (14 v Man Utd's 13 after their 2024 win); one more Man Utd FA Cup makes two options equally correct.",
+  "q": "Which club has won the most FA Cup titles in history?",
+  "o": [
+   "Liverpool",
+   "Man Utd",
+   "Chelsea",
+   "Arsenal"
+  ],
+  "answer": "Arsenal",
+  "cat": "PL",
+  "diff": "medium"
+ }
+]

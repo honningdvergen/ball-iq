@@ -1,0 +1,47 @@
+[
+ {
+  "id": "q_90eb83",
+  "kind": "stale",
+  "claim": "The FA Cup win count is a rolling record: the keyed 14 is correct only if Arsenal did not win the 2025-26 FA Cup (final played May 2026), and it must be re-verified every season the stem's 'as of' year is advanced.",
+  "q": "As of the 2025-26 season, Arsenal hold the record for most FA Cup wins - how many times have they lifted it?",
+  "o": [
+   "14",
+   "12",
+   "13",
+   "15"
+  ],
+  "answer": "14",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0aecfa",
+  "kind": "wrong_answer",
+  "claim": "The stem dates Juary's winner in the 1987 European Cup final to the 84th minute; Wikipedia's match details and standard records give it as the 80th minute (Kögl 25', Madjer 77', Juary 80') — the keyed answer Juary is correct, only the minute is wrong.",
+  "q": "Who scored Porto's 84th-minute winner in the 1987 European Cup final to beat Bayern Munich 2-1?",
+  "o": [
+   "Paulo Futre",
+   "Fernando Gomes",
+   "Juary",
+   "Rabah Madjer"
+  ],
+  "answer": "Juary",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d1ab4",
+  "kind": "multiple_correct",
+  "claim": "Bruno Conti — also an option — likewise blazed his penalty over the bar in the same 1984 shootout (Roma's second kick), and several retellings credit Grobbelaar's antics with unsettling him too, so 'Conti' is defensible even though the spaghetti-legs specifically preceded Graziani's kick.",
+  "q": "Bruce Grobbelaar's 'spaghetti legs' antics are credited with unsettling which Roma player into blazing his penalty over the bar in the 1984 final shootout?",
+  "o": [
+   "Bruno Conti",
+   "Francesco Graziani",
+   "Paulo Roberto Falcão",
+   "Agostino Di Bartolomei"
+  ],
+  "answer": "Francesco Graziani",
+  "cat": "SerieA",
+  "diff": "hard"
+ }
+]

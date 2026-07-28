@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_b24955",
+  "kind": "stale",
+  "claim": "'Promoted from Serie B the most times' is a cumulative superlative that changes with future promotions, and the Brescia key should be re-verified against Genoa/Bari, which are also cited for most Serie B promotions/titles.",
+  "q": "Which Italian club has been promoted from Serie B the most times?",
+  "o": [
+   "Brescia",
+   "Empoli",
+   "Bari",
+   "Palermo"
+  ],
+  "answer": "Brescia",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bda0d8",
+  "kind": "stale",
+  "claim": "'How many different countries have had two of their clubs meet in a Champions League final' (currently 4: Spain, England, Italy, Germany) silently increments the first time an all-domestic final happens for a fifth country.",
+  "q": "How many different countries have had two of their clubs meet in a Champions League final?",
+  "o": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": "4",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6e0e62",
+  "kind": "multiple_correct",
+  "claim": "Cádiz CF is also widely nicknamed \"El Submarino Amarillo\" in Spain (the nickname predates Villarreal's international fame), so the Cadiz option is defensibly correct for the stem as written.",
+  "q": "Which La Liga club has the nickname El Submarino Amarillo — The Yellow Submarine?",
+  "o": [
+   "Cadiz",
+   "Villarreal",
+   "Getafe",
+   "Las Palmas"
+  ],
+  "answer": "Villarreal",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_236cd2",
+  "kind": "multiple_correct",
+  "claim": "'UEFA Cup' and 'Europa League' are the same competition under two names (renamed in 2009), and Frankfurt's earlier 1980 win — the '42 years' referenced in the stem — was as the UEFA Cup, so a knowledgeable player can defend the UEFA Cup option; one of the two names should be replaced.",
+  "q": "Eintracht Frankfurt won which European trophy in 2022 — their first in 42 years?",
+  "o": [
+   "Champions League",
+   "Europa League",
+   "Conference League",
+   "UEFA Cup"
+  ],
+  "answer": "Europa League",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_727865",
+  "kind": "stale",
+  "claim": "The stem's qualifier 'Premier League club' is no longer true of Southampton, who were relegated to the Championship at the end of 2024-25; the nickname fact is unaffected but the qualifier has rotted.",
+  "q": "Which Premier League club is known as The Saints?",
+  "o": [
+   "Crystal Palace",
+   "Southampton",
+   "Fulham",
+   "QPR"
+  ],
+  "answer": "Southampton",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ea8bbc",
+  "kind": "stale",
+  "claim": "\"Germany won their LAST European Championship title in which year?\" keys 1996, which is correct today but silently rots the moment Germany win another Euro (2028 onward); anchor it as \"Germany beat the Czech Republic in the final of which European Championship?\" instead.",
+  "q": "Germany won their last European Championship title in which year?",
+  "o": [
+   "1996",
+   "2000",
+   "2004",
+   "2008"
+  ],
+  "answer": "1996",
+  "cat": "Euros",
+  "diff": "medium"
+ }
+]

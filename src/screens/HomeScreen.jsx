@@ -8,7 +8,7 @@ import { getWordleAnswer } from "../lib/wordle.js";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { FootleHero } from "../components/FootleHero.jsx";
-import { APP_STORE_URL } from "../lib/links.js";
+import { APP_STORE_URL, PLAY_STORE_URL } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
 // ── Footle HERO card (DESKTOP web only) ──────────────────────────────────────
@@ -506,8 +506,8 @@ function HomeScreenImpl({
       {/* Take Ball IQ everywhere — app-download banner (desktop-web only).
           Hidden below 1024 and in installed PWAs/native (you're already in the
           app there). App Store badge uses the known-good Apple glyph
-          (viewBox 0 0 384 512). Android intentionally a non-link ("coming
-          soon") — a dead store link is worse than none. */}
+          (viewBox 0 0 384 512). Google Play went live 2026-07-27, so the
+          former "Android coming soon" text is now a real badge. */}
       <div className="home-app-banner">
         <div className="hab-copy">
           <div className="hab-title">Take {APP_NAME} everywhere</div>
@@ -523,7 +523,15 @@ function HomeScreenImpl({
               <span className="hab-store-nm">App Store</span>
             </span>
           </a>
-          <span className="hab-soon">Android coming soon</span>
+          <a className="hab-store" href={PLAY_STORE_URL} target="_blank" rel="noopener" aria-label="Get it on Google Play">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path fill="currentColor" d="M4 3.5 20 12 4 20.5z" />
+            </svg>
+            <span className="hab-store-txt">
+              <span className="hab-store-ey">Get it on</span>
+              <span className="hab-store-nm">Google Play</span>
+            </span>
+          </a>
         </div>
       </div>
       </div>

@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_17e0c1",
+  "q": "Which of these Portuguese clubs is based in the Azores islands?",
+  "o": [
+   "Marítimo",
+   "Santa Clara",
+   "Nacional",
+   "Farense"
+  ],
+  "answer": "Santa Clara",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_473ad5",
+  "q": "The 'Derby do Minho' is a heated rivalry between Braga and which club?",
+  "o": [
+   "Rio Ave",
+   "Moreirense",
+   "Vitória de Guimarães",
+   "Famalicão"
+  ],
+  "answer": "Vitória de Guimarães",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_448323",
+  "q": "Which Portuguese stadium hosted both the 2014 and 2020 Champions League finals?",
+  "o": [
+   "Estádio do Dragão",
+   "Estádio da Luz",
+   "Estádio José Alvalade",
+   "Estádio Municipal de Braga"
+  ],
+  "answer": "Estádio da Luz",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4a5409",
+  "q": "José Mourinho's Porto won the 2003 UEFA Cup final 3-2 against which club?",
+  "o": [
+   "Celtic",
+   "Rangers",
+   "Lazio",
+   "Marseille"
+  ],
+  "answer": "Celtic",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b55f3",
+  "q": "Sporting CP signed striker Viktor Gyökeres in 2023 from which English club?",
+  "o": [
+   "Norwich City",
+   "Brighton",
+   "Coventry City",
+   "Middlesbrough"
+  ],
+  "answer": "Coventry City",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d8800",
+  "q": "Sporting CP's long-serving goalkeeper Rui Patrício left in 2018 to join which Premier League club?",
+  "o": [
+   "Leicester City",
+   "Wolves",
+   "Everton",
+   "West Ham"
+  ],
+  "answer": "Wolves",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_668335",
+  "q": "Which Algerian forward scored a legendary backheel equaliser for Porto in the 1987 European Cup final?",
+  "o": [
+   "Lakhdar Belloumi",
+   "Rabah Madjer",
+   "Djamel Menad",
+   "Salah Assad"
+  ],
+  "answer": "Rabah Madjer",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd6126",
+  "q": "As of 2024, which 1940s Sporting CP striker was still the Primeira Liga's all-time record goalscorer?",
+  "o": [
+   "Fernando Peyroteo",
+   "Eusébio",
+   "Fernando Gomes",
+   "Manuel Vasques"
+  ],
+  "answer": "Fernando Peyroteo",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7d43eb",
+  "q": "Which Porto striker, nicknamed 'Bibota', won the European Golden Boot twice in the 1980s?",
+  "o": [
+   "Juary",
+   "Fernando Gomes",
+   "Domingos Paciência",
+   "Rui Barros"
+  ],
+  "answer": "Fernando Gomes",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c394c0",
+  "q": "Who managed Porto to the 1998-99 title, sealing five in a row, before later winning Euro 2016 with Portugal?",
+  "o": [
+   "António Oliveira",
+   "Jesualdo Ferreira",
+   "Fernando Santos",
+   "Carlos Queiroz"
+  ],
+  "answer": "Fernando Santos",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_10b6e2",
+  "q": "Which Romanian coach guided Sporting CP to the 2001-02 Primeira Liga title?",
+  "o": [
+   "Mircea Lucescu",
+   "László Bölöni",
+   "Anghel Iordănescu",
+   "Gheorghe Hagi"
+  ],
+  "answer": "László Bölöni",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bc9a11",
+  "q": "Which club won the first national Portuguese league championship in 1934-35?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "Belenenses",
+   "Porto"
+  ],
+  "answer": "Porto",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6caf3d",
+  "q": "Braga finished as Primeira Liga runners-up for the first time in which season, under manager Domingos Paciência?",
+  "o": [
+   "2003-04",
+   "2009-10",
+   "2015-16",
+   "1997-98"
+  ],
+  "answer": "2009-10",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a7e321",
+  "q": "Which Porto striker scored a then-record 17 goals in the 2010-11 Europa League-winning campaign?",
+  "o": [
+   "Hulk",
+   "Jackson Martínez",
+   "Radamel Falcao",
+   "Lisandro López"
+  ],
+  "answer": "Radamel Falcao",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_573e34",
+  "q": "Sporting CP won their first major European trophy in 1964 — which competition?",
+  "o": [
+   "Fairs Cup",
+   "European Cup",
+   "UEFA Cup",
+   "Cup Winners' Cup"
+  ],
+  "answer": "Cup Winners' Cup",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ac9108",
+  "q": "Which Portuguese star of Porto's 1987 European Cup win finished runner-up in that year's Ballon d'Or?",
+  "o": [
+   "Paulo Futre",
+   "Fernando Gomes",
+   "João Pinto",
+   "Rui Barros"
+  ],
+  "answer": "Paulo Futre",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_77bd7e",
+  "q": "Who was Porto's head coach for their 1987 European Cup triumph?",
+  "o": [
+   "Tomislav Ivić",
+   "Artur Jorge",
+   "José Maria Pedroto",
+   "Bobby Robson"
+  ],
+  "answer": "Artur Jorge",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_295b7b",
+  "q": "Porto went through the entire 2010-11 Primeira Liga season unbeaten under which young manager?",
+  "o": [
+   "Sérgio Conceição",
+   "Vítor Pereira",
+   "André Villas-Boas",
+   "Marco Silva"
+  ],
+  "answer": "André Villas-Boas",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c658ea",
+  "q": "Galatasaray vs Fenerbahçe, played across two continents, is known as the Intercontinental Derby. On which side of Istanbul is Fenerbahçe based?",
+  "o": [
+   "The Asian side, in Kadıköy",
+   "The European side, in Beyoğlu",
+   "The European side, in Beşiktaş",
+   "The Asian side, in Üsküdar"
+  ],
+  "answer": "The Asian side, in Kadıköy",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ea989b",
+  "q": "Istanbul's traditional 'Big Three' of Turkish football are Galatasaray, Fenerbahçe and which other club?",
+  "o": [
+   "Trabzonspor",
+   "Başakşehir",
+   "Beşiktaş",
+   "Bursaspor"
+  ],
+  "answer": "Beşiktaş",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1c4365",
+  "q": "Which Süper Lig club is nicknamed the 'Black Eagles' (Kara Kartallar)?",
+  "o": [
+   "Beşiktaş",
+   "Trabzonspor",
+   "Fenerbahçe",
+   "Gençlerbirliği"
+  ],
+  "answer": "Beşiktaş",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_acd9f4",
+  "q": "Which colours are traditionally worn by Fenerbahçe?",
+  "o": [
+   "Red and yellow",
+   "Claret and blue",
+   "Black and white",
+   "Yellow and navy blue"
+  ],
+  "answer": "Yellow and navy blue",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d22618",
+  "q": "As of the end of the 2023-24 season, which striker was the Süper Lig's all-time record goalscorer with 249 league goals?",
+  "o": [
+   "Tanju Çolak",
+   "Hakan Şükür",
+   "Metin Oktay",
+   "Aykut Kocaman"
+  ],
+  "answer": "Hakan Şükür",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_39fbc4",
+  "q": "Trabzonspor traditionally play in which colour combination?",
+  "o": [
+   "Claret and blue",
+   "Green and white",
+   "Red and navy",
+   "Purple and yellow"
+  ],
+  "answer": "Claret and blue",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9b0558",
+  "q": "After leaving Arsenal in January 2021, Mesut Özil signed for which Süper Lig club?",
+  "o": [
+   "Galatasaray",
+   "Beşiktaş",
+   "Fenerbahçe",
+   "Trabzonspor"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9ab672",
+  "q": "Which club ended a 38-year wait by winning the 2021-22 Süper Lig title, their first since 1983-84?",
+  "o": [
+   "Trabzonspor",
+   "Bursaspor",
+   "Beşiktaş",
+   "Fenerbahçe"
+  ],
+  "answer": "Trabzonspor",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_48bcad",
+  "q": "Beşiktaş's new stadium on the site of the old İnönü ground opened in 2016 under which sponsorship name?",
+  "o": [
+   "Türk Telekom Arena",
+   "Ülker Stadium",
+   "RAMS Park",
+   "Vodafone Arena"
+  ],
+  "answer": "Vodafone Arena",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ff6761",
+  "q": "Fenerbahçe's stadium in Kadıköy has traditionally carried which name?",
+  "o": [
+   "Ali Sami Yen Stadium",
+   "Şükrü Saracoğlu Stadium",
+   "İnönü Stadium",
+   "Atatürk Olympic Stadium"
+  ],
+  "answer": "Şükrü Saracoğlu Stadium",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9749fa",
+  "q": "Which Portuguese coach, a two-time Champions League winner, took charge of Fenerbahçe in the summer of 2024?",
+  "o": [
+   "Vítor Pereira",
+   "Paulo Fonseca",
+   "José Mourinho",
+   "Nuno Espírito Santo"
+  ],
+  "answer": "José Mourinho",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_31ca74",
+  "q": "Who managed Beşiktaş to back-to-back Süper Lig titles in 2015-16 and 2016-17?",
+  "o": [
+   "Slaven Bilić",
+   "Sergen Yalçın",
+   "Abdullah Avcı",
+   "Şenol Güneş"
+  ],
+  "answer": "Şenol Güneş",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_19e2c7",
+  "q": "Which Anatolian club stunned Turkish football by pipping Fenerbahçe to the 2009-10 Süper Lig title on the final day?",
+  "o": [
+   "Bursaspor",
+   "Sivasspor",
+   "Kayserispor",
+   "Gaziantepspor"
+  ],
+  "answer": "Bursaspor",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5156d7",
+  "q": "Which club became the first from outside Istanbul to win the Turkish top flight, taking the 1975-76 title?",
+  "o": [
+   "Eskişehirspor",
+   "Göztepe",
+   "Trabzonspor",
+   "Bursaspor"
+  ],
+  "answer": "Trabzonspor",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_187817",
+  "q": "Which Portuguese winger, famed for his 'trivela' crosses, won Süper Lig titles with Beşiktaş in 2016 and 2017?",
+  "o": [
+   "Nani",
+   "Ricardo Quaresma",
+   "Bruma",
+   "Rafa Silva"
+  ],
+  "answer": "Ricardo Quaresma",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1c97ab",
+  "q": "Which Brazilian World Cup-winning left-back joined Fenerbahçe in 2007 after leaving Real Madrid?",
+  "o": [
+   "Roberto Carlos",
+   "Marcelo",
+   "Filipe Luís",
+   "Maxwell"
+  ],
+  "answer": "Roberto Carlos",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6910c6",
+  "q": "As of the end of the 2024-25 season, Fenerbahçe's most recent Süper Lig title had come in which season?",
+  "o": [
+   "2010-11",
+   "2013-14",
+   "2016-17",
+   "2018-19"
+  ],
+  "answer": "2013-14",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1c723f",
+  "q": "The 2020-21 Süper Lig title was decided on goal difference, with Beşiktaş edging which club after both finished on 84 points?",
+  "o": [
+   "Fenerbahçe",
+   "Trabzonspor",
+   "Başakşehir",
+   "Galatasaray"
+  ],
+  "answer": "Galatasaray",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_77d21e",
+  "q": "Which former Galatasaray midfielder was appointed head coach in June 2022 and delivered the 2022-23 Süper Lig title?",
+  "o": [
+   "Okan Buruk",
+   "Hasan Şaş",
+   "Tugay Kerimoğlu",
+   "Arda Turan"
+  ],
+  "answer": "Okan Buruk",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5ee512",
+  "q": "Which Galatasaray manager famously planted a club flag in the pitch at Fenerbahçe's stadium after winning the 1996 Turkish Cup final?",
+  "o": [
+   "Fatih Terim",
+   "Graeme Souness",
+   "Mircea Lucescu",
+   "Gheorghe Hagi"
+  ],
+  "answer": "Graeme Souness",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9e65ee",
+  "q": "Which Turkish striker left Beşiktaş for Lille in 2020 and helped them win the 2020-21 Ligue 1 title?",
+  "o": [
+   "Cenk Tosun",
+   "Enes Ünal",
+   "Burak Yılmaz",
+   "Umut Bozok"
+  ],
+  "answer": "Burak Yılmaz",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c6f6f2",
+  "q": "In 2017-18, which Turkish club topped a Champions League group containing Porto, RB Leipzig and Monaco?",
+  "o": [
+   "Galatasaray",
+   "Fenerbahçe",
+   "Başakşehir",
+   "Beşiktaş"
+  ],
+  "answer": "Beşiktaş",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_876dec",
+  "q": "Which French striker, known for his 'panther' celebration, was the Süper Lig's top scorer in 2017-18 as Galatasaray won the title?",
+  "o": [
+   "Bafétimbi Gomis",
+   "Alexandre Lacazette",
+   "Olivier Giroud",
+   "Wissam Ben Yedder"
+  ],
+  "answer": "Bafétimbi Gomis",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bef1a5",
+  "q": "In which year was Turkey's national top-flight league, now known as the Süper Lig, first contested?",
+  "o": [
+   "1923",
+   "1946",
+   "1959",
+   "1963"
+  ],
+  "answer": "1959",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_345892",
+  "q": "Beşiktaş are backed by which famous supporters' group, known for its anarchist-style 'A' in its logo?",
+  "o": [
+   "UltrAslan",
+   "çArşı",
+   "Genç Fenerbahçeliler",
+   "Teksas"
+  ],
+  "answer": "çArşı",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_038c00",
+  "q": "In the 2020-21 Champions League group stage, Demba Ba scored a famous breakaway goal as which Turkish club beat Manchester United 2-1?",
+  "o": [
+   "Trabzonspor",
+   "Galatasaray",
+   "İstanbul Başakşehir",
+   "Beşiktaş"
+  ],
+  "answer": "İstanbul Başakşehir",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b4e72d",
+  "q": "Which Turkish striker won the 1987-88 European Golden Boot after scoring 39 league goals for Galatasaray?",
+  "o": [
+   "Hakan Şükür",
+   "Tanju Çolak",
+   "Aykut Kocaman",
+   "Feyyaz Uçar"
+  ],
+  "answer": "Tanju Çolak",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a23755",
+  "q": "How many Turkish league titles did Trabzonspor win during their golden era between 1975-76 and 1983-84?",
+  "o": [
+   "Four",
+   "Five",
+   "Six",
+   "Seven"
+  ],
+  "answer": "Six",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b1a240",
+  "q": "Who scored the goal that gave Fenerbahçe a 1-0 win at Old Trafford in 1996, ending Manchester United's 40-year unbeaten home run in Europe?",
+  "o": [
+   "Elvir Baljić",
+   "Jay-Jay Okocha",
+   "Saffet Sancaklı",
+   "Elvir Bolić"
+  ],
+  "answer": "Elvir Bolić",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cdd0ed",
+  "q": "Fenerbahçe won the 2010-11 title level on 82 points with which club, edging them on head-to-head record?",
+  "o": [
+   "Galatasaray",
+   "Trabzonspor",
+   "Beşiktaş",
+   "Bursaspor"
+  ],
+  "answer": "Trabzonspor",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e0d524",
+  "q": "Which veteran Turkish midfielder, formerly of Inter and Newcastle, won the 2019-20 title with Başakşehir in his late thirties?",
+  "o": [
+   "Selçuk İnan",
+   "Mehmet Topal",
+   "Emre Belözoğlu",
+   "Arda Turan"
+  ],
+  "answer": "Emre Belözoğlu",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f25dce",
+  "q": "Which former Beşiktaş playmaker managed the club to a Süper Lig and Turkish Cup double in 2020-21?",
+  "o": [
+   "Sergen Yalçın",
+   "Slaven Bilić",
+   "Abdullah Avcı",
+   "Şenol Güneş"
+  ],
+  "answer": "Sergen Yalçın",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b63613",
+  "q": "Which Brazilian great was Fenerbahçe's manager when they reached the 2007-08 Champions League quarter-finals?",
+  "o": [
+   "Carlos Alberto Parreira",
+   "Zico",
+   "Vanderlei Luxemburgo",
+   "Mano Menezes"
+  ],
+  "answer": "Zico",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9a2066",
+  "q": "Beşiktaş went through the entire 1991-92 league season unbeaten under which British manager?",
+  "o": [
+   "Graeme Souness",
+   "John Toshack",
+   "Gordon Milne",
+   "Steve McClaren"
+  ],
+  "answer": "Gordon Milne",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_688a11",
+  "q": "Which Turkish club reached the 2012-13 Europa League semi-finals, narrowly losing to eventual finalists Benfica?",
+  "o": [
+   "Galatasaray",
+   "Beşiktaş",
+   "Trabzonspor",
+   "Fenerbahçe"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_418ec9",
+  "q": "Which former Fenerbahçe striker managed the club to the 2010-11 Süper Lig title?",
+  "o": [
+   "Ersun Yanal",
+   "Aykut Kocaman",
+   "Christoph Daum",
+   "Zico"
+  ],
+  "answer": "Aykut Kocaman",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e7108e",
+  "q": "Which striker left Trabzonspor for Ajax in 1997 after four prolific seasons on the Black Sea coast?",
+  "o": [
+   "Hami Mandıralı",
+   "Fatih Tekke",
+   "Shota Arveladze",
+   "Orhan Çıkırıkçı"
+  ],
+  "answer": "Shota Arveladze",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_376072",
+  "q": "How many points did Galatasaray amass in winning the 2023-24 Süper Lig, a Turkish top-flight record at the time?",
+  "o": [
+   "96",
+   "99",
+   "102",
+   "105"
+  ],
+  "answer": "102",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6268ce",
+  "q": "Which 1950s Fenerbahçe forward, nicknamed 'Ordinaryüs', is honoured with a statue near the club's Kadıköy home?",
+  "o": [
+   "Can Bartu",
+   "Lefter Küçükandonyadis",
+   "Zeki Rıza Sporel",
+   "Cemil Turan"
+  ],
+  "answer": "Lefter Küçükandonyadis",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_77a46e",
+  "q": "Who was Trabzonspor's head coach for their long-awaited 2021-22 Süper Lig title win?",
+  "o": [
+   "Ünal Karaman",
+   "Eddie Newton",
+   "Şenol Güneş",
+   "Abdullah Avcı"
+  ],
+  "answer": "Abdullah Avcı",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0d2717",
+  "q": "From which club did Napoli sign Diego Maradona in 1984 for a then world-record fee?",
+  "o": [
+   "Boca Juniors",
+   "Barcelona",
+   "Argentinos Juniors",
+   "River Plate"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_78207b",
+  "q": "Napoli's stadium was renamed after Diego Maradona in 2020. What was it called before?",
+  "o": [
+   "Stadio Arturo Collana",
+   "Stadio Partenopeo",
+   "Stadio San Paolo",
+   "Stadio Ascarelli"
+  ],
+  "answer": "Stadio San Paolo",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_84bbb8",
+  "q": "In which season did Napoli win their first-ever Serie A title?",
+  "o": [
+   "1984-85",
+   "1986-87",
+   "1987-88",
+   "1989-90"
+  ],
+  "answer": "1986-87",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5d778e",
+  "q": "Which manager guided Napoli to the 2022-23 Serie A title, their first in 33 years?",
+  "o": [
+   "Antonio Conte",
+   "Gennaro Gattuso",
+   "Luciano Spalletti",
+   "Maurizio Sarri"
+  ],
+  "answer": "Luciano Spalletti",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_19b641",
+  "q": "Who is Napoli's all-time record goalscorer as of 2024?",
+  "o": [
+   "Marek Hamšík",
+   "Diego Maradona",
+   "Dries Mertens",
+   "Edinson Cavani"
+  ],
+  "answer": "Dries Mertens",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_348a8a",
+  "q": "Napoli thrashed which club 5-1 to win the 1990 Supercoppa Italiana?",
+  "o": [
+   "Milan",
+   "Inter",
+   "Juventus",
+   "Sampdoria"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d567a",
+  "q": "Diego Maradona left Napoli in 1992 to join which club?",
+  "o": [
+   "Sevilla",
+   "Marseille",
+   "Boca Juniors",
+   "Newell's Old Boys"
+  ],
+  "answer": "Sevilla",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a12fb4",
+  "q": "How many Serie A goals did Gonzalo Higuaín score for Napoli in 2015-16, setting a new single-season record?",
+  "o": [
+   "32",
+   "34",
+   "36",
+   "38"
+  ],
+  "answer": "36",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_db0940",
+  "q": "After going bankrupt in 2004, Napoli were re-founded and forced to restart in which division?",
+  "o": [
+   "Serie B",
+   "Serie C1",
+   "Serie C2",
+   "Serie D"
+  ],
+  "answer": "Serie C1",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2204f",
+  "q": "Which club knocked Napoli out of their first-ever Champions League quarter-final in 2023?",
+  "o": [
+   "Inter",
+   "Juventus",
+   "Milan",
+   "Lazio"
+  ],
+  "answer": "Milan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b656b3",
+  "q": "Victor Osimhen won the 2022-23 Serie A Capocannoniere with how many goals?",
+  "o": [
+   "21",
+   "24",
+   "26",
+   "29"
+  ],
+  "answer": "26",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b6bb9d",
+  "q": "Who replaced Carlo Ancelotti as Napoli manager in December 2019?",
+  "o": [
+   "Maurizio Sarri",
+   "Gennaro Gattuso",
+   "Walter Mazzarri",
+   "Rafael Benítez"
+  ],
+  "answer": "Gennaro Gattuso",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_37f0e0",
+  "q": "Napoli beat which club on penalties to win the 2020 Coppa Italia final?",
+  "o": [
+   "Inter",
+   "Milan",
+   "Lazio",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0241da",
+  "q": "Napoli signed Edinson Cavani in 2010 from which Serie A club?",
+  "o": [
+   "Udinese",
+   "Palermo",
+   "Fiorentina",
+   "Bologna"
+  ],
+  "answer": "Palermo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28d40f",
+  "q": "In their first European Cup campaign in 1987-88, Napoli were knocked out in the first round by which club?",
+  "o": [
+   "Bayern Munich",
+   "Porto",
+   "Real Madrid",
+   "PSV Eindhoven"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f7339b",
+  "q": "Whose all-time Napoli goalscoring record did Marek Hamšík break in 2017?",
+  "o": [
+   "Careca",
+   "Diego Maradona",
+   "Attila Sallustro",
+   "Edinson Cavani"
+  ],
+  "answer": "Diego Maradona",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3187ac",
+  "q": "Napoli's 1990-91 European Cup run ended in a penalty shootout against which club?",
+  "o": [
+   "Red Star Belgrade",
+   "Dynamo Kyiv",
+   "Sparta Prague",
+   "Spartak Moscow"
+  ],
+  "answer": "Spartak Moscow",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bd8f40",
+  "q": "Who managed Napoli to their first Scudetto in 1986-87?",
+  "o": [
+   "Albertino Bigon",
+   "Ottavio Bianchi",
+   "Rino Marchesi",
+   "Luís Vinício"
+  ],
+  "answer": "Ottavio Bianchi",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2df3a6",
+  "q": "Gonzalo Higuaín's 2016 transfer from Napoli to Juventus was for what fee, then an Italian record?",
+  "o": [
+   "€70m",
+   "€80m",
+   "€90m",
+   "€100m"
+  ],
+  "answer": "€90m",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a3b0b7",
+  "q": "Napoli famously let a Serie A title lead slip late in 1987-88, losing the Scudetto to which club?",
+  "o": [
+   "Milan",
+   "Inter",
+   "Juventus",
+   "Sampdoria"
+  ],
+  "answer": "Milan",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_584206",
+  "q": "Which defender's late header won Napoli's April 2018 match at Juventus, briefly reigniting their title bid?",
+  "o": [
+   "Raúl Albiol",
+   "Kalidou Koulibaly",
+   "Nikola Maksimović",
+   "Mário Rui"
+  ],
+  "answer": "Kalidou Koulibaly",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_957cca",
+  "q": "What is the name of Benfica's home stadium, rebuilt in 2003?",
+  "o": [
+   "Estádio da Luz",
+   "Estádio do Dragão",
+   "Estádio José Alvalade",
+   "Estádio do Bessa"
+  ],
+  "answer": "Estádio da Luz",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6d9217",
+  "q": "Who is Benfica's all-time record goalscorer?",
+  "o": [
+   "Eusébio",
+   "Nené",
+   "José Águas",
+   "Nuno Gomes"
+  ],
+  "answer": "Eusébio",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0ee1f4",
+  "q": "Benfica contest the fierce Lisbon derby, 'O Derby', against which club?",
+  "o": [
+   "Sporting CP",
+   "Porto",
+   "Boavista",
+   "Braga"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a17c3",
+  "q": "Enzo Fernández left Benfica in January 2023 for a British-record fee — which club signed him?",
+  "o": [
+   "Chelsea",
+   "Liverpool",
+   "Manchester United",
+   "Arsenal"
+  ],
+  "answer": "Chelsea",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d24c43",
+  "q": "Benfica won their first European Cup in 1961 by beating which club 3-2 in the final?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "AC Milan",
+   "Ajax"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_220fba",
+  "q": "What is Galatasaray's most famous nickname, chanted by fans since the club's early days?",
+  "o": [
+   "Kanaryalar",
+   "Cimbom",
+   "Kara Kartallar",
+   "Fırtına"
+  ],
+  "answer": "Cimbom",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9ba9f0",
+  "q": "Galatasaray's fierce rivalry with Fenerbahçe, spanning Istanbul's European and Asian sides, is known as what?",
+  "o": [
+   "The Bosphorus Derby",
+   "The Eternal Derby",
+   "The Intercontinental Derby",
+   "The Marmara Derby"
+  ],
+  "answer": "The Intercontinental Derby",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d99369",
+  "q": "In 2024, Galatasaray signed Nigerian striker Victor Osimhen on loan from which Italian club?",
+  "o": [
+   "Napoli",
+   "Juventus",
+   "AC Milan",
+   "Lille"
+  ],
+  "answer": "Napoli",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_731f57",
+  "q": "Dutch playmaker Wesley Sneijder joined Galatasaray in January 2013 from which club?",
+  "o": [
+   "Real Madrid",
+   "Ajax",
+   "Inter Milan",
+   "AC Milan"
+  ],
+  "answer": "Inter Milan",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c31705",
+  "q": "Which Galatasaray legend scored the fastest goal in World Cup history, after just 10.8 seconds in 2002?",
+  "o": [
+   "Hakan Şükür",
+   "Hasan Şaş",
+   "Ümit Davala",
+   "Arda Turan"
+  ],
+  "answer": "Hakan Şükür",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f85b21",
+  "q": "Where do Arsenal's nickname 'The Gunners' and the cannon on their crest come from?",
+  "o": [
+   "They were founded by workers at the Royal Arsenal armaments factory in Woolwich",
+   "A founder had served as an artillery officer in the British Army",
+   "Their first ground was built on a former military firing range",
+   "A Victorian arms manufacturer was the club's first sponsor"
+  ],
+  "answer": "They were founded by workers at the Royal Arsenal armaments factory in Woolwich",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0d4c2e",
+  "q": "Herbert Chapman successfully lobbied London Underground in 1932 to rename which station in the club's honour?",
+  "o": [
+   "Gillespie Road",
+   "Finsbury Park",
+   "Highbury & Islington",
+   "Drayton Park"
+  ],
+  "answer": "Gillespie Road",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7406cc",
+  "q": "Which manager introduced Arsenal's iconic white shirt sleeves in 1933?",
+  "o": [
+   "Herbert Chapman",
+   "Tom Whittaker",
+   "George Allison",
+   "Leslie Knighton"
+  ],
+  "answer": "Herbert Chapman",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fe4907",
+  "q": "The English top-flight record of seven goals by one player in a single match was set in 1935 by which Arsenal forward?",
+  "o": [
+   "Ted Drake",
+   "Cliff Bastin",
+   "Jack Lambert",
+   "David Jack"
+  ],
+  "answer": "Ted Drake",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_baff41",
+  "q": "When Ian Wright broke Arsenal's all-time scoring record in 1997, whose mark — standing since 1939 — did he surpass?",
+  "o": [
+   "Cliff Bastin",
+   "Ted Drake",
+   "Reg Lewis",
+   "David Jack"
+  ],
+  "answer": "Cliff Bastin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9991e",
+  "q": "Arsenal lifted their first major European trophy in 1970. Which competition was it?",
+  "o": [
+   "Inter-Cities Fairs Cup",
+   "European Cup Winners' Cup",
+   "UEFA Cup",
+   "European Cup"
+  ],
+  "answer": "Inter-Cities Fairs Cup",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_62c01d",
+  "q": "Who scored the extra-time winner in the 1971 FA Cup final that sealed Arsenal's first ever League and Cup Double?",
+  "o": [
+   "Charlie George",
+   "John Radford",
+   "Ray Kennedy",
+   "George Graham"
+  ],
+  "answer": "Charlie George",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ce74fb",
+  "q": "Despite losing only one league game all season in 1990-91, George Graham's title-winning Arsenal were docked two points for what?",
+  "o": [
+   "An on-pitch brawl with Manchester United",
+   "Fielding an ineligible player",
+   "Breaching wage regulations",
+   "A stadium safety violation"
+  ],
+  "answer": "An on-pitch brawl with Manchester United",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_43c1a1",
+  "q": "Arsenal's record 49-match unbeaten league run ended in October 2004 against which club?",
+  "o": [
+   "Manchester United",
+   "Chelsea",
+   "Newcastle United",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_896b4e",
+  "q": "In 2001 Arsenal caused an uproar by signing which England defender on a free transfer directly from arch-rivals Tottenham?",
+  "o": [
+   "Sol Campbell",
+   "Ledley King",
+   "Jonathan Woodgate",
+   "Rio Ferdinand"
+  ],
+  "answer": "Sol Campbell",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_612dea",
+  "q": "Arsenal's continuous top-flight run since 1919 — the longest in English football as of 2026 — began with a controversial election to the expanded First Division, largely at the expense of which club?",
+  "o": [
+   "Tottenham Hotspur",
+   "Chelsea",
+   "Fulham",
+   "West Ham United"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e149ad",
+  "q": "As of the 2025-26 season, who holds Arsenal's all-time appearance record?",
+  "o": [
+   "Tony Adams",
+   "George Armstrong",
+   "David O'Leary",
+   "Pat Rice"
+  ],
+  "answer": "David O'Leary",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0982db",
+  "q": "Whose 1999 sale to Real Madrid netted such a profit that Arsenal's London Colney training ground was nicknamed the house he built?",
+  "o": [
+   "Marc Overmars",
+   "Emmanuel Petit",
+   "Nicolas Anelka",
+   "Jose Antonio Reyes"
+  ],
+  "answer": "Nicolas Anelka",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ee0b68",
+  "q": "What was Patrick Vieira's final act as an Arsenal player?",
+  "o": [
+   "Scoring the decisive penalty in the 2005 FA Cup final shootout",
+   "Captaining the side to the 2004 title",
+   "Scoring in the Champions League final",
+   "Netting a last-minute league winner at Tottenham"
+  ],
+  "answer": "Scoring the decisive penalty in the 2005 FA Cup final shootout",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd5431",
+  "q": "On his 2012 loan return to Arsenal, Thierry Henry marked his 'second debut' with a winning goal against which club in the FA Cup?",
+  "o": [
+   "Sunderland",
+   "Leeds United",
+   "Blackburn Rovers",
+   "Aston Villa"
+  ],
+  "answer": "Leeds United",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ccad13",
+  "q": "Which Arsenal captain was controversially sold to Manchester United in 2012, months after a 30-goal Premier League season?",
+  "o": [
+   "Emmanuel Adebayor",
+   "Olivier Giroud",
+   "Robin van Persie",
+   "Alexis Sanchez"
+  ],
+  "answer": "Robin van Persie",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b22ae",
+  "q": "Who scored all four Arsenal goals in the famous 4-4 draw at Liverpool in April 2009?",
+  "o": [
+   "Robin van Persie",
+   "Emmanuel Adebayor",
+   "Andrey Arshavin",
+   "Samir Nasri"
+  ],
+  "answer": "Andrey Arshavin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b5565e",
+  "q": "Whose stoppage-time goal at Anfield in 1989 snatched the title from Liverpool on goals scored?",
+  "o": [
+   "Alan Smith",
+   "Michael Thomas",
+   "Paul Merson",
+   "David Rocastle"
+  ],
+  "answer": "Michael Thomas",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7d682a",
+  "q": "Which forward scored a 15-minute hat-trick at Stamford Bridge in 1999, finishing from a near-impossible angle to beat Chelsea 3-2?",
+  "o": [
+   "Dennis Bergkamp",
+   "Nwankwo Kanu",
+   "Davor Suker",
+   "Thierry Henry"
+  ],
+  "answer": "Nwankwo Kanu",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e79c41",
+  "q": "Which Arsenal club captain lifted the 2017 FA Cup after starting the final against Chelsea despite having played almost no minutes all season?",
+  "o": [
+   "Laurent Koscielny",
+   "Per Mertesacker",
+   "Nacho Monreal",
+   "Gabriel Paulista"
+  ],
+  "answer": "Per Mertesacker",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ccbe36",
+  "q": "Who scored Arsenal's goal in the 2006 Champions League final defeat to Barcelona?",
+  "o": [
+   "Sol Campbell",
+   "Kolo Toure",
+   "Gilberto Silva",
+   "Ashley Cole"
+  ],
+  "answer": "Sol Campbell",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f45af",
+  "q": "Which Arsenal goalkeeper holds the unwanted distinction of being the first player ever sent off in a Champions League final?",
+  "o": [
+   "Jens Lehmann",
+   "David Seaman",
+   "Manuel Almunia",
+   "Wojciech Szczesny"
+  ],
+  "answer": "Jens Lehmann",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_90eb83",
+  "q": "As of the 2025-26 season, Arsenal hold the record for most FA Cup wins - how many times have they lifted it?",
+  "o": [
+   "14",
+   "12",
+   "13",
+   "15"
+  ],
+  "answer": "14",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_50699e",
+  "q": "Who scored Arsenal's dramatic late winner in the 1979 'Five-Minute Final' FA Cup final against Manchester United?",
+  "o": [
+   "Alan Sunderland",
+   "Frank Stapleton",
+   "Liam Brady",
+   "Brian Talbot"
+  ],
+  "answer": "Alan Sunderland",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_69f5b7",
+  "q": "Arsenal lost the 1980 European Cup Winners' Cup final on penalties to which Spanish club?",
+  "o": [
+   "Valencia",
+   "Real Madrid",
+   "Barcelona",
+   "Atletico Madrid"
+  ],
+  "answer": "Valencia",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7b887e",
+  "q": "In what year did Fenerbahçe win the very first Turkish national league (later Süper Lig) title?",
+  "o": [
+   "1957",
+   "1959",
+   "1961",
+   "1963"
+  ],
+  "answer": "1959",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c37d46",
+  "q": "In which season did Fenerbahçe win the Süper Lig title that stood as their 19th league championship?",
+  "o": [
+   "2010-11",
+   "2011-12",
+   "2012-13",
+   "2013-14"
+  ],
+  "answer": "2013-14",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b92b40",
+  "q": "In which year was Fenerbahçe Spor Kulübü founded?",
+  "o": [
+   "1903",
+   "1905",
+   "1907",
+   "1911"
+  ],
+  "answer": "1907",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b23d78",
+  "q": "Fenerbahçe signed club legend Alex de Souza in 2004 from which Brazilian club?",
+  "o": [
+   "Palmeiras",
+   "Cruzeiro",
+   "Corinthians",
+   "São Paulo"
+  ],
+  "answer": "Cruzeiro",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aa647e",
+  "q": "Alex de Souza won the Süper Lig Golden Boot in the 2010-11 title season with how many goals?",
+  "o": [
+   "22",
+   "25",
+   "28",
+   "31"
+  ],
+  "answer": "28",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2ff3d4",
+  "q": "Alex de Souza also won an earlier Süper Lig top-scorer award in 2006-07; how many league goals did he score that season?",
+  "o": [
+   "17",
+   "19",
+   "23",
+   "26"
+  ],
+  "answer": "19",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_175b03",
+  "q": "In May 2011 Alex de Souza scored five goals in a single Süper Lig match against which opponent?",
+  "o": [
+   "Gençlerbirliği",
+   "Ankaragücü",
+   "Kayserispor",
+   "Bursaspor"
+  ],
+  "answer": "Ankaragücü",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4c593b",
+  "q": "Alex de Souza inherited the Fenerbahçe captaincy after which player left for German side 1. FC Köln?",
+  "o": [
+   "Ümit Özat",
+   "Selçuk Şahin",
+   "Emre Belözoğlu",
+   "Gökhan Gönül"
+  ],
+  "answer": "Ümit Özat",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0f208a",
+  "q": "Which former Fenerbahçe striker, who later also managed the club, scored 140 Süper Lig goals in a Fenerbahçe shirt?",
+  "o": [
+   "Alex de Souza",
+   "Aykut Kocaman",
+   "Semih Şentürk",
+   "Zeki Rıza Sporel"
+  ],
+  "answer": "Aykut Kocaman",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e32b44",
+  "q": "Fenerbahçe fans gave legend Lefter Küçükandonyadis which nickname, a title normally reserved for distinguished professors?",
+  "o": [
+   "Ordinaryüs",
+   "İmparator",
+   "Sultan",
+   "Efsane"
+  ],
+  "answer": "Ordinaryüs",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8cdcd3",
+  "q": "In which year did Fenerbahçe fans erect a statue of Lefter Küçükandonyadis in Kadıköy?",
+  "o": [
+   "2005",
+   "2007",
+   "2009",
+   "2012"
+  ],
+  "answer": "2009",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_71d8e5",
+  "q": "Lefter Küçükandonyadis represented Turkey at which World Cup?",
+  "o": [
+   "1950",
+   "1954",
+   "1962",
+   "1966"
+  ],
+  "answer": "1954",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fd1fb9",
+  "q": "Fenerbahçe reached the Champions League quarter-finals for the first time in 2007-08 by beating which side on penalties in the round of 16?",
+  "o": [
+   "Valencia",
+   "Sevilla",
+   "Villarreal",
+   "Roma"
+  ],
+  "answer": "Sevilla",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ba16e6",
+  "q": "Which goalkeeper saved three penalties in the 2008 shootout at Sevilla that sent Fenerbahçe to their first Champions League quarter-final?",
+  "o": [
+   "Rüştü Reçber",
+   "Volkan Demirel",
+   "Serdar Kulbilge",
+   "Mert Günok"
+  ],
+  "answer": "Volkan Demirel",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_93366b",
+  "q": "Which Brazilian great managed Fenerbahçe during their run to the 2007-08 Champions League quarter-finals?",
+  "o": [
+   "Christoph Daum",
+   "Zico",
+   "Luiz Felipe Scolari",
+   "Vanderlei Luxemburgo"
+  ],
+  "answer": "Zico",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_734340",
+  "q": "In the 2007-08 Champions League quarter-final first leg, Fenerbahçe won 2-1 at home against which English club?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Liverpool",
+   "Manchester United"
+  ],
+  "answer": "Chelsea",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_776bbc",
+  "q": "Which English-born Turkey international scored in Fenerbahçe's 2-1 home win over Chelsea in the 2008 Champions League quarter-final?",
+  "o": [
+   "Colin Kazım-Richards",
+   "Mehmet Aurélio",
+   "Emre Belözoğlu",
+   "Uğur Boral"
+  ],
+  "answer": "Colin Kazım-Richards",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d99e73",
+  "q": "During the 2007-08 Champions League group stage, Fenerbahçe beat which Italian giant 1-0 at home in Kadıköy?",
+  "o": [
+   "Milan",
+   "Internazionale",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "Internazionale",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea99a9",
+  "q": "Who came off the bench to score Fenerbahçe's late winner in the 3-2 home victory over Sevilla in the 2008 Champions League round-of-16 first leg?",
+  "o": [
+   "Alex de Souza",
+   "Semih Şentürk",
+   "Mateja Kežman",
+   "Deivid"
+  ],
+  "answer": "Semih Şentürk",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_144626",
+  "q": "Which Serbian striker led Fenerbahçe's attack during their 2007-08 Champions League campaign?",
+  "o": [
+   "Nikola Žigić",
+   "Mateja Kežman",
+   "Savo Milošević",
+   "Danko Lazović"
+  ],
+  "answer": "Mateja Kežman",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_76c4aa",
+  "q": "Which Uruguayan centre-back was a Fenerbahçe defensive mainstay in the second half of the 2000s?",
+  "o": [
+   "Diego Godín",
+   "Diego Lugano",
+   "Paolo Montero",
+   "Martín Cáceres"
+  ],
+  "answer": "Diego Lugano",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ba84c3",
+  "q": "Fenerbahçe reached their first-ever European semi-final in 2012-13, losing on aggregate to which club?",
+  "o": [
+   "Benfica",
+   "Porto",
+   "Chelsea",
+   "Basel"
+  ],
+  "answer": "Benfica",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_167fb0",
+  "q": "Whose 1996 goal at Old Trafford gave Fenerbahçe a 1-0 win that ended Manchester United's decades-long unbeaten European home record?",
+  "o": [
+   "Elvir Bolić",
+   "Aykut Kocaman",
+   "Saffet Sancaklı",
+   "Tayfun Korkut"
+  ],
+  "answer": "Elvir Bolić",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_479d63",
+  "q": "Who was Fenerbahçe's Brazilian head coach for the famous 1996 Champions League win at Old Trafford?",
+  "o": [
+   "Sebastião Lazaroni",
+   "Zico",
+   "Carlos Alberto Parreira",
+   "Vanderlei Luxemburgo"
+  ],
+  "answer": "Sebastião Lazaroni",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a0dde6",
+  "q": "In the 1968-69 European Cup first round, Fenerbahçe knocked out which reigning English champions?",
+  "o": [
+   "Leeds United",
+   "Manchester City",
+   "Manchester United",
+   "Liverpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "SuperLig",
+  "diff": "hard"
+ },
+ {
+  "id": "q_386e2a",
+  "q": "After the 2011 match-fixing scandal, Fenerbahçe were barred from the 2011-12 Champions League and replaced in the draw by which Turkish club?",
+  "o": [
+   "Beşiktaş",
+   "Trabzonspor",
+   "Bursaspor",
+   "Galatasaray"
+  ],
+  "answer": "Trabzonspor",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d0bac",
+  "q": "Christoph Daum guided Fenerbahçe to back-to-back Süper Lig titles in which two seasons?",
+  "o": [
+   "2001-02 and 2002-03",
+   "2003-04 and 2004-05",
+   "2004-05 and 2005-06",
+   "2005-06 and 2006-07"
+  ],
+  "answer": "2003-04 and 2004-05",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66dc8d",
+  "q": "World Cup-winning left-back Roberto Carlos played for Fenerbahçe during which period?",
+  "o": [
+   "2005-2007",
+   "2006-2008",
+   "2007-2009",
+   "2008-2010"
+  ],
+  "answer": "2007-2009",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9c9aa3",
+  "q": "Fenerbahçe signed Robin van Persie in 2015 from which club?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Manchester City",
+   "Feyenoord"
+  ],
+  "answer": "Manchester United",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1997c4",
+  "q": "Robin van Persie scored twice in a November 2016 home derby win over Galatasaray; what was the final score?",
+  "o": [
+   "2-0",
+   "3-1",
+   "2-1",
+   "4-2"
+  ],
+  "answer": "2-0",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d2f4b0",
+  "q": "Fenerbahçe signed Mesut Özil in 2021 from which club?",
+  "o": [
+   "Real Madrid",
+   "Arsenal",
+   "Werder Bremen",
+   "Schalke 04"
+  ],
+  "answer": "Arsenal",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe07e3",
+  "q": "Dutch forward Dirk Kuyt joined Fenerbahçe in 2012 from which club?",
+  "o": [
+   "Feyenoord",
+   "Liverpool",
+   "Ajax",
+   "PSV Eindhoven"
+  ],
+  "answer": "Liverpool",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_797a85",
+  "q": "Turkey forward Tuncay Şanlı left Fenerbahçe in 2007 to join which Premier League club?",
+  "o": [
+   "Middlesbrough",
+   "Newcastle United",
+   "Everton",
+   "Blackburn Rovers"
+  ],
+  "answer": "Middlesbrough",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_96f47f",
+  "q": "Fenerbahçe's Kadıköy stadium was renamed after Şükrü Saracoğlu in which year?",
+  "o": [
+   "1988",
+   "1995",
+   "1998",
+   "2002"
+  ],
+  "answer": "1998",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cb70f8",
+  "q": "When Mesut Özil left Fenerbahçe in 2022, which Turkish club did he join?",
+  "o": [
+   "İstanbul Başakşehir",
+   "Galatasaray",
+   "Trabzonspor",
+   "Antalyaspor"
+  ],
+  "answer": "İstanbul Başakşehir",
+  "cat": "SuperLig",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9c4cb2",
+  "q": "Which long-serving club president was arrested in connection with the 2011 Turkish match-fixing scandal that engulfed Fenerbahçe?",
+  "o": [
+   "Aziz Yıldırım",
+   "Ali Koç",
+   "Mahmut Uslu",
+   "Vefa Küçük"
+  ],
+  "answer": "Aziz Yıldırım",
+  "cat": "SuperLig",
+  "diff": "hard"
+ }
+]

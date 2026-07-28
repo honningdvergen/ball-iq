@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_ab8e65",
+  "q": "George Weah became the first and only African player to win the World Player of the Year award. In which year?",
+  "o": [
+   "1993",
+   "1995",
+   "1997",
+   "1999"
+  ],
+  "answer": "1995",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9082a",
+  "q": "Which club has won the most Ligue 1 titles in French football history?",
+  "o": [
+   "Saint-Étienne",
+   "Marseille",
+   "Lyon",
+   "PSG"
+  ],
+  "answer": "PSG",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c398fc",
+  "q": "PSG won the 2025 Champions League — their first ever. Who did they beat in the final and what was the score?",
+  "o": [
+   "Arsenal 2-0",
+   "Real Madrid 2-1",
+   "Bayern Munich 3-1",
+   "Inter Milan 5-0"
+  ],
+  "answer": "Inter Milan 5-0",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2d2261",
+  "q": "Samuel Eto'o won the Champions League with two different clubs. Which two?",
+  "o": [
+   "Barcelona and Chelsea",
+   "Barcelona and Inter Milan",
+   "Chelsea and Real Madrid",
+   "Inter Milan and Bayern Munich"
+  ],
+  "answer": "Barcelona and Inter Milan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_444572",
+  "q": "Which Asian nation has won the AFC Asian Cup the most times?",
+  "o": [
+   "South Korea",
+   "Japan",
+   "Saudi Arabia",
+   "Iran"
+  ],
+  "answer": "Japan",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_54f6b9",
+  "q": "Which Bundesliga club is nicknamed 'Die Werkself' (The Company's Eleven) because they were founded by workers of a pharmaceutical company?",
+  "o": [
+   "Wolfsburg",
+   "Bayer Leverkusen",
+   "RB Leipzig",
+   "Hoffenheim"
+  ],
+  "answer": "Bayer Leverkusen",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e6cdf1",
+  "q": "Borussia Dortmund's Signal Iduna Park is famous for its incredible atmosphere. What is the name of its iconic south stand terrace?",
+  "o": [
+   "The Black Wall",
+   "The Westfalenstadion End",
+   "The Thunder End",
+   "The Yellow Wall"
+  ],
+  "answer": "The Yellow Wall",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_be53b6",
+  "q": "Which country has won the Women's World Cup the most times?",
+  "o": [
+   "Germany",
+   "Norway",
+   "USA",
+   "Brazil"
+  ],
+  "answer": "USA",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a5ea46",
+  "q": "Which French club did Zinedine Zidane play for before moving to Juventus in 1996?",
+  "o": [
+   "Lyon",
+   "Nice",
+   "Marseille",
+   "Bordeaux"
+  ],
+  "answer": "Bordeaux",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3ec6e8",
+  "q": "Which goalkeeper holds the record for most clean sheets in Champions League history?",
+  "o": [
+   "Gianluigi Buffon",
+   "Peter Schmeichel",
+   "Iker Casillas",
+   "Manuel Neuer"
+  ],
+  "answer": "Manuel Neuer",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_483b8e",
+  "q": "What colour did Brazil originally wear before switching to their iconic yellow kit after a traumatic World Cup defeat?",
+  "o": [
+   "White",
+   "Blue",
+   "Green",
+   "Red"
+  ],
+  "answer": "White",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ae6ebd",
+  "q": "How many different clubs won the Bundesliga across the 25 seasons from 2000-01 to 2024-25?",
+  "o": [
+   "3",
+   "4",
+   "6",
+   "7"
+  ],
+  "answer": "6",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f81f36",
+  "q": "How many World Cup goals did Diego Maradona score across the 1982, 1986 and 1990 tournaments?",
+  "o": [
+   "6",
+   "7",
+   "10",
+   "8"
+  ],
+  "answer": "7",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_324b5b",
+  "q": "In September 2024, Bayern Munich beat Dinamo Zagreb by a record scoreline for goals by one team in a single Champions League match. How many goals did Bayern score?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "9",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7e29ba",
+  "q": "Erling Haaland became the fastest player to score 100 Premier League goals in December 2025. How many matches did it take him?",
+  "o": [
+   "95",
+   "100",
+   "111",
+   "124"
+  ],
+  "answer": "111",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_85ba21",
+  "q": "Lionel Messi won back-to-back MLS MVP awards in 2024 and 2025 before leading Inter Miami to their first MLS Cup title. Which club did Miami beat in the 2025 final?",
+  "o": [
+   "Vancouver Whitecaps",
+   "NYCFC",
+   "Atlanta United",
+   "Seattle Sounders"
+  ],
+  "answer": "Vancouver Whitecaps",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4e9e8e",
+  "q": "Steven Gerrard scored a stunning long-range equaliser in the 2006 FA Cup final to force extra time. Which goalkeeper did he beat?",
+  "o": [
+   "Roy Carroll",
+   "Shaka Hislop",
+   "David James",
+   "Robert Green"
+  ],
+  "answer": "Shaka Hislop",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5c657e",
+  "q": "Which African player was the first to score 100 Premier League goals, reaching the milestone on March 10, 2012?",
+  "o": [
+   "Yakubu",
+   "Didier Drogba",
+   "Mohamed Salah",
+   "Emmanuel Adebayor"
+  ],
+  "answer": "Didier Drogba",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_74609f",
+  "q": "Luka Romero became the youngest player ever to appear in La Liga in 2020. For which club did he debut aged just 15 years and 219 days?",
+  "o": [
+   "Villarreal",
+   "Getafe",
+   "Mallorca",
+   "Elche"
+  ],
+  "answer": "Mallorca",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c699e2",
+  "q": "Virgil van Dijk became the world record transfer fee for a defender when Liverpool signed him in January 2018. How much did they pay Southampton?",
+  "o": [
+   "£55 million",
+   "£65 million",
+   "£75 million",
+   "£85 million"
+  ],
+  "answer": "£75 million",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b0dd22",
+  "q": "Cristiano Ronaldo became the first player to score 100 Champions League goals in April 2017. Against which team did he score the landmark goal?",
+  "o": [
+   "Atlético Madrid",
+   "Juventus",
+   "Bayern Munich",
+   "Barcelona"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4b6ab9",
+  "q": "Mohamed Salah scored the fastest hat-trick in Champions League history as a substitute in 2022. How long did it take him?",
+  "o": [
+   "4 minutes 12 seconds",
+   "5 minutes 33 seconds",
+   "6 minutes 12 seconds",
+   "7 minutes 45 seconds"
+  ],
+  "answer": "6 minutes 12 seconds",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2720df",
+  "q": "In 2005, Liverpool famously came back from 3-0 down at half-time against AC Milan in Istanbul. Who scored Liverpool's first goal to begin the comeback?",
+  "o": [
+   "Steven Gerrard",
+   "Vladimir Smicer",
+   "Xabi Alonso",
+   "Djibril Cissé"
+  ],
+  "answer": "Steven Gerrard",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9d7030",
+  "q": "Russia's Oleg Salenko scored five goals in a single World Cup match in 1994 — a record that still stands. Which country did he score them against?",
+  "o": [
+   "Saudi Arabia",
+   "Bolivia",
+   "Cameroon",
+   "Greece"
+  ],
+  "answer": "Cameroon",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_98165a",
+  "q": "Only two countries have ever won back-to-back World Cups. Italy did it in 1934 and 1938. Which other country won consecutive World Cups in 1958 and 1962?",
+  "o": [
+   "Argentina",
+   "West Germany",
+   "Brazil",
+   "Uruguay"
+  ],
+  "answer": "Brazil",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_130aef",
+  "q": "Napoli won their first Serie A title in 33 years in 2022-23. Which legendary player had last led them to the title back in 1990?",
+  "o": [
+   "Roberto Baggio",
+   "Marco van Basten",
+   "Diego Maradona",
+   "Ruud Gullit"
+  ],
+  "answer": "Diego Maradona",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_61022d",
+  "q": "In 2019 Tottenham reached their first ever Champions League final. Which club did they beat in a dramatic semi-final comeback, with Lucas Moura scoring a 96th-minute winner?",
+  "o": [
+   "Man City",
+   "Ajax",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Ajax",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8f03b0",
+  "q": "Which club has lost the most Champions League finals with seven final defeats?",
+  "o": [
+   "Bayern Munich",
+   "Benfica",
+   "Atlético Madrid",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e61f30",
+  "q": "Robert Lewandowski came off the bench at half-time for Bayern Munich in September 2015 and scored five goals in nine minutes — a Bundesliga record. Which team were Bayern playing?",
+  "o": [
+   "Dortmund",
+   "Schalke",
+   "Hamburg",
+   "Wolfsburg"
+  ],
+  "answer": "Wolfsburg",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_65a76f",
+  "q": "Whose ashes are interred beneath the penalty spot at Stamford Bridge?",
+  "o": [
+   "Bobby Tambling",
+   "Peter Osgood",
+   "Roy Bentley",
+   "Ron Harris"
+  ],
+  "answer": "Peter Osgood",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0e34af",
+  "q": "Sir Arthur Conan Doyle, author of Sherlock Holmes, played in goal for which English football club?",
+  "o": [
+   "Portsmouth",
+   "Reading",
+   "Watford",
+   "Brighton"
+  ],
+  "answer": "Portsmouth",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8607ad",
+  "q": "Which goalkeeper is the only player to have played professionally in all six football confederations?",
+  "o": [
+   "Lutz Pfannenstiel",
+   "Jens Lehmann",
+   "Bodo Illgner",
+   "Oliver Kahn"
+  ],
+  "answer": "Lutz Pfannenstiel",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f65f2d",
+  "q": "Which is the only club in Europe to have won more European Cups than domestic league titles?",
+  "o": [
+   "Nottingham Forest",
+   "Aston Villa",
+   "Chelsea",
+   "Borussia Dortmund"
+  ],
+  "answer": "Nottingham Forest",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88ebe8",
+  "q": "In 1996, Eidur and Arnor Gudjohnsen became the first father and son to do what in international football?",
+  "o": [
+   "Score in the same World Cup",
+   "Captain the same nation",
+   "Score in the same match",
+   "Play in the same match"
+  ],
+  "answer": "Play in the same match",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_380d02",
+  "q": "Cheltenham Town once missed an entire FA Cup season for what reason?",
+  "o": [
+   "Financial collapse",
+   "They forgot to enter",
+   "Player strike",
+   "Stadium ban"
+  ],
+  "answer": "They forgot to enter",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f4e68a",
+  "q": "Complete Sir Alex Ferguson's famous quote after Manchester United's 1999 Champions League final comeback: 'Football, ___!'",
+  "o": [
+   "Bloody hell",
+   "What a game",
+   "You beauty",
+   "Unbelievable"
+  ],
+  "answer": "Bloody hell",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7294ff",
+  "q": "In the 2009 Premier League match between Sunderland and Liverpool, what unusual object deflected Darren Bent's shot into the goal?",
+  "o": [
+   "A seagull",
+   "A beach ball",
+   "A plastic bag",
+   "A scarf"
+  ],
+  "answer": "A beach ball",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2098e3",
+  "q": "In the 2006 World Cup final, who did Zinedine Zidane headbutt in the chest, resulting in his red card in the final game of his career?",
+  "o": [
+   "Fabio Cannavaro",
+   "Gennaro Gattuso",
+   "Marco Materazzi",
+   "Andrea Pirlo"
+  ],
+  "answer": "Marco Materazzi",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0568e6",
+  "q": "Which Manchester United player famously performed a kung-fu kick at a Crystal Palace fan in 1995?",
+  "o": [
+   "Roy Keane",
+   "Eric Cantona",
+   "Paul Ince",
+   "Mark Hughes"
+  ],
+  "answer": "Eric Cantona",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_100221",
+  "q": "Who said 'I think he is a specialist in failure' about Arsène Wenger in 2014?",
+  "o": [
+   "Sir Alex Ferguson",
+   "José Mourinho",
+   "Pep Guardiola",
+   "Jürgen Klopp"
+  ],
+  "answer": "José Mourinho",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c2fab",
+  "q": "At which World Cup did Diego Maradona score his infamous 'Hand of God' goal against England?",
+  "o": [
+   "1978",
+   "1982",
+   "1986",
+   "1990"
+  ],
+  "answer": "1986",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_48489b",
+  "q": "Which striker famously fooled Southampton into signing him in 1996 by pretending to be George Weah's cousin?",
+  "o": [
+   "Tony Cascarino",
+   "Ali Dia",
+   "Ade Akinbiyi",
+   "Kevin Davies"
+  ],
+  "answer": "Ali Dia",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6de256",
+  "q": "During a 2013 League Cup match, which Chelsea player was sent off for kicking a ball boy at Swansea?",
+  "o": [
+   "Frank Lampard",
+   "John Terry",
+   "Eden Hazard",
+   "Branislav Ivanović"
+  ],
+  "answer": "Eden Hazard",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_17abb1",
+  "q": "At the 1962 World Cup, which England player caught a stray dog that had run onto the pitch during their match against Brazil?",
+  "o": [
+   "Bobby Charlton",
+   "Jimmy Greaves",
+   "Bobby Moore",
+   "Gordon Banks"
+  ],
+  "answer": "Jimmy Greaves",
+  "cat": "chaos",
+  "diff": "hard"
+ },
+ {
+  "id": "q_57e092",
+  "q": "Complete Bill Shankly's famous quote: 'Football is not a matter of life and death. It's ___ than that.'",
+  "o": [
+   "A thousand times more serious",
+   "Much more important",
+   "Bigger than war",
+   "The only thing that matters"
+  ],
+  "answer": "Much more important",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41b8bf",
+  "q": "What did Chilean goalkeeper Roberto Rojas do during a 1989 World Cup qualifier vs Brazil, resulting in Chile being banned from the 1994 World Cup?",
+  "o": [
+   "Claimed a fan ran onto the pitch and punched him in the face",
+   "Faked being hit by a firework using a razor blade hidden in his glove",
+   "Refused to keep playing after a stray dog invaded the penalty area",
+   "Accused Brazilian officials of poisoning the water he drank at half time"
+  ],
+  "answer": "Faked being hit by a firework using a razor blade hidden in his glove",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e0fef0",
+  "q": "What did Peter Crouch famously answer in 2007 when asked 'What would you be if you weren't a footballer?'",
+  "o": [
+   "A virgin",
+   "A giant",
+   "Lonely",
+   "An accountant"
+  ],
+  "answer": "A virgin",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_59a43d",
+  "q": "In a famous 1988 photo that became a football icon, what was Vinnie Jones doing to Paul Gascoigne?",
+  "o": [
+   "Headbutting him",
+   "Grabbing his testicles",
+   "Biting his ear",
+   "Pulling his hair"
+  ],
+  "answer": "Grabbing his testicles",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_46d68c",
+  "q": "Uruguay striker Luis Suárez was banned for 4 months at the 2014 World Cup for biting which Italian defender?",
+  "o": [
+   "Giorgio Chiellini",
+   "Leonardo Bonucci",
+   "Andrea Barzagli",
+   "Matteo Darmian"
+  ],
+  "answer": "Giorgio Chiellini",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e1328c",
+  "q": "What famous celebration did Bebeto perform at the 1994 World Cup after scoring against the Netherlands?",
+  "o": [
+   "Pretending to swim across the pitch",
+   "Dancing like a robot with Romário",
+   "Holding his hand to his ear as a phone",
+   "Rocking an imaginary baby"
+  ],
+  "answer": "Rocking an imaginary baby",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f45713",
+  "q": "In 1998, Romanian defender Daniel Prodan signed for Rangers for £2.2 million but played how many games before retiring injured?",
+  "o": [
+   "Zero",
+   "Three",
+   "Eight",
+   "Twenty"
+  ],
+  "answer": "Zero",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_62bbe6",
+  "q": "Which Premier League club's fans sing 'Blue is the Colour' as their anthem?",
+  "o": [
+   "Man City",
+   "Chelsea",
+   "Everton",
+   "Birmingham City"
+  ],
+  "answer": "Chelsea",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0804a4",
+  "q": "Complete Brian Clough's iconic response when asked if he was the best manager in the business: 'I wouldn't say I was the best manager in the business, but I was ___'",
+  "o": [
+   "In the top one",
+   "Never bothered by the competition",
+   "Too busy being brilliant",
+   "Better than most"
+  ],
+  "answer": "In the top one",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d3d1f1",
+  "q": "When told his concussed player Colin McGlashan didn't know who he was, Partick Thistle manager John Lambie famously replied: 'That's great, tell him he's ___ and get him back on.'",
+  "o": [
+   "Maradona",
+   "Zidane",
+   "Beckham",
+   "Pelé"
+  ],
+  "answer": "Pelé",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_40001e",
+  "q": "What title did José Mourinho famously give himself at his unveiling as Chelsea manager in 2004?",
+  "o": [
+   "The Chosen One",
+   "The Special One",
+   "The Great One",
+   "The Winning One"
+  ],
+  "answer": "The Special One",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7f47ac",
+  "q": "Complete Gary Lineker's iconic quote: 'Football is a simple game; 22 men chase a ball for 90 minutes, and at the end, ___'",
+  "o": [
+   "The Germans always win",
+   "Only one team is happy",
+   "The referee gets the blame",
+   "England lose on penalties"
+  ],
+  "answer": "The Germans always win",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e599b5",
+  "q": "What did Ian Holloway say after a QPR win, comparing ugly victories to something unexpected?",
+  "o": [
+   "Like finding a fiver in the pocket of a coat you haven't worn in years",
+   "Like being handed a Sunday roast that's been left in the oven too long",
+   "Like winning a raffle you'd completely forgotten you entered",
+   "Like pulling a girl on a night out who's not good looking"
+  ],
+  "answer": "Like pulling a girl on a night out who's not good looking",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_731c52",
+  "q": "Which legendary English manager confidently said 'The first 90 minutes are the most important' when discussing a football match?",
+  "o": [
+   "Brian Clough",
+   "Bobby Robson",
+   "Ron Atkinson",
+   "Graham Taylor"
+  ],
+  "answer": "Bobby Robson",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_59c39b",
+  "q": "Complete Zlatan Ibrahimović's famously humble response when asked about his own arrogance: 'I spent my life trying not to be arrogant. But when you're the best, ___'",
+  "o": [
+   "It's hard to hide it",
+   "You start telling it",
+   "Humility is for losers",
+   "The truth just comes out"
+  ],
+  "answer": "You start telling it",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66079b",
+  "q": "Complete Bill Shankly's legendary put-down of Everton: 'If Everton were playing down the bottom of my garden, I'd ___'",
+  "o": [
+   "Call the police",
+   "Put up a fence",
+   "Draw the curtains",
+   "Close the blinds"
+  ],
+  "answer": "Draw the curtains",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_082fe8",
+  "q": "Sir Alex Ferguson made a classic jibe at which Italian striker, saying 'That lad must have been born offside'?",
+  "o": [
+   "Paolo Di Canio",
+   "Filippo Inzaghi",
+   "Christian Vieri",
+   "Luca Toni"
+  ],
+  "answer": "Filippo Inzaghi",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_89e534",
+  "q": "In the 2002-03 season, what unusual object was thrown at Luís Figo during an El Clásico after he'd left Barcelona for Real Madrid?",
+  "o": [
+   "A pig's head",
+   "A shoe",
+   "A bottle of sangria",
+   "A Barcelona scarf"
+  ],
+  "answer": "A pig's head",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cc7579",
+  "q": "In 2005, which Italian club was stripped of their 2004-05 Serie A title due to the 'Calciopoli' match-fixing scandal?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "AS Roma",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5b8d04",
+  "q": "In November 2005, Real Madrid fans gave Ronaldinho a standing ovation at the Bernabéu after he scored how many goals in Barcelona's 3-0 win?",
+  "o": [
+   "One",
+   "Two",
+   "Three",
+   "Four"
+  ],
+  "answer": "Two",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84ced5",
+  "q": "After Juventus' dramatic Champions League exit to Real Madrid in 2018, Gianluigi Buffon furiously said referee Michael Oliver had '___ instead of a heart.'",
+  "o": [
+   "A rubbish bin",
+   "A cold stone",
+   "A block of ice",
+   "A computer chip"
+  ],
+  "answer": "A rubbish bin",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_725424",
+  "q": "Ronaldinho famously scored a goal for Brazil against England at the 2002 World Cup with what kind of shot?",
+  "o": [
+   "An overhead bicycle kick from outside the penalty area",
+   "A long-range free kick lob over David Seaman",
+   "A diving header from a Rivaldo cross to the back post",
+   "A curling strike from the corner of the penalty area"
+  ],
+  "answer": "A long-range free kick lob over David Seaman",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ca0800",
+  "q": "In November 2009, Thierry Henry controversially used his hand in the build-up to a goal that sent France to the World Cup at the expense of which team?",
+  "o": [
+   "Russia",
+   "Portugal",
+   "Ukraine",
+   "Ireland"
+  ],
+  "answer": "Ireland",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c50877",
+  "q": "Zinedine Zidane scored twice in the 1998 World Cup final to give France their first World Cup. Both goals came from what type of play?",
+  "o": [
+   "Long-range strikes",
+   "Free kicks",
+   "Corner kick headers",
+   "Penalty kicks"
+  ],
+  "answer": "Corner kick headers",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b43ac8",
+  "q": "In the infamous 2014 World Cup semi-final, what was the final score when Germany demolished host nation Brazil?",
+  "o": [
+   "5-0",
+   "6-1",
+   "7-1",
+   "8-2"
+  ],
+  "answer": "7-1",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_00c1ab",
+  "q": "In a 2011 El Clásico, Mourinho famously poked which Barcelona coach in the eye during a touchline brawl?",
+  "o": [
+   "Pep Guardiola",
+   "Tito Vilanova",
+   "Xavi Hernandez",
+   "Albert Celades"
+  ],
+  "answer": "Tito Vilanova",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c0f2bf",
+  "q": "In 2006, who tied his shirt around his head after scoring Italy's winning penalty against France in the World Cup final?",
+  "o": [
+   "Fabio Grosso",
+   "Alessandro Del Piero",
+   "Francesco Totti",
+   "Andrea Pirlo"
+  ],
+  "answer": "Fabio Grosso",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a5d0ad",
+  "q": "Diego Maradona sobbed openly on the pitch after Argentina lost the 1990 World Cup final to which team?",
+  "o": [
+   "Brazil",
+   "Italy",
+   "West Germany",
+   "Netherlands"
+  ],
+  "answer": "West Germany",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b72f47",
+  "q": "Which AC Milan legend played his entire 25-year senior career at the club, retiring in 2009 at age 40 after lifting the Serie A trophy in 2003-04?",
+  "o": [
+   "Franco Baresi",
+   "Paolo Maldini",
+   "Alessandro Costacurta",
+   "Gennaro Gattuso"
+  ],
+  "answer": "Paolo Maldini",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_42cad1",
+  "q": "In 1999, Bayern Munich lost the Champions League final to Manchester United in injury time. How many minutes into injury time did United score the winning goal?",
+  "o": [
+   "First minute",
+   "Second minute",
+   "Third minute",
+   "Fifth minute"
+  ],
+  "answer": "Third minute",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a499c",
+  "q": "In Barcelona's legendary 6-1 Champions League comeback against PSG in 2017, they had lost the first leg by what score?",
+  "o": [
+   "2-0",
+   "3-0",
+   "4-0",
+   "5-1"
+  ],
+  "answer": "4-0",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_099bc6",
+  "q": "At Euro 2016, which tiny nation with a population of less than a million famously beat England 2-1 in the round of 16?",
+  "o": [
+   "Luxembourg",
+   "Malta",
+   "Iceland",
+   "Andorra"
+  ],
+  "answer": "Iceland",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7dac96",
+  "q": "What were Leicester City's odds of winning the Premier League at the start of the 2015-16 season, before their historic title win?",
+  "o": [
+   "100-1",
+   "500-1",
+   "5,000-1",
+   "10,000-1"
+  ],
+  "answer": "5,000-1",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_404d1b",
+  "q": "In 2013, which footballer did Real Madrid sign from Tottenham for a then-world-record fee of around €100 million?",
+  "o": [
+   "Gareth Bale",
+   "Cristiano Ronaldo",
+   "Luka Modric",
+   "James Rodriguez"
+  ],
+  "answer": "Gareth Bale",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d14a83",
+  "q": "In a 2016 Premier League match against Arsenal, Manchester United manager Louis van Gaal made headlines by doing what on the touchline to protest a decision?",
+  "o": [
+   "Ripping off his overcoat and hurling it onto the pitch",
+   "Walking over and theatrically hugging the fourth official",
+   "Sitting down in the technical area and refusing to stand up",
+   "Dramatically throwing himself to the ground"
+  ],
+  "answer": "Dramatically throwing himself to the ground",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e37de7",
+  "q": "In 2011, Fernando Torres became the most expensive British transfer ever at £50m. What did he do nine months later at Old Trafford that became iconic for all the wrong reasons?",
+  "o": [
+   "Got sent off after 3 minutes",
+   "Refused to come off as a substitute",
+   "Scored an own goal",
+   "Missed an open goal from two metres"
+  ],
+  "answer": "Missed an open goal from two metres",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a0245d",
+  "q": "In March 2015, Liverpool's Steven Gerrard was sent off after just 38 seconds of coming on as a substitute against which team?",
+  "o": [
+   "Arsenal",
+   "Everton",
+   "Man United",
+   "Chelsea"
+  ],
+  "answer": "Man United",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9790fc",
+  "q": "At the 2018 World Cup, Belgian striker Michy Batshuayi celebrated Adnan Januzaj's goal against England by doing what?",
+  "o": [
+   "Sprinting straight into the corner flag and snapping it",
+   "Kicking the ball into his own face off the post",
+   "Tripping over the advertising hoarding and falling into the crowd",
+   "Barrelling into a ball boy and knocking him flat on his back"
+  ],
+  "answer": "Kicking the ball into his own face off the post",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b96fe3",
+  "q": "At the 1982 World Cup, Kuwait's players stopped playing during a France match because they claimed they heard what?",
+  "o": [
+   "A gunshot going off somewhere in the stands behind them",
+   "A whistle from somewhere in the crowd that they mistook for the referee's",
+   "Their Kuwaiti head coach screaming at them to stop play",
+   "The stadium announcer prematurely calling time on the match"
+  ],
+  "answer": "A whistle from somewhere in the crowd that they mistook for the referee's",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c1e762",
+  "q": "José Mourinho once said that if a film was made of his life, which Hollywood actor should play him?",
+  "o": [
+   "Brad Pitt",
+   "Tom Cruise",
+   "George Clooney",
+   "Antonio Banderas"
+  ],
+  "answer": "George Clooney",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ce182c",
+  "q": "When a reporter asked Gordon Strachan 'Can you give us a quick word?' after a tough match, what did he famously reply?",
+  "o": [
+   "No",
+   "Football",
+   "Goodbye",
+   "Velocity"
+  ],
+  "answer": "Velocity",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9e8cbc",
+  "q": "After his infamous kung-fu kick ban in 1995, Cantona held a press conference where he said his famous seagulls line. What did he do immediately after?",
+  "o": [
+   "Burst out laughing",
+   "Stood up and walked out",
+   "Answered questions for an hour",
+   "Threw water on a journalist"
+  ],
+  "answer": "Stood up and walked out",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f3a8ee",
+  "q": "At a 2013 press conference before a Champions League game with Bayern Munich, what bizarre question did Arsène Wenger ask a journalist who was interviewing him?",
+  "o": [
+   "Why do you look at me?",
+   "Are you a real journalist?",
+   "Do you even watch football?",
+   "Who sent you here?"
+  ],
+  "answer": "Why do you look at me?",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2c5d4d",
+  "q": "At the 1994 World Cup final, which Italian legend missed the decisive penalty in the shootout against Brazil, handing the trophy to South America?",
+  "o": [
+   "Franco Baresi",
+   "Demetrio Albertini",
+   "Roberto Baggio",
+   "Daniele Massaro"
+  ],
+  "answer": "Roberto Baggio",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a37c96",
+  "q": "Denmark won Euro 1992 despite not even qualifying. Why were they called up just 10 days before the tournament?",
+  "o": [
+   "They were the highest-ranked non-qualifier",
+   "Yugoslavia were disqualified",
+   "The original hosts withdrew",
+   "A coin flip decided it"
+  ],
+  "answer": "Yugoslavia were disqualified",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_409697",
+  "q": "At the 1990 World Cup, which 38-year-old Cameroon legend came off the bench to score twice against Colombia in the last 16, becoming a global icon?",
+  "o": [
+   "Thomas N'Kono",
+   "Roger Milla",
+   "François Omam-Biyik",
+   "Rigobert Song"
+  ],
+  "answer": "Roger Milla",
+  "cat": "chaos",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b8aeb9",
+  "q": "Greece won Euro 2004 as massive underdogs, beating host nation Portugal in both the opening game AND the final. Who scored the only goal in the final?",
+  "o": [
+   "Theodoros Zagorakis",
+   "Angelos Charisteas",
+   "Takis Fyssas",
+   "Giorgos Karagounis"
+  ],
+  "answer": "Angelos Charisteas",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_987f04",
+  "q": "In the 2019 Champions League semi-final, Liverpool overcame a 3-0 first-leg deficit to beat Barcelona 4-0 at Anfield. Which player scored twice after coming on as a substitute?",
+  "o": [
+   "Roberto Firmino",
+   "Mohamed Salah",
+   "Divock Origi",
+   "Georginio Wijnaldum"
+  ],
+  "answer": "Georginio Wijnaldum",
+  "cat": "chaos",
+  "diff": "medium"
+ },
+ {
+  "id": "q_91f758",
+  "q": "Which Croatian midfielder won the 2018 Ballon d'Or after captaining Croatia to the World Cup final?",
+  "o": [
+   "Ivan Rakitić",
+   "Mateo Kovačić",
+   "Luka Modrić",
+   "Marcelo Brozović"
+  ],
+  "answer": "Luka Modrić",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_219789",
+  "q": "Who won the 2018 World Cup Golden Boot?",
+  "o": [
+   "Harry Kane (England)",
+   "Mario Mandžukić (Croatia)",
+   "Antoine Griezmann (France)",
+   "Romelu Lukaku (Belgium)"
+  ],
+  "answer": "Harry Kane (England)",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ee52d1",
+  "q": "How far did Croatia advance at the 2022 World Cup in Qatar?",
+  "o": [
+   "Semi-final",
+   "Quarter-final",
+   "Round of 16",
+   "Final"
+  ],
+  "answer": "Semi-final",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e821fc",
+  "q": "Who scored Croatia's late equaliser in extra time vs Brazil at the 2022 World Cup, sending the quarter-final to penalties?",
+  "o": [
+   "Mateo Kovačić",
+   "Luka Modrić",
+   "Mislav Oršić",
+   "Bruno Petković"
+  ],
+  "answer": "Bruno Petković",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8aceb7",
+  "q": "Which Croatian goalkeeper saved 3 penalties in the 2022 World Cup shootout vs Japan?",
+  "o": [
+   "Danijel Subašić",
+   "Dominik Livaković",
+   "Stipe Pletikosa",
+   "Lovre Kalinić"
+  ],
+  "answer": "Dominik Livaković",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3c71b1",
+  "q": "Who was Croatia's head coach for both the 2018 and 2022 World Cups?",
+  "o": [
+   "Igor Štimac",
+   "Niko Kovač",
+   "Zlatko Dalić",
+   "Slaven Bilić"
+  ],
+  "answer": "Zlatko Dalić",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8a723a",
+  "q": "Which Croatian midfielder joined Manchester City from Chelsea in summer 2023?",
+  "o": [
+   "Mateo Kovačić",
+   "Luka Modrić",
+   "Marcelo Brozović",
+   "Mario Pašalić"
+  ],
+  "answer": "Mateo Kovačić",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bc44c2",
+  "q": "Croatia gained independence in 1991 and joined international football in 1992. What was their best result at their first World Cup?",
+  "o": [
+   "Group stage exit",
+   "Round of 16",
+   "Quarter-final",
+   "Third place"
+  ],
+  "answer": "Third place",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eb0374",
+  "q": "Which Croatian striker won the 1998 World Cup Golden Boot?",
+  "o": [
+   "Alen Bokšić",
+   "Goran Vlaović",
+   "Igor Cvitanović",
+   "Davor Šuker"
+  ],
+  "answer": "Davor Šuker",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eafd28",
+  "q": "What is Croatia's traditional kit pattern, immediately recognisable on the international stage?",
+  "o": [
+   "Solid red",
+   "Blue and white stripes",
+   "Green hoops",
+   "Red and white checkerboard"
+  ],
+  "answer": "Red and white checkerboard",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2a15ba",
+  "q": "Morocco became the first African nation to reach a World Cup semi-final at which tournament?",
+  "o": [
+   "South Africa 2010",
+   "Brazil 2014",
+   "Russia 2018",
+   "Qatar 2022"
+  ],
+  "answer": "Qatar 2022",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0e64df",
+  "q": "Who managed Morocco to the 2022 World Cup semi-final?",
+  "o": [
+   "Hervé Renard",
+   "Walid Regragui",
+   "Vahid Halilhodžić",
+   "Roger Lemerre"
+  ],
+  "answer": "Walid Regragui",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b0ba97",
+  "q": "Which Morocco right-back has played for PSG and Inter Milan?",
+  "o": [
+   "Achraf Hakimi",
+   "Noussair Mazraoui",
+   "Yahya Attiat-Allah",
+   "Adam Masina"
+  ],
+  "answer": "Achraf Hakimi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d5ebaf",
+  "q": "Morocco beat which European nation 1-0 in the 2022 World Cup quarter-final?",
+  "o": [
+   "Spain",
+   "Netherlands",
+   "Belgium",
+   "Portugal"
+  ],
+  "answer": "Portugal",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_40e768",
+  "q": "Which Morocco goalkeeper made decisive saves in the 2022 World Cup penalty shootout vs Spain?",
+  "o": [
+   "Munir Mohamedi",
+   "Yassine Bounou",
+   "Anas Zniti",
+   "Ahmed Reda Tagnaouti"
+  ],
+  "answer": "Yassine Bounou",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ddd792",
+  "q": "In which year did Morocco win their first African Cup of Nations?",
+  "o": [
+   "1976",
+   "1988",
+   "2004",
+   "2017"
+  ],
+  "answer": "1976",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aea3d2",
+  "q": "How did Canada perform at the 2022 World Cup, their first World Cup appearance since 1986?",
+  "o": [
+   "Group stage, 0 wins",
+   "Group stage, 1 win",
+   "Round of 16",
+   "Quarter-final"
+  ],
+  "answer": "Group stage, 0 wins",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_03d990",
+  "q": "Canada won the CONCACAF Gold Cup in 2000. Through 2025, how many further Gold Cup titles did they add?",
+  "o": [
+   "None",
+   "One",
+   "Two",
+   "Three"
+  ],
+  "answer": "None",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b266b",
+  "q": "Toronto FC plays in which league?",
+  "o": [
+   "MLS",
+   "Canadian Premier League",
+   "USL Championship",
+   "MLS Next Pro"
+  ],
+  "answer": "MLS",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_868c4f",
+  "q": "Which Canadian cities will host games at the 2026 World Cup?",
+  "o": [
+   "Montreal and Toronto",
+   "Toronto and Vancouver",
+   "Toronto only",
+   "Vancouver only"
+  ],
+  "answer": "Toronto and Vancouver",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2e6bb",
+  "q": "Which Belgium playmaker joined Napoli on a free transfer in summer 2025 after a decade at Manchester City?",
+  "o": [
+   "Eden Hazard",
+   "Romelu Lukaku",
+   "Kevin De Bruyne",
+   "Dries Mertens"
+  ],
+  "answer": "Kevin De Bruyne",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_480f05",
+  "q": "Which Belgium goalkeeper played for Real Madrid and Chelsea?",
+  "o": [
+   "Simon Mignolet",
+   "Thibaut Courtois",
+   "Koen Casteels",
+   "Matz Sels"
+  ],
+  "answer": "Thibaut Courtois",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_000407",
+  "q": "Belgium beat which country to claim third place at the 2018 World Cup?",
+  "o": [
+   "England",
+   "Sweden",
+   "Croatia",
+   "France"
+  ],
+  "answer": "England",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_003c97",
+  "q": "Which Belgium striker holds the national team's all-time goalscoring record?",
+  "o": [
+   "Kevin De Bruyne",
+   "Eden Hazard",
+   "Romelu Lukaku",
+   "Dries Mertens"
+  ],
+  "answer": "Romelu Lukaku",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_33b98f",
+  "q": "Which Spanish manager guided Belgium's Golden Generation, succeeded by Domenico Tedesco in 2023?",
+  "o": [
+   "Unai Emery",
+   "Roberto Martínez",
+   "Julen Lopetegui",
+   "Rafa Benítez"
+  ],
+  "answer": "Roberto Martínez",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2c0eeb",
+  "q": "Which Senegal forward won the Champions League with Liverpool in 2019 before later moves to Bayern and Al-Nassr?",
+  "o": [
+   "Sadio Mané",
+   "Ismaïla Sarr",
+   "Idrissa Gueye",
+   "Édouard Mendy"
+  ],
+  "answer": "Sadio Mané",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8205ff",
+  "q": "Senegal's run to which 2002 World Cup stage made them only the second African nation to advance that far?",
+  "o": [
+   "Round of 16",
+   "Quarter-final",
+   "Semi-final",
+   "Final"
+  ],
+  "answer": "Quarter-final",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_938385",
+  "q": "How did Senegal perform at the 2022 World Cup in Qatar?",
+  "o": [
+   "Failed to qualify",
+   "Group stage exit",
+   "Round of 16",
+   "Quarter-final"
+  ],
+  "answer": "Round of 16",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ba0e4",
+  "q": "Which Senegalese coach led Senegal to the 2021 AFCON title and the 2022 World Cup?",
+  "o": [
+   "Aliou Cissé",
+   "Bruno Metsu",
+   "Henryk Kasperczak",
+   "Lamine Diatta"
+  ],
+  "answer": "Aliou Cissé",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e268d2",
+  "q": "Which Serie A club did USMNT star Christian Pulisic join from Chelsea in 2023?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "Roma",
+   "AC Milan"
+  ],
+  "answer": "AC Milan",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_24531f",
+  "q": "Who was named USMNT head coach in September 2024 to lead the team into the 2026 World Cup?",
+  "o": [
+   "Gregg Berhalter",
+   "Mauricio Pochettino",
+   "Jesse Marsch",
+   "Bob Bradley"
+  ],
+  "answer": "Mauricio Pochettino",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3395ba",
+  "q": "Which Premier League club did USMNT midfielder Tyler Adams join in summer 2023?",
+  "o": [
+   "Leeds United",
+   "AFC Bournemouth",
+   "Brighton",
+   "Crystal Palace"
+  ],
+  "answer": "AFC Bournemouth",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d9f278",
+  "q": "USMNT midfielder Weston McKennie has spent the bulk of his career at which Serie A club?",
+  "o": [
+   "Roma",
+   "Inter Milan",
+   "AC Milan",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b46f46",
+  "q": "Who is Mexico's head coach for the 2026 World Cup?",
+  "o": [
+   "Gerardo Martino",
+   "Jaime Lozano",
+   "Javier Aguirre",
+   "Ricardo La Volpe"
+  ],
+  "answer": "Javier Aguirre",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b11d1f",
+  "q": "Which Premier League club did Mexico striker Raúl Jiménez join in 2023 after leaving Wolves?",
+  "o": [
+   "Wolves",
+   "Newcastle",
+   "Fulham",
+   "Brentford"
+  ],
+  "answer": "Fulham",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a22fd9",
+  "q": "Who is the captain of the Mexico national team heading into the 2026 World Cup?",
+  "o": [
+   "Edson Álvarez",
+   "Hirving Lozano",
+   "Raúl Jiménez",
+   "Guillermo Ochoa"
+  ],
+  "answer": "Edson Álvarez",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b6cbaa",
+  "q": "Which Italian club did Mexico striker Santiago Giménez join from Feyenoord in early 2025?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "Napoli",
+   "Juventus"
+  ],
+  "answer": "AC Milan",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a9d226",
+  "q": "Which three Mexican cities will host games at the 2026 World Cup?",
+  "o": [
+   "Mexico City, Guadalajara, Monterrey",
+   "Mexico City, Guadalajara, Tijuana",
+   "Mexico City, Cancún, Monterrey",
+   "Mexico City, Puebla, León"
+  ],
+  "answer": "Mexico City, Guadalajara, Monterrey",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_78d218",
+  "q": "Who is Canada's head coach for the 2026 World Cup?",
+  "o": [
+   "John Herdman",
+   "Jesse Marsch",
+   "Octavio Zambrano",
+   "Stephen Hart"
+  ],
+  "answer": "Jesse Marsch",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_77e3af",
+  "q": "Which Canadian midfielder played for Portuguese giant FC Porto at the 2022 World Cup?",
+  "o": [
+   "Atiba Hutchinson",
+   "Stephen Eustáquio",
+   "Ismaël Koné",
+   "Mark-Anthony Kaye"
+  ],
+  "answer": "Stephen Eustáquio",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_27f0dd",
+  "q": "Which Canadian winger joined Inter Milan from Club Brugge in 2024 before a 2025 move to Villarreal?",
+  "o": [
+   "Tajon Buchanan",
+   "Junior Hoilett",
+   "Liam Millar",
+   "Jacob Shaffelburg"
+  ],
+  "answer": "Tajon Buchanan",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_843d23",
+  "q": "Who holds Canada's all-time record for international appearances?",
+  "o": [
+   "Dwayne De Rosario",
+   "Julian de Guzman",
+   "Atiba Hutchinson",
+   "Paul Stalteri"
+  ],
+  "answer": "Atiba Hutchinson",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ea9ba9",
+  "q": "How many goals did Canada score at their first ever World Cup, in Mexico 1986?",
+  "o": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": "0",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7b8bfe",
+  "q": "Canada's 1986 World Cup group included France, the Soviet Union, and which other nation?",
+  "o": [
+   "Hungary",
+   "Belgium",
+   "Algeria",
+   "Bulgaria"
+  ],
+  "answer": "Hungary",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9a9385",
+  "q": "Canada's domestic top-flight league, launched in 2019, is called what?",
+  "o": [
+   "Canadian Premier League",
+   "Major League Soccer Canada",
+   "North American Soccer League",
+   "Canadian Soccer League"
+  ],
+  "answer": "Canadian Premier League",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1ad2bd",
+  "q": "CF Montréal plays its home games in which Canadian province?",
+  "o": [
+   "Ontario",
+   "Quebec",
+   "British Columbia",
+   "Alberta"
+  ],
+  "answer": "Quebec",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fba064",
+  "q": "What is the name of Vancouver's stadium hosting 2026 World Cup matches?",
+  "o": [
+   "BC Place",
+   "BMO Field",
+   "Rogers Centre",
+   "Commonwealth Stadium"
+  ],
+  "answer": "BC Place",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cca4f4",
+  "q": "Which MLS club did Alphonso Davies play for before moving to Bayern Munich in 2019?",
+  "o": [
+   "Toronto FC",
+   "CF Montréal",
+   "LA Galaxy",
+   "Vancouver Whitecaps"
+  ],
+  "answer": "Vancouver Whitecaps",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_81df70",
+  "q": "Which Australian goalkeeper captained the Socceroos at the 2022 World Cup, leading them to the knockouts?",
+  "o": [
+   "Maty Ryan",
+   "Mark Schwarzer",
+   "Mark Bosnich",
+   "Andrew Redmayne"
+  ],
+  "answer": "Maty Ryan",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e86d23",
+  "q": "Which Australian forward scored the only goal as Australia beat Denmark 1-0 to reach the 2022 World Cup Round of 16?",
+  "o": [
+   "Mathew Leckie",
+   "Mitchell Duke",
+   "Jamie Maclaren",
+   "Awer Mabil"
+  ],
+  "answer": "Mathew Leckie",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_47cf6b",
+  "q": "In which year did Australia officially join the AFC (Asian confederation), leaving the OFC behind?",
+  "o": [
+   "2004",
+   "2005",
+   "2006",
+   "2008"
+  ],
+  "answer": "2006",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a4d309",
+  "q": "Tim Cahill spent 8 Premier League seasons at which club after joining from Millwall in 2004?",
+  "o": [
+   "Tottenham",
+   "Everton",
+   "West Ham",
+   "Sunderland"
+  ],
+  "answer": "Everton",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3862ba",
+  "q": "In Australia's 2006 World Cup Round of 16 defeat to Italy, who scored the controversial 95th-minute winning penalty?",
+  "o": [
+   "Andrea Pirlo",
+   "Francesco Totti",
+   "Luca Toni",
+   "Alessandro Del Piero"
+  ],
+  "answer": "Francesco Totti",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1f3832",
+  "q": "Australia's top-flight men's football competition has been officially known by which name since 2021?",
+  "o": [
+   "A-League Men",
+   "NSL Premier",
+   "Hyundai League",
+   "National Premier League"
+  ],
+  "answer": "A-League Men",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_83a05b",
+  "q": "Aaron Mooy joined which Premier League club permanently from Manchester City in 2017, starring in their first top-flight season after promotion?",
+  "o": [
+   "Watford",
+   "Stoke City",
+   "Huddersfield Town",
+   "Brighton"
+  ],
+  "answer": "Huddersfield Town",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_95e30b",
+  "q": "Which Brazilian forward scored a stunning scissor-kick volley vs Serbia at the 2022 World Cup that won the Goal of the Tournament award?",
+  "o": [
+   "Neymar",
+   "Vinícius Jr.",
+   "Richarlison",
+   "Raphinha"
+  ],
+  "answer": "Richarlison",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_81f8a6",
+  "q": "Which Brazil manager resigned after the 2022 World Cup quarter-final loss to Croatia on penalties?",
+  "o": [
+   "Tite",
+   "Carlo Ancelotti",
+   "Fernando Diniz",
+   "Dorival Júnior"
+  ],
+  "answer": "Tite",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7150f7",
+  "q": "Uruguay won the inaugural World Cup in 1930, beating Argentina 4-2 in the final. Where was the final held?",
+  "o": [
+   "Buenos Aires",
+   "Montevideo",
+   "São Paulo",
+   "Lima"
+  ],
+  "answer": "Montevideo",
+  "cat": "WorldCup",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_0aa9f2",
+  "q": "The 2020 Europa League final, won by Sevilla, was hosted in which German city?",
+  "o": [
+   "Cologne",
+   "Berlin",
+   "Munich",
+   "Frankfurt"
+  ],
+  "answer": "Cologne",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_64d055",
+  "q": "The 2023 Europa League final that Sevilla won on penalties took place in which city?",
+  "o": [
+   "Budapest",
+   "Vienna",
+   "Prague",
+   "Bucharest"
+  ],
+  "answer": "Budapest",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b296b",
+  "q": "In the 2023 Europa League final shootout, which Sevilla goalkeeper saved a decisive penalty?",
+  "o": [
+   "Yassine Bounou",
+   "Sergio Rico",
+   "Andrés Palop",
+   "David Soria"
+  ],
+  "answer": "Yassine Bounou",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9133c7",
+  "q": "Which Malian international striker became a Sevilla icon and won the 2007 African Footballer of the Year award?",
+  "o": [
+   "Frédéric Kanouté",
+   "Didier Drogba",
+   "Samuel Eto'o",
+   "El Hadji Diouf"
+  ],
+  "answer": "Frédéric Kanouté",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cbece8",
+  "q": "Sevilla sold midfielder Ivan Rakitić in 2014 to which club?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Bayern Munich",
+   "Juventus"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fbf8c4",
+  "q": "Which winger, a product of Sevilla's academy, was part of Spain's 2010 World Cup-winning squad?",
+  "o": [
+   "Jesús Navas",
+   "David Silva",
+   "Pedro",
+   "Santi Cazorla"
+  ],
+  "answer": "Jesús Navas",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_913cc4",
+  "q": "Diego Maradona had a short spell at Sevilla during which period?",
+  "o": [
+   "1992-93",
+   "1986-87",
+   "1996-97",
+   "1982-83"
+  ],
+  "answer": "1992-93",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9f89b",
+  "q": "Diego Maradona, who once played for Sevilla, represented which national team?",
+  "o": [
+   "Argentina",
+   "Brazil",
+   "Uruguay",
+   "Colombia"
+  ],
+  "answer": "Argentina",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2e63bb",
+  "q": "Who was Sevilla's long-serving sporting director credited with shrewd transfer dealings during the club's rise?",
+  "o": [
+   "Monchi",
+   "Txiki Begiristain",
+   "Luis Campos",
+   "Andrea Berta"
+  ],
+  "answer": "Monchi",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9bcab",
+  "q": "Which manager led Sevilla to three consecutive Europa League titles in 2014, 2015 and 2016?",
+  "o": [
+   "Unai Emery",
+   "Julen Lopetegui",
+   "Juande Ramos",
+   "Jorge Sampaoli"
+  ],
+  "answer": "Unai Emery",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8b9b18",
+  "q": "Which manager guided Sevilla to their back-to-back UEFA Cup wins in 2006 and 2007?",
+  "o": [
+   "Juande Ramos",
+   "Unai Emery",
+   "Joaquín Caparrós",
+   "Manolo Jiménez"
+  ],
+  "answer": "Juande Ramos",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41fa71",
+  "q": "Which young Sevilla academy defender died in August 2007 after collapsing during a La Liga match?",
+  "o": [
+   "Antonio Puerta",
+   "José Antonio Reyes",
+   "Diego Capel",
+   "Sergio Ramos"
+  ],
+  "answer": "Antonio Puerta",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1da58e",
+  "q": "José Antonio Reyes left Sevilla in January 2004 to join which English club?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Manchester United",
+   "Liverpool"
+  ],
+  "answer": "Arsenal",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_48b877",
+  "q": "Which centre-back came through Sevilla's academy before a 2005 transfer to Real Madrid?",
+  "o": [
+   "Sergio Ramos",
+   "Gerard Piqué",
+   "Raúl Albiol",
+   "Carlos Marchena"
+  ],
+  "answer": "Sergio Ramos",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_007d35",
+  "q": "Sevilla's attacking full-back Dani Alves represented which national team internationally?",
+  "o": [
+   "Brazil",
+   "Argentina",
+   "Portugal",
+   "Colombia"
+  ],
+  "answer": "Brazil",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_819837",
+  "q": "Sevilla won the 2010 Copa del Rey final against which club?",
+  "o": [
+   "Atlético Madrid",
+   "Real Madrid",
+   "Barcelona",
+   "Valencia"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_afb33c",
+  "q": "Sevilla lifted the 2007 Copa del Rey by beating which club in the final?",
+  "o": [
+   "Getafe",
+   "Osasuna",
+   "Racing Santander",
+   "Levante"
+  ],
+  "answer": "Getafe",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4d7839",
+  "q": "Sevilla's first Copa del Rey triumph, beating Sabadell in the final, came in which year?",
+  "o": [
+   "1935",
+   "1928",
+   "1941",
+   "1950"
+  ],
+  "answer": "1935",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1e78a5",
+  "q": "Sevilla established themselves as specialists in which European competition, winning it in years including 2006, 2014 and 2020?",
+  "o": [
+   "UEFA Cup / Europa League",
+   "UEFA Champions League",
+   "European Cup Winners' Cup",
+   "UEFA Intertoto Cup"
+  ],
+  "answer": "UEFA Cup / Europa League",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_546b17",
+  "q": "In the 2015 Europa League final, which striker scored twice for Sevilla, including the decisive goal?",
+  "o": [
+   "Carlos Bacca",
+   "Kevin Gameiro",
+   "Wissam Ben Yedder",
+   "Álvaro Negredo"
+  ],
+  "answer": "Carlos Bacca",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9aa1e0",
+  "q": "Which Brazilian striker was a prolific Sevilla goalscorer in the late 2000s and also played for Brazil?",
+  "o": [
+   "Luís Fabiano",
+   "Adriano",
+   "Grafite",
+   "Robinho"
+  ],
+  "answer": "Luís Fabiano",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a82c99",
+  "q": "Which goalkeeper was a hero of Sevilla's mid-2000s European run, including the 2007 UEFA Cup shootout success?",
+  "o": [
+   "Andrés Palop",
+   "Iker Casillas",
+   "Santiago Cañizares",
+   "Pepe Reina"
+  ],
+  "answer": "Andrés Palop",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4130aa",
+  "q": "Sevilla sold striker Álvaro Negredo in 2013 to which English club?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Everton",
+   "West Ham United"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b15fe",
+  "q": "Which Argentine midfielder was the creative fulcrum of Sevilla's 2019-20 Europa League-winning side?",
+  "o": [
+   "Éver Banega",
+   "Lucas Ocampos",
+   "Franco Vázquez",
+   "Guido Pizarro"
+  ],
+  "answer": "Éver Banega",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4664f8",
+  "q": "In which year was Real Betis founded?",
+  "o": [
+   "1899",
+   "1907",
+   "1914",
+   "1923"
+  ],
+  "answer": "1907",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1033d0",
+  "q": "When it was founded in 1907, the club that became Real Betis originally went by which name?",
+  "o": [
+   "Real Balompédica",
+   "Sevilla Balompié",
+   "Betis FC",
+   "Triana Sporting"
+  ],
+  "answer": "Sevilla Balompié",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9b0c4e",
+  "q": "Real Betis added 'Real' (Royal) to its name in 1914 under the patronage of which Spanish king?",
+  "o": [
+   "Juan Carlos I",
+   "Alfonso XII",
+   "Alfonso XIII",
+   "Felipe VI"
+  ],
+  "answer": "Alfonso XIII",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_28d628",
+  "q": "The 'Betis' in the club's name comes from Baetis, the Roman name for which Andalusian river?",
+  "o": [
+   "Ebro",
+   "Guadiana",
+   "Tajo",
+   "Guadalquivir"
+  ],
+  "answer": "Guadalquivir",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a97efe",
+  "q": "In Real Betis's name, what does the word 'Real' mean in English?",
+  "o": [
+   "Royal",
+   "Genuine",
+   "River",
+   "Regional"
+  ],
+  "answer": "Royal",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_330f59",
+  "q": "Real Betis won the La Liga title for the first time in which season?",
+  "o": [
+   "1929-30",
+   "1934-35",
+   "1948-49",
+   "1962-63"
+  ],
+  "answer": "1934-35",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8715f1",
+  "q": "Real Betis play in vertical stripes of which two colours?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "Green and white",
+   "Green and black"
+  ],
+  "answer": "Green and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_beb24b",
+  "q": "The famous Betis chant '¡Viva el Betis manque pierda!' expresses what sentiment?",
+  "o": [
+   "Betis will win every match",
+   "Long live Betis even when they lose",
+   "Betis fear no rival",
+   "Betis are the pride of Spain"
+  ],
+  "answer": "Long live Betis even when they lose",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_289209",
+  "q": "In 1961, Real Betis's stadium was renamed after which former club president who had bought the ground?",
+  "o": [
+   "Ramón Sánchez-Pizjuán",
+   "Benito Villamarín",
+   "Manuel Ruiz de Lopera",
+   "Luis del Sol"
+  ],
+  "answer": "Benito Villamarín",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_62e1c0",
+  "q": "In 1997, Real Betis's stadium was briefly renamed after which then-president?",
+  "o": [
+   "José María del Nido",
+   "Ángel Haro",
+   "Manuel Ruiz de Lopera",
+   "Manuel Villanova"
+  ],
+  "answer": "Manuel Ruiz de Lopera",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7911f7",
+  "q": "Real Betis's ground opened in 1929 in which Seville neighbourhood, which also gave it an early name?",
+  "o": [
+   "Nervión",
+   "Heliópolis",
+   "Los Remedios",
+   "Macarena"
+  ],
+  "answer": "Heliópolis",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_39acdb",
+  "q": "Real Betis are traditionally associated with the working-class roots of which Seville district?",
+  "o": [
+   "Santa Cruz",
+   "El Arenal",
+   "Triana",
+   "Nervión"
+  ],
+  "answer": "Triana",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_222eff",
+  "q": "Real Betis contest the Seville derby, 'El Gran Derbi', against which club?",
+  "o": [
+   "Sevilla FC",
+   "Real Zaragoza",
+   "Cádiz CF",
+   "Málaga CF"
+  ],
+  "answer": "Sevilla FC",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c3703c",
+  "q": "In which year did Real Betis lift the Copa del Rey for the first time?",
+  "o": [
+   "1968",
+   "1977",
+   "1985",
+   "1992"
+  ],
+  "answer": "1977",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c706d3",
+  "q": "Real Betis won their first Copa del Rey in 1977 with a final victory over which club?",
+  "o": [
+   "Real Sociedad",
+   "Deportivo Alavés",
+   "Athletic Bilbao",
+   "Racing Santander"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7c8718",
+  "q": "How was the 1977 Copa del Rey final, Real Betis's first cup triumph, ultimately decided after a 2-2 draw?",
+  "o": [
+   "A replay",
+   "A penalty shootout",
+   "A golden goal",
+   "A coin toss"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2cc152",
+  "q": "Real Betis's 1977 Copa del Rey final was played at which Madrid stadium?",
+  "o": [
+   "Santiago Bernabéu",
+   "Vicente Calderón",
+   "La Romareda",
+   "Balaídos"
+  ],
+  "answer": "Vicente Calderón",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_043441",
+  "q": "Real Betis won the 2005 Copa del Rey final against which club?",
+  "o": [
+   "Espanyol",
+   "Getafe",
+   "Osasuna",
+   "Real Zaragoza"
+  ],
+  "answer": "Osasuna",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d4f0fa",
+  "q": "Including their 2005 triumph, how many Copa del Rey titles had Real Betis won by the end of 2005?",
+  "o": [
+   "One",
+   "Two",
+   "Three",
+   "Four"
+  ],
+  "answer": "Two",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_98d71f",
+  "q": "Real Betis won the 2022 Copa del Rey final, against which club?",
+  "o": [
+   "Levante",
+   "Espanyol",
+   "Valencia",
+   "Real Sociedad"
+  ],
+  "answer": "Valencia",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a91e9d",
+  "q": "The 2022 Copa del Rey final won by Real Betis was staged at which Seville stadium?",
+  "o": [
+   "Estadio de La Cartuja",
+   "Ramón Sánchez-Pizjuán",
+   "Santiago Bernabéu",
+   "La Rosaleda"
+  ],
+  "answer": "Estadio de La Cartuja",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_128cca",
+  "q": "Which Spanish king presented the trophy to Real Betis's captain after the 2022 Copa del Rey final?",
+  "o": [
+   "Juan Carlos I",
+   "Felipe VI",
+   "Alfonso XIII",
+   "Felipe V"
+  ],
+  "answer": "Felipe VI",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c9337c",
+  "q": "Real Betis suffered a shock La Liga relegation at the end of which season around the turn of the millennium?",
+  "o": [
+   "1996-97",
+   "1999-2000",
+   "2003-04",
+   "1990-91"
+  ],
+  "answer": "1999-2000",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9a6e32",
+  "q": "Which academy-graduate winger set Real Betis's all-time appearance record and captained the side to the 2022 Copa del Rey?",
+  "o": [
+   "Poli Rincón",
+   "Alfonso Pérez",
+   "Joaquín",
+   "Finidi George"
+  ],
+  "answer": "Joaquín",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e4c9f5",
+  "q": "In 1998, Real Betis stunned football by paying a world-record fee for which Brazilian forward?",
+  "o": [
+   "Sávio",
+   "Denílson",
+   "Amoroso",
+   "Élber"
+  ],
+  "answer": "Denílson",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b96d9d",
+  "q": "Real Betis's record-breaking 1998 signing was bought from which Brazilian club?",
+  "o": [
+   "São Paulo",
+   "Flamengo",
+   "Corinthians",
+   "Santos"
+  ],
+  "answer": "São Paulo",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a692ce",
+  "q": "Which Chilean coach was appointed Real Betis manager in July 2020?",
+  "o": [
+   "Marcelo Bielsa",
+   "Juan Antonio Pizzi",
+   "Manuel Pellegrini",
+   "Jorge Sampaoli"
+  ],
+  "answer": "Manuel Pellegrini",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bbabb4",
+  "q": "Real Betis won the 2005 Copa del Rey and reached the Champions League for the first time under which veteran coach?",
+  "o": [
+   "Luis Aragonés",
+   "Lorenzo Serra Ferrer",
+   "Javier Clemente",
+   "Víctor Fernández"
+  ],
+  "answer": "Lorenzo Serra Ferrer",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a3e9be",
+  "q": "Which coach, later Barcelona manager, led Real Betis to an attractive brand of football between 2017 and 2019?",
+  "o": [
+   "Pepe Mel",
+   "Gus Poyet",
+   "Quique Setién",
+   "Rubi"
+  ],
+  "answer": "Quique Setién",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ad8d29",
+  "q": "Real Betis made their debut in the UEFA Champions League group stage in which season?",
+  "o": [
+   "2001-02",
+   "2005-06",
+   "2010-11",
+   "1995-96"
+  ],
+  "answer": "2005-06",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8d17c3",
+  "q": "In 2025, Real Betis reached the first major European final in their history, in which UEFA competition?",
+  "o": [
+   "Champions League",
+   "Europa League",
+   "Europa Conference League",
+   "Cup Winners' Cup"
+  ],
+  "answer": "Europa Conference League",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_944d03",
+  "q": "In their maiden Champions League group stage, Real Betis famously beat which English club 1-0 at home?",
+  "o": [
+   "Liverpool",
+   "Arsenal",
+   "Chelsea",
+   "Manchester United"
+  ],
+  "answer": "Chelsea",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9538cd",
+  "q": "After their first Champions League group stage, Real Betis dropped into the UEFA Cup, where they were eliminated by which Romanian club?",
+  "o": [
+   "Rapid Bucharest",
+   "Steaua Bucharest",
+   "Dinamo Bucharest",
+   "CFR Cluj"
+  ],
+  "answer": "Steaua Bucharest",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_126484",
+  "q": "Real Betis great Rafael Gordillo, who later won five straight La Liga titles at Real Madrid, played at two World Cups for which country?",
+  "o": [
+   "Portugal",
+   "Argentina",
+   "Spain",
+   "Mexico"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_43ac44",
+  "q": "Real Betis's home stadium in Seville hosted matches at which men's World Cup?",
+  "o": [
+   "1966",
+   "1982",
+   "1990",
+   "2002"
+  ],
+  "answer": "1982",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5d4580",
+  "q": "Real Betis Balompié compete in the top division of which country's football?",
+  "o": [
+   "Portugal",
+   "Spain",
+   "Italy",
+   "Mexico"
+  ],
+  "answer": "Spain",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_50f994",
+  "q": "'Balompié' in the name Real Betis Balompié is a Spanish word for which sport?",
+  "o": [
+   "Basketball",
+   "Handball",
+   "Football",
+   "Futsal"
+  ],
+  "answer": "Football",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_391de4",
+  "q": "El Gran Derbi, one of Spain's most passionate rivalries, is a city derby contested in which city?",
+  "o": [
+   "Madrid",
+   "Valencia",
+   "Seville",
+   "Bilbao"
+  ],
+  "answer": "Seville",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0c5f58",
+  "q": "By what colour-based nickname are Real Betis widely known?",
+  "o": [
+   "Blaugrana",
+   "Verdiblancos",
+   "Rojiblancos",
+   "Colchoneros"
+  ],
+  "answer": "Verdiblancos",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_593fe7",
+  "q": "Schalke 04 and Borussia Dortmund, fierce rivals, are separated by roughly what distance?",
+  "o": [
+   "About 30 km",
+   "About 200 km",
+   "About 500 km",
+   "About 800 km"
+  ],
+  "answer": "About 30 km",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_33709f",
+  "q": "Schalke's nickname 'Die Knappen' refers to workers from which industry, central to the club's roots?",
+  "o": [
+   "Coal mining",
+   "Steelmaking",
+   "Shipbuilding",
+   "Textiles"
+  ],
+  "answer": "Coal mining",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3b5849",
+  "q": "What are Schalke's traditional club colours, reflected in the nickname 'Die Königsblauen'?",
+  "o": [
+   "Royal blue and white",
+   "Red and white",
+   "Black and yellow",
+   "Green and white"
+  ],
+  "answer": "Royal blue and white",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e189ad",
+  "q": "Schalke won the 1997 UEFA Cup, beating which Italian club over two legs in the final?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "AC Milan",
+   "Lazio"
+  ],
+  "answer": "Inter Milan",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_41b41d",
+  "q": "The Schalke squad that won the 1997 UEFA Cup is fondly remembered by which nickname?",
+  "o": [
+   "The Eurofighters",
+   "The Miners' XI",
+   "The Blue Wall",
+   "The Ruhr Kings"
+  ],
+  "answer": "The Eurofighters",
+  "cat": "ChampionsLeague",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f7fcc5",
+  "q": "Schalke won seven German championships in a golden era — the last of them came in which year?",
+  "o": [
+   "1958",
+   "1965",
+   "1949",
+   "1972"
+  ],
+  "answer": "1958",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bf7168",
+  "q": "Schalke's first German championship, in 1934, was secured with a 2-1 final win over which club?",
+  "o": [
+   "1. FC Nürnberg",
+   "Bayern Munich",
+   "VfB Stuttgart",
+   "Fortuna Düsseldorf"
+  ],
+  "answer": "1. FC Nürnberg",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_aa0587",
+  "q": "The celebrated short-passing style of Schalke's 1930s team was known by what name?",
+  "o": [
+   "The Schalker Kreisel",
+   "Tiki-taka",
+   "The W-M",
+   "Catenaccio"
+  ],
+  "answer": "The Schalker Kreisel",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_63d521",
+  "q": "Which Schalke striker of the 1970s and 80s was famous for his spectacular bicycle-kick goals?",
+  "o": [
+   "Klaus Fischer",
+   "Gerd Müller",
+   "Uwe Seeler",
+   "Rudi Völler"
+  ],
+  "answer": "Klaus Fischer",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_22b0ca",
+  "q": "Who holds Schalke's all-time club record for most competitive appearances, with over 550 games?",
+  "o": [
+   "Klaus Fichtel",
+   "Olaf Thon",
+   "Ernst Kuzorra",
+   "Klaus Fischer"
+  ],
+  "answer": "Klaus Fichtel",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c84f37",
+  "q": "Before the 2001 arena, Schalke played at which stadium, built to host 1974 World Cup matches?",
+  "o": [
+   "Parkstadion",
+   "Glückauf-Kampfbahn",
+   "Westfalenstadion",
+   "Rheinstadion"
+  ],
+  "answer": "Parkstadion",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_039bb2",
+  "q": "Schalke's fierce derby against a neighbouring Ruhr club is popularly known by what name?",
+  "o": [
+   "The Revierderby",
+   "El Clásico",
+   "The Klassiker",
+   "The Ruhrpott Cup"
+  ],
+  "answer": "The Revierderby",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ba1d78",
+  "q": "Which Dutch manager led Schalke to their 1997 UEFA Cup triumph?",
+  "o": [
+   "Huub Stevens",
+   "Louis van Gaal",
+   "Guus Hiddink",
+   "Dick Advocaat"
+  ],
+  "answer": "Huub Stevens",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_97bc2d",
+  "q": "Which Spanish forward joined Schalke from Real Madrid in 2010?",
+  "o": [
+   "Raúl",
+   "David Villa",
+   "Fernando Morientes",
+   "Álvaro Negredo"
+  ],
+  "answer": "Raúl",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_54d169",
+  "q": "Which goalkeeper came through Schalke's youth setup before joining Bayern Munich in 2011?",
+  "o": [
+   "Manuel Neuer",
+   "Marc-André ter Stegen",
+   "Bernd Leno",
+   "Roman Weidenfeller"
+  ],
+  "answer": "Manuel Neuer",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e69cfc",
+  "q": "Schalke's acclaimed youth academy is nicknamed what?",
+  "o": [
+   "Knappenschmiede",
+   "La Masia",
+   "De Toekomst",
+   "Clairefontaine"
+  ],
+  "answer": "Knappenschmiede",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3e355b",
+  "q": "In 2016 Schalke sold winger Leroy Sané, for a club-record fee, to which club?",
+  "o": [
+   "Manchester City",
+   "Manchester United",
+   "Chelsea",
+   "Bayern Munich"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fbbb10",
+  "q": "In their run to the 2010-11 Champions League semi-finals, Schalke were eliminated by which English club?",
+  "o": [
+   "Manchester United",
+   "Chelsea",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Manchester United",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9bdda2",
+  "q": "Schalke 04 was one of the founding members of the Bundesliga in which year?",
+  "o": [
+   "1963",
+   "1955",
+   "1970",
+   "1974"
+  ],
+  "answer": "1963",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7f4e38",
+  "q": "Schalke suffered their first Bundesliga relegation in some 30 years in which year?",
+  "o": [
+   "2021",
+   "2016",
+   "2019",
+   "2014"
+  ],
+  "answer": "2021",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f655ac",
+  "q": "Schalke's record Bundesliga away win was a 7-0 rout in 1976 at the ground of which club?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Mönchengladbach",
+   "Hamburger SV",
+   "1. FC Köln"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8e65f1",
+  "q": "Schalke midfielder Olaf Thon won which trophy with the German national team?",
+  "o": [
+   "1990 World Cup",
+   "1996 European Championship",
+   "1974 World Cup",
+   "1980 European Championship"
+  ],
+  "answer": "1990 World Cup",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6b5ca8",
+  "q": "Which Gelsenkirchen-born playmaker came through Schalke before winning the 2014 World Cup with Germany?",
+  "o": [
+   "Mesut Özil",
+   "Toni Kroos",
+   "Thomas Müller",
+   "Bastian Schweinsteiger"
+  ],
+  "answer": "Mesut Özil",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f080d0",
+  "q": "Which manager led Schalke to the 2010-11 DFB-Pokal and oversaw the latter stages of their Champions League semi-final run?",
+  "o": [
+   "Ralf Rangnick",
+   "Felix Magath",
+   "Jens Keller",
+   "Domenico Tedesco"
+  ],
+  "answer": "Ralf Rangnick",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_396fa7",
+  "q": "Under which coach did Schalke finish runners-up in the 2017-18 Bundesliga?",
+  "o": [
+   "Domenico Tedesco",
+   "David Wagner",
+   "Manuel Baum",
+   "Christian Gross"
+  ],
+  "answer": "Domenico Tedesco",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_bcc54a",
+  "q": "Schalke won the DFB-Pokal in back-to-back seasons in the early 2000s — which two years?",
+  "o": [
+   "2001 and 2002",
+   "2005 and 2006",
+   "1998 and 1999",
+   "2009 and 2010"
+  ],
+  "answer": "2001 and 2002",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_51bdc9",
+  "q": "Schalke's agonising last-day title miss in 2001, when a late Bayern goal snatched the Bundesliga away, earned them which nickname?",
+  "o": [
+   "Meister der Herzen (Champions of Hearts)",
+   "Die Unbesiegbaren",
+   "Kings of May",
+   "Die Grauen"
+  ],
+  "answer": "Meister der Herzen (Champions of Hearts)",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a05256",
+  "q": "Schalke's 1930s stars Fritz Szepan and Ernst Kuzorra were famously related in what way?",
+  "o": [
+   "They were brothers-in-law",
+   "They were twins",
+   "They were father and son",
+   "They were cousins"
+  ],
+  "answer": "They were brothers-in-law",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fbbd95",
+  "q": "Attacking midfielder Julian Draxler, a Schalke academy product, left in 2015 to join which German club?",
+  "o": [
+   "VfL Wolfsburg",
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "RB Leipzig"
+  ],
+  "answer": "VfL Wolfsburg",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_48ffe1",
+  "q": "Schalke's arena, opened in 2001, is known for which unusual engineering feature?",
+  "o": [
+   "A retractable roof and slide-out pitch",
+   "An all-standing lower bowl",
+   "A running track around the pitch",
+   "A fully underground stadium"
+  ],
+  "answer": "A retractable roof and slide-out pitch",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2e7f43",
+  "q": "FC Schalke 04 was originally founded under which name?",
+  "o": [
+   "Westfalia Schalke",
+   "Borussia Schalke",
+   "Preußen Schalke",
+   "Alemannia Schalke"
+  ],
+  "answer": "Westfalia Schalke",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_48f709",
+  "q": "In 2005, Schalke's arena took on the sponsored name of which brewery?",
+  "o": [
+   "Veltins",
+   "Krombacher",
+   "Warsteiner",
+   "Bitburger"
+  ],
+  "answer": "Veltins",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c308f8",
+  "q": "Schalke's record DFB-Pokal victory was an 11-1 thrashing in 2011 of which amateur side?",
+  "o": [
+   "FC Teningen",
+   "SV Meppen",
+   "TSV Havelse",
+   "FC Nöttingen"
+  ],
+  "answer": "FC Teningen",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_57419b",
+  "q": "Which Schalke academy graduate and defender played every minute of Germany's 2014 World Cup win, often at left-back?",
+  "o": [
+   "Benedikt Höwedes",
+   "Mats Hummels",
+   "Jérôme Boateng",
+   "Per Mertesacker"
+  ],
+  "answer": "Benedikt Höwedes",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7cd5ef",
+  "q": "Schalke won the 2011 DFB-Pokal final, thrashing which second-division club 5-0 in Berlin?",
+  "o": [
+   "MSV Duisburg",
+   "1. FC Kaiserslautern",
+   "Union Berlin",
+   "Fortuna Düsseldorf"
+  ],
+  "answer": "MSV Duisburg",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08d1ab",
+  "q": "Which Dutch striker joined Schalke in 2010 and won the Bundesliga's top-scorer award in 2011-12?",
+  "o": [
+   "Klaas-Jan Huntelaar",
+   "Ruud van Nistelrooy",
+   "Robin van Persie",
+   "Dirk Kuyt"
+  ],
+  "answer": "Klaas-Jan Huntelaar",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_54ffa0",
+  "q": "Which Belgian forward, a relentless penalty hero, was a key striker in Schalke's 1997 European campaign?",
+  "o": [
+   "Marc Wilmots",
+   "Luc Nilis",
+   "Gilles De Bilde",
+   "Josip Weber"
+  ],
+  "answer": "Marc Wilmots",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_476c6a",
+  "q": "Which position did Schalke's 1930s talisman Ernst Kuzorra primarily play?",
+  "o": [
+   "Centre-forward",
+   "Goalkeeper",
+   "Full-back",
+   "Defensive midfielder"
+  ],
+  "answer": "Centre-forward",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28cfe6",
+  "q": "Which greeting, rooted in mining culture, is a core part of Schalke's identity and fan chants?",
+  "o": [
+   "Glückauf",
+   "Hopp",
+   "Olé",
+   "Servus"
+  ],
+  "answer": "Glückauf",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e379d6",
+  "q": "Schalke's record signing before the 2020s, Breel Embolo (2016), was bought from which Swiss club?",
+  "o": [
+   "FC Basel",
+   "Young Boys",
+   "Grasshoppers",
+   "FC Zürich"
+  ],
+  "answer": "FC Basel",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fd288c",
+  "q": "Schalke's 1997 UEFA Cup final was decided by what, after the two legs finished level on aggregate?",
+  "o": [
+   "A penalty shootout",
+   "Away goals",
+   "A replay",
+   "Extra time only"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a7dc9",
+  "q": "Which two nations met in the Arena AufSchalke quarter-final at the 2006 World Cup?",
+  "o": [
+   "England and Portugal",
+   "Germany and Italy",
+   "France and Brazil",
+   "Argentina and Germany"
+  ],
+  "answer": "England and Portugal",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0b4350",
+  "q": "Schalke's passionate ultras and vocal home support fill which part of the arena?",
+  "o": [
+   "The Nordkurve (North Stand)",
+   "The Yellow Wall",
+   "The Kop",
+   "The Curva Sud"
+  ],
+  "answer": "The Nordkurve (North Stand)",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_85877e",
+  "q": "Approximately how many spectators does Schalke's arena, opened in 2001, hold?",
+  "o": [
+   "About 62,000",
+   "About 40,000",
+   "About 80,000",
+   "About 27,000"
+  ],
+  "answer": "About 62,000",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9388b0",
+  "q": "Which coach, who scored the winning goal in Hamburg's 1983 European Cup final, managed Schalke from 2009?",
+  "o": [
+   "Felix Magath",
+   "Mirko Slomka",
+   "Fred Rutten",
+   "Jupp Heynckes"
+  ],
+  "answer": "Felix Magath",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_538a8a",
+  "q": "Hamburger SV traces its origins to the founding of the club SC Germania in which year?",
+  "o": [
+   "1887",
+   "1901",
+   "1909",
+   "1963"
+  ],
+  "answer": "1887",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0ff9bd",
+  "q": "In which year did three Hamburg clubs merge to create the club officially named Hamburger SV?",
+  "o": [
+   "1911",
+   "1919",
+   "1928",
+   "1945"
+  ],
+  "answer": "1919",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8e3ca2",
+  "q": "HSV long carried the affectionate nickname 'der Dino' (the Dinosaur). What earned them this name?",
+  "o": [
+   "For decades they had appeared in every Bundesliga season without relegation",
+   "They were the oldest football club in Germany",
+   "Their crest once depicted a dinosaur",
+   "They owned the largest stadium in the country"
+  ],
+  "answer": "For decades they had appeared in every Bundesliga season without relegation",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4c2b87",
+  "q": "HSV's first-ever relegation from the Bundesliga came in which year?",
+  "o": [
+   "2014",
+   "2016",
+   "2018",
+   "2020"
+  ],
+  "answer": "2018",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d7ba9a",
+  "q": "HSV's nickname 'Die Rothosen' refers to which feature of their traditional kit?",
+  "o": [
+   "Their red shorts",
+   "Their red socks",
+   "Their red goalkeeper shirt",
+   "Their red captain's armband"
+  ],
+  "answer": "Their red shorts",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_712b43",
+  "q": "After a long spell in the second tier, HSV won promotion back to the Bundesliga in which year?",
+  "o": [
+   "2021",
+   "2023",
+   "2025",
+   "2019"
+  ],
+  "answer": "2025",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a50476",
+  "q": "HSV won the DFB-Pokal (German Cup) in 1976 and then lifted it again in which later year?",
+  "o": [
+   "1983",
+   "1985",
+   "1987",
+   "1991"
+  ],
+  "answer": "1987",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8bbfa0",
+  "q": "HSV's fierce 'Nordderby' (Northern Derby) is contested against which club?",
+  "o": [
+   "Werder Bremen",
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Schalke 04"
+  ],
+  "answer": "Werder Bremen",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_885813",
+  "q": "Within the city of Hamburg, HSV's local derby is played against which club?",
+  "o": [
+   "FC St. Pauli",
+   "Holstein Kiel",
+   "Hannover 96",
+   "VfL Wolfsburg"
+  ],
+  "answer": "FC St. Pauli",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ce74d1",
+  "q": "What is the primary colour of HSV's traditional home shirt?",
+  "o": [
+   "White",
+   "Blue",
+   "Red",
+   "Black"
+  ],
+  "answer": "White",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0018b0",
+  "q": "Hamburger SV compete in the top division of which country?",
+  "o": [
+   "Germany",
+   "Austria",
+   "Switzerland",
+   "Netherlands"
+  ],
+  "answer": "Germany",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9d127d",
+  "q": "For many years a large clock at HSV's stadium famously counted what?",
+  "o": [
+   "The unbroken time the club had spent in the Bundesliga",
+   "The years since the club's founding",
+   "The total goals scored at the ground",
+   "The days until the next home match"
+  ],
+  "answer": "The unbroken time the club had spent in the Bundesliga",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7b16b4",
+  "q": "HSV's club crest features a white diamond (Raute) set on a background of which colour?",
+  "o": [
+   "Blue",
+   "Green",
+   "Red",
+   "Yellow"
+  ],
+  "answer": "Blue",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_027c43",
+  "q": "In which year did HSV win their first German national championship?",
+  "o": [
+   "1923",
+   "1931",
+   "1938",
+   "1952"
+  ],
+  "answer": "1923",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_443695",
+  "q": "In the early 1980s HSV won back-to-back German championships. In which year did they win the first of that pair?",
+  "o": [
+   "1980",
+   "1981",
+   "1982",
+   "1984"
+  ],
+  "answer": "1982",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20bfc1",
+  "q": "After their pre-war successes, HSV won their first post-World-War-II German championship in which year?",
+  "o": [
+   "1957",
+   "1960",
+   "1963",
+   "1966"
+  ],
+  "answer": "1960",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d9179",
+  "q": "HSV won the 1983 European Cup final, beating which Italian club 1-0?",
+  "o": [
+   "Juventus",
+   "Napoli",
+   "Internazionale",
+   "Roma"
+  ],
+  "answer": "Juventus",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5d7200",
+  "q": "Which HSV midfielder scored the only goal of the 1983 European Cup final?",
+  "o": [
+   "Felix Magath",
+   "Georg Volkert",
+   "Jürgen Milewski",
+   "Kevin Keegan"
+  ],
+  "answer": "Felix Magath",
+  "cat": "ChampionsLeague",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f19112",
+  "q": "In which city was the 1983 European Cup final, won by HSV, played?",
+  "o": [
+   "Athens",
+   "Rome",
+   "Madrid",
+   "Lisbon"
+  ],
+  "answer": "Athens",
+  "cat": "ChampionsLeague",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c49738",
+  "q": "HSV won their first major European trophy in 1977, beating which Belgian club 2-0 in the Cup Winners' Cup final?",
+  "o": [
+   "Anderlecht",
+   "Club Brugge",
+   "Standard Liège",
+   "KRC Genk"
+  ],
+  "answer": "Anderlecht",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a82004",
+  "q": "Which coach led HSV to their 1977 European Cup Winners' Cup triumph?",
+  "o": [
+   "Kuno Klötzer",
+   "Ernst Happel",
+   "Branko Zebec",
+   "Otto Rehhagel"
+  ],
+  "answer": "Kuno Klötzer",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3ebffb",
+  "q": "HSV lost the 1968 European Cup Winners' Cup final to which Italian club?",
+  "o": [
+   "AC Milan",
+   "Lazio",
+   "Fiorentina",
+   "Torino"
+  ],
+  "answer": "AC Milan",
+  "cat": "History",
+  "diff": "hard"
+ },
+ {
+  "id": "q_48c0b6",
+  "q": "Which Austrian coach managed HSV to their 1983 European Cup triumph?",
+  "o": [
+   "Ernst Happel",
+   "Branko Zebec",
+   "Kuno Klötzer",
+   "Hennes Weisweiler"
+  ],
+  "answer": "Ernst Happel",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_43dbe2",
+  "q": "Under which coach did HSV win the 1979 German championship?",
+  "o": [
+   "Branko Zebec",
+   "Ernst Happel",
+   "Kuno Klötzer",
+   "Udo Lattek"
+  ],
+  "answer": "Branko Zebec",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cdbc10",
+  "q": "Which forward, a one-club HSV legend who captained West Germany at the 1966 World Cup, is celebrated as the club's greatest icon?",
+  "o": [
+   "Uwe Seeler",
+   "Gerd Müller",
+   "Franz Beckenbauer",
+   "Wolfgang Overath"
+  ],
+  "answer": "Uwe Seeler",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e295a7",
+  "q": "Which HSV right-back of the 1970s and 80s was famed for his curling crosses, dubbed 'Bananenflanken' (banana crosses)?",
+  "o": [
+   "Manfred Kaltz",
+   "Bernd Wehmeyer",
+   "Peter Nogly",
+   "Ditmar Jakobs"
+  ],
+  "answer": "Manfred Kaltz",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_96c403",
+  "q": "Which powerful HSV striker of the early 1980s earned the nickname 'Das Kopfball-Ungeheuer' (the Header Monster)?",
+  "o": [
+   "Horst Hrubesch",
+   "Georg Volkert",
+   "Jürgen Milewski",
+   "Caspar Memering"
+  ],
+  "answer": "Horst Hrubesch",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4b446e",
+  "q": "English forward Kevin Keegan, nicknamed 'Mighty Mouse' by HSV fans, won the Ballon d'Or (European Footballer of the Year) in which two consecutive years while at the club?",
+  "o": [
+   "1978 and 1979",
+   "1976 and 1977",
+   "1980 and 1981",
+   "1974 and 1975"
+  ],
+  "answer": "1978 and 1979",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a26710",
+  "q": "HSV signed playmaker Rafael van der Vaart in 2005 from which Dutch club?",
+  "o": [
+   "Ajax",
+   "PSV Eindhoven",
+   "Feyenoord",
+   "AZ Alkmaar"
+  ],
+  "answer": "Ajax",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bf7397",
+  "q": "In 2008, HSV sold Rafael van der Vaart to which club?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Bayern Munich",
+   "Manchester United"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_439f75",
+  "q": "Which South Korean forward began his professional career at HSV, scoring his first senior goal in 2010?",
+  "o": [
+   "Son Heung-min",
+   "Ki Sung-yueng",
+   "Koo Ja-cheol",
+   "Lee Chung-yong"
+  ],
+  "answer": "Son Heung-min",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fbcd93",
+  "q": "HSV signed Kevin Keegan in 1977 from which English club?",
+  "o": [
+   "Liverpool",
+   "Newcastle United",
+   "Everton",
+   "Southampton"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8b7661",
+  "q": "Kevin Keegan's 1977 transfer to HSV set a British record fee of roughly how much?",
+  "o": [
+   "£500,000",
+   "£150,000",
+   "£1.2 million",
+   "£2 million"
+  ],
+  "answer": "£500,000",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b6840d",
+  "q": "At international level, HSV playmaker Rafael van der Vaart appeared at World Cups for which national team?",
+  "o": [
+   "Netherlands",
+   "Belgium",
+   "Germany",
+   "Denmark"
+  ],
+  "answer": "Netherlands",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e400ff",
+  "q": "HSV's home stadium has carried various sponsor names over the years but is traditionally known by which name?",
+  "o": [
+   "Volksparkstadion",
+   "Weserstadion",
+   "Signal Iduna Park",
+   "Olympiastadion"
+  ],
+  "answer": "Volksparkstadion",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b08946",
+  "q": "In the season they won promotion back to the Bundesliga, HSV clinched it with a 6-1 home win over which club?",
+  "o": [
+   "SSV Ulm",
+   "SV Sandhausen",
+   "Hansa Rostock",
+   "SC Paderborn"
+  ],
+  "answer": "SSV Ulm",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f362b4",
+  "q": "In which year was Fiorentina founded?",
+  "o": [
+   "1919",
+   "1926",
+   "1931",
+   "1945"
+  ],
+  "answer": "1926",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_594509",
+  "q": "Fiorentina was created by merging the club CS Firenze with which other Florentine side?",
+  "o": [
+   "PG Libertas",
+   "US Florentia",
+   "Fortitudo Firenze",
+   "Itala Firenze"
+  ],
+  "answer": "PG Libertas",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a09cd",
+  "q": "Fiorentina switched from red-and-white to purple shirts in 1929. What is the popular legend behind the colour change?",
+  "o": [
+   "A sponsor demanded it",
+   "The shirts faded to purple after a botched wash",
+   "To honour a local cardinal",
+   "To copy the city's football rivals"
+  ],
+  "answer": "The shirts faded to purple after a botched wash",
+  "cat": "History",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a12476",
+  "q": "Fiorentina's crest features the 'Giglio,' the historic emblem of Florence. What is it?",
+  "o": [
+   "A black eagle",
+   "A golden cross",
+   "A red lily (iris) on a white field",
+   "A silver wolf"
+  ],
+  "answer": "A red lily (iris) on a white field",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_79281d",
+  "q": "In which Italian city is Fiorentina based?",
+  "o": [
+   "Florence",
+   "Bologna",
+   "Turin",
+   "Genoa"
+  ],
+  "answer": "Florence",
+  "cat": "History",
+  "diff": "easy"
+ },
+ {
+  "id": "q_49d4f8",
+  "q": "Fiorentina's rivalry with Bologna, named after the mountains between the two cities, is known as what?",
+  "o": [
+   "Derby della Lanterna",
+   "Derby dell'Appennino",
+   "Derby della Madonnina",
+   "Derby del Sole"
+  ],
+  "answer": "Derby dell'Appennino",
+  "cat": "History",
+  "diff": "medium"
+ }
+]

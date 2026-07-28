@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_d1b7e5",
+  "q": "Inter signed Romelu Lukaku in 2019 from which Premier League club?",
+  "o": [
+   "Manchester United",
+   "Chelsea",
+   "Everton",
+   "Tottenham"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b0a8a7",
+  "q": "As of 2025, how many times had Inter won the European Cup / Champions League?",
+  "o": [
+   "Three",
+   "Two",
+   "Five",
+   "One"
+  ],
+  "answer": "Three",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2d2788",
+  "q": "Inter play their home matches at which stadium, shared with city rivals AC Milan?",
+  "o": [
+   "San Siro (Giuseppe Meazza)",
+   "Stadio Olimpico",
+   "Allianz Stadium",
+   "Stadio Diego Armando Maradona"
+  ],
+  "answer": "San Siro (Giuseppe Meazza)",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2ad3fd",
+  "q": "Inter's popular nickname 'Nerazzurri' refers to which two shirt colours?",
+  "o": [
+   "Black and blue",
+   "Red and black",
+   "Black and white",
+   "Blue and white"
+  ],
+  "answer": "Black and blue",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_984a7d",
+  "q": "Inter had strong European runs in the 1990s, winning which trophy three times that decade (1991, 1994, 1998)?",
+  "o": [
+   "UEFA Cup",
+   "European Cup Winners' Cup",
+   "Intertoto Cup",
+   "European Super Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe60f2",
+  "q": "Inter won the 1998 UEFA Cup final 3-0, with Ronaldo scoring, against which fellow Serie A side in Paris?",
+  "o": [
+   "Lazio",
+   "Roma",
+   "Parma",
+   "Fiorentina"
+  ],
+  "answer": "Lazio",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e8d215",
+  "q": "Which Brazilian goalkeeper was Inter's No.1 during the 2010 treble, renowned for his shot-stopping?",
+  "o": [
+   "Julio Cesar",
+   "Dida",
+   "Doni",
+   "Heurelho Gomes"
+  ],
+  "answer": "Julio Cesar",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_87f4da",
+  "q": "Before Mourinho, which manager guided Inter to three consecutive Scudetti in 2006, 2007 and 2008?",
+  "o": [
+   "Roberto Mancini",
+   "Marcello Lippi",
+   "Roberto Donadoni",
+   "Cesare Prandelli"
+  ],
+  "answer": "Roberto Mancini",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9a8784",
+  "q": "Inter were crowned world champions at the 2010 FIFA Club World Cup, beating which African side 3-0 in the final?",
+  "o": [
+   "TP Mazembe",
+   "Al Ahly",
+   "Esperance",
+   "Mamelodi Sundowns"
+  ],
+  "answer": "TP Mazembe",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c37a0",
+  "q": "Playmaker Wesley Sneijder, the creative heart of the 2010 treble, joined Inter in 2009 from which club?",
+  "o": [
+   "Real Madrid",
+   "Ajax",
+   "Galatasaray",
+   "Tottenham"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_369a01",
+  "q": "In 2009 Inter signed Samuel Eto'o from Barcelona in a swap deal that sent which striker to the Camp Nou?",
+  "o": [
+   "Zlatan Ibrahimovic",
+   "Diego Milito",
+   "Adriano",
+   "Hernan Crespo"
+  ],
+  "answer": "Zlatan Ibrahimovic",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_62a35c",
+  "q": "Nicknamed 'Lo Zio' (The Uncle), which defender spent his entire career at Inter and won the 1982 World Cup with Italy as a teenager?",
+  "o": [
+   "Beppe Bergomi",
+   "Riccardo Ferri",
+   "Giuseppe Baresi",
+   "Fulvio Collovati"
+  ],
+  "answer": "Beppe Bergomi",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_841b70",
+  "q": "Inter retired the number 3 shirt in honour of which one-club legend who later became club president?",
+  "o": [
+   "Giacinto Facchetti",
+   "Javier Zanetti",
+   "Beppe Bergomi",
+   "Ivano Bordon"
+  ],
+  "answer": "Giacinto Facchetti",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_824beb",
+  "q": "La Grande Inter's dominance ended in the 1967 European Cup final, where they lost 2-1 to which side later dubbed the 'Lisbon Lions'?",
+  "o": [
+   "Celtic",
+   "Manchester United",
+   "Ajax",
+   "Benfica"
+  ],
+  "answer": "Celtic",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_57c1db",
+  "q": "Chilean striker Ivan Zamorano famously wore the shirt number '1+8' at Inter. Why?",
+  "o": [
+   "His usual number 9 had been given to new signing Ronaldo",
+   "The number 9 was banned by the league that season",
+   "He was superstitious about wearing a single digit",
+   "He wanted to honour two retired teammates"
+  ],
+  "answer": "His usual number 9 had been given to new signing Ronaldo",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_228f38",
+  "q": "On the final day of 2001-02, Inter needed only a draw but lost 4-2 to blow the title. Which club inflicted that famous collapse?",
+  "o": [
+   "Lazio",
+   "Juventus",
+   "Roma",
+   "Udinese"
+  ],
+  "answer": "Lazio",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e6096b",
+  "q": "Which Brazilian left-back spent the 1995-96 season at Inter before being sold to Real Madrid, where he became a legend?",
+  "o": [
+   "Roberto Carlos",
+   "Cafu",
+   "Maicon",
+   "Aldair"
+  ],
+  "answer": "Roberto Carlos",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1733ee",
+  "q": "La Grande Inter won the Intercontinental Cup in both 1964 and 1965, beating which Argentine club on each occasion?",
+  "o": [
+   "Independiente",
+   "Boca Juniors",
+   "River Plate",
+   "Racing Club"
+  ],
+  "answer": "Independiente",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6d750b",
+  "q": "Which oil magnate and Inter president bankrolled 'La Grande Inter' of the 1960s and was father of the club's treble-winning owner?",
+  "o": [
+   "Angelo Moratti",
+   "Giuseppe Prisco",
+   "Ernesto Pellegrini",
+   "Carlo Masseroni"
+  ],
+  "answer": "Angelo Moratti",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9b06da",
+  "q": "In 1999 Inter made Christian Vieri the world's most expensive player, signing the striker from which Italian club?",
+  "o": [
+   "Lazio",
+   "Juventus",
+   "Atalanta",
+   "Fiorentina"
+  ],
+  "answer": "Lazio",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0dd0d0",
+  "q": "Ajax are based in which Dutch city, home to their famous De Toekomst academy?",
+  "o": [
+   "Amsterdam",
+   "Rotterdam",
+   "Eindhoven",
+   "Utrecht"
+  ],
+  "answer": "Amsterdam",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b7ceef",
+  "q": "Ajax's iconic home shirt is white with a single broad vertical stripe down the middle. What colour is that stripe?",
+  "o": [
+   "Red",
+   "Blue",
+   "Orange",
+   "Green"
+  ],
+  "answer": "Red",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d42545",
+  "q": "Since 2018 Ajax's home ground has been renamed in honour of their greatest player. What is it now called?",
+  "o": [
+   "Johan Cruyff Arena",
+   "Rinus Michels Arena",
+   "Amsterdam Dome",
+   "Ajax Stadion"
+  ],
+  "answer": "Johan Cruyff Arena",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_606b31",
+  "q": "Zlatan Ibrahimovic starred for Ajax before moving to which Italian club in 2004?",
+  "o": [
+   "Juventus",
+   "Inter Milan",
+   "AC Milan",
+   "Roma"
+  ],
+  "answer": "Juventus",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_480fa2",
+  "q": "Frenkie de Jong left Ajax in 2019, after their run to the Champions League semi-final, for which club?",
+  "o": [
+   "Barcelona",
+   "Bayern Munich",
+   "Manchester City",
+   "Paris Saint-Germain"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a953cf",
+  "q": "Wesley Sneijder came through Ajax's academy before completing a big-money move in 2007 to which club?",
+  "o": [
+   "Real Madrid",
+   "Inter Milan",
+   "Barcelona",
+   "Galatasaray"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c01321",
+  "q": "Rinus Michels, architect of Total Football and Ajax's first European Cup-winning coach, received which honour from FIFA in 1999?",
+  "o": [
+   "Coach of the Century",
+   "FIFA Order of Merit",
+   "FIFA Presidential Award",
+   "UEFA President"
+  ],
+  "answer": "Coach of the Century",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1eb9f5",
+  "q": "Which manager guided Ajax to their most recent Champions League title, in 1995?",
+  "o": [
+   "Louis van Gaal",
+   "Johan Cruyff",
+   "Rinus Michels",
+   "Marco van Basten"
+  ],
+  "answer": "Louis van Gaal",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_45cc3e",
+  "q": "Matthijs de Ligt captained Ajax's 2018-19 side before joining which club that summer?",
+  "o": [
+   "Juventus",
+   "Bayern Munich",
+   "Barcelona",
+   "Liverpool"
+  ],
+  "answer": "Juventus",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af28eb",
+  "q": "Ajax won the 1972 Intercontinental Cup, beating which South American club over two legs?",
+  "o": [
+   "Independiente",
+   "Estudiantes",
+   "Peñarol",
+   "Nacional"
+  ],
+  "answer": "Independiente",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a2e636",
+  "q": "Finnish playmaker Jari Litmanen, who wore the number 10 in Ajax's 1995 European Cup win, earned which affectionate nickname?",
+  "o": [
+   "The King of Ajax",
+   "The Flying Finn",
+   "The Iceman",
+   "The Wizard"
+  ],
+  "answer": "The King of Ajax",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c7173d",
+  "q": "Edwin van der Sar, Ajax's legendary goalkeeper, returned to the club in 2016 in which off-pitch capacity?",
+  "o": [
+   "General director (CEO)",
+   "Head coach",
+   "Goalkeeping coach",
+   "Youth academy director"
+  ],
+  "answer": "General director (CEO)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4fd995",
+  "q": "Christian Eriksen graduated from Ajax's academy before joining which Premier League club in 2013?",
+  "o": [
+   "Tottenham Hotspur",
+   "Manchester United",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a9e27",
+  "q": "Ajax reached the 1996 Champions League final but lost on penalties to which Italian side?",
+  "o": [
+   "Juventus",
+   "AC Milan",
+   "Inter Milan",
+   "Fiorentina"
+  ],
+  "answer": "Juventus",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a913c8",
+  "q": "Erik ten Hag led Ajax to a domestic league-and-cup double in which season, the same year they nearly reached the CL final?",
+  "o": [
+   "2018-19",
+   "2016-17",
+   "2017-18",
+   "2019-20"
+  ],
+  "answer": "2018-19",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_38d375",
+  "q": "Before the Amsterdam Arena opened in 1996, Ajax played from 1934 at which stadium?",
+  "o": [
+   "De Meer Stadion",
+   "Het Kasteel",
+   "De Kuip",
+   "Galgenwaard"
+  ],
+  "answer": "De Meer Stadion",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_85e329",
+  "q": "Ajax lost their first-ever European Cup final in 1969. To which Italian club, and by what score?",
+  "o": [
+   "AC Milan, 4-1",
+   "Inter Milan, 3-0",
+   "Juventus, 2-1",
+   "Fiorentina, 3-2"
+  ],
+  "answer": "AC Milan, 4-1",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_60c2a6",
+  "q": "When Johan Cruyff left Ajax for Barcelona in 1973 for a world-record fee, which coach — his old Ajax mentor — was waiting for him there?",
+  "o": [
+   "Rinus Michels",
+   "Louis van Gaal",
+   "Helenio Herrera",
+   "Vic Buckingham"
+  ],
+  "answer": "Rinus Michels",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0356e7",
+  "q": "Louis van Gaal's Ajax achieved what remarkable Eredivisie feat in the 1994-95 season?",
+  "o": [
+   "Went the entire league season unbeaten",
+   "Scored 150 league goals",
+   "Won every away match",
+   "Kept a clean sheet in every home game"
+  ],
+  "answer": "Went the entire league season unbeaten",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3be7e0",
+  "q": "Which left winger, a key artist of Ajax's three-in-a-row European Cups, is regarded as Cruyff's great on-field foil of that era?",
+  "o": [
+   "Piet Keizer",
+   "Sjaak Swart",
+   "Johnny Rep",
+   "Gerrie Mühren"
+  ],
+  "answer": "Piet Keizer",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_71b22a",
+  "q": "Ajax won the 1987 European Cup Winners' Cup with Johan Cruyff as manager. Which club did they beat in the final?",
+  "o": [
+   "Lokomotive Leipzig",
+   "Malmö FF",
+   "Real Zaragoza",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Lokomotive Leipzig",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d7021f",
+  "q": "As Ajax manager, Frank de Boer won how many consecutive Eredivisie titles from 2011 to 2014?",
+  "o": [
+   "Four",
+   "Three",
+   "Five",
+   "Two"
+  ],
+  "answer": "Four",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_36bdbb",
+  "q": "Antoine Griezmann first joined Atlético Madrid in 2014 from which other Spanish club?",
+  "o": [
+   "Real Sociedad",
+   "Valencia",
+   "Villarreal",
+   "Málaga"
+  ],
+  "answer": "Real Sociedad",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9f36f3",
+  "q": "Sergio 'Kun' Agüero left Atlético Madrid in 2011 to join which English club?",
+  "o": [
+   "Manchester City",
+   "Chelsea",
+   "Manchester United",
+   "Liverpool"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_90b43a",
+  "q": "Atlético goalkeeper Jan Oblak represents which national team?",
+  "o": [
+   "Slovenia",
+   "Croatia",
+   "Serbia",
+   "Slovakia"
+  ],
+  "answer": "Slovenia",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_769de3",
+  "q": "What is the nationality of long-serving Atlético manager Diego Simeone?",
+  "o": [
+   "Argentine",
+   "Uruguayan",
+   "Chilean",
+   "Spanish"
+  ],
+  "answer": "Argentine",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec7cf2",
+  "q": "Atlético Madrid contest the Madrid derby against which fierce city rival?",
+  "o": [
+   "Real Madrid",
+   "Rayo Vallecano",
+   "Getafe",
+   "FC Barcelona"
+  ],
+  "answer": "Real Madrid",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5f0218",
+  "q": "Iconic Atlético captain and centre-back Diego Godín played international football for which country?",
+  "o": [
+   "Uruguay",
+   "Argentina",
+   "Colombia",
+   "Chile"
+  ],
+  "answer": "Uruguay",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c9a7ba",
+  "q": "In the 2016 Champions League final against Real Madrid, who scored Atlético's 79th-minute equaliser to force extra time?",
+  "o": [
+   "Yannick Carrasco",
+   "Antoine Griezmann",
+   "Fernando Torres",
+   "Saúl Ñíguez"
+  ],
+  "answer": "Yannick Carrasco",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_59cac0",
+  "q": "Radamel Falcao was signed by Atlético Madrid in 2011 from which Portuguese club?",
+  "o": [
+   "FC Porto",
+   "Benfica",
+   "Sporting CP",
+   "Braga"
+  ],
+  "answer": "FC Porto",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eff807",
+  "q": "When Griezmann left Atlético for Barcelona in 2019, Barça paid his release clause of how much?",
+  "o": [
+   "€120m",
+   "€80m",
+   "€100m",
+   "€150m"
+  ],
+  "answer": "€120m",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_588485",
+  "q": "Luis Aragonés, an Atlético legend as both player and coach, later won Euro 2008 as manager of which national team?",
+  "o": [
+   "Spain",
+   "Greece",
+   "Portugal",
+   "Italy"
+  ],
+  "answer": "Spain",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_195236",
+  "q": "How many times have Atlético Madrid won the Copa del Rey (as of 2024)?",
+  "o": [
+   "10",
+   "5",
+   "7",
+   "13"
+  ],
+  "answer": "10",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d8265f",
+  "q": "On the way to the 2014 Champions League final, Atlético knocked out which English club in the semifinals?",
+  "o": [
+   "Chelsea",
+   "Manchester City",
+   "Liverpool",
+   "Arsenal"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_014d37",
+  "q": "Atlético beat Chelsea 4-1 in the 2012 UEFA Super Cup thanks to a hat-trick from which striker?",
+  "o": [
+   "Radamel Falcao",
+   "Diego Costa",
+   "Arda Turan",
+   "Adrián López"
+  ],
+  "answer": "Radamel Falcao",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_77a0d6",
+  "q": "Which manager led Atlético Madrid to the 2010 Europa League title?",
+  "o": [
+   "Quique Sánchez Flores",
+   "Gregorio Manzano",
+   "Abel Resino",
+   "Javier Aguirre"
+  ],
+  "answer": "Quique Sánchez Flores",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df33ec",
+  "q": "Atlético's Metropolitano stadium, opened in 2017, has an approximate capacity of how many?",
+  "o": [
+   "68,000",
+   "55,000",
+   "80,000",
+   "45,000"
+  ],
+  "answer": "68,000",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_416920",
+  "q": "Atlético won their first European trophy in 1962 — the Cup Winners' Cup — beating which Italian side in a replay?",
+  "o": [
+   "Fiorentina",
+   "AC Milan",
+   "Roma",
+   "Torino"
+  ],
+  "answer": "Fiorentina",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_784cb1",
+  "q": "Saúl Ñíguez scored a celebrated solo goal in Atlético's 2016 Champions League semifinal first leg against which club?",
+  "o": [
+   "Bayern Munich",
+   "Barcelona",
+   "Real Madrid",
+   "Bayer Leverkusen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eeedc5",
+  "q": "Which Mexican striker won the Pichichi at Atlético before a controversial 1985 switch to rivals Real Madrid?",
+  "o": [
+   "Hugo Sánchez",
+   "Luis García",
+   "Rafael Márquez",
+   "Cuauhtémoc Blanco"
+  ],
+  "answer": "Hugo Sánchez",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a2c6ca",
+  "q": "Which Italian striker top-scored for Atlético in 1997-98 before joining Lazio, later starring for Italy at World Cups?",
+  "o": [
+   "Christian Vieri",
+   "Filippo Inzaghi",
+   "Fabrizio Ravanelli",
+   "Enrico Chiesa"
+  ],
+  "answer": "Christian Vieri",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b554b6",
+  "q": "Atlético's 2013-14 La Liga title was their first Spanish league crown since which year?",
+  "o": [
+   "1996",
+   "1977",
+   "1991",
+   "1985"
+  ],
+  "answer": "1996",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd5559",
+  "q": "Before Julián Álvarez arrived in 2024, Atlético's second-most expensive signing was a French winger bought from Monaco in 2018. Who?",
+  "o": [
+   "Thomas Lemar",
+   "Antoine Griezmann",
+   "Yannick Carrasco",
+   "Gelson Martins"
+  ],
+  "answer": "Thomas Lemar",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0bb88e",
+  "q": "Which Mexican coach led Atlético to Champions League qualification in 2008, ending an 11-year absence from the competition?",
+  "o": [
+   "Javier Aguirre",
+   "César Luis Menotti",
+   "Gregorio Manzano",
+   "Quique Sánchez Flores"
+  ],
+  "answer": "Javier Aguirre",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_40c12f",
+  "q": "How many Serie A titles had Napoli won in their history as of 2025?",
+  "o": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": "4",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd5efa",
+  "q": "Which Brazilian striker formed the famous 'Ma-Gi-Ca' attacking trio with Maradona and Bruno Giordano at Napoli?",
+  "o": [
+   "Careca",
+   "Müller",
+   "Casagrande",
+   "Romário"
+  ],
+  "answer": "Careca",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e84752",
+  "q": "Which former Chelsea and Juventus manager led Napoli to the 2024-25 Serie A title?",
+  "o": [
+   "Antonio Conte",
+   "Luciano Spalletti",
+   "Maurizio Sarri",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Antonio Conte",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1ccf56",
+  "q": "From which French club did Napoli sign striker Victor Osimhen in 2020?",
+  "o": [
+   "Lille",
+   "Lyon",
+   "Monaco",
+   "Marseille"
+  ],
+  "answer": "Lille",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_285ea0",
+  "q": "Which Georgian winger nicknamed 'Kvaradona' was a breakout star of Napoli's 2022-23 title win?",
+  "o": [
+   "Khvicha Kvaratskhelia",
+   "Piotr Zielinski",
+   "Eljif Elmas",
+   "Matteo Politano"
+  ],
+  "answer": "Khvicha Kvaratskhelia",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a38468",
+  "q": "Napoli won which European trophy in 1989, their only major continental honour?",
+  "o": [
+   "UEFA Cup",
+   "European Cup",
+   "Cup Winners' Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_77caa3",
+  "q": "Which German club did Napoli beat over two legs to win the 1989 UEFA Cup final?",
+  "o": [
+   "VfB Stuttgart",
+   "Bayern Munich",
+   "Hamburg",
+   "1. FC Köln"
+  ],
+  "answer": "VfB Stuttgart",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7e7644",
+  "q": "Napoli sold Edinson Cavani to which club in 2013 for a then club-record fee?",
+  "o": [
+   "Paris Saint-Germain",
+   "Real Madrid",
+   "Chelsea",
+   "Manchester City"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_97541d",
+  "q": "Which manager introduced the fluid 'Sarriball' style at Napoli between 2015 and 2018?",
+  "o": [
+   "Maurizio Sarri",
+   "Rafael Benítez",
+   "Walter Mazzarri",
+   "Carlo Ancelotti"
+  ],
+  "answer": "Maurizio Sarri",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_92ff4b",
+  "q": "Which Slovak midfielder held Napoli's all-time record for most appearances as of 2024?",
+  "o": [
+   "Marek Hamšík",
+   "Lorenzo Insigne",
+   "Piotr Zielinski",
+   "Ciro Ferrara"
+  ],
+  "answer": "Marek Hamšík",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fefedc",
+  "q": "Napoli amassed a club-record 91 points in which season, yet still finished second to Juventus?",
+  "o": [
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19"
+  ],
+  "answer": "2017-18",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88b25c",
+  "q": "Napoli signed Khvicha Kvaratskhelia in 2022 from which club?",
+  "o": [
+   "Dinamo Batumi",
+   "Rubin Kazan",
+   "Dinamo Tbilisi",
+   "Lokomotiv Moscow"
+  ],
+  "answer": "Dinamo Batumi",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_5f7613",
+  "q": "Which Spanish manager guided Napoli to the Coppa Italia in 2014?",
+  "o": [
+   "Rafael Benítez",
+   "Luis Enrique",
+   "Unai Emery",
+   "Quique Setién"
+  ],
+  "answer": "Rafael Benítez",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7a78d8",
+  "q": "How many times had Napoli won the Coppa Italia as of 2024?",
+  "o": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": "6",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af5cf2",
+  "q": "Which future World Cup-winning Italy captain began his professional career at Napoli in the early 1990s?",
+  "o": [
+   "Fabio Cannavaro",
+   "Alessandro Nesta",
+   "Marco Materazzi",
+   "Gianluca Zambrotta"
+  ],
+  "answer": "Fabio Cannavaro",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8ee07d",
+  "q": "Napoli beat which English club 3-1 at home in the 2011-12 Champions League round-of-16 first leg?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Manchester City",
+   "Tottenham"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_30ff3a",
+  "q": "Napoli signed striker Gonzalo Higuaín in 2013 from which club?",
+  "o": [
+   "Real Madrid",
+   "Juventus",
+   "Atlético Madrid",
+   "Valencia"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f0eadd",
+  "q": "Which manager led Napoli to their first-ever Champions League group stage in 2011-12?",
+  "o": [
+   "Walter Mazzarri",
+   "Edoardo Reja",
+   "Rafael Benítez",
+   "Maurizio Sarri"
+  ],
+  "answer": "Walter Mazzarri",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5c6497",
+  "q": "Which midfielder followed manager Maurizio Sarri from Napoli to Chelsea in 2018?",
+  "o": [
+   "Jorginho",
+   "Allan",
+   "Marek Hamšík",
+   "Piotr Zielinski"
+  ],
+  "answer": "Jorginho",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c2a077",
+  "q": "In the 2022-23 Champions League group stage, Napoli thrashed which Dutch club 6-1 away?",
+  "o": [
+   "Ajax",
+   "PSV Eindhoven",
+   "Feyenoord",
+   "AZ Alkmaar"
+  ],
+  "answer": "Ajax",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cbd95e",
+  "q": "Which Naples-born captain left Napoli to join Toronto FC in 2022?",
+  "o": [
+   "Lorenzo Insigne",
+   "Dries Mertens",
+   "José Callejón",
+   "Piotr Zielinski"
+  ],
+  "answer": "Lorenzo Insigne",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d9296b",
+  "q": "In which year was the club that became modern Napoli founded as Associazione Calcio Napoli?",
+  "o": [
+   "1904",
+   "1919",
+   "1926",
+   "1932"
+  ],
+  "answer": "1926",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8aacfc",
+  "q": "In which city is the football club Galatasaray based?",
+  "o": [
+   "Ankara",
+   "Izmir",
+   "Istanbul",
+   "Bursa"
+  ],
+  "answer": "Istanbul",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8f00c6",
+  "q": "What are Galatasaray's traditional club colours?",
+  "o": [
+   "Red and yellow",
+   "Blue and yellow",
+   "Black and white",
+   "Green and red"
+  ],
+  "answer": "Red and yellow",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cf5e43",
+  "q": "Which Ivorian striker and Chelsea great played for Galatasaray between 2013 and 2015?",
+  "o": [
+   "Didier Drogba",
+   "Wilfried Bony",
+   "Salomon Kalou",
+   "Gervinho"
+  ],
+  "answer": "Didier Drogba",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40751a",
+  "q": "As of 2025, which club held the record for the most Turkish Süper Lig titles?",
+  "o": [
+   "Fenerbahçe",
+   "Beşiktaş",
+   "Galatasaray",
+   "Trabzonspor"
+  ],
+  "answer": "Galatasaray",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_63e6a5",
+  "q": "Who was Galatasaray's manager when the club won the 2000 UEFA Cup?",
+  "o": [
+   "Mircea Lucescu",
+   "Fatih Terim",
+   "Frank Rijkaard",
+   "Cesare Prandelli"
+  ],
+  "answer": "Fatih Terim",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c498e",
+  "q": "Romanian playmaker Gheorghe Hagi joined Galatasaray in 1996 from which Spanish club?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Valencia",
+   "Atlético Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_402213",
+  "q": "Which long-serving Uruguayan goalkeeper made over 400 appearances for Galatasaray between 2011 and 2024?",
+  "o": [
+   "Fernando Muslera",
+   "Martín Campaña",
+   "Sebastián Sosa",
+   "Sergio Rochet"
+  ],
+  "answer": "Fernando Muslera",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b55c7f",
+  "q": "Galatasaray first signed striker Mauro Icardi on loan in 2022, then permanently in 2023, from which club?",
+  "o": [
+   "Inter Milan",
+   "Paris Saint-Germain",
+   "Sampdoria",
+   "Roma"
+  ],
+  "answer": "Paris Saint-Germain",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b2200",
+  "q": "Which Galatasaray academy graduate was sold to Atlético Madrid in 2011 and later captained Turkey?",
+  "o": [
+   "Arda Turan",
+   "Selçuk İnan",
+   "Hamit Altıntop",
+   "Sabri Sarıoğlu"
+  ],
+  "answer": "Arda Turan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_191220",
+  "q": "Galatasaray was founded in 1905 by a group of students led by which man, later the namesake of their old stadium?",
+  "o": [
+   "Ali Sami Yen",
+   "Metin Oktay",
+   "Gündüz Kılıç",
+   "Bülent Eken"
+  ],
+  "answer": "Ali Sami Yen",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b61b8e",
+  "q": "In 2023, Galatasaray's stadium (opened in 2011 to replace the old Ali Sami Yen ground) took on which sponsorship name?",
+  "o": [
+   "RAMS Park",
+   "Vodafone Park",
+   "Türk Telekom Arena",
+   "Nef Stadium"
+  ],
+  "answer": "RAMS Park",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6296ac",
+  "q": "In the record-breaking 2023-24 season, Galatasaray won the Süper Lig by edging which rival to the title?",
+  "o": [
+   "Fenerbahçe",
+   "Beşiktaş",
+   "Trabzonspor",
+   "Başakşehir"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "SuperLig",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6dc7b9",
+  "q": "Galatasaray beat which club to win the 2000 UEFA Super Cup, sealed by a Mário Jardel golden goal?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Manchester United",
+   "Barcelona"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7799d5",
+  "q": "In the 1993-94 Champions League, Galatasaray famously eliminated which club, whose fans were greeted by a 'Welcome to Hell' banner?",
+  "o": [
+   "Manchester United",
+   "Arsenal",
+   "Barcelona",
+   "AC Milan"
+  ],
+  "answer": "Manchester United",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef99a0",
+  "q": "Who scored the decisive penalty for Galatasaray in the 2000 UEFA Cup final shootout against Arsenal?",
+  "o": [
+   "Gheorghe Hagi",
+   "Gheorghe Popescu",
+   "Hakan Şükür",
+   "Ergün Penbe"
+  ],
+  "answer": "Gheorghe Popescu",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e83f39",
+  "q": "Which 1960s Galatasaray striker, a six-time league top scorer, was nicknamed the 'Uncrowned King' (Taçsız Kral)?",
+  "o": [
+   "Metin Oktay",
+   "Hakan Şükür",
+   "Tanju Çolak",
+   "Cevad Prekazi"
+  ],
+  "answer": "Metin Oktay",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_be65f3",
+  "q": "Which Brazilian World Cup-winning goalkeeper saved two penalties for Galatasaray in the 2000 UEFA Cup final shootout?",
+  "o": [
+   "Claudio Taffarel",
+   "Dida",
+   "Júlio César",
+   "Marcos"
+  ],
+  "answer": "Claudio Taffarel",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3acf5a",
+  "q": "Which former Manchester City manager led Galatasaray to the 2013-14 Turkish Cup?",
+  "o": [
+   "Roberto Mancini",
+   "Cesare Prandelli",
+   "Claudio Ranieri",
+   "Fabio Capello"
+  ],
+  "answer": "Roberto Mancini",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d9500e",
+  "q": "As of the 2024-25 season, which club had won the most Primeira Liga titles in Portuguese football history?",
+  "o": [
+   "Sporting CP",
+   "Porto",
+   "Benfica",
+   "Braga"
+  ],
+  "answer": "Benfica",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8939fc",
+  "q": "In which year was Benfica founded?",
+  "o": [
+   "1904",
+   "1893",
+   "1920",
+   "1911"
+  ],
+  "answer": "1904",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eb91c9",
+  "q": "João Félix left Benfica in 2019 in a €126m deal — which club signed him?",
+  "o": [
+   "Manchester City",
+   "Atlético Madrid",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c0ecc9",
+  "q": "Which Premier League club signed striker Darwin Núñez from Benfica in 2022?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Liverpool",
+   "Newcastle"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a1c9f",
+  "q": "In which city does Benfica play its home matches?",
+  "o": [
+   "Porto",
+   "Lisbon",
+   "Braga",
+   "Coimbra"
+  ],
+  "answer": "Lisbon",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8e929d",
+  "q": "Which bird features on Benfica's crest and appears as their matchday mascot?",
+  "o": [
+   "Falcon",
+   "Eagle",
+   "Hawk",
+   "Raven"
+  ],
+  "answer": "Eagle",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_194fcc",
+  "q": "Which Hungarian coach led Benfica to back-to-back European Cup triumphs in 1961 and 1962?",
+  "o": [
+   "Béla Guttmann",
+   "Gusztáv Sebes",
+   "Nándor Hidegkuti",
+   "Ferenc Puskás"
+  ],
+  "answer": "Béla Guttmann",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d48b19",
+  "q": "The famous 'Guttmann curse' supposedly dooms Benfica to no European trophy for how long?",
+  "o": [
+   "50 years",
+   "100 years",
+   "25 years",
+   "200 years"
+  ],
+  "answer": "100 years",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a60235",
+  "q": "Benfica won their 38th league title in 2022-23 under which German head coach?",
+  "o": [
+   "Roger Schmidt",
+   "Julian Nagelsmann",
+   "Ralf Rangnick",
+   "Thomas Tuchel"
+  ],
+  "answer": "Roger Schmidt",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_480827",
+  "q": "Defender Rúben Dias joined which club from Benfica in 2020?",
+  "o": [
+   "Chelsea",
+   "Manchester City",
+   "Paris Saint-Germain",
+   "Bayern Munich"
+  ],
+  "answer": "Manchester City",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_50e424",
+  "q": "Sven-Göran Eriksson led Benfica to the 1990 European Cup final, where they lost 1-0 to which club?",
+  "o": [
+   "AC Milan",
+   "Ajax",
+   "Real Madrid",
+   "Steaua Bucharest"
+  ],
+  "answer": "AC Milan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bfecc4",
+  "q": "Ángel Di María moved to Real Madrid in 2010 from which club?",
+  "o": [
+   "Rosario Central",
+   "Benfica",
+   "Porto",
+   "Shakhtar Donetsk"
+  ],
+  "answer": "Benfica",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f25c49",
+  "q": "Benfica lost the 2013 Europa League final to which English side?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Liverpool"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f7bc3f",
+  "q": "Mário Coluna, captain of Benfica's 1960s European Cup winners, was famously nicknamed what?",
+  "o": [
+   "The Sacred Monster",
+   "The Black Panther",
+   "The Eagle",
+   "The General"
+  ],
+  "answer": "The Sacred Monster",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c3c439",
+  "q": "Which Italian coach ended Benfica's 11-year league drought by winning the 2004-05 Primeira title?",
+  "o": [
+   "Giovanni Trapattoni",
+   "Fabio Capello",
+   "Carlo Ancelotti",
+   "Marcello Lippi"
+  ],
+  "answer": "Giovanni Trapattoni",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b968f1",
+  "q": "Benfica lost the 1963 European Cup final 2-1 to AC Milan — which forward scored both Milan goals?",
+  "o": [
+   "José Altafini",
+   "Gianni Rivera",
+   "Bruno Mora",
+   "Paolo Barison"
+  ],
+  "answer": "José Altafini",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_70420e",
+  "q": "Benfica striker Miklós Fehér tragically collapsed and died during a 2004 match against which Portuguese club?",
+  "o": [
+   "Vitória de Guimarães",
+   "Boavista",
+   "Sporting CP",
+   "Braga"
+  ],
+  "answer": "Vitória de Guimarães",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f75533",
+  "q": "Who holds Benfica's club record for most official appearances, made across 18 seasons from 1968 to 1986?",
+  "o": [
+   "Nené",
+   "Mário Coluna",
+   "Eusébio",
+   "Rui Costa"
+  ],
+  "answer": "Nené",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_84bfab",
+  "q": "When Benfica set a Guinness World Record for most paid-up members of a sports club in 2006, roughly how many members did they have?",
+  "o": [
+   "40,000",
+   "160,000",
+   "500,000",
+   "1 million"
+  ],
+  "answer": "160,000",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_44fa70",
+  "q": "Benfica lost the 1965 European Cup final 1-0 at the San Siro to which Italian club?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Juventus",
+   "Fiorentina"
+  ],
+  "answer": "Inter",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a90163",
+  "q": "Benfica lost the 2014 Europa League final on penalties to which Spanish club?",
+  "o": [
+   "Sevilla",
+   "Valencia",
+   "Villarreal",
+   "Atlético Madrid"
+  ],
+  "answer": "Sevilla",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a1fc19",
+  "q": "Which former Benfica and Portugal playmaker became the club's president in 2021?",
+  "o": [
+   "Rui Costa",
+   "João Pinto",
+   "Nuno Gomes",
+   "Simão Sabrosa"
+  ],
+  "answer": "Rui Costa",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f2e60",
+  "q": "Portuguese football's 'Big Three' have dominated the Primeira Liga. Which club is NOT one of them?",
+  "o": [
+   "Braga",
+   "Benfica",
+   "Porto",
+   "Sporting CP"
+  ],
+  "answer": "Braga",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6b6ff9",
+  "q": "FC Porto play their home matches at which stadium?",
+  "o": [
+   "Estádio da Luz",
+   "Estádio do Dragão",
+   "Estádio José Alvalade",
+   "Estádio do Bessa"
+  ],
+  "answer": "Estádio do Dragão",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_009e34",
+  "q": "The Lisbon derby, one of Portugal's fiercest fixtures, pits Benfica against which club?",
+  "o": [
+   "Boavista",
+   "Belenenses",
+   "Sporting CP",
+   "Porto"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0430be",
+  "q": "Cristiano Ronaldo made his professional debut in the Primeira Liga in 2002 with which club?",
+  "o": [
+   "Porto",
+   "Benfica",
+   "Boavista",
+   "Sporting CP"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4090c",
+  "q": "Sporting CP are famously nicknamed after which animal?",
+  "o": [
+   "Lions",
+   "Dragons",
+   "Eagles",
+   "Wolves"
+  ],
+  "answer": "Lions",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ddd0c7",
+  "q": "Which club won the 2021-22 Primeira Liga, clinching their 30th Portuguese title?",
+  "o": [
+   "Sporting CP",
+   "Porto",
+   "Benfica",
+   "Braga"
+  ],
+  "answer": "Porto",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2a2277",
+  "q": "Which club won the 2020-21 Primeira Liga, ending a 19-year wait for the title?",
+  "o": [
+   "Braga",
+   "Boavista",
+   "Sporting CP",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2ec183",
+  "q": "'O Clássico', Portuguese football's biggest inter-city rivalry, is played between Porto and which club?",
+  "o": [
+   "Sporting CP",
+   "Braga",
+   "Benfica",
+   "Boavista"
+  ],
+  "answer": "Benfica",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_83d80f",
+  "q": "Which Primeira Liga club plays at a spectacular stadium carved into the face of a rock quarry?",
+  "o": [
+   "Braga",
+   "Marítimo",
+   "Vitória de Guimarães",
+   "Gil Vicente"
+  ],
+  "answer": "Braga",
+  "cat": "Primeira",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dad0ef",
+  "q": "Luís Figo began his professional career in the Primeira Liga with which club?",
+  "o": [
+   "Porto",
+   "Benfica",
+   "Belenenses",
+   "Sporting CP"
+  ],
+  "answer": "Sporting CP",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c353fb",
+  "q": "Brazilian forward Hulk starred in the Primeira Liga from 2008 to 2012, winning three league titles with which club?",
+  "o": [
+   "Benfica",
+   "Porto",
+   "Sporting CP",
+   "Braga"
+  ],
+  "answer": "Porto",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e3fec6",
+  "q": "The Estádio da Luz, Estádio do Dragão and José Alvalade were all newly built ahead of which tournament?",
+  "o": [
+   "Euro 2000",
+   "2002 World Cup",
+   "Euro 2004",
+   "Euro 2008"
+  ],
+  "answer": "Euro 2004",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_19d55e",
+  "q": "Porto came from behind to beat which club 2-1 in the 1987 European Cup final in Vienna?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Juventus",
+   "Steaua Bucharest"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b70dc7",
+  "q": "The 2011 Europa League final was an all-Portuguese affair — Porto beat which club 1-0 in Dublin?",
+  "o": [
+   "Sporting CP",
+   "Benfica",
+   "Braga",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Braga",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a62aa8",
+  "q": "Which Brazilian striker won the European Golden Shoe with Porto in 1998-99 and again with Sporting in 2001-02?",
+  "o": [
+   "Mário Jardel",
+   "Derlei",
+   "Liédson",
+   "Jonas"
+  ],
+  "answer": "Mário Jardel",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7f2498",
+  "q": "Which manager led Sporting CP to the 2020-21 Primeira Liga title?",
+  "o": [
+   "Jorge Jesus",
+   "Rúben Amorim",
+   "Sérgio Conceição",
+   "Paulo Fonseca"
+  ],
+  "answer": "Rúben Amorim",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d52c95",
+  "q": "Which coach sparked outrage by leaving Benfica for arch-rivals Sporting CP in the summer of 2015?",
+  "o": [
+   "Bruno Lage",
+   "Rui Vitória",
+   "Jorge Jesus",
+   "Leonardo Jardim"
+  ],
+  "answer": "Jorge Jesus",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3b3c20",
+  "q": "Which club stunned Portugal by winning the 2000-01 Primeira Liga title?",
+  "o": [
+   "Boavista",
+   "Braga",
+   "Marítimo",
+   "Vitória de Guimarães"
+  ],
+  "answer": "Boavista",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_adea63",
+  "q": "Belenenses, league champions in 1945-46, are historically based in which Portuguese city?",
+  "o": [
+   "Setúbal",
+   "Coimbra",
+   "Braga",
+   "Lisbon"
+  ],
+  "answer": "Lisbon",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b60d8c",
+  "q": "Sporting CP play their home matches at which stadium?",
+  "o": [
+   "Estádio do Restelo",
+   "Estádio José Alvalade",
+   "Estádio do Bessa",
+   "Estádio das Antas"
+  ],
+  "answer": "Estádio José Alvalade",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bbf772",
+  "q": "The award for the Primeira Liga's top scorer each season is traditionally known as what?",
+  "o": [
+   "Bola de Ouro",
+   "Chuteira de Prata",
+   "Bola de Prata",
+   "Águia de Ouro"
+  ],
+  "answer": "Bola de Prata",
+  "cat": "Primeira",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1a4c30",
+  "q": "Which playmaker won the 2004 Champions League with Porto before joining Barcelona that summer?",
+  "o": [
+   "Deco",
+   "Maniche",
+   "Dmitri Alenichev",
+   "Ricardo Quaresma"
+  ],
+  "answer": "Deco",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_436d76",
+  "q": "Before his 2013 move to Monaco, James Rodríguez spent three seasons in the Primeira Liga with which club?",
+  "o": [
+   "Benfica",
+   "Sporting CP",
+   "Braga",
+   "Porto"
+  ],
+  "answer": "Porto",
+  "cat": "Primeira",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1c1359",
+  "q": "Which manager won back-to-back Primeira Liga titles with Porto in 1995 and 1996?",
+  "o": [
+   "Bobby Robson",
+   "Graeme Souness",
+   "Artur Jorge",
+   "Manuel José"
+  ],
+  "answer": "Bobby Robson",
+  "cat": "Primeira",
+  "diff": "medium"
+ }
+]

@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_6a89c9",
+  "q": "Which country won the 2010 World Cup?",
+  "o": [
+   "Spain",
+   "Netherlands",
+   "Germany",
+   "Brazil"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a77e72",
+  "q": "Brazil have won the World Cup 5 times — which of these years is NOT one of their victories?",
+  "o": [
+   "1958",
+   "1970",
+   "1982",
+   "2002"
+  ],
+  "answer": "1982",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1d0d44",
+  "q": "Which country won the 2022 World Cup?",
+  "o": [
+   "France",
+   "Brazil",
+   "Argentina",
+   "Croatia"
+  ],
+  "answer": "Argentina",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_712805",
+  "q": "In which year did England win their only World Cup?",
+  "o": [
+   "1962",
+   "1966",
+   "1970",
+   "1958"
+  ],
+  "answer": "1966",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9414e9",
+  "q": "Which team did Germany beat 7-1 in the 2014 WC semi-final?",
+  "o": [
+   "Argentina",
+   "France",
+   "Brazil",
+   "Colombia"
+  ],
+  "answer": "Brazil",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7b9cc2",
+  "q": "Who was top scorer at the 2018 World Cup?",
+  "o": [
+   "Neymar",
+   "Messi",
+   "Kane",
+   "Ronaldo"
+  ],
+  "answer": "Kane",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b33984",
+  "q": "Who captained France in the 2018 World Cup final?",
+  "o": [
+   "Griezmann",
+   "Pogba",
+   "Lloris",
+   "Varane"
+  ],
+  "answer": "Lloris",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9e729f",
+  "q": "Which Argentina goalkeeper saved Kingsley Coman's spot-kick in the 2022 World Cup final shoot-out against France — winning the Golden Glove after earlier saving two penalties against the Netherlands in the quarter-final?",
+  "o": [
+   "Emiliano Martínez",
+   "Franco Armani",
+   "Gerónimo Rulli",
+   "Juan Musso"
+  ],
+  "answer": "Emiliano Martínez",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_194aa3",
+  "q": "In what year did the first World Cup take place?",
+  "o": [
+   "1926",
+   "1930",
+   "1934",
+   "1938"
+  ],
+  "answer": "1930",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_864355",
+  "q": "Who managed Croatia to the 2018 World Cup final?",
+  "o": [
+   "Bilic",
+   "Dalić",
+   "Čačić",
+   "Kovač"
+  ],
+  "answer": "Dalić",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e40932",
+  "q": "Who scored France's third goal in the 1998 World Cup final — in stoppage time as France beat Brazil 3-0?",
+  "o": [
+   "Petit",
+   "Thuram",
+   "Djorkaeff",
+   "Guivarc'h"
+  ],
+  "answer": "Petit",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_145079",
+  "q": "In the 2002 World Cup third-place play-off, Turkey's Hakan Şükür scored after just 11 seconds — who were Turkey playing?",
+  "o": [
+   "Japan",
+   "Senegal",
+   "South Korea",
+   "USA"
+  ],
+  "answer": "South Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_919497",
+  "q": "In what year did Pelé make his World Cup debut and become the youngest WC scorer?",
+  "o": [
+   "1954",
+   "1958",
+   "1962",
+   "1950"
+  ],
+  "answer": "1958",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5060ac",
+  "q": "Who was top scorer at Euro 2020?",
+  "o": [
+   "Mbappé",
+   "Ronaldo",
+   "Kane",
+   "Lukaku"
+  ],
+  "answer": "Ronaldo",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3ff5fc",
+  "q": "Which country has won the European Championship the most times?",
+  "o": [
+   "Germany",
+   "Spain",
+   "France",
+   "Italy"
+  ],
+  "answer": "Spain",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6a3e53",
+  "q": "Which two-nation pairing hosted Euro 2000 — the first ever co-hosted European Championship?",
+  "o": [
+   "Austria & Switzerland",
+   "Poland & Ukraine",
+   "Belgium & Netherlands",
+   "Spain & Portugal"
+  ],
+  "answer": "Belgium & Netherlands",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3dd434",
+  "q": "Which club did Liverpool beat in the 2019 Champions League final?",
+  "o": [
+   "PSG",
+   "Juventus",
+   "Tottenham",
+   "Barcelona"
+  ],
+  "answer": "Tottenham",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3f52fd",
+  "q": "Manchester City won their first ever UCL title in which year?",
+  "o": [
+   "2021",
+   "2022",
+   "2023",
+   "2024"
+  ],
+  "answer": "2023",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_93330f",
+  "q": "As of 2026, who is the all-time top scorer in the UEFA Champions League?",
+  "o": [
+   "Messi",
+   "Lewandowski",
+   "Ronaldo",
+   "Benzema"
+  ],
+  "answer": "Ronaldo",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ef2a00",
+  "q": "Which player scored a stunning overhead kick vs Juventus in the 2018 UCL quarter-final?",
+  "o": [
+   "Asensio",
+   "Bale",
+   "Benzema",
+   "Ronaldo"
+  ],
+  "answer": "Ronaldo",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_90effe",
+  "q": "Who scored the crucial 4th goal for Liverpool vs Barcelona in the 2019 UCL semi-final second leg?",
+  "o": [
+   "Salah",
+   "Firmino",
+   "Origi",
+   "Wijnaldum"
+  ],
+  "answer": "Origi",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0a2ab8",
+  "q": "Which goalkeeper saved a crucial penalty for Chelsea in the 2012 UCL final shootout?",
+  "o": [
+   "Hilário",
+   "Cudicini",
+   "Čech",
+   "Turnbull"
+  ],
+  "answer": "Čech",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c93bc3",
+  "q": "In which year did Ajax reach the UCL semi-finals, eliminating both Real Madrid and Juventus?",
+  "o": [
+   "2017",
+   "2018",
+   "2020",
+   "2019"
+  ],
+  "answer": "2019",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dea4a9",
+  "q": "Who holds the all-time record for most Premier League goals?",
+  "o": [
+   "Shearer",
+   "Rooney",
+   "Cole",
+   "Lampard"
+  ],
+  "answer": "Shearer",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6685ba",
+  "q": "What nickname is given to the Arsenal side that went unbeaten throughout the 2003-04 Premier League season?",
+  "o": [
+   "The Invincibles",
+   "The Untouchables",
+   "The Centurions",
+   "The Immortals"
+  ],
+  "answer": "The Invincibles",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_efd682",
+  "q": "Which club did Thierry Henry join when he left Arsenal in 2007?",
+  "o": [
+   "Real Madrid",
+   "Chelsea",
+   "Juventus",
+   "Barcelona"
+  ],
+  "answer": "Barcelona",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2d7a04",
+  "q": "Which player scored a then-record 32 Premier League goals for Liverpool in the 2017-18 season?",
+  "o": [
+   "Firmino",
+   "Mané",
+   "Coutinho",
+   "Salah"
+  ],
+  "answer": "Salah",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7ccc9f",
+  "q": "Who captained Leicester City to the 2016 Premier League title?",
+  "o": [
+   "Vardy",
+   "Mahrez",
+   "Huth",
+   "Morgan"
+  ],
+  "answer": "Morgan",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_94c227",
+  "q": "Who managed Liverpool when they ended their 30-year wait for the league title in 2020?",
+  "o": [
+   "Houllier",
+   "Benítez",
+   "Rodgers",
+   "Klopp"
+  ],
+  "answer": "Klopp",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fc472e",
+  "q": "How many points did Man City accumulate in their record-breaking 2017-18 PL season?",
+  "o": [
+   "95",
+   "98",
+   "102",
+   "100"
+  ],
+  "answer": "100",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d51cd2",
+  "q": "In which season did Chelsea win the Premier League with the most points under Mourinho?",
+  "o": [
+   "2003-04",
+   "2006-07",
+   "2005-06",
+   "2004-05"
+  ],
+  "answer": "2004-05",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_08efbd",
+  "q": "Which club has won La Liga the most times?",
+  "o": [
+   "Barcelona",
+   "Real Madrid",
+   "Atlético",
+   "Valencia"
+  ],
+  "answer": "Real Madrid",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4696c5",
+  "q": "Which manager led Barcelona to the treble in 2015?",
+  "o": [
+   "Guardiola",
+   "Rijkaard",
+   "Luis Enrique",
+   "Valverde"
+  ],
+  "answer": "Luis Enrique",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a80958",
+  "q": "In which year did Deportivo La Coruña win La Liga — one of the biggest upsets in Spanish football?",
+  "o": [
+   "1995",
+   "1998",
+   "2000",
+   "2002"
+  ],
+  "answer": "2000",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9e0221",
+  "q": "Pep Guardiola left Barcelona in 2012 and took a one-year sabbatical in New York City — which club did he manage next, from July 2013?",
+  "o": [
+   "Man City",
+   "Bayern Munich",
+   "Chelsea",
+   "PSG"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b35c3f",
+  "q": "Which German player has the most international caps for the national team?",
+  "o": [
+   "Lahm",
+   "Müller",
+   "Neuer",
+   "Matthäus"
+  ],
+  "answer": "Matthäus",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e4d56b",
+  "q": "What is the sponsorship name of Borussia Dortmund's home stadium?",
+  "o": [
+   "Allianz Arena",
+   "Volksparkstadion",
+   "Veltins-Arena",
+   "Signal Iduna Park"
+  ],
+  "answer": "Signal Iduna Park",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_28c249",
+  "q": "In what year did Borussia Dortmund last win the Champions League?",
+  "o": [
+   "1993",
+   "1995",
+   "1997",
+   "2001"
+  ],
+  "answer": "1997",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_90e6be",
+  "q": "Which Italian club dominated Serie A from 2012 to 2020, winning nine consecutive titles?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Napoli",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f333ee",
+  "q": "Which club ended Juventus's nine-year dominance to win Serie A in 2020-21?",
+  "o": [
+   "Napoli",
+   "AC Milan",
+   "Roma",
+   "Inter"
+  ],
+  "answer": "Inter",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_68ec54",
+  "q": "Which Italian manager won three consecutive Serie A titles with Juventus before going to Chelsea?",
+  "o": [
+   "Ancelotti",
+   "Capello",
+   "Conte",
+   "Lippi"
+  ],
+  "answer": "Conte",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66cc62",
+  "q": "Who managed Manchester United before Ole Gunnar Solskjær?",
+  "o": [
+   "Mourinho",
+   "Van Gaal",
+   "Moyes",
+   "Ferguson"
+  ],
+  "answer": "Mourinho",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_107681",
+  "q": "Sir Alex Ferguson managed Manchester United for how many years?",
+  "o": [
+   "21",
+   "24",
+   "26",
+   "27"
+  ],
+  "answer": "26",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2d3121",
+  "q": "Sven-Göran Eriksson was the first foreign manager to manage England — which club did he leave to take the job?",
+  "o": [
+   "Inter",
+   "Lazio",
+   "Roma",
+   "Fiorentina"
+  ],
+  "answer": "Lazio",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3d9777",
+  "q": "Which manager guided Nottingham Forest to back-to-back European Cups (1979 & 1980)?",
+  "o": [
+   "Bob Paisley",
+   "Brian Clough",
+   "Bobby Robson",
+   "Joe Fagan"
+  ],
+  "answer": "Brian Clough",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a465da",
+  "q": "In the 1986 World Cup quarter-final, Argentina beat England 2-1. Who scored both Argentina goals?",
+  "o": [
+   "Valdano",
+   "Burruchaga",
+   "Caniggia",
+   "Maradona"
+  ],
+  "answer": "Maradona",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0d58b9",
+  "q": "Who won the Ballon d'Or in 2005?",
+  "o": [
+   "Lampard",
+   "Gerrard",
+   "Henry",
+   "Ronaldinho"
+  ],
+  "answer": "Ronaldinho",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7a4200",
+  "q": "How many Ballon d'Or awards has Lionel Messi won in total?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "8",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bfed4c",
+  "q": "Who was the first African player to win the Ballon d'Or?",
+  "o": [
+   "Drogba",
+   "Eto'o",
+   "Yaya Touré",
+   "Weah"
+  ],
+  "answer": "Weah",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_816738",
+  "q": "As of 2026, who holds the record for most international goals in men's football?",
+  "o": [
+   "Messi",
+   "Ali Daei",
+   "Ronaldo",
+   "Puskas"
+  ],
+  "answer": "Ronaldo",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_23692a",
+  "q": "Who was the first player to win the Ballon d'Or three times in a row?",
+  "o": [
+   "Cruyff",
+   "Platini",
+   "Messi",
+   "Ronaldo"
+  ],
+  "answer": "Platini",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4c0913",
+  "q": "In which year did Zinedine Zidane win his only Ballon d'Or?",
+  "o": [
+   "1996",
+   "1997",
+   "1998",
+   "2000"
+  ],
+  "answer": "1998",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1d815f",
+  "q": "In which year did Ronaldo (R9) win his first Ballon d'Or?",
+  "o": [
+   "1995",
+   "1996",
+   "1997",
+   "1998"
+  ],
+  "answer": "1997",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b5ee8",
+  "q": "Who won the 2024 Men's Ballon d'Or?",
+  "o": [
+   "Vinicius Jr",
+   "Jude Bellingham",
+   "Yamal",
+   "Rodri"
+  ],
+  "answer": "Rodri",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e3d034",
+  "q": "Who won the 2024 UEFA Champions League final, beating Borussia Dortmund at Wembley?",
+  "o": [
+   "Bayern Munich",
+   "PSG",
+   "Man City",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7cd7c5",
+  "q": "Who won the 2024-25 Champions League, beating Inter Milan 5-0 in the final?",
+  "o": [
+   "Real Madrid",
+   "Arsenal",
+   "Barcelona",
+   "PSG"
+  ],
+  "answer": "PSG",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bf71a0",
+  "q": "Which teenage winger won the 2024 Kopa Trophy and was named best young player at Euro 2024?",
+  "o": [
+   "Pedri",
+   "Gavi",
+   "Yamal",
+   "Bellingham"
+  ],
+  "answer": "Yamal",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c7b147",
+  "q": "Liverpool won the 2024-25 Premier League — who was their manager?",
+  "o": [
+   "Klopp",
+   "Rodgers",
+   "Benitez",
+   "Slot"
+  ],
+  "answer": "Slot",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_debe86",
+  "q": "Who was named Player of the Tournament at Euro 2024?",
+  "o": [
+   "Bellingham",
+   "Yamal",
+   "Mbappe",
+   "Rodri"
+  ],
+  "answer": "Rodri",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0accea",
+  "q": "Which English club was relegated from the Premier League EARLIEST ever in 2024-25 — with seven games still to play?",
+  "o": [
+   "Ipswich",
+   "Leicester",
+   "Everton",
+   "Southampton"
+  ],
+  "answer": "Southampton",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8d85d6",
+  "q": "Which country won the 1970 World Cup — widely considered the greatest team of all time?",
+  "o": [
+   "Argentina",
+   "West Germany",
+   "Italy",
+   "Brazil"
+  ],
+  "answer": "Brazil",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b489d4",
+  "q": "Eric Cantona was banned for 8 months after kung fu kicking a fan — which club was he playing for?",
+  "o": [
+   "Leeds",
+   "Man Utd",
+   "Marseille",
+   "Newcastle"
+  ],
+  "answer": "Man Utd",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_4c996b",
+  "q": "Manchester United won the 1999 treble — who scored their two injury-time goals in the UCL final?",
+  "o": [
+   "Scholes & Cole",
+   "Sheringham & Solskjær",
+   "Cole & Yorke",
+   "Keane & Scholes"
+  ],
+  "answer": "Sheringham & Solskjær",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d5cd97",
+  "q": "The Bosman ruling in 1995 changed football — what did it allow players to do?",
+  "o": [
+   "Move for free when contracts expire",
+   "Earn unlimited wages",
+   "Change nationality",
+   "Strike legally"
+  ],
+  "answer": "Move for free when contracts expire",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_35c4d4",
+  "q": "Which Italian club beat Barcelona 4-0 in the 1994 Champions League final?",
+  "o": [
+   "Juventus",
+   "Inter",
+   "AC Milan",
+   "AS Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_46469d",
+  "q": "Which Dutch club did Johan Cruyff play for before joining Barcelona?",
+  "o": [
+   "PSV",
+   "Feyenoord",
+   "Ajax",
+   "AZ Alkmaar"
+  ],
+  "answer": "Ajax",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_798b7c",
+  "q": "Pelé won three World Cups with Brazil — in which years?",
+  "o": [
+   "1954, 1958, 1962",
+   "1958, 1962, 1966",
+   "1958, 1962, 1970",
+   "1962, 1966, 1970"
+  ],
+  "answer": "1958, 1962, 1970",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7b7413",
+  "q": "Which club did Ronaldo (R9) leave to join Barcelona in 1996?",
+  "o": [
+   "Flamengo",
+   "Santos",
+   "Cruzeiro",
+   "PSV"
+  ],
+  "answer": "PSV",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cd169c",
+  "q": "Who managed Brazil to their 1970 World Cup victory — arguably the greatest international team ever?",
+  "o": [
+   "Vicente Feola",
+   "João Saldanha",
+   "Aymoré Moreira",
+   "Mário Zagallo"
+  ],
+  "answer": "Mário Zagallo",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_12e845",
+  "q": "Pep Guardiola was part of Barcelona's 'Dream Team' that won the European Cup in 1992 — who was the manager?",
+  "o": [
+   "Johan Cruyff",
+   "Louis van Gaal",
+   "Bobby Robson",
+   "Frank Rijkaard"
+  ],
+  "answer": "Johan Cruyff",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1baa06",
+  "q": "Which nation finished above France in the group stage of Euro 1992 to advance to the semi-finals — then went on to win the tournament?",
+  "o": [
+   "Sweden",
+   "Denmark",
+   "England",
+   "Yugoslavia"
+  ],
+  "answer": "Denmark",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fbfef6",
+  "q": "Which legendary Italian goalkeeper captained Italy to World Cup glory in 1982 — aged 40, still the oldest WC winner?",
+  "o": [
+   "Buffon",
+   "Peruzzi",
+   "Zenga",
+   "Dino Zoff"
+  ],
+  "answer": "Dino Zoff",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d481f2",
+  "q": "Which country hosted the 1994 World Cup?",
+  "o": [
+   "Brazil",
+   "Germany",
+   "France",
+   "USA"
+  ],
+  "answer": "USA",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e36a60",
+  "q": "Who was the top scorer at the 2022 World Cup?",
+  "o": [
+   "Messi",
+   "Alvarez",
+   "Giroud",
+   "Mbappe"
+  ],
+  "answer": "Mbappe",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_42619d",
+  "q": "Ronaldo Nazário (R9) won the Golden Boot at the 2002 World Cup — how many goals did he score in the tournament?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": "8",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e4e3c2",
+  "q": "Luka Modrić was named player of the tournament at which World Cup?",
+  "o": [
+   "2014",
+   "2010",
+   "2022",
+   "2018"
+  ],
+  "answer": "2018",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_601d40",
+  "q": "Who hosted Euro 2016?",
+  "o": [
+   "Spain",
+   "Germany",
+   "France",
+   "Italy"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5733e2",
+  "q": "At Euro 2024, which country knocked out hosts Germany in the quarter-finals?",
+  "o": [
+   "France",
+   "Spain",
+   "Portugal",
+   "England"
+  ],
+  "answer": "Spain",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bf5a09",
+  "q": "Which player has scored the most goals in European Championship history?",
+  "o": [
+   "Rooney",
+   "Platini",
+   "Ronaldo",
+   "Shevchenko"
+  ],
+  "answer": "Ronaldo",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a22c1a",
+  "q": "Which club won the 2021 Champions League beating Man City in the final?",
+  "o": [
+   "PSG",
+   "Chelsea",
+   "Porto",
+   "Liverpool"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c07ae5",
+  "q": "How many times has Liverpool won the European Cup or Champions League?",
+  "o": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": "6",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e18ce4",
+  "q": "Which club did Erling Haaland play for before Manchester City?",
+  "o": [
+   "RB Salzburg",
+   "Ajax",
+   "Juventus",
+   "Dortmund"
+  ],
+  "answer": "Dortmund",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7cb21d",
+  "q": "Who scored the dramatic last-minute winner for Real Madrid vs Man City in the 2022 UCL semi-final?",
+  "o": [
+   "Benzema",
+   "Vinicius Jr",
+   "Modric",
+   "Ramos"
+  ],
+  "answer": "Benzema",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0bef33",
+  "q": "Which keeper made crucial saves in the 2005 UCL final shootout for Liverpool vs AC Milan?",
+  "o": [
+   "Dudek",
+   "James",
+   "Carson",
+   "Kirkland"
+  ],
+  "answer": "Dudek",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_27c4fd",
+  "q": "Which club signed Kylian Mbappé on a free transfer in 2024?",
+  "o": [
+   "Barcelona",
+   "Bayern Munich",
+   "Man City",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_155920",
+  "q": "Jude Bellingham joined Real Madrid in 2023 from which club?",
+  "o": [
+   "Chelsea",
+   "Dortmund",
+   "Man City",
+   "Birmingham"
+  ],
+  "answer": "Dortmund",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2dfc82",
+  "q": "Who was the Premier League top scorer in 2022-23?",
+  "o": [
+   "Kane",
+   "Salah",
+   "Haaland",
+   "Nunez"
+  ],
+  "answer": "Haaland",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f49ff1",
+  "q": "Which club ended Manchester United's grip on the Premier League title in 2001-02?",
+  "o": [
+   "Liverpool",
+   "Chelsea",
+   "Leeds United",
+   "Arsenal"
+  ],
+  "answer": "Arsenal",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_087960",
+  "q": "How many goals did Erling Haaland score in his first Premier League season?",
+  "o": [
+   "33",
+   "36",
+   "38",
+   "40"
+  ],
+  "answer": "36",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5071ea",
+  "q": "Which club ended Arsenal's 49-game unbeaten Premier League run in 2004?",
+  "o": [
+   "Chelsea",
+   "Man Utd",
+   "Blackburn",
+   "Middlesbrough"
+  ],
+  "answer": "Man Utd",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63c770",
+  "q": "Who managed Blackburn Rovers when they won the Premier League in 1995?",
+  "o": [
+   "Bobby Gould",
+   "Kenny Dalglish",
+   "Jack Walker",
+   "Ray Harford"
+  ],
+  "answer": "Kenny Dalglish",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1a3fc0",
+  "q": "As of the 2025-26 season, which stadium had the largest capacity in the Premier League?",
+  "o": [
+   "Old Trafford",
+   "Tottenham Hotspur Stadium",
+   "Anfield",
+   "Etihad"
+  ],
+  "answer": "Old Trafford",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a10f9b",
+  "q": "Who scored 36 Premier League goals in 2022-23 to set a new single-season record?",
+  "o": [
+   "Kane",
+   "Mohamed Salah",
+   "Haaland",
+   "Ivan Toney"
+  ],
+  "answer": "Haaland",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e3892b",
+  "q": "Who did Arne Slot replace as Liverpool manager in 2024?",
+  "o": [
+   "Dalglish",
+   "Rodgers",
+   "Benitez",
+   "Klopp"
+  ],
+  "answer": "Klopp",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e1a191",
+  "q": "Which manager took Atletico Madrid to La Liga titles in 2014 and 2021?",
+  "o": [
+   "Benitez",
+   "Mourinho",
+   "Emery",
+   "Simeone"
+  ],
+  "answer": "Simeone",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_01cc97",
+  "q": "What is the name of Real Madrid's home stadium?",
+  "o": [
+   "Camp Nou",
+   "Santiago Bernabéu",
+   "Metropolitano",
+   "Mestalla"
+  ],
+  "answer": "Santiago Bernabéu",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_930060",
+  "q": "Which club did Robert Lewandowski leave Bayern Munich to join in 2022?",
+  "o": [
+   "PSG",
+   "Real Madrid",
+   "Barcelona",
+   "Inter"
+  ],
+  "answer": "Barcelona",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d2fc88",
+  "q": "Which player has scored the most Bundesliga goals of all time?",
+  "o": [
+   "Thomas Müller",
+   "Miroslav Klose",
+   "Lewandowski",
+   "Gerd Müller"
+  ],
+  "answer": "Gerd Müller",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fc06ff",
+  "q": "Which Bundesliga club famously beat Barcelona 8-2 in the 2020 Champions League?",
+  "o": [
+   "RB Leipzig",
+   "Leverkusen",
+   "Dortmund",
+   "Bayern Munich"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_82d3e1",
+  "q": "Which club won the 2023-24 Bundesliga title breaking Bayern Munich's 11-year streak?",
+  "o": [
+   "Leverkusen",
+   "Dortmund",
+   "RB Leipzig",
+   "Stuttgart"
+  ],
+  "answer": "Leverkusen",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_90c9df",
+  "q": "Under Stefano Pioli, AC Milan won the Serie A title in which year?",
+  "o": [
+   "2009",
+   "2011",
+   "2022",
+   "2019"
+  ],
+  "answer": "2022",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9a7ef6",
+  "q": "Which manager won the PL title in his first full Chelsea season in 2005?",
+  "o": [
+   "Ranieri",
+   "Ancelotti",
+   "Mourinho",
+   "Hiddink"
+  ],
+  "answer": "Mourinho",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b9a2d5",
+  "q": "Jürgen Klopp managed Dortmund — which German club did he manage before that?",
+  "o": [
+   "Mainz",
+   "Stuttgart",
+   "Hamburg",
+   "Schalke"
+  ],
+  "answer": "Mainz",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_292546",
+  "q": "Who managed France to their 1998 World Cup home victory?",
+  "o": [
+   "Houllier",
+   "Platini",
+   "Jacquet",
+   "Blanc"
+  ],
+  "answer": "Jacquet",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f4a833",
+  "q": "Who replaced Ole Gunnar Solskjær as Man United interim manager in November 2021?",
+  "o": [
+   "Ralf Rangnick",
+   "Antonio Conte",
+   "Pochettino",
+   "Brendan Rodgers"
+  ],
+  "answer": "Ralf Rangnick",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a1278c",
+  "q": "Who won the first ever Women's Ballon d'Or in 2018?",
+  "o": [
+   "Marta",
+   "Ada Hegerberg",
+   "Megan Rapinoe",
+   "Alex Morgan"
+  ],
+  "answer": "Ada Hegerberg",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_824289",
+  "q": "Cristiano Ronaldo joined Al Nassr in 2023 — which Saudi city is Al Nassr based in?",
+  "o": [
+   "Jeddah",
+   "Riyadh",
+   "Dammam",
+   "Mecca"
+  ],
+  "answer": "Riyadh",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a8ce09",
+  "q": "Which player won the Ballon d'Or in 2022?",
+  "o": [
+   "Messi",
+   "Haaland",
+   "Benzema",
+   "Vinicius Jr"
+  ],
+  "answer": "Benzema",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_42cc9f",
+  "q": "Who became the youngest scorer in Champions League history in 2019?",
+  "o": [
+   "Bellingham",
+   "Fati",
+   "Camavinga",
+   "Mbappé"
+  ],
+  "answer": "Fati",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a863ab",
+  "q": "Which club did Zinedine Zidane famously leave for Real Madrid in 2001 for a then-world record?",
+  "o": [
+   "Marseille",
+   "Bordeaux",
+   "Juventus",
+   "Monaco"
+  ],
+  "answer": "Juventus",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5a6e4b",
+  "q": "Which country won the very first European Championship in 1960?",
+  "o": [
+   "West Germany",
+   "Italy",
+   "USSR",
+   "Yugoslavia"
+  ],
+  "answer": "USSR",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c2301f",
+  "q": "Who was top scorer at the 1998 World Cup with 6 goals?",
+  "o": [
+   "Zidane",
+   "Petit",
+   "Suker",
+   "Ronaldo"
+  ],
+  "answer": "Suker",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a33530",
+  "q": "Ronaldo R9 starred at the 2002 World Cup after years of knee injuries — which Italian club was he playing for at the time?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Lazio",
+   "Inter"
+  ],
+  "answer": "Inter",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f81ef0",
+  "q": "Which three managers combined to win AC Milan's four European Cups between 1988 and 2003?",
+  "o": [
+   "Sacchi, Capello and Ancelotti",
+   "Sacchi, Zaccheroni and Ancelotti",
+   "Sacchi, Capello and Lippi",
+   "Capello, Ancelotti and Allegri"
+  ],
+  "answer": "Sacchi, Capello and Ancelotti",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_28f026",
+  "q": "Which country did Franz Beckenbauer captain to the 1974 World Cup title?",
+  "o": [
+   "East Germany",
+   "Austria",
+   "West Germany",
+   "Switzerland"
+  ],
+  "answer": "West Germany",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f89f63",
+  "q": "Who scored 4 goals for England at the 1966 World Cup — including the only hat-trick in a World Cup final?",
+  "o": [
+   "Geoff Hurst",
+   "Bobby Charlton",
+   "Martin Peters",
+   "Roger Hunt"
+  ],
+  "answer": "Geoff Hurst",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_109aae",
+  "q": "Which legendary Argentine striker — 1978 World Cup winner — was nicknamed 'El Matador'?",
+  "o": [
+   "Batistuta",
+   "Kempes",
+   "Maradona",
+   "Crespo"
+  ],
+  "answer": "Kempes",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5f8a5e",
+  "q": "What squad number did Zinedine Zidane wear at Real Madrid (2001-06)?",
+  "o": [
+   "5",
+   "8",
+   "10",
+   "21"
+  ],
+  "answer": "5",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_93b0c7",
+  "q": "What squad number did David Beckham wear at Real Madrid (2003-07) — a tribute to basketball legend Michael Jordan?",
+  "o": [
+   "7",
+   "10",
+   "17",
+   "23"
+  ],
+  "answer": "23",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_89391a",
+  "q": "Which number did Messi famously switch to at PSG after leaving Barcelona?",
+  "o": [
+   "10",
+   "19",
+   "30",
+   "7"
+  ],
+  "answer": "30",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fb8683",
+  "q": "What shirt number did Paolo Maldini wear for his entire AC Milan career?",
+  "o": [
+   "3",
+   "5",
+   "6",
+   "4"
+  ],
+  "answer": "3",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f4f5b",
+  "q": "Which squad number did Ronaldo wear when he first joined Manchester United in 2003?",
+  "o": [
+   "7",
+   "9",
+   "10",
+   "11"
+  ],
+  "answer": "7",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c8615c",
+  "q": "Which shirt number is Steven Gerrard most associated with at Liverpool, wearing it from 2004 onwards?",
+  "o": [
+   "4",
+   "6",
+   "10",
+   "8"
+  ],
+  "answer": "8",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_71fd4d",
+  "q": "Raúl wore which shirt number during his Real Madrid career?",
+  "o": [
+   "7",
+   "9",
+   "10",
+   "11"
+  ],
+  "answer": "7",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_12ffe8",
+  "q": "Aymeric Laporte represented France at youth level but switched to which senior national team?",
+  "o": [
+   "Portugal",
+   "Belgium",
+   "Spain",
+   "Morocco"
+  ],
+  "answer": "Spain",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e697fe",
+  "q": "Thiago Alcântara has a Brazilian father and was born in Italy — which country did he represent at senior international level?",
+  "o": [
+   "Italy",
+   "Brazil",
+   "Portugal",
+   "Spain"
+  ],
+  "answer": "Spain",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_62fb9f",
+  "q": "Diego Costa represented Brazil in friendly matches before switching to represent which country?",
+  "o": [
+   "Portugal",
+   "Argentina",
+   "Spain",
+   "Italy"
+  ],
+  "answer": "Spain",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_910f3c",
+  "q": "Owen Hargreaves was born in Canada and raised in Germany — which country did he play for?",
+  "o": [
+   "Canada",
+   "Germany",
+   "USA",
+   "England"
+  ],
+  "answer": "England",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3fcad5",
+  "q": "Nwankwo Kanu won the Champions League with Ajax before representing which country at international level?",
+  "o": [
+   "Ghana",
+   "Cameroon",
+   "Nigeria",
+   "Ivory Coast"
+  ],
+  "answer": "Nigeria",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a26b99",
+  "q": "Which Brazilian club did Robinho leave to join Real Madrid in 2005?",
+  "o": [
+   "Flamengo",
+   "Santos",
+   "Corinthians",
+   "Cruzeiro"
+  ],
+  "answer": "Santos",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7124c9",
+  "q": "Dejan Lovren was born in Bosnia but represented which country internationally?",
+  "o": [
+   "Bosnia",
+   "Serbia",
+   "Slovenia",
+   "Croatia"
+  ],
+  "answer": "Croatia",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0dfd53",
+  "q": "Who became the first player to win the Champions League with three different clubs?",
+  "o": [
+   "Ronaldo",
+   "Seedorf",
+   "R. Carlos",
+   "Xabi Alonso"
+  ],
+  "answer": "Seedorf",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6efe6e",
+  "q": "Which club was the first to win back-to-back Premier League titles since the competition's founding in 1992?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Man Utd",
+   "Man City"
+  ],
+  "answer": "Man Utd",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3487b4",
+  "q": "Which country did England's senior team face in their first match at the new Wembley in 2007?",
+  "o": [
+   "Brazil",
+   "Germany",
+   "France",
+   "USA"
+  ],
+  "answer": "Brazil",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3c687b",
+  "q": "Who captained Spain when they won the 2010 World Cup final against Netherlands?",
+  "o": [
+   "Xavi",
+   "Iniesta",
+   "Puyol",
+   "Casillas"
+  ],
+  "answer": "Casillas",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b109fd",
+  "q": "Who wore the captain's armband for Italy in the 2006 World Cup final?",
+  "o": [
+   "Maldini",
+   "Buffon",
+   "Cannavaro",
+   "Totti"
+  ],
+  "answer": "Cannavaro",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_28a8a0",
+  "q": "Who captained France in their 1998 World Cup final victory on home soil?",
+  "o": [
+   "Zidane",
+   "Desailly",
+   "Deschamps",
+   "Blanc"
+  ],
+  "answer": "Deschamps",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7cd1c6",
+  "q": "Who lifted the trophy as Barcelona's captain in the 2015 Champions League final — his final appearance for the club?",
+  "o": [
+   "Messi",
+   "Xavi",
+   "Piqué",
+   "Iniesta"
+  ],
+  "answer": "Xavi",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2185d5",
+  "q": "Who captained Chelsea to their 2012 Champions League final victory over Bayern Munich?",
+  "o": [
+   "Terry",
+   "Lampard",
+   "Ashley Cole",
+   "Drogba"
+  ],
+  "answer": "Lampard",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b2fbea",
+  "q": "Who captained Real Madrid when they won the 2016 Champions League final vs Atletico?",
+  "o": [
+   "Modric",
+   "Ramos",
+   "Benzema",
+   "Bale"
+  ],
+  "answer": "Ramos",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_66cafa",
+  "q": "Who captained Argentina to their 2022 World Cup final win over France?",
+  "o": [
+   "Di María",
+   "Paredes",
+   "De Paul",
+   "Messi"
+  ],
+  "answer": "Messi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ffd26d",
+  "q": "Who captained Germany in the 2014 World Cup final against Argentina?",
+  "o": [
+   "Neuer",
+   "Müller",
+   "Hummels",
+   "Lahm"
+  ],
+  "answer": "Lahm",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e7862",
+  "q": "In which year did Cristiano Ronaldo first move from Manchester United to Real Madrid?",
+  "o": [
+   "2007",
+   "2008",
+   "2009",
+   "2010"
+  ],
+  "answer": "2009",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_77a11d",
+  "q": "In which year did Zinedine Zidane move from Juventus to Real Madrid for a then-world record?",
+  "o": [
+   "1999",
+   "2000",
+   "2001",
+   "2002"
+  ],
+  "answer": "2001",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_12c965",
+  "q": "Which club did Luis Suárez join when he left Liverpool in 2014?",
+  "o": [
+   "Real Madrid",
+   "PSG",
+   "Barcelona",
+   "Juventus"
+  ],
+  "answer": "Barcelona",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_cad396",
+  "q": "How much did Man City pay Aston Villa for Jack Grealish in 2021 — a British record?",
+  "o": [
+   "£80m",
+   "£90m",
+   "£115m",
+   "£100m"
+  ],
+  "answer": "£100m",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d0b727",
+  "q": "In which year did Gareth Bale move from Tottenham to Real Madrid for a then-world record fee?",
+  "o": [
+   "2011",
+   "2012",
+   "2014",
+   "2013"
+  ],
+  "answer": "2013",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0b81b7",
+  "q": "Zlatan Ibrahimović spent just one season at Barcelona (2009-10) before moving to which Italian club in August 2010, where he won Serie A in his first year?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Juventus",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e6e622",
+  "q": "In which year did Kylian Mbappé first join PSG on loan from Monaco?",
+  "o": [
+   "2016",
+   "2019",
+   "2018",
+   "2017"
+  ],
+  "answer": "2017",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c1175e",
+  "q": "How much did Chelsea pay for Enzo Fernández in January 2023 — a British record at the time?",
+  "o": [
+   "£95m",
+   "£105m",
+   "£107m",
+   "£120m"
+  ],
+  "answer": "£107m",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

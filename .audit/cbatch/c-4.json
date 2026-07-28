@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_7af792",
+  "kind": "wrong_answer",
+  "claim": "The stem's qualifier 'throughout his entire Roma career' is false — Totti wore No. 20 from his 1993 debut until 1997, only taking the No. 10 after Giuseppe Giannini left; the keyed '10' is right but the stem misinforms.",
+  "q": "What squad number did Francesco Totti wear throughout his entire Roma career?",
+  "o": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "answer": "10",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3433df",
+  "kind": "wrong_answer",
+  "claim": "The stem's 'throughout his career' is false — Iniesta wore 34 on his 2002 debut and 24 the following season(s) before taking No. 8; the keyed '8' is right but the stem overstates.",
+  "q": "Andrés Iniesta wore which squad number for Barcelona throughout his career?",
+  "o": [
+   "6",
+   "7",
+   "8",
+   "10"
+  ],
+  "answer": "8",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_103de5",
+  "kind": "stale",
+  "claim": "'Which squad number HAS Haaland worn SINCE joining' is an open-ended present-perfect claim that silently rots if he ever changes number at City; a past-tense anchor (e.g. 'on joining in 2022') would be time-proof.",
+  "q": "Which squad number has Erling Haaland worn since joining Manchester City in 2022?",
+  "o": [
+   "7",
+   "9",
+   "10",
+   "11"
+  ],
+  "answer": "9",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a9a1a",
+  "kind": "stale",
+  "claim": "\"How many total has he won\" is an open-ended present-tense count (currently three: 2015-16, 2016-17, 2020-21) that would silently become wrong if Kane, still an active player, returns to the Premier League and wins another Golden Boot.",
+  "q": "Harry Kane won back-to-back Premier League Golden Boots in 2015-16 and 2016-17 — how many total has he won?",
+  "o": [
+   "Two",
+   "Three",
+   "Four",
+   "Five"
+  ],
+  "answer": "Three",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3e3e0c",
+  "kind": "wrong_answer",
+  "claim": "Man City's 2018-2021 run is not a unique 'record' — Liverpool also won four consecutive League Cups (1981, 1982, 1983, 1984), so the record is shared; the dates in the stem still pin Man City as the intended answer, but the word 'record' misinforms.",
+  "q": "Which club won the League Cup a record four times in a row from 2018 to 2021?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "Liverpool",
+   "Man City"
+  ],
+  "answer": "Man City",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ed91a6",
+  "kind": "stale",
+  "claim": "'Record for most Premier League relegations — six in total' hard-codes a live count: Norwich's total (6, from 1995, 2005, 2014, 2016, 2020, 2022) becomes wrong the next time they are promoted and relegated again.",
+  "q": "Which club holds the record for the most Premier League relegations — six in total — earning their reputation as the league's ultimate yo-yo club?",
+  "o": [
+   "Crystal Palace",
+   "Bradford City",
+   "Norwich City",
+   "Sunderland"
+  ],
+  "answer": "Norwich City",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

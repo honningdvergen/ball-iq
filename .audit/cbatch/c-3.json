@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_2db639",
+  "kind": "stale",
+  "claim": "\"How many times has Spain won the European Championship\" is answered 4 (1964, 2008, 2012, 2024) but the count itself is the answer, so a Spanish win at Euro 2028 silently makes the keyed answer wrong.",
+  "q": "How many times has Spain won the European Championship — a record since their 2024 victory?",
+  "o": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": "4",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_965a28",
+  "kind": "stale",
+  "claim": "Stem asserts Sevilla won the Europa League \"a record seven times\" — true today (7th in 2023), but an 8th title would make the stem's number factually false even though the answer Sevilla stays correct.",
+  "q": "Which Spanish club won the Europa League a record seven times?",
+  "o": [
+   "Real Madrid",
+   "Valencia",
+   "Villarreal",
+   "Sevilla"
+  ],
+  "answer": "Sevilla",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b19c90",
+  "kind": "stale",
+  "claim": "'Most money across all career moves combined' is an unbounded career-aggregate superlative with no agreed methodology (loan fees, add-ons, and Neymar's disputed Santos fee all shift the total) and can change while Neymar and Mbappé are still transferable.",
+  "q": "Which player has been transferred for the most money across all their career moves combined?",
+  "o": [
+   "Neymar",
+   "Mbappé",
+   "Griezmann",
+   "Hazard"
+  ],
+  "answer": "Neymar",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_151b4f",
+  "kind": "multiple_correct",
+  "claim": "1. FC Kaiserslautern was also founded in 1900 and also plays in red and white (nicknamed 'Die Roten Teufel'), so only the exact nickname 'Die Roten' separates it from Bayern — the founding-year and colour clues do not discriminate.",
+  "q": "Which German club was founded in 1900 and plays in red and white — nicknamed 'Die Roten'?",
+  "o": [
+   "Cologne",
+   "Stuttgart",
+   "Bayern Munich",
+   "Kaiserslautern"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef0f10",
+  "kind": "stale",
+  "claim": "Ancelotti's Champions League count (5, correct through 2024) is an open record that increases if he ever manages another UCL-winning side, so the keyed answer can silently rot.",
+  "q": "Carlo Ancelotti holds the record for most Champions League titles as a manager — how many has he won?",
+  "o": [
+   "3",
+   "4",
+   "6",
+   "5"
+  ],
+  "answer": "5",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a46f5b",
+  "kind": "stale",
+  "claim": "'How many players have won Premier League titles with three different clubs?' is an open-ended negative-existence claim — 'None' is correct today but silently rots the moment any two-club winner (e.g. a future Leicester/Chelsea/City-type mover) lifts a third title with a new club.",
+  "q": "How many players have won Premier League titles with three different clubs?",
+  "o": [
+   "None",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": "None",
+  "cat": "PL",
+  "diff": "hard"
+ }
+]

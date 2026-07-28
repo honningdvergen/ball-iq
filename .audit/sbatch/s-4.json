@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_8e2001",
+  "q": "Who scored England's fourth goal in their 4-2 win over West Germany in the 1966 World Cup final — with a controversial shot?",
+  "o": [
+   "Roger Hunt",
+   "Geoff Hurst",
+   "Martin Peters",
+   "Bobby Charlton"
+  ],
+  "answer": "Geoff Hurst",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_63941b",
+  "q": "Which country did Brazil beat 4-1 in the 1970 World Cup final at the Estadio Azteca?",
+  "o": [
+   "West Germany",
+   "Italy",
+   "Uruguay",
+   "England"
+  ],
+  "answer": "Italy",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8b2c96",
+  "q": "Which country hosted the very first African World Cup in 2010?",
+  "o": [
+   "Egypt",
+   "Morocco",
+   "South Africa",
+   "Nigeria"
+  ],
+  "answer": "South Africa",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b92287",
+  "q": "The 1978 World Cup was held on which continent?",
+  "o": [
+   "Europe",
+   "North America",
+   "South America",
+   "Africa"
+  ],
+  "answer": "South America",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f1da76",
+  "q": "Ronaldinho scored a stunning free kick against which team for Brazil at the 2002 World Cup, catching the keeper off guard?",
+  "o": [
+   "England",
+   "Germany",
+   "Turkey",
+   "USA"
+  ],
+  "answer": "England",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_850b37",
+  "q": "Which Dutch club did Marco van Basten come through before joining AC Milan?",
+  "o": [
+   "PSV",
+   "Feyenoord",
+   "Ajax",
+   "Utrecht"
+  ],
+  "answer": "Ajax",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_883df3",
+  "q": "Eric Cantona's famous kung fu kick was against a fan of which club?",
+  "o": [
+   "Everton",
+   "Crystal Palace",
+   "Leeds",
+   "Millwall"
+  ],
+  "answer": "Crystal Palace",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d9d3e0",
+  "q": "Diego Maradona won the World Cup with Argentina in 1986 — who did they beat in the final?",
+  "o": [
+   "England",
+   "Brazil",
+   "Italy",
+   "West Germany"
+  ],
+  "answer": "West Germany",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bed37f",
+  "q": "Which club did George Weah play for in England before returning to France?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "Chelsea",
+   "West Ham"
+  ],
+  "answer": "Chelsea",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f2d34d",
+  "q": "Dennis Bergkamp scored a legendary first-touch and finish at the 1998 World Cup QF vs Argentina — what was the score when he took down Frank de Boer's pass in the 90th minute?",
+  "o": [
+   "1-1",
+   "1-0",
+   "2-2",
+   "0-0"
+  ],
+  "answer": "1-1",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6da7e0",
+  "q": "Which legendary striker was nicknamed 'The Black Panther' and won the 1966 Golden Boot?",
+  "o": [
+   "Roger Milla",
+   "Pelé",
+   "Eusébio",
+   "Didier Drogba"
+  ],
+  "answer": "Eusébio",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_94bd1f",
+  "q": "As of the 2022 World Cup, who was the all-time top scorer in World Cup history with 16 goals?",
+  "o": [
+   "Pelé",
+   "Ronaldo R9",
+   "Miroslav Klose",
+   "Just Fontaine"
+  ],
+  "answer": "Miroslav Klose",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_fe0500",
+  "q": "Who is the all-time top scorer in Africa Cup of Nations history with 18 goals?",
+  "o": [
+   "Samuel Eto'o",
+   "Didier Drogba",
+   "Hossam Hassan",
+   "Laurent Pokou"
+  ],
+  "answer": "Samuel Eto'o",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2f6399",
+  "q": "Which country is the youngest player ever to appear at a World Cup, Norman Whiteside, from?",
+  "o": [
+   "Republic of Ireland",
+   "Scotland",
+   "Wales",
+   "Northern Ireland"
+  ],
+  "answer": "Northern Ireland",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_da69f5",
+  "q": "Which club has won the UEFA Europa League the most times — 7 in total?",
+  "o": [
+   "Inter",
+   "Atlético",
+   "Juventus",
+   "Sevilla"
+  ],
+  "answer": "Sevilla",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1fcf44",
+  "q": "Which Scottish club was the first from Britain to win the European Cup in 1967?",
+  "o": [
+   "Rangers",
+   "Hearts",
+   "Aberdeen",
+   "Celtic"
+  ],
+  "answer": "Celtic",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0219d7",
+  "q": "Which club shocked PSG to win Ligue 1 in the 2020-21 season?",
+  "o": [
+   "Monaco",
+   "Lyon",
+   "Marseille",
+   "Lille"
+  ],
+  "answer": "Lille",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4aee49",
+  "q": "Which club became the first to win all three UEFA club competitions — Champions League, Europa League, and Conference League?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Atlético",
+   "Juventus"
+  ],
+  "answer": "Chelsea",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_089d87",
+  "q": "Nottingham Forest won the European Cup in 1979 — who scored the only goal in the final vs Malmö?",
+  "o": [
+   "John Robertson",
+   "Trevor Francis",
+   "Tony Woodcock",
+   "Garry Birtles"
+  ],
+  "answer": "Trevor Francis",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_405f75",
+  "q": "Nottingham Forest won the European Cup again in 1980 — who scored the winner vs Hamburg?",
+  "o": [
+   "Trevor Francis",
+   "Garry Birtles",
+   "John Robertson",
+   "Tony Woodcock"
+  ],
+  "answer": "John Robertson",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ad333a",
+  "q": "Which legendary Hungarian scored FOUR goals in the famous 1960 European Cup final — Real Madrid 7-3 Eintracht Frankfurt?",
+  "o": [
+   "Hidegkuti",
+   "Kocsis",
+   "Puskás",
+   "Czibor"
+  ],
+  "answer": "Puskás",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3cdf89",
+  "q": "Paul Lambert won the Champions League in 1997 as a player — with which club?",
+  "o": [
+   "Ajax",
+   "AC Milan",
+   "Bayern Munich",
+   "Dortmund"
+  ],
+  "answer": "Dortmund",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e31f29",
+  "q": "Feyenoord became the first Dutch club to win the European Cup in which year?",
+  "o": [
+   "1968",
+   "1969",
+   "1971",
+   "1970"
+  ],
+  "answer": "1970",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6ea76c",
+  "q": "Which club won the inaugural UEFA Conference League in 2021-22?",
+  "o": [
+   "Feyenoord",
+   "Lazio",
+   "AS Roma",
+   "Villarreal"
+  ],
+  "answer": "AS Roma",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_040721",
+  "q": "Who scored the fastest hat-trick in Premier League history — in 2 minutes 56 seconds for Southampton?",
+  "o": [
+   "Michael Owen",
+   "Robbie Fowler",
+   "Sadio Mané",
+   "Sergio Agüero"
+  ],
+  "answer": "Sadio Mané",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2d3856",
+  "q": "Which player has the most Premier League assists of all time with 162?",
+  "o": [
+   "Kevin De Bruyne",
+   "Frank Lampard",
+   "Cesc Fàbregas",
+   "Giggs"
+  ],
+  "answer": "Giggs",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fb20a2",
+  "q": "Peter Shilton retired from international football in 1990 with how many England caps — a national record at the time?",
+  "o": [
+   "115",
+   "119",
+   "130",
+   "125"
+  ],
+  "answer": "125",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4ee122",
+  "q": "Which team broke the Championship record with 106 points in a single season (2005-06)?",
+  "o": [
+   "Sunderland",
+   "Newcastle",
+   "Reading",
+   "Birmingham"
+  ],
+  "answer": "Reading",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2c3ea2",
+  "q": "Aleksandar Mitrović broke the Championship scoring record in 2021-22 — how many goals?",
+  "o": [
+   "38",
+   "41",
+   "43",
+   "46"
+  ],
+  "answer": "43",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a75e45",
+  "q": "As of the end of the 2024-25 season, which three players shared the Premier League Player of the Month record with 7 awards each?",
+  "o": [
+   "Henry, Shearer, Rooney",
+   "Kane, Agüero, Salah",
+   "Ronaldo, Rooney, Gerrard",
+   "Drogba, Lampard, Terry"
+  ],
+  "answer": "Kane, Agüero, Salah",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b9a487",
+  "q": "Who was the first player to score 100 assists in the Premier League?",
+  "o": [
+   "David Beckham",
+   "Frank Lampard",
+   "Dennis Bergkamp",
+   "Giggs"
+  ],
+  "answer": "Giggs",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f29303",
+  "q": "Who holds the record for most goals in a single Serie A season — 36 for Napoli in 2015-16?",
+  "o": [
+   "Totti",
+   "Luca Toni",
+   "Immobile",
+   "Higuaín"
+  ],
+  "answer": "Higuaín",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_11cb41",
+  "q": "John Charles made a landmark move abroad in 1957 — which Italian club did he join?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Roma",
+   "Juventus"
+  ],
+  "answer": "Juventus",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_367ba7",
+  "q": "Which club did David Beckham end his playing career with?",
+  "o": [
+   "LA Galaxy",
+   "AC Milan",
+   "PSG",
+   "Real Madrid"
+  ],
+  "answer": "PSG",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d2ad1",
+  "q": "Elton John is a famous celebrity owner — which football club has he twice owned?",
+  "o": [
+   "Crystal Palace",
+   "QPR",
+   "Luton Town",
+   "Watford"
+  ],
+  "answer": "Watford",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_308176",
+  "q": "Wrexham AFC shot to global fame after being bought by which two Hollywood actors?",
+  "o": [
+   "Brad Pitt & George Clooney",
+   "Ben Affleck & Matt Damon",
+   "Ryan Reynolds & Rob McElhenney",
+   "Will Ferrell & John C. Reilly"
+  ],
+  "answer": "Ryan Reynolds & Rob McElhenney",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_957b8e",
+  "q": "Which Italian club is nicknamed 'I Giallorossi' (The Yellow and Reds)?",
+  "o": [
+   "Parma",
+   "Roma",
+   "Hellas Verona",
+   "Sampdoria"
+  ],
+  "answer": "Roma",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a27f4e",
+  "q": "What is the Derby della Madonnina — the famous Milan derby between Inter and AC Milan?",
+  "o": [
+   "It's named after the city's cathedral spire",
+   "It's named after a local saint",
+   "It refers to the match being played on Madonnas day",
+   "It's named after a famous Italian referee"
+  ],
+  "answer": "It's named after the city's cathedral spire",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a574c0",
+  "q": "Just Fontaine scored how many goals at the 1958 World Cup — a single-tournament record that still stands?",
+  "o": [
+   "11",
+   "13",
+   "15",
+   "17"
+  ],
+  "answer": "13",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d95a9f",
+  "q": "Which country did Australia famously beat 31-0 in a 2002 World Cup qualifier?",
+  "o": [
+   "Fiji",
+   "Guam",
+   "Tonga",
+   "American Samoa"
+  ],
+  "answer": "American Samoa",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3970ab",
+  "q": "Which nation has won the Copa América the most times after Argentina — with 15 titles?",
+  "o": [
+   "Brazil",
+   "Chile",
+   "Uruguay",
+   "Colombia"
+  ],
+  "answer": "Uruguay",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_647793",
+  "q": "England's most-capped goalkeeper Peter Shilton — which club did he win the First Division title with in 1978?",
+  "o": [
+   "Arsenal",
+   "Man City",
+   "Forest",
+   "Ipswich Town"
+  ],
+  "answer": "Forest",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b5f8f",
+  "q": "As of the 2025-26 season, how many English managers had ever won the Premier League title?",
+  "o": [
+   "1",
+   "2",
+   "3",
+   "0"
+  ],
+  "answer": "0",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_888d6f",
+  "q": "Which manager won the most Premier League Manager of the Month awards — 27 in total?",
+  "o": [
+   "Wenger",
+   "Mourinho",
+   "Guardiola",
+   "Ferguson"
+  ],
+  "answer": "Ferguson",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_49bc75",
+  "q": "What is the name of the derby between Borussia Dortmund and Schalke?",
+  "o": [
+   "Westfalenderby",
+   "Revierderby",
+   "Ruhrderby",
+   "Stahlderby"
+  ],
+  "answer": "Revierderby",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_428a64",
+  "q": "Who is the youngest player ever to appear in the Bundesliga, aged 16 years and 1 day?",
+  "o": [
+   "Kai Havertz",
+   "Florian Wirtz",
+   "Moukoko",
+   "Nuri Sahin"
+  ],
+  "answer": "Moukoko",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e342a7",
+  "q": "What is the name of the award given to the Bundesliga's top scorer each season?",
+  "o": [
+   "Der Goldene Schuh",
+   "Die Goldene Kugel",
+   "Torschützenkönig",
+   "Torjägerkanone"
+  ],
+  "answer": "Torjägerkanone",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_237eb3",
+  "q": "Which club became the only newly-promoted team to ever win the Bundesliga — in the 1997-98 season?",
+  "o": [
+   "Hansa Rostock",
+   "Energie Cottbus",
+   "1. FC Kaiserslautern",
+   "Dynamo Dresden"
+  ],
+  "answer": "1. FC Kaiserslautern",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0902d3",
+  "q": "Which Bundesliga club is nicknamed 'Die Fohlen' (The Foals)?",
+  "o": [
+   "Hamburger SV",
+   "Eintracht Frankfurt",
+   "Leverkusen",
+   "Borussia Mönchengladbach"
+  ],
+  "answer": "Borussia Mönchengladbach",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d7014f",
+  "q": "Who was the first non-German manager to win the Bundesliga title?",
+  "o": [
+   "Max Merkel",
+   "Branko Zebec",
+   "Jupp Heynckes",
+   "Giovanni Trapattoni"
+  ],
+  "answer": "Max Merkel",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_af8cfe",
+  "q": "Ottmar Hitzfeld won the Champions League with two different German clubs — Dortmund (1997) and which other?",
+  "o": [
+   "Schalke",
+   "Hamburg",
+   "Bayern Munich",
+   "Leverkusen"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f4e822",
+  "q": "As of 2026, which two clubs follow Bayern Munich with five Bundesliga titles each?",
+  "o": [
+   "Dortmund & Schalke",
+   "Werder Bremen & Mönchengladbach",
+   "Hamburger SV & Dortmund",
+   "Mönchengladbach & Dortmund"
+  ],
+  "answer": "Mönchengladbach & Dortmund",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_797e1a",
+  "q": "Which team won the Bundesliga title in 1963-64, the first ever Bundesliga season?",
+  "o": [
+   "Bayern Munich",
+   "Dortmund",
+   "1. FC Köln",
+   "Borussia Mönchengladbach"
+  ],
+  "answer": "1. FC Köln",
+  "cat": "Bundesliga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_28fa69",
+  "q": "Germany have won the World Cup four times — how many times as a unified Germany (post-1990)?",
+  "o": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": "1",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b97877",
+  "q": "Florian Wirtz briefly became the Bundesliga's youngest goalscorer in June 2020 — for which club?",
+  "o": [
+   "Dortmund",
+   "Schalke",
+   "Leverkusen",
+   "Cologne"
+  ],
+  "answer": "Leverkusen",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5b918a",
+  "q": "Who was the first English player to play in La Liga, joining Real Madrid in 1979?",
+  "o": [
+   "McManaman",
+   "David Beckham",
+   "Laurie Cunningham",
+   "Michael Owen"
+  ],
+  "answer": "Laurie Cunningham",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0d171a",
+  "q": "Who is the all-time top scorer in La Liga history?",
+  "o": [
+   "Raúl",
+   "Cristiano Ronaldo",
+   "Hugo Sánchez",
+   "Lionel Messi"
+  ],
+  "answer": "Lionel Messi",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bd2b22",
+  "q": "The La Liga Golden Boot is named the Trofeo Pichichi after a legend of which club?",
+  "o": [
+   "Real Madrid",
+   "Athletic Bilbao",
+   "Barcelona",
+   "Atlético Madrid"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6d7ad3",
+  "q": "Diego Maradona played for two Spanish clubs — Barcelona and which other?",
+  "o": [
+   "Atlético",
+   "Valencia",
+   "Real Betis",
+   "Sevilla"
+  ],
+  "answer": "Sevilla",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f786a3",
+  "q": "How many La Liga clubs have ever won the title —?",
+  "o": [
+   "9",
+   "7",
+   "11",
+   "15"
+  ],
+  "answer": "9",
+  "cat": "LaLiga",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ee2cd8",
+  "q": "Which club won La Liga in 2000 as a huge underdog, with Mauro Silva and Roy Makaay starring?",
+  "o": [
+   "Celta Vigo",
+   "Valencia",
+   "Real Betis",
+   "Deportivo de La Coruña"
+  ],
+  "answer": "Deportivo de La Coruña",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_408d5a",
+  "q": "Against which club did Lionel Messi score his first career hat-trick in La Liga — in a famous 3-3 El Clásico draw on 10 March 2007?",
+  "o": [
+   "Sevilla",
+   "Atlético Madrid",
+   "Real Madrid",
+   "Valencia"
+  ],
+  "answer": "Real Madrid",
+  "cat": "LaLiga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_aaeece",
+  "q": "Which La Liga club plays at the San Mamés stadium?",
+  "o": [
+   "Real Sociedad",
+   "Athletic Bilbao",
+   "Celta Vigo",
+   "Villarreal"
+  ],
+  "answer": "Athletic Bilbao",
+  "cat": "LaLiga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_58cb4b",
+  "q": "Who is the all-time top scorer in Serie A history with 274 goals?",
+  "o": [
+   "Roberto Baggio",
+   "Giuseppe Meazza",
+   "Silvio Piola",
+   "Gabriel Batistuta"
+  ],
+  "answer": "Silvio Piola",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2c4234",
+  "q": "Which Swedish manager led Lazio to their second-ever Serie A title in 1999-2000 — before becoming the first foreign manager of the England national team the following year?",
+  "o": [
+   "Lars Lagerbäck",
+   "Erik Hamrén",
+   "Sven-Göran Eriksson",
+   "Janne Andersson"
+  ],
+  "answer": "Sven-Göran Eriksson",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6a682e",
+  "q": "Which team won their first Serie A title in 1986-87, inspired by Diego Maradona?",
+  "o": [
+   "Lazio",
+   "Roma",
+   "Sampdoria",
+   "Napoli"
+  ],
+  "answer": "Napoli",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_874ec4",
+  "q": "Who is the youngest player ever to appear in Serie A, at 15 years 260 days in November 2023?",
+  "o": [
+   "Moise Kean",
+   "Francesco Camarda",
+   "Pietro Pellegri",
+   "Mattia Destro"
+  ],
+  "answer": "Francesco Camarda",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c269f1",
+  "q": "Which player was top scorer in Serie A in 1997-98 with 27 goals for Udinese?",
+  "o": [
+   "Ronaldo",
+   "Roberto Baggio",
+   "Oliver Bierhoff",
+   "Christian Vieri"
+  ],
+  "answer": "Oliver Bierhoff",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2ada51",
+  "q": "After Juventus, AC Milan, and Inter, which club has won the most Serie A titles?",
+  "o": [
+   "Roma",
+   "Napoli",
+   "Torino",
+   "Fiorentina"
+  ],
+  "answer": "Torino",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ca52be",
+  "q": "Which Italian club won Serie A in 2020-21 under Antonio Conte, ending Juventus's run?",
+  "o": [
+   "AC Milan",
+   "Lazio",
+   "Napoli",
+   "Inter"
+  ],
+  "answer": "Inter",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f48e0f",
+  "q": "Franco Baresi played his entire career at AC Milan and had his squad number retired — which number?",
+  "o": [
+   "3",
+   "5",
+   "10",
+   "6"
+  ],
+  "answer": "6",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b7a75c",
+  "q": "Fernando Torres scored in two different European Championship finals — in 2008 and which other year?",
+  "o": [
+   "2010",
+   "2012",
+   "2016",
+   "2004"
+  ],
+  "answer": "2012",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5affb8",
+  "q": "Which player scored the decisive goal in extra time for France vs Italy in the Euro 2000 final?",
+  "o": [
+   "Zidane",
+   "Henry",
+   "Trezeguet",
+   "Wiltord"
+  ],
+  "answer": "Trezeguet",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4aa3ae",
+  "q": "In which year did the European Championship expand from 16 to 24 teams?",
+  "o": [
+   "2012",
+   "2016",
+   "2020",
+   "2024"
+  ],
+  "answer": "2016",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_537a0d",
+  "q": "Only one person has won the European Championship as both a player and a manager — who?",
+  "o": [
+   "Beckenbauer",
+   "Platini",
+   "Berti Vogts",
+   "Didier Deschamps"
+  ],
+  "answer": "Berti Vogts",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_74f574",
+  "q": "Which goalkeeper famously scored a penalty at Euro 2004 to send his side through?",
+  "o": [
+   "Ricardo (Portugal)",
+   "Buffon (Italy)",
+   "Casillas (Spain)",
+   "Oliver Kahn (Germany)"
+  ],
+  "answer": "Ricardo (Portugal)",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d343db",
+  "q": "Who was the Golden Boot winner at Euro 2020 with 5 goals and 1 assist?",
+  "o": [
+   "Lukaku",
+   "Kane",
+   "Schick",
+   "Ronaldo"
+  ],
+  "answer": "Ronaldo",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d4c479",
+  "q": "West Germany beat Belgium 2-1 to win Euro 1980 — who hosted that tournament?",
+  "o": [
+   "France",
+   "West Germany",
+   "Spain",
+   "Italy"
+  ],
+  "answer": "Italy",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c66595",
+  "q": "Which country won Euro 2000 — the first tournament co-hosted by two nations?",
+  "o": [
+   "Italy",
+   "Portugal",
+   "France",
+   "Spain"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_013080",
+  "q": "Greece's Euro 2004 semi-final win over the Czech Republic was decided by a rare rule — what type of goal did Traianos Dellas score in extra time?",
+  "o": [
+   "Golden goal",
+   "Silver goal",
+   "Penalty",
+   "Own goal"
+  ],
+  "answer": "Silver goal",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_adaedf",
+  "q": "England vs Germany at Euro 1996 ended 1-1 — who scored England's goal?",
+  "o": [
+   "Gascoigne",
+   "Sheringham",
+   "Shearer",
+   "Anderton"
+  ],
+  "answer": "Shearer",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f12e9a",
+  "q": "Three people have won the World Cup as both a player and manager — Zagallo, Beckenbauer and who?",
+  "o": [
+   "Deschamps",
+   "Zidane",
+   "Platini",
+   "Capello"
+  ],
+  "answer": "Deschamps",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_19c2ca",
+  "q": "Jose Mourinho famously lived in a hotel during his time as Manchester United manager — which one?",
+  "o": [
+   "The Lowry Hotel",
+   "Midland Hotel",
+   "Radisson Blu",
+   "Hilton Manchester"
+  ],
+  "answer": "The Lowry Hotel",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fc34a9",
+  "q": "Which manager won the Champions League with Borussia Dortmund in 1997 and Bayern Munich in 2001?",
+  "o": [
+   "Jupp Heynckes",
+   "Udo Lattek",
+   "Nevio Scala",
+   "Ottmar Hitzfeld"
+  ],
+  "answer": "Ottmar Hitzfeld",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_212a47",
+  "q": "In what capacity did Sir Alex Ferguson work with the Scotland national team?",
+  "o": [
+   "Caretaker manager at the 1986 World Cup",
+   "Permanent manager 1984-1986",
+   "Assistant to Jock Stein only",
+   "He never worked with Scotland"
+  ],
+  "answer": "Caretaker manager at the 1986 World Cup",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4f44b5",
+  "q": "Who was the youngest ever head coach in Bundesliga history, aged just 28 years and 205 days?",
+  "o": [
+   "Thomas Tuchel",
+   "Julian Nagelsmann",
+   "Roger Schmidt",
+   "Marco Rose"
+  ],
+  "answer": "Julian Nagelsmann",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_206497",
+  "q": "Which manager guided Deportivo La Coruña to a shock Champions League semi-final in 2004 — eliminating AC Milan?",
+  "o": [
+   "Victor Fernández",
+   "Javier Irureta",
+   "Lucas Alcaraz",
+   "Arsenio Iglesias"
+  ],
+  "answer": "Javier Irureta",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_af49a5",
+  "q": "Which English manager won the First Division title with Ipswich in 1962, before later managing England?",
+  "o": [
+   "Ron Greenwood",
+   "Bobby Robson",
+   "Alf Ramsey",
+   "Don Revie"
+  ],
+  "answer": "Alf Ramsey",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c6d293",
+  "q": "Which Swedish footballer had a clause in his PL contract banning him from travelling into space?",
+  "o": [
+   "Freddie Ljungberg",
+   "Andreas Johansson",
+   "Henrik Larsson",
+   "Stefan Schwarz"
+  ],
+  "answer": "Stefan Schwarz",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_78e35b",
+  "q": "Which former England internationals reached number 12 in the UK Singles Chart with 'Diamond Lights' in 1987?",
+  "o": [
+   "Gascoigne & Beardsley",
+   "Waddle & Hoddle",
+   "Lineker & Shilton",
+   "Barnes & Beardsley"
+  ],
+  "answer": "Waddle & Hoddle",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_503741",
+  "q": "Pelé starred alongside which Hollywood actors in the 1981 film 'Escape to Victory'?",
+  "o": [
+   "Clint Eastwood & Burt Reynolds",
+   "Michael Caine & Sylvester Stallone",
+   "Robert De Niro & Al Pacino",
+   "Harrison Ford & Sean Connery"
+  ],
+  "answer": "Michael Caine & Sylvester Stallone",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd3e4b",
+  "q": "Which goalkeeper won the Premier League Golden Glove with both Chelsea and Arsenal?",
+  "o": [
+   "Petr Cech",
+   "Joe Hart",
+   "Thibaut Courtois",
+   "David De Gea"
+  ],
+  "answer": "Petr Cech",
+  "cat": "PL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b4c54a",
+  "q": "Derby County hold the unwanted record for fewest points in a Premier League season — how many in 2007-08?",
+  "o": [
+   "9",
+   "11",
+   "15",
+   "17"
+  ],
+  "answer": "11",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41dcd4",
+  "q": "Who won the Premier League Player of the Season award in 2007-08?",
+  "o": [
+   "Fernando Torres",
+   "Rooney",
+   "Cristiano Ronaldo",
+   "Steven Gerrard"
+  ],
+  "answer": "Cristiano Ronaldo",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd6623",
+  "q": "In what year were yellow and red cards first used at a World Cup?",
+  "o": [
+   "1966",
+   "1970",
+   "1974",
+   "1978"
+  ],
+  "answer": "1970",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fce510",
+  "q": "Which country lost the most World Cup finals without ever winning — three times?",
+  "o": [
+   "Hungary",
+   "Czechoslovakia",
+   "Croatia",
+   "Netherlands"
+  ],
+  "answer": "Netherlands",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b4c0ca",
+  "q": "What is the original name of the World Cup trophy, used until 1970?",
+  "o": [
+   "The Continental Cup",
+   "The Jules Rimet Trophy",
+   "The Henri Delaunay Cup",
+   "The Gold Trophy"
+  ],
+  "answer": "The Jules Rimet Trophy",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_80429a",
+  "q": "Roger Milla became the oldest scorer in World Cup history at 42 — at which tournament?",
+  "o": [
+   "1986",
+   "1990",
+   "1994",
+   "1998"
+  ],
+  "answer": "1994",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d7d5a4",
+  "q": "Which Brazilian winger was nicknamed 'Little Bird' and starred in the 1958 and 1962 World Cup wins?",
+  "o": [
+   "Zagallo",
+   "Julinho",
+   "Pepe",
+   "Garrincha"
+  ],
+  "answer": "Garrincha",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_01ca10",
+  "q": "Who is the only player to win the World Cup as player and manager for the same country twice?",
+  "o": [
+   "Beckenbauer",
+   "Deschamps",
+   "Zagallo",
+   "Alf Ramsey"
+  ],
+  "answer": "Zagallo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_08b9fd",
+  "q": "Which animal oracle correctly predicted World Cup results in 2010, choosing between flag-covered boxes?",
+  "o": [
+   "Harry the Hedgehog",
+   "Paul the Octopus",
+   "Franz the Fox",
+   "Wilhelm the Wolf"
+  ],
+  "answer": "Paul the Octopus",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ea4ab0",
+  "q": "Which Asian nation made the biggest World Cup upset of 1966 — beating Italy 1-0 at Ayresome Park to knock the Azzurri out in the group stage?",
+  "o": [
+   "Japan",
+   "Iran",
+   "South Korea",
+   "North Korea"
+  ],
+  "answer": "North Korea",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f9a975",
+  "q": "Tim Howard set the record for most saves in a single World Cup match in 2014 — how many?",
+  "o": [
+   "12",
+   "14",
+   "18",
+   "16"
+  ],
+  "answer": "16",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_7cf5c0",
+  "q": "The 1954 World Cup final between Hungary and West Germany ended in what famous scoreline — dubbed the 'Miracle of Bern'?",
+  "o": [
+   "2-0 WG",
+   "3-2 WG",
+   "4-2 WG",
+   "5-3 WG"
+  ],
+  "answer": "3-2 WG",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e10169",
+  "q": "Which player was the top scorer at the 1978 World Cup with 6 goals including one in the final?",
+  "o": [
+   "Kempes",
+   "Leopoldo Luque",
+   "Rob Rensenbrink",
+   "Teófilo Cubillas"
+  ],
+  "answer": "Kempes",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_035000",
+  "q": "Ferenc Puskás represented which country after switching nationality in the 1960s?",
+  "o": [
+   "Argentina",
+   "Portugal",
+   "Spain",
+   "France"
+  ],
+  "answer": "Spain",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_dbf430",
+  "q": "What were the only two World Cup tournaments cancelled — due to World War II?",
+  "o": [
+   "1938 & 1942",
+   "1943 & 1947",
+   "1940 & 1944",
+   "1942 & 1946"
+  ],
+  "answer": "1942 & 1946",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_809f53",
+  "q": "Which Italian manager guided his team to two consecutive World Cup titles in 1934 and 1938?",
+  "o": [
+   "Enzo Bearzot",
+   "Vittorio Pozzo",
+   "Marcello Lippi",
+   "Ferruccio Valcareggi"
+  ],
+  "answer": "Vittorio Pozzo",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_030dab",
+  "q": "Which England striker won the Golden Boot as the top scorer at Euro 96 with 5 goals?",
+  "o": [
+   "Gary Lineker",
+   "Alan Shearer",
+   "Rooney",
+   "Kane"
+  ],
+  "answer": "Alan Shearer",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_13ee34",
+  "q": "The Champions League has been won only once by a Romanian club — who?",
+  "o": [
+   "Dinamo Bucharest",
+   "Universitatea Craiova",
+   "Rapid Bucharest",
+   "Steaua Bucharest"
+  ],
+  "answer": "Steaua Bucharest",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9d2d39",
+  "q": "Which outfield player appeared in European Cup/Champions League finals in the 1980s, 1990s and 2000s?",
+  "o": [
+   "Giggs",
+   "Maldini",
+   "Inzaghi",
+   "Raúl"
+  ],
+  "answer": "Maldini",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bda1ed",
+  "q": "What is the UCL anthem an adaptation of — composed in 1727?",
+  "o": [
+   "Handel's Messiah",
+   "Handel's Zadok the Priest",
+   "Bach's Mass in B minor",
+   "Vivaldi's Four Seasons"
+  ],
+  "answer": "Handel's Zadok the Priest",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_176738",
+  "q": "Which British ground was the first to host a European Cup final?",
+  "o": [
+   "Wembley",
+   "Hampden Park",
+   "Anfield",
+   "Ibrox"
+  ],
+  "answer": "Hampden Park",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f6ad15",
+  "q": "Liverpool have won the European Cup 6 times — who are England's third most successful club with 2 titles?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "Aston Villa",
+   "Forest"
+  ],
+  "answer": "Forest",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d948f7",
+  "q": "In which city was the 2023 Champions League final played — Man City vs Inter?",
+  "o": [
+   "London",
+   "Paris",
+   "Istanbul",
+   "Lisbon"
+  ],
+  "answer": "Istanbul",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_45680d",
+  "q": "Which club won the most consecutive European Cups — 5 in a row from 1956 to 1960?",
+  "o": [
+   "Ajax",
+   "AC Milan",
+   "Bayern Munich",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_21aec1",
+  "q": "As of 2026, who holds the record for most appearances in the Champions League?",
+  "o": [
+   "Messi",
+   "Ronaldo",
+   "Xavi",
+   "Casillas"
+  ],
+  "answer": "Ronaldo",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_af2592",
+  "q": "Which Dutch club beat Celtic in the 1970 European Cup final to become the first Dutch winners?",
+  "o": [
+   "Ajax",
+   "PSV",
+   "Feyenoord",
+   "AZ Alkmaar"
+  ],
+  "answer": "Feyenoord",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dc9226",
+  "q": "In the 2005 UCL final, what was the score at half-time before Liverpool's famous comeback?",
+  "o": [
+   "2-0 to Milan",
+   "4-0 to Milan",
+   "3-1 to Milan",
+   "3-0 to Milan"
+  ],
+  "answer": "3-0 to Milan",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_150a91",
+  "q": "Shane Long scored the fastest ever Premier League goal in 7.69 seconds — for which club?",
+  "o": [
+   "Watford",
+   "Aston Villa",
+   "Southampton",
+   "Bournemouth"
+  ],
+  "answer": "Southampton",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d1bd70",
+  "q": "How many clubs have been ever-present in the Premier League since its founding in 1992?",
+  "o": [
+   "Four",
+   "Five",
+   "Seven",
+   "Six"
+  ],
+  "answer": "Six",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c88235",
+  "q": "Sir Alex Ferguson holds the record for most Premier League wins as a manager — how many?",
+  "o": [
+   "428",
+   "488",
+   "568",
+   "528"
+  ],
+  "answer": "528",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_84aeb7",
+  "q": "Sam Allardyce holds the record for most different Premier League clubs managed — how many?",
+  "o": [
+   "6",
+   "7",
+   "9",
+   "11"
+  ],
+  "answer": "9",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e8f309",
+  "q": "Chelsea had a remarkable unbeaten run at Stamford Bridge — how many consecutive home league games did they go unbeaten under Mourinho and others?",
+  "o": [
+   "64",
+   "72",
+   "100",
+   "86"
+  ],
+  "answer": "86",
+  "cat": "PL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2fc271",
+  "q": "Garrincha — Brazil's legendary winger — had a physical disability from birth. What was it?",
+  "o": [
+   "He was deaf in one ear",
+   "One leg was shorter than the other",
+   "He had limited vision in one eye",
+   "He was born without a right hand"
+  ],
+  "answer": "One leg was shorter than the other",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d4fada",
+  "q": "Bobby Moore captained England to the 1966 World Cup — which club did he spend most of his career at?",
+  "o": [
+   "Arsenal",
+   "Tottenham",
+   "Chelsea",
+   "West Ham"
+  ],
+  "answer": "West Ham",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bebd48",
+  "q": "Which legendary player was known as the 'Kaiser' and pioneered the attacking sweeper role?",
+  "o": [
+   "Günter Netzer",
+   "Gerd Müller",
+   "Fritz Walter",
+   "Franz Beckenbauer"
+  ],
+  "answer": "Franz Beckenbauer",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_31f5ae",
+  "q": "Michel Platini retired in 1987 at the peak of his powers — how old was he when he walked away from the game?",
+  "o": [
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "answer": "32",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_50f7da",
+  "q": "Which club did Puskás join after defecting from Hungary following the 1956 uprising?",
+  "o": [
+   "Barcelona",
+   "AC Milan",
+   "Juventus",
+   "Real Madrid"
+  ],
+  "answer": "Real Madrid",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_09f02f",
+  "q": "Ronaldinho was briefly imprisoned in 2020 — in which country?",
+  "o": [
+   "Brazil",
+   "Colombia",
+   "USA",
+   "Paraguay"
+  ],
+  "answer": "Paraguay",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_3aa38b",
+  "q": "The Three Lions song at Euro 96 was performed by which comedian duo?",
+  "o": [
+   "French & Saunders",
+   "Lee & Herring",
+   "Baddiel & Skinner",
+   "Newman & Baddiel"
+  ],
+  "answer": "Baddiel & Skinner",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a9021c",
+  "q": "Who was the goalkeeper who scored a penalty at Euro 2004 to help Portugal through against England?",
+  "o": [
+   "Vítor Baía",
+   "Ricardo",
+   "Rui Patrício",
+   "Eduardo"
+  ],
+  "answer": "Ricardo",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_634523",
+  "q": "Which country did Czechoslovakia beat in the Euro 1976 final on penalties — with the famous Panenka?",
+  "o": [
+   "England",
+   "Netherlands",
+   "West Germany",
+   "Soviet Union"
+  ],
+  "answer": "West Germany",
+  "cat": "Euros",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4f7ce8",
+  "q": "Which country hosted the first-ever European Championship in 1960?",
+  "o": [
+   "France",
+   "Italy",
+   "Sweden",
+   "Soviet Union"
+  ],
+  "answer": "France",
+  "cat": "Euros",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f49245",
+  "q": "At Euro 2024, which player became the youngest-ever scorer in European Championship history?",
+  "o": [
+   "Pedri",
+   "Gavi",
+   "Nico Williams",
+   "Yamal"
+  ],
+  "answer": "Yamal",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0a2be8",
+  "q": "How old was Lamine Yamal when he scored at Euro 2024?",
+  "o": [
+   "15",
+   "16",
+   "17",
+   "18"
+  ],
+  "answer": "16",
+  "cat": "Euros",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ff39e7",
+  "q": "Which English striker won the World Cup Golden Boot at Mexico 1986 with 6 goals?",
+  "o": [
+   "Gary Lineker",
+   "Geoff Hurst",
+   "Michael Owen",
+   "Kane"
+  ],
+  "answer": "Gary Lineker",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7f9bce",
+  "q": "Which country will host a men's World Cup for the first time ever in 2026, alongside the United States and Mexico?",
+  "o": [
+   "Canada",
+   "Costa Rica",
+   "Panama",
+   "Jamaica"
+  ],
+  "answer": "Canada",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8291b6",
+  "q": "Iceland became the then-smallest nation by population to reach a World Cup — which year?",
+  "o": [
+   "2014",
+   "2018",
+   "2022",
+   "2016"
+  ],
+  "answer": "2018",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_de9806",
+  "q": "Marta is the first footballer of either gender to score at 5 different World Cups — which country does she play for?",
+  "o": [
+   "Argentina",
+   "Colombia",
+   "Mexico",
+   "Brazil"
+  ],
+  "answer": "Brazil",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_197a2e",
+  "q": "Which sports brand has supplied the official ball for every World Cup since 1970?",
+  "o": [
+   "Nike",
+   "Puma",
+   "Umbro",
+   "Adidas"
+  ],
+  "answer": "Adidas",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_94f035",
+  "q": "Bobby Moore was West Ham captain and 1966 World Cup winner — what age did he die?",
+  "o": [
+   "48",
+   "51",
+   "55",
+   "60"
+  ],
+  "answer": "51",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1437a1",
+  "q": "Which country was the first from Africa to compete in a World Cup — in 1934?",
+  "o": [
+   "Nigeria",
+   "South Africa",
+   "Morocco",
+   "Egypt"
+  ],
+  "answer": "Egypt",
+  "cat": "WorldCup",
+  "diff": "hard"
+ },
+ {
+  "id": "q_cb38b8",
+  "q": "Real Madrid won the first 5 European Cups (1956-60). Which club won the next two, ending their dynasty?",
+  "o": [
+   "Inter",
+   "AC Milan",
+   "Eintracht Frankfurt",
+   "Benfica"
+  ],
+  "answer": "Benfica",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_270b4b",
+  "q": "Which former Germany international goalkeeper transitioned to a career as a WWE professional wrestler after retiring in 2014?",
+  "o": [
+   "Tim Wiese",
+   "Roman Weidenfeller",
+   "Oliver Kahn",
+   "Jens Lehmann"
+  ],
+  "answer": "Tim Wiese",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0b43eb",
+  "q": "Who is the youngest permanent manager in Premier League history, appointed by Brighton in 2024 aged 31?",
+  "o": [
+   "Fabian Hurzeler",
+   "Graham Potter",
+   "Andre Villas-Boas",
+   "Gianluca Vialli"
+  ],
+  "answer": "Fabian Hurzeler",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_41fb3d",
+  "q": "Which manager won the Champions League with Porto (2004) and Inter Milan (2010) — both as underdogs?",
+  "o": [
+   "Claudio Ranieri",
+   "José Mourinho",
+   "Rafael Benítez",
+   "Giovanni Trapattoni"
+  ],
+  "answer": "José Mourinho",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6ef811",
+  "q": "France won Euro 2000 and the 1998 World Cup — who was their manager for Euro 2000?",
+  "o": [
+   "Aimé Jacquet",
+   "Roger Lemerre",
+   "Raymond Domenech",
+   "Gérard Houllier"
+  ],
+  "answer": "Roger Lemerre",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ef51c7",
+  "q": "Carlo Ancelotti has won the Champions League with only which two clubs?",
+  "o": [
+   "AC Milan and Real Madrid",
+   "AC Milan and Chelsea",
+   "Real Madrid and Bayern Munich",
+   "AC Milan and Juventus"
+  ],
+  "answer": "AC Milan and Real Madrid",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_afebbc",
+  "q": "Bob Paisley won the European Cup how many times as Liverpool manager?",
+  "o": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": "3",
+  "cat": "Managers",
+  "diff": "medium"
+ }
+]

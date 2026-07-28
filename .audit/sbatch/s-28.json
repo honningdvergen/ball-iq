@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_54e385",
+  "q": "In which season did Rangers become the first Scottish club to win the domestic treble?",
+  "o": [
+   "1948-49",
+   "1928-29",
+   "1960-61",
+   "1988-89"
+  ],
+  "answer": "1948-49",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bc0ed0",
+  "q": "Which legendary Rangers manager (1920-1954) won a club-record 18 league titles?",
+  "o": [
+   "Bill Struth",
+   "Willie Waddell",
+   "Scot Symon",
+   "Jock Wallace"
+  ],
+  "answer": "Bill Struth",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1d7c76",
+  "q": "The Zenit side that beat Rangers in the 2008 UEFA Cup final was managed by which former Rangers boss?",
+  "o": [
+   "Dick Advocaat",
+   "Walter Smith",
+   "Graeme Souness",
+   "Paul Le Guen"
+  ],
+  "answer": "Dick Advocaat",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a7326e",
+  "q": "Dick Advocaat won a domestic treble in which — his first — season as Rangers manager?",
+  "o": [
+   "1998-99",
+   "2000-01",
+   "1996-97",
+   "2002-03"
+  ],
+  "answer": "1998-99",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1bbc0c",
+  "q": "Which manager led Rangers to a domestic treble in 2002-03, the club's seventh?",
+  "o": [
+   "Alex McLeish",
+   "Dick Advocaat",
+   "Walter Smith",
+   "Paul Le Guen"
+  ],
+  "answer": "Alex McLeish",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_626b89",
+  "q": "Rangers' then record signing, bought for around £12m from Chelsea in 2000, was which striker?",
+  "o": [
+   "Tore André Flo",
+   "Michael Mols",
+   "Ronald de Boer",
+   "Marcus Gayle"
+  ],
+  "answer": "Tore André Flo",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_835f75",
+  "q": "Who scored Rangers' goal in the 2022 Europa League final?",
+  "o": [
+   "Joe Aribo",
+   "James Tavernier",
+   "Ryan Kent",
+   "Alfredo Morelos"
+  ],
+  "answer": "Joe Aribo",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a1d4bd",
+  "q": "Whose missed spot-kick decided the 2022 Europa League final shoot-out against Rangers' favour?",
+  "o": [
+   "Aaron Ramsey",
+   "James Tavernier",
+   "Scott Arfield",
+   "Kemar Roofe"
+  ],
+  "answer": "Aaron Ramsey",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2442e1",
+  "q": "Which Rangers player, a right-back, finished top scorer of the 2021-22 Europa League with seven goals?",
+  "o": [
+   "James Tavernier",
+   "Alfredo Morelos",
+   "Joe Aribo",
+   "Ryan Kent"
+  ],
+  "answer": "James Tavernier",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_89d488",
+  "q": "Which club legend was Rangers' manager when they began life in the fourth tier in 2012-13?",
+  "o": [
+   "Ally McCoist",
+   "Walter Smith",
+   "Mark Warburton",
+   "Stuart McCall"
+  ],
+  "answer": "Ally McCoist",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_427bdc",
+  "q": "Which manager led Rangers to the 2015-16 Championship title and promotion back to the Premiership?",
+  "o": [
+   "Mark Warburton",
+   "Pedro Caixinha",
+   "Steven Gerrard",
+   "Ally McCoist"
+  ],
+  "answer": "Mark Warburton",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df6c3b",
+  "q": "Who captained Rangers through most of the nine-in-a-row era in the 1990s?",
+  "o": [
+   "Richard Gough",
+   "Barry Ferguson",
+   "John Greig",
+   "Terry Butcher"
+  ],
+  "answer": "Richard Gough",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5cb300",
+  "q": "Which 1990s Rangers goalkeeper was famously nicknamed 'The Goalie'?",
+  "o": [
+   "Andy Goram",
+   "Chris Woods",
+   "Stefan Klos",
+   "Allan McGregor"
+  ],
+  "answer": "Andy Goram",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3ad4db",
+  "q": "Who scored twice for Rangers in their 1972 Cup Winners' Cup final win over Dynamo Moscow?",
+  "o": [
+   "Willie Johnston",
+   "Colin Stein",
+   "John Greig",
+   "Sandy Jardine"
+  ],
+  "answer": "Willie Johnston",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_93d14c",
+  "q": "In 1961 Rangers became the first British club to reach a European final, losing the Cup Winners' Cup to which Italian side?",
+  "o": [
+   "Fiorentina",
+   "Juventus",
+   "AC Milan",
+   "Inter Milan"
+  ],
+  "answer": "Fiorentina",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dcdaa4",
+  "q": "Rangers lost the 1967 European Cup Winners' Cup final after extra time to which German club?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Hamburg",
+   "Schalke"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2ae640",
+  "q": "Rangers' unbeaten 2020-21 league season made them only the second club to go a Scottish Premiership season without defeat — after which club?",
+  "o": [
+   "Celtic",
+   "Aberdeen",
+   "Hearts",
+   "Dundee United"
+  ],
+  "answer": "Celtic",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_580db4",
+  "q": "Rangers hold the record for the most wins of which Scottish knockout competition?",
+  "o": [
+   "Scottish League Cup",
+   "Scottish Cup",
+   "FA Cup",
+   "European Cup"
+  ],
+  "answer": "Scottish League Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_85f24c",
+  "q": "Which silky 1960s Rangers midfielder was nicknamed 'Slim Jim'?",
+  "o": [
+   "Jim Baxter",
+   "Willie Henderson",
+   "Sandy Jardine",
+   "Davie Cooper"
+  ],
+  "answer": "Jim Baxter",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_416ac4",
+  "q": "Which England striker formed a prolific partnership with Ally McCoist at Rangers in the early 1990s?",
+  "o": [
+   "Mark Hateley",
+   "Alan Shearer",
+   "Les Ferdinand",
+   "Teddy Sheringham"
+  ],
+  "answer": "Mark Hateley",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_57cd48",
+  "q": "Who was Rangers' manager for their 1972 European Cup Winners' Cup triumph?",
+  "o": [
+   "Willie Waddell",
+   "Jock Wallace",
+   "Scot Symon",
+   "John Greig"
+  ],
+  "answer": "Willie Waddell",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_414dc9",
+  "q": "In which year was Olympique de Marseille founded?",
+  "o": [
+   "1919",
+   "1899",
+   "1932",
+   "1902"
+  ],
+  "answer": "1899",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_339a0a",
+  "q": "At which stadium does Marseille play its home matches?",
+  "o": [
+   "Parc des Princes",
+   "Stade de France",
+   "Stade Vélodrome",
+   "Stade Geoffroy-Guichard"
+  ],
+  "answer": "Stade Vélodrome",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4537d",
+  "q": "In which year did Marseille become the first French club to win the European Cup / Champions League?",
+  "o": [
+   "1991",
+   "1993",
+   "1985",
+   "1999"
+  ],
+  "answer": "1993",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_40fe6e",
+  "q": "Which club did Marseille defeat in the 1993 Champions League final?",
+  "o": [
+   "AC Milan",
+   "Real Madrid",
+   "Ajax",
+   "Barcelona"
+  ],
+  "answer": "AC Milan",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f2a94d",
+  "q": "Who scored the only goal of Marseille's 1993 Champions League final win?",
+  "o": [
+   "Jean-Pierre Papin",
+   "Rudi Völler",
+   "Basile Boli",
+   "Abedi Pelé"
+  ],
+  "answer": "Basile Boli",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3f3b82",
+  "q": "What colour are Marseille's traditional home shirts?",
+  "o": [
+   "Red",
+   "White",
+   "Black",
+   "Green"
+  ],
+  "answer": "White",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f6e64f",
+  "q": "Marseille's fiercest rivalry, known as 'Le Classique', is contested against which club?",
+  "o": [
+   "Lyon",
+   "Monaco",
+   "PSG",
+   "Saint-Étienne"
+  ],
+  "answer": "PSG",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b6cd92",
+  "q": "Chelsea signed Didier Drogba in 2004 from which club?",
+  "o": [
+   "Lyon",
+   "Monaco",
+   "Guingamp",
+   "Marseille"
+  ],
+  "answer": "Marseille",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e508bf",
+  "q": "Franck Ribéry left Marseille in 2007 to join which club?",
+  "o": [
+   "Real Madrid",
+   "Bayern Munich",
+   "Juventus",
+   "Chelsea"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dc2c68",
+  "q": "Marseille are nicknamed 'Les Phocéens' in reference to what?",
+  "o": [
+   "A local river",
+   "The club's first president",
+   "The ancient Greeks who founded the city",
+   "A famous shipyard"
+  ],
+  "answer": "The ancient Greeks who founded the city",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_800006",
+  "q": "Which flamboyant businessman was Marseille's president during its dominant early-1990s era?",
+  "o": [
+   "Bernard Tapie",
+   "Frank McCourt",
+   "Jean-Michel Aulas",
+   "Nasser Al-Khelaifi"
+  ],
+  "answer": "Bernard Tapie",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9a8b66",
+  "q": "Who managed Marseille to their 1993 Champions League triumph?",
+  "o": [
+   "Raymond Goethals",
+   "Arsène Wenger",
+   "Franz Beckenbauer",
+   "Gérard Houllier"
+  ],
+  "answer": "Raymond Goethals",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e792cc",
+  "q": "Marseille lost the 1991 European Cup final to which club?",
+  "o": [
+   "Steaua Bucharest",
+   "Benfica",
+   "PSV Eindhoven",
+   "Red Star Belgrade"
+  ],
+  "answer": "Red Star Belgrade",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_952502",
+  "q": "How was the 1991 European Cup final between Marseille and Red Star Belgrade decided?",
+  "o": [
+   "A penalty shoot-out after 0-0",
+   "A last-minute winner",
+   "A 3-1 win",
+   "A golden goal"
+  ],
+  "answer": "A penalty shoot-out after 0-0",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d67491",
+  "q": "Which Marseille striker won the 1991 Ballon d'Or?",
+  "o": [
+   "Rudi Völler",
+   "Jean-Pierre Papin",
+   "Chris Waddle",
+   "Abedi Pelé"
+  ],
+  "answer": "Jean-Pierre Papin",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_df3e7a",
+  "q": "Josip Skoblar set a Ligue 1 single-season scoring record with Marseille in 1970-71 — how many goals?",
+  "o": [
+   "44",
+   "30",
+   "38",
+   "52"
+  ],
+  "answer": "44",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a48421",
+  "q": "Who is Marseille's all-time leading goalscorer, with 194 goals?",
+  "o": [
+   "Jean-Pierre Papin",
+   "Josip Skoblar",
+   "Didier Drogba",
+   "Gunnar Andersson"
+  ],
+  "answer": "Gunnar Andersson",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d27bf0",
+  "q": "Which goalkeeper holds Marseille's record for most appearances?",
+  "o": [
+   "Fabien Barthez",
+   "Steve Mandanda",
+   "Gaëtan Huard",
+   "Jérôme Alonzo"
+  ],
+  "answer": "Steve Mandanda",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2ef736",
+  "q": "Who captained Marseille to the 1993 Champions League title and later managed the club to the 2010 league title?",
+  "o": [
+   "Didier Deschamps",
+   "Marcel Desailly",
+   "Basile Boli",
+   "Jean-Pierre Papin"
+  ],
+  "answer": "Didier Deschamps",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1b34e5",
+  "q": "Marseille's 2010 Ligue 1 title ended a title drought of how many years?",
+  "o": [
+   "5",
+   "10",
+   "18",
+   "25"
+  ],
+  "answer": "18",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_25f5f2",
+  "q": "Which England winger did Marseille sign from Tottenham in 1989?",
+  "o": [
+   "Chris Waddle",
+   "Glenn Hoddle",
+   "Gary Lineker",
+   "Paul Gascoigne"
+  ],
+  "answer": "Chris Waddle",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c483c",
+  "q": "Which club did Éric Cantona join in 1988 for a then French record transfer fee?",
+  "o": [
+   "Marseille",
+   "Nîmes",
+   "Leeds United",
+   "Nice"
+  ],
+  "answer": "Marseille",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d02c0a",
+  "q": "Following the 1993 match-fixing scandal, Marseille were stripped of which season's Ligue 1 title?",
+  "o": [
+   "1990-91",
+   "1992-93",
+   "1988-89",
+   "1993-94"
+  ],
+  "answer": "1992-93",
+  "cat": "Ligue1",
+  "diff": "hard"
+ },
+ {
+  "id": "q_994856",
+  "q": "Marseille lost the 1999 UEFA Cup final to which Italian club?",
+  "o": [
+   "Parma",
+   "Inter",
+   "Lazio",
+   "Fiorentina"
+  ],
+  "answer": "Parma",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b1acea",
+  "q": "In Didier Drogba's only season, Marseille lost the 2004 UEFA Cup final to which club?",
+  "o": [
+   "Sevilla",
+   "Valencia",
+   "Villarreal",
+   "Real Betis"
+  ],
+  "answer": "Valencia",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_41ec60",
+  "q": "Marseille lost the 2018 Europa League final to which club?",
+  "o": [
+   "Atlético Madrid",
+   "Sevilla",
+   "Chelsea",
+   "Ajax"
+  ],
+  "answer": "Atlético Madrid",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_03229f",
+  "q": "The 2018 Europa League final, which Marseille lost, was staged in which French city?",
+  "o": [
+   "Marseille",
+   "Paris",
+   "Lyon",
+   "Nice"
+  ],
+  "answer": "Lyon",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c5a638",
+  "q": "Marseille broke their transfer record in January 2023 to sign striker Vitinha from which club?",
+  "o": [
+   "Benfica",
+   "Porto",
+   "Braga",
+   "Sporting"
+  ],
+  "answer": "Braga",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_69a23b",
+  "q": "Which American businessman bought Marseille in 2016?",
+  "o": [
+   "Frank McCourt",
+   "Stan Kroenke",
+   "John Textor",
+   "Todd Boehly"
+  ],
+  "answer": "Frank McCourt",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0d9ce0",
+  "q": "Who founded Olympique de Marseille in 1899?",
+  "o": [
+   "Bernard Tapie",
+   "Marcel Leclerc",
+   "René Dufaure de Montmirail",
+   "Gunnar Andersson"
+  ],
+  "answer": "René Dufaure de Montmirail",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_39dd04",
+  "q": "What is Marseille's club motto?",
+  "o": [
+   "Droit Au But",
+   "Toujours Plus Haut",
+   "Vaincre ou Mourir",
+   "Ensemble"
+  ],
+  "answer": "Droit Au But",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_452eb3",
+  "q": "Marseille's blue and white colours are taken from what?",
+  "o": [
+   "The city's flag",
+   "A sponsor's logo",
+   "The French tricolour",
+   "A founder's racehorse"
+  ],
+  "answer": "The city's flag",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_11dfe6",
+  "q": "How many times has Marseille won the Coupe de France?",
+  "o": [
+   "3",
+   "10",
+   "15",
+   "1"
+  ],
+  "answer": "10",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d14b2",
+  "q": "How many French top-flight titles is Marseille officially credited with?",
+  "o": [
+   "9",
+   "3",
+   "14",
+   "20"
+  ],
+  "answer": "9",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_be660e",
+  "q": "Marseille won four consecutive French league titles across which span?",
+  "o": [
+   "1989-1992",
+   "1970-1973",
+   "1948-1951",
+   "2007-2010"
+  ],
+  "answer": "1989-1992",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8e11ed",
+  "q": "Which Argentine coach took charge of Marseille in 2014?",
+  "o": [
+   "Marcelo Bielsa",
+   "Diego Simeone",
+   "Mauricio Pochettino",
+   "Gerardo Martino"
+  ],
+  "answer": "Marcelo Bielsa",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aa9e4b",
+  "q": "Which Ghanaian playmaker was a star of Marseille's great early-1990s side?",
+  "o": [
+   "Tony Yeboah",
+   "Abedi Pelé",
+   "Michael Essien",
+   "Sulley Muntari"
+  ],
+  "answer": "Abedi Pelé",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e08e8",
+  "q": "Marseille won the league-and-Coupe-de-France double in 1972 and again in which year?",
+  "o": [
+   "1989",
+   "1976",
+   "1993",
+   "2010"
+  ],
+  "answer": "1989",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef5cb1",
+  "q": "In which league does Marseille compete?",
+  "o": [
+   "La Liga",
+   "Ligue 1",
+   "Serie A",
+   "Bundesliga"
+  ],
+  "answer": "Ligue 1",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2cc923",
+  "q": "By which two-letter abbreviation is Olympique de Marseille widely known?",
+  "o": [
+   "OM",
+   "OL",
+   "AS",
+   "RC"
+  ],
+  "answer": "OM",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_de01c2",
+  "q": "In which year did Marseille move into the Stade Vélodrome?",
+  "o": [
+   "1907",
+   "1937",
+   "1965",
+   "1998"
+  ],
+  "answer": "1937",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_315939",
+  "q": "Under Didier Deschamps, Marseille won three consecutive editions of which competition from 2010 to 2012?",
+  "o": [
+   "Coupe de la Ligue",
+   "Coupe de France",
+   "Trophée des Champions",
+   "Champions League"
+  ],
+  "answer": "Coupe de la Ligue",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_a413dd",
+  "q": "Which manager led Marseille to the 2018 Europa League final?",
+  "o": [
+   "André Villas-Boas",
+   "Rudi Garcia",
+   "Marcelo Bielsa",
+   "Didier Deschamps"
+  ],
+  "answer": "Rudi Garcia",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_cbe2e8",
+  "q": "Marseille won the UEFA Intertoto Cup in which year?",
+  "o": [
+   "1999",
+   "2005",
+   "2011",
+   "1996"
+  ],
+  "answer": "2005",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_68299b",
+  "q": "In which year was Feyenoord founded?",
+  "o": [
+   "1898",
+   "1908",
+   "1912",
+   "1920"
+  ],
+  "answer": "1908",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6c6676",
+  "q": "In which city is Feyenoord based?",
+  "o": [
+   "Amsterdam",
+   "Eindhoven",
+   "Rotterdam",
+   "Utrecht"
+  ],
+  "answer": "Rotterdam",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_7cbe81",
+  "q": "Under what name was the club originally founded in 1908?",
+  "o": [
+   "Wilhelmina",
+   "Xerxes",
+   "Hermes DVS",
+   "Sparta"
+  ],
+  "answer": "Wilhelmina",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6d6072",
+  "q": "Where does the club's name 'Feijenoord' come from?",
+  "o": [
+   "A Rotterdam neighbourhood",
+   "The club's first captain",
+   "A local shipyard owner",
+   "A river near the city"
+  ],
+  "answer": "A Rotterdam neighbourhood",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ae3290",
+  "q": "By what nickname is Feyenoord's home ground, Stadion Feijenoord, universally known?",
+  "o": [
+   "De Meer",
+   "De Kuip",
+   "Philips Stadion",
+   "De Arena"
+  ],
+  "answer": "De Kuip",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9cd5ec",
+  "q": "What does the stadium nickname 'De Kuip' mean in English?",
+  "o": [
+   "The Cathedral",
+   "The Nest",
+   "The Tub",
+   "The Fortress"
+  ],
+  "answer": "The Tub",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_248390",
+  "q": "In which year did Feyenoord first play at De Kuip?",
+  "o": [
+   "1927",
+   "1937",
+   "1947",
+   "1958"
+  ],
+  "answer": "1937",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2fe837",
+  "q": "Which Belgian club were the opponents in the very first match at De Kuip in 1937?",
+  "o": [
+   "Anderlecht",
+   "Standard Liège",
+   "Beerschot",
+   "Club Brugge"
+  ],
+  "answer": "Beerschot",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_879fb1",
+  "q": "What are the two main colours of Feyenoord's traditional home shirt?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "Red and black",
+   "Green and white"
+  ],
+  "answer": "Red and white",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c4e4a3",
+  "q": "What colour are Feyenoord's traditional home shorts?",
+  "o": [
+   "White",
+   "Black",
+   "Red",
+   "Blue"
+  ],
+  "answer": "Black",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3ed29d",
+  "q": "Feyenoord and their city share the motto 'Geen woorden maar daden'. What does it mean?",
+  "o": [
+   "No words but deeds",
+   "Strength through unity",
+   "Always one step ahead",
+   "One heart, one city"
+  ],
+  "answer": "No words but deeds",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d99ea5",
+  "q": "In which competition does Feyenoord play its domestic league football?",
+  "o": [
+   "Eredivisie",
+   "Bundesliga",
+   "Pro League",
+   "La Liga"
+  ],
+  "answer": "Eredivisie",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ea846b",
+  "q": "By what name is the Ajax versus Feyenoord fixture known?",
+  "o": [
+   "The Old Firm",
+   "El Clásico",
+   "De Klassieker",
+   "Der Klassiker"
+  ],
+  "answer": "De Klassieker",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_73c7bf",
+  "q": "Which club is Feyenoord's local rival in the Rotterdam derby?",
+  "o": [
+   "Sparta Rotterdam",
+   "Vitesse",
+   "Ajax",
+   "PSV Eindhoven"
+  ],
+  "answer": "Sparta Rotterdam",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e7fff3",
+  "q": "Feyenoord recorded a famous 9-5 league win in 1960 over which rival?",
+  "o": [
+   "PSV Eindhoven",
+   "Ajax",
+   "ADO Den Haag",
+   "Sparta Rotterdam"
+  ],
+  "answer": "Ajax",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_dc45c1",
+  "q": "Which of these nicknames belongs to Feyenoord?",
+  "o": [
+   "De Godenzonen",
+   "De Boeren",
+   "De Stadionclub",
+   "De Superboeren"
+  ],
+  "answer": "De Stadionclub",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_8dda95",
+  "q": "Feyenoord's 2017 Eredivisie title ended a league drought of how many years?",
+  "o": [
+   "8 years",
+   "12 years",
+   "18 years",
+   "25 years"
+  ],
+  "answer": "18 years",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_48c69e",
+  "q": "Before their 2023 Eredivisie triumph, when had Feyenoord last won the league?",
+  "o": [
+   "2011",
+   "2015",
+   "2017",
+   "2019"
+  ],
+  "answer": "2017",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d68fe0",
+  "q": "Which superstar was playing the final season of his career while winning Feyenoord's 1984 league-and-cup double?",
+  "o": [
+   "Johan Cruyff",
+   "Marco van Basten",
+   "Ruud Krol",
+   "Rob Rensenbrink"
+  ],
+  "answer": "Johan Cruyff",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ee025b",
+  "q": "Which European trophy did Feyenoord win in both 1974 and 2002?",
+  "o": [
+   "European Cup Winners' Cup",
+   "UEFA Cup",
+   "UEFA Super Cup",
+   "Europa Conference League"
+  ],
+  "answer": "UEFA Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_798279",
+  "q": "Feyenoord beat which club 3-0 in the 2018 KNVB Cup final?",
+  "o": [
+   "AZ",
+   "Ajax",
+   "PSV Eindhoven",
+   "Vitesse"
+  ],
+  "answer": "AZ",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_333873",
+  "q": "In which year did Feyenoord become the first Dutch club to win the European Cup?",
+  "o": [
+   "1966",
+   "1970",
+   "1972",
+   "1974"
+  ],
+  "answer": "1970",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8a535d",
+  "q": "Which club did Feyenoord defeat in the 1970 European Cup final?",
+  "o": [
+   "Celtic",
+   "Leeds United",
+   "Benfica",
+   "Inter Milan"
+  ],
+  "answer": "Celtic",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8825f1",
+  "q": "At which stadium was the 1970 European Cup final played?",
+  "o": [
+   "Wembley, London",
+   "San Siro, Milan",
+   "Bernabéu, Madrid",
+   "Heysel, Brussels"
+  ],
+  "answer": "San Siro, Milan",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f9ba02",
+  "q": "Who scored Feyenoord's extra-time winner in the 1970 European Cup final?",
+  "o": [
+   "Coen Moulijn",
+   "Rinus Israël",
+   "Ove Kindvall",
+   "Wim Jansen"
+  ],
+  "answer": "Ove Kindvall",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5e69b7",
+  "q": "Feyenoord beat which South American side to win the 1970 Intercontinental Cup?",
+  "o": [
+   "Peñarol",
+   "Boca Juniors",
+   "Estudiantes",
+   "Nacional"
+  ],
+  "answer": "Estudiantes",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d745aa",
+  "q": "Feyenoord won their first UEFA Cup in 1974 by beating which English club?",
+  "o": [
+   "Liverpool",
+   "Tottenham Hotspur",
+   "Leeds United",
+   "Wolverhampton Wanderers"
+  ],
+  "answer": "Tottenham Hotspur",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_36971e",
+  "q": "What was the aggregate score in Feyenoord's 1974 UEFA Cup final win over Tottenham?",
+  "o": [
+   "4-2",
+   "2-0",
+   "3-1",
+   "5-2"
+  ],
+  "answer": "4-2",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_213399",
+  "q": "Feyenoord won the 2002 UEFA Cup final against which German club?",
+  "o": [
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Schalke 04",
+   "Werder Bremen"
+  ],
+  "answer": "Borussia Dortmund",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_918d69",
+  "q": "What made Feyenoord's 2002 UEFA Cup final especially memorable?",
+  "o": [
+   "It was played at their own De Kuip",
+   "It was won on penalties",
+   "It was settled by a golden goal",
+   "They recovered from 3-0 down"
+  ],
+  "answer": "It was played at their own De Kuip",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f85367",
+  "q": "Which Feyenoord striker scored twice in the 3-2 win in the 2002 UEFA Cup final?",
+  "o": [
+   "Pierre van Hooijdonk",
+   "Robin van Persie",
+   "Jon Dahl Tomasson",
+   "Roy Makaay"
+  ],
+  "answer": "Pierre van Hooijdonk",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_865e21",
+  "q": "Feyenoord lost the inaugural 2022 Europa Conference League final to which club?",
+  "o": [
+   "Lazio",
+   "Roma",
+   "Fiorentina",
+   "Napoli"
+  ],
+  "answer": "Roma",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_906526",
+  "q": "Which coach led Feyenoord to the 1970 European Cup?",
+  "o": [
+   "Rinus Michels",
+   "Ernst Happel",
+   "Ștefan Kovács",
+   "Dettmar Cramer"
+  ],
+  "answer": "Ernst Happel",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_aca410",
+  "q": "Which former Netherlands captain managed Feyenoord to the 2017 Eredivisie title?",
+  "o": [
+   "Giovanni van Bronckhorst",
+   "Ronald Koeman",
+   "Frank de Boer",
+   "Dick Advocaat"
+  ],
+  "answer": "Giovanni van Bronckhorst",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9decad",
+  "q": "Which manager won the 2023 Eredivisie with Feyenoord before joining Liverpool?",
+  "o": [
+   "Peter Bosz",
+   "Erik ten Hag",
+   "Arne Slot",
+   "John Heitinga"
+  ],
+  "answer": "Arne Slot",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f2c789",
+  "q": "Under which manager did Feyenoord reach the 2022 Europa Conference League final?",
+  "o": [
+   "Arne Slot",
+   "Giovanni van Bronckhorst",
+   "Dick Advocaat",
+   "Mario Been"
+  ],
+  "answer": "Arne Slot",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_930273",
+  "q": "Arne Slot succeeded which manager when he took over at Liverpool in 2024?",
+  "o": [
+   "Rafael Benítez",
+   "Jürgen Klopp",
+   "Pep Guardiola",
+   "Brendan Rodgers"
+  ],
+  "answer": "Jürgen Klopp",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1947c4",
+  "q": "Which winger is nicknamed 'Mr. Feyenoord' after his long career at the club?",
+  "o": [
+   "Wim Jansen",
+   "Coen Moulijn",
+   "Willem van Hanegem",
+   "Ove Kindvall"
+  ],
+  "answer": "Coen Moulijn",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8a9150",
+  "q": "In which position did Feyenoord icon Coen Moulijn play?",
+  "o": [
+   "Left winger",
+   "Goalkeeper",
+   "Centre-back",
+   "Centre-forward"
+  ],
+  "answer": "Left winger",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0fc4ec",
+  "q": "What was the nickname of Feyenoord and Netherlands midfielder Willem van Hanegem?",
+  "o": [
+   "Het Kanon",
+   "De Kromme",
+   "De Generaal",
+   "De Zwarte"
+  ],
+  "answer": "De Kromme",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_73edee",
+  "q": "Which striker scored a final-day hat-trick to clinch Feyenoord's 2017 title?",
+  "o": [
+   "Robin van Persie",
+   "Dirk Kuyt",
+   "Nicolai Jørgensen",
+   "Steven Berghuis"
+  ],
+  "answer": "Dirk Kuyt",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_963ed9",
+  "q": "Which academy graduate became Feyenoord's youngest debutant in 2007 before starring for Liverpool?",
+  "o": [
+   "Jordy Clasie",
+   "Tonny Vilhena",
+   "Georginio Wijnaldum",
+   "Leroy Fer"
+  ],
+  "answer": "Georginio Wijnaldum",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_41c10c",
+  "q": "Alongside Cruyff, which future Ballon d'Or winner played in Feyenoord's 1984 double side?",
+  "o": [
+   "Ruud Gullit",
+   "Frank Rijkaard",
+   "Marco van Basten",
+   "Ronald Koeman"
+  ],
+  "answer": "Ruud Gullit",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1b8e70",
+  "q": "Which midfielder completed Feyenoord's 1970 midfield trio with van Hanegem and Franz Hasil?",
+  "o": [
+   "Johan Neeskens",
+   "Wim Jansen",
+   "Arie Haan",
+   "Wim Suurbier"
+  ],
+  "answer": "Wim Jansen",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_38cf45",
+  "q": "Feyenoord sold which striker to Arsenal in 2004?",
+  "o": [
+   "Robin van Persie",
+   "Salomon Kalou",
+   "Dirk Kuyt",
+   "Jon Dahl Tomasson"
+  ],
+  "answer": "Robin van Persie",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d79545",
+  "q": "From which Mexican club did Feyenoord sign striker Santiago Giménez in 2022?",
+  "o": [
+   "Club América",
+   "Cruz Azul",
+   "Chivas Guadalajara",
+   "Pumas UNAM"
+  ],
+  "answer": "Cruz Azul",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1f7b2f",
+  "q": "Feyenoord sold Santiago Giménez in 2025 to which Italian club?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "AC Milan",
+   "Napoli"
+  ],
+  "answer": "AC Milan",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_120148",
+  "q": "In 2011 Feyenoord sold academy graduate Georginio Wijnaldum to which Dutch club?",
+  "o": [
+   "Ajax",
+   "PSV Eindhoven",
+   "AZ",
+   "Vitesse"
+  ],
+  "answer": "PSV Eindhoven",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_751c2a",
+  "q": "Dirk Kuyt was sold by Feyenoord to which English club in 2006?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Newcastle United",
+   "Fulham"
+  ],
+  "answer": "Liverpool",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ba86ec",
+  "q": "In which year was PSV Eindhoven founded?",
+  "o": [
+   "1913",
+   "1900",
+   "1925",
+   "1888"
+  ],
+  "answer": "1913",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ec963d",
+  "q": "What does the abbreviation 'PSV' stand for?",
+  "o": [
+   "Philips Sport Vereniging",
+   "Philips Stadion Vereniging",
+   "Provinciale Sport Vereniging",
+   "Philips Sportclub Veldhoven"
+  ],
+  "answer": "Philips Sport Vereniging",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6895fc",
+  "q": "PSV was founded as a sports club for the employees of which company?",
+  "o": [
+   "Philips",
+   "Shell",
+   "Heineken",
+   "DAF Trucks"
+  ],
+  "answer": "Philips",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2ccf98",
+  "q": "In which Dutch city does PSV play its home matches?",
+  "o": [
+   "Eindhoven",
+   "Rotterdam",
+   "Amsterdam",
+   "Utrecht"
+  ],
+  "answer": "Eindhoven",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a72c34",
+  "q": "What is the name of PSV's home stadium?",
+  "o": [
+   "Philips Stadion",
+   "De Kuip",
+   "Johan Cruyff Arena",
+   "Galgenwaard"
+  ],
+  "answer": "Philips Stadion",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ee6c85",
+  "q": "What are PSV's traditional club colours?",
+  "o": [
+   "Red and white",
+   "Blue and white",
+   "Red and black",
+   "Green and white"
+  ],
+  "answer": "Red and white",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b33900",
+  "q": "PSV's nickname 'Boeren' translates to what in English?",
+  "o": [
+   "Farmers",
+   "Lions",
+   "Miners",
+   "Sailors"
+  ],
+  "answer": "Farmers",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eee8b5",
+  "q": "Eindhoven, PSV's home city, lies in which Dutch province?",
+  "o": [
+   "North Brabant",
+   "North Holland",
+   "South Holland",
+   "Gelderland"
+  ],
+  "answer": "North Brabant",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a3b248",
+  "q": "PSV, Ajax and which other club make up the traditional 'Big Three' of Dutch football?",
+  "o": [
+   "Feyenoord",
+   "AZ Alkmaar",
+   "FC Twente",
+   "Vitesse"
+  ],
+  "answer": "Feyenoord",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_9be499",
+  "q": "In which year did PSV win their first Dutch national championship?",
+  "o": [
+   "1929",
+   "1913",
+   "1951",
+   "1963"
+  ],
+  "answer": "1929",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_37cc74",
+  "q": "In their 1988 treble season, PSV won the Eredivisie, the European Cup and which domestic trophy?",
+  "o": [
+   "KNVB Cup",
+   "Johan Cruyff Shield",
+   "Intercontinental Cup",
+   "UEFA Super Cup"
+  ],
+  "answer": "KNVB Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1df73b",
+  "q": "How many league goals did PSV score in their dominant 1987-88 Eredivisie title win?",
+  "o": [
+   "117",
+   "83",
+   "64",
+   "152"
+  ],
+  "answer": "117",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_4921bb",
+  "q": "Which PSV striker, nicknamed 'Het Kanon' (The Cannon), scored 43 league goals in the 1956-57 season?",
+  "o": [
+   "Coen Dillen",
+   "Willy van der Kuijlen",
+   "Wim Kieft",
+   "Coen Moulijn"
+  ],
+  "answer": "Coen Dillen",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_2b7473",
+  "q": "Which forward, remembered as 'Mister PSV', scored over 300 league goals for the club between 1964 and 1981?",
+  "o": [
+   "Willy van der Kuijlen",
+   "Ruud van Nistelrooy",
+   "Coen Dillen",
+   "Luc Nilis"
+  ],
+  "answer": "Willy van der Kuijlen",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_066d21",
+  "q": "Which club did PSV beat to win the 1988 European Cup?",
+  "o": [
+   "Benfica",
+   "Real Madrid",
+   "Steaua Bucharest",
+   "Bayern Munich"
+  ],
+  "answer": "Benfica",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3832c4",
+  "q": "How was the 1988 European Cup final between PSV and Benfica ultimately decided?",
+  "o": [
+   "A penalty shootout",
+   "A last-minute goal",
+   "A replay",
+   "A golden goal in extra time"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d6ad61",
+  "q": "Which PSV goalkeeper saved the decisive penalty to win the 1988 European Cup final shootout?",
+  "o": [
+   "Hans van Breukelen",
+   "Edwin van der Sar",
+   "Ronald Waterreus",
+   "Heurelho Gomes"
+  ],
+  "answer": "Hans van Breukelen",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_56fed5",
+  "q": "Who managed PSV to their 1988 treble, including the European Cup?",
+  "o": [
+   "Guus Hiddink",
+   "Bobby Robson",
+   "Dick Advocaat",
+   "Ronald Koeman"
+  ],
+  "answer": "Guus Hiddink",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_e2de99",
+  "q": "PSV won their first European trophy, the 1978 UEFA Cup, by beating which French club in the final?",
+  "o": [
+   "Bastia",
+   "Saint-Etienne",
+   "Marseille",
+   "Monaco"
+  ],
+  "answer": "Bastia",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_772444",
+  "q": "PSV reached the 2005 Champions League semi-finals, where they were knocked out by which Italian club?",
+  "o": [
+   "AC Milan",
+   "Juventus",
+   "Inter Milan",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6f843a",
+  "q": "In the 2005 Champions League semi-final, PSV won the second leg 3-1 against AC Milan but went out on what basis?",
+  "o": [
+   "Away goals",
+   "A penalty shootout",
+   "A coin toss",
+   "A replay"
+  ],
+  "answer": "Away goals",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f7a86a",
+  "q": "Which Brazilian striker scored prolifically for PSV from 1988 to 1993 before joining Barcelona?",
+  "o": [
+   "Romario",
+   "Ronaldinho",
+   "Rivaldo",
+   "Bebeto"
+  ],
+  "answer": "Romario",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f7626",
+  "q": "Ronaldo joined PSV in 1994 as a teenager from which Brazilian club?",
+  "o": [
+   "Cruzeiro",
+   "Flamengo",
+   "Santos",
+   "Corinthians"
+  ],
+  "answer": "Cruzeiro",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_820598",
+  "q": "Which Dutch striker was PSV's top scorer in 1998-99 and 1999-2000 before a big-money move to Manchester United?",
+  "o": [
+   "Ruud van Nistelrooy",
+   "Dennis Bergkamp",
+   "Klaas-Jan Huntelaar",
+   "Patrick Kluivert"
+  ],
+  "answer": "Ruud van Nistelrooy",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_64cdd5",
+  "q": "Which defender won the 1988 European Cup with PSV before joining Barcelona's 'Dream Team'?",
+  "o": [
+   "Ronald Koeman",
+   "Frank de Boer",
+   "Jaap Stam",
+   "Danny Blind"
+  ],
+  "answer": "Ronald Koeman",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e0a2d2",
+  "q": "Which Belgian right-back captained PSV to their 1988 European Cup triumph?",
+  "o": [
+   "Eric Gerets",
+   "Jan Ceulemans",
+   "Franky Van der Elst",
+   "Enzo Scifo"
+  ],
+  "answer": "Eric Gerets",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a4e0de",
+  "q": "Which PSV academy graduate and Netherlands forward joined Liverpool in January 2023?",
+  "o": [
+   "Cody Gakpo",
+   "Donyell Malen",
+   "Steven Bergwijn",
+   "Noni Madueke"
+  ],
+  "answer": "Cody Gakpo",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3e8add",
+  "q": "Which PSV academy product moved to Manchester United in 2015 after starring in the Eredivisie?",
+  "o": [
+   "Memphis Depay",
+   "Georginio Wijnaldum",
+   "Cody Gakpo",
+   "Luuk de Jong"
+  ],
+  "answer": "Memphis Depay",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_244188",
+  "q": "Which English manager led PSV to two Eredivisie titles in the early 1990s after succeeding Guus Hiddink?",
+  "o": [
+   "Bobby Robson",
+   "Terry Venables",
+   "Roy Hodgson",
+   "Howard Kendall"
+  ],
+  "answer": "Bobby Robson",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c82214",
+  "q": "PSV treble-winning coach Guus Hiddink is of which nationality?",
+  "o": [
+   "Dutch",
+   "Belgian",
+   "German",
+   "Danish"
+  ],
+  "answer": "Dutch",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fe1cc7",
+  "q": "Which coach oversaw PSV's successful mid-1970s spell, winning the 1978 UEFA Cup and back-to-back league titles?",
+  "o": [
+   "Kees Rijvers",
+   "Rinus Michels",
+   "Ernst Happel",
+   "Guus Hiddink"
+  ],
+  "answer": "Kees Rijvers",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fa5366",
+  "q": "Which former PSV European Cup winner returned as head coach in 2006 and won the Eredivisie in his first season back?",
+  "o": [
+   "Ronald Koeman",
+   "Guus Hiddink",
+   "Fred Rutten",
+   "Phillip Cocu"
+  ],
+  "answer": "Ronald Koeman",
+  "cat": "Managers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_020d02",
+  "q": "In 2001, Ruud van Nistelrooy left PSV for which English club?",
+  "o": [
+   "Manchester United",
+   "Arsenal",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "answer": "Manchester United",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_83ad37",
+  "q": "Ronaldo left PSV in 1996 for which club, in what was then a world-record transfer?",
+  "o": [
+   "Barcelona",
+   "Inter Milan",
+   "Real Madrid",
+   "AC Milan"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3740e6",
+  "q": "Which English club signed Arjen Robben from PSV in 2004?",
+  "o": [
+   "Chelsea",
+   "Manchester United",
+   "Tottenham",
+   "Newcastle"
+  ],
+  "answer": "Chelsea",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_780df5",
+  "q": "To which Italian club did PSV sell Hirving Lozano in 2019?",
+  "o": [
+   "Napoli",
+   "Roma",
+   "Lazio",
+   "Fiorentina"
+  ],
+  "answer": "Napoli",
+  "cat": "Transfers",
+  "diff": "hard"
+ }
+]

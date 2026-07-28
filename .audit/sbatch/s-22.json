@@ -1,0 +1,1952 @@
+[
+ {
+  "id": "q_0522d8",
+  "q": "Franz Beckenbauer, Bayern's greatest figure, was known across world football by a regal nickname. What was it?",
+  "o": [
+   "Der Bomber",
+   "Der Kaiser",
+   "Der Titan",
+   "Der General"
+  ],
+  "answer": "Der Kaiser",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_685e2d",
+  "q": "Bayern have only ever been relegated from the top flight once. In which decade did this embarrassment happen?",
+  "o": [
+   "The 1930s",
+   "The 1950s",
+   "The 1960s",
+   "It has never happened"
+  ],
+  "answer": "The 1950s",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c5a0fb",
+  "q": "Uli Hoeneß, a legendary Bayern figure for half a century, served time in prison in 2014 for what offence?",
+  "o": [
+   "Tax evasion",
+   "Drink-driving",
+   "Match-fixing",
+   "Assault"
+  ],
+  "answer": "Tax evasion",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6ce680",
+  "q": "The wing duo dubbed 'Robbery' terrorised defences for nearly a decade at Bayern. Which two players formed it?",
+  "o": [
+   "Robben and Ribéry",
+   "Robben and Rummenigge",
+   "Robben and Müller",
+   "Ribéry and Rafinha"
+  ],
+  "answer": "Robben and Ribéry",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a2422f",
+  "q": "Bayern's training ground and headquarters sit on a famous street in Munich, synonymous with the club itself. What is it called?",
+  "o": [
+   "Säbener Straße",
+   "Marienplatz",
+   "Leopoldstraße",
+   "Olympiastraße"
+  ],
+  "answer": "Säbener Straße",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_6cb3a9",
+  "q": "Before moving to the Allianz Arena in 2005, Bayern played their home games for over three decades at which iconic Munich venue?",
+  "o": [
+   "The Westfalenstadion",
+   "The Olympiastadion",
+   "The Grünwalder Stadion",
+   "The Volksparkstadion"
+  ],
+  "answer": "The Olympiastadion",
+  "cat": "Bundesliga",
+  "diff": "medium"
+ },
+ {
+  "id": "q_031cb8",
+  "q": "Karl-Heinz Rummenigge, twice European Footballer of the Year at Bayern, later returned to serve the club in which capacity?",
+  "o": [
+   "Head coach",
+   "Chairman of the executive board",
+   "Sporting director",
+   "Club president"
+  ],
+  "answer": "Chairman of the executive board",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c3e323",
+  "q": "Bayern's 2001 Champions League final win over Valencia was decided by which dramatic method?",
+  "o": [
+   "An own goal in extra time",
+   "A penalty shootout",
+   "A golden goal",
+   "A last-minute header"
+  ],
+  "answer": "A penalty shootout",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f529df",
+  "q": "Thomas Müller invented a tongue-in-cheek term to describe his own unconventional, space-finding playing style. What did he call himself?",
+  "o": [
+   "The 'Raumdeuter' (space interpreter)",
+   "The 'Torjäger' (goal hunter)",
+   "The 'Spielmacher' (playmaker)",
+   "The 'Libero'"
+  ],
+  "answer": "The 'Raumdeuter' (space interpreter)",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f58f72",
+  "q": "Which legendary striker did Bayern controversially sign on a free transfer in 2014, prising him from arch-rivals Borussia Dortmund?",
+  "o": [
+   "Mario Gómez",
+   "Robert Lewandowski",
+   "Mario Mandžukić",
+   "Miroslav Klose"
+  ],
+  "answer": "Robert Lewandowski",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d2ea22",
+  "q": "On their way to winning the 2019-20 Champions League, Bayern produced one of the most shocking knockout scorelines in the competition's history. What was it?",
+  "o": [
+   "An 8-2 quarter-final demolition of Barcelona",
+   "A 7-1 win over Real Madrid",
+   "A 6-0 win over Liverpool",
+   "A 5-0 win over PSG"
+  ],
+  "answer": "An 8-2 quarter-final demolition of Barcelona",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a7066b",
+  "q": "Bayern's 2020 Champions League final, completing the treble, was won 1-0 against PSG by a goal from a player who came through PSG's own academy. Who scored it?",
+  "o": [
+   "Serge Gnabry",
+   "Kingsley Coman",
+   "Leroy Sané",
+   "Robert Lewandowski"
+  ],
+  "answer": "Kingsley Coman",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ecc04e",
+  "q": "Sepp Maier, Bayern's goalkeeper through the 1970s glory years, earned a quirky nickname tied to his agility. What was he called?",
+  "o": [
+   "'The Cat from Anzing'",
+   "'The Spider'",
+   "'The Octopus'",
+   "'The Panther'"
+  ],
+  "answer": "'The Cat from Anzing'",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0436e8",
+  "q": "PSG were founded in 1970 from the merger of Paris FC and which other club?",
+  "o": [
+   "Stade Saint-Germain",
+   "Red Star Paris",
+   "Racing Club de France",
+   "CA Paris"
+  ],
+  "answer": "Stade Saint-Germain",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2f122b",
+  "q": "PSG finally won their first-ever Champions League in 2025 with a record-breaking final scoreline. How did the final end?",
+  "o": [
+   "PSG 5-0 Inter Milan",
+   "PSG 3-1 Inter Milan",
+   "PSG 2-0 Inter Milan",
+   "PSG 4-0 Inter Milan"
+  ],
+  "answer": "PSG 5-0 Inter Milan",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ad30d3",
+  "q": "A 19-year-old ran riot in the 2025 Champions League final, scoring twice and assisting once. Who was this breakout star?",
+  "o": [
+   "Désiré Doué",
+   "Bradley Barcola",
+   "Warren Zaïre-Emery",
+   "Senny Mayulu"
+  ],
+  "answer": "Désiré Doué",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ef85dc",
+  "q": "In one of football's most infamous collapses, PSG won a 2017 Champions League last-16 first leg 4-0, then lost the return how?",
+  "o": [
+   "6-1 to Barcelona",
+   "4-0 to Real Madrid",
+   "5-2 to Bayern Munich",
+   "3-0 to Manchester United"
+  ],
+  "answer": "6-1 to Barcelona",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d50e0d",
+  "q": "Who became the most expensive player in the world when PSG signed him in 2017 for €222 million?",
+  "o": [
+   "Neymar",
+   "Kylian Mbappé",
+   "Edinson Cavani",
+   "Ángel Di María"
+  ],
+  "answer": "Neymar",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d6a4c5",
+  "q": "A future African head of state starred for PSG in the mid-1990s and won the Ballon d'Or in 1995. Who was he?",
+  "o": [
+   "George Weah",
+   "Jay-Jay Okocha",
+   "Roger Milla",
+   "Abedi Pelé"
+  ],
+  "answer": "George Weah",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a1abe7",
+  "q": "Kylian Mbappé left PSG in 2024 as the club's all-time top scorer. Which club did he join, and on what terms?",
+  "o": [
+   "Real Madrid on a free transfer",
+   "Real Madrid for €180m",
+   "Liverpool on a free transfer",
+   "Manchester City for €150m"
+  ],
+  "answer": "Real Madrid on a free transfer",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f3cdc5",
+  "q": "PSG completed back-to-back Champions League titles in 2026. Whom did they beat in that final, and how?",
+  "o": [
+   "Arsenal, on penalties",
+   "Bayern Munich, 2-1",
+   "Manchester City, 3-2",
+   "Real Madrid, on penalties"
+  ],
+  "answer": "Arsenal, on penalties",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3add2c",
+  "q": "Just weeks after their 2025 Champions League triumph, PSG lost a major final 3-0. Which trophy slipped away?",
+  "o": [
+   "Club World Cup",
+   "UEFA Super Cup",
+   "Trophée des Champions",
+   "Coupe de France"
+  ],
+  "answer": "Club World Cup",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b6b73f",
+  "q": "Which fashion designer became PSG club president in the 1970s and is credited with creating their iconic kit design?",
+  "o": [
+   "Daniel Hechter",
+   "Pierre Cardin",
+   "Yves Saint Laurent",
+   "Jean-Paul Gaultier"
+  ],
+  "answer": "Daniel Hechter",
+  "cat": "Ligue1",
+  "diff": "hard"
+ },
+ {
+  "id": "q_985ecd",
+  "q": "Nigerian playmaker Jay-Jay Okocha became a Parc des Princes cult hero in the late '90s. Which club did PSG sign him from?",
+  "o": [
+   "Fenerbahçe",
+   "Bolton Wanderers",
+   "Eintracht Frankfurt",
+   "Ajax"
+  ],
+  "answer": "Fenerbahçe",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_a34533",
+  "q": "Who scored the goal that won PSG the 1996 Cup Winners' Cup final against Rapid Vienna?",
+  "o": [
+   "Bruno Ngotty",
+   "Patrice Loko",
+   "Youri Djorkaeff",
+   "Leonardo"
+  ],
+  "answer": "Bruno Ngotty",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_11bf00",
+  "q": "Edinson Cavani moved to PSG in 2013 from which Italian club, where he'd been known as 'El Matador'?",
+  "o": [
+   "Napoli",
+   "Roma",
+   "Juventus",
+   "Internazionale"
+  ],
+  "answer": "Napoli",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3290e0",
+  "q": "Brazilian World Cup winner Ronaldinho began his European career at PSG. Which club did he leave them for in 2003, where he became a global icon?",
+  "o": [
+   "Barcelona",
+   "AC Milan",
+   "Real Madrid",
+   "Manchester United"
+  ],
+  "answer": "Barcelona",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_5fa2e4",
+  "q": "Which Swedish striker arrived at PSG in 2012, declared 'I came like a king, left like a legend,' and rewrote the club's scoring record?",
+  "o": [
+   "Zlatan Ibrahimović",
+   "Henrik Larsson",
+   "Ola Toivonen",
+   "Marcus Berg"
+  ],
+  "answer": "Zlatan Ibrahimović",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_d034eb",
+  "q": "Marco Verratti spent over a decade as PSG's midfield metronome. From which Italian club did PSG sign the 'Little Owl' in 2012?",
+  "o": [
+   "Pescara (Serie B)",
+   "Roma",
+   "Lazio",
+   "Atalanta"
+  ],
+  "answer": "Pescara (Serie B)",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9f9f58",
+  "q": "How many Ligue 1 titles did Kylian Mbappé win during his seven seasons at PSG (2017–2024)?",
+  "o": [
+   "Six",
+   "Four",
+   "Seven",
+   "Three"
+  ],
+  "answer": "Six",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_542851",
+  "q": "Which manager led PSG to their historic first Champions League in 2025 — and a second the year after?",
+  "o": [
+   "Luis Enrique",
+   "Mauricio Pochettino",
+   "Thomas Tuchel",
+   "Christophe Galtier"
+  ],
+  "answer": "Luis Enrique",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_107035",
+  "q": "Inter was born in 1908 when a group broke away from the Milan Cricket and Football Club. What was the founders' core disagreement?",
+  "o": [
+   "They wanted to welcome foreign players, not just Italians",
+   "They refused to play in red shirts",
+   "They wanted to move out of the city of Milan",
+   "They objected to charging fans for tickets"
+  ],
+  "answer": "They wanted to welcome foreign players, not just Italians",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6a7095",
+  "q": "Inter holds a unique distinction in Italian football that no other club can claim. What is it?",
+  "o": [
+   "The only club never relegated from the top flight",
+   "The only club to win three consecutive Scudetti",
+   "The only club to win the European Cup three years running",
+   "The only club founded in the 19th century"
+  ],
+  "answer": "The only club never relegated from the top flight",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_342d0d",
+  "q": "Inter's affectionate nickname 'Il Biscione' refers to what creature, borrowed from the historic crest of Milan's Visconti dynasty?",
+  "o": [
+   "A serpent",
+   "A black eagle",
+   "A wild boar",
+   "A she-wolf"
+  ],
+  "answer": "A serpent",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_96200d",
+  "q": "Who is Inter's all-time leading goalscorer, with 284 goals — a legend so revered the club's stadium bears his name?",
+  "o": [
+   "Giuseppe Meazza",
+   "Sandro Mazzola",
+   "Roberto Boninsegna",
+   "Alessandro Altobelli"
+  ],
+  "answer": "Giuseppe Meazza",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_98091a",
+  "q": "Which one-club captain holds Inter's all-time appearance record with a staggering 858 official games over nearly two decades?",
+  "o": [
+   "Javier Zanetti",
+   "Giacinto Facchetti",
+   "Beppe Bergomi",
+   "Walter Zenga"
+  ],
+  "answer": "Javier Zanetti",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_b01cfa",
+  "q": "In the 1960s, a coach built 'La Grande Inter' around the famous defensive system known as catenaccio. Who was this innovative manager?",
+  "o": [
+   "Helenio Herrera",
+   "Giovanni Trapattoni",
+   "Nereo Rocco",
+   "Alfredo Foni"
+  ],
+  "answer": "Helenio Herrera",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_467b0f",
+  "q": "Inter won the European Cup in 1964 and retained it in 1965. Which Spanish giants did they beat 3-1 in that first 1964 final?",
+  "o": [
+   "Real Madrid",
+   "Barcelona",
+   "Atletico Madrid",
+   "Valencia"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_67152c",
+  "q": "When Inter won the 1988-89 Scudetto, they set a points record for an 18-team, two-points-per-win Serie A. Which German midfielder anchored that team?",
+  "o": [
+   "Lothar Matthaus",
+   "Thomas Hassler",
+   "Andreas Moller",
+   "Stefan Effenberg"
+  ],
+  "answer": "Lothar Matthaus",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6f7028",
+  "q": "In 1997 Inter signed a 20-year-old Brazilian for a then-world-record fee. Which striker, soon nicknamed 'Il Fenomeno', was it?",
+  "o": [
+   "Ronaldo",
+   "Adriano",
+   "Roberto Baggio",
+   "Christian Vieri"
+  ],
+  "answer": "Ronaldo",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_2f34e9",
+  "q": "Inter's 2009-10 treble was sealed with a 2-0 Champions League final win over Bayern Munich. Who scored BOTH of Inter's goals that night?",
+  "o": [
+   "Diego Milito",
+   "Samuel Eto'o",
+   "Wesley Sneijder",
+   "Goran Pandev"
+  ],
+  "answer": "Diego Milito",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5448bf",
+  "q": "Diego Milito's nickname 'El Principe' (The Prince) came from his resemblance to which earlier South American star who shared the same moniker?",
+  "o": [
+   "Enzo Francescoli",
+   "Gabriel Batistuta",
+   "Diego Maradona",
+   "Daniel Passarella"
+  ],
+  "answer": "Enzo Francescoli",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9e2ca5",
+  "q": "Who masterminded Inter's 2010 treble — the first ever by an Italian club — before leaving for Real Madrid that summer?",
+  "o": [
+   "Jose Mourinho",
+   "Roberto Mancini",
+   "Rafa Benitez",
+   "Claudio Ranieri"
+  ],
+  "answer": "Jose Mourinho",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_140e70",
+  "q": "In a 2010 game against Sampdoria, Mourinho made an iconic gesture toward the cameras after two of his players were sent off. What did he mime?",
+  "o": [
+   "Crossing his wrists as if handcuffed",
+   "Zipping his lips shut",
+   "Pulling an imaginary trigger",
+   "Holding up an invisible trophy"
+  ],
+  "answer": "Crossing his wrists as if handcuffed",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_42f6a6",
+  "q": "Inter were awarded the 2005-06 Scudetto despite finishing third on the pitch. What caused this unusual title award?",
+  "o": [
+   "The Calciopoli match-fixing scandal",
+   "A goal-difference recount",
+   "A points deduction for crowd trouble",
+   "An abandoned-match replay ruling"
+  ],
+  "answer": "The Calciopoli match-fixing scandal",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d0a6c2",
+  "q": "Inter's 2021 Serie A title was historically significant because it ended a long streak by which rival?",
+  "o": [
+   "Juventus' nine straight titles",
+   "Milan's run of dominance",
+   "Napoli's three-in-a-row",
+   "Roma's title defence"
+  ],
+  "answer": "Juventus' nine straight titles",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c1c4c",
+  "q": "In April 2024 Inter clinched their 20th league title — and earned a coveted 'second star'. What made the moment extra sweet for fans?",
+  "o": [
+   "They sealed it by beating Milan in the derby",
+   "They won it at Juventus' stadium",
+   "They clinched it on the final day",
+   "They won it without losing a single match"
+  ],
+  "answer": "They sealed it by beating Milan in the derby",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_6d8cea",
+  "q": "The two stars now worn above Inter's badge represent a milestone tied to which achievement?",
+  "o": [
+   "Reaching 20 league titles",
+   "Winning 20 trophies in total",
+   "Surviving 20 seasons unbeaten at home",
+   "Producing 20 Italy internationals"
+  ],
+  "answer": "Reaching 20 league titles",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_462ad5",
+  "q": "Inter reached the 2025 Champions League final but suffered a record-breaking defeat. Who beat them, and by what scoreline?",
+  "o": [
+   "PSG, 5-0",
+   "Manchester City, 4-0",
+   "Real Madrid, 3-0",
+   "Bayern Munich, 4-1"
+  ],
+  "answer": "PSG, 5-0",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_3bd1a0",
+  "q": "Inter has shared the San Siro with rivals AC Milan for decades. But the famous stadium was originally built for, and home to, which club first?",
+  "o": [
+   "AC Milan",
+   "Inter Milan",
+   "Both from the start",
+   "Neither — it was a neutral venue"
+  ],
+  "answer": "AC Milan",
+  "cat": "SerieA",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d03fb1",
+  "q": "The Inter-Milan derby has a poetic name referencing a golden statue atop the city's cathedral. What is it called?",
+  "o": [
+   "Derby della Madonnina",
+   "Derby della Lanterna",
+   "Derby della Mole",
+   "Derby del Sole"
+  ],
+  "answer": "Derby della Madonnina",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4d5044",
+  "q": "Cult hero Adriano announced himself to the world in 2001 with what feat against Real Madrid at the Bernabeu?",
+  "o": [
+   "A thunderous free-kick clocked at around 170 km/h",
+   "A hat-trick off the bench",
+   "A goal direct from kick-off",
+   "Saving a penalty as an outfield player"
+  ],
+  "answer": "A thunderous free-kick clocked at around 170 km/h",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_c18463",
+  "q": "Which Inter Milan defender was famously involved in the incident that got Zinedine Zidane sent off in the 2006 World Cup final?",
+  "o": [
+   "Marco Materazzi",
+   "Ivan Cordoba",
+   "Walter Samuel",
+   "Cristian Chivu"
+  ],
+  "answer": "Marco Materazzi",
+  "cat": "WorldCup",
+  "diff": "easy"
+ },
+ {
+  "id": "q_0f56ca",
+  "q": "Sandro Mazzola, a hero of La Grande Inter, carried extra emotional weight at the club. Why?",
+  "o": [
+   "He was the son of Torino captain Valentino Mazzola, who died in the Superga air disaster",
+   "He was the club's youngest-ever signing",
+   "He was the first foreign-born Inter captain",
+   "He had earlier played for rivals Milan"
+  ],
+  "answer": "He was the son of Torino captain Valentino Mazzola, who died in the Superga air disaster",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f1c6c4",
+  "q": "In the 2009-10 treble run, Inter knocked out the reigning European champions in a dramatic semi-final. Which club did they eliminate?",
+  "o": [
+   "Barcelona",
+   "Manchester United",
+   "Chelsea",
+   "Real Madrid"
+  ],
+  "answer": "Barcelona",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c79e7c",
+  "q": "Inter completed the treble in 2010 by also winning the Coppa Italia. The same Argentine striker who later sank Bayern scored in that final too. Who?",
+  "o": [
+   "Diego Milito",
+   "Mauro Icardi",
+   "Hernan Crespo",
+   "Julio Cruz"
+  ],
+  "answer": "Diego Milito",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_7ea05e",
+  "q": "Juventus's iconic black-and-white stripes were copied from an English club after their original pink shirts kept fading in the wash. Which club's kit inspired the change?",
+  "o": [
+   "Newcastle United",
+   "Notts County",
+   "Fulham",
+   "West Bromwich Albion"
+  ],
+  "answer": "Notts County",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_68b0d2",
+  "q": "The 1985 European Cup final, Juventus's first, is forever overshadowed by the Heysel Stadium disaster. Who scored the decisive (and hugely controversial) penalty to beat Liverpool 1-0?",
+  "o": [
+   "Zbigniew Boniek",
+   "Michel Platini",
+   "Paolo Rossi",
+   "Marco Tardelli"
+  ],
+  "answer": "Michel Platini",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a56162",
+  "q": "As of 2025, who is Juventus's all-time leading goalscorer and record appearance-maker, a one-club legend across 19 years?",
+  "o": [
+   "Giampiero Boniperti",
+   "Roberto Bettega",
+   "Alessandro Del Piero",
+   "David Trezeguet"
+  ],
+  "answer": "Alessandro Del Piero",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_07548f",
+  "q": "In the 2006 Calciopoli scandal, Juventus suffered a punishment no other Italian giant had ever endured. What was it?",
+  "o": [
+   "A two-year ban from European football",
+   "Relegation to Serie B",
+   "A permanent points cap for five seasons",
+   "Dissolution and forced re-founding"
+  ],
+  "answer": "Relegation to Serie B",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_111d7e",
+  "q": "Juventus's nickname 'La Vecchia Signora' (The Old Lady) carries a built-in irony. What is it?",
+  "o": [
+   "The club is the youngest of Italy's giants",
+   "The Latin name 'Juventus' literally means 'youth'",
+   "It was founded by teenagers on a park bench",
+   "Their first president was only 19"
+  ],
+  "answer": "The Latin name 'Juventus' literally means 'youth'",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_68211c",
+  "q": "Juventus won the 1996 Champions League final against Ajax in a tense penalty shootout in Rome. Which goalkeeper was the hero, saving two spot-kicks?",
+  "o": [
+   "Gianluigi Buffon",
+   "Angelo Peruzzi",
+   "Stefano Tacconi",
+   "Edwin van der Sar"
+  ],
+  "answer": "Angelo Peruzzi",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_da2f6f",
+  "q": "Andrea Pirlo's arrival in 2011 is often called the spark of Juventus's nine-titles-in-a-row dynasty. What made the transfer so remarkable?",
+  "o": [
+   "He cost a then-Italian record fee",
+   "He arrived on a free transfer, discarded by AC Milan",
+   "He came out of retirement to sign",
+   "He was swapped for a youth-team player"
+  ],
+  "answer": "He arrived on a free transfer, discarded by AC Milan",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_75b2b4",
+  "q": "In 2013-14, Antonio Conte's Juventus set a Serie A record that still stands. What was it?",
+  "o": [
+   "A season unbeaten with no draws",
+   "102 points in a single season",
+   "100 goals with zero conceded at home",
+   "Winning every away game"
+  ],
+  "answer": "102 points in a single season",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3a09d9",
+  "q": "Roberto Baggio, a Juventus star of the early '90s, earned a poetic nickname tied to his hairstyle and his Buddhist faith. What was it?",
+  "o": [
+   "Il Fenomeno",
+   "Il Divin Codino",
+   "Re Leone",
+   "Il Pinturicchio"
+  ],
+  "answer": "Il Divin Codino",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bcec61",
+  "q": "Juventus broke Serie A's transfer record in 2018 to sign one of the world's best from Real Madrid for over €100m. Who was it?",
+  "o": [
+   "Gonzalo Higuain",
+   "Cristiano Ronaldo",
+   "Paulo Dybala",
+   "Matthijs de Ligt"
+  ],
+  "answer": "Cristiano Ronaldo",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_1eb2b4",
+  "q": "The Agnelli family, owners of Fiat, have controlled Juventus for most of the club's history. In which decade did they first take over the club?",
+  "o": [
+   "1900s",
+   "1920s",
+   "1950s",
+   "1970s"
+  ],
+  "answer": "1920s",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ba7cac",
+  "q": "Gianluigi Buffon spent most of his career as Juventus's goalkeeper and captain, yet one major prize always eluded him there. Which was it?",
+  "o": [
+   "The Serie A title",
+   "The Coppa Italia",
+   "The Champions League",
+   "The Italian goalkeeper of the year award"
+  ],
+  "answer": "The Champions League",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6586f9",
+  "q": "Juventus's home from 1990 to 2006, the Stadio delle Alpi, was so disliked that the club eventually demolished it. What was the main complaint?",
+  "o": [
+   "It had no roof",
+   "A running track left fans far from the pitch",
+   "It was outside the city limits",
+   "It held fewer than 10,000"
+  ],
+  "answer": "A running track left fans far from the pitch",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f6e685",
+  "q": "Marco Tardelli's roaring, tearful celebration after scoring in the 1982 World Cup final is one of football's most famous images. Which club did he play for at the time?",
+  "o": [
+   "Inter Milan",
+   "Juventus",
+   "AS Roma",
+   "Fiorentina"
+  ],
+  "answer": "Juventus",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_57500c",
+  "q": "Which prolific French striker formed a deadly partnership with Del Piero and holds a notable Juventus scoring distinction from the 2000s?",
+  "o": [
+   "Thierry Henry",
+   "David Trezeguet",
+   "Nicolas Anelka",
+   "Djibril Cisse"
+  ],
+  "answer": "David Trezeguet",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3c99b9",
+  "q": "Juventus were the first club in the world to win all three major UEFA competitions of their era — the European Cup, the Cup Winners' Cup, and which other?",
+  "o": [
+   "The UEFA Cup",
+   "The Intertoto Cup",
+   "The Super Cup only",
+   "The Latin Cup"
+  ],
+  "answer": "The UEFA Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3cae82",
+  "q": "In the late 1990s, one future Real Madrid Galactico starred for Juventus under Marcello Lippi before a record-breaking transfer. Which one?",
+  "o": [
+   "Luis Figo",
+   "Zinedine Zidane",
+   "Ronaldo",
+   "Roberto Carlos"
+  ],
+  "answer": "Zinedine Zidane",
+  "cat": "Transfers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_bc8718",
+  "q": "Pavel Nedved, a Juventus midfield icon, was given a nickname celebrating both his nationality and his relentless running. What was it?",
+  "o": [
+   "The Czech Cannon",
+   "Furia Ceca (The Czech Fury)",
+   "The Prague Express",
+   "Il Tornado"
+  ],
+  "answer": "Furia Ceca (The Czech Fury)",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_f0e21e",
+  "q": "In 2018 Juventus became the first major Italian club to put a second team into the professional Serie C league pyramid. Originally called 'Juventus U23,' what was that team rebranded as in 2022?",
+  "o": [
+   "Juventus B",
+   "Juventus Next Gen",
+   "Juventus Primavera",
+   "Juventus Reserves"
+  ],
+  "answer": "Juventus Next Gen",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_557793",
+  "q": "AC Milan was founded in 1899 by an Englishman from Nottingham. What was his name?",
+  "o": [
+   "Herbert Kilpin",
+   "William Garbutt",
+   "James Richardson Spensley",
+   "Alfred Edwards"
+  ],
+  "answer": "Herbert Kilpin",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_410119",
+  "q": "The club's original 1899 name reveals it wasn't only about football. What was it called?",
+  "o": [
+   "Milan Foot-Ball and Cricket Club",
+   "Milan Athletic Society",
+   "Milan Gymnastic Union",
+   "Milan Sporting Club Internazionale"
+  ],
+  "answer": "Milan Foot-Ball and Cricket Club",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_0d3613",
+  "q": "Who is AC Milan's all-time leading goalscorer, a Swede who racked up 221 goals in the 1950s?",
+  "o": [
+   "Gunnar Nordahl",
+   "Andriy Shevchenko",
+   "Marco van Basten",
+   "Filippo Inzaghi"
+  ],
+  "answer": "Gunnar Nordahl",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_82a712",
+  "q": "In 1963, AC Milan became the first Italian club to win the European Cup, beating Benfica at Wembley. Who was their captain that day?",
+  "o": [
+   "Cesare Maldini",
+   "Gianni Rivera",
+   "Nils Liedholm",
+   "Giovanni Trapattoni"
+  ],
+  "answer": "Cesare Maldini",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b94a7c",
+  "q": "In July 1986, the club's new owner staged a theatrical takeover, arriving by helicopter to Wagner's 'Ride of the Valkyries'. Who was he?",
+  "o": [
+   "Silvio Berlusconi",
+   "Adriano Galliani",
+   "Paolo Berlusconi",
+   "Felice Riva"
+  ],
+  "answer": "Silvio Berlusconi",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_013ae5",
+  "q": "Arrigo Sacchi's great AC Milan side was built around three Dutch superstars. Which trio?",
+  "o": [
+   "Gullit, Van Basten and Rijkaard",
+   "Cruyff, Neeskens and Krol",
+   "Bergkamp, Davids and Seedorf",
+   "Van Nistelrooy, Kluivert and Davids"
+  ],
+  "answer": "Gullit, Van Basten and Rijkaard",
+  "cat": "Managers",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dde9da",
+  "q": "In the 1989 European Cup final, AC Milan demolished Steaua Bucharest. What was the score?",
+  "o": [
+   "4-0",
+   "2-1",
+   "3-2",
+   "5-1"
+  ],
+  "answer": "4-0",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1a7e50",
+  "q": "Fabio Capello's Milan earned the nickname 'Gli Invincibili' for a record-setting feat. What did they achieve?",
+  "o": [
+   "58 Serie A games unbeaten",
+   "Three trebles in a row",
+   "Conceding zero goals in a season",
+   "Winning every away game for two years"
+  ],
+  "answer": "58 Serie A games unbeaten",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b14574",
+  "q": "This player scored a famous 'coast-to-coast' solo goal for Milan against Verona and in 1995 became the first African to win the Ballon d'Or. Who?",
+  "o": [
+   "George Weah",
+   "Ruud Gullit",
+   "Marcel Desailly",
+   "Clarence Seedorf"
+  ],
+  "answer": "George Weah",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_87d4a4",
+  "q": "After the trauma of losing the 2005 final, AC Milan got revenge over Liverpool in the 2007 Champions League final. Who scored both Milan goals?",
+  "o": [
+   "Filippo Inzaghi",
+   "Kaká",
+   "Andriy Shevchenko",
+   "Clarence Seedorf"
+  ],
+  "answer": "Filippo Inzaghi",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e93735",
+  "q": "AC Milan's most painful European final came in 2005, when they led 3-0 at half-time but lost on penalties. To whom?",
+  "o": [
+   "Liverpool",
+   "Juventus",
+   "Real Madrid",
+   "Porto"
+  ],
+  "answer": "Liverpool",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_ebd85c",
+  "q": "Who scored the winning penalty in the all-Italian 2003 Champions League final at Old Trafford, beating Juventus?",
+  "o": [
+   "Andriy Shevchenko",
+   "Filippo Inzaghi",
+   "Paolo Maldini",
+   "Clarence Seedorf"
+  ],
+  "answer": "Andriy Shevchenko",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_578af1",
+  "q": "Milan retired Paolo Maldini's No. 3 shirt, but with one unusual condition. What was it?",
+  "o": [
+   "It can be brought back if one of his sons plays for the first team",
+   "It returns to use only after his death",
+   "It can be auctioned off for charity",
+   "It passes to whoever is named club captain"
+  ],
+  "answer": "It can be brought back if one of his sons plays for the first team",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bd8cda",
+  "q": "AC Milan ended an 11-year title drought by winning the Serie A Scudetto in which season?",
+  "o": [
+   "2021-22",
+   "2019-20",
+   "2018-19",
+   "2022-23"
+  ],
+  "answer": "2021-22",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_34051e",
+  "q": "Only Real Madrid have won more European Cups / Champions Leagues than AC Milan. How many has Milan won?",
+  "o": [
+   "7",
+   "5",
+   "6",
+   "9"
+  ],
+  "answer": "7",
+  "cat": "Records",
+  "diff": "easy"
+ },
+ {
+  "id": "q_eb0636",
+  "q": "The San Siro's official name honours a legend many Milan fans dislike crediting. Who is the stadium officially named after?",
+  "o": [
+   "Giuseppe Meazza",
+   "Gianni Rivera",
+   "Nils Liedholm",
+   "Cesare Maldini"
+  ],
+  "answer": "Giuseppe Meazza",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8c359d",
+  "q": "AC Milan's home derby against Inter has a famous name. What is it called?",
+  "o": [
+   "Derby della Madonnina",
+   "Derby della Lanterna",
+   "Derby della Mole",
+   "Derby del Sole"
+  ],
+  "answer": "Derby della Madonnina",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e559c8",
+  "q": "Which silky playmaker, the 'Golden Boy' and 1969 Ballon d'Or winner, is one of Milan's most beloved all-time icons?",
+  "o": [
+   "Gianni Rivera",
+   "Sandro Mazzola",
+   "Giuseppe Meazza",
+   "Roberto Baggio"
+  ],
+  "answer": "Gianni Rivera",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_80817d",
+  "q": "In the dominant Sacchi-Capello era, Milan's defence was anchored by a legendary back line. Which pairing of centre-backs is most associated with it?",
+  "o": [
+   "Franco Baresi and Alessandro Costacurta",
+   "Fabio Cannavaro and Ciro Ferrara",
+   "Claudio Gentile and Gaetano Scirea",
+   "Giorgio Chiellini and Leonardo Bonucci"
+  ],
+  "answer": "Franco Baresi and Alessandro Costacurta",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_77ef48",
+  "q": "Two goals from a Brazilian striker won Milan the 1963 European Cup final against Benfica. Who scored them?",
+  "o": [
+   "José Altafini",
+   "Paolo Barison",
+   "Dino Sani",
+   "Gianni Rivera"
+  ],
+  "answer": "José Altafini",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_fb387c",
+  "q": "Kaká was the last man to win the Ballon d'Or before Messi and Ronaldo monopolised it for a decade. In which year did the Milan playmaker claim football's biggest individual prize?",
+  "o": [
+   "2007",
+   "2004",
+   "2009",
+   "2005"
+  ],
+  "answer": "2007",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2c5790",
+  "q": "AC Milan's badge features a red cross on white. What is the origin of that symbol?",
+  "o": [
+   "The flag of the city of Milan (cross of Saint Ambrose / Saint George)",
+   "The English flag honouring the founders",
+   "The colours of founder Kilpin's hometown",
+   "The Italian royal house emblem"
+  ],
+  "answer": "The flag of the city of Milan (cross of Saint Ambrose / Saint George)",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_3cbc6e",
+  "q": "AC Milan's founder Herbert Kilpin gave a famous reason for the club's red-and-black colours. What did he say they stood for?",
+  "o": [
+   "Red like fire, and black to strike fear into opponents — 'a team of devils'",
+   "The red sunrise and the black of the night sky",
+   "The blood and ash of the city's history",
+   "The red wine and black coffee he loved"
+  ],
+  "answer": "Red like fire, and black to strike fear into opponents — 'a team of devils'",
+  "cat": "Transfers",
+  "diff": "hard"
+ },
+ {
+  "id": "q_39bd9d",
+  "q": "In the 1997 Champions League final, 20-year-old local boy Lars Ricken came off the bench and scored an audacious chip just 16 seconds after stepping on the pitch. Which giants did Dortmund beat 3-1 that night in Munich?",
+  "o": [
+   "Juventus",
+   "Real Madrid",
+   "Manchester United",
+   "Ajax"
+  ],
+  "answer": "Juventus",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_a3a089",
+  "q": "Borussia Dortmund got their name not from the Latin word for Prussia directly, but from a sign hanging in the pub where they were founded in 1909. What was that sign advertising?",
+  "o": [
+   "A brewery's beer",
+   "A bicycle shop",
+   "A railway company",
+   "A tobacco merchant"
+  ],
+  "answer": "A brewery's beer",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8d1fe8",
+  "q": "On 18 January 2020, a teenager came off the bench on his Dortmund debut against Augsburg and scored a hat-trick inside 23 minutes. Who announced himself so spectacularly?",
+  "o": [
+   "Erling Haaland",
+   "Youssoufa Moukoko",
+   "Donyell Malen",
+   "Karim Adeyemi"
+  ],
+  "answer": "Erling Haaland",
+  "cat": "Bundesliga",
+  "diff": "easy"
+ },
+ {
+  "id": "q_577008",
+  "q": "In 1966, Borussia Dortmund achieved a German first by beating Liverpool 2-1 after extra time at Hampden Park. What did this victory make them?",
+  "o": [
+   "The first German club to win a European trophy",
+   "The first German club to play at Wembley",
+   "The first German club in the European Cup",
+   "The first German club with a foreign coach"
+  ],
+  "answer": "The first German club to win a European trophy",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_8504a0",
+  "q": "Dortmund's famous Südtribüne earns its nickname 'Die Gelbe Wand' (The Yellow Wall) for a specific reason. What record does this terrace hold?",
+  "o": [
+   "Largest standing terrace in European football",
+   "Steepest stand in any stadium",
+   "Loudest measured crowd in the world",
+   "Oldest continuously-used stand in Germany"
+  ],
+  "answer": "Largest standing terrace in European football",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_eca4da",
+  "q": "Jürgen Klopp once contrasted his style with Arsène Wenger's Arsenal, calling them 'an orchestra... a silent song.' What did Klopp say he preferred?",
+  "o": [
+   "Heavy metal",
+   "Punk rock",
+   "Loud jazz",
+   "A marching band"
+  ],
+  "answer": "Heavy metal",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e2fd06",
+  "q": "On 11 April 2017, Dortmund's team bus was rocked by three roadside bombs on the way to a Champions League quarter-final. Which player was injured by flying glass?",
+  "o": [
+   "Marc Bartra",
+   "Sokratis Papastathopoulos",
+   "Lukasz Piszczek",
+   "Nuri Sahin"
+  ],
+  "answer": "Marc Bartra",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2bd86f",
+  "q": "Borussia Dortmund's official motto is two German words capturing the bond between club and fans. What are they?",
+  "o": [
+   "Echte Liebe",
+   "Niemals allein",
+   "Wahre Treue",
+   "Schwarz-Gelb"
+  ],
+  "answer": "Echte Liebe",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e9bed7",
+  "q": "Which one-club legend holds Borussia Dortmund's record for most competitive appearances, turning out 572 times between 1981 and 1998?",
+  "o": [
+   "Michael Zorc",
+   "Lars Ricken",
+   "Roman Weidenfeller",
+   "Sebastian Kehl"
+  ],
+  "answer": "Michael Zorc",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_ec6d8d",
+  "q": "Dortmund's Westfalenstadion was built for the 1974 World Cup only because another city pulled out, freeing up the funds. Which city's withdrawal handed Dortmund its stadium?",
+  "o": [
+   "Cologne",
+   "Düsseldorf",
+   "Essen",
+   "Wuppertal"
+  ],
+  "answer": "Cologne",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9be600",
+  "q": "In 2024 Borussia Dortmund reached the Champions League final at Wembley but lost 2-0. Which club denied them, lifting a record-extending 15th title?",
+  "o": [
+   "Real Madrid",
+   "Manchester City",
+   "Bayern Munich",
+   "Paris Saint-Germain"
+  ],
+  "answer": "Real Madrid",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_9722a6",
+  "q": "In the early 2000s Borussia Dortmund came perilously close to bankruptcy, with reported debts of around €200 million. According to Uli Hoeness, which arch-rival quietly lent them €2 million to make payroll?",
+  "o": [
+   "Bayern Munich",
+   "Schalke 04",
+   "Bayer Leverkusen",
+   "VfB Stuttgart"
+  ],
+  "answer": "Bayern Munich",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_e08e00",
+  "q": "Marco Reus, the boyhood Dortmund fan who became captain, ended his 12-year spell at the club in 2024. Where did he head next?",
+  "o": [
+   "LA Galaxy",
+   "Inter Miami",
+   "Al-Hilal",
+   "Toronto FC"
+  ],
+  "answer": "LA Galaxy",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c608fa",
+  "q": "Dortmund's first two German championships were won by a forward line nicknamed the 'three Alfredos' — Preißler, Kelbassa and Niepieklo. In which decade did BVB claim those back-to-back national titles?",
+  "o": [
+   "1950s",
+   "1940s",
+   "1960s",
+   "1930s"
+  ],
+  "answer": "1950s",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fd7d13",
+  "q": "Borussia Dortmund are nicknamed 'BVB'. What does this abbreviation actually stand for?",
+  "o": [
+   "Ballspielverein Borussia",
+   "Bundesliga Verein Borussia",
+   "Borussia Vereinsbund",
+   "Ballklub Verein Borussia"
+  ],
+  "answer": "Ballspielverein Borussia",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_722107",
+  "q": "Klopp's first Bundesliga title with Dortmund in 2010-11 was built on a remarkably young squad. Which midfielder, a Dortmund academy product, did Klopp infamously 'lose' to rivals Bayern in 2013?",
+  "o": [
+   "Mario Götze",
+   "Ilkay Gündogan",
+   "Nuri Sahin",
+   "Sven Bender"
+  ],
+  "answer": "Mario Götze",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1f8241",
+  "q": "As of 2024, Borussia Dortmund had won eight German championships in total. Counting both the pre-Bundesliga and Bundesliga eras, how many of those titles came in the Bundesliga era specifically?",
+  "o": [
+   "5",
+   "3",
+   "8",
+   "6"
+  ],
+  "answer": "5",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1e241d",
+  "q": "As of 2026, who is the manager that engineered Borussia Dortmund's dramatic 2024-25 turnaround — taking over with the club 11th and dragging them to a final-day fourth place and Champions League qualification?",
+  "o": [
+   "Niko Kovac",
+   "Edin Terzic",
+   "Nuri Sahin",
+   "Marco Rose"
+  ],
+  "answer": "Niko Kovac",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88fb6b",
+  "q": "Ajax is named after a hero of Greek mythology. What specifically about this hero appealed to the club's founders in 1900?",
+  "o": [
+   "He was a famously fast runner",
+   "He remained unconquered, never beaten in battle",
+   "He was the god of football",
+   "He defeated a thousand enemies single-handed"
+  ],
+  "answer": "He remained unconquered, never beaten in battle",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_91d4b8",
+  "q": "Ajax's golden era peaked with three consecutive European Cups. In which years did they win them?",
+  "o": [
+   "1969, 1970, 1971",
+   "1971, 1972, 1973",
+   "1972, 1973, 1974",
+   "1973, 1974, 1975"
+  ],
+  "answer": "1971, 1972, 1973",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_f74db6",
+  "q": "Returning from injury in 1970, Cruyff gave his usual number 9 to a teammate who'd lost his shirt, then grabbed a spare from the laundry basket — a number Ajax would retire forever. Which one?",
+  "o": [
+   "7",
+   "10",
+   "14",
+   "11"
+  ],
+  "answer": "14",
+  "cat": "Legends",
+  "diff": "easy"
+ },
+ {
+  "id": "q_dfc239",
+  "q": "In the 1995 Champions League final, Ajax beat AC Milan 1-0 with a late winner from a teenage substitute. Who scored it?",
+  "o": [
+   "Marc Overmars",
+   "Patrick Kluivert",
+   "Jari Litmanen",
+   "Finidi George"
+  ],
+  "answer": "Patrick Kluivert",
+  "cat": "UCL",
+  "diff": "easy"
+ },
+ {
+  "id": "q_db9953",
+  "q": "A young Marco van Basten made his Ajax first-team debut in 1982 in a remarkable way — he came on as a substitute for which legend?",
+  "o": [
+   "Ruud Krol",
+   "Johan Cruyff",
+   "Sjaak Swart",
+   "Frank Rijkaard"
+  ],
+  "answer": "Johan Cruyff",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ebc659",
+  "q": "Who holds Ajax's all-time appearance record, earning the nickname 'Mr. Ajax' across 17 straight seasons?",
+  "o": [
+   "Sjaak Swart",
+   "Ruud Krol",
+   "Gerrie Mühren",
+   "Piet Keizer"
+  ],
+  "answer": "Sjaak Swart",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_c4b172",
+  "q": "Ajax's all-time leading goalscorer is a name many casual fans wouldn't guess — a pre-war forward whose record still stands. Who is he?",
+  "o": [
+   "Johan Cruyff",
+   "Piet van Reenen",
+   "Marco van Basten",
+   "Sjaak Swart"
+  ],
+  "answer": "Piet van Reenen",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_e440aa",
+  "q": "Ajax's 1966 home demolition of Bill Shankly's Liverpool earned a famous Dutch nickname. What was 'De Mistwedstrijd'?",
+  "o": [
+   "The Mud Match",
+   "The Fog Match",
+   "The Night Match",
+   "The Miracle Match"
+  ],
+  "answer": "The Fog Match",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2b48d0",
+  "q": "Finish Johan Cruyff's most famous footballing maxim: 'Playing football is very simple, but...'",
+  "o": [
+   "...winning is even simpler",
+   "...playing simple football is the hardest thing there is",
+   "...only the brave can do it",
+   "...the ball must always come back to you"
+  ],
+  "answer": "...playing simple football is the hardest thing there is",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_4c4ac1",
+  "q": "Luis Suarez's Ajax career ended in disgrace in 2010 before his move to Liverpool. What did he do?",
+  "o": [
+   "He punched a referee",
+   "He bit PSV's Otman Bakkal on the shoulder",
+   "He missed three months of drug tests",
+   "He head-butted his own captain"
+  ],
+  "answer": "He bit PSV's Otman Bakkal on the shoulder",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2dbbe3",
+  "q": "In a move that broke Ajax fans' hearts in 1983, Johan Cruyff left the club and signed for which bitter rival?",
+  "o": [
+   "PSV Eindhoven",
+   "Feyenoord",
+   "AZ Alkmaar",
+   "FC Utrecht"
+  ],
+  "answer": "Feyenoord",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_fa23a3",
+  "q": "Ajax's 2018-19 Champions League run ended in agony, dumped out in stoppage time of the semi-final by a hat-trick from which player?",
+  "o": [
+   "Heung-min Son",
+   "Lucas Moura",
+   "Dele Alli",
+   "Christian Eriksen"
+  ],
+  "answer": "Lucas Moura",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_ff2d60",
+  "q": "In 1992 Ajax won the UEFA Cup, completing a rare clean sweep. What did this achievement make them?",
+  "o": [
+   "The first Dutch club to win in Europe",
+   "Only the second club ever to win all three major UEFA competitions",
+   "The first club to win two trophies in one season",
+   "The only club to beat an Italian side in a final"
+  ],
+  "answer": "Only the second club ever to win all three major UEFA competitions",
+  "cat": "UCL",
+  "diff": "hard"
+ },
+ {
+  "id": "q_d5b90e",
+  "q": "Clarence Seedorf began his Champions League legend at Ajax in 1995. What unique record does he still hold?",
+  "o": [
+   "Youngest player to captain a CL winner",
+   "Only player to win the Champions League with three different clubs",
+   "Most CL final appearances ever",
+   "Only player to score in three different CL finals"
+  ],
+  "answer": "Only player to win the Champions League with three different clubs",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_1eaed4",
+  "q": "Arsenal and Ajax great Dennis Bergkamp got his unusual first name from a footballer his father admired. Who?",
+  "o": [
+   "Denis Law",
+   "Denis Compton",
+   "Dennis Bergkamp Sr.",
+   "Denis Tueart"
+  ],
+  "answer": "Denis Law",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_b4680d",
+  "q": "Ajax's youth academy, the conveyor belt that produced Cruyff, Bergkamp, the De Boers and more, is named 'De Toekomst'. What does that mean?",
+  "o": [
+   "The Factory",
+   "The Future",
+   "The Garden",
+   "The Foundation"
+  ],
+  "answer": "The Future",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_2eeb46",
+  "q": "In 2022 Ajax sold a winger to Manchester United for around 95 million euros — a club-record fee at the time. Who was he?",
+  "o": [
+   "Hakim Ziyech",
+   "Antony",
+   "Steven Bergwijn",
+   "David Neres"
+  ],
+  "answer": "Antony",
+  "cat": "Transfers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_65376e",
+  "q": "Ajax have won FAR more Dutch league titles than any other club — yet none since 2022. Exactly how many do they have as of June 2026?",
+  "o": [
+   "26",
+   "36",
+   "46",
+   "16"
+  ],
+  "answer": "36",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_f74965",
+  "q": "Ajax suffered one of football's most infamous collapses in 2024-25, blowing a huge late lead to hand PSV the title. How big was the lead they squandered?",
+  "o": [
+   "A 5-point lead with three games left",
+   "A 9-point lead with five games left",
+   "A 12-point lead at Christmas",
+   "A 7-point lead on goal difference"
+  ],
+  "answer": "A 9-point lead with five games left",
+  "cat": "Managers",
+  "diff": "medium"
+ },
+ {
+  "id": "q_260e0d",
+  "q": "Ajax legends are recognised in a special club for those with a certain number of official appearances. It's called the 'Club van...' what?",
+  "o": [
+   "Club van 50",
+   "Club van 100",
+   "Club van 250",
+   "Club van 11"
+  ],
+  "answer": "Club van 100",
+  "cat": "Records",
+  "diff": "hard"
+ },
+ {
+  "id": "q_af418e",
+  "q": "Johan Cruyff's iconic turn against Sweden at the 1974 World Cup left defender Jan Olsson chasing a ghost. To pull it off, behind which leg did Cruyff drag the ball?",
+  "o": [
+   "His standing leg",
+   "His kicking leg",
+   "The leg nearer the defender",
+   "Both legs in sequence"
+  ],
+  "answer": "His standing leg",
+  "cat": "WorldCup",
+  "diff": "medium"
+ },
+ {
+  "id": "q_20bc10",
+  "q": "Ajax extended their record in Dutch cup football under Erik ten Hag. Which trophy did they lift for a record 20th time in 2021?",
+  "o": [
+   "The Johan Cruyff Shield",
+   "The KNVB Cup",
+   "The Eredivisie",
+   "The UEFA Super Cup"
+  ],
+  "answer": "The KNVB Cup",
+  "cat": "Records",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b7a4a8",
+  "q": "Ajax was founded in 1900, but where exactly did its famous nickname 'de Joden' (the Jews) historically come from?",
+  "o": [
+   "The founders were all Jewish",
+   "The old stadium sat beside Amsterdam's Jewish quarter",
+   "A Jewish businessman bankrolled the club",
+   "The first captain was a rabbi"
+  ],
+  "answer": "The old stadium sat beside Amsterdam's Jewish quarter",
+  "cat": "Legends",
+  "diff": "medium"
+ },
+ {
+  "id": "q_58c5ff",
+  "q": "Which club was the first French team to win the European Cup / Champions League?",
+  "o": [
+   "Olympique de Marseille",
+   "Olympique Lyonnais",
+   "AS Monaco",
+   "Saint-Étienne"
+  ],
+  "answer": "Olympique de Marseille",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_334315",
+  "q": "In which year did Marseille win the Champions League, becoming the first French club to lift the trophy?",
+  "o": [
+   "1991",
+   "1993",
+   "1996",
+   "1999"
+  ],
+  "answer": "1993",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_6fadb8",
+  "q": "Which club pulled off a surprise Ligue 1 title in 2011-12, holding off PSG on the final day?",
+  "o": [
+   "Montpellier",
+   "Lille",
+   "Saint-Étienne",
+   "Rennes"
+  ],
+  "answer": "Montpellier",
+  "cat": "Ligue1",
+  "diff": "easy"
+ },
+ {
+  "id": "q_8696b4",
+  "q": "After PSG, which club has won the second-most Ligue 1 titles, with 10 championships?",
+  "o": [
+   "Marseille",
+   "Nantes",
+   "Saint-Étienne",
+   "Monaco"
+  ],
+  "answer": "Saint-Étienne",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_b39610",
+  "q": "Who scored the winning goal in Marseille's 1993 Champions League final against AC Milan?",
+  "o": [
+   "Jean-Pierre Papin",
+   "Basile Boli",
+   "Alen Bokšić",
+   "Abedi Pelé"
+  ],
+  "answer": "Basile Boli",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_bc51dc",
+  "q": "Which Italian giant did Marseille defeat in the 1993 Champions League final?",
+  "o": [
+   "Juventus",
+   "Inter Milan",
+   "AC Milan",
+   "Roma"
+  ],
+  "answer": "AC Milan",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_375c80",
+  "q": "Which club, founded in 1872, is generally regarded as the oldest football club in France?",
+  "o": [
+   "Girondins de Bordeaux",
+   "Le Havre AC",
+   "Sochaux",
+   "Marseille"
+  ],
+  "answer": "Le Havre AC",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_5a25ca",
+  "q": "Who is the all-time leading goalscorer in French Ligue 1 history, with 299 goals?",
+  "o": [
+   "Bernard Lacombe",
+   "Jean-Pierre Papin",
+   "Delio Onnis",
+   "Hervé Revelli"
+  ],
+  "answer": "Delio Onnis",
+  "cat": "Ligue1",
+  "diff": "hard"
+ },
+ {
+  "id": "q_0a3439",
+  "q": "Which striker won the Ligue 1 Golden Boot for champions Montpellier in their 2011-12 title-winning season?",
+  "o": [
+   "Olivier Giroud",
+   "Nenê",
+   "Kevin Gameiro",
+   "Bafétimbi Gomis"
+  ],
+  "answer": "Olivier Giroud",
+  "cat": "Ligue1",
+  "diff": "hard"
+ },
+ {
+  "id": "q_9ca716",
+  "q": "Which French club reached the 2004 Champions League final, losing to Porto?",
+  "o": [
+   "Lyon",
+   "Bordeaux",
+   "AS Monaco",
+   "Marseille"
+  ],
+  "answer": "AS Monaco",
+  "cat": "Ligue1",
+  "diff": "medium"
+ },
+ {
+  "id": "q_88a73c",
+  "q": "Which French club is famously nicknamed \"Les Verts\" (The Greens)?",
+  "o": [
+   "Saint-Étienne",
+   "Nantes",
+   "Lens",
+   "Rennes"
+  ],
+  "answer": "Saint-Étienne",
+  "cat": "Ligue1",
+  "diff": "easy"
+ }
+]

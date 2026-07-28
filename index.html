@@ -35,7 +35,7 @@
     {"@context":"https://schema.org","@graph":[
       {"@type":"Organization","@id":"https://balliq.app/#org","name":"Ball IQ","url":"https://balliq.app/","logo":"https://balliq.app/icon-512.png"},
       {"@type":"WebSite","@id":"https://balliq.app/#website","url":"https://balliq.app/","name":"Ball IQ","description":"The ultimate football quiz — thousands of questions across 10 game modes.","publisher":{"@id":"https://balliq.app/#org"}},
-      {"@type":"MobileApplication","@id":"https://balliq.app/#app","name":"Ball IQ — Football Trivia","operatingSystem":"iOS","applicationCategory":"GameApplication","url":"https://balliq.app/","downloadUrl":"https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+      {"@type":"MobileApplication","@id":"https://balliq.app/#app","name":"Ball IQ — Football Trivia","operatingSystem":"iOS, Android","applicationCategory":"GameApplication","url":"https://balliq.app/","downloadUrl":"https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     ]}
     </script>
 
@@ -521,10 +521,9 @@
         transition: opacity 0.15s;
       }
       .landing-signup-form button:hover:not(:disabled) { opacity: 0.92; }
-      /* TODO: Replace text pills with official "Download on the App Store"
-         and "Get it on Google Play" badge images once App Store Connect
-         and Google Play Console listings are approved. Until then both
-         badges show a "Coming soon" toast on click. */
+      /* Both listings are approved and live (App Store; Google Play from
+         2026-07-27) and both pills are real links. Optional polish: swap the
+         text pills for the official store badge artwork. */
       .landing-store-badges {
         display: flex; gap: 10px; justify-content: center;
         margin: 0 auto 20px;
@@ -580,7 +579,7 @@
     <div class="landing-top">
       <nav class="landing-nav">
         <div class="landing-nav-inner">
-          <a href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener" class="landing-nav-cta">Get the app</a>
+          <a href="/get" rel="noopener" class="landing-nav-cta">Get the app</a>
         </div>
       </nav>
     </div>
@@ -623,11 +622,12 @@
       </section>
 
       <section class="landing-signup" id="cta-signup">
-        <p class="landing-signup-eyebrow">Now on the App Store</p>
+        <p class="landing-signup-eyebrow">Now on iOS and Android</p>
         <h2 class="landing-signup-title">Take Ball IQ with you</h2>
         <p class="landing-signup-sub">Play right here in your browser, or grab the app for daily puzzles, streaks and online multiplayer on the go.</p>
         <div class="landing-store-badges">
           <a href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener" class="landing-store-badge" data-store="ios">Download on the App Store →</a>
+          <a href="https://play.google.com/store/apps/details?id=app.balliq" target="_blank" rel="noopener" class="landing-store-badge" data-store="android">Get it on Google Play →</a>
         </div>
       </section>
 
@@ -680,8 +680,8 @@
         });
       })();
 
-      // Landing store badge is now a real App Store link (the app is live), so
-      // no "coming soon" interception is needed.
+      // Landing store badges are real links on BOTH stores (iOS live, Google
+      // Play live 2026-07-27), so no "coming soon" interception is needed.
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>

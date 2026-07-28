@@ -1,0 +1,92 @@
+[
+ {
+  "id": "q_5408ed",
+  "kind": "multiple_correct",
+  "claim": "Piotr Zieliński also scored heavily in Napoli's 2022-23 Champions League campaign (2 v Liverpool MD1, 1 v Rangers, further group goals, 1 pen v Eintracht Frankfurt) and may equal or exceed Osimhen's total (4 of Osimhen's goals came in the knockouts: 1 + 2 v Frankfurt, 1 v Milan) — verify Osimhen is the unique top scorer before shipping.",
+  "q": "Who was Napoli's top scorer in their historic 2022-23 Champions League run — reaching the quarter-finals?",
+  "o": [
+   "Osimhen",
+   "Kvaratskhelia",
+   "Lozano",
+   "Zielinski"
+  ],
+  "answer": "Osimhen",
+  "cat": "SerieA",
+  "diff": "medium"
+ },
+ {
+  "id": "q_d1bd70",
+  "kind": "stale",
+  "claim": "'Six ever-present Premier League clubs' (Arsenal, Chelsea, Everton, Liverpool, Man Utd, Tottenham) is correct today but silently becomes wrong the season any of the six — Everton being the nearest risk — is relegated.",
+  "q": "How many clubs have been ever-present in the Premier League since its founding in 1992?",
+  "o": [
+   "Four",
+   "Five",
+   "Seven",
+   "Six"
+  ],
+  "answer": "Six",
+  "cat": "PL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_21aec1",
+  "kind": "stale",
+  "claim": "'As of 2026, most Champions League appearances' is a time-anchored record claim; the 'as of 2026' wording will read as outdated in later seasons even while Ronaldo's 183 remains the record.",
+  "q": "As of 2026, who holds the record for most appearances in the Champions League?",
+  "o": [
+   "Messi",
+   "Ronaldo",
+   "Xavi",
+   "Casillas"
+  ],
+  "answer": "Ronaldo",
+  "cat": "UCL",
+  "diff": "medium"
+ },
+ {
+  "id": "q_31f5ae",
+  "kind": "wrong_answer",
+  "claim": "Platini (born 21 June 1955) played his final Juventus match on 17 May 1987, so he was 31 when he walked away, not the keyed 32 — the correct age is not among the options.",
+  "q": "Michel Platini retired in 1987 at the peak of his powers — how old was he when he walked away from the game?",
+  "o": [
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "answer": "32",
+  "cat": "Legends",
+  "diff": "hard"
+ },
+ {
+  "id": "q_1ea17d",
+  "kind": "stale",
+  "claim": "The stem's description is outdated: since the 2023-24 edition the Supercoppa Italiana is a four-team Final Four (Serie A winner and runner-up plus Coppa Italia winner and runner-up), not a two-team match between the Serie A and Coppa Italia winners.",
+  "q": "What is the name of the Italian Super Cup — contested between the Serie A winner and Coppa Italia winner?",
+  "o": [
+   "Trofeo Bravo",
+   "Supercoppa Italiana",
+   "Coppa Supernazionale",
+   "Scudetto Cup"
+  ],
+  "answer": "Supercoppa Italiana",
+  "cat": "SerieA",
+  "diff": "easy"
+ },
+ {
+  "id": "q_c12d8e",
+  "kind": "stale",
+  "claim": "The stem calls Watford a 'Premier League club', but Watford has been in the Championship since relegation in 2021-22, and Elton John's two chairmanships (1976-87, 1997-2002) largely predate or sit outside the club's PL spells; the descriptor will keep rotting with promotions/relegations.",
+  "q": "Elton John has been chairman of which Premier League club on two separate occasions?",
+  "o": [
+   "QPR",
+   "Crystal Palace",
+   "Watford",
+   "Charlton"
+  ],
+  "answer": "Watford",
+  "cat": "PL",
+  "diff": "medium"
+ }
+]
