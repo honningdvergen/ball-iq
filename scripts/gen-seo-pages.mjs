@@ -1296,11 +1296,79 @@ function listRelatedPages(rows, clubPages, playerPages) {
   }
   return out.slice(0, 12);
 }
-function buildListPage(cfg, clubPages, playerPages, catPages) {
+// Questions to make a reference list PLAYABLE.
+//
+// Clarity, 2026-07-28: club pages (which carry a taster) hold 109-145s of
+// ACTIVE time — more than the app itself. These list pages, which carry none,
+// hold 2.3s at 14% scroll depth. Same traffic source, same layout language;
+// the only structural difference is that there is nothing here to DO. So give
+// them something.
+//
+// Topicality is enforced twice, because a generic question on a Ballon d'Or
+// page is worse than no question: the candidate pool is restricted to the list's own
+// category, AND the question must mention an entity that actually appears in
+// the table. Falls back to category-only, then to no taster at all — a page
+// with an off-topic quiz is the one outcome we don't ship.
+const LIST_CATS = [
+  [/ballon-dor|golden-boot|greatest/, ['Legends', 'Records']],
+  [/champions-league|european-cup/, ['UCL', 'ChampionsLeague']],
+  [/premier-league|most-fa-cups|fa-cup/, ['PL']],
+  [/world-cup/, ['WorldCup']],
+  [/euro|european-championship/, ['Euros']],
+  [/la-liga|copa-del-rey/, ['LaLiga']],
+  [/serie-a|coppa-italia/, ['SerieA']],
+  [/bundesliga|dfb/, ['Bundesliga']],
+  [/ligue-1|coupe-de-france/, ['Ligue1']],
+  [/primeira|liga-portugal/, ['Primeira']],
+  [/super-lig/, ['SuperLig']],
+  [/transfer|expensive/, ['Transfers']],
+  [/manager|coach/, ['Managers']],
+];
+// Generic football vocabulary. A first cut split cells into words and kept any
+// capitalised 5+ token, so "League", "United" and "Cup" became "entities" and
+// matched most of the bank — the World Cup list got a CONCACAF question and the
+// Asian Cup list got Copa Libertadores. Entities must be whole names.
+const LIST_STOP = new Set(['league', 'cup', 'united', 'city', 'club', 'final', 'finals',
+  'winner', 'winners', 'season', 'total', 'goals', 'first', 'record', 'champions',
+  'football', 'national', 'team', 'player', 'players', 'title', 'titles', 'year']);
+
+function listTasterRows(cfg, usedIds) {
+  const hit = LIST_CATS.find(([re]) => re.test(cfg.slug));
+  if (!hit) return [];                 // unmapped list → no taster, never a generic one
+  const cats = hit[1];
+  const pool = QB.filter((r) => cats.includes(r.cat) && r.type === 'mcq'
+    && r.hint && Array.isArray(r.o) && r.o.length === 4 && !usedIds.has(r.id));
+
+  // Whole cell values that read as proper names: "Lionel Messi", "Real Madrid".
+  // Numbers, years and bare generic words are excluded.
+  const ents = [];
+  for (const cell of cfg.rows.flat()) {
+    const v = String(cell).trim();
+    if (v.length < 5 || /^\d/.test(v) || !/^[A-ZÀ-Þ]/.test(v)) continue;
+    if (LIST_STOP.has(v.toLowerCase())) continue;
+    ents.push(v.toLowerCase());
+  }
+  const uniq = [...new Set(ents)];
+  const mentions = (r) => {
+    const hay = (r.q + ' ' + r.o.join(' ')).toLowerCase();
+    return uniq.some((e) => hay.includes(e));
+  };
+
+  // No generic fallback: a page with an off-topic quiz is worse than a page
+  // with none, so fewer than 5 genuinely on-topic questions means no taster.
+  const onTopic = pool.filter(mentions);
+  if (onTopic.length < 5) return [];
+  const rows = tasterPick(onTopic, 5);
+  rows.forEach((r) => usedIds.add(r.id));   // no two lists share a question set
+  return rows.length === 5 ? rows : [];
+}
+
+function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
   const canonical = `${SITE.base}/lists/${cfg.slug}/`;
   const cols = cfg.columns;
   const rows = cfg.rows;
   const related = listRelatedPages(rows, clubPages, playerPages);
+  const taster = listTasterRows(cfg, usedIds);
   const tiles = related.length >= 4 ? related : [...related, ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 6 - related.length)];
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -1371,6 +1439,13 @@ ${cfg.intro.map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p
 <section class="sec narrow">
 ${table}
 </section>
+${taster.length ? `<section class="sec narrow">
+${/* ctaName is phrased for "…quizzes about the Bundesliga", so it already
+      carries its article and reads as "Know your the Bundesliga" here. */ ''}
+<h2>Think you know this? Five questions</h2>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Five questions, tap to answer. No sign-up.</p>
+${renderQA(taster)}
+</section>` : ''}
 ${adSlot('afterQA')}
 ${appCtaBand(cfg.ctaName || 'football')}
 <section class="sec">
@@ -2235,7 +2310,8 @@ async function main() {
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
-  const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages));
+  const listTasterIds = new Set();
+  const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages, listTasterIds));
   buildListsHubPage(LISTS, clubPages, livePages);
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
