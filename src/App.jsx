@@ -29,6 +29,7 @@ import { notificationsSupported, getNotifPermission, requestNotifPermission, sch
 import { registerPush, onPushTap } from './lib/push.js';
 import { maybeRequestReview } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
+import { getTrailAnswer } from './lib/trail.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -52,6 +53,11 @@ const FriendProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx
 const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.BlockedUsersScreen })));
 // Online multiplayer (~1700 lines) — only loads when a user goes online, never
 // on the cold/first paint. Both entry points share the one chunk.
+// Transfer Trail — lazy like the other full screens. Self-gating: the entry
+// card and the route both resolve through getTrailAnswer(), which returns
+// null while TRAIL_ANSWER_LOG is empty, so this renders NOTHING until the
+// spot-checked dataset lands. Wiring inert beats wiring half-done.
+const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
@@ -8811,6 +8817,7 @@ function AppInner() {
         window.history.replaceState({}, "", u.pathname + u.search + u.hash);
       } catch {}
       if (gameSlug === "footle") { setScreen("wordle"); return; }
+      if (gameSlug === "trail") { setScreen("trail"); return; }
       if (stumpId && /^q_[a-z0-9]+$/.test(stumpId)) {
         // Async on purpose: the bank is lazy-loaded. The stump screen is
         // guest-friendly — recipients answer with zero login (same staging-
@@ -9647,7 +9654,7 @@ function AppInner() {
   // unmount cleanup so navigating away always strips the class. The
   // matching CSS rule lives in the AppInner css string further down.
   useEffect(() => {
-    const playing = inGame || screen === "wordle";
+    const playing = inGame || screen === "wordle" || screen === "trail";
     try {
       if (playing) document.body.classList.add("in-focused-play");
       else document.body.classList.remove("in-focused-play");
@@ -10035,7 +10042,7 @@ function AppInner() {
     hwBackRef.current = () => {
       if (closeTopModal()) return;
       if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
-      if (inGame || screen === "wordle") {
+      if (inGame || screen === "wordle" || screen === "trail") {
         // dispatchEvent returns false when a listener preventDefault()ed —
         // i.e. the mounted engine claimed the press and owns the quit flow.
         let claimed = false;
@@ -10845,6 +10852,14 @@ function AppInner() {
 
         {/* ── FOOTBALL WORDLE ── */}
         {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} />}
+        {screen === "trail" && (() => {
+          const p = getTrailAnswer();
+          // No dataset yet -> no puzzle. Send them home rather than render an
+          // empty board; a deep link that lands on a blank screen is worse
+          // than one that lands somewhere real.
+          if (!p) { setTimeout(goHome, 0); return null; }
+          return <React.Suspense fallback={null}><TransferTrail player={p} onBack={goHome} /></React.Suspense>;
+        })()}
         {screen === "stump" && stumpRow && (
           <StumpScreen
             row={stumpRow}
