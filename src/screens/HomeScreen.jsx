@@ -136,6 +136,10 @@ function HomeScreenImpl({
   // Display name for the desktop rail cards (mirrors the greeting's name logic;
   // plain consts, not hooks, so hook order is untouched). Placeholder usernames
   // (Player / player_xxxxx) fall back to a neutral label rather than being shown.
+  // Whether Trail has a puzzle today. Read once here rather than inside the
+  // daily-zone IIFE, because the entry point now lives in the More-modes grid.
+  const trailLive = (() => { try { return !!getTrailAnswer(); } catch { return false; } })();
+
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);
   const railUsername = authProfile?.username && !isPlaceholderName(authProfile.username) ? authProfile.username : null;
   const railName = railUsername || (profile?.name && !isPlaceholderName(profile.name) ? profile.name : "Ball IQ Player");
@@ -304,24 +308,11 @@ function HomeScreenImpl({
       {(() => {
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
-        // Transfer Trail joins the zone only once its frozen schedule actually
-        // has a puzzle for today. getTrailAnswer() returns null before
-        // TRAIL_ANCHOR_DAY (2026-08-01), so Home does NOT grow by a row until
-        // launch day and then gains its door automatically — no second deploy,
-        // and no dead tile advertising a mode that cannot be played.
-        const trailToday = (() => { try { return getTrailAnswer(); } catch { return null; } })();
-        const trailLive = !!trailToday;
-        const trailDone = (() => {
-          if (!trailLive) return false;
-          try {
-            const raw = localStorage.getItem(`biq_trail_${dateToYMD(new Date())}`);
-            const p = raw ? JSON.parse(raw) : null;
-            return p?.status === "won" || p?.status === "lost";
-          } catch { return false; }
-        })();
-
-        const total = trailLive ? 3 : 2;
-        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0) + (trailDone ? 1 : 0);
+        // Trail is NOT counted here. Alex, on seeing it previewed in this zone:
+        // "it does not belong as a hero, it needs marinating." It lives in the
+        // More-modes grid instead, so the Daily ritual stays Footle + Daily 7.
+        const total = 2;
+        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
           <div className="daily-zone" role="group" aria-label="Daily">
@@ -355,25 +346,6 @@ function HomeScreenImpl({
               </span>
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
-            {/* Transfer Trail. Reuses Daily 7's row exactly — same class, same
-                shape — so the zone stays one rhythm rather than gaining a third
-                visual language. Hidden entirely until the mode is live. */}
-            {trailLive && (
-              <button
-                className={`todays-seven-secondary${trailDone ? ' is-done' : ''}`}
-                onClick={() => setScreen("trail")}
-                aria-label={trailDone ? "Transfer Trail complete" : "Play Transfer Trail"}
-              >
-                <span className="t7s-icon" aria-hidden="true"><Route size={22} strokeWidth={2} /></span>
-                <span className="t7s-body">
-                  <span className="t7s-title">Transfer Trail</span>
-                  <span className="t7s-sub">
-                    {trailDone ? <>✅ Done</> : <>Put a career in order · 5 tries</>}
-                  </span>
-                </span>
-                <span className="t7s-cta">{trailDone ? "View" : "Play"}</span>
-              </button>
-            )}
           </div>
         );
       })()}
@@ -516,6 +488,11 @@ function HomeScreenImpl({
       <div className="play-grid">
         {[
           { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
+          // Trail takes the second slot once it is live — League Quiz has ONE
+          // lifetime play and Trail is a daily, so it earns the position. The
+          // whole entry is gated on the schedule actually having a puzzle, so
+          // nothing advertises a mode that cannot be played.
+          ...(trailLive ? [{ key:"trail", Icon: Route, name: "Transfer Trail", desc: "Name the player", onTap: () => setScreen("trail") }] : []),
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
