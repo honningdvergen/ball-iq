@@ -27,12 +27,20 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnlin
         <span className="mp-card-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <div className="mp-card-titles">
           <div className="mp-card-title">Play with Friends</div>
-          <div className="mp-card-sub">Race friends online or play locally.</div>
+          {/* The subtitle here read "Race friends online or play locally." — it
+              restated the two button labels sitting directly beneath it, which
+              is the same dead-text pattern cut from the Home greeting earlier
+              today. The buttons say it better because they are tappable. */}
+          <div className="mp-card-sub">Head-to-head, 10 questions.</div>
         </div>
       </div>
       <div className="mp-card-ctas">
-        <button type="button" className="mp-card-cta" onClick={onOnline} aria-label="Play online multiplayer">Online</button>
-        <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play local multiplayer">Local</button>
+        {/* "Online" and "Local" named our internal taxonomy, not what happens.
+            A label should finish the sentence "I want to…" — and the second one
+            also answers the question a first-time user actually has, which is
+            whether they need a second phone. */}
+        <button type="button" className="mp-card-cta" onClick={onOnline} aria-label="Play a friend online">Play a friend</button>
+        <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play locally on one phone">Same phone</button>
       </div>
     </div>
   );
