@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -308,15 +308,23 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
       const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0, m: metric(p) }));
       const mine = rows.find(r => r.id === myPlayer.user_id);
       const opps = rows.filter(r => r.id !== myPlayer.user_id);
+      const iWon = !!mine && opps.length > 0 && mine.m > Math.max(...opps.map(o => o.m));
       recordMpResult({
         roomId: room.id,
         at: Date.now(),
         mode: gameMode,
-        won: !!mine && opps.length > 0 && mine.m > Math.max(...opps.map(o => o.m)),
+        won: iWon,
         myScore: mine ? mine.score : 0,
         myMetric: mine ? mine.m : 0,
         opponents: opps,
       });
+      // Pay the XP from HERE rather than from the game-over screen, because
+      // this effect is already the once-per-room gate: ref-latched against
+      // realtime 'ended' echoes, and recordMpResult dedupes by roomId behind
+      // it. The results screen re-renders and can be revisited; this cannot.
+      window.dispatchEvent(new CustomEvent('biq:mp-completed', {
+        detail: { won: iWon, score: mine ? mine.score : 0, mode: gameMode },
+      }));
     } catch {}
   }, [room, players, myPlayer]);
 
@@ -1079,6 +1087,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
           ) : myRank > 0 && !isWinner && (
             <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
               You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
+            </div>
+          )}
+          {/* The progression payoff every other ending has and this one did
+              not. Same "+N XP earned ⚡" line as the solo result screens, so a
+              live win visibly counts toward the same level as everything else.
+              Recomputed from getMpXP rather than passed down — the award itself
+              fires from the once-per-room effect in MultiplayerLobby, and this
+              must never be the thing that pays it. */}
+          {myPlayer && (
+            <div style={{ marginTop: 10, fontSize: 14, fontWeight: 800, color: 'var(--accent)' }}>
+              +{getMpXP(isWinner && !survivalDraw, myPlayer.score || 0)} XP earned ⚡
             </div>
           )}
         </div>

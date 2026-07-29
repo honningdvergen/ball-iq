@@ -3558,6 +3558,25 @@ function getFootleXP(won, guesses) {
   return 30 + (6 - g) * 6;
 }
 
+// Online multiplayer XP.
+//
+// It had none. Every other mode feeds the level economy — a solo result screen
+// ends on "+N XP earned", Footle pays via getFootleXP, Transfer Trail pays
+// 40/10 — and the one mode that asks most of a player (find an opponent,
+// coordinate, play live) paid nothing at all. A playtester called the MP
+// game-over screen "dull"; the visual pass that followed added a VS board,
+// count-ups and a podium, and the screen is not dull any more. It was still the
+// only ending in the app with no progression on it.
+//
+// Same 10-per-correct rate as a standard quiz, because they are the same
+// questions and the same effort. The win bonus mirrors the solo perfect bonus:
+// 50 for the thing that mode is actually about. The floor exists because unlike
+// solo you can play well and still lose to someone who played better, and a
+// zero-XP ending is a reason not to come back.
+export function getMpXP(won, score) {
+  return Math.max(15, (score || 0) * 10 + (won ? 50 : 0));
+}
+
 function getXPForResult(score, total, mode) {
   if (mode === "hotstreak") {
     // Hot Streak: 5 XP per correct, bonus tiers
@@ -9146,6 +9165,18 @@ function AppInner() {
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
   }, [maybePromptNotif, awardXp, user?.id]);
+
+  // Online multiplayer joins the XP economy (it was the only mode outside it).
+  // The emitter in OnlineMultiplayer is the once-per-room gate, so no dedup is
+  // needed here — same arrangement as Footle's daily-completed dispatch.
+  useEffect(() => {
+    const onMpDone = (e) => {
+      const d = e?.detail || {};
+      awardXp(getMpXP(d.won === true, d.score));
+    };
+    window.addEventListener('biq:mp-completed', onMpDone);
+    return () => window.removeEventListener('biq:mp-completed', onMpDone);
+  }, [awardXp]);
 
   // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
   // long-streak user (that would burn both lifetime asks before they ever see a
