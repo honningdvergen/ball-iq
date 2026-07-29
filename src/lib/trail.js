@@ -18,16 +18,21 @@ import { dateToYMD } from "./date.js";
 export const TRAIL_MAX_ATTEMPTS = 5;
 
 // ── Puzzle number ─────────────────────────────────────────────────────────────
-// Same day-index math as footleNumber.js. The anchor is the launch day, and it
-// is Trail #1.
+// Same day-index math as footleNumber.js.
 //
-// ⚠️ THIS IS NOW LIVE AND MUST NEVER MOVE AGAIN. The puzzle number is the token
-// that makes strangers' shared grids comparable ("Trail #6 4/5") — shifting the
-// anchor renumbers every puzzle anyone has ever posted. It was moved once, from
-// the provisional 2026-08-01 to 2026-07-29, on the day it went live and before
-// a single puzzle had been played. That was the last legitimate moment to do it.
+// ⚠️ PROVISIONAL AGAIN — the mode is DARK. It was briefly pointed at 2026-07-29
+// and reverted the same hour: Alex, on seeing the screen, "transfer trail is not
+// ready and not intended to look like that". Verified in prod before reverting
+// that `scores` held ZERO rows for game_mode='trail', so no puzzle number had
+// ever been played or shared and the anchor was still free to move. That is the
+// ONLY condition under which it may move — once a single grid is out in the
+// world, the number is load-bearing and shifting it renumbers everyone's.
+//
+// Set this to the real launch day in the SAME commit that declares the screen
+// ready. Until then getTrailAnswerForDayIndex returns null for every date
+// before it, so Home shows no Trail row and the route sends you home.
 export const DAY_MS = 24 * 60 * 60 * 1000;
-export const TRAIL_ANCHOR_DAY = 20663; // Date.UTC(2026,6,29)/DAY_MS — launch day = Trail #1
+export const TRAIL_ANCHOR_DAY = 20697; // Date.UTC(2026,8,1)/DAY_MS — PROVISIONAL, mode is dark
 
 export function getTrailDayIndex(date = new Date()) {
   return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / DAY_MS);
