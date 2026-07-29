@@ -581,12 +581,12 @@ export const WORDLE_ANSWER_LOG = [
   "SEEDORF","ALLEN","DUNNE","LINEKER","ASPAS","BUSBY","MUSCAT","BERAHINO",
   "MENDY","TIGANA","STERLING","ALVES","ZAMORA","BUSQUETS","NEUER","ALONSO",
   "CASILLAS","KLOPP","LUKAKU","WILLIAN","SHANKLY","TORRES","ELLIOTT","BOATENG",
-  "FOWLER","BENITEZ","ROBINSON","WENGER","MAGUIRE","RAFINHA","BURNS","MALDINI",
+  "FOWLER","VALVERDE","ROBINSON","ANELKA","MAGUIRE","RAFINHA","BURNS","MALDINI",
   "ZIDANE","AGGER","CANTONA","BELOTTI","CONTE","RONALDO","GUARDADO","DEPAY",
-  "HAYNES","MAKELELE","COSTA","MORENO","FABREGAS","GOTZE","ANTONY","MOURINHO",
+  "HAYNES","MAKELELE","COSTA","MORENO","FABREGAS","GOTZE","ANTONY","FODEN",
   "BANKS","LLORIS","MANCINI","HUGHES","HAZARD","LAUDRUP","KOLAROV","BERGER",
   "ROBINHO","BARESI","CRUYFF","RUDIGER","VANGAAL","WOODS","GATTUSO","THIAGO",
-  "PEDRI","WILKINS","TERRY","SARRI","HAALAND","GUERRERO","TOURE","HOWARD",
+  "PEDRI","WILKINS","TERRY","WILSHERE","HAALAND","GUERRERO","TOURE","HOWARD",
   "MAZRAOUI","EVANS","HEINZE","COUTINHO","KROOS","WALKER","FERGUSON","MOORE",
   "VARANE","FRIEDEL","PIZARRO","MORATA","ENRIQUE","ARTETA","MULLER","MARTIAL",
   "BRUCE","PUSKAS","KIMMICH","MATTHAUS","DOYLE","INZAGHI","KONATE","ELANO",
@@ -596,9 +596,9 @@ export const WORDLE_ANSWER_LOG = [
   "YASHIN","DEMBELE","MOUNT","SHEVA","MILITAO","SAGNOL","LEIVA","SHILTON",
   "MARTINEZ","CARRA","BECKHAM","RIQUELME","YAMAL","PALMER","HEIGHWAY","VARDY",
   "HUTTON","JORGINHO","NESTA","BARTON","MARADONA","ADAMS","HAKIMI","MILBURN",
-  "VILLA","MAHREZ","MUSIALA","BAILEY","ROBBEN","BRADLEY","BIERHOFF","PETERS",
-  "ENDRICK","JONES","MATIP","ASENSIO","BIELSA","KANTE","FLOWERS","BISSAKA",
-  "WALSH","GERRARD","RANGNICK","WIRTZ","NEDVED","CAMPBELL","BRADY","TAYLOR",
+  "VILLA","MAHREZ","MUSIALA","BAILEY","ROBBEN","GHIGGIA","BIERHOFF","PETERS",
+  "ENDRICK","JONES","MATIP","ASENSIO","VIDIC","KANTE","FLOWERS","BISSAKA",
+  "WALSH","GERRARD","FOFANA","WIRTZ","NEDVED","CAMPBELL","BRADY","TAYLOR",
   "VINICIUS","PIRLO","PEARCE","CHARLTON","PIRES","CAVANI","ZANETTI","GIGGS",
   "MILNER","ROSICKY","CHIESA","PERSIE","INSIGNE","DEROSSI","HODDLE","WALCOTT",
   "BAGGIO","NEYMAR","HERRERA","VOELLER","TUDOR","TOSHACK","ROBSON","MOYES",
@@ -632,7 +632,29 @@ export const WORDLE_ANSWER_LOG = [
 // fallback has to filter too, or the rule silently lapses the day the log runs
 // out. WORDLE_PLAYERS itself keeps its 4-letter names — they are still valid
 // guesses, and 15 of them are already-published answers the archive serves.
-export const WORDLE_ANSWER_POOL = WORDLE_PLAYERS.filter((w) => w.length >= 5 && w.length <= 8);
+//
+// MANAGERS (Alex, 2026-07-29): the hero used to read "Surname of a footballer
+// or manager", which wrapped onto a second line and made the card taller. The
+// word went, so the rule has to go with it — a promise the puzzle keeps.
+//
+// This is a short list on purpose. Most managers in WORDLE_PLAYERS are there as
+// PLAYERS and stay: Klopp, Zidane, Conte, Tuchel, Potter, Ferguson, Shankly,
+// Busby, Dalglish, Souness, Koeman, Gullit and the rest all had real careers.
+// Only these seven are in the bank purely for the dugout — none of them has a
+// professional playing career worth the name.
+//
+// They remain valid GUESSES. Typing MOURINHO should never be rejected as "not a
+// name"; it just can't be the thing you're hunting for. Being generous about
+// input while strict about answers costs nothing and avoids a baffling refusal.
+export const WORDLE_MANAGERS = ['MOURINHO', 'WENGER', 'SARRI', 'RANGNICK', 'BIELSA', 'BRADLEY', 'BENITEZ'];
+
+// ⚠️ BIELSA is Footle #11 — already published, and api/footle.js serves that
+// archive. WORDLE_ANSWER_LOG is consulted before this pool, so the frozen day
+// keeps its answer; this list only governs days the log doesn't cover, plus the
+// tail of the log, which was re-keyed off these seven in the same change.
+export const WORDLE_ANSWER_POOL = WORDLE_PLAYERS.filter(
+  (w) => w.length >= 5 && w.length <= 8 && !WORDLE_MANAGERS.includes(w)
+);
 
 export function getWordleAnswerForDayIndex(dayIndex) {
   const n = dayIndex - WORDLE_ANCHOR_DAY;

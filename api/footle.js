@@ -219,7 +219,7 @@ ${hintItems}
 </div>
 
 <h2>What is Footle?</h2>
-<p><strong>Footle</strong> is a free daily football word game — Wordle for footballers. Every day there's one hidden surname of a real player or manager, and you get six guesses. After each guess the tiles turn <strong style="color:var(--grn)">green</strong> (right letter, right spot), <span style="color:var(--gold)">yellow</span> (in the name, wrong spot) or grey (not in the name). The word length changes daily, from four to eight letters. There's no sign-up, a fresh puzzle drops at midnight, and you can share your result grid.</p>
+<p><strong>Footle</strong> is a free daily football word game — Wordle for footballers. Every day there's one hidden surname of a real footballer, and you get six guesses. After each guess the tiles turn <strong style="color:var(--grn)">green</strong> (right letter, right spot), <span style="color:var(--gold)">yellow</span> (in the name, wrong spot) or grey (not in the name). The word length changes from day to day. There's no sign-up, a fresh puzzle drops at midnight, and you can share your result grid.</p>
 <p>Footle is part of <a href="${SITE}/" style="color:var(--grn)">Ball IQ</a>, a football trivia app with 4,000+ questions across leagues, clubs and competitions, plus real-time multiplayer. If you found this page looking for today's answer, the puzzle itself takes about a minute — <a href="${SITE}/play?game=footle" style="color:var(--grn)">give it a try first</a>.</p>
 
 <h2>Past Footle answers</h2>

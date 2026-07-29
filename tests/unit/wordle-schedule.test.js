@@ -13,6 +13,8 @@ import {
   getWordleAnswerForDayIndex,
   getWordleAnswer,
   getWordleDayIndex,
+  WORDLE_ANSWER_POOL,
+  WORDLE_MANAGERS,
 } from "../../src/lib/wordle.js";
 
 // The pool size the log was generated from. If WORDLE_PLAYERS grows, the
@@ -89,5 +91,33 @@ describe("WORDLE_ANSWER_LOG freeze", () => {
   it("known anchors: #1 = GAZZA (2026-05-04), #72 = KLOSE (2026-07-14)", () => {
     expect(getWordleAnswerForDayIndex(WORDLE_ANCHOR_DAY)).toBe("GAZZA");
     expect(getWordleAnswerForDayIndex(WORDLE_ANCHOR_DAY + 71)).toBe("KLOSE");
+  });
+});
+
+// ── Managers are guessable but never the answer (Alex, 2026-07-29) ───────────
+//
+// The hero reads "Surname of a footballer" — the word "manager" was cut because
+// it wrapped the subtitle onto a fourth line. Copy and puzzle have to agree, so
+// the seven manager-only names stopped being answers on the same day.
+//
+// This is a promise that lapses SILENTLY: nothing crashes if a manager sneaks
+// back into the pool, a player just gets a puzzle the card told them they
+// wouldn't. The frozen prefix is exempt — BIELSA is Footle #11, already
+// published, and api/footle.js serves that archive.
+describe('managers are guessable, never answers', () => {
+  it('keeps manager-only names out of the answer pool', () => {
+    const leaked = WORDLE_ANSWER_POOL.filter((w) => WORDLE_MANAGERS.includes(w));
+    expect(leaked).toEqual([]);
+  });
+
+  it('keeps them valid as GUESSES — rejecting MOURINHO would just baffle people', () => {
+    for (const m of WORDLE_MANAGERS) expect(WORDLE_PLAYERS).toContain(m);
+  });
+
+  it('has no manager scheduled on any unpublished day', () => {
+    const future = WORDLE_ANSWER_LOG
+      .map((w, i) => ({ day: i + 1, w }))
+      .filter(({ day, w }) => day > PUBLISHED_THROUGH_IDX + 1 && WORDLE_MANAGERS.includes(w));
+    expect(future).toEqual([]);
   });
 });

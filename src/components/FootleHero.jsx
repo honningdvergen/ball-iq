@@ -103,15 +103,20 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     return (
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
-          <div className="fh-eyebrow">Daily · Footle</div>
+          {/* The "Daily · Footle" eyebrow that used to sit here is gone (Alex,
+              2026-07-29): the card lives inside a section already headed DAILY
+              and its own title says Footle, so the eyebrow spent a line saying
+              both words a second time. */}
           <div className="fh-title">Footle</div>
-          {/* "· daily" dropped: the eyebrow directly above already reads
-              "Daily · Footle", and the extra word pushed this to four lines
-              with two orphaned words ("daily", "manager") once the tile grid
-              took the right-hand column. */}
+          {/* Kept to TWO lines, deliberately. The tile grid takes the right-hand
+              column, so this text has roughly half the card's width — every
+              extra word costs a whole line and orphans one word on it. "· daily"
+              went first (the section header carries it), then "or manager",
+              which is why the answer pool no longer contains manager-only names:
+              the copy and the puzzle have to agree. */}
           <div className="fh-sub">
             {cols} letters · 6 guesses<br />
-            Surname of a footballer or manager
+            Surname of a footballer
           </div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>

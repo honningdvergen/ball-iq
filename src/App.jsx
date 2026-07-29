@@ -7002,7 +7002,7 @@ class TabErrorBoundary extends React.Component {
 // entirely unreachable for months: a first-time Footle player got a blank grid,
 // a keyboard, and no explanation of the colours).
 const HOW_TO_PLAY = {
-  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real player or manager surname","6 guesses, new player at midnight"] },
+  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real footballer's surname","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
