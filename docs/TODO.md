@@ -9,6 +9,41 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
+## 🚀 1.4.0 IS IN FLIGHT ON BOTH STORES (2026-07-30, ~01:00)
+
+- **Android:** versionCode 9 / 1.4.0 — **SUBMITTED, under review, 100% rollout,
+  all targeted countries.** Previous live build was 6 (1.3.3), 11 active
+  installs. Publishing this also clears Play's Android-16/API-36 warning (the
+  bump was already in the bundle; the flag was against 1.3.3).
+- **iOS:** build 51 / 1.4.0 — submitted for review.
+- Store copy updated on both: question/club COUNTS REMOVED from the App Store
+  promo text and description (Alex: a raw count is a codebase stat, not a reason
+  to download — and both were stale anyway, saying 5,800/50+ when the real
+  figures were 6,394/71). Keywords taken to exactly 100/100 by adding `quiz` and
+  `daily`, with zero overlap against the app name.
+- ⚠️ **The release notes nearly shipped a false claim.** The existing draft said
+  "Rematch now invites your opponent instead of leaving you alone" — written
+  before we knew `send_play_invite` raises `not friends`. For a link-joined
+  opponent it notifies nobody. Replaced with "Rematch tells you whether your
+  opponent was notified." Check release notes against what the code ACTUALLY
+  does, not against what the last sprint intended.
+- ⚠️ **Play Console UI trap:** after clicking "Send N endringer til gjennomgang",
+  the button at that exact position becomes **"Opphev endringene"** (revoke), and
+  a confirm dialog opened over the fresh submission. Answer "Ikke fjern". Do not
+  click twice in that spot.
+- Screenshots deliberately NOT refreshed. Alex: shipping the better build now
+  beats holding it days for cosmetics. Friend is doing them separately.
+
+### Verified NOT a problem (checked 2026-07-30, do not re-audit)
+Play flags edge-to-edge twice and 1.4.0 is the first release at targetSdk 36
+(1.3.3 was 35), where Android enforces it. **Insets ARE handled**: `viewport-fit=cover`
+plus 16 `safe-area-inset` usages — `.sbar` top spacer, `.tabbar` and
+`.tab-content` on `max(env(safe-area-inset-bottom),34px)`, sheets and banners
+too, and the standalone mirror repeats it. Play's warning is generic advice, not
+a symptom. No Android layout bug.
+
+---
+
 ## THE NUMBER THAT MATTERS
 
 **97.2% new users · 2.8% returning · four people came back.** (Clarity, 3 days.)
