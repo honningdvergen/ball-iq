@@ -792,8 +792,17 @@ export default function MarketingHome() {
           <a href="/lists/" className="mkt-link mkt-nav-sec">Records</a>
           <a href="#modes" className="mkt-link mkt-nav-sec">Modes</a>
           <a href="#faq" className="mkt-link mkt-nav-sec">FAQ</a>
-          <a href={PLAY} className="mkt-nav-play mkt-nav-cta">Play free</a>
-          <GreenCTA href={GET_APP} className="mkt-nav-cta">Get the app</GreenCTA>
+          {/* PRIMARY is "Play free", not "Get the app". The page's whole
+              proposition is "no sign-up, no download, play here" — making the
+              dominant header click an off-site App Store trip contradicts it,
+              and an install is a far bigger ask than a tap from someone who
+              has not played yet. 2026 conversion research is explicit: short
+              pages convert ~17% better with ONE above-fold primary plus a
+              low-friction secondary, and "too many CTA types early confuse
+              intent". The install ask survives lower down, at the moment it is
+              earned ("Get 6,000+ questions in the app"). */}
+          <GreenCTA href={PLAY} className="mkt-nav-cta">Play free</GreenCTA>
+          <a href={GET_APP} className="mkt-nav-play mkt-nav-cta">Get the app</a>
         </div>
       </nav>
 
