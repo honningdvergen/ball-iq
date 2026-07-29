@@ -26,28 +26,38 @@ Do not rebuild the "soccer layer".
 
 ## 🔴 NOW — in priority order
 
-### 1. CLAUDE · Next club wave — SPANISH-FIRST
-Wave L put five South American clubs live. **Their fans search in Spanish.** A
-Boca fan types "quiz de Boca Juniors" and finds nothing of ours. We just built
-inventory for a market we cannot be found in — the strongest localisation case
-we have, and the exact opposite of the dead US one, because here the search
-language genuinely differs.
+### 1. ~~CLAUDE · Spanish-first club page~~ — **SHIPPED 2026-07-29 (7e4b584)**
+`/es/quiz/boca-juniors/` is **LIVE and verified by static `<title>`**, with
+reciprocal `en`/`es`/`x-default` hreflang on both halves and the URL in the
+sitemap. 22 questions, translated from our own verified Boca set and keyed by
+the English question `id`, so the page asserts no new facts and two build
+guards fail loudly if the originals move. Both guards were proven by breaking
+them on purpose.
 
-Prove ONE page converts before scaling: `/es/quiz/boca-juniors/` with `hreflang`
-back to the English page, then measure. Do not build 70 on a hunch.
+**MEASURE BEFORE SCALING.** Do not build the other 70. The question this page
+exists to answer is whether Spanish search traffic arrives AND converts, and
+its FAQ says plainly that the app itself is English — if people bounce there,
+the answer is "not until the app is localised too". Check GSC for
+`/es/quiz/boca-juniors/` impressions in ~2-3 weeks.
 
 Further clubs: `scripts/seo/leagues.mjs` maps 356, we have 71. **Saturation
 finding from the tier-1 top-up: 75% of rejections were duplicates.** Chelsea and
 Man Utd are full; Dortmund had room. Check saturation before commissioning.
 
-### 2. CLAUDE · MP results screen
-A playtester called it dull. It is shown immediately after playing a friend —
-the exact share-and-return moment, and one of the few places the 2.8% can move.
-Small surface, high leverage.
+### 2. ~~CLAUDE · MP results screen~~ — **the visual half was already done**
+This item was STALE: `a74fe9d` (podium, count-up, entrance choreography) and
+`f1da201` (1v1 winner crown) had already shipped the VS board, margin line and
+head-to-head chip. Classic orientation trap — checked before building.
+
+The real gap was underneath it: **online multiplayer awarded no XP at all**,
+the only mode outside the level economy, so the ending looked good and meant
+nothing. Fixed in `2938c5c` — `getMpXP(won, score) = max(15, score*10 + 50 if
+won)`, paid from the once-per-room ended effect, shown as "+N XP earned ⚡" like
+every other result screen. **Not device-verified** — needs two live clients.
 
 ### 3. ALEX · 2-device MP test
-Unblocks the last of the MP work. The stall watchdog is committed — it is a
-real-network failure mode, and a green build proves compilation, not behaviour.
+Now unblocks three things, not one: the stall watchdog, the MP stats write, and
+the new MP XP award. A green build proves compilation, not behaviour.
 
 ---
 
@@ -63,13 +73,29 @@ real-network failure mode, and a green build proves compilation, not behaviour.
   `arsenal quizzes` 19.3, `premier league quizzes` 26.7. These are the only US
   queries where a click is possible at all — the Gold Cup cluster ranks 8-10
   with ZERO clicks because Google answers those in the SERP itself.
-- **ALEX** · Submit 1.4.0. iOS build 50 + Android AAB (versionCode 8) are built
-  and verified, but ⚠️ they predate today's commits — re-sync first:
+- **ALEX** · Submit 1.4.0. iOS build 51 + Android versionCode 9 passed preflight
+  earlier today, but ⚠️ they now predate a lot: one-screen onboarding, the
+  rating-prompt fixes, the Footle explainer removal, the invite feedback and MP
+  XP all landed after. Re-sync before archiving:
   `rm -rf dist && npm run build && npx cap sync ios && node scripts/prune-native-web-assets.mjs`
-- **ALEX** · App Store screenshots. Method agreed: seed REAL state in the
-  simulator (set a name, play a Footle and a Daily 7 so streak and rating are
-  genuine). Never composite — both stores treat a fabricated screenshot as
-  misrepresentation.
+  then `node scripts/preflight-release.mjs` (it checks the native bundle really
+  matches source — the thing that nearly shipped Trail early).
+  ⚠️ `npx cap sync ios` currently fails at the **pod install** step on this Mac
+  (a Ruby/CocoaPods problem, not ours). `cap copy` still succeeds, so the web
+  bundle syncs correctly and builds are fine — but a NEW native plugin would not
+  install until that is fixed.
+- **CLAUDE/ALEX** · App Store screenshots. `screenshots/apple/` and
+  `screenshots/android/` exist. Method agreed: seed REAL state in the simulator
+  (set a name, play a Footle and a Daily 7 so streak and rating are genuine).
+  Never composite — both stores treat a fabricated screenshot as
+  misrepresentation. iPhone 17 Pro Max shoots at 1320×2868, exactly the 6.9"
+  requirement.
+  - **Footle frame: shoot on or after 2026-07-30.** Footle #87 (today) is RICE,
+    four letters, and a 4-wide grid is the thing Alex specifically does not want
+    in the listing. #88 onward are all 5-8.
+  - ⚠️ **Android is BLOCKED**: no AVD and no system image on this Mac. Either
+    download a system image (~1.5GB) and create an AVD, or shoot on Alex's
+    physical Android. Do NOT put iOS shots in the Play listing.
 - **ALEX** · Clarity AI-bot tracking (2 clicks) + Bing Webmaster Tools (needs
   your sign-in). Bot tracking tells us whether AI crawlers actually reach the
   `/lists` pages we built as an AI-answer surface — currently unknowable.
@@ -92,6 +118,19 @@ real-network failure mode, and a green build proves compilation, not behaviour.
 
 ---
 
+## ⚠️ ONE DECISION WAITING ON ALEX
+
+**Should `send_play_invite` accept "we were in the same room" as grounds to
+notify?** Right now it raises `not friends` unless the two accounts are accepted
+friends. That gate is correct as anti-spam — otherwise anyone could ping a
+stranger by joining their room — but an online opponent normally arrives via a
+shared LINK, so **the usual Rematch notifies nobody.** The client no longer
+pretends otherwise (`d5e0026`: it now says "share the link to bring them back"),
+but the loop still leaks at the last step. Widening it is a prod migration
+touching a spam boundary, so it is Alex's call, not one to make unattended.
+
+---
+
 ## HEALTH — verified 2026-07-29
 
 - **Indexing is healthy.** 151 indexed / 18 not (queued + intentional
@@ -109,6 +148,31 @@ real-network failure mode, and a green build proves compilation, not behaviour.
 - **Profile picture is one thing now (7490c76):** upload a photo, or the Ball IQ
   ball. Emoji set removed — 6 of 108 profiles had ever used it, 10 had found the
   photo upload.
+- **Onboarding is ONE screen (b4e095d).** The skill-level step wrote exactly one
+  thing — `biq_settings.defaultDiff`, already in Settings, Classic-only — and
+  asked people to self-assess before playing anything. Everyone starts on
+  medium now, which is what skippers already got. The taster survives: it is the
+  only screen between "opened the app" and "played something".
+- **The rating prompt was quietly self-limiting (b4e095d).** `MAX_LIFETIME` was
+  4, and `requestReview()` resolves identically whether iOS rendered the sheet
+  or silently declined — so four invisible no-ops retired a user permanently,
+  and the most engaged players were likeliest to burn all four on nothing. Now
+  24; Apple's 3-per-365 is the real ceiling. It also used to stack the iOS
+  rating card on top of our own notification sheet on a first-ever Footle solve;
+  it now waits, and requires a solve on an earlier day.
+  ⚠️ **Wiring is proven, DELIVERY is not.** In the Simulator and in any build
+  not installed from the App Store or TestFlight, that sheet is a preview —
+  tapping a star submits nothing. Only App Store Connect's ratings count can
+  confirm. And it produces star RATINGS, not written reviews.
+- **Footle's first-run explainer is gone (f684972).** Two of its five lines
+  repeated the card you tapped to get there, two were Wordle's colour
+  convention, and the fifth — "guesses must be a real footballer's surname" —
+  was FALSE: `submitGuess` checks length and nothing else. Replaced with a
+  legend strip above the grid that retires itself after the first guess.
+- **Footle answers are 5-8 letters from #88 onward, mechanically.** All 16
+  non-conforming answers are in the published past; #87 (RICE, today) is the
+  last. The guard in `tests/unit/wordle-schedule.test.js` was verified by
+  injecting a 4-letter future answer and watching it fail.
 - **Club-page reflow DONE (94cda78).** Measured 13,953px (16.5 screens), not the
   12,200 this file claimed. "More quizzes to try" was 5,734px — 41% of the page
   and the single biggest block, for a LINK LIST. Compacted the tiles: 11,953px

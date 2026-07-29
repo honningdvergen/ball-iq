@@ -35,6 +35,9 @@ import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
+import { CLUBS_PT } from './seo/clubs-pt.mjs';
+// One list, so a third language is a file plus a spread rather than a rewrite.
+const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT];
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
@@ -1177,19 +1180,26 @@ ${footer()}`;
 // ── per-club page ─────────────────────────────────────────────────────────────
 // Mirrors buildCategoryPage but filters the bank by `club` instead of `cat`.
 // Prose comes from scripts/seo/clubs.mjs (fact-checked, currency-verified).
-// ── Spanish club page (pilot) ────────────────────────────────────────────────
-// Emits /es/quiz/<slug>/. Deliberately its own builder rather than a flag on
+// ── Localised club page (pilots) ─────────────────────────────────────────────
+// Emits /<lang>/quiz/<slug>/. Deliberately its own builder rather than a flag on
 // buildClubPage: almost every string on a club page is English prose baked into
 // the shared renderers (taster eyebrow, covers grid, CTA band), and threading a
-// translation table through all of them to serve ONE page would be the tail
-// wagging the dog. This renders the Spanish content directly and reuses only
+// translation table through all of them to serve two pages would be the tail
+// wagging the dog. This renders the localised content directly and reuses only
 // the renderers that take pure data.
 //
-// The questions come from clubs-es.mjs, which stores a translation per English
-// question id. We resolve every id against the bank and throw if one is missing
-// — a Boca question deleted or re-idded later must break the build, not leave
-// this page quoting something that no longer exists.
-function buildClubPageEs(cfg) {
+// ONE PAGE PER LANGUAGE, not one page total. Wave L shipped five South American
+// clubs and they do NOT share a language: Boca and River are Argentine, while
+// Corinthians, Flamengo and Palmeiras are Brazilian — so a Spanish page leaves
+// the majority of that wave unserved. Spanish and Portuguese are separate
+// search markets with separate competition, so each needs its own pilot before
+// anything scales. Two experiments, not seventy pages on a hunch.
+//
+// The questions come from clubs-<lang>.mjs, which stores a translation per
+// English question id. We resolve every id against the bank and throw if one is
+// missing — a question deleted or re-idded later must break the build, not
+// leave this page quoting something that no longer exists.
+function buildClubPageIntl(cfg, siblings = []) {
   const byId = new Map(QB.filter((q) => q.club === cfg.club).map((q) => [q.id, q]));
   const rows = [...cfg.taster, ...cfg.sample];
   const orphans = rows.filter((r) => !byId.has(r.id)).map((r) => r.id);
@@ -1246,11 +1256,15 @@ function buildClubPageEs(cfg) {
   const medium = all.filter((x) => x.diff === 'medium').length;
   const hard = all.filter((x) => x.diff === 'hard').length;
 
-  const canonical = `${SITE.base}/es/quiz/${cfg.slug}/`;
+  const canonical = `${SITE.base}/${cfg.lang}/quiz/${cfg.slug}/`;
   const enHref = `${SITE.base}/quiz/${cfg.slug}/`;
+  // The cluster names EVERY language this slug exists in, not just this page's
+  // own — a two-language cluster where each page only knows about English is
+  // not a cluster. x-default points at English: it is the fallback for a reader
+  // whose language we do not publish.
   const alternates = [
     { hreflang: 'en', href: enHref },
-    { hreflang: 'es', href: canonical },
+    ...siblings.map((s) => ({ hreflang: s.lang, href: `${SITE.base}/${s.lang}/quiz/${s.slug}/` })),
     { hreflang: 'x-default', href: enHref },
   ];
   const c = cfg.copy;
@@ -1289,7 +1303,7 @@ function buildClubPageEs(cfg) {
 <script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: 'es', alternates })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
 <body>
 ${NAV}
 <main id="main">
@@ -1334,10 +1348,10 @@ ${adSlot('afterFaq')}
 </main>
 ${footer()}`;
 
-  const dir = resolve(DIST, 'es', 'quiz', cfg.slug);
+  const dir = resolve(DIST, cfg.lang, 'quiz', cfg.slug);
   mkdirSync(dir, { recursive: true });
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
-  return { slug: cfg.slug, lang: 'es', canonical, count: rows.length };
+  return { slug: cfg.slug, lang: cfg.lang, canonical, count: rows.length };
 }
 
 function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
@@ -1397,11 +1411,11 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
   // The other half of the hreflang pair. Google discards a cluster whose links
   // are not reciprocal, so the English page has to point back at the Spanish
   // one — and it only does so for slugs that actually have a Spanish page.
-  const esTwin = CLUBS_ES.find((e) => e.slug === cfg.slug);
-  const alternates = esTwin
+  const twins = CLUBS_INTL.filter((e) => e.slug === cfg.slug);
+  const alternates = twins.length
     ? [
       { hreflang: 'en', href: canonical },
-      { hreflang: 'es', href: `${SITE.base}/es/quiz/${cfg.slug}/` },
+      ...twins.map((t) => ({ hreflang: t.lang, href: `${SITE.base}/${t.lang}/quiz/${cfg.slug}/` })),
       { hreflang: 'x-default', href: canonical },
     ]
     : [];
@@ -2642,7 +2656,7 @@ function buildSitemap(livePages, listPages = [], esPages = []) {
     // follow the hreflang from the English twin — a new URL on a low-authority
     // site can sit undiscovered for weeks otherwise, and the whole point of a
     // pilot is to get an answer quickly.
-    ...esPages.map((p) => ({ loc: `${SITE.base}/es/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
+    ...esPages.map((p) => ({ loc: `${SITE.base}/${p.lang}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
     ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
@@ -2789,7 +2803,10 @@ async function main() {
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
-  const builtEs = CLUBS_ES.map((c) => buildClubPageEs(c));
+  // Siblings = every OTHER language this slug exists in, so each localised page
+  // links the whole cluster rather than just itself and English.
+  const builtEs = CLUBS_INTL.map((c) =>
+    buildClubPageIntl(c, CLUBS_INTL.filter((s) => s.slug === c.slug)));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   const listTasterIds = new Set();
@@ -2809,7 +2826,7 @@ async function main() {
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
-  for (const b of builtEs) console.log(`  ✓ /es/quiz/${b.slug}/  (español, ${b.count} preguntas traducidas)`);
+  for (const b of builtEs) console.log(`  ✓ /${b.lang}/quiz/${b.slug}/  (${b.lang}, ${b.count} translated Qs)`);
   for (const b of builtPlayers) console.log(`  ✓ /quiz/${b.slug}/  (player, ${b.count} Qs in bank)`);
   for (const b of builtNations) console.log(`  ✓ /quiz/${b.slug}/  (nation, ${b.count} Qs in bank)`);
   for (const b of builtLists) console.log(`  ✓ /lists/${b.slug}/  (reference list, ${b.count} rows)`);
