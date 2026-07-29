@@ -34,6 +34,7 @@ import { dirname, resolve } from 'node:path';
 import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
@@ -742,9 +743,17 @@ ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
 // render adSlot() calls should pass it — see the AD_SLOTS placement policy.
 // The account meta below stays on every page unconditionally: it is inert
 // (makes no request) and is Google's raw-HTML site-ownership signal.
-function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage }) {
+// `lang` + `alternates` exist for the Spanish pilot (/es/quiz/boca-juniors/).
+// Both default to today's behaviour, so every existing page renders byte-identical.
+//
+// hreflang has to be RECIPROCAL or Google ignores the whole cluster — the
+// English page must point at the Spanish one as well as the other way round —
+// and the set must include an x-default. That is why `alternates` is a list
+// passed in by the caller rather than something derived here: only the caller
+// knows both halves of the pair exist.
+function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [] }) {
   return `<!DOCTYPE html>
-<html lang="en" style="background-color:${PAGE_BG}">
+<html lang="${lang}" style="background-color:${PAGE_BG}">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -792,7 +801,8 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 </script>` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
-<link rel="canonical" href="${canonical}" />
+<link rel="canonical" href="${canonical}" />${alternates.map((a) => `
+<link rel="alternate" hreflang="${a.hreflang}" href="${a.href}" />`).join('')}
 <meta property="og:type" content="website" />
 <meta property="og:url" content="${canonical}" />
 <meta property="og:title" content="${esc(title)}" />
@@ -1167,6 +1177,169 @@ ${footer()}`;
 // ── per-club page ─────────────────────────────────────────────────────────────
 // Mirrors buildCategoryPage but filters the bank by `club` instead of `cat`.
 // Prose comes from scripts/seo/clubs.mjs (fact-checked, currency-verified).
+// ── Spanish club page (pilot) ────────────────────────────────────────────────
+// Emits /es/quiz/<slug>/. Deliberately its own builder rather than a flag on
+// buildClubPage: almost every string on a club page is English prose baked into
+// the shared renderers (taster eyebrow, covers grid, CTA band), and threading a
+// translation table through all of them to serve ONE page would be the tail
+// wagging the dog. This renders the Spanish content directly and reuses only
+// the renderers that take pure data.
+//
+// The questions come from clubs-es.mjs, which stores a translation per English
+// question id. We resolve every id against the bank and throw if one is missing
+// — a Boca question deleted or re-idded later must break the build, not leave
+// this page quoting something that no longer exists.
+function buildClubPageEs(cfg) {
+  const byId = new Map(QB.filter((q) => q.club === cfg.club).map((q) => [q.id, q]));
+  const rows = [...cfg.taster, ...cfg.sample];
+  const orphans = rows.filter((r) => !byId.has(r.id)).map((r) => r.id);
+  if (orphans.length) {
+    throw new Error(
+      `[gen-seo] /es/quiz/${cfg.slug}: ${orphans.length} translated question(s) no longer resolve in the bank: ${orphans.join(', ')}. ` +
+      `Either the English question was deleted/re-idded, or its \`club\` changed. Fix scripts/seo/clubs-es.mjs in the same change as the bank edit.`,
+    );
+  }
+  // Answer-key agreement.
+  //
+  // Worth stating what is actually guarded, because the first version of this
+  // check guarded the wrong thing and failed the build on a CORRECT translation
+  // ("Azul con banda amarilla" shares no letters with "Blue with a yellow
+  // band"). No code can judge whether Spanish prose is a good translation. What
+  // it can do is notice when the English original moves underneath a
+  // translation that was checked by hand — a corrected answer key in
+  // src/questions.js silently leaving this page wrong, in a language nobody
+  // reviewing that correction reads.
+  //
+  // Two shapes, because two kinds of answer exist:
+  //
+  //   Proper nouns ("River Plate", "Carlos Bianchi", "40") survive translation
+  //   unchanged, so the resolved strings are compared directly — loosely, since
+  //   accents and casing legitimately shift (Grêmio/Gremio), and by digits when
+  //   the answer is numeric ("Los años 2000" vs "The 2000s").
+  //
+  //   Translated prose shares no letters with its original, so those entries
+  //   carry `en`: the exact English answer they were translated FROM, compared
+  //   to the bank verbatim. It reads as redundant and is not — it is the
+  //   tripwire. Change that English answer and this throws, naming the id.
+  const fold = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+  const mismatched = rows.filter((r) => {
+    const en = byId.get(r.id);
+    const enAns = en.o[en.a];
+    if (r.en != null) return fold(r.en) !== fold(enAns);
+    const a = fold(enAns);
+    const b = fold(r.o[r.a]);
+    const aD = a.replace(/[^0-9]/g, '');
+    const bD = b.replace(/[^0-9]/g, '');
+    if (aD && aD === bD) return false;
+    return !(a.includes(b) || b.includes(a));
+  });
+  if (mismatched.length) {
+    throw new Error(
+      `[gen-seo] /es/quiz/${cfg.slug}: translated answer key no longer agrees with the English original for ` +
+      mismatched.map((r) => `${r.id} (es="${r.o[r.a]}"${r.en ? `, declared en="${r.en}"` : ''} vs bank="${byId.get(r.id).o[byId.get(r.id).a]}")`).join('; ') +
+      `. If the English answer was corrected, correct the translation too. If the Spanish answer is translated prose rather than a proper noun, give the entry an \`en\` field naming the exact English answer it came from.`,
+    );
+  }
+
+  const all = clubRows(cfg.club);
+  const easy = all.filter((x) => x.diff === 'easy').length;
+  const medium = all.filter((x) => x.diff === 'medium').length;
+  const hard = all.filter((x) => x.diff === 'hard').length;
+
+  const canonical = `${SITE.base}/es/quiz/${cfg.slug}/`;
+  const enHref = `${SITE.base}/quiz/${cfg.slug}/`;
+  const alternates = [
+    { hreflang: 'en', href: enHref },
+    { hreflang: 'es', href: canonical },
+    { hreflang: 'x-default', href: enHref },
+  ];
+  const c = cfg.copy;
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Ball IQ', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
+        ],
+      },
+      eduQuizLd(cfg.h1, cfg.sample),
+    ],
+  });
+
+  const clubBadge = CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name);
+  const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: 'Quiz de club' });
+  const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
+
+  // Spanish taster markup. Same widget + same TASTER_JS as the English pages
+  // (the script reads its questions from the JSON block, so it is language
+  // agnostic); only the surrounding copy differs.
+  const payload = cfg.taster.map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
+  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
+<div class="eyebrow">${esc(c.tasterEyebrow)}</div>
+<h2 id="taster-h">${esc(c.tasterH)}</h2>
+<div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}">
+<p class="tph">${esc(c.tasterPh)} <a href="${SITE.base}/play?club=${cfg.slug}">${esc(c.playLabel)} →</a></p>
+</div>
+<p class="taster-note">${esc(c.tasterNote)}</p>
+<script type="application/json" id="biq-taster-data">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>
+<script>${TASTER_JS}</script>
+</section>`;
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: 'es', alternates })}
+<body>
+${NAV}
+<main id="main">
+${heroTwoCol({
+    crumbItems: [
+      { name: 'Ball IQ', url: `${SITE.base}/` },
+      { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+      { name: cfg.h1, url: canonical },
+    ],
+    badge: { text: clubBadge, emoji: false, color: CLUB_COLOR[cfg.slug] },
+    kind: cfg.kind,
+    name: cfg.name,
+    h1: cfg.h1,
+    lead: cfg.description,
+    statLine: cfg.statLine,
+    playHref: '#play',
+    playLabel: cfg.playLabel,
+  }, tasterHtml)}
+<section class="sec narrow" id="play">
+<h2>${esc(c.playSection)}</h2>
+<p class="sub">${esc(c.playSub)}</p>
+${renderQA(cfg.sample)}
+</section>
+${adSlot('afterQA')}
+<section class="sec"><div class="appband">
+<div class="appband-flame" aria-hidden="true">🔥</div>
+<div class="appband-in">
+<h2>${esc(c.bandH)}</h2>
+<p>${esc(c.bandP)}</p>
+${storeBadges()}
+</div>
+</div></section>
+<section class="sec narrow">
+<h2>${esc(c.alsoH)}</h2>
+<p class="sub">${esc(c.alsoP)} <a href="${enHref}" hreflang="en">${esc(c.alsoLink)}</a></p>
+</section>
+<section class="sec narrow">
+<h2>${esc(c.faqH)}</h2>
+${renderFaq(cfg.faq, { q: c.aboutQ, html: `${introHtml}\n<p class="stats">${esc(c.statsLine(all.length, easy, medium, hard))}</p>` })}
+</section>
+${adSlot('afterFaq')}
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, 'es', 'quiz', cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, lang: 'es', canonical, count: rows.length };
+}
+
 function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
   const all = clubRows(cfg.club);
   const hints = clubHintRows(cfg.club);
@@ -1221,7 +1394,18 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
 
   const clubBadge = CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name);
   const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: 'Club quiz' });
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage })}
+  // The other half of the hreflang pair. Google discards a cluster whose links
+  // are not reciprocal, so the English page has to point back at the Spanish
+  // one — and it only does so for slugs that actually have a Spanish page.
+  const esTwin = CLUBS_ES.find((e) => e.slug === cfg.slug);
+  const alternates = esTwin
+    ? [
+      { hreflang: 'en', href: canonical },
+      { hreflang: 'es', href: `${SITE.base}/es/quiz/${cfg.slug}/` },
+      { hreflang: 'x-default', href: canonical },
+    ]
+    : [];
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, alternates })}
 <body>
 ${NAV}
 <main id="main">
@@ -2440,7 +2624,7 @@ ${footer()}`;
   return { total, leagues: LEAGUES.length };
 }
 
-function buildSitemap(livePages, listPages = []) {
+function buildSitemap(livePages, listPages = [], esPages = []) {
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
   // Pages are regenerated every deploy, so the build date is an honest hint.
@@ -2454,6 +2638,11 @@ function buildSitemap(livePages, listPages = []) {
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
+    // Spanish pilot pages. Listed so Google discovers them without waiting to
+    // follow the hreflang from the English twin — a new URL on a low-authority
+    // site can sit undiscovered for weeks otherwise, and the whole point of a
+    // pilot is to get an answer quickly.
+    ...esPages.map((p) => ({ loc: `${SITE.base}/es/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
     ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
@@ -2600,6 +2789,7 @@ async function main() {
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
+  const builtEs = CLUBS_ES.map((c) => buildClubPageEs(c));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   const listTasterIds = new Set();
@@ -2611,7 +2801,7 @@ async function main() {
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
@@ -2619,6 +2809,7 @@ async function main() {
   for (const b of built) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} Qs in bank)`);
   for (const b of builtListicles) console.log(`  ✓ /quiz/${b.slug}/  (${b.count} featured Qs)`);
   for (const b of builtClubs) console.log(`  ✓ /quiz/${b.slug}/  (club, ${b.count} Qs in bank)`);
+  for (const b of builtEs) console.log(`  ✓ /es/quiz/${b.slug}/  (español, ${b.count} preguntas traducidas)`);
   for (const b of builtPlayers) console.log(`  ✓ /quiz/${b.slug}/  (player, ${b.count} Qs in bank)`);
   for (const b of builtNations) console.log(`  ✓ /quiz/${b.slug}/  (nation, ${b.count} Qs in bank)`);
   for (const b of builtLists) console.log(`  ✓ /lists/${b.slug}/  (reference list, ${b.count} rows)`);
