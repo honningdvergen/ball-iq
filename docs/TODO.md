@@ -130,6 +130,28 @@ the new MP XP award. A green build proves compilation, not behaviour.
 
 ---
 
+## 🔴 FOUND 2026-07-29 LATE — Transfer Trail has NO web page
+
+Footle has `/football-wordle/` plus `/football-wordle/answer` (the daily
+traffic spigot). **Trail has nothing** — zero references in
+`gen-seo-pages.mjs`, zero in the sitemap. A whole game mode with no search
+surface, while its nearest sibling has two pages and a recurring one.
+
+⚠️ **This needs a decision from Alex before it can be built, because the mode is
+dark until 2026-09-01 and the anchor is still marked PROVISIONAL.** A page that
+says "play today's Transfer Trail" would promise something that does not exist.
+
+The argument for building it NOW anyway: a new URL on this domain takes weeks to
+index and rank, so publishing ~5 weeks ahead means it is aged and indexed the
+day Trail launches. The cost: publishing a date makes the anchor a public
+commitment and it stops being provisional.
+
+So: **Alex picks.** (a) publish now with an honest "starts 1 September" framing
+and freeze the anchor for good, or (b) hold the page until launch and accept
+starting from zero crawl age. Do not publish a launch date unilaterally.
+
+---
+
 ## ⚠️ ONE DECISION WAITING ON ALEX
 
 **Should `send_play_invite` accept "we were in the same room" as grounds to
@@ -152,11 +174,23 @@ touching a spam boundary, so it is Alex's call, not one to make unattended.
   `webkit.messageHandlers` console error is NOT ours — proven in a clean room;
   it is injected by an extension or a social in-app webview.
 - Bank 6,394 · 71 club pages · 25 player pages · 50 reference lists.
-- **Transfer Trail is LIVE (b23b489).** Launched on web 2026-07-29; Trail #1 is
-  Fernando Torres. 38 careers, schedule frozen 380 days. ⚠️ `TRAIL_ANCHOR_DAY`
-  must NEVER move again — it renumbers every shared grid. Native picks it up on
-  the next build. **Repeat every 38 days**, so forge a second roster wave before
-  early September.
+- ⚠️ **Transfer Trail is NOT live — this file said it was, and that was wrong.**
+  Verified 2026-07-29 23:00: `TRAIL_ANCHOR_DAY = 20697` (2026-09-01) against
+  today's day index 20663, so `getTrailNumber()` returns **-33**,
+  `getTrailAnswer()` returns null, and the app correctly sends you home rather
+  than render an empty board. The mode is DARK, exactly as the comment in
+  `src/lib/trail.js` says. Built and verified, not launched.
+  - Playthrough confirmed working (dev server, anchor temporarily patched then
+    reverted): ladder reveals on each miss, wrong guesses strike through, club
+    colours + real 3-letter codes, loans marked amber, unknown clubs fall back
+    to a neutral chip, full reveal + "Got it on 3 clubs" + share.
+  - 38 careers, schedule frozen 380 days. ⚠️ `TRAIL_ANCHOR_DAY` must NEVER move
+    once a grid has been shared — it renumbers every share. **Repeats every 38
+    days**, so forge a second roster wave before the anchor date.
+  - ⚠️ **NEVER preview Trail by patching the anchor in a build that gets
+    `cap sync`'d.** That is what nearly shipped Trail early this morning. Use
+    the dev server + browser; the native bundle then cannot be contaminated.
+    `node scripts/preflight-release.mjs` is the backstop, not the plan.
 - **Profile picture is one thing now (7490c76):** upload a photo, or the Ball IQ
   ball. Emoji set removed — 6 of 108 profiles had ever used it, 10 had found the
   photo upload.
