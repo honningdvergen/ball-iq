@@ -105,8 +105,12 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
         <div className="fh-body">
           <div className="fh-eyebrow">Daily · Footle</div>
           <div className="fh-title">Footle</div>
+          {/* "· daily" dropped: the eyebrow directly above already reads
+              "Daily · Footle", and the extra word pushed this to four lines
+              with two orphaned words ("daily", "manager") once the tile grid
+              took the right-hand column. */}
           <div className="fh-sub">
-            {cols} letters · 6 guesses · daily<br />
+            {cols} letters · 6 guesses<br />
             Surname of a footballer or manager
           </div>
           <div className="fh-cta-row">
