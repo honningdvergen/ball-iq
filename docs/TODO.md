@@ -26,19 +26,31 @@ Do not rebuild the "soccer layer".
 
 ## 🔴 NOW — in priority order
 
-### 1. ~~CLAUDE · Spanish-first club page~~ — **SHIPPED 2026-07-29 (7e4b584)**
-`/es/quiz/boca-juniors/` is **LIVE and verified by static `<title>`**, with
-reciprocal `en`/`es`/`x-default` hreflang on both halves and the URL in the
-sitemap. 22 questions, translated from our own verified Boca set and keyed by
-the English question `id`, so the page asserts no new facts and two build
-guards fail loudly if the originals move. Both guards were proven by breaking
-them on purpose.
+### 1. ~~CLAUDE · Localised club pages~~ — **TWO PILOTS LIVE 2026-07-29**
+- `/es/quiz/boca-juniors/` (7e4b584) — Spanish
+- `/pt/quiz/flamengo/` (5a58437) — Brazilian Portuguese
 
-**MEASURE BEFORE SCALING.** Do not build the other 70. The question this page
-exists to answer is whether Spanish search traffic arrives AND converts, and
-its FAQ says plainly that the app itself is English — if people bounce there,
-the answer is "not until the app is localised too". Check GSC for
-`/es/quiz/boca-juniors/` impressions in ~2-3 weeks.
+Both **verified live by static `<title>`**, reciprocal hreflang on both halves,
+per-slug clusters (Boca advertises `es` only, Flamengo `pt` only), both in the
+sitemap. 22 questions each, translated from our own verified sets and keyed by
+the English question `id`, so neither page asserts a new fact and two build
+guards fail loudly if an original moves. Both guards proven by breaking them.
+
+⚠️ **Wave L is mostly BRAZILIAN, which the Spanish page alone missed.** Boca and
+River are Argentine; Corinthians, Flamengo and Palmeiras are Brazilian. That is
+why there are two pilots and not one — separate languages, separate search
+markets, separate competition.
+
+**MEASURE BEFORE SCALING.** Still unbuilt on purpose: River Plate (es),
+Corinthians + Palmeiras (pt), and the other 69 clubs. Check GSC for both URLs
+in ~2-3 weeks — impressions AND whether they convert. A third language is now a
+data file plus a spread (`scripts/seo/clubs-<lang>.mjs`), so scaling is cheap
+once the answer is in.
+
+⚠️ **What a reader actually gets today:** the PAGE is fully playable in their
+language (taster + Q&A + explanations, 22 questions). The APP is still English,
+and both FAQs say so. If the bounce lands on that FAQ, the answer to "should we
+localise?" is "not before the app is".
 
 Further clubs: `scripts/seo/leagues.mjs` maps 356, we have 71. **Saturation
 finding from the tier-1 top-up: 75% of rejections were duplicates.** Chelsea and
