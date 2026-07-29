@@ -26,23 +26,7 @@ Do not rebuild the "soccer layer".
 
 ## 🔴 NOW — in priority order
 
-### 1. CLAUDE · Split the question bank
-2.0MB raw / 622KB gzipped, parsed in ONE ~700ms main-thread task at t≈2s —
-exactly when a visitor decides to tap. It is the entire "INP needs improvement"
-in Clarity; LCP and CLS already pass.
-
-**JSON.parse was tried 2026-07-29 and FAILED** (779ms vs 651ms baseline, and
-+286kB). Do not retry it. The problem is volume, not encoding: we ship 6,394
-questions so someone can answer ten.
-
-Design that survives the Daily-7 constraint — selection must stay
-date-deterministic across devices (it feeds `/c/` links and the "you beat X"
-modal), so ship a lightweight **index** (`id + cat + club + diff`, no text) that
-every selector reads, then fetch only the chosen rows' text.
-
-⚠️ Cost grows with every wave. The bank went 6,010 → 6,394 today alone.
-
-### 2. CLAUDE · Next club wave — SPANISH-FIRST
+### 1. CLAUDE · Next club wave — SPANISH-FIRST
 Wave L put five South American clubs live. **Their fans search in Spanish.** A
 Boca fan types "quiz de Boca Juniors" and finds nothing of ours. We just built
 inventory for a market we cannot be found in — the strongest localisation case
@@ -56,12 +40,12 @@ Further clubs: `scripts/seo/leagues.mjs` maps 356, we have 71. **Saturation
 finding from the tier-1 top-up: 75% of rejections were duplicates.** Chelsea and
 Man Utd are full; Dortmund had room. Check saturation before commissioning.
 
-### 3. CLAUDE · MP results screen
+### 2. CLAUDE · MP results screen
 A playtester called it dull. It is shown immediately after playing a friend —
 the exact share-and-return moment, and one of the few places the 2.8% can move.
 Small surface, high leverage.
 
-### 4. ALEX · Transfer Trail — spot-check 30 careers, then it launches
+### 3. ALEX · Transfer Trail — spot-check 30 careers, then it launches
 38 players ready (8 yours from July, 30 forged 2026-07-29). Routing is LIVE and
 inert; it lights up the moment the answer log is frozen.
 
@@ -76,7 +60,7 @@ Wikipedia lists the parent first; BeSoccer orders by season played. Treat
 After your check: I freeze `TRAIL_ANSWER_LOG`, set `TRAIL_ANCHOR_DAY` (it can
 never move once live), and Trail #1 ships.
 
-### 5. ALEX · 2-device MP test
+### 4. ALEX · 2-device MP test
 Unblocks the last of the MP work. The stall watchdog is committed — it is a
 real-network failure mode, and a green build proves compilation, not behaviour.
 
@@ -134,6 +118,11 @@ real-network failure mode, and a green build proves compilation, not behaviour.
   `webkit.messageHandlers` console error is NOT ours — proven in a clean room;
   it is injected by an extension or a social in-app webview.
 - Bank 6,394 · 71 club pages · 25 player pages · 50 reference lists.
+- **Bank split SHIPPED (aca556f).** Browsing no longer loads the bank: the club
+  and league pickers read a 46kB text-free index instead of 621kB, ~4× cheaper
+  to parse, and the full parse now happens on real play intent rather than at
+  t≈2s on Home. Watch Clarity's INP over the next few days — the fix is
+  measured in V8 and reasoned about in the browser, not yet observed live.
 
 ---
 
@@ -148,3 +137,10 @@ real-network failure mode, and a green build proves compilation, not behaviour.
   method, not the code.
 - **Search by content, not by planned name.** "Tottenham" found nothing because
   the bank says "Tottenham Hotspur"; three clubs were nearly re-built as missing.
+- **`src/questions-index.js` is generated — never hand-edit, never reorder, never
+  add question text to it.** Row order is load-bearing (the Daily 7 shuffles by
+  array position, and `/c/` links assume every device agrees). It exists so
+  browsing doesn't pay for playing; putting `q`/`o`/`hint` in it defeats the file.
+  `npm run gen:index` regenerates; dev and build do it automatically.
+- **JSON.parse on the bank makes things WORSE** — tried 2026-07-29, 779ms vs
+  651ms and +286kB. The problem is volume, not encoding. Don't retry it.
