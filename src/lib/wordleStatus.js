@@ -13,6 +13,36 @@ export function getWordleDateKey() {
   return dateToDateKey(new Date());
 }
 
+// Footle solves on this device from days BEFORE today.
+//
+// There is no counter to read — Footle's only trace is one `biq_wordle_<ymd>`
+// key per day played, so the count IS a scan. That is fine: the keyset is one
+// entry per day of play, and this runs once, on a solve.
+//
+// Today is excluded ON PURPOSE, and not as a rounding choice. The caller is the
+// App Store rating ask, which runs off the solve event — but the day's state is
+// written by a useEffect, so whether today's key exists yet when we count is a
+// race React does not promise either way. Excluding today makes the answer the
+// same in both orderings: "has this person ever solved one on an earlier day?"
+//
+// That question is also the one worth asking. Rating an app on the first puzzle
+// you have ever played produces "seems fine?" three-star ratings; having come
+// back on a second day IS the opinion we are asking them to give.
+export function countPriorFootleSolves() {
+  const todayKey = `biq_wordle_${getWordleDateKey()}`;
+  let n = 0;
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || !k.startsWith("biq_wordle_") || k === todayKey) continue;
+      try {
+        if (JSON.parse(localStorage.getItem(k))?.status === "won") n++;
+      } catch { /* a malformed day is not a solve */ }
+    }
+  } catch { return 0; }
+  return n;
+}
+
 // Returns one of:
 //   { kind: "ready" } | { kind: "in-progress", used: N } | { kind: "won", used: N } | { kind: "lost" }
 export function readWordleTodayStatus() {

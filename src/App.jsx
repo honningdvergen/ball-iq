@@ -24,7 +24,7 @@ import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
-import { readWordleTodayStatus, getWordleDateKey } from './lib/wordleStatus.js';
+import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { registerPush, onPushTap } from './lib/push.js';
 import { maybeRequestReview } from './lib/review.js';
@@ -6745,18 +6745,27 @@ function XPBar({ xp, streak }) {
 
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
-// 2-step flow shown once per device after auth. Persists:
-//   biq_skill_level  — "casual" | "fan" | "expert" (or absent → medium default)
+// ONE step, shown once per device after auth. Persists:
 //   biq_onboarded    — "1" once completed OR skipped
 //
-// The pure-copy "Welcome to Ball IQ" step was deleted (it had no skip control).
-// Step 1 is now the sample question; Skip is present on every step — see `skip`.
-const SKILL_OPTIONS = [
-  { id: "casual", icon: "🌱", name: "Casual Fan", desc: "I watch the big games and know the top teams.",           diff: "easy"   },
-  { id: "fan",    icon: "⚽", name: "Football Fan", desc: "I follow a league or two and the major competitions.",   diff: "medium" },
-  { id: "expert", icon: "🧠", name: "Expert",      desc: "I know obscure facts and follow football history.",      diff: "hard"   },
-];
-
+// It has been trimmed twice, both times by deleting a screen that talked ABOUT
+// the app instead of being it:
+//
+//   1. A pure-copy "Welcome to Ball IQ" step (which also had no skip control).
+//   2. A "How's your football knowledge?" self-assessment. Its entire payload
+//      was seeding biq_settings.defaultDiff — a setting that already lives in
+//      Settings, only affects Classic, and that people are bad at choosing for
+//      themselves before they have played a single question. Everyone now
+//      starts on medium (what skippers already got) and moves it once they have
+//      an opinion worth having. Activation, not configuration, is the thing
+//      this screen is fighting for: it sits between "opened the app" and
+//      "played anything", which is exactly where our funnel leaks.
+//
+// What survives is a question, because a question is the product.
+//
+// Legacy note: biq_skill_level is no longer written. It is still in the
+// sign-out clear list in useAuth.jsx so devices carrying the old value shed it.
+//
 // One easy, universally-fun taster so a brand-new player tastes the trivia
 // within seconds — kept deliberately light (still fully skippable, no login).
 // Reviewer-facing first impression (App Review sees this screen on every fresh
@@ -6764,28 +6773,10 @@ const SKILL_OPTIONS = [
 const ONBOARD_SAMPLE = { q: "Who has scored the most goals in men's international football?", o: ["Lionel Messi", "Cristiano Ronaldo", "Pelé", "Neymar"], a: 1 };
 
 function OnboardingScreen({ onDone }) {
-  const [step, setStep] = useState(0);
-  const [skillLevel, setSkillLevel] = useState(null);
   const [sampleAnswered, setSampleAnswered] = useState(null);
-  const TOTAL = 2;
-  const stepW = `${100 / TOTAL}%`;
 
   const persistAndFinish = () => {
     try {
-      if (skillLevel) {
-        localStorage.setItem("biq_skill_level", skillLevel);
-        const diffFor = SKILL_OPTIONS.find(s => s.id === skillLevel)?.diff;
-        if (diffFor) {
-          try {
-            const raw = localStorage.getItem("biq_settings");
-            const s = raw
-              ? JSON.parse(raw)
-              : { defaultDiff: "medium", hints: true, timer: true, sound: false, haptics: true };
-            s.defaultDiff = diffFor;
-            localStorage.setItem("biq_settings", JSON.stringify(s));
-          } catch {}
-        }
-      }
       localStorage.setItem("biq_onboarded", "1");
     } catch {}
     // Sprint #26 X2: persist to profile so the flag survives across devices.
@@ -6804,35 +6795,23 @@ function OnboardingScreen({ onDone }) {
     onDone?.();
   };
 
+  // Both controls now do the same thing, and that is the point: with a single
+  // step there is no flow left to skip THROUGH, only one to leave. Skip is kept
+  // so a player who does not want to answer is never trapped.
+  // persistAndFinish() writes biq_onboarded + profiles.onboarded_at, so neither
+  // path is ever re-prompted.
   const next = () => {
-    haptic("soft");
-    if (step < TOTAL - 1) setStep(s => s + 1);
-    else persistAndFinish();
-  };
-  // Skip exits the flow; it used to be byte-identical to `next`.
-  // persistAndFinish() writes biq_onboarded + profiles.onboarded_at, so a
-  // skipper is never re-prompted; skillLevel left null keeps the medium
-  // default (biq_settings is not touched when it's null).
-  const skip = () => {
     haptic("soft");
     persistAndFinish();
   };
+  const skip = next;
 
   return (
     <div className="onboard-wrap">
-      <div className="onboard-progress">
-        {Array.from({ length: TOTAL }).map((_, i) => (
-          <div
-            key={i}
-            className={`onboard-bar${i < step ? " done" : ""}${i === step ? " active" : ""}`}
-          />
-        ))}
-      </div>
-
       <div className="onboard-viewport">
-        <div className="onboard-track" style={{ width: `${TOTAL * 100}%`, transform: `translateX(-${step * (100 / TOTAL)}%)` }}>
-          {/* 1. Taste it — one quick question (the casual hook). */}
-          <div className="onboard-step" style={{ width: stepW }}>
+        <div className="onboard-track">
+          {/* Taste it — one quick question (the casual hook). */}
+          <div className="onboard-step">
             <div className="onboard-step-top">
               <div className="onboard-title" style={{ marginTop: 16 }}>Quick one — give it a go ⚽</div>
               <div className="onboard-body" style={{ marginBottom: 14 }}>{ONBOARD_SAMPLE.q}</div>
@@ -6861,37 +6840,11 @@ function OnboardingScreen({ onDone }) {
                   : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} — the all-time record holder. You'll pick these up fast!`)}
               </div>
             </div>
+            {/* The label is the exit, so it names the destination rather than
+                a step number — there is no next step to go to. */}
             <div className="onboard-actions">
               <button className="onboard-skip" onClick={skip}>Skip</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Next" : "Continue"}</button>
-            </div>
-          </div>
-
-          {/* 2. Skill Level — optional; Skip lands straight in the app. */}
-          <div className="onboard-step" style={{ width: stepW }}>
-            <div style={{width:"100%"}}>
-              <div className="onboard-title" style={{marginTop:16}}>How's your football knowledge?</div>
-              <div className="onboard-body">We'll tune the default difficulty to match.</div>
-            </div>
-            <div className="onboard-skill-list">
-              {SKILL_OPTIONS.map(opt => (
-                <button
-                  key={opt.id}
-                  className={`onboard-skill${skillLevel === opt.id ? " on" : ""}`}
-                  onClick={() => { haptic("soft"); setSkillLevel(opt.id); }}
-                  aria-pressed={skillLevel === opt.id}
-                >
-                  <span className="onboard-skill-icon">{opt.icon}</span>
-                  <div className="onboard-skill-body">
-                    <div className="onboard-skill-name">{opt.name}</div>
-                    <div className="onboard-skill-desc">{opt.desc}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <div className="onboard-actions">
-              <button className="onboard-skip" onClick={skip}>Skip</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>Finish</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Start playing" : "Let's play"}</button>
             </div>
           </div>
         </div>
@@ -7267,12 +7220,10 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
       // exactly once (this transition fires once per day by construction —
       // finished puzzles never re-enter submitGuess).
       try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
-      // ⭐ 5-star ask at a Footle emotional peak — a fast solve (≤3 guesses) is a
-      // genuine "I'm good at this" moment. maybeRequestReview enforces a long
-      // cooldown + lifetime cap + native-only, so it only occasionally prompts.
-      if (newStatus === "won" && newGuesses.length <= 3) {
-        timeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
-      }
+      // The ⭐ 5-star ask used to fire from right here, and it stacked the iOS
+      // rating card on top of our own notification sheet on a fresh install.
+      // It now rides the event above, handled in the app shell, which is the
+      // only place that knows whether the notification sheet just opened.
     }
   }, [state, current, answer]);
 
@@ -9026,17 +8977,24 @@ function AppInner() {
   // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
   // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
   // user declined). Only shows while the OS permission is still undecided.
+  //
+  // Returns true when it actually opened the sheet. Callers need that: the
+  // Footle-solve path also wants to ask for an App Store rating, and on a fresh
+  // install both fired at once — the iOS rating card rendered ON TOP of this
+  // one. Two modals stacked on the first puzzle a person ever finished, with
+  // the notification opt-in buried behind the one they'd reflexively dismiss.
   const maybePromptNotif = useCallback(async () => {
-    if (!notificationsSupported()) return;
+    if (!notificationsSupported()) return false;
     try {
-      if (localStorage.getItem('biq_notif_enabled') === '1') return;
+      if (localStorage.getItem('biq_notif_enabled') === '1') return false;
       const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
-      if (asks >= 2) return;
+      if (asks >= 2) return false;
       const perm = await getNotifPermission();
-      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return;
+      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return false;
       localStorage.setItem('biq_notif_asks', String(asks + 1));
       setNotifPromptOpen(true);
-    } catch { /* noop */ }
+      return true;
+    } catch { return false; }
   }, []);
 
   // (Re)schedule the rolling window on open + whenever today's play state
@@ -9099,7 +9057,28 @@ function AppInner() {
   useEffect(() => {
     const onDailyDone = (e) => {
       cancelTodayReminder();
-      maybePromptNotif();
+      // ⭐ The 5-star ask, re-homed here from inside the Footle screen.
+      //
+      // Alex, 2026-07-29: solving Footle IS the right moment to ask — it is the
+      // app's happiest second. The bug was never the moment, it was the
+      // collision: on a fresh install the iOS rating card rendered on top of our
+      // notification sheet, so a first-time player got two modals at once and
+      // the notification opt-in was the one that lost.
+      //
+      // Two conditions now, and only two:
+      //   - the notification sheet did NOT just open (never stack)
+      //   - they solved a Footle on an earlier day, so they have a basis for an
+      //     opinion. Rating an app on the first puzzle you have ever played is
+      //     how you collect three-star "seems fine?" ratings.
+      // Everything past that is Apple's to decide — see lib/review.js.
+      const askedNotif = maybePromptNotif();
+      if (e?.detail?.game === 'footle' && e.detail.won === true) {
+        Promise.resolve(askedNotif).then((notifOpened) => {
+          if (notifOpened) return;
+          if (countPriorFootleSolves() < 1) return;
+          celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+        });
+      }
       // Footle XP (scan #3). ONLY for game:'footle' — the Daily 7 also fires
       // this event and already earns XP via handleComplete; awarding here for
       // it too would double-pay. Footle's dispatch happens exactly once per
