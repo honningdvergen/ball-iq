@@ -184,10 +184,16 @@ function HomeScreenImpl({
         // Sprint #12: when both daily rituals are complete, omit the
         // subtext entirely — the Daily zone's "2/2 done" status carries
         // the celebration, the greeting line stays calm.
+        //
+        // 2026-07-29: the both-OPEN case is that same situation mirrored, so it
+        // is null too. "Daily puzzle is up." sat directly above a card reading
+        // "0/2 today" and told the user nothing the card wasn't already saying
+        // more precisely. The one-done cases stay: naming WHICH ritual is still
+        // open is real information the chip's bare count can't give.
         const subtext = footleDone && dailyDone ? null
           : footleDone                          ? "Daily 7 is still open."
           : dailyDone                           ? "Today's Footle is still open."
-          :                                       "Daily puzzle is up.";
+          :                                       null;
         return (
           <div className="hg-block" style={{padding:"6px 0 8px"}}>
             <div style={{display:"flex", alignItems:"center", gap:10}}>
