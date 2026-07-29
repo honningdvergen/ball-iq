@@ -1,10 +1,11 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList, Route } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer } from "../lib/wordle.js";
+import { getTrailAnswer } from "../lib/trail.js";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { FootleHero } from "../components/FootleHero.jsx";
@@ -299,14 +300,31 @@ function HomeScreenImpl({
       {(() => {
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
-        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0);
-        const allDone = doneCount === 2;
+        // Transfer Trail joins the zone only once its frozen schedule actually
+        // has a puzzle for today. getTrailAnswer() returns null before
+        // TRAIL_ANCHOR_DAY (2026-08-01), so Home does NOT grow by a row until
+        // launch day and then gains its door automatically — no second deploy,
+        // and no dead tile advertising a mode that cannot be played.
+        const trailToday = (() => { try { return getTrailAnswer(); } catch { return null; } })();
+        const trailLive = !!trailToday;
+        const trailDone = (() => {
+          if (!trailLive) return false;
+          try {
+            const raw = localStorage.getItem(`biq_trail_${dateToYMD(new Date())}`);
+            const p = raw ? JSON.parse(raw) : null;
+            return p?.status === "won" || p?.status === "lost";
+          } catch { return false; }
+        })();
+
+        const total = trailLive ? 3 : 2;
+        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0) + (trailDone ? 1 : 0);
+        const allDone = doneCount === total;
         return (
           <div className="daily-zone" role="group" aria-label="Daily">
             <div className="daily-zone-head">
               <span className="daily-zone-eyebrow">Daily</span>
               <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
-                {allDone ? "2/2 done" : `${doneCount}/2 today`}
+                {allDone ? `${total}/${total} done` : `${doneCount}/${total} today`}
               </span>
             </div>
             <div className="home-footle-mobile">
@@ -333,6 +351,25 @@ function HomeScreenImpl({
               </span>
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
+            {/* Transfer Trail. Reuses Daily 7's row exactly — same class, same
+                shape — so the zone stays one rhythm rather than gaining a third
+                visual language. Hidden entirely until the mode is live. */}
+            {trailLive && (
+              <button
+                className={`todays-seven-secondary${trailDone ? ' is-done' : ''}`}
+                onClick={() => setScreen("trail")}
+                aria-label={trailDone ? "Transfer Trail complete" : "Play Transfer Trail"}
+              >
+                <span className="t7s-icon" aria-hidden="true"><Route size={22} strokeWidth={2} /></span>
+                <span className="t7s-body">
+                  <span className="t7s-title">Transfer Trail</span>
+                  <span className="t7s-sub">
+                    {trailDone ? <>✅ Done</> : <>Put a career in order · 5 tries</>}
+                  </span>
+                </span>
+                <span className="t7s-cta">{trailDone ? "View" : "Play"}</span>
+              </button>
+            )}
           </div>
         );
       })()}
