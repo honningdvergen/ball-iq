@@ -931,12 +931,20 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .ad-slot:has(.adsbygoogle[data-ad-status="filled"]){margin:10px auto 26px}
   .ad-slot:has(.adsbygoogle[data-ad-status="filled"])::before{content:"Advertisement";display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx4)}
   /* related tiles */
-  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-  .tile{display:flex;align-items:center;gap:11px;padding:14px;background:var(--card2);border:1px solid var(--bd);border-radius:14px;transition:border-color .16s,transform .16s}
+  /* Compact tiles (2026-07-29). MEASURED on the live Arsenal page: "More
+     quizzes to try" was 5,734px — 41% of a 13,953px page, the single largest
+     block on it, and it is a LINK LIST. 115 links at minmax(160px) rendered two
+     per row as 76px cards, so 58 rows of navigation sat between the reader and
+     the FAQ / record-book content beneath.
+     Every link is kept — the internal mesh is doing real crawl work. Only the
+     box around each one shrinks: 3 columns on a 390px phone instead of 2, and
+     ~44px tall instead of 76px (still at the 44px touch-target norm). */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+  .tile{display:flex;align-items:center;gap:8px;padding:8px 10px;min-height:44px;background:var(--card2);border:1px solid var(--bd);border-radius:11px;transition:border-color .16s,transform .16s}
   .tile:hover{text-decoration:none;border-color:var(--bd3);transform:translateY(-2px)}
-  .tbadge{width:36px;height:36px;flex:0 0 auto;border-radius:10px;background:#1F2430;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:800;color:#fff;letter-spacing:.02em}
-  .tbadge.emoji{background:rgba(255,255,255,.04);font-size:20px}
-  .tname{font-size:14.5px;font-weight:700;color:var(--tx)}
+  .tbadge{width:26px;height:26px;flex:0 0 auto;border-radius:8px;background:#1F2430;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.02em}
+  .tbadge.emoji{background:rgba(255,255,255,.04);font-size:15px}
+  .tname{font-size:12.5px;font-weight:700;color:var(--tx);line-height:1.25;min-width:0;overflow:hidden;text-overflow:ellipsis}
   /* faq */
   .faq{border-top:1px solid #1A1D27}
   .faq details{border-bottom:1px solid #1A1D27}
