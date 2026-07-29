@@ -1022,8 +1022,30 @@ function footer() {
   return `<script>${CTA_JS}</script>
 <footer class="foot"><div class="foot-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="26" height="26" />Ball&nbsp;<b>IQ</b></a>
+${/* THESE THREE SLOTS ARE THE ONLY SITE-WIDE INTERNAL LINKS WE CONTROL, and
+      they were picked once and never revisited. Measured 2026-07-29:
+
+        manchester-united  183 inbound internal links  (footer -> every page)
+        premier-league     183                          (footer -> every page)
+        arsenal            109                          (tile mesh only)
+        chelsea            110
+        liverpool          114
+
+      So ~40% of the site's internal link equity was pointed at Man United,
+      which is not a page we are trying to move — while Arsenal, which GSC has
+      at position 14.9 for "arsenal quiz" and 19.3 for "arsenal quizzes", the
+      two US queries where a click is actually possible, sat in the tile mesh
+      with a third fewer links.
+
+      Arsenal is added rather than swapped in: Man United's own rankings are
+      not a problem to create. Four slots still keeps the footer a signal
+      rather than a link farm. This is a hypothesis — the measured ceiling is
+      authority, not on-page — but it is free, it is directionally right, and
+      pointing site-wide equity at the page closest to breaking page 1 costs
+      nothing if it fails. */ ''}
 <div class="foot-links">
 <a href="${SITE.base}/quiz/premier-league/">Premier League quiz</a>
+<a href="${SITE.base}/quiz/arsenal/">Arsenal quiz</a>
 <a href="${SITE.base}/quiz/manchester-united/">Man United quiz</a>
 <a href="${SITE.base}/quiz/champions-league/">Champions League quiz</a>
 <a href="${SITE.base}/quiz/">All quizzes</a>
