@@ -59,6 +59,9 @@ export function useMultiplayerRoom(code) {
   // tear it down via supabase.removeChannel.
   const channelRef = useRef(null)
 
+  // Escape hatch to the effect-scoped refetch, for the stall watchdog below.
+  const refetchRef = useRef(null)
+
   // Code transition handler. When `code` changes (mount, room switch,
   // unmount-style null transition), reset state and re-fetch. Loading is
   // flipped true on every non-null code mount — including the A → B
@@ -101,6 +104,7 @@ export function useMultiplayerRoom(code) {
         if (playersRes.data) setPlayers(playersRes.data)
       } catch {}
     }
+    refetchRef.current = refetchInitialState
 
     // Foreground resync: iOS suspends the websocket while backgrounded, and
     // the CLOSED→SUBSCRIBED catch-up below can lag — or never fire at all if
@@ -328,6 +332,39 @@ export function useMultiplayerRoom(code) {
   const retry = useCallback(() => {
     setRetryNonce(n => n + 1)
   }, [])
+
+  // ── STALL WATCHDOG ────────────────────────────────────────────────────────
+  // Two recovery paths already exist: a refetch when the channel transitions
+  // closed/error -> subscribed, and a refetch on foreground. Both need a
+  // SIGNAL. Neither fires for the failure mode that actually bit us: the
+  // channel reports SUBSCRIBED and then silently stops delivering, with the
+  // tab in the foreground the whole time. That is exactly what free-tier
+  // realtime did — postgres_changes channels subscribed fine and no event
+  // ever arrived — and it left a client parked on the last question forever:
+  // no results screen, and no local head-to-head record, because BOTH are
+  // gated on room.state === 'ended' reaching this device.
+  //
+  // So: while a game is in progress, if nothing changes for appreciably
+  // longer than a question can take, pull the room directly once. Cheap
+  // (one SELECT, and refetchInitialState already debounces at 2s), and it
+  // costs nothing in the happy path because every realtime UPDATE resets
+  // the timer before it can fire.
+  //
+  // 32s vs the 20s question: long enough not to race a slow-but-working
+  // socket, short enough that a stalled player is not left staring. The
+  // number deliberately does NOT import QUESTION_DURATION_MS — that lives in
+  // App.jsx and importing it here would close an import cycle.
+  const STALL_MS = 32000
+  useEffect(() => {
+    if (!room?.id || room.state !== 'playing') return
+    const id = setTimeout(() => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
+      refetchRef.current?.(room.id)
+    }, STALL_MS)
+    return () => clearTimeout(id)
+    // current_question in the deps is the point: each advance rearms the
+    // watchdog, so it only ever fires when the game has genuinely stopped.
+  }, [room?.id, room?.state, room?.current_question])
 
   return {
     room,
