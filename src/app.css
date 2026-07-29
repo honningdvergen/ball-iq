@@ -296,7 +296,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
 .mp-card-ctas{display:flex;gap:10px;margin-top:15px;align-items:stretch;}
-.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
 .mp-card-cta.ghost{background:transparent;color:#8AE042;border:1px solid #2A6B33;box-shadow:none;-webkit-text-fill-color:#8AE042;}
@@ -1522,7 +1522,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
 .fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
 .fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 16px;height:36px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;}
+/* Page hero. Measured on device it was the SMALLEST green control on Home —
+   36px tall / 13px type / no shadow — while the secondary "Play with Friends"
+   card's Online button was ~45px, 15px type, 2.5x wider AND glowing. The
+   hierarchy was inverted: the card below outshouted the hero above it. Raised
+   to match (and the old 36px also missed the 44pt tap-target guideline). The
+   glow moves here; .mp-card-cta gives its up. */
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 22px;height:44px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);}
 /* nowrap + no-shrink: on wide Footle grids (6-letter answers) the flex column
    squeezed these CTAs — "↗︎ Share" wrapped to two lines and the 999px radius
    turned it into a blob (Alex's device catch, build 43 test). FIXED height +

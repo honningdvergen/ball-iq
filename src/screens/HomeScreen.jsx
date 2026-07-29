@@ -237,7 +237,11 @@ function HomeScreenImpl({
                 style={{background:"none",border:"none",padding:"4px 0 0",fontSize:12,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"inherit"}}
                 aria-label="Set your name"
               >
-                ✏️ Tap to set your name
+                {/* Was "✏️ Tap to set your name" — the same action was worded
+                    three different ways across Home and Profile, and "Tap to"
+                    is redundant on a touch device. All three now read "Set
+                    your name" with a trailing pencil. */}
+                Set your name ✏️
               </button>
             )}
           </div>

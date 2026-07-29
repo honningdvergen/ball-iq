@@ -5465,7 +5465,13 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
           <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 6 players.</div>
         </div>
-        <button onClick={() => startMode("local")} style={{padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
+        {/* Filled for a signed-out user: with the main CTA now honestly saying
+            "sign up", this is the ONLY thing on the tab a guest can actually
+            do, so it stops being a ghost button. Signed in, it goes back to
+            secondary — online is the point of the tab by then. */}
+        <button onClick={() => startMode("local")} style={needsAccount
+          ? {padding:"10px 18px",borderRadius:10,border:"none",background:"var(--accent)",color:"#06230C",WebkitTextFillColor:"#06230C",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0}
+          : {padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}
@@ -7322,10 +7328,16 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>
         )}
-        <div className="wd-countdown" title="New player tomorrow">
-          <div className="wd-countdown-label">Next</div>
-          <div className="wd-countdown-time">{countdown}</div>
-        </div>
+        {/* Only once today's puzzle is over. Before you've played, a countdown
+            to TOMORROW is the least useful thing on the screen, and it was
+            rendered in the accent colour competing with the board and ENTER.
+            Afterwards it's the one thing you want — when can I play again. */}
+        {state.status !== "playing" && (
+          <div className="wd-countdown" title="New player tomorrow">
+            <div className="wd-countdown-label">Next</div>
+            <div className="wd-countdown-time">{countdown}</div>
+          </div>
+        )}
       </div>
 
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
