@@ -1,3 +1,4 @@
+import { Target } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from './Phone.jsx';
 // Tiny data-free module (NOT lib/wordle.js — that would drag the 400+-player
@@ -383,7 +384,7 @@ function QuizTaster() {
 
   const head = (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><span style={{ fontSize: 20 }}>🎯</span><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>What&apos;s your Ball IQ?</span></div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Target size={19} strokeWidth={2.4} color="#8AE042" aria-hidden="true" /><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>What&apos;s your Ball IQ?</span></div>
       <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Five questions. Rated out of 99.</div>
     </>
   );
@@ -462,14 +463,49 @@ function PlayNow() {
           Measured 2026-07-28 against a 100% homepage bounce rate.
           Keep this block TIGHT. Margins here cost conversions. */}
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginBottom: 20 }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 15px', border: '1px solid #2A2D3A', borderRadius: 999, background: 'rgba(26,29,39,0.6)', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.04em', color: '#9BA0B8' }}>
-          <span>⚽</span> Free · no sign-up · no download
+        {/* PROOF TICKER. Replaces the "⚽ Free · no sign-up · no download" pill
+            rather than sitting beside it, so it costs no vertical space — the
+            block comment above is right that margins here cost conversions,
+            and the first tappable answer only has ~69px of clearance to the
+            812px fold.
+            The figures are the SAME real ones the chip row below already used
+            (QB_COUNT is build-time injected, the Footle number is computed per
+            local day) — they simply weren't visible before a scroll. Numbers a
+            competitor cannot fake, delivered before a line of marketing copy.
+            Mono + tabular-nums so the digits read as data, not decoration. */}
+        {/* THREE cells, not four. Four wrapped at 375px and orphaned the last
+            one onto its own centred row — ugly, and the wrap cost ~30px of the
+            fold clearance this block has almost none of. "50 clubs" was the
+            weakest of the four (the question count already implies breadth). */}
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'nowrap', marginBottom: 2 }}>
+          {[
+            ['FREE', 'no sign-up'],
+            [QB_COUNT.toLocaleString('en-US'), 'questions'],
+            [`#${getFootleNumber()}`, 'today'],
+          ].map(([v, l], i) => (
+            <span key={l} style={{
+              display: 'inline-flex', alignItems: 'baseline', gap: 4,
+              padding: '5px 11px', fontSize: 11, whiteSpace: 'nowrap',
+              borderLeft: i === 0 ? 'none' : '1px solid #242836',
+            }}>
+              <b style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,monospace", fontWeight: 700, color: '#8AE042', fontVariantNumeric: 'tabular-nums' }}>{v}</b>
+              <span style={{ color: '#7E828C', letterSpacing: '0.03em' }}>{l}</span>
+            </span>
+          ))}
         </div>
         {/* "Pick your challenge." named no sport, no stake and no reward — on a
             page whose visitors overwhelmingly leave without clicking, the H1 is
             the highest-leverage string on the site. Lead with the question the
             visitor already wants answered about themselves. */}
-        <h1 style={{ margin: '14px auto 0', maxWidth: '15ch', fontSize: 'clamp(34px,6vw,60px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff' }}>How good is your football knowledge, really?</h1>
+        {/* Anton, not Inter 900. Inter is the default face of modern software
+            and says nothing; Anton is condensed and reads as matchday
+            programme / broadcast — instant category recognition. Because it is
+            condensed the same words set LARGER in the same space, so the
+            clamp ceiling goes 60 -> 68 without costing a pixel of fold.
+            Anton is uppercase-native and ships one weight; keep it to display
+            only, never body. Loaded on the Google Fonts request already in the
+            page, so no new host and no extra round-trip. */}
+        <h1 style={{ margin: '12px auto 0', maxWidth: '14ch', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
         <p style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
       </div>
       <div className="mkt-play-grid" style={{ position: 'relative', zIndex: 2 }}>
