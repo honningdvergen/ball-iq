@@ -36,8 +36,9 @@ import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from '.
 import { CLUBS } from './seo/clubs.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
-// One list, so a third language is a file plus a spread rather than a rewrite.
-const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT];
+import { CLUBS_TR } from './seo/clubs-tr.mjs';
+// One list, so another language is a file plus a spread rather than a rewrite.
+const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR];
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
