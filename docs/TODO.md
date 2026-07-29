@@ -130,6 +130,69 @@ the new MP XP award. A green build proves compilation, not behaviour.
 
 ---
 
+## 🌍 LOCALISATION STRATEGY (Alex's call, 2026-07-29) — both languages, always
+
+**The model: a localised page is ADDITIVE, never a replacement.** Every club
+keeps its English page at `/quiz/<slug>/`; the twin lives at
+`/<lang>/quiz/<slug>/` and they point at each other via hreflang. Real Madrid
+gets English AND Spanish, because both audiences are real and
+"real madrid quiz" and "quiz del Real Madrid" are different queries with
+different competition. Alex is right about this and the generator already does it.
+
+**32 clubs are localisable TODAY** with questions already verified in the bank:
+
+| Lang | Clubs we already have |
+|---|---|
+| es | Real Madrid 42 · Barcelona 42 · Atlético 49 · Sevilla 42 · Valencia 35 · Betis 39 · Boca 36 ✅ · River 38 ✅ |
+| pt | Flamengo 36 ✅ · Corinthians 36 ✅ · Palmeiras 36 ✅ · Benfica 50 · Porto 38 |
+| de | Bayern 43 · Dortmund 42 · Leverkusen 36 · Schalke 42 |
+| it | Juventus 42 · Milan 44 · Napoli 42 · Roma 37 · Lazio 47 · Fiorentina 47 |
+| tr | Galatasaray 45 · Fenerbahçe 38 · Beşiktaş 39 · Trabzonspor 45 |
+| fr | Marseille 44 · Monaco 33 |
+| nl | Ajax 43 · PSV 46 · Feyenoord 49 |
+
+### ⚠️ Sequence by ENGLISH PROFICIENCY and SERP thinness — NOT fanbase size
+
+This is the counter-intuitive part and it should drive the order. A localised
+page only pays where the audience would otherwise **fail to find us**, or search
+in a **thinner SERP**:
+
+1. **Turkish (4 clubs) — likely the best opportunity in the whole table**, and
+   the one nobody would guess. Fanatical audiences, lower English proficiency,
+   and Turkish football-quiz SERPs are almost certainly thin. We already have all
+   four Süper Lig clubs with 38-45 questions each.
+2. **Portuguese + Spanish** — enormous volume, moderate competition.
+3. **Italian** — decent volume, moderate proficiency.
+4. **German / Dutch — LOWEST priority despite the big clubs.** Very high English
+   proficiency means the incremental reach is small; those fans already find and
+   read the English page. Bayern's fanbase size is a trap here.
+
+### ⚠️ REGISTER, not just language — the trap to catch before scaling
+
+`clubs-pt.mjs` is written in **Brazilian** Portuguese on purpose (goleiro,
+técnico, zagueiro). **Benfica and Porto are European Portuguese** — writing them
+in Brazilian would read as foreign to the exact Lisbon fan the page is courting.
+Same split in Spanish: Boca and River are **Rioplatense** (sabés, arquero),
+while Real Madrid and Barcelona need **Peninsular** (sabes, portero).
+
+So the authoring rule is: pick the register from the CLUB's audience, not from
+the language name. (hreflang stays plain `es`/`pt` per club — region codes only
+become necessary if we ever localise the SAME club into two registers.)
+
+### The gate before volume
+
+Five pages is a clean experiment; forty is a systemic bet. And every localised
+page currently dead-ends at an **English app** — which is fine as a measured
+funnel leak at 5 pages and a real conversion problem at 40. The US localisation
+thesis was already killed by data once (`project_us_egypt_gsc_2026_07_29`), so
+the lesson is not "localisation is wrong" but "check before scaling".
+
+**Recommended next step: ONE Turkish probe (Galatasaray), because it tests the
+surprising hypothesis rather than the comfortable one.** Then read GSC on all
+six and open the taps on whichever language actually converts.
+
+---
+
 ## 🔴 FOUND 2026-07-29 LATE — Transfer Trail has NO web page
 
 Footle has `/football-wordle/` plus `/football-wordle/answer` (the daily
