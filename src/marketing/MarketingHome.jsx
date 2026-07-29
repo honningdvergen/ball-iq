@@ -514,7 +514,7 @@ function PlayNow() {
           ].map(([v, l], i) => (
             <span key={l} style={{
               display: 'inline-flex', alignItems: 'baseline', gap: 4,
-              padding: '5px 11px', fontSize: 11, whiteSpace: 'nowrap',
+              padding: 'clamp(5px,0.5vw,8px) clamp(11px,1.1vw,18px)', fontSize: 'clamp(11px,1.05vw,14.5px)', whiteSpace: 'nowrap',
               borderLeft: i === 0 ? 'none' : '1px solid #242836',
             }}>
               <b style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,monospace", fontWeight: 700, color: '#8AE042', fontVariantNumeric: 'tabular-nums' }}>{v}</b>
@@ -534,7 +534,7 @@ function PlayNow() {
             Anton is uppercase-native and ships one weight; keep it to display
             only, never body. Loaded on the Google Fonts request already in the
             page, so no new host and no extra round-trip. */}
-        <h1 className="mkt-rise mkt-rise-2" style={{ margin: '12px auto 0', maxWidth: '14ch', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
+        <h1 className="mkt-rise mkt-rise-2" style={{ margin: '12px auto 0', maxWidth: 'min(94vw,880px)', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
         <p className="mkt-rise mkt-rise-3" style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
       </div>
       <div className="mkt-play-grid mkt-rise mkt-rise-4" style={{ position: 'relative', zIndex: 2 }}>
