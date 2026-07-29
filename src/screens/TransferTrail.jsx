@@ -183,7 +183,7 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
               enterKeyHint="go"
               style={{ flex: 1, minWidth: 0, background: "var(--s1)", border: "1px solid var(--border)",
-                       borderRadius: 12, padding: "13px 15px", color: "var(--t1)", fontSize: 15,
+                       borderRadius: 12, padding: "13px 15px", color: "var(--t1)", fontSize: 16,
                        fontFamily: "inherit", outline: "none" }}
             />
             <button onClick={() => submit(false)} disabled={!entry.trim()}

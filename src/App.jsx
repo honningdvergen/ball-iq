@@ -1434,7 +1434,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
               aria-label={`Search ${tab}`}
               autoComplete="off"
               spellCheck={false}
-              style={{width:"100%",boxSizing:"border-box",padding:"12px 38px",borderRadius:13,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:14.5,fontFamily:"inherit",outline:"none"}}
+              style={{width:"100%",boxSizing:"border-box",padding:"12px 38px",borderRadius:13,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:16,fontFamily:"inherit",outline:"none"}}
             />
             {q && (
               <button onClick={() => setQ("")} aria-label="Clear search"
@@ -5603,10 +5603,10 @@ function ResetPasswordOverlay() {
           <>
             <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6,marginBottom:18}}>You're signed in via the reset link — choose a new password to finish.</div>
             <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="New password" autoComplete="new-password"
-              style={{width:"100%",padding:"14px 16px",marginBottom:10,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:15,fontFamily:"inherit",outline:"none"}} />
+              style={{width:"100%",padding:"14px 16px",marginBottom:10,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
             <input type="password" value={pw2} onChange={e => setPw2(e.target.value)} placeholder="Repeat new password" autoComplete="new-password"
               onKeyDown={e => { if (e.key === "Enter") submit(); }}
-              style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:15,fontFamily:"inherit",outline:"none"}} />
+              style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
             {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
             <button onClick={submit} disabled={busy || !pw || !pw2}
               style={{width:"100%",border:"none",borderRadius:14,background:"var(--accent)",padding:15,fontSize:15,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>

@@ -240,8 +240,12 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     },
     label: { display: 'block', fontSize: 12, fontWeight: 600, color: C.t2, marginBottom: 6 },
     input: {
+      // 16px is a hard floor on iOS: WKWebView auto-zooms the page whenever a
+      // focused input is under it, which shifts the whole layout sideways and
+      // clips the right edge. Every sign-up field on this screen shared this
+      // style, so every sign-up tap zoomed. Do not lower it for looks.
       width: '100%', padding: '14px 15px', borderRadius: 13, background: C.card,
-      border: `1px solid ${C.border}`, color: '#fff', fontSize: 15, fontFamily: 'inherit',
+      border: `1px solid ${C.border}`, color: '#fff', fontSize: 16, fontFamily: 'inherit',
     },
     banner: {
       padding: '10px 14px', borderRadius: 12, background: C.card, border: `1px solid ${C.border}`,
