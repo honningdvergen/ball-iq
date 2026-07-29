@@ -683,6 +683,11 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 // have >=10 for that club — auto-upgrading each club as content is generated —
 // and falls back to the pack's starter questions otherwise.
 const CLUB_PACK_TO_QB = {
+  Boca: "Boca Juniors",
+  River: "River Plate",
+  Flamengo: "Flamengo",
+  Palmeiras: "Palmeiras",
+  Corinthians: "Corinthians",
   Arsenal: "Arsenal", Liverpool: "Liverpool", ManUtd: "Manchester United", ManCity: "Manchester City",
   Chelsea: "Chelsea", Tottenham: "Tottenham Hotspur", Newcastle: "Newcastle United",
   Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
@@ -736,6 +741,13 @@ const CLUB_LEAGUES = {
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
   Sporting: "primeira", SaintEtienne: "ligue1",
+  // Wave L: first non-European section. Brasileirao + Primera Division were
+  // already mapped in leagues.mjs; these five are the first packs to use them.
+  // Grouped as one section rather than two — the same 2+-clubs-per-section rule
+  // that kept lone Serbian/Croatian/Swiss clubs in "other" argues for one
+  // continental bucket over a 2-club and a 3-club section.
+  Boca: "southamerica", River: "southamerica", Flamengo: "southamerica",
+  Palmeiras: "southamerica", Corinthians: "southamerica",
   // Wave K: Parma were in Serie A for 2025-26; Valencia/Leverkusen/Lyon/Monaco
   // all sit in their country's top flight, so each lands in its real section.
   Valencia: "laliga", Leverkusen: "bundesliga", Lyon: "ligue1",
@@ -752,6 +764,7 @@ const CLUB_LEAGUE_SECTIONS = [
   { key: "scottish", label: "Scottish Premiership" },
   { key: "eredivisie", label: "Eredivisie" },
   { key: "belgian", label: "Belgian Pro League" },
+  { key: "southamerica", label: "South America" },
   { key: "other", label: "More clubs" },
 ];
 
@@ -774,6 +787,11 @@ function clubReadableText(hex) {
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
 // not raw initials. Falls back to clubInitials() for any unmapped key.
 const CLUB_ABBR = {
+  Boca: "BOC",
+  River: "RIV",
+  Flamengo: "FLA",
+  Palmeiras: "PAL",
+  Corinthians: "COR",
   Arsenal: "ARS", Liverpool: "LIV", ManUtd: "MUN", ManCity: "MCI", Chelsea: "CHE", Tottenham: "TOT", Newcastle: "NEW",
   Barcelona: "FCB", RealMadrid: "RMA", Atletico: "ATM",
   Juventus: "JUV", AcMilan: "ACM", InterMilan: "INT",
@@ -798,6 +816,11 @@ const CLUB_ABBR = {
 // searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
 // these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
 const CLUB_SLUG_TO_PACK = {
+  "boca-juniors": "Boca",
+  "river-plate": "River",
+  "flamengo": "Flamengo",
+  "palmeiras": "Palmeiras",
+  "corinthians": "Corinthians",
   "arsenal": "Arsenal", "liverpool": "Liverpool", "manchester-united": "ManUtd",
   "manchester-city": "ManCity", "chelsea": "Chelsea", "tottenham": "Tottenham",
   "newcastle": "Newcastle", "barcelona": "Barcelona", "real-madrid": "RealMadrid",
@@ -858,6 +881,26 @@ const LEAGUE_QUIZ_SECTIONS = [
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
 const CLUB_PACKS = {
+  Boca: {
+    name: "Boca Juniors", icon: "🔵", color: "#0A2B72",
+    questions: [],
+  },
+  River: {
+    name: "River Plate", icon: "⚪", color: "#E1122E",
+    questions: [],
+  },
+  Flamengo: {
+    name: "Flamengo", icon: "🔴", color: "#C52613",
+    questions: [],
+  },
+  Palmeiras: {
+    name: "Palmeiras", icon: "🟢", color: "#006437",
+    questions: [],
+  },
+  Corinthians: {
+    name: "Corinthians", icon: "⬛", color: "#111111",
+    questions: [],
+  },
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
     questions: [

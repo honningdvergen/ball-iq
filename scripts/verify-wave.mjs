@@ -45,8 +45,13 @@ const STOP = new Set(['which','what','when','where','many','club','team','player
 const STALE = /\b(youngest|oldest|fastest|current(ly)?|so far|to date|record[- ]holder|all[- ]time (top|record)|still the|remains the|as of)\b/i;
 const SUPERLATIVE_RECORD = /\b(youngest|oldest) (ever|player|scorer|to)\b/i;
 
-let files = readdirSync(dir).filter((f) => /^p-.*\.json$/.test(f)).sort();
-if (!files.length) { console.error('no p-*.json in ' + dir); process.exit(1); }
+// Player packs are p-*.json, club packs c-*.json. The only behavioural
+// difference is the SEO gate: playerHintRows() needs the PLAYER's name in the
+// stem or answer, whereas a club page filters on the `club` field, so a club
+// question about the club is always eligible. Running the name check on a club
+// pack would flag most of it for nothing.
+let files = readdirSync(dir).filter((f) => /^[pc]-.*\.json$/.test(f)).sort();
+if (!files.length) { console.error('no p-*.json or c-*.json in ' + dir); process.exit(1); }
 
 let grandTotal = 0, grandFlags = 0;
 const report = [];
@@ -59,6 +64,7 @@ for (const file of files) {
   const parts = String(name).split(/\s+/);
   const matchRe = new RegExp('(' + [name, parts[parts.length - 1]].map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'i');
 
+  const isPlayer = file.startsWith('p-');
   const flags = [];
   const answers = qs.map((r) => (Array.isArray(r.o) && typeof r.a === 'number' ? r.o[r.a] : null));
   const posCount = [0, 0, 0, 0];
@@ -102,8 +108,8 @@ for (const file of files) {
     // ── already in the bank
     if (bankSeen.has(norm(r.q))) add('bank-dupe', 'stem already in src/questions.js');
 
-    // ── SEO eligibility (playerHintRows)
-    if (!(matchRe.test(r.q) || matchRe.test(ans || ''))) {
+    // ── SEO eligibility. Player pages only; see the note at the file list.
+    if (isPlayer && !(matchRe.test(r.q) || matchRe.test(ans || ''))) {
       add('seo-blind', 'name not in stem or answer — contributes 0 to the 15-hint page gate');
     }
   });
@@ -134,7 +140,7 @@ for (const file of files) {
   });
 
   const seoEligible = qs.filter((r) => Array.isArray(r.o) && r.hint &&
-    (matchRe.test(r.q) || matchRe.test(r.o[r.a] || ''))).length;
+    (!isPlayer || matchRe.test(r.q) || matchRe.test(r.o[r.a] || ''))).length;
 
   // ── ANSWER-POSITION BIAS. No single question is wrong, so per-question
   //    verification cannot see this — but a pack keyed 24/0/0/0 is solvable by

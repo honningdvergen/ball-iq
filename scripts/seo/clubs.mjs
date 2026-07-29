@@ -2121,5 +2121,165 @@ export const CLUBS = [
         "a": "It runs from easy (which country's league do Monaco play in?) to hard (who managed the 1977-78 champions?). The mix means casual fans and Louis II regulars both get a real test."
       }
     ]
-  }
+  },
+{
+  "club": "Boca Juniors",
+  "slug": "boca-juniors",
+  "name": "Boca Juniors",
+  "h1": "Boca Juniors Quiz",
+  "title": "Boca Juniors Quiz — La Bombonera Trivia | Ball IQ",
+  "description": "Free Boca Juniors quiz with explained answers — Riquelme, the Bianchi years, four Libertadores in a decade and the Superclásico.",
+  "intro": [
+    "No club in world football sounds like Boca Juniors. La Bombonera does not applaud, it shakes — and this free Boca quiz is built for the people who know why. It runs the whole modern arc: the Carlos Bianchi era that produced four Copa Libertadores in eight seasons, Juan Román Riquelme as the last great enganche, the 2000 and 2003 Intercontinental Cups against Real Madrid and Milan, and the Superclásico rivalry that stops a country.",
+    "The questions get genuinely hard. Where Boca's history is contested — and parts of it are, including the 2012 final scoreline, which credible sources report two different ways — we leave the question out rather than pick a side. What ships is what checks out.",
+    "Every answer carries a written explanation, so a wrong guess still teaches you something about how Boca actually won what they won.",
+    "Free to play, no sign-up, nothing to install. The River Plate quiz is the obvious next one, if you dare."
+  ],
+  "faq": [
+    {
+      "q": "How many Copa Libertadores have Boca Juniors won?",
+      "a": "Six in total, and four of those came in a single decade — 2000, 2001, 2003 and 2007. Carlos Bianchi coached three of them, taking Boca to five continental finals in the 2000s."
+    },
+    {
+      "q": "What is La Bombonera?",
+      "a": "Boca's stadium, officially the Estadio Alberto J. Armando. The nickname means 'the chocolate box', from its flat-sided, steep-tiered shape — one stand is vertical because the plot ran out."
+    },
+    {
+      "q": "Who is Boca's most famous number 10?",
+      "a": "Juan Román Riquelme, the last great classical enganche, who drove the 2000, 2001 and 2007 Libertadores runs. Diego Maradona also had two spells at the club."
+    },
+    {
+      "q": "Is this Boca Juniors quiz free?",
+      "a": "Yes — it plays in your browser with no sign-up and no download, and every answer comes with an explanation."
+    }
+  ]
+},
+{
+  "club": "River Plate",
+  "slug": "river-plate",
+  "name": "River Plate",
+  "h1": "River Plate Quiz",
+  "title": "River Plate Quiz — El Monumental Trivia | Ball IQ",
+  "description": "Free River Plate quiz with explained answers — the Gallardo years, Madrid 2018, Enzo Pérez in goal and four Libertadores.",
+  "intro": [
+    "River Plate's modern history has one obvious peak and it happened in Madrid. This free River quiz covers all of it: Marcelo Gallardo's decade, the 2015 and 2018 Copa Libertadores, and the 2018 final against Boca that had to be moved to the Santiago Bernabéu — the only Superclásico ever settled on another continent.",
+    "It goes deeper than the trophies. The El Monumental questions, the academy that produced Saviola, Aimar, Mascherano and Julián Álvarez, and the night in 2021 when Enzo Pérez played in goal with a squad ravaged by covid.",
+    "A note on rigour: River's own honours are misreported in places — one widely-read summary lists two Libertadores years that belong to Peñarol and Colo-Colo. Everything here was checked against the individual tournament records.",
+    "Every answer is explained. Free, no sign-up, and the Boca Juniors quiz is waiting when you're done."
+  ],
+  "faq": [
+    {
+      "q": "Why was the 2018 Libertadores final played in Madrid?",
+      "a": "The second leg against Boca was abandoned after the Boca team bus was attacked outside El Monumental. CONMEBOL moved it abroad, and River won 3-1 after extra time at the Santiago Bernabéu on 9 December 2018."
+    },
+    {
+      "q": "How many Copa Libertadores have River Plate won?",
+      "a": "Four: 1986, 1996, 2015 and 2018. Marcelo Gallardo coached the last two, in a spell that also brought two Copa Sudamericanas and three Recopas."
+    },
+    {
+      "q": "Which players came through River's academy?",
+      "a": "An unusually long list — Javier Saviola, Pablo Aimar, Javier Mascherano, Radamel Falcao, Gonzalo Higuaín and Julián Álvarez among them. The quiz includes a question designed around a common misconception about one of them."
+    },
+    {
+      "q": "Is the River Plate quiz free?",
+      "a": "Yes. No sign-up, no download, and every answer carries a written explanation."
+    }
+  ]
+},
+{
+  "club": "Flamengo",
+  "slug": "flamengo",
+  "name": "Flamengo",
+  "h1": "Flamengo Quiz",
+  "title": "Flamengo Quiz — Mengão Trivia Questions | Ball IQ",
+  "description": "Free Flamengo quiz with explained answers — Zico, the 1981 world title, and the 2019 Libertadores comeback in Lima.",
+  "intro": [
+    "Flamengo claim the largest supporter base in Brazil, and 2019 is the year that generation will tell their grandchildren about. This free Flamengo quiz covers it properly: the Libertadores final in Lima, two goals in the last three minutes to beat River Plate, and the Brasileirão won the same weekend with a record points total.",
+    "It reaches back too — to Zico, and to the 1981 double that took Flamengo past Cobreloa and then past Liverpool in Tokyo for the Intercontinental Cup.",
+    "One thing we deliberately do not ask: how many Brasileirão titles Flamengo have won. That count is genuinely disputed because of the 1987 Copa União, and different reputable sources give different answers. A quiz should not pick a side in an argument the sport hasn't settled.",
+    "Every answer is explained, it's free, and there's nothing to install."
+  ],
+  "faq": [
+    {
+      "q": "What happened in the 2019 Copa Libertadores final?",
+      "a": "Flamengo trailed River Plate in Lima until Gabriel Barbosa scored twice in the closing minutes to win it 2-1. They clinched the Brasileirão the following day without playing."
+    },
+    {
+      "q": "Did Flamengo beat Liverpool?",
+      "a": "Yes — 3-0 in the 1981 Intercontinental Cup in Tokyo, with Nunes scoring twice and Zico supplying the passes. It remains one of the most one-sided finals in the competition's history."
+    },
+    {
+      "q": "How many Brasileirão titles do Flamengo have?",
+      "a": "This is genuinely contested — sources differ depending on how the 1987 Copa União is counted, so the quiz deliberately avoids the question rather than assert a number that reputable sources disagree on."
+    },
+    {
+      "q": "Is the Flamengo quiz free?",
+      "a": "Yes, free in your browser with no account needed, and every answer is explained."
+    }
+  ]
+},
+{
+  "club": "Palmeiras",
+  "slug": "palmeiras",
+  "name": "Palmeiras",
+  "h1": "Palmeiras Quiz",
+  "title": "Palmeiras Quiz — Verdão Trivia Questions | Ball IQ",
+  "description": "Free Palmeiras quiz with explained answers — Abel Ferreira's back-to-back Libertadores, Endrick, and the Derby Paulista.",
+  "intro": [
+    "Palmeiras spent the early 2020s as the best-run club in South America, and this free Palmeiras quiz is built around that run: Abel Ferreira arriving from Portugal, the 2020 Copa Libertadores won in an empty Maracanã, and the 2021 final against Flamengo that made it back-to-back.",
+    "There is plenty beyond the trophies — the Italian-immigrant founding, the Derby Paulista against Corinthians, Ademir da Guia, Roberto Carlos's years there before Europe, and the Endrick era that ended at Real Madrid.",
+    "A warning about the internet on this one: several aggregator sites list Palmeiras' Copa do Brasil years wrongly, and one commonly repeated claim credits the wrong goalkeeper with Olympic gold in 2016. Both are corrected here, with the explanation telling you what actually happened.",
+    "Every answer is explained. Free, no sign-up, nothing to install."
+  ],
+  "faq": [
+    {
+      "q": "How many Copa Libertadores have Palmeiras won?",
+      "a": "Three — 1999, 2020 and 2021. The last two came back to back under Abel Ferreira, with the 2021 final won against Flamengo after extra time."
+    },
+    {
+      "q": "Who founded Palmeiras?",
+      "a": "Italian immigrants in São Paulo in 1914, originally as Palestra Italia. The name changed during the Second World War when Brazil restricted the use of Axis-nation names."
+    },
+    {
+      "q": "Did Endrick play for Palmeiras?",
+      "a": "Yes — he came through the academy and won two Brasileirão titles there before joining Real Madrid, the move having been agreed long before he was old enough to make it."
+    },
+    {
+      "q": "Is the Palmeiras quiz free?",
+      "a": "Yes. It plays in the browser with no sign-up, and every answer carries a written explanation."
+    }
+  ]
+},
+{
+  "club": "Corinthians",
+  "slug": "corinthians",
+  "name": "Corinthians",
+  "h1": "Corinthians Quiz",
+  "title": "Corinthians Quiz — Timão Trivia Questions | Ball IQ",
+  "description": "Free Corinthians quiz with explained answers — the 2012 Libertadores and world title, Sócrates and the Democracy, Ronaldo's return.",
+  "intro": [
+    "Corinthians are the club of the São Paulo working class, and their story has two chapters nobody else can claim. This free Corinthians quiz covers both: the 2012 season that brought a first Copa Libertadores and then the Club World Cup against Chelsea, and the Corinthians Democracy of the early 1980s, when Sócrates and his team-mates ran the club by vote under a military dictatorship.",
+    "Also here: the 2000 inaugural Club World Championship, the 2007 relegation that the club came back from, Ronaldo Nazário's spell from 2009, and the Derby Paulista.",
+    "Two things we checked hard. Rivaldo is often said to have played for Corinthians in 2004 — he didn't, that was Cruzeiro, and his only spell here was a decade earlier. And the club's Copa do Brasil count varies between sources, so no question depends on it.",
+    "Every answer is explained. Free, no account, nothing to install."
+  ],
+  "faq": [
+    {
+      "q": "What did Corinthians win in 2012?",
+      "a": "The Copa Libertadores — their first — and then the FIFA Club World Cup, beating Chelsea 1-0 in the final in Yokohama through a Paolo Guerrero goal."
+    },
+    {
+      "q": "What was the Corinthians Democracy?",
+      "a": "A movement in the early 1980s, led by Sócrates and team-mates, in which players voted on club decisions — from tactics to transfers — as a deliberate stand against Brazil's military dictatorship."
+    },
+    {
+      "q": "Did Ronaldo play for Corinthians?",
+      "a": "Ronaldo Nazário did, from 2009 until his retirement in 2011, winning the Copa do Brasil and the Campeonato Paulista. He is not to be confused with Cristiano Ronaldo, who never played in Brazil."
+    },
+    {
+      "q": "Is the Corinthians quiz free?",
+      "a": "Yes — free in your browser, no sign-up, and every answer is explained."
+    }
+  ]
+}
 ];
