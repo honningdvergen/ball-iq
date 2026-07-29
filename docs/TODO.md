@@ -130,6 +130,64 @@ the new MP XP award. A green build proves compilation, not behaviour.
 
 ---
 
+## 🔬 CLUB-PER-MARKET RESEARCH — first real data, 2026-07-29
+
+Alex, correctly: *"i actually do not know what clubs people from indonesia
+actually support, this is research we have to do."* Right, and my prior was
+WRONG. Google Trends, Indonesia, past 12 months, average search interest:
+
+| Club | Interest |
+|---|---|
+| **Arsenal** | **24** |
+| Liverpool | 18 |
+| Chelsea | 17 |
+| Manchester United | **9** |
+
+**United came LAST, by 2.7×** — and United is the club I had just built the
+Indonesian page for. Assumption beaten by ten minutes of Trends.
+
+⚠️ **Read the caveat before acting on it.** These are raw search TERMS and three
+of the four are homonyms in Indonesia: "arsenal" is a common noun, "Liverpool" a
+city, and **"Chelsea" is a very common Indonesian given name** (Chelsea Islan,
+Chelsea Olivia). Only "Manchester United" is unambiguous — so United's 9 is
+clean while the other three are inflated by non-football searches.
+
+Two follow-ups, and the second one matters more:
+- Re-running with unambiguous forms ("Man United", "Arsenal FC", "Liverpool FC")
+  returned **too little volume to chart**. That is itself a finding: Indonesian
+  searchers use the PLAIN club name, so the raw comparison is closer to the real
+  query set than the confound suggests — but it also means ranking for
+  "arsenal" in Indonesia means competing with every non-football meaning.
+- **The query that actually matters is quiz-intent, not club-name**: "kuis
+  Arsenal", "kuis Liverpool". Low individual volume, but it is what we would
+  actually rank for. Check those before picking the next club.
+
+**Practical call:** keep `/id/quiz/manchester-united/` — it is live, cost nothing
+and is a clean control. Add Arsenal or Liverpool as the second Indonesian page,
+because that is where the demand is.
+
+### Method to reuse for every other market
+`trends.google.com/trends/explore?date=today%2012-m&geo=<CC>&q=<club>,<club>,…`
+Compare 4 clubs at a time, note homonyms in the local language, then sanity-check
+with a quiz-intent query. **Do this BEFORE writing 22 questions**, not after.
+
+### Priors still UNTESTED — do not build on these until Trends confirms
+The selection logic for Asia is NOT "biggest global brand", which is why the
+Indonesia result was a surprise. Per-market hooks worth testing:
+- **Korea → Tottenham** (Son Heung-min). In bank, 42 Qs.
+- **Thailand → Leicester** (King Power is Thai-owned). ⚠️ **NOT IN THE BANK** —
+  needs a pack forged before a Thai page is even possible.
+- **Japan → clubs with Japanese-player history**: United (Kagawa), Celtic
+  (Nakamura), Brighton (Mitoma), Arsenal, Liverpool. All in bank.
+- **Vietnam / HK / Taiwan → Premier League giants**, club TBC by Trends.
+- **India → SKIP.** Fans are real but search in ENGLISH; the existing English
+  pages already serve them. Same shape as the dead US thesis.
+- **Mainland China → SKIP.** Baidu rules and an ICP licence effectively gates
+  ranking; the app CTA also dead-ends (no Google Play). The reachable Chinese
+  opportunity is **zh-Hant for HK/TW/SG/MY**, which are Google markets.
+
+---
+
 ## 🌍 LOCALISATION STRATEGY (Alex's call, 2026-07-29) — both languages, always
 
 **The model: a localised page is ADDITIVE, never a replacement.** Every club
