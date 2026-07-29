@@ -5401,7 +5401,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
             {avatarUrl
               ? <img src={avatarUrl} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:84,height:84,borderRadius:"50%",objectFit:"cover",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)"}} />
-              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:40,background:"var(--s2)"}}>{avatarEmoji}</span>}
+              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"var(--s2)"}}><img src="/marketing/ball.png" alt="" aria-hidden="true" style={{width:"100%",height:"100%",objectFit:"cover"}} /></span>}
             <span style={{fontSize:14,fontWeight:800,color:"var(--t1)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{displayName}</span>
           </div>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:19,fontWeight:800,color:"var(--t3)"}}>VS</span>
@@ -10645,7 +10645,7 @@ function AppInner() {
                 return "You";
               })()}
               avatarUrl={authProfile?.avatar_url}
-              avatarEmoji={profile.avatar || "⚽"}
+              avatarEmoji={null}   /* emoji set removed 2026-07-29; the VS card falls back to the ball below */
             />
             </TabErrorBoundary>
           </div>

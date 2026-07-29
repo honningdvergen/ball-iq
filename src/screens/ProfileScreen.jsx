@@ -22,24 +22,40 @@ export const BADGE_DEFS = [
   ["world_class", "🌍", "World Class",   "100 International Qs"]
 ];
 
-export const AVATARS = ["⚽","🏆","🔥","⭐","🧠","🎯","👑","🌍","🐐","💎","🦁","🦅","🐺","🐉","🚀","⚡","🏅","🥇","🥈","🥉","🔮","🌟","💫","🌈","🎭","🎨","🦊","🐬","🦋","🎵","🌺","🏄"];
+// ── Profile picture ─────────────────────────────────────────────────────────
+//
+// One concept, one name. The app used to have TWO: an "avatar" (one of 32
+// emoji) and a "profile picture" (an uploaded photo), for a single circle —
+// which is confusing to explain and was confusing on screen.
+//
+// The emoji set is gone. Measured in prod 2026-07-29 before removing it:
+// of 108 profiles, 102 were still on the untouched "ball" default and only SIX
+// people had ever picked an emoji — while TEN had found the photo upload. A
+// full-screen grid of 32 options earning 6 users is not carrying its weight,
+// and it was the source of the naming muddle.
+//
+// So: upload a photo, or you get the Ball IQ ball. The "?" on the mark reads as
+// unset, which is exactly what a default is. Identity comes from the username.
+//
+// Fills its container. Every avatar slot has explicit dimensions (.profile-avatar
+// 72px, .friends-avatar 32px, .pd-avatar 80px) AND a font-size left over from the
+// emoji days — sizing in `em` looked reasonable and put a 32px ball inside a 72px
+// ring. Measured in the simulator, not assumed.
+const BALL_SRC = "/marketing/ball.png";
 
-// Map any legacy string IDs (a pre-emoji convention that survives in some
-// older profile rows — see useAuth.jsx fallback) onto their emoji equivalent.
-// Real emojis pass through unchanged. Unknown legacy strings default to ⚽
-// rather than render as plain text "ball" / "lion" / etc.
-const LEGACY_AVATAR_IDS = {
-  ball: "⚽", trophy: "🏆", fire: "🔥", star: "⭐", brain: "🧠",
-  target: "🎯", crown: "👑", world: "🌍", goat: "🐐", diamond: "💎",
-  lion: "🦁", eagle: "🦅", wolf: "🐺", dragon: "🐉", rocket: "🚀",
-};
-export function avatarEmoji(v) {
-  if (!v || typeof v !== "string") return "⚽";
-  if (LEGACY_AVATAR_IDS[v]) return LEGACY_AVATAR_IDS[v];
-  // Plain ASCII looks like an unmapped legacy id — fall back rather than
-  // render text. Real emojis are non-ASCII so they sail through.
-  if (/^[a-z_-]+$/i.test(v)) return "⚽";
-  return v;
+export function ProfilePic({ value, url, className, style }) {
+  const src = url || BALL_SRC;
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
+      className={className}
+      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%",
+               display: "block", ...style }}
+      onError={(e) => { if (e.currentTarget.src !== BALL_SRC) e.currentTarget.src = BALL_SRC; }}
+    />
+  );
 }
 
 // ─── IMAGE CROPPER (cropperjs from CDN) ──────────────────────────────────────
@@ -495,7 +511,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       .filter(Boolean)
       // Sprint #84 AAA3: blocked users disappear from the leaderboard too.
       .filter(r => !blockMask.has(r.id));
-    rows.push({ id: userId, username: currentUserName || "You", avatar: avatarEmoji(currentUserAvatar), score: currentUserScore || 0, isMe: true });
+    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar, score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
   }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar, blockMask]);
@@ -536,7 +552,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           })()}
           {results.map(r => (
             <div key={r.id} className="friends-row">
-              <div className="friends-avatar">{avatarEmoji(r.avatar)}</div>
+              <div className="friends-avatar"><ProfilePic value={r.avatar} /></div>
               <div className="friends-meta">
                 <div className="friends-name">{r.username}</div>
                 <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
@@ -556,7 +572,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -580,7 +596,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub">Pending…</div>
@@ -643,7 +659,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           return (
             <div key={f.id} className="friends-row">
               <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={`View ${p.username}'s profile`}>
-                <div className="friends-avatar">{avatarEmoji(p.avatar)}</div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -664,7 +680,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
               const inner = (
                 <>
                   <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
-                  <div className="friends-avatar">{avatarEmoji(row.avatar)}</div>
+                  <div className="friends-avatar"><ProfilePic value={row.avatar} /></div>
                   <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label="You">YOU</span>}</div>
                   <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
                 </>
@@ -790,7 +806,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const totalCorrect = data.correct_answers || 0;
   const totalAnswered = friendStats.totalAnswered || 0;
   const gamesPlayed = data.games_played || 0;
-  const avatar = avatarEmoji(data.avatar_id);
+  const avatar = <ProfilePic value={data.avatar_id} url={data.avatar_url} />;
   const username = data.username || 'Player';
   const hasAnyStats = gamesPlayed > 0 || totalCorrect > 0 || (friendStats.bestScore || 0) > 0;
 
@@ -1072,7 +1088,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
               key={row.id}
               style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0",borderBottom:"1px solid var(--border)"}}
             >
-              <div style={{fontSize:28,lineHeight:1}}>{avatarEmoji(row.avatar)}</div>
+              <div style={{width:28,height:28,flexShrink:0}}><ProfilePic value={row.avatar} /></div>
               <div style={{flex:1,fontSize:15,fontWeight:600,color:"var(--t1)"}}>{row.username}</div>
               <button
                 type="button"
@@ -1091,7 +1107,6 @@ export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
@@ -1101,7 +1116,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // the freshly-picked emoji immediately; we also clear avatar_url server-side
   // so it stays consistent after the next authProfile refetch. Reset to false
   // when a new photo upload succeeds.
-  const [emojiOverridesPhoto, setEmojiOverridesPhoto] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   // Optimistic name override — the card normally shows the SERVER username
@@ -1192,8 +1206,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // Show the uploaded photo only when it hasn't been overridden by a fresh
   // emoji pick this session. Emoji itself is local-first (the just-picked value
   // in `profile.avatar`) with the server's avatar_id as the fallback.
-  const showPhoto = !!avatarUrl && !emojiOverridesPhoto;
-  const displayEmoji = avatarEmoji(profile?.avatar || authProfile?.avatar_id);
+  // Was `!!avatarUrl && !emojiOverridesPhoto` — the override existed so a
+  // chosen emoji could beat an uploaded photo. With the emoji set gone there
+  // is nothing left to beat it.
+  const showPhoto = !!avatarUrl;
+  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} />;
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
   // practice every caller passes onToast — this is defensive.
@@ -1201,9 +1218,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
 
   const openAvatarPicker = () => {
     if (uploading || authLoading) return;
-    // Guests can only use emoji — logged-in users get the full menu
+    // Guests have nowhere to upload TO (the photo lives in Supabase storage
+    // against a user id), so for them the ball is simply it — tapping does
+    // nothing rather than opening a menu whose only row they cannot use.
+    // This used to route guests to the emoji picker, which no longer exists.
     if (user && !isGuest) setShowAvatarMenu(true);
-    else setShowEmojiPicker(true);
   };
 
   const pickFromLibrary = () => {
@@ -1243,8 +1262,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       if (result?.error) {
         toast("Could not upload photo — try again");
       } else {
-        // A fresh photo replaces any emoji override.
-        setEmojiOverridesPhoto(false);
         toast("Profile photo updated ✓");
       }
     } catch {
@@ -1326,7 +1343,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   ) : showPhoto ? (
                     <img crossOrigin="anonymous" src={avatarUrl} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                   ) : (
-                    <span className="pd-avatar-emoji">{displayEmoji}</span>
+                    displayEmoji
                   )}
                 </button>
                 <div className="pd-idcol">
@@ -1651,7 +1668,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
-          currentUserAvatar={avatarEmoji(profile?.avatar || authProfile?.avatar_id)}
+          currentUserAvatar={profile?.avatar || authProfile?.avatar_id}
           onChallenge={onChallenge}
           onToast={onToast}
           onOpenFriend={onOpenFriend}
@@ -1728,45 +1745,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   <div style={{fontSize:12, color:"var(--t3)"}}>Upload a photo from your device</div>
                 </div>
               </button>
-              <button className="avatar-menu-row" onClick={() => { setShowAvatarMenu(false); setShowEmojiPicker(true); }}>
-                <span style={{fontSize:22}}>😀</span>
-                <div style={{flex:1, minWidth:0}}>
-                  <div style={{fontSize:14, fontWeight:700, color:"var(--t1)"}}>Choose emoji avatar</div>
-                  <div style={{fontSize:12, color:"var(--t3)"}}>Pick from the emoji set</div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {showEmojiPicker && (
-        <div className="emoji-picker-overlay" onClick={() => setShowEmojiPicker(false)}>
-          <div className="emoji-picker-sheet" onClick={e => e.stopPropagation()}>
-            <div className="emoji-picker-title">Choose your avatar</div>
-            <div className="emoji-grid">
-              {AVATARS.map(em => (
-                <button key={em} className={`emoji-opt${profile?.avatar===em?" selected":""}`}
-                  aria-label={`Choose ${em} avatar`}
-                  onClick={() => {
-                    setProfile(p => ({...p, avatar:em}));
-                    setShowEmojiPicker(false);
-                    // Make the emoji win over any existing uploaded photo,
-                    // immediately (local) and after refetch (server clear).
-                    setEmojiOverridesPhoto(true);
-                    // Sync emoji choice to Supabase so friend lists and
-                    // leaderboards see the new avatar across devices. Clear
-                    // avatar_url too so the photo doesn't re-win on next load.
-                    if (user && !isGuest) {
-                      supabase.from('profiles').update({ avatar_id: em, avatar_url: null }).eq('id', user.id).then(({ error }) => {
-                        if (error) toast("⚠️ Couldn't sync avatar — check your connection");
-                      }).catch(() => {
-                        toast("⚠️ Couldn't sync avatar — check your connection");
-                      });
-                    }
-                  }}>
-                  {em}
-                </button>
-              ))}
+              {/* The "Choose emoji avatar" row lived here. Removed 2026-07-29:
+                  6 of 108 profiles had ever used it, and having both an "avatar"
+                  and a "profile picture" for one circle was the confusing part.
+                  Upload a photo, or keep the ball. */}
             </div>
           </div>
         </div>
