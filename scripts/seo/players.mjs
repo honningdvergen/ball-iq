@@ -649,5 +649,216 @@ export const PLAYERS = [
         "a": "It scales from easy to hard — gentle openers about his major clubs and trophies, then deeper questions on early loans, fees, shirt numbers, and international milestones. Every answer is explained, so it doubles as a way to learn his career, not just test it."
       }
     ]
-  }
+  },
+{
+  "slug": "bellingham",
+  "match": [
+    "Bellingham"
+  ],
+  "name": "Jude Bellingham",
+  "initials": "JB5",
+  "h1": "Jude Bellingham Quiz",
+  "title": "Jude Bellingham Quiz — Real Madrid Trivia | Ball IQ",
+  "description": "Free Jude Bellingham quiz with explained answers — Birmingham's retired 22, the Dortmund years, and that 91st-minute Clasico winner.",
+  "intro": [
+    "Jude Bellingham went from Championship teenager to Real Madrid's number five in three seasons, and the speed of it still does not look real written down. This free Bellingham quiz follows the whole climb: the Birmingham City debut at sixteen that ended with the club retiring the number 22 shirt behind him, the move to Borussia Dortmund in 2020, the DFB-Pokal he lifted in his second season, and the 2023 transfer to the Bernabeu where he took the shirt Zinedine Zidane once wore.",
+    "The questions run from the gentle to the genuinely hard. Where his career gets mythologised — the age records, the fees, the debut dates — the explanations give you the real figures rather than the rounded ones repeated in highlight reels.",
+    "Every answer carries a written explanation, so a wrong guess still teaches you something. There is no sign-up and nothing to install.",
+    "If you want more after this, the Real Madrid and La Liga quizzes go wider on the club and the league he now defines."
+  ],
+  "faq": [
+    {
+      "q": "Which club did Jude Bellingham start his career at?",
+      "a": "Birmingham City. He debuted in August 2019 at sixteen and Birmingham retired the number 22 shirt when he left for Borussia Dortmund in 2020 — an unusual honour for a player with one senior season behind him."
+    },
+    {
+      "q": "How much did Borussia Dortmund pay for Bellingham?",
+      "a": "Around £25m guaranteed up front, reported in July 2020. It made him one of the most expensive English teenagers ever at the time, and Dortmund roughly quadrupled the fee when they sold him to Real Madrid three years later."
+    },
+    {
+      "q": "What shirt number does Bellingham wear at Real Madrid?",
+      "a": "Number 5 — previously worn by Zinedine Zidane and by Fernando Hierro before him. He wore 22 at Birmingham and 22 at Dortmund."
+    },
+    {
+      "q": "Is this Jude Bellingham quiz free?",
+      "a": "Yes. It plays in the browser with no sign-up and no download, and every answer comes with an explanation. The full app has thousands more questions if you want to keep going."
+    }
+  ]
+},
+{
+  "slug": "foden",
+  "match": [
+    "Foden"
+  ],
+  "name": "Phil Foden",
+  "initials": "PF47",
+  "h1": "Phil Foden Quiz",
+  "title": "Phil Foden Quiz — Man City Trivia | Ball IQ",
+  "description": "Free Phil Foden quiz with explained answers — the Stockport academy kid, shirt 47, two Spurs firsts and a Player of the Season.",
+  "intro": [
+    "Phil Foden is the rarest thing in modern football: a local boy who stayed. This free Foden quiz covers the whole arc from Stockport to the Etihad — the Manchester City academy years, the Premier League debut against Tottenham in December 2017, the first senior goal away at Oxford United in the EFL Cup, and the 2023 treble.",
+    "Two of the sharper questions hinge on the same opponent twice: his Premier League debut and his first Premier League goal both came against Spurs, sixteen months apart. That kind of detail is where the quiz gets genuinely hard.",
+    "There is a running thread about the number 47 as well — the shirt he has worn since the first team, and kept when Sergio Aguero offered him the 10 on his way out in 2021.",
+    "Every answer is explained. No sign-up, nothing to install, and the Manchester City and Premier League quizzes go wider when you are done."
+  ],
+  "faq": [
+    {
+      "q": "Where is Phil Foden from?",
+      "a": "Stockport, in Greater Manchester, born 28 May 2000. He joined Manchester City's academy as a child and has spent his entire senior career at the club."
+    },
+    {
+      "q": "Why does Phil Foden wear 47?",
+      "a": "It was the high squad number he was given coming through, and he chose to keep it. Sergio Aguero offered him the number 10 when leaving City in 2021 and Foden stayed with 47."
+    },
+    {
+      "q": "When did Phil Foden make his Premier League debut?",
+      "a": "16 December 2017, in a 4-1 win over Tottenham. His first Premier League goal also came against Spurs, a header on 20 April 2019."
+    },
+    {
+      "q": "How hard is the Phil Foden quiz?",
+      "a": "It scales. The opening questions cover his club and the treble; the harder ones get into debut dates, his first senior goal at Oxford United, and the difference between his first goal at the Etihad and his first away."
+    }
+  ]
+},
+{
+  "slug": "musiala",
+  "match": [
+    "Musiala"
+  ],
+  "name": "Jamal Musiala",
+  "initials": "JM42",
+  "h1": "Jamal Musiala Quiz",
+  "title": "Jamal Musiala Quiz — Bayern Munich Trivia | Ball IQ",
+  "description": "Free Jamal Musiala quiz with explained answers — Stuttgart to Chelsea to Bayern, the number 42, and the Germany switch.",
+  "intro": [
+    "Jamal Musiala had three football educations before he turned eighteen. Born in Stuttgart, raised in England from the age of seven, schooled at Southampton and then Chelsea's Cobham academy for eight years, and finished at Bayern Munich — this free Musiala quiz follows every stage of an unusually well-travelled upbringing.",
+    "The questions cover the 3. Liga debut for Bayern II, the first Bundesliga goal against Schalke in September 2020, the number 42 he wore from his debut, and the decision to represent Germany after appearing for England's youth sides.",
+    "A few of the harder ones deal with records he set and then lost — Bayern's youngest Bundesliga player and youngest scorer have both been taken since. The explanations say who took them and when, which is more interesting than the record itself.",
+    "Every answer is explained. Free, no sign-up, and the Bayern Munich and Bundesliga quizzes are there when you want more."
+  ],
+  "faq": [
+    {
+      "q": "Which English clubs did Jamal Musiala play for?",
+      "a": "Southampton first, from 2010 to March 2011, then Chelsea from 2011 to 2019 — eight years at the Cobham academy before he joined Bayern Munich at sixteen."
+    },
+    {
+      "q": "Why does Jamal Musiala play for Germany and not England?",
+      "a": "He was born in Stuttgart and holds both nationalities. He came through England's youth sides during his years at Chelsea, then chose Germany at senior level in 2021."
+    },
+    {
+      "q": "What was Jamal Musiala's first Bundesliga goal?",
+      "a": "Against Schalke in September 2020. Worth noting that it was not his first professional goal — those came for Bayern II against FSV Zwickau in June 2020, a detail several sources get wrong."
+    },
+    {
+      "q": "Is the Jamal Musiala quiz free?",
+      "a": "Yes — it plays in the browser with no sign-up or download, and every answer carries a written explanation."
+    }
+  ]
+},
+{
+  "slug": "saka",
+  "match": [
+    "Saka"
+  ],
+  "name": "Bukayo Saka",
+  "initials": "BS7",
+  "h1": "Bukayo Saka Quiz",
+  "title": "Bukayo Saka Quiz — Arsenal Trivia | Ball IQ",
+  "description": "Free Bukayo Saka quiz with explained answers — Hale End at seven, shirt 87 on debut, and Arsenal's 2,000th Premier League goal.",
+  "intro": [
+    "Bukayo Saka joined Arsenal's Hale End academy at seven and has never played for another club. This free Saka quiz runs from there: the senior debut against Vorskla Poltava in November 2018, the Premier League debut on New Year's Day 2019 wearing 87, the first Arsenal goal and two assists at Eintracht Frankfurt, and the first Premier League goal at Wolves in July 2020.",
+    "The harder questions get into the specifics people misremember. He took the number 7 in July 2020 from Henrikh Mkhitaryan, not from Willian a year later, and his England debut was 8 October 2020, not the 1st — both are wrong on pages you would expect to be right.",
+    "There is a landmark in here too: Arsenal's 2,000th Premier League goal, scored by Saka at Villa Park in March 2022.",
+    "Every answer is explained, it is free, and there is nothing to install. The Arsenal and Premier League quizzes go wider when you finish."
+  ],
+  "faq": [
+    {
+      "q": "How old was Bukayo Saka when he joined Arsenal?",
+      "a": "Seven. He joined the Hale End academy in 2008 after a short spell in Watford's system, and has been at Arsenal his whole career since."
+    },
+    {
+      "q": "What shirt number did Saka wear on his Premier League debut?",
+      "a": "87, against Fulham on 1 January 2019. He took the number 7 in July 2020, inheriting it from Henrikh Mkhitaryan."
+    },
+    {
+      "q": "When did Bukayo Saka make his England debut?",
+      "a": "8 October 2020, against Wales. His first England goal followed against Austria on 2 June 2021, and he scored a hat-trick against North Macedonia in June 2023."
+    },
+    {
+      "q": "How hard is the Bukayo Saka quiz?",
+      "a": "It builds from easy to hard. Early questions cover the academy and the club; later ones get into debut dates, shirt numbers and specific matches, with every answer explained."
+    }
+  ]
+},
+{
+  "slug": "vinicius",
+  "match": [
+    "Vinicius",
+    "Vinícius"
+  ],
+  "name": "Vinícius Júnior",
+  "initials": "VJ7",
+  "h1": "Vinícius Júnior Quiz",
+  "title": "Vinicius Junior Quiz — Real Madrid Trivia | Ball IQ",
+  "description": "Free Vinicius Junior quiz with explained answers — the Flamengo teenager, the 2022 Champions League winner, and shirt 7.",
+  "intro": [
+    "Vinícius Júnior was sixteen when he made his Flamengo debut and Real Madrid had already agreed to sign him. This free Vinícius quiz follows the whole route from São Gonçalo: the May 2017 debut against Atlético Mineiro, the 2017 agreement that could only take effect after his eighteenth birthday in July 2018, and the years at the Bernabéu that turned a raw winger into a Champions League final match-winner.",
+    "The 2022 final is here — the only goal against Liverpool in Paris, scored wearing 20 — along with the switch to number 7 in 2023-24 after Eden Hazard left, and the Champions League Player of the Season and The Best FIFA awards that followed.",
+    "One thing the quiz deliberately avoids: his first Real Madrid goal is genuinely disputed between sources, with one widely-cited strike logged elsewhere as an own goal. Where a fact is contested, we leave it out rather than pick a side.",
+    "Every answer is explained. Free, no sign-up, and the Real Madrid and La Liga quizzes carry on from here."
+  ],
+  "faq": [
+    {
+      "q": "When did Vinicius Junior join Real Madrid?",
+      "a": "The move was agreed in May 2017 but could only take effect after his eighteenth birthday, so he formally joined in July 2018. He made his Real Madrid debut that September against Atletico Madrid."
+    },
+    {
+      "q": "Did Vinicius Junior score in a Champions League final?",
+      "a": "Yes — the only goal of the 2022 final against Liverpool in Paris, wearing number 20. He was named Champions League Player of the Season in 2023-24."
+    },
+    {
+      "q": "What number does Vinicius Junior wear?",
+      "a": "Number 7 since 2023-24, taken after Eden Hazard's departure. He wore 28 on his Real Madrid debut and 20 for the 2022 Champions League final."
+    },
+    {
+      "q": "Is the Vinicius Junior quiz free?",
+      "a": "Yes. It plays in your browser with no sign-up and no download, and every answer comes with a written explanation."
+    }
+  ]
+},
+{
+  "slug": "yamal",
+  "match": [
+    "Yamal"
+  ],
+  "name": "Lamine Yamal",
+  "initials": "LY10",
+  "h1": "Lamine Yamal Quiz",
+  "title": "Lamine Yamal Quiz — Barcelona Trivia | Ball IQ",
+  "description": "Free Lamine Yamal quiz with explained answers — the Rocafonda kid, La Masia, Euro 2024, and the numbers 41, 27 and 19.",
+  "intro": [
+    "Lamine Yamal was photographed in a bath with Lionel Messi as a six-month-old for a charity calendar in 2007. Sixteen years later he was starting for Barcelona. This free Yamal quiz covers the whole improbable line: the Rocafonda neighbourhood of Mataró that gives him his 304 celebration, La Masia, the debut at fifteen, and Euro 2024.",
+    "The squad numbers alone make a good round — 41 in 2022-23, 27 the following season, then 19 — and the quiz tracks them properly rather than assuming he has always worn the same shirt.",
+    "Euro 2024 gets real depth: the goal against France, Young Player of the Tournament, and the final against England in Berlin. There are questions on the 2025 Copa del Rey and Supercopa runs too.",
+    "Every answer is explained, and it is free with no sign-up. The Barcelona and La Liga quizzes go wider when you are done."
+  ],
+  "faq": [
+    {
+      "q": "Where is Lamine Yamal from?",
+      "a": "He was born in July 2007 and grew up in Rocafonda, a neighbourhood of Mataro near Barcelona. His 304 goal celebration refers to the area's postcode."
+    },
+    {
+      "q": "Is the Messi photo with baby Lamine Yamal real?",
+      "a": "Yes. Messi photographed a six-month-old Yamal in a bath for a 2007 charity calendar run by the Barcelona daily Sport, with photographs by Joan Monfort."
+    },
+    {
+      "q": "What squad numbers has Lamine Yamal worn at Barcelona?",
+      "a": "41 in 2022-23, then 27 in 2023-24, then 19. The quiz covers each change and when it happened."
+    },
+    {
+      "q": "How hard is the Lamine Yamal quiz?",
+      "a": "It ranges from easy to hard — early questions on his club and Euro 2024, later ones on squad numbers, his family background and specific finals. Every answer is explained."
+    }
+  ]
+}
 ];
