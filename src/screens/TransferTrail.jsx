@@ -21,7 +21,8 @@ import {
   computeTrailStreak,
   buildTrailShareText,
 } from "../lib/trail.js";
-import { Confetti, haptic } from "../App.jsx";
+import { Confetti, haptic, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
+import { clubColour, clubAbbr } from "../lib/clubColour.js";
 
 function loadDay(ymd) {
   try {
@@ -115,6 +116,23 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
 
   const wrongOnes = attempts.filter((a) => !a.skipped && !guessMatchesPlayer(a.text, player));
 
+  // Club identity on the ladder, mirroring the Club Quiz rows. CLUB_PACKS
+  // carries {name, color}; the resolver handles the fact that careers say
+  // "Man Utd" where the packs say "Man United".
+  const packColours = Object.fromEntries(Object.values(CLUB_PACKS).map((p) => [p.name, p.color]));
+  const tint = (hex, a) => {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+  };
+  const onColour = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => {
+      const v = c / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] > 0.42 ? "#14181F" : "#FFFFFF";
+  };
+
   return (
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 }}>
       {won && Confetti ? <Confetti /> : null}
@@ -138,19 +156,29 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 7, padding: "6px 2px" }}>
-        {career.slice(0, shown).map((club, i) => (
-          <div key={i} style={{
-            display: "flex", alignItems: "center", gap: 12,
-            background: "var(--s1)", border: "1px solid var(--border)",
-            borderRadius: 12, padding: "13px 15px",
-          }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", width: 14, flexShrink: 0 }}>{i + 1}</span>
-            <span style={{ fontSize: 15.5, fontWeight: 700, color: "var(--t1)", flex: 1, minWidth: 0 }}>{club}</span>
-            {player.loans?.[i] && (
-              <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>loan</span>
-            )}
-          </div>
-        ))}
+        {career.slice(0, shown).map((club, i) => {
+          const col = clubColour(club, packColours);
+          return (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: 11,
+              background: col ? `linear-gradient(90deg, ${tint(col, 0.3)} 0%, ${tint(col, 0.05)} 100%)` : "var(--s1)",
+              border: `1px solid ${col ? tint(col, 0.45) : "var(--border)"}`,
+              borderRadius: 12, padding: "12px 14px",
+            }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", width: 12, flexShrink: 0 }}>{i + 1}</span>
+              <span aria-hidden="true" style={{
+                width: 30, height: 30, flexShrink: 0, borderRadius: 9,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 11, fontWeight: 800, letterSpacing: "0.02em",
+                background: col || "var(--s3)", color: col ? onColour(col) : "var(--t3)",
+              }}>{clubAbbr(club, CLUB_ABBR)}</span>
+              <span style={{ fontSize: 15.5, fontWeight: 700, color: "var(--t1)", flex: 1, minWidth: 0 }}>{club}</span>
+              {player.loans?.[i] && (
+                <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>loan</span>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {hint && (

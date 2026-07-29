@@ -792,7 +792,7 @@ function clubReadableText(hex) {
 
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
 // not raw initials. Falls back to clubInitials() for any unmapped key.
-const CLUB_ABBR = {
+export const CLUB_ABBR = {
   Boca: "BOC",
   River: "RIV",
   Flamengo: "FLA",
@@ -886,7 +886,7 @@ const LEAGUE_QUIZ_SECTIONS = [
 ];
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
-const CLUB_PACKS = {
+export const CLUB_PACKS = {
   Boca: {
     name: "Boca Juniors", icon: "🔵", color: "#0A2B72",
     questions: [],
