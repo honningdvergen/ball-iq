@@ -379,7 +379,6 @@ function HomeScreenImpl({
           gated there on create/join, not on viewing); Local enters
           pass-and-play immediately. Invite auto-creates a room. */}
       <MultiplayerCard
-        onOnline={() => setTab("online")}
         onInvite={() => {
           // 1.1: "Invite" now creates a room and drops you in the lobby (where
           // the real /join/CODE link lives) instead of sharing a dead link.

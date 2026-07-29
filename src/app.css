@@ -321,7 +321,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    surroundings, not shout louder. The button is now the only green in here. */
 .mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:var(--s1);border:1px solid var(--border);overflow:hidden;contain:layout paint style;}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
-.mp-card-icon{width:46px;height:46px;border-radius:13px;background:rgba(88,204,2,0.14);border:1px solid rgba(88,204,2,0.3);display:inline-flex;align-items:center;justify-content:center;color:#8AE042;flex-shrink:0;line-height:1;}
+.mp-card-icon{width:46px;height:46px;border-radius:13px;background:var(--s2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;color:var(--t2);flex-shrink:0;line-height:1;}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
 .mp-card-sub{font-size:12.5px;color:#9BA0B8;margin-top:5px;font-weight:600;line-height:1.4;}
