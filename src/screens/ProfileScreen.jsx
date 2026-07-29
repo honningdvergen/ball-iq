@@ -322,7 +322,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     try {
       const PAGE = 1000;
       const rows = [];
-      const cols = "*,requester:profiles!requester_id(id,username,avatar:avatar_id,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,total_score)";
+      const cols = "*,requester:profiles!requester_id(id,username,avatar:avatar_id,photo:avatar_url,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,photo:avatar_url,total_score)";
       for (let from = 0; ; from += PAGE) {
         const { data, error } = await supabase
           .from("friendships")
@@ -421,7 +421,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("id,username,avatar:avatar_id,total_score")
+          .select("id,username,avatar:avatar_id,photo:avatar_url,total_score")
           .ilike("username", `%${q}%`)
           .limit(10);
         if (cancelled) return;
@@ -552,7 +552,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           })()}
           {results.map(r => (
             <div key={r.id} className="friends-row">
-              <div className="friends-avatar"><ProfilePic value={r.avatar} /></div>
+              <div className="friends-avatar"><ProfilePic value={r.avatar} url={r.photo} /></div>
               <div className="friends-meta">
                 <div className="friends-name">{r.username}</div>
                 <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
@@ -572,7 +572,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -596,7 +596,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub">Pending…</div>
@@ -659,7 +659,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           return (
             <div key={f.id} className="friends-row">
               <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={`View ${p.username}'s profile`}>
-                <div className="friends-avatar"><ProfilePic value={p.avatar} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -680,7 +680,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
               const inner = (
                 <>
                   <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
-                  <div className="friends-avatar"><ProfilePic value={row.avatar} /></div>
+                  <div className="friends-avatar"><ProfilePic value={row.avatar} url={row.photo} /></div>
                   <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label="You">YOU</span>}</div>
                   <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
                 </>
@@ -732,7 +732,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
       try {
         const { data: row, error } = await supabase
           .from('profiles')
-          .select('id, username, avatar_id, total_score, games_played, correct_answers, xp, stats')
+          .select('id, username, avatar_id, avatar_url, total_score, games_played, correct_answers, xp, stats')
           .eq('id', friendId)
           .maybeSingle();
         if (cancelled) return;
@@ -1088,7 +1088,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
               key={row.id}
               style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0",borderBottom:"1px solid var(--border)"}}
             >
-              <div style={{width:28,height:28,flexShrink:0}}><ProfilePic value={row.avatar} /></div>
+              <div style={{width:28,height:28,flexShrink:0}}><ProfilePic value={row.avatar} url={row.photo} /></div>
               <div style={{flex:1,fontSize:15,fontWeight:600,color:"var(--t1)"}}>{row.username}</div>
               <button
                 type="button"

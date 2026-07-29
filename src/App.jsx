@@ -9853,7 +9853,7 @@ function AppInner() {
     if (!user?.id) { setNotifRequests([]); setNotifInvites([]); return; }
     // Friend requests — incoming pending rows from friendships.
     try {
-      const cols = "id,requester_id,requester:profiles!requester_id(id,username,avatar:avatar_id)";
+      const cols = "id,requester_id,requester:profiles!requester_id(id,username,avatar:avatar_id,photo:avatar_url)";
       const { data } = await supabase
         .from("friendships")
         .select(cols)

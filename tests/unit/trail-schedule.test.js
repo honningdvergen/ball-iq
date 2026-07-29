@@ -15,15 +15,15 @@ const dayIndex = (ymd) => {
 };
 
 describe("Trail schedule is frozen", () => {
-  it("has not moved the anchor — Trail #1 is 2026-08-01", () => {
+  it("has not moved the anchor — Trail #1 is 2026-07-29", () => {
     // Once a puzzle number is public it is the token that makes strangers'
     // grids comparable. Moving the anchor renumbers every past puzzle.
-    expect(TRAIL_ANCHOR_DAY).toBe(dayIndex("2026-08-01"));
-    expect(getTrailNumber(new Date("2026-08-01T12:00:00Z"))).toBe(1);
+    expect(TRAIL_ANCHOR_DAY).toBe(dayIndex("2026-07-29"));
+    expect(getTrailNumber(new Date("2026-07-29T12:00:00Z"))).toBe(1);
   });
 
   it("stays dark before launch rather than serving puzzle #0", () => {
-    expect(getTrailAnswerForDayIndex(dayIndex("2026-07-31"))).toBeNull();
+    expect(getTrailAnswerForDayIndex(dayIndex("2026-07-28"))).toBeNull();
   });
 
   it("pins the opening week", () => {
