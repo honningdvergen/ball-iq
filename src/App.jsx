@@ -6988,7 +6988,12 @@ class TabErrorBoundary extends React.Component {
 // entirely unreachable for months: a first-time Footle player got a blank grid,
 // a keyboard, and no explanation of the colours).
 const HOW_TO_PLAY = {
-  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Guesses must be a real footballer's surname","6 guesses, new player at midnight"] },
+  // "Guesses must be a real footballer's surname" was here and was false —
+  // submitGuess only checks that the guess is the right LENGTH. Rather than add
+  // validation (our word list is 400-odd puzzle answers, not a dictionary, so
+  // it would reject most real footballers and infuriate people), the claim
+  // goes. Any surname you like is a legal probe; only the answer is fixed.
+  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
@@ -7127,25 +7132,20 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
   // a solved puzzle later in the day (no confetti on every revisit).
   const wasFinishedAtMount = useRef(state.status !== "playing");
 
-  // Auto-open the rules ONCE, for a first-time Footle player only: nothing on
-  // the grid says what green/yellow/grey mean or that a guess must be a real
-  // surname. Only fires on a genuinely untouched puzzle — someone mid-grid (or
-  // re-opening a finished one) has already worked it out and doesn't need a
-  // sheet over it.
-  const rulesAutoOpenedRef = useRef(false);
-  useEffect(() => {
-    if (rulesAutoOpenedRef.current || !onHowToPlay) return;
-    if (wasFinishedAtMount.current || state.guesses.length > 0) return;
-    try {
-      if (localStorage.getItem("biq_footle_rules_seen") === "1") return;
-      localStorage.setItem("biq_footle_rules_seen", "1");
-    } catch {}
-    rulesAutoOpenedRef.current = true;
-    onHowToPlay();
-    // Mount-only by construction (the ref latches, and guesses.length is read
-    // from the mount-time state); deps kept minimal deliberately.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onHowToPlay]);
+  // The rules sheet used to auto-open here, once, for a first-time player.
+  // Alex, 2026-07-29: "do we really need the explainer first time someone opens
+  // footle?" — no. Of its five lines, two repeated the card you tapped to get
+  // here ("Surname of a footballer", "6 guesses"), two were the colour
+  // convention, and the fifth ("guesses must be a real footballer's surname")
+  // was simply untrue: submitGuess checks length and nothing else.
+  //
+  // The colour convention was the only line worth keeping, and a modal is the
+  // wrong way to deliver it — colour is not prose. It is now a legend strip
+  // above the grid (see below) that costs no taps and retires itself after the
+  // first guess. The sheet stays reachable behind "?" for anyone who wants it.
+  //
+  // The first guess someone plays now happens without anything on top of it.
+  const showLegend = state.status === "playing" && state.guesses.length === 0;
 
   // Persist on every change to the game state.
   useEffect(() => {
@@ -7380,6 +7380,18 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
           </div>
         )}
       </div>
+
+      {/* What the auto-opening rules sheet was actually for. Full page width, so
+          it fits where the header subtitle could not (that string is width-
+          constrained — a longer one already wrapped the header onto a third
+          line at 375px once). Gone the moment a guess lands, because by then
+          the board has taught it better than any caption could. */}
+      {showLegend && (
+        <div className="wd-legend" aria-hidden="true">
+          <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
+          <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+        </div>
+      )}
 
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
         {rows}

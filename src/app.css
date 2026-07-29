@@ -1401,6 +1401,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
 .wd-sub{font-size:13px;font-weight:600;color:var(--t2);margin-top:3px;letter-spacing:0;}
+/* Colour legend, shown only until the first guess lands. Deliberately quiet —
+   it is a caption, not a control, and it sits between the header and the board
+   without owning either. Chips reuse the board's own tile colours so the
+   mapping is literal rather than described. */
+.wd-legend{display:flex;justify-content:center;gap:18px;margin:10px 0 2px;font-size:12px;font-weight:600;color:var(--t2);}
+.wd-legend-item{display:inline-flex;align-items:center;gap:6px;}
+.wd-legend-chip{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.wd-legend-chip.is-green{background:#58CC02;}  /* == .wd-tile.wd-green  */
+.wd-legend-chip.is-amber{background:#FFC107;}  /* == .wd-tile.wd-yellow */
 .wd-countdown{flex-shrink:0;text-align:right;padding:6px 10px;background:var(--s1);border:1px solid var(--border);border-radius:10px;}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
