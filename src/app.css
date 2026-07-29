@@ -314,7 +314,12 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    primary CTAs (Online / Local) plus a corner Invite affordance. Reflects
    the strategic priority: friends-inviting-friends is the launch acquisition
    channel, so MP needs visible-not-utility weight on home. */
-.mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(135deg,rgba(88,204,2,0.10),#0F1117 62%);border:1px solid #1E3A24;box-shadow:0 0 30px -14px rgba(88,204,2,0.4);overflow:hidden;contain:layout paint style;}
+/* Neutral card, green button (2026-07-29). Alex: "the play a friend button
+   does not catch my eyes". It was not the button — the CARD had a green
+   wash, a green border AND a green glow, so a green CTA sat on green and had
+   nothing to contrast against. Contrast is relative; the fix is to quiet the
+   surroundings, not shout louder. The button is now the only green in here. */
+.mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:var(--s1);border:1px solid var(--border);overflow:hidden;contain:layout paint style;}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
 .mp-card-icon{width:46px;height:46px;border-radius:13px;background:rgba(88,204,2,0.14);border:1px solid rgba(88,204,2,0.3);display:inline-flex;align-items:center;justify-content:center;color:#8AE042;flex-shrink:0;line-height:1;}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
@@ -327,8 +332,8 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
-.mp-card-cta.ghost{background:transparent;color:#8AE042;border:1px solid #2A6B33;box-shadow:none;-webkit-text-fill-color:#8AE042;}
-.mp-card-cta.ghost:hover{background:rgba(88,204,2,0.06);border-color:rgba(88,204,2,0.6);filter:none;}
+.mp-card-cta.ghost{background:transparent;color:var(--t2);border:1px solid var(--border2);box-shadow:none;-webkit-text-fill-color:var(--t2);}
+.mp-card-cta.ghost:hover{background:var(--s2);border-color:var(--t3);filter:none;}
 
 /* ── DAILY ZONE (Sprint #12) ──
    Tinted green-to-amber gradient container framing Footle + Today's 7 as
