@@ -16,7 +16,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
 import { seededShuffle, pickDailyQuestions } from './lib/quiz.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2 } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -5449,7 +5449,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           a bait-and-switch. The gate itself is correct and stays — a room
           needs a real user id to host or join. */}
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{fontSize:16}}>{needsAccount ? "⚡" : "🎮"}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
+        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
       </button>
       {needsAccount && (
         <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>
@@ -5462,7 +5462,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         <div style={{flex:1,minWidth:0,borderRadius:16,background:"var(--s1)",padding:"0 15px",display:"flex",alignItems:"center",gap:10,
           border:joinFocus ? "1.5px solid rgba(88,204,2,0.55)" : "1px solid var(--border)",
           boxShadow:joinFocus ? "0 0 0 4px rgba(88,204,2,0.12)" : undefined}}>
-          <span style={{fontSize:14,flexShrink:0}}>🔑</span>
+          <span style={{flexShrink:0,display:"flex",color:"var(--t3)"}} aria-hidden="true"><KeyRound size={15} strokeWidth={2} /></span>
           <input
             type="text"
             value={joinCode}

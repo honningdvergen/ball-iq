@@ -1218,11 +1218,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
 
   const openAvatarPicker = () => {
     if (uploading || authLoading) return;
-    // Guests have nowhere to upload TO (the photo lives in Supabase storage
-    // against a user id), so for them the ball is simply it — tapping does
-    // nothing rather than opening a menu whose only row they cannot use.
-    // This used to route guests to the emoji picker, which no longer exists.
-    if (user && !isGuest) setShowAvatarMenu(true);
+    if (user && !isGuest) { setShowAvatarMenu(true); return; }
+    // Guests have nowhere to upload TO — the photo is stored against a user id.
+    // But a control that does NOTHING when tapped is just a broken control, and
+    // this one is tapped by someone actively trying to personalise their
+    // profile. That is the best possible moment to ask them to sign up, so it
+    // opens the auth prompt instead of silently swallowing the tap.
+    try { openAuthPrompt?.('save'); } catch { /* auth UI is optional here */ }
   };
 
   const pickFromLibrary = () => {
