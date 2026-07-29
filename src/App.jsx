@@ -9970,10 +9970,35 @@ function AppInner() {
   // A specific friend can be invited to play: challengeFriend stashes their id;
   // once the auto-created room's code is known (onLobbyEnter) we fire the invite.
   const [pendingInviteFriendId, setPendingInviteFriendId] = useState(null);
+  // Returns whether the invite actually landed.
+  //
+  // It used to return nothing and swallow everything, and the swallow was worse
+  // than it looked: supabase.rpc() RESOLVES with {data, error} on a Postgres
+  // error rather than throwing, so the try/catch never ran and the real failure
+  // sat unread in `error`. Two layers of silence over the same fact.
+  //
+  // And it fails often, by design. send_play_invite raises 'not friends' unless
+  // the two accounts are accepted friends — reasonable, or anyone could ping a
+  // stranger by joining their room. But online opponents usually arrive via a
+  // shared LINK, not a friendship, so the common case for Rematch is that
+  // nobody is notified at all. Callers need to know that to say something true.
   const sendPlayInvite = useCallback(async (addresseeId, code) => {
-    if (!addresseeId || !code) return;
-    try { await supabase.rpc("send_play_invite", { p_addressee: addresseeId, p_code: code }); }
-    catch { /* soft-fail: the share link in the lobby still works as a fallback */ }
+    if (!addresseeId || !code) return false;
+    try {
+      const { error } = await supabase.rpc("send_play_invite", { p_addressee: addresseeId, p_code: code });
+      if (error) {
+        // 'not friends' is expected and not worth Sentry noise; anything else is.
+        if (!/not friends/i.test(error.message || '')) {
+          console.warn('[sendPlayInvite]', error.message);
+          Sentry.captureException(error, { tags: { area: 'play-invite' } });
+        }
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn('[sendPlayInvite]', e?.message || e);
+      return false;
+    }
   }, []);
   const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifs(); }, [loadNotifs]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
@@ -10891,12 +10916,25 @@ function AppInner() {
           <React.Suspense fallback={<div className="screen" />}>
             <OnlineEntry
               onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); }}
-              onLobbyEnter={(c) => {
+              onLobbyEnter={async (c) => {
                 setStage1RoomCode(c);
                 setScreen("online-stage1-lobby");
                 // Challenge flow: fire the play_invite to the stashed friend now
                 // that the room code exists, then clear the pending target.
-                if (pendingInviteFriendId) { sendPlayInvite(pendingInviteFriendId, c); setPendingInviteFriendId(null); }
+                //
+                // This one targets an accepted friend by construction, so the
+                // RPC's friend-gate passes and it is the reliable half of the
+                // pair. It still says so out loud: a challenge that silently
+                // fails (friendship removed, offline) is indistinguishable from
+                // one that worked, and you find out by waiting in an empty room.
+                if (pendingInviteFriendId) {
+                  const target = pendingInviteFriendId;
+                  setPendingInviteFriendId(null);
+                  const ok = await sendPlayInvite(target, c);
+                  showToast(ok
+                    ? "Challenge sent — they've been notified"
+                    : "Couldn't notify them — share the invite link instead");
+                }
               }}
               defaultName={authProfile?.username || profile?.name || ""}
               autoJoinCode={pendingJoinCode}
@@ -10921,9 +10959,20 @@ function AppInner() {
               // exact moment the adrenaline drops. Challenge already fires a
               // play_invite (see challengeFriend/onLobbyEnter); this gives
               // Rematch the same reach, to everyone who was in the match.
-              onRematch={(c, opponentIds) => {
+              // …and then say which of those two things actually happened.
+              // send_play_invite only reaches accepted FRIENDS, and an online
+              // opponent normally arrives by shared link, so for most rematches
+              // the honest answer is "nobody was pinged — send them the link".
+              // Fire-and-forget left the user believing the opposite while they
+              // sat waiting in an empty lobby.
+              onRematch={async (c, opponentIds) => {
                 setStage1RoomCode(c);
-                (opponentIds || []).forEach((id) => { if (id) sendPlayInvite(id, c); });
+                const ids = (opponentIds || []).filter(Boolean);
+                if (!ids.length) return;
+                const sent = (await Promise.all(ids.map((id) => sendPlayInvite(id, c)))).filter(Boolean).length;
+                showToast(sent
+                  ? (sent === 1 ? "Rematch sent — they've been notified" : `Rematch sent — ${sent} players notified`)
+                  : "Rematch room ready — share the link to bring them back");
               }}
             />
           </React.Suspense>
