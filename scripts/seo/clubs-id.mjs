@@ -1,0 +1,129 @@
+// Indonesian club pages — first member of the MANCHESTER UNITED language cluster.
+//
+// WHY THIS FILE EXISTS, AND WHY IT IS MAN UNITED RATHER THAN A LOCAL CLUB
+//
+// The Spanish, Portuguese and Turkish pilots all follow one shape: a DOMESTIC
+// club written in its own country's language (Boca in Spanish, Flamengo in
+// Portuguese, Galatasaray in Turkish). This is the other shape, and Alex's
+// point: a GLOBAL club has enormous fanbases in countries whose language is
+// nothing like the club's own. There are millions of Manchester United
+// supporters in Indonesia, and every page we own about United is in English.
+//
+// That makes United the right hub for a MULTI-LANGUAGE cluster rather than a
+// one-off. Two reasons, and the second is the one that changed my mind:
+//
+//   1. Holding the CLUB constant across languages means any difference between
+//      the Indonesian and Japanese pages is attributable to the market, not the
+//      badge. Cleaner than spreading one language each across different clubs.
+//   2. An hreflang cluster with several members is stronger than the same
+//      number of isolated pages — the members reinforce one another and Google
+//      can serve the right one per locale. Concentrating languages on one
+//      high-value club builds a real cluster instead of a handful of orphans.
+//
+// WHY INDONESIAN FIRST, ahead of the languages people actually name:
+//
+//   - Enormous Premier League following, and United's is among the largest.
+//   - Google-dominant (unlike mainland China, where Baidu rules and an ICP
+//     licence effectively gates ranking — see the note in clubs-tr.mjs about
+//     testing markets rather than badges).
+//   - An extremely thin Indonesian football-quiz SERP.
+//   - Unlike India — where football fans overwhelmingly search in ENGLISH, so
+//     the audience is real but the LANGUAGE GAP is not — Indonesian searchers
+//     genuinely use Indonesian.
+//
+// ── THE QUESTIONS ARE TRANSLATIONS, NOT NEW WRITING ──────────────────────────
+//
+// Same contract as the other clubs-<lang>.mjs files: every entry carries the
+// `id` of the English original in src/questions.js, and gen-seo-pages.mjs fails
+// the build if an id stops resolving or if the answer keys stop agreeing.
+// Translated prose answers declare the exact English string via `en`.
+//
+// Indonesian register: the vocabulary Indonesian football media actually uses —
+// "Setan Merah" for United (universal there, and a phrase no machine translation
+// would reach for), plus kiper, bek, gelandang, penyerang, pelatih, gol
+// kemenangan. Written in standard Indonesian rather than Malay: close languages,
+// different audiences, and Indonesia is the bigger of the two here.
+
+export const CLUBS_ID = [
+  {
+    club: 'Manchester United',     // must match the `club` field in src/questions.js
+    slug: 'manchester-united',     // shared with the English page
+    lang: 'id',
+    name: 'Manchester United',
+    h1: 'Kuis Manchester United',
+    title: 'Kuis Manchester United — Tebak Setan Merah | Ball IQ',
+    description:
+      'Kuis Manchester United gratis dengan jawaban berpenjelasan: treble 1999, Sir Alex Ferguson, Cantona, Ronaldo, dan Old Trafford.',
+    kind: 'Kuis klub',
+    statLine: 'Gratis · 42 soal Manchester United · tanpa daftar',
+    playLabel: 'Mulai kuis',
+    intro: [
+      'Setan Merah punya pendukung di seluruh dunia, dan Indonesia adalah salah satu basis terbesarnya. Kuis gratis ini menelusuri seluruh perjalanan klub: dari Newton Heath dan tragedi Munich 1958, era Sir Matt Busby yang berujung trofi Eropa 1968, 26 tahun Sir Alex Ferguson, treble 1999 dengan gol Solskjaer di masa tambahan, sampai Cantona, Beckham, Ronaldo, dan Rooney.',
+      'Soalnya benar-benar naik tingkat. Ketika sejarah klub masih diperdebatkan, kami memilih tidak menerbitkan soal itu daripada memihak satu versi. Yang terbit adalah yang bisa diverifikasi.',
+      'Setiap jawaban di set Manchester United punya penjelasan tertulis, jadi salah menjawab pun tetap mengajarkan sesuatu tentang bagaimana United meraih apa yang mereka raih.',
+    ],
+    faq: [
+      {
+        q: 'Apakah kuis Manchester United ini gratis?',
+        a: 'Gratis. Bisa langsung dimainkan di browser, tanpa daftar dan tanpa mengunduh apa pun. Semua soal di halaman ini bebas diakses.',
+      },
+      {
+        q: 'Apa saja yang dibahas dalam kuis ini?',
+        a: 'Sejarah klub, tragedi Munich, era Busby dan trofi Eropa 1968, 26 tahun Sir Alex Ferguson, treble 1999, final Liga Champions 2008 di Moskow, Cantona, Beckham, Ronaldo, Rooney, rekor klub, dan Old Trafford. Tingkat kesulitannya naik dari mudah sampai benar-benar sulit.',
+      },
+      {
+        q: 'Dari mana soal-soal ini berasal?',
+        a: 'Semuanya ditulis dan diperiksa manual, tidak pernah dibuat otomatis. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.',
+      },
+      {
+        // The honest disclosure, same as every other localised page.
+        q: 'Apakah aplikasi Ball IQ tersedia dalam bahasa Indonesia?',
+        a: 'Belum: halaman ini berbahasa Indonesia, tetapi aplikasinya masih berbahasa Inggris. Kami sedang mengukur minat sebelum menerjemahkannya — kalau kamu sampai di sini, kamu sudah membantu kami memutuskan.',
+      },
+    ],
+    // ── Taster: 10 questions, tappable in the hero ────────────────────────────
+    taster: [
+      { id: 'q_288abe', q: 'Apa nama stadion markas Manchester United?', o: ['Anfield', 'Old Trafford', 'Elland Road', 'Etihad Stadium'], a: 1, hint: 'Dibuka pada 1910 dan dijuluki “Theatre of Dreams” oleh Bobby Charlton.' },
+      { id: 'q_6d4ed6', en: 'The Red Devils', q: 'Manchester United paling dikenal dengan julukan apa?', o: ['The Red Devils', 'The Citizens', 'The Blues', 'The Hammers'], a: 0, hint: 'Julukan ini diambil pada era Matt Busby; di Indonesia dikenal sebagai Setan Merah.' },
+      { id: 'q_bbf4e8', q: 'Pelatih mana yang memimpin Manchester United lebih dari 26 tahun sebelum pensiun pada 2013?', o: ['Sir Alex Ferguson', 'Sir Matt Busby', 'Ron Atkinson', 'David Moyes'], a: 0, hint: 'Ia datang dari Aberdeen pada 1986 dan pergi setelah memenangi gelar liga terakhirnya.' },
+      { id: 'q_15548d', q: 'Di final Liga Champions 1999, siapa yang mencetak gol kemenangan United di masa tambahan melawan Bayern Munich untuk melengkapi treble?', o: ['Teddy Sheringham', 'Dwight Yorke', 'Ole Gunnar Solskjaer', 'Andy Cole'], a: 2, hint: 'Ia masuk sebagai pemain pengganti dan mencetak gol setelah Sheringham menyamakan kedudukan.' },
+      { id: 'q_afec62', q: 'Cristiano Ronaldo pertama kali bergabung dengan Manchester United pada 2003 dari klub mana?', o: ['Benfica', 'Porto', 'Sporting CP', 'Real Madrid'], a: 2, hint: 'Ferguson memutuskan merekrutnya setelah laga persahabatan melawan klub Lisbon itu.' },
+      { id: 'q_42a3cd', q: 'Manchester United merekrut Wayne Rooney yang masih remaja pada 2004 dari klub mana?', o: ['Liverpool', 'Newcastle United', 'Aston Villa', 'Everton'], a: 3, hint: 'Ia sudah terkenal di klub Merseyside itu sejak golnya ke gawang Arsenal pada usia 16 tahun.' },
+      { id: 'q_5749fd', q: 'Pemain mana yang memegang rekor penampilan terbanyak untuk Manchester United dengan 963 laga?', o: ['Bobby Charlton', 'Paul Scholes', 'Ryan Giggs', 'Gary Neville'], a: 2, hint: 'Gelandang sayap Wales ini bermain untuk satu klub saja selama 23 musim.' },
+      { id: 'q_533a6b', q: 'Manchester United mengalahkan klub Inggris mana lewat adu penalti di final Liga Champions 2008 di Moskow?', o: ['Arsenal', 'Liverpool', 'Chelsea', 'Tottenham'], a: 2, hint: 'John Terry gagal pada kesempatan yang bisa menentukan gelar, lalu Anelka gagal juga.' },
+      { id: 'q_825e9a', q: 'Kiper mana, yang dijuluki “The Great Dane”, menjadi tulang punggung Manchester United di era gelar 1990-an?', o: ['Edwin van der Sar', 'Fabien Barthez', 'Mark Bosnich', 'Peter Schmeichel'], a: 3, hint: 'Ia juga juara Piala Eropa 1992 bersama negaranya dan menjadi kapten pada malam treble.' },
+      { id: 'q_3723f9', en: 'The Munich air disaster', q: 'Bencana pada 6 Februari 1958 yang menewaskan delapan pemain “Busby Babes” dikenal sebagai apa?', o: ['Tragedi udara Munich', 'Tragedi Hillsborough', 'Tragedi Heysel', 'Kebakaran Bradford'], a: 0, hint: 'Pesawat yang membawa tim gagal lepas landas saat pulang dari laga Piala Eropa di Beograd.' },
+    ],
+    // ── Sample Q&A: 12 more, listed below the taster ──────────────────────────
+    sample: [
+      { id: 'q_80e5cb', q: 'Dengan nama apa Manchester United pertama kali didirikan pada 1878, sebelum memakai nama sekarang pada 1902?', o: ['Newton Heath LYR', 'Manchester Central', 'Heaton Park Rovers', 'Ardwick FC'], a: 0, hint: 'Klub ini awalnya dibentuk oleh para pekerja depot kereta api di Newton Heath.' },
+      { id: 'q_9d23bf', q: 'Siapa pelatih pertama yang membawa Manchester United menjuarai Piala Eropa, pada 1968?', o: ['Sir Matt Busby', 'Tommy Docherty', 'Sir Alex Ferguson', 'Wilf McGuinness'], a: 0, hint: 'Sepuluh tahun setelah tragedi Munich, ia membawa klub menjadi tim Inggris pertama yang menjuarai kompetisi itu.' },
+      { id: 'q_8eb32d', q: 'Manchester United memenangi gelar Premier League yang pertama pada musim apa?', o: ['1991-92', '1992-93', '1993-94', '1994-95'], a: 1, hint: 'Itu gelar liga pertama klub setelah penantian 26 tahun, dan musim pertama kompetisi dengan format baru.' },
+      { id: 'q_fe34a1', q: 'Eric Cantona datang ke United pada 1992 lewat transfer mengejutkan dari rival mana, yang baru saja ia bantu menjadi juara?', o: ['Leeds United', 'Sheffield Wednesday', 'Aston Villa', 'Nottingham Forest'], a: 0, hint: 'Kesepakatan itu hanya bernilai sekitar satu juta pound dan sering disebut transfer paling menguntungkan dalam sejarah liga.' },
+      { id: 'q_c3fcce', en: 'A kung-fu kick', q: 'Pada 25 Januari 1995, Eric Cantona dihukum larangan bermain delapan bulan karena melakukan apa terhadap suporter Crystal Palace di Selhurst Park?', o: ['Tendangan kung-fu', 'Melempar sepatunya', 'Meludahinya', 'Menanduk petugas keamanan'], a: 0, hint: 'Kejadian itu terjadi tepat setelah ia menerima kartu merah dan berjalan ke arah tribun.' },
+      { id: 'q_eb8687', q: 'Pemain sayap mana yang mencetak gol langsung dari garis tengah melawan Wimbledon pada 1996?', o: ['Ryan Giggs', 'David Beckham', 'Lee Sharpe', 'Andrei Kanchelskis'], a: 1, hint: 'Gol itu terjadi di laga pembuka musim dan langsung membuat namanya dikenal di seluruh Inggris.' },
+      { id: 'q_89d02c', en: 'A booking ruled him out of the final', q: 'Roy Keane tampil luar biasa sebagai kapten di semifinal Liga Champions 1999 di Juventus, padahal ia tahu apa?', o: ['Ia akan dijual musim panas itu', 'Kartu kuning membuatnya absen di final', 'Kakinya patah', 'Ferguson akan mencadangkannya'], a: 1, hint: 'Ia tetap menggerakkan tim sepanjang laga meski sudah pasti tidak bisa ikut malam terbesar klub.' },
+      { id: 'q_50030f', q: 'Rekor siapa yang dilewati Wayne Rooney pada 2017 sehingga ia menjadi pencetak gol terbanyak sepanjang sejarah United?', o: ['Denis Law', 'Bobby Charlton', 'Jack Rowley', 'Ruud van Nistelrooy'], a: 1, hint: 'Pemegang rekor sebelumnya adalah juara dunia 1966 yang juga selamat dari tragedi Munich.' },
+      { id: 'q_96ffa8', q: 'Sampai 2025, berapa total gelar liga tertinggi Inggris yang dimenangi Manchester United, sama dengan Liverpool di puncak daftar sepanjang masa?', o: ['18', '19', '20', '22'], a: 2, hint: 'Gelar terakhir datang pada musim terakhir Sir Alex Ferguson, 2012-13.' },
+      { id: 'q_b53ba7', q: 'Manchester United memecahkan rekor transfer dunia pada 2016 untuk memulangkan gelandang mana dari Juventus?', o: ['Ander Herrera', 'Nemanja Matic', 'Paul Pogba', 'Marouane Fellaini'], a: 2, hint: 'Ia pernah meninggalkan Old Trafford secara gratis empat tahun sebelumnya, yang membuat transfer ini makin dibicarakan.' },
+      { id: 'q_709115', q: 'Penyerang mana yang direkrut dari Arsenal pada 2012 dan membawa Manchester United ke gelar liga terakhir Sir Alex Ferguson?', o: ['Robin van Persie', 'Dimitar Berbatov', 'Radamel Falcao', 'Zlatan Ibrahimovic'], a: 0, hint: 'Ia menjadi pencetak gol terbanyak liga musim itu, termasuk voli terkenal ke gawang Aston Villa.' },
+      { id: 'q_42d3ad', q: 'Kapten bertipe petarung mana, direkrut dari West Brom pada 1981, yang dikenal sebagai “Captain Marvel” sepanjang 1980-an?', o: ['Steve Bruce', 'Bryan Robson', 'Roy Keane', 'Norman Whiteside'], a: 1, hint: 'Ia menjadi kapten klub dan tim nasional Inggris, dan terkenal terus bermain meski cedera.' },
+    ],
+    copy: {
+      tasterEyebrow: 'Contoh gratis · Tanpa daftar',
+      tasterH: 'Seberapa paham kamu soal Manchester United?',
+      tasterPh: 'Sepuluh soal cepat untuk mengukur Ball IQ Setan Merah kamu.',
+      tasterNote: 'Ini hanya contoh soal — kuis lengkapnya jauh lebih banyak.',
+      playSection: 'Mainkan kuis Manchester United',
+      playSub: 'Ketuk salah satu jawaban untuk memeriksanya — langsung benar/salah, plus cerita di belakangnya.',
+      faqH: 'Kuis Manchester United — Pertanyaan umum',
+      aboutQ: 'Tentang kuis Manchester United ini',
+      bandH: 'Merasa paling paham Setan Merah? Buktikan di aplikasinya.',
+      bandP: 'Rentetan harian, 1v1 langsung, rating sampai 99 — semua kuis dalam satu aplikasi. Aplikasinya berbahasa Inggris.',
+      alsoH: 'Halaman yang sama dalam bahasa Inggris',
+      alsoP: 'Ini versi bahasa Indonesia dari kuis Manchester United kami. Versi aslinya, dengan 42 soal, ada di sini:',
+      alsoLink: 'Manchester United quiz (English)',
+      statsLine: (n, e, m, h) => `Ball IQ punya ${n} soal Manchester United — ${e} mudah, ${m} sedang, dan ${h} sulit.`,
+    },
+  },
+];

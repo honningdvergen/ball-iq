@@ -37,8 +37,16 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
+import { CLUBS_ID } from './seo/clubs-id.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
-const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR];
+// Two shapes live in here side by side and both are intentional:
+//   - a DOMESTIC club in its own country's language (Boca/es, Flamengo/pt,
+//     Galatasaray/tr)
+//   - a GLOBAL club in the language of a large foreign fanbase (Manchester
+//     United/id, and more to come) — the multi-language cluster, which holds
+//     the club constant so differences between pages are attributable to the
+//     MARKET rather than the badge.
+const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR, ...CLUBS_ID];
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
