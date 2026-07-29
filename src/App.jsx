@@ -9096,6 +9096,28 @@ function AppInner() {
           });
         }
       }
+      // Transfer Trail — same three loops Footle gets. Wired on launch day
+      // (2026-07-29) rather than months later, which is the mistake above.
+      // A Trail day is one puzzle in <=5 attempts, so score/total mirror
+      // Footle's shape: attempts used out of the max, 1 "question" attempted.
+      if (e?.detail?.game === 'trail') {
+        awardXp(e.detail.won === true ? 40 : 10);
+        if (user?.id) {
+          const used = Math.min(e.detail.attempts || 5, 5);
+          supabase.from('scores').insert({
+            user_id: user.id,
+            game_mode: 'trail',
+            score: e.detail.won === true ? used : 0,
+            correct_answers: e.detail.won === true ? 1 : 0,
+            total_questions: 1,
+          }).then(({ error }) => {
+            if (error) {
+              console.warn('[trail score]', error.message);
+              Sentry.captureException(error, { tags: { area: 'trail-score' } });
+            }
+          });
+        }
+      }
     };
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);

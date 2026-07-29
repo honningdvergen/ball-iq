@@ -1,14 +1,13 @@
 // Transfer Trail — daily "put the career in order" screen (docs/transfer-trail-spec.md §2).
-// INERT until routed from App.jsx: nothing imports this file yet. The screen is
-// prop-driven — the router passes the day's dataset row — so it carries zero
-// data of its own (TRAIL_PLAYERS ships empty until the verified forge fills it).
+// LIVE since 2026-07-29 (Trail #1 = Fernando Torres). The screen is prop-driven —
+// the router passes the day's dataset row — so it carries zero data of its own.
 //
 // Interaction model (spec): tap-two-to-swap (no drag lib, mobile-first), 5
 // attempts, per-rung grading colours + ⬆️/⬇️ direction arrows, spoiler-free
 // convergence-grid share. Persistence: biq_trail_<ymd> stores the raw
 // arrangements (labels), grades recompute from gradeTrail — same
 // store-inputs-not-derived-state pattern as Footle's biq_wordle_<ymd>.
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dateToYMD } from "../lib/date.js";
 import {
   TRAIL_MAX_ATTEMPTS,
@@ -61,6 +60,29 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
   useEffect(() => {
     saveDay(ymd, { status: won ? "won" : lost ? "lost" : "playing", attempts });
   }, [ymd, attempts, won, lost]);
+
+  // Announce completion exactly once per day, on the transition into done.
+  //
+  // This is the wiring Footle went months WITHOUT, which is why "what do people
+  // actually play?" had no answer for the most-played mode in the app. The same
+  // listener in App.jsx cancels the evening reminder, counts toward the
+  // notification prompt, awards XP and writes the `scores` row — so a mode that
+  // stays silent here is invisible everywhere that matters, and looks like
+  // nobody plays it.
+  //
+  // Guarded by a ref rather than the effect deps: `done` flips once, but this
+  // component also re-mounts when you navigate back into a finished puzzle, and
+  // a second dispatch would double-pay XP and log a duplicate row.
+  const announcedRef = useRef(false);
+  useEffect(() => {
+    if (!done || announcedRef.current) return;
+    announcedRef.current = true;
+    try {
+      window.dispatchEvent(new CustomEvent("biq:daily-completed", {
+        detail: { positive: won, game: "trail", won, attempts: attempts.length },
+      }));
+    } catch { /* event dispatch is best-effort; never block the win screen */ }
+  }, [done, won, attempts.length]);
 
   // Last attempt's grades, shown only on rungs untouched since that submit —
   // a moved chip's old colour would be a lie, so it resets to neutral.
