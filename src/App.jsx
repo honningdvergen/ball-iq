@@ -11,7 +11,7 @@ import Login from './Login.jsx';
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 // Desktop left rail (>= 1024px, browser only — hidden in native + installed PWA).
 import { BiqNav } from './BiqNav.jsx';
-import { loadQuestions, prefetchQuestions } from './questions-loader.js';
+import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIndex } from './questions-loader.js';
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
@@ -5186,10 +5186,15 @@ function ClubQuizScreen({ onStart, onBack }) {
   const [verifiedCounts, setVerifiedCounts] = React.useState(null);
   React.useEffect(() => {
     let alive = true;
-    loadQuestions().then(({ QB }) => {
+    // Counts read the INDEX, not the bank — 13× less to download and parse for
+    // a number the user is only reading. Landing on this screen IS play intent
+    // though, so warm the full bank in the background: the parse then overlaps
+    // navigation instead of colliding with a tap on Home.
+    prefetchQuestions();
+    loadQuestionIndex().then((IDX) => {
       if (!alive) return;
       const c = {};
-      for (const [k, name] of Object.entries(CLUB_PACK_TO_QB)) c[k] = QB.filter(q => q && q.club === name && q.type === "mcq" && Array.isArray(q.o)).length;
+      for (const [k, name] of Object.entries(CLUB_PACK_TO_QB)) c[k] = IDX.filter(q => q && q.club === name && q.type === "mcq" && q.n > 0).length;
       setVerifiedCounts(c);
     }).catch(() => {});
     return () => { alive = false; };
@@ -5261,10 +5266,13 @@ function LeagueQuizScreen({ onStart, onBack }) {
   const [counts, setCounts] = React.useState(null);
   React.useEffect(() => {
     let alive = true;
-    loadQuestions().then(({ QB }) => {
+    // Index for the counts, full bank warmed in the background — see the club
+    // picker above for why.
+    prefetchQuestions();
+    loadQuestionIndex().then((IDX) => {
       if (!alive) return;
       const c = {};
-      for (const s of LEAGUE_QUIZ_SECTIONS) for (const it of s.items) c[it.cat] = QB.filter(q => q && q.cat === it.cat && q.type === "mcq" && Array.isArray(q.o)).length;
+      for (const s of LEAGUE_QUIZ_SECTIONS) for (const it of s.items) c[it.cat] = IDX.filter(q => q && q.cat === it.cat && q.type === "mcq" && q.n > 0).length;
       setCounts(c);
     }).catch(() => {});
     return () => { alive = false; };
@@ -8380,10 +8388,32 @@ function AppInner() {
     // the main thread is free; quiz users still get it well before they tap Play
     // (idle fires within ~1-2s on Home). setTimeout fallback for WKWebViews
     // without rIC (iOS < 17.4).
+    //
+    // STAGED (2026-07-29): the single idle prefetch above used to pull the whole
+    // bank at t≈1-2s. That is one ~700ms main-thread task landing exactly in the
+    // window where a visitor decides what to tap, and it was the entire "INP
+    // needs improvement" in Clarity. It cannot be made non-blocking — parsing a
+    // module is atomic — so the only levers are shrinking it and moving it.
+    //
+    //   stage 1, immediately at idle: the INDEX (~13× smaller). Cheap, and the
+    //     club/league pickers need it to render their counts.
+    //   stage 2, deliberately late: the full bank, for someone who sits on Home
+    //     and then taps a mode directly. The picker screens call
+    //     prefetchQuestions() on mount, so anyone browsing pulls it forward on
+    //     real intent — this timer only covers the direct-tap path.
+    //
+    // Both are fire-and-forget and dedupe inside questions-loader, so a stage-2
+    // timer firing after a picker already started the load is a no-op.
     {
-      const idlePrefetch = () => { try { prefetchQuestions(); } catch {} };
-      if (typeof requestIdleCallback === 'function') requestIdleCallback(idlePrefetch, { timeout: 3000 });
-      else setTimeout(idlePrefetch, 1200);
+      const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} };
+      const idleBank = () => { try { prefetchQuestions(); } catch {} };
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(idleIndex, { timeout: 3000 });
+        requestIdleCallback(() => setTimeout(() => requestIdleCallback(idleBank, { timeout: 8000 }), 4000), { timeout: 3000 });
+      } else {
+        setTimeout(idleIndex, 1200);
+        setTimeout(idleBank, 5200);
+      }
     }
     // Prune expired seen-question history (>14 days old) on mount
     try { loadSeenHistory(); } catch {}

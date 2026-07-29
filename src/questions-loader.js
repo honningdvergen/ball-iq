@@ -27,6 +27,43 @@
 //     them with a console.warn (non-blocking — caller will retry on next
 //     real loadQuestions invocation).
 
+// ── The INDEX door (2026-07-29) ──────────────────────────────────────────────
+//
+// Browsing and playing want different data. The club and league pickers used to
+// call loadQuestions() on mount purely to render a count next to each tile —
+// paying the full ~700ms bank parse so someone could read "52" next to Arsenal,
+// before they had chosen anything. src/questions-index.js is the same rows with
+// the text stripped: 13× smaller gzipped, ~50ms to parse.
+//
+// Use loadQuestionIndex() for ANYTHING that only filters on id/type/cat/club/
+// diff — counts, availability, pool sizing. Use loadQuestions() when the text,
+// options or answer key are actually going to be rendered.
+//
+// The index preserves QB's row ORDER, so an index position maps to the same
+// question. Do not sort it: the Daily 7 shuffles by array position.
+let idxCache = null;
+let idxInFlight = null;
+
+export function loadQuestionIndex() {
+  if (idxCache) return Promise.resolve(idxCache);
+  if (idxInFlight) return idxInFlight;
+  idxInFlight = import('./questions-index.js').then((mod) => {
+    idxCache = mod.QB_INDEX;
+    idxInFlight = null;
+    return idxCache;
+  }).catch((err) => {
+    idxInFlight = null;
+    throw err;
+  });
+  return idxInFlight;
+}
+
+export function prefetchQuestionIndex() {
+  loadQuestionIndex().catch((err) => {
+    console.warn('[questions-loader] index prefetch failed', err?.message || err);
+  });
+}
+
 let cache = null;
 let inFlight = null;
 

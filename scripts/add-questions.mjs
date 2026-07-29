@@ -76,3 +76,12 @@ console.log(`Adding ${entries.length} question(s) to cat=${defCat} (${skipped} s
 if (dry) { console.log('\n--- DRY RUN, preview ---\n' + entries.join('\n')); process.exit(0); }
 fs.writeFileSync(QFILE, newSrc);
 console.log('Written. Run the build (eslint gate) to confirm the file still parses.');
+
+// Keep src/questions-index.js in step. The build regenerates it too, but a dev
+// server already running would otherwise serve counts that omit the new rows.
+try {
+  const { execFileSync } = await import('node:child_process');
+  execFileSync(process.execPath, [new URL('gen-questions-index.mjs', import.meta.url).pathname], { stdio: 'inherit' });
+} catch (err) {
+  console.warn('⚠ could not regenerate questions-index.js — run `npm run gen:index`:', err?.message || err);
+}

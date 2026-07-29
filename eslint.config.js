@@ -10,7 +10,9 @@ import reactHooks from 'eslint-plugin-react-hooks';
 // Everything else is a non-blocking 'warn' (visible via `npm run lint`) so the
 // large existing monolith doesn't fail the build on pre-existing style nits.
 export default [
-  { ignores: ['dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/**', '*.config.js'] },
+  // src/questions-index.js is generated (scripts/gen-questions-index.mjs) and is
+  // one giant JSON literal — linting it costs time and can find nothing.
+  { ignores: ['dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/**', '*.config.js', 'src/questions-index.js'] },
   {
     files: ['src/**/*.{js,jsx}'],
     languageOptions: {

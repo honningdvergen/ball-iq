@@ -7,9 +7,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/gen-questions-index.mjs && vite",
     "lint": "eslint src",
-    "build": "eslint src --quiet && vite build && node scripts/gen-seo-pages.mjs && node scripts/gen-sw-precache.mjs && node scripts/lists-staleness.mjs",
+    "build": "node scripts/gen-questions-index.mjs && eslint src --quiet && vite build && node scripts/gen-seo-pages.mjs && node scripts/gen-sw-precache.mjs && node scripts/lists-staleness.mjs",
     "lists:stale": "node scripts/lists-staleness.mjs",
     "preview": "vite preview",
     "publish-review": "node scripts/publish-review.mjs",
@@ -20,7 +20,8 @@
     "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "gen:index": "node scripts/gen-questions-index.mjs"
   },
   "dependencies": {
     "@capacitor-community/apple-sign-in": "^6.0.0",
