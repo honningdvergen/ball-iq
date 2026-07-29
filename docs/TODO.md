@@ -45,22 +45,7 @@ A playtester called it dull. It is shown immediately after playing a friend —
 the exact share-and-return moment, and one of the few places the 2.8% can move.
 Small surface, high leverage.
 
-### 3. ALEX · Transfer Trail — spot-check 30 careers, then it launches
-38 players ready (8 yours from July, 30 forged 2026-07-29). Routing is LIVE and
-inert; it lights up the moment the answer log is frozen.
-
-Spec §7.3 requires your 100% spot-check — a wrong career order is unfalsifiable
-to the player and poisons the share loop.
-
-**Rule learned, keep it:** nearly every source conflict was one pattern — a
-player signs, then is immediately loaned out before playing for the parent.
-Wikipedia lists the parent first; BeSoccer orders by season played. Treat
-"signed then immediately loaned" as an automatic reject, never adjudicate.
-
-After your check: I freeze `TRAIL_ANSWER_LOG`, set `TRAIL_ANCHOR_DAY` (it can
-never move once live), and Trail #1 ships.
-
-### 4. ALEX · 2-device MP test
+### 3. ALEX · 2-device MP test
 Unblocks the last of the MP work. The stall watchdog is committed — it is a
 real-network failure mode, and a green build proves compilation, not behaviour.
 
@@ -68,7 +53,7 @@ real-network failure mode, and a green build proves compilation, not behaviour.
 
 ## 🟡 QUEUED
 
-- **CLAUDE** · New game modes. Trail is next and nearly out. Judge later
+- **CLAUDE** · New game modes. Trail is OUT (live 2026-07-29). Judge later
   candidates on what actually mattered in the Trail decision: can it ship with a
   FROZEN zero-maintenance schedule (Footle's real advantage), and is its share
   card spoiler-free? A mode needing per-puzzle curation forever is a liability.
@@ -118,6 +103,14 @@ real-network failure mode, and a green build proves compilation, not behaviour.
   `webkit.messageHandlers` console error is NOT ours — proven in a clean room;
   it is injected by an extension or a social in-app webview.
 - Bank 6,394 · 71 club pages · 25 player pages · 50 reference lists.
+- **Transfer Trail is LIVE (b23b489).** Launched on web 2026-07-29; Trail #1 is
+  Fernando Torres. 38 careers, schedule frozen 380 days. ⚠️ `TRAIL_ANCHOR_DAY`
+  must NEVER move again — it renumbers every shared grid. Native picks it up on
+  the next build. **Repeat every 38 days**, so forge a second roster wave before
+  early September.
+- **Profile picture is one thing now (7490c76):** upload a photo, or the Ball IQ
+  ball. Emoji set removed — 6 of 108 profiles had ever used it, 10 had found the
+  photo upload.
 - **Bank split SHIPPED (aca556f).** Browsing no longer loads the bank: the club
   and league pickers read a 46kB text-free index instead of 621kB, ~4× cheaper
   to parse, and the full parse now happens on real play intent rather than at
