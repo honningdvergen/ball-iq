@@ -40,7 +40,11 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onLocal
         {/* Labels finish "I want to…" rather than naming our internal
             taxonomy, and the second answers the question a first-timer
             actually has: do I need a second phone? */}
-        <button type="button" className="mp-card-cta" onClick={handleInvite} aria-label="Create a room and invite a friend">Invite a friend</button>
+        {/* Plural, deliberately. The subtitle one line up says "up to 8
+            players" and this said "a friend" — the card contradicted itself,
+            and the singular undersold the one thing that makes our
+            multiplayer unusual. */}
+        <button type="button" className="mp-card-cta" onClick={handleInvite} aria-label="Create a room and invite friends">Invite friends</button>
         <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play locally on one phone">Same phone</button>
       </div>
     </div>
