@@ -330,11 +330,45 @@ export const TRAIL_POSITIONS = {
   FLAMINI: "Midfielder", GILBERTO_SILVA: "Midfielder",
 };
 
+// Letters that are NOT decorated versions of an ascii letter — they are their
+// own characters, so NFD does not decompose them and a naive mark-strip DELETES
+// them. Measured before this existed: Ødegaard folded to "degaard", Højbjerg to
+// "hjbjerg", Błaszczykowski to "baszczykowski", Đorđević to "orevic", Weiß to
+// "wei". Every one of those is unwinnable — the player types the obvious plain
+// spelling and it cannot match.
+//
+// Alex, 2026-07-29: "people write names differently you know, some swedish
+// names, norwegian names, south american, they all have unique letters and dots
+// everywhere so we should be graceful here." Correct, and this is the half that
+// gracefulness does not come free.
+//
+// Note what is NOT here: é č ö ü å ñ ş all DO decompose, so the mark-strip below
+// already handles them. Only the non-decomposing ones need spelling out.
+const LETTER_FOLD = {
+  ø: "o", æ: "ae", œ: "oe", ß: "ss", ł: "l", đ: "d", ð: "d", þ: "th",
+  ı: "i", ŧ: "t", ħ: "h", ŋ: "n", ĸ: "k",
+};
+
 /** Fold a typed guess to its comparable form: accent-free, lowercase, a-z only. */
 export function normaliseGuess(s) {
   return String(s || "")
+    .toLowerCase()
+    .replace(/[øæœßłđðþıŧħŋĸ]/g, (c) => LETTER_FOLD[c] || c)
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase().replace(/[^a-z]/g, "");
+    .replace(/[^a-z]/g, "");
+}
+
+// German and Nordic spelling admits TWO correct plain-ascii forms: Müller is
+// written "Muller" or "Mueller", Ødegaard as "Odegaard" or "Oedegaard", and
+// both are things a real person types. One fold cannot satisfy both, so a name
+// folds to a SET and a guess matches if the sets overlap.
+const DIGRAPH_FOLD = { "ü": "ue", "ö": "oe", "ä": "ae", "ø": "oe", "å": "aa" };
+
+/** Every plain-ascii spelling this string could reasonably be typed as. */
+export function normaliseVariants(s) {
+  const raw = String(s || "").toLowerCase();
+  const digraph = raw.replace(/[üöäøå]/g, (c) => DIGRAPH_FOLD[c] || c);
+  return [...new Set([normaliseGuess(raw), normaliseGuess(digraph)].filter(Boolean))];
 }
 
 /** Every string that counts as naming this player. */
@@ -350,9 +384,11 @@ export function acceptedNamesFor(player) {
 }
 
 export function guessMatchesPlayer(guess, player) {
-  const g = normaliseGuess(guess);
-  if (!g) return false;
-  return acceptedNamesFor(player).some((name) => normaliseGuess(name) === g);
+  const guessForms = normaliseVariants(guess);
+  if (!guessForms.length) return false;
+  return acceptedNamesFor(player).some((name) =>
+    normaliseVariants(name).some((n) => guessForms.includes(n))
+  );
 }
 
 /**

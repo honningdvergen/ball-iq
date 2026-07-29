@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   TRAIL_PLAYERS, TRAIL_ALIASES, TRAIL_POSITIONS, TRAIL_MAX_ATTEMPTS,
-  normaliseGuess, acceptedNamesFor, guessMatchesPlayer,
+  normaliseGuess, normaliseVariants, acceptedNamesFor, guessMatchesPlayer,
   cluesShown, hintFor, buildTrailShareText,
 } from "../../src/lib/trail.js";
 
@@ -20,6 +20,46 @@ describe("guess matching", () => {
   it("accepts the compound surname with or without the particle", () => {
     expect(guessMatchesPlayer("van Persie", find("VAN_PERSIE"))).toBe(true);
     expect(guessMatchesPlayer("persie", find("VAN_PERSIE"))).toBe(true);
+  });
+
+  // Alex, 2026-07-29: "people write names differently — some swedish names,
+  // norwegian names, south american, they all have unique letters and dots
+  // everywhere, so we should be graceful here."
+  //
+  // The subtle half: é č ö ü å ñ ş are DECORATED ascii letters and decompose
+  // under NFD, so stripping marks handles them. But ø æ ß ł đ are their own
+  // letters — they do not decompose, and a naive strip DELETES them. Measured
+  // before the fold table existed: Ødegaard -> "degaard", Højbjerg -> "hjbjerg",
+  // Błaszczykowski -> "baszczykowski", Đorđević -> "orevic", Weiß -> "wei".
+  // Every one unwinnable, because the player types the obvious plain spelling.
+  const asPlayer = (first, last) => ({ key: "TEST", display: [first, last], clubs: ["A", "B"], loans: [false, false] });
+
+  it("folds letters that do NOT decompose, not just accents", () => {
+    for (const [typed, real] of [
+      ["Odegaard", "Ødegaard"], ["Hojbjerg", "Højbjerg"],
+      ["Blaszczykowski", "Błaszczykowski"], ["Dordevic", "Đorđević"],
+      ["Weiss", "Weiß"], ["Sorloth", "Sørloth"],
+    ]) {
+      expect(guessMatchesPlayer(typed, asPlayer("X", real)), `${typed} vs ${real}`).toBe(true);
+      expect(guessMatchesPlayer(real, asPlayer("X", real)), `${real} typed exactly`).toBe(true);
+    }
+  });
+
+  it("accepts both German/Nordic spellings of the same name", () => {
+    // Müller is written "Muller" AND "Mueller" by real people; one fold cannot
+    // satisfy both, so a name folds to a SET and the sets have to overlap.
+    for (const typed of ["Muller", "Mueller", "Müller"]) {
+      expect(guessMatchesPlayer(typed, asPlayer("Thomas", "Müller")), typed).toBe(true);
+    }
+    for (const typed of ["Odegaard", "Oedegaard", "Ødegaard"]) {
+      expect(guessMatchesPlayer(typed, asPlayer("Martin", "Ødegaard")), typed).toBe(true);
+    }
+  });
+
+  it("gracefulness does not make everything match everything", () => {
+    expect(guessMatchesPlayer("Muller", asPlayer("Mesut", "Özil"))).toBe(false);
+    expect(guessMatchesPlayer("Odegaard", asPlayer("Thomas", "Müller"))).toBe(false);
+    expect(normaliseVariants("").length).toBe(0);
   });
 
   it("rejects a wrong player", () => {
