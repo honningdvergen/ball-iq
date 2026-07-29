@@ -63,8 +63,6 @@ real-network failure mode, and a green build proves compilation, not behaviour.
   `arsenal quizzes` 19.3, `premier league quizzes` 26.7. These are the only US
   queries where a click is possible at all — the Gold Cup cluster ranks 8-10
   with ZERO clicks because Google answers those in the SERP itself.
-- **CLAUDE** · Club-page reflow. 12,200px ≈ 14.5 phone screens. Do NOT treat
-  "scroll stops at 21-25%" as fact — it is a bimodal mean.
 - **ALEX** · Submit 1.4.0. iOS build 50 + Android AAB (versionCode 8) are built
   and verified, but ⚠️ they predate today's commits — re-sync first:
   `rm -rf dist && npm run build && npx cap sync ios && node scripts/prune-native-web-assets.mjs`
@@ -111,6 +109,13 @@ real-network failure mode, and a green build proves compilation, not behaviour.
 - **Profile picture is one thing now (7490c76):** upload a photo, or the Ball IQ
   ball. Emoji set removed — 6 of 108 profiles had ever used it, 10 had found the
   photo upload.
+- **Club-page reflow DONE (94cda78).** Measured 13,953px (16.5 screens), not the
+  12,200 this file claimed. "More quizzes to try" was 5,734px — 41% of the page
+  and the single biggest block, for a LINK LIST. Compacted the tiles: 11,953px
+  (14.2 screens), mesh -35%, all 115 links kept, 0 labels clipped. The biggest
+  block on a club page is now the playable taster (39%), which is correct.
+  Residual: 3 columns would save ~1,500px more but truncates club names —
+  not worth degrading the anchor text.
 - **Bank split SHIPPED (aca556f).** Browsing no longer loads the bank: the club
   and league pickers read a 46kB text-free index instead of 621kB, ~4× cheaper
   to parse, and the full parse now happens on real play intent rather than at
