@@ -374,7 +374,12 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    Was align-items:flex-start + text-align:left. If centered reads
    worse than left-aligned in review, revert by flipping these two
    properties back. */
-.play-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:center;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+.play-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:104px;background:var(--s1);border:1px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--t1);transition:background 0.15s,border-color 0.15s,transform 0.1s;box-shadow:0 2px 10px rgba(0,0,0,0.22);overflow:hidden;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;contain:layout paint style;}
+/* Left-aligned (2026-07-29): the mode grid was the ONLY centred surface in the
+   app — every other list (club rows, Daily 7, the friends card) is icon-left,
+   text-left. Centring also left both edges ragged, since "Club Quiz" and
+   "Ball IQ Test" are very different widths, so the eye had nothing to run down.
+   Now every tile shares one scan line. */
 .play-card:hover{background:var(--s2);border-color:var(--border2);}
 .play-card:active{transform:scale(0.98);}
 .play-card-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--s1);font-size:20px;line-height:1;margin-bottom:6px;border:1px solid var(--border);}

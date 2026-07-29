@@ -27,11 +27,16 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOnlin
         <span className="mp-card-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <div className="mp-card-titles">
           <div className="mp-card-title">Play with Friends</div>
-          {/* The subtitle here read "Race friends online or play locally." — it
-              restated the two button labels sitting directly beneath it, which
-              is the same dead-text pattern cut from the Home greeting earlier
-              today. The buttons say it better because they are tappable. */}
-          <div className="mp-card-sub">Head-to-head, 10 questions.</div>
+          {/* Went through two wrong versions before this one. First it read
+              "Race friends online or play locally", which just restated the two
+              buttons underneath. Then "Head-to-head, 10 questions" — false:
+              Hot Streak and Survival Duel are not 10 questions, so the count
+              could not be stated at all (Alex caught it).
+              What the line SHOULD carry is the capacity. Rooms hold 8
+              (CAPACITY in OnlineMultiplayer.jsx), and "up to 8 players" is
+              already our claim on the site, the store listing and the
+              screenshots — the app was the only place that never said it. */}
+          <div className="mp-card-sub">Live rooms, up to 8 players.</div>
         </div>
       </div>
       <div className="mp-card-ctas">

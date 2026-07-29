@@ -5184,6 +5184,20 @@ function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);
   // Show the real (verified) pool size per club; falls back to the pack count.
   const [verifiedCounts, setVerifiedCounts] = React.useState(null);
+  // Each league collapses to a short preview. The Premier League alone filled
+  // more than a screen, so La Liga sat below the fold with nothing to suggest it
+  // existed — someone looking for Barcelona had no reason to believe scrolling
+  // would help (Alex, 2026-07-29). Previewing two per league puts EVERY league
+  // in view at once, and it gets better rather than worse as club waves land.
+  const CLUB_PREVIEW = 2;
+  const [openLeagues, setOpenLeagues] = React.useState(() => new Set());
+  const toggleLeague = React.useCallback((key) => {
+    setOpenLeagues((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  }, []);
   React.useEffect(() => {
     let alive = true;
     // Counts read the INDEX, not the bank — 13× less to download and parse for
@@ -5214,11 +5228,17 @@ function ClubQuizScreen({ onStart, onBack }) {
       {CLUB_LEAGUE_SECTIONS.map((section) => {
         const clubs = Object.entries(CLUB_PACKS).filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key);
         if (!clubs.length) return null;
+        const isOpen = openLeagues.has(section.key);
+        const shown = isOpen ? clubs : clubs.slice(0, CLUB_PREVIEW);
+        const hidden = clubs.length - shown.length;
         return (
           <div key={section.key} style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px" }}>{section.label}</div>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+              <span>{section.label}</span>
+              <span style={{ letterSpacing: 0, textTransform: "none", fontWeight: 600, color: "var(--t3)" }}>{clubs.length}</span>
+            </div>
             <div className="mode-list">
-              {clubs.map(([key, pack]) => {
+              {shown.map(([key, pack]) => {
                 const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
                 const lightClub = clubReadableText(pack.color) === "#0a0a0a";
                 const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
@@ -5237,13 +5257,26 @@ function ClubQuizScreen({ onStart, onBack }) {
                 );
               })}
             </div>
+            {(hidden > 0 || isOpen) && (
+              <button
+                type="button"
+                onClick={() => { haptic("select"); toggleLeague(section.key); }}
+                style={{ marginTop: 7, width: "100%", background: "transparent", border: "1px solid var(--border)", borderRadius: 11, padding: "9px 12px", color: "var(--t2)", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}
+                aria-expanded={isOpen}
+              >
+                {isOpen ? "Show fewer" : `Show all ${clubs.length}`}
+              </button>
+            )}
           </div>
         );
       })}
+      {/* The card that used to sit here promised "Galatasaray, Benfica, Napoli,
+          Fenerbahçe and more are on the way" — all four have been in the list
+          directly above it since Wave A. It was telling users that clubs they
+          could already play were missing. Replaced with something true. */}
       <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
-        <div style={{fontSize:22,marginBottom:6}}>🏆</div>
-        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>More clubs coming soon</div>
-        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>Galatasaray, Benfica, Napoli, Fenerbahçe and more are on the way.</div>
+        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>Missing your club?</div>
+        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>New clubs are added regularly — more leagues are on the way.</div>
       </div>
       {showProModal && (
         <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
