@@ -349,6 +349,34 @@ function MiniFootle() {
 // ── Playable quiz taster (marketing) — "What's your Ball IQ?" ────────────────
 // 5 famous questions → instant feedback → an IQ score out of 99. Homepage uses
 // skill tiers (per handoff); the /quiz/* landing pages use fan tiers.
+// Counts a figure up on mount. The bank size is our strongest single proof
+// and it was rendering as a static number — a printed claim. Counting it makes
+// it read as something being measured, which is what it actually is.
+// Honours prefers-reduced-motion by jumping straight to the final value: the
+// CSS killswitch cannot help here because this animates a text node, not a
+// property.
+function useCountUp(target, ms = 900) {
+  const [n, setN] = useState(() => {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? target : 0; }
+    catch { return 0; }
+  });
+  useEffect(() => {
+    if (n === target) return;
+    let raf, t0;
+    const ease = (x) => 1 - Math.pow(1 - x, 3);            // easeOutCubic
+    const step = (t) => {
+      if (!t0) t0 = t;
+      const p = Math.min(1, (t - t0) / ms);
+      setN(Math.round(ease(p) * target));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, ms]);
+  return n;
+}
+
 function QuizTaster() {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -421,7 +449,7 @@ function QuizTaster() {
       <div style={{ marginTop: 12, fontSize: 17, fontWeight: 800, lineHeight: 1.3, color: '#fff' }}>{cur.q}</div>
       <div style={{ display: 'grid', gap: 9, marginTop: 14 }} onMouseMove={hoverArmed ? undefined : () => setHoverArmed(true)}>
         {cur.opts.map((o, i) => (
-          <button key={i} disabled={answered} onClick={() => pick(i)} className={!answered && hoverArmed ? 'mkt-opt' : undefined} style={optStyle(i)}>
+          <button key={i} disabled={answered} onClick={() => pick(i)} className={[!answered && hoverArmed ? 'mkt-opt' : '', !answered && i === 0 ? 'mkt-live-hint' : ''].filter(Boolean).join(' ') || undefined} style={optStyle(i)}>
             {/* A/B/C/D badge. The club pages have carried these since launch;
                 the homepage taster never did, so four identical grey slabs read
                 as a disabled LIST rather than four buttons — at the exact
@@ -452,6 +480,7 @@ function QuizTaster() {
 // decided anything. No marketing headline above this; per the design, "Pick your
 // challenge" + the two playable cards IS the top of the page.
 function PlayNow() {
+  const bankCount = useCountUp(QB_COUNT);
   return (
     <section style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px,5vw,56px) 20px 22px', overflow: 'hidden' }}>
       <div className="mkt-glow" style={{ position: 'absolute', top: '20%', left: '50%', width: 'min(760px,120vw)', height: 'min(760px,120vw)', background: 'radial-gradient(circle, rgba(88,204,2,0.16) 0%, rgba(88,204,2,0.05) 38%, transparent 64%)', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: 0 }} />
@@ -477,10 +506,10 @@ function PlayNow() {
             one onto its own centred row — ugly, and the wrap cost ~30px of the
             fold clearance this block has almost none of. "50 clubs" was the
             weakest of the four (the question count already implies breadth). */}
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'nowrap', marginBottom: 2 }}>
+        <div className="mkt-rise mkt-rise-1" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'nowrap', marginBottom: 2 }}>
           {[
             ['FREE', 'no sign-up'],
-            [QB_COUNT.toLocaleString('en-US'), 'questions'],
+            [bankCount.toLocaleString('en-US'), 'questions'],
             [`#${getFootleNumber()}`, 'today'],
           ].map(([v, l], i) => (
             <span key={l} style={{
@@ -505,10 +534,10 @@ function PlayNow() {
             Anton is uppercase-native and ships one weight; keep it to display
             only, never body. Loaded on the Google Fonts request already in the
             page, so no new host and no extra round-trip. */}
-        <h1 style={{ margin: '12px auto 0', maxWidth: '14ch', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
-        <p style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
+        <h1 className="mkt-rise mkt-rise-2" style={{ margin: '12px auto 0', maxWidth: '14ch', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
+        <p className="mkt-rise mkt-rise-3" style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
       </div>
-      <div className="mkt-play-grid" style={{ position: 'relative', zIndex: 2 }}>
+      <div className="mkt-play-grid mkt-rise mkt-rise-4" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mkt-play-card"><MiniFootle /></div>
         <div className="mkt-play-card"><QuizTaster /></div>
       </div>

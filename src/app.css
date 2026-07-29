@@ -13,6 +13,34 @@
   }
 }
 
+/* ── MARKETING HERO MOTION ──────────────────────────────────────────────
+   Three effects, all functional — nothing decorative. Scattered ornamental
+   animation is the fastest way to make a page read as machine-made, so the
+   test each of these passes is "does it tell the visitor something true?".
+
+   1. .mkt-rise — the hero ASSEMBLES rather than appearing. Expo-out easing
+      (0.16,1,0.3,1); 380ms with a 60ms stagger, which is inside the 250-350ms
+      per-item guidance once the offset is counted.
+   2. .mkt-live-hint — the answer options looked like a screenshot until you
+      touched one. A slow breathe on the FIRST option says "this is playable"
+      without a word of instruction. Stops the moment anything is answered.
+   3. transform/opacity only — no width/height animation, so no layout thrash
+      on a page whose LCP we care about.
+
+   The global prefers-reduced-motion killswitch at the top of this file
+   neutralises all three; no per-rule retrofit needed. */
+@keyframes mktRise{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+.mkt-rise{animation:mktRise 380ms cubic-bezier(0.16,1,0.3,1) both;will-change:transform,opacity}
+.mkt-rise-1{animation-delay:40ms}
+.mkt-rise-2{animation-delay:110ms}
+.mkt-rise-3{animation-delay:180ms}
+.mkt-rise-4{animation-delay:260ms}
+@keyframes mktBreathe{
+  0%,100%{border-color:#2A2D3A;box-shadow:0 0 0 0 rgba(88,204,2,0)}
+  50%{border-color:rgba(88,204,2,0.55);box-shadow:0 0 0 4px rgba(88,204,2,0.07)}
+}
+.mkt-live-hint{animation:mktBreathe 2.8s ease-in-out infinite}
+
 /* Sprint #23 U3 P2: tab swap micro-fade. Three home tabs (Home /
    Daily / Profile) stay mounted via display:none toggling so per-tab
    state survives switches; this 120ms opacity fade plays each time
