@@ -10264,10 +10264,14 @@ function AppInner() {
                 — on a tab-bar app the app name on its own home is redundant, and
                 the personalised greeting now owns the top. Settings has its own
                 header; other sub-screens keep the brand mark as a home anchor. */}
-            {/* 1.1: hide the global wordmark on screens that already have their
-                own page-header (Settings, the online MP setup + lobby) — it just
-                stacks a second identifier. (Broader sub-screen audit deferred.) */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {/* Hide the global wordmark on screens that already have their own
+                page-header — it just stacks a second identifier above the real
+                one. The "broader sub-screen audit" this comment used to defer
+                was DONE 2026-07-29: every `screen` value was enumerated against
+                the ones that render their own header, which caught `trail`,
+                `league-quiz` and `stump`. League Quizzes was the giveaway —
+                a direct sibling of club-quiz, which was already excluded. */}
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
