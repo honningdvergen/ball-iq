@@ -135,5 +135,38 @@ export function clubColour(club, packMap = {}) {
   return null;
 }
 
+// ── Abbreviations ────────────────────────────────────────────────────────────
+// CLUB_ABBR already holds proper 3-letter codes (LIV, CHE, MUN, RMA, ATM, BVB)
+// but is keyed by PACK id — "ManUtd", "RealMadrid", "AcMilan" — while careers
+// carry display names. First preview computed initials instead and rendered
+// Liverpool as "L" and Chelsea as "C". The codes existed; the lookup did not.
+const squash = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+
+/**
+ * A 3-letter badge for a club. Prefers the curated CLUB_ABBR code, then the
+ * alias, then a derived form — never a single letter.
+ * @param {string} club
+ * @param {Record<string,string>} abbrMap  CLUB_ABBR, keyed by pack id
+ */
+export function clubAbbr(club, abbrMap = {}) {
+  if (!club) return "--";
+  const want = squash(club);
+  for (const [k, v] of Object.entries(abbrMap)) if (squash(k) === want) return v;
+
+  const aliased = ALIASES[key(club)];
+  if (aliased) {
+    const a = squash(aliased);
+    for (const [k, v] of Object.entries(abbrMap)) if (squash(k) === a) return v;
+  }
+
+  // Derived fallback. Three letters, always — "L" for Liverpool is what this
+  // exists to prevent. Multi-word names take initials only when that yields
+  // three (Red Bull Salzburg -> RBS); otherwise the first three letters of the
+  // squashed name (Sagan Tosu -> SAG, Feyenoord -> FEY).
+  const words = String(club).trim().split(/\s+/).filter(Boolean);
+  if (words.length >= 3) return words.slice(0, 3).map((w) => w[0]).join("").toUpperCase();
+  return want.slice(0, 3).toUpperCase() || "--";
+}
+
 export const CLUB_COLOUR_ALIASES = ALIASES;
 export const CLUB_COLOUR_EXTRA = EXTRA;
