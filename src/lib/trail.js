@@ -293,68 +293,84 @@ export function getTrailAnswer(date = new Date(), log = TRAIL_ANSWER_LOG, player
   return getTrailAnswerForDayIndex(getTrailDayIndex(date), log, players);
 }
 
-// ── Grader ────────────────────────────────────────────────────────────────────
-// Label-based per-rung grading (spec §2): a rung is judged by the CLUB LABEL
-// standing on it, not tile identity — so duplicate-club careers (two Aston
-// Villa spells) "just work": either Villa tile is green in either Villa slot.
+// ── Answer matching (spec v2) ────────────────────────────────────────────────
 //
-//   green  — this label belongs on this exact rung
-//   yellow — the label's nearest true rung is exactly 1 away
-//   grey   — 2+ away
-//   dir    — "up" (belongs earlier) | "down" (belongs later) | null when green.
-//            Equidistant duplicate ties resolve "up" (deterministic; the arrow
-//            is UX sugar over the same truth, so any consistent rule is fine).
-export function gradeTrail(guess, answer) {
-  const positions = new Map(); // label → [rung indexes in the true order]
-  answer.forEach((label, i) => {
-    if (!positions.has(label)) positions.set(label, []);
-    positions.get(label).push(i);
-  });
-  return guess.map((label, i) => {
-    const truth = positions.get(label) || [];
-    if (truth.includes(i)) return { mark: "green", dir: null };
-    if (!truth.length) return { mark: "grey", dir: null }; // foreign label; bench-only guards make this unreachable in-game
-    let best = truth[0];
-    for (const p of truth) {
-      const d = Math.abs(p - i), bd = Math.abs(best - i);
-      if (d < bd || (d === bd && p < best)) best = p; // tie → earlier rung → "up"
-    }
-    return {
-      mark: Math.abs(best - i) === 1 ? "yellow" : "grey",
-      dir: best < i ? "up" : "down",
-    };
-  });
+// The guess is a surname typed by hand, so matching has to survive accents,
+// case, punctuation and spacing. NFD + combining-mark strip turns Čech into
+// cech, Özil into ozil, Agüero into aguero — one rule instead of a lookup.
+//
+// Accepted forms are DERIVED from `display` (surname, and the full name), so
+// only genuine exceptions are listed below. Two of them are not stylistic —
+// they are unwinnable without an alias: Neymar's surname in the data is
+// "Júnior" and Isco's is "Alarcón". Nobody on earth types those.
+export const TRAIL_ALIASES = {
+  NEYMAR:         ["Neymar"],
+  ISCO:           ["Isco"],
+  JOAQUIN:        ["Joaquin"],
+  VAN_PERSIE:     ["Persie"],
+  RONALDO_C:      ["Cristiano", "CR7"],
+  GILBERTO_SILVA: ["Gilberto", "Gilberto Silva"],
+  GOTZE:          ["Goetze"],   // common German transliteration of ö
+  OZIL:           ["Oezil"],
+};
+
+// Revealed as a hint after the third miss. Nationality already lives on the
+// career row; position did not, and a nationality on its own is a weak rescue
+// ("France" covers half the roster).
+export const TRAIL_POSITIONS = {
+  TORRES: "Forward", BALE: "Winger", VAN_PERSIE: "Forward", ALONSO: "Midfielder",
+  HENRY: "Forward", SNEIJDER: "Midfielder", OZIL: "Midfielder", OWEN: "Forward",
+  RONALDO_C: "Forward", ROONEY: "Forward", ROBBEN: "Winger", SEEDORF: "Midfielder",
+  VIEIRA: "Midfielder", MAKELELE: "Midfielder", BALLACK: "Midfielder", MANE: "Forward",
+  POGBA: "Midfielder", FABREGAS: "Midfielder", COLE_A: "Defender", BUFFON: "Goalkeeper",
+  RAMOS: "Defender", CECH: "Goalkeeper", DUFF: "Winger", GOTZE: "Midfielder",
+  KOMPANY: "Defender", FIGO: "Winger", KROOS: "Midfielder", NEYMAR: "Forward",
+  AGUERO: "Forward", ISCO: "Midfielder", VERTONGHEN: "Defender", KANTE: "Midfielder",
+  ALDERWEIRELD: "Defender", JOAQUIN: "Winger", KLOSE: "Forward", MATUIDI: "Midfielder",
+  FLAMINI: "Midfielder", GILBERTO_SILVA: "Midfielder",
+};
+
+/** Fold a typed guess to its comparable form: accent-free, lowercase, a-z only. */
+export function normaliseGuess(s) {
+  return String(s || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^a-z]/g, "");
 }
 
-export function isTrailSolved(grades) {
-  return grades.length > 0 && grades.every((g) => g.mark === "green");
+/** Every string that counts as naming this player. */
+export function acceptedNamesFor(player) {
+  if (!player) return [];
+  const [first, last] = player.display || [];
+  const out = [];
+  if (last) out.push(last);
+  if (first && last) out.push(`${first} ${last}`);
+  if (first && !last) out.push(first);
+  for (const alias of TRAIL_ALIASES[player.key] || []) out.push(alias);
+  return out;
 }
 
-// ── Bench scramble ────────────────────────────────────────────────────────────
-// Deterministic per-day scramble (seed = day index) so every player worldwide
-// gets the SAME bench order — grids stay comparable and "attempt 1" is a fair
-// shared baseline. Guaranteed not to present the solved order (or any
-// all-green-equivalent order under duplicate labels).
-export function scrambleBench(clubs, seed) {
-  const idx = clubs.map((_, i) => i);
-  let h = (seed >>> 0) || 1;
-  const next = () => {
-    h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0;
-    return h;
-  };
-  for (let attempt = 0; attempt < 8; attempt++) {
-    for (let i = idx.length - 1; i > 0; i--) {
-      const j = next() % (i + 1);
-      [idx[i], idx[j]] = [idx[j], idx[i]];
-    }
-    const bench = idx.map((i) => clubs[i]);
-    // Label-equality check: with duplicate clubs, a permutation can be the
-    // solved order in disguise. Compare labels, not indexes.
-    if (bench.some((label, i) => label !== clubs[i])) return bench;
-  }
-  // 8 failed reshuffles means every label is identical (impossible for real
-  // careers); rotate as a last resort so we never hand out a solved board.
-  return [...clubs.slice(1), clubs[0]];
+export function guessMatchesPlayer(guess, player) {
+  const g = normaliseGuess(guess);
+  if (!g) return false;
+  return acceptedNamesFor(player).some((name) => normaliseGuess(name) === g);
+}
+
+/**
+ * How many clubs are on the ladder after `misses` wrong guesses or skips.
+ * Opens at TRAIL_OPENING_CLUBS and grows by one each time, capped at the
+ * career length — a 6-rung career runs out of clubs exactly as the player runs
+ * out of attempts, so there is no tuning constant to drift.
+ */
+export const TRAIL_OPENING_CLUBS = 2;
+export function cluesShown(misses, careerLength) {
+  return Math.min(TRAIL_OPENING_CLUBS + Math.max(0, misses), careerLength);
+}
+
+/** The hint unlocks once three guesses are gone. */
+export function hintFor(player, misses) {
+  if (!player || misses < 3) return null;
+  const pos = TRAIL_POSITIONS[player.key];
+  return [player.nat, pos].filter(Boolean).join(" · ") || null;
 }
 
 // ── Streak ────────────────────────────────────────────────────────────────────
@@ -376,16 +392,16 @@ export function computeTrailStreak(today) {
   return streak;
 }
 
-// ── Share text ────────────────────────────────────────────────────────────────
-// Spoiler-free convergence grid (spec §3): one row per attempt, one emoji per
-// rung — closeness without revealing WHICH club sat where. Mirrors the Footle
-// share builder's Wordle-convention format.
-export function buildTrailShareText(attemptGrades, { number, won, streak } = {}) {
-  const grid = attemptGrades
-    .map((grades) => grades.map((g) => (g.mark === "green" ? "🟩" : g.mark === "yellow" ? "🟨" : "⬛")).join(""))
-    .join("\n");
-  const score = won ? attemptGrades.length : "X";
-  const head = `⚽ Ball IQ · Transfer Trail${number > 0 ? ` #${number}` : ""} — ${score}/${TRAIL_MAX_ATTEMPTS}`;
+// ── Share text (spec v2) ─────────────────────────────────────────────────────
+// Spoiler-free by construction: it names neither the player nor a single club,
+// only how many rungs it took. That is a stronger guarantee than v1's grid,
+// which leaked the SHAPE of the career (how many clubs, how scrambled).
+export function buildTrailShareText({ number, won, clubsUsed, streak } = {}) {
+  const head = `⚽ Ball IQ · Transfer Trail${number > 0 ? ` #${number}` : ""}`;
+  const line = won
+    ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"} ${"⚽".repeat(Math.min(clubsUsed, 6))}`
+    : `Didn't get it — X/${TRAIL_MAX_ATTEMPTS}`;
   const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
-  return `${head}${streakLine}\n\n${grid}\n\nballiq.app/trail`;
+  return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
 }
+

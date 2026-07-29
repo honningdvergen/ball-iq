@@ -1,28 +1,27 @@
-// Transfer Trail — daily "put the career in order" screen (docs/transfer-trail-spec.md §2).
-// LIVE since 2026-07-29 (Trail #1 = Fernando Torres). The screen is prop-driven —
-// the router passes the day's dataset row — so it carries zero data of its own.
+// Transfer Trail — daily "name the player from their career" screen.
+// Spec: docs/transfer-trail-spec-v2.md.
 //
-// Interaction model (spec): tap-two-to-swap (no drag lib, mobile-first), 5
-// attempts, per-rung grading colours + ⬆️/⬇️ direction arrows, spoiler-free
-// convergence-grid share. Persistence: biq_trail_<ymd> stores the raw
-// arrangements (labels), grades recompute from gradeTrail — same
-// store-inputs-not-derived-state pattern as Footle's biq_wordle_<ymd>.
+// The career is revealed chronologically, two clubs to open, one more per miss.
+// v1 asked players to SORT a scrambled career instead; it was pulled the hour it
+// shipped, because sorting is only deduction if you already know whose career it
+// is — without recognition it is blind permutation. Naming the player is the
+// genre convention and needs no tutorial.
+//
+// Only revealed clubs are drawn. No "?" placeholders for the rest: the LENGTH of
+// a career is itself a clue — a six-club journeyman reads very differently from
+// a three-club one-club-man — and handing that over free undoes the ladder.
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dateToYMD } from "../lib/date.js";
 import {
   TRAIL_MAX_ATTEMPTS,
   getTrailNumber,
-  getTrailDayIndex,
-  gradeTrail,
-  isTrailSolved,
-  scrambleBench,
+  guessMatchesPlayer,
+  cluesShown,
+  hintFor,
   computeTrailStreak,
   buildTrailShareText,
 } from "../lib/trail.js";
 import { Confetti, haptic } from "../App.jsx";
-
-const MARK_BG = { green: "#58CC02", yellow: "#FFC107", grey: "var(--s2)" };
-const MARK_FG = { green: "#06230C", yellow: "#0A0A0A", grey: "var(--t1)" };
 
 function loadDay(ymd) {
   try {
@@ -38,91 +37,61 @@ function saveDay(ymd, state) {
 
 export default function TransferTrail({ player, date = new Date(), onBack }) {
   const ymd = dateToYMD(date);
-  const answer = useMemo(() => player?.clubs || [], [player]);
   const number = getTrailNumber(date);
+  const career = useMemo(() => player?.clubs || [], [player]);
 
-  // Restore: attempts are stored as raw label arrays; everything else derives.
+  // Attempts are the raw submissions — { text, skipped } — and everything else
+  // derives. Same store-inputs-not-derived-state rule as Footle, so a mid-game
+  // reload rebuilds the exact board rather than trusting a cached verdict.
   const [attempts, setAttempts] = useState(() => loadDay(ymd)?.attempts || []);
-  const grades = useMemo(() => attempts.map((a) => gradeTrail(a, answer)), [attempts, answer]);
-  const won = grades.some(isTrailSolved);
-  const lost = !won && attempts.length >= TRAIL_MAX_ATTEMPTS;
+  const [entry, setEntry] = useState("");
+  const [shake, setShake] = useState(false);
+
+  const won = attempts.some((a) => !a.skipped && guessMatchesPlayer(a.text, player));
+  const misses = attempts.filter((a) => a.skipped || !guessMatchesPlayer(a.text, player)).length;
+  const lost = !won && misses >= TRAIL_MAX_ATTEMPTS;
   const done = won || lost;
 
-  // Current working arrangement: last submitted attempt, else the daily bench.
-  const [arrangement, setArrangement] = useState(() => {
-    const stored = loadDay(ymd);
-    if (stored?.attempts?.length) return stored.attempts[stored.attempts.length - 1];
-    return answer.length ? scrambleBench(answer, getTrailDayIndex(date)) : [];
-  });
-  const [selected, setSelected] = useState(null); // rung index of the first tap
-  const [showConfetti, setShowConfetti] = useState(false);
+  const shown = done ? career.length : cluesShown(misses, career.length);
+  const clubsUsed = won ? cluesShown(misses, career.length) : career.length;
+  const hint = done ? null : hintFor(player, misses);
+  const left = Math.max(0, TRAIL_MAX_ATTEMPTS - misses);
 
   useEffect(() => {
     saveDay(ymd, { status: won ? "won" : lost ? "lost" : "playing", attempts });
   }, [ymd, attempts, won, lost]);
 
-  // Announce completion exactly once per day, on the transition into done.
-  //
-  // This is the wiring Footle went months WITHOUT, which is why "what do people
-  // actually play?" had no answer for the most-played mode in the app. The same
-  // listener in App.jsx cancels the evening reminder, counts toward the
-  // notification prompt, awards XP and writes the `scores` row — so a mode that
-  // stays silent here is invisible everywhere that matters, and looks like
-  // nobody plays it.
-  //
-  // Guarded by a ref rather than the effect deps: `done` flips once, but this
-  // component also re-mounts when you navigate back into a finished puzzle, and
-  // a second dispatch would double-pay XP and log a duplicate row.
-  const announcedRef = useRef(false);
+  // Fire the shared daily-completed event exactly once. App.jsx listens and
+  // cancels the evening reminder, awards XP and writes the `scores` row — a mode
+  // that stays silent here is invisible in the only table anyone queries, which
+  // is how Footle went months looking unplayed. Ref-guarded because the screen
+  // re-mounts whenever you navigate back into a finished puzzle.
+  const announced = useRef(false);
   useEffect(() => {
-    if (!done || announcedRef.current) return;
-    announcedRef.current = true;
+    if (!done || announced.current) return;
+    announced.current = true;
     try {
       window.dispatchEvent(new CustomEvent("biq:daily-completed", {
-        detail: { positive: won, game: "trail", won, attempts: attempts.length },
+        detail: { positive: won, game: "trail", won, attempts: Math.max(1, misses) },
       }));
-    } catch { /* event dispatch is best-effort; never block the win screen */ }
-  }, [done, won, attempts.length]);
+    } catch { /* best effort; never block the reveal */ }
+  }, [done, won, misses]);
 
-  // Last attempt's grades, shown only on rungs untouched since that submit —
-  // a moved chip's old colour would be a lie, so it resets to neutral.
-  const lastAttempt = attempts.length ? attempts[attempts.length - 1] : null;
-  const lastGrades = grades.length ? grades[grades.length - 1] : null;
-  const rungGrade = (i) =>
-    lastAttempt && lastGrades && arrangement[i] === lastAttempt[i] ? lastGrades[i] : null;
-
-  const tapRung = useCallback((i) => {
+  const submit = useCallback((skipped) => {
     if (done) return;
-    haptic("select");
-    setSelected((sel) => {
-      if (sel === null) return i;
-      if (sel === i) return null;
-      setArrangement((arr) => {
-        const next = [...arr];
-        [next[sel], next[i]] = [next[i], next[sel]];
-        return next;
-      });
-      return null;
-    });
-  }, [done]);
-
-  const submit = useCallback(() => {
-    if (done || !arrangement.length) return;
-    const g = gradeTrail(arrangement, answer);
-    setAttempts((a) => [...a, [...arrangement]]);
-    setSelected(null);
-    if (isTrailSolved(g)) {
-      haptic("hardCorrect");
-      setShowConfetti(true);
-    } else {
-      haptic("wrong");
-    }
-  }, [done, arrangement, answer]);
+    const text = skipped ? "" : entry.trim();
+    if (!skipped && !text) return;
+    const hit = !skipped && guessMatchesPlayer(text, player);
+    setAttempts((a) => [...a, { text, skipped: !!skipped }]);
+    setEntry("");
+    if (hit) haptic("hardCorrect");
+    else { haptic("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
+  }, [done, entry, player]);
 
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
   const shareText = useMemo(
-    () => (done ? buildTrailShareText(grades, { number, won, streak }) : ""),
-    [done, grades, number, won, streak]
+    () => (done ? buildTrailShareText({ number, won, clubsUsed, streak }) : ""),
+    [done, number, won, clubsUsed, streak]
   );
   const onShare = useCallback(async () => {
     if (!shareText) return;
@@ -133,110 +102,124 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
     } catch {}
   }, [shareText]);
 
-  // Dataset not wired yet (or a bad route): show a graceful placeholder rather
-  // than a blank board. This is the only path reachable while the screen is
-  // unrouted, and it keeps the component safe to mount in tests.
-  if (!answer.length) {
+  // Unrouted or a bad day index: land somewhere real rather than on a blank board.
+  if (!career.length) {
     return (
       <div className="screen" style={{ padding: 24, textAlign: "center" }}>
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div style={{ marginTop: 60, fontSize: 40 }}>🔀</div>
-        <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)", marginTop: 12 }}>Transfer Trail</div>
-        <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>Coming soon — a new career to untangle every day.</div>
+        <div style={{ marginTop: 60, fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Transfer Trail</div>
+        <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>Coming soon — a new career to name every day.</div>
       </div>
     );
   }
 
+  const wrongOnes = attempts.filter((a) => !a.skipped && !guessMatchesPlayer(a.text, player));
+
   return (
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 }}>
-      {showConfetti && Confetti ? <Confetti /> : null}
+      {won && Confetti ? <Confetti /> : null}
 
-      {/* header — mirrors the Footle header layout */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 4px" }}>
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Transfer Trail{number > 0 ? ` #${number}` : ""}</div>
-          <div style={{ fontSize: 12.5, color: "var(--t2)" }}>Put the career in order — first club at the top</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>
+            Transfer Trail{number > 0 ? ` #${number}` : ""}
+          </div>
+          <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
+            {done ? (won ? "Solved" : "Not this time") : "Name the player from their career"}
+          </div>
         </div>
-        <div style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)", textAlign: "center" }}>
-          <div>{Math.max(0, TRAIL_MAX_ATTEMPTS - attempts.length)}</div>
-          <div style={{ fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase" }}>left</div>
-        </div>
+        {!done && (
+          <div style={{ textAlign: "center", flexShrink: 0 }}>
+            <div style={{ fontSize: 17, fontWeight: 800, color: left <= 1 ? "var(--red)" : "var(--t1)" }}>{left}</div>
+            <div style={{ fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t3)" }}>left</div>
+          </div>
+        )}
       </div>
 
-      {/* board */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: "8px 2px", flex: 1 }}>
-        {arrangement.map((club, i) => {
-          const g = rungGrade(i);
-          const isSel = selected === i;
-          const loan = player.loans?.[player.clubs.indexOf(club)]; // display-only hint chip
-          return (
-            <button
-              key={`${club}-${i}`}
-              onClick={() => tapRung(i)}
-              disabled={done}
-              style={{
-                display: "flex", alignItems: "center", gap: 10, width: "100%",
-                padding: "13px 14px", borderRadius: 12, cursor: done ? "default" : "pointer",
-                background: g ? MARK_BG[g.mark] : "var(--s1)",
-                color: g ? MARK_FG[g.mark] : "var(--t1)",
-                border: isSel ? "2px solid var(--accent)" : "2px solid var(--border)",
-                transform: isSel ? "scale(1.02)" : "none",
-                transition: "transform 0.12s ease, background 0.2s ease",
-                fontFamily: "inherit", fontSize: 15.5, fontWeight: 700, textAlign: "left",
-              }}
-            >
-              <span style={{ fontSize: 11, fontWeight: 800, opacity: 0.55, width: 16 }}>{i + 1}</span>
-              <span style={{ flex: 1 }}>
-                {club}
-                {loan ? <span style={{ fontSize: 10.5, fontWeight: 700, opacity: 0.7, marginLeft: 6 }}>(loan)</span> : null}
-              </span>
-              {g && g.mark !== "green" ? (
-                <span aria-label={g.dir === "up" ? "belongs earlier" : "belongs later"} style={{ fontSize: 15 }}>
-                  {g.dir === "up" ? "⬆️" : "⬇️"}
-                </span>
-              ) : null}
-              {g && g.mark === "green" ? <span style={{ fontSize: 15 }}>✓</span> : null}
-            </button>
-          );
-        })}
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, padding: "6px 2px" }}>
+        {career.slice(0, shown).map((club, i) => (
+          <div key={i} style={{
+            display: "flex", alignItems: "center", gap: 12,
+            background: "var(--s1)", border: "1px solid var(--border)",
+            borderRadius: 12, padding: "13px 15px",
+          }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", width: 14, flexShrink: 0 }}>{i + 1}</span>
+            <span style={{ fontSize: 15.5, fontWeight: 700, color: "var(--t1)", flex: 1, minWidth: 0 }}>{club}</span>
+            {player.loans?.[i] && (
+              <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>loan</span>
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* controls / result */}
-      {!done ? (
-        <div style={{ padding: "6px 2px" }}>
-          <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginBottom: 8 }}>
-            {selected === null ? "Tap two clubs to swap them" : "Now tap where it should go"}
-          </div>
-          <button
-            className="wd-share"
-            onClick={submit}
-            style={{ width: "100%", background: "var(--accent)", color: "#06230C", fontWeight: 800 }}
-          >
-            Submit order
-          </button>
+      {hint && (
+        <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 11,
+                      background: "rgba(255,193,7,0.10)", border: "1px solid rgba(255,193,7,0.3)",
+                      color: "var(--gold)", fontSize: 13, fontWeight: 700 }}>
+          {hint}
         </div>
-      ) : (
-        <div style={{ padding: "6px 2px", textAlign: "center" }}>
-          <div style={{ fontSize: 18, fontWeight: 800, color: "var(--t1)" }}>
-            {won ? `Solved in ${attempts.length}/${TRAIL_MAX_ATTEMPTS} 🎉` : "Out of attempts"}
+      )}
+
+      {wrongOnes.length > 0 && !done && (
+        <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {wrongOnes.map((a, i) => (
+            <span key={i} style={{ fontSize: 12.5, color: "var(--t3)", textDecoration: "line-through",
+                                   background: "var(--s2)", borderRadius: 8, padding: "4px 9px" }}>{a.text}</span>
+          ))}
+        </div>
+      )}
+
+      {!done && (
+        <>
+          <div style={{ marginTop: 14, display: "flex", gap: 8,
+                        transform: shake ? "translateX(-4px)" : "none", transition: "transform .12s" }}>
+            <input
+              value={entry}
+              onChange={(e) => setEntry(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") submit(false); }}
+              placeholder="Type a surname…"
+              aria-label="Your guess"
+              autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
+              enterKeyHint="go"
+              style={{ flex: 1, minWidth: 0, background: "var(--s1)", border: "1px solid var(--border)",
+                       borderRadius: 12, padding: "13px 15px", color: "var(--t1)", fontSize: 15,
+                       fontFamily: "inherit", outline: "none" }}
+            />
+            <button onClick={() => submit(false)} disabled={!entry.trim()}
+              style={{ flexShrink: 0, padding: "0 20px", borderRadius: 12, border: "none",
+                       background: entry.trim() ? "var(--accent)" : "var(--s2)",
+                       color: entry.trim() ? "#06230C" : "var(--t3)", fontWeight: 800, fontSize: 14,
+                       fontFamily: "inherit", cursor: entry.trim() ? "pointer" : "default" }}>Guess</button>
           </div>
-          <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 6 }}>
-            {player.display?.join(" ") || "Mystery player"}
-            {won && streak > 1 ? ` · 🔥 ${streak}-day streak` : ""}
-          </div>
-          {lost && (
-            <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 10, lineHeight: 1.6 }}>
-              {answer.map((c, i) => `${i + 1}. ${c}${player.years?.[i] ? ` (${player.years[i]})` : ""}`).join("  →  ")}
-            </div>
-          )}
-          <button
-            className="wd-share"
-            onClick={onShare}
-            style={{ width: "100%", marginTop: 14, background: "var(--accent)", color: "#06230C", fontWeight: 800 }}
-          >
-            Share your grid
+          <button onClick={() => submit(true)}
+            style={{ marginTop: 8, width: "100%", background: "transparent", border: "1px solid var(--border)",
+                     borderRadius: 11, padding: "10px", color: "var(--t2)", fontSize: 13, fontWeight: 700,
+                     fontFamily: "inherit", cursor: "pointer" }}>
+            Skip — show me another club
           </button>
+        </>
+      )}
+
+      {done && (
+        <div style={{ marginTop: 18, textAlign: "center" }}>
+          <div style={{ fontSize: 13, color: "var(--t2)" }}>It was</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: "var(--t1)", marginTop: 2 }}>
+            {(player.display || []).join(" ")}
+          </div>
+          <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
+            {won
+              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${streak > 1 ? ` · 🔥 ${streak}-day streak` : ""}`
+              : "Out of guesses — back tomorrow"}
+          </div>
+          <button onClick={onShare}
+            style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
+                     background: "var(--accent)", color: "#06230C", fontWeight: 800, fontSize: 15,
+                     fontFamily: "inherit", cursor: "pointer" }}>Share result</button>
+          <button onClick={onBack}
+            style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
+                     border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
+                     fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back home</button>
         </div>
       )}
     </div>
