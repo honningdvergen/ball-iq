@@ -114,9 +114,14 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               went first (the section header carries it), then "or manager",
               which is why the answer pool no longer contains manager-only names:
               the copy and the puzzle have to agree. */}
+          {/* No letter count here (Alex, 2026-07-29). It WAS dynamic — {cols}
+              is today's answer length, not a fixed claim — but the teaser grid
+              to the right is hard-coded 5 wide, so on any non-5-letter day the
+              card printed "4 letters" beside five tiles and contradicted itself.
+              Bring it back only if the grid becomes dynamic too. */}
           <div className="fh-sub">
-            {cols} letters · 6 guesses<br />
-            Surname of a footballer
+            Surname of a footballer<br />
+            6 guesses
           </div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
