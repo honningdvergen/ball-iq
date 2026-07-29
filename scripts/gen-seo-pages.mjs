@@ -1236,7 +1236,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   const orphans = rows.filter((r) => !byId.has(r.id)).map((r) => r.id);
   if (orphans.length) {
     throw new Error(
-      `[gen-seo] /es/quiz/${cfg.slug}: ${orphans.length} translated question(s) no longer resolve in the bank: ${orphans.join(', ')}. ` +
+      `[gen-seo] /${cfg.lang}/quiz/${cfg.slug}: ${orphans.length} translated question(s) no longer resolve in the bank: ${orphans.join(', ')}. ` +
       `Either the English question was deleted/re-idded, or its \`club\` changed. Fix scripts/seo/clubs-es.mjs in the same change as the bank edit.`,
     );
   }
@@ -1276,7 +1276,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   });
   if (mismatched.length) {
     throw new Error(
-      `[gen-seo] /es/quiz/${cfg.slug}: translated answer key no longer agrees with the English original for ` +
+      `[gen-seo] /${cfg.lang}/quiz/${cfg.slug}: translated answer key no longer agrees with the English original for ` +
       mismatched.map((r) => `${r.id} (es="${r.o[r.a]}"${r.en ? `, declared en="${r.en}"` : ''} vs bank="${byId.get(r.id).o[byId.get(r.id).a]}")`).join('; ') +
       `. If the English answer was corrected, correct the translation too. If the Spanish answer is translated prose rather than a proper noun, give the entry an \`en\` field naming the exact English answer it came from.`,
     );

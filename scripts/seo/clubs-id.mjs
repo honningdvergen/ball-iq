@@ -126,4 +126,89 @@ export const CLUBS_ID = [
       statsLine: (n, e, m, h) => `Ball IQ punya ${n} soal Manchester United — ${e} mudah, ${m} sedang, dan ${h} sulit.`,
     },
   },
+  // ── Arsenal ────────────────────────────────────────────────────────────────
+  // Added SECOND and for a measured reason, not a hunch. Google Trends,
+  // Indonesia, past 12 months, average search interest:
+  //
+  //     Arsenal 24 · Liverpool 18 · Chelsea 17 · Manchester United 9
+  //
+  // United — the club this file opened with, on my assumption — came LAST by
+  // 2.7x. Alex asked for research before more pages and he was right to.
+  //
+  // ⚠️ The caveat travels with the number: those are raw search TERMS, and three
+  // of the four are homonyms in Indonesia ("arsenal" is a common noun,
+  // "Liverpool" a city, and "Chelsea" a very common Indonesian given name), so
+  // only United's 9 is clean. Re-running with unambiguous forms ("Arsenal FC")
+  // returned too little volume to chart — which says Indonesian searchers use
+  // the PLAIN club name, so the raw comparison is closer to the real query set
+  // than the confound implies. Arsenal is the better bet on the evidence we
+  // have; United stays as the control.
+  {
+    club: 'Arsenal',
+    slug: 'arsenal',
+    lang: 'id',
+    name: 'Arsenal',
+    h1: 'Kuis Arsenal',
+    title: 'Kuis Arsenal — Tebak Meriam London | Ball IQ',
+    description:
+      'Kuis Arsenal gratis dengan jawaban berpenjelasan: The Invincibles, Wenger, Henry, Bergkamp, dan rekor Piala FA.',
+    kind: 'Kuis klub',
+    statLine: 'Gratis · 67 soal Arsenal · tanpa daftar',
+    playLabel: 'Mulai kuis',
+    intro: [
+      'Meriam London punya salah satu basis pendukung terbesar di Indonesia. Kuis gratis ini menelusuri seluruh sejarah klub: dari Dial Square dan para pekerja pabrik amunisi pada 1886, lini belakang legendaris era 1990-an, 22 tahun Arsène Wenger, Thierry Henry dan Dennis Bergkamp, sampai rekor Piala FA yang tidak tersentuh klub lain.',
+      'Soalnya benar-benar naik tingkat. Ketika sejarah klub masih diperdebatkan, kami memilih tidak menerbitkan soal itu daripada memihak satu versi. Yang terbit adalah yang bisa diverifikasi.',
+      'Setiap jawaban di set Arsenal punya penjelasan tertulis, jadi salah menjawab pun tetap mengajarkan sesuatu tentang bagaimana Arsenal meraih apa yang mereka raih.',
+    ],
+    faq: [
+      { q: 'Apakah kuis Arsenal ini gratis?', a: 'Gratis. Bisa langsung dimainkan di browser, tanpa daftar dan tanpa mengunduh apa pun. Semua soal di halaman ini bebas diakses.' },
+      { q: 'Apa saja yang dibahas dalam kuis ini?', a: 'Sejarah klub sejak 1886, era Wenger, Henry, Bergkamp, Vieira dan lini belakang 1990-an, final-final Piala FA, transfer besar, sampai era Saka dan gelar Liga Primer. Tingkat kesulitannya naik dari mudah sampai benar-benar sulit.' },
+      { q: 'Dari mana soal-soal ini berasal?', a: 'Semuanya ditulis dan diperiksa manual, tidak pernah dibuat otomatis. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.' },
+      { q: 'Apakah aplikasi Ball IQ tersedia dalam bahasa Indonesia?', a: 'Belum: halaman ini berbahasa Indonesia, tetapi aplikasinya masih berbahasa Inggris. Kami sedang mengukur minat sebelum menerjemahkannya — kalau kamu sampai di sini, kamu sudah membantu kami memutuskan.' },
+    ],
+    taster: [
+      { id: 'q_fa63f7', q: 'Siapa pencetak gol terbanyak sepanjang sejarah Arsenal?', o: ['Ian Wright', 'Dennis Bergkamp', 'Thierry Henry', 'Robin van Persie'], a: 2, hint: 'Ia mencetak 228 gol untuk klub dan patungnya berdiri di depan Emirates Stadium.' },
+      // `en` because Indonesian localises the competition name ("Piala FA"),
+      // so the strings share no letters — the guard is right to demand it.
+      { id: 'q_c46593', en: 'FA Cup', q: 'Arsenal memegang rekor juara terbanyak di kompetisi Inggris yang mana?', o: ['Piala Liga', 'Piala FA', 'Community Shield', 'Divisi Satu/Liga Primer'], a: 1, hint: 'Kompetisi piala tertua di dunia, dan Arsenal punya lebih banyak trofinya daripada klub mana pun.' },
+      { id: 'q_178706', q: 'Berapa Piala FA yang dimenangkan Arsène Wenger bersama Arsenal?', o: ['5', '6', '7', '8'], a: 2, hint: 'Jumlah itu menjadikannya manajer tersukses dalam sejarah kompetisi tersebut.' },
+      { id: 'q_4d67bb', q: 'Thierry Henry bergabung dengan Arsenal pada Agustus 1999 seharga £11 juta — dari klub Italia mana?', o: ['Juventus', 'AC Milan', 'Inter', 'Parma'], a: 0, hint: 'Di Italia ia dimainkan sebagai pemain sayap; Wenger yang memindahkannya ke posisi penyerang tengah.' },
+      { id: 'q_a52765', q: 'Setelah menunggu 22 tahun dan tiga kali finis runner-up berturut-turut, Arsenal akhirnya menjadi juara Liga Primer pada musim apa?', o: ['2024-25', '2025-26', '2023-24', '2022-23'], a: 1, hint: 'Gelar liga sebelumnya datang pada musim tak terkalahkan 2003-04.' },
+      { id: 'q_f49ff1', q: 'Klub mana yang mengakhiri dominasi Manchester United atas gelar Liga Primer pada 2001-02?', o: ['Liverpool', 'Chelsea', 'Leeds United', 'Arsenal'], a: 3, hint: 'Gelar itu dipastikan justru di Old Trafford, di kandang lawan langsung mereka.' },
+      { id: 'q_18aa78', q: 'Apa nama paling awal klub yang kemudian menjadi Arsenal, saat didirikan para pekerja pabrik amunisi pada 1886?', o: ['Royal Arsenal', 'Woolwich United', 'Dial Square', 'Plumstead Rovers'], a: 2, hint: 'Namanya diambil dari salah satu bengkel di kompleks persenjataan Woolwich tempat para pendirinya bekerja.' },
+      { id: 'q_a7b699', q: 'Remaja Spanyol mana yang meninggalkan akademi La Masia Barcelona pada usia 16 tahun di September 2003 untuk bergabung dengan Arsenal?', o: ['Cesc Fàbregas', 'Gerard Piqué', 'Lionel Messi', 'Xavi'], a: 0, hint: 'Ia langsung menjadi pemain tim utama termuda dalam sejarah klub saat itu.' },
+      { id: 'q_2d59e9', q: 'Lini belakang terkenal Arsenal era 1990-an berisi Adams, Bould, Dixon — siapa yang melengkapinya?', o: ['Ashley Cole', 'Nigel Winterburn', 'Martin Keown', 'Kenny Sansom'], a: 1, hint: 'Bek kiri ini bermain lebih dari 400 laga untuk klub dan menjadi bagian dari dua gelar liga.' },
+      { id: 'q_1607cb', q: 'Siapa pencetak gol terbanyak Arsenal di Liga Primer 2023-24 dengan 16 gol?', o: ['Martinelli', 'Havertz', 'Saka', 'Jesus'], a: 2, hint: 'Pemain sayap kanan produk akademi Hale End ini juga memimpin daftar assist klub musim itu.' },
+    ],
+    sample: [
+      { id: 'q_0f2de2', q: 'Nomor punggung berapa yang dipakai Patrick Vieira di Arsenal sepanjang hampir seluruh kariernya (1996-2005)?', o: ['4', '5', '6', '8'], a: 0, hint: 'Nomor itu diwarisi dari tradisi gelandang bertahan klub dan kemudian dipakai Fàbregas.' },
+      { id: 'q_95ee06', en: 'A three-touch turn and finish', q: 'Dennis Bergkamp mencetak hat-trick melawan Leicester pada Agustus 1997, dan gol ketiganya dianggap ikonik — apa yang membuatnya begitu diingat?', o: ['Tendangan sepeda', 'Tiga sentuhan: kontrol, putar, dan selesaikan', 'Lob dari 37 meter', 'Voli kaki kiri'], a: 1, hint: 'Gol itu terpilih sebagai gol terbaik Liga Primer sepanjang masa dalam beberapa jajak pendapat.' },
+      { id: 'q_9bfa7a', q: 'Siapa yang memberi assist untuk tendangan scorpion Olivier Giroud melawan Crystal Palace pada 1 Januari 2017?', o: ['Sánchez', 'Özil', 'Iwobi', 'Bellerín'], a: 0, hint: 'Umpan silangnya datang dari sisi kiri dan gol itu memenangi Puskás Award tahun tersebut.' },
+      { id: 'q_0160ac', q: 'Siapa yang mencetak penalti penentu bagi Arsenal di final Piala FA 2005 melawan Manchester United?', o: ['Henry', 'Pires', 'Vieira', 'Bergkamp'], a: 2, hint: 'Itu menjadi sentuhan terakhirnya untuk klub — ia pindah ke Juventus musim panas itu.' },
+      { id: 'q_e115f8', q: 'Siapa yang mencetak gol kemenangan Arsenal di masa tambahan final Piala FA 2014, melengkapi kebangkitan dari ketertinggalan 2-0 melawan Hull City?', o: ['Giroud', 'Ramsey', 'Özil', 'Walcott'], a: 1, hint: 'Gol itu mengakhiri sembilan tahun tanpa trofi bagi klub.' },
+      { id: 'q_9fbb3b', q: 'Pemain sayap Belanda mana yang dijual Arsenal ke Barcelona pada 2000 seharga £25 juta?', o: ['Boudewijn Zenden', 'Marc Overmars', 'Arjen Robben', 'Ryan Babel'], a: 1, hint: 'Ia bagian dari tim ganda juara 1998 dan transfernya menjadi rekor untuk pemain Belanda saat itu.' },
+      { id: 'q_a302d8', q: 'Pada musim apa Tottenham pertama kali finis di atas Arsenal di Liga Primer era Arsène Wenger?', o: ['2016-17', '1998-99', '1999-2000', '2000-01'], a: 0, hint: 'Itu mengakhiri rentetan 20 tahun yang oleh pendukung Arsenal dijuluki “St Totteringham’s Day”.' },
+      { id: 'q_8a6b9b', en: 'Three (1980s, 1990s, 2000s)', q: 'Tony Adams, yang hanya bermain untuk Arsenal sepanjang kariernya, menjadi kapten tim juara liga di berapa dekade berbeda?', o: ['Tiga (1980-an, 1990-an, 2000-an)', 'Dua (1980-an, 1990-an)', 'Empat (1980-an sampai 2010-an)', 'Dua (1990-an, 2000-an)'], a: 0, hint: 'Ia mengangkat trofi liga pada 1989, 1991, 1998 dan 2002.' },
+      { id: 'q_d42b8a', q: 'Siapa yang mencetak gol kemenangan di menit terakhir saat Arsenal mengalahkan Manchester United 3-2 di final Piala FA 1979, yang dijuluki “Final Lima Menit”?', o: ['Stapleton', 'Brady', 'Price', 'Sunderland'], a: 3, hint: 'Arsenal memimpin 2-0 sebelum United menyamakan dalam dua menit — lalu gol ini datang.' },
+      { id: 'q_ba8366', q: 'Penyerang Arsenal mana yang mencetak kedua gol di final Piala Liga 1987, trofi Piala Liga pertama klub, saat menang 2-1 atas Liverpool?', o: ['Ian Allinson', 'Nicholas', 'Niall Quinn', 'Paul Davis'], a: 1, hint: 'Gol keduanya datang di menit-menit akhir dan menjadi trofi pertama era George Graham.' },
+      { id: 'q_d4df55', q: 'Berapa klub yang pernah ditangani Arsène Wenger sebelum Arsenal?', o: ['1', '2', '4', '3'], a: 3, hint: 'Ia melatih di Prancis dan Jepang sebelum tiba di London pada 1996.' },
+      { id: 'q_7a6a33', q: 'Insiden “Pizzagate” di Old Trafford pada Oktober 2004 melibatkan pemain Arsenal berusia 17 tahun yang melempar sepotong pizza dan mengenai Sir Alex Ferguson. Siapa dia?', o: ['Cesc Fàbregas', 'Patrick Vieira', 'José Antonio Reyes', 'Henry'], a: 0, hint: 'Kejadian itu terjadi setelah laga yang mengakhiri rekor 49 pertandingan tanpa kalah Arsenal.' },
+    ],
+    copy: {
+      tasterEyebrow: 'Contoh gratis · Tanpa daftar',
+      tasterH: 'Seberapa paham kamu soal Arsenal?',
+      tasterPh: 'Sepuluh soal cepat untuk mengukur Ball IQ Meriam London kamu.',
+      tasterNote: 'Ini hanya contoh soal — kuis lengkapnya jauh lebih banyak.',
+      playSection: 'Mainkan kuis Arsenal',
+      playSub: 'Ketuk salah satu jawaban untuk memeriksanya — langsung benar/salah, plus cerita di belakangnya.',
+      faqH: 'Kuis Arsenal — Pertanyaan umum',
+      aboutQ: 'Tentang kuis Arsenal ini',
+      bandH: 'Merasa paling paham Meriam London? Buktikan di aplikasinya.',
+      bandP: 'Rentetan harian, 1v1 langsung, rating sampai 99 — semua kuis dalam satu aplikasi. Aplikasinya berbahasa Inggris.',
+      alsoH: 'Halaman yang sama dalam bahasa Inggris',
+      alsoP: 'Ini versi bahasa Indonesia dari kuis Arsenal kami. Versi aslinya, dengan 67 soal, ada di sini:',
+      alsoLink: 'Arsenal quiz (English)',
+      statsLine: (n, e, m, h) => `Ball IQ punya ${n} soal Arsenal — ${e} mudah, ${m} sedang, dan ${h} sulit.`,
+    },
+  },
 ];
