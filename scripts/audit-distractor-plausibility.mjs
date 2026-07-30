@@ -101,6 +101,24 @@ const NOT_A_SURNAME = new Set([
   'internacional','nacional','universidad','america','américa','guadalajara',
   'brazil','argentina','germany','france','italy','spain','england','portugal',
   'netherlands','belgium','croatia','uruguay','mexico','japan','korea','nigeria',
+  // Added after the first full-bank run: 56 of 65 Tier-2 hits were option sets
+  // built CORRECTLY around a shared category noun ("Second Division" vs "Third
+  // Division", "Rapid Wien" vs "Austria Wien", "Brentford Rowing Club" vs
+  // "Brentford Cricket Club"). Those are the right distractors for those
+  // questions, and drowning the real signal in them trains everyone to ignore
+  // the whole tier.
+  'division','dock','star','army','team','wall','club','stadion','kulubu',
+  'vereniging','sudamericana','derby','budapest','wien','vienna','cali',
+  'dynamo','guinea','prata','geordie','toon','wonder','golden','sport',
+]);
+
+// A "set of labelled variants" — the options differ only by an ordinal, compass
+// direction or colour ("First/Second/Third Division", "North/South/East/West
+// London", "Red Star"/"White Star"). Never a name collision; always deliberate.
+const VARIANT_QUALIFIER = new Set([
+  'first','second','third','fourth','fifth','1st','2nd','3rd','4th',
+  'north','south','east','west','northern','southern','eastern','western',
+  'red','white','black','yellow','blue','green','gold','silver','the',
 ]);
 
 const words = (s) => String(s).split(/[\s'’.-]+/).filter(Boolean);
@@ -128,7 +146,13 @@ const surnameClash = (a, b) => {
   const wa = words(a).map(norm), wb = words(b).map(norm);
   const lastA = wa[wa.length - 1], lastB = wb[wb.length - 1];
   const shared = wa.filter((t) => wb.includes(t) && t.length >= 4 && !NOT_A_SURNAME.has(t));
-  return shared.find((t) => t === lastA || t === lastB) ?? null;
+  const clash = shared.find((t) => t === lastA || t === lastB) ?? null;
+  if (!clash) return null;
+  // If every token the two options DON'T share is a variant qualifier, this is a
+  // labelled-variant set, not two people with the same surname.
+  const rest = [...wa.filter((t) => !wb.includes(t)), ...wb.filter((t) => !wa.includes(t))];
+  if (rest.length && rest.every((t) => VARIANT_QUALIFIER.has(t))) return null;
+  return clash;
 };
 
 // ⚠️ The surname fallback is ONLY safe for bare-surname options ("Ramos",

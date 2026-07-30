@@ -124,6 +124,19 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
     const n = parseInt(hex.slice(1), 16);
     return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
   };
+  // Every black-and-white side carries #111111 (Juventus, Santos, Botafogo,
+  // Atlético Mineiro). At 30% alpha on a dark card that is invisible, so those
+  // rungs looked uncoloured even though the lookup had succeeded — which is how
+  // Gilberto Silva's real América-MG → Atlético-MG move read as one club twice.
+  // Lift ONLY the value used for the card tint and border. The badge keeps the
+  // true club colour, where black with white type is authentic and legible.
+  const lift = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 >= 0.18) return hex;
+    const mix = (c) => Math.round(c + (255 - c) * 0.55);
+    return `#${[mix(r), mix(g), mix(b)].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+  };
   const onColour = (hex) => {
     const n = parseInt(hex.slice(1), 16);
     const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => {
@@ -161,8 +174,8 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
           return (
             <div key={i} style={{
               display: "flex", alignItems: "center", gap: 11,
-              background: col ? `linear-gradient(90deg, ${tint(col, 0.3)} 0%, ${tint(col, 0.05)} 100%)` : "var(--s1)",
-              border: `1px solid ${col ? tint(col, 0.45) : "var(--border)"}`,
+              background: col ? `linear-gradient(90deg, ${tint(lift(col), 0.3)} 0%, ${tint(lift(col), 0.05)} 100%)` : "var(--s1)",
+              border: `1px solid ${col ? tint(lift(col), 0.45) : "var(--border)"}`,
               borderRadius: 12, padding: "12px 14px",
             }}>
               <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", width: 12, flexShrink: 0 }}>{i + 1}</span>

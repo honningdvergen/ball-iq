@@ -109,6 +109,12 @@ const EXTRA = {
   "Shamrock Rovers": "#00843D",
   "Atletico Mineiro": "#111111",
   "Basaksehir": "#F26522",
+  // Gilberto Silva's trail (#2) opens América Mineiro → Atlético Mineiro. Two
+  // genuinely different Belo Horizonte clubs, but with América missing here it
+  // resolved to null and rendered as an uncoloured row directly above Atlético's
+  // near-black one — so a real transfer read as the same club listed twice.
+  // América-MG ("Coelho") play in green and white.
+  "America Mineiro": "#0B7A3B",
 };
 
 const key = (s) =>
