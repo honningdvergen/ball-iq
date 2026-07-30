@@ -130,8 +130,10 @@ already verified, only the explanation is missing. ⚠️ Don't chase 100%
 mechanically; "Which club plays at Anfield?" needs no explanation and forcing one
 produces filler.
 
-**Performance + bug audit.** Alex asked; it's overdue. Run it as **measurement,
-not reading** — real Lighthouse, actual bundle numbers, live Sentry, prod
+**Performance + bug audit.** Alex asked; it's overdue. ⚡ **The chrome-devtools MCP
+is now live and carries `lighthouse_audit`, `performance_start_trace` and
+`performance_analyze_insight`** — so this is a real tool run, not a manual
+exercise. Run it as **measurement, not reading** — real Lighthouse, actual bundle numbers, live Sentry, prod
 queries. Measured today: playtesters ~100% precision, sweeping audits 3–6%. One
 grammar sweep produced 1,744 false positives and one real defect in 6,856 rows.
 Convert findings into **gates** (eslint, distractor plausibility, lists
@@ -186,8 +188,9 @@ designing-before-coding suits how Alex works.
 
 ## 8. Tooling state
 
-**Live in a new session:** Supabase, Vercel, Sentry, Clarity, Firecrawl *(keyless
-tier — search/scrape/parse only; `map`/`crawl`/`agent` need a key)*, Serena,
+**Live in a new session:** Supabase, Vercel, Sentry, Clarity, **Firecrawl (FULL
+authenticated tier — Alex completed OAuth 2026-07-30 evening; all 28 tools incl.
+map/crawl/extract/agent/monitor, verified by a real `firecrawl_map` call)**, Serena,
 Semgrep, context7, Exa *(via the claude.ai connector, not the plugin)*, Chrome ×2,
 iOS Simulator, Magic UI, shadcn, Canva, Drive, desktop-commander, episodic-memory.
 
