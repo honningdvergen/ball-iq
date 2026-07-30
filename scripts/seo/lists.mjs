@@ -949,7 +949,7 @@ export const LISTS = [
   {
     "slug": "premier-league-top-scorers",
     "h1": "Every Premier League Golden Boot Winner (1992-93 to 2024-25)",
-    "title": "Premier League Golden Boot Winners: Every Season's Top Scorer | Ball IQ",
+    "title": "Premier League Golden Boot Winners by Season | Ball IQ",
     "description": "The complete list of Premier League Golden Boot winners and top scorers for every season from 1992-93 to 2024-25, with clubs and goal tallies.",
     "intro": [
       "The Premier League Golden Boot goes to the division's leading goalscorer at the end of each 38-game campaign. Since the competition's first season in 1992-93, the award has traced the careers of the game's most feared strikers — from Alan Shearer's mid-90s dominance to Thierry Henry's Arsenal peak, and on to the record-breaking hauls of Mohamed Salah and Erling Haaland.",
@@ -1393,7 +1393,7 @@ export const LISTS = [
   {
     "slug": "euro-winners",
     "h1": "Every UEFA European Championship Winner (1960-2024)",
-    "title": "Euro Winners: Every European Championship Winner (1960-2024) | Ball IQ",
+    "title": "Euro Winners: European Championship, 1960–2024 | Ball IQ",
     "description": "The complete list of every UEFA European Championship winner from 1960 to 2024, with finals, runners-up, scores and host nations for all 17 tournaments.",
     "intro": [
       "The UEFA European Championship, universally known as the Euros, is the continent's premier national-team tournament, held every four years since 1960. Fewer nations have lifted it than you might expect: across 17 editions from 1960 to 2024, only 10 different countries have been crowned champions of Europe, making the trophy one of the hardest in football to win.",
@@ -1552,7 +1552,7 @@ export const LISTS = [
   {
     "slug": "la-liga-champions",
     "h1": "Every La Liga Champion by Season (1928-29 to 2024-25)",
-    "title": "La Liga Champions: Every Winner by Season (1929-2025) | Ball IQ",
+    "title": "La Liga Champions: Every Winner, 1929–2025 | Ball IQ",
     "description": "The complete list of Spanish La Liga champions and runners-up, season by season from 1928-29 through 2024-25. Every winner in one chronological table.",
     "intro": [
       "Spain's Primera Division kicked off in 1928-29 with just ten clubs, and Barcelona edged Real Madrid by two points to claim the very first title. Nearly a century later, the same two names still tower over the record books, but the story in between is richer than the modern rivalry suggests.",
@@ -2065,7 +2065,7 @@ export const LISTS = [
   {
     "slug": "serie-a-champions",
     "h1": "Every Serie A Champion by Season (1929–2025)",
-    "title": "Serie A Champions by Season: Every Scudetto Winner 1929–2025 | Ball IQ",
+    "title": "Serie A Champions: Every Scudetto, 1929–2025 | Ball IQ",
     "description": "The complete list of Italian Serie A champions and runners-up by season, from 1929-30 to 2024-25 — every Scudetto winner, including the Calciopoli revocation.",
     "intro": [
       "Since Italy's top division was unified into a single national round-robin in 1929, the Scudetto — the small tricolour shield champions wear the following season — has been the ultimate prize in Italian football. This page lists every Serie A champion and runner-up by season, from Ambrosiana-Inter's inaugural 1929-30 crown through Napoli's 2024-25 triumph.",
@@ -2578,7 +2578,7 @@ export const LISTS = [
   {
     "slug": "bundesliga-champions",
     "h1": "Every Bundesliga Champion by Season (1963-64 to 2024-25)",
-    "title": "Bundesliga Champions: Full List of Winners by Season | Ball IQ",
+    "title": "Bundesliga Champions: Every Winner by Season | Ball IQ",
     "description": "The complete list of German Bundesliga champions and runners-up for every season from the competition's 1963-64 debut through to 2024-25.",
     "intro": [
       "The Bundesliga launched in 1963-64, replacing Germany's old regional-league playoff system with a single national top flight. Its very first champions were 1. FC Koln, and in the six decades since, the title has told the story of German football's shifting powers - from the Borussia Monchengladbach and Hamburger SV sides of the 1970s to the era of near-total Bayern Munich dominance.",
@@ -2931,7 +2931,7 @@ export const LISTS = [
   {
     "slug": "super-lig-champions",
     "h1": "Every Süper Lig Champion (1959-2025)",
-    "title": "Süper Lig Champions: Every Turkish Title Winner (1959-2025) | Ball IQ",
+    "title": "Süper Lig Champions: Every Winner, 1959–2025 | Ball IQ",
     "description": "The complete list of Turkish Süper Lig champions and runners-up, season by season from 1959 to 2024-25. Every title from Galatasaray to Fenerbahçe, verified.",
     "intro": [
       "Turkey's top flight was founded in 1959 as the Milli Lig, uniting the strongest clubs from Istanbul, Ankara and Izmir into a single national league for the first time. Fenerbahçe claimed that inaugural title, and for decades the competition has been dominated by a familiar core of giants. Galatasaray, Fenerbahçe and Beşiktaş, the three great Istanbul clubs, have shared the overwhelming majority of championships since day one.",
@@ -3309,7 +3309,7 @@ export const LISTS = [
   {
     "slug": "premier-league-champions",
     "h1": "Every Premier League Champion (1992-2025)",
-    "title": "Premier League Champions: Every Winner by Season (1992-2025) | Ball IQ",
+    "title": "Premier League Champions: Every Winner, 1992–2025 | Ball IQ",
     "description": "The complete list of Premier League champions and runners-up for every season from 1992-93 to 2024-25, with title winners in full chronological order.",
     "intro": [
       "The Premier League launched in 1992-93, breaking away from the old Football League First Division to become English football's top tier. Since then, only a handful of clubs have managed to get their hands on the trophy, and the roll of honour tells the story of shifting eras of dominance across more than three decades.",
@@ -3517,7 +3517,7 @@ export const LISTS = [
   {
     "slug": "ligue-1-champions",
     "h1": "Every Ligue 1 Champion (1932-2025)",
-    "title": "Ligue 1 Champions: Full Winners List by Season (1932-2025) | Ball IQ",
+    "title": "Ligue 1 Champions: Every Winner, 1932–2025 | Ball IQ",
     "description": "The complete list of French Ligue 1 champions and runners-up for every season from 1932-33 to 2024-25, from Olympique Lillois to PSG's modern dynasty.",
     "intro": [
       "France's top flight kicked off as a professional league in 1932, and its roll of honour reads like a tour of the country's football heartlands: the northern mill towns of Lille and Roubaix, the Mediterranean giants of Marseille and Nice, and the green wave of Saint-Étienne, whose 10 titles set the early benchmark. For decades no single club could keep a grip on the trophy for long.",
@@ -4000,7 +4000,7 @@ export const LISTS = [
   {
     "slug": "eredivisie-champions",
     "h1": "Every Eredivisie Champion (1956-57 to 2024-25)",
-    "title": "Eredivisie Champions: Full List of Dutch League Winners by Season | Ball IQ",
+    "title": "Eredivisie Champions: Every Winner by Season | Ball IQ",
     "description": "The complete list of Eredivisie champions and runners-up, season by season from 1956-57 through 2024-25. Every Dutch top-flight title winner in one table.",
     "intro": [
       "The Eredivisie has crowned a champion of Dutch football every season since 1956-57, when the country's regional leagues were folded into a single national professional division. Ajax lifted that inaugural title, setting the tone for nearly seven decades in which one of three clubs would claim the trophy far more often than not.",
@@ -4388,8 +4388,8 @@ export const LISTS = [
   {
     "slug": "primeira-liga-champions",
     "h1": "Every Primeira Liga Champion (1934-35 to 2024-25)",
-    "title": "Primeira Liga Champions: Every Portuguese League Winner by Season | Ball IQ",
-    "description": "The complete list of Portuguese Primeira Liga champions and runners-up, season by season from 1934-35 to 2024-25 — Benfica, Porto and Sporting CP's title history.",
+    "title": "Primeira Liga Champions: Every Winner by Season | Ball IQ",
+    "description": "Every Portuguese Primeira Liga champion and runner-up, season by season from 1934-35 to 2024-25 — Benfica, Porto and Sporting CP's title history.",
     "intro": [
       "Portugal's top flight has crowned a champion every season since Porto lifted the very first title in 1934-35. Nine decades later the story is still written almost entirely by three clubs — Benfica, Porto and Sporting CP, the 'três grandes' who between them have taken all but two championships in league history.",
       "Only Os Belenenses (1945-46) and Boavista (2000-01) have ever broken the monopoly, each managing a single, celebrated title. Everything else has been a Lisbon-versus-Porto tug of war, from Benfica's Eusébio-era dominance in the 1960s to Porto's run of six titles in seven seasons in the 2000s.",
@@ -4886,7 +4886,7 @@ export const LISTS = [
   {
     "slug": "scottish-premiership-champions",
     "h1": "Every Scottish Premiership Champion (1998-2025)",
-    "title": "Scottish Premiership Champions: Full Winners List 1998-2025 | Ball IQ",
+    "title": "Scottish Premiership Champions, 1998–2025 | Ball IQ",
     "description": "Every Scottish top-flight champion by season from 1998-99 to 2024-25, with runners-up. Celtic and Rangers's grip on the SPL and SPFL Premiership title, in full.",
     "intro": [
       "Scotland's top flight rebranded twice across this era. The Scottish Premier League broke away from the old Premier Division in 1998, then merged with the Scottish Football League in 2013 to form the SPFL, whose top tier became the Premiership. Through every name change, one truth held: the trophy almost never left Glasgow.",
@@ -5242,7 +5242,7 @@ export const LISTS = [
   {
     "slug": "most-ballon-dors",
     "h1": "Players With the Most Ballon d'Or Awards",
-    "title": "Most Ballon d'Ors: Players Ranked (Messi, Ronaldo…) | Ball IQ",
+    "title": "Most Ballon d'Ors: Players Ranked | Ball IQ",
     "description": "Who has won the most Ballon d'Or awards? Lionel Messi leads with a record eight. Every multiple winner, ranked, with the years they won.",
     "intro": [
       "The Ballon d'Or has gone to the best player in the world (in Europe, until 2007) every year since 1956. This page ranks the players who have won it more than once — the small club of true greats who dominated their eras.",
@@ -5494,7 +5494,7 @@ export const LISTS = [
   {
     "slug": "la-liga-top-scorers",
     "h1": "La Liga Top Scorers: Every Pichichi Trophy Winner (1928–29 to 2024–25)",
-    "title": "La Liga Top Scorers: Every Pichichi Winner by Season | Ball IQ",
+    "title": "La Liga Top Scorers: Every Pichichi Winner | Ball IQ",
     "description": "The complete list of La Liga Pichichi Trophy winners, season by season, from 1928–29 to 2024–25 — every top scorer, their club, and their goal tally.",
     "intro": [
       "The Pichichi Trophy, awarded each year by Spanish sports daily Marca, honours the top goalscorer in La Liga. Named after Athletic Bilbao legend Rafael 'Pichichi' Moreno, the award has crowned Spain's most lethal finishers since the league's inaugural 1928–29 season. This table gathers every winner in one place, from Paco Bienzobas's modest 14-goal haul to the record-shattering seasons of the modern era.",
@@ -6103,7 +6103,7 @@ export const LISTS = [
   {
     "slug": "serie-a-top-scorers",
     "h1": "Serie A Top Scorers: Every Capocannoniere Since 1929-30",
-    "title": "Serie A Top Scorers (Capocannoniere) by Season, 1929-2025 | Ball IQ",
+    "title": "Serie A Top Scorers: Capocannoniere, 1929–2025 | Ball IQ",
     "description": "The complete list of Serie A top scorers (Capocannoniere) for every season from 1929-30 to 2024-25 — player, club and goal tally, with joint winners.",
     "intro": [
       "The Capocannoniere is the award given to the leading goalscorer in Italy's Serie A each season. Since the league adopted its single-division round-robin format in 1929-30, the title has traced the arc of Italian football — from the marksmen of the pre-war Ambrosiana-Inter and Juventus sides to the imported goal machines of the modern game.",
@@ -6712,7 +6712,7 @@ export const LISTS = [
   {
     "slug": "bundesliga-top-scorers",
     "h1": "Bundesliga Top Scorers by Season (1963-64 to 2024-25)",
-    "title": "Bundesliga Top Scorers by Season: Every Torschützenkönig | Ball IQ",
+    "title": "Bundesliga Top Scorers: Every Torschützenkönig | Ball IQ",
     "description": "The complete list of Bundesliga top scorers (Torschützenkönig) for every season from 1963-64 to 2024-25, with player, club and goal tally.",
     "intro": [
       "Since the Bundesliga kicked off in 1963-64, the league's leading marksman has been crowned Torschützenkönig — and from 1966 onward handed the Kicker Torjägerkanone, the miniature cannon trophy that remains German football's most coveted individual prize for a striker. This table tracks every winner across more than six decades, from Uwe Seeler's opening-season 30 goals to Harry Kane's back-to-back cannons in Bavaria.",
@@ -7129,8 +7129,8 @@ export const LISTS = [
   {
     "slug": "ligue-1-top-scorers",
     "h1": "Ligue 1 Top Scorer Every Season (1932–33 to 2024–25)",
-    "title": "Ligue 1 Top Scorers by Season: Every Golden Boot Winner | Ball IQ",
-    "description": "The complete list of Ligue 1 top scorers for every season from 1932–33 to 2024–25 — player, club and goals, from Just Fontaine and Josip Skoblar to Kylian Mbappé.",
+    "title": "Ligue 1 Top Scorers: Every Golden Boot Winner | Ball IQ",
+    "description": "Every Ligue 1 top scorer from 1932–33 to 2024–25 — player, club and goals, from Just Fontaine and Josip Skoblar to Kylian Mbappé.",
     "intro": [
       "France's top flight has crowned a leading marksman every season since its 1932–33 debut, and the roll call doubles as a history of European goalscoring. The early decades belonged to prolific imports and homegrown talents alike — Roger Courtois, Just Fontaine and the astonishing Josip Skoblar, whose 44 goals for Marseille in 1970–71 remain the single-season Ligue 1 record that no one has come close to touching since.",
       "A handful of names recur like a drumbeat. Carlos Bianchi topped the charts five times in the 1970s across Reims and Paris Saint-Germain, Delio Onnis piled up goals for Monaco, Tours and Toulon, and Jean-Pierre Papin strung together five straight Golden Boots for Marseille from 1988 to 1992 — a run only Kylian Mbappé has since rivalled. Ties were common in the amateur and early professional eras, when two or even three players finished level and shared the honour.",
@@ -7696,7 +7696,7 @@ export const LISTS = [
   {
     "slug": "champions-league-top-scorers",
     "h1": "Champions League Top Scorer Every Season (1955-56 to 2024-25)",
-    "title": "Champions League Top Scorers by Season: Complete List | Ball IQ",
+    "title": "Champions League Top Scorers by Season | Ball IQ",
     "description": "The top scorer of every European Cup and UEFA Champions League season from 1955-56 to 2024-25, with player, club and goal tally for each year.",
     "intro": [
       "Since the European Cup kicked off in 1955, one player has finished ahead of the rest in front of goal almost every season. This complete list runs from Miloš Milutinović's eight goals in that debut 1955-56 campaign, through the 1992 rebrand to the UEFA Champions League, all the way to the 2024-25 final. In the early decades the leading tallies were modest — often five, six or seven goals — and ties at the top were common, reflecting a straight knockout format with far fewer matches than today's expanded league phase.",
@@ -8530,7 +8530,7 @@ export const LISTS = [
   {
     "slug": "afcon-winners",
     "h1": "Every AFCON Winner: Africa Cup of Nations Champions (1957–2025)",
-    "title": "AFCON Winners: Every Africa Cup of Nations Champion (1957–2025) | Ball IQ",
+    "title": "AFCON Winners: Africa Cup of Nations, 1957–2025 | Ball IQ",
     "description": "The complete list of Africa Cup of Nations winners from 1957 to 2025 — every champion, runner-up and host, with Egypt the record seven-time winners.",
     "intro": [
       "The Africa Cup of Nations is the continent's oldest and most prestigious international football tournament, first contested in 1957 with just three teams: Egypt, Sudan and Ethiopia. From those modest beginnings it has grown into a 24-nation showpiece watched by hundreds of millions, staged every two years and long regarded as the toughest trophy to win outside the World Cup itself.",
@@ -8779,7 +8779,7 @@ export const LISTS = [
   {
     "slug": "copa-america-winners",
     "h1": "Every Copa América Winner (1916–2024)",
-    "title": "Copa América Winners: Full List by Year (1916–2024) | Ball IQ",
+    "title": "Copa América Winners by Year, 1916–2024 | Ball IQ",
     "description": "The complete list of Copa América winners from 1916 to 2024, with the runner-up and host nation for every edition of South America's oldest trophy.",
     "intro": [
       "The Copa América is the oldest international football tournament in the world, first contested in 1916 as the South American Championship. Run by CONMEBOL, it has crowned a champion of the continent for more than a century, and since 1993 has regularly invited guest nations from CONCACAF and beyond to complete the field.",
@@ -9850,7 +9850,7 @@ export const LISTS = [
   {
     "slug": "most-afcon-titles",
     "h1": "Countries With the Most AFCON Titles",
-    "title": "Most AFCON Titles: Africa Cup of Nations Winners Ranked | Ball IQ",
+    "title": "Most AFCON Titles: Africa Cup of Nations Ranked | Ball IQ",
     "description": "Which country has won the most Africa Cup of Nations titles? Egypt lead with a record haul. Every AFCON winner ranked by titles, with the years.",
     "intro": [
       "The Africa Cup of Nations has crowned the continent's champions since 1957. This page ranks every winner by number of titles — a list headed, emphatically, by one nation.",
@@ -11324,7 +11324,7 @@ export const LISTS = [
   {
     "slug": "copa-del-rey-winners",
     "h1": "Copa del Rey Winners (1902–2026)",
-    "title": "Copa del Rey Winners: Every Champion by Season (1902–2026) | Ball IQ",
+    "title": "Copa del Rey Winners: Every Champion, 1902–2026 | Ball IQ",
     "description": "The complete list of Copa del Rey winners from 1902 to 2025-26 — every Spanish cup final's champion, runner-up and score in one table.",
     "intro": [
       "The Copa del Rey is Spanish football's oldest national competition, a single-elimination knockout open to clubs from every tier of the Spanish league system. First contested in 1903 — with a 1902 pre-tournament, the Copa de la Coronación, staged to mark the coronation of King Alfonso XIII — it predates La Liga by nearly three decades and has crowned a champion in all but a handful of interrupted years.",
@@ -12620,7 +12620,7 @@ export const LISTS = [
   {
     "slug": "dfb-pokal-winners",
     "h1": "DFB-Pokal Winners: Every German Cup Champion by Season (1935–2026)",
-    "title": "DFB-Pokal Winners: Every German Cup Champion by Season | Ball IQ",
+    "title": "DFB-Pokal Winners: Every German Cup Champion | Ball IQ",
     "description": "Complete list of DFB-Pokal (German Cup) winners by season from 1935 to 2025-26, with runners-up and final scores. Bayern Munich lead with 21 titles.",
     "intro": [
       "The DFB-Pokal is Germany's premier knockout cup competition, and one of the toughest in Europe to win because every round is a single tie played at the lower-ranked club's ground. It began in 1935 as the Tschammerpokal, named after Reich sports leader Hans von Tschammer und Osten, ran until 1943, and was then dormant through the war years before returning under the German Football Association as the DFB-Pokal for the 1952-53 season. Since 1985 the final has been staged as a permanent showpiece at Berlin's Olympiastadion.",
@@ -13592,7 +13592,7 @@ export const LISTS = [
   {
     "slug": "club-world-cup-winners",
     "h1": "Every FIFA Club World Cup Winner (2000–2025)",
-    "title": "FIFA Club World Cup Winners by Year: Full List 2000–2025 | Ball IQ",
+    "title": "FIFA Club World Cup Winners, 2000–2025 | Ball IQ",
     "description": "The complete list of FIFA Club World Cup winners from 2000 to 2025, with runner-up and host nation for every edition — including the new 32-team format.",
     "intro": [
       "The FIFA Club World Cup crowns the best club side on the planet by pitting the champions of each continent against one another. It began in 2000 with Corinthians lifting the inaugural trophy on home soil in Brazil, went dormant for four years, then returned in 2005 as an annual fixture that ran through 2023.",
@@ -14216,7 +14216,7 @@ export const LISTS = [
   {
     "slug": "primeira-liga-top-scorers",
     "h1": "Primeira Liga Top Scorers — Every Season (1934–35 to 2025–26)",
-    "title": "Primeira Liga Top Scorers by Season (Bola de Prata) | Ball IQ",
+    "title": "Primeira Liga Top Scorers: Bola de Prata | Ball IQ",
     "description": "The Primeira Liga top scorer for every season since 1934–35 — the full Bola de Prata roll call of players, clubs and goal tallies from Peyroteo to Suárez.",
     "intro": [
       "Portugal's top flight has crowned a leading marksman every season since 1934–35, an honour recognised today by the Bola de Prata (\"Silver Ball\"), awarded by the newspaper A Bola. This table gathers the whole run of winners in one place, from Sporting's Manuel Soeiro in the inaugural campaign to the present day.",
@@ -14807,7 +14807,7 @@ export const LISTS = [
   {
     "slug": "super-lig-top-scorers",
     "h1": "Süper Lig Top Scorers (Gol Kralı) — Every Season, 1959 to 2025-26",
-    "title": "Süper Lig Top Scorers by Season (1959–2026) — Gol Kralı | Ball IQ",
+    "title": "Süper Lig Top Scorers: Gol Kralı, 1959–2026 | Ball IQ",
     "description": "The Turkish Süper Lig top scorer (Gol Kralı) for every season from 1959 to 2025-26 — player, club and goal tally in one complete, verified list.",
     "intro": [
       "Turkey crowns a Gol Kralı — literally 'goal king' — at the end of every Süper Lig season, and the honour roll reads like a history of Turkish football itself. It opens with Metin Oktay, the Galatasaray idol who topped the charts six times and still holds a share of the early scoring records, and runs all the way to the imported goal machines of the modern era.",
@@ -15948,7 +15948,7 @@ export const LISTS = [
     "slug": "asian-cup-winners",
     "h1": "Every AFC Asian Cup Winner (1956–2023)",
     "title": "AFC Asian Cup Winners: Full List 1956–2023 | Ball IQ",
-    "description": "The complete list of AFC Asian Cup winners from 1956 to 2023, with runner-up and host for every edition. Japan lead with four titles; Qatar are back-to-back holders.",
+    "description": "Every AFC Asian Cup winner from 1956 to 2023, with runner-up and host. Japan lead with four titles; Qatar are back-to-back holders.",
     "intro": [
       "The AFC Asian Cup is the top prize in men's international football across Asia, first contested in 1956 in Hong Kong with just four teams playing a round-robin. It has since grown into a 24-nation tournament and ranks among the oldest continental championships in the world, predating the European Championship by four years.",
       "No single country has dominated the way some nations have in other regions. Japan sit top of the roll of honour with four titles, all won since 1992, while Iran and Saudi Arabia have three each and South Korea — winners of the first two editions — have not lifted it since 1960. Iran are the only side to win three in a row, taking the trophy in 1968, 1972 and 1976.",

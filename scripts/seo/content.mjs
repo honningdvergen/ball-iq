@@ -153,7 +153,7 @@ export const CATEGORIES = [
     h1: 'Premier League Quiz',
     title: 'Premier League Quiz — Football Trivia | Ball IQ',
     description:
-      'Free Premier League quiz with most answers explained — from the 1992 breakaway and the Invincibles to City’s 100-point season. Test your English football knowledge.',
+      'Free Premier League quiz, most answers explained — the 1992 breakaway, the Invincibles and City’s 100-point season. Test your knowledge.',
     about: 'Premier League',
     sample: 20,
     intro: [
@@ -231,7 +231,7 @@ export const LISTICLES = [
     h1: 'Football Trivia Questions and Answers',
     title: 'Football Trivia Questions and Answers (Hard) | Ball IQ',
     description:
-      'Hard football trivia questions and answers across the World Cup, Premier League, Champions League, Euros, records and legends — each with the answer and the story behind it.',
+      'Hard football trivia questions and answers — World Cup, Premier League, Champions League, Euros, records and legends, most with the story behind them.',
     about: 'Association football trivia',
     lede: 'A hand-picked set of harder football trivia questions — with answers and the story behind each one.',
     intro: [
@@ -262,7 +262,7 @@ export const LISTICLES = [
     h1: 'World Cup 2026 Quiz Questions and Answers',
     title: 'World Cup Quiz Questions and Answers (2026) | Ball IQ',
     description:
-      '55+ World Cup quiz questions with answers — from Uruguay 1930 to the 48-team 2026 tournament in the USA, Canada and Mexico. Free, with the story behind every answer.',
+      '55+ World Cup quiz questions with answers — from Uruguay 1930 to the 48-team 2026 tournament in the USA, Canada and Mexico. Free to play.',
     about: 'FIFA World Cup trivia',
     lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, with most answers explained.',
     intro: [
@@ -302,7 +302,7 @@ export const LISTICLES = [
 export const FOOTLE_PAGE = {
   slug: 'football-wordle',
   h1: 'Footle — the Football Wordle',
-  title: 'Footle — Play the Football Wordle Free | Daily Footballer Guessing Game',
+  title: 'Footle — The Free Daily Football Wordle | Ball IQ',
   description:
     "Footle by Ball IQ is the football Wordle — guess the footballer's surname in 6 tries. A new player every day. Free, in your browser, no sign-up.",
   lede: 'Guess the footballer in 6 tries. New player every day — free, no sign-up.',

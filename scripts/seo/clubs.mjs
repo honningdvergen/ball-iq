@@ -912,7 +912,7 @@ export const CLUBS = [
     "name": "Anderlecht",
     "h1": "Anderlecht Quiz",
     "title": "Anderlecht Quiz — RSC Anderlecht Trivia | Ball IQ",
-    "description": "Free RSC Anderlecht quiz with explained answers — from two Cup Winners' Cups and the 1983 UEFA Cup to Paul Van Himst and the purple and white. Play free in your browser.",
+    "description": "Free RSC Anderlecht quiz with explained answers — from two Cup Winners' Cups and the 1983 UEFA Cup to Paul Van Himst and the purple and white.",
     "intro": [
       "RSC Anderlecht were founded in 1908 in the Brussels borough that gives them their name, and the purple and white have been Belgian football's defining colours ever since. This free Anderlecht quiz covers the whole story: the Brussels roots, the trophy-laden decades, and a run of European nights that made a Belgian club genuinely feared on the continent. If you know your Anderlecht, this is your test.",
       "Anderlecht's European golden age arrived in the 1970s and 80s. They won the European Cup Winners' Cup in 1976 and again in 1978, and lifted the UEFA Cup in 1983 — a haul few clubs outside the traditional giants can match. Paul Van Himst, named Belgium's footballer of the twentieth century, won all four of his Golden Shoes at Anderlecht across sixteen years at the club, while the Dutch winger Rob Rensenbrink scored in both of those Cup Winners' Cup final victories.",
@@ -944,7 +944,7 @@ export const CLUBS = [
     "name": "Beşiktaş",
     "h1": "Beşiktaş Quiz",
     "title": "Beşiktaş Quiz — Black Eagles Trivia | Ball IQ",
-    "description": "Free Beşiktaş quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies. Play free in your browser.",
+    "description": "Free Beşiktaş quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies.",
     "intro": [
       "Beşiktaş were founded in 1903, making them the oldest club of Istanbul's big three — the football branch followed in 1911 — and they have played in the shadow of the Dolmabahçe Palace on the European shore of the Bosphorus for most of their history. This free Beşiktaş quiz covers the whole story: the black-and-white stripes, the Kara Kartallar — the Black Eagles — and a support that treats the club as a birthright rather than a hobby. If you know your Beşiktaş, this is your test.",
       "The defining season came in 1991-92, when Gordon Milne's side became the first team to go through a Süper Lig campaign unbeaten — an English manager writing one of the most Turkish chapters in the league's history. That side's attack was the club's most beloved: the Metin-Ali-Feyyaz trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar, together since the mid-1980s and still chanted as a single word. Later came Sergen Yalçın, who returned as manager to win the league and cup double in 2020-21, and the ground at Dolmabahçe was rebuilt in 2016 on the site of the old BJK İnönü Stadium.",
@@ -1008,7 +1008,7 @@ export const CLUBS = [
     "name": "Club Brugge",
     "h1": "Club Brugge Quiz",
     "title": "Club Brugge Quiz — Blauw-Zwart Trivia | Ball IQ",
-    "description": "Free Club Brugge quiz with explained answers — from the 1978 European Cup final and Ernst Happel to Jan Ceulemans and the Bruges derby. Play free in your browser.",
+    "description": "Free Club Brugge quiz with explained answers — from the 1978 European Cup final and Ernst Happel to Jan Ceulemans and the Bruges derby.",
     "intro": [
       "Club Brugge were founded in 1891, which makes them one of the oldest clubs in Belgium, and the blauw-zwart — blue and black — have spent the century since making a medieval tourist town into a serious football address. This free Club Brugge quiz covers the whole story: the Jan Breydel Stadium — opened in 1975 as the Olympiastadion — which Club moved into that year and shared for decades with local rivals Cercle Brugge, the Belgian Clásico with Anderlecht, and the European run that took a Belgian club closer to the continent's biggest prize than any had gone before. If you know your Club, this is your test.",
       "The peak came in 1978, when Club Brugge became the first Belgian club to reach a European Cup final, losing 1-0 to Liverpool at Wembley to a Kenny Dalglish goal. Two years earlier the same opponents had beaten them in the UEFA Cup final. The man who took them to Wembley was Ernst Happel, the Austrian who had already won the European Cup with Feyenoord in 1970 — a reminder of how small the map of great coaches really is. The club's own icon is Jan Ceulemans, who turned down Milan to stay in Bruges and captained Belgium to the World Cup semi-final in 1986.",
@@ -1040,7 +1040,7 @@ export const CLUBS = [
     "name": "Red Star Belgrade",
     "h1": "Red Star Belgrade Quiz",
     "title": "Red Star Belgrade Quiz — Crvena Zvezda Trivia | Ball IQ",
-    "description": "Free Red Star Belgrade quiz with explained answers — from the 1991 European Cup in Bari to the Marakana, the Eternal Derby and Dragan Džajić. Play free in your browser.",
+    "description": "Free Red Star Belgrade quiz with explained answers — from the 1991 European Cup in Bari to the Marakana, the Eternal Derby and Dragan Džajić.",
     "intro": [
       "Red Star Belgrade — Crvena zvezda — were founded in 1945 and have spent the decades since turning their corner of Belgrade into the loudest address in Balkan football. This free Red Star quiz covers the whole story: the red-and-white shirts, the Marakana rocking under the Delije, and the Eternal Derby against Partizan that stops the city. If you know your Zvezda, this is your test.",
       "The club's greatest night came in 1991, when Red Star beat Marseille on penalties in Bari to win the European Cup, then added the Intercontinental Cup against Colo-Colo the same year. That side was studded with talent — Darko Pančev, Europe's top league scorer in 1990-91, the young Robert Prosinečki, and Dejan Savićević, all of whom were soon sold to Italy and Spain. Behind them stands Dragan Džajić, the left winger nicknamed 'Magic Dragan', still regarded as the greatest player the club ever produced.",
@@ -1072,7 +1072,7 @@ export const CLUBS = [
     "name": "Dinamo Zagreb",
     "h1": "Dinamo Zagreb Quiz",
     "title": "Dinamo Zagreb Quiz — Modri Trivia | Ball IQ",
-    "description": "Free Dinamo Zagreb quiz with explained answers — from the 1967 Fairs Cup and Maksimir to Luka Modrić, the Bad Blue Boys and the Eternal Derby. Play free in your browser.",
+    "description": "Free Dinamo Zagreb quiz with explained answers — from the 1967 Fairs Cup and Maksimir to Luka Modrić, the Bad Blue Boys and the Eternal Derby.",
     "intro": [
       "Dinamo Zagreb were established in 1945 and have long been the standard-bearers of Croatian football, playing in blue at Maksimir Stadium in front of the Bad Blue Boys. This free Dinamo quiz covers the whole story: the modri — the blues — the Eternal Derby against Hajduk Split, the European nights, and a talent factory that has fed the biggest clubs in the world. If you know your Dinamo, this is your test.",
       "The club's great European trophy came in 1967, when Dinamo won the Inter-Cities Fairs Cup, taking the two-legged final by beating Leeds United. Since Croatian independence they have dominated at home, and their academy reads like a who's who: Luka Modrić, who left for Tottenham Hotspur in 2008 before becoming a Ballon d'Or winner, Mateo Kovačić, Dejan Lovren and Mario Mandžukić all came through Maksimir. In 2020 they beat Tottenham 3-0 on the night in the Europa League, Mislav Oršić scoring a hat-trick, and a year earlier goalkeeper Dominik Livaković became a national hero at the 2022 World Cup.",
@@ -1104,7 +1104,7 @@ export const CLUBS = [
     "name": "Basel",
     "h1": "FC Basel Quiz",
     "title": "FC Basel Quiz — Rotblau Trivia Questions & Answers | Ball IQ",
-    "description": "Free FC Basel quiz with explained answers — from St. Jakob-Park and the Champions League nights to Mohamed Salah, Xherdan Shaqiri and the talent factory. Play free in your browser.",
+    "description": "Free FC Basel quiz with explained answers — from St. Jakob-Park and the Champions League nights to Mohamed Salah, Xherdan Shaqiri and the talent factory.",
     "intro": [
       "FC Basel were founded in 1893 and play in red and blue at St. Jakob-Park, the biggest stadium in Switzerland. This free Basel quiz covers the whole story: the rotblau, the Swiss title runs, the European nights that punched above the club's weight, and a talent factory that has sent player after player to the biggest leagues. If you know your Basel, this is your test.",
       "Basel's reputation was built on European upsets and the players who made them. They knocked Manchester United out of the Champions League group stage with a 2-1 win at St. Jakob-Park in December 2011, and beat Chelsea home and away the following season. Above all they are a selling club with an eye for a talent: Mohamed Salah was signed in 2012 and sold on to Chelsea, while Xherdan Shaqiri, Granit Xhaka, Yann Sommer, Ivan Rakitić and Breel Embolo all passed through on their way to the top.",
@@ -1136,7 +1136,7 @@ export const CLUBS = [
     "name": "Nottingham Forest",
     "h1": "Nottingham Forest Quiz",
     "title": "Nottingham Forest Quiz — Garibaldi Red Trivia | Ball IQ",
-    "description": "Free Nottingham Forest quiz with explained answers — from Brian Clough and back-to-back European Cups to the City Ground, Stuart Pearce and Trevor Francis. Play free in your browser.",
+    "description": "Free Nottingham Forest quiz with explained answers — from Brian Clough and back-to-back European Cups to the City Ground, Stuart Pearce and Trevor Francis.",
     "intro": [
       "Nottingham Forest were founded in 1865, making them one of the oldest football clubs in the world, and have played beside the River Trent at the City Ground since 1898. This free Forest quiz covers the whole story: the Garibaldi red they were among the first clubs ever to wear, the Trent End, and one of the most improbable rises in the history of the European game. If you know your Forest, this is your test.",
       "The story belongs to Brian Clough. His side won the First Division in 1977-78 — their first season back in the top flight — then won the European Cup at the very first attempt, beating Malmö 1-0 in 1979, and retained it against Hamburg at the Bernabéu in 1980. Trevor Francis, Britain's first £1 million footballer, scored in the 1979 final; Peter Shilton kept goal; John Robertson supplied the magic on the left. Kenny Burns was reinvented from striker to Footballer of the Year at centre-back, and years later Stuart Pearce — 'Psycho' — became the captain the City Ground adored.",
@@ -1168,7 +1168,7 @@ export const CLUBS = [
     "name": "Aston Villa",
     "h1": "Aston Villa Quiz",
     "title": "Aston Villa Quiz — Claret & Blue Trivia | Ball IQ",
-    "description": "Free Aston Villa quiz with explained answers — from the 1982 European Cup and Peter Withe to Villa Park, the Second City derby and Unai Emery. Play free in your browser.",
+    "description": "Free Aston Villa quiz with explained answers — from the 1982 European Cup and Peter Withe to Villa Park, the Second City derby and Unai Emery.",
     "intro": [
       "Aston Villa were founded in 1874 and were one of the twelve founding members of the Football League in 1888. This free Villa quiz covers the whole story: the claret and blue, Villa Park, a proud Victorian and Edwardian dominance, and the night in 1982 when Villa conquered Europe. If you know your Villa, this is your test.",
       "That European Cup remains the peak. In 1982, Tony Barton's side beat Bayern Munich 1-0 in Rotterdam, Peter Withe scoring the only goal after reserve goalkeeper Nigel Spink came on early and produced the game of his life. Villa added the European Super Cup that year too. Across their history they have won the First Division seven times and the FA Cup and League Cup many times over, and under Unai Emery they returned to the Champions League in the 2024-25 season. The Second City derby against Birmingham City runs through it all.",
@@ -1200,7 +1200,7 @@ export const CLUBS = [
     "name": "Everton",
     "h1": "Everton Quiz",
     "title": "Everton Quiz — The Toffees Trivia | Ball IQ",
-    "description": "Free Everton quiz with explained answers — from Dixie Dean's 60 goals and the 1985 Cup Winners' Cup to Goodison Park, the School of Science and the Merseyside derby. Play free in your browser.",
+    "description": "Free Everton quiz with explained answers — Dixie Dean's 60 goals, the 1985 Cup Winners' Cup, Goodison Park and the Merseyside derby.",
     "intro": [
       "Everton were founded in 1878 and were one of the twelve founding members of the Football League in 1888. This free Everton quiz covers the whole story: the royal blue, the 'School of Science' reputation for stylish football, the great Goodison Park sides, and a proud place among the most successful clubs in English history. If you know your Everton, this is your test.",
       "The records run deep. Dixie Dean scored 60 league goals in the 1927-28 season, a feat in English top-flight football that has never been beaten. Everton have won the First Division nine times, and their finest modern side — Howard Kendall's team of the mid-1980s — won the European Cup Winners' Cup in 1985, beating Rapid Vienna 3-1, with Neville Southall a giant in goal. The Merseyside derby against Liverpool is one of the most-played fixtures in English football.",
@@ -1232,7 +1232,7 @@ export const CLUBS = [
     "name": "Leeds United",
     "h1": "Leeds United Quiz",
     "title": "Leeds United Quiz — Elland Road Trivia | Ball IQ",
-    "description": "Free Leeds United quiz with explained answers — from Don Revie's champions and the Fairs Cup to Elland Road, Billy Bremner and Marcelo Bielsa. Play free in your browser.",
+    "description": "Free Leeds United quiz with explained answers — from Don Revie's champions and the Fairs Cup to Elland Road, Billy Bremner and Marcelo Bielsa.",
     "intro": [
       "Leeds United were formed in 1919 to take the place of the disbanded Leeds City, and have played at Elland Road ever since. This free Leeds quiz covers the whole story: the white shirts, the fierce Elland Road atmosphere, the great Don Revie side, and a modern revival that captured neutrals' hearts. If you know your Leeds, this is your test.",
       "Don Revie built the defining team. Leeds won the First Division in 1969 and 1974, lifted the Inter-Cities Fairs Cup in 1968 and 1971, and were driven by Billy Bremner in midfield and Jack Charlton — a 1966 World Cup winner with England — at the back. Leeds were also the last champions of the old First Division, winning the title in 1991-92 under Howard Wilkinson just before the Premier League began. After a long absence, Marcelo Bielsa's thrilling side won promotion back to the top flight in 2020.",
@@ -1264,7 +1264,7 @@ export const CLUBS = [
     "name": "West Ham",
     "h1": "West Ham Quiz",
     "title": "West Ham Quiz — The Hammers Trivia | Ball IQ",
-    "description": "Free West Ham quiz with explained answers — from Bobby Moore and 1966 to the 1965 Cup Winners' Cup, the Academy of Football and the 2023 Conference League. Play free in your browser.",
+    "description": "Free West Ham quiz with explained answers — from Bobby Moore and 1966 to the 1965 Cup Winners' Cup, the Academy of Football and the 2023 Conference League.",
     "intro": [
       "West Ham United were founded in 1895 as Thames Ironworks, becoming West Ham United in 1900, and are known across the game as 'the Academy of Football'. This free West Ham quiz covers the whole story: the claret and blue, 'I'm Forever Blowing Bubbles', the move from the Boleyn Ground to the London Stadium in 2016, and a claim on the greatest day in English football. If you know your Hammers, this is your test.",
       "West Ham's fingerprints are on 1966. England's World Cup-winning captain Bobby Moore was a Hammer, as were Geoff Hurst, who scored a hat-trick in the final, and Martin Peters. The club won the FA Cup in 1964 and the European Cup Winners' Cup in 1965, beating 1860 Munich at Wembley. After decades without a major trophy, David Moyes' side won the UEFA Europa Conference League in 2023, Jarrod Bowen scoring a late winner against Fiorentina — the club's first major trophy in more than forty years.",
@@ -1296,7 +1296,7 @@ export const CLUBS = [
     "name": "Athletic Bilbao",
     "h1": "Athletic Bilbao Quiz",
     "title": "Athletic Bilbao Quiz — Los Leones Trivia | Ball IQ",
-    "description": "Free Athletic Bilbao quiz with explained answers — from the Basque-only cantera and San Mamés to Telmo Zarra, the 2024 Copa del Rey and the Basque derby. Play free in your browser.",
+    "description": "Free Athletic Bilbao quiz with explained answers — from the Basque-only cantera and San Mamés to Telmo Zarra, the 2024 Copa del Rey and the Basque derby.",
     "intro": [
       "Athletic Club — Athletic Bilbao — were founded in 1898 and are one of the most distinctive institutions in world football. This free Athletic quiz covers the whole story: the red-and-white stripes, San Mamés (La Catedral), Los Leones, and the famous cantera philosophy of fielding only players with Basque roots or developed in the Basque region. If you know your Athletic, this is your test.",
       "Few clubs carry this much history. Athletic are one of only three clubs never to have been relegated from La Liga, alongside Real Madrid and Barcelona, and won eight Spanish league titles, the last of them in 1983-84. They have lifted the Copa del Rey more than almost anyone, and in 2024 they ended a 40-year wait for a major trophy by beating Mallorca on penalties. The club's identity runs through Telmo Zarra, after whom the Zarra Trophy is named, goalkeeper-captain José Ángel Iribar, and Rafael 'Pichichi' Moreno, whose nickname adorns La Liga's top-scorer award. Titles are still paraded down the Nervión estuary on La Gabarra, a river barge.",
@@ -1328,7 +1328,7 @@ export const CLUBS = [
     "name": "Sevilla",
     "h1": "Sevilla Quiz",
     "title": "Sevilla Quiz — Sevilla FC Trivia | Ball IQ",
-    "description": "Free Sevilla quiz with explained answers — from a record run of UEFA Cup and Europa League triumphs to the Sánchez-Pizjuán, Monchi and the Seville derby. Play free in your browser.",
+    "description": "Free Sevilla quiz with explained answers — from a record run of UEFA Cup and Europa League triumphs to the Sánchez-Pizjuán, Monchi and the Seville derby.",
     "intro": [
       "Sevilla FC were founded in 1890, one of the oldest clubs in Spain, and play in red and white at the Estadio Ramón Sánchez-Pizjuán. This free Sevilla quiz covers the whole story: the fervent Nervión atmosphere, a golden age of European cup football, and a recruitment model that became the envy of the continent. If you know your Sevilla, this is your test.",
       "Sevilla made the UEFA Cup and Europa League their own. They won back-to-back UEFA Cups in 2006 and 2007, then an astonishing three in a row in 2014, 2015 and 2016 under Unai Emery, and lifted the trophy again in 2020 and 2023 — no club has a stronger history in the competition. Behind much of it was the sporting director Monchi, famed for buying and selling brilliantly, and stars like Frédéric Kanouté, Ivan Rakitić and the one-club local hero Jesús Navas. Diego Maradona even spent a season at the club in the early 1990s.",
@@ -1360,7 +1360,7 @@ export const CLUBS = [
     "name": "Real Betis",
     "h1": "Real Betis Quiz",
     "title": "Real Betis Quiz — Béticos Trivia | Ball IQ",
-    "description": "Free Real Betis quiz with explained answers — from the 1935 title and the green-and-white to the 2022 Copa del Rey, Joaquín and the Seville derby. Play free in your browser.",
+    "description": "Free Real Betis quiz with explained answers — from the 1935 title and the green-and-white to the 2022 Copa del Rey, Joaquín and the Seville derby.",
     "intro": [
       "Real Betis Balompié were founded in 1907 and play in green-and-white stripes at the Estadio Benito Villamarín. This free Betis quiz covers the whole story: the passionate Béticos, the unmistakable chant '¡Viva el Betis manque pierda!' — long live Betis even when they lose — and one of the most loyal supports in Spanish football. If you know your Betis, this is your test.",
       "Betis won La Liga in 1934-35, the club's sole league title and a proud landmark, and have lifted the Copa del Rey three times, in 1977, 2005 and most recently in 2022, when they beat Valencia on penalties. The modern era has been defined by the winger Joaquín, a beloved one-club icon of his generation, and by the manager Manuel Pellegrini, who brought European nights back to the Villamarín. Above all, the club's identity is bound up with the Seville derby against Sevilla, one of the fiercest in Spain.",
@@ -1392,7 +1392,7 @@ export const CLUBS = [
     "name": "Schalke 04",
     "h1": "Schalke 04 Quiz",
     "title": "Schalke 04 Quiz — Die Knappen Trivia | Ball IQ",
-    "description": "Free Schalke 04 quiz with explained answers — from the miners' club and the 1997 UEFA Cup Eurofighters to the Revierderby with Dortmund and the Royal Blues. Play free in your browser.",
+    "description": "Free Schalke 04 quiz with explained answers — from the miners' club and the 1997 UEFA Cup Eurofighters to the Revierderby with Dortmund and the Royal Blues.",
     "intro": [
       "FC Schalke 04 were founded in 1904 in Gelsenkirchen, in the heart of the Ruhr coalfield, and play in royal blue and white. This free Schalke quiz covers the whole story: Die Knappen — the miners — the enormous, devoted support, and one of the great rivalries in world football. If you know your Schalke, this is your test.",
       "Schalke were German football's dominant force in its early decades, winning seven national championships between 1934 and 1958. Their greatest modern night came in 1997, when the side known as the 'Eurofighters' won the UEFA Cup, beating Inter Milan on penalties. They have won the DFB-Pokal several times and have called the Arena AufSchalke home since 2001. Nothing defines the club like the Revierderby against Borussia Dortmund, the Ruhr derby that divides the region — and after decades in the top flight, Schalke were relegated from the Bundesliga in 2021.",
@@ -1424,7 +1424,7 @@ export const CLUBS = [
     "name": "Hamburger SV",
     "h1": "Hamburger SV Quiz",
     "title": "Hamburger SV Quiz — HSV Trivia Questions & Answers | Ball IQ",
-    "description": "Free Hamburger SV quiz with explained answers — from the 1983 European Cup and Kevin Keegan to Uwe Seeler, the Volksparkstadion and the Bundesliga clock. Play free in your browser.",
+    "description": "Free Hamburger SV quiz with explained answers — from the 1983 European Cup and Kevin Keegan to Uwe Seeler, the Volksparkstadion and the Bundesliga clock.",
     "intro": [
       "Hamburger SV — HSV — were founded in 1887 and play at the Volksparkstadion, wearing the famous white diamond on blue. This free HSV quiz covers the whole story: one of the giants of German football, the great European night in Athens, and a club whose long unbroken run in the Bundesliga became part of its very identity. If you know your HSV, this is your test.",
       "The peak came in 1983, when Ernst Happel's side won the European Cup, beating Juventus 1-0 in Athens with a goal from Felix Magath. HSV won six German championships, the last of them also in 1983, and the European Cup Winners' Cup in 1977. Kevin Keegan starred for the club between 1977 and 1980, winning two Ballon d'Or awards while there, and the one-club legend Uwe Seeler remains the definitive HSV icon. For decades HSV were the only club ever-present in the Bundesliga since its founding in 1963 — a run marked by a stadium clock counting their time in the top flight — until they were finally relegated in 2018 and the clock was stopped.",
@@ -1456,7 +1456,7 @@ export const CLUBS = [
     "name": "Fiorentina",
     "h1": "Fiorentina Quiz",
     "title": "Fiorentina Quiz — La Viola Trivia | Ball IQ",
-    "description": "Free Fiorentina quiz with explained answers — from Batistuta and Antognoni to the purple shirts, the Artemio Franchi and the Derby dell'Appennino. Play free in your browser.",
+    "description": "Free Fiorentina quiz with explained answers — from Batistuta and Antognoni to the purple shirts, the Artemio Franchi and the Derby dell'Appennino.",
     "intro": [
       "Fiorentina were founded in 1926 from the merger of two Florentine clubs, and by 1929 they wore the purple that made them La Viola — legend says the original red-and-white kit came out purple after a botched wash. This free Fiorentina quiz covers the whole story: the Giglio of Florence on the crest, the Curva Fiesole in full voice, and the Stadio Artemio Franchi with its concrete Marathon Tower, designed by Pier Luigi Nervi in the 1930s. If you know your Viola, this is your test.",
       "The trophies came in two bursts: a first Scudetto in 1955-56, with the Brazilian winger Julinho flying, and a second in 1968-69 with the young 'Ye-Ye' side. In between and after came the icons. Giancarlo Antognoni wore the 10 for his entire prime and made a club-record 429 appearances; Kurt Hamrin — 'Uccellino' — scored 150 Serie A goals; and Gabriel Batistuta struck 207 goals in nine years, staying loyally in Serie B after the 1993 relegation and firing the club straight back up. The 1990 sale of Roberto Baggio to Juventus sparked riots in the streets — the rivalry with Turin has burned ever since.",
@@ -1488,7 +1488,7 @@ export const CLUBS = [
     "name": "Lazio",
     "h1": "Lazio Quiz",
     "title": "Lazio Quiz — Biancocelesti Trivia | Ball IQ",
-    "description": "Free Lazio quiz with explained answers — from the 1999 Cup Winners' Cup and the 2000 Scudetto to the eagle, the Derby della Capitale and Ciro Immobile. Play free in your browser.",
+    "description": "Free Lazio quiz with explained answers — from the 1999 Cup Winners' Cup and the 2000 Scudetto to the eagle, the Derby della Capitale and Ciro Immobile.",
     "intro": [
       "Lazio were founded in 1900 as a running club, took white and sky blue as a tribute to Greece — home of the Olympic ideal — and carry the eagle on the badge that makes them le Aquile. This free Lazio quiz covers the whole story: the Stadio Olimpico shared with Roma since 1953, the Curva Nord, and the fiercest fixture in the capital. When Rome's clubs were merged to create AS Roma in 1927, Lazio refused — the Derby della Capitale has carried that edge ever since.",
       "The first Scudetto came in 1973-74 under Tommaso Maestrelli, with Giorgio Chinaglia's 24 goals leading Serie A. The golden turn of the millennium brought the rest: the last-ever Cup Winners' Cup in 1999, won 2-1 against Mallorca at Villa Park with Pavel Nedvěd scoring the winner, the 1999 UEFA Super Cup against Manchester United, and the 2000 Scudetto under Sven-Göran Eriksson, sealed on a dramatic rain-soaked final day. That era traded in world records — Christian Vieri sold to Inter, Hernán Crespo signed from Parma for £35.5 million — while the academy produced Alessandro Nesta, the Rome-born captain of the double winners.",
@@ -1520,7 +1520,7 @@ export const CLUBS = [
     "name": "Torino",
     "h1": "Torino Quiz",
     "title": "Torino Quiz — Il Grande Torino Trivia | Ball IQ",
-    "description": "Free Torino quiz with explained answers — from the Grande Torino and the Superga disaster to Valentino Mazzola, the granata and the Derby della Mole. Play free in your browser.",
+    "description": "Free Torino quiz with explained answers — from the Grande Torino and the Superga disaster to Valentino Mazzola, the granata and the Derby della Mole.",
     "intro": [
       "Torino were founded in 1906 by dissidents who split from Juventus, and the maroon shirts made them the granata — Il Toro, the bull, on the crest. This free Torino quiz covers the whole story: the Derby della Mole against the old enemy, the fortress Filadelfia, and the greatest and most tragic team in Italian history. If you know your Toro, this is your test.",
       "Il Grande Torino won five consecutive Serie A titles in the 1940s, built by president Ferruccio Novo and captained by Valentino Mazzola, the attacking number 10 who defined an era — in one 1947 international, Italy's team was almost entirely Torino players. Then, on 4 May 1949, the plane carrying the entire squad crashed into the Superga hillside above Turin. Every player died, four games from another title. Superga is not just history — it is the club's soul, honoured every year since.",
@@ -1552,7 +1552,7 @@ export const CLUBS = [
     "name": "Sporting CP",
     "h1": "Sporting CP Quiz",
     "title": "Sporting CP Quiz — Os Leões Trivia | Ball IQ",
-    "description": "Free Sporting CP quiz with explained answers — from the 1964 Cup Winners' Cup and the Cinco Violinos to Cristiano Ronaldo's academy and Figo. Play free in your browser.",
+    "description": "Free Sporting CP quiz with explained answers — from the 1964 Cup Winners' Cup and the Cinco Violinos to Cristiano Ronaldo's academy and Figo.",
     "intro": [
       "Sporting Clube de Portugal were founded in 1906 in Lisbon, wear the green-and-white hoops, and carry the lion — Os Leões — on the crest. This free Sporting quiz covers the whole story: the Estádio José Alvalade, rebuilt in 2003 for Euro 2004, the Lisbon derby against Benfica, and a place alongside Benfica and Porto in Portugal's Três Grandes. If you know your Sporting, this is your test.",
       "The great European night came in 1964, when Sporting won the Cup Winners' Cup, beating MTK Budapest in a replay settled by João Morais from a free kick — a run that included a 16-1 win that still defies belief. At home, the Cinco Violinos forward line of the 1940s set the standard. But Sporting's modern fame is the academy: Cristiano Ronaldo wore 28 as a teenager before Manchester United came for him in 2003, Luís Figo left for Barcelona in 1995, and Rui Patrício, Nani, Quaresma and Bruno Fernandes all followed the same path to the top. In 2020 the club renamed the academy in Ronaldo's honour.",
@@ -1584,7 +1584,7 @@ export const CLUBS = [
     "name": "Saint-Étienne",
     "h1": "Saint-Étienne Quiz",
     "title": "Saint-Étienne Quiz — Les Verts Trivia | Ball IQ",
-    "description": "Free Saint-Étienne quiz with explained answers — from the golden era and the poteaux carrés of 1976 to le Chaudron, Rocheteau and Platini. Play free in your browser.",
+    "description": "Free Saint-Étienne quiz with explained answers — from the golden era and the poteaux carrés of 1976 to le Chaudron, Rocheteau and Platini.",
     "intro": [
       "AS Saint-Étienne were founded in 1919 by employees of the Casino grocery company, turned professional in 1933, and became Les Verts — the Greens — the most romantic name in French football. This free Saint-Étienne quiz covers the whole story: the Stade Geoffroy-Guichard, built 'à l'anglaise' with four separate stands and nicknamed le Chaudron for its ferocious atmosphere, the Kop Nord, and the derby with Lyon. If you know your Verts, this is your test.",
       "The golden era brought ten French league titles between the late 1950s and 1981, six Coupes de France between 1962 and 1977, and the run that made the club immortal: the 1976 European Cup final against Bayern Munich at Hampden Park, lost 1-0 amid the cursed square goalposts — les poteaux carrés — after shots rattled the frame. The day after the defeat, roughly 100,000 people celebrated the team on the Champs-Élysées. Dominique Rocheteau — l'Ange Vert — led the line; Robert Herbin, appointed at just 33, was the coach; and in 1979 a young Michel Platini arrived from Nancy.",
@@ -1616,7 +1616,7 @@ export const CLUBS = [
     "name": "Sunderland",
     "h1": "Sunderland Quiz",
     "title": "Sunderland Quiz — Stadium of Light Trivia | Ball IQ",
-    "description": "Free Sunderland quiz with explained answers — from six league titles and the 1973 FA Cup upset to Roker Park, the Stadium of Light and Kevin Phillips. Play free in your browser.",
+    "description": "Free Sunderland quiz with explained answers — from six league titles and the 1973 FA Cup upset to Roker Park, the Stadium of Light and Kevin Phillips.",
     "intro": [
       "Sunderland, founded in 1879 and famous for their red-and-white stripes, are one of English football's grand old names with one of the game's most devoted followings. This free Sunderland quiz covers the whole story — the six league titles, the great cup days, the move from Roker Park to the Stadium of Light, and the modern rollercoaster made famous on Netflix.",
       "The history runs deep. Sunderland have won the English league six times, the last in 1936, and lifted the FA Cup in 1937 (beating Preston North End) and again in 1973 — when, as a Second Division side, they stunned Leeds United in one of the competition's greatest upsets. Kevin Phillips won the European Golden Shoe in 1999-2000, and Peter Reid's side racked up a then-record 105 points to win the 1998-99 First Division. In 1997 the club left Roker Park for the Stadium of Light, built on the site of the former Wearmouth colliery.",
@@ -1648,7 +1648,7 @@ export const CLUBS = [
     "name": "Ipswich Town",
     "h1": "Ipswich Town Quiz",
     "title": "Ipswich Town Quiz — Portman Road Trivia | Ball IQ",
-    "description": "Free Ipswich Town quiz with explained answers — from Alf Ramsey's title and Bobby Robson's UEFA Cup to Portman Road and the Tractor Boys. Play free in your browser.",
+    "description": "Free Ipswich Town quiz with explained answers — from Alf Ramsey's title and Bobby Robson's UEFA Cup to Portman Road and the Tractor Boys.",
     "intro": [
       "Ipswich Town, the pride of Suffolk and long-time residents of Portman Road, punch far above their size in English football history. This free Ipswich quiz covers the whole story — from two of the greatest managers the English game has produced to the blue of the Tractor Boys.",
       "Both of Ipswich's defining eras were built by legendary bosses. Alf Ramsey led the club to the First Division title in 1961-62 — their only league championship — before taking England to the 1966 World Cup. Then Bobby Robson built a side that won the 1978 FA Cup and the 1981 UEFA Cup, powered by home-grown talents like Kevin Beattie. Portman Road has been home throughout.",
@@ -1680,7 +1680,7 @@ export const CLUBS = [
     "name": "Crystal Palace",
     "h1": "Crystal Palace Quiz",
     "title": "Crystal Palace Quiz — Selhurst Park Trivia | Ball IQ",
-    "description": "Free Crystal Palace quiz with explained answers — from the 2025 FA Cup and the 1990 final to Selhurst Park, Wright and Bright, and the Eagles. Play free in your browser.",
+    "description": "Free Crystal Palace quiz with explained answers — from the 2025 FA Cup and the 1990 final to Selhurst Park, Wright and Bright, and the Eagles.",
     "intro": [
       "Crystal Palace, the Eagles of south London, have long been one of English football's most colourful clubs, and this free Palace quiz covers the whole story — from the 1990 FA Cup final to the club's first-ever major trophy in 2025.",
       "Palace reached the FA Cup final in 1990, taking Manchester United to a replay, in a side lit up by Ian Wright and Mark Bright. Decades later, at Selhurst Park, the club finally landed its first major honour by winning the 2025 FA Cup. More recently, home-grown talents like Wilfried Zaha and Eberechi Eze have carried the flame for the Eagles.",
@@ -1744,7 +1744,7 @@ export const CLUBS = [
     "name": "Brighton",
     "h1": "Brighton Quiz",
     "title": "Brighton Quiz — Amex Stadium Trivia | Ball IQ",
-    "description": "Free Brighton quiz with explained answers — from the Amex and Tony Bloom's data model to the 2023 European qualification and the Seagulls. Play free in your browser.",
+    "description": "Free Brighton quiz with explained answers — from the Amex and Tony Bloom's data model to the 2023 European qualification and the Seagulls.",
     "intro": [
       "Brighton & Hove Albion, the Seagulls of the south coast, have risen from the lower leagues to become one of the Premier League's most admired clubs, and this free Brighton quiz covers the whole journey — from the wilderness years to the Amex and Europe.",
       "The story is one of shrewd modern football. After leaving the Goldstone Ground, Brighton spent years at the Withdean Stadium (1999–2011) before moving to the American Express Community Stadium — the Amex. Under owner Tony Bloom's data-driven model, and managed by Roberto De Zerbi, Brighton qualified for European football for the first time in 2023, funding it by selling talents like Alexis Mac Allister, Moisés Caicedo and João Pedro for huge fees.",

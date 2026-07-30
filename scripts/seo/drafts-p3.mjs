@@ -17,7 +17,7 @@ export const P3_CATEGORIES = [
     slug: 'football-records',
     name: 'Football Records',
     h1: 'Football Records Quiz',
-    title: 'Football Records Quiz — Ballon d’Or, Top Scorers & More | Ball IQ',
+    title: 'Football Records Quiz — Ballon d’Or & Top Scorers | Ball IQ',
     description:
       'Free football records trivia with explained answers — Ballon d’Or winners, all-time scorers, caps, transfer fees and the numbers that settle every argument.',
     about: 'Association football records',
@@ -41,7 +41,7 @@ export const P3_CATEGORIES = [
     slug: 'legends',
     name: 'Legends',
     h1: 'Football Legends Quiz',
-    title: 'Football Legends Quiz — Pelé, Maradona, Cruyff & More | Ball IQ',
+    title: 'Football Legends Quiz — Pelé, Maradona, Cruyff | Ball IQ',
     description:
       'Free football legends trivia with explained answers — Pelé, Maradona, Cruyff, Beckenbauer and the greats who built the game before 2000.',
     about: 'Association football legends',
@@ -65,7 +65,7 @@ export const P3_CATEGORIES = [
     slug: 'managers',
     name: 'Managers',
     h1: 'Football Managers Quiz',
-    title: 'Football Managers Quiz — Ferguson, Mourinho, Guardiola | Ball IQ',
+    title: 'Football Managers Quiz — Ferguson, Guardiola | Ball IQ',
     description:
       'Free football managers trivia with explained answers — Ferguson, Wenger, Mourinho, Guardiola and the great gaffers who shaped the game from the dugout.',
     about: 'Association football managers',
@@ -161,7 +161,7 @@ export const P3_CATEGORIES = [
     slug: 'euros',
     name: 'Euros',
     h1: 'Euros Quiz',
-    title: 'Euros Quiz — European Championship Trivia & Answers | Ball IQ',
+    title: 'Euros Quiz — European Championship Trivia | Ball IQ',
     description:
       'Free Euros quiz with most answers explained — from 1960 to Spain’s 2024 win. European Championship hosts, winners, golden goals and shocks.',
     about: 'UEFA European Championship',
@@ -255,7 +255,7 @@ export const P3_CATEGORIES = [
     "slug": "primeira-liga",
     "name": "Primeira Liga",
     "h1": "Primeira Liga Quiz",
-    "title": "Primeira Liga Quiz — Portuguese Football Trivia & Answers | Ball IQ",
+    "title": "Primeira Liga Quiz — Portuguese Football Trivia | Ball IQ",
     "description": "Free Primeira Liga quiz with explained answers — Benfica, Porto, Sporting, Eusébio, the Guttmann curse and Portugal's great talent factory.",
     "about": "Primeira Liga",
     "sample": 20,

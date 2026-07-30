@@ -41,7 +41,7 @@ export const STUDY = {
   slug: 'football-trivia-memory',
   title: "Football's Memory Starts in 1990 | Ball IQ",
   description:
-    'We counted the years referenced across {{bank}} hand-checked football trivia questions. One recent decade carries {{ratio}} times the weight of the half-century before 1950.',
+    'We counted the years referenced across {{bank}} hand-checked football trivia questions. One decade carries {{ratio}}x the weight of everything before 1950.',
   h1: "Football's memory starts in 1990",
   standfirst:
     'We write and fact-check football trivia for a living. When we counted which years our own questions actually refer to, the shape of the sport’s collective memory turned out to be far more lopsided than we expected.',

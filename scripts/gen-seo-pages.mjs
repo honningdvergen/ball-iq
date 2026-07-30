@@ -2650,7 +2650,10 @@ q.addEventListener('input',function(){
 
   const html = `${head({
     title: `Club Quizzes by League — ${totalLabel} Football Clubs | Ball IQ`,
-    description: `Free football club quizzes organised by league — ${totalLabel} clubs across ${LEAGUES.length} leagues, from the Premier League to the Brasileirão. ${builtCount} club quizzes live, every answer explained, new clubs added weekly.`,
+    // Was 192 chars and truncated. "every answer explained" STAYS — unlike the
+    // league pages, all 72 club packs measure 100% hint coverage (the generator's
+    // own MIN_HINTS gate enforces it), so here the strong claim is true.
+    description: `Free football club quizzes by league — ${builtCount} clubs live, from the Premier League to the Brasileirão, every answer explained. New clubs added weekly.`,
     canonical, ld, ads: true,
   })}
 <body>
