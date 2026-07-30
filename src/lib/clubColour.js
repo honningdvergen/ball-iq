@@ -117,6 +117,10 @@ const EXTRA = {
   "America Mineiro": "#0B7A3B",
   "Dinamo Zagreb": "#1B458F",
   "Hajduk Split": "#0E4C92",
+  "Celtic": "#018749",
+  "Genk": "#005EB8",
+  "Wolfsburg": "#65B32E",
+  "Olympiacos": "#DA020E",
 };
 
 const key = (s) =>

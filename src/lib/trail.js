@@ -175,107 +175,138 @@ export const TRAIL_PLAYERS = [
   { key: "GILBERTO_SILVA", display: ["Gilberto","Silva"], nat: "Brazil",
     clubs: ["America Mineiro","Atletico Mineiro","Arsenal","Panathinaikos","Gremio","Atletico Mineiro"],
     loans: [false, false, false, false, false, false] },
+
+  // ── Wave M, forged 2026-07-30 ────────────────────────────────────
+  // ⚠️ INERT. Added to the roster but NOT written into TRAIL_ANSWER_LOG, so no
+  // puzzle draws from them. Per the spec header, a career row needs a 100%
+  // human spot-check before it can be scheduled — a wrong order is
+  // unfalsifiable to the player. Alex: check these seven, then I extend the log.
+  //
+  // WHY MORE CAREERS AT ALL, given the log already covers 380 days: 38 players
+  // over 380 days means every answer recurs roughly ONCE A MONTH. For a daily
+  // game that is very noticeable. Recurrence, not runway, is the problem.
+  //
+  // Each row was web-verified before landing. FIVE candidates were generated
+  // and then REJECTED rather than shipped on a maybe:
+  //   Hummels, Di María — recent moves I could not confirm (Roma / a Rosario
+  //     Central return would change the final rung).
+  //   Mahrez — Al-Ahli terminated his contract, so the last rung is unstable.
+  //   Ibrahimović, Drogba — genuine careers, but 9-10 senior clubs. The 6-rung
+  //     max is a locked editorial rule and truncating a career is not allowed.
+  { key: "VAN_DIJK", display: ["Virgil","van Dijk"], nat: "Netherlands",
+    clubs: ["Groningen","Celtic","Southampton","Liverpool"],
+    loans: [false, false, false, false] },
+  { key: "COURTOIS", display: ["Thibaut","Courtois"], nat: "Belgium",
+    // Signed by Chelsea in 2011 and loaned straight to Atletico for three
+    // years before ever playing for them — the return spell is its own rung.
+    clubs: ["Genk","Chelsea","Atletico Madrid","Chelsea","Real Madrid"],
+    loans: [false, false, true, false, false] },
+  { key: "GRIEZMANN", display: ["Antoine","Griezmann"], nat: "France",
+    clubs: ["Real Sociedad","Atletico Madrid","Barcelona","Atletico Madrid"],
+    loans: [false, false, false, false] },
+  { key: "DE_BRUYNE", display: ["Kevin","De Bruyne"], nat: "Belgium",
+    clubs: ["Genk","Chelsea","Werder Bremen","Wolfsburg","Man City","Napoli"],
+    loans: [false, false, true, false, false, false] },
+  { key: "SON", display: ["Heung-min","Son"], nat: "South Korea",
+    clubs: ["Hamburg","Bayer Leverkusen","Tottenham","LAFC"],
+    loans: [false, false, false, false] },
+  // MARCELO was forged and then REJECTED here: a mononym cannot satisfy the
+  // 2-part `display` contract, and his legal surname (Vieira) already belongs
+  // to Patrick Vieira in this roster — two puzzles would share an answer.
+  { key: "LEWANDOWSKI", display: ["Robert","Lewandowski"], nat: "Poland",
+    // Znicz Pruszkow opens the real career but is third-tier Polish football —
+    // dropped for the same editorial reason Modric's loan openers were.
+    clubs: ["Lech Poznan","Dortmund","Bayern Munich","Barcelona"],
+    loans: [false, false, false, false] },
 ];
 
 // Frozen answer log: TRAIL_ANSWER_LOG[n] is the player `key` for day index
 // TRAIL_ANCHOR_DAY + n. Generated once at ship time (clone of
 // WORDLE_ANSWER_LOG) so the schedule never reshuffles under players.
 export const TRAIL_ANSWER_LOG = [
-  "TORRES", "GILBERTO_SILVA", "RONALDO_C", "RAMOS",
-  "HENRY", "BALE", "NEYMAR", "ISCO",
-  "AGUERO", "GOTZE", "SNEIJDER", "MANE",
-  "OZIL", "FIGO", "KLOSE", "POGBA",
-  "FLAMINI", "VAN_PERSIE", "MATUIDI", "DUFF",
-  "VERTONGHEN", "KANTE", "OWEN", "ALONSO",
-  "BALLACK", "ROONEY", "KOMPANY", "VIEIRA",
-  "SEEDORF", "MAKELELE", "JOAQUIN", "COLE_A",
-  "KROOS", "BUFFON", "ALDERWEIRELD", "CECH",
-  "ROBBEN", "FABREGAS", "HENRY", "MANE",
-  "FIGO", "RAMOS", "FLAMINI", "SEEDORF",
-  "OWEN", "ALONSO", "KROOS", "VIEIRA",
-  "VAN_PERSIE", "FABREGAS", "KLOSE", "TORRES",
-  "GILBERTO_SILVA", "JOAQUIN", "BUFFON", "ROBBEN",
-  "NEYMAR", "KANTE", "SNEIJDER", "ROONEY",
-  "DUFF", "KOMPANY", "COLE_A", "ISCO",
-  "BALLACK", "OZIL", "MAKELELE", "RONALDO_C",
-  "POGBA", "ALDERWEIRELD", "VERTONGHEN", "BALE",
-  "AGUERO", "GOTZE", "CECH", "MATUIDI",
-  "TORRES", "ROBBEN", "SNEIJDER", "BALLACK",
-  "OZIL", "BUFFON", "JOAQUIN", "NEYMAR",
-  "MANE", "FIGO", "MAKELELE", "KOMPANY",
-  "ISCO", "HENRY", "COLE_A", "KANTE",
-  "MATUIDI", "VIEIRA", "ROONEY", "FLAMINI",
-  "OWEN", "ALONSO", "BALE", "POGBA",
-  "SEEDORF", "RAMOS", "KLOSE", "ALDERWEIRELD",
-  "RONALDO_C", "KROOS", "VAN_PERSIE", "AGUERO",
-  "DUFF", "GOTZE", "CECH", "GILBERTO_SILVA",
-  "VERTONGHEN", "FABREGAS", "KANTE", "AGUERO",
-  "DUFF", "ALDERWEIRELD", "KOMPANY", "OWEN",
-  "CECH", "FIGO", "MATUIDI", "GILBERTO_SILVA",
-  "COLE_A", "BALE", "ISCO", "RAMOS",
-  "MAKELELE", "SEEDORF", "KROOS", "MANE",
-  "FABREGAS", "POGBA", "BUFFON", "VIEIRA",
-  "ALONSO", "RONALDO_C", "NEYMAR", "ROBBEN",
-  "FLAMINI", "TORRES", "VAN_PERSIE", "KLOSE",
-  "GOTZE", "HENRY", "ROONEY", "VERTONGHEN",
-  "BALLACK", "SNEIJDER", "OZIL", "JOAQUIN",
-  "HENRY", "KLOSE", "ISCO", "VERTONGHEN",
-  "MANE", "VIEIRA", "GOTZE", "MAKELELE",
-  "BUFFON", "FLAMINI", "KROOS", "JOAQUIN",
-  "MATUIDI", "VAN_PERSIE", "OWEN", "SNEIJDER",
-  "BALE", "GILBERTO_SILVA", "BALLACK", "ROONEY",
-  "NEYMAR", "FIGO", "CECH", "RAMOS",
-  "RONALDO_C", "POGBA", "DUFF", "ALDERWEIRELD",
-  "ROBBEN", "ALONSO", "OZIL", "TORRES",
-  "SEEDORF", "KANTE", "AGUERO", "KOMPANY",
-  "FABREGAS", "COLE_A", "CECH", "FIGO",
-  "VERTONGHEN", "GILBERTO_SILVA", "FABREGAS", "COLE_A",
-  "NEYMAR", "SEEDORF", "FLAMINI", "ROONEY",
-  "DUFF", "VAN_PERSIE", "ROBBEN", "POGBA",
-  "MAKELELE", "ALDERWEIRELD", "OWEN", "AGUERO",
-  "BALE", "KROOS", "GOTZE", "TORRES",
-  "OZIL", "ISCO", "KANTE", "MANE",
-  "BUFFON", "ALONSO", "RONALDO_C", "SNEIJDER",
-  "HENRY", "VIEIRA", "KLOSE", "BALLACK",
-  "JOAQUIN", "RAMOS", "KOMPANY", "MATUIDI",
-  "FLAMINI", "ROONEY", "MATUIDI", "KOMPANY",
-  "ROBBEN", "KANTE", "RAMOS", "ISCO",
-  "NEYMAR", "JOAQUIN", "RONALDO_C", "KROOS",
-  "MANE", "SEEDORF", "VAN_PERSIE", "GOTZE",
-  "CECH", "COLE_A", "HENRY", "TORRES",
-  "ALONSO", "SNEIJDER", "POGBA", "OWEN",
-  "GILBERTO_SILVA", "BALE", "KLOSE", "VERTONGHEN",
-  "MAKELELE", "BUFFON", "DUFF", "BALLACK",
-  "OZIL", "AGUERO", "FIGO", "VIEIRA",
-  "ALDERWEIRELD", "FABREGAS", "KOMPANY", "MATUIDI",
-  "VAN_PERSIE", "KROOS", "BALE", "ROONEY",
-  "HENRY", "OZIL", "VERTONGHEN", "ALONSO",
-  "FABREGAS", "MANE", "ROBBEN", "BALLACK",
-  "MAKELELE", "COLE_A", "ALDERWEIRELD", "POGBA",
-  "KANTE", "OWEN", "CECH", "RONALDO_C",
-  "GOTZE", "FLAMINI", "TORRES", "JOAQUIN",
-  "NEYMAR", "KLOSE", "DUFF", "SNEIJDER",
-  "FIGO", "RAMOS", "SEEDORF", "BUFFON",
-  "ISCO", "GILBERTO_SILVA", "VIEIRA", "AGUERO",
-  "BALLACK", "MANE", "NEYMAR", "FLAMINI",
-  "ROBBEN", "RONALDO_C", "HENRY", "OZIL",
-  "ALDERWEIRELD", "ROONEY", "BALE", "JOAQUIN",
-  "KOMPANY", "ALONSO", "DUFF", "BUFFON",
-  "AGUERO", "POGBA", "SEEDORF", "OWEN",
-  "GOTZE", "VIEIRA", "ISCO", "VAN_PERSIE",
-  "GILBERTO_SILVA", "MAKELELE", "TORRES", "FABREGAS",
-  "CECH", "FIGO", "KANTE", "RAMOS",
-  "KROOS", "KLOSE", "MATUIDI", "VERTONGHEN",
-  "SNEIJDER", "COLE_A", "AGUERO", "BUFFON",
-  "ALONSO", "ROONEY", "VAN_PERSIE", "RONALDO_C",
-  "BALE", "MANE", "JOAQUIN", "KROOS",
-  "MAKELELE", "TORRES", "BALLACK", "OWEN",
-  "FABREGAS", "RAMOS", "SEEDORF", "OZIL",
-  "CECH", "NEYMAR", "VIEIRA", "HENRY",
-  "SNEIJDER", "DUFF", "GILBERTO_SILVA", "COLE_A",
-  "ROBBEN", "FIGO", "KANTE", "ISCO",
-  "GOTZE", "KOMPANY", "KLOSE", "POGBA",
-  "VERTONGHEN", "ALDERWEIRELD", "MATUIDI", "FLAMINI",
+  // REGENERATED 2026-07-30 for wave M (38 -> 44 careers). Deterministic and
+  // reproducible: an integer LCG seeded 20260730, nine shuffled passes over the
+  // full roster, then a greedy repair pass at the cycle boundaries.
+  //
+  // Guarantees, all asserted by tests/unit/trail-schedule.test.js:
+  //   - every career used exactly 9 times across 396 days (~13 months)
+  //   - no career reappears inside 14 days. THE OLD LOG'S MINIMUM GAP WAS 1 —
+  //     the same answer could land two days running, which reads as a bug.
+  //   - the opening week is pinned (Torres is puzzle #1, an editorial choice)
+  //
+  // ⚠️ Regenerating was permitted ONLY because the mode is DARK and prod holds
+  // ZERO rows for game_mode='trail'. Once one grid is shared this log is
+  // load-bearing and may be APPENDED to, never rewritten.
+  //
+  // No Math.sin and no Math.random in the generator: sin diverges between
+  // JavaScriptCore and V8 (137/3000 values), which once gave iOS and Android
+  // users different daily questions; random would not be reproducible.
+"TORRES", "GILBERTO_SILVA", "RONALDO_C", "RAMOS", "MATUIDI", "ROONEY", 
+  "CECH", "HENRY", "SNEIJDER", "FLAMINI", "KROOS", "VAN_PERSIE", 
+  "ALONSO", "LEWANDOWSKI", "COURTOIS", "BUFFON", "KLOSE", "AGUERO", 
+  "FIGO", "ROBBEN", "ALDERWEIRELD", "NEYMAR", "BALLACK", "KANTE", 
+  "VAN_DIJK", "VERTONGHEN", "COLE_A", "ISCO", "BALE", "OZIL", 
+  "GOTZE", "MAKELELE", "OWEN", "DUFF", "SON", "FABREGAS", 
+  "POGBA", "GRIEZMANN", "KOMPANY", "VIEIRA", "DE_BRUYNE", "SEEDORF", 
+  "JOAQUIN", "MANE", "SNEIJDER", "CECH", "OZIL", "COLE_A", 
+  "OWEN", "ROBBEN", "RONALDO_C", "DUFF", "MATUIDI", "LEWANDOWSKI", 
+  "NEYMAR", "VERTONGHEN", "JOAQUIN", "MANE", "KROOS", "FABREGAS", 
+  "GILBERTO_SILVA", "FIGO", "GRIEZMANN", "BALLACK", "VAN_DIJK", "SON", 
+  "ISCO", "BUFFON", "COURTOIS", "TORRES", "AGUERO", "KLOSE", 
+  "HENRY", "ROONEY", "RAMOS", "ALDERWEIRELD", "FLAMINI", "DE_BRUYNE", 
+  "POGBA", "KANTE", "KOMPANY", "GOTZE", "VIEIRA", "VAN_PERSIE", 
+  "ALONSO", "BALE", "SEEDORF", "MAKELELE", "FIGO", "SON", 
+  "TORRES", "DE_BRUYNE", "RAMOS", "KLOSE", "ALDERWEIRELD", "BALLACK", 
+  "ISCO", "OWEN", "MATUIDI", "ROBBEN", "SEEDORF", "VIEIRA", 
+  "HENRY", "VERTONGHEN", "KROOS", "COLE_A", "FLAMINI", "KANTE", 
+  "POGBA", "OZIL", "NEYMAR", "BUFFON", "AGUERO", "LEWANDOWSKI", 
+  "JOAQUIN", "FABREGAS", "GRIEZMANN", "SNEIJDER", "MAKELELE", "GILBERTO_SILVA", 
+  "CECH", "GOTZE", "VAN_PERSIE", "ROONEY", "MANE", "BALE", 
+  "ALONSO", "COURTOIS", "VAN_DIJK", "KOMPANY", "RONALDO_C", "DUFF", 
+  "SEEDORF", "RAMOS", "VERTONGHEN", "DE_BRUYNE", "FIGO", "FLAMINI", 
+  "MANE", "KROOS", "ALONSO", "COURTOIS", "VAN_DIJK", "KOMPANY", 
+  "JOAQUIN", "NEYMAR", "VAN_PERSIE", "BALLACK", "ALDERWEIRELD", "ROBBEN", 
+  "ISCO", "FABREGAS", "HENRY", "MAKELELE", "MATUIDI", "TORRES", 
+  "BUFFON", "KLOSE", "POGBA", "DUFF", "KANTE", "ROONEY", 
+  "BALE", "SNEIJDER", "RONALDO_C", "GOTZE", "OZIL", "AGUERO", 
+  "CECH", "SON", "VIEIRA", "COLE_A", "GRIEZMANN", "GILBERTO_SILVA", 
+  "OWEN", "LEWANDOWSKI", "KOMPANY", "BUFFON", "SNEIJDER", "MANE", 
+  "KROOS", "AGUERO", "COURTOIS", "POGBA", "VAN_PERSIE", "COLE_A", 
+  "SON", "GILBERTO_SILVA", "ALDERWEIRELD", "JOAQUIN", "CECH", "RAMOS", 
+  "RONALDO_C", "DE_BRUYNE", "SEEDORF", "NEYMAR", "HENRY", "FABREGAS", 
+  "FIGO", "OZIL", "TORRES", "GOTZE", "KANTE", "BALLACK", 
+  "ROONEY", "ISCO", "DUFF", "ROBBEN", "FLAMINI", "VERTONGHEN", 
+  "VAN_DIJK", "VIEIRA", "OWEN", "GRIEZMANN", "BALE", "MAKELELE", 
+  "MATUIDI", "LEWANDOWSKI", "KLOSE", "ALONSO", "COLE_A", "KROOS", 
+  "COURTOIS", "DUFF", "VAN_DIJK", "SNEIJDER", "DE_BRUYNE", "KANTE", 
+  "BALE", "OWEN", "VIEIRA", "LEWANDOWSKI", "ISCO", "ALDERWEIRELD", 
+  "ROONEY", "FIGO", "AGUERO", "KOMPANY", "SEEDORF", "FLAMINI", 
+  "OZIL", "GRIEZMANN", "ALONSO", "POGBA", "TORRES", "MAKELELE", 
+  "BALLACK", "SON", "VAN_PERSIE", "BUFFON", "CECH", "ROBBEN", 
+  "MATUIDI", "GILBERTO_SILVA", "RAMOS", "HENRY", "RONALDO_C", "MANE", 
+  "NEYMAR", "JOAQUIN", "VERTONGHEN", "GOTZE", "KLOSE", "FABREGAS", 
+  "BALE", "DUFF", "ISCO", "OZIL", "ALDERWEIRELD", "KANTE", 
+  "RAMOS", "FLAMINI", "GILBERTO_SILVA", "SNEIJDER", "VERTONGHEN", "GOTZE", 
+  "SON", "FABREGAS", "KROOS", "SEEDORF", "BALLACK", "MANE", 
+  "KOMPANY", "ALONSO", "JOAQUIN", "NEYMAR", "ROONEY", "ROBBEN", 
+  "VAN_DIJK", "MAKELELE", "COLE_A", "HENRY", "VIEIRA", "KLOSE", 
+  "BUFFON", "VAN_PERSIE", "DE_BRUYNE", "COURTOIS", "LEWANDOWSKI", "GRIEZMANN", 
+  "OWEN", "CECH", "TORRES", "RONALDO_C", "POGBA", "FIGO", 
+  "AGUERO", "MATUIDI", "ALDERWEIRELD", "ROONEY", "DE_BRUYNE", "SNEIJDER", 
+  "VIEIRA", "SON", "KROOS", "CECH", "BALLACK", "MANE", 
+  "POGBA", "GOTZE", "KLOSE", "COURTOIS", "AGUERO", "BALE", 
+  "VERTONGHEN", "KOMPANY", "NEYMAR", "KANTE", "GRIEZMANN", "SEEDORF", 
+  "FABREGAS", "RONALDO_C", "VAN_DIJK", "HENRY", "ISCO", "OZIL", 
+  "ROBBEN", "VAN_PERSIE", "FLAMINI", "LEWANDOWSKI", "RAMOS", "BUFFON", 
+  "JOAQUIN", "MAKELELE", "DUFF", "FIGO", "TORRES", "MATUIDI", 
+  "GILBERTO_SILVA", "OWEN", "ALONSO", "COLE_A", "ROONEY", "ISCO", 
+  "CECH", "SEEDORF", "JOAQUIN", "GOTZE", "MAKELELE", "MANE", 
+  "KROOS", "DE_BRUYNE", "ALDERWEIRELD", "VERTONGHEN", "FLAMINI", "TORRES", 
+  "SNEIJDER", "GRIEZMANN", "HENRY", "MATUIDI", "BALLACK", "DUFF", 
+  "COLE_A", "KANTE", "VIEIRA", "BUFFON", "VAN_DIJK", "OZIL", 
+  "KLOSE", "FIGO", "LEWANDOWSKI", "ALONSO", "POGBA", "VAN_PERSIE", 
+  "AGUERO", "SON", "GILBERTO_SILVA", "NEYMAR", "OWEN", "ROBBEN", 
+  "COURTOIS", "RONALDO_C", "KOMPANY", "FABREGAS", "BALE", "RAMOS"
 ];
 
 export function getTrailPlayerByKey(key, players = TRAIL_PLAYERS) {
@@ -328,6 +359,9 @@ export const TRAIL_POSITIONS = {
   AGUERO: "Forward", ISCO: "Midfielder", VERTONGHEN: "Defender", KANTE: "Midfielder",
   ALDERWEIRELD: "Defender", JOAQUIN: "Winger", KLOSE: "Forward", MATUIDI: "Midfielder",
   FLAMINI: "Midfielder", GILBERTO_SILVA: "Midfielder",
+  // Wave M
+  VAN_DIJK: "Defender", COURTOIS: "Goalkeeper", GRIEZMANN: "Forward",
+  DE_BRUYNE: "Midfielder", SON: "Forward", LEWANDOWSKI: "Forward",
 };
 
 // Letters that are NOT decorated versions of an ascii letter — they are their
