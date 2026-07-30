@@ -173,6 +173,50 @@ the new MP XP award. A green build proves compilation, not behaviour.
 
 ## 🟡 QUEUED
 
+### NEW 2026-07-30 — website facelift: tooling + the traps
+
+**What we already have** (no install needed, all connected):
+- `ui-ux-pro-max` — LOCAL skill, verified working. 84 styles, 192 palettes, 74
+  font pairings, **16 GSAP motion presets** with framework notes, do/don't and
+  performance caveats. Run it as
+  `python .claude/skills/ui-ux-pro-max/scripts/search.py "<q>" --domain gsap`.
+  Also `--design-system --persist` writes a MASTER.md the whole facelift works from.
+- `frontend-design` + `artifact-design` skills — art direction, anti-AI-slop rules.
+- `design-critique` + `accessibility-review` skills — structured review passes.
+- **Magic Patterns** (AI UI generation) and **Canva** MCPs — both connected.
+- claude.ai **design-system** tools (`create_design_system`, `create_inspiration_document`).
+- **Chrome ×2** for pulling reference sites, **iOS Simulator** for visual checks.
+
+**Worth adding, in order** (only these — see the MCP inventory note; we already
+carry 24 dead enterprise connectors):
+1. **Figma Dev Mode MCP** — the real gap. Exposes live layer structure, auto-layout,
+   variants and token references so code is generated against the actual design
+   instead of a screenshot. Needs a Figma account + interactive auth. ⚠️ DesignSync
+   cannot authenticate non-interactively — Alex has to paste the `.dc.html` + tokens.
+2. **Magic UI MCP** — animated React + Tailwind components. Closest thing to
+   "motion design" as a tool rather than a snippet library.
+3. **shadcn/ui MCP** — component primitives. Lower value here; we are not on shadcn.
+
+Skip TouchDesigner, Framer, Webflow, Penpot, MasterGo — none match this stack.
+
+**⚠️ THE TRAPS — a facelift here is not just CSS**
+1. **The standalone CSS mirror.** `app.css` carries a
+   `@media (display-mode: standalone)` block of ~155 `!important` rules that
+   re-styles what the ≥1024px desktop reflow changes. **Any token or class the
+   facelift touches must be checked against the mirror AND against `index.html`'s
+   `html.native-app` killswitch.** Miss it and installed PWAs plus the native app
+   keep the old styling — this has already happened once.
+2. **A single element commonly has hooks in FOUR places:** the component, the base
+   rule, the desktop reflow, and the mirror.
+3. **`webDir: "dist"` means everything built for web ships inside the native app.**
+   Any new font, script or asset is bundled whether it renders there or not, and a
+   raw third-party `<script src>` silently falsifies the store privacy declaration.
+   Native-guard it in code, not in a comment.
+4. **Don't break `/footle`.** It is the short share alias in every share text and
+   all four social redirects.
+5. Marketing `/` keeps the "Both" hero (Footle + quiz) — Alex's standing call.
+
+
 ### NEW 2026-07-30 — raise explanation coverage (77.6% → higher)
 Measured: 4,970 of 6,402 MCQs carry an explanation. All 72 **club** packs are at
 100% (the generator's MIN_HINTS gate has been quietly enforcing it) — the gap is
