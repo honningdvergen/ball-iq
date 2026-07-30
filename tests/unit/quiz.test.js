@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { seededShuffle, pickDailyQuestions, DAILY_SEED_MULTIPLIER } from '../../src/lib/quiz.js'
+import { seededShuffle, pickDailyQuestions, DAILY_SEED_MULTIPLIER, isModernEra } from '../../src/lib/quiz.js'
 
 // A stand-in bank. Deliberately not the real 4k questions — this pins the
 // ALGORITHM, which must hold for any bank.
@@ -135,5 +135,42 @@ describe('pickDailyQuestions — regression guards', () => {
 
   it('pins the seed multiplier — changing it reshuffles every past and future day', () => {
     expect(DAILY_SEED_MULTIPLIER).toBe(1013904223)
+  })
+})
+
+// ── Daily 7 era filter ───────────────────────────────────────────────────────
+// Reported from a real device 2026-07-30: an 1890s Sunderland question arrived as
+// question 1 of 7. Alex's standing rule is that nobody cares about pre-1950
+// football — the Daily 7 is the most-shared screen in the app and the likeliest
+// first impression, so it gets the modernity filter.
+describe('isModernEra', () => {
+  const q = (stem, opts = ['a', 'b', 'c', 'd']) => ({ q: stem, o: opts })
+
+  it('reads the OPTIONS, not just the stem', () => {
+    // The exact shape that shipped: no year anywhere in the stem, era only in
+    // the options. A stem-only filter passes this straight through.
+    expect(isModernEra(q("Sunderland's great side of which decade was dubbed the 'Team of All the Talents'?",
+      ['The 1930s', 'The 1870s', 'The 1910s', 'The 1890s']))).toBe(false)
+  })
+
+  it('matches decade spellings — the trailing s? is load-bearing', () => {
+    // `\b(1[6-9]\d\d)\b` does NOT match "1930s": no word boundary between 0 and
+    // s. That bug made the filter a no-op against the very row it was built for.
+    expect(isModernEra(q('When?', ['The 1930s']))).toBe(false)
+    expect(isModernEra(q('When?', ['1930']))).toBe(false)
+  })
+
+  it('judges on the NEWEST year, so modern questions about old records survive', () => {
+    expect(isModernEra(q('Whose 1972 record of 85 goals did Messi beat in 2012?'))).toBe(true)
+    expect(isModernEra(q('Who scored 4 goals at the 1966 World Cup?'))).toBe(true)
+  })
+
+  it('keeps questions with no year at all — absence of a date is not age', () => {
+    expect(isModernEra(q('Which club plays at Anfield?'))).toBe(true)
+  })
+
+  it('honours the boundary exactly', () => {
+    expect(isModernEra(q('x', ['1949']))).toBe(false)
+    expect(isModernEra(q('x', ['1950']))).toBe(true)
   })
 })

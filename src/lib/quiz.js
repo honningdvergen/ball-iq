@@ -50,7 +50,41 @@ export const DAILY_SEED_MULTIPLIER = 1013904223;
  * @param {number} dayIndex - UTC-midnight day index (see src/lib/date.js)
  * @returns {Array} exactly the 7 questions for that day, in order
  */
+/** Anything whose newest reference predates this belongs in Legends, not the Daily 7. */
+export const DAILY_MIN_ERA = 1950;
+
+/**
+ * True when a question touches football from DAILY_MIN_ERA onward.
+ *
+ * ⚠️ It reads the OPTIONS as well as the stem, and that is the whole point. The
+ * question that prompted this — "Sunderland's great side of which decade was
+ * dubbed the 'Team of All the Talents'?" — landed as question 1 of 7 on a
+ * playtester's Daily 7 with options 1930s / 1870s / 1910s / 1890s. Its stem
+ * contains no year at all, so a stem-only filter sails straight past it.
+ *
+ * The test is on the NEWEST year referenced, not the oldest: "whose 1972 record
+ * did Messi beat in 2012?" is a modern question that happens to mention 1972.
+ * Questions with no year at all are KEPT — absence of a date is not evidence of
+ * age, and most of the bank carries no year.
+ *
+ * The trailing `s?` is load-bearing. Written first as `\b(1[6-9]\d\d)\b`, it did
+ * not match "1930s" at all — there is no word boundary between "0" and "s", so
+ * the decade options sailed through and the very question this was built for was
+ * still served. Verified by asserting on that row, not by reading the regex.
+ */
+export function isModernEra(q, minYear = DAILY_MIN_ERA) {
+  const text = `${q.q || ""} ${(q.o || []).join(" ")}`;
+  const years = (text.match(/\b(1[6-9]\d\d|20\d\d)s?\b/g) || []).map((y) => parseInt(y, 10));
+  return years.length === 0 || Math.max(...years) >= minYear;
+}
+
 export function pickDailyQuestions(QB, dayIndex) {
-  const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends");
+  // Era filter, not just Legends. Alex's standing rule is that nobody cares about
+  // pre-1950 football; we stopped GENERATING it but it kept SURFACING, and the
+  // Daily 7 is the worst place for it — it is the most-shared, most-compared
+  // screen in the app and the one a new player is most likely to meet first.
+  // These questions stay playable in Classic and Legends; they just stop
+  // representing us on the daily.
+  const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q));
   return seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER).slice(0, 7);
 }
