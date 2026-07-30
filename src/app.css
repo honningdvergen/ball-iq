@@ -496,7 +496,27 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .mi-name{font-size:14px;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;}
 .mi-desc{font-size:12px;color:var(--t2);line-height:1.4;}
 .mi-arrow{font-size:13px;color:var(--t2);}
-.quiz-wrap{padding-top:20px;padding-bottom:16px;min-height:calc(100vh - 40px);}
+/* ⚠️ The bottom padding MUST carry the safe-area inset. Found 2026-07-30 on an
+   Android API 36 emulator with 3-button navigation: the last element in the quiz
+   — which is now the "⚑ Report a problem" chip — rendered UNDERNEATH the system
+   nav bar, with the home button drawn over it. The page was already scrolled to
+   its end, so there was no way to reach the chip.
+   This was a flat 16px while every other bottom-anchored surface in the app
+   (.tabbar, .tab-content, .diff-sheet, .crop-actions, .modal-overlay,
+   .offline-banner) already used env(safe-area-inset-bottom). .quiz-wrap was the
+   one that didn't, and it only started mattering the day we put a control at the
+   bottom of it.
+   ⚠️ A PLAIN env() IS NOT ENOUGH, and the first attempt at this fix proved it on
+   the emulator: written as env(safe-area-inset-bottom, 0px) nothing moved,
+   because Android's WebView reports the inset as 0. The .tab-bar comment ~40
+   lines below already records exactly that — "even when env(safe-area-inset-bottom)
+   resolves to 0 (Android, iPad portrait, desktop browsers)" — and solves it with
+   a max() FLOOR. .quiz-wrap simply never got the same treatment.
+   So: same expression shape as .tab-content, giving a 50px minimum, which clears
+   Android's 48dp three-button nav. On a scrolling container the extra room at the
+   end is harmless. The standalone mirror and the ≥1024px reflow both override only
+   max-width/margin here, so this base rule reaches native too. */
+.quiz-wrap{padding-top:20px;padding-bottom:calc(16px + max(env(safe-area-inset-bottom,34px),34px));min-height:calc(100vh - 40px);}
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
