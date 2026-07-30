@@ -7150,7 +7150,39 @@ const WORDLE_KB_ROWS = [
   ["Z","X","C","V","B","N","M","DEL"],
 ];
 
-const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily }) {
+function FootleReportButton({ answer, status, onReport }) {
+  const [sent, setSent] = useState(false);
+  const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
+  return (
+    <button
+      type="button"
+      disabled={sent}
+      onClick={() => {
+        if (sent) return;
+        onReport({
+          id: `footle:${answer}`,
+          q: `Footle answer "${answer}" (${(prefix ? prefix + " " : "") + surname})`,
+          picked: null,
+          correct: answer,
+          mode: status === "won" ? "footle" : "footle-lost",
+        });
+        setSent(true);
+      }}
+      style={{
+        margin: "10px auto 0", padding: "9px 13px", minHeight: 40, display: "block",
+        background: "none", border: "1px solid var(--border)", borderRadius: 10,
+        cursor: sent ? "default" : "pointer",
+        color: sent ? "var(--accent)" : "var(--t2)",
+        fontSize: 12.5, fontWeight: 700, fontFamily: "inherit",
+        WebkitAppearance: "none", appearance: "none", WebkitTextFillColor: "currentColor",
+      }}
+    >
+      {sent ? "✓ Reported — thanks" : "⚑ Bad answer? Tell us"}
+    </button>
+  );
+}
+
+const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily, onReport }) {
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
   const dateKey = getWordleDateKey();
@@ -7492,6 +7524,12 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
             +{getFootleXP(state.status === "won", state.guesses.length)} XP
           </div>
           <button className="wd-share" onClick={onShare}>Share result</button>
+          {/* Footle had NO report path. It is the most-played mode in the app and
+              its failure mode is the nastiest we ship: an answer that is
+              misspelled or not a real surname is UNWINNABLE, and the player has
+              no way to tell us — two literally unwinnable answers have shipped
+              before. The daily answer is the whole payload, so one button does it. */}
+          {onReport && <FootleReportButton answer={answer} status={state.status} onReport={onReport} />}
           {/* wa.me is web-only: inside the Capacitor WebView it often loads
               the wa.me web page instead of app-switching, and the native
               share sheet (shareCard's IS_NATIVE branch) already surfaces
@@ -11078,14 +11116,14 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} />}
+        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} onReport={reportQuestion} />}
         {screen === "trail" && (() => {
           const p = getTrailAnswer();
           // No dataset yet -> no puzzle. Send them home rather than render an
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
           if (!p) { setTimeout(goHome, 0); return null; }
-          return <React.Suspense fallback={null}><TransferTrail player={p} onBack={goHome} /></React.Suspense>;
+          return <React.Suspense fallback={null}><TransferTrail player={p} onBack={goHome} onReport={reportQuestion} /></React.Suspense>;
         })()}
         {screen === "stump" && stumpRow && (
           <StumpScreen

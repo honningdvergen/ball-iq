@@ -36,7 +36,7 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player, date = new Date(), onBack }) {
+export default function TransferTrail({ player, date = new Date(), onBack, onReport }) {
   const ymd = dateToYMD(date);
   const number = getTrailNumber(date);
   const career = useMemo(() => player?.clubs || [], [player]);
@@ -90,6 +90,7 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
   }, [done, entry, player]);
 
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
+  const [reportSent, setReportSent] = useState(false);
   const shareText = useMemo(
     () => (done ? buildTrailShareText({ number, won, clubsUsed, streak }) : ""),
     [done, number, won, clubsUsed, streak]
@@ -257,6 +258,33 @@ export default function TransferTrail({ player, date = new Date(), onBack }) {
             style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
                      background: "var(--accent)", color: "#06230C", fontWeight: 800, fontSize: 15,
                      fontFamily: "inherit", cursor: "pointer" }}>Share result</button>
+          {/* A wrong career order is UNFALSIFIABLE to the player — they cannot
+              tell a puzzle they misread from data we got wrong, so without this
+              they simply lose trust and say nothing. Same trust class as a wrong
+              answer key. Sends the full ladder so the row is actionable. */}
+          {onReport && (
+            <button
+              type="button"
+              disabled={reportSent}
+              onClick={() => {
+                if (reportSent) return;
+                onReport({
+                  id: `trail:${player.key}`,
+                  q: `Transfer Trail #${number} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
+                  picked: null,
+                  correct: (player.display || []).join(" "),
+                  mode: "trail",
+                });
+                setReportSent(true);
+              }}
+              style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
+                       border: "1px solid var(--border)", background: "transparent",
+                       color: reportSent ? "var(--accent)" : "var(--t2)",
+                       fontWeight: 700, fontSize: 13, fontFamily: "inherit",
+                       cursor: reportSent ? "default" : "pointer" }}>
+              {reportSent ? "✓ Reported — thanks" : "⚑ Career looks wrong? Tell us"}
+            </button>
+          )}
           <button onClick={onBack}
             style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
                      border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
