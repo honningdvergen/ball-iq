@@ -1,0 +1,16 @@
+[
+  { "q": "In 1945 Hajduk Split toured Egypt, Palestine, Lebanon, Syria and Malta — roughly how many matches did they play?",
+    "o": ["About 12", "About 25", "About 45", "More than 90"], "a": 3,
+    "cat": "History", "club": "Hajduk Split", "type": "mcq", "diff": "hard",
+    "hint": "More than 90 matches on that post-war tour, winning 74 of them — the club was effectively touring as the face of the new Yugoslavia." },
+
+  { "q": "Which Croatia goalkeeper played for Hajduk Split before joining Monaco and starting the 2018 World Cup final?",
+    "o": ["Stipe Pletikosa", "Danijel Subašić", "Dominik Livaković", "Tonči Gabrić"], "a": 1,
+    "cat": "Legends", "club": "Hajduk Split", "type": "mcq", "diff": "medium",
+    "hint": "Subašić kept goal in Moscow as Croatia lost 4-2 to France. Pletikosa and Gabrić also kept for Hajduk; Livaković came through at Dinamo Zagreb." },
+
+  { "q": "Who holds Hajduk Split's official appearance record, with 390 matches?",
+    "o": ["Jurica Jerković", "Igor Tudor", "Vedran Rožić", "Frane Matošić"], "a": 2,
+    "cat": "History", "club": "Hajduk Split", "type": "mcq", "diff": "hard",
+    "hint": "Vedran Rožić made 390 official appearances. Matošić's 739 matches include wartime and friendly fixtures outside the official record." }
+]

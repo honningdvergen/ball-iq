@@ -568,6 +568,7 @@ function PlayNow() {
 // slug here MUST be a live generated page (scripts/gen-seo-pages.mjs) — a tile
 // pointing at a non-existent page is a 404: wasted crawl budget + dead UX.
 const QUIZ_CLUBS = [
+  { slug: 'hajduk-split', label: 'Hajduk Split', badge: 'HAJ' },
   { slug: 'boca-juniors', label: 'Boca Juniors', badge: 'BOC' },
   { slug: 'river-plate', label: 'River Plate', badge: 'RIV' },
   { slug: 'flamengo', label: 'Flamengo', badge: 'FLA' },
@@ -657,6 +658,7 @@ const QUIZ_LEAGUES = [
 // badge tinting. Light shirts (Real Madrid white, Dortmund yellow) get dark
 // text via readableOn(); a hairline border keeps dark badges legible.
 const CLUB_COLOR = {
+  'hajduk-split': '#0E4C92',
   'boca-juniors': '#0A2B72', 'river-plate': '#E1122E', 'flamengo': '#C52613', 'palmeiras': '#006437', 'corinthians': '#111111',
   'manchester-united': '#DA291C', arsenal: '#EF0107', 'manchester-city': '#6CABDD',
   liverpool: '#C8102E', chelsea: '#034694', tottenham: '#132257', newcastle: '#241F20',

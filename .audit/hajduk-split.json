@@ -1,0 +1,182 @@
+[
+  {
+    "q": "Hajduk Split were founded in 1911 by a group of Split students who were studying in which city?",
+    "o": [
+      "Vienna",
+      "Prague",
+      "Budapest",
+      "Rome"
+    ],
+    "a": 1,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "hard",
+    "hint": "Four students from Split, studying in Prague, took the idea home and founded the club on 13 February 1911 — the name means 'outlaw' or 'bandit', for the rebels who fought Ottoman rule."
+  },
+  {
+    "q": "Hajduk Split were re-formed in 1944 on which Adriatic island, becoming the official football team of the Yugoslav resistance?",
+    "o": [
+      "Hvar",
+      "Brač",
+      "Vis",
+      "Korčula"
+    ],
+    "a": 2,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "hard",
+    "hint": "With the Adriatic islands serving as a haven for the resistance, the club was reborn on Vis on 7 May 1944 and its players joined the Partisan general headquarters there."
+  },
+  {
+    "q": "Which British prime minister's son was present when Hajduk Split were re-formed on Vis in 1944?",
+    "o": [
+      "Winston Churchill",
+      "Neville Chamberlain",
+      "Clement Attlee",
+      "Anthony Eden"
+    ],
+    "a": 0,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "hard",
+    "hint": "Randolph Churchill, Winston's son, was among the British officers present alongside Partisan leader Josip Broz Tito on 7 May 1944."
+  },
+  {
+    "q": "In September 1944 Hajduk Split played the British Army in Bari in front of around 40,000 spectators — how did it end?",
+    "o": [
+      "Hajduk won 2-1",
+      "A 3-3 draw",
+      "Hajduk lost 9-2",
+      "Hajduk lost 1-0"
+    ],
+    "a": 2,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "hard",
+    "hint": "A heavy 9-2 defeat on 23 September 1944, in front of a crowd that dwarfed anything the club had played before."
+  },
+  {
+    "q": "Hajduk Split have reached two European semi-finals: the 1973 Cup Winners' Cup and which competition in 1984?",
+    "o": [
+      "The European Cup",
+      "The UEFA Cup",
+      "The Intertoto Cup",
+      "The Inter-Cities Fairs Cup"
+    ],
+    "a": 1,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "The 1984 UEFA Cup run took in Metz, VfB Stuttgart, Torino, Dnipro and Universitatea Craiova before the semi-final."
+  },
+  {
+    "q": "Which player is Hajduk Split's all-time leading scorer, with 729 goals for the club?",
+    "o": [
+      "Vedran Rožić",
+      "Jurica Jerković",
+      "Frane Matošić",
+      "Igor Štimac"
+    ],
+    "a": 2,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "hard",
+    "hint": "Frane Matošić scored 729 goals in 739 matches. Vedran Rožić holds the official appearance record with 390."
+  },
+  {
+    "q": "Which future Shakhtar Donetsk and Croatia captain began his senior career at Hajduk Split?",
+    "o": [
+      "Igor Tudor",
+      "Niko Kranjčar",
+      "Darijo Srna",
+      "Stipe Pletikosa"
+    ],
+    "a": 2,
+    "cat": "Transfers",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "Srna left Split for Shakhtar in 2003 and stayed 15 years, becoming their record appearance holder and captaining Croatia over 130 times."
+  },
+  {
+    "q": "Hajduk Split's supporters' group, founded in 1950, holds which distinction?",
+    "o": [
+      "The oldest organised supporters' group in Europe",
+      "The first group officially recognised by UEFA",
+      "The largest single supporters' group in Europe",
+      "The first to be given its own stand"
+    ],
+    "a": 0,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "Founded on 28 October 1950 by three students in Zagreb — Ante Dorić, Ante Ivanišević and Vjenceslav Žuvela — a day before a decisive match against Red Star Belgrade."
+  },
+  {
+    "q": "Hajduk Split's supporters' group took its name from a fan movement in which country?",
+    "o": [
+      "Argentina",
+      "Italy",
+      "Brazil",
+      "Portugal"
+    ],
+    "a": 2,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "The founders had seen the Brazilian torcida at the 1950 World Cup; the word comes from the Portuguese verb 'torcer', to cheer on."
+  },
+  {
+    "q": "What made Hajduk Split's 1950 Yugoslav championship remarkable?",
+    "o": [
+      "They won it without losing a single match",
+      "They won it with an all-teenage side",
+      "They won it after starting with nine defeats",
+      "They won it while playing every match away"
+    ],
+    "a": 0,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "An unbeaten league title that no Yugoslav club matched in the 40 years before the league broke up."
+  },
+  {
+    "q": "Which stadium has been Hajduk Split's home since 1979?",
+    "o": [
+      "Stadion Maksimir",
+      "Stadion Poljud",
+      "Stadion Kantrida",
+      "Stadion Rujevica"
+    ],
+    "a": 1,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "easy",
+    "hint": "The 33,987-seat Poljud, with Torcida massed in the north stand. Maksimir is Dinamo Zagreb's ground in the capital."
+  },
+  {
+    "q": "Along with Hajduk Split, Dinamo Zagreb and Red Star Belgrade, which club made up the 'Big Four' of Yugoslav football?",
+    "o": [
+      "Sarajevo",
+      "Vojvodina",
+      "Partizan Belgrade",
+      "Željezničar"
+    ],
+    "a": 2,
+    "cat": "History",
+    "club": "Hajduk Split",
+    "type": "mcq",
+    "diff": "medium",
+    "hint": "The four dominated SFR Yugoslavia between them; Partizan also reached the 1966 European Cup final."
+  }
+]

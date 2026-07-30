@@ -116,6 +116,7 @@ const EXTRA = {
   // América-MG ("Coelho") play in green and white.
   "America Mineiro": "#0B7A3B",
   "Dinamo Zagreb": "#1B458F",
+  "Hajduk Split": "#0E4C92",
 };
 
 const key = (s) =>

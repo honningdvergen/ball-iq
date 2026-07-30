@@ -2282,4 +2282,37 @@ export const CLUBS = [
     }
   ]
 }
+,
+{
+  "club": "Hajduk Split",
+  "slug": "hajduk-split",
+  "name": "Hajduk Split",
+  "h1": "Hajduk Split Quiz",
+  "title": "Hajduk Split Quiz \u2014 Torcida & Poljud Trivia | Ball IQ",
+  "description": "Free Hajduk Split quiz with explained answers \u2014 Torcida, Poljud, the 1944 rebirth on Vis and the 1984 UEFA Cup run. Play free in your browser.",
+  "intro": [
+    "Hajduk Split were founded on 13 February 1911 by four students from Split who were studying in Prague, and named for the hajduks \u2014 the outlaws who fought Ottoman rule. This free Hajduk Split quiz covers the whole story of the Bili: Poljud, Torcida, the Eternal Derby with Dinamo Zagreb, and a history unlike any other club's in Europe.",
+    "That history includes the strangest rebirth in football. With Split occupied and the Adriatic islands sheltering the resistance, Hajduk were re-formed on the island of Vis on 7 May 1944, in front of Partisan leader Josip Broz Tito and British officers \u2014 among them Randolph Churchill, son of the wartime prime minister. The club became the official football team of the Yugoslav resistance, and that September played the British Army in Bari before a crowd of some 40,000, losing 9-2. In 1945 they toured Egypt, Palestine, Lebanon, Syria and Malta, playing more than 90 matches.",
+    "In peacetime Hajduk became one of the \"Big Four\" of Yugoslav football alongside Dinamo Zagreb, Partizan and Red Star Belgrade, winning the 1950 championship without losing a match. Europe brought two semi-finals \u2014 the 1973 Cup Winners' Cup and the 1984 UEFA Cup, that run taking in Metz, Stuttgart, Torino, Dnipro and Universitatea Craiova. Torcida, formed on 28 October 1950, is the oldest organised supporters' group in Europe and still fills Poljud's north stand.",
+    "Expect questions on Vis and the war years, the club's record-breakers, the players who left for bigger leagues, and Torcida itself. Every answer is explained, so you finish knowing why."
+  ],
+  "faq": [
+    {
+      "q": "Why is Hajduk Split's wartime history so unusual?",
+      "a": "The club was re-formed on the island of Vis on 7 May 1944 in front of Tito and British officers, and became the official football team of the Yugoslav resistance \u2014 touring and playing Allied service sides rather than a domestic league."
+    },
+    {
+      "q": "What is Torcida?",
+      "a": "Hajduk's supporters' group, founded on 28 October 1950 and the oldest organised supporters' group in Europe. The name comes from the Brazilian torcida the founders saw at that year's World Cup."
+    },
+    {
+      "q": "How far have Hajduk Split gone in Europe?",
+      "a": "Two semi-finals \u2014 the Cup Winners' Cup in 1973 and the UEFA Cup in 1984 \u2014 plus five European quarter-finals."
+    },
+    {
+      "q": "Is the Hajduk Split quiz free?",
+      "a": "Yes \u2014 free in your browser, no sign-up, and every answer is explained."
+    }
+  ]
+}
 ];

@@ -705,7 +705,7 @@ const CLUB_PACK_TO_QB = {
   Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
   Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
   Besiktas: "Besiktas", Trabzonspor: "Trabzonspor", ClubBrugge: "Club Brugge",
-  RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Basel: "Basel",
+  RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Hajduk: "Hajduk Split", Basel: "Basel",
   Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
   Leeds: "Leeds United", WestHam: "West Ham",
   Sunderland: "Sunderland", Ipswich: "Ipswich Town", Palace: "Crystal Palace", Fulham: "Fulham", Brighton: "Brighton",
@@ -737,7 +737,7 @@ const CLUB_LEAGUES = {
   // Wave E: lone clubs from Serbia/Croatia/Switzerland — kept in "other" until a
   // second club from each country justifies its own league section (same rule
   // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
-  RedStar: "other", DinamoZagreb: "other", Basel: "other",
+  RedStar: "other", DinamoZagreb: "croatian", Hajduk: "croatian", Basel: "other",
   Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
   Sunderland: "pl", Ipswich: "pl", Palace: "pl", Fulham: "pl", Brighton: "pl",
   // Wave J: Burnley/Wolves sit in the Championship for 2026-27, but the in-app
@@ -771,6 +771,7 @@ const CLUB_LEAGUE_SECTIONS = [
   { key: "scottish", label: "Scottish Premiership" },
   { key: "eredivisie", label: "Eredivisie" },
   { key: "belgian", label: "Belgian Pro League" },
+  { key: "croatian", label: "Croatian First League" },
   { key: "southamerica", label: "South America" },
   { key: "other", label: "More clubs" },
 ];
@@ -809,7 +810,7 @@ export const CLUB_ABBR = {
   Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
   Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
   Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
-  RedStar: "CZ", DinamoZagreb: "DIN", Basel: "BAS",
+  RedStar: "CZ", DinamoZagreb: "DIN", Hajduk: "HAJ", Basel: "BAS",
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU",
   Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
   Bournemouth: "BOU", Brentford: "BRE", Burnley: "BUR", Wolves: "WOL",
@@ -839,7 +840,7 @@ const CLUB_SLUG_TO_PACK = {
   "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
   "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
   "besiktas": "Besiktas", "trabzonspor": "Trabzonspor", "club-brugge": "ClubBrugge",
-  "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "basel": "Basel",
+  "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "hajduk-split": "Hajduk", "basel": "Basel",
   "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
   "leeds-united": "Leeds", "west-ham": "WestHam",
   "sunderland": "Sunderland", "ipswich": "Ipswich", "crystal-palace": "Palace", "fulham": "Fulham", "brighton": "Brighton",
@@ -1201,6 +1202,10 @@ export const CLUB_PACKS = {
   },
   DinamoZagreb: {
     name: "Dinamo Zagreb", icon: "🔵", color: "#1B458F",
+    questions: [],
+  },
+  Hajduk: {
+    name: "Hajduk Split", icon: "⚪", color: "#0E4C92",
     questions: [],
   },
   Basel: {
