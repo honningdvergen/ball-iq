@@ -129,6 +129,37 @@ Do not rebuild the "soccer layer".
 
 ## 🔴 NOW — in priority order
 
+### 📱 ANDROID: 1.4.1 IS LIVE. The four Play flags, and what each actually needs
+
+**1.4.1 / vc10 published 2026-07-30** — 177 regions, 11 installs. ⚡ Google
+reviewed it in MINUTES; a revoke attempted minutes later failed with "already
+reviewed". **Plan Android releases as if there is no take-back window.**
+
+Play's release analysis raises 4 items against 10 (1.4.1). Read at source:
+
+| # | Play says | What it actually is | Cost |
+|---|---|---|---|
+| 1 | Edge-to-edge may not work for all users | **Our bug.** The report chip rendered under the nav bar. Found independently on the emulator. | ✅ **FIXED** in vc12 |
+| 2 | Deprecated fullscreen APIs | `Window.get/setStatusBarColor`, called from `com.capacitorjs.plugins.statusbar.StatusBar`. **Not our code.** `@capacitor/status-bar` 6.0.3 IS the newest 6.x — no patch exists. | **Capacitor 7 migration** (core + android + ios + cli + 13 plugins) |
+| 3 | Optimise bitmap images | 50 PNGs, 6.0 MB in `android/app/src/main/res`. Convert to WebP. | Low risk, do with #2 |
+| 4 | R8 config → higher memory | ⚠️ NOT "enable R8" — **our R8 registered fine.** It wants **AGP ≥ 9.0**; we are on **8.2.1** with Gradle 8.2.1. | AGP + Gradle upgrade |
+
+**None of 2–4 is a defect.** They are deprecation and toolchain recommendations;
+the app works. Only #1 was a real user-facing bug, and it is fixed.
+
+### THE PLAN (agreed shape — ship the fix, then upgrade deliberately)
+
+**1.4.2 / vc12 — NOW.** Carries only the nav-bar inset fix. Built and staged at
+`~/Downloads/balliq-1.4.2-vc12.aab`. Resolves flag #1, the only one users feel.
+
+**1.5.0 — a dedicated platform-upgrade release.** Capacitor 6 → 7, AGP 8.2.1 → 9.x,
+Gradle to match, PNG → WebP. Clears flags #2, #3, #4 together. This is a real
+migration touching every native plugin and both platform projects.
+⚠️ Do NOT bundle it into a same-day patch — and now that we know Play publishes
+in minutes, there is no window to catch a regression after the fact. Test it on
+the `balliq_r8` emulator first (see [[reference_android_emulator]]).
+
+
 ### ⚠️ NEW 2026-07-30 — ALEX: AdSense is DORMANT on ~175 pages (one line)
 
 Found by a real Chrome performance trace on `/quiz/`: AdSense never appeared in
