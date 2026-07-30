@@ -1,11 +1,67 @@
 # Ball IQ — the list
 
-**Last updated: 2026-07-29.** Single source of truth for what's in flight.
+**Last updated: 2026-07-30.** Single source of truth for what's in flight.
 `[ ]` = open · **ALEX** = needs you · **CLAUDE** = I do it.
 
 Claude: update this file whenever something lands, and re-read it when asked
 "what's left". It exists because a chat scrollback is not a plan. Completed
 items are deleted, not archived — git history is the archive.
+
+---
+
+## TODAY — 2026-07-30
+
+### ⚠️ THE TRAP THAT COST THE MORNING: check the branch FIRST
+The repo AND Xcode were sitting on **`desktop-web-refresh`, 378 commits behind
+main**, with a `questions.js` roughly half the size of prod's. This is the second
+time in two days. What it cost:
+
+- Alex's iPhone build failed and showed **1.2.0 / build 40** — not a signing or
+  Capacitor problem, just the wrong branch checked out.
+- I "found and fixed" a second bug (`q_3ffbe5`, a 2016/2014 mix-up) that **was
+  already correct on main.** A stale-branch phantom, reported as real. Retracted.
+- The detector's first results (3,495 MCQs) were meaningless; prod has 6,394.
+
+**Rule going forward: `git rev-parse --abbrev-ref HEAD` before ANY bank or build
+work.** A clean `git status` tells you nothing about which branch you're clean on.
+The stale edits are stashed (`git stash list`) if ever wanted, but they're
+superseded.
+
+### DONE — the R9 distractor + a permanent gate (f323644, NOT YET PUSHED)
+Alex's friend hit `q_1d9b9c` in Daily 7: "Ronaldo R9" offered on the 2016 UCL
+final shootout. R9 retired 2011. Two defects at once — impossible option, AND a
+near-name twin of the correct answer ("Cristiano Ronaldo") that told the player
+which Ronaldo was meant.
+
+Not fixed by swapping the option: `q_132f55` already asks who scored the decisive
+fifth penalty, so a swap would leave two near-identical questions. `q_1d9b9c` now
+asks who OPENED the scoring (Ramos, 15') — nobody asked that, and Bale/Marcelo/
+Ronaldo all started in Milan, so every option is genuinely plausible. Also trimmed
+`q_132f55`'s hint, which named Ramos and would have leaked the new answer.
+
+`scripts/audit-distractor-plausibility.mjs` now gates `npm run build`. It only
+fails on the **intersection** (near-name twin AND impossible), because each half
+alone is not a defect — `q_d2fc88` deliberately offers Thomas vs Gerd Müller and
+that IS the question, while any "scored in 2002, 2006, 2010 AND 2014" stem is
+era-bounded by construction. Tiers 2-3 are advisory: `npm run audit:distractors`.
+
+⚠️ **The detector produced three false-positive classes before it was trusted**,
+all caught by running it, not reading it — including a `\d` guard that silently
+excluded "Ronaldo R9" itself, so it reported **0 against the exact row it was
+built for**. Verified by reinjecting the bug and watching the build fail.
+
+### DONE — iOS build unblocked
+`pod install` was failing with `Encoding::CompatibilityError` — a CocoaPods
+locale bug, nothing to do with the project. **Fix: export `LANG`/`LC_ALL` to
+`en_US.UTF-8` before `cap sync`.** Then clean dist → build → sync → prune
+(reclaimed 15.85 MB) → `xcodebuild` = **BUILD SUCCEEDED**. main is 1.4.0 / 51.
+
+### ALEX — two MCP servers did NOT register
+Perplexity and Firecrawl are both absent from `claude mcp list`; hitting Run did
+nothing. Both commands still contained the literal `YOUR_KEY` placeholder. Worth
+finishing — they unblock real work: Firecrawl gets past the Google Trends wall
+that killed the club-per-market research, and Perplexity answers the "which clubs
+does country X support" question with citations I can verify.
 
 ---
 
