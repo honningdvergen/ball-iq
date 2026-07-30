@@ -2701,11 +2701,19 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
               onReport({ id: q?.id, q: q?.q, picked, correct, mode });
               setReportedKeys(prev => new Set(prev).add(rkey));
             }}
+            // Was 12px var(--t3) — our DIMMEST token — borderless, on a screen
+            // that auto-advances. Zero reports were ever filed. A control the
+            // player cannot find is the same as no control, and playtesters have
+            // a far better hit rate on real question defects than any audit we
+            // run, so this is the highest-value thing on the screen after the
+            // answer itself. Now t2 on a bordered chip at 13px, and a 44px min
+            // height so it clears the touch-target floor.
             style={{
-              display:"block", margin:"12px auto 0", padding:"6px 10px",
-              background:"none", border:"none", cursor: reported ? "default" : "pointer",
-              color:"var(--t3)", fontSize:12, fontWeight:600, fontFamily:"inherit",
-              opacity: reported ? 0.65 : 1,
+              display:"block", margin:"14px auto 0", padding:"10px 14px", minHeight:44,
+              background:"var(--s2)", border:"1px solid var(--border)", borderRadius:10,
+              cursor: reported ? "default" : "pointer",
+              color: reported ? "var(--accent)" : "var(--t2)",
+              fontSize:13, fontWeight:700, fontFamily:"inherit",
               WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
             }}
           >
@@ -8351,16 +8359,36 @@ function AppInner() {
   // question_reports (RPC-only) so we can re-check flagged items. We always thank
   // the player even if the write fails — the point is to defuse "this is wrong"
   // frustration in-app rather than have it become a 1-star review.
-  const reportQuestion = useCallback((info) => {
-    supabase.rpc("report_question", {
-      p_question_id: info?.id != null ? String(info.id) : null,
-      p_question_text: info?.q || "(unknown)",
-      p_picked: info?.picked ?? null,
-      p_correct: info?.correct ?? null,
-      p_mode: info?.mode ?? null,
-      p_reason: null,
-    }).catch((e) => { try { console.warn("report_question failed", e); } catch {} });
-    showToast("Thanks — we'll double-check this one ⚽");
+  // ⚠️ supabase.rpc() RESOLVES with {data, error} on a Postgres error — it does
+  // NOT throw — so a .catch()-only version never fired and we thanked the player
+  // regardless. Combined with the button being near-invisible, the result was
+  // that public.question_reports held ZERO rows for the entire life of the app,
+  // while playtesters were finding real question defects and texting Alex instead.
+  // Same failure shape as sendPlayInvite. Read `error`, and only claim success
+  // when there was one.
+  const reportQuestion = useCallback(async (info) => {
+    try {
+      const { error } = await supabase.rpc("report_question", {
+        p_question_id: info?.id != null ? String(info.id) : null,
+        p_question_text: info?.q || "(unknown)",
+        p_picked: info?.picked ?? null,
+        p_correct: info?.correct ?? null,
+        p_mode: info?.mode ?? null,
+        p_reason: null,
+      });
+      if (error) {
+        console.warn("[report_question]", error.message);
+        Sentry.captureException(error, { tags: { area: "question-report" } });
+        showToast("Couldn't send that report — we'll look into it");
+        return false;
+      }
+      showToast("Thanks — we'll double-check this one ⚽");
+      return true;
+    } catch (e) {
+      console.warn("[report_question]", e?.message || e);
+      showToast("Couldn't send that report — we'll look into it");
+      return false;
+    }
   }, [showToast]);
 
   // Audit 2.4: surface localStorage quota exhaustion. safeSetItem fires this
