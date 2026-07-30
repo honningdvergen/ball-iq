@@ -260,7 +260,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 // joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
-function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
+function MultiplayerLobby({ code, onExit, defaultName, onRematch, onReport }) {
   const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
@@ -435,7 +435,7 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch }) {
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -803,7 +803,7 @@ function useCountUp(target, { duration = 850, delay = 400 } = {}) {
   return val;
 }
 
-function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
+function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
   const isSurvival = room?.mode === 'survival';
   // Survival ranks by who lasted longest (alive > later elimination); Race
   // ranks by points. All fall back to joined_at asc so ties stay stable
@@ -824,6 +824,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
   const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
   const winner = sorted[0];
   const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
+  const [reportedQs, setReportedQs] = useState(() => new Set());
   // Survival: if everyone got eliminated, the "winner" is whoever lasted
   // longest — frame it as that rather than "You won!" beside their own 💀 row.
   const survivalLastStanding = isSurvival && !!winner && winner.eliminated_at_q != null;
@@ -1240,6 +1241,55 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch }) {
         </div>
         )}
 
+        {/* The round's questions, with a report on each. Two things at once:
+            multiplayer was the last mode with NO report path, and the playtester
+            note that this screen is dull was fair — it showed scores and nothing
+            you actually played.
+
+            ⚠️ Deliberately renders the PROMPT ONLY, never question.correct. The
+            answer key is embedded in the stored jsonb today, but Phase 2 of the
+            answer-key hardening strips it (task #12) — anything reading `correct`
+            here would break the day that ships. A full answer review belongs with
+            Phase 2, sourced from the member-gated reveal_question RPC. */}
+        {Array.isArray(room?.questions) && room.questions.length > 0 && onReport && (
+          <div style={{ marginBottom: 20 }}>
+            <div className="ds-eyebrow" style={{ textAlign: 'center', marginBottom: 10 }}>
+              This round's {room.questions.length} questions
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {room.questions.map((q, i) => {
+                const rkey = q?.id != null ? String(q.id) : `idx:${i}`;
+                const done = reportedQs.has(rkey);
+                return (
+                  <div key={i} style={{ background: 'var(--s1)', border: '1px solid var(--border)',
+                                        borderRadius: 11, padding: '11px 13px' }}>
+                    <div style={{ fontSize: 13.5, color: 'var(--t1)', lineHeight: 1.5 }}>
+                      <span style={{ color: 'var(--t3)', fontWeight: 700 }}>{i + 1}. </span>{q?.prompt}
+                    </div>
+                    <button
+                      type="button"
+                      disabled={done}
+                      onClick={() => {
+                        if (done) return;
+                        onReport({ id: q?.id, q: q?.prompt, picked: null, correct: null,
+                                   mode: `mp-${room?.mode || 'race'}` });
+                        setReportedQs(prev => new Set(prev).add(rkey));
+                      }}
+                      style={{ marginTop: 8, padding: '6px 10px', minHeight: 34,
+                               background: 'none', border: '1px solid var(--border)', borderRadius: 8,
+                               cursor: done ? 'default' : 'pointer',
+                               color: done ? 'var(--accent)' : 'var(--t3)',
+                               fontSize: 11.5, fontWeight: 700, fontFamily: 'inherit',
+                               WebkitAppearance: 'none', appearance: 'none',
+                               WebkitTextFillColor: 'currentColor' }}>
+                      {done ? '✓ Reported' : '⚑ This looks wrong'}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div className="mp-go-actions">
           {onRematch && (
             <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>

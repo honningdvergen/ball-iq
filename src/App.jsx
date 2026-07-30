@@ -2839,7 +2839,11 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
       // Per-game option shuffle: authored order skews correct answers toward
       // A/B and turns rematches into answer-position memory tests.
       const idx = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
-      return { prompt: q.q, options: idx.map(i => q.o[i]), correct: idx.indexOf(q.a) };
+      // `id` rides along so a multiplayer report identifies the exact bank row.
+      // Without it a report lands with a null question_id and only the prompt
+      // text to match on. Additive: existing readers take prompt/options/correct
+      // and ignore the rest.
+      return { id: q.id, prompt: q.q, options: idx.map(i => q.o[i]), correct: idx.indexOf(q.a) };
     }),
   };
 }
@@ -11192,6 +11196,7 @@ function AppInner() {
           <div className="mp-cap">
           <React.Suspense fallback={<div className="screen" />}>
             <MultiplayerLobby
+              onReport={reportQuestion}
               key={stage1RoomCode}
               code={stage1RoomCode}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
