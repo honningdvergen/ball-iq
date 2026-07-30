@@ -2316,7 +2316,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       // userAnswerText carries what the user picked so the missed-answers
       // review on the result screen can show "✗ X · ✓ Y". Typed inputs
       // don't pass it (different code path); those just show "✓ correct".
-      wrongAnswersRef.current = [...wrongAnswersRef.current, { q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat, hint: q.hint }];
+      wrongAnswersRef.current = [...wrongAnswersRef.current, { id: q.id, q: q.q, correct: q.type === "typed" ? q.typed_a : q.type === "tf" ? (q.a ? "TRUE" : "FALSE") : q.o[q.a], user: userAnswerText, cat: q.cat, hint: q.hint }];
     }
     // Phase 5x: capture the full answer record for the Daily review
     // screen. userIndex is the actual selected index passed from
@@ -4483,7 +4483,13 @@ function StumpScreen({ row, onPlayFull, onHome }) {
 // Wrong-answer review list — shared by the mobile results stack and the
 // desktop rd-card so the learn-loop survives at every width (desktop used to
 // silently drop it: the list lived inside .rd-mobile, display:none >= 1024).
-function WrongAnswersReview({ wrongAnswers }) {
+// The results screen is the RIGHT home for reporting, and until now it had none.
+// In-quiz, the report control sits on a screen that auto-advances, so it can be
+// gone before the player has finished reading. Here there is no timer, the player
+// is already re-reading the questions they got wrong, and every MCQ mode — daily,
+// classic, club, league, survival, hot streak — ends up on this one component.
+function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
+  const [reported, setReported] = useState(() => new Set());
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
   return (
     <div style={{marginTop:24}}>
@@ -4501,6 +4507,31 @@ function WrongAnswersReview({ wrongAnswers }) {
             )}
             <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
             {w.hint && <div className="wr-why">{w.hint}</div>}
+            {onReport && (() => {
+              const rkey = w.id != null ? String(w.id) : w.q;
+              const done = reported.has(rkey);
+              return (
+                <button
+                  type="button"
+                  disabled={done}
+                  onClick={() => {
+                    if (done) return;
+                    onReport({ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode });
+                    setReported(prev => new Set(prev).add(rkey));
+                  }}
+                  style={{
+                    marginTop:10, padding:"7px 11px", minHeight:36,
+                    background:"none", border:"1px solid var(--border)", borderRadius:9,
+                    cursor: done ? "default" : "pointer",
+                    color: done ? "var(--accent)" : "var(--t2)",
+                    fontSize:12, fontWeight:700, fontFamily:"inherit",
+                    WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
+                  }}
+                >
+                  {done ? "✓ Reported — thanks" : "⚑ This looks wrong"}
+                </button>
+              );
+            })()}
           </div>
         ))}
       </div>
@@ -4508,7 +4539,7 @@ function WrongAnswersReview({ wrongAnswers }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label }) {
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -4683,7 +4714,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
       </div>
 
       {/* Wrong answers review — below the buttons */}
-      <WrongAnswersReview wrongAnswers={wrongAnswers} />
+      <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
       </div>{/* /.rd-mobile */}
 
       {/* ── desktop-web-refresh (Results #03): centered card. display:none <1024;
@@ -4723,7 +4754,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
         <div style={{maxWidth:560, margin:"0 auto"}}>
-          <WrongAnswersReview wrongAnswers={wrongAnswers} />
+          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
         </div>
       </div>
     </div>
@@ -11194,6 +11225,7 @@ function AppInner() {
             survivalBest={stats.bestStreak}
             iqHistory={iqHistory}
             wrongAnswers={wrongAnswers}
+            onReport={reportQuestion}
             askedQuestions={questions}
             classicBest={stats.bestScore || 0}
             label={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
