@@ -325,7 +325,13 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    clearly football, clearly not the CTA — and #58CC02 reads as a light source
    against it instead of disappearing into a tint of itself. */
 .mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(150deg,#14301C 0%,#122318 34%,#0F1117 78%);border:1px solid #24462C;box-shadow:0 0 34px -16px rgba(88,204,2,0.45);overflow:hidden;contain:layout paint style;}
+.mp-card{cursor:pointer;}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
+/* .mp-card-row is a real <button> so the card body is keyboard-reachable and
+   announced — these rules only strip the UA button chrome so it still looks like
+   the plain row it replaced. width:100% keeps the whole row a tap target rather
+   than shrink-wrapping the text. */
+.mp-card-open{width:100%;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .mp-card-icon{width:46px;height:46px;border-radius:13px;background:rgba(88,204,2,0.13);border:1px solid rgba(88,204,2,0.28);display:inline-flex;align-items:center;justify-content:center;color:#8AE042;flex-shrink:0;line-height:1;}
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
@@ -644,7 +650,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .cdown{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;}
 .player-input-row{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
 .player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:'Inter',sans-serif;}
-.player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
+/* font-size is 16px because it MUST be: iOS auto-zooms on focusing any input
+   below 16, and WKWebView never restores the scale on blur — so one tap on a
+   player-name field would leave the whole app zoomed. Same floor as .typed-inp
+   and the Login inputs. Do not shrink for layout; shorten the placeholder. */
+.player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:16px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
 .player-inp:focus{border-color:var(--accent-b);background:var(--s2);}
 .remove-btn{width:28px;height:28px;border-radius:7px;border:none;background:var(--s2);color:var(--t3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;}
 .remove-btn:hover{background:rgba(248,113,113,0.12);color:var(--red);}

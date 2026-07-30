@@ -16,15 +16,33 @@ import { Users } from "lucide-react";
 // the slower route to the same place. Merged: the primary CTA now runs the
 // invite flow directly. The Online tab is still one tap away in the nav for
 // anyone joining with a code, so nothing became unreachable.
-export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onLocal, onInvite }) {
+// The card BODY is also a target. Everything outside the two buttons — the icon,
+// the title, the subtitle, the padding — used to be a dead tap on the largest
+// card on Home. It now opens the Online tab, which is where a curious tap wants
+// to go (joining with a code lives there).
+//
+// The title row is a real <button> so this is reachable by keyboard and
+// announced by VoiceOver; the outer div's handler only exists to catch the
+// padding, which no assistive tech targets anyway. Both CTAs stopPropagation —
+// without it, "Same phone" would start a local game AND switch tabs behind it.
+export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onLocal, onInvite, onOpen }) {
   const handleInvite = useCallback((e) => {
     e?.stopPropagation();
     onInvite?.();
   }, [onInvite]);
+  const handleLocal = useCallback((e) => {
+    e?.stopPropagation();
+    onLocal?.();
+  }, [onLocal]);
+  const handleOpen = useCallback((e) => {
+    e?.stopPropagation();
+    onOpen?.();
+  }, [onOpen]);
 
   return (
-    <div className="mp-card" role="group" aria-label="Multiplayer">
-      <div className="mp-card-row">
+    <div className="mp-card" role="group" aria-label="Multiplayer" onClick={handleOpen}>
+      <button type="button" className="mp-card-row mp-card-open" onClick={handleOpen}
+              aria-label="Open the Online tab">
         <span className="mp-card-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <div className="mp-card-titles">
           <div className="mp-card-title">Play with Friends</div>
@@ -35,7 +53,7 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onLocal
               listing and the screenshots. The app was the only place silent. */}
           <div className="mp-card-sub">Live rooms, up to 8 players.</div>
         </div>
-      </div>
+      </button>
       <div className="mp-card-ctas">
         {/* Labels finish "I want to…" rather than naming our internal
             taxonomy, and the second answers the question a first-timer
@@ -45,7 +63,7 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onLocal
             and the singular undersold the one thing that makes our
             multiplayer unusual. */}
         <button type="button" className="mp-card-cta" onClick={handleInvite} aria-label="Create a room and invite friends">Invite friends</button>
-        <button type="button" className="mp-card-cta ghost local" onClick={onLocal} aria-label="Play locally on one phone">Same phone</button>
+        <button type="button" className="mp-card-cta ghost local" onClick={handleLocal} aria-label="Play locally on one phone">Same phone</button>
       </div>
     </div>
   );

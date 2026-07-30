@@ -1059,6 +1059,10 @@ ${/* THESE THREE SLOTS ARE THE ONLY SITE-WIDE INTERNAL LINKS WE CONTROL, and
 <a href="${SITE.base}/quiz/champions-league/">Champions League quiz</a>
 <a href="${SITE.base}/quiz/">All quizzes</a>
 <a href="${SITE.base}/lists/">Football lists</a>
+${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orphan,
+      reachable only via sitemap.xml. It is the one page built specifically to
+      EARN links, so leaving it unlinked from our own site was self-defeating. */ ''}
+<a href="${SITE.base}/study/football-trivia-memory/">Trivia memory study</a>
 <a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
@@ -1385,7 +1389,7 @@ ${footer()}`;
   return { slug: cfg.slug, lang: cfg.lang, canonical, count: rows.length };
 }
 
-function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
+function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages = []) {
   const all = clubRows(cfg.club);
   const hints = clubHintRows(cfg.club);
   if (hints.length < MIN_HINTS) {
@@ -1431,10 +1435,29 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = []) {
   const medium = all.filter((x) => x.diff === 'medium').length;
   const hard = all.filter((x) => x.diff === 'hard').length;
 
+  // ⚠️ Nation pages were a SEALED ISLAND. Measured 2026-07-30: each of the nine
+  // received exactly 8 inbound internal links — from the other eight nations and
+  // nowhere else. Neither the hub nor any of the 117 club pages linked one, so
+  // the class got zero equity from the bulk of the site, against an 80-link
+  // average for clubs. Same defect class as the 50 orphaned /lists pages, and
+  // worse here because GSC has nation pages as our BEST converters:
+  // /quiz/argentina/ runs 7.5% CTR, ahead of Liverpool (3.8%), Newcastle (2.8%)
+  // and Arsenal (2.0%).
+  //
+  // Rotate rather than slice — `slice(0, N)` would point all 117 club pages at
+  // the same first nations and leave the tail orphaned, which is exactly the bug
+  // the nation-to-nation mesh above already had to fix once.
+  const nStart = clubPages.findIndex((p) => p.slug === cfg.slug);
+  const nationSlice = nationPages.length
+    ? Array.from({ length: Math.min(2, nationPages.length) },
+      (_, i) => nationPages[(Math.max(0, nStart) + i) % nationPages.length])
+    : [];
+
   const related = [
     ...clubPages.filter((p) => p.slug !== cfg.slug),
     ...catPages,
     ...playerPages,
+    ...nationSlice,
   ];
 
   const clubBadge = CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name);
@@ -2833,7 +2856,7 @@ async function main() {
   const built = [];
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
-  const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages));
+  const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages, nationPages));
   // Siblings = every OTHER language this slug exists in, so each localised page
   // links the whole cluster rather than just itself and English.
   const builtEs = CLUBS_INTL.map((c) =>

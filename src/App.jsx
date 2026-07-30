@@ -5532,7 +5532,15 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             enterKeyHint="go"
             aria-label="Room code"
             style={{flex:1,minWidth:0,border:"none",background:"transparent",outline:"none",padding:"15px 0",
-              fontSize:joinCode ? 17 : 14.5,fontWeight:joinCode ? 800 : 500,
+              // ⚠️ 16px is a HARD FLOOR — see the same note in Login.jsx. iOS
+              // auto-zooms the page on focusing any input below it, and
+              // WKWebView never restores the scale on blur, so ONE tap on this
+              // field left the whole app zoomed until relaunch (reported on
+              // device 2026-07-30: the Lobby's room code and Leave Room button
+              // were pushed off-screen afterwards). The empty state was 14.5
+              // and only grew to 17 once you typed — by which point the zoom
+              // had already fired. Never drop a focusable field below 16.
+              fontSize:joinCode ? 17 : 16,fontWeight:joinCode ? 800 : 500,
               letterSpacing:joinCode ? "0.22em" : "normal",
               color:"var(--text)",
               fontFamily:joinCode ? "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" : "inherit"}}
@@ -6496,7 +6504,7 @@ const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
 const FAQ_ENTRIES = [
   {
     q: "How do I play with friends online?",
-    a: `Tap "Play with Friends" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to three friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
+    a: `Tap "Play with Friends" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to seven friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
   },
   {
     q: "How do I share a multiplayer invite?",

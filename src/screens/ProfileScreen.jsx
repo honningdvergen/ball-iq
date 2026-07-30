@@ -963,7 +963,9 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
               value={reportMessage}
               onChange={e => setReportMessage(e.target.value.slice(0, 500))}
               rows={3}
-              style={{width:"100%",padding:"12px 14px",fontSize:14,borderRadius:10,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",resize:"vertical",fontFamily:"inherit",marginBottom:16}}
+              // fontSize 16, not 14 — iOS auto-zooms on focus below 16 and never
+              // restores the scale on blur. Same floor as .typed-inp / .player-inp.
+              style={{width:"100%",padding:"12px 14px",fontSize:16,borderRadius:10,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",resize:"vertical",fontFamily:"inherit",marginBottom:16}}
             />
             <div style={{display:"flex",gap:8}}>
               <button

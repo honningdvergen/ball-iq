@@ -366,6 +366,11 @@ function HomeScreenImpl({
           setScreen("online-stage1");
         }}
         onLocal={() => startMode("local")}
+        // Tapping the card anywhere outside the two buttons was a dead click.
+        // Guests are deliberately NOT gated here — the Online tab is viewable
+        // signed-out and gates on create/join, so sending them to an auth prompt
+        // for a browse would be a harsher funnel than the buttons have.
+        onOpen={() => setTab("online")}
         showToast={showToast}
       />
       </div>
