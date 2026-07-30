@@ -124,6 +124,52 @@ Do not rebuild the "soccer layer".
 
 ## 🔴 NOW — in priority order
 
+### ⚠️ NEW 2026-07-30 — ALEX: AdSense is DORMANT on ~175 pages (one line)
+
+Found by a real Chrome performance trace on `/quiz/`: AdSense never appeared in
+the third-party list. It isn't a bug — `AD_SLOTS` in `gen-seo-pages.mjs` has zero
+active entries, the slot ids are commented out, so `ADS_ENABLED = false` and the
+gate emits neither units nor loader on ANY generated page.
+
+    // afterQA: '4505987680', afterFaq: '4505987680', listInline: '4505987680',
+
+**10 `ads: true` call sites cover ~175 live pages** — club, player, category,
+nation, lists, study. Our highest-traffic pages, the ones GSC shows converting.
+Earning zero. (Only `dist/index.html` loads the ad library, and it is correctly
+native-guarded.)
+
+The disable was deliberate and the reasoning was right: *"DORMANT until AdSense is
+confirmed SERVING, so no empty ad boxes render before ads fill."*
+
+**ALEX — this is one check:** open AdSense → Nettsteder. Does balliq.app show
+approved / "Klar"? If yes, uncomment that line, rebuild, ship. If no, leave it —
+the current state is correct. This is the open half of the AdSense task and has
+been waiting since 2026-07-20.
+
+### ✅ 2026-07-30 — performance audit: NOTHING TO FIX
+
+Real Chrome trace + Lighthouse on `/quiz/`, mobile, **Slow 4G + 4× CPU throttle**:
+
+| metric | result | threshold |
+|---|---|---|
+| LCP | **1,330 ms** | good ≤ 2,500 |
+| CLS | **0.00** | good ≤ 0.1 |
+| TTFB | 36 ms | — |
+| Lighthouse a11y / best-practices / SEO / agentic | **100 / 100 / 100 / 100** | 49 passed, 0 failed |
+| DOM | 420 elements, depth 8 | small |
+| 3rd parties | Clarity only, 1.4 kB / 143 ms | — |
+
+Largest single cost is style recalc (409 ms) — but that is at 4× throttle, so
+~100 ms real. **No optimisation work is warranted.** Recording this so nobody
+re-runs it: the pages are fast, and the audit's value was finding the AdSense
+gap, not a perf problem.
+
+⚠️ Correction for the record: I briefly claimed the generated pages were
+render-blocked by Google Fonts. They are not — a truncated grep hid
+`media="print" onload="this.media='all'"`. Both `index.html` and the generator
+use the non-blocking pattern.
+
+
 ### 1. ~~CLAUDE · Localised club pages~~ — **TWO PILOTS LIVE 2026-07-29**
 - `/es/quiz/boca-juniors/` (7e4b584) — Spanish
 - `/pt/quiz/flamengo/` (5a58437) — Brazilian Portuguese
