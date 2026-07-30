@@ -11,6 +11,7 @@
 // everything here no-ops off-native. Best-effort throughout — push is a
 // nice-to-have layered on top of the in-app inbox, never load-bearing.
 
+import * as Sentry from '@sentry/react';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { supabase } from '../supabase.js';
@@ -37,8 +38,27 @@ let _tapCb = null;         // app-provided router for notification taps
 async function saveToken(token) {
   if (!_uid || !token) return;
   try {
-    await supabase.rpc('register_device_token', { p_token: token, p_platform: Capacitor.getPlatform() });
-  } catch { /* best-effort */ }
+    // ⚠️ supabase.rpc() RESOLVES with {data, error} on a Postgres error — it does
+    // NOT throw — so the previous try/catch here discarded failures without even
+    // logging them. If this RPC ever starts failing (a grant change, an RLS
+    // tweak, a new constraint) the token silently never lands and the user gets
+    // no push notifications FOREVER, with zero signal to us.
+    //
+    // Checked prod 2026-07-30 before changing anything: 20 tokens / 19 users, so
+    // this is hardening, not a live outage. But the same swallow-the-error shape
+    // had already cost us two real failures that day — sendPlayInvite telling
+    // users an opponent was invited when the RPC raised, and report_question
+    // thanking users while question_reports stayed empty for the app's whole life.
+    const { error } = await supabase.rpc('register_device_token', {
+      p_token: token, p_platform: Capacitor.getPlatform(),
+    });
+    if (error) {
+      console.warn('[push] register_device_token', error.message);
+      Sentry.captureException(error, { tags: { area: 'push-token' } });
+    }
+  } catch (e) {
+    console.warn('[push] register_device_token threw', e?.message || e);
+  }
 }
 
 // Set the tap router BEFORE registerPush so a cold-launch-from-notification tap
