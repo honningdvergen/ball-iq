@@ -115,6 +115,7 @@ const EXTRA = {
   // near-black one — so a real transfer read as the same club listed twice.
   // América-MG ("Coelho") play in green and white.
   "America Mineiro": "#0B7A3B",
+  "Dinamo Zagreb": "#1B458F",
 };
 
 const key = (s) =>
