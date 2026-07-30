@@ -102,13 +102,22 @@ switch the URL; do **not** redirect `/footle`.
 - Screenshots deliberately NOT refreshed. Alex: shipping the better build now
   beats holding it days for cosmetics. Friend is doing them separately.
 
-### Verified NOT a problem (checked 2026-07-30, do not re-audit)
-Play flags edge-to-edge twice and 1.4.0 is the first release at targetSdk 36
-(1.3.3 was 35), where Android enforces it. **Insets ARE handled**: `viewport-fit=cover`
-plus 16 `safe-area-inset` usages — `.sbar` top spacer, `.tabbar` and
-`.tab-content` on `max(env(safe-area-inset-bottom),34px)`, sheets and banners
-too, and the standalone mirror repeats it. Play's warning is generic advice, not
-a symptom. No Android layout bug.
+### ❌ RETRACTED — this section was WRONG (corrected 2026-07-30 evening)
+
+It used to read: *"Play's warning is generic advice, not a symptom. No Android
+layout bug."* **There was an Android layout bug**, and this note would have told
+the next session not to look for it.
+
+What the reasoning got right: `viewport-fit=cover` is present and 16
+`safe-area-inset` usages exist. What it got wrong: it inferred from *some*
+surfaces handling insets that *all* did. `.quiz-wrap` had a flat
+`padding-bottom:16px`, so on Android three-button nav the last element of a quiz
+— the report chip — rendered under the system bar. Fixed in `93f4edb`.
+
+**The lesson: a survey of the code is not a test of the screen.** The bug was
+found by running the app on a device and looking, in about two minutes, after
+reading the CSS had produced a confident all-clear. Never write "do not
+re-audit" on the strength of a read-through alone.
 
 ---
 
