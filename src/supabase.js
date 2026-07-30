@@ -28,24 +28,44 @@ const isNative = (() => { try { return Capacitor.isNativePlatform() } catch { re
 // does NOT log current native users out. Web keeps the default localStorage
 // store untouched. (Does not address the separate rotating-refresh-token cause
 // of cross-device logout — see the session-persistence backlog note.)
+//
+// ⚡️ Every getItem used to cross the JS↔native bridge. A device log of ONE app
+// open showed 33 `Preferences get` calls, ~30 of them returning the identical
+// access token — because supabase-js reads the session store on essentially
+// every getSession(), and getSession() runs on every query that attaches a JWT.
+// Each call marshals a ~1KB JWT across WKWebView and, being async, yields the
+// event loop, so they serialise into the startup critical path.
+//
+// `mirror` is a write-through in-memory cache. It is safe to treat as
+// authoritative because this adapter is the ONLY writer of these keys — nothing
+// on the native side mutates them out of band. Use `has()` rather than a null
+// check so "loaded, and the value is null" (logged out) is distinguishable from
+// "not yet loaded" and doesn't re-hit the bridge on every read.
+const mirror = new Map()
+
 const nativeStorage = {
   getItem: async (key) => {
+    if (mirror.has(key)) return mirror.get(key)
     try {
       const { value } = await Preferences.get({ key })
-      if (value != null) return value
+      if (value != null) { mirror.set(key, value); return value }
       // One-time migration from the old WKWebView localStorage location.
       const legacy = (typeof localStorage !== 'undefined') ? localStorage.getItem(key) : null
       if (legacy != null) {
         await Preferences.set({ key, value: legacy })
+        mirror.set(key, legacy)
         return legacy
       }
-    } catch { /* fall through to null */ }
+    } catch { return null }   // do NOT cache a transient bridge failure
+    mirror.set(key, null)
     return null
   },
   setItem: async (key, value) => {
+    mirror.set(key, value)
     try { await Preferences.set({ key, value }) } catch { /* best-effort */ }
   },
   removeItem: async (key) => {
+    mirror.set(key, null)
     try { await Preferences.remove({ key }) } catch { /* best-effort */ }
     try { if (typeof localStorage !== 'undefined') localStorage.removeItem(key) } catch {}
   },
