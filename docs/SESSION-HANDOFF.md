@@ -59,6 +59,22 @@ The gates that already exist and do work: eslint, distractor plausibility, lists
 staleness, and now SERP metadata. Converting a finding into a gate has a much
 better track record here than another sweep.
 
+## Design tooling (added 2026-07-30, for the facelift)
+
+`magicui` and `shadcn` MCP servers are now in `~/.claude.json` (user scope) and
+were verified by probing their tool lists, not by trusting "Connected". A backup
+of the config sits at `~/.claude.json.bak-*`.
+
+⚠️ **But read the TODO's facelift section first.** Ball IQ is plain CSS — no
+Tailwind, no shadcn, no GSAP. Six of shadcn's seven tools require a
+`components.json` we do not have, Magic UI ships Tailwind components, and the
+GSAP motion presets need GSAP added. The first facelift decision is a stack
+decision, not a tooling one.
+
+Figma Dev Mode MCP is the one genuinely worth having and it is blocked: Figma
+desktop is not installed on this Mac and the local server at 127.0.0.1:3845
+answers nothing.
+
 ## Tooling state
 
 - **This conversation cannot see Firecrawl, Serena or Semgrep.** They connect

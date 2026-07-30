@@ -187,17 +187,37 @@ the new MP XP award. A green build proves compilation, not behaviour.
 - claude.ai **design-system** tools (`create_design_system`, `create_inspiration_document`).
 - **Chrome ×2** for pulling reference sites, **iOS Simulator** for visual checks.
 
-**Worth adding, in order** (only these — see the MCP inventory note; we already
-carry 24 dead enterprise connectors):
-1. **Figma Dev Mode MCP** — the real gap. Exposes live layer structure, auto-layout,
-   variants and token references so code is generated against the actual design
-   instead of a screenshot. Needs a Figma account + interactive auth. ⚠️ DesignSync
-   cannot authenticate non-interactively — Alex has to paste the `.dc.html` + tokens.
-2. **Magic UI MCP** — animated React + Tailwind components. Closest thing to
-   "motion design" as a tool rather than a snippet library.
-3. **shadcn/ui MCP** — component primitives. Lower value here; we are not on shadcn.
+**ADDED 2026-07-30 — both verified by probing their tool lists, not by "Connected"**
+- `magicui` — `npx -y @magicuidesign/mcp` · 3 tools (listRegistryItems,
+  getRegistryItem, searchRegistryItems). Animated React components.
+- `shadcn` — `npx -y shadcn@latest mcp` · 7 tools (search/view/examples/add-command
+  /audit-checklist across registries).
 
-Skip TouchDesigner, Framer, Webflow, Penpot, MasterGo — none match this stack.
+**Figma Dev Mode MCP: BLOCKED, and it is the one that mattered.** Its server runs
+locally out of the Figma desktop app — `Figma.app is NOT installed` and
+`127.0.0.1:3845/mcp` answers nothing. Needs Alex to install Figma desktop, enable
+the Dev Mode MCP server, and hold a Professional+ plan. Skipped TouchDesigner,
+Framer, Webflow, Penpot, MasterGo — none match this stack.
+
+### ⚠️ THE FINDING THAT MATTERS MORE THAN THE SERVERS
+
+Ball IQ is **plain CSS** — `src/app.css`. Checked package.json: no Tailwind, no
+shadcn, no Radix, no styled-components, no Framer Motion, **no GSAP**.
+
+The entire modern design-tooling ecosystem assumes Tailwind:
+- **6 of shadcn MCP's 7 tools refuse to run without `components.json`.** We have
+  none. As things stand that server is inert here.
+- **Magic UI ships React + Tailwind components.** Its three tools still work as a
+  reference/inspiration source, but nothing can be pasted in as-is.
+- **The 16 GSAP motion presets in `ui-ux-pro-max` are GSAP snippets** — using them
+  means taking on GSAP as a dependency, and SplitText is a paid Club plugin.
+
+So the facelift's real first decision is not which MCP to install, it is:
+**adopt Tailwind (+ maybe GSAP), or stay on hand-written CSS and use these servers
+purely as inspiration?** Adopting Tailwind on an 11.5k-line App.jsx with a
+155-rule `!important` standalone mirror is a big, risky migration — and the mirror
+is exactly the thing that has already broken installed PWAs once. Decide this
+BEFORE any component work, not during.
 
 **⚠️ THE TRAPS — a facelift here is not just CSS**
 1. **The standalone CSS mirror.** `app.css` carries a
