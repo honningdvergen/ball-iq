@@ -193,7 +193,22 @@ the new MP XP award. A green build proves compilation, not behaviour.
 - `shadcn` — `npx -y shadcn@latest mcp` · 7 tools (search/view/examples/add-command
   /audit-checklist across registries).
 
-**Figma Dev Mode MCP: BLOCKED, and it is the one that mattered.** Its server runs
+**Figma Dev Mode MCP: BLOCKED — and on reflection, SKIP IT FOR NOW.**
+
+Pricing checked at source 2026-07-30: Professional **Full seat $16/mo**, Dev seat
+$12/mo. A Dev seat gets Dev Mode and the MCP but can only *view/comment* in
+Design, so a solo dev who both designs and codes needs **Full**. Starter is free
+but has no Dev Mode.
+
+The money is trivial. The reason to skip is **sequencing**: the MCP reads an
+*existing* design file, and there are zero Ball IQ designs in Figma. So the real
+cost is learning Figma and designing every screen first — and the generated code
+would still need heavy rework against plain CSS plus the standalone mirror.
+**Zero-cost test:** design one screen on the free tier and see whether
+designing-before-coding suits how Alex actually works. If it does, $16 is an easy
+yes.
+
+Mechanically it is also blocked right now: the server runs
 locally out of the Figma desktop app — `Figma.app is NOT installed` and
 `127.0.0.1:3845/mcp` answers nothing. Needs Alex to install Figma desktop, enable
 the Dev Mode MCP server, and hold a Professional+ plan. Skipped TouchDesigner,
