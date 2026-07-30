@@ -1,5 +1,11 @@
 # Session handoff — 2026-07-30
 
+> **UPDATE 2026-07-30 evening — the handoff was not needed.** Resuming a
+> conversation REBUILDS its tool registry, so the original session picked up
+> firecrawl, magicui, shadcn, serena, semgrep and chrome-devtools without losing
+> any history. Keep this file as the written record of where things stand; it is
+> no longer a prerequisite for tooling.
+
 **Read this, then `docs/TODO.md`.** Memory loads automatically and carries the
 durable stuff (product decisions, traps, numbers); this file carries the things
 memory can't: what happened today, why, and what is mid-flight.
