@@ -106,6 +106,43 @@
       if (location.protocol === 'capacitor:' ||
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');
+
+        /* ── iOS focus-zoom lock (NATIVE ONLY) ──────────────────────────────
+           iOS zooms the page when a focused input computes under 16px, and
+           WKWebView NEVER restores the scale afterwards. Reported twice on
+           device 2026-07-30: one tap on the room-code box left the entire app
+           zoomed — through the lobby AND a full 10-question multiplayer match,
+           with the header colliding with the status bar.
+
+           Raising every input to >=16px prevents it AT SOURCE and is the real
+           fix. This is the second layer, because prevention is only as good as
+           the next input somebody adds, and it cannot UNDO a zoom already in
+           effect. Adding maximum-scale on focus stops the zoom; REMOVING it on
+           blur is what makes WKWebView snap the scale back to 1.
+
+           Native only, deliberately. On the web this would disable pinch-zoom
+           and fail WCAG 1.4.4 — there, the 16px floor stands alone. */
+        document.addEventListener('DOMContentLoaded', function () {
+          var vp = document.querySelector('meta[name="viewport"]');
+          if (!vp) return;
+          var BASE = vp.getAttribute('content');
+          var LOCKED = BASE + ', maximum-scale=1, user-scalable=no';
+          var isField = function (el) {
+            return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' ||
+                          el.tagName === 'SELECT' || el.isContentEditable);
+          };
+          document.addEventListener('focusin', function (e) {
+            if (isField(e.target)) vp.setAttribute('content', LOCKED);
+          }, true);
+          document.addEventListener('focusout', function (e) {
+            if (!isField(e.target)) return;
+            // Next frame: restoring in the same tick can be coalesced with the
+            // lock and leave the scale stuck at whatever it was.
+            requestAnimationFrame(function () {
+              if (!isField(document.activeElement)) vp.setAttribute('content', BASE);
+            });
+          }, true);
+        });
       } else if (location.pathname === '/' &&
                  !(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) &&
                  !window.navigator.standalone) {

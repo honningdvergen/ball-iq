@@ -200,11 +200,38 @@ for (const q of QB) {
   }
 }
 
+// ── League-era check ─────────────────────────────────────────────────────────
+// The Premier League began in 1992-93, so a cat:"PL" question about 1961 cannot
+// belong there. Reported from a real multiplayer match 2026-07-30: "Which club
+// won the inaugural League Cup in 1961?" served inside a Premier League quiz.
+// Twelve were miscategorised; eleven moved to History / UCL / Managers.
+const PL_ERA_START = 1992;
+// Deliberate exception: the fact is about an ONGOING Premier League fixture and
+// the 1901 date is incidental to it.
+const PL_ERA_ALLOW = new Set(['q_a1a515']);
+
+const yearsIn = (text) => (String(text).match(/\b(1[6-9]\d\d|20\d\d)s?\b/g) || [])
+  .map((m) => (/s$/.test(m) ? parseInt(m, 10) + 9 : parseInt(m, 10)));
+
+const eraMismatch = QB.filter((q) => {
+  if (q.cat !== 'PL' || PL_ERA_ALLOW.has(q.id)) return false;
+  const ys = yearsIn(`${q.q || ''} ${(q.o || []).join(' ')}`);
+  return ys.length > 0 && Math.max(...ys) < PL_ERA_START;
+});
+
 // --quiet is the build gate: fail loudly on Tier 1, stay silent otherwise.
 // Tiers 2-3 are advisory and would just be noise in a deploy log.
 if (process.argv.includes('--quiet')) {
+  if (eraMismatch.length) {
+    console.error(`\n✗ LEAGUE-ERA MISMATCH — ${eraMismatch.length} cat:"PL" question(s) predate 1992:\n`);
+    for (const h of eraMismatch) {
+      console.error(`  ${h.id}  ${h.q}`);
+      console.error('      → recategorise to History / UCL / Managers, or allowlist it in PL_ERA_ALLOW.\n');
+    }
+    process.exit(1);
+  }
   if (!tier1.length) {
-    console.log(`✓ distractor plausibility: no near-name/anachronism pairs (${QB.length} MCQs)`);
+    console.log(`✓ distractor plausibility: no near-name/anachronism pairs (${QB.length} MCQs) · PL era clean`);
     process.exit(0);
   }
   console.error(`\n✗ DISTRACTOR PLAUSIBILITY — ${tier1.length} deletion-grade option(s):\n`);

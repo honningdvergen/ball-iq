@@ -72,9 +72,18 @@ export const DAILY_MIN_ERA = 1950;
  * the decade options sailed through and the very question this was built for was
  * still served. Verified by asserting on that row, not by reading the regex.
  */
+export function yearsReferenced(text) {
+  return (String(text).match(/\b(1[6-9]\d\d|20\d\d)s?\b/g) || []).map((m) => {
+    const y = parseInt(m, 10);
+    // A DECADE spans its later years, so "the 1990s" reaches 1999 — and that
+    // matters: judged as 1990, "Arsenal's famous 1990s back four" and Keegan's
+    // "mid-1990s" Newcastle both read as pre-Premier-League, which they are not.
+    return /s$/.test(m) ? y + 9 : y;
+  });
+}
+
 export function isModernEra(q, minYear = DAILY_MIN_ERA) {
-  const text = `${q.q || ""} ${(q.o || []).join(" ")}`;
-  const years = (text.match(/\b(1[6-9]\d\d|20\d\d)s?\b/g) || []).map((y) => parseInt(y, 10));
+  const years = yearsReferenced(`${q.q || ""} ${(q.o || []).join(" ")}`);
   return years.length === 0 || Math.max(...years) >= minYear;
 }
 
