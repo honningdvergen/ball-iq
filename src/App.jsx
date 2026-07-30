@@ -1,6 +1,7 @@
 import './app.css';
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
 import * as Sentry from '@sentry/react';
+import { CLUB_COLOUR_ALIASES } from './lib/clubColour.js';
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
@@ -5238,6 +5239,21 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
 
 
 // ─── CLUB QUIZ SCREEN ────────────────────────────────────────────────────────
+// What a fan actually types. CLUB_COLOUR_ALIASES already covers the transfer
+// shorthand (spurs, bvb, man utd, atletico…) because the Trail needed the same
+// normalisation, so it is reused rather than duplicated — these are only the
+// terrace nicknames it lacks. Search-only: never rendered, so a wrong-ish entry
+// costs nothing but a stray match.
+const CLUB_SEARCH_NICKNAMES = {
+  gunners: "Arsenal", reds: "Liverpool", toffees: "Everton", citizens: "Man City",
+  "red devils": "Man United", devils: "Man United", blues: "Chelsea",
+  barca: "Barcelona", barça: "Barcelona", madrid: "Real Madrid", juve: "Juventus",
+  nerazzurri: "Inter", rossoneri: "AC Milan", gers: "Rangers", hoops: "Celtic",
+  magpies: "Newcastle", hammers: "West Ham", villans: "Aston Villa",
+  bianconeri: "Juventus", merengues: "Real Madrid", cityzens: "Man City",
+  lilywhites: "Tottenham", potters: "Stoke City", baggies: "West Brom",
+};
+
 function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);
   // Show the real (verified) pool size per club; falls back to the pack count.
@@ -5249,6 +5265,11 @@ function ClubQuizScreen({ onStart, onBack }) {
   // in view at once, and it gets better rather than worse as club waves land.
   const CLUB_PREVIEW = 2;
   const [openLeagues, setOpenLeagues] = React.useState(() => new Set());
+  // Playtester, via Alex: "this NEEDS to have drop down menus, or boxes to search
+  // for a club so you don't have to scroll". 71 packs across 12 league sections,
+  // each collapsed to 2 — finding one club meant scrolling AND expanding. A query
+  // bypasses the grouping entirely and shows a flat ranked list.
+  const [clubQuery, setClubQuery] = React.useState("");
   const toggleLeague = React.useCallback((key) => {
     setOpenLeagues((prev) => {
       const next = new Set(prev);
@@ -5283,7 +5304,93 @@ function ClubQuizScreen({ onStart, onBack }) {
       <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
         Test your deep knowledge of a specific club — history, players, trophies and iconic moments.
       </p>
-      {CLUB_LEAGUE_SECTIONS.map((section) => {
+      {(() => {
+        const q = clubQuery.trim().toLowerCase();
+        const norm = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        // Match on the display name AND the 3-letter code, so "BVB", "psg" and
+        // "dortmund" all land. Prefix matches rank above substring ones, which is
+        // what makes a 2-3 character query feel immediate.
+        const matches = !q ? [] : Object.entries(CLUB_PACKS)
+          .map(([key, pack]) => {
+            const name = norm(pack.name), abbr = norm(CLUB_ABBR[key]);
+            const nq = norm(q);
+            // "spurs" found nothing before this: the pack is named "Tottenham"
+            // with abbr TOT, so the nickname a fan would type matched neither.
+            const aliasTarget = norm(CLUB_COLOUR_ALIASES[nq] || CLUB_SEARCH_NICKNAMES[nq] || "");
+            if (aliasTarget && aliasTarget === name) return { key, pack, rank: 0 };
+            if (name.startsWith(nq) || abbr === nq) return { key, pack, rank: 0 };
+            if (name.includes(nq) || abbr.startsWith(nq)) return { key, pack, rank: 1 };
+            return null;
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.rank - b.rank || a.pack.name.localeCompare(b.pack.name));
+        return (
+          <>
+            <div style={{ position: "relative", marginBottom: 16 }}>
+              <input
+                type="text"
+                value={clubQuery}
+                onChange={(e) => setClubQuery(e.target.value)}
+                placeholder={`Search ${Object.keys(CLUB_PACKS).length} clubs…`}
+                aria-label="Search clubs"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                enterKeyHint="search"
+                style={{
+                  width: "100%", boxSizing: "border-box", padding: "13px 38px 13px 14px",
+                  borderRadius: 12, background: "var(--s1)", border: "1px solid var(--border)",
+                  color: "var(--t1)",
+                  // ⚠️ 16px is a HARD FLOOR — below it iOS auto-zooms on focus and
+                  // WKWebView never restores the scale, leaving the whole app zoomed.
+                  // Three inputs had to be fixed for exactly this on 2026-07-30.
+                  fontSize: 16, fontFamily: "inherit", outline: "none",
+                }}
+              />
+              {clubQuery && (
+                <button type="button" onClick={() => setClubQuery("")} aria-label="Clear search"
+                  style={{ position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)",
+                           width: 30, height: 30, borderRadius: 9, background: "transparent",
+                           border: "none", color: "var(--t2)", fontSize: 15, cursor: "pointer",
+                           fontFamily: "inherit" }}>✕</button>
+              )}
+            </div>
+            {q && (
+              <div style={{ marginBottom: 18 }}>
+                {matches.length === 0 ? (
+                  <div style={{ fontSize: 13.5, color: "var(--t2)", padding: "6px 2px" }}>
+                    No club matches “{clubQuery}”. Try a shorter search.
+                  </div>
+                ) : (
+                  <div className="mode-list">
+                    {matches.map(({ key, pack }) => {
+                      const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
+                      const lightClub = clubReadableText(pack.color) === "#0a0a0a";
+                      const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
+                      return (
+                        <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
+                          style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
+                          <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
+                            <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
+                          </div>
+                          <div className="mi-body">
+                            <div className="mi-name">{pack.name}</div>
+                            <div className="mi-desc">{count} questions</div>
+                          </div>
+                          <div className="mi-arrow">→</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        );
+      })()}
+      {/* League sections hide entirely while searching — two competing lists on
+          one screen is worse than either alone. */}
+      {!clubQuery.trim() && CLUB_LEAGUE_SECTIONS.map((section) => {
         const clubs = Object.entries(CLUB_PACKS).filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key);
         if (!clubs.length) return null;
         const isOpen = openLeagues.has(section.key);
