@@ -39,8 +39,17 @@ android {
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
             }
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Play Console flags the app as unoptimized while this is false.
+            // See proguard-rules.pro — Capacitor registers all 17 plugins by
+            // reflection, so R8 needs explicit keep rules or it strips them and
+            // the build STILL goes green; the breakage is runtime-only.
+            minifyEnabled true
+            // Left off deliberately. The AAB is dominated by the web bundle in
+            // assets/ and the native libs, neither of which resource shrinking
+            // touches, so it would add a way for res/ to go missing in exchange
+            // for almost no size win.
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
