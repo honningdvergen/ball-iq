@@ -9,61 +9,68 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
-## TODAY — 2026-07-30
+## TODAY — 2026-07-30 (evening state)
 
-### ⚠️ THE TRAP THAT COST THE MORNING: check the branch FIRST
-The repo AND Xcode were sitting on **`desktop-web-refresh`, 378 commits behind
-main**, with a `questions.js` roughly half the size of prod's. This is the second
-time in two days. What it cost:
+Per this file's own rule, completed detail is deleted rather than archived —
+git history is the archive. What follows is only what is still true or still open.
 
-- Alex's iPhone build failed and showed **1.2.0 / build 40** — not a signing or
-  Capacitor problem, just the wrong branch checked out.
-- I "found and fixed" a second bug (`q_3ffbe5`, a 2016/2014 mix-up) that **was
-  already correct on main.** A stale-branch phantom, reported as real. Retracted.
-- The detector's first results (3,495 MCQs) were meaningless; prod has 6,394.
+### Shipped this session — all pushed to main, all live
 
-**Rule going forward: `git rev-parse --abbrev-ref HEAD` before ANY bank or build
-work.** A clean `git status` tells you nothing about which branch you're clean on.
-The stale edits are stashed (`git stash list`) if ever wanted, but they're
-superseded.
+| commit | what |
+|---|---|
+| `5cb8655` | **Hajduk Split** — 15 verified questions, 72nd club page. Croatia now has its own league section. |
+| `03f469f` | **Hub title stopped splitting "football quiz."** It read `Football (Soccer) Quiz` — the parenthetical broke the exact phrase on the ONE page targeting our best term, and it was there for the US-localisation thesis we later disproved. Description 187 → 153 (it was truncating). |
+| `68ec74c` | **Android R8 on.** AAB 7.63 → 6.50 MB (−14.8%). Capacitor registers all 17 plugins by reflection, so this needed full keep rules; verified by DEX-diffing both bundles — 15 plugin classes before, 15 after, empty difference. |
+| `ccdb960` | **Site-wide SERP sweep.** 31 truncated titles → 0, 46 truncated descriptions → 0, across 190 pages. Almost all of it was `/lists`, which shipped after the last truncation pass and never inherited the rule. |
+| `1e531b3` | **Build gate** (`scripts/audit-serp-meta.mjs`) so truncation cannot return a third time. Proved by reinjecting the original bug. |
+| `4d7c25a` | **Trail wave M.** 38 → 44 careers. Found a real bug: the old schedule's minimum recurrence gap was **1** — the same answer could land two days running. Now 14 days minimum. |
+| `53891cb` | Backlink submission pack + session handoff docs. |
 
-### DONE — the R9 distractor + a permanent gate (f323644, NOT YET PUSHED)
-Alex's friend hit `q_1d9b9c` in Daily 7: "Ronaldo R9" offered on the 2016 UCL
-final shootout. R9 retired 2011. Two defects at once — impossible option, AND a
-near-name twin of the correct answer ("Cristiano Ronaldo") that told the player
-which Ronaldo was meant.
+Earlier the same day: the question-report loop (which had **never** delivered a
+single report in the app's entire life), the MP card dead click, the persistent
+iOS zoom, club picker search over 72 packs, PRL → EPL.
 
-Not fixed by swapping the option: `q_132f55` already asks who scored the decisive
-fifth penalty, so a swap would leave two near-identical questions. `q_1d9b9c` now
-asks who OPENED the scoring (Ramos, 15') — nobody asked that, and Bale/Marcelo/
-Ronaldo all started in Milan, so every option is genuinely plausible. Also trimmed
-`q_132f55`'s hint, which named Ramos and would have leaked the new answer.
+### 🔴 ALEX — blocking, in priority order
 
-`scripts/audit-distractor-plausibility.mjs` now gates `npm run build`. It only
-fails on the **intersection** (near-name twin AND impossible), because each half
-alone is not a defect — `q_d2fc88` deliberately offers Thomas vs Gerd Müller and
-that IS the question, while any "scored in 2002, 2006, 2010 AND 2014" stem is
-era-bounded by construction. Tiers 2-3 are advisory: `npm run audit:distractors`.
+1. **Device-test the R8 Android build**, then upload
+   `~/Downloads/balliq-1.4.1-vc10-r8.aab`. R8 breakage is runtime-only and
+   silent, and a green build proves nothing. Exercise: push permission + token,
+   share sheet, splash dismiss, Apple sign-in, in-app review, haptics, keyboard.
+   The pre-R8 7.63 MB bundle is still in Downloads as a fallback.
+2. **Spot-check the 6 new Trail careers** before 2026-09-01 — van Dijk,
+   Courtois, Griezmann, De Bruyne, Son, Lewandowski. The spec requires 100%
+   human review; a wrong club order is unfalsifiable to the player.
+3. **Tap "⚑ Report a problem" once on a device.** The loop is fixed everywhere
+   but has still never delivered one real report end to end.
+4. **Directory submissions** — `docs/BACKLINK-SUBMISSIONS.md`. Four are
+   genuinely open (verified by fetching each site, see below).
+5. **Say yes/no to a ~1.5 GB Android SDK download** so an emulator exists. No
+   AVDs and no `sdkmanager` are installed, so there is currently no way to test
+   Android locally.
 
-⚠️ **The detector produced three false-positive classes before it was trusted**,
-all caught by running it, not reading it — including a `\d` guard that silently
-excluded "Ronaldo R9" itself, so it reported **0 against the exact row it was
-built for**. Verified by reinjecting the bug and watching the build fail.
+### Directory status — CHECKED, not assumed (2026-07-30)
 
-### DONE — iOS build unblocked
-`pod install` was failing with `Encoding::CompatibilityError` — a CocoaPods
-locale bug, nothing to do with the project. **Fix: export `LANG`/`LC_ALL` to
-`en_US.UTF-8` before `cap sync`.** Then clean dist → build → sync → prune
-(reclaimed 15.85 MB) → `xcodebuild` = **BUILD SUCCEEDED**. main is 1.4.0 / 51.
+Alex thought these were already done. Fetched each site and searched it:
 
-### ALEX — two MCP servers did NOT register
-Perplexity and Firecrawl are both absent from `claude mcp list`; hitting Run did
-nothing. Both commands still contained the literal `YOUR_KEY` placeholder. Worth
-finishing — they unblock real work: Firecrawl gets past the Google Trends wall
-that killed the club-per-market research, and Perplexity answers the "which clubs
-does country X support" question with citations I can verify.
+| directory | listed? |
+|---|---|
+| adoryvo daily-games list | ✅ **already there** — Sports section, marked 🆕, good description |
+| listdle.com | ❌ not listed (and it *does* carry football games — we are absent from an on-target directory) |
+| dailydle.org | ❌ not listed |
+| likewordle.com | ❌ not listed |
+| wordly.org | ❌ not listed |
 
----
+Already done and NOT to be repeated: Product Hunt (~2026-07-09), AlternativeTo
+(2026-07-13). `playfootball.games` stays dropped — verified as a direct
+competitor with no submission path.
+
+⚠️ **Small finding:** the adoryvo listing points at `balliq.app/footle`, which
+is the SPA boot alias and serves the generic `<title>`, not the `/football-wordle`
+landing page. Left alone deliberately — `/footle` is the short share URL in every
+share text and all four social redirects, and it drops users straight into the
+puzzle, which the "playable beats readable" finding says converts better. If we
+ever want the link equity on the landing page instead, ask the maintainer to
+switch the URL; do **not** redirect `/footle`.
 
 ## 🚀 1.4.0 IS IN FLIGHT ON BOTH STORES (2026-07-30, ~01:00)
 
@@ -165,6 +172,44 @@ the new MP XP award. A green build proves compilation, not behaviour.
 ---
 
 ## 🟡 QUEUED
+
+### NEW 2026-07-30 — raise explanation coverage (77.6% → higher)
+Measured: 4,970 of 6,402 MCQs carry an explanation. All 72 **club** packs are at
+100% (the generator's MIN_HINTS gate has been quietly enforcing it) — the gap is
+entirely in the older category banks that predate the gate:
+
+    WorldCup 54% (631) · Euros 56% (192) · PL 61% (558) · Bundesliga 64% (281)
+    SerieA 68% (320) · LaLiga 74% (365) · UCL 74% (593) · Managers 80%
+    Records 82% · Legends 84% · Ligue1 95% · History 96%
+    100%: Transfers, chaos, SuperLig, Primeira, ChampionsLeague
+
+Copy has been made honest in the meantime ("most answers explained"). **The prize
+is earning the sentence back**: at 100% we can truthfully say "every answer
+explained" everywhere, which is the product's whole pitch. Club pages already do.
+
+Additive work — the answers are verified, only the explanation is missing — so
+much cheaper and lower-risk than forging new questions. World Cup first (~290
+missing, biggest category and a top-traffic page).
+
+⚠️ Do NOT chase 100% mechanically. "Which club plays at Anfield?" needs no
+explanation, and forcing one produces filler, which is where fabrication starts.
+Target is "every question that benefits from one".
+
+### NEW 2026-07-30 — performance + bug audit (Alex asked; overdue)
+Genuinely overdue. But run it as **measurement, not reading**: a real Lighthouse
+pass, actual bundle numbers, live Sentry, prod queries. Today's evidence is
+blunt — every real defect came from executing something (calling
+`report_question()` against prod, diffing the DEX, decoding HTML entities before
+measuring), while broad read-everything sweeps produced noise. And convert each
+finding into a **gate**, like the SERP one; gates have a far better track record
+here than repeat sweeps.
+
+### NEW 2026-07-30 — more clubs? Top up the thin ones first
+72 packs live. Breadth is not the constraint — **repetition is.** A ~40-question
+pack with 10-question sessions and a 14-day seen-filter gives a club fan roughly
+4 fresh plays before repeats start. Fixing the five thin packs beats adding
+club 73.
+
 
 - **CLAUDE** · New game modes. Trail is OUT (live 2026-07-29). Judge later
   candidates on what actually mattered in the Trail decision: can it ship with a

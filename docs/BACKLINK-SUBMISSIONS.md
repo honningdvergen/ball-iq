@@ -32,8 +32,9 @@ and nobody ever established who "Dan" was.
 
 ## 2. Ready to submit — no account needed
 
-Verified live, HTTP 200, and confirmed to take open submissions. This is the
-whole list you can clear in one sitting.
+Verified live 2026-07-30, and — importantly — **each site was fetched and searched
+for "balliq" / "footle" to confirm we are genuinely absent.** All four below are
+real gaps, not duplicates.
 
 ### listdle.com/submit ← start here
 The most on-target directory that exists for us. **Confirmed: no login, free.**
@@ -57,11 +58,17 @@ than the feature list.
 Browsable by category and platform (Web / Android — we qualify for both now).
 Same submission approach as dailydle.
 
-### adoryvo.github.io/lists/dailies.html
-A GitHub-hosted list of daily web games. This one takes a **pull request**, not
-a form — which means it is the single highest-quality link here (a real editorial
-list, and GitHub carries authority). I can prepare the PR on request; it needs
-your GitHub account to actually open.
+### ~~adoryvo.github.io/lists/dailies.html~~ — ✅ ALREADY LISTED
+Checked the live page 2026-07-30: **Footle is already there**, in the 🏅 Sports
+section, marked 🆕, with a good description. Nothing to do.
+
+⚠️ It links `balliq.app/footle`, which is the SPA boot alias and serves the
+generic `<title>` rather than the `/football-wordle` landing page. Deliberately
+left alone — `/footle` is the short share URL in every share text and all four
+social redirects, and it drops the visitor straight into the puzzle, which the
+measured "playable beats readable" finding says converts better. If we ever want
+the equity on the landing page, ask the maintainer to change the URL. Do **not**
+redirect `/footle`.
 
 ### itch.io — daily puzzle collection
 `itch.io/c/6446625/daily`. Needs an itch.io account, so it belongs in §3, but the
@@ -142,7 +149,8 @@ The genuinely high-value plays remain, in order:
    Beebom. Attainable, and high DR. This is the one that would actually matter.
 2. **A data-story PR** off the 6,409-question bank. The `/study/` page already
    exists as the asset.
-3. **The GitHub daily-games PR** above — small, but a real editorial list.
+3. **listdle.com** — the only genuinely on-target directory we are still absent
+   from, and it takes 30 seconds with no account.
 
 Reddit stays parked: the account has 14 link karma and posts are being removed by
 the spam filter. Comment first, build karma, post later.
