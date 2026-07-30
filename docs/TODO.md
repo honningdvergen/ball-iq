@@ -32,11 +32,16 @@ iOS zoom, club picker search over 72 packs, PRL → EPL.
 
 ### 🔴 ALEX — blocking, in priority order
 
-1. **Device-test the R8 Android build**, then upload
-   `~/Downloads/balliq-1.4.1-vc10-r8.aab`. R8 breakage is runtime-only and
-   silent, and a green build proves nothing. Exercise: push permission + token,
-   share sheet, splash dismiss, Apple sign-in, in-app review, haptics, keyboard.
-   The pre-R8 7.63 MB bundle is still in Downloads as a fallback.
+1. ✅ **DONE — R8 + edge-to-edge VERIFIED on an emulator (2026-07-30).**
+   Built an Android emulator on this Mac (AVD `balliq_r8`, Pixel 7, API 36) and
+   ran the minified build on it. Capacitor bridge starts, onboarding→Home works,
+   storage persists, splash dismisses, status bar correct, **zero**
+   FATAL/ClassNotFound/NoClassDefFound. Edge-to-edge verified on **3-button nav**
+   — the exact risky config — tab bar sits clear of the nav buttons.
+   ⚠️ One false alarm: the first run ANR'd under `-gpu swiftshader_indirect`.
+   That was the emulator (system-server disk I/O, load 4.23), not the app —
+   `-gpu host` reproduced the identical tap with no ANR. Always A/B the GPU flag.
+   **→ `~/Downloads/balliq-1.4.1-vc10-r8.aab` IS SAFE TO UPLOAD.**
 2. **Spot-check the 6 new Trail careers** before 2026-09-01 — van Dijk,
    Courtois, Griezmann, De Bruyne, Son, Lewandowski. The spec requires 100%
    human review; a wrong club order is unfalsifiable to the player.
