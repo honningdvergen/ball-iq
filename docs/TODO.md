@@ -121,6 +121,55 @@ re-audit" on the strength of a read-through alone.
 
 ---
 
+## Branch `upgrade/capacitor-8` — unblocked, NOT merged
+
+Capacitor 6.2.1 → 8, AGP 8.2.1 → 8.13.2, Gradle 8.14.3, minSdk 22 → 23.
+Builds, runs, 15/15 plugin classes survive R8, 92 tests pass.
+
+**The one regression is fixed** (`4f8aa7f`). Under Capacitor 8 the status and
+navigation bars rendered WHITE, framing the app in a border. Cause: the theme
+inherited `Theme.AppCompat.DayNight`, which was always wrong — Ball IQ has zero
+`prefers-color-scheme` rules — but Capacitor 6 called
+`StatusBar.setBackgroundColor("#0A0A0A")` on every launch and painted over it.
+Capacitor 8 removes that path (`Window.setStatusBarColor` is deprecated in
+Android 15 — the very API Play flagged), so the light variant surfaced.
+
+Fixed in `styles.xml` at the cause: dark parent, transparent bars,
+`windowLight*=false`, and the window background pinned to `@color/biqBackground`
+(#0A0A0A). That last piece came from **measuring pixels**, not reasoning — with
+the bars transparent they sampled #303030, exactly AppCompat dark's
+`colorBackground` showing through. An `enforce*Contrast` opt-out was tried first,
+measured as a no-op, and left out.
+
+Verified on the `balliq_r8` emulator (`-gpu host`, API 36), release APK with R8
+on, in **both** system light and dark mode: bars sample #0A0A0A, pixel-identical
+to Capacitor 6 on main. ⚠️ This regression passed every automated check. It was
+only ever visible in a screenshot — same lesson as the retracted section above.
+
+**Still to do before merge:** the iOS side is untouched and needs its own build
+and review; retest AGP 9 once this lands (it was blocked by Capacitor 6's own
+`build.gradle`). Main is unaffected and still on Capacitor 6.2.1.
+
+## ❌ `@vercel/og` → 1.0.0: DO NOT. 1.0.0 is OLDER than 0.11.1
+
+Recommended in error and reverted the same evening. **`1.0.0` was published
+2023-01-09; `0.11.1` was published 2026-03-05.** The npm `latest` tag is
+**0.11.1** — we are already on the newest release. 1.0.0 is a stray old version
+that sorts highest under semver, and installing it broke all five OG cards
+(`ERR_MODULE_NOT_FOUND: wbg`, from a 2022-era `satori 0.0.46` tree).
+
+The advisory that prompted it — sharp/libvips CVEs — **cannot be upgraded away
+and does not apply to us.** `api/og.js` is `runtime: 'edge'`, and sharp has
+**0 references in `dist/index.edge.js`** (8 in the node build we never deploy).
+
+Rule this establishes: **a higher version number is not proof of a newer
+release.** Check `npm view <pkg> dist-tags` and the publish date before treating
+a bump as an upgrade. Harness for re-testing the cards lives in the session
+scratchpad as `og-render.mjs` — it renders all five variants and asserts the PNG
+magic bytes; byte sizes on 0.11.1 are 99908 / 75623 / 60902 / 58125 / 58736.
+
+---
+
 ## THE NUMBER THAT MATTERS
 
 **97.2% new users · 2.8% returning · four people came back.** (Clarity, 3 days.)
