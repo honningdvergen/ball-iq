@@ -151,7 +151,31 @@ Play's release analysis raises 4 items against 10 (1.4.1). Read at source:
 | 1 | Edge-to-edge may not work for all users | **Our bug.** The report chip rendered under the nav bar. Found independently on the emulator. | ✅ **FIXED** in vc12 |
 | 2 | Deprecated fullscreen APIs | `Window.get/setStatusBarColor`, called from `com.capacitorjs.plugins.statusbar.StatusBar`. **Not our code.** `@capacitor/status-bar` 6.0.3 IS the newest 6.x — no patch exists. | **Capacitor 7 migration** (core + android + ios + cli + 13 plugins) |
 | 3 | Optimise bitmap images | 50 PNGs, 6.0 MB in `android/app/src/main/res`. Convert to WebP. | Low risk, do with #2 |
-| 4 | R8 config → higher memory | ⚠️ NOT "enable R8" — **our R8 registered fine.** It wants **AGP ≥ 9.0**; we are on **8.2.1** with Gradle 8.2.1. | AGP + Gradle upgrade |
+| 4 | R8 config → higher memory | ⚠️ NOT "enable R8" — **our R8 registered fine.** It wants **AGP ≥ 9.0**; we are on **8.2.1**. **TESTED 2026-07-31: AGP 9 is BLOCKED BY CAPACITOR 6** — see below. | gated behind #2 |
+
+#### ✅ TESTED, not assumed: AGP 9 cannot be taken on its own
+
+Tried it rather than guessing (git was clean, reverted after). Two builds, two
+answers:
+
+1. AGP 9.3.1 + Gradle 9.1.0 → *"Minimum supported Gradle version is 9.5.0"*. Fixable.
+2. AGP 9.3.1 + Gradle 9.5.0 → fails in
+   **`node_modules/@capacitor/android/capacitor/build.gradle` line 57**:
+   *"`getDefaultProguardFile('proguard-android.txt')` is no longer supported since
+   it includes `-dontoptimize`"*.
+
+**The blocker is inside Capacitor 6's own build file, not ours.** (Our
+`app/build.gradle` already uses `proguard-android-optimize.txt` — that changed
+when R8 went on in 68ec74c.) It cannot be fixed without editing `node_modules`,
+which any `npm install` wipes.
+
+So the dependency chain is now **proven, not assumed**:
+**AGP 9 ← requires Capacitor 7 ← which also fixes the deprecated StatusBar APIs.**
+Flags #2 and #4 are therefore ONE job, and Capacitor 7 is the entry point. Do not
+attempt AGP separately; it will fail the same way.
+
+Toolchain facts for whoever picks this up: JDK 21 is already available (Android
+Studio's bundled JBR), AGP 9.x latest is 9.3.1, and AGP 9.3.1 requires Gradle ≥ 9.5.0.
 
 **None of 2–4 is a defect.** They are deprecation and toolchain recommendations;
 the app works. Only #1 was a real user-facing bug, and it is fixed.
