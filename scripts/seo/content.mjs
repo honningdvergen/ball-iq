@@ -50,11 +50,25 @@ export const SITE = {
 export const HUB = {
   slug: 'quiz',
   h1: 'Football Quizzes',
-  title: 'Football (Soccer) Quiz — Free Trivia | Ball IQ',
+  // ⚠️ KEEP "Football Quiz" AS AN UNBROKEN PHRASE AT THE FRONT.
+  // This is the only page targeting "football quiz" — our single highest-value
+  // query (GSC 2026-07-30: position 41, and a top-10 finish is worth a 10-20x
+  // impression multiplier). The title read "Football (Soccer) Quiz" for a while:
+  // the parenthetical was added for the US-localisation thesis, which we later
+  // DISPROVED (see the US/Egypt GSC read — Egypt is 100% brand traffic and the
+  // US ranks us for our own name because "ball IQ" is basketball jargon there).
+  // So it split the exact phrase on our most important term in exchange for
+  // nothing. "Soccer" still earns its place further along, where it catches
+  // soccer searches without interrupting the phrase.
+  title: 'Football Quiz — Free Soccer Trivia, No Sign-Up | Ball IQ',
+  // "with explained answers" implied ALL of them. Measured 2026-07-30: 4,970 of
+  // 6,402 MCQs carry a hint = 77.6%. This is the same false claim we already
+  // corrected in the store listings; it was still live here, on the page we care
+  // about most. "Most" is both true and still a strong differentiator.
   description:
-    'Play free football and soccer quizzes covering the World Cup, Premier League, Champions League and more. Thousands of soccer trivia questions with explained answers — no sign-up needed.',
+    'Play free football and soccer quizzes — World Cup, Premier League, Champions League and more. Thousands of questions, most answers explained. No sign-up.',
   intro: [
-    `Ball IQ is a football quiz built for people who actually argue about football. Not the surface-level "name the striker" stuff — real questions about the moments, records and managers that shaped the game, each one with a short explanation so you walk away knowing something you didn't before. Whether you call it football or soccer, it's the same game and the same obsession — and the same free quizzes here.`,
+    `Ball IQ is a football quiz built for people who actually argue about football. Not the surface-level "name the striker" stuff — real questions about the moments, records and managers that shaped the game, most with a short explanation so you walk away knowing something you didn't before. Whether you call it football or soccer, it's the same game and the same obsession — and the same free quizzes here.`,
     `Every quiz below is free, runs straight in your browser, and needs no sign-up. Pick a topic and play: the FIFA World Cup, from Uruguay 1930 to Argentina's penalty-shootout win in Qatar; the Premier League, from the 1992 breakaway to Manchester City's 100-point season; the UEFA Champions League, from Real Madrid's early European Cup dynasty to Liverpool's 4-0 comeback against Barcelona. There are also dedicated quizzes on La Liga, Serie A, the Bundesliga, the Euros, football's great managers, and the all-time records that settle pub arguments.`,
     `What makes Ball IQ different is the explanations. Most online quizzes just tell you "wrong, the answer was Spain." Ours tell you Spain beat the Netherlands 1-0 in Johannesburg with Andrés Iniesta's extra-time winner — context that makes the next question easier and the whole thing feel like learning rather than guessing. Questions are graded easy, medium and hard, so casual fans and obsessives both get a proper test.`,
     `Ball IQ started as a mobile app and grew into a full football trivia platform with a daily challenge, a Wordle-style "Footle" guessing game, and live multiplayer where you go head-to-head with friends. The quizzes on this page are a free taste of the question bank. Find a topic you love below, play a round, and if you want the daily streak, the leaderboards and the multiplayer, the full game is a tap away.`,
@@ -65,12 +79,12 @@ export const HUB = {
 export const ABOUT = {
   slug: 'about',
   h1: 'About Ball IQ',
-  title: 'About Ball IQ — The Football Quiz That Explains Every Answer',
+  title: 'About Ball IQ — The Football Quiz Built on Explanations',
   description:
-    'Ball IQ is an independent football quiz game with thousands of hand-curated questions and an explanation behind every answer. Learn what it is and who makes it.',
+    'Ball IQ is an independent football quiz game with thousands of hand-curated questions and an explanation behind most answers. Learn what it is and who makes it.',
   lede: 'An independent football trivia game, made for fans who love the details.',
   body: [
-    `Ball IQ is a football quiz game for people who love the details — the moments, records, managers and matches that define the sport. It began with a simple frustration: almost every football quiz online is shallow, and when you get one wrong it just says "wrong" and moves on. Ball IQ explains every answer, so playing feels less like a test and more like learning something each round.`,
+    `Ball IQ is a football quiz game for people who love the details — the moments, records, managers and matches that define the sport. It began with a simple frustration: almost every football quiz online is shallow, and when you get one wrong it just says "wrong" and moves on. Ball IQ explains the answer on most questions, so playing feels less like a test and more like learning something each round.`,
     `The game is built on thousands of hand-curated questions spanning the FIFA World Cup, the Premier League, the UEFA Champions League, La Liga, Serie A, the Bundesliga and the European Championship, plus dedicated sets on football's great managers, its legends, and the all-time records that settle arguments. Difficulty runs from gentle warm-ups to genuinely hard deep cuts, so a casual fan and a die-hard both get a real test. Beyond the quizzes there's a daily challenge, a Wordle-style guessing game called Footle, an IQ test that scores your football knowledge, and live online multiplayer where you go head-to-head with friends in real time.`,
     `Ball IQ is an independent project, built and maintained in Norway. It's available as a free app on the App Store and as a web app you can play in any browser — no sign-up required to start. New questions are added regularly, and the whole thing is made by someone who genuinely cares about getting the football right.`,
     `That accuracy matters to us. Questions are researched, every answer carries a short factual explanation, and the bank is reviewed continuously. If you ever spot a mistake or a question that reads wrong, we want to know — corrections get fixed fast. Football history is detailed and occasionally contested, and we'd rather get it right than get it quickly.`,
@@ -139,7 +153,7 @@ export const CATEGORIES = [
     h1: 'Premier League Quiz',
     title: 'Premier League Quiz — Football Trivia | Ball IQ',
     description:
-      'Free Premier League quiz with explained answers — from the 1992 breakaway and the Invincibles to City’s 100-point season. Test your English football knowledge.',
+      'Free Premier League quiz with most answers explained — from the 1992 breakaway and the Invincibles to City’s 100-point season. Test your English football knowledge.',
     about: 'Premier League',
     sample: 20,
     intro: [
@@ -250,7 +264,7 @@ export const LISTICLES = [
     description:
       '55+ World Cup quiz questions with answers — from Uruguay 1930 to the 48-team 2026 tournament in the USA, Canada and Mexico. Free, with the story behind every answer.',
     about: 'FIFA World Cup trivia',
-    lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, every answer explained.',
+    lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, with most answers explained.',
     intro: [
       `The summer of the 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico, with the final at MetLife Stadium in New Jersey on July 19 — is the perfect excuse to find out how much World Cup history you actually know. This is a big, hand-picked set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930 to Argentina's shoot-out win over France in Qatar in 2022.`,
       `The set is graded from easy to hard. The warm-ups ask things any fan should get — who won in 2010, which country has lifted the trophy five times. The middle band digs into the famous moments: Maradona's 1986, the headbutt final of 2006, Germany 7-1 Brazil. And the hard end is for the obsessives — controversial penalties in extra time, golden goals, and the scorers everyone forgets. Whether you're building a pub-quiz round, testing your mates during the group stage, or just settling an argument, there's a difficulty band for it.`,

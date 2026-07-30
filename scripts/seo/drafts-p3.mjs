@@ -91,7 +91,7 @@ export const P3_CATEGORIES = [
     h1: 'La Liga Quiz',
     title: 'La Liga Quiz — Spanish Football Trivia & Answers | Ball IQ',
     description:
-      'Free La Liga quiz with explained answers — Real Madrid, Barcelona, the Clásico, Messi’s records and the history of Spanish football.',
+      'Free La Liga quiz with most answers explained — Real Madrid, Barcelona, the Clásico, Messi’s records and the history of Spanish football.',
     about: 'La Liga',
     sample: 20,
     intro: [
@@ -115,7 +115,7 @@ export const P3_CATEGORIES = [
     h1: 'Serie A Quiz',
     title: 'Serie A Quiz — Italian Football Trivia & Answers | Ball IQ',
     description:
-      'Free Serie A quiz with explained answers — Juventus, Milan, Inter, Napoli and Maradona, plus the history of Italian football.',
+      'Free Serie A quiz with most answers explained — Juventus, Milan, Inter, Napoli and Maradona, plus the history of Italian football.',
     about: 'Serie A',
     sample: 20,
     intro: [
@@ -139,7 +139,7 @@ export const P3_CATEGORIES = [
     h1: 'Bundesliga Quiz',
     title: 'Bundesliga Quiz — German Football Trivia & Answers | Ball IQ',
     description:
-      'Free Bundesliga quiz with explained answers — Bayern Munich, Borussia Dortmund, Gerd Müller, Lewandowski and German football history.',
+      'Free Bundesliga quiz with most answers explained — Bayern Munich, Borussia Dortmund, Gerd Müller, Lewandowski and German football history.',
     about: 'Bundesliga',
     sample: 20,
     intro: [
@@ -163,7 +163,7 @@ export const P3_CATEGORIES = [
     h1: 'Euros Quiz',
     title: 'Euros Quiz — European Championship Trivia & Answers | Ball IQ',
     description:
-      'Free Euros quiz with explained answers — from 1960 to Spain’s 2024 win. European Championship hosts, winners, golden goals and shocks.',
+      'Free Euros quiz with most answers explained — from 1960 to Spain’s 2024 win. European Championship hosts, winners, golden goals and shocks.',
     about: 'UEFA European Championship',
     sample: 20,
     intro: [
