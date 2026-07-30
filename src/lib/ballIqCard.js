@@ -7,7 +7,7 @@
 // `icon` uses country flags (license-safe, unlike the trademarked competition
 // logos). England flag for the PL, a star for the UCL, a globe for international.
 export const CARD_COMPS = [
-  { abbr: "PRL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+  { abbr: "EPL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
   { abbr: "UCL", cat: "UCL",        name: "Champions League", icon: "⭐" },
   { abbr: "INT", cat: "WorldCup",   name: "International",     icon: "🌍" },
   { abbr: "LAL", cat: "LaLiga",     name: "La Liga",          icon: "🇪🇸" },

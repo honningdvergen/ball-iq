@@ -61,6 +61,6 @@ describe("computeCard", () => {
     const card = computeCard(catStats);
     const mean = Math.round(card.ratings.reduce((s, r) => s + r.rating, 0) / 6);
     expect(card.overall).toBe(mean);
-    expect(card.ratings.find((r) => r.abbr === "PRL").answered).toBe(50);
+    expect(card.ratings.find((r) => r.abbr === "EPL").answered).toBe(50);
   });
 });

@@ -867,10 +867,10 @@ const CAT_TO_QUIZ_SLUG = Object.fromEntries(Object.entries(QUIZ_SLUG_TO_CAT).map
 // ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
 // Solo single-competition quizzes. Unlike the club quiz (which re-tags rows as
 // cat:"ClubQuiz"), league-quiz questions KEEP their real cat, so every answer
-// feeds the matching competition rating on the Ball IQ card (PRL/UCL/WCP/…).
+// feeds the matching competition rating on the Ball IQ card (EPL/UCL/INT/…).
 const LEAGUE_QUIZ_SECTIONS = [
   { label: "Leagues", items: [
-    { cat: "PL",         name: "Premier League",   abbr: "PRL", color: "#3D195B" },
+    { cat: "PL",         name: "Premier League",   abbr: "EPL", color: "#3D195B" },
     { cat: "LaLiga",     name: "La Liga",          abbr: "LAL", color: "#EE8707" },
     { cat: "SerieA",     name: "Serie A",          abbr: "SEA", color: "#0578D3" },
     { cat: "Bundesliga", name: "Bundesliga",       abbr: "BUN", color: "#D20515" },
