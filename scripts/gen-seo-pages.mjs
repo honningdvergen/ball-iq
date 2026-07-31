@@ -784,7 +784,7 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-len button:hover{border-color:var(--bd3)}
   .bq-len button[aria-pressed="true"]{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
   .bq-card{background:linear-gradient(var(--card2),var(--card));border:1px solid var(--bd2);border-radius:20px;padding:20px;position:relative;overflow:hidden}
-  .bq-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--grn),var(--grn-soft) 60%,transparent)}
+  .bq-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--club,var(--grn)),var(--club-soft,var(--grn-soft)) 60%,transparent)}
   .bq-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;min-height:24px}
   .bq-meter{display:flex;gap:4px;flex-wrap:wrap}
   .bq-meter i{width:15px;height:4px;border-radius:2px;background:var(--bd);transition:background .2s}
@@ -815,7 +815,7 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-crest{width:30px;height:30px;margin:6px auto 10px;border-radius:8px;background:var(--club,var(--grn));color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
   .bq-rank{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4)}
   .bq-big{font-family:var(--mono);font-size:clamp(50px,11vw,62px);font-weight:800;line-height:1;letter-spacing:-.04em;color:#fff;margin:6px 0 6px}
-  .bq-tier{display:inline-block;font-size:15px;font-weight:800;color:var(--grn-ink);background:var(--grn);padding:5px 13px;border-radius:999px}
+  .bq-tier{display:inline-block;font-size:15px;font-weight:800;color:var(--club-ink,var(--grn-ink));background:var(--club,var(--grn));padding:5px 13px;border-radius:999px}
   .bq-sub{font-size:13.5px;color:var(--tx4);margin-top:11px}
   .bq-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
   .bq-row a,.bq-row button{flex:1 1 140px;text-align:center;padding:12px;border-radius:11px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:14px;border:none;cursor:pointer}
@@ -1021,6 +1021,25 @@ ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
 // unreadable as text — so the *text* tint is derived, while the solid crest
 // keeps the true colour. Measured, not eyeballed: the loop stops at the first
 // step that passes.
+// Ink for text sitting ON the club colour. Without this the tier pill fell back
+// to --grn-ink (near-black) on every club, which is fine on Dortmund yellow and
+// unreadable on Juventus black or Tottenham navy. Pick whichever of white/near-
+// black actually contrasts better, the same rule the club badges already use.
+// "200, 16, 46" -- so a club colour can be used inside rgba() for atmosphere.
+function rgbTriplet(hex) {
+  return [1, 3, 5].map((i) => parseInt(hex.substr(i, 2), 16)).join(', ');
+}
+
+function inkOn(hex) {
+  const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  const lum = (h) => {
+    const c = [1, 3, 5].map((i) => lin(parseInt(h.substr(i, 2), 16) / 255));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const cr = (a, b) => { const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x); return (hi + 0.05) / (lo + 0.05); };
+  return cr(hex, '#ffffff') >= cr(hex, '#0A0A0A') ? '#ffffff' : '#0A0A0A';
+}
+
 function softenAccent(hex) {
   const lum = (h) => {
     const c = [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16) / 255)
@@ -1147,7 +1166,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
 <style>
-  ${accent ? `:root{--club:${accent};--club-soft:${softenAccent(accent)}}` : ''}
+  ${accent ? `:root{--club:${accent};--club-soft:${softenAccent(accent)};--club-ink:${inkOn(accent)};--club-glow:${rgbTriplet(softenAccent(accent))}}` : ''}
   :root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -1182,7 +1201,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* hero */
   .hero{padding:46px 0 40px;position:relative;overflow:hidden}
   .hero-in{position:relative;z-index:2}
-  .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(88,204,2,.14) 0%,rgba(88,204,2,.04) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
+  .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(var(--club-glow, 88, 204, 2),.16) 0%,rgba(var(--club-glow, 88, 204, 2),.05) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
   @keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.72}}
   @media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
   /* two-column quiz hero: intro/CTA left, playable taster right */
@@ -1223,7 +1242,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* clubs/players/nations -> /lists/. See listsMentioning(): every list page
      had exactly ONE inbound internal link before this, against 163 for a club
      page, so we were signalling the whole reference surface as unimportant. */
-  .editorial{margin:18px 0 0;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
+  .editorial{margin:18px 0 0;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--club,var(--grn));border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
   .editorial a{color:var(--grn-soft)}
   .llinks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   .llinks li{background:var(--card);border:1px solid var(--bd);border-radius:12px}
@@ -2679,7 +2698,7 @@ function buildStudyPage(cfg) {
   .sbar .bar{display:block;height:15px;border-radius:3px;background:linear-gradient(90deg,var(--grn),var(--grn-soft))}
   .sbar .n{text-align:right;font-family:var(--mono);font-size:13px;color:var(--tx3);padding-left:12px;width:1%;white-space:nowrap}
   .standfirst{font-size:17px;line-height:1.6;color:var(--tx2)}
-  .method{margin-top:22px;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
+  .method{margin-top:22px;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--club,var(--grn));border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
   </style>`;
 
   const html = `${head({ title: cfg.title, description: fill(cfg.description), canonical, ld })}
