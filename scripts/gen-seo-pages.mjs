@@ -409,8 +409,13 @@ ${mini ? storeBadgesMini() : storeBadges()}
   // Chips beat a sentence: a searcher scans them, and every value is computed
   // from the bank at build time so none of it can drift or overstate. This is
   // the honest version of the "75 verified questions" badge competitors assert.
+  // Stat strip, not chips: mono numerals in a ruled row, the way a programme or
+  // a scoreboard sets figures. Every value is computed from the bank. "Free" is
+  // deliberately NOT in the row — it is not a number, and mixing it in broke the
+  // one rule the row is built on (and made a fourth cell wrap to its own line).
   const stat = Array.isArray(chips) && chips.length
-    ? `<div class="hero-chips">${chips.map((c) => `<span class="chip">${c}</span>`).join('')}</div>`
+    ? `<div class="hero-facts">${chips.map((c) => `<div class="hf"><b>${esc(String(c.n))}</b><span>${esc(c.label)}</span></div>`).join('')}</div>
+<p class="hero-free">Free to play &middot; no sign-up &middot; nothing to install</p>`
     : statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
   return `${crumbs(crumbItems)}
 <div class="kicker">${chip}<span class="eyebrow">${esc(kind)}</span></div>
@@ -711,29 +716,6 @@ function pct100(rows) {
   return 'Every one of them carries a written explanation.';
 }
 
-// Sticky in-page nav. Long pages need a spine — Clarity has scroll stopping at
-// 25% on 14-screen club pages. Rendered only when there is more than one target,
-// and each link is checked against the assembled HTML so it can never point at a
-// section this page did not emit.
-function subNav(name, { records = false } = {}) {
-  const items = [
-    ['covers', 'What it covers'],
-    ...(records ? [['records', 'Record books']] : []),
-    ['faq', 'FAQ'],
-  ];
-  // "Records" was also a top-level site-nav item pointing at /lists — same word,
-  // different destination, eight pixels apart. Renamed. "How it is checked" came
-  // out too: it is supporting evidence, not a destination, and it does not earn
-  // a nav slot beside the quiz itself.
-  if (items.length < 2) return '';
-  return `<nav class="subnav" aria-label="${esc(name)} page sections">
-<div class="subnav-in">${items.map(([id, label]) => `<a href="#${id}">${esc(label)}</a>`).join('')}</div>
-</nav>
-<script>(function(){var n=document.currentScript.previousElementSibling,q=document.getElementById('quiz');if(!n||!q)return;
-function u(){var b=q.getBoundingClientRect();n.classList.toggle('on',b.bottom<80)}
-addEventListener('scroll',u,{passive:true});u()})();</script>`;
-}
-
 // The verification section. Competitors publish theirs and we run a stricter
 // process, so this is pure upside — but the coverage sentence comes from pct100()
 // so it stays silent wherever coverage is not actually 100%.
@@ -824,11 +806,13 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-o.no{border-color:var(--wrong);background:rgba(255,71,71,.09);color:#FF8A82}
   .bq-o.no .k{background:var(--wrong);color:#fff}
   .bq-o.dim{opacity:.45}
-  .bq-why{margin-top:13px;padding:12px 13px;border-radius:11px;background:var(--bg);border:1px solid var(--bd);font-size:13.5px;color:var(--tx3);line-height:1.55}
-  .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--grn);margin-bottom:5px;font-weight:700}
+  .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55}
+  .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--club-soft,var(--grn));margin-bottom:5px;font-weight:700}
   .bq-next{margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   .bq-next:hover{filter:brightness(1.05)}
-  .bq-res{text-align:center;padding:6px 2px}
+  .bq-res{text-align:center;padding:6px 2px;position:relative;overflow:hidden}
+  .bq-res::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--club,var(--grn)),transparent)}
+  .bq-crest{width:30px;height:30px;margin:6px auto 10px;border-radius:8px;background:var(--club,var(--grn));color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
   .bq-rank{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4)}
   .bq-big{font-family:var(--mono);font-size:clamp(50px,11vw,62px);font-weight:800;line-height:1;letter-spacing:-.04em;color:#fff;margin:6px 0 6px}
   .bq-tier{display:inline-block;font-size:15px;font-weight:800;color:var(--grn-ink);background:var(--grn);padding:5px 13px;border-radius:999px}
@@ -848,7 +832,7 @@ var list=root.querySelector('.bq-list');if(!list)return;
 var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
 var total=qs.length,name=root.getAttribute('data-name')||'this club';
 var tiers=(root.getAttribute('data-tiers')||'').split('|');
-var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0);
+var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
@@ -878,7 +862,7 @@ rounds++;var G=grade(sc,run.length),left=total-run.length+more;
 var cont=(rounds<2&&total>run.length)
 ?'<a href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
 :'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
-res.innerHTML='<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
+res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
 +'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
@@ -916,7 +900,7 @@ root.classList.add('bq-live');start(Math.min(10,total));
 
 // rows = every question the page ships. `more` = how many further questions the
 // full pack holds beyond these, used for the honest app line at the end.
-function renderQuizSet(rows, { name, tiers, store, more = 0 }) {
+function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '' }) {
   const items = rows
     .map(shuffleOptions)
     .map((r) => {
@@ -938,7 +922,7 @@ function renderQuizSet(rows, { name, tiers, store, more = 0 }) {
         .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? `${n} Full set` : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
         .join('')}</div>`
     : '';
-  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-more="${more}">
+  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-more="${more}" data-badge="${esc(badge)}">
 <div class="bq-head">${picker}
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>
@@ -1032,7 +1016,28 @@ ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
 // and the set must include an x-default. That is why `alternates` is a list
 // passed in by the caller rather than something derived here: only the caller
 // knows both halves of the pair exist.
-function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [] }) {
+// Lighten a club hex enough to clear 4.5:1 on our near-black ground. Club
+// crests are chosen for shirts, not dark UI — Juventus black and Porto navy are
+// unreadable as text — so the *text* tint is derived, while the solid crest
+// keeps the true colour. Measured, not eyeballed: the loop stops at the first
+// step that passes.
+function softenAccent(hex) {
+  const lum = (h) => {
+    const c = [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16) / 255)
+      .map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const ratio = (h) => (lum(h) + 0.05) / (0.0111 + 0.05); // vs #0F1117
+  let [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.substr(i, 2), 16));
+  for (let n = 0; n < 24 && ratio(`#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`) < 4.5; n++) {
+    r = Math.min(255, Math.round(r + (255 - r) * 0.16));
+    g = Math.min(255, Math.round(g + (255 - g) * 0.16));
+    b = Math.min(255, Math.round(b + (255 - b) * 0.16));
+  }
+  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+}
+
+function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, taster = false }) {
   return `<!DOCTYPE html>
 <html lang="${lang}" style="background-color:${PAGE_BG}">
 <head>
@@ -1104,6 +1109,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
 <style>
+  ${accent ? `:root{--club:${accent};--club-soft:${softenAccent(accent)}}` : ''}
   :root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -1285,20 +1291,16 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
     .brand{font-size:17px}
     .brand img{width:25px;height:25px}
   }
-${TASTER_CSS}
+${taster ? TASTER_CSS : ''}
 ${BQ_CSS}
-  .subnav{position:sticky;top:56px;z-index:60;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s,transform .18s,visibility .18s;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
-  .subnav-in{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px);display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
-  .subnav-in::-webkit-scrollbar{display:none}
-  .subnav-in a{flex:0 0 auto;padding:12px 0;font-size:13.5px;font-weight:600;color:var(--tx3);white-space:nowrap;border-bottom:2px solid transparent}
-  .subnav-in a:hover{color:#fff;text-decoration:none}
-  .subnav-in a:focus-visible{outline:3px solid var(--grn-soft);outline-offset:-3px}
-  .subnav.on{opacity:1;visibility:visible;transform:none}
-  @media (prefers-reduced-motion:reduce){.subnav{transition:none}}
-  @media (max-width:640px){.subnav{top:52px}.subnav-in{gap:16px}}
-  .hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
-  .hero-chips .chip{font-size:12.5px;font-weight:700;color:var(--tx2);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 11px}
-  .hero-chips .chip b{color:var(--grn)}
+  /* Fixed columns, never flex-wrap: a fourth item in a narrow column dropped
+     onto its own full-width row and read as a layout bug. */
+  .hero-facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);margin:16px 0 0}
+  .hero-facts .hf{padding:12px 0;border-right:1px solid var(--bd);min-width:0}
+  .hero-facts .hf:last-child{border-right:0}
+  .hero-facts .hf b{display:block;font-family:var(--mono);font-size:19px;font-weight:700;color:#fff;line-height:1}
+  .hero-facts .hf span{display:block;font-size:11.5px;color:var(--tx4);margin-top:5px}
+  .hero-free{margin:14px 0 0;font-size:13px;color:var(--tx4)}
   .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -1451,10 +1453,9 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
 
   const catKind = CAT_KIND[catCfg.slug] || 'League quiz';
   const ogImage = clubOgImage({ name: catCfg.name, badge: '', color: CLUB_COLOR[catCfg.slug], kind: catKind });
-  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true, ogImage })}
+  const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true, ogImage, accent: CLUB_COLOR[catCfg.slug] })}
 <body>
 ${NAV}
-${subNav(catCfg.name, { records: listsMentioning(catCfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1468,12 +1469,11 @@ ${heroTwoCol({
     h1: catCfg.h1,
     lead: catCfg.description,
     chips: [
-      `<b>${all.length}</b> questions`,
-      ...(pct100(all) ? ['<b>100%</b> explained'] : []),
-      'Easy to hard',
-      'No sign-up',
+      { n: all.length, label: 'questions' },
+      ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
+      { n: hard, label: 'hard ones' },
     ],
-    playHref: '#taster',
+    playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length) }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
@@ -1624,7 +1624,7 @@ function buildClubPageIntl(cfg, siblings = []) {
 <script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates , taster: true})}
 <body>
 ${NAV}
 <main id="main">
@@ -1762,10 +1762,9 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
       { hreflang: 'x-default', href: canonical },
     ]
     : [];
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, alternates })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, alternates, accent: CLUB_COLOR[cfg.slug] })}
 <body>
 ${NAV}
-${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1779,13 +1778,12 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      `<b>${all.length}</b> questions`,
-      ...(pct100(all) ? ['<b>100%</b> explained'] : []),
-      `${easy} easy · ${medium} medium · ${hard} hard`,
-      'No sign-up',
+      { n: all.length, label: 'questions' },
+      ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
+      { n: hard, label: 'hard ones' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length) }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge }))}
 ${trustSection(cfg.name, all)}
 ${adSlot('afterQA')}
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
@@ -1861,7 +1859,6 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1875,14 +1872,13 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      `<b>${hints.length}</b> questions`,
+      { n: hints.length, label: 'questions' },
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
-      ...(pct100(poolAll) ? ['<b>100%</b> explained'] : []),
-      'Easy to hard',
-      'No sign-up',
+      ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
+      { n: hints.filter((r) => r.diff === 'hard').length, label: 'hard ones' },
     ],
-    playHref: '#taster',
+    playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
 ${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
@@ -2324,7 +2320,6 @@ function buildNationPage(cfg, catPages, nationPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
-${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -2338,14 +2333,13 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      `<b>${hints.length}</b> questions`,
+      { n: hints.length, label: 'questions' },
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
-      ...(pct100(poolAll) ? ['<b>100%</b> explained'] : []),
-      'Easy to hard',
-      'No sign-up',
+      ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
+      { n: hints.filter((r) => r.diff === 'hard').length, label: 'hard ones' },
     ],
-    playHref: '#taster',
+    playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
 ${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
@@ -2724,7 +2718,7 @@ function buildFootlePage(cfg) {
     .map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`)
     .join('\n');
   const bodyHtml = cfg.body.map((p) => `<p>${esc(p)}</p>`).join('\n');
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld , taster: true})}
 <body>
 ${NAV}
 <main id="main">
