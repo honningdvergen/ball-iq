@@ -178,6 +178,36 @@
             (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
             document.documentElement.classList.contains('native-app');
           if (!isNative) {
+            /* GOOGLE CMP (Funding Choices) — loaded BEFORE the ad library.
+               There was no consent management anywhere on this site. Google
+               requires a certified CMP for EEA/UK traffic, and Ball IQ is
+               operated from Norway, so most traffic is EEA. This is the most
+               likely reason AdSense approval has not come through.
+
+               Same native guard as everything else here: the native app
+               declares no ads and no analytics, so it must never load this.
+
+               INERT until a GDPR message is created and published in the
+               AdSense console (Privacy & messaging). The script loads and
+               does nothing until then -- deliberately, so this can ship
+               ahead of that step rather than half-wired. */
+            var fc = document.createElement('script');
+            fc.async = true;
+            fc.src = 'https://fundingchoicesmessages.google.com/i/pub-7467890219483381?ers=1';
+            document.head.appendChild(fc);
+            /* Google's required presence signal — an offscreen named iframe
+               the CMP looks for. Without it the message can fail to show. */
+            (function signalGooglefcPresent() {
+              if (!window.frames['googlefcPresent']) {
+                if (document.body) {
+                  var i = document.createElement('iframe');
+                  i.style.cssText = 'width:0;height:0;border:none;z-index:-1000;left:-1000px;top:-1000px;display:none';
+                  i.name = 'googlefcPresent';
+                  document.body.appendChild(i);
+                } else { setTimeout(signalGooglefcPresent, 0); }
+              }
+            })();
+
             var s = document.createElement('script');
             s.async = true;
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381';

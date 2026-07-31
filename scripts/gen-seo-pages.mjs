@@ -1085,6 +1085,44 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   document.head.appendChild(s);
 }catch(e){}})();
 </script>` : ''}
+<script>
+/* GOOGLE CMP (Funding Choices) — UNCONDITIONAL, and deliberately NOT inside
+   the ads && ADS_ENABLED block above.
+
+   That distinction is the whole point. AD_SLOTS is currently empty, so
+   ADS_ENABLED is false and NO generated page loads the ad library today.
+   Consent, however, is a property of the SITE, not of whether a given page
+   happens to carry a slot: an EEA visitor landing on /quiz/arsenal/ needs the
+   same consent surface as one landing on the homepage, and an AdSense
+   reviewer checks the site rather than one template. Piggybacking on the ads
+   conditional is also the exact mistake that silently dropped Clarity from
+   every club page once — so this gets its own block.
+
+   Still native-guarded: capacitor's webDir:"dist" ships every one of these
+   pages inside the iOS/Android bundle, and the native app declares no ads and
+   no analytics.
+
+   INERT until a GDPR message is created and published in the AdSense console
+   under Privacy & messaging. Until then the script loads and does nothing. */
+(function(){try{
+  var native = location.protocol === 'capacitor:' ||
+    (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
+    document.documentElement.classList.contains('native-app');
+  if (native) return;
+  var fc = document.createElement('script');
+  fc.async = true;
+  fc.src = 'https://fundingchoicesmessages.google.com/i/${ADSENSE_CLIENT.replace('ca-', '')}?ers=1';
+  document.head.appendChild(fc);
+  (function sig(){
+    if (window.frames['googlefcPresent']) return;
+    if (!document.body) return setTimeout(sig, 0);
+    var i = document.createElement('iframe');
+    i.style.cssText = 'width:0;height:0;border:none;z-index:-1000;left:-1000px;top:-1000px;display:none';
+    i.name = 'googlefcPresent';
+    document.body.appendChild(i);
+  })();
+}catch(e){}})();
+</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
 <link rel="canonical" href="${canonical}" />${alternates.map((a) => `
