@@ -400,7 +400,7 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, p
   // Fix: when the target is an in-page anchor, scroll it into view AND focus
   // its first option, so there is always a visible response. Plain-anchor
   // behaviour is preserved if JS is off, and real hrefs are untouched.
-  const ctaRow = playHref
+  const ctaRow = (playHref && !playHref.startsWith('#'))
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}"${playHref.startsWith('#') ? ' data-scrollto="1"' : ''}>${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
 ${mini ? storeBadgesMini() : storeBadges()}
@@ -1193,8 +1193,8 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px}
   .badge-chip{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:32px;padding:0 10px;border-radius:10px;background:#1F2430;font-family:var(--mono);font-weight:800;font-size:13px;letter-spacing:.03em;color:#fff}
   .badge-chip.emoji{background:rgba(255,255,255,.04);font-size:22px;padding:0 8px}
-  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--grn)}
-  .hero h1{font-size:clamp(36px,5.4vw,60px);font-weight:900;line-height:1.02;letter-spacing:-.03em;color:#fff;margin-bottom:18px}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--club-soft,var(--grn))}
+  .hero h1{font-family:'Anton',Inter,sans-serif;font-weight:400;font-size:clamp(40px,5.6vw,64px);line-height:.92;letter-spacing:.004em;text-transform:uppercase;color:#fff;margin-bottom:16px}
   .hero-lead{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--tx3);max-width:52ch;margin-bottom:26px}
   .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:22px}
   .btn-green{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:13px;box-shadow:0 10px 26px -8px rgba(88,204,2,.55)}
@@ -1477,7 +1477,6 @@ ${heroTwoCol({
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length) }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
-${trustSection(catCfg.name, all)}
 ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -1485,6 +1484,7 @@ ${renderTiles(related)}
 ${renderListLinks(catCfg.name)}
 </section>
 <section class="sec narrow">
+${trustSection(catCfg.name, all)}
 <h2 id="faq">${esc(catCfg.name)} quiz — FAQ</h2>
 ${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
@@ -1784,7 +1784,6 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge }))}
-${trustSection(cfg.name, all)}
 ${adSlot('afterQA')}
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
 ${appCtaBand(cfg.name)}
@@ -1794,6 +1793,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
+${trustSection(cfg.name, all)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
@@ -1880,7 +1880,6 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
-${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -1895,6 +1894,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
+${trustSection(cfg.name, poolAll)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
 </section>
@@ -2341,7 +2341,6 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
-${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -2356,6 +2355,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
+${trustSection(cfg.name, poolAll)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
 </section>

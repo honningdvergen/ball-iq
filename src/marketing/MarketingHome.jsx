@@ -221,12 +221,25 @@ const chip = (extra) => ({ display: 'inline-flex', alignItems: 'center', gap: 7,
 // first contact); correct-answer index is varied so it isn't guessable as
 // "always the first option". Hardcoded (5 rows, ~tiny) rather than importing the
 // question bank — keeps the freshly-slimmed marketing chunk lean.
+// Taster questions. Every row is a VERBATIM copy of a real bank question —
+// `id` is the src/questions.js id, and `why` is that question's own `hint`.
+// This matters twice over:
+//  1. "Every answer tells you why" is the differentiator GSC says converts
+//     ("<club> quiz with answers" out-converts "<club> quiz" ~4x at equal
+//     position), so the taster has to actually DEMONSTRATE it, not claim it.
+//  2. The bank's explanations are fact-checked; hand-written marketing copy
+//     is not. Sourcing from the bank keeps the zero-error bar on the most-read
+//     page on the site.
+// Options are ROTATED from the bank order so the answer is not at index 2 four
+// times running (it was) — a five-question taster where the answer is always
+// "C" teaches the wrong lesson. Rotation moves `a` with the answer string;
+// regenerate rather than hand-editing, and re-check `opts[a]` if you touch it.
 const TASTE_QS = [
-  { q: 'Who has won the most Ballon d’Or awards?', opts: ['Cristiano Ronaldo', 'Lionel Messi', 'Michel Platini', 'Johan Cruyff'], a: 1 },
-  { q: 'Which nation has won the most World Cups?', opts: ['Brazil', 'Germany', 'Italy', 'Argentina'], a: 0 },
-  { q: 'Who is the Premier League’s all-time top scorer?', opts: ['Harry Kane', 'Alan Shearer', 'Wayne Rooney', 'Sergio Agüero'], a: 1 },
-  { q: 'Which club has won the most Champions League titles?', opts: ['AC Milan', 'Bayern Munich', 'Liverpool', 'Real Madrid'], a: 3 },
-  { q: 'Who won the 2022 World Cup?', opts: ['France', 'Argentina', 'Brazil', 'Croatia'], a: 1 },
+  { id: 'q_1d0d44', q: 'Which country won the 2022 World Cup?', opts: ['Argentina', 'France', 'Brazil', 'Croatia'], a: 0, why: 'The final went to penalties in Qatar after a 3-3 draw; Mbappé scored a hat-trick in defeat.' },
+  { id: 'q_04e822', q: 'Who is Barcelona\'s all-time top scorer in La Liga?', opts: ['Ronaldo', 'Fàbregas', 'Romário', 'Messi'], a: 3, why: 'Messi scored 474 La Liga goals for Barcelona between 2004 and 2021, also the all-time record for the competition.' },
+  { id: 'q_a10f9b', q: 'Who scored 36 Premier League goals in 2022-23 to set a new single-season record?', opts: ['Kane', 'Haaland', 'Mohamed Salah', 'Ivan Toney'], a: 1, why: 'Haaland\'s 36 goals in 2022-23 broke the 38-game PL season record (previously 32 by Salah in 2017-18).' },
+  { id: 'q_663a6e', q: 'Which Italian manager won the Champions League with both AC Milan and Real Madrid?', opts: ['Lippi', 'Capello', 'Ancelotti', 'Conte'], a: 2, why: 'Ancelotti won UCL with AC Milan (2003, 2007) and Real Madrid (2014, 2022, 2024) — five in total, more than any other manager.' },
+  { id: 'q_0b5ee8', q: 'Who won the 2024 Men\'s Ballon d\'Or?', opts: ['Vinicius Jr', 'Jude Bellingham', 'Yamal', 'Rodri'], a: 3, why: 'Rodri became the first Manchester City player to win the Ballon d\'Or, edging Vinicius Junior months after winning Euro 2024 with Spain (where he was named player of the tournament).' },
 ];
 
 // ── Playable Footle (marketing taste) ────────────────────────────────────────
@@ -469,6 +482,20 @@ function QuizTaster() {
           </button>
         ))}
       </div>
+      {/* THE EXPLANATION. This is the differentiator and until now the homepage
+          claimed it nowhere — the taster coloured the options and moved on.
+          GSC says the intent that converts is exactly this: "<club> quiz with
+          answers" out-converts "<club> quiz" roughly 4x at the SAME position
+          (Arsenal 5.3% at 11.1 vs 1.4% at 10.6). So show the reason at the
+          moment of maximum attention, right after the tap, rather than
+          asserting it in a feature list further down.
+          Text is the bank question's own fact-checked `hint` — see TASTE_QS. */}
+      {answered && cur.why && (
+        <div style={{ marginTop: 12, padding: '12px 14px', background: 'rgba(88,204,2,0.09)', borderLeft: '3px solid #58CC02', borderRadius: '0 10px 10px 0' }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8AE042', marginBottom: 5 }}>Why</div>
+          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: '#D6DBE4' }}>{cur.why}</p>
+        </div>
+      )}
       {answered && <button onClick={next} style={{ width: '100%', marginTop: 14, padding: 13, background: '#58CC02', color: '#06230C', border: 'none', borderRadius: 12, fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>{idx + 1 >= total ? 'See your Ball IQ →' : 'Next →'}</button>}
     </div>
   );
