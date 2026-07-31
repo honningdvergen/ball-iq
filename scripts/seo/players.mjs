@@ -132,7 +132,7 @@ export const PLAYERS = [
     "initials": "P10",
     "h1": "Pelé Quiz",
     "title": "Pelé Quiz — Trivia Questions & Answers | Ball IQ",
-    "description": "Test yourself on Pelé: Santos, the New York Cosmos, three World Cups and 1,000-plus goals. A free Pelé quiz with every answer explained — play in your browser.",
+    "description": "Test yourself on Pelé: Santos, the New York Cosmos, three World Cups and 1,000-plus goals. A free Pelé quiz with most answers explained — play in your browser.",
     "intro": [
       "Pelé is the man against whom every debate about football's greatest still begins — the teenager who won a World Cup and never really stopped. This free Pelé quiz runs the whole arc: the 15-year-old Waldemar de Brito delivered to Santos in 1956, the phenomenon who tore up Brazilian football through the 1960s and made Santos world champions, the three-time World Cup winner, and the ageing king who crossed the Atlantic in 1975 to launch the game in America with the New York Cosmos. Only two professional clubs in a career that spanned two decades and, by FIFA's count, well over a thousand goals. If you can name the club he scored his 1,000th goal against, this quiz is for you.",
       "The defining moments arrived early and never stopped. At the 1958 World Cup in Sweden he became the youngest man ever to win the tournament, at 17, and scored a brace in the final against the hosts — still the youngest player to score in a World Cup final. He won again in 1962, then produced perhaps his masterpiece in Mexico 1970, opening the scoring in the final against Italy and setting up two more as Brazil kept the Jules Rimet Trophy for good. He remains, as of 2026, the only man to win three World Cups. In between came the landmarks: 643 goals for Santos — the most for a single club until Lionel Messi passed it in December 2020 — the two Copa Libertadores and Intercontinental Cups of 1962 and 1963, and the 1,000th goal, a penalty at a packed Maracanã against Vasco da Gama in November 1969.",
@@ -237,7 +237,7 @@ export const PLAYERS = [
     "initials": "EH9",
     "h1": "Erling Haaland Quiz",
     "title": "Erling Haaland Quiz — Trivia Questions & Answers | Ball IQ",
-    "description": "The free Erling Haaland quiz — from Salzburg's teen sensation to Manchester City's record-breaker and Norway's talisman. Easy to hard, every answer explained.",
+    "description": "The free Erling Haaland quiz — from Salzburg's teen sensation to Manchester City's record-breaker and Norway's talisman. Easy to hard, most answers explained.",
     "intro": [
       "Erling Haaland is the most ruthless goal machine of his generation — a giant, left-footed Norwegian who turned scoring into something close to a mechanical certainty. This free Haaland quiz runs the whole arc: the Bryne boy who moved to Molde under Ole Gunnar Solskjær, the teenager who detonated at RB Salzburg, the Borussia Dortmund phenomenon, and the 2022 switch to Manchester City that handed Pep Guardiola the final piece of a treble. In his very first season at the Etihad he scored 36 Premier League goals — a single-season record for the competition — and 52 across all competitions. If you know which release clause City triggered to sign him from Dortmund, this quiz is for you.",
       "The defining images arrive early and never let up. On 17 September 2019, a 19-year-old making his Champions League debut for Salzburg scored a first-half hat-trick against Genk — still the only player to manage that on his debut in the competition. Three years later he tore up the Premier League record book, reaching 100 goals in just 111 appearances in December 2025 — faster than Alan Shearer's 124, the quickest century the competition has ever seen. He is Norway's all-time leading scorer, and at the 2026 World Cup — his first — his two late goals sank Brazil in the last 16 and carried Norway to their first-ever quarter-final.",
@@ -377,7 +377,7 @@ export const PLAYERS = [
     "initials": "RL9",
     "h1": "Robert Lewandowski Quiz",
     "title": "Robert Lewandowski Quiz: Test Your Knowledge | Ball IQ",
-    "description": "Free Robert Lewandowski quiz — play in your browser, no sign-up. Dortmund, Bayern, Barça and Chicago Fire, every answer explained. Test your Lewy IQ.",
+    "description": "Free Robert Lewandowski quiz — play in your browser, no sign-up. Dortmund, Bayern, Barça and Chicago Fire, most answers explained. Test your Lewy IQ.",
     "intro": [
       "Robert Lewandowski is the most complete penalty-box striker of his generation, a goalscorer whose career reads like a tour of European football's biggest stages. From humble beginnings at Znicz Pruszków and Lech Poznań in Poland, he broke out at Borussia Dortmund, became a record-shattering machine at Bayern Munich, led the line at Barcelona for four seasons, and in the summer of 2026 crossed the Atlantic to join Chicago Fire in MLS as a free agent. If you can recite his goal tallies season by season and know exactly which records he took off Gerd Müller, this quiz is built for you.",
       "The defining chapter came in 2019-20, when Lewandowski drove Bayern to a Champions League triumph and became the first player to finish as the sole top scorer in the league, domestic cup and Champions League in the same treble-winning campaign. He followed it the next season by scoring 41 Bundesliga goals in 2020-21 — beating Müller's 49-year-old single-season record of 40 with a last-gasp strike on the final day — and was twice named The Best FIFA Men's Player, in 2020 and 2021. Across his career he has scored more than 600 club goals and remains Poland's all-time leading scorer with more than 80 international goals.",
@@ -412,7 +412,7 @@ export const PLAYERS = [
     "initials": "MS11",
     "h1": "Mohamed Salah Quiz",
     "title": "Mohamed Salah Quiz: Liverpool & Egypt Trivia | Ball IQ",
-    "description": "Free Mohamed Salah quiz — Liverpool, Roma, Egypt, the Golden Boots and records. Play in your browser, no sign-up, every answer explained.",
+    "description": "Free Mohamed Salah quiz — Liverpool, Roma, Egypt, the Golden Boots and records. Play in your browser, no sign-up, most answers explained.",
     "intro": [
       "Mohamed Salah is one of the defining forwards of the Premier League era, an Egyptian winger who turned a slow start in Europe into nine record-breaking years at the very top. His path ran from Cairo's Arab Contractors to Basel in Switzerland, through a frustrating first crack at the Premier League with Chelsea, into a reinvention in Italy with Fiorentina and then Roma, and finally to Liverpool, where from 2017 he became one of the most feared attackers on the planet. That spell ended in the summer of 2026, closing a chapter that reshaped how the club scored goals. If you can trace the arc from El Mokawloon to Anfield — and you have an opinion on where he belongs among the all-time greats — this quiz is built for you.",
       "Salah's 2024-25 season is the case for the defence in any greatest-of-his-generation argument. He scored 29 Premier League goals and laid on 18 assists, becoming the first player in the competition's history to win the Golden Boot and the Playmaker award in the same campaign, and dragging Liverpool to the title in Arne Slot's first season. It earned him a record third PFA Players' Player of the Year award. That fourth Golden Boot also drew him level with Thierry Henry at the top of the all-time list, and it was no flash in the pan: back in 2017-18 he had scored 32 goals in a 38-game season, still the benchmark for a single top-flight year. He finished as Liverpool's third-highest scorer of all time with more than 250 goals for the club, and their leading Premier League marksman.",
@@ -448,7 +448,7 @@ export const PLAYERS = [
     "initials": "TH14",
     "h1": "Thierry Henry Quiz",
     "title": "Thierry Henry Quiz: Test Your Knowledge | Ball IQ",
-    "description": "Free Thierry Henry quiz you can play in your browser, no sign-up. From Monaco to Arsenal's Invincibles to Barcelona's treble — every answer explained.",
+    "description": "Free Thierry Henry quiz you can play in your browser, no sign-up. From Monaco to Arsenal's Invincibles to Barcelona's treble — most answers explained.",
     "intro": [
       "Thierry Henry is one of the most complete forwards the game has produced, a striker whose blend of pace, poise and finishing rewrote what a modern number nine could be. His career arc ran from AS Monaco, where Arsène Wenger first shaped him, through a difficult spell at Juventus, into the Arsenal years that made him a legend, then on to Barcelona, before he closed out his playing days at New York Red Bulls in Major League Soccer. If you can picture the swerve of a left-footed finish curled inside the far post, this quiz is for you.",
       "The Arsenal chapter is where the legend was built. Henry became the club's all-time leading scorer with 228 goals and finished as the Premier League's top scorer four times, winning four Golden Boots — a total since matched by Mohamed Salah. In the 2003-04 Invincibles season he scored 30 league goals; the year before, in 2002-03, he became the only player in Premier League history to record at least 20 goals and 20 assists in a single campaign, with 24 goals and 20 assists. At Barcelona he completed the picture, winning the 2009 treble of La Liga, Copa del Rey and Champions League, and internationally he won the 1998 World Cup and Euro 2000 with France, finishing his national-team career with 51 goals in 123 caps.",
@@ -483,7 +483,7 @@ export const PLAYERS = [
     "initials": "WR10",
     "h1": "The Wayne Rooney Quiz",
     "title": "Wayne Rooney Quiz: Test Your Knowledge | Ball IQ",
-    "description": "Free Wayne Rooney quiz you can play right in your browser, no sign-up. Clubs, goals, records and big moments, with every answer explained.",
+    "description": "Free Wayne Rooney quiz you can play right in your browser, no sign-up. Clubs, goals, records and big moments, with most answers explained.",
     "intro": [
       "Wayne Rooney is the Croxteth teenager who grew into English football's defining forward of his generation, a player whose career ran from a wonder goal at 16 to the top of two record books. He burst out of Everton's academy, moved to Manchester United in 2004 for a fee that made him the most expensive teenager in the world, spent thirteen trophy-laden seasons at Old Trafford, then closed the loop with a final Everton spell before playing out his career at DC United and Derby County. If you can still picture the scruffy kid curling one past David Seaman to end Arsenal's unbeaten run, this quiz is built for you.",
       "The numbers are the kind fans quote from memory. Rooney is Manchester United's all-time leading goalscorer with 253 goals across 559 appearances, a tally that edged him past Sir Bobby Charlton. For England he won 120 caps and scored 53 goals, and for the best part of a decade he stood as his country's all-time top scorer before Harry Kane finally passed the mark. Add it all up and his senior career cleared 360 goals for club and country.",
@@ -518,7 +518,7 @@ export const PLAYERS = [
     "initials": "SG8",
     "h1": "Steven Gerrard Quiz",
     "title": "Steven Gerrard Quiz: Test Your Knowledge | Ball IQ",
-    "description": "Free Steven Gerrard quiz you can play in your browser, no sign-up. Liverpool, England and LA Galaxy questions with every answer explained.",
+    "description": "Free Steven Gerrard quiz you can play in your browser, no sign-up. Liverpool, England and LA Galaxy questions with most answers explained.",
     "intro": [
       "Steven Gerrard is the one-club talisman who carried Liverpool for the better part of two decades, a driving central midfielder who could tackle, pass, run and — above all — score the kind of goals that decided finals. He came through Liverpool's academy, made his debut in 1998, wore the armband for more than a decade, and stayed until 2015 before a farewell spell at LA Galaxy in Major League Soccer closed out his playing days. Add 114 England caps on top, and you have one of the defining British midfielders of his generation. If you can still picture him arriving late into the box with the outside of his right boot cocked, this quiz is built for you.",
       "His masterpiece came in Istanbul on 25 May 2005. Liverpool were 3-0 down to AC Milan at half-time in the Champions League final; Gerrard's header just after the hour started the comeback, the Reds drew level at 3-3, and they won the shoot-out to lift the European Cup as captain. It remains the single most famous night of his career, but it sits alongside a 2006 FA Cup final so dominated by him it is simply called \"the Gerrard final,\" and a 2001 season in which he helped Liverpool win the UEFA Cup, FA Cup and League Cup treble. For England he won 114 caps and scored 21 goals, captaining his country 38 times.",
@@ -681,7 +681,7 @@ export const PLAYERS = [
     },
     {
       "q": "Is this Jude Bellingham quiz free?",
-      "a": "Yes. It plays in the browser with no sign-up and no download, and every answer comes with an explanation. The full app has thousands more questions if you want to keep going."
+      "a": "Yes. It plays in the browser with no sign-up and no download, and every question here comes with an explanation. The full app has thousands more questions if you want to keep going."
     }
   ]
 },
@@ -751,7 +751,7 @@ export const PLAYERS = [
     },
     {
       "q": "Is the Jamal Musiala quiz free?",
-      "a": "Yes — it plays in the browser with no sign-up or download, and every answer carries a written explanation."
+      "a": "Yes — it plays in the browser with no sign-up or download, and every question here carries a written explanation."
     }
   ]
 },
@@ -786,7 +786,7 @@ export const PLAYERS = [
     },
     {
       "q": "How hard is the Bukayo Saka quiz?",
-      "a": "It builds from easy to hard. Early questions cover the academy and the club; later ones get into debut dates, shirt numbers and specific matches, with every answer explained."
+      "a": "It builds from easy to hard. Early questions cover the academy and the club; later ones get into debut dates, shirt numbers and specific matches, with most answers explained."
     }
   ]
 },
@@ -822,7 +822,7 @@ export const PLAYERS = [
     },
     {
       "q": "Is the Vinicius Junior quiz free?",
-      "a": "Yes. It plays in your browser with no sign-up and no download, and every answer comes with a written explanation."
+      "a": "Yes. It plays in your browser with no sign-up and no download, and every question here comes with a written explanation."
     }
   ]
 },

@@ -103,6 +103,14 @@
          of inline scripts. App.jsx re-applies the class at module load as
          belt-and-braces. -->
     <script>
+      /* #biq-prerender is the static homepage copy sitting inside #root. This
+         shell is ALSO served for /play and every other client route, so mark
+         non-home routes here — in <head>, before the body is parsed — and let
+         CSS hide it. Doing this after paint would flash a wall of marketing
+         text over the game on every cold load. */
+      if (location.pathname !== '/' && location.pathname !== '/index.html') {
+        document.documentElement.classList.add('biq-not-home');
+      }
       if (location.protocol === 'capacitor:' ||
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');
@@ -295,6 +303,42 @@
       html.native-app .ad-slot-sidebar-right,
       html.native-app .ad-slot-banner,
       html.native-app .biq-nav { display: none !important; }
+
+      /* Static homepage copy: crawlers, and first paint on '/' only. React's
+         createRoot() wipes it on mount, so these rules govern only the window
+         before the app boots — but on native and in an installed PWA it must
+         never be seen at all, and on a client route it would flash marketing
+         text over the game. Hidden in CSS rather than by script so it is never
+         painted once. Paired with html.biq-not-home from the head script. */
+      html.native-app #biq-prerender,
+      html.biq-not-home #biq-prerender { display: none !important; }
+      #biq-prerender {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 28px 20px 40px;
+        color: #C9CDD3;
+        font-size: 15px;
+        line-height: 1.62;
+      }
+      #biq-prerender h1 {
+        color: #fff;
+        font-size: clamp(28px, 5.4vw, 40px);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      #biq-prerender h2 {
+        color: #fff;
+        font-size: 19px;
+        letter-spacing: -0.01em;
+        margin: 26px 0 6px;
+      }
+      #biq-prerender p { margin: 0 0 12px; }
+      #biq-prerender a { color: #6DE23A; }
+      @media (display-mode: standalone) {
+        #biq-prerender { display: none !important; }
+      }
       html.native-app body > #root {
         max-width: none !important;
         margin: 0 !important;
@@ -622,6 +666,79 @@
     </div>
 
     <div id="root">
+      <!-- ── STATIC HOMEPAGE COPY (crawler-visible) ────────────────────────
+           WHY THIS EXISTS. balliq.app/ used to serve 144 visible words, nearly
+           all of it JSON-LD: MarketingHome is React.lazy(), so a crawler had to
+           load the main bundle, hydrate, THEN dynamic-import a second chunk
+           before a single word of marketing copy existed. Every other page on
+           the site ships 1,000-2,000 static words; the front door shipped none.
+           AdSense refused the site on 2026-07-31 for "low value content", and
+           this was the only surface that deserved the label.
+
+           HOW IT IS SAFE. React's createRoot() removes existing children of the
+           container on first render, so this is wiped the moment the app mounts
+           — same mechanism that already retires .biq-splash below. It is hidden
+           BEFORE paint (never merely after) in the three places it must not
+           show: the native app, an installed PWA, and any non-'/' route, which
+           share this shell. See the html.biq-not-home guard in the head script.
+
+           KEEP IT HONEST. Claims here must match MarketingHome and the store
+           listings — "most answers explained", never "every answer" (measured
+           77.6%). Counts are real: 6,409 questions, 126 quiz pages, 51 lists. -->
+      <div id="biq-prerender">
+        <h1>How good is your football knowledge, really?</h1>
+        <p>Ball IQ is a free football quiz game. There is no sign-up and nothing to
+          install — open it in a browser and you are playing in about ten seconds.
+          If you would rather have it on your home screen, there are native apps for
+          iPhone and Android. Whether you call it football or soccer, the questions
+          are the same.</p>
+
+        <h2>Two things to play every day</h2>
+        <p><strong>Footle</strong> is the daily football word game: guess the mystery
+          footballer's surname in six tries, with green and yellow tiles telling you
+          how close you are. One player a day, the same one for everybody, so a
+          result is worth comparing.</p>
+        <p><strong>The Daily 7</strong> is seven questions in roughly three minutes.
+          Everyone in the world gets the same seven on the same day, which is what
+          makes a score worth arguing about. Both reset at midnight.</p>
+
+        <h2>Quizzes for your club, your league, your era</h2>
+        <p>There are 6,409 hand-curated questions in the bank and 126 dedicated quiz
+          pages. Clubs run from <a href="/quiz/liverpool/">Liverpool</a>,
+          <a href="/quiz/arsenal/">Arsenal</a> and
+          <a href="/quiz/manchester-united/">Manchester United</a> through to Celtic,
+          Rangers, Galatasaray, Boca Juniors and Hajduk Split — 72 clubs, not just
+          the famous ones. There are league and tournament quizzes for the
+          <a href="/quiz/premier-league/">Premier League</a>, La Liga, Serie A, the
+          Bundesliga, the <a href="/quiz/champions-league/">Champions League</a>, the
+          <a href="/quiz/world-cup/">World Cup</a> and the Euros, plus pages built
+          around individual players.</p>
+
+        <h2>Built on explanations</h2>
+        <p>Most answers come with a short explanation of why they are right — the
+          season it happened, who else was involved, what made it matter. That is the
+          part people come back for. Getting a question wrong and learning something
+          is a better outcome than getting it right and learning nothing, and it is
+          the reason the questions are written by hand rather than scraped.</p>
+
+        <h2>Play against other people</h2>
+        <p>You can host a live room for up to eight players and race them through the
+          same questions in real time, or pass a single phone around a table for two
+          to six players. Both are free, and the online rooms work from a shared
+          link — nobody else needs an account.</p>
+
+        <h2>Reference lists</h2>
+        <p>Alongside the quizzes there are 51 <a href="/lists/">reference lists</a> —
+          every Ballon d'Or winner, every European Cup and Champions League final,
+          Premier League top scorers, World Cup winners and more — kept as plain,
+          checkable tables for when you want the fact rather than the game.</p>
+
+        <h2>Who makes it</h2>
+        <p>Ball IQ is independent, built and maintained by one developer, and free to
+          play. <a href="/about/">Read more about the project</a>, or
+          <a href="/contact/">get in touch</a> if you spot a question that looks
+          wrong — corrections from players are how the bank stays accurate.</p>
+      </div>
       <div class="biq-splash" aria-label="Loading Ball IQ">
         <div class="biq-splash-mark">Ball <em>IQ</em></div>
         <div class="biq-splash-dot"></div>
