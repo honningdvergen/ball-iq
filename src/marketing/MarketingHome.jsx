@@ -24,11 +24,13 @@ import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
 // Play BADGES below stay as direct links, because there the platform is the label.
 const GET_APP = '/get';
 const PLAY = '/play';
-// Build-time question-bank count (vite define, re-derived every deploy so it
-// never drifts stale). Fallback keeps dev servers / edge cases safe.
-const QB_COUNT = Number(import.meta.env.VITE_QB_COUNT || 4000);
-// Rounded floor for marketing copy (e.g. 5,483 -> "5,000+"); auto-updates from QB_COUNT so it never drifts.
-const QB_ROUND = Math.floor(QB_COUNT / 1000) * 1000;
+// QB_COUNT / QB_ROUND (the build-time bank size) used to feed six strings on
+// this page. They are gone deliberately, not by accident: the exact question
+// count never appears in copy again. A visitor cannot tell 6,407 from 600 or
+// 60,000, so the figure persuades nobody, while handing a competitor a number
+// to beat with a scraped 20,000. Scale is shown by breadth (72 clubs, Real
+// Madrid to Hajduk Split), never counted. The measured figures still live in
+// PRODUCT.md, where they belong — they are an honesty check, not a headline.
 const BALL = '/marketing/ball.png';
 const SHOT = {
   home: '/marketing/balliq-screenshot-00-home.png',
@@ -360,7 +362,11 @@ const footleKeyStyle = (state, wide) => {
   const base = { height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 7, border: 'none', fontWeight: 700, fontSize: wide ? 11.5 : 14, cursor: 'pointer', flex: wide ? '1.6 1 0' : '1 1 0', fontFamily: 'inherit', textTransform: 'uppercase' };
   if (state === 'correct') return { ...base, background: '#58CC02', color: '#06230C' };
   if (state === 'present') return { ...base, background: '#FFC107', color: '#241B00' };
-  if (state === 'absent') return { ...base, background: '#14161C', color: '#5B6070' };
+  // A spent key still has to be READ — it is how you remember what you have
+  // already tried. #5B6070 on this background measured 2.89:1, the worst text
+  // on the site and the only WCAG failure the deterministic scan found (x4).
+  // #7E828C is an existing token here and clears at 4.70:1.
+  if (state === 'absent') return { ...base, background: '#14161C', color: '#7E828C' };
   return { ...base, background: '#2A2D3A', color: '#E8EAF0' };
 };
 const RESET_BTN = { display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', background: 'transparent', color: '#9BA0B8', fontWeight: 700, fontSize: 14, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' };
@@ -454,34 +460,6 @@ function MiniFootle() {
 // ── Playable quiz taster (marketing) — "What's your Ball IQ?" ────────────────
 // 5 famous questions → instant feedback → an IQ score out of 99. Homepage uses
 // skill tiers (per handoff); the /quiz/* landing pages use fan tiers.
-// Counts a figure up on mount. The bank size is our strongest single proof
-// and it was rendering as a static number — a printed claim. Counting it makes
-// it read as something being measured, which is what it actually is.
-// Honours prefers-reduced-motion by jumping straight to the final value: the
-// CSS killswitch cannot help here because this animates a text node, not a
-// property.
-function useCountUp(target, ms = 900) {
-  const [n, setN] = useState(() => {
-    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? target : 0; }
-    catch { return 0; }
-  });
-  useEffect(() => {
-    if (n === target) return;
-    let raf, t0;
-    const ease = (x) => 1 - Math.pow(1 - x, 3);            // easeOutCubic
-    const step = (t) => {
-      if (!t0) t0 = t;
-      const p = Math.min(1, (t - t0) / ms);
-      setN(Math.round(ease(p) * target));
-      if (p < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [target, ms]);
-  return n;
-}
-
 function QuizTaster() {
   const [idx, setIdx] = useState(0);
   // Per-question OUTCOMES, not just a tally. The card used to keep a bare
@@ -621,7 +599,6 @@ function QuizTaster() {
 // decided anything. No marketing headline above this; per the design, "Pick your
 // challenge" + the two playable cards IS the top of the page.
 function PlayNow() {
-  const bankCount = useCountUp(QB_COUNT);
   return (
     <section style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px,5vw,56px) 20px 22px', overflow: 'hidden' }}>
       <div className="mkt-glow" style={{ position: 'absolute', top: '20%', left: '50%', width: 'min(760px,120vw)', height: 'min(760px,120vw)', background: 'radial-gradient(circle, rgba(88,204,2,0.16) 0%, rgba(88,204,2,0.05) 38%, transparent 64%)', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: 0 }} />
@@ -650,7 +627,13 @@ function PlayNow() {
         <div className="mkt-rise mkt-rise-1" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'nowrap', marginBottom: 2 }}>
           {[
             ['FREE', 'no sign-up'],
-            [bankCount.toLocaleString('en-US'), 'questions'],
+            // Was the question count, animated up from 0 by useCountUp. Two
+            // problems: a visitor cannot tell 6,407 from 600 or 60,000, so the
+            // number persuades nobody while handing a competitor a target to
+            // beat with a scraped 20,000 -- and the odometer displayed 1,689
+            // and 2,996 as fact for ~800ms each on the way. Club count says
+            // the same thing (breadth) in a unit a football person feels.
+            ['72', 'clubs'],
             [`#${getFootleNumber()}`, 'today'],
           ].map(([v, l], i) => (
             <span key={l} style={{
@@ -687,12 +670,20 @@ function PlayNow() {
           The middle chip references the app's competitive DAILY, deliberately
           not captioning the MiniFootle taste above (separate 12-word game). */}
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 26 }}>
-        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Brain size={15} strokeWidth={2} /> {QB_COUNT.toLocaleString('en-US')} fact-checked questions</span>
+        {/* The count said how MANY; this says why they are worth answering,
+            which is the thing a scraped competitor cannot copy. "Most" is
+            deliberate and measured: 80.9% carry an explanation, so "every"
+            would be the false claim we already had to retract once. */}
+        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Brain size={15} strokeWidth={2} /> Fact-checked — and most tell you why</span>
         <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</span>
         <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Smartphone size={15} strokeWidth={2} /> Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
-        <GreenCTA href={GET_APP}>Get {QB_ROUND.toLocaleString('en-US')}+ questions in the app →</GreenCTA>
+        {/* Was "Get 6,000+ questions in the app". Two faults: it printed the
+            count (and a DIFFERENT rounding of it to the 6,407 chip 200px away,
+            which reads as two products), and it asked for an install on a page
+            whose own hero promises "nothing to install". */}
+        <GreenCTA href={GET_APP}>Get the app — free →</GreenCTA>
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
@@ -928,7 +919,11 @@ const FAQS = [
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the footballer's surname in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
-  { q: 'Where can I play?', a: 'On iPhone via the App Store, or instantly in your browser — on Android, desktop, anywhere — at balliq.app. A native Android app is on the way; your progress follows your account across all of them.' },
+  // Said "a native Android app is on the way" while a Google Play button sat
+  // in the footer of the same page. Android went live 2026-07-30; the line
+  // outlived the release. Stale copy contradicting a live link on the same
+  // screen is the cheapest possible way to look unmaintained.
+  { q: 'Where can I play?', a: 'On iPhone via the App Store, on Android via Google Play, or instantly in your browser at balliq.app — no install, no account. Your progress follows your account across all three.' },
 ];
 
 function Brand({ size = 20, imgSize = 32 }) {
@@ -1075,7 +1070,7 @@ export default function MarketingHome() {
         <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7E828C', whiteSpace: 'nowrap' }}>
           {[0, 1].map((i) => (
             <span key={i}>
-              {[`${QB_ROUND.toLocaleString('en-US')}+ Questions`, '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
+              {['Every club, Real Madrid to Hajduk Split', '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
                 <React.Fragment key={j}>{'  '}{t}{'  '}<span style={{ color: '#FF6A00' }}>✦</span></React.Fragment>
               ))}
             </span>
@@ -1212,7 +1207,7 @@ export default function MarketingHome() {
         <div style={{ maxWidth: 1140, margin: '0 auto', padding: '56px 24px 40px', display: 'flex', flexWrap: 'wrap', gap: 40, justifyContent: 'space-between' }}>
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
-            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#7E828C' }}>{`The ultimate football quiz. ${QB_ROUND.toLocaleString('en-US')}+ questions across 10 game modes — test your knowledge solo, with friends, or against up to 8 players online. Free to play — no ads in the app.`}</p>
+            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#7E828C' }}>{'The ultimate football quiz. Ten game modes, seventy-two clubs, and a new one every morning — solo, with friends, or against up to eight players online. Free to play, no ads in the app.'}</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
