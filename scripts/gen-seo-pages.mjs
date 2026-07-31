@@ -34,7 +34,7 @@ import { dirname, resolve } from 'node:path';
 import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
-import { tiersFor } from './seo/clubTiers.mjs';
+import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -379,7 +379,7 @@ function storeBadgesMini() {
 
 // Inner hero content (breadcrumb → stat), shared by the single-column heroSection
 // (Footle landing, listicles) and the two-column quiz hero (heroTwoCol).
-function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref, playLabel, mini }) {
+function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, playHref, playLabel, mini }) {
   let chipStyle = '';
   if (badge && !badge.emoji && badge.color) {
     const [bg, fg] = badgeColors(badge.color);
@@ -406,7 +406,12 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, playHref
 ${mini ? storeBadgesMini() : storeBadges()}
 </div>`
     : '';
-  const stat = statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
+  // Chips beat a sentence: a searcher scans them, and every value is computed
+  // from the bank at build time so none of it can drift or overstate. This is
+  // the honest version of the "75 verified questions" badge competitors assert.
+  const stat = Array.isArray(chips) && chips.length
+    ? `<div class="hero-chips">${chips.map((c) => `<span class="chip">${c}</span>`).join('')}</div>`
+    : statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
   return `${crumbs(crumbItems)}
 <div class="kicker">${chip}<span class="eyebrow">${esc(kind)}</span></div>
 <h1>${esc(h1)}</h1>
@@ -706,6 +711,17 @@ function pct100(rows) {
   return 'Every one of them carries a written explanation.';
 }
 
+// The verification section. Competitors publish theirs and we run a stricter
+// process, so this is pure upside — but the coverage sentence comes from pct100()
+// so it stays silent wherever coverage is not actually 100%.
+function trustSection(name, rows) {
+  return `<section class="sec narrow" id="how">
+<h2>How the ${esc(name)} quiz is checked</h2>
+<p class="sub">Every question above was written by hand and verified before it went live.</p>
+<p class="trust-note">All ${rows.length} ${esc(name)} questions were checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
+</section>`;
+}
+
 // ── Unified quiz set (2026-07-31 rebuild) ────────────────────────────────────
 // Replaces the taster+Q&A split. WHY:
 //   1. The page carried a 10-question scored taster AND a separate 12-question
@@ -806,11 +822,16 @@ var cont=(rounds<2&&total>run.length)
 res.innerHTML='<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
-+'<div class="bq-row">'+cont+'<button class="ghost" data-again="1">Play again</button></div>'
++'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
 +(rounds>=2?'<p class="bq-note">'+left+' more '+esc(name)+' questions in the app, plus a new daily game and your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();start(Math.min(20,total))});
-var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)})}
+var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)});
+var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){
+var txt='I scored '+sc+'/'+run.length+' on the '+name+' quiz — '+G.tier+'. Beat that.',u=location.href.split('#')[0];
+if(navigator.share){navigator.share({title:name+' quiz',text:txt,url:u})['catch'](function(){})}
+else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent='Copied ✓'})}
+else{window.prompt('Copy your score',txt+' '+u)}})}
 function start(n){
 len=n;res.hidden=true;if(head)head.hidden=false;
 run=[];sc=0;at=0;streak=0;best=0;
@@ -1206,6 +1227,9 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   }
 ${TASTER_CSS}
 ${BQ_CSS}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
+  .hero-chips .chip{font-size:12.5px;font-weight:700;color:var(--tx2);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 11px}
+  .hero-chips .chip b{color:var(--grn)}
   .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -1317,9 +1341,9 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   // on a club page and never crossed over.
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
-  const tasterRows = tasterPick(hints, 10);
-  const tasterIds = new Set(tasterRows.map((r) => r.id));
-  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), catCfg.sample);
+  // One pool — see renderQuizSet(). Was a 10-q JSON taster + a disjoint HTML block.
+  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
   const ld = jsonLd({
@@ -1373,16 +1397,17 @@ ${heroTwoCol({
     name: catCfg.name,
     h1: catCfg.h1,
     lead: catCfg.description,
-    statLine: `Free · ${all.length}+ ${catCfg.name} questions · new ones added weekly`,
+    chips: [
+      `<b>${all.length}</b> questions`,
+      ...(pct100(all) ? ['<b>100%</b> explained'] : []),
+      'Easy to hard',
+      'No sign-up',
+    ],
     playHref: '#taster',
-  }, renderTaster(tasterRows, catCfg.name, deepPlay))}
+  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length) }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
-<section class="sec narrow">
-<h2>${esc(catCfg.name)} sample questions &amp; answers</h2>
-<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
-${renderQA(sample)}
-</section>
+${trustSection(catCfg.name, all)}
 ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -1682,14 +1707,15 @@ ${heroTwoCol({
     name: cfg.name,
     h1: cfg.h1,
     lead: cfg.description,
-    statLine: `Free · ${all.length}+ ${cfg.name} questions · new ones added weekly`,
-    playHref: '#play',
+    chips: [
+      `<b>${all.length}</b> questions`,
+      ...(pct100(all) ? ['<b>100%</b> explained'] : []),
+      `${easy} easy · ${medium} medium · ${hard} hard`,
+      'No sign-up',
+    ],
+    playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length) }))}
-<section class="sec narrow" id="play">
-<h2>How the ${esc(cfg.name)} quiz is checked</h2>
-<p class="sub">Every question above was written by hand and verified before it went live.</p>
-<p class="trust-note">All ${all.length} ${esc(cfg.name)} questions were checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some clubs carry fewer questions than others. ${pct100(all)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
-</section>
+${trustSection(cfg.name, all)}
 ${adSlot('afterQA')}
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
 ${appCtaBand(cfg.name)}
@@ -1717,17 +1743,18 @@ ${footer()}`;
 // "about" a player if any `match` alternative appears in the stem or the
 // correct answer. Prose comes from scripts/seo/players.mjs (fact-checked). No
 // in-app "player quiz" mode, so the taster funnels to the game at /play.
-function playerHintRows(match) {
+function playerAllRows(match) {
   const re = new RegExp('(' + match.join('|') + ')', 'i');
   return QB.filter(
-    (x) =>
-      x.type === 'mcq' &&
-      Array.isArray(x.o) &&
-      x.hint &&
-      (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
+    (x) => x.type === 'mcq' && Array.isArray(x.o) && (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
   );
 }
+
+function playerHintRows(match) {
+  return playerAllRows(match).filter((x) => x.hint);
+}
 function buildPlayerPage(cfg, clubPages, catPages) {
+  const poolAll = playerAllRows(cfg.match);
   const hints = playerHintRows(cfg.match);
   if (hints.length < MIN_HINTS) {
     throw new Error(`[gen-seo] player "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
@@ -1741,11 +1768,9 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // on a club page and never crossed over.
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
-  const tasterRows = tasterPick(hints, 10);
-  const tasterIds = new Set(tasterRows.map((r) => r.id));
-  // Visible sample Q&A (same pattern as category/club pages) — also anchors
-  // the flashcard Quiz node below. MIN_HINTS guard above guarantees ≥10 left.
-  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(10, hints.length - 5));
+  // One pool — see renderQuizSet(). Also anchors the flashcard Quiz node below.
+  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -1777,9 +1802,16 @@ ${heroTwoCol({
     name: cfg.name,
     h1: cfg.h1,
     lead: cfg.description,
-    statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
+    chips: [
+      `<b>${hints.length}</b> questions`,
+      // pct100(hints) would be a tautology — `hints` IS the explained rows.
+      // Measure the unfiltered pool or the claim means nothing.
+      ...(pct100(poolAll) ? ['<b>100%</b> explained'] : []),
+      'Easy to hard',
+      'No sign-up',
+    ],
     playHref: '#taster',
-  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -2153,17 +2185,18 @@ ${footer()}`;
 // answer. Prose (fact-checked, web-verified) comes from scripts/seo/nations.mjs.
 // World-Cup-timed: nation/host search peaks every 4 years. Nation pages interlink
 // with each other + the tournament category pages (World Cup, Euros).
-function nationHintRows(match) {
+function nationAllRows(match) {
   const re = new RegExp('(' + match.join('|') + ')', 'i');
   return QB.filter(
-    (x) =>
-      x.type === 'mcq' &&
-      Array.isArray(x.o) &&
-      x.hint &&
-      (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
+    (x) => x.type === 'mcq' && Array.isArray(x.o) && (re.test(x.q) || (x.a != null && re.test(x.o[x.a] || ''))),
   );
 }
+
+function nationHintRows(match) {
+  return nationAllRows(match).filter((x) => x.hint);
+}
 function buildNationPage(cfg, catPages, nationPages) {
+  const poolAll = nationAllRows(cfg.match);
   const hints = nationHintRows(cfg.match);
   if (hints.length < MIN_HINTS) {
     throw new Error(`[gen-seo] nation "${cfg.slug}" has only ${hints.length} hint MCQs (< ${MIN_HINTS}). Refusing a thin page.`);
@@ -2177,9 +2210,9 @@ function buildNationPage(cfg, catPages, nationPages) {
   // on a club page and never crossed over.
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
-  const tasterRows = tasterPick(hints, 10);
-  const tasterIds = new Set(tasterRows.map((r) => r.id));
-  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(10, hints.length - 5));
+  // One pool — see renderQuizSet().
+  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -2230,9 +2263,16 @@ ${heroTwoCol({
     name: cfg.name,
     h1: cfg.h1,
     lead: cfg.description,
-    statLine: `Free · ${hints.length}+ ${cfg.name} questions · new ones added weekly`,
+    chips: [
+      `<b>${hints.length}</b> questions`,
+      // pct100(hints) would be a tautology — `hints` IS the explained rows.
+      // Measure the unfiltered pool or the claim means nothing.
+      ...(pct100(poolAll) ? ['<b>100%</b> explained'] : []),
+      'Easy to hard',
+      'No sign-up',
+    ],
     playHref: '#taster',
-  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play`))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
