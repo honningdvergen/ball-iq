@@ -717,16 +717,21 @@ function pct100(rows) {
 // section this page did not emit.
 function subNav(name, { records = false } = {}) {
   const items = [
-    ['quiz', 'Quiz'],
     ['covers', 'What it covers'],
-    ['how', 'How it is checked'],
-    ...(records ? [['records', 'Records']] : []),
+    ...(records ? [['records', 'Record books']] : []),
     ['faq', 'FAQ'],
   ];
+  // "Records" was also a top-level site-nav item pointing at /lists — same word,
+  // different destination, eight pixels apart. Renamed. "How it is checked" came
+  // out too: it is supporting evidence, not a destination, and it does not earn
+  // a nav slot beside the quiz itself.
   if (items.length < 2) return '';
   return `<nav class="subnav" aria-label="${esc(name)} page sections">
 <div class="subnav-in">${items.map(([id, label]) => `<a href="#${id}">${esc(label)}</a>`).join('')}</div>
-</nav>`;
+</nav>
+<script>(function(){var n=document.currentScript.previousElementSibling,q=document.getElementById('quiz');if(!n||!q)return;
+function u(){var b=q.getBoundingClientRect();n.classList.toggle('on',b.bottom<80)}
+addEventListener('scroll',u,{passive:true});u()})();</script>`;
 }
 
 // The verification section. Competitors publish theirs and we run a stricter
@@ -738,6 +743,42 @@ function trustSection(name, rows) {
 <p class="sub">Every question above was written by hand and verified before it went live.</p>
 <p class="trust-note">All ${rows.length} ${esc(name)} questions were checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
 </section>`;
+}
+
+// Difficulty arc for the on-page quiz set.
+//
+// curate() and tasterPick() both exclude `easy` by construction ("never easy"),
+// so a club page rendered 12 medium then 10 hard — a flat plateau followed by a
+// cliff, opening on a question you have to think about. Game-design guidance on
+// quiz completion is blunt about this: a first question the player must think
+// about is the most expensive mistake in the flow. Confidence first, peak in the
+// middle, never a wall at the start.
+//
+// The length picker takes a PREFIX of this array (10 / 20 / all), so the arc has
+// to hold for any prefix — an arc spread across 22 would give a 10-question run
+// no peak at all. Hence: two easy openers, then a repeating medium/medium/hard
+// cycle, which makes every prefix of 5+ a sane shape.
+function arcPick(rows, n) {
+  const by = { easy: [], medium: [], hard: [] };
+  for (const r of rows) (by[r.diff] || by.medium).push(r);
+  for (const k of Object.keys(by)) by[k].sort((a, b) => (a.id < b.id ? -1 : 1));
+  const want = (i) => (i < 2 ? 'easy' : ['medium', 'medium', 'hard'][(i - 2) % 3]);
+  const out = [], used = new Set();
+  const take = (k) => {
+    const r = by[k].find((x) => !used.has(x.id));
+    if (r) used.add(r.id);
+    return r;
+  };
+  for (let i = 0; i < n; i++) {
+    // Fall back through the other buckets so a club with no easy questions still
+    // fills the slot rather than emitting a short set.
+    const order = { easy: ['easy', 'medium', 'hard'], medium: ['medium', 'easy', 'hard'], hard: ['hard', 'medium', 'easy'] }[want(i)];
+    let r;
+    for (const k of order) { r = take(k); if (r) break; }
+    if (!r) break;
+    out.push(r);
+  }
+  return out;
 }
 
 // ── Unified quiz set (2026-07-31 rebuild) ────────────────────────────────────
@@ -1246,12 +1287,14 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   }
 ${TASTER_CSS}
 ${BQ_CSS}
-  .subnav{position:sticky;top:56px;z-index:60;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+  .subnav{position:sticky;top:56px;z-index:60;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s,transform .18s,visibility .18s;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
   .subnav-in{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px);display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
   .subnav-in::-webkit-scrollbar{display:none}
   .subnav-in a{flex:0 0 auto;padding:12px 0;font-size:13.5px;font-weight:600;color:var(--tx3);white-space:nowrap;border-bottom:2px solid transparent}
   .subnav-in a:hover{color:#fff;text-decoration:none}
   .subnav-in a:focus-visible{outline:3px solid var(--grn-soft);outline-offset:-3px}
+  .subnav.on{opacity:1;visibility:visible;transform:none}
+  @media (prefers-reduced-motion:reduce){.subnav{transition:none}}
   @media (max-width:640px){.subnav{top:52px}.subnav-in{gap:16px}}
   .hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
   .hero-chips .chip{font-size:12.5px;font-weight:700;color:var(--tx2);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 11px}
@@ -1368,7 +1411,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet(). Was a 10-q JSON taster + a disjoint HTML block.
-  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const quizRows = arcPick(hints, Math.min(22, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
@@ -1653,7 +1696,7 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   // payload plus a disjoint 12-question Q&A block in HTML — two quizzes from the
   // visitor's seat, and only the second one was crawlable. Now every question is
   // server-rendered in a single set and JS paces it.
-  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const quizRows = arcPick(hints, Math.min(22, hints.length));
   const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
@@ -1797,7 +1840,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet(). Also anchors the flashcard Quiz node below.
-  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const quizRows = arcPick(hints, Math.min(22, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
@@ -2241,7 +2284,7 @@ function buildNationPage(cfg, catPages, nationPages) {
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet().
-  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const quizRows = arcPick(hints, Math.min(22, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
