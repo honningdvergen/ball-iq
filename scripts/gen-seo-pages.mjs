@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
@@ -1352,6 +1352,7 @@ ${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orpha
 <a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
+<a href="${SITE.base}/terms/">Terms</a>
 <a href="${SITE.base}/privacy.html">Privacy</a>
 </div>
 <p class="foot-copy">Ball IQ is 100% free — no ads in the app.</p>
@@ -2526,7 +2527,7 @@ ${footer()}`;
 function buildSimplePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const crumb = cfg.slug.charAt(0).toUpperCase() + cfg.slug.slice(1);
-  const pageType = cfg.slug === 'contact' ? 'ContactPage' : 'AboutPage';
+  const pageType = cfg.slug === 'contact' ? 'ContactPage' : cfg.slug === 'terms' ? 'WebPage' : 'AboutPage';
   const ld = jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -3023,6 +3024,7 @@ function buildSitemap(livePages, listPages = [], esPages = []) {
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
+    { loc: `${SITE.base}/terms/`, freq: 'yearly', pri: '0.2' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
   ];
   const body = urls
@@ -3102,6 +3104,7 @@ ${playerPages.length ? `\n## Player quizzes\n${playerLinks}\n` : ''}${listPages.
 ## About
 - [About Ball IQ](${SITE.base}/about/): What Ball IQ is, who it is for, and how it works.
 - [Contact](${SITE.base}/contact/): How to get in touch.
+- [Terms of Service](${SITE.base}/terms/): The terms that apply when using Ball IQ.
 
 ## Play
 - [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a Ball IQ player rating and multiplayer.
@@ -3178,6 +3181,7 @@ async function main() {
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
+  buildSimplePage(TERMS);
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
@@ -3192,7 +3196,7 @@ async function main() {
   for (const b of builtLists) console.log(`  ✓ /lists/${b.slug}/  (reference list, ${b.count} rows)`);
   console.log(`  ✓ /quiz/  (hub)`);
   console.log(`  ✓ /football-wordle/  (Footle landing)`);
-  console.log(`  ✓ /about/  ✓ /contact/`);
+  console.log(`  ✓ /about/  ✓ /contact/  ✓ /terms/`);
   console.log(`  ✓ /sitemap.xml  ✓ /llms.txt`);
 }
 

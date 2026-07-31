@@ -111,6 +111,32 @@ export const CONTACT = {
   ],
 };
 
+// ── TERMS OF SERVICE ────────────────────────────────────────────────────────
+// Ball IQ has accounts, multiplayer rooms and user-chosen display names, so a
+// ToS is a genuine legal gap and not only an AdSense checkbox. Written in the
+// same plain register as the privacy policy — a document nobody can read is
+// not a document. NOT drafted by a lawyer; review before relying on it.
+export const TERMS = {
+  slug: 'terms',
+  h1: 'Terms of Service',
+  title: 'Terms of Service — Ball IQ',
+  description:
+    'The terms that apply when you use Ball IQ — accounts, acceptable use, multiplayer conduct, content ownership and liability. Plain language, updated July 2026.',
+  lede: 'The rules for using Ball IQ. Short, and in plain language.',
+  body: [
+    `<strong>Last updated: 31 July 2026.</strong> By using Ball IQ — the website at balliq.app, or the iOS and Android apps — you agree to these terms. If you do not agree with them, please do not use the service. We have tried to keep this readable rather than exhaustive; if something here is unclear, ask us at <a href="mailto:hello@balliq.app">hello@balliq.app</a> and we will explain it in ordinary words.`,
+    `<strong>Who can use it.</strong> Ball IQ is intended for a general audience and is free to play. You do not need an account to play the daily games or any quiz. If you are under the age at which your country considers you able to agree to terms like these, you should have a parent or guardian agree on your behalf. We do not knowingly collect personal information from children — see the <a href="/privacy.html">privacy policy</a> for what is stored and why.`,
+    `<strong>Accounts and display names.</strong> Creating an account adds saved streaks, friends and multiplayer rooms. You are responsible for what happens under your account, and for keeping access to your email or sign-in provider secure. Display names are visible to other players in multiplayer and on leaderboards, so choose one you are comfortable being seen. We may change or remove a name that impersonates someone, is designed to harass, or is obscene — and we may do so without notice.`,
+    `<strong>Acceptable use.</strong> Play the game as it is meant to be played. Do not attempt to break, overload or reverse-engineer the service; do not automate play, manipulate scores or leaderboards, or interfere with other players' games; do not use multiplayer rooms to harass, threaten or abuse anyone. We may suspend or remove access for any of these, and we will generally do so without a warning where other players are being harmed.`,
+    `<strong>The questions and the content.</strong> The question bank, explanations, written prose, reference lists and design are ours, and are provided for personal, non-commercial use. You are welcome to share a score, a screenshot or a link. You may not scrape, bulk-copy or republish the question bank, in whole or in substantial part, including to train a model or to populate a competing quiz. Club names, competition names and trademarks referenced in questions belong to their respective owners; Ball IQ is an independent project and is not affiliated with, endorsed by or licensed by any club, league or competition.`,
+    `<strong>Accuracy.</strong> We check every question before it is published, and most answers carry a written explanation. Football history is detailed and occasionally contested, and we will sometimes be wrong. Nothing in the game is offered as authoritative fact for any purpose that matters — if you are settling a bet, check a primary source. If you find a mistake, tell us: corrections from players are the fastest route to fixing the bank.`,
+    `<strong>Availability.</strong> Ball IQ is provided as it is, without warranty of any kind. It is an independent project run by one person, so there is no uptime guarantee, no support commitment and no promise that any particular feature will continue to exist. We may change, suspend or discontinue any part of the service, including multiplayer, at any time. Progress stored only on your device — which is the default when you are not signed in — will be lost if you clear your browser data or remove the app.`,
+    `<strong>Liability.</strong> To the extent the law allows, Ball IQ is not liable for indirect or consequential loss arising from your use of the service, or for lost progress, lost streaks or unavailability. Nothing here limits liability that cannot be limited by law, including for death or personal injury caused by negligence, or for fraud.`,
+    `<strong>The apps and the app stores.</strong> The iOS and Android apps are distributed through the App Store and Google Play, and your use of them is also subject to those stores' own terms. The native apps carry no advertising and no analytics. This website does carry advertising, which is how the free web version is paid for.`,
+    `<strong>Changes and contact.</strong> We may update these terms as the product changes; the date at the top will change with them, and continuing to use Ball IQ after an update means you accept the revised version. These terms are governed by Norwegian law, and Ball IQ is operated from Norway. Questions, complaints or anything else: <a href="mailto:hello@balliq.app">hello@balliq.app</a>.`,
+  ],
+};
+
 // ── CATEGORY PAGES ──────────────────────────────────────────────────────────
 // `cat` matches the `cat` field in src/questions.js. `sample` = number of
 // hint-bearing Q&A the generator renders. `about` feeds the JSON-LD Quiz.about.
