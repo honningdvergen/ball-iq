@@ -1,4 +1,8 @@
-import { Target, Menu, X } from 'lucide-react';
+import {
+  Target, Menu, X,
+  Brain, Smartphone, Star, Globe, ClipboardList, Timer, Flame, Zap, Trophy,
+  Users, Search, Swords,
+} from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from './Phone.jsx';
 // Tiny data-free module (NOT lib/wordle.js — that would drag the 400+-player
@@ -410,7 +414,7 @@ function MiniFootle() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><span style={{ fontSize: 20 }}>⚽</span><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>Daily Footle</span></div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><BallIcon size={21} strokeWidth={1.8} /><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>Daily Footle</span></div>
       <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Guess the mystery footballer in six.</div>
       <div style={{ margin: '16px 0 0', display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center' }}>
         {rows.map((row, r) => (
@@ -661,9 +665,9 @@ function PlayNow() {
           The middle chip references the app's competitive DAILY, deliberately
           not captioning the MiniFootle taste above (separate 12-word game). */}
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 26 }}>
-        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>🧠 {QB_COUNT.toLocaleString('en-US')} fact-checked questions</span>
-        <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}>⚽ Footle #{getFootleNumber()} is live today</span>
-        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>📱 Free on iPhone + any browser</span>
+        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Brain size={15} strokeWidth={2} /> {QB_COUNT.toLocaleString('en-US')} fact-checked questions</span>
+        <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</span>
+        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Smartphone size={15} strokeWidth={2} /> Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
         <GreenCTA href={GET_APP}>Get {QB_ROUND.toLocaleString('en-US')}+ questions in the app →</GreenCTA>
@@ -756,17 +760,21 @@ const QUIZ_CLUBS = [
   { slug: 'parma', label: 'Parma', badge: 'PAR' },
   { slug: 'monaco', label: 'AS Monaco', badge: 'ASM' },
 ];
+// Leagues get the SAME coloured-badge treatment as clubs, not flag emoji.
+// Flags rendered differently on every OS, and they were the wrong metaphor
+// anyway -- the Champions League and the Euros are not countries. Codes read
+// at a glance and the badge inherits the contrast-safe ink from badgeColors().
 const QUIZ_LEAGUES = [
-  { slug: 'premier-league', label: 'Premier League', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-  { slug: 'la-liga', label: 'La Liga', emoji: '🇪🇸' },
-  { slug: 'serie-a', label: 'Serie A', emoji: '🇮🇹' },
-  { slug: 'bundesliga', label: 'Bundesliga', emoji: '🇩🇪' },
-  { slug: 'ligue-1', label: 'Ligue 1', emoji: '🇫🇷' },
-  { slug: 'super-lig', label: 'Süper Lig', emoji: '🇹🇷' },
-  { slug: 'primeira-liga', label: 'Primeira Liga', emoji: '🇵🇹' },
-  { slug: 'champions-league', label: 'Champions League', emoji: '⭐' },
-  { slug: 'euros', label: 'Euros', emoji: '🇪🇺' },
-  { slug: 'world-cup', label: 'World Cup', emoji: '🌍' },
+  { slug: 'premier-league', label: 'Premier League', badge: 'EPL', color: '#3D195B' },
+  { slug: 'la-liga', label: 'La Liga', badge: 'LAL', color: '#EE8707' },
+  { slug: 'serie-a', label: 'Serie A', badge: 'SEA', color: '#0B5CAB' },
+  { slug: 'bundesliga', label: 'Bundesliga', badge: 'BUN', color: '#D20515' },
+  { slug: 'ligue-1', label: 'Ligue 1', badge: 'LI1', color: '#DAE025' },
+  { slug: 'super-lig', label: 'Süper Lig', badge: 'SUP', color: '#E30613' },
+  { slug: 'primeira-liga', label: 'Primeira Liga', badge: 'PRI', color: '#036D3A' },
+  { slug: 'champions-league', label: 'Champions League', badge: 'UCL', color: '#0E1E5B' },
+  { slug: 'euros', label: 'Euros', badge: 'EUR', color: '#00B2A9' },
+  { slug: 'world-cup', label: 'World Cup', badge: 'WC', color: '#7A263A' },
 ];
 
 // Club brand colours (mirror the app CLUB_PACKS + the /quiz SEO badges) for
@@ -852,22 +860,45 @@ function QuizGrid() {
       </div>
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
       <div className="mkt-qgrid">
-        {QUIZ_LEAGUES.map((l) => <QuizTile key={l.slug} href={`/quiz/${l.slug}/`} emoji={l.emoji} label={l.label} />)}
+        {QUIZ_LEAGUES.map((l) => <QuizTile key={l.slug} href={`/quiz/${l.slug}/`} badge={l.badge} color={l.color} label={l.label} />)}
         <a href="/quiz/" className="mkt-qtile mkt-qtile-all"><span style={{ fontSize: 14, fontWeight: 800, color: '#8AE042' }}>All quizzes →</span></a>
       </div>
     </section>
   );
 }
 
+/* THE BALL. Lucide 0.383 has no football, and the substitutes are all wrong:
+   Dribbble is a brand logo, CircleDot is a target, Goal is a signpost. On a
+   football product the ball is the one icon that must not be an approximation,
+   so it is drawn here on Lucide's own 24x24 grid, inheriting currentColor and
+   the same stroke weight, and therefore sits in the set rather than beside it. */
+const BallIcon = ({ size = 24, strokeWidth = 1.6, ...rest }) => (
+  <svg
+    width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={strokeWidth}
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...rest}
+  >
+    <circle cx="12" cy="12" r="9.25" />
+    <path d="M12 6.6 15.9 9.4 14.4 14h-4.8L8.1 9.4z" />
+    <path d="M12 6.6V2.9M15.9 9.4l3.5-1.2M14.4 14l2.2 3M9.6 14l-2.2 3M8.1 9.4 4.6 8.2" />
+  </svg>
+);
+
+/* Emoji are gone from the UI. They rendered as a different illustration on
+   every OS -- so the brand literally looked different on macOS, Windows and
+   Android -- could not inherit the accent, could not be sized to the grid, and
+   carried the visual register of a Slack message. After the hero itself this
+   was the loudest "built fast" signal on the page and much the cheapest to fix.
+   One stroked set, 1.5-1.6px, sized on the 4px grid, all currentColor. */
 const MODES = [
-  { icon: '📋', tint: 'rgba(255,193,7,0.12)', name: 'Daily 7', sub: 'Seven questions, ~3 min.' },
-  { icon: '⚽', tint: 'rgba(88,204,2,0.12)', name: 'Footle', sub: 'Guess the surname in six.' },
-  { icon: '🌐', tint: 'rgba(88,204,2,0.12)', name: 'Online', sub: 'Up to 8 players, live.' },
-  { icon: '⏱️', tint: 'rgba(88,204,2,0.12)', name: 'Classic', sub: '10 questions, 20s each.' },
-  { icon: '🔥', tint: 'rgba(255,106,0,0.12)', name: 'Survival', sub: 'One wrong answer ends it.' },
-  { icon: '⚡', tint: 'rgba(255,193,7,0.12)', name: 'Hot Streak', sub: '60-second sprint.' },
-  { icon: '🏆', tint: 'rgba(88,204,2,0.12)', name: 'Legends', sub: 'Pre-2000 greats.' },
-  { icon: '👥', tint: 'rgba(88,204,2,0.12)', name: 'Local', sub: 'Pass & play on one device.' },
+  { Icon: ClipboardList, tint: 'rgba(255,193,7,0.12)', name: 'Daily 7', sub: 'Seven questions, ~3 min.' },
+  { Icon: BallIcon,      tint: 'rgba(88,204,2,0.12)',  name: 'Footle', sub: 'Guess the surname in six.' },
+  { Icon: Swords,        tint: 'rgba(88,204,2,0.12)',  name: 'Online', sub: 'Up to 8 players, live.' },
+  { Icon: Timer,         tint: 'rgba(88,204,2,0.12)',  name: 'Classic', sub: '10 questions, 20s each.' },
+  { Icon: Flame,         tint: 'rgba(255,106,0,0.12)', name: 'Survival', sub: 'One wrong answer ends it.' },
+  { Icon: Zap,           tint: 'rgba(255,193,7,0.12)', name: 'Hot Streak', sub: '60-second sprint.' },
+  { Icon: Trophy,        tint: 'rgba(88,204,2,0.12)',  name: 'Legends', sub: 'Pre-2000 greats.' },
+  { Icon: Users,         tint: 'rgba(88,204,2,0.12)',  name: 'Local', sub: 'Pass & play on one device.' },
 ];
 
 const FAQS = [
@@ -1039,9 +1070,9 @@ export default function MarketingHome() {
             <h2 style={h2Style}>A new challenge,<br />every single day.</h2>
             <p style={bodyStyle}>Footle — our Wordle for footballers — drops every morning. Pair it with the Daily 7, build a streak, and see how you stack up against everyone else.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>⚽ Footle</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>📋 Daily 7</span>
-              <span style={chip({ background: 'rgba(255,106,0,0.12)', border: '1px solid rgba(255,106,0,0.3)', color: '#FF9245', fontWeight: 700 })}>🔥 Streaks</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><BallIcon size={15} strokeWidth={2} /> Footle</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><ClipboardList size={15} strokeWidth={2} /> Daily 7</span>
+              <span style={chip({ background: 'rgba(255,106,0,0.12)', border: '1px solid rgba(255,106,0,0.3)', color: '#FF9245', fontWeight: 700 })}><Flame size={15} strokeWidth={2} /> Streaks</span>
             </div>
           </div>
           <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
@@ -1068,8 +1099,8 @@ export default function MarketingHome() {
             <h2 style={h2Style}>Race real players,<br />in real time.</h2>
             <p style={bodyStyle}>Match up with up to eight players online, or pass and play locally — same questions, live scores, and a podium at the final whistle.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-              <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}>🌐 Online · up to 8</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>👥 Local · up to 6</span>
+              <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><Swords size={15} strokeWidth={2} /> Online · up to 8</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Users size={15} strokeWidth={2} /> Local · up to 6</span>
             </div>
           </div>
         </Reveal>
@@ -1081,8 +1112,8 @@ export default function MarketingHome() {
             <h2 style={h2Style}>Your football brain,<br />rated out of 99.</h2>
             <p style={bodyStyle}>Every answer feeds your player card — an OVERALL rating broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-              <span style={chip({ background: 'rgba(255,193,7,0.12)', border: '1px solid rgba(255,193,7,0.3)', color: '#FFD24A', fontWeight: 700 })}>⭐ OVERALL rating</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}>🔍 Scouting report</span>
+              <span style={chip({ background: 'rgba(255,193,7,0.12)', border: '1px solid rgba(255,193,7,0.3)', color: '#FFD24A', fontWeight: 700 })}><Star size={15} strokeWidth={2} /> OVERALL rating</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Search size={15} strokeWidth={2} /> Scouting report</span>
             </div>
           </div>
           <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
@@ -1097,13 +1128,17 @@ export default function MarketingHome() {
       {/* ── MODES ── */}
       <section id="modes" style={{ maxWidth: 1140, margin: '0 auto', padding: '80px 24px' }}>
         <Reveal style={{ textAlign: 'center', marginBottom: 44 }}>
-          <div style={eyebrow('#9BA0B8')}>10 game modes</div>
+          {/* Was "10 game modes" above a grid of EIGHT cards. Either show ten
+              or do not claim ten; a number a visitor can disprove by counting
+              is worse than no number. Dropped rather than padded, because the
+              eight shown are the eight worth showing. */}
+          <div style={eyebrow('#9BA0B8')}>Game modes</div>
           <h2 style={{ margin: '12px 0 0', fontSize: 'clamp(30px,4.4vw,46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}>Pick your battle.</h2>
         </Reveal>
         <Reveal style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 14 }}>
           {MODES.map((m) => (
             <a key={m.name} href={PLAY} className="mkt-mode" style={{ padding: 22, background: '#14161E', border: '1px solid #242836', borderRadius: 18, display: 'block' }}>
-              <div style={{ width: 46, height: 46, borderRadius: 13, background: m.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>{m.icon}</div>
+              <div style={{ width: 46, height: 46, borderRadius: 13, background: m.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C7F59B' }}><m.Icon size={23} strokeWidth={1.6} /></div>
               <div style={{ marginTop: 16, fontSize: 18, fontWeight: 800, color: '#fff' }}>{m.name}</div>
               <div style={{ marginTop: 4, fontSize: 14, color: '#9BA0B8' }}>{m.sub}</div>
             </a>
@@ -1114,7 +1149,7 @@ export default function MarketingHome() {
       {/* ── DAILY BAND ── */}
       <section style={{ maxWidth: 1140, margin: '0 auto', padding: '0 24px 90px' }}>
         <Reveal style={{ position: 'relative', overflow: 'hidden', borderRadius: 28, padding: 'clamp(32px,5vw,56px)', background: 'linear-gradient(120deg,#FF6A00 0%,#FFC107 100%)' }}>
-          <div style={{ position: 'absolute', right: -30, bottom: -50, fontSize: 240, opacity: 0.18, pointerEvents: 'none' }} aria-hidden="true">🔥</div>
+          <div style={{ position: 'absolute', right: -30, bottom: -50, opacity: 0.16, pointerEvents: 'none', color: '#0A0A0A' }} aria-hidden="true"><Flame size={240} strokeWidth={1.1} /></div>
           <div style={{ position: 'relative', maxWidth: '30ch' }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.85)' }}>Daily 7</div>
             <div style={{ marginTop: 12, fontSize: 'clamp(26px,3.4vw,38px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', color: '#0A0A0A' }}>Seven questions. Three minutes. Everyone plays the same set.</div>
