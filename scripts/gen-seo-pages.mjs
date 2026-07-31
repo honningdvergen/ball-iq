@@ -711,6 +711,24 @@ function pct100(rows) {
   return 'Every one of them carries a written explanation.';
 }
 
+// Sticky in-page nav. Long pages need a spine — Clarity has scroll stopping at
+// 25% on 14-screen club pages. Rendered only when there is more than one target,
+// and each link is checked against the assembled HTML so it can never point at a
+// section this page did not emit.
+function subNav(name, { records = false } = {}) {
+  const items = [
+    ['quiz', 'Quiz'],
+    ['covers', 'What it covers'],
+    ['how', 'How it is checked'],
+    ...(records ? [['records', 'Records']] : []),
+    ['faq', 'FAQ'],
+  ];
+  if (items.length < 2) return '';
+  return `<nav class="subnav" aria-label="${esc(name)} page sections">
+<div class="subnav-in">${items.map(([id, label]) => `<a href="#${id}">${esc(label)}</a>`).join('')}</div>
+</nav>`;
+}
+
 // The verification section. Competitors publish theirs and we run a stricter
 // process, so this is pure upside — but the coverage sentence comes from pct100()
 // so it stays silent wherever coverage is not actually 100%.
@@ -934,7 +952,7 @@ function renderCovers(name, isLeague, isPlayer, href) {
       : `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`))
     .join('\n');
   return `<section class="sec">
-<h2>What the ${esc(name)} quiz covers</h2>
+<h2 id="covers">What the ${esc(name)} quiz covers</h2>
 ${/* One visible use of "soccer" per page, in the shared covers subtitle so a
       single edit reaches all ~120 club/league/player pages. Kept as an aside
       rather than a rewrite: "football" stays the primary term for the UK
@@ -1227,6 +1245,13 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   }
 ${TASTER_CSS}
 ${BQ_CSS}
+  .subnav{position:sticky;top:56px;z-index:60;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+  .subnav-in{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px);display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+  .subnav-in::-webkit-scrollbar{display:none}
+  .subnav-in a{flex:0 0 auto;padding:12px 0;font-size:13.5px;font-weight:600;color:var(--tx3);white-space:nowrap;border-bottom:2px solid transparent}
+  .subnav-in a:hover{color:#fff;text-decoration:none}
+  .subnav-in a:focus-visible{outline:3px solid var(--grn-soft);outline-offset:-3px}
+  @media (max-width:640px){.subnav{top:52px}.subnav-in{gap:16px}}
   .hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
   .hero-chips .chip{font-size:12.5px;font-weight:700;color:var(--tx2);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 11px}
   .hero-chips .chip b{color:var(--grn)}
@@ -1385,6 +1410,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   const html = `${head({ title: catCfg.title, description: catCfg.description, canonical, ld, ads: true, ogImage })}
 <body>
 ${NAV}
+${subNav(catCfg.name, { records: listsMentioning(catCfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1415,7 +1441,7 @@ ${renderTiles(related)}
 ${renderListLinks(catCfg.name)}
 </section>
 <section class="sec narrow">
-<h2>${esc(catCfg.name)} quiz — FAQ</h2>
+<h2 id="faq">${esc(catCfg.name)} quiz — FAQ</h2>
 ${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
 ${adSlot('afterFaq')}
@@ -1695,6 +1721,7 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, alternates })}
 <body>
 ${NAV}
+${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1725,7 +1752,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
-<h2>${esc(cfg.name)} quiz — FAQ</h2>
+<h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
 </section>
 ${adSlot('afterFaq')}
@@ -1790,6 +1817,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
+${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -1812,6 +1840,7 @@ ${heroTwoCol({
     ],
     playHref: '#taster',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
+${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -1826,7 +1855,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
-<h2>${esc(cfg.name)} quiz — FAQ</h2>
+<h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
 </section>
 ${adSlot('afterFaq')}
@@ -1953,7 +1982,7 @@ function renderListLinks(name) {
   const hits = listsMentioning(name);
   if (!hits.length) return '';
   return `<section class="sec narrow">
-<h2>${esc(name)} in the record books</h2>
+<h2 id="records">${esc(name)} in the record books</h2>
 <p class="sub" style="color:var(--tx3);margin:-6px 0 14px">Free reference tables — every winner, every top scorer, checked and dated.</p>
 <ul class="llinks">${hits.map((h) => `<li><a href="${SITE.base}/lists/${h.slug}/">${esc(h.h1)}</a> <span class="llink-n">${h.n} entries</span></li>`).join('')}</ul>
 </section>`;
@@ -2251,6 +2280,7 @@ function buildNationPage(cfg, catPages, nationPages) {
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true })}
 <body>
 ${NAV}
+${subNav(cfg.name, { records: listsMentioning(cfg.name).length > 0 })}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -2273,6 +2303,7 @@ ${heroTwoCol({
     ],
     playHref: '#taster',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
+${trustSection(cfg.name, poolAll)}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -2287,7 +2318,7 @@ ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
 <section class="sec narrow">
-<h2>${esc(cfg.name)} quiz — FAQ</h2>
+<h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
 ${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
 </section>
 ${adSlot('afterFaq')}
