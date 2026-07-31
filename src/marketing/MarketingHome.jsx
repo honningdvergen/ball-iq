@@ -308,6 +308,31 @@ const TASTE_QS = [
 const FOOTLE_WORDS = ['HAALAND', 'RONALDO', 'MALDINI', 'LAMPARD', 'GERRARD', 'CANTONA', 'SHEARER', 'SEEDORF', 'RIVALDO', 'ROBINHO', 'BALLACK', 'LINEKER'];
 const FOOTLE_TARGET = FOOTLE_WORDS[Math.floor(Date.now() / 86400000) % FOOTLE_WORDS.length];
 
+// SEEDED OPENING GUESS. The card used to render 42 empty squares plus a
+// keyboard, which made the largest object on the homepage look like a broken
+// grid rather than a game. A visitor decides what this site is in about half a
+// second, and an empty 7x6 grid says "unfinished".
+//
+// Two rules, both learned the hard way:
+//  1. It must be a REAL seven-letter surname. A previous attempt at seeding
+//     used "ALISTER", which is not a name, and "ALONSO", which is six letters
+//     in a seven-wide grid. A football audience spots a fake board instantly.
+//  2. Its colours are NOT hardcoded. scoreGuess() runs against the live daily
+//     target at render, so the greens and ambers are always genuinely correct
+//     for today's word -- there is no day on which this board lies.
+//
+// INIESTA must never appear in FOOTLE_WORDS: if the opener were the answer the
+// card would render as already won. The assertion below enforces that rather
+// than trusting whoever edits the word list next.
+const FOOTLE_OPENER = 'INIESTA';
+if (FOOTLE_WORDS.includes(FOOTLE_OPENER) ||
+    FOOTLE_WORDS.some((w) => w.length !== FOOTLE_OPENER.length)) {
+  throw new Error(
+    `MiniFootle seed is invalid: "${FOOTLE_OPENER}" must not be an answer and ` +
+    'must match the answer length. Fix FOOTLE_OPENER or FOOTLE_WORDS.',
+  );
+}
+
 // Two-pass Wordle scoring: greens claimed first, then presents (duplicate-safe).
 function scoreGuess(guess, target) {
   const res = new Array(guess.length).fill('absent');
@@ -340,7 +365,11 @@ function MiniFootle() {
   const target = FOOTLE_TARGET;
   const L = target.length;
   const MAX = 6;
-  const [guesses, setGuesses] = useState([]);
+  // Starts on the seeded opener, so the board is a game IN PROGRESS on first
+  // paint rather than 42 empty squares. Costs the visitor one of six rows,
+  // which is the right trade for a taster: it demonstrates the mechanic
+  // instantly instead of asking them to imagine it.
+  const [guesses, setGuesses] = useState([FOOTLE_OPENER]);
   const [cur, setCur] = useState('');
   const won = guesses.length > 0 && guesses[guesses.length - 1] === target;
   const status = won ? 'won' : guesses.length >= MAX ? 'lost' : 'playing';
@@ -348,7 +377,9 @@ function MiniFootle() {
   const type = (ch) => { if (status !== 'playing') return; setCur((c) => (c.length < L ? c + ch : c)); };
   const del = () => setCur((c) => c.slice(0, -1));
   const submit = () => { if (status !== 'playing' || cur.length !== L) return; setGuesses((g) => [...g, cur]); setCur(''); };
-  const reset = () => { setGuesses([]); setCur(''); };
+  // Reset returns to the SEED, not to empty — otherwise "play again" drops the
+  // visitor back onto the blank board this change exists to remove.
+  const reset = () => { setGuesses([FOOTLE_OPENER]); setCur(''); };
 
   useEffect(() => {
     const onKey = (e) => {
