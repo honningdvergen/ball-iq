@@ -34,6 +34,7 @@ import { dirname, resolve } from 'node:path';
 import { QB } from '../src/questions.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { tiersFor } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -696,6 +697,180 @@ function renderTaster(rows, name, playHref) {
 </section>`;
 }
 
+// Explanation coverage as a sentence, or nothing when it is not 100%. Club packs
+// all measure 100% today, but this must never assert it blind — categories run
+// as low as 53% and the same trust block will be reused there.
+function pct100(rows) {
+  const n = rows.length, e = rows.filter((r) => r.hint && String(r.hint).trim()).length;
+  if (!n || e < n) return '';
+  return 'Every one of them carries a written explanation.';
+}
+
+// ── Unified quiz set (2026-07-31 rebuild) ────────────────────────────────────
+// Replaces the taster+Q&A split. WHY:
+//   1. The page carried a 10-question scored taster AND a separate 12-question
+//      Q&A block from a disjoint pool. From a visitor's seat that is two
+//      quizzes; one recorded session spent 2,135s and never crossed over.
+//   2. The taster shipped its questions as a JSON payload inside a <script>,
+//      which is worth ZERO crawlable text. The Q&A block was visible HTML and a
+//      large share of each club page's ~1,825 words. So the merge had to run
+//      taster -> HTML, never HTML -> widget: AdSense refused the site for
+//      "low value content" on 2026-07-31 and thinning these pages would have
+//      been an own goal.
+// Every question is therefore server-rendered, including its explanation. JS
+// only PACES what is already in the DOM. With JS off you get the full set as a
+// readable Q&A — which is exactly what a crawler should see.
+const BQ_CSS = `  .bq{scroll-margin-top:72px}
+  .bq-lenl{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4);margin-bottom:7px}
+  .bq-len{display:flex;gap:7px;margin-bottom:12px}
+  .bq-len button{flex:1;min-height:44px;padding:9px 6px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx3);font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+  .bq-len button:hover{border-color:var(--bd3)}
+  .bq-len button[aria-pressed="true"]{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
+  .bq-card{background:linear-gradient(var(--card2),var(--card));border:1px solid var(--bd2);border-radius:20px;padding:20px;position:relative;overflow:hidden}
+  .bq-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--grn),var(--grn-soft) 60%,transparent)}
+  .bq-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;min-height:24px}
+  .bq-meter{display:flex;gap:4px;flex-wrap:wrap}
+  .bq-meter i{width:15px;height:4px;border-radius:2px;background:var(--bd);transition:background .2s}
+  .bq-meter i.ok{background:var(--grn)}
+  .bq-meter i.no{background:#4A2426}
+  .bq-streak{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--grn-ink);background:var(--amber);border-radius:6px;padding:3px 8px}
+  .bq-list{list-style:none;margin:0;padding:0}
+  .bq-q + .bq-q{margin-top:26px;padding-top:26px;border-top:1px solid var(--bd)}
+  .bq-qn{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4);margin-bottom:7px}
+  .bq-qx{font-size:19px;font-weight:700;color:var(--tx);line-height:1.3;letter-spacing:-.015em;margin:0 0 15px;text-wrap:balance}
+  .bq-os{display:grid;gap:8px}
+  .bq-o{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s}
+  .bq-o:hover:not(:disabled){border-color:var(--bd3);background:var(--card2)}
+  .bq-o:disabled{cursor:default}
+  .bq-o .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;background:#1B2029;color:var(--tx4)}
+  .bq-o .tt{flex:1}
+  .bq-o.ok{border-color:var(--grn);background:rgba(88,204,2,.10);color:#B6F27E}
+  .bq-o.ok .k{background:var(--grn);color:var(--grn-ink)}
+  .bq-o.no{border-color:var(--wrong);background:rgba(255,71,71,.09);color:#FF8A82}
+  .bq-o.no .k{background:var(--wrong);color:#fff}
+  .bq-o.dim{opacity:.45}
+  .bq-why{margin-top:13px;padding:12px 13px;border-radius:11px;background:var(--bg);border:1px solid var(--bd);font-size:13.5px;color:var(--tx3);line-height:1.55}
+  .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--grn);margin-bottom:5px;font-weight:700}
+  .bq-next{margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  .bq-next:hover{filter:brightness(1.05)}
+  .bq-res{text-align:center;padding:6px 2px}
+  .bq-rank{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4)}
+  .bq-big{font-family:var(--mono);font-size:clamp(50px,11vw,62px);font-weight:800;line-height:1;letter-spacing:-.04em;color:#fff;margin:6px 0 6px}
+  .bq-tier{display:inline-block;font-size:15px;font-weight:800;color:var(--grn-ink);background:var(--grn);padding:5px 13px;border-radius:999px}
+  .bq-sub{font-size:13.5px;color:var(--tx4);margin-top:11px}
+  .bq-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+  .bq-row a,.bq-row button{flex:1 1 140px;text-align:center;padding:12px;border-radius:11px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:14px;border:none;cursor:pointer}
+  .bq-row a:hover{text-decoration:none;filter:brightness(1.05)}
+  .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
+  .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
+  .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}}`;
+
+// Progressive enhancement only. Everything it touches is already in the DOM.
+const BQ_JS = `(function(){
+var root=document.querySelector('.bq[data-total]');if(!root)return;
+var list=root.querySelector('.bq-list');if(!list)return;
+var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
+var total=qs.length,name=root.getAttribute('data-name')||'this club';
+var tiers=(root.getAttribute('data-tiers')||'').split('|');
+var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0);
+var BANDS=[0,25,45,65,85,100];
+function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
+if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
+var run=[],at=0,sc=0,streak=0,best=0,rounds=0,len=Math.min(10,total);
+var head=root.querySelector('.bq-head'),meter=root.querySelector('.bq-meter'),sbadge=root.querySelector('.bq-streak');
+var res=root.querySelector('.bq-res');
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function paintMeter(){if(!meter)return;var h='';for(var i=0;i<run.length;i++){var st=run[i].got;h+='<i class="'+(st===1?'ok':st===0?'no':'')+'"></i>'}meter.innerHTML=h}
+function show(){
+for(var i=0;i<qs.length;i++)qs[i].hidden=true;
+if(at>=run.length){return finish()}
+var q=run[at].el;q.hidden=false;
+var n=q.querySelector('.bq-qn');if(n)n.textContent='Question '+(at+1)+' of '+run.length+(q.getAttribute('data-diff')?' · '+q.getAttribute('data-diff'):'');
+if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
+paintMeter()}
+function answer(q,rec,k){
+var a=+q.getAttribute('data-a'),os=q.querySelectorAll('.bq-o');
+for(var b=0;b<os.length;b++){os[b].disabled=true;
+if(b===a)os[b].className='bq-o ok';else if(b===k)os[b].className='bq-o no';else os[b].className='bq-o dim'}
+var w=q.querySelector('.bq-why');if(w)w.hidden=false;
+if(k===a){sc++;streak++;if(streak>best)best=streak;rec.got=1}else{streak=0;rec.got=0}
+if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
+paintMeter();
+var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
+function finish(){
+rounds++;var G=grade(sc,run.length),left=total-run.length+more;
+var cont=(rounds<2&&total>run.length)
+?'<a href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
+:'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
+res.innerHTML='<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
++'<span class="bq-tier">'+esc(G.tier)+'</span>'
++'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
++'<div class="bq-row">'+cont+'<button class="ghost" data-again="1">Play again</button></div>'
++(rounds>=2?'<p class="bq-note">'+left+' more '+esc(name)+' questions in the app, plus a new daily game and your streak.</p>':'');
+res.hidden=false;if(head)head.hidden=true;
+var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();start(Math.min(20,total))});
+var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)})}
+function start(n){
+len=n;res.hidden=true;if(head)head.hidden=false;
+run=[];sc=0;at=0;streak=0;best=0;
+for(var i=0;i<qs.length&&run.length<n;i++){
+var q=qs[i];run.push({el:q,got:-1});
+var os=q.querySelectorAll('.bq-o');
+for(var b=0;b<os.length;b++){os[b].disabled=false;os[b].className='bq-o'}
+var w=q.querySelector('.bq-why');if(w)w.hidden=true;
+var nx=q.querySelector('.bq-next');if(nx)nx.hidden=true}
+show()}
+list.addEventListener('click',function(ev){
+var o=ev.target.closest?ev.target.closest('.bq-o'):null;
+if(o&&!o.disabled){var q=o.closest('.bq-q');answer(q,run[at],+o.getAttribute('data-i'));return}
+var nx=ev.target.closest?ev.target.closest('.bq-next'):null;
+if(nx){at++;show();var c=root.querySelector('.bq-card');if(c&&c.getBoundingClientRect().top<0)c.scrollIntoView({block:'start'})}});
+var lens=root.querySelectorAll('.bq-len button');
+for(var i=0;i<lens.length;i++)lens[i].addEventListener('click',function(e){
+var v=+e.currentTarget.getAttribute('data-n');
+for(var j=0;j<lens.length;j++)lens[j].setAttribute('aria-pressed',lens[j]===e.currentTarget?'true':'false');
+rounds=0;start(v)});
+root.classList.add('bq-live');start(Math.min(10,total));
+})();`;
+
+// rows = every question the page ships. `more` = how many further questions the
+// full pack holds beyond these, used for the honest app line at the end.
+function renderQuizSet(rows, { name, tiers, store, more = 0 }) {
+  const items = rows
+    .map(shuffleOptions)
+    .map((r) => {
+      const opts = r.o
+        .map((o, k) => `<button class="bq-o" type="button" data-i="${k}"><span class="k">${'ABCD'[k] || ''}</span><span class="tt">${esc(o)}</span></button>`)
+        .join('');
+      return `<li class="bq-q" data-a="${r.a}"${r.diff ? ` data-diff="${esc(r.diff)}"` : ''}>
+<p class="bq-qn">${esc(r.diff || 'Question')}</p>
+<p class="bq-qx">${esc(r.q)}</p>
+<div class="bq-os">${opts}</div>
+<div class="bq-why"><b>Why</b>${esc(r.hint)}</div>
+<button class="bq-next" type="button" hidden>Next question →</button>
+</li>`;
+    })
+    .join('\n');
+  const lens = [10, 20, rows.length].filter((n, i, a) => n <= rows.length && a.indexOf(n) === i);
+  const picker = lens.length > 1
+    ? `<div class="bq-lenl">How many questions?</div><div class="bq-len">${lens
+        .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? `${n} Full set` : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
+        .join('')}</div>`
+    : '';
+  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-more="${more}">
+<div class="bq-head">${picker}
+<div class="bq-card">
+<div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>
+<ol class="bq-list">
+${items}
+</ol>
+</div></div>
+<div class="bq-res bq-card" hidden></div>
+<script>${BQ_JS}</script>
+</section>`;
+}
+
 // ── "What the <topic> quiz covers" topic grid (Claude Design handoff) ─────────
 // Six generic-but-on-topic cards. Reassures the searcher what's inside + adds
 // crawlable keyword coverage (history, players, managers, trophies, records).
@@ -1030,6 +1205,8 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
     .brand img{width:25px;height:25px}
   }
 ${TASTER_CSS}
+${BQ_CSS}
+  .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">${ld}</script>
@@ -1420,9 +1597,12 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   // on a club page and never crossed over.
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
-  const tasterRows = tasterPick(hints, 10);
-  const tasterIds = new Set(tasterRows.map((r) => r.id));
-  const sample = curate(hints.filter((r) => !tasterIds.has(r.id)), Math.min(12, Math.max(0, hints.length - 10)));
+  // ONE pool, not two. The page used to render a 10-question taster from a JSON
+  // payload plus a disjoint 12-question Q&A block in HTML — two quizzes from the
+  // visitor's seat, and only the second one was crawlable. Now every question is
+  // server-rendered in a single set and JS paces it.
+  const quizRows = curate(tasterPick(hints, Math.min(22, hints.length)), Math.min(22, hints.length));
+  const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
   const ld = jsonLd({
@@ -1504,11 +1684,11 @@ ${heroTwoCol({
     lead: cfg.description,
     statLine: `Free · ${all.length}+ ${cfg.name} questions · new ones added weekly`,
     playHref: '#play',
-  }, renderTaster(tasterRows, cfg.name, `${SITE.base}/play?club=${cfg.slug}`))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length) }))}
 <section class="sec narrow" id="play">
-<h2>Play the ${esc(cfg.name)} quiz</h2>
-<p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
-${renderQA(sample)}
+<h2>How the ${esc(cfg.name)} quiz is checked</h2>
+<p class="sub">Every question above was written by hand and verified before it went live.</p>
+<p class="trust-note">All ${all.length} ${esc(cfg.name)} questions were checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some clubs carry fewer questions than others. ${pct100(all)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
 </section>
 ${adSlot('afterQA')}
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
