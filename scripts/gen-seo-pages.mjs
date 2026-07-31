@@ -1136,10 +1136,11 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .editorial a{color:var(--grn-soft)}
   .llinks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   .llinks li{background:var(--card);border:1px solid var(--bd);border-radius:12px}
-  .llinks a{display:block;padding:13px 15px;color:var(--tx);text-decoration:none;font-weight:700;font-size:15px}
+  .llinks a{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;color:var(--tx);text-decoration:none;font-weight:700;font-size:15px}
   .llinks li:hover{border-color:var(--grn);background:var(--card2)}
   .llinks a:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
-  .llink-n{display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--tx4)}
+  .llink-t{min-width:0}
+  .llink-n{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--tx4);white-space:nowrap}
   .skip{position:absolute;left:-9999px;top:0;z-index:200;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;border-radius:0 0 12px 0}
   .skip:focus{left:0}
   .kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -1984,7 +1985,7 @@ function renderListLinks(name) {
   return `<section class="sec narrow">
 <h2 id="records">${esc(name)} in the record books</h2>
 <p class="sub" style="color:var(--tx3);margin:-6px 0 14px">Free reference tables — every winner, every top scorer, checked and dated.</p>
-<ul class="llinks">${hits.map((h) => `<li><a href="${SITE.base}/lists/${h.slug}/">${esc(h.h1)}</a> <span class="llink-n">${h.n} entries</span></li>`).join('')}</ul>
+<ul class="llinks">${hits.map((h) => `<li><a href="${SITE.base}/lists/${h.slug}/"><span class="llink-t">${esc(h.h1)}</span><span class="llink-n">${h.n} entries</span></a></li>`).join('')}</ul>
 </section>`;
 }
 
