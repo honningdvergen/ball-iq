@@ -1,0 +1,2862 @@
+[
+ {
+  "id": "q_e15d6b",
+  "diff": "easy",
+  "q": "Who scored the stoppage-time goal that won Man City the 2012 Premier League title against QPR?",
+  "answer": "Agüero",
+  "options": [
+   "Tevez",
+   "Dzeko",
+   "Balotelli",
+   "Agüero"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_dea4a9",
+  "diff": "easy",
+  "q": "Who holds the all-time record for most Premier League goals?",
+  "answer": "Shearer",
+  "options": [
+   "Shearer",
+   "Rooney",
+   "Cole",
+   "Lampard"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6685ba",
+  "diff": "easy",
+  "q": "What nickname is given to the Arsenal side that went unbeaten throughout the 2003-04 Premier League season?",
+  "answer": "The Invincibles",
+  "options": [
+   "The Invincibles",
+   "The Untouchables",
+   "The Centurions",
+   "The Immortals"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_efd682",
+  "diff": "easy",
+  "q": "Which club did Thierry Henry join when he left Arsenal in 2007?",
+  "answer": "Barcelona",
+  "options": [
+   "Real Madrid",
+   "Chelsea",
+   "Juventus",
+   "Barcelona"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_7ccc9f",
+  "diff": "medium",
+  "q": "Who captained Leicester City to the 2016 Premier League title?",
+  "answer": "Morgan",
+  "options": [
+   "Vardy",
+   "Mahrez",
+   "Huth",
+   "Morgan"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_94c227",
+  "diff": "easy",
+  "q": "Who managed Liverpool when they ended their 30-year wait for the league title in 2020?",
+  "answer": "Klopp",
+  "options": [
+   "Houllier",
+   "Benítez",
+   "Rodgers",
+   "Klopp"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c7b147",
+  "diff": "easy",
+  "q": "Liverpool won the 2024-25 Premier League — who was their manager?",
+  "answer": "Slot",
+  "options": [
+   "Klopp",
+   "Rodgers",
+   "Benitez",
+   "Slot"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2dfc82",
+  "diff": "easy",
+  "q": "Who was the Premier League top scorer in 2022-23?",
+  "answer": "Haaland",
+  "options": [
+   "Kane",
+   "Salah",
+   "Haaland",
+   "Nunez"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_087960",
+  "diff": "medium",
+  "q": "How many goals did Erling Haaland score in his first Premier League season?",
+  "answer": "36",
+  "options": [
+   "33",
+   "36",
+   "38",
+   "40"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5071ea",
+  "diff": "medium",
+  "q": "Which club ended Arsenal's 49-game unbeaten Premier League run in 2004?",
+  "answer": "Man Utd",
+  "options": [
+   "Chelsea",
+   "Man Utd",
+   "Blackburn",
+   "Middlesbrough"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e3892b",
+  "diff": "easy",
+  "q": "Who did Arne Slot replace as Liverpool manager in 2024?",
+  "answer": "Klopp",
+  "options": [
+   "Dalglish",
+   "Rodgers",
+   "Benitez",
+   "Klopp"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6efe6e",
+  "diff": "medium",
+  "q": "Which club was the first to win back-to-back Premier League titles since the competition's founding in 1992?",
+  "answer": "Man Utd",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man Utd",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_12c965",
+  "diff": "easy",
+  "q": "Which club did Luis Suárez join when he left Liverpool in 2014?",
+  "answer": "Barcelona",
+  "options": [
+   "Real Madrid",
+   "PSG",
+   "Barcelona",
+   "Juventus"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_29958a",
+  "diff": "easy",
+  "q": "Which Premier League club is nicknamed 'The Toffees'?",
+  "answer": "Everton",
+  "options": [
+   "Crystal Palace",
+   "Everton",
+   "Burnley",
+   "Watford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_77fe8f",
+  "diff": "easy",
+  "q": "What is the name of Liverpool's famous home end stand?",
+  "answer": "The Kop",
+  "options": [
+   "The Stretford End",
+   "The Kop",
+   "The Holte End",
+   "The Gallowgate"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_205961",
+  "diff": "easy",
+  "q": "What is Leicester City's nickname?",
+  "answer": "The Foxes",
+  "options": [
+   "The Hornets",
+   "The Foxes",
+   "The Hatters",
+   "The Blades"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4c833e",
+  "diff": "medium",
+  "q": "At what age did Cesc Fàbregas make his Arsenal debut — becoming one of the youngest ever?",
+  "answer": "16",
+  "options": [
+   "15",
+   "16",
+   "17",
+   "18"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5a3568",
+  "diff": "medium",
+  "q": "Sol Campbell famously moved on a free transfer from Spurs to which club in 2001?",
+  "answer": "Arsenal",
+  "options": [
+   "Chelsea",
+   "Liverpool",
+   "Arsenal",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_443fef",
+  "diff": "easy",
+  "q": "Which manager led Arsenal to their unbeaten 'Invincibles' season of 2003-04?",
+  "answer": "Arsène Wenger",
+  "options": [
+   "George Graham",
+   "Terry Neill",
+   "Bruce Rioch",
+   "Arsène Wenger"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_62603d",
+  "diff": "medium",
+  "q": "Man United beat which club 2-0 in the 1999 FA Cup final, with Sheringham and Scholes scoring?",
+  "answer": "Newcastle",
+  "options": [
+   "Wimbledon",
+   "Arsenal",
+   "Liverpool",
+   "Newcastle"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_7ad948",
+  "diff": "medium",
+  "q": "Which club won the Premier League in the 2004-05 season with a record 95 points at the time?",
+  "answer": "Chelsea",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man Utd",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_19532e",
+  "diff": "hard",
+  "q": "Who scored Manchester United's extra-time winner in the 2016 FA Cup final against Crystal Palace?",
+  "answer": "Lingard",
+  "options": [
+   "Rooney",
+   "Martial",
+   "Lingard",
+   "Juan Mata"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d453ec",
+  "diff": "medium",
+  "q": "Who managed Tottenham to second place in the Premier League in 2016-17 — their highest finish under him?",
+  "answer": "Pochettino",
+  "options": [
+   "Redknapp",
+   "Sherwood",
+   "Villas-Boas",
+   "Pochettino"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3fb781",
+  "diff": "easy",
+  "q": "Carlos Tevez famously crossed a bitter divide in 2009 — which Premier League club did he join after leaving Old Trafford?",
+  "answer": "Man City",
+  "options": [
+   "Everton",
+   "Liverpool",
+   "Bolton",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_713bb4",
+  "diff": "easy",
+  "q": "Peter Schmeichel's son Kasper Schmeichel was the goalkeeper for which club's Premier League title win?",
+  "answer": "Leicester City",
+  "options": [
+   "Aston Villa",
+   "Wolves",
+   "Leicester City",
+   "Watford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_731e08",
+  "diff": "medium",
+  "q": "Which club was the first to reach 100 points in a Premier League season?",
+  "answer": "Man City",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man City",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_41205d",
+  "diff": "hard",
+  "q": "Which stadium hosted the first ever Premier League goal in August 1992?",
+  "answer": "Bramall Lane",
+  "options": [
+   "Highbury",
+   "Bramall Lane",
+   "Selhurst Park",
+   "Highfield Road"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_94a74b",
+  "diff": "medium",
+  "q": "Which club has won the most FA Cup titles in history?",
+  "answer": "Arsenal",
+  "options": [
+   "Liverpool",
+   "Man Utd",
+   "Chelsea",
+   "Arsenal"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5b5317",
+  "diff": "medium",
+  "q": "What squad number did Frank Lampard wear throughout his Chelsea career?",
+  "answer": "8",
+  "options": [
+   "6",
+   "7",
+   "8",
+   "10"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_bb2bad",
+  "diff": "easy",
+  "q": "In which season did Leicester City win the Premier League as 5000-1 outsiders?",
+  "answer": "2015-16",
+  "options": [
+   "2014-15",
+   "2015-16",
+   "2016-17",
+   "2013-14"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fa4a29",
+  "diff": "medium",
+  "q": "What squad number did Patrick Vieira wear at Arsenal throughout his dominant years?",
+  "answer": "4",
+  "options": [
+   "4",
+   "6",
+   "8",
+   "14"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c33142",
+  "diff": "hard",
+  "q": "What squad number did Nicolas Anelka wear at Arsenal during the 1997-98 double-winning season?",
+  "answer": "9",
+  "options": [
+   "7",
+   "23",
+   "14",
+   "9"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3807bc",
+  "diff": "hard",
+  "q": "Which squad number did Hernán Crespo wear at Chelsea?",
+  "answer": "9",
+  "options": [
+   "7",
+   "9",
+   "11",
+   "18"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_946ac3",
+  "diff": "medium",
+  "q": "Wayne Rooney wore which squad number when he broke the Manchester United scoring record?",
+  "answer": "10",
+  "options": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_040721",
+  "diff": "medium",
+  "q": "Who scored the fastest hat-trick in Premier League history — in 2 minutes 56 seconds for Southampton?",
+  "answer": "Sadio Mané",
+  "options": [
+   "Michael Owen",
+   "Robbie Fowler",
+   "Sadio Mané",
+   "Sergio Agüero"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2d3856",
+  "diff": "medium",
+  "q": "Which player has the most Premier League assists of all time with 162?",
+  "answer": "Giggs",
+  "options": [
+   "Kevin De Bruyne",
+   "Frank Lampard",
+   "Cesc Fàbregas",
+   "Giggs"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_bd3e4b",
+  "diff": "easy",
+  "q": "Which goalkeeper won the Premier League Golden Glove with both Chelsea and Arsenal?",
+  "answer": "Petr Cech",
+  "options": [
+   "Petr Cech",
+   "Joe Hart",
+   "Thibaut Courtois",
+   "David De Gea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_41dcd4",
+  "diff": "medium",
+  "q": "Who won the Premier League Player of the Season award in 2007-08?",
+  "answer": "Cristiano Ronaldo",
+  "options": [
+   "Fernando Torres",
+   "Rooney",
+   "Cristiano Ronaldo",
+   "Steven Gerrard"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_150a91",
+  "diff": "medium",
+  "q": "Shane Long scored the fastest ever Premier League goal in 7.69 seconds — for which club?",
+  "answer": "Southampton",
+  "options": [
+   "Watford",
+   "Aston Villa",
+   "Southampton",
+   "Bournemouth"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_771b7b",
+  "diff": "medium",
+  "q": "How many teams started the first Premier League season in 1992-93?",
+  "answer": "22",
+  "options": [
+   "18",
+   "20",
+   "22",
+   "24"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3af61c",
+  "diff": "medium",
+  "q": "Who was the first African player to win the Premier League Golden Boot?",
+  "answer": "Didier Drogba",
+  "options": [
+   "Nwankwo Kanu",
+   "Didier Drogba",
+   "Nicolas Anelka",
+   "Michael Essien"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_32d90a",
+  "diff": "easy",
+  "q": "Wayne Rooney scored an overhead kick against which rival in 2011?",
+  "answer": "Man City",
+  "options": [
+   "Liverpool",
+   "Arsenal",
+   "Chelsea",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c4c266",
+  "diff": "easy",
+  "q": "Which Premier League club plays at Selhurst Park?",
+  "answer": "Crystal Palace",
+  "options": [
+   "Brentford",
+   "Charlton",
+   "QPR",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_34f275",
+  "diff": "easy",
+  "q": "Which manager guided Leicester City to their miraculous Premier League title in 2016?",
+  "answer": "Claudio Ranieri",
+  "options": [
+   "Nigel Pearson",
+   "Craig Shakespeare",
+   "Claudio Ranieri",
+   "Peter Taylor"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d999cc",
+  "diff": "easy",
+  "q": "Which Premier League club moved into a brand new 60,000-seat stadium in 2019?",
+  "answer": "Tottenham",
+  "options": [
+   "Everton",
+   "Brentford",
+   "West Ham",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_594e05",
+  "diff": "easy",
+  "q": "Tottenham Hotspur's stadium is located in which area of London?",
+  "answer": "North London",
+  "options": [
+   "East London",
+   "North London",
+   "South London",
+   "West London"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2affe8",
+  "diff": "easy",
+  "q": "Which club won back-to-back Premier League titles in 2017-18 and 2018-19?",
+  "answer": "Man City",
+  "options": [
+   "Chelsea",
+   "Liverpool",
+   "Man City",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a82b98",
+  "diff": "easy",
+  "q": "What is the nickname of Newcastle United?",
+  "answer": "The Magpies",
+  "options": [
+   "The Robins",
+   "The Magpies",
+   "The Owls",
+   "The Canaries"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5f5249",
+  "diff": "easy",
+  "q": "Which Premier League club is nicknamed 'The Foxes'?",
+  "answer": "Leicester City",
+  "options": [
+   "Crystal Palace",
+   "Norwich",
+   "Leicester City",
+   "Watford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_f941ac",
+  "diff": "easy",
+  "q": "Brighton & Hove Albion play at which stadium?",
+  "answer": "The Amex",
+  "options": [
+   "The Amex",
+   "The Den",
+   "Carrow Road",
+   "Kenilworth Road"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5b6c11",
+  "diff": "easy",
+  "q": "Eric Cantona played for Manchester United and which other English club?",
+  "answer": "Leeds United",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Leeds United",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_241954",
+  "diff": "easy",
+  "q": "Which club finished second behind Man City in the 2018-19 Premier League on 97 points?",
+  "answer": "Liverpool",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Liverpool",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4ebd3c",
+  "diff": "easy",
+  "q": "Newcastle United play their home games at which stadium?",
+  "answer": "St James' Park",
+  "options": [
+   "Elland Road",
+   "St James' Park",
+   "Stadium of Light",
+   "The Hawthorns"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fb4114",
+  "diff": "medium",
+  "q": "Which club earned the nickname 'The Entertainers' under Kevin Keegan in 1995-96?",
+  "answer": "Newcastle",
+  "options": [
+   "Man City",
+   "Tottenham",
+   "Aston Villa",
+   "Newcastle"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c12d8e",
+  "diff": "medium",
+  "q": "Elton John has been chairman of which English football club on two separate occasions?",
+  "answer": "Watford",
+  "options": [
+   "QPR",
+   "Crystal Palace",
+   "Watford",
+   "Charlton"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2cbf07",
+  "diff": "easy",
+  "q": "Which Premier League club plays in claret and blue at the London Stadium?",
+  "answer": "West Ham",
+  "options": [
+   "Aston Villa",
+   "West Ham",
+   "Burnley",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3809d2",
+  "diff": "easy",
+  "q": "Antonio Conte won the Premier League title in his first season at which club?",
+  "answer": "Chelsea",
+  "options": [
+   "Tottenham",
+   "Arsenal",
+   "Man City",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_630a30",
+  "diff": "easy",
+  "q": "Which manager won the Premier League Manager of the Month award a record 27 times?",
+  "answer": "Sir Alex Ferguson",
+  "options": [
+   "Arsène Wenger",
+   "José Mourinho",
+   "Pep Guardiola",
+   "Sir Alex Ferguson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_36bc04",
+  "diff": "medium",
+  "q": "Which club did Dennis Bergkamp join Arsenal from in 1995?",
+  "answer": "Inter",
+  "options": [
+   "Ajax",
+   "PSV",
+   "Inter",
+   "Feyenoord"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fac203",
+  "diff": "medium",
+  "q": "Who was the first Premier League player to score 100 Premier League goals?",
+  "answer": "Alan Shearer",
+  "options": [
+   "Alan Shearer",
+   "Les Ferdinand",
+   "Robbie Fowler",
+   "Ian Wright"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c852bb",
+  "diff": "medium",
+  "q": "Which club did Roy Keane join Manchester United from in 1993?",
+  "answer": "Forest",
+  "options": [
+   "Celtic",
+   "Leeds",
+   "Aston Villa",
+   "Forest"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_15d058",
+  "diff": "medium",
+  "q": "How many times did Manchester United win the Premier League under Sir Alex Ferguson?",
+  "answer": "13",
+  "options": [
+   "11",
+   "12",
+   "13",
+   "10"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3a1d26",
+  "diff": "medium",
+  "q": "Who finished as the Premier League's top scorer in the 2020-21 season?",
+  "answer": "Kane",
+  "options": [
+   "Salah",
+   "Vardy",
+   "Kane",
+   "Son"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ad88c2",
+  "diff": "medium",
+  "q": "Which player scored the most Premier League goals in a single season before Haaland's record?",
+  "answer": "Shearer",
+  "options": [
+   "Shearer",
+   "Fowler",
+   "Henry",
+   "Suárez"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d02056",
+  "diff": "medium",
+  "q": "Which club did Juan Mata join Manchester United from?",
+  "answer": "Chelsea",
+  "options": [
+   "Atlético",
+   "Real Madrid",
+   "Valencia",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_df98cf",
+  "diff": "medium",
+  "q": "How much did Manchester United pay for Paul Pogba in 2016 — a then world record?",
+  "answer": "£89m",
+  "options": [
+   "£79m",
+   "£109m",
+   "£99m",
+   "£89m"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d11037",
+  "diff": "easy",
+  "q": "Which season did Arsenal win the Premier League by going unbeaten for the whole season?",
+  "answer": "2003-04",
+  "options": [
+   "2001-02",
+   "2002-03",
+   "2004-05",
+   "2003-04"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_307d1c",
+  "diff": "medium",
+  "q": "Who scored Arsenal's extra-time winner in the 2014 FA Cup final, poking in Olivier Giroud's backheel to beat Hull 3-2?",
+  "answer": "Ramsey",
+  "options": [
+   "Cazorla",
+   "Ramsey",
+   "Özil",
+   "Koscielny"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d10190",
+  "diff": "medium",
+  "q": "Which iconic number did Wayne Rooney inherit at Manchester United in 2007, taking it over from Ruud van Nistelrooy?",
+  "answer": "10",
+  "options": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_549b26",
+  "diff": "medium",
+  "q": "Who assisted Sergio Agüero's famous last-minute title winner for Man City in 2012?",
+  "answer": "Balotelli",
+  "options": [
+   "Nasri",
+   "Balotelli",
+   "Silva",
+   "De Bruyne"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8d344e",
+  "diff": "medium",
+  "q": "Which club paid a then world record £15m for Alan Shearer in 1996?",
+  "answer": "Newcastle",
+  "options": [
+   "Man Utd",
+   "Chelsea",
+   "Newcastle",
+   "Leeds"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9f5b64",
+  "diff": "medium",
+  "q": "Which club bought Romelu Lukaku for a club record £97.5m in 2021?",
+  "answer": "Chelsea",
+  "options": [
+   "PSG",
+   "Real Madrid",
+   "Man City",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_51d6f2",
+  "diff": "easy",
+  "q": "Paul Pogba's £89m move to Manchester United in 2016 was from which club?",
+  "answer": "Juventus",
+  "options": [
+   "PSG",
+   "Inter",
+   "Juventus",
+   "Monaco"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_afd347",
+  "diff": "easy",
+  "q": "Which club is nicknamed 'The Red Devils'?",
+  "answer": "Man Utd",
+  "options": [
+   "Liverpool",
+   "Arsenal",
+   "Atlético",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_052be8",
+  "diff": "easy",
+  "q": "What is Chelsea's stadium called?",
+  "answer": "Stamford Bridge",
+  "options": [
+   "Stamford Bridge",
+   "Craven Cottage",
+   "Loftus Road",
+   "Selhurst Park"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6cbf0e",
+  "diff": "easy",
+  "q": "What is Arsenal's home ground called?",
+  "answer": "The Emirates",
+  "options": [
+   "Highbury",
+   "Wembley",
+   "The Emirates",
+   "White Hart Lane"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1ba58a",
+  "diff": "easy",
+  "q": "Which club is nicknamed 'The Citizens'?",
+  "answer": "Man City",
+  "options": [
+   "Coventry",
+   "Man Utd",
+   "Leicester",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_0511a2",
+  "diff": "easy",
+  "q": "Yaya Touré won three Premier League titles with which club?",
+  "answer": "Man City",
+  "options": [
+   "Liverpool",
+   "Arsenal",
+   "Man Utd",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6da665",
+  "diff": "medium",
+  "q": "Riyad Mahrez became the first African player to win the PFA Players' Player of the Year — which club was he at?",
+  "answer": "Leicester City",
+  "options": [
+   "Man City",
+   "Arsenal",
+   "Leicester City",
+   "QPR"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_daad03",
+  "diff": "medium",
+  "q": "Which European club did Park Ji-sung play for immediately before joining Manchester United in 2005?",
+  "answer": "PSV Eindhoven",
+  "options": [
+   "Ajax",
+   "Feyenoord",
+   "Anderlecht",
+   "PSV Eindhoven"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e7c26b",
+  "diff": "medium",
+  "q": "What is the record for the most goals scored in a single Premier League game by one player?",
+  "answer": "5",
+  "options": [
+   "4",
+   "7",
+   "6",
+   "5"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_34af79",
+  "diff": "easy",
+  "q": "What is the Merseyside Derby?",
+  "answer": "Liverpool vs Everton",
+  "options": [
+   "Liverpool vs Everton",
+   "Liverpool vs Man Utd",
+   "Everton vs Man City",
+   "Liverpool vs Tranmere"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_b42290",
+  "diff": "medium",
+  "q": "Which goalkeeper scored a famous goal for Manchester United against Rotor Volgograd in 1995?",
+  "answer": "Schmeichel",
+  "options": [
+   "Schmeichel",
+   "van der Sar",
+   "Bosnich",
+   "Barthez"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d0ff28",
+  "diff": "easy",
+  "q": "Which manager guided Arsenal to two doubles in 1998 and 2002?",
+  "answer": "Arsène Wenger",
+  "options": [
+   "George Graham",
+   "Terry Neill",
+   "Stewart Houston",
+   "Arsène Wenger"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e160e7",
+  "diff": "easy",
+  "q": "Who was Tottenham's manager when they reached the Champions League final in 2019?",
+  "answer": "Mauricio Pochettino",
+  "options": [
+   "Tim Sherwood",
+   "André Villas-Boas",
+   "José Mourinho",
+   "Mauricio Pochettino"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fa3358",
+  "diff": "medium",
+  "q": "Which manager took Newcastle to second place in the Premier League in 1995-96?",
+  "answer": "Kevin Keegan",
+  "options": [
+   "Bobby Robson",
+   "Kenny Dalglish",
+   "Graeme Souness",
+   "Kevin Keegan"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_28237a",
+  "diff": "medium",
+  "q": "Which club did Michael Owen join after leaving Real Madrid in 2005 — surprising many fans?",
+  "answer": "Newcastle",
+  "options": [
+   "Everton",
+   "Chelsea",
+   "Liverpool",
+   "Newcastle"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_527f70",
+  "diff": "medium",
+  "q": "Which club did Carlos Tevez controversially join in 2009, unveiling it on a billboard that stunned fans across the city?",
+  "answer": "Man City",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man City",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_7e7abb",
+  "diff": "medium",
+  "q": "Robinho became Manchester City's record signing in 2008 — from which club?",
+  "answer": "Real Madrid",
+  "options": [
+   "Santos",
+   "Inter",
+   "Real Madrid",
+   "AC Milan"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_012246",
+  "diff": "medium",
+  "q": "Fernando Torres became Chelsea's then-record signing in January 2011 — for how much?",
+  "answer": "£50m",
+  "options": [
+   "£40m",
+   "£50m",
+   "£60m",
+   "£70m"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3e9acb",
+  "diff": "medium",
+  "q": "Dennis Bergkamp scored a stunning first-touch-spin-and-finish goal for Arsenal vs which club in a 2002 Premier League game?",
+  "answer": "Newcastle",
+  "options": [
+   "Leicester City",
+   "Wimbledon",
+   "Newcastle",
+   "Sunderland"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2a0253",
+  "diff": "easy",
+  "q": "Who scored the stoppage-time winner for Manchester City against QPR on the final day of 2011-12 to win the title?",
+  "answer": "Agüero",
+  "options": [
+   "Tevez",
+   "Džeko",
+   "Balotelli",
+   "Agüero"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a029ee",
+  "diff": "medium",
+  "q": "Which club did Kevin De Bruyne leave for Manchester City — initially let go by Chelsea without a chance?",
+  "answer": "Wolfsburg",
+  "options": [
+   "Genk",
+   "Wolfsburg",
+   "Werder Bremen",
+   "Ajax"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1ac805",
+  "diff": "easy",
+  "q": "Which player became the first £100m British transfer when he moved from Aston Villa to Man City in 2021?",
+  "answer": "Jack Grealish",
+  "options": [
+   "Declan Rice",
+   "Jarrod Bowen",
+   "Jack Grealish",
+   "Raheem Sterling"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_dda8e7",
+  "diff": "medium",
+  "q": "Enzo Fernández's £107m move to Chelsea in January 2023 — which club did he leave?",
+  "answer": "Benfica",
+  "options": [
+   "Porto",
+   "River Plate",
+   "Sporting CP",
+   "Benfica"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2d88c3",
+  "diff": "easy",
+  "q": "Which Premier League defender joined Liverpool from Southampton in January 2018 for £75m — then a world record for a defender?",
+  "answer": "Virgil van Dijk",
+  "options": [
+   "Virgil van Dijk",
+   "Joel Matip",
+   "Dejan Lovren",
+   "Joe Gomez"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1b3cc6",
+  "diff": "easy",
+  "q": "Which club won the 2024-25 Premier League title — ending a run of dominance by other clubs?",
+  "answer": "Liverpool",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man City",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ad89df",
+  "diff": "easy",
+  "q": "Who managed Liverpool to the 2024-25 Premier League title in his first full season in charge?",
+  "answer": "Slot",
+  "options": [
+   "Klopp",
+   "Howe",
+   "Slot",
+   "Rodgers"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_14ce89",
+  "diff": "medium",
+  "q": "The fastest Premier League goal was scored in 7.69 seconds — by which player?",
+  "answer": "Shane Long",
+  "options": [
+   "Shearer",
+   "Defoe",
+   "Shane Long",
+   "Ledley King"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ec4a25",
+  "diff": "medium",
+  "q": "Alan Shearer scored how many Premier League goals in total — the all-time record?",
+  "answer": "260",
+  "options": [
+   "220",
+   "240",
+   "283",
+   "260"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c8da49",
+  "diff": "medium",
+  "q": "Peter Crouch holds the Guinness World Record for the most what in the Premier League?",
+  "answer": "Headed goals",
+  "options": [
+   "Penalty misses",
+   "Assists from long throws",
+   "Yellow cards without a red",
+   "Headed goals"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_f94f5c",
+  "diff": "medium",
+  "q": "In the 2003-04 'Battle of Old Trafford', which Arsenal player confronted Ruud van Nistelrooy after a penalty miss?",
+  "answer": "Keown",
+  "options": [
+   "Vieira",
+   "Ljungberg",
+   "Henry",
+   "Keown"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_b47cdf",
+  "diff": "easy",
+  "q": "The 'Pizzagate' tunnel bust-up after Arsenal's 2004 defeat at Old Trafford ended with which manager hit by a slice of flying pizza?",
+  "answer": "Alex Ferguson",
+  "options": [
+   "Arsène Wenger",
+   "Alex Ferguson",
+   "David Moyes",
+   "Rafael Benítez"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_31f99f",
+  "diff": "medium",
+  "q": "Which team beat Man United 6-1 at Old Trafford in 2011 — their biggest home defeat in the Premier League era?",
+  "answer": "Man City",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Liverpool",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_364986",
+  "diff": "medium",
+  "q": "Which goalkeeper went a record 1,311 minutes without conceding in the Premier League?",
+  "answer": "Edwin van der Sar",
+  "options": [
+   "Čech",
+   "Schmeichel",
+   "David James",
+   "Edwin van der Sar"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5f19df",
+  "diff": "hard",
+  "q": "Which club holds the record for the most draws in a single Premier League season with 18?",
+  "answer": "Sheffield United",
+  "options": [
+   "Stoke City",
+   "Bolton",
+   "Wimbledon",
+   "Sheffield United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ac1bd4",
+  "diff": "easy",
+  "q": "Which club pipped Liverpool to the Premier League title by a single point on the final day in 2018-19?",
+  "answer": "Man City",
+  "options": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1753e2",
+  "diff": "medium",
+  "q": "Leicester won the 2015-16 Premier League at 5000-1 odds — by how many points did they win the title?",
+  "answer": "10",
+  "options": [
+   "8",
+   "10",
+   "12",
+   "14"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_aa5fd7",
+  "diff": "medium",
+  "q": "Andy Cole scored 34 Premier League goals in 1993-94 for which club — a single-season record at the time?",
+  "answer": "Newcastle",
+  "options": [
+   "Blackburn",
+   "Man Utd",
+   "Newcastle",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_dbaa5f",
+  "diff": "medium",
+  "q": "Which English winger left Liverpool to join Manchester City in 2015, won four Premier League titles, then moved to Chelsea in 2022 for £47.5m?",
+  "answer": "Sterling",
+  "options": [
+   "Rashford",
+   "Grealish",
+   "Foden",
+   "Sterling"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a7a4bd",
+  "diff": "easy",
+  "q": "Which club did Sergio Agüero join when he left Manchester City in 2021?",
+  "answer": "Barcelona",
+  "options": [
+   "Inter Miami",
+   "PSG",
+   "Barcelona",
+   "Atlético"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_34c935",
+  "diff": "medium",
+  "q": "Which club won the Premier League in 2009-10 with a then-record 103 goals scored?",
+  "answer": "Chelsea",
+  "options": [
+   "Man Utd",
+   "Chelsea",
+   "Arsenal",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2af871",
+  "diff": "medium",
+  "q": "Steven Gerrard played his entire domestic career at Liverpool — how many years did he serve the club?",
+  "answer": "17",
+  "options": [
+   "15",
+   "17",
+   "19",
+   "21"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_82a49a",
+  "diff": "hard",
+  "q": "Chelsea won the Premier League in 2004-05 with how many points — a record at the time?",
+  "answer": "95",
+  "options": [
+   "91",
+   "93",
+   "95",
+   "97"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_761523",
+  "diff": "easy",
+  "q": "Which English club is nicknamed 'The Hornets' and plays in yellow and black?",
+  "answer": "Watford",
+  "options": [
+   "Brentford",
+   "Norwich City",
+   "Burton Albion",
+   "Watford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9f3d7a",
+  "diff": "medium",
+  "q": "Which club did Paul Gascoigne famously play for before joining Lazio in 1992?",
+  "answer": "Tottenham Hotspur",
+  "options": [
+   "Arsenal",
+   "Liverpool",
+   "Everton",
+   "Tottenham Hotspur"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4ad62f",
+  "diff": "medium",
+  "q": "Which team finished bottom of the Premier League with only 11 points in 2007-08?",
+  "answer": "Derby County",
+  "options": [
+   "Derby County",
+   "Sunderland",
+   "Bradford",
+   "Reading"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4d461e",
+  "diff": "medium",
+  "q": "Which club paid a then British record £8.5m for Stan Collymore in 1995?",
+  "answer": "Liverpool",
+  "options": [
+   "Aston Villa",
+   "Everton",
+   "Liverpool",
+   "Forest"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1f2b59",
+  "diff": "easy",
+  "q": "Harry Kane joined Bayern Munich in 2023 — from which Premier League club?",
+  "answer": "Tottenham Hotspur",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man City",
+   "Tottenham Hotspur"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_561df2",
+  "diff": "medium",
+  "q": "Dimitar Berbatov joined Man United in 2008 for £30.75m — from which club?",
+  "answer": "Tottenham Hotspur",
+  "options": [
+   "Leverkusen",
+   "Aston Villa",
+   "Liverpool",
+   "Tottenham Hotspur"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6a3d3b",
+  "diff": "medium",
+  "q": "Which club did Michael Owen join on a free transfer in 2009 — shocking many fans?",
+  "answer": "Man Utd",
+  "options": [
+   "Liverpool",
+   "Chelsea",
+   "Man City",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_b837e8",
+  "diff": "medium",
+  "q": "David Beckham scored from the halfway line aged 21 against which club in 1996?",
+  "answer": "Wimbledon",
+  "options": [
+   "Wimbledon",
+   "Chelsea",
+   "Arsenal",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4b064e",
+  "diff": "medium",
+  "q": "What did Eric Cantona do in 1997 when he left Manchester United, surprising fans?",
+  "answer": "Retired from football immediately",
+  "options": [
+   "Retired from football immediately",
+   "Signed for Marseille",
+   "Signed for Barcelona",
+   "Signed for Juventus"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_61e682",
+  "diff": "medium",
+  "q": "Kevin Keegan's famous 'I will love it if we beat them' rant in 1996 was aimed at which manager?",
+  "answer": "Ferguson",
+  "options": [
+   "Wenger",
+   "Dalglish",
+   "Robson",
+   "Ferguson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_076bc8",
+  "diff": "medium",
+  "q": "Premier League record: most goals in a single season by a team — 106 by Man City in which year?",
+  "answer": "2017-18",
+  "options": [
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6cd4eb",
+  "diff": "medium",
+  "q": "Which club has the best goal difference in a single Premier League season — plus 79 in 2017-18?",
+  "answer": "Man City",
+  "options": [
+   "Liverpool",
+   "Arsenal",
+   "Chelsea",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d66492",
+  "diff": "hard",
+  "q": "Who holds the record for most hat-tricks in a single Premier League season, with 5 in 1995-96?",
+  "answer": "Alan Shearer",
+  "options": [
+   "Alan Shearer",
+   "Robbie Fowler",
+   "Erling Haaland",
+   "Harry Kane"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_af02d6",
+  "diff": "hard",
+  "q": "How much did Man United pay for Juan Mata in January 2014 — a then record for a January window?",
+  "answer": "£37.1m",
+  "options": [
+   "£28m",
+   "£36m",
+   "£37.1m",
+   "£42m"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9d61bd",
+  "diff": "medium",
+  "q": "Which club has the nickname 'The Magpies' and plays in black and white stripes?",
+  "answer": "Notts County and Newcastle United",
+  "options": [
+   "Notts County and Newcastle United",
+   "Only Newcastle United",
+   "Only Notts County",
+   "Swansea City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_08480c",
+  "diff": "easy",
+  "q": "Which Premier League club played its home games at Wembley for two seasons while its new stadium was built?",
+  "answer": "Tottenham",
+  "options": [
+   "Arsenal",
+   "Tottenham",
+   "West Ham",
+   "Leicester"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5da785",
+  "diff": "medium",
+  "q": "Which club played their first Premier League season in 2021-22 after a 74-year absence from the top flight (last appearance: 1946-47)?",
+  "answer": "Brentford",
+  "options": [
+   "Brentford",
+   "Watford",
+   "Norwich",
+   "Sheffield United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9fc82a",
+  "diff": "easy",
+  "q": "Which Premier League club's ground is called Portman Road?",
+  "answer": "Ipswich Town",
+  "options": [
+   "Ipswich Town",
+   "Norwich City",
+   "Colchester United",
+   "Peterborough"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8d6e63",
+  "diff": "hard",
+  "q": "Which was the first club to field an entirely foreign starting XI in the Premier League?",
+  "answer": "Chelsea",
+  "options": [
+   "Arsenal",
+   "Chelsea",
+   "Man City",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_908962",
+  "diff": "easy",
+  "q": "Which club sold Erling Haaland to Man City in 2022 for just €60m — widely seen as a bargain?",
+  "answer": "Dortmund",
+  "options": [
+   "RB Salzburg",
+   "Ajax",
+   "Dortmund",
+   "Schalke"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3aad50",
+  "diff": "medium",
+  "q": "Mo Salah scored how many Premier League goals in 2017-18 — a then record for a 38-game season?",
+  "answer": "32",
+  "options": [
+   "30",
+   "32",
+   "36",
+   "38"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c0948a",
+  "diff": "easy",
+  "q": "Which club has the longest unbeaten run in Premier League history at 49 games?",
+  "answer": "Arsenal",
+  "options": [
+   "Chelsea",
+   "Man City",
+   "Arsenal",
+   "Man United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_bfa2e2",
+  "diff": "medium",
+  "q": "Thierry Henry won how many Premier League Golden Boots?",
+  "answer": "4",
+  "options": [
+   "3",
+   "6",
+   "5",
+   "4"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_4ba0f3",
+  "diff": "medium",
+  "q": "Who is the only player to score 30+ Premier League goals in three different seasons?",
+  "answer": "Shearer",
+  "options": [
+   "Shearer",
+   "Henry",
+   "Cole",
+   "Kane"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_716827",
+  "diff": "hard",
+  "q": "What was the first season in which goal-line technology was used in the Premier League?",
+  "answer": "2013-14",
+  "options": [
+   "2011-12",
+   "2012-13",
+   "2013-14",
+   "2014-15"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ba6edb",
+  "diff": "easy",
+  "q": "Which club did Jack Grealish leave to join Manchester City for £100m in 2021?",
+  "answer": "Aston Villa",
+  "options": [
+   "Tottenham",
+   "Everton",
+   "Aston Villa",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a25672",
+  "diff": "medium",
+  "q": "The Premier League introduced the Video Assistant Referee (VAR) in which season?",
+  "answer": "2019-20",
+  "options": [
+   "2017-18",
+   "2018-19",
+   "2019-20",
+   "2020-21"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6374f7",
+  "diff": "medium",
+  "q": "Which foreign player has scored the most Premier League goals overall?",
+  "answer": "Salah",
+  "options": [
+   "Henry",
+   "Drogba",
+   "Agüero",
+   "Salah"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_de87c8",
+  "diff": "easy",
+  "q": "Blackburn Rovers won the Premier League in 1994-95 — who was their chairman who funded it?",
+  "answer": "Jack Walker",
+  "options": [
+   "Jack Walker",
+   "Sam Allardyce",
+   "Ray Harford",
+   "Kenny Dalglish"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_745812",
+  "diff": "hard",
+  "q": "Which club did Liverpool beat 4-0 at Anfield in June 2020, the day before they were confirmed as 2019-20 Premier League champions?",
+  "answer": "Crystal Palace",
+  "options": [
+   "Crystal Palace",
+   "Chelsea",
+   "Burnley",
+   "Brighton"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_f853b9",
+  "diff": "easy",
+  "q": "Arsene Wenger's last season at Arsenal was which year?",
+  "answer": "2018",
+  "options": [
+   "2016",
+   "2017",
+   "2019",
+   "2018"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3e9381",
+  "diff": "medium",
+  "q": "Which club did Manchester City sign Kevin De Bruyne from in 2015?",
+  "answer": "Wolfsburg",
+  "options": [
+   "Wolfsburg",
+   "Genk",
+   "Chelsea",
+   "Werder Bremen"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8f8158",
+  "diff": "easy",
+  "q": "Sadio Mane left Liverpool to join which club in 2022?",
+  "answer": "Bayern Munich",
+  "options": [
+   "Al Nassr",
+   "PSG",
+   "Bayern Munich",
+   "Juventus"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3baa0f",
+  "diff": "medium",
+  "q": "Which club plays their home games at Bramall Lane?",
+  "answer": "Sheffield United",
+  "options": [
+   "Barnsley",
+   "Rotherham",
+   "Sheffield United",
+   "Huddersfield"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_869282",
+  "diff": "medium",
+  "q": "Who scored a famous last-minute winner for Manchester United vs Bayern Munich in 1999?",
+  "answer": "Solskjaer",
+  "options": [
+   "Sheringham",
+   "Solskjaer",
+   "Cole",
+   "Scholes"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e51300",
+  "diff": "medium",
+  "q": "Which goalkeeper kept the most clean sheets in the 2022-23 Premier League season — winning the Golden Glove with 17?",
+  "answer": "De Gea",
+  "options": [
+   "De Gea",
+   "Alisson",
+   "Areola",
+   "Ederson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_bc296f",
+  "diff": "hard",
+  "q": "Peter Schmeichel left Manchester United to join which club in 1999?",
+  "answer": "Sporting CP",
+  "options": [
+   "Aston Villa",
+   "Sporting CP",
+   "Brondby",
+   "Atlético"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d505e7",
+  "diff": "medium",
+  "q": "Which club played Premier League football for the first time in their history in 2023-24?",
+  "answer": "Luton Town",
+  "options": [
+   "Luton Town",
+   "Sheffield Wednesday",
+   "Burnley",
+   "Brentford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_51b05b",
+  "diff": "hard",
+  "q": "Who scored Manchester City's equaliser against QPR before Agueroooo in 2012?",
+  "answer": "Dzeko",
+  "options": [
+   "Tevez",
+   "Dzeko",
+   "Silva",
+   "Nasri"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1488f3",
+  "diff": "medium",
+  "q": "Tottenham's new stadium opened in which year?",
+  "answer": "2019",
+  "options": [
+   "2017",
+   "2018",
+   "2019",
+   "2020"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_abf379",
+  "diff": "easy",
+  "q": "Which club did Thierry Henry leave to join Arsenal in 1999?",
+  "answer": "Juventus",
+  "options": [
+   "Monaco",
+   "PSG",
+   "Juventus",
+   "Bordeaux"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_eae341",
+  "diff": "medium",
+  "q": "Which club did Mohamed Salah play for before joining Liverpool?",
+  "answer": "Roma",
+  "options": [
+   "Basel",
+   "Chelsea",
+   "Fiorentina",
+   "Roma"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_101461",
+  "diff": "easy",
+  "q": "Which club won the Premier League in the 2019-20 season, the campaign completed behind closed doors after the Covid shutdown?",
+  "answer": "Liverpool",
+  "options": [
+   "Man City",
+   "Chelsea",
+   "Arsenal",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_934b32",
+  "diff": "medium",
+  "q": "Which club did Ian Wright play for before Arsenal — where he was prolific?",
+  "answer": "Crystal Palace",
+  "options": [
+   "Millwall",
+   "Crystal Palace",
+   "Charlton",
+   "Brighton"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_7c4faf",
+  "diff": "easy",
+  "q": "Phil Foden came through the academy of which club?",
+  "answer": "Man City",
+  "options": [
+   "Man Utd",
+   "Chelsea",
+   "Tottenham",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_efeec1",
+  "diff": "easy",
+  "q": "Which year did Leicester City famously win the Premier League?",
+  "answer": "2016",
+  "options": [
+   "2016",
+   "2015",
+   "2017",
+   "2018"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9df75a",
+  "diff": "easy",
+  "q": "Declan Rice's £105m move to Arsenal in 2023 — from which club?",
+  "answer": "West Ham",
+  "options": [
+   "Tottenham",
+   "West Ham",
+   "Chelsea",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_de0548",
+  "diff": "easy",
+  "q": "Which Premier League club plays at Elland Road?",
+  "answer": "Leeds United",
+  "options": [
+   "Huddersfield",
+   "Sheffield United",
+   "Bradford",
+   "Leeds United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1eaa0a",
+  "diff": "medium",
+  "q": "Which manager guided Brentford into the Premier League for the first time in their history?",
+  "answer": "Thomas Frank",
+  "options": [
+   "Thomas Frank",
+   "Dean Smith",
+   "Frank Lampard",
+   "Phil Parkinson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_01c2e5",
+  "diff": "medium",
+  "q": "How many times did Chelsea win the Premier League in the Abramovich era from 2003-2022?",
+  "answer": "5",
+  "options": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_f6d451",
+  "diff": "easy",
+  "q": "Which club went unbeaten for the first 29 games of a Premier League season?",
+  "answer": "Arsenal 2003-04",
+  "options": [
+   "Arsenal 2003-04",
+   "Man City 2017-18",
+   "Chelsea 2004-05",
+   "Liverpool 2019-20"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_f05345",
+  "diff": "medium",
+  "q": "Newcastle United were taken over by Saudi Arabia's PIF in which year?",
+  "answer": "2021",
+  "options": [
+   "2019",
+   "2020",
+   "2022",
+   "2021"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_51ec89",
+  "diff": "hard",
+  "q": "Which club won the EFL Championship play-off final four times — a record?",
+  "answer": "Crystal Palace",
+  "options": [
+   "Norwich",
+   "Leeds",
+   "Brentford",
+   "Crystal Palace"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ddac8c",
+  "diff": "easy",
+  "q": "Which club sold Ashley Cole to Chelsea in 2006 — in a deal that caused controversy?",
+  "answer": "Arsenal",
+  "options": [
+   "Tottenham",
+   "Charlton",
+   "Man City",
+   "Arsenal"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8f3bbd",
+  "diff": "hard",
+  "q": "Which Premier League club's mascot is a giant bee?",
+  "answer": "Burnley",
+  "options": [
+   "Norwich",
+   "Burnley",
+   "Man City",
+   "Watford"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8d8d58",
+  "diff": "medium",
+  "q": "Which player holds the record for most yellow cards in Premier League history?",
+  "answer": "Gareth Barry",
+  "options": [
+   "Roy Keane",
+   "Patrick Vieira",
+   "Gareth Barry",
+   "Paul Scholes"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fe7efc",
+  "diff": "easy",
+  "q": "Which club won the 2023-24 Premier League with 91 points?",
+  "answer": "Man City",
+  "options": [
+   "Man City",
+   "Arsenal",
+   "Liverpool",
+   "Aston Villa"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_77e53b",
+  "diff": "easy",
+  "q": "Cole Palmer joined Chelsea from which club in 2023?",
+  "answer": "Man City",
+  "options": [
+   "Arsenal",
+   "Man City",
+   "Aston Villa",
+   "Everton"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_deb74e",
+  "diff": "easy",
+  "q": "Which club won the FA Cup in 2024 — their first major trophy in years?",
+  "answer": "Man United",
+  "options": [
+   "Tottenham",
+   "Wolves",
+   "Newcastle",
+   "Man United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a26717",
+  "diff": "easy",
+  "q": "Which club did Eric Cantona join before his famous move to Manchester United in 1992?",
+  "answer": "Leeds United",
+  "options": [
+   "PSG",
+   "Marseille",
+   "Nimes",
+   "Leeds United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6de450",
+  "diff": "easy",
+  "q": "Which club won the treble of PL, FA Cup and Champions League in 2022-23?",
+  "answer": "Man City",
+  "options": [
+   "Chelsea",
+   "Arsenal",
+   "Tottenham",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_2db81e",
+  "diff": "easy",
+  "q": "What shirt number did Thierry Henry famously wear at Arsenal?",
+  "answer": "14",
+  "options": [
+   "7",
+   "9",
+   "10",
+   "14"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_140582",
+  "diff": "easy",
+  "q": "Which club won the 2023-24 FA Cup — beating Man City in the final?",
+  "answer": "Man United",
+  "options": [
+   "Arsenal",
+   "Man United",
+   "Wolves",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_fa4ada",
+  "diff": "medium",
+  "q": "Who scored the winning goal in the 2023-24 FA Cup final?",
+  "answer": "Mainoo",
+  "options": [
+   "Rashford",
+   "Garnacho",
+   "Fernandes",
+   "Mainoo"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a10e60",
+  "diff": "hard",
+  "q": "Which goalkeeper kept the most PL clean sheets in 2023-24?",
+  "answer": "Raya",
+  "options": [
+   "Flekken",
+   "Raya",
+   "Onana",
+   "Ederson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_42b583",
+  "diff": "easy",
+  "q": "West Ham's new stadium is a converted version of which venue?",
+  "answer": "2012 Olympic Stadium",
+  "options": [
+   "Crystal Palace athletics track",
+   "2012 Olympic Stadium",
+   "Wembley annex",
+   "Silverstone circuit"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d05fc5",
+  "diff": "easy",
+  "q": "Which PL club has the nickname The Toffees?",
+  "answer": "Everton",
+  "options": [
+   "Burnley",
+   "Sunderland",
+   "Stoke",
+   "Everton"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_57a759",
+  "diff": "medium",
+  "q": "Which club did Alan Shearer leave to join Newcastle United for a world record £15m in 1996?",
+  "answer": "Blackburn Rovers",
+  "options": [
+   "Man Utd",
+   "Arsenal",
+   "Blackburn Rovers",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e7266f",
+  "diff": "medium",
+  "q": "Who is Everton's all-time top scorer with 383 goals?",
+  "answer": "Dixie Dean",
+  "options": [
+   "Gary Lineker",
+   "Rooney",
+   "Tommy Lawton",
+   "Dixie Dean"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ae5ed4",
+  "diff": "medium",
+  "q": "Marcus Rashford scored how many goals in all competitions in 2022-23 — his best ever season?",
+  "answer": "30",
+  "options": [
+   "25",
+   "28",
+   "30",
+   "35"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_727865",
+  "diff": "easy",
+  "q": "Which English club is known as The Saints?",
+  "answer": "Southampton",
+  "options": [
+   "Crystal Palace",
+   "Southampton",
+   "Fulham",
+   "QPR"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5f2738",
+  "diff": "hard",
+  "q": "Which club's approach did Jürgen Klopp turn down — saying it \"didn't feel right\" — before he joined Liverpool in 2015?",
+  "answer": "Manchester United",
+  "options": [
+   "Manchester United",
+   "Arsenal",
+   "Everton",
+   "Newcastle United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_167050",
+  "diff": "hard",
+  "q": "Newcastle United's record Premier League win was 8-0 — against which club in 1999?",
+  "answer": "Sheffield Wednesday",
+  "options": [
+   "Sheffield Wednesday",
+   "Sunderland",
+   "Bradford",
+   "Wimbledon"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_3555e9",
+  "diff": "easy",
+  "q": "Which club won the first ever Premier League title in 1992-93, finishing ten points clear?",
+  "answer": "Man Utd",
+  "options": [
+   "Arsenal",
+   "Blackburn",
+   "Leeds",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_9a46d5",
+  "diff": "easy",
+  "q": "Which club did Harry Kane leave Tottenham to join in 2023?",
+  "answer": "Bayern Munich",
+  "options": [
+   "Real Madrid",
+   "Man Utd",
+   "Bayern Munich",
+   "PSG"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_1efd65",
+  "diff": "medium",
+  "q": "What is the name of Wolves' home stadium?",
+  "answer": "Molineux",
+  "options": [
+   "Molineux",
+   "The Hawthorns",
+   "Bramall Lane",
+   "Deepdale"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_090567",
+  "diff": "easy",
+  "q": "Blackburn Rovers' Premier League title in 1994-95 — who was their star striker?",
+  "answer": "Alan Shearer",
+  "options": [
+   "Chris Sutton",
+   "Alan Shearer",
+   "Kevin Gallacher",
+   "Mike Newell"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_b9ec09",
+  "diff": "medium",
+  "q": "Mohamed Salah's record 32 Premier League goals came in which season?",
+  "answer": "2017-18",
+  "options": [
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6a1939",
+  "diff": "medium",
+  "q": "Which club won back-to-back FA Cups in 2002 and 2003?",
+  "answer": "Arsenal",
+  "options": [
+   "Arsenal",
+   "Liverpool",
+   "Chelsea",
+   "Man United"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a9e56b",
+  "diff": "easy",
+  "q": "Which club won the Premier League in 2015-16 as 5000-1 outsiders — one of the biggest shocks in football history?",
+  "answer": "Leicester City",
+  "options": [
+   "Bournemouth",
+   "Watford",
+   "Leicester City",
+   "West Ham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d93381",
+  "diff": "medium",
+  "q": "Which club won the Championship play-off final on penalties in 2023 to reach the Premier League?",
+  "answer": "Luton Town",
+  "options": [
+   "Sheffield United",
+   "Middlesbrough",
+   "Coventry City",
+   "Luton Town"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_62818f",
+  "diff": "easy",
+  "q": "Which club was Wayne Rooney playing for when he scored his famous first Premier League goal against Arsenal in 2002?",
+  "answer": "Everton",
+  "options": [
+   "Man Utd",
+   "Everton",
+   "Liverpool",
+   "Tottenham"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5acbf9",
+  "diff": "hard",
+  "q": "How many times did Arsenal finish as Premier League runners-up under Wenger?",
+  "answer": "6",
+  "options": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_ab9d16",
+  "diff": "easy",
+  "q": "Steve Bruce won three league titles as a player with which club?",
+  "answer": "Man Utd",
+  "options": [
+   "Aston Villa",
+   "Birmingham",
+   "Man Utd",
+   "Sunderland"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d4381a",
+  "diff": "medium",
+  "q": "Which club did Kevin De Bruyne leave to join Wolfsburg before eventually joining Man City?",
+  "answer": "Chelsea",
+  "options": [
+   "Anderlecht",
+   "Gent",
+   "Bruges",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_5a8cbe",
+  "diff": "medium",
+  "q": "Before Wolves in 2025-26, which club was the last to go a full Premier League season without winning an away game?",
+  "answer": "Derby County 2007-08",
+  "options": [
+   "Sunderland 2005-06",
+   "Derby County 2007-08",
+   "Bradford 2000-01",
+   "Watford 2019-20"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_765ef0",
+  "diff": "hard",
+  "q": "How many hat-tricks did Alan Shearer score in the Premier League throughout his career?",
+  "answer": "11",
+  "options": [
+   "10",
+   "11",
+   "12",
+   "13"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_7c0ccc",
+  "diff": "medium",
+  "q": "Which club did Erling Haaland score his first Premier League hat-trick against?",
+  "answer": "Crystal Palace",
+  "options": [
+   "Forest",
+   "Wolves",
+   "Crystal Palace",
+   "Man Utd"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a855ff",
+  "diff": "hard",
+  "q": "Trent Alexander-Arnold broke whose record for most assists by a defender in a single PL season?",
+  "answer": "Leighton Baines",
+  "options": [
+   "Gary Neville",
+   "Ashley Cole",
+   "Leighton Baines",
+   "Andy Robertson"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_857df4",
+  "diff": "easy",
+  "q": "When was the inaugural Premier League season?",
+  "answer": "1992-93",
+  "options": [
+   "1990-91",
+   "1992-93",
+   "1994-95",
+   "1988-89"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_914427",
+  "diff": "easy",
+  "q": "Which team won the first Premier League title?",
+  "answer": "Man Utd",
+  "options": [
+   "Arsenal",
+   "Man Utd",
+   "Blackburn Rovers",
+   "Liverpool"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_e7644a",
+  "diff": "easy",
+  "q": "What is the record for the highest number of points in a single Premier League season?",
+  "answer": "100",
+  "options": [
+   "98",
+   "97",
+   "99",
+   "100"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_79cd0b",
+  "diff": "easy",
+  "q": "Which English club was the first to reach 1,000 Premier League points?",
+  "answer": "Man Utd",
+  "options": [
+   "Liverpool",
+   "Man Utd",
+   "Arsenal",
+   "Chelsea"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_073575",
+  "diff": "medium",
+  "q": "Who was the first goalkeeper to score in a Premier League match — netting for Aston Villa vs Everton in October 2001?",
+  "answer": "Peter Schmeichel",
+  "options": [
+   "Peter Schmeichel",
+   "Tim Howard",
+   "Edwin van der Sar",
+   "Petr Čech"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_aa1071",
+  "diff": "easy",
+  "q": "Who scored the dramatic stoppage-time winner that sealed Manchester City's first Premier League title in 2012?",
+  "answer": "Sergio Agüero",
+  "options": [
+   "Yaya Touré",
+   "Sergio Agüero",
+   "Mario Balotelli",
+   "David Silva"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_a6c63d",
+  "diff": "medium",
+  "q": "How many different Premier League clubs did Michael Owen score for?",
+  "answer": "4",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "1"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_c47d19",
+  "diff": "medium",
+  "q": "Which player scored four goals in the first half of a Premier League match for the first time in league history (2024-25 season)?",
+  "answer": "Cole Palmer",
+  "options": [
+   "Mohamed Salah",
+   "Kane",
+   "Haaland",
+   "Cole Palmer"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_550941",
+  "diff": "medium",
+  "q": "Who became the first player in Premier League history to score a hat-trick in the north London derby?",
+  "answer": "Eberechi Eze",
+  "options": [
+   "Bukayo Saka",
+   "Eberechi Eze",
+   "Gabriel Jesus",
+   "Declan Rice"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_aa6a4d",
+  "diff": "medium",
+  "q": "What unusual clause was once in Stefan Schwarz's Premier League contract?",
+  "answer": "No space travel",
+  "options": [
+   "No flying",
+   "No space travel",
+   "No tattoos",
+   "No acting"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_d56266",
+  "diff": "easy",
+  "q": "Who provided the only Premier League assist of his entire career -- for Sergio Agüero's dramatic 2012 title-winning goal?",
+  "answer": "Mario Balotelli",
+  "options": [
+   "David Silva",
+   "James Milner",
+   "Yaya Touré",
+   "Mario Balotelli"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_6e46ad",
+  "diff": "easy",
+  "q": "Which 2016 Premier League title win is still considered one of the greatest underdog stories in football history?",
+  "answer": "Leicester City",
+  "options": [
+   "Arsenal",
+   "Leicester City",
+   "Tottenham Hotspur",
+   "Man City"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_efa8e4",
+  "diff": "medium",
+  "q": "Who scored the longest-range goal ever recognised in the Premier League (from his own half)?",
+  "answer": "Asmir Begovic",
+  "options": [
+   "Asmir Begovic",
+   "David Beckham",
+   "Paul Scholes",
+   "Hal Robson-Kanu"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_25a634",
+  "diff": "easy",
+  "q": "English rock star Elton John was twice the owner of which football club?",
+  "answer": "Watford",
+  "options": [
+   "Watford",
+   "Tottenham Hotspur",
+   "Crystal Palace",
+   "Forest"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_eefa0a",
+  "diff": "easy",
+  "q": "Which stadium is famously nicknamed \"The Theatre of Dreams\"?",
+  "answer": "Old Trafford",
+  "options": [
+   "Old Trafford",
+   "Camp Nou",
+   "Anfield",
+   "Santiago Bernabéu"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_8a723a",
+  "diff": "easy",
+  "q": "Which Croatian midfielder joined Manchester City from Chelsea in summer 2023?",
+  "answer": "Mateo Kovačić",
+  "options": [
+   "Mateo Kovačić",
+   "Luka Modrić",
+   "Marcelo Brozović",
+   "Mario Pašalić"
+  ],
+  "type": "mcq"
+ },
+ {
+  "id": "q_707cac",
+  "diff": "easy",
+  "q": "Which Arsenal player finished as the Premier League's top scorer in the 2003-04 season?",
+  "answer": "Thierry Henry",
+  "options": [
+   "Thierry Henry",
+   "Robert Pires",
+   "Dennis Bergkamp",
+   "Freddie Ljungberg"
+  ],
+  "type": "mcq"
+ }
+]
