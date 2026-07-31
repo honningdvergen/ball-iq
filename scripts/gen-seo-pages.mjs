@@ -972,7 +972,7 @@ ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
                there is more to say" and not "every answer". The store copy
                currently overclaims exactly this and is logged as task #63.
       Regenerate from src/questions.js before editing these figures. */ ''}
-<p class="editorial">Written and fact-checked by hand — never auto-generated. The bank runs to ${QB.length.toLocaleString('en-GB')} questions, and where there is more to say about an answer we say it. Spot something wrong? <a href="${SITE.base}/contact/">Tell us</a> and we will fix it.</p>
+<p class="editorial">This is one set from a bank of ${QB.length.toLocaleString('en-GB')} questions spanning 72 clubs, every major league and eight decades of football.</p>
 </section>`;
 }
 
