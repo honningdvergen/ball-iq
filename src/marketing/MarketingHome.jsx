@@ -484,7 +484,12 @@ function useCountUp(target, ms = 900) {
 
 function QuizTaster() {
   const [idx, setIdx] = useState(0);
-  const [score, setScore] = useState(0);
+  // Per-question OUTCOMES, not just a tally. The card used to keep a bare
+  // count, which a progress bar can render but a scoreboard cannot: a bar says
+  // "60% through", pips say "you got 1, 2 and 4 and missed 3". Score is derived
+  // from this rather than kept alongside it, so the two cannot drift.
+  const [results, setResults] = useState([]);
+  const score = results.filter(Boolean).length;
   const [picked, setPicked] = useState(null);
   const [done, setDone] = useState(false);
   // Parked-pointer hover artifact (Alex report, browser-repro verified): after
@@ -498,9 +503,9 @@ function QuizTaster() {
   const IQ = [46, 54, 63, 74, 88, 99];
   const TIERS = ['Rising talent', 'Rising talent', 'Solid', 'Pro', 'Elite', 'World class'];
 
-  const pick = (i) => { if (answered) return; setPicked(i); if (i === cur.a) setScore((s) => s + 1); };
+  const pick = (i) => { if (answered) return; setPicked(i); setResults((r) => [...r, i === cur.a]); };
   const next = () => { if (idx + 1 >= total) setDone(true); else { setIdx(idx + 1); setPicked(null); setHoverArmed(false); } };
-  const reset = () => { setIdx(0); setScore(0); setPicked(null); setDone(false); setHoverArmed(false); };
+  const reset = () => { setIdx(0); setResults([]); setPicked(null); setDone(false); setHoverArmed(false); };
 
   const optStyle = (i) => {
     // Longhand border props ONLY — mixing the `border` shorthand with a
@@ -550,7 +555,24 @@ function QuizTaster() {
             screenshot of the live site, invisible at desktop width). */}
         <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: '#8AE042', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px', whiteSpace: 'nowrap', flex: '0 0 auto' }}>{score} correct</span>
       </div>
-      <div style={{ height: 5, borderRadius: 999, background: '#1A1D27', marginTop: 10, overflow: 'hidden' }}><div style={{ width: pct + '%', height: '100%', background: '#58CC02', borderRadius: 999, transition: 'width .3s ease' }} /></div>
+      {/* PIPS, not a bar. Same width, twice the information: position AND the
+          outcome of every question so far. Capped deliberately -- see PIP_MAX
+          on the generator side; five is well inside it. */}
+      <div style={{ display: 'flex', gap: 4, marginTop: 10 }} role="img"
+           aria-label={`Question ${idx + 1} of ${total}, ${score} correct so far`}>
+        {Array.from({ length: total }, (_, i) => {
+          const r = results[i];
+          const isNow = i === idx;
+          return (
+            <span key={i} style={{
+              flex: 1, height: 5, borderRadius: 999,
+              background: r === true ? '#58CC02' : r === false ? '#FF4747' : '#1A1D27',
+              boxShadow: isNow && r === undefined ? 'inset 0 0 0 1.5px #3A3D4A' : 'none',
+              transition: 'background-color .25s ease',
+            }} />
+          );
+        })}
+      </div>
       <div style={{ marginTop: 12, fontSize: 17, fontWeight: 800, lineHeight: 1.3, color: '#fff' }}>{cur.q}</div>
       <div style={{ display: 'grid', gap: 9, marginTop: 14 }} onMouseMove={hoverArmed ? undefined : () => setHoverArmed(true)}>
         {cur.opts.map((o, i) => (
