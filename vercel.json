@@ -13,7 +13,13 @@
     { "source": "/join/:code", "destination": "/api/join?c=:code" },
     { "source": "/football-wordle/answer", "destination": "/api/footle" },
     { "source": "/football-wordle/answer/", "destination": "/api/footle" },
-    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+
+    { "source": "/play", "destination": "/index.html" },
+    { "source": "/play/(.*)", "destination": "/index.html" },
+    { "source": "/footle", "destination": "/index.html" },
+    { "source": "/footle/", "destination": "/index.html" },
+    { "source": "/home-preview", "destination": "/index.html" },
+    { "source": "/home-preview/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
