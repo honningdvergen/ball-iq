@@ -341,7 +341,7 @@ function storeBadges() {
 const navHtml = (active = '') => `<a class="skip" href="#main">Skip to content</a>
 <header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
+<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-play" href="${SITE.base}/play">Play free</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
 </div></header>`;
 const NAV = navHtml();
 
@@ -789,7 +789,7 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-meter{display:flex;gap:4px;flex-wrap:wrap}
   .bq-meter i{width:15px;height:4px;border-radius:2px;background:var(--bd);transition:background .2s}
   .bq-meter i.ok{background:var(--grn)}
-  .bq-meter i.no{background:#4A2426}
+  .bq-meter i.no{background:#FF4747}
   .bq-streak{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--grn-ink);background:var(--amber);border-radius:6px;padding:3px 8px}
   .bq-list{list-style:none;margin:0;padding:0}
   .bq-q + .bq-q{margin-top:26px;padding-top:26px;border-top:1px solid var(--bd)}
@@ -1171,6 +1171,12 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .nav-link:hover{color:#fff;text-decoration:none}
   .nav-link.active{color:#fff;border-bottom:2px solid var(--grn);padding-bottom:2px}
   /* Flat per the 2026-07-21 Clubs Directory handoff — Alex: no 3D look. */
+  /* The 126 quiz pages carried Get-the-app but NOT Play-free -- so the
+     browser-play CTA was missing from exactly the pages where a visitor has
+     most demonstrated intent to play in a browser. They arrived searching
+     "arsenal quiz", and the only action offered was an App Store trip. */
+  .nav-play{display:inline-flex;align-items:center;padding:9px 15px;border:1.5px solid rgba(88,204,2,.55);border-radius:12px;color:var(--grn-soft);font-weight:800;font-size:13.5px}
+  .nav-play:hover{text-decoration:none;border-color:var(--grn);background:rgba(88,204,2,.08)}
   .nav-cta{display:inline-flex;align-items:center;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px}
   .nav-cta:hover{text-decoration:none;filter:brightness(1.04)}
   /* hero */

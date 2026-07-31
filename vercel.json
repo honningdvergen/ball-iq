@@ -1,85 +1,194 @@
 {
   "redirects": [
-    { "source": "/t", "destination": "/footle?utm_source=threads", "permanent": false },
-    { "source": "/ig", "destination": "/footle?utm_source=instagram", "permanent": false },
-    { "source": "/tt", "destination": "/footle?utm_source=tiktok", "permanent": false },
-    { "source": "/x", "destination": "/footle?utm_source=x", "permanent": false }
+    {
+      "source": "/t",
+      "destination": "/footle?utm_source=threads",
+      "permanent": false
+    },
+    {
+      "source": "/ig",
+      "destination": "/footle?utm_source=instagram",
+      "permanent": false
+    },
+    {
+      "source": "/tt",
+      "destination": "/footle?utm_source=tiktok",
+      "permanent": false
+    },
+    {
+      "source": "/x",
+      "destination": "/footle?utm_source=x",
+      "permanent": false
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html",
+      "permanent": true
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy.html",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/get", "destination": "/api/get" },
-    { "source": "/p", "destination": "/api/p" },
-    { "source": "/q", "destination": "/api/q" },
-    { "source": "/c/:token", "destination": "/api/c?t=:token" },
-    { "source": "/join/:code", "destination": "/api/join?c=:code" },
-    { "source": "/football-wordle/answer", "destination": "/api/footle" },
-    { "source": "/football-wordle/answer/", "destination": "/api/footle" },
-
-    { "source": "/play", "destination": "/index.html" },
-    { "source": "/play/(.*)", "destination": "/index.html" },
-    { "source": "/footle", "destination": "/index.html" },
-    { "source": "/footle/", "destination": "/index.html" },
-    { "source": "/home-preview", "destination": "/index.html" },
-    { "source": "/home-preview/(.*)", "destination": "/index.html" }
+    {
+      "source": "/get",
+      "destination": "/api/get"
+    },
+    {
+      "source": "/p",
+      "destination": "/api/p"
+    },
+    {
+      "source": "/q",
+      "destination": "/api/q"
+    },
+    {
+      "source": "/c/:token",
+      "destination": "/api/c?t=:token"
+    },
+    {
+      "source": "/join/:code",
+      "destination": "/api/join?c=:code"
+    },
+    {
+      "source": "/football-wordle/answer",
+      "destination": "/api/footle"
+    },
+    {
+      "source": "/football-wordle/answer/",
+      "destination": "/api/footle"
+    },
+    {
+      "source": "/play",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/play/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/footle",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/footle/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/home-preview",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/home-preview/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
-        { "key": "Content-Security-Policy-Report-Only", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://fundingchoicesmessages.google.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://va.vercel-scripts.com https://www.clarity.ms https://*.clarity.ms https://appleid.cdn-apple.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.ingest.de.sentry.io https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://va.vercel-scripts.com https://www.clarity.ms https://*.clarity.ms https://appleid.apple.com; frame-src https://fundingchoicesmessages.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://appleid.apple.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://appleid.apple.com; report-uri https://o4511344022061056.ingest.de.sentry.io/api/4511344097362000/security/?sentry_key=2c8c4cfc35467314a31f5aa00f16a8f5" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://fundingchoicesmessages.google.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://va.vercel-scripts.com https://www.clarity.ms https://*.clarity.ms https://appleid.cdn-apple.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.ingest.de.sentry.io https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://va.vercel-scripts.com https://www.clarity.ms https://*.clarity.ms https://appleid.apple.com; frame-src https://fundingchoicesmessages.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://appleid.apple.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://appleid.apple.com; report-uri https://o4511344022061056.ingest.de.sentry.io/api/4511344097362000/security/?sentry_key=2c8c4cfc35467314a31f5aa00f16a8f5"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
     {
       "source": "/",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/index.html",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/sw.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/version.json",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/quiz/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=600" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=600"
+        }
       ]
     },
     {
       "source": "/lists/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=600" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=600"
+        }
       ]
     },
     {
       "source": "/.well-known/apple-app-site-association",
       "headers": [
-        { "key": "Content-Type", "value": "application/json" },
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     }
   ]
