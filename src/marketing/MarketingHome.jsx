@@ -1,4 +1,4 @@
-import { Target } from 'lucide-react';
+import { Target, Menu, X } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from './Phone.jsx';
 // Tiny data-free module (NOT lib/wordle.js — that would drag the 400+-player
@@ -45,14 +45,71 @@ const STYLE = `
    next to the solid "Get the app" so the free web play is an obvious action. */
 .mkt-nav-play { display:inline-flex; align-items:center; padding:9px 17px; border:1.5px solid rgba(88,204,2,0.65); border-radius:12px; background:rgba(88,204,2,0.08); color:#8AE042; font-weight:800; font-size:14px; box-shadow:0 0 20px -6px rgba(88,204,2,0.5); transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, background .18s, border-color .18s; }
 .mkt-nav-play:hover { transform:translateY(-2px); background:rgba(88,204,2,0.15); border-color:#58CC02; box-shadow:0 0 26px -4px rgba(88,204,2,0.65); color:#AEEF6E; }
-/* Nav collapse: on phones the full link row + CTA overflows the viewport, so
-   drop the anchor-jump links (Features/Modes/FAQ) and keep the two real actions
-   (Play + Get the app) in a tighter row that always fits. */
+/* Nav collapse: on phones the full link row overflows, so the anchor-jump links
+   move into a drawer rather than simply vanishing.
+
+   They used to just vanish. At 390px the header rendered the logo and two CTAs
+   and silently dropped Quizzes / Records / Modes / FAQ with no hamburger and no
+   menu of any kind -- on a homepage that is ~10,900px tall. A phone visitor who
+   wanted the quiz index had to scroll twenty-five screens or guess a URL, which
+   quietly capped pages-per-session, and pages-per-session is the number ad
+   revenue is a function of.
+
+   Also drops to ONE header CTA on mobile: "Play free" is the primary action and
+   "Get the app" moves into the drawer. Two competing CTAs plus a menu button is
+   three controls fighting over ~200px of header. */
+.mkt-burger { display:none; }
 @media (max-width:640px) {
   .mkt-nav { padding:12px 15px; }
-  .mkt-nav-links { gap:14px; }
+  .mkt-nav-links { gap:10px; }
   .mkt-nav-sec { display:none; }
+  .mkt-nav-play { display:none; }               /* "Get the app" lives in the drawer */
   .mkt-nav-cta { padding:10px 15px !important; font-size:13px !important; }
+  .mkt-burger {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; flex:0 0 44px;      /* WCAG 2.5.5 touch target */
+    background:transparent; border:1px solid #2A2D3A; border-radius:12px;
+    color:#F0F1F5; cursor:pointer; padding:0;
+  }
+  .mkt-burger:hover { border-color:#3A3D4A; }
+}
+.mkt-drawer-scrim {
+  position:fixed; inset:0; z-index:200; background:rgba(4,5,7,0.72);
+  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  opacity:0; transition:opacity .22s ease;
+}
+.mkt-drawer-scrim[data-open="1"] { opacity:1; }
+.mkt-drawer {
+  position:fixed; top:0; right:0; bottom:0; z-index:201; width:min(84vw,320px);
+  background:#101219; border-left:1px solid #242836;
+  display:flex; flex-direction:column; padding:14px 16px 24px;
+  transform:translateX(100%); transition:transform .26s cubic-bezier(.22,.8,.3,1);
+  overflow-y:auto; overscroll-behavior:contain;
+}
+.mkt-drawer[data-open="1"] { transform:translateX(0); }
+.mkt-drawer-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.mkt-drawer-close {
+  width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center;
+  background:transparent; border:1px solid #2A2D3A; border-radius:12px; color:#F0F1F5;
+  cursor:pointer; padding:0;
+}
+.mkt-drawer a {
+  display:flex; align-items:center; min-height:52px; padding:0 14px;
+  border-radius:12px; color:#F0F1F5; font-size:17px; font-weight:700;
+  border:1px solid transparent;
+}
+.mkt-drawer a:hover, .mkt-drawer a:focus-visible { background:#181B24; border-color:#242836; }
+.mkt-drawer .mkt-drawer-cta {
+  justify-content:center; background:#58CC02; color:#06230C; margin-top:14px;
+  font-weight:800; border-color:#58CC02;
+}
+.mkt-drawer .mkt-drawer-app {
+  justify-content:center; margin-top:9px; border-color:rgba(88,204,2,0.5); color:#8AE042;
+}
+.mkt-drawer-sep { height:1px; background:#242836; margin:12px 4px; }
+.mkt-drawer :focus-visible, .mkt-burger:focus-visible { outline:3px solid #58CC02; outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) {
+  .mkt-drawer, .mkt-drawer-scrim { transition:none; }
 }
 .mkt-cta-green { transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, filter .15s; }
 .mkt-cta-green:hover { transform:translateY(-2px); box-shadow:0 14px 30px -6px rgba(88,204,2,0.72), inset 0 1px 0 rgba(255,255,255,0.25); filter:brightness(1.04); }
@@ -811,6 +868,25 @@ export default function MarketingHome() {
     return () => { html.style.scrollBehavior = prev; };
   }, []);
 
+  // ── MOBILE NAV ───────────────────────────────────────────────────────────
+  const [menuOpen, setMenuOpen] = useState(false);
+  const burgerRef = useRef(null);
+  useEffect(() => {
+    if (!menuOpen) return;
+    // Escape closes, and focus returns to the button that opened it — without
+    // that return, a keyboard user is dumped back at the top of the document.
+    const onKey = (e) => { if (e.key === 'Escape') { setMenuOpen(false); burgerRef.current?.focus(); } };
+    document.addEventListener('keydown', onKey);
+    // Lock the page behind the drawer. The homepage is ~10,900px tall, so
+    // without this the body scrolls under the panel while the drawer is open.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [menuOpen]);
+
   return (
     <div className="mkt">
       <style>{STYLE}</style>
@@ -838,8 +914,68 @@ export default function MarketingHome() {
               earned ("Get 6,000+ questions in the app"). */}
           <GreenCTA href={PLAY} className="mkt-nav-cta">Play free</GreenCTA>
           <a href={GET_APP} className="mkt-nav-play mkt-nav-cta">Get the app</a>
+          {/* Mobile only (CSS). Before this the four nav links simply vanished
+              below 640px with nothing to reach them by. */}
+          <button
+            ref={burgerRef}
+            type="button"
+            className="mkt-burger"
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+            aria-controls="mkt-drawer"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu size={22} strokeWidth={2.2} aria-hidden="true" />
+          </button>
         </div>
       </nav>
+
+      {/* ── MOBILE DRAWER ── rendered only when open so it never sits in the
+          a11y tree or tab order on desktop. */}
+      {menuOpen && (
+        <>
+          <div
+            className="mkt-drawer-scrim"
+            data-open="1"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            id="mkt-drawer"
+            className="mkt-drawer"
+            data-open="1"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            <div className="mkt-drawer-top">
+              <Brand size={18} imgSize={28} />
+              <button
+                type="button"
+                className="mkt-drawer-close"
+                aria-label="Close menu"
+                onClick={() => { setMenuOpen(false); burgerRef.current?.focus(); }}
+                autoFocus
+              >
+                <X size={22} strokeWidth={2.2} aria-hidden="true" />
+              </button>
+            </div>
+            <a href="#quizzes" onClick={() => setMenuOpen(false)}>Quizzes</a>
+            <a href="/lists/">Record books</a>
+            <a href="#modes" onClick={() => setMenuOpen(false)}>Game modes</a>
+            <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+            <div className="mkt-drawer-sep" />
+            {/* Real destinations, not just in-page anchors — the drawer is the
+                only route a phone user has to the rest of the site. */}
+            <a href="/quiz/">All 72 club quizzes</a>
+            <a href="/football-wordle/">Footle</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+            <a className="mkt-drawer-cta" href={PLAY}>Play free</a>
+            <a className="mkt-drawer-app" href={GET_APP}>Get the app</a>
+          </div>
+        </>
+      )}
 
       {/* WCAG 1.3.1 — the SEO pages all have <main>; this one never did. */}
       <main id="mkt-main">
