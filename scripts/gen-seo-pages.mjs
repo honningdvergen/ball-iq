@@ -637,7 +637,19 @@ if(!box||!d)return;
 var QS;try{QS=JSON.parse(d.textContent)}catch(e){return}
 if(!QS||!QS.length)return;
 var nm=box.getAttribute('data-name')||'this team',play=box.getAttribute('data-play')||'/',store=box.getAttribute('data-store')||'#';
-var IQ=[46,54,63,74,88,99],T=['Casual fan','Casual fan','Solid','Big fan','Superfan','Club legend'];
+/* ⚠️ SCORE-INDEXED LADDERS BREAK WHEN THE TASTER LENGTH CHANGES.
+   This was IQ=[46,54,63,74,88,99] indexed by raw score — six entries, written
+   when the taster was 5 questions. The taster went to 10 and the ladder did
+   not, so every score from 5 upward fell through to the last entry: 5/10 and
+   10/10 both showed "Ball IQ 99 — Club legend", and 4/10 read "Superfan".
+   Half marks presented as a perfect score on 126 pages.
+   Banding on PERCENTAGE instead is length-independent, so it stays correct
+   for a 10-, 20- or full-length run. Do not reintroduce an index-by-score. */
+var BANDS=[[0,46,'Casual fan'],[25,54,'Getting there'],[45,63,'Solid'],[65,74,'Big fan'],[85,88,'Superfan'],[100,99,'Club legend']];
+function grade(sc,n){var pct=n?Math.round((sc/n)*100):0,b=BANDS[0];
+for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g][0])b=BANDS[g]}
+if(pct>=100)b=BANDS[BANDS.length-1];
+return{iq:b[1],tier:b[2],pct:pct}}
 var i=0,sc=0,p=null;
 function e(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function draw(){
@@ -656,7 +668,7 @@ var nb=box.querySelector('.tn');if(nb){nb.addEventListener('click',next)}
 function pick(ev){if(p!==null)return;var k=+ev.currentTarget.getAttribute('data-i');p=k;if(k===QS[i].a)sc++;draw()}
 function next(){i++;p=null;draw()}
 function done(){
-var iq=IQ[sc]!=null?IQ[sc]:IQ[IQ.length-1],ti=T[sc]!=null?T[sc]:T[T.length-1];
+var G=grade(sc,QS.length),iq=G.iq,ti=G.tier;
 box.innerHTML='<div class="tdone"><div class="tdl">Your Ball IQ</div><div class="tiq">'+iq+'</div><div class="ttier">'+e(ti)+'</div><div class="tscore">You scored '+sc+' / '+QS.length+' on the '+e(nm)+' taster</div><div class="tcta"><a class="btn" href="'+play+'">Play the full '+e(nm)+' quiz →</a><a class="btn store" href="'+store+'" rel="noopener">Get the app</a></div><button class="tn again">Play again</button></div>';
 var ag=box.querySelector('.again');if(ag){ag.addEventListener('click',function(){i=0;sc=0;p=null;draw()})}
 }
@@ -676,7 +688,7 @@ function renderTaster(rows, name, playHref) {
 <div class="eyebrow">Free taster · No sign-up</div>
 <h2 id="taster-h">How well do you know ${esc(name)}?</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.getApp}">
-<p class="tph">Five quick questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
+<p class="tph">${rows.length} questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
 </div>
 <p class="taster-note">Sample questions shown — the full quiz has many more.</p>
 <script type="application/json" id="biq-taster-data">${data}</script>
