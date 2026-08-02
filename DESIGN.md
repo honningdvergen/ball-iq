@@ -157,9 +157,9 @@ The palette is built from two near-achromatic grounds plus a single accent famil
 
 ### Primary
 - **Scout's Ramp — Fail** (`#8B2635`, oxblood): the "wrong" mark across the whole system — running-report `0 of 1` text, the empty/red progress bar, Footle's "not in it" key state is a separate near-black tone, but a wrong quiz answer and a wrong verdict-0 score both use this exact red.
-- **Scout's Ramp — Near** (`#C9992B`, amber): the middle mark — Footle's "right letter, wrong place" tile and key, taken down from the raw screen amber until it cleared 4.5:1 on newsprint (documented in the source as a deliberate de-saturation from a 2.1:1-reading value).
+- **Scout's Ramp — Near** (`#C9992B`, amber): the middle mark — Footle's "right letter, wrong place" tile and key. This is the *screen* amber, and it reads only 2.13:1 against newsprint. That is not a defect, because it is never ink: `--r3` appears exclusively as a `background` and `border-color` on the dark Footle board, with its own dark text (`#1A1200`) sitting on top of it.
 - **Scout's Ramp — Pass** (`#2F6B3A`, green): the "correct" mark — running-report `1 of 1` text, the filled progress bar, Footle's "right letter, right place" tile and key, and the verdict's best tier.
-- **Verdict Ramp** (`--verdict-0` through `--verdict-5`): a *separate* six-step scale used only for the verdict number and tier headline, one step per score (0 of 5 through 5 of 5). It shares its two endpoints with the three-step ramp above (`verdict-0` = Scout's Ramp — Fail, `verdict-5` = Scout's Ramp — Pass) but its middle four stops (`#94472A`, `#7E6318`, `#5F6A22`, `#46702E`) are independently authored, not interpolated from `ramp-near`. See **Do's and Don'ts** — this is a real fork in the system, not an oversight to smooth over silently.
+- **Verdict Ramp** (`--verdict-0` through `--verdict-5`): the same oxblood→amber→green family, rendered at **ink strength** for the one place the ramp is used as text on paper — the verdict number and the tier headline's rule, one step per score. It is not a second, unrelated scale. Measured in Lab, its hue sweeps monotonically through the same arc as the three-step ramp (20.1° → 46.7° → **85.9°** → 111.8° → 131.0° → 145.1°), and its amber stop `verdict-2` sits at hue 85.9° against `ramp-near`'s 82.6° — the same colour, three degrees apart. What differs is lightness, and only because it has to: `ramp-near` at L\*66.0 reads 2.13:1 on newsprint, while `verdict-2` at L\*43.4 reads 4.66:1. Every verdict stop clears 4.5:1 on paper (7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23).
 
 ### Neutral — Desk (the world)
 - **Desk** (`#0E1110`): the page's base background, carrying a fine authored SVG grain. This is the ground for the masthead, hero, section bands, club index, Footle, and footer — everything that is not the report itself.
@@ -181,6 +181,16 @@ The palette is built from two near-achromatic grounds plus a single accent famil
 ### Named Rules
 **The One Ramp Rule.** The only saturated colours anywhere in the system are the scout's ramp and its verdict variant. Nothing else — not a link, not a CTA, not a decorative flourish — is allowed a hue that isn't ink, paper, or desk.
 
+**The Two Strengths Rule.** There is one ramp and two renderings of it, and which one you reach for is decided by the *ground and the job*, never by the component:
+
+| | as a **fill** on the dark desk | as **ink** on newsprint |
+|---|---|---|
+| tokens | `--r1` `--r3` `--r5` | `--v0` … `--v5` |
+| used by | Footle tiles and keys, chip fills, answer-option borders | the verdict number, the tier rule |
+| contrast floor | text sits *on* the colour, so the fill is free | every stop must clear 4.5:1 on paper |
+
+This is why `ramp-near` never needed an ink version of its own: it is the one stop that is never text on paper. `--r1` and `--r5` appear in both columns because they happen to clear 4.5:1 on newsprint unaided (7.08:1 and 5.23:1), so the fill value doubles as the ink value.
+
 **The Same-Weight Rule Rule.** `hairline-rule` and `control-rule` are the same *visual* weight (both thin, both grey-green) but different jobs: one is furniture (a table row separator), the other is a control's boundary and is held to a harder contrast floor because a reader has to be able to find it to use it.
 
 ## Typography
@@ -189,6 +199,8 @@ The palette is built from two near-achromatic grounds plus a single accent famil
 **Body Font:** Archivo (regular/medium) — every paragraph, question, answer option, table cell, and caption.
 
 **Character:** A narrow, heavy display face doing all the shouting (headlines, the verdict, the clock) against a plain grotesque doing all the reading. The pairing reads like a back page and a team-sheet: bold masthead type over plain report type, never a third voice.
+
+**Delivery:** both faces are embedded as base64 woff2 so the file renders identically with no network. Archivo is a **variable** font declared once across `font-weight:100 900`; Archivo Narrow is a single static 700, which is the only weight it is ever asked for. Archivo was previously declared three times — at 400, 600 and 800 — each carrying a byte-identical copy of the same variable payload (34,940 B, md5 `92895aba…`). Collapsing them to one declaration reproduced 400/600/800 to the pixel and cut the file 214,713 → 121,269 bytes (gzip −49.3%). It also *fixed* two weights: with only three pinned faces, CSS font-matching snapped `font-weight:500` down to the 400 face and `700` up to the 800 face, so the answer options and every uppercase micro-label were rendering at a weight nobody wrote. They now render at the weights this document specifies.
 
 ### Hierarchy
 - **Headline** (700, `clamp(41px, 6.6vw, 88px)`, line-height .95): the page's own `h1` only — two lines, then straight into the question.
@@ -270,8 +282,10 @@ A dark-ground word-game board: a 7-wide tile grid (one row per guess, 6 rows) an
 ### Countdown Clock (`.clock`)
 Display-scale, tabular-figure countdown to the next midnight reset, self-correcting: if the page is left open across midnight, it detects the date rollover and swaps its own copy to "reload for today's board" rather than silently counting from a stale target.
 
-### Footer Distribution Line (`.footin .dist`)
-"Also on" plus inline SVG store-badge icons, on the dark ground. This is the *only* icon-based distribution row in the file — a related but distinct affordance from the Masthead's single CTA button. `.dist` itself is a shared component styled for a paper (light) context by default and overridden here for the dark footer ground (icon fill, border colour, hover background all re-specified under `.footin .dist`).
+### Footer Distribution Line (`.dist`)
+"Also on" plus inline SVG store-badge icons, on the dark ground. This is the *only* icon-based distribution row in the file — a related but distinct affordance from the Masthead's single CTA button.
+
+It is a **single-ground component with exactly one call-site**, and it is defined once. It used to carry a second, paper-ground skin (`--rule` borders, `--mut` label, white hover) left over from an earlier placement inside the Letterhead; when that placement was removed the paper styling stayed behind, and every one of its declarations was being overridden by a `.footin .dist` block further down. Both halves are now collapsed into one dark-ground definition, and the icons inherit their fill from `.mk-i` rather than re-specifying it. If a second, light-ground placement is ever wanted, add a modifier deliberately — do not reintroduce a default skin for a ground the component does not appear on.
 
 ### Ad Slot (`.adslot`)
 A quiet, bordered, centred band with a single "Advertisement" label — no framing copy, no explanation of ad policy on the page itself. The source comments are explicit that an ad slot which explains itself is addressed to a reviewer, not to the person who arrived from a club search.
@@ -289,6 +303,7 @@ A quiet, bordered, centred band with a single "Advertisement" label — no frami
 ### Don't:
 - **Don't** introduce a fourth colour family for any reason — a new accent, a decorative tint, a brand colour borrowed from elsewhere in the product. The direction contract is explicit that action is ink or paper, never a fourth colour.
 - **Don't** add border-radius anywhere. This build has none, on any element, and it is a stated rejection ("no radius") in the direction contract, not an oversight.
-- **Don't** assume the three-step Scout's Ramp and the six-step Verdict Ramp are the same scale re-sampled — they share only their two endpoints; the middle four verdict stops were authored independently. Treat them as two related but distinct tokens groups until someone deliberately unifies them.
+- **Don't** treat the three-step Scout's Ramp and the six-step Verdict Ramp as two unrelated scales — they are one hue family at two rendering strengths (see **The Two Strengths Rule**). If you add a stop to either, put it on the same hue arc and hold it to that column's contrast floor.
+- **Don't** use `--r3` as text on newsprint. It is a fill, it reads 2.13:1 on paper, and the ink-strength stop for that hue already exists as `--v2`.
 - **Don't** add motion that isn't a direct response to the reader's own action. Nothing on this page moves on load, on scroll, or ambiently — a bar fills because an answer was correct, the verdict lands because the last question was answered, a Footle row shakes because a guess was invalid.
 - **Don't** collapse the Masthead CTA, the Letterhead, and the Footer distribution line into one component. They look related (all "get the app / find us elsewhere") but are three different patterns living in three different places, and only the footer carries the icon row.

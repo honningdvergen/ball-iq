@@ -5,11 +5,11 @@
   "extensions": {
     "colorMeta": {
       "ramp-fail": { "role": "primary", "displayName": "Scout's Ramp — Fail (Oxblood)", "canonical": "#8B2635" },
-      "ramp-near": { "role": "primary", "displayName": "Scout's Ramp — Near (Amber)", "canonical": "#C9992B" },
+      "ramp-near": { "role": "primary", "displayName": "Scout's Ramp — Near (Amber, FILL ONLY — 2.13:1 on newsprint; the ink-strength stop for this hue is verdict-2)", "canonical": "#C9992B" },
       "ramp-pass": { "role": "primary", "displayName": "Scout's Ramp — Pass (Green)", "canonical": "#2F6B3A" },
       "verdict-0": { "role": "primary", "displayName": "Verdict Ramp 0/5", "canonical": "#8B2635" },
       "verdict-1": { "role": "primary", "displayName": "Verdict Ramp 1/5", "canonical": "#94472A" },
-      "verdict-2": { "role": "primary", "displayName": "Verdict Ramp 2/5", "canonical": "#7E6318" },
+      "verdict-2": { "role": "primary", "displayName": "Verdict Ramp 2/5 (the ink-strength amber — same hue as ramp-near, 4.66:1 on newsprint)", "canonical": "#7E6318" },
       "verdict-3": { "role": "primary", "displayName": "Verdict Ramp 3/5", "canonical": "#5F6A22" },
       "verdict-4": { "role": "primary", "displayName": "Verdict Ramp 4/5", "canonical": "#46702E" },
       "verdict-5": { "role": "primary", "displayName": "Verdict Ramp 5/5", "canonical": "#2F6B3A" },
@@ -134,6 +134,7 @@
     ],
     "rules": [
       { "name": "The One Ramp Rule", "body": "The only saturated colours anywhere in the system are the scout's ramp and its verdict variant. Nothing else is allowed a hue that isn't ink, paper, or desk.", "section": "colors" },
+      { "name": "The Two Strengths Rule", "body": "There is ONE ramp rendered at two strengths, chosen by ground and job, not by component. As a fill on the dark desk: --r1/--r3/--r5 (Footle tiles and keys, chip fills, option borders) — text sits on the colour, so the fill is free. As ink on newsprint: --v0 through --v5 (the verdict number and tier rule) — every stop must clear 4.5:1 on paper, and they do (7.08/5.38/4.66/4.81/4.75/5.23). Measured in Lab the two share one monotonic hue arc: 20.1 -> 46.7 -> 85.9 -> 111.8 -> 131.0 -> 145.1 degrees, with verdict-2 at hue 85.9 against ramp-near at 82.6. They are not two scales. ramp-near needs no ink twin because it is the one stop never used as text; r1 and r5 serve both columns because they clear 4.5:1 on newsprint unaided.", "section": "colors" },
       { "name": "The Same-Weight Rule Rule", "body": "hairline-rule and control-rule are the same visual weight but different jobs: one is furniture, the other is a control boundary held to a harder contrast floor.", "section": "colors" },
       { "name": "The Five-Plus-One Rule", "body": "Five body-scale sizes carry every prose job; the uppercase micro-label is a distinct treatment (case + tracking), not a sixth size.", "section": "typography" },
       { "name": "The Tabular Figures Rule", "body": "Any number a reader might compare against another number is set with tabular-nums.", "section": "typography" },
