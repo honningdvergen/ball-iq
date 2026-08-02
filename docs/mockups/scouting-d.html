@@ -37,12 +37,37 @@
   --desk:#0E1110; --desk2:#161A17; --deskline:#252B26;
   --onDesk:#C3CBC3; --onDeskHi:#F2F5F1; --onDeskMut:#98A199;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
+  /* MATERIAL. --grain above is authored for near-black and does its job there.
+     Over paper it does nothing: measured, mid-grey noise at .055 on #E7E9E4
+     moves the sheet by 13 levels peak-to-peak with a standard deviation of
+     1.6 — under half a JND, invisible in a screenshot. This is the second
+     turbulence, authored for the light ground, and two things had to change
+     to make it a material rather than a haze.
+     First, feTurbulence writes noise into the ALPHA channel too, so the tile
+     was arriving at roughly half the opacity it was set to; feFuncA pins it
+     to 1 and lets the rect's own opacity be the only dial. Second, four
+     octaves of fractalNoise converge hard on mid-grey — sigma 0.061 — so the
+     transfer stretches the greys 2x around the paper's own value before they
+     are laid down, rather than being carried by brute opacity.
+     Measured on the composited sheet: mean 228.6 against a flat 231, so the
+     declared #E7E9E4 is not restated, only mottled; sd 6.9; 2nd-to-98th
+     percentile 212 to 235; darkest fleck 196, where the ink still reads
+     10.3:1 against 14.7:1 on flat stock. One inline SVG, no host to fetch. */
+  --paper:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncG type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncB type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncA type='table' tableValues='1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)' opacity='.2'/%3E%3C/svg%3E");
   --pa:#E7E9E4; --pa2:#DEE1DB; --pa3:#D5D8D2;
   --ink:#14171A; --mut:#4A524C; --rule:#B9BFB6;
   /* Table rules stay hairline-pale. A rule that has to say "this is a control"
      is a different job: --rule is 1.53:1 on the paper, --rule2 is 3.31:1, which
      is what WCAG 1.4.11 asks of a component boundary. Same weight, same world. */
   --rule2:#7A8078;
+  /* The paper got that treatment; the desk never did. Every control on the dark
+     side was outlined in #3A423C, which measures 1.58:1 against the Footle
+     board and 1.83:1 against the desk — the section's only playable surface,
+     all but gone. This is --rule2's twin for the dark ground, and it is set
+     against the WORST of the surfaces it has to sit on rather than the easiest:
+     3.53:1 on an empty tile, 3.12:1 on a live key, 3.65:1 on a spent key,
+     3.79:1 on the band, 4.10:1 on the desk. Same weight, same world. */
+  --rule2d:#6E776F;
   --r1:#8B2635; --r3:#C9992B; --r5:#2F6B3A;
   /* The same oxblood-to-green ramp at printing strength. The screen amber
      (#C9992B) reads 2.1:1 on newsprint, so the ramp is taken down until every
@@ -81,8 +106,13 @@ body{background:var(--desk);color:var(--onDesk);position:relative;
    leading and a hair of tracking so the ink does not close up. Prose on the
    paper keeps the tighter default — it is dark on light and does not bloom. */
 .lede,.sub,.foot,.cnote,.key,.clubs td{letter-spacing:.006em}
-/* One uppercase micro-label rule instead of six near-copies of it. */
-.dl,.adlab,.clab,.vlab,.why b{font-size:var(--t-lab);font-weight:700;
+/* One uppercase micro-label rule instead of six near-copies of it. Two of the
+   six are gone rather than restyled: "Next one in" sat above the biggest number
+   in its section and "Also on" above the store links — an eyebrow and the
+   hero-metric template in one gesture, both refused unconditionally. The words
+   are now inside the sentences those elements were already making. What is left
+   are field labels on a form, which is what a report is. */
+.adlab,.vlab,.why b{font-size:var(--t-lab);font-weight:700;
      letter-spacing:.13em;text-transform:uppercase;line-height:1.4}
 .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
      clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
@@ -141,12 +171,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
    font-size:clamp(41px,6.6vw,88px);line-height:.95;letter-spacing:-.02em;
    max-width:20ch;color:var(--onDeskHi);text-wrap:balance}
+/* The contract promises ONE line of lede. 44ch was breaking a 72-character
+   sentence over two, so the first viewport opened on a paragraph instead of a
+   line. 74ch is the top of the 65-75ch measure and holds the sentence on one
+   line from 900px up; below that it wraps, which is what a phone is for. */
 .lede{margin-top:18px;font-size:var(--t-lede);line-height:1.55;color:var(--onDesk);
-      max-width:44ch;text-wrap:pretty}
+      max-width:74ch;text-wrap:pretty}
 
 /* the running report stub, visible DURING play -------------- */
 .file{--over:66px;
-      position:relative;z-index:3;background:var(--pa);color:var(--ink);padding:0;
+      position:relative;z-index:3;background:var(--pa) var(--paper);color:var(--ink);padding:0;
       width:calc(100% + var(--over)*2);margin:-52px 0 0 calc(var(--over)*-1);
       transform:rotate(-.45deg);transform-origin:52% 0;
       box-shadow:
@@ -156,7 +190,7 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
       outline:1px solid rgba(0,0,0,.35);outline-offset:0}
 /* The second sheet under it: the file is a stack, not a page. */
 .file::after{content:'';position:absolute;inset:12px -9px -11px 8px;z-index:-1;
-             background:#CBCFC7;transform:rotate(1.1deg);
+             background:#CBCFC7 var(--paper);transform:rotate(1.1deg);
              box-shadow:14px 26px 46px -22px rgba(0,0,0,.8)}
 /* Between the phone and the wide desk there is no side margin to overhang into,
    so a 66px bleed pushed the report's own 40px of margin to 2px off the screen
@@ -206,24 +240,29 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 .q{font-size:22px;font-weight:600;line-height:1.32;margin-bottom:16px;max-width:50ch;
    letter-spacing:-.006em;text-wrap:balance}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+/* The option rows are cut from the same sheet, so they carry the same fibre.
+   Every state below moves background-COLOR only; a `background:` shorthand here
+   would silently drop the grain and leave four rows of flat stock in the middle
+   of a sheet that has it. */
 .opt{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;
-     border:1px solid var(--rule2);background:var(--pa);font-size:var(--t-body);font-weight:500;
+     border:1px solid var(--rule2);background:var(--pa) var(--paper);
+     font-size:var(--t-body);font-weight:500;
      min-height:52px;transition:border-color .15s,background-color .15s}
-@media (hover:hover){.opt:hover:not(:disabled){border-color:var(--ink);background:#fff}}
+@media (hover:hover){.opt:hover:not(:disabled){border-color:var(--ink);background-color:#fff}}
 /* Answered options are done taking input, and the cursor should say so. */
 .opt:disabled{cursor:default}
 .opt u{flex:0 0 24px;height:24px;display:grid;place-items:center;text-decoration:none;
        border:1px solid var(--rule2);font-size:var(--t-lab);font-weight:700;color:var(--mut)}
-.opt.hit{border-color:var(--r5);background:#E3EDE2}
+.opt.hit{border-color:var(--r5);background-color:#E3EDE2}
 .opt.hit u{background:var(--r5);border-color:var(--r5);color:#fff}
-.opt.miss{border-color:var(--r1);background:#F1E3E4}
+.opt.miss{border-color:var(--r1);background-color:#F1E3E4}
 .opt.miss u{background:var(--r1);border-color:var(--r1);color:#fff}
 /* The three you did not pick stay readable — after answering, people re-read
    the options. Measured: .42 opacity read 3.0:1 and .58 read 4.13:1, with the
    A/B/C/D chip down at 2.61:1. Opacity cannot recess text and keep it legible
    at the same time, so this recedes in ink instead: #4A524C on #DEE1DB is
    6.11:1, plainly quieter than the ink of the answer and still readable. */
-.opt.dim{background:var(--pa2);border-color:var(--rule);color:var(--mut)}
+.opt.dim{background-color:var(--pa2);border-color:var(--rule);color:var(--mut)}
 .opt.dim u{border-color:var(--rule)}
 .why{margin-top:15px;padding:14px 16px;background:var(--pa2);
      border-left:1px solid var(--ink);font-size:var(--t-body);line-height:1.55;max-width:64ch}
@@ -236,7 +275,7 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
    of shadow the report does — offset AND blurred. A zero-blur block shadow
    is a neobrutalist costume, and this world is paper on a desk. */
 .verdict{display:none;position:relative;margin:var(--s4) 0 var(--s1);
-         border:2px solid var(--ink);background:var(--pa);
+         border:2px solid var(--ink);background:var(--pa) var(--paper);
          transform:rotate(.7deg);
          box-shadow:9px 15px 30px -12px rgba(20,23,26,.34),
                     2px 4px 9px -4px rgba(20,23,26,.24)}
@@ -266,19 +305,23 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
        border-left:1px solid var(--rule)}
 .vlab{color:var(--mut);display:block}
 .vnote p{margin-top:10px;font-size:var(--t-body);line-height:1.5;color:var(--ink)}
-.vcta{display:flex;gap:10px;padding:0 26px 26px;flex-wrap:wrap}
-.keep{margin:20px 26px 0;padding:17px 18px;border-top:2px solid var(--ink);background:var(--pa2)}
-.keept{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
-       font-size:19px;letter-spacing:.03em;line-height:1}
-.keepp{margin-top:7px;font-size:15px;line-height:1.5;color:var(--mut);max-width:46ch}
-.keepl{margin-top:13px;display:flex;gap:9px;flex-wrap:wrap}
-.keepa{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 17px;
-       border:1px solid var(--ink);font-weight:600;font-size:15.5px;
-       transition:background-color .15s,color .15s}
-.keepa span{font-size:13px;color:var(--mut)}
-@media (hover:hover){.keepa:hover{background:var(--ink);color:var(--pa)}
-                     .keepa:hover span{color:var(--pa3)}}
-@media (max-width:640px){.keepa{width:100%;justify-content:space-between}}
+/* The download ask stays exactly where it was — at the verdict, which is peak
+   intent and the right place for it. What is gone is the boxing: it used to be
+   a titled, tinted, top-ruled panel INSIDE the verdict INSIDE the sheet, with
+   two more bordered boxes inside that. Four frames deep on a page whose
+   contract says no cards. It is now two ruled rows of the slip itself — the
+   same hairline device the report uses for every other row of data. */
+.vrow{display:flex;align-items:center;gap:var(--s2) var(--s3);flex-wrap:wrap;
+      padding:var(--s3) 26px;border-top:1px solid var(--ink)}
+.vsay{flex:1 1 250px;font-size:var(--t-body);line-height:1.5;color:var(--mut);max-width:44ch}
+.vacts{display:flex;gap:10px;flex-wrap:wrap}
+/* The continuations are text, not controls competing with the ask above them:
+   ink on paper with the rule under the words rather than around them. */
+.vgo{gap:var(--s2) var(--s4)}
+.vlink{display:inline-flex;align-items:center;min-height:44px;font-weight:600;
+       box-shadow:inset 0 -2px 0 var(--ink);transition:background-color .15s,box-shadow .15s}
+@media (hover:hover){.vlink:hover{background-color:var(--pa2);box-shadow:inset 0 -2px 0 var(--ink)}}
+@media (max-width:640px){.vacts{width:100%}.vacts .btn{flex:1 1 auto}}
 .btn,.next{display:inline-flex;align-items:center;min-height:52px;padding:0 26px;
      font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
      font-size:18px;letter-spacing:.05em;transition:background-color .16s,color .16s}
@@ -315,10 +358,17 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 @media (hover:hover){.crow:hover{background:#1E241F}
   .crow:hover em{color:var(--onDeskHi)}}
 .crow b{font-weight:400}
-.crow em{margin-left:auto;font-style:normal;font-size:var(--t-sec);color:var(--onDeskMut);
+.crow em{font-style:normal;font-size:var(--t-sec);color:var(--onDeskMut);
          white-space:nowrap;letter-spacing:.006em}
-.sw{display:inline-block;width:12px;height:12px;flex:0 0 12px;position:relative;top:1px;
-    border:1px solid rgba(0,0,0,.3)}
+/* Twelve saturated club crests were a second palette living inside a world
+   whose only saturation is the scout's ramp — five more hues than the whole
+   rest of the page owns, and the swatch was doing no work a reader could use.
+   The device that replaces it is one the page already has: the leader rule.
+   An index sets a name, a run of rule, and what the entry belongs to. It is
+   ink, it earns its place by carrying the eye across a 460px column, and it
+   is not a bullet with the colour taken out. */
+.ldr{flex:1 1 auto;min-width:16px;align-self:center;height:0;position:relative;top:1px;
+     border-bottom:1px dotted #454E47}
 .more{display:inline-block;margin-top:var(--s4);font-size:var(--t-body);font-weight:600;
       color:var(--onDeskHi);border-bottom:1px solid var(--onDeskHi);padding-bottom:2px}
 @media (max-width:760px){.clubs{columns:1}}
@@ -336,10 +386,10 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 .key{display:grid;gap:10px;font-size:var(--t-sec);color:var(--onDeskMut)}
 .key span{display:inline-flex;align-items:center;gap:10px}
 .key .tried{color:var(--onDeskHi);font-weight:600;margin-top:2px}
-.k{width:15px;height:15px;flex:0 0 15px;display:inline-block;border:1px solid #3A423C}
+.k{width:15px;height:15px;flex:0 0 15px;display:inline-block;border:1px solid var(--rule2d)}
 .k.hit{background:var(--r5);border-color:var(--r5)}
 .k.near{background:var(--r3);border-color:var(--r3)}
-.k.off{background:#2A312B;border-color:#495148}
+.k.off{background:#2A312B}
 /* Six rows of empty board is what Footle honestly is, so the board is sized
    to read as a board and not as a hole: big enough to be the object, small
    enough that the five unplayed rows are quiet. */
@@ -350,6 +400,7 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 /* The worked example, moved out of the six rows it used to occupy. Smaller and
    set back, so it reads as a caption to the board rather than as play. */
 .eg{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--deskline)}
+.eglab b{font-weight:700;color:var(--onDeskHi)}
 .eglab{font:400 13.5px/1.45 'Archivo',sans-serif;color:var(--onDeskMut);margin-bottom:9px}
 .egrid{grid-template-columns:repeat(7,minmax(0,32px));gap:5px;justify-content:start}
 .egrid .tile{width:32px;height:32px;font-size:15px}
@@ -360,12 +411,15 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 .tile{aspect-ratio:1;display:grid;place-items:center;
       font-family:'Archivo Narrow',sans-serif;font-weight:700;
       font-size:clamp(19px,1.9vw,26px);
-      border:1px solid #3A423C;background:#1B211D;color:var(--pa)}
+      border:1px solid var(--rule2d);background:#1B211D;color:var(--pa)}
 .tile.hit{background:var(--r5);border-color:var(--r5);color:#fff}
 .tile.near{background:var(--r3);border-color:var(--r3);color:#1A1200}
 /* "Not in it" is a result, and a result you cannot see is not one. It was
-   #22271F on a #1B211D board — a state that reads as an unplayed square. */
-.tile.off{background:#2A312B;border-color:#495148;color:#A7B0A8}
+   #22271F on a #1B211D board — a state that reads as an unplayed square. Its
+   own outline is gone now rather than restated: the board's boundary is the
+   board's boundary, and this state is carried by the lighter fill and the
+   letter printed on it. */
+.tile.off{background:#2A312B;color:#A7B0A8}
 .tile.now{border-color:var(--pa)}
 .kb{margin-top:var(--s3);display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0}
 .grid.short{animation:nudge .34s cubic-bezier(.36,.07,.19,.97)}
@@ -375,7 +429,7 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
       line-height:1.5}
 .kr{display:flex;gap:6px;justify-content:center;min-width:0}
 .kr button{flex:1 1 0;min-width:0;max-width:56px;height:50px;display:grid;place-items:center;
-      background:#252B26;border:1px solid #3A423C;font-size:var(--t-sec);font-weight:700;
+      background:#252B26;border:1px solid var(--rule2d);font-size:var(--t-sec);font-weight:700;
       cursor:pointer;transition:background-color .14s,border-color .14s}
 /* A key under the cursor is not a scored letter. Hover used to paint the key
    the ramp's "right letter, right place" green, which is the one thing on this
@@ -385,12 +439,18 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 /* Measured: opacity .36 fades the label AND the face together, leaving the
    letter at 2.33:1 against the key it is printed on — and these keys stay
    pressable, so they are not exempt as inactive controls. Spent, in ink. */
-.kr button.used{background:#191E1A;border-color:#2F362F;color:#8A948B}
+/* Spent, but still pressable — so its boundary holds at the same 3:1 the live
+   keys do, and the spending is said by the darker face and the dimmer letter
+   (5.39:1 against its own key, where a live letter reads 8.71:1). */
+.kr button.used{background:#191E1A;color:#8A948B}
 .clock{border-left:1px solid var(--deskline);padding-left:var(--s4)}
-.clab{color:var(--onDeskMut)}
+/* The clock had "NEXT ONE IN" tracked out above it: an eyebrow over the biggest
+   number in the section, which is the hero-metric template with a kicker on
+   top. The words did not need a label, they needed a verb. The time and the
+   line under it are now one sentence that happens to start with a number. */
 .ctime{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:clamp(46px,4.6vw,64px);
-       line-height:1;letter-spacing:-.02em;margin-top:var(--s1);color:var(--onDeskHi)}
-.cnote{margin-top:var(--s2);font-size:var(--t-sec);color:var(--onDeskMut);line-height:1.55}
+       line-height:1;letter-spacing:-.02em;color:var(--onDeskHi)}
+.cnote{margin-top:6px;font-size:var(--t-sub);color:var(--onDesk);line-height:1.5;max-width:30ch}
 .crule{margin:var(--s4) 0;border:0;border-top:1px solid var(--deskline)}
 
 .foot{padding:var(--s4) 0 var(--s6);font-size:var(--t-sec);color:var(--onDeskMut);
@@ -402,9 +462,9 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
    every one of those declarations was being overridden right here. The icons
    already inherit their fill from .mk-i. */
 .dist{margin-left:auto;display:flex;align-items:center;gap:0}
-.dist .dl{color:var(--onDeskMut);margin-right:13px}
-.dist a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;font-size:var(--t-sec);
-        font-weight:600;color:var(--onDeskHi);border:1px solid #3A423C;border-right-width:0;
+.dist a{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 15px;
+        font-size:var(--t-sec);
+        font-weight:600;color:var(--onDeskHi);border:1px solid var(--rule2d);border-right-width:0;
         transition:background-color .15s}
 .dist a:last-child{border-right-width:1px}
 @media (hover:hover){.dist a:hover{background:#242B25}}
@@ -447,7 +507,7 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
   .ah{padding:12px 16px}
   .verdict{margin:var(--s3) 0 0}
   .vtop{padding:20px 16px 18px}
-  .vcta{padding:0 16px 20px}
+  .vrow{padding:var(--s3) 16px}
   /* Wrapped below the tier, the note is a block under a rule, not a column
      beside one. Its old left rule landed mid-paragraph. */
   .vnote{flex:1 1 100%;padding:var(--s2) 0 0;margin-top:var(--s2);
@@ -467,8 +527,8 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 <a class="vh" href="#assessment">Skip to the assessment</a>
 <header class="mast">
   <span class="mk">Ball IQ</span>
-  <nav class="mn mid" aria-label="Main"><a class="tap" href="#">Clubs</a><a class="tap" href="#">Records</a><a class="tap" href="#">Daily</a><a class="tap" href="#">About</a></nav>
-  <span class="mr"><a class="getapp" href="#">Get the app</a></span>
+  <nav class="mn mid" aria-label="Main"><a class="tap" href="/quiz/">Clubs</a><a class="tap" href="/lists/">Records</a><a class="tap" href="/football-wordle/">Daily</a><a class="tap" href="/about/">About</a></nav>
+  <span class="mr"><a class="getapp" href="/play">Play now</a></span>
 </header>
 
 <main class="w" id="main">
@@ -508,26 +568,40 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
         <p id="vnote"></p>
       </div>
     </div>
-    <div class="keep">
-      <div class="keept">Keep this report</div>
-      <p class="keepp">The full test scores you 60 to 160 and remembers it. Your streak, your clubs, your card.</p>
-      <div class="keepl">
-        <a href="#" class="keepa">iPhone<span>App Store</span></a>
-        <a href="#" class="keepa">Android<span>Google Play</span></a>
+    <div class="vrow">
+      <p class="vsay">A report nobody keeps is a report nobody wrote. The app remembers this one, and the streak, and every club you get found out on.</p>
+      <div class="vacts">
+        <a class="btn pri" href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener">App Store</a>
+        <a class="btn pri" href="https://play.google.com/store/apps/details?id=app.balliq" target="_blank" rel="noopener">Google Play</a>
       </div>
     </div>
-    <div class="vcta">
-      <a class="btn pri" href="#">Take the full test</a>
-      <a class="btn alt" href="#">Just my club instead</a>
+    <div class="vrow vgo">
+      <a class="vlink tap" href="/play">Take the full test here</a>
+      <a class="vlink tap" href="/quiz/">Just my club instead</a>
     </div>
   </div>
+    </div>
   </div>
-  </div>
-
-</div>
-
 </main>
 
+<!-- The index sits where an index sits: after the thing it indexes, before the
+     page closes. It used to be the last section, which put a list of files and
+     an ad band between the reader and the only invitation to come back. -->
+<div class="w">
+  <section class="sec" aria-labelledby="clubsT">
+    <h2 id="clubsT">Seventy-two clubs on file</h2>
+    <p class="sub">Hajduk Split get the same treatment as Real Madrid. Every question in both files went through the same checks before it was let in, and most of them tell you why the answer is the answer.</p>
+    <div class="clubs" id="clubBody">
+      <noscript><p class="sub">The index needs JavaScript as well. All seventy-two clubs have a
+      file of their own, Hajduk Split included.</p></noscript>
+    </div>
+    <a class="more tap" href="/quiz/">Open the full club index</a>
+  </section>
+  <div class="adslot"><span class="adlab">Advertisement</span></div>
+</div>
+
+<!-- STORY: the page ends on tomorrow. This is the last band, and the last
+     thing in it is the clock counting down to the next one. -->
 <section class="tom" id="tomorrow" aria-labelledby="tomT">
   <div class="w">
     <h2 id="tomT">Footle. Football Wordle.</h2>
@@ -535,7 +609,7 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
     <div class="ftl">
       <div class="board">
         <div class="eg">
-          <div class="eglab">For example, if you guessed Laporte</div>
+          <div class="eglab">Yesterday’s surname was <b>Haaland</b>. If you had guessed Laporte:</div>
           <div class="grid egrid" id="ftlEg" aria-hidden="true"></div>
         </div>
         <div class="grid" id="ftlGrid" role="group" aria-label="Footle board, six guesses of seven letters"></div>
@@ -545,42 +619,29 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
         <p class="fsay" id="ftlSay" role="status"></p>
       </div>
       <div class="clock">
-        <div class="clab" id="clabT">Next one in</div>
-        <div class="ctime" id="clock" role="timer" aria-live="off" aria-labelledby="clabT">--:--:--</div>
-        <div class="cnote" id="cnote">A new surname, and seven new questions.</div>
-        <hr class="crule">
         <div class="key">
           <span><i class="k hit"></i>Right letter, right place</span>
           <span><i class="k near"></i>In the surname, wrong place</span>
           <span><i class="k off"></i>Not in it</span>
           <span class="tried" id="ftlLeft"></span>
         </div>
+        <hr class="crule">
+        <div class="ctime" id="clock" role="timer" aria-live="off" aria-label="Time left before the next Footle and Daily 7">--:--:--</div>
+        <p class="cnote" id="cnote">until a new surname and seven new questions.</p>
       </div>
     </div>
   </div>
 </section>
 
 <div class="w">
-  <section class="sec" aria-labelledby="clubsT">
-    <h2 id="clubsT">Seventy-two clubs on file</h2>
-    <p class="sub">Hajduk Split get the same treatment as Real Madrid. Same verification, same explanations. What changes between them is only how far back there is anything worth asking about.</p>
-    <div class="clubs" id="clubBody">
-      <noscript><p class="sub">The index needs JavaScript as well. All seventy-two clubs have a
-      file of their own, Hajduk Split included.</p></noscript>
-    </div>
-    <a class="more tap" href="#">Open the full club index</a>
-    <div class="adslot"><span class="adlab">Advertisement</span></div>
-  </section>
-</div>
-
-<div class="w">
   <footer class="foot">
     <div class="footin">
       <p>Ball IQ &mdash; an independent football quiz. Most answers tell you why.<br>Made by one person.</p>
+      <!-- "ALSO ON" was a tracked eyebrow over two links that already name
+           themselves. Two store names and two marks say it without a label. -->
       <div class="dist">
-        <span class="dl">Also on</span>
-        <a class="tap" href="#"><svg class="mk-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.2 1.3-2.4 1.3-2.5 0 0-2.5-1-2.5-3.6zM14.4 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.5 2.8-1.3z"/></svg>iPhone</a>
-        <a class="tap" href="#"><svg class="mk-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.2c-.3.3-.5.8-.5 1.4v16.8c0 .6.2 1.1.5 1.4l.1.1 9.4-9.4v-.2L3.7 2.1z"/><path d="M16.3 15.7l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2z"/><path d="M16.4 15.8L13.2 12.6 3.6 22.2c.4.4 1 .4 1.7 0z"/><path d="M16.4 8.2L5.3 1.9c-.7-.4-1.3-.4-1.7 0l9.6 9.6z"/></svg>Android</a>
+        <a class="tap" href="https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961" target="_blank" rel="noopener"><svg class="mk-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.2 1.3-2.4 1.3-2.5 0 0-2.5-1-2.5-3.6zM14.4 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.5 2.8-1.3z"/></svg>App Store</a>
+        <a class="tap" href="https://play.google.com/store/apps/details?id=app.balliq" target="_blank" rel="noopener"><svg class="mk-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.2c-.3.3-.5.8-.5 1.4v16.8c0 .6.2 1.1.5 1.4l.1.1 9.4-9.4v-.2L3.7 2.1z"/><path d="M16.3 15.7l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2z"/><path d="M16.4 15.8L13.2 12.6 3.6 22.2c.4.4 1 .4 1.7 0z"/><path d="M16.4 8.2L5.3 1.9c-.7-.4-1.3-.4-1.7 0l9.6 9.6z"/></svg>Google Play</a>
       </div>
     </div>
   </footer>
@@ -604,18 +665,26 @@ var QS = [
     o:['The Cottage','White Hart Lane','The Dell','Maine Road'], a:1,
     why:"White Hart Lane was Spurs' home for 118 years; the new stadium was built on the very same site." }
 ];
-// Depth is a ramp, never a count. The number was contradicting the sentence
-// directly above it: "same depth as Real Madrid" over "Hajduk Split 15 Qs".
-// Era covered, not a fill ratio. A bar that reads 12% next to a sentence
-// promising equal treatment refutes the sentence; an era band says what the
-// file actually contains and is true for every club on the list.
+// The right-hand column used to be an era span, and it did not survive a check.
+// It came from a 4-digit-year regex over each club's questions, options and
+// hints — so most of the earliest years it found were DISTRACTORS, not facts:
+// Liverpool's 1892 and Celtic's 1878 are wrong answers to "in which year…",
+// Real Madrid's 1885 is a decoy on a question about the 1920 crest, and Bayern
+// Munich's 1860 is 1860 Munich, the city rivals, read as a year. Bayern were
+// founded in 1900 and every German fan knows it. Correcting the artifacts does
+// not save the column either: a founding date says nothing about how deep a
+// file is, and 1878 is the wrong advertisement for a bank aimed at 1990 on.
+// A column that states something untrue is worse than no column, so the era
+// column is gone. What takes its place is the one thing about each file that
+// is checkable both in the repo (scripts/seo/leagues.mjs) and by the reader:
+// the competition it belongs to. Third field is the club page's own slug.
 var CLUBS = [
-  ['Liverpool','#C8102E','1959 to today'],['Arsenal','#EF0107','1930 to today'],
-  ['Manchester United','#DA291C','1958 to today'],['Manchester City','#6CABDD','1968 to today'],
-  ['Chelsea','#034694','1955 to today'],['Tottenham Hotspur','#132257','1961 to today'],
-  ['Barcelona','#A50044','1957 to today'],['Real Madrid','#FEBE10','1956 to today'],
-  ['Bayern Munich','#DC052D','1965 to today'],['Borussia Dortmund','#FDE100','1966 to today'],
-  ['Celtic','#018749','1967 to today'],['Hajduk Split','#0E4C92','1911 to today']
+  ['Liverpool','liverpool','Premier League'],['Arsenal','arsenal','Premier League'],
+  ['Manchester United','manchester-united','Premier League'],['Manchester City','manchester-city','Premier League'],
+  ['Chelsea','chelsea','Premier League'],['Tottenham Hotspur','tottenham','Premier League'],
+  ['Barcelona','barcelona','La Liga'],['Real Madrid','real-madrid','La Liga'],
+  ['Bayern Munich','bayern-munich','Bundesliga'],['Borussia Dortmund','borussia-dortmund','Bundesliga'],
+  ['Celtic','celtic','Scottish Premiership'],['Hajduk Split','hajduk-split','Croatian HNL']
 ];
 // Honest, and in football's own register. A scout who grades everybody in the
 // sixties is a horoscope; a mate who calls you a cone is telling the truth.
@@ -795,16 +864,21 @@ function finish(){
 /* ---- clubs --------------------------------------------------------- */
 var ct = document.getElementById('clubBody');
 CLUBS.forEach(function(c){
-  var a = el('a','crow'); a.href = '#';
-  var sw = el('span','sw'); sw.style.background = c[1];
-  a.appendChild(sw);
+  var a = el('a','crow'); a.href = '/quiz/' + c[1] + '/';
   a.appendChild(el('b', null, c[0]));
+  // The leader carries the eye across the column. It is decoration for the
+  // eye only, so it is not in the accessibility tree.
+  var ldr = el('i','ldr'); ldr.setAttribute('aria-hidden','true');
+  a.appendChild(ldr);
   a.appendChild(el('em', null, c[2]));
   ct.appendChild(a);
 });
 
 /* ---- tomorrow: one real guess, and a real clock --------------------- */
-var ANSWER = 'HAALAND', ROWS = 6, LEN = 7;
+var ANSWER = 'ALISSON', ROWS = 6, LEN = 7;
+// The teaching example is scored against a REVEALED past answer, never
+// against today's, so every tile in it can be checked by the reader.
+var EG_ANSWER = 'HAALAND', EG_GUESS = 'LAPORTE';
 // LAPORTE is on the board before the reader arrives, so the three tile
 // colours are legible without a legend being read first. It is an EXAMPLE,
 // and the counter below has to say so — telling a first-timer "one guess
@@ -832,9 +906,10 @@ function drawLeft(){
   left.textContent = CAPWORD[used] + (used === 1 ? ' guess played. ' : ' guesses played. ')
     + (rem === 0 ? 'None left.' : CAPWORD[rem] + ' left.');
 }
-function score(g){
+function score(g, answer){
+  var A = answer || ANSWER;
   var out = new Array(LEN).fill('off'), pool = {};
-  for (var i=0;i<LEN;i++){ if (g[i]===ANSWER[i]) out[i]='hit'; else pool[ANSWER[i]]=(pool[ANSWER[i]]||0)+1; }
+  for (var i=0;i<LEN;i++){ if (g[i]===A[i]) out[i]='hit'; else pool[A[i]]=(pool[A[i]]||0)+1; }
   for (var j=0;j<LEN;j++){ if (out[j]==='hit') continue;
     if (pool[g[j]]>0){ out[j]='near'; pool[g[j]]--; } }
   return out;
@@ -903,14 +978,15 @@ function press(ch){
     guesses.push(cur); cur = ''; mine++;
     var won = played === ANSWER;
     over = won || guesses.length >= ROWS;
-    // The note under the clock answers one question — what arrives next — and
-    // never repeats the countdown sitting directly above it. The surname the
-    // reader missed goes on the board, where they are actually looking.
+    // The line under the clock is the second half of the clock's sentence, so
+    // every version of it has to start where a number left off. It answers one
+    // question — what arrives next — and never restates the countdown above it.
+    // The surname the reader missed goes on the board, where they are looking.
     document.getElementById('cnote').textContent = won
-      ? 'Got it. Come back tomorrow to keep the streak.'
+      ? 'until the next one. Come back tomorrow and the streak keeps counting.'
       : (guesses.length >= ROWS
-          ? 'A new surname, and seven new questions.'
-          : 'Solve it and the streak starts counting.');
+          ? 'until a new surname and seven new questions.'
+          : 'until the next one. Solve today’s and the streak starts counting.');
     report(won ? played + '. All seven, first name on the sheet.'
       : played + '. ' + counts.hit + ' in place, ' + counts.near + ' in the surname, ' + counts.off + ' not in it.');
     drawKb(); drawLeft();
@@ -945,7 +1021,7 @@ function tick(){
     day = now.getDate();
     // Two lines, two jobs: the note says what went stale, the status says what
     // to do about it. Both used to say "reload".
-    cnoteEl.textContent = 'Midnight passed \u2014 the board above is yesterday\u2019s.';
+    cnoteEl.textContent = 'until the one after this. The board above is yesterday\u2019s.';
     report('A new surname is live. Reload the page for today\u2019s board.');
   }
 }
@@ -959,7 +1035,7 @@ document.addEventListener('visibilitychange', runClock);
 
 (function drawExample(){
   var eg = document.getElementById('ftlEg'); if (!eg) return;
-  var g = 'LAPORTE', marks = score(g);
+  var g = EG_GUESS, marks = score(g, EG_ANSWER);
   for (var i = 0; i < LEN; i++) eg.appendChild(el('span', 'tile ' + marks[i], g[i]));
 })();
 drawStub(); renderQ(); drawGrid(); drawKb(); drawLeft(); runClock();

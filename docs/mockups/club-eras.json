@@ -1,0 +1,86 @@
+[
+ {
+  "display": "Liverpool",
+  "bankKey": "Liverpool",
+  "qs": 42,
+  "from": 1892,
+  "to": 2024
+ },
+ {
+  "display": "Arsenal",
+  "bankKey": "Arsenal",
+  "qs": 67,
+  "from": 1886,
+  "to": 2026
+ },
+ {
+  "display": "Manchester United",
+  "bankKey": "Manchester United",
+  "qs": 42,
+  "from": 1878,
+  "to": 2025
+ },
+ {
+  "display": "Manchester City",
+  "bankKey": "Manchester City",
+  "qs": 42,
+  "from": 1923,
+  "to": 2025
+ },
+ {
+  "display": "Chelsea",
+  "bankKey": "Chelsea",
+  "qs": 42,
+  "from": 1905,
+  "to": 2025
+ },
+ {
+  "display": "Tottenham Hotspur",
+  "bankKey": "Tottenham Hotspur",
+  "qs": 42,
+  "from": 1882,
+  "to": 2025
+ },
+ {
+  "display": "Barcelona",
+  "bankKey": "Barcelona",
+  "qs": 42,
+  "from": 1899,
+  "to": 2026
+ },
+ {
+  "display": "Real Madrid",
+  "bankKey": "Real Madrid",
+  "qs": 42,
+  "from": 1885,
+  "to": 2024
+ },
+ {
+  "display": "Bayern Munich",
+  "bankKey": "Bayern Munich",
+  "qs": 43,
+  "from": 1860,
+  "to": 2026
+ },
+ {
+  "display": "Borussia Dortmund",
+  "bankKey": "Borussia Dortmund",
+  "qs": 42,
+  "from": 1909,
+  "to": 2026
+ },
+ {
+  "display": "Celtic",
+  "bankKey": "Celtic",
+  "qs": 49,
+  "from": 1887,
+  "to": 2023
+ },
+ {
+  "display": "Hajduk Split",
+  "bankKey": "Hajduk Split",
+  "qs": 15,
+  "from": 1911,
+  "to": 2018
+ }
+]
