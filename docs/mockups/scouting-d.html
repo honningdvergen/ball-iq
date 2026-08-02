@@ -190,10 +190,15 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 .stub .out.pend{color:var(--mut);font-weight:400}
 .bar{display:block;position:relative;height:9px;background:var(--pa3);
      border:1px solid var(--rule);min-width:70px}
+/* The one authored moment on the page: a mark being entered on the report.
+   scaleX off the compositor, exponential ease-out from a bar that is already
+   there. Nominally .85s, but the curve does the work early — measured 90% of
+   the travel by 285ms — so the tail is a settle, not motion the reader is
+   made to wait through. Only the row that was just answered runs it; see
+   drawStub(). */
 .bar i{display:block;height:100%;width:100%;background:var(--r5);
        transform:scaleX(0);transform-origin:left center;
        transition:transform .85s var(--ease)}
-.bar i.no{background:var(--r1)}
 
 /* the assessment ------------------------------------------- */
 .asmt{border:1px solid var(--ink);margin:0 0 8px}
@@ -378,8 +383,12 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 @media (hover:hover){.footin .dist a:hover{background:#242B25}}
 .footin .dist .mk-i{fill:var(--onDeskHi)}
 .footin .dist .dl{color:var(--onDeskMut)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}
-  .stub{transition:none!important}}
+/* Reduce Motion has to leave the page in the RIGHT state, not merely a still
+   one. Verified by exercising all five questions with these declarations
+   forced on: the bar of a correct row computes scaleX(1) and a wrong row
+   scaleX(0); the verdict computes display:block, opacity:1 and its resting
+   rotate(.7deg), not the .land keyframe's rotate(2.6deg) it starts from. */
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 /* ---- real breakpoints, not a hand-applied class ------------ */
 @media (max-width:900px){
@@ -605,7 +614,16 @@ var idx = 0, right = 0, results = [];
 
 /* ---- the running report ------------------------------------------ */
 var stub = document.getElementById('stub'), stubTable = document.getElementById('stubTable');
-function drawStub(){
+/* `live` is the row that was just answered, and it is the only one allowed to
+   animate. The table is rebuilt from scratch on every answer, so without this
+   every bar earned so far was recreated at scaleX(0) and re-run: measured 1,
+   2, 3, 4 then 5 simultaneous transitions across the five questions. That is
+   not feedback, it is a page-wide sweep that fires again every time you touch
+   anything — and a report that empties itself and fills back up is the exact
+   opposite of the thing this page claims to be doing. Older rows are given
+   their final transform before they are ever style-resolved, so no transition
+   is generated for them at all. */
+function drawStub(live){
   stubTable.textContent = '';
   var cap = el('caption','vh','The report so far, by discipline');
   stubTable.appendChild(cap);
@@ -622,7 +640,8 @@ function drawStub(){
     if (results[i] != null){
       var bar = el('span','bar'); var fill = el('i');
       if (results[i] === true){
-        requestAnimationFrame(function(){ fill.style.transform = 'scaleX(1)'; });
+        if (i === live) requestAnimationFrame(function(){ fill.style.transform = 'scaleX(1)'; });
+        else fill.style.transform = 'scaleX(1)';
       }
       bar.appendChild(fill); tdb.appendChild(bar);
     }
@@ -679,7 +698,7 @@ function renderQ(){
       setSubject('Subject: under assessment · ' + filed + ' of ' + QS.length + ' filed');
       var before = asmtEl.getBoundingClientRect().top;
       stub.classList.add('on');
-      drawStub();
+      drawStub(idx);
       // Layout has changed; put the card back where the reader left it.
       var after = asmtEl.getBoundingClientRect().top;
       if (Math.abs(after - before) > 2) window.scrollBy(0, after - before);
