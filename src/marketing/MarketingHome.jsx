@@ -458,7 +458,7 @@ function MiniFootle() {
 }
 
 // ── Playable quiz taster (marketing) — "What's your Ball IQ?" ────────────────
-// 5 famous questions → instant feedback → an IQ score out of 99. Homepage uses
+// 5 famous questions → instant feedback → a Ball IQ. Homepage uses
 // skill tiers (per handoff); the /quiz/* landing pages use fan tiers.
 function QuizTaster() {
   const [idx, setIdx] = useState(0);
@@ -501,7 +501,7 @@ function QuizTaster() {
   const head = (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Target size={19} strokeWidth={2.4} color="#8AE042" aria-hidden="true" /><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>What&apos;s your Ball IQ?</span></div>
-      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Five questions. Rated out of 99.</div>
+      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Five questions. Then your Ball IQ.</div>
     </>
   );
 
@@ -1126,8 +1126,8 @@ export default function MarketingHome() {
         <Reveal style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 48 }}>
           <div style={{ flex: '1 1 320px', minWidth: 300 }}>
             <div style={eyebrow('#FFC107')}>Your profile</div>
-            <h2 style={h2Style}>Your football brain,<br />rated out of 99.</h2>
-            <p style={bodyStyle}>Every answer feeds your player card — an OVERALL rating broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
+            <h2 style={h2Style}>Your football brain,<br />scored like an IQ.</h2>
+            <p style={bodyStyle}>Every answer feeds your player card — one rating on a 60 to 160 scale, broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
               <span style={chip({ background: 'rgba(255,193,7,0.12)', border: '1px solid rgba(255,193,7,0.3)', color: '#FFD24A', fontWeight: 700 })}><Star size={15} strokeWidth={2} /> OVERALL rating</span>
               <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Search size={15} strokeWidth={2} /> Scouting report</span>
