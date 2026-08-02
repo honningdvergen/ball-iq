@@ -267,6 +267,18 @@ h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
 .vlab{color:var(--mut);display:block}
 .vnote p{margin-top:10px;font-size:var(--t-body);line-height:1.5;color:var(--ink)}
 .vcta{display:flex;gap:10px;padding:0 26px 26px;flex-wrap:wrap}
+.keep{margin:20px 26px 0;padding:17px 18px;border-top:2px solid var(--ink);background:var(--pa2)}
+.keept{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
+       font-size:19px;letter-spacing:.03em;line-height:1}
+.keepp{margin-top:7px;font-size:15px;line-height:1.5;color:var(--mut);max-width:46ch}
+.keepl{margin-top:13px;display:flex;gap:9px;flex-wrap:wrap}
+.keepa{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 17px;
+       border:1px solid var(--ink);font-weight:600;font-size:15.5px;
+       transition:background-color .15s,color .15s}
+.keepa span{font-size:13px;color:var(--mut)}
+@media (hover:hover){.keepa:hover{background:var(--ink);color:var(--pa)}
+                     .keepa:hover span{color:var(--pa3)}}
+@media (max-width:640px){.keepa{width:100%;justify-content:space-between}}
 .btn,.next{display:inline-flex;align-items:center;min-height:52px;padding:0 26px;
      font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
      font-size:18px;letter-spacing:.05em;transition:background-color .16s,color .16s}
@@ -335,6 +347,16 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
      grid-template-columns:minmax(0,470px) minmax(0,1fr);gap:var(--s5);align-items:start}
 .board{max-width:470px}
 .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+/* The worked example, moved out of the six rows it used to occupy. Smaller and
+   set back, so it reads as a caption to the board rather than as play. */
+.eg{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--deskline)}
+.eglab{font:400 13.5px/1.45 'Archivo',sans-serif;color:var(--onDeskMut);margin-bottom:9px}
+.egrid{grid-template-columns:repeat(7,minmax(0,32px));gap:5px;justify-content:start}
+.egrid .tile{width:32px;height:32px;font-size:15px}
+@media (max-width:640px){
+  .egrid{grid-template-columns:repeat(7,1fr)}
+  .egrid .tile{width:auto;height:auto;aspect-ratio:1;font-size:13px}
+}
 .tile{aspect-ratio:1;display:grid;place-items:center;
       font-family:'Archivo Narrow',sans-serif;font-weight:700;
       font-size:clamp(19px,1.9vw,26px);
@@ -486,6 +508,14 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
         <p id="vnote"></p>
       </div>
     </div>
+    <div class="keep">
+      <div class="keept">Keep this report</div>
+      <p class="keepp">The full test scores you 60 to 160 and remembers it. Your streak, your clubs, your card.</p>
+      <div class="keepl">
+        <a href="#" class="keepa">iPhone<span>App Store</span></a>
+        <a href="#" class="keepa">Android<span>Google Play</span></a>
+      </div>
+    </div>
     <div class="vcta">
       <a class="btn pri" href="#">Take the full test</a>
       <a class="btn alt" href="#">Just my club instead</a>
@@ -504,6 +534,10 @@ h2{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:upperc
     <p class="sub">Guess the footballer&rsquo;s surname in six. It resets at midnight, along with the Daily 7 &mdash; the same seven questions for everybody in the world, which is the only reason a score is worth arguing about.</p>
     <div class="ftl">
       <div class="board">
+        <div class="eg">
+          <div class="eglab">For example, if you guessed Laporte</div>
+          <div class="grid egrid" id="ftlEg" aria-hidden="true"></div>
+        </div>
         <div class="grid" id="ftlGrid" role="group" aria-label="Footle board, six guesses of seven letters"></div>
         <div class="kb" id="ftlKb" role="group" aria-label="On-screen keyboard">
           <noscript><p class="fsay">The board needs JavaScript as well.</p></noscript>
@@ -775,7 +809,7 @@ var ANSWER = 'HAALAND', ROWS = 6, LEN = 7;
 // colours are legible without a legend being read first. It is an EXAMPLE,
 // and the counter below has to say so — telling a first-timer "one guess
 // played, five left" about a guess they did not play is simply untrue.
-var guesses = ['LAPORTE'], cur = '', mine = 0;
+var guesses = [], cur = '', mine = 0;
 var grid = document.getElementById('ftlGrid'), kb = document.getElementById('ftlKb');
 // A letter is spent only if it has never landed. Scored per TILE, the three
 // A's in HAALAND would grey the A key the moment one A fell outside the word —
@@ -791,12 +825,11 @@ var CAPWORD = ['None','One','Two','Three','Four','Five','Six'];
 function drawLeft(){
   if (!left) return;
   var used = guesses.length, rem = ROWS - used;
-  // Rows counts the example; the reader does not. Everything the counter says
-  // about THEM is counted from `mine`, and only "left" reads off the board.
-  if (guesses[guesses.length-1] === ANSWER){ left.textContent = 'Solved in ' + WORD[mine] + '.'; return; }
-  if (used === 0){ left.textContent = 'Six guesses, none played yet.'; return; }
-  if (!mine){ left.textContent = 'Laporte is an example. Five guesses are yours.'; return; }
-  left.textContent = CAPWORD[mine] + (mine === 1 ? ' guess played. ' : ' guesses played. ')
+  // Every row on the board belongs to the reader now, so `mine` and
+  // `guesses.length` are the same number and the counter needs no exceptions.
+  if (guesses[guesses.length-1] === ANSWER){ left.textContent = 'Solved in ' + WORD[used] + '.'; return; }
+  if (used === 0){ left.textContent = 'Six guesses.'; return; }
+  left.textContent = CAPWORD[used] + (used === 1 ? ' guess played. ' : ' guesses played. ')
     + (rem === 0 ? 'None left.' : CAPWORD[rem] + ' left.');
 }
 function score(g){
@@ -924,5 +957,10 @@ function runClock(){
 }
 document.addEventListener('visibilitychange', runClock);
 
+(function drawExample(){
+  var eg = document.getElementById('ftlEg'); if (!eg) return;
+  var g = 'LAPORTE', marks = score(g);
+  for (var i = 0; i < LEN; i++) eg.appendChild(el('span', 'tile ' + marks[i], g[i]));
+})();
 drawStub(); renderQ(); drawGrid(); drawKb(); drawLeft(); runClock();
 </script>
