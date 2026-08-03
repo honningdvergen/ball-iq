@@ -140,6 +140,40 @@ the settled "content stays free, Pro = features" decision.
 against a mate, daily streaks, XP, Footle, Transfer Trail. Same lesson as the
 "every answer is explained" store-copy fix: the CTA has to be true.
 
+## ❌ FALSIFIED 2026-08-03 — the club-page "CTR fix" is not a real opportunity
+
+I ranked this the #1 ROI task. It does not survive its own data, and the
+correction matters because it would have been a day of pointless work.
+
+**The claim:** Rangers converts 10.0% and Arsenal 2.5%, so Arsenal's titles
+must be worse — rewrite them and quadruple the clicks from impressions we
+already hold.
+
+**Why it is wrong.** Every club title uses the SAME template —
+`<Club> Quiz — <Nickname> Trivia & Answers | Ball IQ` — and the same
+description pattern. Rangers and Galatasaray are structurally identical
+listings with a 4x CTR difference. Wording is not the variable.
+
+**What actually correlates: the page-one boundary.**
+    Rangers 8.2 · Everton 9.0 · Tottenham 9.3   ->  4.7-10.0% CTR
+    Arsenal 10.7 · Chelsea 13.3 · Real Madrid 14.8 · Man Utd 19.7  ->  0.6-2.5%
+That is a cliff at ~position 10, not a slope, and it is exactly what CTR
+curves look like. The query data agrees: **"arsenal quiz" gets 337
+impressions and 4 clicks** — perfect intent, 1.2% CTR, because we sit at ~11.
+
+**The one anomaly:** Galatasaray ranks 7.1 but converts 2.6%. Likely an
+intent-mix problem — impressions from Turkish-language queries where a quiz
+is not what the searcher wants. Not fixable by copy either.
+
+**Conclusion: there is no cheap on-page CTR win.** The lever is POSITION,
+which is authority, which is the partnership. This is the fourth independent
+route to the same answer today. **Stop looking for on-page wins on club
+pages.**
+
+⚠️ Method note for next time: I compared CTR across pages WITHOUT normalising
+for position, which is the first thing a CTR analysis must do. Pull position
+in the same query, always.
+
 ## 🔑 GSC READ 2026-08-03 — "175 dead pages" WAS WRONG. Nothing is dead.
 
 Alex opened GSC. It overturns the finding I recorded hours earlier, and the
