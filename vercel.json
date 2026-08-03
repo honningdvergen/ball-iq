@@ -29,6 +29,26 @@
       "source": "/privacy/",
       "destination": "/privacy.html",
       "permanent": true
+    },
+    {
+      "source": "/trail",
+      "destination": "/play?game=trail",
+      "permanent": false
+    },
+    {
+      "source": "/trail/",
+      "destination": "/play?game=trail",
+      "permanent": false
+    },
+    {
+      "source": "/mystery",
+      "destination": "/play?game=mystery",
+      "permanent": false
+    },
+    {
+      "source": "/mystery/",
+      "destination": "/play?game=mystery",
+      "permanent": false
     }
   ],
   "rewrites": [

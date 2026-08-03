@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowLeft, Search } from 'lucide-react';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
-  answerIdForDay, mysteryDayIndex, mysteryNumber,
+  answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
 import CAREERS from '../data/mysteryCareers.json';
@@ -37,6 +37,7 @@ export default function MysteryPlayer({ onExit }) {
   const [guesses, setGuesses] = useState([]); // [{ id, name, club, rank, band }]
   const [error, setError] = useState('');
   const [won, setWon] = useState(false);
+  const [copied, setCopied] = useState(false);
   const inputRef = useRef(null);
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
@@ -120,6 +121,23 @@ export default function MysteryPlayer({ onExit }) {
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}.
           </div>
+          <button
+            type="button"
+            onClick={async () => {
+              const text = buildMysteryShareText({ number: mysteryNumber(), guesses, won: true });
+              try {
+                // Native share sheet where there is one; clipboard otherwise.
+                // Both paths are wrapped because a user dismissing the sheet
+                // REJECTS, and an unhandled rejection here would surface as a
+                // crash on a screen the player has just won.
+                if (navigator.share) await navigator.share({ text });
+                else { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }
+              } catch { /* dismissed or blocked — nothing to recover */ }
+            }}
+            style={{ marginTop: 12, width: '100%', border: 'none', borderRadius: 12, background: 'var(--accent)', color: '#06230C', padding: '12px 16px', fontSize: 14.5, fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            {copied ? 'Copied!' : 'Share result'}
+          </button>
         </div>
       )}
 

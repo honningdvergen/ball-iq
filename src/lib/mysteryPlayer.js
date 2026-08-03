@@ -165,3 +165,25 @@ export function matchGuess(pool, text) {
   });
   return surname.length === 1 ? surname[0] : null;
 }
+
+/**
+ * Share text. A daily game without one does not spread — it is the entire
+ * mechanism Wordle grew on, and Footle and the Trail both have it while this
+ * shipped without.
+ *
+ * ⚠️ SPOILER-SAFE. The grid shows the BAND of each guess, never the rank and
+ * never a name, so posting it cannot give the answer away to someone who has
+ * not played. Ordered worst-to-best so it reads as a journey ending in green.
+ */
+export function buildMysteryShareText({ number, guesses = [], won } = {}) {
+  const head = `⚽ Ball IQ · Mystery Player${number > 0 ? ` #${number}` : ''}`;
+  const icon = { win: '🟩', hot: '🟩', warm: '🟨', cold: '⬜' };
+  const grid = [...guesses]
+    .sort((a, b) => b.rank - a.rank)
+    .map((g) => icon[g.band] || '⬜')
+    .join('');
+  const line = won
+    ? `Solved in ${guesses.length} ${guesses.length === 1 ? 'guess' : 'guesses'}`
+    : 'Gave up';
+  return `${head}\n${line}\n${grid}\n\nballiq.app/mystery`;
+}

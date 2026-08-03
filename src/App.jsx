@@ -7941,7 +7941,7 @@ function AppInner() {
       const joinPath = path.match(/^\/join\/([A-Za-z0-9]+)/);
       if (joinPath && normalizeJoinCode(joinPath[1])) return true;
       const sp = new URLSearchParams(BOOT_SEARCH);
-      if (sp.get("game") === "footle") return true;
+      if (["footle", "trail", "mystery"].includes(sp.get("game"))) return true;
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
       if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;
@@ -9149,6 +9149,8 @@ function AppInner() {
       // so this stays a one-liner on purpose.
       if (gameSlug === "daily") { startMode("daily"); return; }
       if (gameSlug === "trail") { setScreen("trail"); return; }
+      // ?game=mystery — the /mystery redirect and the share link land here.
+      if (gameSlug === "mystery") { setScreen("mystery"); return; }
       if (stumpId && /^q_[a-z0-9]+$/.test(stumpId)) {
         // Async on purpose: the bank is lazy-loaded. The stump screen is
         // guest-friendly — recipients answer with zero login (same staging-
