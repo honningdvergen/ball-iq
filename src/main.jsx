@@ -165,6 +165,13 @@ const _hasHandoff =
 const showMarketing =
   _isBrowser && !_hasHandoff && (_path === '/' || _path.startsWith('/home-preview'))
 
+// The Scouting Report redesign (seed cf2f8891) renders at /home-preview ONLY.
+// `/` keeps MarketingHome until the new composition is judged on a real phone,
+// so the page that is currently converting carries none of the risk. Its own
+// lazy chunk, so a visitor to `/` never downloads it.
+const _isPreview = showMarketing && _path.startsWith('/home-preview')
+const ScoutingReport = React.lazy(() => import('./marketing/ScoutingReport.jsx'))
+
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
 // download the ~200KB-gz game bundle. React.lazy only fires its import() on
 // first render — which is after createRoot + the initial reconcile — so for
@@ -203,7 +210,9 @@ const _fullBleed = () => {
 if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <ErrorBoundary><React.Suspense fallback={null}><MarketingHome /></React.Suspense></ErrorBoundary>,
+    <ErrorBoundary><React.Suspense fallback={null}>
+      {_isPreview ? <ScoutingReport /> : <MarketingHome />}
+    </React.Suspense></ErrorBoundary>,
   )
 } else {
   // desktop-web-refresh: mark the document as the game shell so the desktop

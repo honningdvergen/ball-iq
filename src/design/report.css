@@ -2,4 +2,4 @@
    Source of truth: src/design/report.js
    The Scouting Report layer. Marketing homepage ONLY -- deliberately not part
    of tokens.css, which is inlined into all 191 generated pages. */
-:root{--on-desk:#C3CBC3;--pa:#E7E9E4;--pa2:#DEE1DB;--pa3:#D5D8D2;--ink:#14171A;--mut:#4A524C;--rule:#B9BFB6;--rule2:#7A8078;--rule2d:#6E776F;--v0:#8B2635;--v1:#94472A;--v2:#7E6318;--v3:#5F6A22;--v4:#46702E;--v5:#2F6B3A;--sp1:8px;--sp2:14px;--sp3:22px;--sp4:34px;--sp5:52px;--sp6:76px;--ease:cubic-bezier(.16,1,.3,1)}
+:root{--on-desk:#C3CBC3;--pa:#E7E9E4;--pa2:#DEE1DB;--pa3:#D5D8D2;--ink:#14171A;--mut:#4A524C;--rule:#B9BFB6;--rule2:#7A8078;--rule2d:#6E776F;--attr-mid:#C9992B;--v0:#8B2635;--v1:#94472A;--v2:#7E6318;--v3:#5F6A22;--v4:#46702E;--v5:#2F6B3A;--sp1:8px;--sp2:14px;--sp3:22px;--sp4:34px;--sp5:52px;--sp6:76px;--ease:cubic-bezier(.16,1,.3,1)}

@@ -55,12 +55,26 @@ export const REPORT = {
   rule2: '#7A8078',
   rule2d: '#6E776F',
 
-  // ── The verdict ramp: oxblood to green, the ONLY saturation on the page.
-  // The mockup carried this twice -- as --v0..--v5 and again as a three-stop
-  // --r1/--r3/--r5 -- which is the "two ramps sharing one name" DESIGN.md
-  // recorded. This is the single canonical ramp. (The alias's middle stop
-  // #C9992B was a brighter gold than --v2 and is deliberately not kept: one
-  // ramp means one set of steps.)
+  // ── Saturation. The only colour on the page besides ink and paper.
+  //
+  // ⚠️ CORRECTED. The mockup declares TWO ramps, and an earlier pass here kept
+  // the wrong one. Counting actual references settles it:
+  //     --v0..--v5   1 reference each -- their own declaration. Never consumed.
+  //     --r1 5 uses, --r3 5 uses, --r5 10 uses -- this is what the page paints.
+  // I had reasoned from the names that --v* was canonical and dropped --r3
+  // (#C9992B) as redundant. It is not redundant; it is the only mid-tone the
+  // design actually renders, and --v2 (#7E6318) is far too dark to stand in.
+  //
+  // They are not duplicates -- they QUANTISE DIFFERENTLY, which is the real
+  // reason both exist and why DESIGN.md read them as "two ramps sharing one
+  // name". The attribute bars are three-level (poor / average / good). A
+  // verdict over five questions has SIX outcomes. Keeping both is correct;
+  // giving them the same name was not.
+  //
+  // The endpoints are shared, so only the attribute mid-tone is extra.
+  'attr-mid': '#C9992B', // the 3-level bars' middle; their ends are --v0 / --v5
+
+  // The six-step verdict band: one stop per possible score, 0 through 5.
   v0: '#8B2635', // oxblood — worst
   v1: '#94472A',
   v2: '#7E6318',
