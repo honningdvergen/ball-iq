@@ -1868,13 +1868,30 @@ ${heroTwoCol({
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge }))}
 ${adSlot('afterQA')}
-${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
+${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts every
+     club page at 13-29% scroll depth while /play reaches 95% and the /lists
+     pages 94%. Engagement is fine (~2 min a session); people simply never go
+     below the top fifth. Measured on /quiz/liverpool/ at 375x812 the page is
+     7,804px, so 20% is 1,561px — under two screens of nine and a half.
+
+     The old order was taster -> covers -> app CTA -> link mesh, which put
+     ~1,000px of explanatory prose ABOVE the cliff and both action blocks
+     below it: the CTA at 27% and the mesh at 32%. Nobody reached either.
+     Swapping them lands the CTA at ~14% and the mesh at ~19%, both inside
+     the fifth of the page people actually read, and demotes the prose —
+     which is reference material a reader seeks out, not something they need
+     first. Crawlers are unaffected either way; they render the whole DOM,
+     so this is an engagement fix, not a crawl-authority one.
+
+     ⚠️ Do NOT move adSlot('afterQA') below this — the placement policy at
+     the top of this file requires ad slots to sit below appCtaBand(). */''}
 ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
+${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
 <section class="sec narrow">
 ${trustSection(cfg.name, all)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
