@@ -675,7 +675,10 @@ function PlayNow() {
             deliberate and measured: 80.9% carry an explanation, so "every"
             would be the false claim we already had to retract once. */}
         <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Brain size={15} strokeWidth={2} /> Fact-checked — and most tell you why</span>
-        <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</span>
+        {/* Links to the page that targets "footle", not to /footle -- that URL
+            canonicals to the Footle landing page now, and this chip is the
+            homepage's only outbound signal for the term. */}
+        <a href="/football-wordle/" style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</a>
         <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Smartphone size={15} strokeWidth={2} /> Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>

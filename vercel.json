@@ -70,11 +70,11 @@
     },
     {
       "source": "/footle",
-      "destination": "/index.html"
+      "destination": "/api/footle-boot"
     },
     {
       "source": "/footle/",
-      "destination": "/index.html"
+      "destination": "/api/footle-boot"
     },
     {
       "source": "/home-preview",
