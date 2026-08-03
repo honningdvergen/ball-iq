@@ -9,6 +9,34 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
+- [ ] **🎯 ALEX'S FEATURE: show who picked what at the reveal** (avatars beside
+  each option). **Verified 2026-08-03 that the data does not exist yet** —
+  `room_players` holds room_id, user_id, name, avatar, score,
+  answered_question, joined_at, disconnected_at, streak, best_streak,
+  eliminated_at_q. `answered_question` is a yes/no; nothing records WHICH
+  option a player chose.
+
+  ⚠️ **Do not just add `last_answer_idx` to `room_players`.** That row is
+  already streamed to every client in the room, and **RLS filters rows, not
+  columns** — so the pick would be readable in the realtime payload the moment
+  it is written, before anyone else has answered. Alex's own constraint
+  ("post-reveal only, or it becomes answer-copying") would then be a
+  client-side promise rather than a guarantee, and inspecting the payload to
+  copy the strongest player's answer is trivial.
+
+  **Design that actually holds:** store the pick server-side (columns
+  `last_answer_idx` + `last_answer_q`, the second so a stale pick can never
+  render against the wrong question), keep those columns OUT of the
+  client-readable projection, and expose them through a SECURITY DEFINER RPC
+  — `get_reveal_answers(p_code, p_question_idx)` — that returns picks ONLY
+  when the question is closed (every player answered, or QUESTION_DURATION_MS
+  elapsed). The client calls it once per question at reveal.
+
+  Cost: one migration, one RPC (ending in `revoke execute ... from public`
+  after explicit grants), submit_answer writing two columns, and the reveal
+  UI. Wants a 2-device test — the same test [[project_mp_stats_realtime_gated]]
+  is already waiting on.
+
 ## FINDINGS 2026-08-03 (afternoon)
 
 - [x] **✅ Trail spot-check DONE — all six careers pass** (van Dijk, Courtois,
