@@ -203,9 +203,30 @@ const CSS = `
   .sr-head{flex-direction:column;align-items:flex-start;gap:4px}
 }
 
-.sr-prog{display:flex;gap:6px;margin:var(--sp2) 0 var(--sp3)}
-.sr-pip{height:3px;flex:1;background:var(--pa3)}
-.sr-pip[data-on="1"]{background:var(--ink)}
+/* The running report — the sheet filling itself in, one row per discipline.
+   Ported from the mockup's drawStub with its decisions intact: only a CORRECT
+   answer fills the bar (a full bar in a different colour still reads as a
+   full bar); an unasked row gets NO bar at all (an empty outline drew the
+   same mark for "wrong" and "not asked yet"); and the outcome column says
+   what HAPPENED — 1 of 1 / 0 of 1 / not assessed — because one binary answer
+   cannot produce a two-digit score and a football person spots a fake
+   instantly. */
+.sr-stub{width:100%;border-collapse:collapse;margin:var(--sp2) 0 var(--sp3)}
+.sr-stub tr:nth-child(even){background:var(--pa2)}
+.sr-stub th{font:var(--ty-label);letter-spacing:var(--ty-label-ls);
+            text-transform:uppercase;color:var(--mut);text-align:left;
+            padding:7px var(--sp1) 7px 0;font-weight:700;white-space:nowrap}
+.sr-stub td{padding:7px 0}
+.sr-bar{display:block;width:100%;max-width:180px;height:5px;background:var(--pa3)}
+.sr-bar i{display:block;height:100%;background:var(--v5);transform:scaleX(0);
+          transform-origin:left;transition:transform .5s var(--ease)}
+.sr-bar i[data-on="1"]{transform:scaleX(1)}
+@media (prefers-reduced-motion:reduce){.sr-bar i{transition:none}}
+.sr-out{font:var(--ty-meta);text-align:right;white-space:nowrap;padding-left:var(--sp1)}
+.sr-out[data-r="yes"]{color:var(--v5);font-weight:700}
+.sr-out[data-r="no"]{color:var(--v0);font-weight:700}
+.sr-out[data-r="pend"]{color:var(--mut)}
+.sr-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 .sr-q{margin-top:var(--sp1);font:var(--ty-sub);font-weight:600;text-wrap:balance}
 @media (min-width:700px){.sr-q{font:var(--ty-lede);font-weight:600}}
@@ -330,6 +351,10 @@ const CSS = `
 export default function ScoutingReport() {
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
+  // One slot per question: true/false once answered, null = not assessed.
+  // This IS "the report writes itself" — the lede's promise, previously
+  // unkept: the page replaced each question and only the tally survived.
+  const [results, setResults] = useState(() => QS.map(() => null));
   // Terminal data via ref: the final answer is read in the same tick it is
   // written, and a state read there would see the previous render's value.
   const scoreRef = useRef(0);
@@ -342,7 +367,9 @@ export default function ScoutingReport() {
   const choose = useCallback((k) => {
     if (picked !== null) return;
     setPicked(k);
-    if (k === QS[i].a) { scoreRef.current += 1; setScore(scoreRef.current); }
+    const right = k === QS[i].a;
+    setResults((r) => r.map((v, j) => (j === i ? right : v)));
+    if (right) { scoreRef.current += 1; setScore(scoreRef.current); }
   }, [picked, i]);
 
   const next = useCallback(() => {
@@ -397,9 +424,22 @@ export default function ScoutingReport() {
 
         {!done ? (
           <>
-            <div className="sr-prog" role="group" aria-label={`Question ${i + 1} of ${QS.length}`}>
-              {QS.map((_, k) => <span key={k} className="sr-pip" data-on={k <= i ? 1 : 0} />)}
-            </div>
+            <table className="sr-stub">
+              <caption className="sr-vh">The report so far, by discipline</caption>
+              <tbody>
+                {QS.map((qq, k) => (
+                  <tr key={k}>
+                    <th scope="row">{qq.d}</th>
+                    <td>{results[k] !== null && (
+                      <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
+                    )}</td>
+                    <td className="sr-out" data-r={results[k] === true ? 'yes' : results[k] === false ? 'no' : 'pend'}>
+                      {results[k] === true ? '1 of 1' : results[k] === false ? '0 of 1' : 'not assessed'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
             <h2 className="sr-q">{q.q}</h2>
 
@@ -435,7 +475,23 @@ export default function ScoutingReport() {
           </>
         ) : (
           <div className="sr-verd">
-            <div className="sr-score" style={{ color: band.v }}>{score} / {QS.length}</div>
+            <table className="sr-stub">
+              <caption className="sr-vh">The completed report, by discipline</caption>
+              <tbody>
+                {QS.map((qq, k) => (
+                  <tr key={k}>
+                    <th scope="row">{qq.d}</th>
+                    <td>{results[k] !== null && (
+                      <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
+                    )}</td>
+                    <td className="sr-out" data-r={results[k] === true ? 'yes' : 'no'}>
+                      {results[k] === true ? '1 of 1' : '0 of 1'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="sr-score" style={{ color: band.v, marginTop: 'var(--sp3)' }}>{score} / {QS.length}</div>
             <div className="sr-band" style={{ color: band.v }}>{band.t}</div>
             <p className="sr-bsub">{band.s}</p>
 
