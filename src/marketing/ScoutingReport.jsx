@@ -48,43 +48,52 @@ const FAQS = [
   { q: 'Where can I play?', a: 'On iPhone via the App Store, on Android via Google Play, or instantly in your browser at balliq.app — no install, no account. Your progress follows your account across all three.' },
 ];
 
-// Carried over verbatim from the approved mockup. `a` is an INDEX into `o`,
-// never the answer string — the bank's oldest trap.
+// FIVE VERIFIED BANK ROWS, not hand-written — Alex called the old opener
+// (Klopp/Liverpool 2020) a gimme, and a taster promising an honest verdict
+// cannot open with a free point. These are graded 'hard' in the bank and
+// ramp from famous-record to genuinely tough; every answer was verified by
+// RESOLVING o[a] at extraction, and every row ships the bank's own hint.
+// `a` is an INDEX into `o`, never the answer string.
 const QS = [
   {
-    d: 'Premier League',
-    q: 'Who managed Liverpool when they ended their 30-year wait for the league title in 2020?',
-    o: ['Houllier', 'Benítez', 'Rodgers', 'Klopp'],
+    // bank q_cad396 [hard] — answer verified by resolution: "£100m"
+    d: "Premier League",
+    q: "How much did Man City pay Aston Villa for Jack Grealish in 2021 — a British record?",
+    o: ["£80m", "£90m", "£115m", "£100m"],
     a: 3,
-    why: "Klopp's Liverpool won the 2019-20 title with seven games to spare, the club's first league championship since 1990.",
+    why: "£100 million — the first-ever £100m deal involving a British club. Grealish went on to win the treble with City.",
   },
   {
-    d: 'Euros',
-    q: 'Which two-nation pairing hosted Euro 2000, the first ever co-hosted European Championship?',
-    o: ['Austria & Switzerland', 'Poland & Ukraine', 'Belgium & Netherlands', 'Spain & Portugal'],
-    a: 2,
-    why: 'Belgium and the Netherlands co-hosted Euro 2000, won by France in the Rotterdam final.',
-  },
-  {
-    d: 'Transfers',
-    q: "Atlético's record signing was a €127.2m teenager bought from Benfica in 2019. Who?",
-    o: ['João Félix', 'Julián Álvarez', 'Rodri', 'Thomas Lemar'],
+    // bank q_08e349 [hard] — answer verified by resolution: "Juventus"
+    d: "Euros",
+    q: "Which club provided the most players to the Euro 2020 winning Italian squad?",
+    o: ["Juventus", "AC Milan", "Inter", "Napoli"],
     a: 0,
-    why: "The Portuguese wonderkid arrived to replace Griezmann's goals. Even Julián Álvarez's 2024 fee from Man City didn't top it.",
+    why: "Italy's two veteran centre-backs that summer both came from the same Turin club, which had four squad members in all.",
   },
   {
-    d: 'Champions League',
-    q: 'In which year did Ajax reach the semi-finals, eliminating both Real Madrid and Juventus?',
-    o: ['2017', '2018', '2020', '2019'],
+    // bank q_88b25c [hard] — answer verified by resolution: "Dinamo Batumi"
+    d: "Transfers",
+    q: "Napoli signed Khvicha Kvaratskhelia in 2022 from which club?",
+    o: ["Dinamo Batumi", "Rubin Kazan", "Dinamo Tbilisi", "Lokomotiv Moscow"],
+    a: 0,
+    why: "Napoli picked up Kvaratskhelia from Georgia's Dinamo Batumi for a modest fee in summer 2022.",
+  },
+  {
+    // bank q_d82f96 [hard] — answer verified by resolution: "Anelka"
+    d: "Champions League",
+    q: "Whose missed penalty allowed Man United to win the 2008 UCL final shootout vs Chelsea?",
+    o: ["Ballack", "Kalou", "Cole", "Anelka"],
     a: 3,
-    why: '2019. Young Ajax, led by De Jong, De Ligt and Ziyech, then lost late to Spurs on away goals in the semi-final.',
+    why: "Nicolas Anelka's saved penalty sealed United's win in Moscow. John Terry had slipped earlier, hitting the post with a chance to win it.",
   },
   {
-    d: 'Legends',
-    q: "Tottenham's old stadium, demolished in 2017, went by what name?",
-    o: ['The Cottage', 'White Hart Lane', 'The Dell', 'Maine Road'],
-    a: 1,
-    why: "White Hart Lane was Spurs' home for 118 years; the new stadium was built on the very same site.",
+    // bank q_c2301f [hard] — answer verified by resolution: "Suker"
+    d: "Legends",
+    q: "Who was top scorer at the 1998 World Cup with 6 goals?",
+    o: ["Zidane", "Petit", "Suker", "Ronaldo"],
+    a: 2,
+    why: "Davor Šuker of Croatia — he led Croatia to third place in their first-ever World Cup as an independent nation.",
   },
 ];
 
@@ -216,6 +225,12 @@ const CSS = `
           transform-origin:left;transition:transform .5s var(--ease)}
 .sr-bar i[data-on="1"]{transform:scaleX(1)}
 @media (prefers-reduced-motion:reduce){.sr-bar i{transition:none}}
+/* Filing motion: a new question slides in as a fresh sheet section; a filed
+   outcome and the why-note land the same way the verdict does. One easing,
+   short, meaningful — motion only where the document changed. */
+.sr-swap{animation:sr-land .28s var(--ease) both}
+.sr-filein{display:inline-block;animation:sr-land .3s var(--ease) both}
+@media (prefers-reduced-motion:reduce){.sr-swap,.sr-filein{animation:none}}
 .sr-out{font:var(--ty-meta);text-align:right;white-space:nowrap;padding-left:var(--sp1)}
 .sr-out[data-r="yes"]{color:var(--v5);font-weight:700}
 .sr-out[data-r="no"]{color:var(--v0);font-weight:700}
@@ -306,7 +321,9 @@ function Stub({ results, caption }) {
               <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
             )}</td>
             <td className="sr-out" data-r={results[k] === true ? 'yes' : results[k] === false ? 'no' : 'pend'}>
-              {results[k] === true ? '1 of 1' : results[k] === false ? '0 of 1' : 'not assessed'}
+              <span className={results[k] === null ? undefined : 'sr-filein'} key={String(results[k])}>
+                {results[k] === true ? '1 of 1' : results[k] === false ? '0 of 1' : 'not assessed'}
+              </span>
             </td>
           </tr>
         ))}
@@ -393,7 +410,7 @@ export default function ScoutingReport() {
                   <span className="sr-abt">Assessment</span>
                   <span className="sr-abn">{i + 1} of {QS.length}</span>
                 </div>
-                <div className="sr-abody">
+                <div className="sr-abody sr-swap" key={i}>
                   <p className="sr-dept">{q.d}</p>
                   <h2 className="sr-q">{q.q}</h2>
                   <div className="sr-opts">
@@ -410,7 +427,7 @@ export default function ScoutingReport() {
                   </div>
                   {answered && (
                     <>
-                      <div className="sr-whywrap" role="status">
+                      <div className="sr-whywrap sr-filein" role="status">
                         <div className="sr-whylab">Why</div>
                         <p className="sr-why">{q.why}</p>
                       </div>

@@ -141,7 +141,12 @@ export const REPORT = {
   // without measuring and is false — the tracking is worth about 6px, not the
   // 54px needed. Above 530px the documented 6.6vw takes over and the ramp is
   // unchanged, so this only ever applies to phones.
-  'ty-headline': "700 clamp(35px,6.6vw,88px)/0.95 'Archivo Narrow',sans-serif",
+  // SECOND DELIBERATE EXTENSION: max 64px, not DESIGN.md's 88px. Alex called
+  // the headline too big twice — once centred, once left-ranged at the
+  // mockup's own 88px — which makes it a product decision, not a taste
+  // debate. 5vw keeps the same feel across widths; the 35px mobile floor and
+  // its measurement stand.
+  'ty-headline': "700 clamp(35px,5vw,64px)/0.95 'Archivo Narrow',sans-serif",
   'ty-headline-ls': '-0.02em',
   'ty-section': "700 clamp(32px,5.2vw,60px)/0.98 'Archivo Narrow',sans-serif",
   'ty-section-ls': '-0.018em',
