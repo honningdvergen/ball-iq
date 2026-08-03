@@ -1496,7 +1496,19 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet(). Was a 10-q JSON taster + a disjoint HTML block.
-  const quizRows = arcPick(hints, Math.min(22, hints.length));
+  // ⚠️ 22 was never a designed number — it is the OLD two-widget layout's
+  // 10-question taster plus its 12-question Q&A block, added together and
+  // carried through the single-pool merge above unchanged. Measured
+  // 2026-08-03: it hid 1,331 verified questions, 46% of the club bank, from
+  // the pages that carry our SEO. 71 of 72 clubs were capped — Arsenal had 67
+  // and showed 22.
+  //
+  // Raised to 40. Page LENGTH is not what limits engagement here, which was
+  // the obvious objection and it is measurably wrong: /lists/serie-a-top-scorers/
+  // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
+  // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
+  // scroll not at all. Depth is set by intent, not by length.
+  const quizRows = arcPick(hints, Math.min(40, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
@@ -1779,7 +1791,19 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   // payload plus a disjoint 12-question Q&A block in HTML — two quizzes from the
   // visitor's seat, and only the second one was crawlable. Now every question is
   // server-rendered in a single set and JS paces it.
-  const quizRows = arcPick(hints, Math.min(22, hints.length));
+  // ⚠️ 22 was never a designed number — it is the OLD two-widget layout's
+  // 10-question taster plus its 12-question Q&A block, added together and
+  // carried through the single-pool merge above unchanged. Measured
+  // 2026-08-03: it hid 1,331 verified questions, 46% of the club bank, from
+  // the pages that carry our SEO. 71 of 72 clubs were capped — Arsenal had 67
+  // and showed 22.
+  //
+  // Raised to 40. Page LENGTH is not what limits engagement here, which was
+  // the obvious objection and it is measurably wrong: /lists/serie-a-top-scorers/
+  // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
+  // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
+  // scroll not at all. Depth is set by intent, not by length.
+  const quizRows = arcPick(hints, Math.min(40, hints.length));
   const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
@@ -1938,7 +1962,19 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet(). Also anchors the flashcard Quiz node below.
-  const quizRows = arcPick(hints, Math.min(22, hints.length));
+  // ⚠️ 22 was never a designed number — it is the OLD two-widget layout's
+  // 10-question taster plus its 12-question Q&A block, added together and
+  // carried through the single-pool merge above unchanged. Measured
+  // 2026-08-03: it hid 1,331 verified questions, 46% of the club bank, from
+  // the pages that carry our SEO. 71 of 72 clubs were capped — Arsenal had 67
+  // and showed 22.
+  //
+  // Raised to 40. Page LENGTH is not what limits engagement here, which was
+  // the obvious objection and it is measurably wrong: /lists/serie-a-top-scorers/
+  // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
+  // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
+  // scroll not at all. Depth is set by intent, not by length.
+  const quizRows = arcPick(hints, Math.min(40, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
@@ -2380,7 +2416,19 @@ function buildNationPage(cfg, catPages, nationPages) {
   // A longer single run means more investment before the ask, and one
   // continuous experience instead of two half-ones.
   // One pool — see renderQuizSet().
-  const quizRows = arcPick(hints, Math.min(22, hints.length));
+  // ⚠️ 22 was never a designed number — it is the OLD two-widget layout's
+  // 10-question taster plus its 12-question Q&A block, added together and
+  // carried through the single-pool merge above unchanged. Measured
+  // 2026-08-03: it hid 1,331 verified questions, 46% of the club bank, from
+  // the pages that carry our SEO. 71 of 72 clubs were capped — Arsenal had 67
+  // and showed 22.
+  //
+  // Raised to 40. Page LENGTH is not what limits engagement here, which was
+  // the obvious objection and it is measurably wrong: /lists/serie-a-top-scorers/
+  // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
+  // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
+  // scroll not at all. Depth is set by intent, not by length.
+  const quizRows = arcPick(hints, Math.min(40, hints.length));
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
