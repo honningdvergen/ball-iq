@@ -18,6 +18,11 @@ items are deleted, not archived — git history is the archive.
 - [ ] **ALEX 2026-08-03: friends' avatars beside their answers in MP** — show
   each friend's profile picture next to the option they picked (post-reveal
   only, or it becomes answer-copying).
+- [ ] **🔴 MP PLAYTEST BUGS (Alex vs Johannes, 2026-08-03) — playtesters are ~100% precision, treat all four as real:**
+  1. **H2H banner says "Alex leads 3–0 vs Alex"** — opponent's name rendered in BOTH slots, and the tally is wrong (true record after this game: 2–1). Screenshot appears to be Johannes's device, so the left slot took the opponent's name too. Find the head-to-head banner render + the record RPC; check name resolution (self vs opponent profile) AND whether the just-finished game is counted / attributed to the right winner. ⚠️ check every rpc() error — resolves, never throws.
+  2. **XP sanity: +52,790 XP for one match** (score 5274 → looks like score×10). Audit the XP formula for MP wins — is one match really worth ~50k? Compare vs solo/daily XP rates; inflation makes levels meaningless.
+  3. **Duplicate questions across back-to-back MP games** — 2 of 20 repeated in two consecutive "mixed" rounds (Atlético stadium capacity; who gave Yamal his senior Spain debut). MP selection is rightly date/seed-deterministic-ish and must NOT consume applySeenFilter — but a REMATCH should exclude the previous room's question ids (room-level exclusion list passed to the picker, not device-local history).
+  4. Verify with prod data, not just code: game_rooms/scores for this pair via the Supabase connector — what did the server actually record for the 3 games?
 - [ ] **WAVE N IN FLIGHT** (fired ~13:30). European Heritage: Eintracht
   Frankfurt, Borussia Mönchengladbach, Werder Bremen, Bologna, Genoa, Lille +
   Fenerbahçe top-up (38→~55). Forge = gen×2 → examiner → skeptic per Q, only
