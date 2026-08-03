@@ -5064,7 +5064,7 @@ export const LISTS = [
   {
     "slug": "most-champions-league-titles",
     "h1": "Clubs With the Most Champions League Titles",
-    "title": "Most Champions League Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Champions League Titles: Real Madrid, 15 | Ball IQ",
     "description": "Which clubs have won the most European Cup / Champions League titles? Real Madrid lead the all-time ranking — every winner, ranked by titles.",
     "intro": [
       "The European Cup, rebranded the UEFA Champions League in 1992, is the most prestigious prize in club football — and a handful of clubs have made it their own. This page ranks every club to have won it, by number of titles, from Real Madrid's record haul down to the one-time winners.",
@@ -5242,7 +5242,7 @@ export const LISTS = [
   {
     "slug": "most-ballon-dors",
     "h1": "Players With the Most Ballon d'Or Awards",
-    "title": "Most Ballon d'Ors: Players Ranked | Ball IQ",
+    "title": "Most Ballon d'Ors: Lionel Messi, 8 | Ball IQ",
     "description": "Who has won the most Ballon d'Or awards? Lionel Messi leads with a record eight. Every multiple winner, ranked, with the years they won.",
     "intro": [
       "The Ballon d'Or has gone to the best player in the world (in Europe, until 2007) every year since 1956. This page ranks the players who have won it more than once — the small club of true greats who dominated their eras.",
@@ -5336,7 +5336,7 @@ export const LISTS = [
   {
     "slug": "most-world-cups",
     "h1": "Countries With the Most World Cup Wins",
-    "title": "Most World Cup Wins: Countries Ranked | Ball IQ",
+    "title": "Most World Cup Wins: Brazil, 5 | Ball IQ",
     "description": "Which country has won the most World Cups? Brazil lead with five. Every nation to win the FIFA World Cup, ranked by titles, with the years.",
     "intro": [
       "Only eight nations have ever won the FIFA World Cup since it began in 1930. This page ranks them by number of titles, from Brazil's record five down to England's single triumph in 1966.",
@@ -5418,7 +5418,7 @@ export const LISTS = [
   {
     "slug": "most-premier-league-titles",
     "h1": "Clubs With the Most Premier League Titles",
-    "title": "Most Premier League Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Premier League Titles: Manchester United, 13 | Ball IQ",
     "description": "Which club has won the most Premier League titles? Manchester United lead with 13. Every Premier League winner since 1992, ranked by titles.",
     "intro": [
       "Since the Premier League began in 1992-93, only seven clubs have won it. This page ranks them by number of titles, from Manchester United's early dominance to Manchester City's modern dynasty.",
@@ -9106,7 +9106,7 @@ export const LISTS = [
   {
     "slug": "most-la-liga-titles",
     "h1": "Clubs With the Most La Liga Titles",
-    "title": "Most La Liga Titles: Clubs Ranked | Ball IQ",
+    "title": "Most La Liga Titles: Real Madrid, 36 | Ball IQ",
     "description": "Which club has won the most La Liga titles? Real Madrid lead the all-time ranking. Every Spanish league champion since 1929, ranked by titles.",
     "intro": [
       "Spain's top flight has been dominated by two clubs since it began in 1929, but the full roll of honour runs deeper. This page ranks every La Liga champion by number of titles, from Real Madrid's record haul down to the one-off winners.",
@@ -9194,7 +9194,7 @@ export const LISTS = [
   {
     "slug": "most-bundesliga-titles",
     "h1": "Clubs With the Most Bundesliga Titles",
-    "title": "Most Bundesliga Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Bundesliga Titles: Bayern Munich, 34 | Ball IQ",
     "description": "Which club has won the most Bundesliga titles? Bayern Munich dominate the all-time ranking. Every German champion since 1963, ranked by titles.",
     "intro": [
       "Germany's Bundesliga was founded in 1963, and while one club has towered over it, the title has still travelled widely across the country. This page ranks every Bundesliga champion by number of titles.",
@@ -9306,7 +9306,7 @@ export const LISTS = [
   {
     "slug": "most-euros-wins",
     "h1": "Countries With the Most European Championship Wins",
-    "title": "Most Euros Wins: Countries Ranked | Ball IQ",
+    "title": "Most Euros Wins: Spain, 4 | Ball IQ",
     "description": "Which country has won the most European Championships? Spain lead with four. Every nation to win the Euros, ranked by titles, with the years.",
     "intro": [
       "The UEFA European Championship has been held every four years since 1960, and only a handful of nations have ever conquered the continent. This page ranks every Euros winner by number of titles.",
@@ -9400,7 +9400,7 @@ export const LISTS = [
   {
     "slug": "most-ligue-1-titles",
     "h1": "Clubs With the Most Ligue 1 Titles",
-    "title": "Most Ligue 1 Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Ligue 1 Titles: Paris Saint-Germain, 14 | Ball IQ",
     "description": "Which club has won the most Ligue 1 titles? Paris Saint-Germain lead the all-time ranking. Every French champion since 1932, ranked by titles.",
     "intro": [
       "French football's top flight has crowned champions since 1932, and its history splits neatly into two eras: a long spell where the title moved freely between the country's great clubs, and the recent age of Paris Saint-Germain dominance. This page ranks every Ligue 1 champion by number of titles.",
@@ -9548,7 +9548,7 @@ export const LISTS = [
   {
     "slug": "most-europa-league-titles",
     "h1": "Clubs With the Most Europa League Titles",
-    "title": "Most Europa League Titles: Clubs Ranked (UEFA Cup) | Ball IQ",
+    "title": "Most Europa League Titles: Sevilla, 7 | Ball IQ",
     "description": "Which club has won the most Europa League / UEFA Cup titles? Sevilla lead by a distance. Every winner ranked, with the years they lifted it.",
     "intro": [
       "Europe's second-tier club competition — the UEFA Cup until 2009, the Europa League since — has been won by clubs from across the continent since 1972. This page ranks every winner by number of titles.",
@@ -9768,7 +9768,7 @@ export const LISTS = [
   {
     "slug": "most-copa-america-titles",
     "h1": "Countries With the Most Copa América Titles",
-    "title": "Most Copa América Titles: Countries Ranked | Ball IQ",
+    "title": "Most Copa América Titles: Argentina, 16 | Ball IQ",
     "description": "Which country has won the most Copa América titles? Argentina and Uruguay lead the oldest international tournament. Every winner ranked by titles.",
     "intro": [
       "The Copa América, first held in 1916, is the oldest international football tournament in the world. This page ranks every winner by number of titles — a race led, as ever, by South America's two grand old rivals.",
@@ -9850,7 +9850,7 @@ export const LISTS = [
   {
     "slug": "most-afcon-titles",
     "h1": "Countries With the Most AFCON Titles",
-    "title": "Most AFCON Titles: Africa Cup of Nations Ranked | Ball IQ",
+    "title": "Most AFCON Titles: Egypt, 7 | Ball IQ",
     "description": "Which country has won the most Africa Cup of Nations titles? Egypt lead with a record haul. Every AFCON winner ranked by titles, with the years.",
     "intro": [
       "The Africa Cup of Nations has crowned the continent's champions since 1957. This page ranks every winner by number of titles — a list headed, emphatically, by one nation.",
@@ -16301,7 +16301,7 @@ export const LISTS = [
   {
     "slug": "most-serie-a-titles",
     "h1": "Clubs With the Most Serie A Titles (Scudetti)",
-    "title": "Clubs With the Most Serie A Titles, Ranked | Ball IQ",
+    "title": "Most Serie A Titles: Juventus, 36 | Ball IQ",
     "description": "The clubs with the most Serie A titles, ranked by official FIGC-recognised Scudetti — from Juventus and Inter down to every one-time Italian champion.",
     "intro": [
       "Italy's league champions wear the Scudetto, the small tricolour shield sewn onto the following season's shirt, and only sixteen clubs have earned the right to do so since the national championship began in 1898. The competition took its modern round-robin \"Serie A\" form in 1929, but the honours roll is counted continuously from those earliest pioneer-era titles, which is why clubs like Genoa and Pro Vercelli sit high on the all-time list despite not having won in a century.",
@@ -16436,7 +16436,7 @@ export const LISTS = [
   {
     "slug": "most-fa-cups",
     "h1": "Clubs With the Most FA Cups",
-    "title": "Most FA Cups: Clubs Ranked | Ball IQ",
+    "title": "Most FA Cups: Arsenal, 14 | Ball IQ",
     "description": "Which club has won the most FA Cups? The full ranking of every FA Cup winner by number of titles, from the record holders down.",
     "intro": [
       "The FA Cup, first contested in 1871-72, is the oldest football competition in the world — and over 150 years it has been lifted by dozens of clubs. This page ranks them all by number of wins.",
@@ -16740,7 +16740,7 @@ export const LISTS = [
   {
     "slug": "most-copa-libertadores",
     "h1": "Clubs With the Most Copa Libertadores Titles",
-    "title": "Most Copa Libertadores Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Copa Libertadores Titles: Independiente, 7 | Ball IQ",
     "description": "Which club has won the most Copa Libertadores titles? The full ranking of South America's greatest clubs by continental crowns.",
     "intro": [
       "The Copa Libertadores is South America's premier club competition, the continent's equivalent of the Champions League, contested since 1960. This page ranks every winner by number of titles.",
@@ -16936,7 +16936,7 @@ export const LISTS = [
   {
     "slug": "most-coupe-de-france-titles",
     "h1": "Clubs With the Most Coupe de France Titles",
-    "title": "Most Coupe de France Titles: Clubs Ranked | Ball IQ",
+    "title": "Most Coupe de France Titles: PSG, 16 | Ball IQ",
     "description": "Which club has won the most Coupe de France titles? The full ranking of every French Cup winner by number of trophies.",
     "intro": [
       "The Coupe de France, France's premier knockout cup, has been contested since 1917-18. This page ranks every winner by number of titles.",
