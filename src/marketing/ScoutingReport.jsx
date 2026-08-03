@@ -2,13 +2,19 @@
 // docs/mockups/scouting-d.html.
 //
 // Lives at /home-preview. `/` still renders MarketingHome, untouched, so the
-// page that is currently converting carries none of this risk while it is
+// page that is currently converting carries none of the risk while this is
 // judged on a real phone.
 //
 // THE THESIS, from the direction contract, because every decision below is
 // downstream of it: the page is not ABOUT a football test. The page IS the
 // test, and it files a report on you. It refuses the category's dark hero,
 // phone mockup and feature-card triptych.
+//
+// EVERY SIZE, COLOUR AND SPACE HERE COMES FROM DESIGN.md. That file already
+// documents this exact direction — it was written from the built mockup — and
+// an earlier pass of this component invented its own type sizes instead. The
+// impeccable detector flagged all ten. Do not add a literal px value here:
+// add a role to design/report.js and use it.
 //
 // Consequences that look like bugs if you do not know the contract:
 //   · No cards, no border-radius, no glow. Hairline rules do that work.
@@ -27,10 +33,9 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 const GET_APP = '/get';
 const PLAY = '/play';
 
-// The five questions, carried over verbatim from the approved mockup so the
-// port is a port and not a rewrite. `a` is an INDEX into `o`, never the answer
-// string — the bank's oldest trap, and the reason `why` is checked against
-// o[a] below rather than against a remembered string.
+// Carried over verbatim from the approved mockup so this is a port, not a
+// rewrite. `a` is an INDEX into `o`, never the answer string — the bank's
+// oldest trap.
 const QS = [
   {
     d: 'Premier League',
@@ -70,9 +75,10 @@ const QS = [
 ];
 
 // One band per possible score — six outcomes over five questions, which is
-// exactly what the six-step --v ramp is for. The wording grades honestly:
-// the direction's whole promise is a verdict you can trust, so 0/5 does not
-// get a consolation prize.
+// exactly what the six-step verdict ramp is for. Every stop clears 4.5:1 as
+// ink on newsprint (measured: 7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23), which
+// is why the VERDICT ramp is used here and not the Scout's Ramp — --attr-mid
+// reads 2.13:1 on paper and must never be text.
 const BANDS = [
   { t: 'Casual', s: 'You watch the finals. Nothing wrong with that.', v: 'var(--v0)' },
   { t: 'Passer-by', s: 'You know the names. The details are somebody else’s job.', v: 'var(--v1)' },
@@ -93,73 +99,94 @@ const CSS = `
 /* ── The desk: chrome. Green survives HERE and only here. ───────────── */
 .sr-mast{display:flex;align-items:center;justify-content:space-between;gap:var(--sp2);
          padding:var(--sp2) var(--sp3);border-bottom:1px solid var(--bd)}
-.sr-mark{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:21px;
-         letter-spacing:.02em;color:var(--tx);text-transform:uppercase}
+.sr-mark{font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
+         color:var(--tx);text-transform:uppercase}
 .sr-mark em{font-style:normal;color:var(--grn)}
-.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:0 var(--sp3);
-         background:var(--grn);color:var(--grn-ink);font-weight:700;font-size:15px;
+/* ⚠️ Written as "sr a.sr-play", not a bare ".sr-play". The reset above is
+   ".sr a" — class + ELEMENT, specificity (0,1,1) — which outranks a bare
+   class (0,1,0). So color:var(--grn-ink) silently lost to color:inherit and
+   the button painted --on-desk #C3CBC3 on #58CC02: 1.3:1, under the 4.5:1
+   floor. (No backticks in this comment: it lives inside a template literal,
+   and a stray one terminates the string and fails the build.)
+   It looked like plausible light-on-green in a screenshot; only the rendered
+   detector pass caught it. */
+.sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:0 var(--sp3);
+         background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
          border:1px solid var(--grn);transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-play:hover{opacity:.88}}
 
 /* ── The lede sits on the desk, not on the paper. ───────────────────── */
-.sr-open{padding:var(--sp5) var(--sp2) var(--sp4);max-width:760px;margin:0 auto;text-align:center}
-@media (min-width:520px){.sr-open{padding-left:var(--sp3);padding-right:var(--sp3)}}
-/* The contract specifies a TWO-line headline. At 375px it was rendering three:
-   "ONE HONEST VERDICT." wrapped. Measured in the browser rather than guessed —
-   34px was the largest size holding two lines inside the old 331px of content
-   width, so the mobile gutter drops to --sp2 to buy back 16px and the clamp is
-   set just under what that width supports. Re-measure if the copy changes. */
-.sr-h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
-       color:var(--tx);line-height:.94;letter-spacing:.005em;text-wrap:balance;
-       font-size:clamp(30px,9.3vw,74px)}
+/* --sp3 (22px), not --sp2 (14px): body text was rendering 14px from the
+   viewport edge, under the 16px floor. The narrower gutter had existed only
+   to buy width for the headline; the headline floor now handles that. */
+.sr-open{padding:var(--sp5) var(--sp3) var(--sp4);max-width:760px;margin:0 auto;text-align:center}
+/* Size and tracking both come from report.js, which documents why the mobile
+   floor is 35px rather than DESIGN.md's 41px: measured, "ONE HONEST VERDICT."
+   needs 385px at 41px against 331px available. Tracking is worth ~6px of that,
+   not 54px — an earlier comment here claimed otherwise without measuring. */
+.sr-h1{font:var(--ty-headline);letter-spacing:var(--ty-headline-ls);
+       text-transform:uppercase;color:var(--tx);text-wrap:balance}
 .sr-h1 span{display:block}
-.sr-lede{margin-top:var(--sp2);font-size:17px;line-height:1.5;color:var(--tx4);
+.sr-lede{margin-top:var(--sp2);font:var(--ty-lede);color:var(--tx4);
          max-width:46ch;margin-left:auto;margin-right:auto}
 
 /* ── The paper. A lit document lying on the desk. ───────────────────── */
 /* The sheet needs DESK VISIBLE AROUND IT or the concept collapses: full-bleed
-   paper reads as "a section with a light background", not as a document lying
-   on a surface. It was bleeding edge-to-edge at 375px — i.e. on 66% of the
-   traffic, the one idea the direction is built on was invisible. */
+   paper reads as "a section with a light background", not a document on a
+   surface. It was bleeding edge-to-edge at 375px — i.e. on 66% of traffic. */
 .sr-sheet{max-width:660px;margin:0 var(--sp2) var(--sp6);background:var(--pa);color:var(--ink);
-          padding:var(--sp4) var(--sp3);box-shadow:0 18px 50px rgba(0,0,0,.55)}
-@media (min-width:700px){.sr-sheet{margin:0 auto var(--sp6);padding:var(--sp5)}}
+          padding:var(--sp4) var(--sp3);box-shadow:var(--sheet-shadow)}
 @media (min-width:520px) and (max-width:699px){.sr-sheet{margin:0 var(--sp3) var(--sp6)}}
+@media (min-width:700px){.sr-sheet{margin:0 auto var(--sp6);padding:var(--sp5)}}
 
+/* Moving the subject into this row made BOTH halves wrap to two lines at
+   375px. A masthead that wraps stops reading as a masthead, so it stacks
+   below 460px instead — each line whole, the document's own header. */
 .sr-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp2);
          padding-bottom:var(--sp1);border-bottom:2px solid var(--ink)}
-.sr-title{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
-          font-size:19px;letter-spacing:.03em}
-.sr-no{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut)}
+.sr-title,.sr-no{font:var(--ty-label);letter-spacing:var(--ty-label-ls);
+                 text-transform:uppercase;white-space:nowrap}
+.sr-no{color:var(--mut)}
+@media (max-width:459px){
+  .sr-head{flex-direction:column;align-items:flex-start;gap:4px}
+}
 
 .sr-prog{display:flex;gap:6px;margin:var(--sp2) 0 var(--sp3)}
-.sr-pip{height:3px;flex:1;background:var(--rule)}
+.sr-pip{height:3px;flex:1;background:var(--pa3)}
 .sr-pip[data-on="1"]{background:var(--ink)}
 
-.sr-dept{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--mut);
-         font-weight:700}
-.sr-q{margin-top:var(--sp1);font-size:21px;line-height:1.3;font-weight:600;text-wrap:balance}
-@media (min-width:700px){.sr-q{font-size:24px}}
+.sr-q{margin-top:var(--sp1);font:var(--ty-sub);font-weight:600;text-wrap:balance}
+@media (min-width:700px){.sr-q{font:var(--ty-lede);font-weight:600}}
 
+/* --rule2 (3.31:1), NOT --rule (1.53:1). DESIGN.md is explicit: a rule doing
+   a CONTROL's job must clear WCAG 1.4.11's 3:1 floor; --rule is for separating
+   rows of data only. */
 .sr-opts{margin-top:var(--sp3);display:flex;flex-direction:column}
 .sr-opt{display:flex;align-items:center;gap:var(--sp2);width:100%;text-align:left;
         min-height:52px;padding:var(--sp1) var(--sp1) var(--sp1) 0;background:none;
-        border:0;border-top:1px solid var(--rule);color:var(--ink);font:inherit;
-        font-size:16.5px;cursor:pointer;transition:background-color .12s var(--ease)}
-.sr-opt:last-child{border-bottom:1px solid var(--rule)}
+        border:0;border-top:1px solid var(--rule2);color:var(--ink);
+        font:var(--ty-body);cursor:pointer;transition:background-color .12s var(--ease)}
+.sr-opt:last-child{border-bottom:1px solid var(--rule2)}
 .sr-opt:disabled{cursor:default}
 @media (hover:hover){.sr-opt:not(:disabled):hover{background:var(--pa2)}}
 .sr-key{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
-        border:1px solid var(--rule2);font-size:12px;font-weight:700;color:var(--mut)}
+        border:1px solid var(--rule2);font:var(--ty-label);color:var(--mut)}
 .sr-opt[data-mark="hit"] .sr-key{background:var(--v5);border-color:var(--v5);color:var(--pa)}
 .sr-opt[data-mark="miss"] .sr-key{background:var(--v0);border-color:var(--v0);color:var(--pa)}
 .sr-opt[data-mark="hit"]{font-weight:700}
-.sr-opt[data-mark="miss"]{color:var(--mut)}
+.sr-opt[data-mark="miss"]{color:var(--mut);background:var(--pa2)}
 
-.sr-why{margin-top:var(--sp2);padding:var(--sp2);background:var(--pa2);
-        border-left:3px solid var(--ink);font-size:15px;line-height:1.5;color:var(--ink)}
-.sr-next{margin-top:var(--sp3);min-height:50px;width:100%;background:var(--ink);color:var(--pa);
-         border:1px solid var(--ink);font:inherit;font-weight:700;font-size:16px;cursor:pointer;
+/* The explanation is an annotation in the document, not an accented card.
+   A 3px coloured bar down one side is the single most recognisable tell of
+   AI-generated UI and the detector flags it by name. It reads as a shaded
+   note with its own label instead — --pa2 is exactly what DESIGN.md
+   documents shaded secondary matter to sit on. */
+.sr-whywrap{margin-top:var(--sp2);padding:var(--sp2);background:var(--pa2)}
+.sr-whylab{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase;
+           color:var(--mut);margin-bottom:6px}
+.sr-why{font:var(--ty-sec);color:var(--ink)}
+.sr-next{margin-top:var(--sp3);min-height:52px;width:100%;background:var(--ink);color:var(--pa);
+         border:1px solid var(--ink);font:var(--ty-body);font-weight:700;cursor:pointer;
          transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-next:hover{opacity:.86}}
 
@@ -167,31 +194,28 @@ const CSS = `
 .sr-verd{animation:sr-land .5s var(--ease) both}
 @keyframes sr-land{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sr-verd{animation:none}}
-.sr-score{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:64px;line-height:1;
-          text-transform:uppercase}
-.sr-band{margin-top:var(--sp1);font-family:'Archivo Narrow',sans-serif;font-weight:700;
-         text-transform:uppercase;font-size:30px;line-height:1.05}
-.sr-bsub{margin-top:6px;font-size:16px;line-height:1.5;color:var(--mut);max-width:44ch}
+.sr-score{font:var(--ty-verdict-num);letter-spacing:var(--ty-verdict-num-ls)}
+.sr-band{margin-top:var(--sp1);font:var(--ty-verdict-tier);
+         letter-spacing:var(--ty-verdict-tier-ls);text-transform:uppercase}
+.sr-bsub{margin-top:var(--sp1);font:var(--ty-body);color:var(--mut);max-width:44ch}
 .sr-keep{margin-top:var(--sp3);padding-top:var(--sp3);border-top:2px solid var(--ink)}
-.sr-keept{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;
-          font-size:19px;letter-spacing:.03em}
-.sr-keepp{margin-top:6px;font-size:15px;line-height:1.5;color:var(--mut);max-width:46ch}
+.sr-keept{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase}
+.sr-keepp{margin-top:6px;font:var(--ty-sec);color:var(--mut);max-width:46ch}
 .sr-links{margin-top:var(--sp2);display:flex;gap:var(--sp1);flex-wrap:wrap}
-.sr-a{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 var(--sp3);
-      border:1px solid var(--ink);font-weight:700;font-size:15.5px;
+.sr-a{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 var(--sp3);
+      border:1px solid var(--ink);font:var(--ty-sec);font-weight:700;
       transition:background-color .15s var(--ease),color .15s var(--ease)}
-.sr-a span{font-weight:400;font-size:13px;color:var(--mut)}
+.sr-a span{font:var(--ty-meta);color:var(--mut)}
 @media (hover:hover){.sr-a:hover{background:var(--ink);color:var(--pa)}
                      .sr-a:hover span{color:var(--pa3)}}
 @media (max-width:520px){.sr-a{width:100%;justify-content:space-between}}
-.sr-web{margin-top:var(--sp2);font-size:14.5px;color:var(--mut)}
+.sr-web{margin-top:var(--sp2);font:var(--ty-sec);color:var(--mut)}
 .sr-web a{text-decoration:underline;text-underline-offset:3px;font-weight:700;color:var(--ink)}
 
-.sr-foot{padding:var(--sp4) var(--sp3) var(--sp5);text-align:center;font-size:13.5px;
+.sr-foot{padding:var(--sp4) var(--sp3) var(--sp5);text-align:center;font:var(--ty-meta);
          color:var(--tx4);border-top:1px solid var(--bd)}
 `;
 
-/** One question, or the verdict once all five are answered. */
 export default function ScoutingReport() {
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
@@ -228,9 +252,9 @@ export default function ScoutingReport() {
       </header>
 
       {/* The promise retires once it has been kept. Leaving "Five questions.
-          One honest verdict." standing above a FILED verdict is a stale
-          headline selling something the reader has already done — and it
-          pushes the actual result down the page on a phone. */}
+          One honest verdict." standing above a FILED verdict sells the reader
+          something they have already done, and pushes the actual result down
+          the page on a phone. */}
       {!done && (
         <div className="sr-open">
           <h1 className="sr-h1"><span>Five questions.</span><span>One honest verdict.</span></h1>
@@ -241,9 +265,15 @@ export default function ScoutingReport() {
       )}
 
       <main className="sr-sheet">
+        {/* The subject sits in the document HEADER, not above the question.
+            A tracked uppercase label as its own block directly above a
+            heading is a kicker, which craft-floor bans outright — and the
+            detector caught it at 1280 even though 375 happened not to trip
+            it. Moving it here is also truer to the form: a real scouting
+            report names its subject in the header, not over every line. */}
         <div className="sr-head">
           <div className="sr-title">Scouting Report</div>
-          <div className="sr-no">No. {getFootleNumber()}</div>
+          <div className="sr-no">{!done && <>{q.d} · </>}No. {getFootleNumber()}</div>
         </div>
 
         {!done ? (
@@ -252,7 +282,6 @@ export default function ScoutingReport() {
               {QS.map((_, k) => <span key={k} className="sr-pip" data-on={k <= i ? 1 : 0} />)}
             </div>
 
-            <div className="sr-dept">{q.d}</div>
             <h2 className="sr-q">{q.q}</h2>
 
             <div className="sr-opts">
@@ -275,7 +304,10 @@ export default function ScoutingReport() {
 
             {answered && (
               <>
-                <p className="sr-why" role="status">{q.why}</p>
+                <div className="sr-whywrap" role="status">
+                  <div className="sr-whylab">Why</div>
+                  <p className="sr-why">{q.why}</p>
+                </div>
                 <button className="sr-next" onClick={next}>
                   {i + 1 >= QS.length ? 'See the verdict' : 'Next question'}
                 </button>
@@ -298,8 +330,8 @@ export default function ScoutingReport() {
                 <a className="sr-a" href={APP_STORE}>iPhone<span>App Store</span></a>
                 <a className="sr-a" href={PLAY_STORE_URL}>Android<span>Google Play</span></a>
               </div>
-              {/* "no install" rather than "no install." avoided an orphaned
-                  full stop on its own line at 375px. */}
+              {/* "nothing to install" rather than "no install." avoided an
+                  orphaned full stop on its own line at 375px. */}
               <p className="sr-web">
                 Or <a href={GET_APP}>keep going in the browser</a> — same test, nothing to install
               </p>

@@ -93,6 +93,50 @@ export const REPORT = {
   // ── Motion. One easing, no bounce: a bounce on a verdict landing was the
   // exact tell this direction was built to avoid. ────────────────────────
   ease: 'cubic-bezier(.16,1,.3,1)',
+
+  // ── Elevation. The sheet's lift off the desk. Tokenised because the
+  // detector correctly flagged a bare rgba(0,0,0,.55) as palette drift.
+  'sheet-shadow': '0 18px 50px rgba(0,0,0,.55)',
+
+  // ── TYPE RAMP — transcribed from DESIGN.md, which documents this exact
+  // direction. Every size here was already decided; inventing 21/24/19/16/64/
+  // 30px instead was drift, and the impeccable detector flagged all ten.
+  //
+  // Each role is a `font` shorthand plus its tracking, because letter-spacing
+  // cannot ride in the shorthand. Use as:  font:var(--ty-headline);
+  //                                        letter-spacing:var(--ty-headline-ls);
+  //
+  // ⚠️ The tracking is not decoration. The headline is specified at -0.02em,
+  // and writing +0.005em instead made "ONE HONEST VERDICT." overflow 375px and
+  // wrap to three lines — against a contract that calls for two. The fix
+  // looked like "shrink the headline to 34px". The actual fault was ignoring
+  // the documented tracking.
+  // ⚠️ DELIBERATE EXTENSION of the DESIGN.md ramp, not drift. DESIGN.md sets
+  // the headline floor at 41px. Measured at 375px: "ONE HONEST VERDICT."
+  // needs 385px at 41px, against 331px of available width, so it wraps to a
+  // THIRD line — and the direction contract specifies a two-line headline in
+  // the first viewport. The largest size that holds it on one line is 35px.
+  //
+  // The floor is 35px for that reason and no other. An earlier comment here
+  // claimed the -0.02em tracking would recover the width; that was asserted
+  // without measuring and is false — the tracking is worth about 6px, not the
+  // 54px needed. Above 530px the documented 6.6vw takes over and the ramp is
+  // unchanged, so this only ever applies to phones.
+  'ty-headline': "700 clamp(35px,6.6vw,88px)/0.95 'Archivo Narrow',sans-serif",
+  'ty-headline-ls': '-0.02em',
+  'ty-section': "700 clamp(32px,5.2vw,60px)/0.98 'Archivo Narrow',sans-serif",
+  'ty-section-ls': '-0.018em',
+  'ty-verdict-num': "700 clamp(102px,13.4vw,176px)/0.74 'Archivo Narrow',sans-serif",
+  'ty-verdict-num-ls': '-0.035em',
+  'ty-verdict-tier': "700 clamp(34px,5.4vw,66px)/0.94 'Archivo Narrow',sans-serif",
+  'ty-verdict-tier-ls': '-0.008em',
+  'ty-lede': '400 20px/1.55 Archivo,system-ui,sans-serif',
+  'ty-sub': '400 18px/1.62 Archivo,system-ui,sans-serif',
+  'ty-body': '400 17px/1.55 Archivo,system-ui,sans-serif',
+  'ty-sec': '400 15px/1.4 Archivo,system-ui,sans-serif',
+  'ty-meta': '400 13.5px/1.4 Archivo,system-ui,sans-serif',
+  'ty-label': '700 12px/1.4 Archivo,system-ui,sans-serif',
+  'ty-label-ls': '0.13em',
 };
 
 /** Render REPORT as a `:root{...}` declaration. */
