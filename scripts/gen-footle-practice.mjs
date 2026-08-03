@@ -43,7 +43,11 @@ function pick() {
     if (number < 1) break; // bounded by Footle #1 — do not remove
     if (number > WORDLE_ANSWER_LOG.length) continue;
     const answer = getWordleAnswerForDayIndex(dayIndex);
-    if (answer) return { answer, number };
+    // Alex, 2026-08-03: "we do not want 4 letter footles, it is too short."
+    // No. 62 (KANE) shipped and sat under a 7-tile teaching strip looking
+    // broken. Floor at 6 — the walk just keeps going until a long-enough
+    // archive answer turns up, still bounded by Footle #1.
+    if (answer && answer.length >= 6) return { answer, number };
   }
   console.error('[footle-practice] no past answer inside the log — refusing to emit');
   process.exit(1);

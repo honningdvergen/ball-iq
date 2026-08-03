@@ -30,7 +30,20 @@ const KB = ['QWERTYUIOP', 'ASDFGHJKL', '⏎ZXCVBNM⌫'];
 
 const CSS = `
 .fb{background:var(--card2);background-image:var(--grain);border-top:1px solid var(--bd)}
-.fb-in{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3)}
+.fb-in{max-width:1000px;margin:0 auto;padding:var(--sp5) 28px}
+/* The mockup's band is a 470px board column and a 422px rail (legend, status,
+   clock) — the first port stacked everything into one long column and left
+   half the width empty. */
+.fb-cols{display:grid;grid-template-columns:1fr;gap:var(--sp4)}
+@media (min-width:1000px){.fb-cols{grid-template-columns:470px 1fr;align-items:start}}
+.fb-legend{display:flex;flex-direction:column;gap:8px;margin-top:var(--sp3)}
+@media (min-width:1000px){.fb-legend{margin-top:0}}
+.fb-li{display:flex;align-items:center;gap:10px;font:var(--ty-sec);color:var(--on-desk)}
+.fb-sw{flex:0 0 auto;width:18px;height:18px;border:1px solid var(--bd3)}
+.fb-sw[data-k="green"]{background:var(--v5);border-color:var(--v5)}
+.fb-sw[data-k="yellow"]{background:var(--attr-mid);border-color:var(--attr-mid)}
+.fb-sw[data-k="grey"]{background:var(--bd);border-color:var(--bd)}
+.fb-six{margin-top:var(--sp1);font:var(--ty-sec);font-weight:700;color:var(--tx)}
 .fb-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
        text-transform:uppercase;color:var(--tx);text-wrap:balance}
 .fb-sub{margin-top:var(--sp2);font:var(--ty-sub);color:var(--on-desk);max-width:58ch}
@@ -45,7 +58,10 @@ const CSS = `
 .fb-tile{width:52px;height:52px;display:grid;place-items:center;
          font:700 22px/1 'Archivo Narrow',sans-serif;text-transform:uppercase;
          border:1px solid var(--bd3);color:var(--tx)}
-@media (max-width:420px){.fb-tile{width:44px;height:44px;font-size:19px}}
+/* Small screens: the TRACK owns the size (9.5vw), the tile fills it — a
+   fixed 44px here overlapped neighbouring tracks by ~8px once the answer
+   length hit 7. aspect-ratio keeps them square at any track width. */
+@media (max-width:520px){.fb-tile{width:auto;height:auto;aspect-ratio:1;font-size:17px}}
 .fb-tile[data-m="green"]{background:var(--v5);border-color:var(--v5);color:var(--tx)}
 .fb-tile[data-m="yellow"]{background:var(--attr-mid);border-color:var(--attr-mid);
                           color:var(--attr-mid-ink)}
@@ -77,7 +93,7 @@ const CSS = `
          transition:background-color .15s var(--ease)}
 @media (hover:hover){.fb-real:hover{background:var(--card)}}
 
-.fb-clock{margin-top:var(--sp5);padding-top:var(--sp3);border-top:1px solid var(--bd)}
+.fb-clock{margin-top:var(--sp4);padding-top:var(--sp3);border-top:1px solid var(--bd)}
 .fb-time{font:700 clamp(44px,9vw,72px)/1 'Archivo Narrow',sans-serif;color:var(--tx);
          font-variant-numeric:tabular-nums;letter-spacing:.01em}
 .fb-cnote{margin-top:6px;font:var(--ty-sec);color:var(--on-desk-mut);max-width:52ch}
@@ -180,7 +196,7 @@ export default function FootleBand() {
 
         <div className="fb-eg" aria-hidden="true">
           <div className="fb-eglab">If you guessed <b>Laporte</b> and the answer was <b>Haaland</b>:</div>
-          <div className="fb-grid" style={{ gridTemplateColumns: `repeat(7, min(44px, 11vw))` }}>
+          <div className="fb-grid" style={{ gridTemplateColumns: 'repeat(7, min(44px, 9.5vw))' }}>
             {'LAPORTE'.split('').map((ch, i) => (
               <span key={i} className="fb-tile" data-m={egMarks[i]}
                 style={{ width: 'auto', height: 'auto', aspectRatio: '1', fontSize: 15 }}>{ch}</span>
@@ -188,12 +204,14 @@ export default function FootleBand() {
           </div>
         </div>
 
+        <div className="fb-cols">
+        <div>
         <p className="fb-note">
           Try No. {FP_NUMBER} from the archive — a {LEN}-letter surname, and nothing about
           tonight’s is given away.
         </p>
 
-        <div className="fb-grid" style={{ gridTemplateColumns: `repeat(${LEN}, min(52px, 13vw))` }}
+        <div className="fb-grid" style={{ gridTemplateColumns: 'repeat(' + LEN + ', min(52px, 9.5vw))' }}
              role="group" aria-label={`Practice Footle board, six guesses of ${LEN} letters`}
              data-shake={shake ? 1 : undefined}
              onAnimationEnd={() => setShake(false)}>
@@ -238,15 +256,24 @@ export default function FootleBand() {
           <a className="fb-real" href="/footle">Play today’s Footle</a>
           <a className="fb-real" href="/play?game=daily">Play the Daily 7</a>
         </div>
-
-        <div className="fb-clock">
-          <div className="fb-time" aria-hidden="true">{rolled ? '00:00:00' : `${hh}:${mm}:${ss}`}</div>
-          <p className="fb-cnote">
-            {rolled
-              ? '0 seconds — the new board is up. Reload for today’s surname and seven new questions.'
-              : 'until a new surname and seven new questions, the same for everybody.'}
-          </p>
         </div>
+
+        <div className="fb-legend" aria-hidden="true">
+          <div className="fb-li"><span className="fb-sw" data-k="green" />Right letter, right place</div>
+          <div className="fb-li"><span className="fb-sw" data-k="yellow" />In the surname, wrong place</div>
+          <div className="fb-li"><span className="fb-sw" data-k="grey" />Not in it</div>
+          <div className="fb-six">Six guesses.</div>
+          <div className="fb-clock">
+            <div className="fb-time" aria-hidden="true">{rolled ? '00:00:00' : hh + ':' + mm + ':' + ss}</div>
+            <p className="fb-cnote">
+              {rolled
+                ? '0 seconds — the new board is up. Reload for today’s surname and seven new questions.'
+                : 'until a new surname and seven new questions, the same for everybody.'}
+            </p>
+          </div>
+        </div>
+        </div>
+
       </div>
     </section>
   );

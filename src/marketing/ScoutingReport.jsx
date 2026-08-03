@@ -1,28 +1,27 @@
 // The Scouting Report homepage — seed cf2f8891, ported from
 // docs/mockups/scouting-d.html.
 //
-// Lives at /home-preview. `/` still renders MarketingHome, untouched, so the
-// page that is currently converting carries none of the risk while this is
-// judged on a real phone.
+// ⚠️ THIS IS A PORT, NOT A PARAPHRASE — the distinction cost a production
+// incident. The first implementation reproduced the mockup's *parts* (a
+// sheet, a question, an index) while inventing its own composition, and Alex
+// called it on the live page: "the implementation did not go right." The
+// composition below follows values MEASURED from the rendered mockup at
+// 1456px, not remembered from grepping it:
+//   container 1000px · hero LEFT-aligned, padding 34/64 · h1 88px -0.02em
+//   the file 1080px wide (overhanging the container), rotated -0.45deg,
+//   with a letterhead ("Ball IQ — scouting report" / "Subject: you · …")
+//   and an INK assessment band carrying "N of 5" · options in a 2-col grid
+//   · 12 curated clubs shown, the rest one disclosure away · Footle as
+//   board + 422px rail with the legend and the clock.
 //
-// THE THESIS, from the direction contract, because every decision below is
-// downstream of it: the page is not ABOUT a football test. The page IS the
-// test, and it files a report on you. It refuses the category's dark hero,
-// phone mockup and feature-card triptych.
-//
-// EVERY SIZE, COLOUR AND SPACE HERE COMES FROM DESIGN.md. That file already
-// documents this exact direction — it was written from the built mockup — and
-// an earlier pass of this component invented its own type sizes instead. The
-// impeccable detector flagged all ten. Do not add a literal px value here:
-// add a role to design/report.js and use it.
-//
-// Consequences that look like bugs if you do not know the contract:
+// Standing rules that look like bugs if you do not know them:
 //   · No cards, no border-radius, no glow. Hairline rules do that work.
-//   · Action on the paper is INK, not green (Alex, 2026-08-03). Green lives on
-//     the dark desk chrome only. Do not "restore" the green button.
-//   · No counted-up numbers, no bounce easing. A bounce on the verdict landing
-//     was the exact tell this direction was built to avoid.
-//   · The question count never appears. Binding product rule.
+//   · Action on the paper is INK, not green (Alex). Green lives on the desk.
+//   · No counted-up numbers, no bounce easing.
+//   · The exact question count never appears. Binding product rule.
+//   · No literal px sizes — every size is a --ty/--sp role from report.js.
+//   · No backticks inside the CSS template literal (build fails silently).
+//   · The JSON-LD block stringifies a STATIC const — no user input reaches it.
 
 import '../design/fonts.css';
 import '../design/report.css';
@@ -36,13 +35,11 @@ import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
 import FootleBand from './FootleBand.jsx';
 
 const GET_APP = '/get';
+const PLAY = '/play';
 
 // The five FAQs, copy identical to MarketingHome's CORRECTED set (Android
 // live since 2026-07-30; no question counts). One array feeds both the
-// rendered section and the FAQPage JSON-LD below, so they cannot diverge —
-// a schema answering differently from the visible page is a rich-result
-// penalty waiting to happen. Note: the old homepage never actually emitted
-// FAQPage schema; this is its first appearance, not a port.
+// rendered section and the FAQPage JSON-LD, so they cannot diverge.
 const FAQS = [
   { q: 'Is Ball IQ free?', a: 'Yes — 100% free, and the app shows no ads. Guests can jump straight into solo and local games, no account needed.' },
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
@@ -50,11 +47,9 @@ const FAQS = [
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
   { q: 'Where can I play?', a: 'On iPhone via the App Store, on Android via Google Play, or instantly in your browser at balliq.app — no install, no account. Your progress follows your account across all three.' },
 ];
-const PLAY = '/play';
 
-// Carried over verbatim from the approved mockup so this is a port, not a
-// rewrite. `a` is an INDEX into `o`, never the answer string — the bank's
-// oldest trap.
+// Carried over verbatim from the approved mockup. `a` is an INDEX into `o`,
+// never the answer string — the bank's oldest trap.
 const QS = [
   {
     d: 'Premier League',
@@ -93,11 +88,9 @@ const QS = [
   },
 ];
 
-// One band per possible score — six outcomes over five questions, which is
-// exactly what the six-step verdict ramp is for. Every stop clears 4.5:1 as
-// ink on newsprint (measured: 7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23), which
-// is why the VERDICT ramp is used here and not the Scout's Ramp — --attr-mid
-// reads 2.13:1 on paper and must never be text.
+// One band per possible score. Every verdict stop clears 4.5:1 as ink on
+// newsprint (measured 7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23) — the Scout's
+// Ramp amber (--attr-mid) is 2.13:1 there and must never be text.
 const BANDS = [
   { t: 'Casual', s: 'You watch the finals. Nothing wrong with that.', v: 'var(--v0)' },
   { t: 'Passer-by', s: 'You know the names. The details are somebody else’s job.', v: 'var(--v1)' },
@@ -107,6 +100,14 @@ const BANDS = [
   { t: 'Scout', s: 'Five from five. The full test is the only thing left that will test you.', v: 'var(--v5)' },
 ];
 
+// The mockup shows these twelve on the homepage; the other sixty stay one
+// disclosure away — still real anchors in the DOM, so the 72-link crawl mesh
+// survives while the reader gets the curated dozen.
+const FEATURED_SLUGS = [
+  'liverpool', 'arsenal', 'manchester-united', 'manchester-city', 'chelsea', 'tottenham',
+  'barcelona', 'real-madrid', 'bayern-munich', 'borussia-dortmund', 'celtic', 'hajduk-split',
+];
+
 const CSS = `
 .sr{background:var(--bg);background-image:var(--grain);color:var(--on-desk);
     font-family:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -114,109 +115,97 @@ const CSS = `
 .sr *{box-sizing:border-box;margin:0;padding:0}
 .sr a{color:inherit;text-decoration:none}
 .sr :focus-visible{outline:3px solid var(--grn);outline-offset:3px}
+.sr-w{max-width:1000px;margin:0 auto;padding-left:28px;padding-right:28px}
 
-/* Skip link: visually hidden until focused — first tabbable thing on the
-   page, jumps past the hero straight to the report. */
-/* "sr a.sr-skip" for the same reason as the Play button below: the ".sr a"
-   reset is class+element (0,1,1) and beats a bare class, so a plain .sr-skip
-   silently inherited --on-desk on green — 1.3:1, the EXACT bug fixed on
-   .sr-play yesterday, reintroduced on a new element while its warning comment
-   sat thirty lines away. Every green control that is an anchor needs this. */
 .sr a.sr-skip{position:absolute;left:-9999px;top:0;z-index:50;min-height:44px;
          display:inline-flex;align-items:center;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700}
 .sr a.sr-skip:focus{left:0}
 
-/* ── The desk: chrome. Green survives HERE and only here. ───────────── */
 .sr-mast{display:flex;align-items:center;justify-content:space-between;gap:var(--sp2);
          flex-wrap:wrap;padding:var(--sp2) var(--sp3);border-bottom:1px solid var(--bd)}
-/* Four links that name themselves — the mockup's masthead nav, no drawer.
-   Inline between wordmark and CTA on desktop; wraps to its own full-width row
-   under 700px, which keeps every target 44px without hiding anything. */
-.sr-nav{display:flex;gap:2px;flex-wrap:wrap}
-.sr-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;
-          font:var(--ty-sec);color:var(--on-desk-mut);
-          transition:color .12s var(--ease)}
-@media (hover:hover){.sr-nav a:hover{color:var(--tx)}}
-@media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
 .sr-mark{font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
          color:var(--tx);text-transform:uppercase}
 .sr-mark em{font-style:normal;color:var(--grn)}
-/* ⚠️ Written as "sr a.sr-play", not a bare ".sr-play". The reset above is
-   ".sr a" — class + ELEMENT, specificity (0,1,1) — which outranks a bare
-   class (0,1,0). So color:var(--grn-ink) silently lost to color:inherit and
-   the button painted --on-desk #C3CBC3 on #58CC02: 1.3:1, under the 4.5:1
-   floor. (No backticks in this comment: it lives inside a template literal,
-   and a stray one terminates the string and fails the build.)
-   It looked like plausible light-on-green in a screenshot; only the rendered
-   detector pass caught it. */
+.sr-nav{display:flex;gap:2px;flex-wrap:wrap}
+.sr-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;
+          font:var(--ty-sec);color:var(--on-desk-mut);transition:color .12s var(--ease)}
+@media (hover:hover){.sr-nav a:hover{color:var(--tx)}}
+@media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
 .sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
          border:1px solid var(--grn);transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-play:hover{opacity:.88}}
 
-/* ── The lede sits on the desk, not on the paper. ───────────────────── */
-/* --sp3 (22px), not --sp2 (14px): body text was rendering 14px from the
-   viewport edge, under the 16px floor. The narrower gutter had existed only
-   to buy width for the headline; the headline floor now handles that. */
-/* 860px, not 760px. At 1280 the headline renders at 84.48px and its longest
-   line needs 793px, so a 760px container (716px of content) wrapped it to a
-   THIRD line on desktop — the same two-line rule broken again, in the other
-   direction. Measured, not guessed. The lede keeps its own 46ch measure, so
-   the wider container only ever affects the headline. */
-.sr-open{padding:var(--sp5) var(--sp3) var(--sp4);max-width:860px;margin:0 auto;text-align:center}
-/* Desktop was spending 594px of an 800px fold before reaching question one,
-   leaving 2 of 4 options below it, against a contract whose first viewport is
-   headline, lede, question. The hero band tightens once there is height to
-   trade. */
-@media (min-width:700px) and (max-height:900px){
-  .sr-open{padding-top:var(--sp4);padding-bottom:var(--sp3)}
-}
-/* Size and tracking both come from report.js, which documents why the mobile
-   floor is 35px rather than DESIGN.md's 41px: measured, "ONE HONEST VERDICT."
-   needs 385px at 41px against 331px available. Tracking is worth ~6px of that,
-   not 54px — an earlier comment here claimed otherwise without measuring. */
+/* The opening. LEFT-aligned and tight — measured from the mockup (34px over,
+   64px under, 1000px container). Centring this was half of "does not look
+   right": the same 88px headline reads calmer ranged left in a dense block. */
+.sr-open{padding-top:var(--sp4);padding-bottom:var(--sp5)}
 .sr-h1{font:var(--ty-headline);letter-spacing:var(--ty-headline-ls);
        text-transform:uppercase;color:var(--tx);text-wrap:balance}
-.sr-h1 span{display:block}
-.sr-lede{margin-top:var(--sp2);font:var(--ty-lede);color:var(--tx4);
-         max-width:46ch;margin-left:auto;margin-right:auto}
+.sr-lede{margin-top:var(--sp2);font:var(--ty-lede);color:var(--tx4);max-width:60ch}
 
-/* ── The paper. A lit document lying on the desk. ───────────────────── */
-/* The sheet needs DESK VISIBLE AROUND IT or the concept collapses: full-bleed
-   paper reads as "a section with a light background", not a document on a
-   surface. It was bleeding edge-to-edge at 375px — i.e. on 66% of traffic. */
-.sr-sheet{max-width:660px;margin:0 var(--sp2) var(--sp6);background:var(--pa);
-          background-image:var(--paper-tex);color:var(--ink);
-          padding:var(--sp4) var(--sp3);box-shadow:var(--sheet-shadow)}
-/* The mockup lays the sheet on the desk at -.3deg — the single cue that this
-   is a DOCUMENT on a surface, not a card in a layout. Flattening it out was
-   part of why production read as "not right". Desktop only. */
-@media (min-width:700px){.sr-sheet{transform:rotate(-.3deg)}}
-@media (min-width:520px) and (max-width:699px){.sr-sheet{margin:0 var(--sp3) var(--sp6)}}
-@media (min-width:700px){.sr-sheet{margin:0 auto var(--sp6);padding:var(--sp5)}}
+/* The file: wider than the container, lying on the desk, with the stacked
+   second sheet behind it — a sheet, not a glow. */
+.sr-filewrap{position:relative;max-width:1080px;margin:0 auto var(--sp6);padding:0 var(--sp1)}
+.sr-file{position:relative;background:var(--pa);background-image:var(--paper-tex);
+         color:var(--ink);box-shadow:var(--sheet-shadow)}
+@media (min-width:1140px){.sr-file{transform:rotate(-.45deg)}}
+.sr-file::before{content:'';position:absolute;inset:-7px -6px 9px 10px;
+                 background:var(--pa3);transform:rotate(.5deg);z-index:-1;
+                 box-shadow:var(--sheet-shadow)}
+@media (max-width:699px){.sr-file::before{display:none}
+  .sr-filewrap{margin-left:var(--sp2);margin-right:var(--sp2);padding:0}}
 
-/* Moving the subject into this row made BOTH halves wrap to two lines at
-   375px. A masthead that wraps stops reading as a masthead, so it stacks
-   below 460px instead — each line whole, the document's own header. */
-.sr-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp2);
-         padding-bottom:var(--sp1);border-bottom:2px solid var(--ink)}
-.sr-title,.sr-no{font:var(--ty-label);letter-spacing:var(--ty-label-ls);
-                 text-transform:uppercase;white-space:nowrap}
-.sr-no{color:var(--mut)}
-@media (max-width:459px){
-  .sr-head{flex-direction:column;align-items:flex-start;gap:4px}
-}
+.sr-lh{padding:var(--sp2) var(--sp3);border-bottom:2px solid var(--ink);background:var(--pa2)}
+@media (min-width:700px){.sr-lh{padding:var(--sp2) var(--sp4)}}
+.sr-who{font:var(--ty-label);letter-spacing:var(--ty-label-ls);
+        text-transform:uppercase;font-weight:700}
+.sr-subject{margin-top:3px;font:var(--ty-meta);color:var(--mut)}
 
-/* The running report — the sheet filling itself in, one row per discipline.
-   Ported from the mockup's drawStub with its decisions intact: only a CORRECT
-   answer fills the bar (a full bar in a different colour still reads as a
-   full bar); an unasked row gets NO bar at all (an empty outline drew the
-   same mark for "wrong" and "not asked yet"); and the outcome column says
-   what HAPPENED — 1 of 1 / 0 of 1 / not assessed — because one binary answer
-   cannot produce a two-digit score and a football person spots a fake
-   instantly. */
-.sr-stub{width:100%;border-collapse:collapse;margin:var(--sp2) 0 var(--sp3)}
+.sr-assess{margin:var(--sp3) var(--sp3) 0;border:1px solid var(--ink)}
+@media (min-width:700px){.sr-assess{margin:var(--sp4) var(--sp4) 0}}
+.sr-ab{display:flex;align-items:center;justify-content:space-between;
+       padding:9px var(--sp2);background:var(--ink);color:var(--pa)}
+.sr-abt{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase}
+.sr-abn{font:var(--ty-meta);color:var(--pa3)}
+.sr-abody{padding:var(--sp3) var(--sp2)}
+@media (min-width:700px){.sr-abody{padding:var(--sp3)}}
+/* Sentence-case caption, deliberately NOT the tracked-uppercase eyebrow the
+   craft floor bans and the detector flagged once already. */
+.sr-dept{font:var(--ty-sec);color:var(--mut)}
+.sr-q{margin-top:6px;font:var(--ty-sub);font-weight:600;text-wrap:balance}
+@media (min-width:700px){.sr-q{font:var(--ty-lede);font-weight:600}}
+
+/* Options: the mockup's two-column boxed grid. --rule2 (3.31:1) because a
+   rule doing a CONTROL's job must clear WCAG 1.4.11's 3:1 floor. */
+.sr-opts{margin-top:var(--sp2);display:grid;grid-template-columns:1fr;gap:9px}
+@media (min-width:700px){.sr-opts{grid-template-columns:1fr 1fr}}
+.sr-opt{display:flex;align-items:center;gap:var(--sp2);width:100%;text-align:left;
+        min-height:52px;padding:var(--sp1) var(--sp2);background:var(--pa);
+        border:1px solid var(--rule2);color:var(--ink);
+        font:var(--ty-body);cursor:pointer;transition:background-color .12s var(--ease)}
+.sr-opt:disabled{cursor:default}
+@media (hover:hover){.sr-opt:not(:disabled):hover{background:var(--pa2)}}
+.sr-key{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
+        border:1px solid var(--rule2);font:var(--ty-label);color:var(--mut)}
+.sr-opt[data-mark="hit"]{border-color:var(--v5);font-weight:700}
+.sr-opt[data-mark="hit"] .sr-key{background:var(--v5);border-color:var(--v5);color:var(--tx)}
+.sr-opt[data-mark="miss"]{color:var(--mut);background:var(--pa2);border-color:var(--v0)}
+.sr-opt[data-mark="miss"] .sr-key{background:var(--v0);border-color:var(--v0);color:var(--tx)}
+
+.sr-whywrap{margin-top:var(--sp2);padding:var(--sp2);background:var(--pa2)}
+.sr-whylab{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase;
+           color:var(--mut);margin-bottom:6px}
+.sr-why{font:var(--ty-sec);color:var(--ink)}
+.sr-next{margin-top:var(--sp2);min-height:52px;width:100%;background:var(--ink);color:var(--pa);
+         border:1px solid var(--ink);font:var(--ty-body);font-weight:700;cursor:pointer;
+         transition:opacity .15s var(--ease)}
+@media (hover:hover){.sr-next:hover{opacity:.86}}
+
+.sr-stubwrap{padding:var(--sp3);border-top:1px solid var(--rule);margin-top:var(--sp3)}
+@media (min-width:700px){.sr-stubwrap{padding:var(--sp3) var(--sp4) var(--sp4)}}
+.sr-stub{width:100%;border-collapse:collapse}
 .sr-stub tr:nth-child(even){background:var(--pa2)}
 .sr-stub th{font:var(--ty-label);letter-spacing:var(--ty-label-ls);
             text-transform:uppercase;color:var(--mut);text-align:left;
@@ -233,43 +222,8 @@ const CSS = `
 .sr-out[data-r="pend"]{color:var(--mut)}
 .sr-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-.sr-q{margin-top:var(--sp1);font:var(--ty-sub);font-weight:600;text-wrap:balance}
-@media (min-width:700px){.sr-q{font:var(--ty-lede);font-weight:600}}
-
-/* --rule2 (3.31:1), NOT --rule (1.53:1). DESIGN.md is explicit: a rule doing
-   a CONTROL's job must clear WCAG 1.4.11's 3:1 floor; --rule is for separating
-   rows of data only. */
-.sr-opts{margin-top:var(--sp3);display:flex;flex-direction:column}
-.sr-opt{display:flex;align-items:center;gap:var(--sp2);width:100%;text-align:left;
-        min-height:52px;padding:var(--sp1) var(--sp1) var(--sp1) 0;background:none;
-        border:0;border-top:1px solid var(--rule2);color:var(--ink);
-        font:var(--ty-body);cursor:pointer;transition:background-color .12s var(--ease)}
-.sr-opt:last-child{border-bottom:1px solid var(--rule2)}
-.sr-opt:disabled{cursor:default}
-@media (hover:hover){.sr-opt:not(:disabled):hover{background:var(--pa2)}}
-.sr-key{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
-        border:1px solid var(--rule2);font:var(--ty-label);color:var(--mut)}
-.sr-opt[data-mark="hit"] .sr-key{background:var(--v5);border-color:var(--v5);color:var(--tx)}
-.sr-opt[data-mark="miss"] .sr-key{background:var(--v0);border-color:var(--v0);color:var(--tx)}
-.sr-opt[data-mark="hit"]{font-weight:700}
-.sr-opt[data-mark="miss"]{color:var(--mut);background:var(--pa2)}
-
-/* The explanation is an annotation in the document, not an accented card.
-   A 3px coloured bar down one side is the single most recognisable tell of
-   AI-generated UI and the detector flags it by name. It reads as a shaded
-   note with its own label instead — --pa2 is exactly what DESIGN.md
-   documents shaded secondary matter to sit on. */
-.sr-whywrap{margin-top:var(--sp2);padding:var(--sp2);background:var(--pa2)}
-.sr-whylab{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase;
-           color:var(--mut);margin-bottom:6px}
-.sr-why{font:var(--ty-sec);color:var(--ink)}
-.sr-next{margin-top:var(--sp3);min-height:52px;width:100%;background:var(--ink);color:var(--pa);
-         border:1px solid var(--ink);font:var(--ty-body);font-weight:700;cursor:pointer;
-         transition:opacity .15s var(--ease)}
-@media (hover:hover){.sr-next:hover{opacity:.86}}
-
-/* ── The verdict. Lands, does not bounce. ───────────────────────────── */
-.sr-verd{animation:sr-land .5s var(--ease) both}
+.sr-verd{padding:var(--sp3);animation:sr-land .5s var(--ease) both}
+@media (min-width:700px){.sr-verd{padding:var(--sp4)}}
 @keyframes sr-land{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sr-verd{animation:none}}
 .sr-score{font:var(--ty-verdict-num);letter-spacing:var(--ty-verdict-num-ls)}
@@ -290,10 +244,30 @@ const CSS = `
 .sr-web{margin-top:var(--sp2);font:var(--ty-sec);color:var(--mut)}
 .sr-web a{text-decoration:underline;text-underline-offset:3px;font-weight:700;color:var(--ink)}
 
-/* ── FAQ. Native details/summary — keyboard and screen-reader behaviour
-   for free, no state. Hairline rules, no cards, per the world. ────────── */
-.sr-faq{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3) var(--sp4);
-        border-top:1px solid var(--bd)}
+.sr-clubs{padding:var(--sp5) 0 var(--sp4);border-top:1px solid var(--bd)}
+.sr-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
+       text-transform:uppercase;color:var(--tx);text-wrap:balance}
+.sr-clsub{margin-top:var(--sp2);font:var(--ty-sub);color:var(--on-desk);max-width:58ch}
+.sr-idx{margin-top:var(--sp3);column-count:1;column-gap:var(--sp5)}
+@media (min-width:760px){.sr-idx{column-count:2}}
+.sr-row{display:flex;align-items:baseline;gap:10px;min-height:36px;
+        break-inside:avoid;padding:6px 0;color:var(--on-desk);font:var(--ty-sec)}
+@media (pointer:coarse){.sr-row{min-height:44px;padding:10px 0}}
+.sr-cn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+.sr-ld{flex:1;min-width:16px;border-bottom:1px dotted var(--bd3);transform:translateY(-4px)}
+.sr-cc{white-space:nowrap;font:var(--ty-meta);color:var(--on-desk-mut)}
+@media (hover:hover){.sr-row:hover{color:var(--tx)}
+  .sr-row:hover .sr-ld{border-bottom-color:var(--on-desk-mut)}}
+.sr-allclubs{margin-top:var(--sp1)}
+.sr-allclubs summary{display:inline-flex;align-items:center;min-height:48px;
+        padding:12px var(--sp3);border:1px solid var(--bd3);color:var(--tx);
+        font:var(--ty-sec);font-weight:700;cursor:pointer;list-style:none;
+        transition:background-color .15s var(--ease)}
+.sr-allclubs summary::-webkit-details-marker{display:none}
+@media (hover:hover){.sr-allclubs summary:hover{background:var(--card)}}
+.sr-allclubs[open] summary{margin-bottom:var(--sp2)}
+
+.sr-faq{padding:var(--sp5) 0 var(--sp4);border-top:1px solid var(--bd)}
 .sr-faq details{border-bottom:1px solid var(--bd)}
 .sr-faq summary{display:flex;align-items:center;justify-content:space-between;
         gap:var(--sp2);min-height:52px;padding:var(--sp2) 0;cursor:pointer;
@@ -307,41 +281,6 @@ const CSS = `
         max-width:60ch;line-height:1.55}
 @media (hover:hover){.sr-faq summary:hover{color:var(--tx)}}
 
-/* ── The Club Index. Desk ground, between the report and the footer. ──
-   DESIGN.md spec: club name, DOTTED LEADER, competition; two columns above
-   760px; hover highlight on non-touch only. Three earlier variants were
-   killed by the finish review and stay dead: no question count (contradicts
-   "same depth for Hajduk Split as for Real Madrid"), no colour swatches
-   (a second palette in a world whose only saturation is the ramp), no era
-   range (its years were mostly distractors). The competition column is the
-   checkable replacement — hand-verified in club-competition.mjs. */
-.sr-clubs{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3);
-          border-top:1px solid var(--bd)}
-.sr-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
-       text-transform:uppercase;color:var(--tx);text-wrap:balance}
-.sr-clsub{margin-top:var(--sp2);font:var(--ty-sub);color:var(--on-desk);max-width:58ch}
-.sr-idx{margin-top:var(--sp3);column-count:1;column-gap:var(--sp5)}
-@media (min-width:760px){.sr-idx{column-count:2}}
-/* Anchors in a multicol container: block + break-inside, or a row can split
-   across columns mid-leader. */
-.sr-row{display:flex;align-items:baseline;gap:10px;min-height:36px;
-        break-inside:avoid;padding:6px 0;color:var(--on-desk);
-        font:var(--ty-sec)}
-@media (pointer:coarse){.sr-row{min-height:44px;padding:10px 0}}
-.sr-cn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
-.sr-ld{flex:1;min-width:16px;border-bottom:1px dotted var(--bd3);
-       transform:translateY(-4px)}
-.sr-cc{white-space:nowrap;font:var(--ty-meta);color:var(--on-desk-mut)}
-@media (hover:hover){
-  .sr-row:hover{color:var(--tx)}
-  .sr-row:hover .sr-ld{border-bottom-color:var(--on-desk-mut)}
-}
-.sr-more{display:inline-flex;align-items:center;min-height:48px;margin-top:var(--sp3);
-         padding:12px var(--sp3);border:1px solid var(--bd3);color:var(--tx);
-         font:var(--ty-sec);font-weight:700;
-         transition:background-color .15s var(--ease)}
-@media (hover:hover){.sr-more:hover{background:var(--card)}}
-
 .sr-foot{padding:var(--sp4) var(--sp3) var(--sp5);text-align:center;font:var(--ty-meta);
          color:var(--tx4);border-top:1px solid var(--bd)}
 .sr-foot p{max-width:52ch;margin:0 auto}
@@ -353,21 +292,40 @@ const CSS = `
 .sr-legal{margin-top:2px;display:flex;gap:var(--sp1);justify-content:center;flex-wrap:wrap}
 `;
 
+/** The running-report table — under the assessment while filing, above the
+ *  verdict once filed. One component so the two can never disagree. */
+function Stub({ results, caption }) {
+  return (
+    <table className="sr-stub">
+      <caption className="sr-vh">{caption}</caption>
+      <tbody>
+        {QS.map((qq, k) => (
+          <tr key={k}>
+            <th scope="row">{qq.d}</th>
+            <td>{results[k] !== null && (
+              <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
+            )}</td>
+            <td className="sr-out" data-r={results[k] === true ? 'yes' : results[k] === false ? 'no' : 'pend'}>
+              {results[k] === true ? '1 of 1' : results[k] === false ? '0 of 1' : 'not assessed'}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 export default function ScoutingReport() {
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
-  // One slot per question: true/false once answered, null = not assessed.
-  // This IS "the report writes itself" — the lede's promise, previously
-  // unkept: the page replaced each question and only the tally survived.
   const [results, setResults] = useState(() => QS.map(() => null));
-  // Terminal data via ref: the final answer is read in the same tick it is
-  // written, and a state read there would see the previous render's value.
   const scoreRef = useRef(0);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
 
   const q = QS[i];
   const answered = picked !== null;
+  const filed = results.filter((r) => r !== null).length;
 
   const choose = useCallback((k) => {
     if (picked !== null) return;
@@ -384,6 +342,16 @@ export default function ScoutingReport() {
   }, [i]);
 
   const band = BANDS[Math.min(score, BANDS.length - 1)];
+  const featured = FEATURED_SLUGS.map((s) => CLUB_INDEX.find((r) => r.s === s)).filter(Boolean);
+  const rest = CLUB_INDEX.filter((r) => !FEATURED_SLUGS.includes(r.s));
+
+  // The letterhead's subject line follows the file's state — every state is a
+  // sentence, never a bare label.
+  const subject = done
+    ? 'Subject: you · verdict filed — ' + band.t.toLowerCase() + ', ' + score + ' of ' + QS.length
+    : filed === 0
+      ? 'Subject: you · nothing filed yet'
+      : 'Subject: you · ' + filed + ' of ' + QS.length + ' filed';
 
   return (
     <div className="sr">
@@ -402,179 +370,146 @@ export default function ScoutingReport() {
         <a className="sr-play" href={PLAY}>Play free</a>
       </header>
 
-      {/* The promise retires once it has been kept. Leaving "Five questions.
-          One honest verdict." standing above a FILED verdict sells the reader
-          something they have already done, and pushes the actual result down
-          the page on a phone. */}
       {!done && (
-        <div className="sr-open">
-          <h1 className="sr-h1"><span>Five questions.</span><span>One honest verdict.</span></h1>
+        <div className="sr-w sr-open">
+          <h1 className="sr-h1">Five questions.<br />One honest verdict.</h1>
           <p className="sr-lede">
             No account, nothing to install. The report writes itself while you answer.
           </p>
         </div>
       )}
 
-      <main className="sr-sheet" id="report">
-        {/* The subject sits in the document HEADER, not above the question.
-            A tracked uppercase label as its own block directly above a
-            heading is a kicker, which craft-floor bans outright — and the
-            detector caught it at 1280 even though 375 happened not to trip
-            it. Moving it here is also truer to the form: a real scouting
-            report names its subject in the header, not over every line. */}
-        <div className="sr-head">
-          <div className="sr-title">Scouting Report</div>
-          <div className="sr-no">{!done && <>{q.d} · </>}No. {getFootleNumber()}</div>
-        </div>
-
-        {!done ? (
-          <>
-            <table className="sr-stub">
-              <caption className="sr-vh">The report so far, by discipline</caption>
-              <tbody>
-                {QS.map((qq, k) => (
-                  <tr key={k}>
-                    <th scope="row">{qq.d}</th>
-                    <td>{results[k] !== null && (
-                      <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
-                    )}</td>
-                    <td className="sr-out" data-r={results[k] === true ? 'yes' : results[k] === false ? 'no' : 'pend'}>
-                      {results[k] === true ? '1 of 1' : results[k] === false ? '0 of 1' : 'not assessed'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <h2 className="sr-q">{q.q}</h2>
-
-            <div className="sr-opts">
-              {q.o.map((opt, k) => {
-                const mark = !answered ? null : k === q.a ? 'hit' : k === picked ? 'miss' : null;
-                return (
-                  <button
-                    key={k}
-                    className="sr-opt"
-                    data-mark={mark || undefined}
-                    disabled={answered}
-                    onClick={() => choose(k)}
-                  >
-                    <span className="sr-key" aria-hidden="true">{'ABCD'[k]}</span>
-                    <span>{opt}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {answered && (
-              <>
-                <div className="sr-whywrap" role="status">
-                  <div className="sr-whylab">Why</div>
-                  <p className="sr-why">{q.why}</p>
-                </div>
-                <button className="sr-next" onClick={next}>
-                  {i + 1 >= QS.length ? 'See the verdict' : 'Next question'}
-                </button>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="sr-verd">
-            <table className="sr-stub">
-              <caption className="sr-vh">The completed report, by discipline</caption>
-              <tbody>
-                {QS.map((qq, k) => (
-                  <tr key={k}>
-                    <th scope="row">{qq.d}</th>
-                    <td>{results[k] !== null && (
-                      <span className="sr-bar"><i data-on={results[k] === true ? 1 : 0} /></span>
-                    )}</td>
-                    <td className="sr-out" data-r={results[k] === true ? 'yes' : 'no'}>
-                      {results[k] === true ? '1 of 1' : '0 of 1'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="sr-score" style={{ color: band.v, marginTop: 'var(--sp3)' }}>{score} / {QS.length}</div>
-            <div className="sr-band" style={{ color: band.v }}>{band.t}</div>
-            <p className="sr-bsub">{band.s}</p>
-
-            <div className="sr-keep">
-              <div className="sr-keept">Keep this report</div>
-              {/* The audit's draft line was "web has ads, the app doesn't" —
-                  currently FALSE: AdSense is unapproved and every slot is
-                  commented out. The claim that IS true: native push. Reminders
-                  shipped in 1.3.3 and are live. Multiplayer capacity is the
-                  resolved figure — online up to 8. */}
-              <p className="sr-keepp">
-                The full test scores you 60 to 160 and remembers it. Your streak, your clubs,
-                your card — and friends to race online, up to eight of you.
-              </p>
-              <p className="sr-keepp">
-                The app is also the only version that can nudge you when tomorrow&rsquo;s
-                puzzle drops.
-              </p>
-              <div className="sr-links">
-                <a className="sr-a" href={APP_STORE}>iPhone<span>App Store</span></a>
-                <a className="sr-a" href={PLAY_STORE_URL}>Android<span>Google Play</span></a>
-              </div>
-              {/* "nothing to install" rather than "no install." avoided an
-                  orphaned full stop on its own line at 375px. */}
-              <p className="sr-web">
-                Or <a href={GET_APP}>keep going in the browser</a> — same test, nothing to install
-              </p>
-            </div>
+      <div className="sr-filewrap">
+        <main className="sr-file" id="report">
+          <div className="sr-lh">
+            <div className="sr-who">Ball IQ — scouting report</div>
+            <div className="sr-subject">{subject}</div>
           </div>
-        )}
-      </main>
 
-      {/* 72 real links to the pages carrying the site's growth — this section
-          took the component from 0 internal club links to 72. The copy is the
-          approved mockup's, not new writing; the heading count is generated
-          so it cannot silently go stale when a wave lands. */}
-      {/* Footle sits directly under the report — Alex's call (2026-08-03,
-          twice), and the activation data agrees: Footle IS the product. The
-          contract's "ends on tomorrow" ending yields to that. */}
+          {!done ? (
+            <>
+              <div className="sr-assess">
+                <div className="sr-ab">
+                  <span className="sr-abt">Assessment</span>
+                  <span className="sr-abn">{i + 1} of {QS.length}</span>
+                </div>
+                <div className="sr-abody">
+                  <p className="sr-dept">{q.d}</p>
+                  <h2 className="sr-q">{q.q}</h2>
+                  <div className="sr-opts">
+                    {q.o.map((opt, k) => {
+                      const mark = !answered ? null : k === q.a ? 'hit' : k === picked ? 'miss' : null;
+                      return (
+                        <button key={k} className="sr-opt" data-mark={mark || undefined}
+                          disabled={answered} onClick={() => choose(k)}>
+                          <span className="sr-key" aria-hidden="true">{'ABCD'[k]}</span>
+                          <span>{opt}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {answered && (
+                    <>
+                      <div className="sr-whywrap" role="status">
+                        <div className="sr-whylab">Why</div>
+                        <p className="sr-why">{q.why}</p>
+                      </div>
+                      <button className="sr-next" onClick={next}>
+                        {i + 1 >= QS.length ? 'See the verdict' : 'Next question'}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="sr-stubwrap">
+                <Stub results={results} caption="The report so far, by discipline" />
+              </div>
+            </>
+          ) : (
+            <div className="sr-verd">
+              <Stub results={results} caption="The completed report, by discipline" />
+              <div className="sr-score" style={{ color: band.v, marginTop: 'var(--sp3)' }}>{score} / {QS.length}</div>
+              <div className="sr-band" style={{ color: band.v }}>{band.t}</div>
+              <p className="sr-bsub">{band.s}</p>
+
+              <div className="sr-keep">
+                <div className="sr-keept">Keep this report</div>
+                <p className="sr-keepp">
+                  The full test scores you 60 to 160 and remembers it. Your streak, your clubs,
+                  your card — and friends to race online, up to eight of you.
+                </p>
+                <p className="sr-keepp">
+                  The app is also the only version that can nudge you when tomorrow&rsquo;s
+                  puzzle drops.
+                </p>
+                <div className="sr-links">
+                  <a className="sr-a" href={APP_STORE}>iPhone<span>App Store</span></a>
+                  <a className="sr-a" href={PLAY_STORE_URL}>Android<span>Google Play</span></a>
+                </div>
+                <p className="sr-web">
+                  Or <a href={GET_APP}>keep going in the browser</a> — same test, nothing to install
+                </p>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+
       <FootleBand />
 
       <section className="sr-clubs" aria-labelledby="srClubsT">
-        <h2 className="sr-h2" id="srClubsT">{CLUB_HEADING}</h2>
-        <p className="sr-clsub">
-          Hajduk Split get the same treatment as Real Madrid. Every question in both files went
-          through the same checks before it was let in, and most of them tell you why the answer
-          is the answer.
-        </p>
-        <div className="sr-idx">
-          {CLUB_INDEX.map((r) => (
-            <a key={r.s} className="sr-row" href={`/quiz/${r.s}/`}>
-              <span className="sr-cn">{r.n}</span>
-              <span className="sr-ld" aria-hidden="true" />
-              <span className="sr-cc">{r.c}</span>
-            </a>
-          ))}
+        <div className="sr-w">
+          <h2 className="sr-h2" id="srClubsT">{CLUB_HEADING}</h2>
+          <p className="sr-clsub">
+            Hajduk Split get the same treatment as Real Madrid. Every question in both files went
+            through the same checks before it was let in, and most of them tell you why the answer
+            is the answer.
+          </p>
+          <div className="sr-idx">
+            {featured.map((r) => (
+              <a key={r.s} className="sr-row" href={'/quiz/' + r.s + '/'}>
+                <span className="sr-cn">{r.n}</span>
+                <span className="sr-ld" aria-hidden="true" />
+                <span className="sr-cc">{r.c}</span>
+              </a>
+            ))}
+          </div>
+          <details className="sr-allclubs">
+            <summary>Show every club on file</summary>
+            <div className="sr-idx">
+              {rest.map((r) => (
+                <a key={r.s} className="sr-row" href={'/quiz/' + r.s + '/'}>
+                  <span className="sr-cn">{r.n}</span>
+                  <span className="sr-ld" aria-hidden="true" />
+                  <span className="sr-cc">{r.c}</span>
+                </a>
+              ))}
+            </div>
+          </details>
         </div>
-        <a className="sr-more" href="/quiz/">Open the full club index</a>
       </section>
 
       <section className="sr-faq" aria-labelledby="srFaqT">
-        <h2 className="sr-h2" id="srFaqT">Common questions</h2>
-        <div style={{ marginTop: 'var(--sp2)' }}>
-          {FAQS.map((f, i) => (
-            <details key={i}>
-              <summary>{f.q}</summary>
-              <p className="sr-fa">{f.a}</p>
-            </details>
-          ))}
+        <div className="sr-w">
+          <h2 className="sr-h2" id="srFaqT">Common questions</h2>
+          <div style={{ marginTop: 'var(--sp2)' }}>
+            {FAQS.map((f, k) => (
+              <details key={k}>
+                <summary>{f.q}</summary>
+                <p className="sr-fa">{f.a}</p>
+              </details>
+            ))}
+          </div>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: FAQS.map((f) => ({
+              '@type': 'Question', name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
+          }) }} />
         </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: FAQS.map((f) => ({
-            '@type': 'Question', name: f.q,
-            acceptedAnswer: { '@type': 'Answer', text: f.a },
-          })),
-        }) }} />
       </section>
 
       <footer className="sr-foot">
