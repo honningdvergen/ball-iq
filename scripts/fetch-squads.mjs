@@ -71,11 +71,28 @@ function slotFor(pos) {
   return null;
 }
 
+// Three filters, each earned by a wrong result rather than guessed:
+//   1. no end-date qualifier  — excludes memberships explicitly finished
+//   2. a start date, and recent — because MANY historical memberships simply
+//      have no end date recorded, so filter 1 alone returned 175 Arsenal
+//      "current" players including Tony Adams
+//   3. not dead — a blunt but effective catch for the oldest rows
+const SINCE = 2015;
 const sparql = (qid) => `
-SELECT ?player ?playerLabel ?positionLabel WHERE {
+SELECT ?player ?playerLabel ?positionLabel ?start WHERE {
   ?player p:P54 ?ms .
   ?ms ps:P54 wd:${qid} .
-  FILTER NOT EXISTS { ?ms pq:P582 ?end }          # no end date = still there
+  FILTER NOT EXISTS { ?ms pq:P582 ?end }
+  ?ms pq:P580 ?start .
+  FILTER( YEAR(?start) >= ${SINCE} )
+  FILTER NOT EXISTS { ?player wdt:P570 ?death }
+  # SCOPE, not a value judgement: Wikidata files a club's men's and women's
+  # teams under the SAME entity, so an unscoped Arsenal query returned
+  # Josephine Henning and Melisa Filis (both Arsenal Women) alongside Saka and
+  # Odegaard. Our club packs and quizzes are the men's first teams, so the
+  # query has to say so. A women's product would want its own scoped query,
+  # not this one loosened.
+  ?player wdt:P21 wd:Q6581097 .
   OPTIONAL { ?player wdt:P413 ?position }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
 }`;
@@ -132,7 +149,14 @@ for (const c of CLUBS) {
   const squad = collapse(rows);
   out[c.club] = squad;
   const withSlot = squad.filter((p) => p.slot).length;
-  report.push(`  ${squad.length >= 15 ? '✓' : '⚠️'} ${c.club.padEnd(14)} ${String(squad.length).padStart(3)} players, ${withSlot} with a usable slot`);
+  // A real squad is ~20-35. Anything far outside that means the filters let
+  // history back in (or the club's data is too thin), and it must NOT be
+  // silently shipped — a lineup builder showing a retired player is exactly
+  // the error a user cannot detect.
+  const sane = squad.length >= 14 && squad.length <= 45;
+  out[c.club] = sane ? squad : undefined;
+  if (!sane) delete out[c.club];
+  report.push(`  ${sane ? '✓' : '⚠️ REJECTED'} ${c.club.padEnd(14)} ${String(squad.length).padStart(3)} players, ${withSlot} with a usable slot`);
   await new Promise((r) => setTimeout(r, 1200)); // be a good citizen
 }
 
