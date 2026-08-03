@@ -49,8 +49,10 @@ Norwegian outlet has a far higher hit rate than a cold English one to 90min.
 
 ## What we can truthfully claim (all verified 2026-08-03 — do not inflate)
 
-- **6,405 questions**, human-and-model verified. ⚠️ Fine in a B2B pitch; the
-  standing rule against printing question counts is about PLAYER-facing copy.
+- **A large, checked question bank.** ⚠️ NEVER print the exact count — not
+  even here. The rule is binding and I already talked myself past it once by
+  deciding a B2B pitch was an exception. It is not. "Thousands of questions,
+  every one checked" says the same thing and cannot go stale.
 - **72 club packs** and 17 categories, so a partner can have any club or
   competition angle they want, on request.
 - **81% of questions carry an explanation.** Say "most", never "every" — the
@@ -95,7 +97,7 @@ and they link generously.
 >
 > Hi [name],
 >
-> I build Ball IQ, a football trivia app with a bank of 6,405 verified
+> I build Ball IQ, a football quiz app with thousands of checked
 > questions across 72 clubs.
 >
 > FotMob runs a Premier League quiz every Friday, built by an outside partner.
@@ -127,8 +129,8 @@ not reply** — a finished artefact converts far better than a proposal.
 >
 > Hei [navn],
 >
-> Jeg lager Ball IQ, en fotballquiz-app med 6 405 kvalitetssikrede spørsmål
-> fordelt på 72 klubber. Norsk, laget på fritiden.
+> Jeg lager Ball IQ, en fotballquiz-app med tusenvis av
+> kvalitetssikrede spørsmål fordelt på 72 klubber. Norsk, laget på fritiden.
 >
 > FotMob har en ukentlig quiz laget av en ekstern partner. Jeg tilbyr [Outlet]
 > det samme, gratis: ti spørsmål om ukas fotball, ferdig til publisering hver
