@@ -119,7 +119,19 @@ const CSS = `
 /* --sp3 (22px), not --sp2 (14px): body text was rendering 14px from the
    viewport edge, under the 16px floor. The narrower gutter had existed only
    to buy width for the headline; the headline floor now handles that. */
-.sr-open{padding:var(--sp5) var(--sp3) var(--sp4);max-width:760px;margin:0 auto;text-align:center}
+/* 860px, not 760px. At 1280 the headline renders at 84.48px and its longest
+   line needs 793px, so a 760px container (716px of content) wrapped it to a
+   THIRD line on desktop — the same two-line rule broken again, in the other
+   direction. Measured, not guessed. The lede keeps its own 46ch measure, so
+   the wider container only ever affects the headline. */
+.sr-open{padding:var(--sp5) var(--sp3) var(--sp4);max-width:860px;margin:0 auto;text-align:center}
+/* Desktop was spending 594px of an 800px fold before reaching question one,
+   leaving 2 of 4 options below it, against a contract whose first viewport is
+   headline, lede, question. The hero band tightens once there is height to
+   trade. */
+@media (min-width:700px) and (max-height:900px){
+  .sr-open{padding-top:var(--sp4);padding-bottom:var(--sp3)}
+}
 /* Size and tracking both come from report.js, which documents why the mobile
    floor is 35px rather than DESIGN.md's 41px: measured, "ONE HONEST VERDICT."
    needs 385px at 41px against 331px available. Tracking is worth ~6px of that,
