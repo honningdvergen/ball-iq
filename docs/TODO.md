@@ -1328,3 +1328,58 @@ touching a spam boundary, so it is Alex's call, not one to make unattended.
   `npm run gen:index` regenerates; dev and build do it automatically.
 - **JSON.parse on the bank makes things WORSE** — tried 2026-07-29, 779ms vs
   651ms and +286kB. The problem is volume, not encoding. Don't retry it.
+
+---
+
+## ⚠️ Mystery Player — data defects found on the simulator (2026-08-04, 00:35)
+
+The mode is LIVE and the wordmark bug is fixed (`"mystery"` added to the
+own-header exclusion list in App.jsx). The ALGORITHM is sound. The DATASET is
+not — found by playing it, not by reading code. All unit tests pass.
+
+Today's top 10 (answer = Kylian Mbappé, Real Madrid):
+
+    1 Mbappé  2 Vinícius  3 Konaté  4 Mendy  5 Alan Pulido
+    6 Mastantuono  7 Rodrygo  8 Alberto Abalde  9 Lunin  10 Alexander-Arnold
+
+**Three defects, all in `scripts/fetch-squads.mjs` output:**
+
+1. **Non-football sections are in the squads.** Alberto Abalde plays for Real
+   Madrid *Baloncesto*. Same trap as Arsenal Women — Wikidata files a club's
+   other sections under the same entity, and the `P21` men's filter does not
+   exclude a men's basketball player. Alan Pulido has never been at Real Madrid.
+   → Need a "is a association football player" constraint (P106 / sport P641),
+   not just gender.
+
+2. **`nat` is unreliable.** Rodrygo and Vinícius both come back **Spain**;
+   Jobe Bellingham comes back **Ireland**. Players with multiple `P27` values
+   get an arbitrary one. The `nat` scoring term is feeding on bad data.
+   → Prefer national-team membership (P54 on a national side) over raw P27,
+   or take the P27 with the preferred rank.
+
+3. **Jude Bellingham is missing from the pool entirely** — a Real Madrid player
+   who is one of the most guessable names in the game. Cause unknown; likely
+   the `P580 >= 2015` + no-end-date filter combination. Diagnose before
+   loosening anything, or the 175-player Arsenal comes back.
+
+**Separately — a DESIGN weakness, not a bug (Alex spotted it):**
+
+    players matching >=1 non-age attribute:  621 of 1539
+    ranks 622-1539 are ordered by AGE ALONE = 918 players = 60% of the pool
+
+With five booleans most pairs of footballers share nothing, so the bottom 60%
+of the ranking is a birth-date sort. Alisson vs Mbappé scores 28.9 — pure age.
+The grey "cold" band communicates it honestly, but a player comparing 900 to
+1326 reads a difference that isn't there.
+
+Proposal for Alex (do NOT ship unilaterally — item 2 is a football judgment):
+  a. Partial credit, not exact-match-only: same confederation when not the same
+     country; same big-five league when not the same league. Pulls most of the
+     918 into a zone where the number carries signal.
+  b. ⚠️ ALEX'S CALL: swap nationality above league country. Currently league
+     (300) outranks nationality (220). "He's French too" is arguably a stronger
+     read for a fan than "he also plays in Spain".
+  c. Club stays dominant — the top 10 behaves correctly and that is where a
+     real player spends their last guesses.
+
+Bring (a)/(b) as before/after rankings, not as a shipped change.
