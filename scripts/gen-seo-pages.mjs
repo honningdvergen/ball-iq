@@ -2406,8 +2406,17 @@ ${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badg
 <section class="sec narrow">
 <h2>We can do daily games too</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">A weekly quiz is the easy start, but the same deal works for a daily game — the format that keeps readers coming back to the same page every morning rather than once a week.</p>
-<p style="margin:0 0 12px;color:var(--tx2)"><a href="${SITE.base}/football-wordle/" style="color:var(--grn);font-weight:700">Play Footle &rarr;</a> — our football word game, a new player every day. It is live and playable right now, so you can see the standard before committing to anything.</p>
+<p style="margin:0 0 12px;color:var(--tx2)">Here is ours, playable below — a finished puzzle from the archive, so nothing here spoils today&#39;s.</p>
 </section>
+${/* The real board, reused wholesale from /football-wordle/ rather than
+      mocked up. footlePracticeSection() ships its own JS and a noscript
+      fallback, and serves a PAST puzzle, so embedding it here cannot spoil
+      today's Footle. A publisher deciding whether to run our game should be
+      able to play it on the page where we ask them to. */''}
+<style>
+${FW_CSS}
+</style>
+${footlePracticeSection()}
 <section class="sec narrow">
 <h2>Who is behind it</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
