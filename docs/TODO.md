@@ -9,6 +9,47 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
+## FINDINGS 2026-08-03 (afternoon)
+
+- [x] **✅ Trail spot-check DONE — all six careers pass** (van Dijk, Courtois,
+  Griezmann, De Bruyne, Son, Lewandowski). Loans are correctly marked via the
+  parallel `loans` array (Courtois→Atlético and De Bruyne→Bremen both `true`).
+  Lewandowski's missing Znicz Pruszków is a *documented* editorial drop (third
+  tier, Modrić precedent), not an omission. **They are already in
+  TRAIL_ANSWER_LOG, 9× each** — the "INERT, NOT written into the log" comment
+  above them is stale. Nothing has served yet only because the anchor is
+  2026-09-01; today resolves to Trail #-28 and `getTrailAnswer()` returns null,
+  which `HomeScreen.jsx:141` correctly gates on, so the card simply hides.
+  ⚠️ **The one real tension:** De Bruyne's Chelsea return (Aug 2013 – Jan 2014,
+  9 apps) is dropped to fit the 6-rung cap, which the locked rules forbid —
+  "returns = rungs" and "truncating a career is not allowed" cannot both hold
+  here. Alex's call: drop De Bruyne, or allow a 7th rung.
+
+- [x] **✅ "Report a problem" on iPhone — DIAGNOSED, and the fix is real.**
+  **iOS build 51 was cut 2026-07-29. The report-loop fixes (`ac0f869`,
+  `845b186`) landed 2026-07-30 — one day later.** Alex's installed binary
+  simply does not contain them. Prod confirms both halves: `question_reports`
+  now holds 4 rows, newest today 09:17 UTC — all from **web**, where the fix
+  deployed immediately. **Action: the fix reaches phones only via a new iOS
+  build (52).** Nothing to debug in the code.
+
+- [ ] **🔴 THE CLUB-PAGE SCROLL CLIFF — the real SEO finding.** Clarity, 7 days:
+  every club page sits at **13–29% scroll depth** (Arsenal 19.0, Liverpool 19.2,
+  Chelsea 19.6, Real Madrid 13.8, Champions League 8.7) while `/play` gets
+  **95.3%**, `/lists/serie-a-top-scorers/` **93.8%** and the homepage **58%**.
+  Engagement is healthy (~2 min/session) — people just never go below the top
+  fifth. Measured on `/quiz/liverpool/` at 375×812: the page is **7,804px (9.6
+  screens)** and 20% is **1,561px — under 2 screens**. So everything from
+  "More quizzes to try" (32%) down is effectively unpublished: the record-book
+  section (74%), the trust/how-it's-checked section (81%), the FAQ (88%) and
+  the whole footer link mesh (94%). **That link mesh is what carries internal
+  authority, and no human ever reaches it.** Options: hoist the mesh above the
+  cliff, or cut the page length. Not a title/meta problem — those were
+  diagnosed clean on 2026-07-28.
+  ⚠️ A 3-day window made `/quiz/liverpool/` look dead (2.2s/session over 5
+  sessions). Over 7 days it is 20 sessions at **117s**. Do not act on Clarity
+  samples under ~15 sessions.
+
 ## TODAY — 2026-08-03
 
 - [ ] **ALEX 2026-08-03: native push for REMATCH invites** — a rematch/challenge
@@ -103,7 +144,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 no backticks inside the CSS template literal (it fails the build silently —
 grep the whole build tail, not `^error`).
 
-### 🎨 Redesign groundwork — committed, NOT pushed
+### 🎨 Redesign groundwork — SHIPPED, pushed 2026-08-03
 
 **Decision (Alex, 2026-08-03): homepage first, HOLD the 191 pages.** They're the
 part that's growing — every rising page in today's GSC read was a club page.
@@ -129,7 +170,7 @@ keep it; nothing could notice.
 
 **Next:** map the Scouting Report vocabulary (`--desk/--paper/--ink/--verd`) onto these tokens, then port the composition.
 
-### 🟢 Committed, NOT yet pushed — waiting on Alex
+### 🟢 Shipped — pushed 2026-08-03, deploy verified live
 
 | commit | what |
 |---|---|
