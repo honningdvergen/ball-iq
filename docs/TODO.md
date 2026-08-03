@@ -21,7 +21,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 
 #### The 9 to swap-ready — BLOCKING (1-6)
 
-- [ ] **1. Club wall** — ⚠️ HIGHEST VALUE. ScoutingReport has **0** links to `/quiz/`; MarketingHome has 15; there are **126 club pages**. Every rising page in the 2026-08-03 GSC read was a club page. The homepage is our strongest linking surface and it currently points at almost none of them.
+- [x] **1. Club wall** — DONE (`bf537e5` + data `885e865`). 0 → **72 club links + hub**, generated from the hand-verified competition map; heading count generated so it can’t go stale; build FAILS if a club lacks a competition. Detector clean (2 pre-existing shell findings only).
 - [ ] **2. Footle section** — most-played mode per `project_first_real_numbers`
 - [ ] **3. Daily 7 door** + `?game=daily` deep link
 - [ ] **4. Nav / drawer** — there is currently NO way off the page except "Play free" (MarketingHome: 40 refs, ScoutingReport: 0)
