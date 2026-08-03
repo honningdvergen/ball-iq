@@ -21,57 +21,73 @@ items are deleted, not archived — git history is the archive.
 | `819f047` `34281b5` `de08a5c` | Homepage redesign preserved in `docs/mockups/`, `DESIGN.md` + sidecar written from the built world. |
 | `a30904e` … `3f01e84` | The redesign's own fix chain — font dedup (−43% file size), a Footle duplicate-letter scoring bug, the verdict CTAs rendering with zero padding, the example row stealing a guess. |
 
-### 🔴 THE FINDING THAT MATTERS TODAY — the Footle vertical is INVISIBLE on Google
+### 🔴 /footle was donating every backlink it earned — REAL, verified, fixed
 
-Measured in GSC (28 days, `https://balliq.app/` URL-prefix), three independent filters:
+**⚠️ CORRECTION.** An earlier version of this entry claimed the Footle vertical
+had *zero impressions* on Google, "measured" via GSC URL parameters like
+`?query=*footle*`. **That syntax does not filter** — it silently returns an
+empty result for everything. Caught by running a control: `?query=*ball*`
+also returned zero, while "ball iq" is the single top query with 55 clicks.
+Every zero in that entry was an artifact of the method, not a finding. The
+footle-specific impression count is **still unverified**.
 
-| filter | impressions |
-|---|---|
-| query contains **footle** | **0** |
-| query contains **wordle** | **0** |
-| page contains **football-wordle** | **0** |
+The rule this broke is already in memory: 0% and 98% are both signals to
+check the instrument. It returned zero four times before the control ran.
 
-Impressions register even at position 90+, so **zero means not in the index** —
-not "ranking badly". Alex's own URL Inspection on `/footle` returned *does not
-exist*, which is consistent.
+**What IS verified, by `curl` rather than by GSC:** `/footle` served
+`<title>Ball IQ — The Ultimate Football Quiz</title>` with
+`canonical → https://balliq.app/`, hardcoded in `index.html:30-31` and never
+updated client-side. Every Footle link in existence points there — the in-app
+share text (`App.jsx:3954`, `:5031`, `:7546`), the `/t` `/ig` `/tt` `/x`
+social redirects, every authority-kit template, the AlternativeTo listing.
+A page that canonicals to `/` is dropped as a duplicate, which is consistent
+with Alex's URL Inspection returning *does not exist*.
 
-**Root cause, fixed in `d38b447`:** every Footle link in existence points at
-`/footle` — the in-app share text (`App.jsx:3954`, `:5031`, `:7546`), the
-`/t` `/ig` `/tt` `/x` social redirects, every authority-kit template, the
-AlternativeTo listing. `/footle` rewrote to `/index.html`, which hardcodes
-`<title>Ball IQ — The Ultimate Football Quiz</title>` and
-`canonical → https://balliq.app/`, and nothing in `src/` updates either
-client-side. A page that canonicals to `/` gets dropped as a duplicate.
+Fixed in `d38b447` with an edge function (`api/footle-boot.js`): same app
+shell, Footle title, `canonical → /football-wordle/`. The share flow still
+boots straight into the puzzle. **Expect `/footle` to report "Duplicate,
+Google chose different canonical" — that is the SUCCESS state.**
 
-Now an edge function (`api/footle-boot.js`) serves the same app shell with a
-Footle title and `canonical → /football-wordle/`, so the share flow still boots
-straight into the puzzle while the equity consolidates on the page that targets
-the term. **Expect `/footle` to report "Duplicate, Google chose different
-canonical" — that is the SUCCESS state, not a failure.**
-
-**The premise was also wrong, and this changes strategy.** "Footle" is not a
-coined word. It is an 1891 English verb (OED) and the name of two established
-competitors: `footle.club` holds four of the top ten, `foot-le.com` owns the
-exact-match domain in EN and FR. Autocomplete confirms the intent split —
-"footle" suggests *footless tights* and *foot lettuce*; "football wordle"
-returns ten game-intent refinements out of ten.
+**The premise was also wrong.** "Footle" is not coined. It is an 1891 English
+verb (OED) and the name of two established competitors — `footle.club` holds
+four of the top ten, `foot-le.com` owns the exact-match domain in EN and FR.
+Winnable targets are "ball iq footle", "football wordle", and the answer
+long-tails.
 
 `[ ]` **CLAUDE — /football-wordle/ is prose-only.** Zero `<button>`, zero
-`<input>`. Every site outranking us *is* the playable game. The playable-taster
-pattern from `78170c6` reached ~120 club pages and never reached this one.
+`<input>`, against competitors that ARE the game. The playable-taster pattern
+from `78170c6` reached ~120 club pages and never reached this one.
 `buildFootlePage()`, `scripts/gen-seo-pages.mjs:2731`.
 
-`[ ]` **ALEX — after a few days, re-inspect `/footle` and `/football-wordle/`**
-in GSC. The question is whether `/football-wordle/` gets indexed at all.
+`[ ]` **ALEX — the GSC numbers I could not get.** The URL-param filters do not
+work and the in-table filter would not apply for me either. Needed from the UI:
+Performance → Queries → filter *contains* "footle", and URL Inspection on
+`/footle` and `/football-wordle/`. Zero impressions and position-90 look
+identical from outside; only that report tells them apart.
 
 ### 🟡 What the GSC query table actually says
 
+Verified 28-day totals (5 Jul – 1 Aug): **311 clicks, 20k impressions,
+1.6% CTR, position 20.9, 1,000 distinct queries.** Clicks and impressions both
+climb sharply from ~23 July.
+
 | query | clicks | impressions | CTR |
 |---|---|---|---|
-| ball iq | 17 | 40 | 42.5% |
-| everton quiz | 5 | 31 | **16.1%** |
-| arsenal quiz | 3 | **231** | **1.3%** |
-| real madrid quiz | 2 | 63 | 3.2% |
+| ball iq | 55 | 205 | 26.8% |
+| everton quiz | 7 | 48 | **14.6%** |
+| arsenal quiz | 4 | **335** | **1.2%** |
+| rangers quiz **with answers** | 4 | 13 | **30.8%** |
+| rangers quiz | 3 | 54 | 5.6% |
+| liverpool quiz **with answers** | 3 | 42 | 7.1% |
+| tottenham quiz **with answers** | 3 | 20 | **15.0%** |
+| tottenham quiz | 2 | 65 | 3.1% |
+| real madrid quiz | 2 | 101 | 2.0% |
+| football quiz | 2 | 86 | 2.3% |
+
+**"with answers" converts 3–5× better than the bare club term** — Rangers
+30.8% vs 5.6%, Tottenham 15.0% vs 3.1%. That is people explicitly searching
+for the thing this product is built on, and we rank far better for it. It is
+the strongest unexploited signal in the whole account.
 
 Arsenal draws 7.5× Everton's impressions and 40% fewer clicks — a 12× CTR gap
 on the same template. That is position, not titles. **The big-club terms inflate
