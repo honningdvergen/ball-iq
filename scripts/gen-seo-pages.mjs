@@ -2363,7 +2363,15 @@ function buildPartnersPage(hints) {
   // A real, playable sample — a publisher should be able to try the thing they
   // are being offered, not read a description of it. Ten questions is the
   // weekly format the pitch actually promises.
-  const sample = arcPick(hints, Math.min(10, hints.length));
+  //
+  // ⚠️ NO EASY QUESTIONS HERE. arcPick front-loads two easy ones, which is
+  // right for a player landing cold and wrong for a sales sample: the first
+  // one shipped was "Hamburger SV compete in the top division of which
+  // country?", which tells an editor our questions are trivial. A publisher is
+  // judging quality, not being onboarded, so the sample opens on medium and
+  // hard and every question carries an explanation.
+  const showcase = hints.filter((q) => q.diff !== 'easy' && q.hint);
+  const sample = arcPick(showcase.length >= 10 ? showcase : hints, 10);
   const ld = jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -2396,8 +2404,13 @@ function buildPartnersPage(hints) {
 ${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
 </section>
 <section class="sec narrow">
+<h2>We can do daily games too</h2>
+<p style="margin:0 0 12px;color:var(--tx2)">A weekly quiz is the easy start, but the same deal works for a daily game — the format that keeps readers coming back to the same page every morning rather than once a week.</p>
+<p style="margin:0 0 12px;color:var(--tx2)"><a href="${SITE.base}/football-wordle/" style="color:var(--grn);font-weight:700">Play Footle &rarr;</a> — our football word game, a new player every day. It is live and playable right now, so you can see the standard before committing to anything.</p>
+</section>
+<section class="sec narrow">
 <h2>Who is behind it</h2>
-<p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes and two daily games — Footle, a football word game, and Transfer Trail, a career-path puzzle. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
+<p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
 <p style="margin:0 0 12px;color:var(--tx2)">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
 </section>
 </main>
