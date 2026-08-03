@@ -103,10 +103,15 @@ const CSS = `
 
 /* Skip link: visually hidden until focused — first tabbable thing on the
    page, jumps past the hero straight to the report. */
-.sr-skip{position:absolute;left:-9999px;top:0;z-index:50;min-height:44px;
+/* "sr a.sr-skip" for the same reason as the Play button below: the ".sr a"
+   reset is class+element (0,1,1) and beats a bare class, so a plain .sr-skip
+   silently inherited --on-desk on green — 1.3:1, the EXACT bug fixed on
+   .sr-play yesterday, reintroduced on a new element while its warning comment
+   sat thirty lines away. Every green control that is an anchor needs this. */
+.sr a.sr-skip{position:absolute;left:-9999px;top:0;z-index:50;min-height:44px;
          display:inline-flex;align-items:center;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700}
-.sr-skip:focus{left:0}
+.sr a.sr-skip:focus{left:0}
 
 /* ── The desk: chrome. Green survives HERE and only here. ───────────── */
 .sr-mast{display:flex;align-items:center;justify-content:space-between;gap:var(--sp2);
