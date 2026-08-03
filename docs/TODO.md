@@ -30,7 +30,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 
 #### SHOULD-DO (7-9)
 
-- [ ] **7. The accumulating report** — the lede promises "the report writes itself while you answer" and the build does NOT do that; it replaces each question. Accumulation is the thesis, not a refinement. Do not soften the copy to match a weaker build.
+- [x] **7. The accumulating report** — DONE. Mockup stub table ported with its honesty rules (only correct fills a bar; unasked rows carry no bar; "1 of 1" not fake ratings); verdict lands beneath the completed table. Pips deleted — they were an invention. Verified by playing a 4/5.
 - [x] **8.** DONE — MP clause ("friends to race online, up to eight") + app line rewritten to the TRUE exclusive (push reminders). The audit's "web has ads" premise is false while AdSense sits unapproved with slots commented.
 - [x] **9.** DONE by construction — Clarity loads from the shared index.html shell (native-guarded, route-agnostic), and MarketingHome fires zero component-level events, so both homepages carry identical instrumentation already. Nothing to port.
 
