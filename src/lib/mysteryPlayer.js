@@ -115,7 +115,12 @@ export function bandFor(rank, poolSize) {
 // picking the answer by `index % pool.length` means ADDING ONE PLAYER silently
 // rewrites every past and future puzzle, including any archive we publish.
 // The log is authored once and only ever appended to.
-export const MYSTERY_ANCHOR_DAY = 20669; // days since epoch — day #1
+// ⚠️ Anchored to the day the mode SHIPPED, not to tomorrow. The Transfer
+// Trail was anchored a month ahead and therefore served nothing while
+// appearing finished — getTrailAnswer() returned null, the card hid itself,
+// and nobody noticed for days. Verify this resolves to a real player on the
+// day you ship.
+export const MYSTERY_ANCHOR_DAY = 20668; // days since epoch — day #1
 
 export function mysteryDayIndex(now = new Date()) {
   return Math.floor(now.getTime() / 86400000);

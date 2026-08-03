@@ -59,6 +59,7 @@ const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx'
 // null while TRAIL_ANSWER_LOG is empty, so this renders NOTHING until the
 // spot-checked dataset lands. Wiring inert beats wiring half-done.
 const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
+const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
 import { DailyTabScreen } from './screens/DailyScreen.jsx';
@@ -10046,7 +10047,7 @@ function AppInner() {
   // unmount cleanup so navigating away always strips the class. The
   // matching CSS rule lives in the AppInner css string further down.
   useEffect(() => {
-    const playing = inGame || screen === "wordle" || screen === "trail";
+    const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery";
     try {
       if (playing) document.body.classList.add("in-focused-play");
       else document.body.classList.remove("in-focused-play");
@@ -10459,7 +10460,7 @@ function AppInner() {
     hwBackRef.current = () => {
       if (closeTopModal()) return;
       if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
-      if (inGame || screen === "wordle" || screen === "trail") {
+      if (inGame || screen === "wordle" || screen === "trail" || screen === "mystery") {
         // dispatchEvent returns false when a listener preventDefault()ed —
         // i.e. the mounted engine claimed the press and owns the quit flow.
         let claimed = false;
@@ -11306,6 +11307,9 @@ function AppInner() {
           if (!p) { setTimeout(goHome, 0); return null; }
           return <React.Suspense fallback={null}><TransferTrail player={p} onBack={goHome} onReport={reportQuestion} /></React.Suspense>;
         })()}
+        {screen === "mystery" && (
+          <React.Suspense fallback={null}><MysteryPlayer onExit={goHome} /></React.Suspense>
+        )}
         {screen === "stump" && stumpRow && (
           <StumpScreen
             row={stumpRow}

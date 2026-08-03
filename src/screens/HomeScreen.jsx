@@ -1,11 +1,13 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList, Route } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
+import { answerIdForDay, mysteryDayIndex } from "../lib/mysteryPlayer.js";
+import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { FootleHero } from "../components/FootleHero.jsx";
@@ -139,6 +141,12 @@ function HomeScreenImpl({
   // Whether Trail has a puzzle today. Read once here rather than inside the
   // daily-zone IIFE, because the entry point now lives in the More-modes grid.
   const trailLive = (() => { try { return !!getTrailAnswer(); } catch { return false; } })();
+  // Cheap enough to compute inline: an array lookup against the frozen log,
+  // no ranking work. The heavy pool/ranking import stays inside the lazy
+  // screen chunk so the home screen never pays for it.
+  const mysteryLive = (() => {
+    try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex()); } catch { return false; }
+  })();
 
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);
   const railUsername = authProfile?.username && !isPlaceholderName(authProfile.username) ? authProfile.username : null;
@@ -498,6 +506,10 @@ function HomeScreenImpl({
           // whole entry is gated on the schedule actually having a puzzle, so
           // nothing advertises a mode that cannot be played.
           ...(trailLive ? [{ key:"trail", Icon: Route, name: "Transfer Trail", desc: "Name the player", onTap: () => setScreen("trail") }] : []),
+          // Same gate as the Trail: the card only exists if the frozen
+          // schedule actually has a puzzle for today, so nothing advertises a
+          // mode that cannot be played. mysteryLive is computed above.
+          ...(mysteryLive ? [{ key:"mystery", Icon: Search, name: "Mystery Player", desc: "Guess who", onTap: () => setScreen("mystery") }] : []),
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
