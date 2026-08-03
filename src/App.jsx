@@ -5772,8 +5772,18 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
               <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
                 <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:19}}>{o.avatar}</span>
                 <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
-                <span style={{fontSize:11,fontWeight:800,color:o.won ? "#8AE042" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
-                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
+                {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
+                    in a third-of-screen card while "Lost 3329–5274" fits on one.
+                    Centred so a wrapped second line doesn't sit ragged-left. */}
+                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "#8AE042" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
+                {/* marginTop:auto pins Rematch to the bottom of the card. The
+                    cards are flex siblings and already stretch to equal height,
+                    but the button used to flow straight after the score — so a
+                    card whose score wrapped pushed its button a line lower than
+                    its neighbours' (Alex, 2026-08-03: "the rematch buttons are
+                    not aligned"). Bottom-anchoring is wrap-count-independent,
+                    which a fixed height or a nowrap score would not be. */}
+                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{marginTop:"auto",border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
               </div>
             ))}
           </div>
