@@ -11,6 +11,49 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+### 🎨 THE SCOUTING REPORT — LIVE AT https://balliq.app/home-preview/
+
+`/` is untouched and still serves MarketingHome. The preview is a separate lazy
+chunk on a route that already existed, so the converting homepage carries zero
+risk. **Judge it on a phone** — 66% of traffic.
+
+**Alex, 2026-08-03: "no need for us to rush, we will get this PERFECT."**
+
+#### The 9 to swap-ready — BLOCKING (1-6)
+
+- [ ] **1. Club wall** — ⚠️ HIGHEST VALUE. ScoutingReport has **0** links to `/quiz/`; MarketingHome has 15; there are **126 club pages**. Every rising page in the 2026-08-03 GSC read was a club page. The homepage is our strongest linking surface and it currently points at almost none of them.
+- [ ] **2. Footle section** — most-played mode per `project_first_real_numbers`
+- [ ] **3. Daily 7 door** + `?game=daily` deep link
+- [ ] **4. Nav / drawer** — there is currently NO way off the page except "Play free" (MarketingHome: 40 refs, ScoutingReport: 0)
+- [ ] **5. FAQ** — carries FAQ schema; dropping it loses rich-result eligibility (12 refs → 0)
+- [ ] **6. Accessibility pass** — detector ≠ WCAG. 25% of sessions produce a dead click on the current site; do not carry that in.
+
+#### SHOULD-DO (7-9)
+
+- [ ] **7. The accumulating report** — the lede promises "the report writes itself while you answer" and the build does NOT do that; it replaces each question. Accumulation is the thesis, not a refinement. Do not soften the copy to match a weaker build.
+- [ ] **8.** Multiplayer clause at the verdict + app-exclusive line ("web has ads, the app doesn't")
+- [ ] **9.** Analytics / Clarity instrumentation parity
+
+**Then:** swap `/`, watch GSC a fortnight, keep `/home-preview` as rollback.
+
+#### Foundation already landed + verified
+
+| commit | what |
+|---|---|
+| `4b11152` | Shared palette token layer — 191 pages **byte-identical**, 312b |
+| `6103775` | Homepage tokenised — 121 literals → 16 tokens |
+| `34aea2b` | Scouting Report layer, chunk-scoped, 0 bytes to the 191 |
+| `763e6dc` | Archivo + Archivo Narrow self-hosted, **proved loading** (`document.fonts.check()` returns `true` for a font that cannot exist) |
+| `2aae197` | The composition at `/home-preview` |
+| `680133f` | impeccable detector run — found a **1.3:1 CTA** I'd eyeballed twice, a banned kicker, a side-tab, 10 off-ramp type sizes |
+| `672a33f` | Desktop fold — I'd only ever designed at 375 |
+
+**Standing rules for this work:** no literal px in the component (add a role to
+`design/report.js`); action on the paper is INK not green; `--attr-mid` is
+2.13:1 on newsprint and must NEVER be text; spacing is `--sp*` never `--s*`;
+no backticks inside the CSS template literal (it fails the build silently —
+grep the whole build tail, not `^error`).
+
 ### 🎨 Redesign groundwork — committed, NOT pushed
 
 **Decision (Alex, 2026-08-03): homepage first, HOLD the 191 pages.** They're the
