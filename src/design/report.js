@@ -79,6 +79,10 @@ export const REPORT = {
   //
   // The endpoints are shared, so only the attribute mid-tone is extra.
   'attr-mid': '#C9992B', // the 3-level bars' middle; their ends are --v0 / --v5
+  // The ONLY legal text on --attr-mid. DESIGN.md: the screen amber "is never
+  // ink: it appears exclusively as a background... with its own dark text
+  // (#1A1200) sitting on top of it". 9.5:1 on the amber.
+  'attr-mid-ink': '#1A1200',
 
   // The six-step verdict band: one stop per possible score, 0 through 5.
   v0: '#8B2635', // oxblood — worst

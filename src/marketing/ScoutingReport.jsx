@@ -33,6 +33,7 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 // Never import scripts/seo/clubs.mjs here — it carries every club's SEO prose
 // and would put ~200KB into this chunk to read three fields.
 import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
+import FootleBand from './FootleBand.jsx';
 
 const GET_APP = '/get';
 const PLAY = '/play';
@@ -187,8 +188,8 @@ const CSS = `
 @media (hover:hover){.sr-opt:not(:disabled):hover{background:var(--pa2)}}
 .sr-key{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
         border:1px solid var(--rule2);font:var(--ty-label);color:var(--mut)}
-.sr-opt[data-mark="hit"] .sr-key{background:var(--v5);border-color:var(--v5);color:var(--pa)}
-.sr-opt[data-mark="miss"] .sr-key{background:var(--v0);border-color:var(--v0);color:var(--pa)}
+.sr-opt[data-mark="hit"] .sr-key{background:var(--v5);border-color:var(--v5);color:var(--tx)}
+.sr-opt[data-mark="miss"] .sr-key{background:var(--v0);border-color:var(--v0);color:var(--tx)}
 .sr-opt[data-mark="hit"]{font-weight:700}
 .sr-opt[data-mark="miss"]{color:var(--mut);background:var(--pa2)}
 
@@ -413,6 +414,10 @@ export default function ScoutingReport() {
         </div>
         <a className="sr-more" href="/quiz/">Open the full club index</a>
       </section>
+
+      {/* The page ends on tomorrow: the Footle band closes it, and the last
+          thing inside is the countdown. Order is the direction contract's. */}
+      <FootleBand />
 
       <footer className="sr-foot">Ball IQ — free football trivia, every day.</footer>
     </div>
