@@ -1012,24 +1012,43 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
   })();
 
   // Lifetime head-to-head vs this opponent, from the local biq_mp_history
-  // ledger (this finished room is already recorded by the parent's ended
-  // effect, so the chip includes it). Draw = not won AND my metric equalled
-  // the opponents' best — the ledger stores both sides' metrics.
+  // ledger PLUS the game just played.
+  //
+  // ⚠️ THE CURRENT ROOM IS ADDED EXPLICITLY, NOT READ FROM THE LEDGER. The
+  // previous version's comment claimed "this finished room is already
+  // recorded by the parent's ended effect, so the chip includes it" — the
+  // exact opposite is true. That effect runs AFTER render, and this memo's
+  // deps never change once the screen is up, so it computed ONCE, before the
+  // write, and stayed frozen there. Measured against prod (2026-08-03): Alex
+  // and Johannes had played four games, Alex leading 3–1, and both devices
+  // showed "3–0" — every prior game counted, the one just finished missing.
+  // Reading live board state removes the race entirely.
   const h2h = useMemo(() => {
     if (!twoPlayer || !oppP?.user_id) return null;
     try {
-      const games = readMpHistory().filter(e => (e.opponents || []).some(o => o.id === oppP.user_id));
-      if (games.length < 2) return null; // first meeting — the board already says it all
+      const prior = readMpHistory().filter(e =>
+        e.roomId !== room?.id && (e.opponents || []).some(o => o.id === oppP.user_id));
       let w = 0, d = 0, l = 0;
-      for (const g of games) {
+      for (const g of prior) {
         const best = Math.max(...(g.opponents || []).map(o => o.m ?? 0));
         if (g.won) w++; else if ((g.myMetric ?? 0) === best) d++; else l++;
       }
+      // The game on screen, from the board itself — same metric the result
+      // uses, so the chip can never disagree with the scoreline above it.
+      if (boardDraw) d++; else if (iWonBoard) w++; else l++;
+      if (w + d + l < 2) return null; // first meeting — the board says it all
       const name = oppP.name || 'them';
-      const line = w > l ? `You lead ${w}–${l}` : l > w ? `${name} leads ${l}–${w}` : `All square at ${w}–${l}`;
-      return { line: `${line} vs ${name}`, draws: d };
+      // Each branch names the opponent AT MOST once. The old code appended
+      // "vs ${name}" to every branch, including the one that already opened
+      // with it — which is why the losing device read "Alex leads 3–0 vs Alex".
+      return {
+        line: w > l ? `You lead ${w}–${l} vs ${name}`
+          : l > w ? `${name} leads ${l}–${w}`
+            : `All square at ${w}–${l} vs ${name}`,
+        draws: d,
+      };
     } catch { return null; }
-  }, [twoPlayer, oppP?.user_id, oppP?.name]);
+  }, [twoPlayer, oppP?.user_id, oppP?.name, room?.id, iWonBoard, boardDraw]);
   const vsSide = (p, mine, won, display, cls) => (
     <div className={cls} style={{
       flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,

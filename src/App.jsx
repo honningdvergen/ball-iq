@@ -3591,8 +3591,19 @@ function getFootleXP(won, guesses) {
 // 50 for the thing that mode is actually about. The floor exists because unlike
 // solo you can play well and still lose to someone who played better, and a
 // zero-XP ending is a reason not to come back.
+// ⚠️ MP `score` is POINTS (thousands), not a correct-answer count. This
+// formula was copied from the solo modes, where `score` is the number correct
+// (0-15) — so `score * 10` meant ~150 XP there and ~50,000 here. Measured on
+// 2026-08-03: a 5274-point win paid 52,790 XP and a 3329-point LOSS paid
+// 33,290, against a site-wide median of 50. Only 2 of 125 profiles were
+// inflated, which is why this is worth correcting now rather than never.
+//
+// The divisor targets parity with a strong solo game (a perfect 15-question
+// run pays 200): real race scores run ~1,600-5,900, so /40 pays ~40-150, plus
+// a 50 win bonus. Better play still pays more; a match is no longer worth a
+// thousand daily quizzes.
 export function getMpXP(won, score) {
-  return Math.max(15, (score || 0) * 10 + (won ? 50 : 0));
+  return Math.max(15, Math.round((score || 0) / 40) + (won ? 50 : 0));
 }
 
 function getXPForResult(score, total, mode) {
