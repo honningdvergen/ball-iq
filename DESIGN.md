@@ -15,6 +15,7 @@ colors:
   ink-mute: "#4A524C"
   hairline-rule: "#B9BFB6"
   control-rule: "#7A8078"
+  control-rule-dark: "#6E776F"
   ramp-fail: "#8B2635"
   ramp-near: "#C9992B"
   ramp-pass: "#2F6B3A"
@@ -162,12 +163,12 @@ The palette is built from two near-achromatic grounds plus a single accent famil
 - **Verdict Ramp** (`--verdict-0` through `--verdict-5`): the same oxblood→amber→green family, rendered at **ink strength** for the one place the ramp is used as text on paper — the verdict number and the tier headline's rule, one step per score. It is not a second, unrelated scale. Measured in Lab, its hue sweeps monotonically through the same arc as the three-step ramp (20.1° → 46.7° → **85.9°** → 111.8° → 131.0° → 145.1°), and its amber stop `verdict-2` sits at hue 85.9° against `ramp-near`'s 82.6° — the same colour, three degrees apart. What differs is lightness, and only because it has to: `ramp-near` at L\*66.0 reads 2.13:1 on newsprint, while `verdict-2` at L\*43.4 reads 4.66:1. Every verdict stop clears 4.5:1 on paper (7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23).
 
 ### Neutral — Desk (the world)
-- **Desk** (`#0E1110`): the page's base background, carrying a fine authored SVG grain. This is the ground for the masthead, hero, section bands, club index, Footle, and footer — everything that is not the report itself.
+- **Desk** (`#0E1110`): the page's base background, carrying a fine authored SVG grain (`--grain`; the paper has a second, separately authored one — see **The Two Grains Rule**). This is the ground for the masthead, hero, section bands, club index, Footle, and footer — everything that is not the report itself.
 - **Desk Shadow** (`#161A17`): the one deliberately lighter band on the desk, used for the "Tomorrow" (Footle) section to give the eye a quiet, wide object to land on after a dense ruled passage.
 - **Desk Hairline** (`#252B26`): every divider rule on the desk ground (masthead border, section rules, footer rule, Footle board dividers).
 - **Desk Text — High** (`#F2F5F1`): headline, section headings (`h2`), and other peak text on the desk.
 - **Desk Text — Body** (`#C3CBC3`): running prose on the desk (lede, sub-paragraphs).
-- **Desk Text — Mute** (`#98A199`): secondary/supporting text on the desk (nav links, captions, club-index era text, Footle labels).
+- **Desk Text — Mute** (`#98A199`): secondary/supporting text on the desk (nav links, captions, the club index's competition column, Footle labels).
 
 ### Neutral — Paper (the report)
 - **Newsprint** (`#E7E9E4`): the report sheet's own background — cool, not warm, and named "newsprint" rather than "cream" or "off-white" because the direction contract is explicit that this is cool paper, not warm parchment.
@@ -193,6 +194,8 @@ This is why `ramp-near` never needed an ink version of its own: it is the one st
 
 **The Same-Weight Rule Rule.** `hairline-rule` and `control-rule` are the same *visual* weight (both thin, both grey-green) but different jobs: one is furniture (a table row separator), the other is a control's boundary and is held to a harder contrast floor because a reader has to be able to find it to use it.
 
+**The Both-Grounds Rule.** Every rule token needs a twin on the other ground, and the control tokens are the ones that actually matter. `control-rule` (`#7A8078`, 3.31:1 on newsprint) had no dark-side counterpart for a long time and every control on the desk was outlined in `desk-hairline` instead — 1.58:1 against the Footle board, which made the section's only playable surface all but invisible. `control-rule-dark` (`#6E776F`) is its twin, and it is set against the *worst* surface it has to sit on rather than the easiest: 3.53:1 on an empty tile, 3.12:1 on a live key, 3.65:1 on a spent key, 3.79:1 on the Footle band, 4.10:1 on the desk. Furniture may stay at `desk-hairline`; anything a reader has to press may not.
+
 ## Typography
 
 **Display Font:** Archivo Narrow (bold, uppercase, tracked tight) — every headline, section heading, verdict number/tier, masthead wordmark, and countdown clock.
@@ -212,12 +215,12 @@ This is why `ramp-near` never needed an ink version of its own: it is the one st
 - **Body** (400, 17px, line-height 1.55): prose, answer options, and table data — the page's base size.
 - **Sec** (400, 15px): supporting text — keys, the colophon-style footer, Footle labels.
 - **Meta** (400, 13.5px): subject lines, counters ("1 of 5"), captions.
-- **Label** (700, 12px, tracking .13em, uppercase): the single uppercase micro-label rule (`.dl`, `.adlab`, `.clab`, `.vlab`, `.why b`) — one rule shared by five different call-sites rather than five near-identical ones.
+- **Label** (700, 12px, tracking .13em, uppercase): the single uppercase micro-label rule (`.adlab`, `.vlab`, `.why b`) — one rule shared by three call-sites rather than three near-identical ones. It was five: `.dl` ("Also on", above the store links) and `.clab` ("Next one in", above the countdown) were deleted rather than restyled in the finish review, because a tracked uppercase label sitting above the biggest number in its section is an eyebrow and the hero-metric template at once. Both are now unconditional refusals, so this treatment is only ever a **field label on a form** — which is what a report is.
 
 ### Named Rules
 **The Five-Plus-One Rule.** Five body-scale sizes (lede/sub/body/sec/meta) carry every prose job on the page; a sixth would be a size looking for a role. The uppercase micro-label is the deliberate exception because it is a distinct *treatment* (case + tracking), not a seventh size.
 
-**The Tabular Figures Rule.** Any number a reader might compare against another number (`.stub .out`, the verdict number, the countdown clock, era ranges, Footle's `.depth`) is set with `font-variant-numeric: tabular-nums`. A date or a score wobbling against neighbouring rows on a proportional grid was the bug this closed.
+**The Tabular Figures Rule.** Any number a reader might compare against another number (`.stub .out`, the verdict number, the countdown clock, Footle's `.depth`) is set with `font-variant-numeric: tabular-nums`. A date or a score wobbling against neighbouring rows on a proportional grid was the bug this closed.
 
 **The Light-on-Dark Compensation Rule.** Text on the desk (light on near-black) gets a touch more letter-spacing (`.006em`) than the equivalent prose on paper. Dark-on-light does not get the same bump — it doesn't need it, and adding it would just loosen type that was already reading fine.
 
@@ -229,7 +232,7 @@ Spacing runs on a six-step scale (`--s1` 8px, `s2` 14px, `s3` 22px, `s4` 34px, `
 
 Responsive behaviour has three real breakpoints (900px, 640px, 360px), not a single mobile cutoff:
 - **900px**: the Footle board and countdown clock stack instead of sitting side by side; the clock's left border becomes a top border.
-- **640px**: the masthead's centre nav disappears entirely (kept only as a `Get the app` CTA), the answer grid drops to one column, and most of the display-scale type steps down a notch.
+- **640px**: the masthead's centre nav disappears entirely (kept only as the `Play now` CTA), the answer grid drops to one column, and most of the display-scale type steps down a notch.
 - **360px**: a floor pass — board and keyboard gaps tighten further so the on-screen keyboard keeps its width rather than the page losing its margin.
 
 ## Elevation & Depth
@@ -243,8 +246,22 @@ The report (`.file`) sits on a second, slightly rotated backing sheet (`.file::a
 - **Backing sheet** (`14px 26px 46px -22px rgba(0,0,0,.8)`): the second sheet under the report, visible only at its rotated edges.
 - **Verdict slip** (`9px 15px 30px -12px rgba(20,23,26,.34), 2px 4px 9px -4px rgba(20,23,26,.24)`): lighter and tighter than the report's own shadow, since the verdict is a smaller object landing on top of an already-shadowed stack.
 
+### Material
+Both grounds are grained, and they need two separately authored grains — this is the part the first build got wrong. `--grain` is tuned for near-black and works there. Laid over newsprint at the same settings it moved the sheet by 13 levels peak-to-peak, standard deviation 1.6: under half a JND, invisible in a screenshot, which left the focal object of a world called The Scouting Report as a flat fill.
+
+`--paper` is the light-ground turbulence, and two things had to be true for it to be a material rather than a haze:
+
+1. **feTurbulence writes noise into the alpha channel too.** A `<rect>` filled with raw turbulence arrives at roughly half its declared opacity. `feFuncA type="table" tableValues="1 1"` pins alpha to 1 so the rect's own `opacity` is the only dial.
+2. **Four octaves of fractalNoise converge on mid-grey** (measured sigma 0.061). Reaching for more opacity to compensate darkens the sheet instead of texturing it. The transfer stretches the greys 2× around the paper's own value first, so the mottle is carried by contrast rather than by weight.
+
+Measured on the composited sheet: mean 228.6 against a flat 231 — the declared `newsprint` is mottled, not restated — sd 6.9, 2nd-to-98th percentile 212–235, darkest fleck 196, where ink still reads 10.3:1 against 14.7:1 on flat stock. In a rendered 1.5× screenshot the same region measures sd 5.3 over a 205–236 range.
+
+It is applied to the three paper objects the reader actually looks at: the report sheet, its backing sheet, and the verdict slip, plus the answer rows. **Every `.opt` state moves `background-color` only** — a `background:` shorthand there silently drops the grain and leaves four rows of flat stock in the middle of a sheet that has it.
+
 ### Named Rules
 **The Object Shadow Rule.** A shadow only appears where something is meant to read as a physical sheet resting on the desk. It is never used for hover feedback, never for a card, and never as ambient page atmosphere.
+
+**The Two Grains Rule.** A grain authored for one ground does nothing on the other, and "nothing" is invisible rather than obviously broken, so it survives review. Measure it: rasterise the tile, composite it over the ground it will actually sit on, and read the standard deviation. Under ~3 is a haze. Do not answer a missing material with a gradient or a lighter base colour.
 
 ## Shapes
 
@@ -253,7 +270,7 @@ Zero border-radius exists anywhere in the file — every rule, button, tile, chi
 ## Components
 
 ### Masthead (`.mast`)
-A flat, dark-ground bar: the wordmark, a centred section nav (hidden entirely under 640px), and a single `Get the app` CTA. The CTA is the one masthead element that borrows paper — newsprint background, ink text — so it reads as the highest-contrast object in the bar; on hover it brightens further to pure white. This is the *only* store-distribution affordance in the masthead; there is no icon row here (see Footer, below, and **Do's and Don'ts**).
+A flat, dark-ground bar: the wordmark, a centred section nav (hidden entirely under 640px), and a single `Play now` CTA pointing at `/play`. The CTA is the one masthead element that borrows paper — newsprint background, ink text — so it reads as the highest-contrast object in the bar; on hover it brightens further to pure white. It is deliberately **not** a store link: one href cannot serve two platforms honestly, and a masthead that says "get the app" while pointing at a browser is a lie. The store ask lives where intent peaks — the Verdict — and again in the Footer. There is no icon row here (see **Do's and Don'ts**).
 
 ### The Paper Sheet (`.file`) — signature component
 The report itself: an oversized newsprint rectangle, wider than its own column, rotated a fraction of a degree, sitting on a second rotated sheet, with the two-layer directional shadow described in Elevation. It is the one element in the whole page allowed to break the grid, and it is the literal subject of the page's own thesis — the report you are being handed as you play.
@@ -271,10 +288,14 @@ A bordered ink-framed panel holding one question: a dark ink header band (discip
 A bordered newsprint button with a boxed letter chip (A–D). Four states: default (paper, `control-rule` border), hover (white, ink border, non-touch only), **hit** (`#E3EDE2` background, `ramp-pass` border, white-on-green chip), **miss** (`#F1E3E4` background, `ramp-fail` border, white-on-red chip), and **dim** (the three unchosen options, which recede via a solid darker ink-on-newsprint-shade combination rather than opacity — see Accessibility).
 
 ### Verdict Stamp (`.verdict`) — signature component
-A second paper slip laid on the report, appearing only once all five questions are answered, animated in with the `land` keyframe. It states the grade three redundant ways at once — a giant number, a tier word, and a colour — all driven by the same six-step verdict ramp, so no single one of the three is load-bearing for a reader who can't see colour or doesn't read past the headline. A "Scout's note," a short generated line naming the reader's best and worst discipline, sits alongside in its own rail. Two CTAs close it out (`Take the full test` / `Just my club instead`).
+A second paper slip laid on the report, appearing only once all five questions are answered, animated in with the `land` keyframe. It states the grade three redundant ways at once — a giant number, a tier word, and a colour — all driven by the same six-step verdict ramp, so no single one of the three is load-bearing for a reader who can't see colour or doesn't read past the headline. A "Scout's note," a short generated line naming the reader's best and worst discipline, sits alongside in its own rail.
+
+Below the grade the slip continues as **ruled rows, not panels**: one row carrying the download ask (a sentence plus `App Store` and `Google Play`, both ink-filled), then one row of ink text links (`Take the full test here` / `Just my club instead`). This replaced a titled, tinted, top-ruled `Keep this report` panel that itself held two more bordered boxes — four frames deep inside a sheet, on a page whose contract says no cards. The *placement* of the download ask was right and is unchanged; only the boxing was wrong.
 
 ### Club Index (`.clubs`)
-A two-column (one column under 760px) list of 72 club rows, each a colour swatch, club name, and an "era covered" range — deliberately a *date range*, not a question count, so the list can claim equal depth for Hajduk Split and Real Madrid without a number contradicting the sentence above it (see PRODUCT.md's binding rule against printing the bank size). Rows highlight on hover (non-touch only).
+A two-column (one column under 760px) list of club rows, each a club name, a **dotted leader rule**, and the competition the file belongs to. Rows highlight on hover (non-touch only).
+
+Two earlier versions of this row are instructive. It first carried a question count, which contradicted the "same depth for Hajduk Split as for Real Madrid" sentence directly above it. It then carried a colour swatch per club and an "era covered" date range, and the finish review killed both: twelve saturated crests are a **second palette** inside a world whose only saturation is the ramp, and the era range was derived by a 4-digit-year regex over each club's questions, options and hints — so most of its start years were *distractors* (Liverpool 1892 and Celtic 1878 are wrong answers to "in which year…", Real Madrid 1885 is a decoy on a 1920 crest question) or name artifacts (Bayern Munich "1860" is 1860 Munich). The competition column is checkable in the repo (`scripts/seo/leagues.mjs`) and by any reader, and the leader rule is a device the world already owns.
 
 ### Footle Board + Keyboard (`.ftl`)
 A dark-ground word-game board: a 7-wide tile grid (one row per guess, 6 rows) and a 3-row on-screen keyboard with wide `ENTER`/`DEL` keys. Tile and key states share the Scout's Ramp exactly (`ramp-pass` = right letter/right place, `ramp-near` = in the word/wrong place, a near-black grey = not in it — deliberately *not* the same colour as an unplayed tile, which was found to read as the same "nothing happened" state). An invalid submit (wrong letter count) triggers a short horizontal shake and a status message rather than doing nothing. A "used" keyboard key recedes the same way a dimmed answer option does — solid darkened colour, not opacity (see Accessibility).
@@ -282,8 +303,14 @@ A dark-ground word-game board: a 7-wide tile grid (one row per guess, 6 rows) an
 ### Countdown Clock (`.clock`)
 Display-scale, tabular-figure countdown to the next midnight reset, self-correcting: if the page is left open across midnight, it detects the date rollover and swaps its own copy to "reload for today's board" rather than silently counting from a stale target.
 
+It is **the last thing on the page**, and that is structural, not incidental: the direction contract promises a page that "ends on tomorrow rather than on a footer". The club index and the ad band sit between the report and the Footle band; the Footle band closes the page; a 5.8%-tall colophon follows it. Inside the rail the legend comes first and the clock last, so the final statement at every width is the countdown.
+
+The clock also carries **no label**. It used to open with a tracked uppercase "NEXT ONE IN" — an eyebrow over the biggest number in its section. The time and the line beneath it are now a single sentence that happens to start with a number ("23:41:08 / until a new surname and seven new questions"), which means **every** state of `#cnote` — solved, out of guesses, mid-game, midnight-rollover — has to be written to continue from a number. Check that before editing any of them.
+
 ### Footer Distribution Line (`.dist`)
-"Also on" plus inline SVG store-badge icons, on the dark ground. This is the *only* icon-based distribution row in the file — a related but distinct affordance from the Masthead's single CTA button.
+Two inline SVG store marks with their store names — `App Store` and `Google Play` — on the dark ground. This is the *only* icon-based distribution row in the file, a related but distinct affordance from the Masthead's single CTA button.
+
+It used to open with an "ALSO ON" micro-label. That label is gone: it was a tracked uppercase eyebrow over two links that already name themselves, and the store names carry the sentence without it.
 
 It is a **single-ground component with exactly one call-site**, and it is defined once. It used to carry a second, paper-ground skin (`--rule` borders, `--mut` label, white hover) left over from an earlier placement inside the Letterhead; when that placement was removed the paper styling stayed behind, and every one of its declarations was being overridden by a `.footin .dist` block further down. Both halves are now collapsed into one dark-ground definition, and the icons inherit their fill from `.mk-i` rather than re-specifying it. If a second, light-ground placement is ever wanted, add a modifier deliberately — do not reintroduce a default skin for a ground the component does not appear on.
 
@@ -306,4 +333,7 @@ A quiet, bordered, centred band with a single "Advertisement" label — no frami
 - **Don't** treat the three-step Scout's Ramp and the six-step Verdict Ramp as two unrelated scales — they are one hue family at two rendering strengths (see **The Two Strengths Rule**). If you add a stop to either, put it on the same hue arc and hold it to that column's contrast floor.
 - **Don't** use `--r3` as text on newsprint. It is a fill, it reads 2.13:1 on paper, and the ink-strength stop for that hue already exists as `--v2`.
 - **Don't** add motion that isn't a direct response to the reader's own action. Nothing on this page moves on load, on scroll, or ambiently — a bar fills because an answer was correct, the verdict lands because the last question was answered, a Footle row shakes because a guess was invalid.
+- **Don't** put a tracked uppercase micro-label above a heading, a big number, or a row of links. The three surviving call-sites (`.adlab`, `.vlab`, `.why b`) are field labels on a form. Two others were deleted in the finish review and neither comes back — if the words matter, fold them into the sentence the element is already making.
+- **Don't** re-nest the Verdict. Sheet → slip → **ruled row** is the depth limit; a panel inside the slip, or a bordered box inside that, is the exact pattern the finish review removed.
+- **Don't** ship a derived data column without checking what the derivation actually caught. The club index's era range read as fact and was mostly distractor years. A column that states something untrue is worse than no column.
 - **Don't** collapse the Masthead CTA, the Letterhead, and the Footer distribution line into one component. They look related (all "get the app / find us elsewhere") but are three different patterns living in three different places, and only the footer carries the icon row.
