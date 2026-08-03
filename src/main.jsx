@@ -163,13 +163,15 @@ const _hasHandoff =
   /[?&]code=/.test(_search) ||
   /access_token=/.test(_hash)
 const showMarketing =
-  _isBrowser && !_hasHandoff && (_path === '/' || _path.startsWith('/home-preview'))
+  _isBrowser && !_hasHandoff &&
+  (_path === '/' || _path.startsWith('/home-preview') || _path.startsWith('/home-old'))
 
-// The Scouting Report redesign (seed cf2f8891) renders at /home-preview ONLY.
-// `/` keeps MarketingHome until the new composition is judged on a real phone,
-// so the page that is currently converting carries none of the risk. Its own
-// lazy chunk, so a visitor to `/` never downloads it.
-const _isPreview = showMarketing && _path.startsWith('/home-preview')
+// THE SWAP (Alex, 2026-08-03: "swap it"). The Scouting Report is the
+// homepage. All nine swap-ready items verified — the skip link on real
+// hardware, the report by playing it, contrast by sweeping all 229 text
+// nodes. MarketingHome remains at /home-old for comparison and as the
+// visual rollback; the real rollback is reverting this commit.
+const _isOldHome = showMarketing && _path.startsWith('/home-old')
 const ScoutingReport = React.lazy(() => import('./marketing/ScoutingReport.jsx'))
 
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
@@ -211,7 +213,7 @@ if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary><React.Suspense fallback={null}>
-      {_isPreview ? <ScoutingReport /> : <MarketingHome />}
+      {_isOldHome ? <MarketingHome /> : <ScoutingReport />}
     </React.Suspense></ErrorBoundary>,
   )
 } else {
