@@ -2487,7 +2487,19 @@ ${FW_CSS}
 #partner-footle h2,
 #partner-footle .fw-lede{display:none}
 #partner-footle .fw-wrap{margin-top:0}
-#partner-footle .fw-card{border:1px solid var(--bd);border-radius:12px;background:var(--card);padding:20px}
+/* The board was hugging the left of a full-width section with a large dead
+   void beside it, and its legend stranded underneath — the layout read as
+   unfinished even once the borrowed chrome was hidden. Two columns on desktop
+   (board left, legend right) fills the void and mirrors how the homepage
+   presents Footle. Collapses to one column under 900px. */
+#partner-footle .fw-wrap{display:grid;grid-template-columns:minmax(0,520px) minmax(0,1fr);gap:34px;align-items:start}
+#partner-footle .fw-card{border:1px solid var(--bd);border-radius:14px;background:var(--card);padding:22px;margin:0}
+#partner-footle .fw-foot{align-self:center;color:var(--tx2);font-size:14.5px;line-height:1.6;margin:0}
+#partner-footle .fw-msg,#partner-footle .fw-done,#partner-footle .fw-again{grid-column:1}
+@media (max-width:900px){
+  #partner-footle .fw-wrap{grid-template-columns:1fr;gap:18px}
+  #partner-footle .fw-foot{align-self:start}
+}
 </style>
 <div id="partner-footle">
 ${footlePracticeSection()}
