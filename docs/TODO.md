@@ -22,7 +22,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 #### The 9 to swap-ready — BLOCKING (1-6)
 
 - [x] **1. Club wall** — DONE (`bf537e5` + data `885e865`). 0 → **72 club links + hub**, generated from the hand-verified competition map; heading count generated so it can’t go stale; build FAILS if a club lacks a competition. Detector clean (2 pre-existing shell findings only).
-- [ ] **2. Footle section** — most-played mode per `project_first_real_numbers`
+- [x] **2. Footle section** — DONE. Playable PAST puzzle (build-time gen, grader emitted from wordle.js with round-trip guard), teaching strip, keyboard, countdown ends the page. Verified by playing; detector clean.
 - [ ] **3. Daily 7 door** + `?game=daily` deep link
 - [ ] **4. Nav / drawer** — there is currently NO way off the page except "Play free" (MarketingHome: 40 refs, ScoutingReport: 0)
 - [ ] **5. FAQ** — carries FAQ schema; dropping it loses rich-result eligibility (12 refs → 0)
