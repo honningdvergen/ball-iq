@@ -11,6 +11,16 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+- [ ] **WAVE N IN FLIGHT** (fired ~13:30). European Heritage: Eintracht
+  Frankfurt, Borussia Mönchengladbach, Werder Bremen, Bologna, Genoa, Lille +
+  Fenerbahçe top-up (38→~55). Forge = gen×2 → examiner → skeptic per Q, only
+  double-survivors, prose last. **WHEN THE WORKFLOW NOTIFICATION ARRIVES:**
+  write the result to `.audit/wave-n.json`, then `scripts/forge-curate.mjs`
+  (edit CLUB_FIELD first), then insert + wire per the seo-wave skill (App.jsx
+  ×5, gen-seo ×2+DIR_ALIAS, clubs.mjs prose w/ array-hole assert, and NEW:
+  scripts/seo/club-competition.mjs entries — build fails loudly without them;
+  clubIndex regenerates itself). Titles must carry "& Answers" ≤60 chars.
+
 - [ ] **CLAUDE: GSC via the data plugin** (Alex, 2026-08-03) — run a proper
   data-tool analysis over Search Console instead of screenshots + the flaky
   in-console filters (the `?query=*term*` trap). ⚠️ The data connectors
