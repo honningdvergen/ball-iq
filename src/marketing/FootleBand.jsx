@@ -88,7 +88,7 @@ const CSS = `
 @media (hover:hover){.fb-k:not([data-m]):hover{background:var(--bd2)}}
 
 .fb-real{display:inline-flex;align-items:center;min-height:48px;margin-top:var(--sp3);
-         padding:12px var(--sp3);border:1px solid var(--bd3);color:var(--tx);
+         padding:12px var(--sp3);border:1px solid var(--bd3);border-radius:var(--rc);color:var(--tx);
          font:var(--ty-sec);font-weight:700;
          transition:background-color .15s var(--ease)}
 @media (hover:hover){.fb-real:hover{background:var(--card)}}

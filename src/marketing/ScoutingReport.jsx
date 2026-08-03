@@ -143,7 +143,7 @@ const CSS = `
 @media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
 .sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
-         border:1px solid var(--grn);transition:opacity .15s var(--ease)}
+         border:1px solid var(--grn);border-radius:var(--rc);transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-play:hover{opacity:.88}}
 
 /* The opening. LEFT-aligned and tight — measured from the mockup (34px over,
@@ -208,7 +208,7 @@ const CSS = `
            color:var(--mut);margin-bottom:6px}
 .sr-why{font:var(--ty-sec);color:var(--ink)}
 .sr-next{margin-top:var(--sp2);min-height:52px;width:100%;background:var(--ink);color:var(--pa);
-         border:1px solid var(--ink);font:var(--ty-body);font-weight:700;cursor:pointer;
+         border:1px solid var(--ink);border-radius:var(--rc);font:var(--ty-body);font-weight:700;cursor:pointer;
          transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-next:hover{opacity:.86}}
 
@@ -250,7 +250,7 @@ const CSS = `
 .sr-keepp{margin-top:6px;font:var(--ty-sec);color:var(--mut);max-width:46ch}
 .sr-links{margin-top:var(--sp2);display:flex;gap:var(--sp1);flex-wrap:wrap}
 .sr-a{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:12px var(--sp3);
-      border:1px solid var(--ink);font:var(--ty-sec);font-weight:700;
+      border:1px solid var(--ink);border-radius:var(--rc);font:var(--ty-sec);font-weight:700;
       transition:background-color .15s var(--ease),color .15s var(--ease)}
 .sr-a span{font:var(--ty-meta);color:var(--mut)}
 @media (hover:hover){.sr-a:hover{background:var(--ink);color:var(--pa)}
@@ -275,7 +275,7 @@ const CSS = `
   .sr-row:hover .sr-ld{border-bottom-color:var(--on-desk-mut)}}
 .sr-allclubs{margin-top:var(--sp1)}
 .sr-allclubs summary{display:inline-flex;align-items:center;min-height:48px;
-        padding:12px var(--sp3);border:1px solid var(--bd3);color:var(--tx);
+        padding:12px var(--sp3);border:1px solid var(--bd3);border-radius:var(--rc);color:var(--tx);
         font:var(--ty-sec);font-weight:700;cursor:pointer;list-style:none;
         transition:background-color .15s var(--ease)}
 .sr-allclubs summary::-webkit-details-marker{display:none}
@@ -300,12 +300,26 @@ const CSS = `
          color:var(--tx4);border-top:1px solid var(--bd)}
 .sr-foot p{max-width:52ch;margin:0 auto}
 .sr-dist{margin-top:var(--sp2);display:flex;gap:var(--sp2);justify-content:center;flex-wrap:wrap}
-.sr-dist a,.sr-legal a{display:inline-flex;align-items:center;min-height:44px;
+.sr-legal a{display:inline-flex;align-items:center;min-height:44px;
         padding:10px 12px;font:var(--ty-sec);color:var(--on-desk-mut);
         text-decoration:underline;text-underline-offset:3px}
-@media (hover:hover){.sr-dist a:hover,.sr-legal a:hover{color:var(--tx)}}
+.sr a.sr-badge{display:inline-flex;align-items:center;gap:9px;min-height:48px;
+        padding:12px 18px;border:1px solid var(--bd3);border-radius:var(--rc);
+        font:var(--ty-sec);font-weight:700;color:var(--tx);text-decoration:none;
+        transition:background-color .15s var(--ease)}
+@media (hover:hover){.sr a.sr-badge:hover{background:var(--card)}}
+@media (hover:hover){.sr-legal a:hover{color:var(--tx)}}
 .sr-legal{margin-top:2px;display:flex;gap:var(--sp1);justify-content:center;flex-wrap:wrap}
 `;
+
+/** The mockup's store marks (Footer Distribution Line, DESIGN.md) — the
+ *  first port replaced them with text links; Alex asked for the marks. */
+function AppleMark() {
+  return (<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M16.7 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.2 1.3-2.4 1.3-2.5 0 0-2.5-1-2.5-3.6zM14.4 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.5 2.8-1.3z" /></svg>);
+}
+function PlayMark() {
+  return (<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M3.6 2.2c-.3.3-.5.8-.5 1.4v16.8c0 .6.2 1.1.5 1.4l.1.1 9.4-9.4v-.2L3.7 2.1z" /><path d="M16.3 15.7l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2z" /><path d="M16.4 15.8L13.2 12.6 3.6 22.2c.4.4 1 .4 1.7 0z" /><path d="M16.4 8.2L5.3 1.9c-.7-.4-1.3-.4-1.7 0l9.6 9.6z" /></svg>);
+}
 
 /** The running-report table — under the assessment while filing, above the
  *  verdict once filed. One component so the two can never disagree. */
@@ -461,8 +475,8 @@ export default function ScoutingReport() {
                   puzzle drops.
                 </p>
                 <div className="sr-links">
-                  <a className="sr-a" href={APP_STORE}>iPhone<span>App Store</span></a>
-                  <a className="sr-a" href={PLAY_STORE_URL}>Android<span>Google Play</span></a>
+                  <a className="sr-a" href={APP_STORE}><AppleMark />App Store</a>
+                  <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
                 </div>
                 <p className="sr-web">
                   Or <a href={GET_APP}>keep going in the browser</a> — same test, nothing to install
@@ -532,8 +546,8 @@ export default function ScoutingReport() {
       <footer className="sr-foot">
         <p>Ball IQ — an independent football quiz. Most answers tell you why. Made by one person.</p>
         <div className="sr-dist">
-          <a href={APP_STORE}>App Store</a>
-          <a href={PLAY_STORE_URL}>Google Play</a>
+          <a className="sr-badge" href={APP_STORE}><AppleMark />App Store</a>
+          <a className="sr-badge" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
         </div>
         <div className="sr-legal">
           <a href="/about/">About</a>

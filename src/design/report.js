@@ -104,6 +104,13 @@ export const REPORT = {
   // exact tell this direction was built to avoid. ────────────────────────
   ease: 'cubic-bezier(.16,1,.3,1)',
 
+  // ── Control rounding (Alex, 2026-08-03: the sharp green button "looks a
+  // bit square and outdated, it is important that we are modern"). The
+  // PAPER stays sharp — it is a document; the contract's no-radius rule now
+  // reads as paper-only. CONTROLS are buttons, and buttons round. One token
+  // so the amount is a decision, not per-button drift.
+  rc: '10px',
+
   // ── THE TWO GRAINS (DESIGN.md: "The Two Grains Rule"). Both authored in
   // the approved mockup and BOTH dropped in the first port — which left
   // production a flat black void with a flat grey card on it, and was the
