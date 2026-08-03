@@ -108,7 +108,7 @@ const BANDS = [
 ];
 
 const CSS = `
-.sr{background:var(--bg);color:var(--on-desk);
+.sr{background:var(--bg);background-image:var(--grain);color:var(--on-desk);
     font-family:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
     font-variant-numeric:tabular-nums;min-height:100vh;overflow-x:hidden}
 .sr *{box-sizing:border-box;margin:0;padding:0}
@@ -186,8 +186,13 @@ const CSS = `
 /* The sheet needs DESK VISIBLE AROUND IT or the concept collapses: full-bleed
    paper reads as "a section with a light background", not a document on a
    surface. It was bleeding edge-to-edge at 375px — i.e. on 66% of traffic. */
-.sr-sheet{max-width:660px;margin:0 var(--sp2) var(--sp6);background:var(--pa);color:var(--ink);
+.sr-sheet{max-width:660px;margin:0 var(--sp2) var(--sp6);background:var(--pa);
+          background-image:var(--paper-tex);color:var(--ink);
           padding:var(--sp4) var(--sp3);box-shadow:var(--sheet-shadow)}
+/* The mockup lays the sheet on the desk at -.3deg — the single cue that this
+   is a DOCUMENT on a surface, not a card in a layout. Flattening it out was
+   part of why production read as "not right". Desktop only. */
+@media (min-width:700px){.sr-sheet{transform:rotate(-.3deg)}}
 @media (min-width:520px) and (max-width:699px){.sr-sheet{margin:0 var(--sp3) var(--sp6)}}
 @media (min-width:700px){.sr-sheet{margin:0 auto var(--sp6);padding:var(--sp5)}}
 
@@ -528,6 +533,11 @@ export default function ScoutingReport() {
           took the component from 0 internal club links to 72. The copy is the
           approved mockup's, not new writing; the heading count is generated
           so it cannot silently go stale when a wave lands. */}
+      {/* Footle sits directly under the report — Alex's call (2026-08-03,
+          twice), and the activation data agrees: Footle IS the product. The
+          contract's "ends on tomorrow" ending yields to that. */}
+      <FootleBand />
+
       <section className="sr-clubs" aria-labelledby="srClubsT">
         <h2 className="sr-h2" id="srClubsT">{CLUB_HEADING}</h2>
         <p className="sr-clsub">
@@ -566,10 +576,6 @@ export default function ScoutingReport() {
           })),
         }) }} />
       </section>
-
-      {/* The page ends on tomorrow: the Footle band closes it, and the last
-          thing inside is the countdown. Order is the direction contract's. */}
-      <FootleBand />
 
       <footer className="sr-foot">
         <p>Ball IQ — an independent football quiz. Most answers tell you why. Made by one person.</p>

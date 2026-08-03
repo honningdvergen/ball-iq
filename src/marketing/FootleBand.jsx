@@ -29,7 +29,7 @@ const LEN = FP_ANSWER.length;
 const KB = ['QWERTYUIOP', 'ASDFGHJKL', '⏎ZXCVBNM⌫'];
 
 const CSS = `
-.fb{background:var(--card2);border-top:1px solid var(--bd)}
+.fb{background:var(--card2);background-image:var(--grain);border-top:1px solid var(--bd)}
 .fb-in{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3)}
 .fb-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
        text-transform:uppercase;color:var(--tx);text-wrap:balance}

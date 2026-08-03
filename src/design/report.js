@@ -104,6 +104,15 @@ export const REPORT = {
   // exact tell this direction was built to avoid. ────────────────────────
   ease: 'cubic-bezier(.16,1,.3,1)',
 
+  // ── THE TWO GRAINS (DESIGN.md: "The Two Grains Rule"). Both authored in
+  // the approved mockup and BOTH dropped in the first port — which left
+  // production a flat black void with a flat grey card on it, and was the
+  // core of Alex's "it does not look right" on the live page. The desk grain
+  // is tuned for near-black; the paper grain is a separate, brighter noise
+  // tuned for newsprint. They are not interchangeable.
+  grain: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E")`,
+  'paper-tex': `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncG type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncB type='linear' slope='2' intercept='-.094'/%3E%3CfeFuncA type='table' tableValues='1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)' opacity='.2'/%3E%3C/svg%3E")`,
+
   // ── Elevation. The sheet's lift off the desk. Tokenised because the
   // detector correctly flagged a bare rgba(0,0,0,.55) as palette drift.
   'sheet-shadow': '0 18px 50px rgba(0,0,0,.55)',
