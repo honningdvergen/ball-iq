@@ -11,6 +11,15 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+- [ ] **CLAUDE: GSC via the data plugin** (Alex, 2026-08-03) — run a proper
+  data-tool analysis over Search Console instead of screenshots + the flaky
+  in-console filters (the `?query=*term*` trap). ⚠️ The data connectors
+  (BigQuery / Hex / Definite) all sit unauthorized — Alex must connect one in
+  claude.ai settings first, OR we pull GSC's API directly (the property is
+  URL-prefix `https://balliq.app/`, never sc-domain). First questions to ask
+  the data: did the "& Answers" retitle move CTR on the 45 changed pages vs
+  the 27 unchanged; post-swap homepage CTR; Türkiye cluster demand curve.
+
 ### 🎨 THE SCOUTING REPORT — LIVE AT https://balliq.app/home-preview/
 
 `/` is untouched and still serves MarketingHome. The preview is a separate lazy
