@@ -11,6 +11,32 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+### 🎨 Redesign groundwork — committed, NOT pushed
+
+**Decision (Alex, 2026-08-03): homepage first, HOLD the 191 pages.** They're the
+part that's growing — every rising page in today's GSC read was a club page.
+Reskinning a working surface and a broken one together makes neither
+attributable.
+
+| commit | what |
+|---|---|
+| `4b11152` | **One source of truth for the web palette** — `src/design/tokens.js` → `tokens.css`, consumed by BOTH the app entry and the 191-page generator. Provably inert: dist/ diffed before/after, **all 191 pages byte-identical**. Cost 312 bytes (250 gz). |
+| `6103775` | **Homepage tokenised** — 121 literals → 16 tokens. Verified in-browser at 375×812, not on paper. |
+
+**Why this was needed:** three surfaces each carried their own copy of the same
+palette. The homepage still painted `#1A1D27` ten times — a navy
+[app.css:57](src/app.css:57) records the product moving *off*. Nobody decided to
+keep it; nothing could notice.
+
+**Still open, all pixel-moving so all separate decisions:**
+- 8 stray surface shades, 23 uses (`#1A1D27`×10, `#16181F`×5, `#181B24`×3, …) — the drift itself
+- **Two text ramps**: `#FFF` (24 uses) vs `--tx` `#F0F1F5` (11). Only one can be the ramp.
+- Orange accent ramp with no token (`#FF6A00`×3, `#FF9245`, `#EE8707`, `#FFD24A`, `#241B00`)
+- Green CTAs disagree on their ink: `--grn-ink` vs `--bg`. Both pass contrast; it's consistency, not a11y.
+- ⚠️ **`--s1/--s2/--s3` collision**: app.css uses them for SURFACES, the Scouting Report mockup for SPACING. Spacing tokens must be `--sp1..--sp6`.
+
+**Next:** map the Scouting Report vocabulary (`--desk/--paper/--ink/--verd`) onto these tokens, then port the composition.
+
 ### 🟢 Committed, NOT yet pushed — waiting on Alex
 
 | commit | what |
