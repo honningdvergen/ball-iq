@@ -140,6 +140,41 @@ the settled "content stays free, Pro = features" decision.
 against a mate, daily streaks, XP, Footle, Transfer Trail. Same lesson as the
 "every answer is explained" store-copy fix: the CTA has to be true.
 
+## 👁️ EYE-OPENER 2026-08-03 — the /lists pages are 52% of our impressions and 4% of our clicks
+
+Totalled from the GSC per-page breakdown (90 days). This is the single most
+striking number on the site and it was invisible until position was pulled
+alongside CTR.
+
+    /lists impressions : 10,494   ← 52% of ALL site impressions
+    /lists clicks      :     11   ←  4% of ALL site clicks
+    /lists CTR         :  0.10%
+    33 of 43 list pages have ZERO clicks, holding 6,196 impressions
+    impression-weighted average position: 27.1
+
+Worst: `premier-league-champions` 873 impressions at position **49.5**, zero
+clicks. `serie-a-top-scorers` 841 at 34.3, one click. `ballon-dor-winners`
+696 at 26.1, zero.
+
+**What it means.** The /lists bet is HALF-WORKING and the half that works is
+the invisible half. Google clearly considers these pages relevant — it shows
+them ten thousand times — but ranks them around 27, where nobody clicks. They
+are not failing to be found; they are failing to be found *high enough*.
+
+**What it does NOT mean.** Do not rewrite the list pages. Same trap as the
+club-page CTR thesis: at position 27-50, 0.1% CTR is simply what is paid, and
+no title fixes that. `most-ballon-dors` sits at 12.6 with 951 impressions and
+2 clicks — the one page ranking respectably still converts at 0.2%, which
+says the QUERIES are informational ("who has the most Ballon d'Ors") and get
+answered in the SERP by a featured snippet. We would be fighting Google's own
+answer box.
+
+**The honest read: /lists is an authority play that has not been paid yet.**
+It cost one day, it generates half our impressions, and it converts nothing
+until the domain moves. That is an argument FOR the partnership, not against
+the lists. Re-read this after the first backlinks land — if position moves
+from 27 to 15, this becomes the biggest traffic source on the site overnight.
+
 ## ❌ FALSIFIED 2026-08-03 — the club-page "CTR fix" is not a real opportunity
 
 I ranked this the #1 ROI task. It does not survive its own data, and the

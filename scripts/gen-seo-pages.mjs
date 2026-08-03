@@ -2333,6 +2333,114 @@ ${footer()}`;
 }
 
 // ── /lists hub ──────────────────────────────────────────────────────────────────
+// ── /questions/<club>-quiz-questions-and-answers/ — the TEXT Q&A layer ───────
+//
+// WHY THIS EXISTS, and why it is not just another club page.
+//
+// The competitor read found our single largest asymmetry: we hold thousands of
+// checked questions and had ZERO pages in the text "questions and answers"
+// format. That is a DIFFERENT SERP from the club-quiz one — currently held by
+// thin listicles with no schema (one ranks with 90 questions and no structured
+// data at all) — so this ADDS impressions rather than fighting for position on
+// terms where we are already stuck on page two.
+//
+// It is also the LINKABLE format. Measured 2026-08-03: our club pages sit at
+// position 10-20 and convert 0.6-2.5% because of the page-one cliff, and the
+// only lever on position is authority. Nobody links to a JS quiz; quizmasters
+// and pub-quiz organisers cite and copy question LISTS. This is the asset that
+// can earn links on its own.
+//
+// FORMAT — deliberate, and copied from what already ranks:
+//   - questions grouped in ROUNDS of 10 (the pub-quiz convention)
+//   - answers in a SEPARATE block after each round, never inline. This is the
+//     whole point: a quizmaster reads the questions aloud and needs the
+//     answers apart from them. Inline answers make the page useless for its
+//     actual job, which is why our existing playable format does not serve it.
+//   - a table of contents with in-page anchors, so a long page is navigable
+//   - print styles, because these get printed for actual pub quizzes
+function buildClubQuestionsPage(cfg, rows) {
+  if (rows.length < 20) return null;   // too thin to be worth a page
+  const canonical = `${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/`;
+  const rounds = [];
+  for (let i = 0; i < rows.length; i += 10) rounds.push(rows.slice(i, i + 10));
+
+  const toc = rounds.map((_, i) => `<a href="#round-${i + 1}">Round ${i + 1}</a>`).join('\n');
+  const body = rounds.map((round, ri) => {
+    const qs = round.map((q, qi) => `<li id="q-${ri + 1}-${qi + 1}">${esc(q.q)}</li>`).join('\n');
+    const as = round.map((q, qi) => `<li>${esc(q.o[q.a])}${q.hint ? ` <span class="qa-why">— ${esc(q.hint)}</span>` : ''}</li>`).join('\n');
+    return `<section class="sec qa-round" id="round-${ri + 1}">
+<h2>Round ${ri + 1}</h2>
+<ol class="qa-qs">
+${qs}
+</ol>
+<details class="qa-ans"${ri === 0 ? ' open' : ''}>
+<summary>Answers — round ${ri + 1}</summary>
+<ol class="qa-as">
+${as}
+</ol>
+</details>
+</section>`;
+  }).join('\n');
+
+  // FAQPage schema. No competitor in the top set for this SERP uses structured
+  // data at all, so this is free differentiation on an already-clean base.
+  const faqLd = jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: rows.slice(0, 20).map((q) => ({
+      '@type': 'Question',
+      name: q.q,
+      acceptedAnswer: { '@type': 'Answer', text: q.hint ? `${q.o[q.a]}. ${q.hint}` : q.o[q.a] },
+    })),
+  });
+
+  const html = `${head({
+    title: `${cfg.name} Quiz Questions and Answers (Free, Printable)`.slice(0, 60),
+    description: `${rows.length} ${cfg.name} quiz questions with answers, grouped in rounds and free to print or read aloud. Written and checked by Ball IQ.`.slice(0, 155),
+    canonical, ld: faqLd,
+  })}
+<style>
+  .qa-toc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+  .qa-toc a{border:1px solid var(--bd);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--tx2);text-decoration:none;background:var(--card)}
+  .qa-round{border-top:1px solid var(--bd);padding-top:18px}
+  .qa-qs li,.qa-as li{margin:0 0 10px;line-height:1.55;color:var(--tx2)}
+  .qa-as li{color:var(--tx)}
+  .qa-why{color:var(--tx3);font-weight:400}
+  .qa-ans{margin:14px 0 0;border:1px solid var(--bd);border-radius:12px;background:var(--card);padding:12px 16px}
+  .qa-ans summary{cursor:pointer;font-weight:800;color:var(--grn);font-size:14px}
+  /* These pages get PRINTED for real pub quizzes — strip the chrome. */
+  @media print{
+    header,footer,.qa-toc,.bq,nav{display:none!important}
+    body{background:#fff!important;color:#000!important}
+    .qa-qs li,.qa-as li,.qa-why{color:#000!important}
+    .qa-round{page-break-inside:avoid}
+  }
+</style>
+<main>
+<section class="sec">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/quiz/${cfg.slug}/">${esc(cfg.name)} quiz</a> › <span>Questions and answers</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">${esc(cfg.name)} Quiz Questions and Answers</h1>
+<p style="margin:0 0 6px;color:var(--tx2);max-width:64ch">${rows.length} ${esc(cfg.name)} questions in rounds of ten, with the answers kept separate so you can read them out. Free to use for a pub quiz, a matchday WhatsApp group or your own revision — no sign-up, and the page prints cleanly.</p>
+<div class="qa-toc">
+${toc}
+</div>
+<p style="margin:10px 0 0;color:var(--tx3);font-size:13.5px">Prefer to play instead of read? <a href="${SITE.base}/quiz/${cfg.slug}/" style="color:var(--grn);font-weight:700">Take the ${esc(cfg.name)} quiz →</a></p>
+</section>
+${body}
+<section class="sec narrow">
+<h2>About these questions</h2>
+<p style="margin:0 0 12px;color:var(--tx2)">Every question here is checked before it ships, and most carry a short explanation so you learn something when you get one wrong. They come from the same bank as the Ball IQ app.</p>
+<p style="margin:0 0 12px;color:var(--tx2)"><a href="${SITE.base}/quiz/${cfg.slug}/" style="color:var(--grn);font-weight:700">Play the ${esc(cfg.name)} quiz →</a></p>
+</section>
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, 'questions', `${cfg.slug}-quiz-questions-and-answers`);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: `${cfg.slug}-quiz-questions-and-answers`, name: `${cfg.name} quiz questions and answers`, count: rows.length };
+}
+
 // ── /embed/quiz/ — the iframe a partner drops into their own CMS ─────────────
 //
 // This is what makes the offer real. "Delivered as an embed" is the line in
@@ -3647,7 +3755,7 @@ ${footer()}`;
   return { total, leagues: LEAGUES.length };
 }
 
-function buildSitemap(livePages, listPages = [], esPages = []) {
+function buildSitemap(livePages, listPages = [], esPages = [], questionPages = []) {
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
   // Pages are regenerated every deploy, so the build date is an honest hint.
@@ -3668,6 +3776,7 @@ function buildSitemap(livePages, listPages = [], esPages = []) {
     ...esPages.map((p) => ({ loc: `${SITE.base}/${p.lang}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
     ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
+    ...questionPages.map((p) => ({ loc: `${SITE.base}/questions/${p.slug}/`, freq: 'monthly', pri: '0.7' })),
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
@@ -3814,6 +3923,9 @@ async function main() {
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages, nationPages));
+  // The text Q&A layer — a DIFFERENT SERP from the club quiz, and the format
+  // that earns links. Only clubs with enough questions get one.
+  const questionPages = CLUBS.map((c) => buildClubQuestionsPage(c, clubHintRows(c.club))).filter(Boolean);
   // Siblings = every OTHER language this slug exists in, so each localised page
   // links the whole cluster rather than just itself and English.
   const builtEs = CLUBS_INTL.map((c) =>
@@ -3832,7 +3944,7 @@ async function main() {
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, questionPages);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
