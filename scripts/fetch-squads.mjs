@@ -133,13 +133,13 @@ function collapse(rows) {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// Start with a handful to prove the pipeline before spending 72 requests on
-// an endpoint that rate-limits. Expand once the shape is verified.
-const CLUBS = [
-  { club: 'Arsenal', qid: 'Q9617' },
-  { club: 'Liverpool', qid: 'Q1130849' },
-  { club: 'Real Madrid', qid: 'Q8682' },
-];
+// All 72 club packs, resolved to Wikidata QIDs by scripts/_qids.mjs. Resolving
+// by exact label found only 13 of 72 (Wikidata says "Liverpool F.C.", we say
+// "Liverpool"); the search API plus a "really is a football club" check found
+// 70, and the last two — Barcelona and Valencia — lose to their own CITY on
+// any name search and were confirmed by hand.
+const { default: QIDS } = await import('./_club-qids.json', { with: { type: 'json' } });
+const CLUBS = Object.entries(QIDS).map(([club, v]) => ({ club, qid: v.qid }));
 
 const out = {};
 const report = [];
