@@ -2438,8 +2438,22 @@ ${/* The real board, reused wholesale from /football-wordle/ rather than
       able to play it on the page where we ask them to. */''}
 <style>
 ${FW_CSS}
+/* Scoped to THIS page. footlePracticeSection() is shared with
+   /football-wordle/, where its eyebrow ("Practice puzzle · Footle #61 ·
+   originally 3 July 2026"), its own <h2> and its "nothing here spoils today's
+   Footle" lede are all correct. Dropped into a sales page they read as
+   duplicated and self-referential — TWO STACKED H2s and archive metadata a
+   publisher has no use for. Hidden here rather than edited there, so the
+   component keeps working on the page it was written for. */
+#partner-footle .fw-eyebrow,
+#partner-footle h2,
+#partner-footle .fw-lede{display:none}
+#partner-footle .fw-wrap{margin-top:0}
+#partner-footle .fw-card{border:1px solid var(--bd);border-radius:12px;background:var(--card);padding:20px}
 </style>
+<div id="partner-footle">
 ${footlePracticeSection()}
+</div>
 <section class="sec">
 <h2>Who is behind it</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
