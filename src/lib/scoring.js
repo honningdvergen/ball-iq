@@ -12,13 +12,31 @@ export function iqPercentile(iq) {
   return 15;
 }
 
+// The ladder EXTENDS UPWARD; the first six thresholds are frozen.
+//
+// The problem: a perfect 15-question game pays 200 XP, so the old ceiling
+// (Legend at 3,000) was ~15 good games — an engaged player finished the whole
+// progression in about a fortnight and then XP meant nothing forever. With
+// retention as the actual bottleneck, a hook that stops pulling after two
+// weeks is a leak.
+//
+// The obvious fix — stretch every threshold — was MEASURED against the live
+// profiles and rejected: it demoted 9 of 9 active users, including one who
+// would have lost a Legend badge they had genuinely earned. Taking away a
+// rank someone earned is a worse harm than a short ladder. So the existing
+// six are untouched (nobody moves) and the climb continues above them.
+//
+// Icon ≈ 8 weeks of daily play, Immortal ≈ 6 months. Both are deliberately
+// far: they exist so the bar is never empty, not to be finished.
 export const LEVELS = [
-  { name:"Sunday League",  xpNeeded:0,    icon:"⚽" },
-  { name:"Non-League",     xpNeeded:100,  icon:"🌱" },
-  { name:"Championship",   xpNeeded:300,  icon:"📈" },
-  { name:"Premier League", xpNeeded:700,  icon:"🏟️" },
+  { name:"Sunday League",  xpNeeded:0,     icon:"⚽" },
+  { name:"Non-League",     xpNeeded:100,   icon:"🌱" },
+  { name:"Championship",   xpNeeded:300,   icon:"📈" },
+  { name:"Premier League", xpNeeded:700,   icon:"🏟️" },
   { name:"Champions League",xpNeeded:1500, icon:"⭐" },
-  { name:"Legend",         xpNeeded:3000, icon:"🐐" },
+  { name:"Legend",         xpNeeded:3000,  icon:"🐐" },
+  { name:"Icon",           xpNeeded:8000,  icon:"👑" },
+  { name:"Immortal",       xpNeeded:20000, icon:"🏆" },
 ];
 
 export function getLevelInfo(xp) {
