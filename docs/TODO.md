@@ -69,6 +69,28 @@ reads "gated on a player dataset, not the algorithm". Build the squad dataset
 once and both ship. That materially changes the cost/benefit and is the
 strongest argument for doing it.
 
+**✅ DATA SOURCE PROVEN 2026-08-03 — Wikidata, not a scraper.**
+Alex suggested Firecrawl for continuous squad updates. We do not need it, and
+should not want it: the good squad sources (Transfermarkt above all) forbid
+scraping in their terms, so a core feature would rest on something that can be
+pulled at any moment, and an HTML scraper breaks silently on any redesign —
+this repo's signature failure.
+
+Wikidata's public SPARQL endpoint was tested live and returns players WITH
+positions for a club (`wdt:P54` = member of sports team, `wdt:P413` =
+position). No auth, no key, no scraping, CC0 licensing, a real query API, and
+it is edited by humans DURING transfer windows — which is exactly the
+freshness problem Alex raised.
+
+Two things learned from the live queries, both handled in one query:
+- ⚠️ `wdt:P54` returns EVERY membership ever — the first Arsenal result gave
+  Tony Adams and Alan Ball. For a current squad, query the statement node
+  (`p:P54`/`ps:P54`) and `FILTER NOT EXISTS` on an end-date qualifier (`pq:P582`).
+- ⚠️ Players return MULTIPLE position rows (Tony Adams as both "centre-back"
+  and "defender"). Needs a dedup/priority map to one position per player.
+- The endpoint 502s under load. Retry with backoff; never make a user-facing
+  request depend on it — snapshot to our own JSON on a schedule instead.
+
 **Open questions before any build:**
 1. Real search volume for "lineup builder" / "football lineup creator"?
 2. Crests and kits — the known licensing blocker. Does a text-and-shirt-colour
