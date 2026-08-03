@@ -362,6 +362,21 @@ function clearSeenHistory() {
   _writeSeenHistoryRaw({});
 }
 
+// Record a multiplayer round into the same 14-day seen history the solo modes
+// use, so the next pick avoids it. Called by BOTH players, not just the host:
+// hosting alternates across a rematch, so a host-only record would leave the
+// new host picking blind against the round they just played. The rows here are
+// the server's shape ({ id, prompt, options, correct }), not QB clones, so
+// there is no `_histKey` to read — it is rebuilt from the id that
+// pickMultiplayerQuestions deliberately sends along.
+//
+// Recorded at PLAY time rather than pick time: a lobby that never starts must
+// not burn questions out of the pool.
+export function recordMpQuestionsSeen(questions) {
+  if (!Array.isArray(questions)) return;
+  recordSeenQuestions(questions.map(q => ({ _histKey: q && q.id ? `q:${q.id}` : null })));
+}
+
 
 async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
   const { QB } = await loadQuestions();
@@ -2828,6 +2843,30 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
   } else if (!packId || packId === "mixed") {
     effectivePack = "mixed";
   }
+  // Drop what this device has played recently. The original note here said a
+  // seen-filter would "create asymmetry between players seeing different
+  // filtered pools" — that reasoning does not apply, because only the HOST
+  // reaches this function. One list is picked, stored on the room row, and
+  // served identically to everyone; the filter changes WHICH ten questions the
+  // room gets, never who sees what.
+  //
+  // Alex playtested this against Johannes and got two repeats across two
+  // consecutive games. That is not the freak event it sounds like, because
+  // they were on a TOPIC pack, not Mixed — both repeated questions are
+  // cat:"LaLiga". Measured back-to-back repeat rates per pack:
+  //     Mixed (6,400)      2%  ->  a non-issue, which is why this hid so long
+  //     LaLiga (270)      34%  ->  7% chance of TWO, which is what he hit
+  //     Ligue 1 (89)      72%
+  //     chaos (39)        97%  ->  82% chance of two
+  // So the defect scales with how narrow the topic is, and topic packs are
+  // exactly what invested players choose.
+  //
+  // applySeenFilter degrades the right way for the thin packs: it never
+  // shortens a game, and once a pack is exhausted it tops up with the
+  // LEAST-recently-seen rather than resurfacing at random. chaos still
+  // repeats — 39 questions cannot fill two 10-question games otherwise — but
+  // it now cycles instead of colliding.
+  eligible = applySeenFilter(eligible, count, qbHistKey);
   // Math.random() - 0.5 sort is biased but undetectable for casual
   // trivia. Upgrade to Fisher-Yates only if a user complaint surfaces.
   const shuffled = eligible.slice().sort(() => Math.random() - 0.5);

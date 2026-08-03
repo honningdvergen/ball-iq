@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -1350,6 +1350,15 @@ const REVEAL_PAUSE_MS = 2000;
 
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
   const question = room.questions?.[room.current_question];
+
+  // Feed the round into the 14-day seen history so the next pick avoids it.
+  // Runs for BOTH players, which is the whole point: hosting alternates over a
+  // rematch, and a host-only record would leave the new host picking blind
+  // against the round they just finished. Keyed on room.id so it fires once
+  // per room rather than on every question advance.
+  useEffect(() => {
+    recordMpQuestionsSeen(room?.questions);
+  }, [room?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // mountedRef: gates setState calls inside async paths so post-unmount
   // resolutions don't trigger React warnings.
