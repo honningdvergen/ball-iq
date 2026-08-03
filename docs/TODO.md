@@ -26,7 +26,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 - [x] **3. Daily 7 door** — DONE. `?game=daily` rides the existing `?game=footle` branch; door beside Footle’s in the band. Verified by booting into "1/7". Note: fresh devices see onboarding first (pre-existing, same as footle).
 - [x] **4. Nav** — DONE. Mockup masthead ported (Clubs/Records/Daily/About, no drawer — wraps under 700px, 44px targets), skip link → #report, footer with store + legal links. ⚠️ skip-link :focus reveal unverifiable in the pane (window unfocused) — check by real keyboard in item 6.
 - [x] **5. FAQ** — DONE. 5 corrected FAQs, native details/summary, FAQPage JSON-LD fed from the same array (schema⇄DOM match verified). NB: the old homepage never had FAQPage schema — this is its first appearance, the TODO’s "loses eligibility" claim was wrong.
-- [ ] **6. Accessibility pass** — detector ≠ WCAG. 25% of sessions produce a dead click on the current site; do not carry that in.
+- [x] **6. Accessibility pass** — programmatic portion DONE: 229 text nodes swept, **0 contrast failures**; heading order H1→H2×6 no skips; 0 unnamed controls; `lang=en`; **320px reflow: no horizontal overflow** (WCAG 1.4.10); all 3 animations reduce-guarded; 44-54px targets verified per component. **ALEX, 2 minutes on your Mac:** (1) load /home-preview, press Tab once — a green "Skip to the assessment" chip must appear top-left (the pane cannot test :focus); (2) optional: VoiceOver one pass through the report.
 
 #### SHOULD-DO (7-9)
 
