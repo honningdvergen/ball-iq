@@ -79,7 +79,7 @@ function slotFor(pos) {
 //   3. not dead — a blunt but effective catch for the oldest rows
 const SINCE = 2015;
 const sparql = (qid) => `
-SELECT ?player ?playerLabel ?positionLabel ?start WHERE {
+SELECT ?player ?playerLabel ?positionLabel ?start ?natLabel ?dob WHERE {
   ?player p:P54 ?ms .
   ?ms ps:P54 wd:${qid} .
   FILTER NOT EXISTS { ?ms pq:P582 ?end }
@@ -94,6 +94,12 @@ SELECT ?player ?playerLabel ?positionLabel ?start WHERE {
   # not this one loosened.
   ?player wdt:P21 wd:Q6581097 .
   OPTIONAL { ?player wdt:P413 ?position }
+  # A guessing game needs ATTRIBUTES to compare. Club and position alone give
+  # a player two bits of feedback per guess, which is not a game. Nationality
+  # and age are the other two the "Who Are Ya?" format leans on, and both are
+  # well populated on Wikidata for professional footballers.
+  OPTIONAL { ?player wdt:P27 ?nat }
+  OPTIONAL { ?player wdt:P569 ?dob }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
 }`;
 
@@ -123,13 +129,35 @@ function collapse(rows) {
     // Wikidata returns the raw Q-id as the label when no English label exists.
     if (!name || /^Q\d+$/.test(name)) continue;
     const pos = (r.positionLabel?.value || '').toLowerCase();
+    const nat = r.natLabel?.value || null;
+    // Keep the FULL birth date, not just the year. Mystery Player's similarity
+    // ranking uses age as its tie-breaker, and a year-only value gives just
+    // ~13 distinct levels — which produced 118 distinct scores across 1,539
+    // players and a largest tie group of 86. Day-level precision makes the
+    // age term effectively continuous and the ranking explicable.
+    const dobFull = r.dob?.value ? String(r.dob.value).slice(0, 10) : null;
+    const dob = dobFull ? Number(dobFull.slice(0, 4)) : null;
     const cur = byPlayer.get(id);
     const rank = POSITION_RANK.indexOf(pos);
     const score = rank === -1 ? 999 : rank;
-    if (!cur || score < cur.score) byPlayer.set(id, { id, name, pos, score });
+    // Keep the most specific POSITION, but never lose a nationality or birth
+    // year just because it rode in on a lower-ranked row.
+    const started = r.start?.value ? String(r.start.value).slice(0, 10) : null;
+    if (!cur || score < cur.score) byPlayer.set(id, { id, name, pos, score, nat: nat || cur?.nat || null, born: dob || cur?.born || null, dob: dobFull || cur?.dob || null, started: started || cur?.started || null });
+    else {
+      if (!cur.nat && nat) cur.nat = nat;
+      if (!cur.born && dob) cur.born = dob;
+      if (!cur.dob && dobFull) cur.dob = dobFull;
+      if (started && (!cur.started || started > cur.started)) cur.started = started;
+    }
   }
   return [...byPlayer.values()]
-    .map(({ id, name, pos }) => ({ id, name, position: pos || null, slot: slotFor(pos) }))
+    .map(({ id, name, pos, nat, born, dob, started }) => ({ id, name, position: pos || null, slot: slotFor(pos), nat: nat || null, born: born || null, dob: dob || null, started: started || null }))
+    // ⚠️ AGE FLOOR. Wikidata leaves plenty of old memberships open, so the
+    // squads came back containing Ze Roberto (b. 1974) at Palmeiras and Steve
+    // Harper (b. 1975) at Sunderland. A 52-year-old is not in a current squad.
+    // 1988 allows a 38-year-old, which is rare but real (Modric, Pepe).
+    .filter((p) => !p.born || p.born >= 1988)
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
