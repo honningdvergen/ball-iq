@@ -37,6 +37,48 @@ items are deleted, not archived — git history is the archive.
   UI. Wants a 2-device test — the same test [[project_mp_stats_realtime_gated]]
   is already waiting on.
 
+## SEO REVIVAL ATTEMPT 2026-08-03 — four hypotheses, four falsified
+
+**The scale of the problem: 175 of 194 pages get essentially no traffic** (90%).
+Only ~19 pages cleared 4 sessions in 7 days. Worst category is the newest one:
+**49 of 51 `/lists` pages are dead (96%)**.
+
+Four on-page explanations were tested and every one failed:
+
+1. **"/quiz/liverpool/ is broken"** — 2.2s/session looked fatal on a 3-day
+   window. Over 7 days it is 20 sessions at **117s**. Noise from a 5-session
+   sample. ⚠️ Do not act on Clarity samples under ~15 sessions.
+2. **"the lists lack the playable taster"** — they have one (12 markers, 20
+   buttons); it is smaller than a club page's, not absent.
+3. **"serie-a-top-scorers 301s vs ballon-dor-winners 10s means the pages
+   differ"** — 5 sessions vs 4. Noise again, from the same trap as #1, twice
+   in one session.
+4. **"internal link equity is starved"** — measured across all 191 built
+   pages: **zero orphans, median 75 inbound links**, max 190. Traffic pages
+   median 86 vs sitewide 75 — barely a difference. Linking is not the drag.
+
+**Conclusion: on-page SEO is not the binding constraint.** This independently
+re-derives [[project_ranking_diagnosis_2026_07_28]] by four different routes —
+fundamentals are clean, the ceiling is AUTHORITY. Stop auditing on-page.
+
+### ⛔ THE ONE THING BLOCKING A REAL ANSWER
+We cannot tell whether the 175 dead pages are **(a) not indexed** — which is
+mine to fix (crawl budget, sitemap, IndexNow) — or **(b) indexed but
+outranked**, which is authority and Alex's outreach. Those need opposite work
+and Clarity cannot distinguish them: it only sees sessions that already
+happened. GSC can, in one query. **Connecting the GSC data connector is worth
+more than any further on-page work.** The last GSC read (2026-07-20) covered
+56 pages and found 55 indexed but stuck on page 2-4; the site is now 191
+pages, so the ~135 added since have never been checked at all.
+
+### Concrete finding worth a decision
+**9 localised pages are near-orphans with 1 inbound link each** —
+`/pt/quiz/{flamengo,palmeiras,corinthians}/`, `/id/quiz/{arsenal,manchester-united}/`,
+`/es/quiz/{boca-juniors,river-plate}/`, `/tr/quiz/galatasaray/`. They were
+built on the localisation thesis that [[project_us_egypt_gsc_2026_07_29]]
+measured as **DEAD**. They duplicate their English originals' structure and
+dilute rather than add. Alex's call: noindex, delete, or leave.
+
 ## FINDINGS 2026-08-03 (afternoon)
 
 - [x] **✅ Trail spot-check DONE — all six careers pass** (van Dijk, Courtois,
