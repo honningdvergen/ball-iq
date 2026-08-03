@@ -1,0 +1,65 @@
+/* The Scouting Report typefaces. Marketing homepage only.
+ *
+ * Self-hosted rather than linked from Google Fonts: the CSP on some surfaces
+ * blocks external hosts, a font CDN is a render-blocking third party on the
+ * page whose LCP we care most about, and — the real reason — a webfont that
+ * silently fails to load is the single most expensive bug this redesign has
+ * had. An earlier round shipped THREE mockups that all rendered in Arial
+ * Narrow because Barlow Condensed never arrived, and every review of them was
+ * a review of the fallback. Files we ship cannot 404 from someone else's CDN.
+ *
+ * ⚠️ HOW TO VERIFY THESE ACTUALLY LOADED
+ * NOT with document.fonts.check(). Measured in this browser, on this page:
+ *   document.fonts.check("48px 'NoSuchFontXYZ123'")  ->  true
+ *   document.fonts.check("48px 'Archivo'")           ->  false   (it HAD loaded)
+ * It is wrong in both directions. It reports whether a download is PENDING,
+ * not whether a family is available.
+ *
+ * Measure canvas text width against a nonsense family instead — with two
+ * corrections that a first pass here got wrong:
+ *
+ *   1. Measure the control at the SAME font-weight as the test. Comparing a
+ *      700 test against a 400 control just detects synthesised bold, and
+ *      reports a fallback as a successful load.
+ *   2. Test across the WEIGHT AXIS, not one weight. Archivo at 400 measured
+ *      683.45 against a fallback's 683.18 — a 0.27px accident that reads as
+ *      "not loaded". Six weights gave six distinct, monotonically increasing
+ *      widths (661.34 / 674.61 / 683.45 / 692.29 / 722.62 / 795.98), which no
+ *      fallback can fake.
+ *
+ * Also: a font nothing on the page USES is never fetched, whatever the CSS
+ * says. Force it with `await document.fonts.load("700 48px Archivo")` before
+ * measuring, or you are testing laziness rather than availability.
+ *
+ * Confirmed loaded by that method: Archivo (variable, 6/6 distinct weights)
+ * and Archivo Narrow 700 (576.91 vs a 703.52 fallback — properly condensed).
+ *
+ * WEIGHTS — the other trap
+ * CSS font-matching snaps an undeclared weight to the NEAREST declared face.
+ * Pinning individual weights is how a previous pass made 500 render as 400 and
+ * 700 as 800 without any error anywhere.
+ *
+ *   Archivo is VARIABLE (100 900), so every weight in that range resolves
+ *   exactly and the snapping problem cannot occur.
+ *
+ *   Archivo Narrow ships 700 ONLY, because the direction uses it at 700 only
+ *   (mastheads and section labels). If you set Archivo Narrow at any other
+ *   weight it will snap to 700 or be synthesised — declare a real face instead
+ *   of assuming it worked.
+ */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900; /* variable — do NOT split into pinned faces */
+  font-display: swap;
+  src: url('./fonts/archivo-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo Narrow';
+  font-style: normal;
+  font-weight: 700; /* the only weight shipped — see the note above */
+  font-display: swap;
+  src: url('./fonts/archivo-narrow-700.woff2') format('woff2');
+}

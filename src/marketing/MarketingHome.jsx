@@ -4,6 +4,7 @@
 // emits it as a dependency of this chunk and injects the <link> before the
 // module evaluates, so there is no unstyled frame. The shared dark palette
 // (--bg/--card/--bd/--tx/--grn) still comes from the entry's tokens.css.
+import '../design/fonts.css';
 import '../design/report.css';
 import {
   Target, Menu, X,
