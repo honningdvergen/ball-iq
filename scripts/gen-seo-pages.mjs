@@ -2333,6 +2333,44 @@ ${footer()}`;
 }
 
 // ── /lists hub ──────────────────────────────────────────────────────────────────
+// ── /embed/quiz/ — the iframe a partner drops into their own CMS ─────────────
+//
+// This is what makes the offer real. "Delivered as an embed" is the line in
+// the pitch, and until now there was no embed — a publisher who said yes would
+// have got HTML to paste, which most CMSes mangle.
+//
+// It is also the aggregator play: playfootball.games gets mirrored across five
+// or more Wordle-clone sites purely because it exposes an embeddable URL. An
+// embed is a link-acquisition surface that runs while you sleep.
+//
+// Deliberately chrome-free: no site nav, no footer, no breadcrumb. It is meant
+// to sit inside someone else's page and look like part of it. The only Ball IQ
+// mark is one small attribution link, which IS the point — that link is the
+// entire price of the arrangement.
+//
+// ⚠️ noindex: this is the same questions as a real page, so letting Google
+// index it would be self-inflicted duplicate content. The iframe host page
+// gets the ranking; we get the link.
+function buildEmbedQuizPage(hints) {
+  const rows = arcPick(hints.filter((q) => q.diff !== 'easy' && q.hint), 10);
+  const html = `${head({
+    title: 'Ball IQ weekly football quiz',
+    description: 'A ten-question football quiz.',
+    canonical: `${SITE.base}/embed/quiz/`,
+    ld: '', taster: true,
+  }).replace('</head>', '<meta name="robots" content="noindex,follow" />\n</head>')}
+<main style="padding:12px 12px 16px;max-width:760px;margin:0 auto">
+${renderQuizSet(rows, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
+<p style="margin:14px 2px 0;font-size:12px;color:var(--tx3);text-align:center">
+Quiz by <a href="${SITE.base}/?utm_source=embed" target="_blank" rel="noopener" style="color:var(--grn);font-weight:700">Ball IQ</a>
+</p>
+</main>`;
+  const dir = resolve(DIST, 'embed', 'quiz');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: 'embed/quiz' };
+}
+
 // ── /partners/ — the page a publisher lands on from the pitch ────────────────
 //
 // WHY THIS EXISTS. The one lever that lifts the whole domain rather than one
@@ -2454,6 +2492,14 @@ ${FW_CSS}
 <div id="partner-footle">
 ${footlePracticeSection()}
 </div>
+</section>
+<section class="sec">
+<h2>Drop it straight into your CMS</h2>
+<p style="margin:0 0 14px;color:var(--tx2);max-width:62ch">One line of HTML. It resizes to its container, needs no script on your side, and works in any CMS that allows an iframe. Prefer plain HTML instead? We will send that.</p>
+<pre style="margin:0;padding:16px 18px;border:1px solid var(--bd);border-radius:12px;background:var(--card);overflow-x:auto;color:var(--tx2);font-size:13px;line-height:1.6"><code>&lt;iframe src="${SITE.base}/embed/quiz/"
+        width="100%" height="620" style="border:0"
+        title="Football quiz by Ball IQ"
+        loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
 <section class="sec">
 <h2>Who is behind it</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
@@ -3766,6 +3812,7 @@ async function main() {
   const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages, listTasterIds));
   buildListsHubPage(LISTS, clubPages, livePages);
   buildPartnersPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
+  buildEmbedQuizPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
