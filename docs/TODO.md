@@ -1,6 +1,6 @@
 # Ball IQ — the list
 
-**Last updated: 2026-07-30.** Single source of truth for what's in flight.
+**Last updated: 2026-08-03.** Single source of truth for what's in flight.
 `[ ]` = open · **ALEX** = needs you · **CLAUDE** = I do it.
 
 Claude: update this file whenever something lands, and re-read it when asked
@@ -9,7 +9,113 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
-## TODAY — 2026-07-30 (evening state)
+## TODAY — 2026-08-03
+
+### Shipped since the last entry — all pushed to main, all live
+
+| commit | what |
+|---|---|
+| `db73078` | **Homepage stopped contradicting itself.** FAQ said "a native Android app is on the way" beside a live Google Play button. The hero number counted up through 1,689 and 2,996 — two figures that were never true — before settling. 6,407 and 6,000+ sat 200px apart. Footle's spent keys were 2.89:1, every one of the detector's WCAG failures. |
+| `83394db` | **"Rated out of 99" was false AND undersold the product.** `calcBallIQ` maps 15 questions onto **60–160**; 99 is the MIDPOINT. The marketing page capped its own scale 61 points below a perfect score, and disagreed with the in-app FAQ, which had said 60–160 all along. |
+| `d38b447` | **/footle was donating every backlink it earned to the homepage.** See below — this is the big one. |
+| `819f047` `34281b5` `de08a5c` | Homepage redesign preserved in `docs/mockups/`, `DESIGN.md` + sidecar written from the built world. |
+| `a30904e` … `3f01e84` | The redesign's own fix chain — font dedup (−43% file size), a Footle duplicate-letter scoring bug, the verdict CTAs rendering with zero padding, the example row stealing a guess. |
+
+### 🔴 THE FINDING THAT MATTERS TODAY — the Footle vertical is INVISIBLE on Google
+
+Measured in GSC (28 days, `https://balliq.app/` URL-prefix), three independent filters:
+
+| filter | impressions |
+|---|---|
+| query contains **footle** | **0** |
+| query contains **wordle** | **0** |
+| page contains **football-wordle** | **0** |
+
+Impressions register even at position 90+, so **zero means not in the index** —
+not "ranking badly". Alex's own URL Inspection on `/footle` returned *does not
+exist*, which is consistent.
+
+**Root cause, fixed in `d38b447`:** every Footle link in existence points at
+`/footle` — the in-app share text (`App.jsx:3954`, `:5031`, `:7546`), the
+`/t` `/ig` `/tt` `/x` social redirects, every authority-kit template, the
+AlternativeTo listing. `/footle` rewrote to `/index.html`, which hardcodes
+`<title>Ball IQ — The Ultimate Football Quiz</title>` and
+`canonical → https://balliq.app/`, and nothing in `src/` updates either
+client-side. A page that canonicals to `/` gets dropped as a duplicate.
+
+Now an edge function (`api/footle-boot.js`) serves the same app shell with a
+Footle title and `canonical → /football-wordle/`, so the share flow still boots
+straight into the puzzle while the equity consolidates on the page that targets
+the term. **Expect `/footle` to report "Duplicate, Google chose different
+canonical" — that is the SUCCESS state, not a failure.**
+
+**The premise was also wrong, and this changes strategy.** "Footle" is not a
+coined word. It is an 1891 English verb (OED) and the name of two established
+competitors: `footle.club` holds four of the top ten, `foot-le.com` owns the
+exact-match domain in EN and FR. Autocomplete confirms the intent split —
+"footle" suggests *footless tights* and *foot lettuce*; "football wordle"
+returns ten game-intent refinements out of ten.
+
+`[ ]` **CLAUDE — /football-wordle/ is prose-only.** Zero `<button>`, zero
+`<input>`. Every site outranking us *is* the playable game. The playable-taster
+pattern from `78170c6` reached ~120 club pages and never reached this one.
+`buildFootlePage()`, `scripts/gen-seo-pages.mjs:2731`.
+
+`[ ]` **ALEX — after a few days, re-inspect `/footle` and `/football-wordle/`**
+in GSC. The question is whether `/football-wordle/` gets indexed at all.
+
+### 🟡 What the GSC query table actually says
+
+| query | clicks | impressions | CTR |
+|---|---|---|---|
+| ball iq | 17 | 40 | 42.5% |
+| everton quiz | 5 | 31 | **16.1%** |
+| arsenal quiz | 3 | **231** | **1.3%** |
+| real madrid quiz | 2 | 63 | 3.2% |
+
+Arsenal draws 7.5× Everton's impressions and 40% fewer clicks — a 12× CTR gap
+on the same template. That is position, not titles. **The big-club terms inflate
+impressions and crush average CTR while delivering almost nothing; the smaller
+clubs are where the winnable traffic is** — which is exactly the moat the
+product already has. Overall: 11.4k impressions, 161 clicks, position 20.5.
+
+### 🟡 Homepage redesign — "The Scouting Report"
+
+Direction assigned by dice (`concept-seed`, seed `cf2f8891`, candidate 4 of 7).
+Files in `docs/mockups/`; `scouting-d.html` is current and reproducible from
+`scouting-c.html` via the patch chain. All 19 impeccable commands have run;
+detector exit 0. **Not yet ported to `MarketingHome.jsx`.**
+
+`[ ]` **CLAUDE — the club band should carry the link mesh it dropped.**
+114 of 126 live `/quiz/` pages are unlinked from the new page (the old one
+linked 82). Same twelve rows, better contents: smaller clubs + competitions +
+players, per the CTR data above.
+
+`[ ]` **CLAUDE — multiplayer appears nowhere on the new page.** Up to 8 online,
+live scores, podium, rematch — verified in `MultiplayerCard.jsx:54`. One clause
+at the verdict, not a band.
+
+`[ ]` **CLAUDE — the Daily 7 has no door.** Named in prose beside the countdown,
+linked nowhere, and no `?game=daily` deep link exists (`App.jsx:9085` handles
+only `footle`/`trail`).
+
+`[ ]` **CLAUDE — `ANSWER = 'ALISSON'` is hardcoded** under a clock promising a
+new surname at midnight. Ships as a lie on day 2.
+
+`[ ]` **CLAUDE — the strongest unclaimed line on the page.** Two app-exclusive
+truths, both verified: the web carries AdSense and the app declares none, and
+`lib/notifications.js` nudges at 7pm with a 30-day win-back tail, native-only.
+Current download argument ("a report nobody keeps") is not app-exclusive —
+`/play` remembers you too.
+
+### ⛔ DO NOT put Transfer Trail on the homepage
+`TRAIL_ANCHOR_DAY = 20697` = **2026-09-01**. `getTrailAnswerForDayIndex`
+returns `null` for every date until then. It shipped `b23b489`, was reverted
+the same hour, rebuilt still dark. Advertising it would be a false claim.
+
+---
+
+## 2026-07-30 (evening state)
 
 Per this file's own rule, completed detail is deleted rather than archived —
 git history is the archive. What follows is only what is still true or still open.
