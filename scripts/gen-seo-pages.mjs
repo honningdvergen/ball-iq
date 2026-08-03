@@ -1508,7 +1508,12 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
   // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
   // scroll not at all. Depth is set by intent, not by length.
-  const quizRows = arcPick(hints, Math.min(40, hints.length));
+  // Cap removed entirely (was 22, then 40). Measured cost of uncapping: +26KB
+  // on the single heaviest page (Arsenal, 67 questions -> 140KB) and ~2KB on a
+  // typical one. Zero layout cost at any size because the quiz paces in place,
+  // so every question rides in crawlable server-rendered HTML without moving
+  // the fold. There is no longer a number here to be wrong.
+  const quizRows = arcPick(hints, hints.length);
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
@@ -1803,7 +1808,12 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
   // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
   // scroll not at all. Depth is set by intent, not by length.
-  const quizRows = arcPick(hints, Math.min(40, hints.length));
+  // Cap removed entirely (was 22, then 40). Measured cost of uncapping: +26KB
+  // on the single heaviest page (Arsenal, 67 questions -> 140KB) and ~2KB on a
+  // typical one. Zero layout cost at any size because the quiz paces in place,
+  // so every question rides in crawlable server-rendered HTML without moving
+  // the fold. There is no longer a number here to be wrong.
+  const quizRows = arcPick(hints, hints.length);
   const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
 
@@ -1974,7 +1984,12 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
   // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
   // scroll not at all. Depth is set by intent, not by length.
-  const quizRows = arcPick(hints, Math.min(40, hints.length));
+  // Cap removed entirely (was 22, then 40). Measured cost of uncapping: +26KB
+  // on the single heaviest page (Arsenal, 67 questions -> 140KB) and ~2KB on a
+  // typical one. Zero layout cost at any size because the quiz paces in place,
+  // so every question rides in crawlable server-rendered HTML without moving
+  // the fold. There is no longer a number here to be wrong.
+  const quizRows = arcPick(hints, hints.length);
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
@@ -2428,7 +2443,12 @@ function buildNationPage(cfg, catPages, nationPages) {
   // is 14.6 screens and holds 94% scroll depth and ~5 minutes, while a 9.6-screen
   // club page holds ~20% and 2 minutes. An earlier 16.5 -> 14.2 screen cut moved
   // scroll not at all. Depth is set by intent, not by length.
-  const quizRows = arcPick(hints, Math.min(40, hints.length));
+  // Cap removed entirely (was 22, then 40). Measured cost of uncapping: +26KB
+  // on the single heaviest page (Arsenal, 67 questions -> 140KB) and ~2KB on a
+  // typical one. Zero layout cost at any size because the quiz paces in place,
+  // so every question rides in crawlable server-rendered HTML without moving
+  // the fold. There is no longer a number here to be wrong.
+  const quizRows = arcPick(hints, hints.length);
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
