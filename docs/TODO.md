@@ -11,6 +11,13 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+- [ ] **ALEX 2026-08-03: native push for REMATCH invites** — a rematch/challenge
+  invite should fire an APNs/FCM banner on the phone, not just in-app realtime
+  (extends #21's fix + the notification-center backlog; web half still gated
+  on VAPID secrets, task #17).
+- [ ] **ALEX 2026-08-03: friends' avatars beside their answers in MP** — show
+  each friend's profile picture next to the option they picked (post-reveal
+  only, or it becomes answer-copying).
 - [ ] **WAVE N IN FLIGHT** (fired ~13:30). European Heritage: Eintracht
   Frankfurt, Borussia Mönchengladbach, Werder Bremen, Bologna, Genoa, Lille +
   Fenerbahçe top-up (38→~55). Forge = gen×2 → examiner → skeptic per Q, only
