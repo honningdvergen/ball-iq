@@ -64,6 +64,31 @@ Norwegian outlet has a far higher hit rate than a cold English one to 90min.
 
 ---
 
+## ⚠️ VERIFY BEFORE YOU SEND — the "you don't have a quiz" claim
+
+The whole pitch hangs on this line, and it came from an agent report that
+flagged parts of itself as unverified. Alex, correctly: "we might only get one
+shot at this."
+
+**SOFASCORE — checked 2026-08-03. The claim needs rewording, not dropping.**
+- ✅ No quiz feature in the current product. The Play Store and App Store
+  listings describe scores, stats, heatmaps, shotmaps, player ratings and
+  player-of-the-match voting — no quiz anywhere.
+- ⚠️ **BUT they have run quizzes before**: a "SofaQuiz" posted to their
+  Facebook (2020) and a Playbuzz quiz under a SofaScore account (2017). Both
+  are one-offs on third-party platforms, not a product feature — but an editor
+  who remembers them will bristle at "you don't have an equivalent."
+  **Say "you don't run a regular quiz" instead of "you don't have one."**
+- ⭐ **THE GIFT**: a public App Store review of Sofascore reads *"I wished for
+  the app to be more fun, add quizzes, score predictions, lineup builders LIKE
+  FOTMOB."* That is a Sofascore user, unprompted, asking for a quiz and naming
+  FotMob as the one who has it. Quote it in the pitch — it is far stronger than
+  us asserting the gap, because it is their own audience saying it.
+
+**ONEFOOTBALL and FLASHSCORE — NOT YET VERIFIED. Do not send to either until
+checked the same way.** The agent report asserted the gap; I have only
+confirmed Sofascore. Treat the other two as unproven.
+
 ## Tier 1 targets — score apps with a competitive gap (best odds)
 
 | Target | Why them | Angle |
