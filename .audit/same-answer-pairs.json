@@ -1,0 +1,2553 @@
+{
+  "generated": "2026-08-03",
+  "note": "Same resolved answer + >=50% stem-token overlap. Needs an editorial call on which twin to drop — the 2 EXACT duplicates were already removed.",
+  "count": 134,
+  "pairs": [
+    {
+      "overlap": 1,
+      "answer": "36",
+      "crossCategory": true,
+      "a": {
+        "id": "q_40e514",
+        "cat": "SerieA",
+        "diff": "hard",
+        "hint": true,
+        "q": "Ciro Immobile won the European Golden Shoe in 2019-20 with how many Serie A goals?"
+      },
+      "b": {
+        "id": "q_e76078",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Ciro Immobile won the 2019-20 European Golden Shoe with how many Serie A goals?"
+      }
+    },
+    {
+      "overlap": 1,
+      "answer": "Brian Deane",
+      "crossCategory": false,
+      "a": {
+        "id": "q_8fa84d",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the first ever Premier League goal, for Sheffield United against Manchester United on 15 August 1992?"
+      },
+      "b": {
+        "id": "q_bc936d",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the Premier League's first ever goal — for Sheffield United against Manchester United in August 1992?"
+      }
+    },
+    {
+      "overlap": 0.9,
+      "answer": "Trevor Francis",
+      "crossCategory": true,
+      "a": {
+        "id": "q_089d87",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Nottingham Forest won the European Cup in 1979 — who scored the only goal in the final vs Malmö?"
+      },
+      "b": {
+        "id": "q_734f34",
+        "cat": "History",
+        "diff": "easy",
+        "hint": false,
+        "q": "Who scored the only goal as Nottingham Forest beat Malmö FF in the 1979 European Cup final?"
+      }
+    },
+    {
+      "overlap": 0.9,
+      "answer": "Béla Guttmann",
+      "crossCategory": true,
+      "a": {
+        "id": "q_194fcc",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Hungarian coach led Benfica to back-to-back European Cup triumphs in 1961 and 1962?"
+      },
+      "b": {
+        "id": "q_235ee9",
+        "cat": "History",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which coach led Benfica to back-to-back European Cup triumphs in 1961 and 1962?"
+      }
+    },
+    {
+      "overlap": 0.86,
+      "answer": "Xavi",
+      "crossCategory": true,
+      "a": {
+        "id": "q_5cbea6",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which manager led Barcelona to the La Liga title in 2022-23?"
+      },
+      "b": {
+        "id": "q_733259",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "Barcelona won La Liga in 2022-23 — which manager led them to the title?"
+      }
+    },
+    {
+      "overlap": 0.83,
+      "answer": "Man Utd",
+      "crossCategory": true,
+      "a": {
+        "id": "q_cd4191",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which English club became the first to win the League and FA Cup double twice?"
+      },
+      "b": {
+        "id": "q_7ce92b",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club was the first to win the English league and FA Cup double twice?"
+      }
+    },
+    {
+      "overlap": 0.83,
+      "answer": "Stade Vélodrome",
+      "crossCategory": false,
+      "a": {
+        "id": "q_339a0a",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "At which stadium does Marseille play its home matches?"
+      },
+      "b": {
+        "id": "q_2cc923",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "Olympique de Marseille play their home matches at which stadium?"
+      }
+    },
+    {
+      "overlap": 0.8,
+      "answer": "Arsenal",
+      "crossCategory": true,
+      "a": {
+        "id": "q_6a9fe2",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which English club did Galatasaray beat on penalties in the 2000 UEFA Cup final in Copenhagen?"
+      },
+      "b": {
+        "id": "q_f31f4d",
+        "cat": "History",
+        "diff": "easy",
+        "hint": false,
+        "q": "Galatasaray beat which side on penalties to win the 2000 UEFA Cup final in Copenhagen?"
+      }
+    },
+    {
+      "overlap": 0.8,
+      "answer": "Sergen Yalçın",
+      "crossCategory": true,
+      "a": {
+        "id": "q_f25dce",
+        "cat": "SuperLig",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which former Beşiktaş playmaker managed the club to a Süper Lig and Turkish Cup double in 2020-21?"
+      },
+      "b": {
+        "id": "q_c11f82",
+        "cat": "Managers",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who managed Beşiktaş to the Süper Lig and Turkish Cup double in 2020-21?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Arsenal",
+      "crossCategory": true,
+      "a": {
+        "id": "q_6a9fe2",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which English club did Galatasaray beat on penalties in the 2000 UEFA Cup final in Copenhagen?"
+      },
+      "b": {
+        "id": "q_9ba9f0",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which club did Galatasaray beat on penalties to win the 2000 UEFA Cup final?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Arsenal",
+      "crossCategory": true,
+      "a": {
+        "id": "q_9ba9f0",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which club did Galatasaray beat on penalties to win the 2000 UEFA Cup final?"
+      },
+      "b": {
+        "id": "q_f31f4d",
+        "cat": "History",
+        "diff": "easy",
+        "hint": false,
+        "q": "Galatasaray beat which side on penalties to win the 2000 UEFA Cup final in Copenhagen?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Al-Hilal",
+      "crossCategory": true,
+      "a": {
+        "id": "q_076613",
+        "cat": "Ligue1",
+        "diff": "medium",
+        "hint": true,
+        "q": "Neymar left PSG in 2023 to join which Saudi Pro League club?"
+      },
+      "b": {
+        "id": "q_00520c",
+        "cat": "Transfers",
+        "diff": "medium",
+        "hint": true,
+        "q": "After leaving PSG in 2023, which Saudi Pro League club did Neymar join?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Götze",
+      "crossCategory": true,
+      "a": {
+        "id": "q_02acbb",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which player scored the winning goal for Germany in the 2014 World Cup final vs Argentina?"
+      },
+      "b": {
+        "id": "q_3b1675",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored the winning goal for Germany in the 2014 World Cup final — a player from the Bundesliga?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Peter Withe",
+      "crossCategory": true,
+      "a": {
+        "id": "q_0b2b0e",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored Aston Villa's famous European Cup winning goal in 1982?"
+      },
+      "b": {
+        "id": "q_9e7953",
+        "cat": "ChampionsLeague",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored Aston Villa's winning goal in the 1982 European Cup final?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Trabzonspor",
+      "crossCategory": true,
+      "a": {
+        "id": "q_5156d7",
+        "cat": "SuperLig",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club became the first from outside Istanbul to win the Turkish top flight, taking the 1975-76 title?"
+      },
+      "b": {
+        "id": "q_bd28cf",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club became the first from outside Istanbul to win the Turkish top flight, in 1975-76?"
+      }
+    },
+    {
+      "overlap": 0.78,
+      "answer": "Şenol Güneş",
+      "crossCategory": true,
+      "a": {
+        "id": "q_31ca74",
+        "cat": "SuperLig",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who managed Beşiktaş to back-to-back Süper Lig titles in 2015-16 and 2016-17?"
+      },
+      "b": {
+        "id": "q_758a73",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which coach won back-to-back Süper Lig titles with Beşiktaş in 2015-16 and 2016-17?"
+      }
+    },
+    {
+      "overlap": 0.77,
+      "answer": "Derlei",
+      "crossCategory": true,
+      "a": {
+        "id": "q_f6d8d2",
+        "cat": "Primeira",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored Porto's decisive extra-time goal in the 2003 UEFA Cup final against Celtic?"
+      },
+      "b": {
+        "id": "q_c891d4",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which Porto striker scored the extra-time winner against Celtic in the 2003 UEFA Cup final?"
+      }
+    },
+    {
+      "overlap": 0.75,
+      "answer": "AC Milan",
+      "crossCategory": true,
+      "a": {
+        "id": "q_bc51dc",
+        "cat": "Ligue1",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Italian giant did Marseille defeat in the 1993 Champions League final?"
+      },
+      "b": {
+        "id": "q_40fe6e",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club did Marseille defeat in the 1993 Champions League final?"
+      }
+    },
+    {
+      "overlap": 0.71,
+      "answer": "Derby della Capitale",
+      "crossCategory": true,
+      "a": {
+        "id": "q_90fa65",
+        "cat": "SerieA",
+        "diff": "medium",
+        "hint": true,
+        "q": "What is the name of the Rome derby between AS Roma and Lazio?"
+      },
+      "b": {
+        "id": "q_4448c4",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What name is given to the derby between Lazio and Roma?"
+      }
+    },
+    {
+      "overlap": 0.71,
+      "answer": "Luciano Spalletti",
+      "crossCategory": true,
+      "a": {
+        "id": "q_30e0a5",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which manager led Napoli to the 2022-23 Serie A title?"
+      },
+      "b": {
+        "id": "q_5d778e",
+        "cat": "Managers",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which manager guided Napoli to the 2022-23 Serie A title, their first in 33 years?"
+      }
+    },
+    {
+      "overlap": 0.71,
+      "answer": "Helmut Rahn",
+      "crossCategory": true,
+      "a": {
+        "id": "q_660f9b",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the winning goal in the 'Miracle of Bern' — West Germany's 3-2 comeback win over Hungary in the 1954 World Cup final?"
+      },
+      "b": {
+        "id": "q_44d741",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the winning goal for West Germany in the 1954 World Cup final — dubbed the 'Miracle of Bern'?"
+      }
+    },
+    {
+      "overlap": 0.71,
+      "answer": "Derby della Mole",
+      "crossCategory": true,
+      "a": {
+        "id": "q_bfd1c6",
+        "cat": "SerieA",
+        "diff": "medium",
+        "hint": false,
+        "q": "What is the name of the derby between Juventus and Torino?"
+      },
+      "b": {
+        "id": "q_329dfc",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What is the name of the Turin derby contested between Torino and Juventus?"
+      }
+    },
+    {
+      "overlap": 0.7,
+      "answer": "Hakan Sukur",
+      "crossCategory": true,
+      "a": {
+        "id": "q_d516d2",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the fastest goal in World Cup history — after just 11 seconds?"
+      },
+      "b": {
+        "id": "q_c31705",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which Galatasaray legend scored the fastest goal in World Cup history, after just 10.8 seconds in 2002?"
+      }
+    },
+    {
+      "overlap": 0.69,
+      "answer": "Carlos Alberto",
+      "crossCategory": true,
+      "a": {
+        "id": "q_fb3213",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the iconic fourth goal in Brazil's 4-1 win in the 1970 World Cup final — often called the greatest team goal ever?"
+      },
+      "b": {
+        "id": "q_a8caf8",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who scored the iconic team goal often called one of the greatest in World Cup history during the 1970 final?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Brazil",
+      "crossCategory": true,
+      "a": {
+        "id": "q_371be8",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": false,
+        "q": "As of the 2022 World Cup, which country had played the most World Cup matches in history?"
+      },
+      "b": {
+        "id": "q_903740",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "As of the 2022 World Cup, which country had scored the most World Cup goals in history?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "26",
+      "crossCategory": true,
+      "a": {
+        "id": "q_30a5f9",
+        "cat": "SerieA",
+        "diff": "hard",
+        "hint": true,
+        "q": "Victor Osimhen won the Serie A Golden Boot in 2022-23 with how many goals?"
+      },
+      "b": {
+        "id": "q_b656b3",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Victor Osimhen won the 2022-23 Serie A Capocannoniere with how many goals?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Man Utd",
+      "crossCategory": false,
+      "a": {
+        "id": "q_6efe6e",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club was the first to win back-to-back Premier League titles since the competition's founding in 1992?"
+      },
+      "b": {
+        "id": "q_d1ee5a",
+        "cat": "PL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club has won the most Premier League titles since the league's founding in 1992?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Haaland",
+      "crossCategory": true,
+      "a": {
+        "id": "q_a10f9b",
+        "cat": "PL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored 36 Premier League goals in 2022-23 to set a new single-season record?"
+      },
+      "b": {
+        "id": "q_7b674a",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who set the Premier League single-season scoring record in 2022-23 with 36 goals?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Geoff Hurst",
+      "crossCategory": false,
+      "a": {
+        "id": "q_f89f63",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored 4 goals for England at the 1966 World Cup — including the only hat-trick in a World Cup final?"
+      },
+      "b": {
+        "id": "q_1d069c",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": false,
+        "q": "Who scored the winning goal (and completed a hat-trick) in the 1966 World Cup final for England?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Xabi Alonso",
+      "crossCategory": true,
+      "a": {
+        "id": "q_db2913",
+        "cat": "Managers",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which manager guided Bayer Leverkusen to their first ever Bundesliga title in 2023-24?"
+      },
+      "b": {
+        "id": "q_4880ac",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which manager led Bayer Leverkusen to their first Bundesliga title in 2023-24?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "32",
+      "crossCategory": true,
+      "a": {
+        "id": "q_3aad50",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Mo Salah scored how many Premier League goals in 2017-18 — a then record for a 38-game season?"
+      },
+      "b": {
+        "id": "q_f04ce8",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "In 2017-18, his first season at Liverpool, Mohamed Salah scored how many Premier League goals — a then-record haul for a 38-game campaign?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "1970",
+      "crossCategory": false,
+      "a": {
+        "id": "q_e31f29",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Feyenoord became the first Dutch club to win the European Cup in which year?"
+      },
+      "b": {
+        "id": "q_333873",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "In which year did Feyenoord become the first Dutch club to win the European Cup?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Jock Stein",
+      "crossCategory": true,
+      "a": {
+        "id": "q_8ee4ac",
+        "cat": "Managers",
+        "diff": "hard",
+        "hint": false,
+        "q": "Which manager famously said 'football is nothing without fans'?"
+      },
+      "b": {
+        "id": "q_57302d",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which legendary Scottish manager said 'Football without fans is nothing'?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Parma",
+      "crossCategory": true,
+      "a": {
+        "id": "q_272933",
+        "cat": "SerieA",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which Italian club won the UEFA Cup in 1999, beating Marseille 3-0 in the Moscow final?"
+      },
+      "b": {
+        "id": "q_994856",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Marseille lost the 1999 UEFA Cup final to which Italian club?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "White",
+      "crossCategory": true,
+      "a": {
+        "id": "q_3f3b82",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Marseille's traditional home shirts?"
+      },
+      "b": {
+        "id": "q_975a8b",
+        "cat": "Ligue1",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Lyon's traditional home shirts?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Molineux",
+      "crossCategory": true,
+      "a": {
+        "id": "q_1efd65",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "What is the name of Wolves' home stadium?"
+      },
+      "b": {
+        "id": "q_e3a336",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What is the name of Wolves' home stadium, their home since 1889?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Braga",
+      "crossCategory": false,
+      "a": {
+        "id": "q_b70dc7",
+        "cat": "Primeira",
+        "diff": "medium",
+        "hint": true,
+        "q": "The 2011 Europa League final was an all-Portuguese affair — Porto beat which club 1-0 in Dublin?"
+      },
+      "b": {
+        "id": "q_b43106",
+        "cat": "Primeira",
+        "diff": "medium",
+        "hint": true,
+        "q": "Porto's 2011 Europa League final was the first all-Portuguese European final; which club did they beat 1-0?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Coventry City",
+      "crossCategory": true,
+      "a": {
+        "id": "q_2b55f3",
+        "cat": "Primeira",
+        "diff": "medium",
+        "hint": true,
+        "q": "Sporting CP signed striker Viktor Gyökeres in 2023 from which English club?"
+      },
+      "b": {
+        "id": "q_975eee",
+        "cat": "Transfers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Sweden striker Viktor Gyökeres joined Sporting in 2023 from which English club?"
+      }
+    },
+    {
+      "overlap": 0.67,
+      "answer": "Cup Winners' Cup",
+      "crossCategory": true,
+      "a": {
+        "id": "q_573e34",
+        "cat": "Primeira",
+        "diff": "medium",
+        "hint": true,
+        "q": "Sporting CP won their first major European trophy in 1964 — which competition?"
+      },
+      "b": {
+        "id": "q_60bfb4",
+        "cat": "ChampionsLeague",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which European trophy did Sporting CP win in 1964?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "Gerd Müller",
+      "crossCategory": true,
+      "a": {
+        "id": "q_31ee85",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which legendary striker scored a record 85 goals in a calendar year (1972) before Messi broke it with 91 in 2012?"
+      },
+      "b": {
+        "id": "q_546d28",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which legendary player scored 85 goals in the calendar year 1972 — a record that stood until Messi's 91 in 2012?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "Karl-Heinz Riedle",
+      "crossCategory": true,
+      "a": {
+        "id": "q_fec81f",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Borussia Dortmund beat Juventus 3-1 in the 1997 Champions League final — which striker scored twice for the Germans?"
+      },
+      "b": {
+        "id": "q_49f666",
+        "cat": "Bundesliga",
+        "diff": "medium",
+        "hint": true,
+        "q": "Borussia Dortmund won the Champions League for the first time in 1997, beating Juventus 3-1 in the final. Who scored twice for Dortmund in that match?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "2008",
+      "crossCategory": false,
+      "a": {
+        "id": "q_7c4c90",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "In which year did Manchester United beat Chelsea on penalties in Moscow to win the Champions League?"
+      },
+      "b": {
+        "id": "q_0e40dd",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "In which year did Wayne Rooney win the Champions League with Manchester United, beating Chelsea on penalties in Moscow?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "Thierry Henry",
+      "crossCategory": false,
+      "a": {
+        "id": "q_707cac",
+        "cat": "PL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which Arsenal player finished as the Premier League's top scorer in the 2003-04 season?"
+      },
+      "b": {
+        "id": "q_fa4bbc",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "In the 2003-04 Invincibles season, who finished as the Premier League's top scorer, powering Arsenal's unbeaten title?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "Fleetwood Town",
+      "crossCategory": false,
+      "a": {
+        "id": "q_9d901b",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club did Jamie Vardy leave to sign for Leicester City in 2012?"
+      },
+      "b": {
+        "id": "q_959af7",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which club did Jamie Vardy leave to sign for Leicester City in 2012 (for £1m — a non-League record at the time)?"
+      }
+    },
+    {
+      "overlap": 0.64,
+      "answer": "Jorge Sampaoli",
+      "crossCategory": true,
+      "a": {
+        "id": "q_e1fa10",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which manager led Chile to their first ever Copa America title in 2015?"
+      },
+      "b": {
+        "id": "q_b8418b",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which manager guided Chile to their 2015 Copa América home triumph — their first ever Copa title?"
+      }
+    },
+    {
+      "overlap": 0.63,
+      "answer": "Lionel Messi",
+      "crossCategory": true,
+      "a": {
+        "id": "q_869b50",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who holds the record for most La Liga goals in a single season?"
+      },
+      "b": {
+        "id": "q_783379",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which player holds the La Liga record for most goals in a single season — 50 goals in 37 games during the 2011-12 campaign?"
+      }
+    },
+    {
+      "overlap": 0.63,
+      "answer": "Benfica",
+      "crossCategory": false,
+      "a": {
+        "id": "q_6cb42f",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which club has won the most Portuguese Primeira Liga titles?"
+      },
+      "b": {
+        "id": "q_d9500e",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "As of the 2024-25 season, which club had won the most Primeira Liga titles in Portuguese football history?"
+      }
+    },
+    {
+      "overlap": 0.63,
+      "answer": "Xabi Alonso",
+      "crossCategory": false,
+      "a": {
+        "id": "q_4880ac",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which manager led Bayer Leverkusen to their first Bundesliga title in 2023-24?"
+      },
+      "b": {
+        "id": "q_31cbb5",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Under which manager did Leverkusen win their first Bundesliga title in 2023-24?"
+      }
+    },
+    {
+      "overlap": 0.63,
+      "answer": "Sevilla",
+      "crossCategory": true,
+      "a": {
+        "id": "q_965a28",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which Spanish club won the Europa League a record seven times?"
+      },
+      "b": {
+        "id": "q_7cde53",
+        "cat": "History",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which club has won the UEFA Cup / Europa League a record seven times?"
+      }
+    },
+    {
+      "overlap": 0.63,
+      "answer": "'...playing simple football is the hardest thing there is.'",
+      "crossCategory": false,
+      "a": {
+        "id": "q_07122c",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Finish this famous Johan Cruyff line about his footballing philosophy at Barcelona: 'Playing football is very simple, but...'"
+      },
+      "b": {
+        "id": "q_2b48d0",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": true,
+        "q": "Finish Johan Cruyff's most famous footballing maxim: 'Playing football is very simple, but...'"
+      }
+    },
+    {
+      "overlap": 0.62,
+      "answer": "Netherlands",
+      "crossCategory": false,
+      "a": {
+        "id": "q_fce510",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which country lost the most World Cup finals without ever winning — three times?"
+      },
+      "b": {
+        "id": "q_8231b5",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which European country has reached the most World Cup finals — three — without ever winning the tournament?"
+      }
+    },
+    {
+      "overlap": 0.62,
+      "answer": "Leeds United",
+      "crossCategory": true,
+      "a": {
+        "id": "q_2460b4",
+        "cat": "ChampionsLeague",
+        "diff": "easy",
+        "hint": true,
+        "q": "Dinamo Zagreb won the 1967 Inter-Cities Fairs Cup by beating which English club in the final?"
+      },
+      "b": {
+        "id": "q_f665dd",
+        "cat": "History",
+        "diff": "medium",
+        "hint": false,
+        "q": "Dinamo Zagreb beat which English club over two legs to win the 1967 Inter-Cities Fairs Cup?"
+      }
+    },
+    {
+      "overlap": 0.62,
+      "answer": "Patrick Kluivert",
+      "crossCategory": false,
+      "a": {
+        "id": "q_ddf030",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who scored a last-minute winner for Ajax in the 1995 Champions League final vs AC Milan?"
+      },
+      "b": {
+        "id": "q_dfc239",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "In the 1995 Champions League final, Ajax beat AC Milan 1-0 with a late winner from a teenage substitute. Who scored it?"
+      }
+    },
+    {
+      "overlap": 0.6,
+      "answer": "Man City",
+      "crossCategory": true,
+      "a": {
+        "id": "q_2666d2",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club won the 2022-23 Champions League?"
+      },
+      "b": {
+        "id": "q_6de450",
+        "cat": "PL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club won the treble of PL, FA Cup and Champions League in 2022-23?"
+      }
+    },
+    {
+      "overlap": 0.6,
+      "answer": "László Kiss",
+      "crossCategory": false,
+      "a": {
+        "id": "q_908b5c",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the fastest hat-trick at a World Cup — three goals in 7 minutes for Hungary vs El Salvador in 1982?"
+      },
+      "b": {
+        "id": "q_25a7e0",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which player scored the fastest hat-trick in World Cup history — in just seven minutes against El Salvador in 1982, as a substitute?"
+      }
+    },
+    {
+      "overlap": 0.6,
+      "answer": "Basile Boli",
+      "crossCategory": true,
+      "a": {
+        "id": "q_b39610",
+        "cat": "Ligue1",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the winning goal in Marseille's 1993 Champions League final against AC Milan?"
+      },
+      "b": {
+        "id": "q_f2a94d",
+        "cat": "Legends",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored the only goal of Marseille's 1993 Champions League final win?"
+      }
+    },
+    {
+      "overlap": 0.58,
+      "answer": "Giggs",
+      "crossCategory": true,
+      "a": {
+        "id": "q_f93795",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Manchester United legend holds the record for most Premier League assists of all time with 162?"
+      },
+      "b": {
+        "id": "q_2d3856",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which player has the most Premier League assists of all time with 162?"
+      }
+    },
+    {
+      "overlap": 0.58,
+      "answer": "Nottingham Forest vs Liverpool",
+      "crossCategory": false,
+      "a": {
+        "id": "q_70643e",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which match was the first-ever live Premier League game, broadcast on Sky's inaugural 'Super Sunday' on 16 August 1992?"
+      },
+      "b": {
+        "id": "q_63757c",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which match was the first live Premier League game broadcast on Sky Sports, on 16 August 1992?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "26",
+      "crossCategory": false,
+      "a": {
+        "id": "q_5fbab6",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Arsenal went unbeaten through the 2003-04 Premier League season. How many of their 38 league games did they win?"
+      },
+      "b": {
+        "id": "q_6ea851",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Arsenal won the 2003-04 title unbeaten — how many wins did they get from their 38 league games?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Ajax",
+      "crossCategory": false,
+      "a": {
+        "id": "q_35fe29",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": false,
+        "q": "Who won the inaugural UEFA Super Cup in 1972?"
+      },
+      "b": {
+        "id": "q_f4e257",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which club became the first to win the UEFA Super Cup in its inaugural edition?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "USA",
+      "crossCategory": false,
+      "a": {
+        "id": "q_a64c4c",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "At the 1950 World Cup, England lost to which country in one of football's greatest upsets?"
+      },
+      "b": {
+        "id": "q_ca21e6",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which country beat England 1-0 in the group stage at the 1950 World Cup, in one of football's all-time greatest upsets?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Santiago Bernabéu",
+      "crossCategory": false,
+      "a": {
+        "id": "q_01cc97",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "What is the name of Real Madrid's home stadium?"
+      },
+      "b": {
+        "id": "q_396df4",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "At which stadium do Real Madrid play their home games?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Celtic",
+      "crossCategory": true,
+      "a": {
+        "id": "q_1fcf44",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which Scottish club was the first from Britain to win the European Cup in 1967?"
+      },
+      "b": {
+        "id": "q_bb2791",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which Scottish club, in 1967, became the first British team to win the European Cup?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "El Clasico",
+      "crossCategory": false,
+      "a": {
+        "id": "q_ee82af",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "What is the nickname for the match between Real Madrid and Barcelona?"
+      },
+      "b": {
+        "id": "q_1e3762",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "What is the name given to the match between Real Madrid and Barcelona?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Roy Makaay",
+      "crossCategory": true,
+      "a": {
+        "id": "q_e0e280",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the quickest goal in the history of the Champions League?"
+      },
+      "b": {
+        "id": "q_0dad00",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "The fastest goal in Champions League history — 10 seconds — was scored by which player?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Carlos Alberto",
+      "crossCategory": true,
+      "a": {
+        "id": "q_fb3213",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the iconic fourth goal in Brazil's 4-1 win in the 1970 World Cup final — often called the greatest team goal ever?"
+      },
+      "b": {
+        "id": "q_65755e",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Brazil's 1970 World Cup squad is often called the greatest ever — who was their captain?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Zico",
+      "crossCategory": false,
+      "a": {
+        "id": "q_b63613",
+        "cat": "SuperLig",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Brazilian great was Fenerbahçe's manager when they reached the 2007-08 Champions League quarter-finals?"
+      },
+      "b": {
+        "id": "q_93366b",
+        "cat": "SuperLig",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Brazilian great managed Fenerbahçe during their run to the 2007-08 Champions League quarter-finals?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "White",
+      "crossCategory": true,
+      "a": {
+        "id": "q_06cd5f",
+        "cat": "Legends",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Tottenham Hotspur's traditional home shirts?"
+      },
+      "b": {
+        "id": "q_3f3b82",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Marseille's traditional home shirts?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "White",
+      "crossCategory": true,
+      "a": {
+        "id": "q_06cd5f",
+        "cat": "Legends",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Tottenham Hotspur's traditional home shirts?"
+      },
+      "b": {
+        "id": "q_975a8b",
+        "cat": "Ligue1",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour are Lyon's traditional home shirts?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "White",
+      "crossCategory": false,
+      "a": {
+        "id": "q_ce74d1",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What is the primary colour of HSV's traditional home shirt?"
+      },
+      "b": {
+        "id": "q_dcbab5",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What colour is Fulham's traditional home shirt?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Red and white",
+      "crossCategory": true,
+      "a": {
+        "id": "q_879fb1",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "What are the two main colours of Feyenoord's traditional home shirt?"
+      },
+      "b": {
+        "id": "q_ee7066",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What are Sevilla FC's traditional home shirt colours?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Georginio Wijnaldum",
+      "crossCategory": true,
+      "a": {
+        "id": "q_987f04",
+        "cat": "chaos",
+        "diff": "medium",
+        "hint": true,
+        "q": "In the 2019 Champions League semi-final, Liverpool overcame a 3-0 first-leg deficit to beat Barcelona 4-0 at Anfield. Which player scored twice after coming on as a substitute?"
+      },
+      "b": {
+        "id": "q_2ad7e5",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "In the 2019 Champions League semi-final, Liverpool overturned a 3-0 first-leg deficit by beating Barcelona 4-0 at Anfield. Who scored TWICE off the bench that night?"
+      }
+    },
+    {
+      "overlap": 0.57,
+      "answer": "Dinamo Batumi",
+      "crossCategory": true,
+      "a": {
+        "id": "q_285ea0",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": false,
+        "q": "From which club did Napoli sign Khvicha Kvaratskhelia in July 2022?"
+      },
+      "b": {
+        "id": "q_88b25c",
+        "cat": "Transfers",
+        "diff": "hard",
+        "hint": true,
+        "q": "Napoli signed Khvicha Kvaratskhelia in 2022 from which club?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Xabi Alonso",
+      "crossCategory": true,
+      "a": {
+        "id": "q_db2913",
+        "cat": "Managers",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which manager guided Bayer Leverkusen to their first ever Bundesliga title in 2023-24?"
+      },
+      "b": {
+        "id": "q_31cbb5",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Under which manager did Leverkusen win their first Bundesliga title in 2023-24?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Vicente del Bosque",
+      "crossCategory": true,
+      "a": {
+        "id": "q_fa668b",
+        "cat": "Managers",
+        "diff": "easy",
+        "hint": false,
+        "q": "Who managed Spain when they won the 2010 World Cup?"
+      },
+      "b": {
+        "id": "q_c00a0f",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who managed Spain to the 2010 World Cup — their first ever world title?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Zlatan Ibrahimovic",
+      "crossCategory": false,
+      "a": {
+        "id": "q_e06b23",
+        "cat": "SerieA",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which non-Italian player won Serie A titles with both Inter and AC Milan?"
+      },
+      "b": {
+        "id": "q_79b94d",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which Swedish striker won Serie A titles with both Inter Milan and AC Milan?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Roger Osborne",
+      "crossCategory": false,
+      "a": {
+        "id": "q_70c86d",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Ipswich Town won the FA Cup in 1978 beating Arsenal 1-0 — who scored the only goal?"
+      },
+      "b": {
+        "id": "q_959171",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored the only goal in Ipswich's 1978 FA Cup final win?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Cole Palmer",
+      "crossCategory": false,
+      "a": {
+        "id": "q_af18a6",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored 4 goals in the first half of a Premier League game in September 2024 — a league first?"
+      },
+      "b": {
+        "id": "q_c47d19",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which player scored four goals in the first half of a Premier League match for the first time in league history (2024-25 season)?"
+      }
+    },
+    {
+      "overlap": 0.56,
+      "answer": "Bruno Petković",
+      "crossCategory": false,
+      "a": {
+        "id": "q_e821fc",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who scored Croatia's late equaliser in extra time vs Brazil at the 2022 World Cup, sending the quarter-final to penalties?"
+      },
+      "b": {
+        "id": "q_e0e506",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Dinamo Zagreb striker scored Croatia's late equaliser against Brazil in the 2022 World Cup quarter-final?"
+      }
+    },
+    {
+      "overlap": 0.55,
+      "answer": "Spain",
+      "crossCategory": true,
+      "a": {
+        "id": "q_5733e2",
+        "cat": "Euros",
+        "diff": "medium",
+        "hint": false,
+        "q": "At Euro 2024, which country knocked out hosts Germany in the quarter-finals?"
+      },
+      "b": {
+        "id": "q_7a9cb7",
+        "cat": "Bundesliga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Germany, with Jamal Musiala in the side, were knocked out of Euro 2024 in the quarter-finals by which team?"
+      }
+    },
+    {
+      "overlap": 0.55,
+      "answer": "Steve Cooper",
+      "crossCategory": false,
+      "a": {
+        "id": "q_240c3f",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which manager led Nottingham Forest back to the Premier League after a 23-year absence in 2022?"
+      },
+      "b": {
+        "id": "q_e03794",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which manager guided Nottingham Forest to promotion to the Premier League in 2022?"
+      }
+    },
+    {
+      "overlap": 0.55,
+      "answer": "Porto",
+      "crossCategory": true,
+      "a": {
+        "id": "q_b1f6c7",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Monaco famously came close to winning the Champions League in 2004 — who beat them in the final?"
+      },
+      "b": {
+        "id": "q_3743ea",
+        "cat": "Ligue1",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club beat Monaco in the 2004 Champions League final?"
+      }
+    },
+    {
+      "overlap": 0.55,
+      "answer": "Paris Saint-Germain",
+      "crossCategory": true,
+      "a": {
+        "id": "q_c07e05",
+        "cat": "Ligue1",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club paid a world-record €222 million to sign Neymar from Barcelona in 2017?"
+      },
+      "b": {
+        "id": "q_b6ef4b",
+        "cat": "Transfers",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club signed Neymar in 2017 for a then-world-record fee of €222 million?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Geoff Hurst",
+      "crossCategory": false,
+      "a": {
+        "id": "q_f89f63",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored 4 goals for England at the 1966 World Cup — including the only hat-trick in a World Cup final?"
+      },
+      "b": {
+        "id": "q_3bd2cd",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": false,
+        "q": "Who scored the only goal as England beat Argentina 1-0 in the 1966 World Cup quarter-final?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Geoff Hurst",
+      "crossCategory": false,
+      "a": {
+        "id": "q_f89f63",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who scored 4 goals for England at the 1966 World Cup — including the only hat-trick in a World Cup final?"
+      },
+      "b": {
+        "id": "q_a83c34",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which West Ham forward scored a hat-trick in the 1966 World Cup final?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Geoff Hurst",
+      "crossCategory": false,
+      "a": {
+        "id": "q_1d069c",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": false,
+        "q": "Who scored the winning goal (and completed a hat-trick) in the 1966 World Cup final for England?"
+      },
+      "b": {
+        "id": "q_a83c34",
+        "cat": "WorldCup",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which West Ham forward scored a hat-trick in the 1966 World Cup final?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Ramos",
+      "crossCategory": true,
+      "a": {
+        "id": "q_b2fbea",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who captained Real Madrid when they won the 2016 Champions League final vs Atletico?"
+      },
+      "b": {
+        "id": "q_1d9b9c",
+        "cat": "LaLiga",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored Real Madrid's opening goal in the 2016 Champions League final against Atlético?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Divock Origi",
+      "crossCategory": false,
+      "a": {
+        "id": "q_3c933e",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored Liverpool's second goal — sealing the 2-0 win — in the 2019 Champions League final?"
+      },
+      "b": {
+        "id": "q_d2f4c0",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored Liverpool's late, decisive second goal in the 2019 Champions League final win over Tottenham in Madrid?"
+      }
+    },
+    {
+      "overlap": 0.54,
+      "answer": "Atalanta",
+      "crossCategory": false,
+      "a": {
+        "id": "q_9d0ec8",
+        "cat": "Bundesliga",
+        "diff": "medium",
+        "hint": false,
+        "q": "Leverkusen's unbeaten 2023-24 season ended in the Europa League final — who beat them?"
+      },
+      "b": {
+        "id": "q_98a47d",
+        "cat": "Bundesliga",
+        "diff": "medium",
+        "hint": true,
+        "q": "Leverkusen's 2023-24 unbeaten run finally ended in the Europa League final against which Italian club?"
+      }
+    },
+    {
+      "overlap": 0.53,
+      "answer": "Arsenal",
+      "crossCategory": true,
+      "a": {
+        "id": "q_9c18f2",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Robbie Fowler scored a 4-minute-33-second Premier League hat-trick at Anfield on 28 August 1994 — against which club?"
+      },
+      "b": {
+        "id": "q_8ba3af",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "Robbie Fowler scored the then-fastest hat-trick in Premier League history (4 min 33 sec) in 1994 against which club?"
+      }
+    },
+    {
+      "overlap": 0.53,
+      "answer": "36",
+      "crossCategory": false,
+      "a": {
+        "id": "q_7d61bd",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "What is the record for the most goals in a Premier League season by a single player — set by Erling Haaland in 2022-23?"
+      },
+      "b": {
+        "id": "q_ffadce",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Erling Haaland set a new single-season Premier League goal record in his debut 2022-23 campaign. How many league goals did he score?"
+      }
+    },
+    {
+      "overlap": 0.53,
+      "answer": "91",
+      "crossCategory": false,
+      "a": {
+        "id": "q_e54d1a",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": false,
+        "q": "Lionel Messi scored how many goals in the calendar year 2012 — a world record?"
+      },
+      "b": {
+        "id": "q_307e1f",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Lionel Messi set a world record for goals in a single calendar year while at Barcelona in 2012. How many did he score for club and country?"
+      }
+    },
+    {
+      "overlap": 0.53,
+      "answer": "Nani",
+      "crossCategory": false,
+      "a": {
+        "id": "q_4cf4ff",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Who assisted Wayne Rooney's famous overhead kick vs Manchester City in 2011?"
+      },
+      "b": {
+        "id": "q_7073e3",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who assisted Wayne Rooney's legendary overhead kick vs Manchester City in February 2011 — crossing the ball that deflected up into Rooney's path?"
+      }
+    },
+    {
+      "overlap": 0.53,
+      "answer": "95",
+      "crossCategory": false,
+      "a": {
+        "id": "q_82a49a",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Chelsea won the Premier League in 2004-05 with how many points — a record at the time?"
+      },
+      "b": {
+        "id": "q_3bc01f",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Chelsea's 2004-05 title winners set a Premier League points record for the era. How many points did they finish on?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Spain",
+      "crossCategory": false,
+      "a": {
+        "id": "q_5733e2",
+        "cat": "Euros",
+        "diff": "medium",
+        "hint": false,
+        "q": "At Euro 2024, which country knocked out hosts Germany in the quarter-finals?"
+      },
+      "b": {
+        "id": "q_4d8a0a",
+        "cat": "Euros",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which country won Euro 2024 in Germany?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "South Korea",
+      "crossCategory": false,
+      "a": {
+        "id": "q_bc2c58",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which country knocked out the defending champions Germany in the 2018 group stage — a massive upset?"
+      },
+      "b": {
+        "id": "q_bc2d8a",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which country beat Germany 2-0 in the 2018 World Cup group stage — causing a massive upset?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Man Utd",
+      "crossCategory": false,
+      "a": {
+        "id": "q_5071ea",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club ended Arsenal's 49-game unbeaten Premier League run in 2004?"
+      },
+      "b": {
+        "id": "q_61920f",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Arsenal went a record 49 matches unbeaten in the Premier League — which rival club finally ended the Invincibles' run on 24 October 2004?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "AC Milan",
+      "crossCategory": true,
+      "a": {
+        "id": "q_b6cbaa",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Italian club did Mexico striker Santiago Giménez join from Feyenoord in early 2025?"
+      },
+      "b": {
+        "id": "q_1f7b2f",
+        "cat": "Transfers",
+        "diff": "medium",
+        "hint": true,
+        "q": "Feyenoord sold Santiago Giménez in 2025 to which Italian club?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Ajax",
+      "crossCategory": true,
+      "a": {
+        "id": "q_850b37",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which Dutch club did Marco van Basten come through before joining AC Milan?"
+      },
+      "b": {
+        "id": "q_e2562e",
+        "cat": "Transfers",
+        "diff": "easy",
+        "hint": true,
+        "q": "AC Milan signed Marco van Basten in 1987 from which Dutch club?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "USA",
+      "crossCategory": true,
+      "a": {
+        "id": "q_9027cb",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which country won the first ever Women's World Cup in 1991?"
+      },
+      "b": {
+        "id": "q_be53b6",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which country has won the Women's World Cup the most times?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Lionel Messi",
+      "crossCategory": false,
+      "a": {
+        "id": "q_0907f4",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "Who won La Liga's Pichichi top scorer award the most times?"
+      },
+      "b": {
+        "id": "q_076f51",
+        "cat": "LaLiga",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which La Liga player has won the most Pichichi awards — with 8 career top-scorer titles?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Chelsea",
+      "crossCategory": false,
+      "a": {
+        "id": "q_905f2b",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "Corinthians beat which English club 1-0 to win the 2012 FIFA Club World Cup final?"
+      },
+      "b": {
+        "id": "q_dd20f5",
+        "cat": "History",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club beat Palmeiras in the final of the 2021 FIFA Club World Cup?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Dortmund",
+      "crossCategory": true,
+      "a": {
+        "id": "q_9ba939",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "Real Madrid won their 15th Champions League in 2024 — who did they beat in the final?"
+      },
+      "b": {
+        "id": "q_8603e9",
+        "cat": "UCL",
+        "diff": "easy",
+        "hint": false,
+        "q": "Real Madrid won their 15th Champions League in 2023-24 — beating which club 2-0 in the final at Wembley?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "36",
+      "crossCategory": true,
+      "a": {
+        "id": "q_087960",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "How many goals did Erling Haaland score in his first Premier League season?"
+      },
+      "b": {
+        "id": "q_ffadce",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Erling Haaland set a new single-season Premier League goal record in his debut 2022-23 campaign. How many league goals did he score?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Santiago Bernabéu",
+      "crossCategory": false,
+      "a": {
+        "id": "q_01cc97",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "What is the name of Real Madrid's home stadium?"
+      },
+      "b": {
+        "id": "q_422e54",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": false,
+        "q": "Real Madrid's home stadium is named after which former president?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Mexico",
+      "crossCategory": true,
+      "a": {
+        "id": "q_7be5d6",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which country has qualified for the most World Cups without ever winning the trophy?"
+      },
+      "b": {
+        "id": "q_837628",
+        "cat": "WorldCup",
+        "diff": "hard",
+        "hint": false,
+        "q": "Which country has appeared in the most World Cup tournaments without ever winning it?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Hakan Şükür",
+      "crossCategory": false,
+      "a": {
+        "id": "q_ea94a5",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who scored the fastest goal ever at a World Cup in 2002 — in just 11 seconds for Turkey vs South Korea?"
+      },
+      "b": {
+        "id": "q_d516d2",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who scored the fastest goal in World Cup history — after just 11 seconds?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Hakan Şükür",
+      "crossCategory": true,
+      "a": {
+        "id": "q_ea94a5",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who scored the fastest goal ever at a World Cup in 2002 — in just 11 seconds for Turkey vs South Korea?"
+      },
+      "b": {
+        "id": "q_c31705",
+        "cat": "Records",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which Galatasaray legend scored the fastest goal in World Cup history, after just 10.8 seconds in 2002?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Monaco",
+      "crossCategory": true,
+      "a": {
+        "id": "q_3d83cd",
+        "cat": "Ligue1",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which French club sold Kylian Mbappé to PSG as a teenager in 2017?"
+      },
+      "b": {
+        "id": "q_300ebd",
+        "cat": "Transfers",
+        "diff": "easy",
+        "hint": true,
+        "q": "PSG signed Kylian Mbappé in 2017 from which French club, where he had just won the Ligue 1 title as a teenager?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Man City",
+      "crossCategory": false,
+      "a": {
+        "id": "q_731e08",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club was the first to reach 100 points in a Premier League season?"
+      },
+      "b": {
+        "id": "q_fe7efc",
+        "cat": "PL",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club won the 2023-24 Premier League with 91 points?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "9",
+      "crossCategory": true,
+      "a": {
+        "id": "q_3fa548",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "How many consecutive league titles did Juventus win in Serie A?"
+      },
+      "b": {
+        "id": "q_d5cd46",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": true,
+        "q": "Juventus won a record run of consecutive Serie A titles that ended in 2019-20. How many in a row was that?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Germany",
+      "crossCategory": false,
+      "a": {
+        "id": "q_de265b",
+        "cat": "Euros",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which nation has scored the most goals in European Championship history?"
+      },
+      "b": {
+        "id": "q_844b48",
+        "cat": "Euros",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which nation has qualified for the most European Championships in history?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Neuer",
+      "crossCategory": true,
+      "a": {
+        "id": "q_23ec6a",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": false,
+        "q": "The 2014 World Cup golden glove went to which goalkeeper?"
+      },
+      "b": {
+        "id": "q_0a1062",
+        "cat": "Bundesliga",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Bundesliga goalkeeper won the World Cup Golden Glove in 2014 — voted the best keeper of the tournament?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "32",
+      "crossCategory": false,
+      "a": {
+        "id": "q_f04ce8",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "In 2017-18, his first season at Liverpool, Mohamed Salah scored how many Premier League goals — a then-record haul for a 38-game campaign?"
+      },
+      "b": {
+        "id": "q_2118ad",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Salah's debut Liverpool campaign saw him win the 2017-18 Premier League Golden Boot. How many league goals did he score, then a record for a 38-game season?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "91",
+      "crossCategory": true,
+      "a": {
+        "id": "q_1fcf2c",
+        "cat": "Bundesliga",
+        "diff": "hard",
+        "hint": true,
+        "q": "Bayern Munich won the Bundesliga in 2012-13 with how many points — a league record?"
+      },
+      "b": {
+        "id": "q_7fc400",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "Bayern set a Bundesliga points record in 2012-13 that stood as a benchmark for years. How many points did they collect?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Liverpool",
+      "crossCategory": false,
+      "a": {
+        "id": "q_e7170c",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Beşiktaş beat which English club 2-1 at İnönü Stadium in the 2007-08 Champions League group stage?"
+      },
+      "b": {
+        "id": "q_1db1ce",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which club inflicted an 8-0 defeat on Beşiktaş in the 2007-08 Champions League group stage?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Osimhen",
+      "crossCategory": false,
+      "a": {
+        "id": "q_21f658",
+        "cat": "SerieA",
+        "diff": "medium",
+        "hint": false,
+        "q": "Which Napoli striker won the 2022-23 Serie A Golden Boot with 26 goals?"
+      },
+      "b": {
+        "id": "q_a0d041",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which Napoli striker fired the club to their first Serie A title in 33 years with 26 goals in 2022-23?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Hansi Flick",
+      "crossCategory": true,
+      "a": {
+        "id": "q_5e5e14",
+        "cat": "Bundesliga",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who was the manager who guided Bayern Munich to the 2020 Champions League title?"
+      },
+      "b": {
+        "id": "q_5f4552",
+        "cat": "Managers",
+        "diff": "medium",
+        "hint": false,
+        "q": "Who managed Bayern Munich to their 2020 Champions League treble?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "43",
+      "crossCategory": true,
+      "a": {
+        "id": "q_2c3ea2",
+        "cat": "PL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Aleksandar Mitrović broke the Championship scoring record in 2021-22 — how many goals?"
+      },
+      "b": {
+        "id": "q_e9b61a",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "How many league goals did Mitrovic score in the record-breaking 2021-22 Championship season?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Franz Beckenbauer",
+      "crossCategory": true,
+      "a": {
+        "id": "q_035c5b",
+        "cat": "Legends",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which West German captain lifted the World Cup as a player in 1974 and then as a manager in 1990 — both times with West Germany?"
+      },
+      "b": {
+        "id": "q_37617b",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who became the first man to win the World Cup as both captain (1974) and manager (1990)?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Egypt",
+      "crossCategory": false,
+      "a": {
+        "id": "q_08ca8e",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which country won the first African Cup of Nations in 1957?"
+      },
+      "b": {
+        "id": "q_2f3fd9",
+        "cat": "Records",
+        "diff": "hard",
+        "hint": false,
+        "q": "Which country has the record for the most appearances at the African Cup of Nations?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Pelé",
+      "crossCategory": true,
+      "a": {
+        "id": "q_56070a",
+        "cat": "Legends",
+        "diff": "easy",
+        "hint": false,
+        "q": "Which Brazilian legend scored in the 1958 and 1970 World Cup finals?"
+      },
+      "b": {
+        "id": "q_05952d",
+        "cat": "WorldCup",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which player scored in 2 different World Cup finals (1958 and 1970) — both Brazil victories?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "San Siro",
+      "crossCategory": false,
+      "a": {
+        "id": "q_037fc5",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": true,
+        "q": "AC Milan and Inter Milan share which famous stadium?"
+      },
+      "b": {
+        "id": "q_826a36",
+        "cat": "SerieA",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which stadium is shared by AC Milan and Inter Milan?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Kepa Arrizabalaga",
+      "crossCategory": true,
+      "a": {
+        "id": "q_17c691",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who holds the world-record transfer fee for a goalkeeper (~£71m, 2018)?"
+      },
+      "b": {
+        "id": "q_951e4d",
+        "cat": "Transfers",
+        "diff": "medium",
+        "hint": true,
+        "q": "In 2018 Chelsea signed which goalkeeper for a then world-record fee for a keeper, around £71m?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Tottenham Hotspur",
+      "crossCategory": true,
+      "a": {
+        "id": "q_e5c79c",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which English club won the first UEFA Cup in 1972?"
+      },
+      "b": {
+        "id": "q_151adf",
+        "cat": "History",
+        "diff": "medium",
+        "hint": true,
+        "q": "Wolves reached the first UEFA Cup final in 1972, losing to which English club?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Ramón Unzaga",
+      "crossCategory": false,
+      "a": {
+        "id": "q_84e399",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": true,
+        "q": "Which player is credited with inventing the bicycle kick — also known as the chilena?"
+      },
+      "b": {
+        "id": "q_4c9c90",
+        "cat": "Legends",
+        "diff": "hard",
+        "hint": false,
+        "q": "Which legendary player is credited with inventing the overhead kick — now known as the chilena?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "50",
+      "crossCategory": true,
+      "a": {
+        "id": "q_6146bf",
+        "cat": "LaLiga",
+        "diff": "medium",
+        "hint": false,
+        "q": "How many goals did Messi score in La Liga in the record-breaking 2011-12 season?"
+      },
+      "b": {
+        "id": "q_8f2b32",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Lionel Messi set a single-season La Liga scoring record in 2011-12. How many league goals did he score that campaign?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Elche",
+      "crossCategory": false,
+      "a": {
+        "id": "q_079e10",
+        "cat": "LaLiga",
+        "diff": "hard",
+        "hint": true,
+        "q": "Real Madrid's record La Liga victory is 11-2 (Feb 1960) — against which club?"
+      },
+      "b": {
+        "id": "q_1e8013",
+        "cat": "LaLiga",
+        "diff": "hard",
+        "hint": true,
+        "q": "Real Madrid's biggest La Liga victory was 11-2 — against which club during the 1959-60 season?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Riva",
+      "crossCategory": true,
+      "a": {
+        "id": "q_072c09",
+        "cat": "Records",
+        "diff": "medium",
+        "hint": true,
+        "q": "Who is Italy's all-time leading international scorer?"
+      },
+      "b": {
+        "id": "q_b38ab9",
+        "cat": "SerieA",
+        "diff": "hard",
+        "hint": false,
+        "q": "Which Italian player is the all-time leading scorer for the national team with 35 goals?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Ramon Sanchez Pizjuan",
+      "crossCategory": true,
+      "a": {
+        "id": "q_7a9eee",
+        "cat": "LaLiga",
+        "diff": "easy",
+        "hint": true,
+        "q": "What is the name of Sevilla's stadium, named after a legendary former club president?"
+      },
+      "b": {
+        "id": "q_4055f6",
+        "cat": "History",
+        "diff": "medium",
+        "hint": true,
+        "q": "Sevilla's home stadium, opened in 1958, is named after which former club president?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Luton Town",
+      "crossCategory": true,
+      "a": {
+        "id": "q_d93381",
+        "cat": "PL",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which club won the Championship play-off final on penalties in 2023 to reach the Premier League?"
+      },
+      "b": {
+        "id": "q_76b74d",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "Which club beat Coventry on penalties in the 2023 Championship play-off final at Wembley?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Malmo FF",
+      "crossCategory": true,
+      "a": {
+        "id": "q_6112bf",
+        "cat": "UCL",
+        "diff": "medium",
+        "hint": false,
+        "q": "Nottingham Forest won the European Cup in 1979 — who did they beat in the final?"
+      },
+      "b": {
+        "id": "q_44dc26",
+        "cat": "ChampionsLeague",
+        "diff": "medium",
+        "hint": true,
+        "q": "Which Swedish club did Forest defeat in the 1979 European Cup final?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "José Altafini",
+      "crossCategory": false,
+      "a": {
+        "id": "q_77ef48",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Two goals from a Brazilian striker won Milan the 1963 European Cup final against Benfica. Who scored them?"
+      },
+      "b": {
+        "id": "q_b968f1",
+        "cat": "UCL",
+        "diff": "hard",
+        "hint": true,
+        "q": "Benfica lost the 1963 European Cup final 2-1 to AC Milan — which forward scored both Milan goals?"
+      }
+    },
+    {
+      "overlap": 0.5,
+      "answer": "Green and white",
+      "crossCategory": false,
+      "a": {
+        "id": "q_dc5fd1",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What are Sporting CP's traditional home shirt colours?"
+      },
+      "b": {
+        "id": "q_1dd920",
+        "cat": "History",
+        "diff": "easy",
+        "hint": true,
+        "q": "What are Palmeiras' traditional home colours?"
+      }
+    }
+  ]
+}
