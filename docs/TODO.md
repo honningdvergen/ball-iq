@@ -23,7 +23,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 
 - [x] **1. Club wall** — DONE (`bf537e5` + data `885e865`). 0 → **72 club links + hub**, generated from the hand-verified competition map; heading count generated so it can’t go stale; build FAILS if a club lacks a competition. Detector clean (2 pre-existing shell findings only).
 - [x] **2. Footle section** — DONE. Playable PAST puzzle (build-time gen, grader emitted from wordle.js with round-trip guard), teaching strip, keyboard, countdown ends the page. Verified by playing; detector clean.
-- [ ] **3. Daily 7 door** + `?game=daily` deep link
+- [x] **3. Daily 7 door** — DONE. `?game=daily` rides the existing `?game=footle` branch; door beside Footle’s in the band. Verified by booting into "1/7". Note: fresh devices see onboarding first (pre-existing, same as footle).
 - [ ] **4. Nav / drawer** — there is currently NO way off the page except "Play free" (MarketingHome: 40 refs, ScoutingReport: 0)
 - [ ] **5. FAQ** — carries FAQ schema; dropping it loses rich-result eligibility (12 refs → 0)
 - [ ] **6. Accessibility pass** — detector ≠ WCAG. 25% of sessions produce a dead click on the current site; do not carry that in.
