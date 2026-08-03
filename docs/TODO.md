@@ -23,15 +23,30 @@ items are deleted, not archived — git history is the archive.
   2. **XP sanity: +52,790 XP for one match** (score 5274 → looks like score×10). Audit the XP formula for MP wins — is one match really worth ~50k? Compare vs solo/daily XP rates; inflation makes levels meaningless.
   3. **Duplicate questions across back-to-back MP games** — 2 of 20 repeated in two consecutive "mixed" rounds (Atlético stadium capacity; who gave Yamal his senior Spain debut). MP selection is rightly date/seed-deterministic-ish and must NOT consume applySeenFilter — but a REMATCH should exclude the previous room's question ids (room-level exclusion list passed to the picker, not device-local history).
   4. Verify with prod data, not just code: game_rooms/scores for this pair via the Supabase connector — what did the server actually record for the 3 games?
-- [ ] **WAVE N IN FLIGHT** (fired ~13:30). European Heritage: Eintracht
-  Frankfurt, Borussia Mönchengladbach, Werder Bremen, Bologna, Genoa, Lille +
-  Fenerbahçe top-up (38→~55). Forge = gen×2 → examiner → skeptic per Q, only
-  double-survivors, prose last. **WHEN THE WORKFLOW NOTIFICATION ARRIVES:**
-  write the result to `.audit/wave-n.json`, then `scripts/forge-curate.mjs`
-  (edit CLUB_FIELD first), then insert + wire per the seo-wave skill (App.jsx
-  ×5, gen-seo ×2+DIR_ALIAS, clubs.mjs prose w/ array-hole assert, and NEW:
-  scripts/seo/club-competition.mjs entries — build fails loudly without them;
-  clubIndex regenerates itself). Titles must carry "& Answers" ≤60 chars.
+- [ ] **WAVE N — RESCUED, NOT SHIPPED** (`b115646`). Run 1 died at the usage
+  wall: 19 of 196 agents done, 177 errored. Six clubs returned EMPTY with
+  `belowGate: true` — the pipeline correctly refusing to ship unverified work.
+  **175 generated questions are saved** in `.audit/wave-n-run1/generated.json`
+  (+ journal + the exact script). ⚠️ **GENERATED ≠ VERIFIED — none may enter
+  src/questions.js until each clears examiner AND skeptic.**
+  Resume (completed agents replay free):
+  `Workflow({scriptPath: '<workflows dir>/wave-n-forge-wf_092cf5c7-559.js', resumeFromRunId: 'wf_092cf5c7-559', args: {fenerStems:[...]}})`
+  **LESSON: 196 agents in one bite was too big — split future waves into 2–3
+  clubs per workflow so a limit costs one club, not a wave.**
+  Then: curate → insert → wire (App.jsx ×5, gen-seo ×2+DIR_ALIAS, clubs.mjs
+  prose w/ array-hole assert, NEW `club-competition.mjs` entries or the build
+  fails, clubIndex self-regenerates). Titles need "& Answers" ≤60 chars.
+  Indexing is automatic: prod deploy regenerates sitemap + pings IndexNow.
+
+- [ ] **FORTNIGHT WATCH (started 2026-08-03)** — the homepage swapped and the
+  "& Answers" retitle both went live today. Read GSC + Clarity around
+  2026-08-17 BEFORE any further homepage surgery: homepage CTR/bounce vs the
+  old page, and the 45 retitled clubs vs the 27 unchanged. Tottenham +
+  Newcastle are the natural experiment (they were LOSING those queries).
+- [ ] **POST-SWAP CLEANUP (after the fortnight verdict)** — delete
+  MarketingHome.jsx + the `/home-old` route + its vercel.json rewrites. That
+  also retires the pixel-debt list (8 stray surface shades, the two text
+  ramps, the orange Trail ramp) — it all lives in the page being deleted.
 
 - [ ] **CLAUDE: GSC via the data plugin** (Alex, 2026-08-03) — run a proper
   data-tool analysis over Search Console instead of screenshots + the flaky
