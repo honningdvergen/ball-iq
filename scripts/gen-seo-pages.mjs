@@ -32,6 +32,11 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { QB } from '../src/questions.js';
+// The web palette. Shared with the marketing homepage (via design/tokens.css)
+// so the two surfaces cannot drift apart the way they already had -- the
+// homepage was still painting #1A1D27, a colour app.css:57 records the product
+// moving off. rootCss() emits the same bytes this file used to hardcode.
+import { rootCss } from '../src/design/tokens.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
@@ -1181,7 +1186,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
 <style>
   ${accent ? `:root{--club:${accent};--club-soft:${softenAccent(accent)};--club-ink:${inkOn(accent)};--club-glow:${rgbTriplet(softenAccent(accent))}}` : ''}
-  :root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+  ${rootCss()}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:${PAGE_FG};line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}

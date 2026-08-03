@@ -3,6 +3,12 @@
 // install event before the React tree mounts. Missing this event leaves the
 // install button inert for the rest of the session.
 import './installPrompt.js'
+// The web palette, as CSS custom properties. Imported by the ENTRY rather than
+// by MarketingHome, which is lazy -- a lazy CSS import lands after first paint
+// and every var() would resolve to `inherit` for a frame. Generated from
+// design/tokens.js; the 191 static pages inline the same bytes. ~450 bytes, so
+// the game routes carry it too rather than duplicating the values a third time.
+import './design/tokens.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
