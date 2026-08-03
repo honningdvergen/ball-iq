@@ -41,16 +41,16 @@ const SHOT = {
 };
 
 const STYLE = `
-.mkt { background:#0A0A0A; color:#F0F1F5; font-family:'Inter',system-ui,sans-serif; overflow-x:hidden; }
+.mkt { background:var(--bg); color:var(--tx); font-family:'Inter',system-ui,sans-serif; overflow-x:hidden; }
 .mkt a { text-decoration:none; }
-.mkt-link { color:#9BA0B8; font-size:14px; font-weight:600; transition:color .15s; }
+.mkt-link { color:var(--tx3); font-size:14px; font-weight:600; transition:color .15s; }
 .mkt-link:hover { color:#fff; }
 .mkt-nav { padding:15px 28px; }
 .mkt-nav-links { gap:30px; }
 /* Highlighted "Play free" — green-outline ghost button with a soft glow, sits
    next to the solid "Get the app" so the free web play is an obvious action. */
-.mkt-nav-play { display:inline-flex; align-items:center; padding:9px 17px; border:1.5px solid rgba(88,204,2,0.65); border-radius:12px; background:rgba(88,204,2,0.08); color:#8AE042; font-weight:800; font-size:14px; box-shadow:0 0 20px -6px rgba(88,204,2,0.5); transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, background .18s, border-color .18s; }
-.mkt-nav-play:hover { transform:translateY(-2px); background:rgba(88,204,2,0.15); border-color:#58CC02; box-shadow:0 0 26px -4px rgba(88,204,2,0.65); color:#AEEF6E; }
+.mkt-nav-play { display:inline-flex; align-items:center; padding:9px 17px; border:1.5px solid rgba(88,204,2,0.65); border-radius:12px; background:rgba(88,204,2,0.08); color:var(--grn-soft); font-weight:800; font-size:14px; box-shadow:0 0 20px -6px rgba(88,204,2,0.5); transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, background .18s, border-color .18s; }
+.mkt-nav-play:hover { transform:translateY(-2px); background:rgba(88,204,2,0.15); border-color:var(--grn); box-shadow:0 0 26px -4px rgba(88,204,2,0.65); color:#AEEF6E; }
 /* Nav collapse: on phones the full link row overflows, so the anchor-jump links
    move into a drawer rather than simply vanishing.
 
@@ -74,10 +74,10 @@ const STYLE = `
   .mkt-burger {
     display:inline-flex; align-items:center; justify-content:center;
     width:44px; height:44px; flex:0 0 44px;      /* WCAG 2.5.5 touch target */
-    background:transparent; border:1px solid #2A2D3A; border-radius:12px;
-    color:#F0F1F5; cursor:pointer; padding:0;
+    background:transparent; border:1px solid var(--bd2); border-radius:12px;
+    color:var(--tx); cursor:pointer; padding:0;
   }
-  .mkt-burger:hover { border-color:#3A3D4A; }
+  .mkt-burger:hover { border-color:var(--bd3); }
 }
 .mkt-drawer-scrim {
   position:fixed; inset:0; z-index:200; background:rgba(4,5,7,0.72);
@@ -87,7 +87,7 @@ const STYLE = `
 .mkt-drawer-scrim[data-open="1"] { opacity:1; }
 .mkt-drawer {
   position:fixed; top:0; right:0; bottom:0; z-index:201; width:min(84vw,320px);
-  background:#101219; border-left:1px solid #242836;
+  background:#101219; border-left:1px solid var(--bd);
   display:flex; flex-direction:column; padding:14px 16px 24px;
   transform:translateX(100%); transition:transform .26s cubic-bezier(.22,.8,.3,1);
   overflow-y:auto; overscroll-behavior:contain;
@@ -96,42 +96,42 @@ const STYLE = `
 .mkt-drawer-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
 .mkt-drawer-close {
   width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center;
-  background:transparent; border:1px solid #2A2D3A; border-radius:12px; color:#F0F1F5;
+  background:transparent; border:1px solid var(--bd2); border-radius:12px; color:var(--tx);
   cursor:pointer; padding:0;
 }
 .mkt-drawer a {
   display:flex; align-items:center; min-height:52px; padding:0 14px;
-  border-radius:12px; color:#F0F1F5; font-size:17px; font-weight:700;
+  border-radius:12px; color:var(--tx); font-size:17px; font-weight:700;
   border:1px solid transparent;
 }
-.mkt-drawer a:hover, .mkt-drawer a:focus-visible { background:#181B24; border-color:#242836; }
+.mkt-drawer a:hover, .mkt-drawer a:focus-visible { background:#181B24; border-color:var(--bd); }
 .mkt-drawer .mkt-drawer-cta {
-  justify-content:center; background:#58CC02; color:#06230C; margin-top:14px;
-  font-weight:800; border-color:#58CC02;
+  justify-content:center; background:var(--grn); color:var(--grn-ink); margin-top:14px;
+  font-weight:800; border-color:var(--grn);
 }
 .mkt-drawer .mkt-drawer-app {
-  justify-content:center; margin-top:9px; border-color:rgba(88,204,2,0.5); color:#8AE042;
+  justify-content:center; margin-top:9px; border-color:rgba(88,204,2,0.5); color:var(--grn-soft);
 }
-.mkt-drawer-sep { height:1px; background:#242836; margin:12px 4px; }
-.mkt-drawer :focus-visible, .mkt-burger:focus-visible { outline:3px solid #58CC02; outline-offset:2px; }
+.mkt-drawer-sep { height:1px; background:var(--bd); margin:12px 4px; }
+.mkt-drawer :focus-visible, .mkt-burger:focus-visible { outline:3px solid var(--grn); outline-offset:2px; }
 @media (prefers-reduced-motion:reduce) {
   .mkt-drawer, .mkt-drawer-scrim { transition:none; }
 }
 .mkt-cta-green { transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, filter .15s; }
 .mkt-cta-green:hover { transform:translateY(-2px); box-shadow:0 14px 30px -6px rgba(88,204,2,0.72), inset 0 1px 0 rgba(255,255,255,0.25); filter:brightness(1.04); }
 .mkt-cta-app { transition:transform 80ms, border-color .15s; }
-.mkt-cta-app:hover { transform:translateY(-2px); border-color:#3A3D4A; }
+.mkt-cta-app:hover { transform:translateY(-2px); border-color:var(--bd3); }
 .mkt-cta-black { transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; }
 .mkt-cta-black:hover { transform:translateY(-2px); box-shadow:0 16px 34px -8px rgba(0,0,0,0.72); }
-.mkt-skip { position:absolute; left:-9999px; top:0; z-index:200; padding:12px 20px; background:#58CC02; color:#06230C; font-weight:800; border-radius:0 0 12px 0; }
+.mkt-skip { position:absolute; left:-9999px; top:0; z-index:200; padding:12px 20px; background:var(--grn); color:var(--grn-ink); font-weight:800; border-radius:0 0 12px 0; }
 .mkt-skip:focus { left:0; }
 /* Without this the anchor inherits the UA's default link blue, so any child
    without an explicit colour renders bright blue on a dark card. */
 .mkt-mode { color:inherit; transition:transform .18s, border-color .18s; }
-.mkt-mode:hover { transform:translateY(-4px); border-color:#3A3D4A; }
+.mkt-mode:hover { transform:translateY(-4px); border-color:var(--bd3); }
 .mkt-opt { transition:transform .15s, border-color .15s, background .15s; }
-.mkt-opt:hover { transform:translateY(-1px); border-color:#3A3D4A; background:#161922; }
-.mkt-try-again:hover { border-color:#3A3D4A !important; color:#fff !important; }
+.mkt-opt:hover { transform:translateY(-1px); border-color:var(--bd3); background:#161922; }
+.mkt-try-again:hover { border-color:var(--bd3) !important; color:#fff !important; }
 .mkt-play-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; max-width:900px; margin:0 auto; }
 /* box-sizing is NOT optional here. Without it the 20px padding + 1px border are
    ADDED to the grid column's width, so on a 375px phone the card measured 376px
@@ -143,7 +143,7 @@ const STYLE = `
    column on a 375px phone, hanging 21px off-screen and clipping the
    "0 correct" pill. box-sizing alone did not solve it (verified: computed
    box-sizing was already border-box while the card was still 376px). */
-.mkt-play-card { min-width:0; box-sizing:border-box; background:#0F1117; border:1px solid #242836; border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
+.mkt-play-card { min-width:0; box-sizing:border-box; background:var(--card); border:1px solid var(--bd); border-radius:22px; padding:20px; box-shadow:0 20px 44px -22px rgba(0,0,0,0.7); }
 /* MOBILE: stack to one column AND put the quiz taster FIRST.
    Measured 2026-07-28 against a ~100% homepage bounce: the MiniFootle card is
    ~636px tall, so stacked after ~200px of badge + headline + subtitle it fills
@@ -167,11 +167,11 @@ const STYLE = `
 @media (min-width:1600px) { .mkt { zoom:1.13; } }
 @media (min-width:2400px) { .mkt { zoom:1.3; } }
 .mkt-qgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:10px; }
-.mkt-qtile { display:flex; align-items:center; gap:11px; padding:14px; background:#14161E; border:1px solid #242836; border-radius:14px; transition:transform .16s, border-color .16s; }
-.mkt-qtile:hover { transform:translateY(-3px); border-color:#3A3D4A; }
+.mkt-qtile { display:flex; align-items:center; gap:11px; padding:14px; background:var(--card2); border:1px solid var(--bd); border-radius:14px; transition:transform .16s, border-color .16s; }
+.mkt-qtile:hover { transform:translateY(-3px); border-color:var(--bd3); }
 .mkt-qtile-all { justify-content:center; background:rgba(88,204,2,0.08); border-color:rgba(88,204,2,0.3); }
 .mkt-qbadge { width:36px; height:36px; flex:0 0 auto; border-radius:10px; background:#1F2430; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#fff; letter-spacing:0.03em; }
-.mkt-foot-link { color:#9BA0B8; font-size:14px; transition:color .15s; }
+.mkt-foot-link { color:var(--tx3); font-size:14px; transition:color .15s; }
 .mkt-foot-link:hover { color:#fff; }
 .mkt-reveal { opacity:0; transform:translateY(30px); transition:opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
 .mkt-reveal.is-visible { opacity:1; transform:none; }
@@ -225,13 +225,13 @@ const AppleGlyph = ({ size = 22 }) => (
 // Only the unlabelled "Get the app" buttons are platform-aware.
 const AppStoreBadge = ({ small }) => (
   <a href={APP_STORE} target="_blank" rel="noopener" className="mkt-cta-app"
-     style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#000', border: '1px solid #2A2D3A', borderRadius: small ? 12 : 14 }}>
+     style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#000', border: '1px solid var(--bd2)', borderRadius: small ? 12 : 14 }}>
     <AppleGlyph size={small ? 18 : 22} />
     {small ? (
       <span style={{ fontSize: 13, color: '#fff', fontWeight: 700 }}>App Store</span>
     ) : (
       <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, textAlign: 'left' }}>
-        <span style={{ fontSize: 10, color: '#9BA0B8', letterSpacing: '0.02em' }}>Download on the</span>
+        <span style={{ fontSize: 10, color: 'var(--tx3)', letterSpacing: '0.02em' }}>Download on the</span>
         <span style={{ fontSize: 16, color: '#fff', fontWeight: 700 }}>App Store</span>
       </span>
     )}
@@ -253,13 +253,13 @@ const GooglePlayGlyph = ({ size = 22 }) => (
 const PlayStoreBadge = ({ small }) => (
   <a className="mkt-cta-play" href={PLAY_STORE_URL} target="_blank" rel="noopener"
      aria-label="Get Ball IQ on Google Play"
-     style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#0A0A0A', border: '1px solid #242836', borderRadius: small ? 12 : 14 }}>
+     style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: 'var(--bg)', border: '1px solid var(--bd)', borderRadius: small ? 12 : 14 }}>
     <GooglePlayGlyph size={small ? 18 : 22} />
     {small ? (
       <span style={{ fontSize: 13, color: '#fff', fontWeight: 700 }}>Google Play</span>
     ) : (
       <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, textAlign: 'left' }}>
-        <span style={{ fontSize: 10, color: '#9BA0B8', letterSpacing: '0.02em' }}>Get it on</span>
+        <span style={{ fontSize: 10, color: 'var(--tx3)', letterSpacing: '0.02em' }}>Get it on</span>
         <span style={{ fontSize: 16, color: '#fff', fontWeight: 700 }}>Google Play</span>
       </span>
     )}
@@ -268,14 +268,14 @@ const PlayStoreBadge = ({ small }) => (
 
 const GreenCTA = ({ href, children, big, target, className }) => (
   <a href={href} target={target} rel={target ? 'noopener' : undefined} className={`mkt-cta-green${className ? ' ' + className : ''}`}
-     style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: big ? '15px 26px' : '11px 20px', background: '#58CC02', color: '#0A0A0A', fontWeight: 800, fontSize: big ? 16 : 14, borderRadius: 12, boxShadow: '0 8px 22px -6px rgba(88,204,2,0.6), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
+     style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: big ? '15px 26px' : '11px 20px', background: 'var(--grn)', color: 'var(--bg)', fontWeight: 800, fontSize: big ? 16 : 14, borderRadius: 12, boxShadow: '0 8px 22px -6px rgba(88,204,2,0.6), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
     {children}
   </a>
 );
 
 const eyebrow = (color) => ({ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color });
 const h2Style = { margin: '14px 0 0', fontSize: 'clamp(30px,4vw,42px)', fontWeight: 800, lineHeight: 1.06, letterSpacing: '-0.025em', color: '#fff' };
-const bodyStyle = { margin: '18px 0 0', fontSize: 17, lineHeight: 1.6, color: '#9BA0B8', maxWidth: '46ch' };
+const bodyStyle = { margin: '18px 0 0', fontSize: 17, lineHeight: 1.6, color: 'var(--tx3)', maxWidth: '46ch' };
 const chip = (extra) => ({ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, fontSize: 13, fontWeight: 600, ...extra });
 
 // Inline "taste of the game" — a real, tappable question right on the landing
@@ -353,23 +353,23 @@ function scoreGuess(guess, target) {
 
 const footleTileStyle = (mark, filled, active) => {
   const base = { width: 'clamp(30px,10.5vw,42px)', height: 'clamp(30px,10.5vw,42px)', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, border: '2px solid', fontWeight: 800, fontSize: 'clamp(15px,5vw,20px)', textTransform: 'uppercase', lineHeight: 1, color: '#fff' };
-  if (mark === 'correct') return { ...base, background: '#58CC02', borderColor: '#58CC02', color: '#06230C' };
-  if (mark === 'present') return { ...base, background: '#FFC107', borderColor: '#FFC107', color: '#241B00' };
+  if (mark === 'correct') return { ...base, background: 'var(--grn)', borderColor: 'var(--grn)', color: 'var(--grn-ink)' };
+  if (mark === 'present') return { ...base, background: 'var(--amber)', borderColor: 'var(--amber)', color: '#241B00' };
   if (mark === 'absent') return { ...base, background: '#181B24', borderColor: '#181B24', color: '#8E93A6' };
-  return { ...base, background: '#0F1117', borderColor: filled ? '#3A3D4A' : (active ? '#46516A' : '#232733') };
+  return { ...base, background: 'var(--card)', borderColor: filled ? 'var(--bd3)' : (active ? '#46516A' : '#232733') };
 };
 const footleKeyStyle = (state, wide) => {
   const base = { height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 7, border: 'none', fontWeight: 700, fontSize: wide ? 11.5 : 14, cursor: 'pointer', flex: wide ? '1.6 1 0' : '1 1 0', fontFamily: 'inherit', textTransform: 'uppercase' };
-  if (state === 'correct') return { ...base, background: '#58CC02', color: '#06230C' };
-  if (state === 'present') return { ...base, background: '#FFC107', color: '#241B00' };
+  if (state === 'correct') return { ...base, background: 'var(--grn)', color: 'var(--grn-ink)' };
+  if (state === 'present') return { ...base, background: 'var(--amber)', color: '#241B00' };
   // A spent key still has to be READ — it is how you remember what you have
   // already tried. #5B6070 on this background measured 2.89:1, the worst text
   // on the site and the only WCAG failure the deterministic scan found (x4).
-  // #7E828C is an existing token here and clears at 4.70:1.
-  if (state === 'absent') return { ...base, background: '#14161C', color: '#7E828C' };
-  return { ...base, background: '#2A2D3A', color: '#E8EAF0' };
+  // var(--tx4) is an existing token here and clears at 4.70:1.
+  if (state === 'absent') return { ...base, background: '#14161C', color: 'var(--tx4)' };
+  return { ...base, background: 'var(--bd2)', color: 'var(--tx2)' };
 };
-const RESET_BTN = { display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', background: 'transparent', color: '#9BA0B8', fontWeight: 700, fontSize: 14, border: '1px solid #2A2D3A', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' };
+const RESET_BTN = { display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', background: 'transparent', color: 'var(--tx3)', fontWeight: 700, fontSize: 14, border: '1px solid var(--bd2)', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color .15s, color .15s' };
 
 function MiniFootle() {
   const target = FOOTLE_TARGET;
@@ -421,7 +421,7 @@ function MiniFootle() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><BallIcon size={21} strokeWidth={1.8} /><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>Daily Footle</span></div>
-      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Guess the mystery footballer in six.</div>
+      <div style={{ fontSize: 13.5, color: 'var(--tx3)', marginTop: 4 }}>Guess the mystery footballer in six.</div>
       <div style={{ margin: '16px 0 0', display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center' }}>
         {rows.map((row, r) => (
           <div key={r} style={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
@@ -432,9 +432,9 @@ function MiniFootle() {
         ))}
       </div>
       {status !== 'playing' ? (
-        <div style={{ marginTop: 14, padding: 14, background: '#14161E', border: '1px solid #242836', borderRadius: 14, textAlign: 'center' }}>
+        <div style={{ marginTop: 14, padding: 14, background: 'var(--card2)', border: '1px solid var(--bd)', borderRadius: 14, textAlign: 'center' }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: '#fff' }}>{msg}</div>
-          <div style={{ fontSize: 13, color: '#9BA0B8', marginTop: 5 }}>A fresh Footle drops every day in the app.</div>
+          <div style={{ fontSize: 13, color: 'var(--tx3)', marginTop: 5 }}>A fresh Footle drops every day in the app.</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 12 }}>
             {/* Deep link straight into the app's real daily Footle — plain
                 /play would strand them on the home dashboard, one game away. */}
@@ -491,7 +491,7 @@ function QuizTaster() {
     // question while skipping the (string-identical) shorthand, leaving the
     // picked+correct buttons with UA-default BLACK rings that moved around
     // every round (Alex report, computed-style probe confirmed).
-    const base = { display: 'flex', alignItems: 'center', gap: 11, width: '100%', textAlign: 'left', padding: '12px 14px', borderRadius: 12, borderWidth: 1.5, borderStyle: 'solid', borderColor: '#242836', background: '#0F1117', color: '#E8EAF0', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
+    const base = { display: 'flex', alignItems: 'center', gap: 11, width: '100%', textAlign: 'left', padding: '12px 14px', borderRadius: 12, borderWidth: 1.5, borderStyle: 'solid', borderColor: 'var(--bd)', background: 'var(--card)', color: 'var(--tx2)', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', cursor: answered ? 'default' : 'pointer' };
     if (!answered) return base;
     if (i === cur.a) return { ...base, borderColor: 'rgba(88,204,2,0.55)', background: 'rgba(88,204,2,0.12)', color: '#9BE25C' };
     if (i === picked) return { ...base, borderColor: 'rgba(255,71,71,0.5)', background: 'rgba(255,71,71,0.1)', color: '#FF8A82' };
@@ -500,8 +500,12 @@ function QuizTaster() {
 
   const head = (
     <>
+      {/* The one palette literal left in this file, on purpose: lucide forwards
+          `color` to the SVG as a `stroke` PRESENTATION ATTRIBUTE, and those do
+          not support var() — stroke="var(--grn-soft)" resolves to nothing and
+          the icon falls back to currentColor. Keep in step with --grn-soft. */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Target size={19} strokeWidth={2.4} color="#8AE042" aria-hidden="true" /><span style={{ fontSize: 17, fontWeight: 800, color: '#fff' }}>What&apos;s your Ball IQ?</span></div>
-      <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 4 }}>Five questions. Then your Ball IQ.</div>
+      <div style={{ fontSize: 13.5, color: 'var(--tx3)', marginTop: 4 }}>Five questions. Then your Ball IQ.</div>
     </>
   );
 
@@ -510,9 +514,9 @@ function QuizTaster() {
       <div>
         {head}
         <div style={{ textAlign: 'center', padding: '18px 4px 4px' }}>
-          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 64, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em', color: '#FFC107' }}>{IQ[score]}</div>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 64, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em', color: 'var(--amber)' }}>{IQ[score]}</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginTop: 4 }}>{TIERS[score]}</div>
-          <div style={{ fontSize: 13.5, color: '#9BA0B8', marginTop: 5 }}>You scored {score} / {total}</div>
+          <div style={{ fontSize: 13.5, color: 'var(--tx3)', marginTop: 5 }}>You scored {score} / {total}</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 16 }}>
             <GreenCTA href={PLAY}>Beat your score →</GreenCTA>
             <button onClick={reset} className="mkt-try-again" style={RESET_BTN}>Play again</button>
@@ -527,11 +531,11 @@ function QuizTaster() {
     <div>
       {head}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16 }}>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7E828C', whiteSpace: 'nowrap' }}>Q {idx + 1} / {total}</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tx4)', whiteSpace: 'nowrap' }}>Q {idx + 1} / {total}</span>
         {/* nowrap + flex-shrink:0 — the pill was being squeezed and CLIPPED at
             the card's right edge on a 375px phone (caught in a Playwright
             screenshot of the live site, invisible at desktop width). */}
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: '#8AE042', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px', whiteSpace: 'nowrap', flex: '0 0 auto' }}>{score} correct</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, color: 'var(--grn-soft)', background: 'rgba(88,204,2,0.1)', borderRadius: 999, padding: '4px 10px', whiteSpace: 'nowrap', flex: '0 0 auto' }}>{score} correct</span>
       </div>
       {/* PIPS, not a bar. Same width, twice the information: position AND the
           outcome of every question so far. Capped deliberately -- see PIP_MAX
@@ -544,8 +548,8 @@ function QuizTaster() {
           return (
             <span key={i} style={{
               flex: 1, height: 5, borderRadius: 999,
-              background: r === true ? '#58CC02' : r === false ? '#FF4747' : '#1A1D27',
-              boxShadow: isNow && r === undefined ? 'inset 0 0 0 1.5px #3A3D4A' : 'none',
+              background: r === true ? 'var(--grn)' : r === false ? 'var(--wrong)' : '#1A1D27',
+              boxShadow: isNow && r === undefined ? 'inset 0 0 0 1.5px var(--bd3)' : 'none',
               transition: 'background-color .25s ease',
             }} />
           );
@@ -565,7 +569,7 @@ function QuizTaster() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: answered && i === cur.a ? 'rgba(88,204,2,0.9)'
                 : answered && i === picked ? 'rgba(255,71,71,0.85)' : '#1A1D27',
-              color: answered && (i === cur.a || i === picked) ? '#06230C' : '#8B90A6',
+              color: answered && (i === cur.a || i === picked) ? 'var(--grn-ink)' : '#8B90A6',
               fontSize: 11.5, fontWeight: 800, fontFamily: "'JetBrains Mono',monospace",
             }}>{'ABCD'[i]}</span>
             <span style={{ flex: 1, minWidth: 0 }}>{o}</span>
@@ -583,12 +587,12 @@ function QuizTaster() {
           asserting it in a feature list further down.
           Text is the bank question's own fact-checked `hint` — see TASTE_QS. */}
       {answered && cur.why && (
-        <div style={{ marginTop: 12, padding: '12px 14px', background: 'rgba(88,204,2,0.09)', borderLeft: '3px solid #58CC02', borderRadius: '0 10px 10px 0' }}>
-          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8AE042', marginBottom: 5 }}>Why</div>
+        <div style={{ marginTop: 12, padding: '12px 14px', background: 'rgba(88,204,2,0.09)', borderLeft: '3px solid var(--grn)', borderRadius: '0 10px 10px 0' }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--grn-soft)', marginBottom: 5 }}>Why</div>
           <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: '#D6DBE4' }}>{cur.why}</p>
         </div>
       )}
-      {answered && <button onClick={next} style={{ width: '100%', marginTop: 14, padding: 13, background: '#58CC02', color: '#06230C', border: 'none', borderRadius: 12, fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>{idx + 1 >= total ? 'See your Ball IQ →' : 'Next →'}</button>}
+      {answered && <button onClick={next} style={{ width: '100%', marginTop: 14, padding: 13, background: 'var(--grn)', color: 'var(--grn-ink)', border: 'none', borderRadius: 12, fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}>{idx + 1 >= total ? 'See your Ball IQ →' : 'Next →'}</button>}
     </div>
   );
 }
@@ -639,10 +643,10 @@ function PlayNow() {
             <span key={l} style={{
               display: 'inline-flex', alignItems: 'baseline', gap: 4,
               padding: 'clamp(5px,0.5vw,8px) clamp(11px,1.1vw,18px)', fontSize: 'clamp(11px,1.05vw,14.5px)', whiteSpace: 'nowrap',
-              borderLeft: i === 0 ? 'none' : '1px solid #242836',
+              borderLeft: i === 0 ? 'none' : '1px solid var(--bd)',
             }}>
-              <b style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,monospace", fontWeight: 700, color: '#8AE042', fontVariantNumeric: 'tabular-nums' }}>{v}</b>
-              <span style={{ color: '#7E828C', letterSpacing: '0.03em' }}>{l}</span>
+              <b style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,monospace", fontWeight: 700, color: 'var(--grn-soft)', fontVariantNumeric: 'tabular-nums' }}>{v}</b>
+              <span style={{ color: 'var(--tx4)', letterSpacing: '0.03em' }}>{l}</span>
             </span>
           ))}
         </div>
@@ -659,7 +663,7 @@ function PlayNow() {
             only, never body. Loaded on the Google Fonts request already in the
             page, so no new host and no extra round-trip. */}
         <h1 className="mkt-rise mkt-rise-2" style={{ margin: '12px auto 0', maxWidth: 'min(94vw,880px)', fontFamily: "'Anton',Inter,sans-serif", fontSize: 'clamp(38px,6.6vw,68px)', fontWeight: 400, lineHeight: 0.94, letterSpacing: '-0.005em', textTransform: 'uppercase', color: '#fff', textWrap: 'balance' }}>How good is your football knowledge, really?</h1>
-        <p className="mkt-rise mkt-rise-3" style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: '#9BA0B8' }}>Find out in 60 seconds. Play below — nothing to install.</p>
+        <p className="mkt-rise mkt-rise-3" style={{ margin: '12px auto 0', maxWidth: '42ch', fontSize: 'clamp(15px,2vw,18px)', lineHeight: 1.5, color: 'var(--tx3)' }}>Find out in 60 seconds. Play below — nothing to install.</p>
       </div>
       <div className="mkt-play-grid mkt-rise mkt-rise-4" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mkt-play-card"><MiniFootle /></div>
@@ -674,12 +678,12 @@ function PlayNow() {
             which is the thing a scraped competitor cannot copy. "Most" is
             deliberate and measured: 80.9% carry an explanation, so "every"
             would be the false claim we already had to retract once. */}
-        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Brain size={15} strokeWidth={2} /> Fact-checked — and most tell you why</span>
+        <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><Brain size={15} strokeWidth={2} /> Fact-checked — and most tell you why</span>
         {/* Links to the page that targets "footle", not to /footle -- that URL
             canonicals to the Footle landing page now, and this chip is the
             homepage's only outbound signal for the term. */}
-        <a href="/football-wordle/" style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</a>
-        <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Smartphone size={15} strokeWidth={2} /> Free on iPhone + any browser</span>
+        <a href="/football-wordle/" style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: 'var(--grn-soft)', fontWeight: 700 })}><BallIcon size={15} strokeWidth={2} /> Footle #{getFootleNumber()} is live today</a>
+        <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><Smartphone size={15} strokeWidth={2} /> Free on iPhone + any browser</span>
       </div>
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', marginTop: 26 }}>
         {/* Was "Get 6,000+ questions in the app". Two faults: it printed the
@@ -690,7 +694,7 @@ function PlayNow() {
         {/* "100% free" is accurate today; when Ball IQ Pro ships (2.0 roadmap:
             content stays free, Pro = features/cosmetics), soften to "Free to
             play". "In the app" scoping is mandatory — this page runs AdSense. */}
-        <p style={{ margin: '14px auto 0', fontSize: 13, color: '#7E828C' }}>100% free · no ads in the app · iOS &amp; Android</p>
+        <p style={{ margin: '14px auto 0', fontSize: 13, color: 'var(--tx4)' }}>100% free · no ads in the app · iOS &amp; Android</p>
       </div>
     </section>
   );
@@ -857,7 +861,7 @@ function QuizTile({ href, badge, emoji, label, color }) {
   return (
     <a href={href} className="mkt-qtile">
       <span className="mkt-qbadge" style={badgeStyle}>{emoji || badge}</span>
-      <span style={{ fontSize: 14.5, fontWeight: 700, color: '#F0F1F5' }}>{label}</span>
+      <span style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--tx)' }}>{label}</span>
     </a>
   );
 }
@@ -870,14 +874,14 @@ function QuizGrid() {
         <h2 style={{ ...h2Style, textAlign: 'center' }}>A quiz for every team and league.</h2>
         <p style={{ ...bodyStyle, maxWidth: '52ch', margin: '12px auto 0', textAlign: 'center' }}>Pick your club or competition and test your knowledge — from the Premier League to the World Cup. New quizzes added every week.</p>
       </div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', margin: '0 2px 12px' }}>Clubs</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--tx4)', margin: '0 2px 12px' }}>Clubs</div>
       <div className="mkt-qgrid">
         {QUIZ_CLUBS.map((c) => <QuizTile key={c.slug} href={`/quiz/${c.slug}/`} badge={c.badge} label={c.label} color={CLUB_COLOR[c.slug]} />)}
       </div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--tx4)', margin: '26px 2px 12px' }}>Leagues &amp; cups</div>
       <div className="mkt-qgrid">
         {QUIZ_LEAGUES.map((l) => <QuizTile key={l.slug} href={`/quiz/${l.slug}/`} badge={l.badge} color={l.color} label={l.label} />)}
-        <a href="/quiz/" className="mkt-qtile mkt-qtile-all"><span style={{ fontSize: 14, fontWeight: 800, color: '#8AE042' }}>All quizzes →</span></a>
+        <a href="/quiz/" className="mkt-qtile mkt-qtile-all"><span style={{ fontSize: 14, fontWeight: 800, color: 'var(--grn-soft)' }}>All quizzes →</span></a>
       </div>
     </section>
   );
@@ -933,7 +937,7 @@ function Brand({ size = 20, imgSize = 32 }) {
   return (
     <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
       <img src={BALL} alt="Ball IQ" width={imgSize} height={imgSize} style={{ width: imgSize, height: imgSize, borderRadius: 8 }} />
-      <span style={{ fontWeight: 900, fontSize: size, letterSpacing: '-0.02em', color: '#fff' }}>Ball&nbsp;<span style={{ color: '#FFC107' }}>IQ</span></span>
+      <span style={{ fontWeight: 900, fontSize: size, letterSpacing: '-0.02em', color: '#fff' }}>Ball&nbsp;<span style={{ color: 'var(--amber)' }}>IQ</span></span>
     </span>
   );
 }
@@ -1069,8 +1073,8 @@ export default function MarketingHome() {
       <QuizGrid />
 
       {/* ── TICKER ── */}
-      <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: '#0C0E13', padding: '16px 0' }}>
-        <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7E828C', whiteSpace: 'nowrap' }}>
+      <div style={{ position: 'relative', overflow: 'hidden', borderTop: '1px solid #16181F', borderBottom: '1px solid #16181F', background: 'var(--bg2)', padding: '16px 0' }}>
+        <div className="mkt-marquee" style={{ display: 'flex', width: 'max-content', fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tx4)', whiteSpace: 'nowrap' }}>
           {[0, 1].map((i) => (
             <span key={i}>
               {['Every club, Real Madrid to Hajduk Split', '10 Game modes', 'Daily 7', 'Footle', 'Up to 8 online', 'Survival', 'Hot Streak', 'Legends'].map((t, j) => (
@@ -1090,8 +1094,8 @@ export default function MarketingHome() {
             <h2 style={h2Style}>A new challenge,<br />every single day.</h2>
             <p style={bodyStyle}>Footle — our Wordle for footballers — drops every morning. Pair it with the Daily 7, build a streak, and see how you stack up against everyone else.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><BallIcon size={15} strokeWidth={2} /> Footle</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><ClipboardList size={15} strokeWidth={2} /> Daily 7</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><BallIcon size={15} strokeWidth={2} /> Footle</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><ClipboardList size={15} strokeWidth={2} /> Daily 7</span>
               <span style={chip({ background: 'rgba(255,106,0,0.12)', border: '1px solid rgba(255,106,0,0.3)', color: '#FF9245', fontWeight: 700 })}><Flame size={15} strokeWidth={2} /> Streaks</span>
             </div>
           </div>
@@ -1115,12 +1119,12 @@ export default function MarketingHome() {
             </div>
           </div>
           <div style={{ flex: '1 1 320px', minWidth: 300 }}>
-            <div style={eyebrow('#58CC02')}>Multiplayer</div>
+            <div style={eyebrow('var(--grn)')}>Multiplayer</div>
             <h2 style={h2Style}>Race real players,<br />in real time.</h2>
             <p style={bodyStyle}>Match up with up to eight players online, or pass and play locally — same questions, live scores, and a podium at the final whistle.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-              <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: '#8AE042', fontWeight: 700 })}><Swords size={15} strokeWidth={2} /> Online · up to 8</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Users size={15} strokeWidth={2} /> Local · up to 6</span>
+              <span style={chip({ background: 'rgba(88,204,2,0.1)', border: '1px solid rgba(88,204,2,0.28)', color: 'var(--grn-soft)', fontWeight: 700 })}><Swords size={15} strokeWidth={2} /> Online · up to 8</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><Users size={15} strokeWidth={2} /> Local · up to 6</span>
             </div>
           </div>
         </Reveal>
@@ -1128,12 +1132,12 @@ export default function MarketingHome() {
         {/* F3 — Profile */}
         <Reveal style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 48 }}>
           <div style={{ flex: '1 1 320px', minWidth: 300 }}>
-            <div style={eyebrow('#FFC107')}>Your profile</div>
+            <div style={eyebrow('var(--amber)')}>Your profile</div>
             <h2 style={h2Style}>Your football brain,<br />scored like an IQ.</h2>
             <p style={bodyStyle}>Every answer feeds your player card — one rating on a 60 to 160 scale, broken down league by league. Read your scouting report, find your specialism, and share the card.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
               <span style={chip({ background: 'rgba(255,193,7,0.12)', border: '1px solid rgba(255,193,7,0.3)', color: '#FFD24A', fontWeight: 700 })}><Star size={15} strokeWidth={2} /> OVERALL rating</span>
-              <span style={chip({ background: '#1A1D27', border: '1px solid #2A2D3A', color: '#F0F1F5' })}><Search size={15} strokeWidth={2} /> Scouting report</span>
+              <span style={chip({ background: '#1A1D27', border: '1px solid var(--bd2)', color: 'var(--tx)' })}><Search size={15} strokeWidth={2} /> Scouting report</span>
             </div>
           </div>
           <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
@@ -1152,15 +1156,15 @@ export default function MarketingHome() {
               or do not claim ten; a number a visitor can disprove by counting
               is worse than no number. Dropped rather than padded, because the
               eight shown are the eight worth showing. */}
-          <div style={eyebrow('#9BA0B8')}>Game modes</div>
+          <div style={eyebrow('var(--tx3)')}>Game modes</div>
           <h2 style={{ margin: '12px 0 0', fontSize: 'clamp(30px,4.4vw,46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}>Pick your battle.</h2>
         </Reveal>
         <Reveal style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 14 }}>
           {MODES.map((m) => (
-            <a key={m.name} href={PLAY} className="mkt-mode" style={{ padding: 22, background: '#14161E', border: '1px solid #242836', borderRadius: 18, display: 'block' }}>
+            <a key={m.name} href={PLAY} className="mkt-mode" style={{ padding: 22, background: 'var(--card2)', border: '1px solid var(--bd)', borderRadius: 18, display: 'block' }}>
               <div style={{ width: 46, height: 46, borderRadius: 13, background: m.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C7F59B' }}><m.Icon size={23} strokeWidth={1.6} /></div>
               <div style={{ marginTop: 16, fontSize: 18, fontWeight: 800, color: '#fff' }}>{m.name}</div>
-              <div style={{ marginTop: 4, fontSize: 14, color: '#9BA0B8' }}>{m.sub}</div>
+              <div style={{ marginTop: 4, fontSize: 14, color: 'var(--tx3)' }}>{m.sub}</div>
             </a>
           ))}
         </Reveal>
@@ -1168,12 +1172,12 @@ export default function MarketingHome() {
 
       {/* ── DAILY BAND ── */}
       <section style={{ maxWidth: 1140, margin: '0 auto', padding: '0 24px 90px' }}>
-        <Reveal style={{ position: 'relative', overflow: 'hidden', borderRadius: 28, padding: 'clamp(32px,5vw,56px)', background: 'linear-gradient(120deg,#FF6A00 0%,#FFC107 100%)' }}>
-          <div style={{ position: 'absolute', right: -30, bottom: -50, opacity: 0.16, pointerEvents: 'none', color: '#0A0A0A' }} aria-hidden="true"><Flame size={240} strokeWidth={1.1} /></div>
+        <Reveal style={{ position: 'relative', overflow: 'hidden', borderRadius: 28, padding: 'clamp(32px,5vw,56px)', background: 'linear-gradient(120deg,#FF6A00 0%,var(--amber) 100%)' }}>
+          <div style={{ position: 'absolute', right: -30, bottom: -50, opacity: 0.16, pointerEvents: 'none', color: 'var(--bg)' }} aria-hidden="true"><Flame size={240} strokeWidth={1.1} /></div>
           <div style={{ position: 'relative', maxWidth: '30ch' }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.85)' }}>Daily 7</div>
-            <div style={{ marginTop: 12, fontSize: 'clamp(26px,3.4vw,38px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', color: '#0A0A0A' }}>Seven questions. Three minutes. Everyone plays the same set.</div>
-            <a href={PLAY} className="mkt-cta-black" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24, padding: '14px 26px', background: '#0A0A0A', color: '#fff', fontWeight: 800, fontSize: 15, borderRadius: 12, boxShadow: '0 10px 26px -8px rgba(0,0,0,0.6)' }}>Play today's set →</a>
+            <div style={{ marginTop: 12, fontSize: 'clamp(26px,3.4vw,38px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', color: 'var(--bg)' }}>Seven questions. Three minutes. Everyone plays the same set.</div>
+            <a href={PLAY} className="mkt-cta-black" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24, padding: '14px 26px', background: 'var(--bg)', color: '#fff', fontWeight: 800, fontSize: 15, borderRadius: 12, boxShadow: '0 10px 26px -8px rgba(0,0,0,0.6)' }}>Play today's set →</a>
           </div>
         </Reveal>
       </section>
@@ -1181,7 +1185,7 @@ export default function MarketingHome() {
       {/* ── FAQ ── */}
       <section id="faq" style={{ maxWidth: 760, margin: '0 auto', padding: '20px 24px 100px' }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div style={eyebrow('#9BA0B8')}>FAQ</div>
+          <div style={eyebrow('var(--tx3)')}>FAQ</div>
           <h2 style={{ margin: '12px 0 0', fontSize: 'clamp(28px,4vw,42px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}>Good to know.</h2>
         </div>
         <div>
@@ -1192,10 +1196,10 @@ export default function MarketingHome() {
                 <button onClick={() => setOpenFaq(open ? null : i)} aria-expanded={open}
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, width: '100%', padding: '22px 2px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', color: '#fff', fontFamily: 'inherit', fontSize: 18, fontWeight: 700 }}>
                   <span>{f.q}</span>
-                  <span style={{ flexShrink: 0, fontSize: 22, lineHeight: 1, color: open ? '#58CC02' : '#9BA0B8', transform: open ? 'rotate(45deg)' : 'none', transition: 'transform .25s cubic-bezier(.34,1.56,.64,1), color .2s' }}>+</span>
+                  <span style={{ flexShrink: 0, fontSize: 22, lineHeight: 1, color: open ? 'var(--grn)' : 'var(--tx3)', transform: open ? 'rotate(45deg)' : 'none', transition: 'transform .25s cubic-bezier(.34,1.56,.64,1), color .2s' }}>+</span>
                 </button>
                 <div style={{ maxHeight: open ? 200 : 0, opacity: open ? 1 : 0, overflow: 'hidden', transition: 'max-height .3s ease, opacity .3s ease' }}>
-                  <p style={{ margin: '0 2px', paddingBottom: 22, color: '#9BA0B8', fontSize: 15.5, lineHeight: 1.65 }}>{f.a}</p>
+                  <p style={{ margin: '0 2px', paddingBottom: 22, color: 'var(--tx3)', fontSize: 15.5, lineHeight: 1.65 }}>{f.a}</p>
                 </div>
               </div>
             );
@@ -1206,16 +1210,16 @@ export default function MarketingHome() {
       </main>
 
       {/* ── FOOTER ── */}
-      <footer style={{ borderTop: '1px solid #16181F', background: '#0C0E13' }}>
+      <footer style={{ borderTop: '1px solid #16181F', background: 'var(--bg2)' }}>
         <div style={{ maxWidth: 1140, margin: '0 auto', padding: '56px 24px 40px', display: 'flex', flexWrap: 'wrap', gap: 40, justifyContent: 'space-between' }}>
           <div style={{ maxWidth: 320 }}>
             <Brand size={19} imgSize={30} />
-            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: '#7E828C' }}>{'The ultimate football quiz. Ten game modes, seventy-two clubs, and a new one every morning — solo, with friends, or against up to eight players online. Free to play, no ads in the app.'}</p>
+            <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: 1.6, color: 'var(--tx4)' }}>{'The ultimate football quiz. Ten game modes, seventy-two clubs, and a new one every morning — solo, with friends, or against up to eight players online. Free to play, no ads in the app.'}</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap' }}><AppStoreBadge small /><PlayStoreBadge small /></div>
           </div>
           <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Quizzes</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--tx4)', marginBottom: 16 }}>Quizzes</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/quiz/" className="mkt-foot-link">Football quizzes</a>
                 <a href="/quiz/world-cup/" className="mkt-foot-link">World Cup quiz</a>
@@ -1224,7 +1228,7 @@ export default function MarketingHome() {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Club quizzes</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--tx4)', marginBottom: 16 }}>Club quizzes</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/quiz/arsenal/" className="mkt-foot-link">Arsenal quiz</a>
                 <a href="/quiz/liverpool/" className="mkt-foot-link">Liverpool quiz</a>
@@ -1234,7 +1238,7 @@ export default function MarketingHome() {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7E828C', marginBottom: 16 }}>Company</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--tx4)', marginBottom: 16 }}>Company</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
                 <a href="/about/" className="mkt-foot-link">About</a>
                 <a href="/contact/" className="mkt-foot-link">Contact</a>
@@ -1243,7 +1247,7 @@ export default function MarketingHome() {
             </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 24px 36px', borderTop: '1px solid #16181F', fontSize: 13, color: '#7E828C' }}>© 2026 Ball IQ. The ultimate football quiz.</div>
+        <div style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 24px 36px', borderTop: '1px solid #16181F', fontSize: 13, color: 'var(--tx4)' }}>© 2026 Ball IQ. The ultimate football quiz.</div>
       </footer>
     </div>
   );
