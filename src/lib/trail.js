@@ -197,10 +197,21 @@ export const TRAIL_PLAYERS = [
     clubs: ["Groningen","Celtic","Southampton","Liverpool"],
     loans: [false, false, false, false] },
   { key: "COURTOIS", display: ["Thibaut","Courtois"], nat: "Belgium",
-    // Signed by Chelsea in 2011 and loaned straight to Atletico for three
-    // years before ever playing for them — the return spell is its own rung.
-    clubs: ["Genk","Chelsea","Atletico Madrid","Chelsea","Real Madrid"],
-    loans: [false, false, true, false, false] },
+    // ⚠️ CORRECTED 2026-08-03. This used to open Genk -> Chelsea -> Atletico,
+    // on the reasoning that he signed for Chelsea in 2011 and was loaned out
+    // immediately, so "the return spell is its own rung". That gets the game
+    // backwards: he never played a single senior match for Chelsea before
+    // 2014, so the first Chelsea rung showed a club he had never turned out
+    // for. In a puzzle where the clubs ARE the clue, that is a false clue.
+    //
+    // The rungs are now the clubs he actually played for, in order. Note this
+    // also settles the rule ambiguity that De Bruyne exposed: coming back from
+    // a loan is NOT a "return" under the returns-are-rungs rule, because the
+    // parent contract never ended. Both players had one continuous Chelsea
+    // deal with a loan inside it; both now list Chelsea once. De Bruyne
+    // needed no change, and does not need a 7th rung.
+    clubs: ["Genk","Atletico Madrid","Chelsea","Real Madrid"],
+    loans: [false, true, false, false] },
   { key: "GRIEZMANN", display: ["Antoine","Griezmann"], nat: "France",
     clubs: ["Real Sociedad","Atletico Madrid","Barcelona","Atletico Madrid"],
     loans: [false, false, false, false] },
