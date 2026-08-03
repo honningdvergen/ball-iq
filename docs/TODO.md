@@ -34,7 +34,7 @@ risk. **Judge it on a phone** — 66% of traffic.
 - [x] **8.** DONE — MP clause ("friends to race online, up to eight") + app line rewritten to the TRUE exclusive (push reminders). The audit's "web has ads" premise is false while AdSense sits unapproved with slots commented.
 - [x] **9.** DONE by construction — Clarity loads from the shared index.html shell (native-guarded, route-agnostic), and MarketingHome fires zero component-level events, so both homepages carry identical instrumentation already. Nothing to port.
 
-**Then:** swap `/`, watch GSC a fortnight, keep `/home-preview` as rollback.
+**SWAPPED (Alex: "swap it", 2026-08-03).** `/` = Scouting Report; old page at `/home-old`; rollback = revert the swap commit. Watch GSC + Clarity for a fortnight.
 
 #### Foundation already landed + verified
 
