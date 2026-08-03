@@ -103,7 +103,34 @@ Squawka · Football365 · The Football Faithful · These Football Times ·
 Breaking The Lines · Tribuna · 90min. They *want* quizzes and mostly hand-make
 them. Offer to take the work off them.
 
-## Tier 3 — Norwegian warm door (highest personal hit rate)
+## ⛔ TIER 3 IS BLOCKED ON CONTENT — measured 2026-08-03
+
+Alex: "if i reach out to norwegian outlets we should have some questions made
+for norwegian audiences too." Correct, and we cannot do it today.
+
+Measured against the bank: **96 questions mention anything Norwegian, but 69
+of those are Norwegian players ABROAD** — Haaland at City, Ødegaard at
+Arsenal, Solskjær at United. That is global content that happens to involve
+Norwegians, not content for a Norwegian audience. A keyword search suggested
+14 domestic-league questions; reading them, they are false positives (the
+pattern "Bod" matching inside other words, plus more Haaland). **Genuine
+Eliteserien / Norwegian domestic football in the bank: effectively zero.**
+
+So a Norwegian outlet's first question — "do you have Norwegian football?" —
+has no good answer right now. Pitching Josimar or NRK today would burn a warm
+door on a product that cannot serve their readers.
+
+**This gives the next content wave a purpose beyond volume:** an Eliteserien /
+Norwegian-football pack (Rosenborg, Bodø/Glimt, Molde, Brann, Vålerenga, the
+national team, Drillos, the 1994 and 1998 World Cups) is what unlocks Tier 3.
+It also has to ship in ENGLISH as well, per Alex — the quiz stays bilingual so
+the same pack serves both a Norwegian outlet and everyone else.
+
+⚠️ It also means the earlier advice to "start with Josimar as a low-stakes
+test" was wrong. It is not low-stakes; it is the one door that gets harder to
+reopen, and the product is not ready for it.
+
+## Tier 3 — Norwegian warm door (blocked until the content exists)
 
 Josimar · NRK Sport · TV2 Sporten · Nettavisen · VG. Pitch in Norwegian. A
 Norwegian solo developer offering a free weekly quiz to Norwegian football
