@@ -441,9 +441,18 @@ export default function ScoutingReport() {
 
             <div className="sr-keep">
               <div className="sr-keept">Keep this report</div>
+              {/* The audit's draft line was "web has ads, the app doesn't" —
+                  currently FALSE: AdSense is unapproved and every slot is
+                  commented out. The claim that IS true: native push. Reminders
+                  shipped in 1.3.3 and are live. Multiplayer capacity is the
+                  resolved figure — online up to 8. */}
               <p className="sr-keepp">
                 The full test scores you 60 to 160 and remembers it. Your streak, your clubs,
-                your card.
+                your card — and friends to race online, up to eight of you.
+              </p>
+              <p className="sr-keepp">
+                The app is also the only version that can nudge you when tomorrow&rsquo;s
+                puzzle drops.
               </p>
               <div className="sr-links">
                 <a className="sr-a" href={APP_STORE}>iPhone<span>App Store</span></a>

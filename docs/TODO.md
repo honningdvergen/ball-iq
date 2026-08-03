@@ -31,8 +31,8 @@ risk. **Judge it on a phone** — 66% of traffic.
 #### SHOULD-DO (7-9)
 
 - [ ] **7. The accumulating report** — the lede promises "the report writes itself while you answer" and the build does NOT do that; it replaces each question. Accumulation is the thesis, not a refinement. Do not soften the copy to match a weaker build.
-- [ ] **8.** Multiplayer clause at the verdict + app-exclusive line ("web has ads, the app doesn't")
-- [ ] **9.** Analytics / Clarity instrumentation parity
+- [x] **8.** DONE — MP clause ("friends to race online, up to eight") + app line rewritten to the TRUE exclusive (push reminders). The audit's "web has ads" premise is false while AdSense sits unapproved with slots commented.
+- [x] **9.** DONE by construction — Clarity loads from the shared index.html shell (native-guarded, route-agnostic), and MarketingHome fires zero component-level events, so both homepages carry identical instrumentation already. Nothing to port.
 
 **Then:** swap `/`, watch GSC a fortnight, keep `/home-preview` as rollback.
 
