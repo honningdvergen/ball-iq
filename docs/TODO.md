@@ -37,6 +37,45 @@ items are deleted, not archived — git history is the archive.
   UI. Wants a 2-device test — the same test [[project_mp_stats_realtime_gated]]
   is already waiting on.
 
+## 💡 LINEUP BUILDER — Alex's idea, 2026-08-03. Strategically well-aimed; it is a DATA problem.
+
+**Why it is a better idea than it first sounds.** Our measured ceiling is
+AUTHORITY, and the thing we lack is linkable assets — nobody links to a JS
+quiz. A lineup builder is a TOOL, and tools are what people link to, embed and
+share. It attacks the actual constraint rather than the symptom.
+
+**The demand is documented, not assumed:**
+- `lineup-builder.co.uk` already ranks in the "football quiz uk" SERP we are
+  fighting in (found in the competitor scan).
+- A public App Store review of **Sofascore** asks them to "add quizzes, score
+  predictions, **lineup builders** like FotMob" — a user naming it unprompted.
+
+⚠️ **What I could NOT verify: search volume.** We have no keyword tool, so
+"people search for these things" is plausible but unmeasured. Do not size this
+opportunity until we have real volume data — that is a one-month Ahrefs or
+Semrush question, and it should come BEFORE the build.
+
+**The blocker is a dataset, and we do not have it.** Measured today:
+    player names (Footle)          406
+    players with a club career      44
+    players with a POSITION         44   <- the killer
+A builder needs current squads: ~25 players x 72 clubs ≈ 1,800 rows, each with
+a position, kept fresh through two transfer windows a year. That is an ongoing
+data-maintenance commitment, not a build.
+
+**⭐ THE REAL INSIGHT: one dataset unlocks TWO products.** The "Mystery Player"
+mode already on this list is blocked on *exactly the same thing* — its note
+reads "gated on a player dataset, not the algorithm". Build the squad dataset
+once and both ship. That materially changes the cost/benefit and is the
+strongest argument for doing it.
+
+**Open questions before any build:**
+1. Real search volume for "lineup builder" / "football lineup creator"?
+2. Crests and kits — the known licensing blocker. Does a text-and-shirt-colour
+   builder work without them? (FotMob and lineup-builder use crests.)
+3. Where does squad data come from, legally and sustainably? Manual for 72
+   clubs is not maintainable by one person through a transfer window.
+
 ## ⭐ NEXT BUILD — the /questions Q&A layer (Alex approved 2026-08-03)
 
 **Why this and not more questions.** The competitor read found our single
