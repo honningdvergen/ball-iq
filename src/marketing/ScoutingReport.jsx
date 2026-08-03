@@ -101,9 +101,25 @@ const CSS = `
 .sr a{color:inherit;text-decoration:none}
 .sr :focus-visible{outline:3px solid var(--grn);outline-offset:3px}
 
+/* Skip link: visually hidden until focused — first tabbable thing on the
+   page, jumps past the hero straight to the report. */
+.sr-skip{position:absolute;left:-9999px;top:0;z-index:50;min-height:44px;
+         display:inline-flex;align-items:center;padding:10px var(--sp3);
+         background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700}
+.sr-skip:focus{left:0}
+
 /* ── The desk: chrome. Green survives HERE and only here. ───────────── */
 .sr-mast{display:flex;align-items:center;justify-content:space-between;gap:var(--sp2);
-         padding:var(--sp2) var(--sp3);border-bottom:1px solid var(--bd)}
+         flex-wrap:wrap;padding:var(--sp2) var(--sp3);border-bottom:1px solid var(--bd)}
+/* Four links that name themselves — the mockup's masthead nav, no drawer.
+   Inline between wordmark and CTA on desktop; wraps to its own full-width row
+   under 700px, which keeps every target 44px without hiding anything. */
+.sr-nav{display:flex;gap:2px;flex-wrap:wrap}
+.sr-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;
+          font:var(--ty-sec);color:var(--on-desk-mut);
+          transition:color .12s var(--ease)}
+@media (hover:hover){.sr-nav a:hover{color:var(--tx)}}
+@media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
 .sr-mark{font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
          color:var(--tx);text-transform:uppercase}
 .sr-mark em{font-style:normal;color:var(--grn)}
@@ -266,6 +282,13 @@ const CSS = `
 
 .sr-foot{padding:var(--sp4) var(--sp3) var(--sp5);text-align:center;font:var(--ty-meta);
          color:var(--tx4);border-top:1px solid var(--bd)}
+.sr-foot p{max-width:52ch;margin:0 auto}
+.sr-dist{margin-top:var(--sp2);display:flex;gap:var(--sp2);justify-content:center;flex-wrap:wrap}
+.sr-dist a,.sr-legal a{display:inline-flex;align-items:center;min-height:44px;
+        padding:10px 12px;font:var(--ty-sec);color:var(--on-desk-mut);
+        text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover){.sr-dist a:hover,.sr-legal a:hover{color:var(--tx)}}
+.sr-legal{margin-top:2px;display:flex;gap:var(--sp1);justify-content:center;flex-wrap:wrap}
 `;
 
 export default function ScoutingReport() {
@@ -298,8 +321,16 @@ export default function ScoutingReport() {
     <div className="sr">
       <style>{CSS}</style>
 
+      <a className="sr-skip" href="#report">Skip to the assessment</a>
+
       <header className="sr-mast">
         <a className="sr-mark" href="/" aria-label="Ball IQ home">Ball <em>IQ</em></a>
+        <nav className="sr-nav" aria-label="Main">
+          <a href="/quiz/">Clubs</a>
+          <a href="/lists/">Records</a>
+          <a href="/football-wordle/">Daily</a>
+          <a href="/about/">About</a>
+        </nav>
         <a className="sr-play" href={PLAY}>Play free</a>
       </header>
 
@@ -316,7 +347,7 @@ export default function ScoutingReport() {
         </div>
       )}
 
-      <main className="sr-sheet">
+      <main className="sr-sheet" id="report">
         {/* The subject sits in the document HEADER, not above the question.
             A tracked uppercase label as its own block directly above a
             heading is a kicker, which craft-floor bans outright — and the
@@ -419,7 +450,18 @@ export default function ScoutingReport() {
           thing inside is the countdown. Order is the direction contract's. */}
       <FootleBand />
 
-      <footer className="sr-foot">Ball IQ — free football trivia, every day.</footer>
+      <footer className="sr-foot">
+        <p>Ball IQ — an independent football quiz. Most answers tell you why. Made by one person.</p>
+        <div className="sr-dist">
+          <a href={APP_STORE}>App Store</a>
+          <a href={PLAY_STORE_URL}>Google Play</a>
+        </div>
+        <div className="sr-legal">
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+          <a href="/terms/">Terms</a>
+        </div>
+      </footer>
     </div>
   );
 }
