@@ -15,10 +15,25 @@ const dayIndex = (ymd) => {
 };
 
 describe("Trail schedule is frozen", () => {
-  it("is still dark — the anchor sits in the future until the screen is ready", () => {
-    // Once a puzzle number is public it is the token that makes strangers'
-    // grids comparable. Moving the anchor renumbers every past puzzle.
-    expect(TRAIL_ANCHOR_DAY).toBe(dayIndex("2026-09-01"));
+  it("is LIVE and must never be moved again", () => {
+    // The original guard pinned the anchor to 2026-09-01 while the mode was
+    // dark. That placeholder outlived its reason: the career spot-check it was
+    // waiting for completed 2026-08-03 (all 44 verified, one real defect found
+    // and fixed), and a finished daily game sat unplayable meanwhile.
+    //
+    // The rule this test defends has NOT changed and is the important part:
+    // once a puzzle number is public it is the token that makes strangers'
+    // shared grids comparable, so moving the anchor renumbers every past
+    // puzzle and breaks them. It was free to move only because nothing had
+    // ever been published under a number. That is no longer true.
+    expect(TRAIL_ANCHOR_DAY).toBe(dayIndex("2026-08-03"));
+  });
+
+  it("serves a real puzzle today", () => {
+    // The failure this catches is invisible: an anchor in the future makes
+    // getTrailAnswer() return null, the home card hides itself, and the mode
+    // looks finished while serving nothing to anyone.
+    expect(TRAIL_ANCHOR_DAY).toBeLessThanOrEqual(Math.floor(Date.now() / 86400000));
   });
 
   it("stays dark before launch rather than serving puzzle #0", () => {

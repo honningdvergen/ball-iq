@@ -32,7 +32,18 @@ export const TRAIL_MAX_ATTEMPTS = 5;
 // ready. Until then getTrailAnswerForDayIndex returns null for every date
 // before it, so Home shows no Trail row and the route sends you home.
 export const DAY_MS = 24 * 60 * 60 * 1000;
-export const TRAIL_ANCHOR_DAY = 20697; // Date.UTC(2026,8,1)/DAY_MS — PROVISIONAL, mode is dark
+// ⚠️ LIVE. Was 20697 (2026-09-01) and commented "PROVISIONAL, mode is dark" —
+// a placeholder from when the engine shipped inert awaiting a career
+// spot-check. That check is now done: all 44 careers verified 2026-08-03,
+// which found and fixed one real defect (Courtois listed Chelsea BEFORE the
+// Atletico loan, a club he had not played a minute for) and confirmed the two
+// recent moves against sources (Kante to Fenerbahce, Feb 2026; Pogba to
+// Monaco, Jun 2025).
+//
+// The placeholder outlived its reason and left a finished daily game dark for
+// days while memory recorded it as "LIVE". If you ever set this ahead again,
+// verify getTrailAnswer() returns a player on the day you ship.
+export const TRAIL_ANCHOR_DAY = 20668; // days since epoch — Trail #1
 
 export function getTrailDayIndex(date = new Date()) {
   return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / DAY_MS);
