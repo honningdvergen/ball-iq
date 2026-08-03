@@ -166,6 +166,49 @@ export function matchGuess(pool, text) {
   return surname.length === 1 ? surname[0] : null;
 }
 
+// ── Persistence + streak ────────────────────────────────────────────────────
+// Retention is the measured bottleneck (activation collapsing 100% -> 38% ->
+// 15% by cohort), so the RETURN mechanic matters more than the game. Footle
+// and the Trail both track a streak; this shipped without one.
+
+const KEY = (ymd) => `biq_mystery_${ymd}`;
+
+function ymd(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/** Persist today's result so a reload does not reset a solved puzzle. */
+export function saveMysteryResult(date, result) {
+  try { localStorage.setItem(KEY(ymd(date)), JSON.stringify(result)); } catch { /* private mode */ }
+}
+
+export function loadMysteryResult(date) {
+  try {
+    const raw = localStorage.getItem(KEY(ymd(date)));
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+/**
+ * Consecutive solved days ending today. Walks BACKWARDS from today and stops
+ * at the first gap, which is what makes it a streak rather than a total.
+ *
+ * ⚠️ Uses LOCAL dates, matching the Trail. A UTC-based walk would break the
+ * streak for anyone playing late evening west of UTC — their "today" and the
+ * stored key would disagree for several hours every night.
+ */
+export function computeMysteryStreak(today = new Date()) {
+  let streak = 0;
+  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  for (let i = 0; i < 366; i++) {
+    const r = loadMysteryResult(cursor);
+    if (!r || !r.won) break;
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
 /**
  * Share text. A daily game without one does not spread — it is the entire
  * mechanism Wordle grew on, and Footle and the Trail both have it while this
@@ -175,7 +218,7 @@ export function matchGuess(pool, text) {
  * never a name, so posting it cannot give the answer away to someone who has
  * not played. Ordered worst-to-best so it reads as a journey ending in green.
  */
-export function buildMysteryShareText({ number, guesses = [], won } = {}) {
+export function buildMysteryShareText({ number, guesses = [], won, streak = 0 } = {}) {
   const head = `⚽ Ball IQ · Mystery Player${number > 0 ? ` #${number}` : ''}`;
   const icon = { win: '🟩', hot: '🟩', warm: '🟨', cold: '⬜' };
   const grid = [...guesses]
@@ -185,5 +228,6 @@ export function buildMysteryShareText({ number, guesses = [], won } = {}) {
   const line = won
     ? `Solved in ${guesses.length} ${guesses.length === 1 ? 'guess' : 'guesses'}`
     : 'Gave up';
-  return `${head}\n${line}\n${grid}\n\nballiq.app/mystery`;
+  const streakLine = won && streak > 1 ? `\n🔥 ${streak}-day streak` : '';
+  return `${head}\n${line}\n${grid}${streakLine}\n\nballiq.app/mystery`;
 }

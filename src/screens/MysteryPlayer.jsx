@@ -3,6 +3,7 @@ import { ArrowLeft, Search } from 'lucide-react';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
+  saveMysteryResult, loadMysteryResult, computeMysteryStreak,
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
 import CAREERS from '../data/mysteryCareers.json';
@@ -33,11 +34,16 @@ export default function MysteryPlayer({ onExit }) {
     [answer],
   );
 
+  // Restore today's game. Without this a refresh — or backgrounding the PWA
+  // long enough for iOS to evict it — silently wipes a solved puzzle, and the
+  // player cannot re-solve it because they already know the answer.
+  const saved = useMemo(() => loadMysteryResult(new Date()), []);
   const [text, setText] = useState('');
-  const [guesses, setGuesses] = useState([]); // [{ id, name, club, rank, band }]
+  const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
   const [error, setError] = useState('');
-  const [won, setWon] = useState(false);
+  const [won, setWon] = useState(() => !!saved?.won);
   const [copied, setCopied] = useState(false);
+  const [streak, setStreak] = useState(() => computeMysteryStreak());
   const inputRef = useRef(null);
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
@@ -72,11 +78,17 @@ export default function MysteryPlayer({ onExit }) {
     const band = bandFor(rank, POOL.length);
     // Newest guess first, but the LIST stays sorted by rank so a player can
     // see how close they are getting without re-reading everything.
-    setGuesses((g) => [{ id: player.id, name: player.name, club: player.club, rank, band }, ...g]
-      .sort((a, b) => a.rank - b.rank));
+    const next = [{ id: player.id, name: player.name, club: player.club, rank, band }, ...guesses]
+      .sort((a, b) => a.rank - b.rank);
+    setGuesses(next);
     setText('');
     setError('');
-    if (rank === 1) setWon(true);
+    const isWin = rank === 1;
+    if (isWin) setWon(true);
+    // Persist EVERY guess, not just the win — a player who closes the tab
+    // three guesses in should come back to those three guesses.
+    saveMysteryResult(new Date(), { won: isWin, guesses: next });
+    if (isWin) setStreak(computeMysteryStreak());
   };
 
   const onSubmitText = (e) => {
@@ -120,11 +132,12 @@ export default function MysteryPlayer({ onExit }) {
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}.
+            {streak > 1 && <> · 🔥 <strong style={{ color: 'var(--t1)' }}>{streak}-day streak</strong></>}
           </div>
           <button
             type="button"
             onClick={async () => {
-              const text = buildMysteryShareText({ number: mysteryNumber(), guesses, won: true });
+              const text = buildMysteryShareText({ number: mysteryNumber(), guesses, won: true, streak });
               try {
                 // Native share sheet where there is one; clipboard otherwise.
                 // Both paths are wrapped because a user dismissing the sheet
