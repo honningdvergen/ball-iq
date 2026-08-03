@@ -9083,6 +9083,10 @@ function AppInner() {
         window.history.replaceState({}, "", u.pathname + u.search + u.hash);
       } catch {}
       if (gameSlug === "footle") { setScreen("wordle"); return; }
+      // ?game=daily — the homepage Daily 7 door. startMode owns the
+      // already-played-today case (shows the done state rather than a replay),
+      // so this stays a one-liner on purpose.
+      if (gameSlug === "daily") { startMode("daily"); return; }
       if (gameSlug === "trail") { setScreen("trail"); return; }
       if (stumpId && /^q_[a-z0-9]+$/.test(stumpId)) {
         // Async on purpose: the bank is lazy-loaded. The stump screen is
