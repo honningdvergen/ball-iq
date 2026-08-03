@@ -36,6 +36,20 @@ import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
 import FootleBand from './FootleBand.jsx';
 
 const GET_APP = '/get';
+
+// The five FAQs, copy identical to MarketingHome's CORRECTED set (Android
+// live since 2026-07-30; no question counts). One array feeds both the
+// rendered section and the FAQPage JSON-LD below, so they cannot diverge —
+// a schema answering differently from the visible page is a rich-result
+// penalty waiting to happen. Note: the old homepage never actually emitted
+// FAQPage schema; this is its first appearance, not a port.
+const FAQS = [
+  { q: 'Is Ball IQ free?', a: 'Yes — 100% free, and the app shows no ads. Guests can jump straight into solo and local games, no account needed.' },
+  { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
+  { q: "What's Footle?", a: "Our daily Wordle-style game: guess the footballer's surname in six tries. A fresh one drops every day." },
+  { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
+  { q: 'Where can I play?', a: 'On iPhone via the App Store, on Android via Google Play, or instantly in your browser at balliq.app — no install, no account. Your progress follows your account across all three.' },
+];
 const PLAY = '/play';
 
 // Carried over verbatim from the approved mockup so this is a port, not a
@@ -250,6 +264,23 @@ const CSS = `
 .sr-web{margin-top:var(--sp2);font:var(--ty-sec);color:var(--mut)}
 .sr-web a{text-decoration:underline;text-underline-offset:3px;font-weight:700;color:var(--ink)}
 
+/* ── FAQ. Native details/summary — keyboard and screen-reader behaviour
+   for free, no state. Hairline rules, no cards, per the world. ────────── */
+.sr-faq{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3) var(--sp4);
+        border-top:1px solid var(--bd)}
+.sr-faq details{border-bottom:1px solid var(--bd)}
+.sr-faq summary{display:flex;align-items:center;justify-content:space-between;
+        gap:var(--sp2);min-height:52px;padding:var(--sp2) 0;cursor:pointer;
+        font:var(--ty-body);font-weight:600;color:var(--on-desk);list-style:none}
+.sr-faq summary::-webkit-details-marker{display:none}
+.sr-faq summary::after{content:'+';font:700 20px/1 'Archivo Narrow',sans-serif;
+        color:var(--on-desk-mut);flex:0 0 auto}
+.sr-faq details[open] summary::after{content:'−'}
+.sr-faq details[open] summary{color:var(--tx)}
+.sr-faq .sr-fa{padding:0 0 var(--sp2);font:var(--ty-sec);color:var(--on-desk-mut);
+        max-width:60ch;line-height:1.55}
+@media (hover:hover){.sr-faq summary:hover{color:var(--tx)}}
+
 /* ── The Club Index. Desk ground, between the report and the footer. ──
    DESIGN.md spec: club name, DOTTED LEADER, competition; two columns above
    760px; hover highlight on non-touch only. Three earlier variants were
@@ -449,6 +480,26 @@ export default function ScoutingReport() {
           ))}
         </div>
         <a className="sr-more" href="/quiz/">Open the full club index</a>
+      </section>
+
+      <section className="sr-faq" aria-labelledby="srFaqT">
+        <h2 className="sr-h2" id="srFaqT">Common questions</h2>
+        <div style={{ marginTop: 'var(--sp2)' }}>
+          {FAQS.map((f, i) => (
+            <details key={i}>
+              <summary>{f.q}</summary>
+              <p className="sr-fa">{f.a}</p>
+            </details>
+          ))}
+        </div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQS.map((f) => ({
+            '@type': 'Question', name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        }) }} />
       </section>
 
       {/* The page ends on tomorrow: the Footle band closes it, and the last
