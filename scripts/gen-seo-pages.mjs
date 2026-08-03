@@ -53,6 +53,20 @@ import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
+// Footle answer schedule + the real grading function, for the playable practice
+// board on /football-wordle/. Importing the GAME's own module is deliberate:
+// the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
+// so the practice board cannot drift from the live game's duplicate-letter rules.
+// ⚠️ This pulls WORDLE_PLAYERS / WORDLE_ANSWER_LOG into the GENERATOR's memory.
+// Exactly one past answer may ever reach the emitted HTML — see pickPracticePuzzle().
+import {
+  getWordleDayIndex,
+  getWordleAnswerForDayIndex,
+  gradeWordleGuess,
+  WORDLE_ANCHOR_DAY,
+  WORDLE_ANSWER_LOG,
+  WORDLE_FULL_NAMES,
+} from '../src/lib/wordle.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -2728,6 +2742,291 @@ ${footer()}`;
   return { slug: cfg.slug, canonical };
 }
 
+// ── Playable Footle practice board (/football-wordle/) ───────────────────────
+// WHY THIS EXISTS. /football-wordle/ was the only page targeting "footle" and it
+// registered ZERO impressions over 28 days — not ranked badly, NOT INDEXED. It
+// was technically spotless (self-canonical, in the sitemap, linked from 191
+// pages) and shipped 0 <button> and 0 <input>: prose ABOUT a game, competing
+// against sites that ARE the game. Club pages already proved the fix in this
+// repo — the playable taster put 115 buttons on /quiz/liverpool/.
+//
+// ⚠️ THE STALENESS TRAP, which is the whole design constraint. This page is
+// generated at BUILD time; the Footle answer changes DAILY. A board baked with
+// today's answer is wrong by tomorrow morning and stays wrong until the next
+// deploy. So the board is seeded from a PAST puzzle, which is fixed forever:
+//   - It can never go stale — a past answer does not change.
+//   - It can never leak a future answer — we only ever look backwards.
+//   - It is not a spoiler — api/footle.js already publishes a rolling archive
+//     of past answers openly.
+// Today's real puzzle lives at /footle and is linked prominently instead.
+const PRACTICE_LOOKBACK_DAYS = 30;
+
+// Deterministic at build time, and deliberately conservative:
+//   - starts 30 days back, so the puzzle is long finished and well inside the
+//     90-day archive api/footle.js already serves;
+//   - REQUIRES the day to sit inside WORDLE_ANSWER_LOG. Days past the log fall
+//     through to the stride formula, whose modulo base is WORDLE_PLAYERS.length
+//     — that answer silently rewrites itself the day anyone appends a player.
+//     Only the frozen log is safe to bake into a static file;
+//   - skips 4-letter answers to honour the shipped 5-8 rule (Alex, 2026-07-29:
+//     a 4-wide grid "looks uglier"). Early log entries predate that rule.
+// The walk is bounded by `number < 1` (Footle #1), NOT by a fixed number of
+// steps. An earlier 400-step cap looked harmless and was a time bomb: once
+// today's puzzle number passes WORDLE_ANSWER_LOG.length + 400, every candidate
+// day is outside the frozen log, the walk runs out of steps and the BUILD dies.
+// Simulating a build on each of the next 1,095 days caught it — 387 of them
+// failed. Walking all the way back to #1 means the page degrades to pinning an
+// older logged puzzle instead of breaking the deploy.
+function pickPracticePuzzle() {
+  const today = getWordleDayIndex();
+  for (let back = PRACTICE_LOOKBACK_DAYS; ; back++) {
+    const dayIndex = today - back;
+    const number = dayIndex - WORDLE_ANCHOR_DAY + 1;
+    if (number < 1) break;
+    if (number > WORDLE_ANSWER_LOG.length) continue;
+    const answer = getWordleAnswerForDayIndex(dayIndex);
+    if (answer.length < 5 || answer.length > 8) continue;
+    return { dayIndex, number, answer };
+  }
+  throw new Error(
+    '[footle] no past puzzle found in WORDLE_ANSWER_LOG for the practice board. ' +
+    'Refusing to bake today\'s (or a formula-derived) answer into a static page.',
+  );
+}
+
+// Deterrence, not security. Keeps the answer out of plain view-source so a
+// curious reader does not spoil their own practice game by accident. Anyone who
+// wants it can still read it off /football-wordle/answer/ — that is fine, it is
+// a finished puzzle. encodeURIComponent first so diacritics in the full name
+// (Mbappé, Šuker) survive the byte-oriented atob() on the client.
+const fwCloak = (s) =>
+  Buffer.from(encodeURIComponent(String(s).split('').reverse().join('')), 'utf8').toString('base64');
+
+const FW_KEY_ROWS = [
+  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+  ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+];
+
+// Every control is a REAL <button> in the emitted HTML, not a <b> with a click
+// handler (that shipped once: unfocusable, invisible to screen readers) and not
+// JS-injected (a crawler — and `grep '<button'` on dist/ — would see nothing).
+// JS only attaches behaviour to markup that is already there.
+function fwKeyboardHtml() {
+  const key = (k, label, text, wide) =>
+    `<button type="button" class="fw-k${wide ? ' fw-wide' : ''}" data-k="${k}"${wide ? ' data-w="1"' : ''} aria-label="${label}">${text}</button>`;
+  const rows = FW_KEY_ROWS.map((row, i) => {
+    let inner = row.map((k) => key(k, `Letter ${k}`, k)).join('');
+    if (i === 2) {
+      inner = key('ENTER', 'Submit guess', 'Enter', true) + inner + key('DEL', 'Delete last letter', '⌫', true);
+    }
+    return `<div class="fw-kr">${inner}</div>`;
+  }).join('\n');
+  return `<div class="fw-kb" role="group" aria-label="Footle keyboard">\n${rows}\n</div>`;
+}
+
+function fwBoardHtml(n) {
+  const rows = [];
+  for (let r = 0; r < 6; r++) {
+    const tiles = [];
+    for (let c = 0; c < n; c++) {
+      tiles.push(`<div class="fw-t" role="gridcell" aria-label="Row ${r + 1}, letter ${c + 1}, empty"></div>`);
+    }
+    rows.push(`<div class="fw-row" role="row">${tiles.join('')}</div>`);
+  }
+  return `<div class="fw-board" role="grid" aria-label="Footle practice board, six guesses of ${n} letters">\n${rows.join('\n')}\n</div>`;
+}
+
+const FW_CSS = `  .fw-wrap{margin-top:8px;scroll-margin-top:72px}
+  .fw-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9BA0B8;margin-bottom:8px}
+  .fw-lede{font-size:15.5px;line-height:1.6;color:#9BA0B8;max-width:62ch;margin:0 0 18px}
+  .fw-card{background:var(--card);border:1px solid #6A6E80;border-radius:20px;padding:20px 16px 22px;max-width:560px}
+  .fw-board{display:grid;gap:6px;margin:0 auto;max-width:min(100%,calc(var(--fw-n) * 60px))}
+  .fw-row{display:grid;grid-template-columns:repeat(var(--fw-n),1fr);gap:6px}
+  .fw-t{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:2px solid #6A6E80;border-radius:8px;background:#0C0E13;color:#F0F1F5;font-family:var(--mono);font-weight:700;font-size:clamp(17px,6vw,28px);line-height:1;text-transform:uppercase;user-select:none}
+  .fw-t.fw-fill{border-color:#8E92A0;background:#14161E}
+  /* Colour is set by the CLASS, never by an animation keyframe — so the
+     reduced-motion rule below can switch the flip off and still land on the
+     correct end state. */
+  .fw-t.fw-green{background:#58CC02;border-color:#58CC02;color:#06230C;animation:fwflip .45s ease both}
+  .fw-t.fw-yellow{background:#FFC107;border-color:#FFC107;color:#2A1B00;animation:fwflip .45s ease both}
+  .fw-t.fw-grey{background:#3A3D4A;border-color:#6A6E80;color:#E8EAF0;animation:fwflip .45s ease both}
+  @keyframes fwflip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+  @keyframes fwshake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-4px)}}
+  .fw-row.fw-shake{animation:fwshake .42s ease}
+  .fw-kb{display:grid;gap:7px;margin-top:20px}
+  .fw-kr{display:flex;gap:5px;justify-content:center}
+  .fw-k{flex:1 1 0;min-width:0;min-height:48px;padding:0 2px;border:1px solid #6A6E80;border-radius:8px;background:#343846;color:#F0F1F5;font:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:background .12s,border-color .12s}
+  .fw-k:hover{background:#3E4250}
+  .fw-k.fw-wide{flex:1.7 1 0;font-size:11.5px;letter-spacing:.04em}
+  .fw-k.fw-green{background:#58CC02;border-color:#58CC02;color:#06230C}
+  .fw-k.fw-yellow{background:#FFC107;border-color:#FFC107;color:#2A1B00}
+  .fw-k.fw-grey{background:#1A1D24;border-color:#6A6E80;color:#8E92A0}
+  .fw-k:focus-visible,.fw-again:focus-visible,.fw-cta:focus-visible{outline:3px solid #FFC107;outline-offset:2px}
+  .fw-msg{min-height:22px;margin:14px 0 0;text-align:center;font-size:14px;font-weight:600;color:#E8EAF0}
+  .fw-done{margin-top:14px;text-align:center;border-top:1px solid #6A6E80;padding-top:14px}
+  .fw-dh{font-size:15px;font-weight:700;color:#F0F1F5;margin:0}
+  .fw-dn{font-family:var(--mono);font-size:20px;font-weight:700;color:#FFC107;margin:6px 0 0;letter-spacing:.02em}
+  .fw-dc{margin:14px 0 0}
+  .fw-cta{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;background:#58CC02;color:#06230C;font-weight:800;font-size:15px;border-radius:12px}
+  .fw-cta:hover{text-decoration:none;filter:brightness(1.05)}
+  .fw-again{display:block;width:100%;min-height:48px;margin-top:12px;border:1px solid #6A6E80;border-radius:12px;background:transparent;color:#E8EAF0;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+  /* An author \`display:block\` beats the UA stylesheet's [hidden]{display:none}
+     no matter the specificity, so the reset button rendered from first paint —
+     mid-game and before a game had even started. Any class that sets display on
+     a [hidden] element has to re-assert this. */
+  .fw-again[hidden]{display:none}
+  .fw-again:hover{background:#1A1D24}
+  .fw-foot{margin:16px 0 0;font-size:13.5px;line-height:1.6;color:#9BA0B8}
+  .fw-ns{margin:14px 0 0;font-size:14px;color:#E8EAF0}
+  @media (max-width:420px){
+    .fw-card{padding:14px 10px 18px}
+    .fw-kr{gap:4px}
+    .fw-k{font-size:13px}
+  }
+  /* Reduced motion: no flip, no shake — but the tiles still arrive fully
+     coloured, because the colour lives on the class, not in a keyframe. */
+  @media (prefers-reduced-motion:reduce){
+    .fw-t.fw-green,.fw-t.fw-yellow,.fw-t.fw-grey,.fw-row.fw-shake{animation:none!important}
+    .fw-t{transition:none!important}
+  }`;
+
+// The grader is INLINED FROM THE GAME'S OWN FUNCTION via toString(), not
+// rewritten here. Wordle duplicate-letter scoring is graded per LETTER, not per
+// tile (guess BANANAS against BANDANA), and a second hand-rolled copy is exactly
+// the kind of thing that drifts. Build-time guards below assert the source is
+// self-contained before it is shipped.
+//
+// All result markup is built with createElement + textContent rather than
+// innerHTML — nothing here is user-supplied, but a DOM-built panel cannot become
+// an injection sink later either.
+const FOOTLE_PRACTICE_JS = `(function(){
+var box=document.getElementById('fw-game');if(!box)return;
+function dec(s){try{return decodeURIComponent(atob(s)).split('').reverse().join('')}catch(e){return ''}}
+var A=dec(box.getAttribute('data-p')||''),FULL=dec(box.getAttribute('data-f')||'')||A;
+if(!A)return;
+var N=A.length,MAX=6;
+var GRADE=(${gradeWordleGuess.toString()});
+var rows=box.querySelectorAll('.fw-row'),kbs=box.querySelectorAll('.fw-k');
+var msg=document.getElementById('fw-msg'),done=document.getElementById('fw-done'),again=document.getElementById('fw-again');
+var keys={};for(var q=0;q<kbs.length;q++){keys[kbs[q].getAttribute('data-k')]=kbs[q]}
+var guesses=[],cur='',status='playing';
+var LBL={green:'correct',yellow:'in the name but the wrong place',grey:'not in the name'};
+function tiles(r){return rows[r].querySelectorAll('.fw-t')}
+function say(t){if(msg)msg.textContent=t||''}
+function clear(el){while(el.firstChild)el.removeChild(el.firstChild)}
+function paint(){var ts=tiles(guesses.length);for(var i=0;i<N;i++){var ch=cur.charAt(i)||'';ts[i].textContent=ch;ts[i].className='fw-t'+(ch?' fw-fill':'');ts[i].setAttribute('aria-label','Row '+(guesses.length+1)+', letter '+(i+1)+(ch?', '+ch:', empty'))}}
+function rank(s){return s==='green'?3:(s==='yellow'?2:1)}
+function shake(){var r=rows[guesses.length];if(!r)return;r.classList.add('fw-shake');setTimeout(function(){r.classList.remove('fw-shake')},450)}
+function finish(won){
+var head=won?('Solved it in '+guesses.length+' of '+MAX+'.'):'Out of guesses.';
+say(head+' The answer was '+FULL+'.');
+if(done){
+clear(done);
+var h=document.createElement('p');h.className='fw-dh';h.textContent=head;
+var n=document.createElement('p');n.className='fw-dn';n.textContent=FULL;
+var w=document.createElement('p');w.className='fw-dc';
+var a=document.createElement('a');a.className='fw-cta';a.setAttribute('href','/footle');a.textContent='Play the real Footle for today \\u2192';
+w.appendChild(a);done.appendChild(h);done.appendChild(n);done.appendChild(w);
+done.hidden=false;
+}
+if(again)again.hidden=false;
+}
+function submit(){
+if(status!=='playing')return;
+if(cur.length!==N){shake();say('Needs '+N+' letters.');return}
+var g=GRADE(cur,A),ts=tiles(guesses.length);
+for(var i=0;i<N;i++){
+ts[i].className='fw-t fw-'+g[i];
+ts[i].style.animationDelay=(i*90)+'ms';
+ts[i].setAttribute('aria-label','Row '+(guesses.length+1)+', letter '+(i+1)+', '+cur.charAt(i)+', '+LBL[g[i]]);
+var k=keys[cur.charAt(i)];
+if(k){var pv=k.getAttribute('data-s')||'';if(!pv||rank(g[i])>rank(pv)){k.setAttribute('data-s',g[i]);k.className='fw-k fw-'+g[i]}}
+}
+guesses.push(cur);
+var won=cur===A;cur='';
+if(won){status='won';finish(true)}
+else if(guesses.length>=MAX){status='lost';finish(false)}
+else{say('Guess '+guesses.length+' of '+MAX+' used.')}
+}
+function press(k){
+if(status!=='playing')return;
+if(k==='ENTER')return submit();
+if(k==='DEL'){cur=cur.slice(0,-1);paint();say('');return}
+if(cur.length<N){cur+=k;paint()}
+}
+function reset(){
+guesses=[];cur='';status='playing';
+for(var r=0;r<MAX;r++){var ts=tiles(r);for(var i=0;i<N;i++){ts[i].textContent='';ts[i].className='fw-t';ts[i].style.animationDelay='';ts[i].setAttribute('aria-label','Row '+(r+1)+', letter '+(i+1)+', empty')}}
+for(var j=0;j<kbs.length;j++){kbs[j].removeAttribute('data-s');kbs[j].className='fw-k'+(kbs[j].getAttribute('data-w')?' fw-wide':'')}
+if(done){clear(done);done.hidden=true}
+if(again)again.hidden=true;
+say('Board cleared \\u2014 six fresh guesses.');
+}
+for(var m=0;m<kbs.length;m++){kbs[m].addEventListener('click',function(){press(this.getAttribute('data-k'))})}
+if(again)again.addEventListener('click',reset);
+document.addEventListener('keydown',function(e){
+/* Cmd+R / Ctrl+R must reload, not type an R. */
+if(e.ctrlKey||e.metaKey||e.altKey)return;
+var t=e.target,tn=t&&t.tagName;
+if(tn==='INPUT'||tn==='TEXTAREA'||tn==='SELECT'||(t&&t.isContentEditable))return;
+var k=e.key;
+/* When a key button has focus, Enter/Space already fire its click — do not
+   also handle it here or one press would count twice. */
+if(tn==='BUTTON'&&(k==='Enter'||k===' '))return;
+if(k==='Enter'){e.preventDefault();press('ENTER');return}
+if(k==='Backspace'){e.preventDefault();press('DEL');return}
+if(k&&k.length===1&&/[a-zA-Z]/.test(k)){e.preventDefault();press(k.toUpperCase())}
+});
+})();`;
+
+// Build-time guards. The inlined grader must be self-contained (it must not
+// close over anything from src/lib/wordle.js), and it must actually score
+// duplicate letters the way the live game does.
+(function assertPracticeGrader() {
+  const src = gradeWordleGuess.toString();
+  if (!/^function gradeWordleGuess\s*\(/.test(src)) {
+    throw new Error('[footle] gradeWordleGuess is no longer a plain function declaration — the inlined practice grader would break.');
+  }
+  if (/WORDLE_|import |require\(/.test(src)) {
+    throw new Error('[footle] gradeWordleGuess now references module scope — it can no longer be inlined into a static page.');
+  }
+  // BANANAS vs BANDANA: three greens, then three yellows that must consume the
+  // remaining A/N/A exactly once each, then a grey. Per-tile grading gets this
+  // wrong; per-letter grading gets it right.
+  const got = gradeWordleGuess('BANANAS', 'BANDANA').join(',');
+  const want = 'green,green,green,yellow,yellow,yellow,grey';
+  if (got !== want) throw new Error(`[footle] duplicate-letter grading changed: ${got}`);
+})();
+
+// Renders the whole playable section. Everything is server-rendered HTML —
+// board, keyboard, prose — so the page is a game in the file, not a game the
+// browser has to assemble before a crawler can see one.
+function footlePracticeSection() {
+  const P = pickPracticePuzzle();
+  const full = (WORDLE_FULL_NAMES[P.answer] || ['', P.answer]).filter(Boolean).join(' ');
+  const when = new Date(P.dayIndex * 86400000).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+  });
+  return `<section class="sec fw-wrap" id="practice" aria-labelledby="fw-h">
+<div class="fw-eyebrow">Practice puzzle · Footle #${P.number} · originally ${esc(when)}</div>
+<h2 id="fw-h">Play a Footle right here</h2>
+<p class="fw-lede">A real Footle from ${esc(when)}, replayable as often as you like — guess the ${P.answer.length}-letter surname in six. It is a finished puzzle, so nothing here spoils <a href="${SITE.base}/footle">today&#39;s Footle</a>, which everyone gets at midnight.</p>
+<div class="fw-card">
+<div id="fw-game" style="--fw-n:${P.answer.length}" data-p="${fwCloak(P.answer)}" data-f="${fwCloak(full)}">
+${fwBoardHtml(P.answer.length)}
+${fwKeyboardHtml()}
+</div>
+<p class="fw-msg" id="fw-msg" role="status" aria-live="polite"></p>
+<div class="fw-done" id="fw-done" hidden></div>
+<button type="button" class="fw-again" id="fw-again" hidden>Play this puzzle again</button>
+<noscript><p class="fw-ns">This practice board needs JavaScript. <a href="${SITE.base}/footle">Play today&#39;s Footle</a> instead.</p></noscript>
+</div>
+<p class="fw-foot">Green means right letter, right place. Yellow means the letter is in the surname somewhere else. Grey means it is not in there at all. Any surname of the right length is accepted as a guess, exactly as in the real game — and when you want the one that counts, <a href="${SITE.base}/footle">today&#39;s Footle</a> is waiting.</p>
+</section>
+<script>${FOOTLE_PRACTICE_JS}</script>`;
+}
+
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;
@@ -2800,6 +3099,10 @@ ${heroSection({
     playHref,
     playLabel: "Play today's Footle →",
   })}
+<style>
+${FW_CSS}
+</style>
+${footlePracticeSection()}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
