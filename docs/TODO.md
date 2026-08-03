@@ -11,6 +11,13 @@ items are deleted, not archived — git history is the archive.
 
 ## TODAY — 2026-08-03
 
+### 🟢 Committed, NOT yet pushed — waiting on Alex
+
+| commit | what |
+|---|---|
+| `b5d6d5e` | **All 72 club titles now say "Answers".** GSC's 28 days: `<club> quiz with answers` converts 3–5× the bare club term — Rangers **30.8% vs 5.6%**, Tottenham **15.0% vs 3.1%**. Same page, same position; the whole gap is whether the title answers the query. 47 titles didn't say it. The claim is true everywhere it's now written: worst explanation coverage among all 72 is **100%**, because club packs clear the ≥15-hint gate. Verified in the *built* HTML, not the source. |
+| `d94a9fc` | **`/football-wordle/` is playable** — was 0 buttons, now 29, server-rendered so crawlers see the game. Seeded from a 31-day-old past puzzle inside the frozen answer log; a 1,095-day build simulation proved no future answer can ever leak, and caught a time bomb that would have hard-failed the build in mid-2027. |
+
 ### Shipped since the last entry — all pushed to main, all live
 
 | commit | what |
