@@ -29,6 +29,10 @@ import '../design/report.css';
 import React, { useState, useRef, useCallback } from 'react';
 import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
+// Generated (gen-club-index.mjs): 72 rows of {name, slug, competition}, 3.8KB.
+// Never import scripts/seo/clubs.mjs here — it carries every club's SEO prose
+// and would put ~200KB into this chunk to read three fields.
+import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
 
 const GET_APP = '/get';
 const PLAY = '/play';
@@ -110,7 +114,7 @@ const CSS = `
    and a stray one terminates the string and fails the build.)
    It looked like plausible light-on-green in a screenshot; only the rendered
    detector pass caught it. */
-.sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:0 var(--sp3);
+.sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
          border:1px solid var(--grn);transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-play:hover{opacity:.88}}
@@ -214,7 +218,7 @@ const CSS = `
 .sr-keept{font:var(--ty-label);letter-spacing:var(--ty-label-ls);text-transform:uppercase}
 .sr-keepp{margin-top:6px;font:var(--ty-sec);color:var(--mut);max-width:46ch}
 .sr-links{margin-top:var(--sp2);display:flex;gap:var(--sp1);flex-wrap:wrap}
-.sr-a{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 var(--sp3);
+.sr-a{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:12px var(--sp3);
       border:1px solid var(--ink);font:var(--ty-sec);font-weight:700;
       transition:background-color .15s var(--ease),color .15s var(--ease)}
 .sr-a span{font:var(--ty-meta);color:var(--mut)}
@@ -223,6 +227,41 @@ const CSS = `
 @media (max-width:520px){.sr-a{width:100%;justify-content:space-between}}
 .sr-web{margin-top:var(--sp2);font:var(--ty-sec);color:var(--mut)}
 .sr-web a{text-decoration:underline;text-underline-offset:3px;font-weight:700;color:var(--ink)}
+
+/* ── The Club Index. Desk ground, between the report and the footer. ──
+   DESIGN.md spec: club name, DOTTED LEADER, competition; two columns above
+   760px; hover highlight on non-touch only. Three earlier variants were
+   killed by the finish review and stay dead: no question count (contradicts
+   "same depth for Hajduk Split as for Real Madrid"), no colour swatches
+   (a second palette in a world whose only saturation is the ramp), no era
+   range (its years were mostly distractors). The competition column is the
+   checkable replacement — hand-verified in club-competition.mjs. */
+.sr-clubs{max-width:860px;margin:0 auto;padding:var(--sp5) var(--sp3);
+          border-top:1px solid var(--bd)}
+.sr-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
+       text-transform:uppercase;color:var(--tx);text-wrap:balance}
+.sr-clsub{margin-top:var(--sp2);font:var(--ty-sub);color:var(--on-desk);max-width:58ch}
+.sr-idx{margin-top:var(--sp3);column-count:1;column-gap:var(--sp5)}
+@media (min-width:760px){.sr-idx{column-count:2}}
+/* Anchors in a multicol container: block + break-inside, or a row can split
+   across columns mid-leader. */
+.sr-row{display:flex;align-items:baseline;gap:10px;min-height:36px;
+        break-inside:avoid;padding:6px 0;color:var(--on-desk);
+        font:var(--ty-sec)}
+@media (pointer:coarse){.sr-row{min-height:44px;padding:10px 0}}
+.sr-cn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+.sr-ld{flex:1;min-width:16px;border-bottom:1px dotted var(--bd3);
+       transform:translateY(-4px)}
+.sr-cc{white-space:nowrap;font:var(--ty-meta);color:var(--on-desk-mut)}
+@media (hover:hover){
+  .sr-row:hover{color:var(--tx)}
+  .sr-row:hover .sr-ld{border-bottom-color:var(--on-desk-mut)}
+}
+.sr-more{display:inline-flex;align-items:center;min-height:48px;margin-top:var(--sp3);
+         padding:12px var(--sp3);border:1px solid var(--bd3);color:var(--tx);
+         font:var(--ty-sec);font-weight:700;
+         transition:background-color .15s var(--ease)}
+@media (hover:hover){.sr-more:hover{background:var(--card)}}
 
 .sr-foot{padding:var(--sp4) var(--sp3) var(--sp5);text-align:center;font:var(--ty-meta);
          color:var(--tx4);border-top:1px solid var(--bd)}
@@ -351,6 +390,29 @@ export default function ScoutingReport() {
           </div>
         )}
       </main>
+
+      {/* 72 real links to the pages carrying the site's growth — this section
+          took the component from 0 internal club links to 72. The copy is the
+          approved mockup's, not new writing; the heading count is generated
+          so it cannot silently go stale when a wave lands. */}
+      <section className="sr-clubs" aria-labelledby="srClubsT">
+        <h2 className="sr-h2" id="srClubsT">{CLUB_HEADING}</h2>
+        <p className="sr-clsub">
+          Hajduk Split get the same treatment as Real Madrid. Every question in both files went
+          through the same checks before it was let in, and most of them tell you why the answer
+          is the answer.
+        </p>
+        <div className="sr-idx">
+          {CLUB_INDEX.map((r) => (
+            <a key={r.s} className="sr-row" href={`/quiz/${r.s}/`}>
+              <span className="sr-cn">{r.n}</span>
+              <span className="sr-ld" aria-hidden="true" />
+              <span className="sr-cc">{r.c}</span>
+            </a>
+          ))}
+        </div>
+        <a className="sr-more" href="/quiz/">Open the full club index</a>
+      </section>
 
       <footer className="sr-foot">Ball IQ — free football trivia, every day.</footer>
     </div>

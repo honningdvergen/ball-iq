@@ -40,6 +40,12 @@
 export const REPORT = {
   // ── The desk. Everything else is inherited from tokens.js. ─────────────
   'on-desk': '#C3CBC3', // body text on the desk — brighter than --tx3, on purpose
+  // Secondary text on the desk. DESIGN.md "Desk Text — Mute": nav links,
+  // captions, and specifically "the club index's competition column".
+  // Measured 7.44:1 on --bg, 7.26:1 on --bg2 — comfortably AA as text on
+  // either desk ground. (A first draft of this comment said 4.62:1, a number
+  // that was never computed. Measure before writing the number down.)
+  'on-desk-mut': '#98A199',
 
   // ── The paper: a light document, lightest to most shadowed. ────────────
   pa: '#E7E9E4', // newsprint
