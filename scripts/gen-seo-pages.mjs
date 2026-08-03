@@ -1923,6 +1923,12 @@ ${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
+${/* Link to this club's TEXT Q&A page. Without this the /questions layer
+     ships ORPHANED — 71 pages in the sitemap with zero inbound internal
+     links, which is precisely the defect the 2026-07-28 ranking diagnosis
+     found on /lists and had to go back and fix. Placed inside the mesh
+     section because that sits at ~19% scroll, above the measured cliff. */''}
+${clubHintRows(cfg.club).length >= 20 ? `<p style="margin:14px 2px 0;color:var(--tx2);font-size:14.5px">Want them as a printable list instead? <a href="${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/" style="color:var(--grn);font-weight:700">${esc(cfg.name)} quiz questions and answers →</a></p>` : ''}
 ${renderListLinks(cfg.name)}
 </section>
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
