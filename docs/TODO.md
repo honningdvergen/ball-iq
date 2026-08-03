@@ -37,6 +37,48 @@ items are deleted, not archived — git history is the archive.
   UI. Wants a 2-device test — the same test [[project_mp_stats_realtime_gated]]
   is already waiting on.
 
+## ⭐ NEXT BUILD — the /questions Q&A layer (Alex approved 2026-08-03)
+
+**Why this and not more questions.** The competitor read found our single
+largest asymmetry: we hold ~6,400 verified questions and have **zero pages in
+the text "questions and answers" format** that wins that SERP — a DIFFERENT
+SERP from the head term, currently held by thin listicles with no schema
+(quiztriviagames ranks with 90 questions and no structured data; kwizzbit uses
+50 as a lead magnet). It is also the LINKABLE format: quizmasters cite
+question lists, nobody cites a JS quiz. The raw material already exists and is
+already verified — this is a script over data we own.
+
+**Shape:** `/questions/<club>-quiz-questions-and-answers/`, 72 pages.
+Questions grouped in rounds of 10, answers in a separate block after each
+round (the pub-quiz convention — that is what makes it printable and
+citable), table-of-contents anchors, print stylesheet, FAQ + Quiz schema
+(NO competitor in the top set uses Quiz schema — free differentiation on an
+already-clean on-page base).
+
+**Wiring that must not be missed** — a new page type is more than a builder:
+- register in `buildSitemap` (see gen-seo-pages.mjs:3641)
+- **`vercel.json` rewrite for `/questions/(.*)`** — routes are whitelisted
+  explicitly and a new one 404s in prod without it; a local dist fallback
+  masks this, so verify LIVE by static `<title>`, never by HTTP 200
+- inbound links from the matching club page, or it ships orphaned
+- 3-level breadcrumbs + self-canonical, same as /lists
+- ⚠️ `main` IS production and auto-deploys, so this lands as 72 pages at once.
+
+## ✅ SETTLED 2026-08-03 — do NOT cap web questions to drive app installs
+
+Alex proposed capping on-page questions and adding "get more Liverpool
+questions in the Ball IQ app". **Measured first: the app has EXACTLY the same
+questions as the web page for all 72 clubs** (Arsenal 67/67, Liverpool 42/42).
+So the claim is not true today, and capping would make it true only by making
+the free product worse first — while pointing the opposite way from the
+competitor finding (our gap is too LITTLE indexable text) and cutting against
+the settled "content stays free, Pro = features" decision.
+
+**Kept:** the club-specific CTA, which is a real improvement over a generic
+"Get the app" — but honest about what the app actually adds: multiplayer
+against a mate, daily streaks, XP, Footle, Transfer Trail. Same lesson as the
+"every answer is explained" store-copy fix: the CTA has to be true.
+
 ## SEO REVIVAL ATTEMPT 2026-08-03 — four hypotheses, four falsified
 
 **The scale of the problem: 175 of 194 pages get essentially no traffic** (90%).
