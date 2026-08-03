@@ -2390,20 +2390,43 @@ function buildPartnersPage(hints) {
     canonical, ld, taster: true,
   })}
 <main>
-<section class="sec narrow">
+<section class="sec">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Partners</span></nav>
-<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">A free weekly football quiz for your readers</h1>
-<p style="margin:0 0 12px;color:var(--tx2)">Football quizzes are some of the most-read content a football site publishes, and the most tedious to produce. We already have the questions — ${'6,405'} of them, checked before they ship — so we will build yours and you can simply publish it.</p>
-<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What you get:</strong> ten questions on the week's football, branded to your site, delivered every Thursday as an embed or plain HTML — whichever your CMS prefers. Any club or competition angle you want. It is free, and it stays free.</p>
-<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What we ask:</strong> a credit line and a link back. That is the whole arrangement.</p>
-<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What it costs you:</strong> nothing, and no ongoing work. We write it, check it and hand it over ready to go.</p>
+<div style="max-width:760px">
+<div style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);border-radius:999px;padding:5px 12px;margin:14px 0 14px;background:var(--card)">
+<img src="/marketing/ball.png" alt="" width="18" height="18" style="display:block" />
+<span style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)">Ball IQ for publishers</span>
+</div>
+<h1 style="font-size:clamp(28px,4.4vw,44px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.08;margin:0 0 14px">A free weekly football quiz for your readers</h1>
+<p style="margin:0 0 18px;color:var(--tx2);font-size:17px;line-height:1.6;max-width:62ch">Football quizzes are some of the most-read content a football site publishes, and the most tedious to produce. We already have the questions, and we check them before they ship — so we will build yours and you can simply publish it.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px">
+<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">6,405</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">checked questions</div></div>
+<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">72</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">club quizzes</div></div>
+<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">Daily</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">games, live now</div></div>
+<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:var(--grn);line-height:1">Free</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">and stays free</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:0 0 6px">
+<div style="border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:12px;padding:16px 18px;background:var(--card)">
+<div style="font-size:11.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--grn);margin-bottom:8px">What you get</div>
+<div style="color:var(--tx2);line-height:1.55;font-size:14.5px">Ten questions on the week&#39;s football, branded to your site, every Thursday — as an embed or plain HTML, whichever your CMS prefers. Any club or competition angle you want.</div>
+</div>
+<div style="border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:12px;padding:16px 18px;background:var(--card)">
+<div style="font-size:11.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--grn);margin-bottom:8px">What we ask</div>
+<div style="color:var(--tx2);line-height:1.55;font-size:14.5px">A credit line and a link back. That is the whole arrangement — no contract, no exclusivity, no catch.</div>
+</div>
+<div style="border:1px solid var(--bd);border-left:3px solid var(--grn);border-radius:12px;padding:16px 18px;background:var(--card)">
+<div style="font-size:11.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--grn);margin-bottom:8px">What it costs you</div>
+<div style="color:var(--tx2);line-height:1.55;font-size:14.5px">Nothing, and no ongoing work. We write it, check it and hand it over ready to publish.</div>
+</div>
+</div>
 </section>
 <section class="sec">
 <h2>Try this week's sample</h2>
 <p style="margin:0 0 14px;color:var(--tx2)">This is the real format, playable right here — exactly what your readers would get.</p>
 ${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
 </section>
-<section class="sec narrow">
+<section class="sec">
 <h2>We can do daily games too</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">A weekly quiz is the easy start, but the same deal works for a daily game — the format that keeps readers coming back to the same page every morning rather than once a week.</p>
 <p style="margin:0 0 12px;color:var(--tx2)">Here is ours, playable below — a finished puzzle from the archive, so nothing here spoils today&#39;s.</p>
@@ -2417,7 +2440,7 @@ ${/* The real board, reused wholesale from /football-wordle/ rather than
 ${FW_CSS}
 </style>
 ${footlePracticeSection()}
-<section class="sec narrow">
+<section class="sec">
 <h2>Who is behind it</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
 <p style="margin:0 0 12px;color:var(--tx2)">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
