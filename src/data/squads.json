@@ -1,0 +1,5060 @@
+{
+  "Arsenal": [
+    {
+      "id": "Q47092717",
+      "name": "Afaf Al-Sadiq",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4707382",
+      "name": "Alan Morton",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4491989",
+      "name": "Alex Forsyth",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q94440283",
+      "name": "Alex McCall",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4717997",
+      "name": "Alex Wilson",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q115697121",
+      "name": "Alexei Rojas",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q84366668",
+      "name": "Amelia Hazard",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q33069726",
+      "name": "Amerley Ollennu Awua-Asamoa",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4757928",
+      "name": "Andrew McCowie",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q56070657",
+      "name": "Andy Neil",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q48458625",
+      "name": "Anna Filbey",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4786654",
+      "name": "Archie Clark",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q59076152",
+      "name": "Arthur Kempton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q80588158",
+      "name": "Arthur Talbot",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q48103499",
+      "name": "Ava Kuyken",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4863569",
+      "name": "Barrie Vassallo",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q83687936",
+      "name": "Bayli Spencer-Adams",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27839155",
+      "name": "Ben White",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q86257966",
+      "name": "Bill Dean",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q65718185",
+      "name": "Bill Healey",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q4911352",
+      "name": "Bill White",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4913040",
+      "name": "Billy Minter",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4913304",
+      "name": "Billy Silto",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q68653124",
+      "name": "Bob Gordon",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4934237",
+      "name": "Bob Turnbull",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q127606259",
+      "name": "Bob Wrigglesworth",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q127606230",
+      "name": "Bobby Daniel",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q96475590",
+      "name": "Bobby Davidson",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4935001",
+      "name": "Bobby Flavell",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4964169",
+      "name": "Brian Jackson",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q17410449",
+      "name": "Brooklyn Beckham",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q59306386",
+      "name": "Bukayo Saka",
+      "position": "winger",
+      "slot": "FW"
+    },
+    {
+      "id": "Q60648660",
+      "name": "Charlie Devlin",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5085659",
+      "name": "Charlie Walker",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q79865666",
+      "name": "Chloe Morgan",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q42806515",
+      "name": "Chris Regis",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q43969205",
+      "name": "Clare Wheatley",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q80787557",
+      "name": "Craig McKernon",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q110458872",
+      "name": "Cristhian Mosquera",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5219344",
+      "name": "Danielle Carter",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5234703",
+      "name": "David Hannah",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5235620",
+      "name": "David Jenkins",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19665907",
+      "name": "David Raya",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q30007142",
+      "name": "Declan Rice",
+      "position": "defensive midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q55356754",
+      "name": "Denis Clapton",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q74881023",
+      "name": "Denzeil Boadu",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q28648758",
+      "name": "Dick Burgess",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5292217",
+      "name": "Don Bennett",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5293447",
+      "name": "Don Rossiter",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q71100029",
+      "name": "Ebenezer Farombi",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q28445512",
+      "name": "Eberechi Eze",
+      "position": "attacking midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q45766782",
+      "name": "Edward Anderson",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5372912",
+      "name": "Emma Mukandi",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q43142591",
+      "name": "Eno E. Ebenso",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q26997965",
+      "name": "Ernest Hanks",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q55238031",
+      "name": "Ernie Wilkinson",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q63032399",
+      "name": "Fábio Vieira",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q27663023",
+      "name": "Faiq Bolkiah",
+      "position": "attacker",
+      "slot": null
+    },
+    {
+      "id": "Q5444183",
+      "name": "Fergus Hunt",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q28777253",
+      "name": "Frank Lloyd",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q17496584",
+      "name": "Frank Morrad",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q24450334",
+      "name": "Freda Ayisi",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5496704",
+      "name": "Freddie Cox",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5497898",
+      "name": "Frederick Groves",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q25175970",
+      "name": "Gabriel Magalhães",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q61460651",
+      "name": "Gabriel Martinelli",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q722565",
+      "name": "George Allison",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5537459",
+      "name": "George Burrell",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5538178",
+      "name": "George Cox, Jr.",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1507313",
+      "name": "George Elcoat",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q304363",
+      "name": "George Morrell",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q27830694",
+      "name": "George Payne",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2026738",
+      "name": "Gerrit Keizer",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q1386573",
+      "name": "Harry Bradshaw",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q49020451",
+      "name": "Harry Logan",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5672651",
+      "name": "Harry Storer, Sr.",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5673517",
+      "name": "Harry Woods",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q101122573",
+      "name": "Hassan Hussein Musa",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5686848",
+      "name": "Hayley Ladd",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q58815590",
+      "name": "Horace Cope",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q86631222",
+      "name": "Hugh Glass",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q3530148",
+      "name": "Ian Gould",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q2898030",
+      "name": "Jack Humble",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q130407434",
+      "name": "Jack Porter",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6115264",
+      "name": "Jack Southam",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q55614866",
+      "name": "James Boyle",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6130428",
+      "name": "James Buchan",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6135840",
+      "name": "James Henderson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q27831091",
+      "name": "James Maxwell",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q83947202",
+      "name": "James Olayinka",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q50067315",
+      "name": "Jessica Naz",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q65560349",
+      "name": "Jimmy Caldwell",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6201041",
+      "name": "Jimmy Paterson",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q66049720",
+      "name": "Jo Price",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6207318",
+      "name": "Jock Davie",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6208755",
+      "name": "Joe Bradshaw",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6211492",
+      "name": "Joe Murrell",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q85493196",
+      "name": "John Ascroft",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q16266871",
+      "name": "John Lumsden",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q60791837",
+      "name": "John Russell",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6256071",
+      "name": "John Ryan",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10513796",
+      "name": "Jordan Nobbs",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q529225",
+      "name": "Josephine Henning",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q273681",
+      "name": "Julie Fleeting",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q53952196",
+      "name": "Jurriën Timber",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27310755",
+      "name": "Kai Havertz",
+      "position": "attacking midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3195361",
+      "name": "Kepa Arrizabalaga",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6396681",
+      "name": "Kevin Kennerley",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6504851",
+      "name": "Lawrie Madden",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6509762",
+      "name": "Leandro Trossard",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q65552823",
+      "name": "Leonard Garrett",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q127599718",
+      "name": "Leslie Lack",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q130305495",
+      "name": "Maldini Kacurri",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q100243106",
+      "name": "Marcelo Flores",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q107584170",
+      "name": "Marquinhos",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q16902219",
+      "name": "Martin Ødegaard",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q63384759",
+      "name": "Martín Zubimendi",
+      "position": "central midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q130442747",
+      "name": "Max Dowman",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q83196933",
+      "name": "Melisa Filis",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q131304249",
+      "name": "Miguel Molina",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q17612631",
+      "name": "Mikel Merino",
+      "position": "defensive midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q24085028",
+      "name": "Molly Bartrip",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q118571844",
+      "name": "Myles Lewis-Skelly",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q51879680",
+      "name": "Neve Grice",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3875865",
+      "name": "Niccolò Galli",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q108197412",
+      "name": "Niran Adesanya",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7047039",
+      "name": "Noel Kelly",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q66801705",
+      "name": "Noni Madueke",
+      "position": "winger",
+      "slot": "FW"
+    },
+    {
+      "id": "Q58305027",
+      "name": "Norman Sidey",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q114795632",
+      "name": "Nura Shehu Jos",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q125217821",
+      "name": "Olufunke Aina",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q125109277",
+      "name": "Oyeniyi Patrick oladepo",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q58885842",
+      "name": "Paige Bailey-Gayle",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q60745298",
+      "name": "Patrick Farrell",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7147359",
+      "name": "Patrick O'Brien",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q42034219",
+      "name": "Pauline MacDonald",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q60768629",
+      "name": "Peter Connolly",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q39078914",
+      "name": "Peter Davies",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7175962",
+      "name": "Peter Mortimer",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2067450",
+      "name": "Phil Kelso",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q101053044",
+      "name": "Piero Hincapié",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7297204",
+      "name": "Ray Bloomfield",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q61772122",
+      "name": "Ray Lee",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7298174",
+      "name": "Ray Swallow",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q61053478",
+      "name": "Rianna Dean",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q97999586",
+      "name": "Riccardo Calafiori",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q57395433",
+      "name": "Robbie Burton",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7350057",
+      "name": "Robert Stevenson",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q1354893",
+      "name": "Sam Hollis",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q273590",
+      "name": "Shaznay Lewis",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q16633069",
+      "name": "Sid Huntley",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q65561969",
+      "name": "Sidney Crawford",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q10860",
+      "name": "Siobhan Chamberlain",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q124169819",
+      "name": "Sophia C. Madumere",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q61653290",
+      "name": "Sophie Harris",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7704175",
+      "name": "Terry Burton",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7704697",
+      "name": "Terry Long",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q12006053",
+      "name": "Thomas Arnold",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q21592223",
+      "name": "Thomas Bryan",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7789608",
+      "name": "Thomas Fitchie",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1242641",
+      "name": "Thomas Mitchell",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q28836822",
+      "name": "Tom Pratt",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7819548",
+      "name": "Tommy Hynds",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16901156",
+      "name": "Tommy Low",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7819807",
+      "name": "Tommy Rigg",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q30612610",
+      "name": "Trevor Rhodes",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q42308096",
+      "name": "Tyrell Robinson",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q17278605",
+      "name": "Vaila Barsley",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q47075606",
+      "name": "Viktor Gyökeres",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q8008511",
+      "name": "William Elcoat",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q8009861",
+      "name": "William Gibson",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q56868118",
+      "name": "William Saliba",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q55366664",
+      "name": "Willie Curle",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q123584499",
+      "name": "Wycliff Luyombya",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q16523844",
+      "name": "Zachari Fagan",
+      "position": "defender",
+      "slot": "DF"
+    }
+  ],
+  "Liverpool": [
+    {
+      "id": "Q4666434",
+      "name": "Abe Rosenthal",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4668858",
+      "name": "Abraham Foxall",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4678835",
+      "name": "Adam Carson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q84361156",
+      "name": "Adam Lewis",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q55375239",
+      "name": "Adam Phillips",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4708722",
+      "name": "Alastair Henderson",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4711212",
+      "name": "Albert Shears",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4716852",
+      "name": "Alex Cooper",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4717527",
+      "name": "Alex Muir",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q29109970",
+      "name": "Alex O'Hanlon",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4717764",
+      "name": "Alex Scott",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4717806",
+      "name": "Alex Smith",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q515938",
+      "name": "Alex Teixeira",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4717899",
+      "name": "Alex Totten",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q23759917",
+      "name": "Alexander Isak",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q437212",
+      "name": "Alexander Kačaniklić",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q33297140",
+      "name": "Alexis Mac Allister",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4721697",
+      "name": "Alf Hobson",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q18128696",
+      "name": "Alfred Thompson",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q18237361",
+      "name": "Alisson Becker",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q20916833",
+      "name": "Allan",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4757928",
+      "name": "Andrew McCowie",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q64009079",
+      "name": "Andy Firth",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4761143",
+      "name": "Andy Parkinson",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q43771095",
+      "name": "Anthony Plant",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q28935591",
+      "name": "Arthur Neal",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4388983",
+      "name": "Arthur Riley",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4800749",
+      "name": "Arthur Worgan",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q24026064",
+      "name": "Ashley Hodson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q770174",
+      "name": "Augustus Beeby",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q822294",
+      "name": "Barney Battles, Sr.",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4861773",
+      "name": "Barney Ramsden",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4864895",
+      "name": "Barry Wilkinson",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q48926983",
+      "name": "Becky Flaherty",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q27919507",
+      "name": "Ben Woodburn",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4888463",
+      "name": "Benjamin Dabbs",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4895775",
+      "name": "Bertram Goode",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4909737",
+      "name": "Bill Kinghorn",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4910148",
+      "name": "Bill McPherson",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4910294",
+      "name": "Bill Murphy",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q4910299",
+      "name": "Bill Murray",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4910740",
+      "name": "Bill Salisbury",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4910848",
+      "name": "Bill Shepherd",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q8012638",
+      "name": "Billy Hughes",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q78828929",
+      "name": "Billy Koumetio",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4912965",
+      "name": "Billy Matthews",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4912986",
+      "name": "Billy McDevitt",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4913028",
+      "name": "Billy Millar",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4913288",
+      "name": "Billy Scott",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4933338",
+      "name": "Bob McDougall",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q113632482",
+      "name": "Bobby Clark",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4934867",
+      "name": "Bobby Clarke",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4935399",
+      "name": "Bobby Murdoch",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q15477554",
+      "name": "Brad Smith",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q912462",
+      "name": "Brian Kettle",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q28871481",
+      "name": "Brooks Lennon",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4980471",
+      "name": "Bryan Williams",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4980883",
+      "name": "Bryn Knowelden",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q3650594",
+      "name": "Caleb Patterson-Sewell",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5024053",
+      "name": "Calum Woods",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q94696146",
+      "name": "Calvin Ramsey",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q20983677",
+      "name": "Cameron Brannagan",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2938867",
+      "name": "Carl Baker",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5076500",
+      "name": "Charles Cotton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q16005808",
+      "name": "Charlie Hafekost",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5085082",
+      "name": "Charlie Jolley",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5085095",
+      "name": "Charlie Jowitt",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q97752146",
+      "name": "Charlotte Clarke",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q28861443",
+      "name": "Chris Seagraves",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q80333522",
+      "name": "Chris Tanzey",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q326623",
+      "name": "Christopher Buchtmann",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q28801927",
+      "name": "Cody Gakpo",
+      "position": "left winger",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19281904",
+      "name": "Connor Randall",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q107031318",
+      "name": "Conor Bradley",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q52004639",
+      "name": "Conor Masterson",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q47089243",
+      "name": "Corey Whelan",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5181039",
+      "name": "Craig Hignett",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5181148",
+      "name": "Craig Le Cornu",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q59913917",
+      "name": "Curtis Jones",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5200834",
+      "name": "Cyril Oxley",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5200873",
+      "name": "Cyril Sidlow",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q21642330",
+      "name": "Dan Bramall",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q24053884",
+      "name": "Danielle Gibbons",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5220619",
+      "name": "Danny McRorie",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5220827",
+      "name": "Danny Shone",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19281946",
+      "name": "Danny Ward",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q1173381",
+      "name": "Dave Watson",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4389211",
+      "name": "Dave Wright",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5234703",
+      "name": "David Hannah",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5234898",
+      "name": "David Henderson",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5237439",
+      "name": "David McMullan",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5237846",
+      "name": "David Murray",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q460137",
+      "name": "David Nugent",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4354912",
+      "name": "Derek Acorah",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5263461",
+      "name": "Des Harlock",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5273543",
+      "name": "Dick White",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5280834",
+      "name": "Dirk Kemp",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q30134278",
+      "name": "Dominik Szoboszlai",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5293535",
+      "name": "Don Sloan",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5293749",
+      "name": "Don Woan",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5294820",
+      "name": "Donald McCallum",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5300710",
+      "name": "Doug McAvoy",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5301412",
+      "name": "Douglas Dick",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5336032",
+      "name": "Eddie Flood",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5344772",
+      "name": "Edward Parry",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5386023",
+      "name": "Eric Anderson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5393664",
+      "name": "Ernest Peake",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5394686",
+      "name": "Ernie Pinkney",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q124170514",
+      "name": "Esther Agbaje",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q115866218",
+      "name": "Fabian Mrozek",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q94699949",
+      "name": "Florian Wirtz",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5480503",
+      "name": "Francis Checkland",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5488481",
+      "name": "Frank Mitchell",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5492073",
+      "name": "Franklin Twist",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q31828380",
+      "name": "Fred Baron",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5495142",
+      "name": "Fred Finney",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5496001",
+      "name": "Fred Nickson",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5496168",
+      "name": "Fred Rogers",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5496567",
+      "name": "Fred Williams",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5525513",
+      "name": "Gary Mackay-Steven",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5525837",
+      "name": "Gary Roberts",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5530702",
+      "name": "Gemma Bonner",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5534162",
+      "name": "Geoff Hickson",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5538578",
+      "name": "George Donnelly",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5539316",
+      "name": "George Fleming",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q5543235",
+      "name": "George Paterson",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q24565981",
+      "name": "George Poland",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5544369",
+      "name": "George Scott",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5546243",
+      "name": "George Whitworth",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5552826",
+      "name": "Gerry Keenan",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q99529077",
+      "name": "Giorgi Mamardashvili",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6078947",
+      "name": "Hakan Duyan Burton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4078701",
+      "name": "Harold Barton",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5660684",
+      "name": "Harold Fitzpatrick",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5662584",
+      "name": "Harold Uren",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16073083",
+      "name": "Harold Wadsworth",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16732294",
+      "name": "Harrison McGahey",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5669306",
+      "name": "Harry Griffiths",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5670183",
+      "name": "Harry Kaye",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5670594",
+      "name": "Harry Lewis",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5670744",
+      "name": "Harry Lowe",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5671012",
+      "name": "Harry McNaughton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5672651",
+      "name": "Harry Storer, Sr.",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q2476368",
+      "name": "Harry Wilson",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q56752774",
+      "name": "Harvey Elliott",
+      "position": "attacking midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q10548318",
+      "name": "Harvey Jones",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5727324",
+      "name": "Henry Race",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q16066958",
+      "name": "Herbert Craik",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q56073230",
+      "name": "Herbie Kane",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16239889",
+      "name": "Hugh Henderson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5931462",
+      "name": "Hugh Lester",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10400903",
+      "name": "Hugh McAuley",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4275794",
+      "name": "Hugh McQueen",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q100602910",
+      "name": "Hugo Ekitike",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q585148",
+      "name": "Ian Armstrong",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q10458830",
+      "name": "Ian Foster",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q78828990",
+      "name": "Jack Bearne",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q18719380",
+      "name": "Jack Dunn",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6112772",
+      "name": "Jack Grainger",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27830756",
+      "name": "Jack Morris",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6114992",
+      "name": "Jack Sambrook",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6116644",
+      "name": "Jackie Sheldon",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q78828973",
+      "name": "Jake Cain",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6130916",
+      "name": "James Cameron",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6131580",
+      "name": "James Collins",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6134504",
+      "name": "James Garner",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6134514",
+      "name": "James Garside",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6134769",
+      "name": "James Gorman",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6135844",
+      "name": "James Henderson",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6136183",
+      "name": "James Holmes",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q28842886",
+      "name": "James Kelso",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q4275585",
+      "name": "James McBride",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q78919073",
+      "name": "James Norris",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16072355",
+      "name": "James Penman",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6143417",
+      "name": "James Speakman",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27541516",
+      "name": "Jasmine Matthews",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6163050",
+      "name": "Jason Massie",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6162809",
+      "name": "Jason Wyn-Jones",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q118724922",
+      "name": "Jayden Danns",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q67198835",
+      "name": "Jeremie Frimpong",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q124283398",
+      "name": "Jérémy Jacquet",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2127364",
+      "name": "Jerome Sinclair",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q38028767",
+      "name": "Jessica King",
+      "position": "winger",
+      "slot": "FW"
+    },
+    {
+      "id": "Q10384799",
+      "name": "Jim Harley",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6200232",
+      "name": "Jimmy Gray",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q3179086",
+      "name": "Jimmy McDougall",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6200782",
+      "name": "Jimmy McInnes",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q10387687",
+      "name": "Jimmy McNulty",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3661120",
+      "name": "Jimmy Payne",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6201491",
+      "name": "Jimmy Walsh",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q10311285",
+      "name": "João Carlos Teixeira",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3179903",
+      "name": "Jock McNab",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q17505113",
+      "name": "Joe Gomez",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6211015",
+      "name": "Joe Lumsden",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4275793",
+      "name": "Joe McQue",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q22100168",
+      "name": "Joe Pritchard",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6222621",
+      "name": "John Bovill",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6225167",
+      "name": "John Carlin",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2657394",
+      "name": "John Charlton",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16066642",
+      "name": "John Curran",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6231056",
+      "name": "John Easdale",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q531550",
+      "name": "John Gidman",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16066732",
+      "name": "John Givens",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6239167",
+      "name": "John Heydon",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6242042",
+      "name": "John Jones",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6246619",
+      "name": "John Manning",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q16245842",
+      "name": "John Marsden",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4275760",
+      "name": "John McCartney",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6247530",
+      "name": "John McConnell",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6247642",
+      "name": "John McDonald",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16079034",
+      "name": "John McFarlane",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q704657",
+      "name": "John McKenna",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6247995",
+      "name": "John McKenna",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6248070",
+      "name": "John McLean",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6248794",
+      "name": "John Miller",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6249125",
+      "name": "John Molyneux",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10379927",
+      "name": "John Relish",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6258340",
+      "name": "John Smith",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6261049",
+      "name": "John Tosswill",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6262720",
+      "name": "John Walker",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q780475",
+      "name": "Johnny Carey",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3809949",
+      "name": "Jon Routledge",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6274451",
+      "name": "Jonathan Smith",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q18121587",
+      "name": "Jordan Rossiter",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6286158",
+      "name": "Joseph Pearson",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6286464",
+      "name": "Joseph Rafferty",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6384883",
+      "name": "Keith Peters",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6396164",
+      "name": "Kevin Doherty",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6396749",
+      "name": "Kevin Lampkin",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10557710",
+      "name": "Kevin Stewart",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q22005877",
+      "name": "Kostas Tsimikas",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q21980590",
+      "name": "Kristóf Polgár",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2595427",
+      "name": "Lawrence Vigouroux",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q24088736",
+      "name": "Leandra Little",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q78828950",
+      "name": "Leighton Clarkson",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5837818",
+      "name": "Liam Jacob",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q25427992",
+      "name": "Line Smørsgård",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q20128059",
+      "name": "Lloyd Saxton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q78828864",
+      "name": "Luis Longstaff",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q52571908",
+      "name": "Malcolm Glazzard",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q20745164",
+      "name": "Marc Pelosi",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q84314202",
+      "name": "Marcelo Pitaluga",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q11988393",
+      "name": "Marius Solberg",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q10482313",
+      "name": "Mark Duffy",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6769205",
+      "name": "Mark Peers",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16079084",
+      "name": "Matthew Fitzsimmons",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q47450438",
+      "name": "Matty Virtue",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6793410",
+      "name": "Maurice Parry",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q24006636",
+      "name": "Mayumi Pacheco",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6819086",
+      "name": "Merfyn Jones",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q11989252",
+      "name": "Michael Collins",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q6830802",
+      "name": "Michael Griffin",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6831258",
+      "name": "Michael Howard",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6838212",
+      "name": "Mick Hayde",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6838239",
+      "name": "Mick Hulligan",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q28445559",
+      "name": "Mike Carroll",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1933404",
+      "name": "Mike Newell",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q110874376",
+      "name": "Milos Kerkez",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q18122000",
+      "name": "MJ Williams",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q78828774",
+      "name": "Morgan Boyes",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q60923794",
+      "name": "Neil Dewsnip",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q16030489",
+      "name": "Neil Kerr",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7052402",
+      "name": "Norman James",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q26953157",
+      "name": "Ovie Ejaria",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7114412",
+      "name": "Owen Brown",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q123991440",
+      "name": "Owoeye Babajide",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q28528617",
+      "name": "Paddy Gray",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q563881",
+      "name": "Pajtim Kasami",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7143440",
+      "name": "Pat Finnerhan",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7143641",
+      "name": "Pat Kinsella",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4143902",
+      "name": "Patrick Gordon",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q69001280",
+      "name": "Patrik Raitanen",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5109480",
+      "name": "Paul Dalglish",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5725439",
+      "name": "Paul Fairclough",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7150657",
+      "name": "Paul Fitzpatrick",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q954458",
+      "name": "Paul Jewell",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q47011826",
+      "name": "Pepijn Lijnders",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7167560",
+      "name": "Percy Saul",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7173216",
+      "name": "Peter Cavanagh",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7176409",
+      "name": "Peter Platt",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7176868",
+      "name": "Peter Sermanni",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7182072",
+      "name": "Phil Kelly",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7183538",
+      "name": "Philip Ferns",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q60484211",
+      "name": "Rafael Camacho",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q17612716",
+      "name": "Rafael Páez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2918519",
+      "name": "Ramon Calliste",
+      "position": "attacker",
+      "slot": null
+    },
+    {
+      "id": "Q7297848",
+      "name": "Ray Minshull",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7307743",
+      "name": "Reg Butcher",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7308609",
+      "name": "Reginald Blore",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7308824",
+      "name": "Reginald Neal",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q510848",
+      "name": "Richard Madden",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q28864269",
+      "name": "Rinsola Babajide",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q131466230",
+      "name": "Rio Ngumoha",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7340986",
+      "name": "Robbie Robinson",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7343053",
+      "name": "Robert Colvin",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7343586",
+      "name": "Robert Done",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7345800",
+      "name": "Robert Ireland",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7347984",
+      "name": "Robert Neil",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7349036",
+      "name": "Robert Priday",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7363999",
+      "name": "Ron Jones",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q1669821",
+      "name": "Rosie White",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7381441",
+      "name": "Russell Crossley",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q22280163",
+      "name": "Ryan Fulton",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q56257870",
+      "name": "Ryan Gravenberch",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q21062024",
+      "name": "Ryan Kent",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q15984979",
+      "name": "Ryan McLaughlin",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7408190",
+      "name": "Sam Speakman",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q512991",
+      "name": "Samed Yeşil",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2261127",
+      "name": "Scott Wootton",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7441015",
+      "name": "Sean Friars",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q26775360",
+      "name": "Sean Highdale",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q50398907",
+      "name": "Sepp van den Berg",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q38458594",
+      "name": "Shamal George",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7488206",
+      "name": "Shane O'Connor",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7576225",
+      "name": "Spencer Whelan",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4430644",
+      "name": "Spice Boys",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7597675",
+      "name": "Stan Hanson",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7599716",
+      "name": "Stanley Kane",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7611812",
+      "name": "Steve Arnold",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7613586",
+      "name": "Steve Peplow",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7614151",
+      "name": "Steve Torpey",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7614240",
+      "name": "Steve Warriner",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7614301",
+      "name": "Steve Wignall",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q26192",
+      "name": "Steven Caulker",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7614745",
+      "name": "Steven Gillespie",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q124170230",
+      "name": "Sunday Olayemi",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7660152",
+      "name": "Sydney Smith",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q24809662",
+      "name": "Ted Parry",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q16079071",
+      "name": "Ted Savage",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7787576",
+      "name": "Thomas Bennett",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q78914231",
+      "name": "Thomas Hill",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7791340",
+      "name": "Thomas John Hunter",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4394449",
+      "name": "Thomas Reid",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19586208",
+      "name": "Thomas Robertson",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7800063",
+      "name": "Tiago Ilori",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2400634",
+      "name": "Tom Bromilow",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q19874639",
+      "name": "Tom Jenkinson",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q7816949",
+      "name": "Tom Morrison",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7817406",
+      "name": "Tom Rogers",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7817506",
+      "name": "Tom Scott",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7818054",
+      "name": "Tom Wilkie",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10467408",
+      "name": "Tommy Gore",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7790170",
+      "name": "Tommy Green",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q7819689",
+      "name": "Tommy McLeod",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q28113224",
+      "name": "Tony Gallacher",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7839065",
+      "name": "Trevor Birch",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q123367931",
+      "name": "Trey Nyoni",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q121422889",
+      "name": "Víctor Muñoz",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q133903",
+      "name": "Virgil van Dijk",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q10464940",
+      "name": "Wally Halsall",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7963475",
+      "name": "Wally Richardson",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q7966368",
+      "name": "Walter Wadsworth",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q8005018",
+      "name": "William Banks",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q8006673",
+      "name": "William Chalmers",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q8006944",
+      "name": "William Cockburn",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q8007376",
+      "name": "William Cunningham",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q8012691",
+      "name": "William Hunter",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q8015323",
+      "name": "William McCann",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q8018943",
+      "name": "William Stuart",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q8019910",
+      "name": "William Walker",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q8020065",
+      "name": "William Watkinson",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q8021469",
+      "name": "Willie Donnelly",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q65921425",
+      "name": "Yasser Larouci",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q19613202",
+      "name": "Yusuf Mersin",
+      "position": "goalkeeper",
+      "slot": "GK"
+    }
+  ],
+  "Real Madrid": [
+    {
+      "id": "Q113508860",
+      "name": "Abel Perau Gelet",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q249572",
+      "name": "Ádám Szalai",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4680888",
+      "name": "Adauto Iglesias Fernández",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q8188501",
+      "name": "Adolfo Atienza",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q505080",
+      "name": "Adolfo Meléndez",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q22981000",
+      "name": "Adrián Dalmau",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q15222370",
+      "name": "Adrián Embarba Blázquez",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q4282518",
+      "name": "Adrián Martín Cardona",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q352631",
+      "name": "Agustín Torassa",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2617208",
+      "name": "Alan Pulido",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19845456",
+      "name": "Alberto Abalde",
+      "position": "small forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q20100549",
+      "name": "Aleix Febas",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2017783",
+      "name": "Alejandro Chumacero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5665403",
+      "name": "Álex Pérez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q15725900",
+      "name": "Alfonso Navarro Perona",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2118086",
+      "name": "Alfredito Olivas",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q451011",
+      "name": "Alípio",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q182482",
+      "name": "Álvaro Domínguez",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q110001765",
+      "name": "Álvaro Fernández",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q42905928",
+      "name": "Álvaro Peláez Antón",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q499258",
+      "name": "Andreas Laudrup",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q26972361",
+      "name": "Andrés Alonso García",
+      "position": "attacker",
+      "slot": null
+    },
+    {
+      "id": "Q2849025",
+      "name": "Andrés Avelino Zapico Junquera",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q4760215",
+      "name": "Andrés Imperiale",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16150421",
+      "name": "Andrés Prieto",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q27342447",
+      "name": "Andriy Lunin",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q15624769",
+      "name": "Ángel Herrero Morales",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4886673",
+      "name": "Ángel Martín González",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q582087",
+      "name": "Ángel Rodríguez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q28922121",
+      "name": "Ángel Segurola Olarreaga",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q12403083",
+      "name": "Ángel Tamargo García",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q597670",
+      "name": "Antoni Lima Solá",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4776404",
+      "name": "Antonio Alsúa Alonso",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4776462",
+      "name": "Antonio Bonet Silvestre",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q16531016",
+      "name": "Antonio Gento",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q891120",
+      "name": "Antonio Gonzales",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5698664",
+      "name": "Antonio Imbelloni",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q4776739",
+      "name": "Antonio León Amador",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q15523918",
+      "name": "Antonio León Blanco",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16233376",
+      "name": "Antonio Martínez Felipe",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2072768",
+      "name": "Antonio Rozzi",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q59284754",
+      "name": "Antonio Serrano Ocaña",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q1769140",
+      "name": "Armando Navarrete",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q96373035",
+      "name": "Balín",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q15521306",
+      "name": "Bernardo Silva",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1440615",
+      "name": "Borja García Freire",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2525565",
+      "name": "Borja Gómez Pérez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2679273",
+      "name": "Borja Pérez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q26973015",
+      "name": "Brahim Díaz",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2153428",
+      "name": "Bryan Rabello",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3754952",
+      "name": "Càndid Gardoy i Martín",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q27699",
+      "name": "Carlos Aranda",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q364833",
+      "name": "Carlos Javier Acuña",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q28788004",
+      "name": "Carlos Santiago Cela Pereira",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q10855163",
+      "name": "Castor Elzo",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q182308",
+      "name": "Celso Ortiz",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1767333",
+      "name": "César Gómez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q933432",
+      "name": "César Jiménez Jiménez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q558912",
+      "name": "César Navas",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q117661592",
+      "name": "César Palacios",
+      "position": "inside forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q584219",
+      "name": "César Prates",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q1650766",
+      "name": "Chedric Seedorf",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q528207",
+      "name": "Christopher Ohen",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q708050",
+      "name": "Christopher Schorch",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3679828",
+      "name": "Claudemir Vítor",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q936583",
+      "name": "Corona",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q549921",
+      "name": "Dani Hernández",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q932907",
+      "name": "Daniel Opare",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q20900354",
+      "name": "Daniel Suárez García-Osorio",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q616009",
+      "name": "Danilinho",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q737044",
+      "name": "David Barral",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3703107",
+      "name": "David Bettoni",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q22166596",
+      "name": "David Soria",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q362418",
+      "name": "David Sousa",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q112184628",
+      "name": "Dean Huijsen",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q19882816",
+      "name": "Denzel Dumfries",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q1151250",
+      "name": "Derik Osede",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q131416396",
+      "name": "Diego Aguado",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q20993942",
+      "name": "Dorian Babunski",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q29950055",
+      "name": "Éder Militão",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q17462519",
+      "name": "Édgar Antonio Méndez Ortega",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q62960177",
+      "name": "Eduardo Camavinga",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1291120",
+      "name": "Eduardo Ordoñez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5819732",
+      "name": "Eduardo Sobrado",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q934674",
+      "name": "Edwin Valencia",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q63141799",
+      "name": "Emilio Álvarez Blanco",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q269883",
+      "name": "Emmanuel Petit",
+      "position": "defensive midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q110644260",
+      "name": "Endrick",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q940737",
+      "name": "Enrique Corrales",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q26722362",
+      "name": "Enrique Normand Faurie",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q12387859",
+      "name": "Enrique Romero Bravo",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q30303042",
+      "name": "Enrique Varela de Seijas",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q124856655",
+      "name": "Esther Onyenezide",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5408290",
+      "name": "Eugenio Hilario",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5409453",
+      "name": "Eulogio Aranguren",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q19509544",
+      "name": "Federico Valverde",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2067907",
+      "name": "Felipe Flores",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q11921760",
+      "name": "Felipe Herrero Baeza",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q23884186",
+      "name": "Ferland Mendy",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q12388367",
+      "name": "Fermín Martínez Cobo",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q748661",
+      "name": "Fernando Guerrero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2783837",
+      "name": "Fernando Sánchez Cipitria",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16798589",
+      "name": "Fernando Sañudo",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19290734",
+      "name": "Ferran Ferrús i Ezquerra",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q20000103",
+      "name": "Ferran Ortuño i Blasco",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q15298237",
+      "name": "Florentino López",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q5865148",
+      "name": "Francisco Aritmendi",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q17155073",
+      "name": "Francisco Ballester",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5483208",
+      "name": "Francisco Bonet Serrano",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q17413406",
+      "name": "Francisco Diz Vázquez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q27730733",
+      "name": "Francisco Feuillassier",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q23908624",
+      "name": "Francisco José Rodríguez Gaitán",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q123289726",
+      "name": "Franco Mastantuono",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1119196",
+      "name": "Gábor Korolovszky",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q1870516",
+      "name": "Galácticos",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q23758869",
+      "name": "Galé",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3775256",
+      "name": "Gaspar Rubio",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5550269",
+      "name": "Gerardo Flores Zúñiga",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q940696",
+      "name": "Gerardo García León",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q26222238",
+      "name": "Gerónimo del Campo",
+      "position": "attacker",
+      "slot": null
+    },
+    {
+      "id": "Q5557590",
+      "name": "Ghulam Hazrat Niazi",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q259002",
+      "name": "Gonzalo García García",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q11313208",
+      "name": "Gonzalo Marzá",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q19561514",
+      "name": "Gonzalo Melero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2759198",
+      "name": "Grégory Thil",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5616234",
+      "name": "Guillermo Pont",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q13422031",
+      "name": "Guillermo Varela",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16574334",
+      "name": "Heliodoro Castaño Pedrosa",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2066580",
+      "name": "Iarley",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q30301454",
+      "name": "Ibrahima Konaté",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6076040",
+      "name": "Isaac Becerra",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6081010",
+      "name": "Isidro Díaz González",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2383686",
+      "name": "Iván González López",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q18649743",
+      "name": "Jack Harper",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q12390800",
+      "name": "Jaime Blanco Núñez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2735245",
+      "name": "Jaime Romero",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q26921659",
+      "name": "Jaime Seoane Valenciano",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6139450",
+      "name": "James McKinstry",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q961760",
+      "name": "Javi Hernández",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q460218",
+      "name": "Javier Camuñas",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q11927414",
+      "name": "Javier Jiménez Pozo",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q9011265",
+      "name": "Javier Maté",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q18654709",
+      "name": "Javier Muñoz",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q27688",
+      "name": "Javier Paredes",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q58756067",
+      "name": "Javier Sánchez de Felipe",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6165753",
+      "name": "Javier Velayos",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q20201547",
+      "name": "Jean Carlos Silva Rocha",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q448073",
+      "name": "Jeffrey Hoogervorst",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2628934",
+      "name": "Jesús Ángel Solana",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q12390870",
+      "name": "Jesús Narro Sancho",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q358692",
+      "name": "Joaquín Caparrós",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4886758",
+      "name": "Joaquín Enrique Valerio",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q6206510",
+      "name": "Joaquín Oliva",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2901192",
+      "name": "Joaquín Parra",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1748240",
+      "name": "Jonay Hernández",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2016846",
+      "name": "Jordi Figueras Montel",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q313761",
+      "name": "Jorge Campos",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q3320968",
+      "name": "Jorge D'Alessandro",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q13592539",
+      "name": "Jorge Franco",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q2706415",
+      "name": "Jorge Pulido",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q18122940",
+      "name": "José Ángel Pozo",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5937697",
+      "name": "José Antonio Barrios",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q10545292",
+      "name": "José Antonio Ríos Reina",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3821748",
+      "name": "José Antonio Salguero García",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q2536321",
+      "name": "José Aurelio Gay",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3050994",
+      "name": "José Bañón",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q26972475",
+      "name": "José Heredia Jiménez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5941150",
+      "name": "José Luis Borja Alarcón",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q347402",
+      "name": "José Luis Caminero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1379087",
+      "name": "José Luis Capdevil",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6292792",
+      "name": "José Luis López Peinado",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q11929132",
+      "name": "José Manuel Meca García",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q367934",
+      "name": "José María Antón",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q13362629",
+      "name": "José María Castivia",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2917816",
+      "name": "José María López de Silva",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q27767",
+      "name": "José María Movilla",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q86322500",
+      "name": "Jose Martinez Lopez",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6293507",
+      "name": "José Morales Berriguete",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3183999",
+      "name": "José Tomás Torregrosa Torregrosa",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q11928492",
+      "name": "Josep Canal i Viñas",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q370506",
+      "name": "Juan Aguilera Núñez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2329115",
+      "name": "Juan Antonio Señor",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16234521",
+      "name": "Juan Eduardo Lescano",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q2584823",
+      "name": "Juan Epitié",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q12391237",
+      "name": "Juan García García",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q3392248",
+      "name": "Juan Garrido Canales",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q2053437",
+      "name": "Juan José García Granero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5162376",
+      "name": "Juan José Narváez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3663145",
+      "name": "Juan Martínez Martínez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q6300546",
+      "name": "Juan Monjardín",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q282398",
+      "name": "Juan Pablo Rodríguez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q972919",
+      "name": "Juan Padrós",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q3822445",
+      "name": "Juan Quero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q18710897",
+      "name": "Juan Sornichero",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q945987",
+      "name": "Juan Verdugo Pérez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q202632",
+      "name": "Juanan",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q12391286",
+      "name": "Juanito Rodríguez",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q2705675",
+      "name": "Juanjo Camacho",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q66241169",
+      "name": "Jude Belligoal",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3811160",
+      "name": "Julio Chulilla Gazol",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q1712377",
+      "name": "Julio María Palleiro",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q55411020",
+      "name": "Julius García Alonso",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q15215546",
+      "name": "Jyula Kiszel",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q21621995",
+      "name": "Kylian Mbappé",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1068653",
+      "name": "Laureano Sanabria Ruiz",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q5981923",
+      "name": "Lautaro leguizamon",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q21070549",
+      "name": "Lin Liangming",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q88094314",
+      "name": "Luciano Boggio",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q15896123",
+      "name": "Luís Castro",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3658379",
+      "name": "Luis Fernando Mosquera",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q440855",
+      "name": "Luis García Fernández",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q19966743",
+      "name": "Luis Gorocito",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5983656",
+      "name": "Luis Hernández Rodríguez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q25367672",
+      "name": "Luismi Quezada",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q5989440",
+      "name": "Madrid de los García",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q4792838",
+      "name": "Mandi",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q12392655",
+      "name": "Manolo Posada",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q5399880",
+      "name": "Manu Barreiro",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3822972",
+      "name": "Manu Sánchez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5992949",
+      "name": "Manuel Fernández Valderrama",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q54161323",
+      "name": "Manuel González",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q962045",
+      "name": "Manuel Herrera Yagüe",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q16547050",
+      "name": "Manuel Pazos",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q12392807",
+      "name": "Manuel Quevedo",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16233643",
+      "name": "Marc de Val",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q22082505",
+      "name": "Marc Hagit Cucurella",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q20986365",
+      "name": "Marcial Arbiza",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q786680",
+      "name": "Marcos Alonso Peña",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q2436319",
+      "name": "Marcos Tébar",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q20831420",
+      "name": "Mathías Rodríguez",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q592084",
+      "name": "Matías Alustiza",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q47067627",
+      "name": "Maximiliano Cantera",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q1774715",
+      "name": "Maximiliano Estévez",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3853192",
+      "name": "Mayer Andrés Candelo García",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q669575",
+      "name": "Melinho",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q4443535",
+      "name": "Miguel Ángel Cordero",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2756907",
+      "name": "Miguel Ángel Guerrero",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q9032733",
+      "name": "Miguel García Martín",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q40854671",
+      "name": "Mink Peeters",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q30346721",
+      "name": "Moha Moukhliss",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q30345713",
+      "name": "Moha Ramos",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q548554",
+      "name": "Mutiu Adepoju",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3873355",
+      "name": "Natureza",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q5413781",
+      "name": "Nazario Belmar",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q597751",
+      "name": "Neider Morantes",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q316836",
+      "name": "Nenê",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q8273213",
+      "name": "Noé Acosta",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q7087474",
+      "name": "Oliver Cuadrado Martín",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q7089760",
+      "name": "Omar Mascarell",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q6050553",
+      "name": "Omar Tejeda",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3323170",
+      "name": "Óscar Díaz González",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q8078842",
+      "name": "Óscar Montalbán Ramos",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q4027141",
+      "name": "Óscar Plano",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q27825594",
+      "name": "Óscar Rodríguez Arnaiz",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q2316961",
+      "name": "Pablo César Aguilar \"El Capi Azulado\"",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q15831136",
+      "name": "Pablo Felipe Teixeira",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q582934",
+      "name": "Pablo Gil",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27974967",
+      "name": "Pablo Lemmel Malo de Molina",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q11686564",
+      "name": "Pablo Niño",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q6056700",
+      "name": "Pachuco Prats",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16494246",
+      "name": "Pascual Botella",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q89418456",
+      "name": "Pedro Ruiz Delgado",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q140800599",
+      "name": "Pepín Menéndez",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7182527",
+      "name": "Phil Walsh",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q6206493",
+      "name": "Quini",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q114630463",
+      "name": "Rafa Verdú",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q7282226",
+      "name": "Rafael Morera López",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q114626432",
+      "name": "Rafael Verdú Fernández",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q15135892",
+      "name": "Rafael Wellington",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q12398521",
+      "name": "Rafael Yunta",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q122583363",
+      "name": "Raúl Asencio",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q3930849",
+      "name": "Raúl Valbuena",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q654903",
+      "name": "Renato Ibarra",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q96401751",
+      "name": "Ricardo Álvarez",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q372386",
+      "name": "Riki",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q376394",
+      "name": "Rodrigo",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q42728914",
+      "name": "Rodrygo",
+      "position": "winger",
+      "slot": "FW"
+    },
+    {
+      "id": "Q18747680",
+      "name": "Román Galarraga",
+      "position": "goalkeeper",
+      "slot": "GK"
+    },
+    {
+      "id": "Q15201097",
+      "name": "Rubén Belima",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q658566",
+      "name": "Rubén Pulido",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16235035",
+      "name": "Rubén Sobrino",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q1255561",
+      "name": "Samuel Sáiz",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q17413409",
+      "name": "Santiago Losada Amor",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q3949437",
+      "name": "Santiago Villafañe",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q16054129",
+      "name": "Santos Bedoya",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q16146625",
+      "name": "Sergio Aguza",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q3296570",
+      "name": "Sergio Díaz",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q18357051",
+      "name": "Sergio Díaz",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q523965",
+      "name": "Sergio Sánchez Ortega",
+      "position": "centre-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q537339",
+      "name": "Sherman Cárdenas Estupiñan",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q9352686",
+      "name": "Szymon Matuszek",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q27830882",
+      "name": "Tang Shi",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q135682148",
+      "name": "Thiago Pitarch",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q2351502",
+      "name": "Toni Moral",
+      "position": "wing half",
+      "slot": null
+    },
+    {
+      "id": "Q27569376",
+      "name": "Trent Alexander-Arnold",
+      "position": "full-back",
+      "slot": "DF"
+    },
+    {
+      "id": "Q123226124",
+      "name": "Valentín Gual",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q636318",
+      "name": "Víctor",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q30345046",
+      "name": "Víctor Chust",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q27876",
+      "name": "Víctor Pérez Alonso",
+      "position": "midfielder",
+      "slot": "MF"
+    },
+    {
+      "id": "Q28973866",
+      "name": "Vinícius Júnior",
+      "position": "forward",
+      "slot": "FW"
+    },
+    {
+      "id": "Q9096005",
+      "name": "Wilker Ángel",
+      "position": "defender",
+      "slot": "DF"
+    },
+    {
+      "id": "Q618623",
+      "name": "Yé-yé",
+      "position": null,
+      "slot": null
+    },
+    {
+      "id": "Q108159340",
+      "name": "Αrda Güler",
+      "position": "attacking midfielder",
+      "slot": "MF"
+    }
+  ]
+}
