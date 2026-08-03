@@ -32,6 +32,19 @@ Memory is **good at rules, bad at status**. A note saying "build 43 is live" exp
 Before claiming something is unbuilt, missing, or broken:
 
 - **Search by content, not by planned name.** Things get built under different names. `grep` the behaviour, the RPC, the CSS class, the route — not the noun from the roadmap.
+- **Check the OTHER half before you build your half.** 2026-08-03: asked for
+  "see what others answered at the MP reveal", I designed a table, an RPC and
+  a client wrapper from scratch. The entire client half already existed —
+  `revealPicks` state, a `picksByOption` memo, the full avatar row with a +N
+  overflow and an aria-label — sitting inert and waiting for a migration it
+  named in a comment (`v1_3_mp_reveal_picks`). The real change was four lines
+  of SQL. My redundant RPC had to be dropped again. **Features here are often
+  built inert on one side**, per the standing "land it inert rather than
+  half-wired" rule, so a missing backend does NOT imply a missing frontend.
+  Grep the feature's nouns across `src/screens/` before designing anything.
+  The inert half is also usually better than what you would write fresh: the
+  existing `reveal_question` gate had a 19.5s clock-drift margin and a
+  survival-mode clause that my from-scratch version missed.
 - **Line numbers in memory and audits have drifted.** Locate by content.
 - **Prod status is unknowable from the repo.** The repo shows what is *cut*, never what is *approved* or *deployed*. For App Store / Play / AdSense state: ask, or read it via the browser (the user's Chrome is paired — Play Console, App Store Connect, AdSense, Search Console are all readable).
 - **Check what production actually serves** before claiming a fix is or isn't live: `curl https://balliq.app/...`. Local commits are not deployed; a branch is not `main`.
