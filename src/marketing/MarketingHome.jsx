@@ -1,3 +1,10 @@
+// The Scouting Report layer (paper, ink, the verdict ramp, --sp* spacing).
+// Imported HERE rather than in main.jsx on purpose: this is the only surface
+// that uses it, and the 191 generated pages must not carry its bytes. Vite
+// emits it as a dependency of this chunk and injects the <link> before the
+// module evaluates, so there is no unstyled frame. The shared dark palette
+// (--bg/--card/--bd/--tx/--grn) still comes from the entry's tokens.css.
+import '../design/report.css';
 import {
   Target, Menu, X,
   Brain, Smartphone, Star, Globe, ClipboardList, Timer, Flame, Zap, Trophy,
