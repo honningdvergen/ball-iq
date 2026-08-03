@@ -2333,6 +2333,81 @@ ${footer()}`;
 }
 
 // ── /lists hub ──────────────────────────────────────────────────────────────────
+// ── /partners/ — the page a publisher lands on from the pitch ────────────────
+//
+// WHY THIS EXISTS. The one lever that lifts the whole domain rather than one
+// page at a time is a recurring media partnership: fcquiz.app outranks us on
+// our North Star term because FotMob publishes their quiz every Friday with
+// two dofollow links, syndicated across ~12 locale URLs. See
+// docs/PARTNERSHIP-PITCH.md for the full mechanic and target tiers.
+//
+// The first reply to any such pitch is "sounds interesting, send an example".
+// This is the example. It has to exist BEFORE the first email goes out, or the
+// pitch points at nothing.
+//
+// ⚠️ DELIBERATELY UNBRANDED. It would be easy to mock this up carrying a
+// target's name and logo to make the pitch concrete — do NOT. Publishing a
+// page dressed as another company's before any agreement exists is passing
+// off, and it is exactly the kind of thing a publisher's legal team notices
+// instead of the offer. Per-partner hubs at /partners/<outlet>/ get built when
+// an outlet says yes, not before.
+// DELIBERATELY NOT IN THE FOOTER OR THE SITEMAP. The footer has exactly three
+// site-wide link slots and they were re-pointed at pages we are trying to
+// RANK (see the note in footer()); spending one on a B2B page would trade away
+// real equity for nothing. This page's job is to be the destination of a link
+// in an outreach email, and that works whether or not Google indexes it. If a
+// partnership lands, /partners/<outlet>/ hubs DO belong in the sitemap — a
+// partner's inbound link should point at an indexable page.
+function buildPartnersPage(hints) {
+  const canonical = `${SITE.base}/partners/`;
+  // A real, playable sample — a publisher should be able to try the thing they
+  // are being offered, not read a description of it. Ten questions is the
+  // weekly format the pitch actually promises.
+  const sample = arcPick(hints, Math.min(10, hints.length));
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Partners', item: canonical },
+        ],
+      },
+    ],
+  });
+  const html = `${head({
+    title: 'Free Weekly Football Quiz for Publishers | Ball IQ',
+    description: 'We build a branded football quiz for your site every week, ready to publish. Free, no work at your end. See a live sample.',
+    canonical, ld, taster: true,
+  })}
+<main>
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Partners</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">A free weekly football quiz for your readers</h1>
+<p style="margin:0 0 12px;color:var(--tx2)">Football quizzes are some of the most-read content a football site publishes, and the most tedious to produce. We already have the questions — ${'6,405'} of them, checked before they ship — so we will build yours and you can simply publish it.</p>
+<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What you get:</strong> ten questions on the week's football, branded to your site, delivered every Thursday as an embed or plain HTML — whichever your CMS prefers. Any club or competition angle you want. It is free, and it stays free.</p>
+<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What we ask:</strong> a credit line and a link back. That is the whole arrangement.</p>
+<p style="margin:0 0 12px;color:var(--tx2)"><strong style="color:var(--tx)">What it costs you:</strong> nothing, and no ongoing work. We write it, check it and hand it over ready to go.</p>
+</section>
+<section class="sec">
+<h2>Try this week's sample</h2>
+<p style="margin:0 0 14px;color:var(--tx2)">This is the real format, playable right here — exactly what your readers would get.</p>
+${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
+</section>
+<section class="sec narrow">
+<h2>Who is behind it</h2>
+<p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes and two daily games — Footle, a football word game, and Transfer Trail, a career-path puzzle. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
+<p style="margin:0 0 12px;color:var(--tx2)">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'partners');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: 'partners', canonical };
+}
+
 // Index page for every reference list. Gives the (otherwise sitemap-only) list
 // pages internal crawl paths + authority, and is itself an SEO page for
 // "football lists / records / winners". Linked from the shared footer.
@@ -3631,6 +3706,7 @@ async function main() {
   const listTasterIds = new Set();
   const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages, listTasterIds));
   buildListsHubPage(LISTS, clubPages, livePages);
+  buildPartnersPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
