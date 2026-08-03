@@ -79,6 +79,52 @@ the settled "content stays free, Pro = features" decision.
 against a mate, daily streaks, XP, Footle, Transfer Trail. Same lesson as the
 "every answer is explained" store-copy fix: the CTA has to be true.
 
+## 🔑 GSC READ 2026-08-03 — "175 dead pages" WAS WRONG. Nothing is dead.
+
+Alex opened GSC. It overturns the finding I recorded hours earlier, and the
+error was in my METHOD: Clarity measures SESSIONS, and at a 1.6% CTR our
+impressions convert to few enough visits that most pages cannot surface in a
+top-25 session list. Absence from Clarity is not absence from Google.
+
+**Indexing — healthy.** 151 indexed, 18 not. Of the 18: 2 alternates with a
+valid canonical (correct, not a fault), 1 "crawled – not currently indexed",
+15 "discovered – not currently indexed" (Google knows them, hasn't prioritised
+crawling). **There is no indexation problem and nothing technical to fix** —
+which the local audit predicted: 191/191 correct self-canonicals, zero
+noindex, robots.txt clean, IndexNow key live at 200.
+
+**Performance, 90 days — the real picture.**
+    impressions   20,200          clicks   314
+    CTR            1.6%           avg position   20.9
+    **174 pages carry impressions**, not 19.
+    Impressions climbing STEEPLY since ~22 July.
+
+**We are not undiscovered. We are on page two.** 20k impressions at position
+~21 is a site being seen constantly and clicked rarely, because page two pays
+~1-2%. This is the authority ceiling stated in traffic terms, and it confirms
+[[project_football_quiz_head_term]] and [[project_ranking_diagnosis_2026_07_28]].
+
+**⭐ THE ACTIONABLE FINDING — club-page CTR varies 6x at similar positions:**
+| page | clicks | impressions | CTR |
+|---|---|---|---|
+| / | 79 | 497 | **15.9%** |
+| /quiz/rangers/ | 22 | 219 | **10.0%** |
+| /quiz/everton/ | 15 | 165 | 9.1% |
+| /quiz/tottenham/ | 22 | 469 | 4.7% |
+| /quiz/liverpool/ | 15 | 400 | 3.8% |
+| /quiz/newcastle/ | 7 | 234 | 3.0% |
+| /quiz/galatasaray/ | 13 | 506 | 2.6% |
+| /quiz/arsenal/ | 25 | **1,006** | 2.5% |
+| /quiz/chelsea/ | 7 | 362 | 1.9% |
+| /quiz/real-madrid/ | 6 | 373 | **1.6%** |
+
+Arsenal holds the most impressions on the site (1,006) at 2.5%, while Rangers
+converts 10%. **CTR at a fixed position is a TITLE/DESCRIPTION problem, and
+that is ours to fix, not an authority wait.** Closing Arsenal's gap to
+Rangers' rate alone would roughly quadruple its clicks from existing
+impressions. Today's "& Answers" retitle targets exactly this — the fortnight
+watch (~2026-08-17) now has a precise before-baseline to measure against.
+
 ## SEO REVIVAL ATTEMPT 2026-08-03 — four hypotheses, four falsified
 
 **The scale of the problem: 175 of 194 pages get essentially no traffic** (90%).
