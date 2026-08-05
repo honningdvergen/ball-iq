@@ -20,6 +20,9 @@ on:
 jobs:
   build-and-unit:
     runs-on: ubuntu-latest
+    # Bounded on purpose. This job takes ~1 minute; 15 leaves generous room
+    # while guaranteeing it can never sit burning Actions minutes.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -45,6 +48,17 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    # ⚠️ ADDED 2026-08-06 after this job ran for FIVE HOURS TEN MINUTES before
+    # failing — and had been doing 5-11 hours on every push for days. With no
+    # timeout-minutes a job inherits GitHub's 6-hour default, and this config
+    # uses workers:1 with retries:2, so one hung test blocks the queue serially
+    # and then does it twice more.
+    #
+    # continue-on-error made it worse, not better: the run was never "failing"
+    # in a way that demanded attention, it was just always yellow and always
+    # slow, so nobody looked. A job that cannot fail loudly must at least be
+    # unable to run forever.
+    timeout-minutes: 20
     # Not yet a gate — see header comment. Flip to strict (remove this line)
     # once the suite has proven reliably green in CI.
     continue-on-error: true

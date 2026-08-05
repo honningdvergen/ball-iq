@@ -16,6 +16,12 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+  // ⚠️ Belt and braces with the job-level timeout-minutes in ci.yml. A single
+  // spec that hangs used to cost 5+ hours of Actions time per push: workers:1
+  // serialises everything behind it and retries:2 repeats the hang twice.
+  // globalTimeout caps the WHOLE run; timeout caps one test.
+  timeout: 30_000,
+  globalTimeout: process.env.CI ? 15 * 60_000 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     // Local vite dev server by default (started by webServer below). The
