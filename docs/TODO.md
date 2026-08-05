@@ -1444,3 +1444,68 @@ over corrupt inputs.
 an uncapped Englishman is "United Kingdom" and will not match a capped
 "England". Needs place-of-birth (P19). Tolerable — the schedule is fame-weighted
 and uncapped players are never the answer.
+
+---
+
+## 🔴 THE BOTTLENECK HAS MOVED — funnel re-measured against prod 2026-08-05
+
+⚠️ **Supersedes "the bottleneck is activation, not distribution."** That was
+true at 15%. It is not true now. Measured directly against prod.
+
+### Activation by signup-week cohort
+
+    Jul 06   16 signups   43.8%
+    Jul 13   21 signups   33.3%   <- trough
+    Jul 20   35 signups   74.3%
+    Jul 27   22 signups   81.8%
+    Aug 03   12 signups   66.7%   (partial week)
+
+**The activation fix wave WORKED: 33% -> 82%.** Nobody had re-queried after
+shipping it, so a successful fix went unrecognised for weeks. Re-measure after
+shipping a fix; "we shipped it" is not "it worked".
+
+### Retention is healthy too (81 players ever)
+
+    returned on 2+ days     58 of 81   71.6%
+    played on 7+ days       15
+    active in last 7 days   41 of 81
+    active in last 30 days  70 of 81
+    average active days     4.1
+
+### => THE CONSTRAINT IS NOW RAW SIGNUP VOLUME
+
+~135 accounts, 20-35 signups a week. At ~80% activation and ~72% return, every
+extra signup converts almost linearly. **Distribution is the lever, and it is
+the one we have invested least in.**
+
+⚠️ **MEASUREMENT TRAP — it changes the answer.** `scores` records only
+survival/daily/classic/wc2026/chaos/legends. Footle, Club Quiz and League Quiz
+write NOTHING to it, and Footle is the most-played mode (it lives in
+`user_game_state.wordle_state`). Measuring activation from `scores` alone
+undercounts by 5-11 points per cohort — it reports the latest cohort as 72.7%
+when it is 81.8%. Always UNION `scores` with `user_game_state`
+(wordle_state + daily_scores). The thing we measure least is what people do most.
+
+### Priority order that follows from this (2026-08-05)
+
+1. **Partnership pitch** — the only lever that MULTIPLIES signups rather than
+   adding a page at a time, and it targets the real ceiling (authority, #51 vs
+   #8). Blocked on: verifying the OneFootball + Flashscore quiz claims, and on
+   Alex choosing to send. Sofascore is verified; the other two are NOT.
+2. **Ship Android 1.5.0** — a whole store surface still on 1.4.1, with Mystery
+   Player and Transfer Trail undelivered. iOS 1.5.0 is synced and staged behind
+   1.4.0 (see the store section — do NOT withdraw 1.4.0; build 53 was never
+   uploaded, so withdrawing buys nothing and costs the queue slot).
+3. **Web pages for Mystery Player + Transfer Trail** — two finished games with
+   no search surface. Same gap that left the Trail dark for days.
+4. **Design audit across the screens** (Alex's ask). ⚠️ Refinement: activation
+   is solved, so the leverage is no longer the in-app drop-off screens — it is
+   the PRE-SIGNUP surface (marketing home, club pages, the path to account
+   creation), because that is where the constraint now sits.
+5. **Club-pack answer leaks (~17%)** — protects the 72% return rate rather than
+   growing the top. Chunked verifiers structurally cannot see pair-leaks.
+
+### ALEX WANTS (queued, not yet done)
+A deeper read of these numbers and a plan to improve them further — e.g. where
+the 20-35 weekly signups actually come from, and which surface converts best.
+Needs a source/attribution query; `scores` will not answer it.
