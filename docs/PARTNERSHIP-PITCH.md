@@ -64,38 +64,55 @@ Norwegian outlet has a far higher hit rate than a cold English one to 90min.
 
 ---
 
-## ⚠️ VERIFY BEFORE YOU SEND — the "you don't have a quiz" claim
+## ✅ VERIFIED 2026-08-05 — and ONE TARGET IS NOW DEAD
 
-The whole pitch hangs on this line, and it came from an agent report that
-flagged parts of itself as unverified. Alex, correctly: "we might only get one
-shot at this."
+The whole pitch hangs on "you don't have an equivalent". Alex: "we might only
+get one shot at this." All three Tier 1 targets are now checked. **The agent
+report that asserted a gap at all three was WRONG.**
 
-**SOFASCORE — checked 2026-08-03. The claim needs rewording, not dropping.**
-- ✅ No quiz feature in the current product. The Play Store and App Store
-  listings describe scores, stats, heatmaps, shotmaps, player ratings and
-  player-of-the-match voting — no quiz anywhere.
-- ⚠️ **BUT they have run quizzes before**: a "SofaQuiz" posted to their
-  Facebook (2020) and a Playbuzz quiz under a SofaScore account (2017). Both
-  are one-offs on third-party platforms, not a product feature — but an editor
-  who remembers them will bristle at "you don't have an equivalent."
-  **Say "you don't run a regular quiz" instead of "you don't have one."**
-- ⭐ **THE GIFT**: a public App Store review of Sofascore reads *"I wished for
-  the app to be more fun, add quizzes, score predictions, lineup builders LIKE
-  FOTMOB."* That is a Sofascore user, unprompted, asking for a quiz and naming
-  FotMob as the one who has it. Quote it in the pitch — it is far stronger than
-  us asserting the gap, because it is their own audience saying it.
+### ❌ ONEFOOTBALL — DO NOT SEND. The premise is flatly false.
 
-**ONEFOOTBALL and FLASHSCORE — NOT YET VERIFIED. Do not send to either until
-checked the same way.** The agent report asserted the gap; I have only
-confirmed Sofascore. Treat the other two as unproven.
+OneFootball has a **fully built, gamified quiz product**, not a gap:
+- **"Quiz of the Week"** published every Monday (e.g. 25 May 2026).
+- A **daily World Cup quiz series** — a new quiz every day for 20+ days before
+  the 2026 tournament.
+- Quizzes are a **core in-app feature** of the OneFootball Club loyalty
+  programme: their own help centre lists "engaging quizzes, games" in the
+  Profile section, XP earned by "participating in quizzes", badges for quiz
+  participation, and daily/weekly/monthly Challenges.
 
-## Tier 1 targets — score apps with a competitive gap (best odds)
+Their quiz offering is more developed than what we would be offering them.
+Sending the pitch would have been instantly, checkably wrong to any editor who
+opened their own app — the exact door-burning Alex was worried about.
 
-| Target | Why them | Angle |
-|---|---|---|
-| **Sofascore** | FotMob's biggest direct rival; huge audience; no quiz feature | The competitive-gap pitch, verbatim |
-| **OneFootball** | Editorial-heavy, publishes constantly, no quiz engine | Free weekly content for a content-hungry newsroom |
-| **Flashscore** | Enormous reach, thin editorial | Cheapest possible way to add engagement content |
+### ⚠️ FLASHSCORE — viable, but reword. They publish quiz CONTENT.
+
+- No in-app quiz feature, and **no regular playable quiz** — that part holds.
+- BUT they run occasional quiz editorial: an annual **"Quiz of the Year"**
+  (30 questions, scroll-for-answers) and a 2026 **"World Cup Questions"** video
+  series quizzing fans in the street, pushed on their YouTube channel.
+- So say **"you don't run a regular playable quiz"**, never "you don't have
+  one". Their video series is actually a POSITIVE signal — it shows quiz
+  content is already on-brand for them; they just have no engine behind it.
+
+### ✅ SOFASCORE — still the best target (checked 2026-08-03)
+
+- No quiz feature in the current product.
+- ⚠️ They HAVE run one-offs before (a Facebook "SofaQuiz" in 2020, a Playbuzz
+  quiz in 2017). Same rule: **"you don't run a regular quiz"**, not "you don't
+  have one".
+- ⭐ THE GIFT: a public App Store review of Sofascore reads *"I wished for the
+  app to be more fun, add quizzes, score predictions, lineup builders LIKE
+  FOTMOB."* Their own user, unprompted, asking for a quiz and naming the rival
+  who has it.
+
+### ⭐ THE REFRAME — the OneFootball finding makes the pitch STRONGER
+
+Losing a target sounds like a setback. It is not. We now have **two** major
+score apps running quizzes, not one: FotMob (via fcQuiz) and OneFootball (in
+their loyalty programme). That turns the pitch from "your rival does this" into
+"this is becoming table stakes for score apps, and you are the one without it."
+Name both.
 
 ## Tier 2 — football editorial that already publishes quizzes
 
