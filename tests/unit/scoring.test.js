@@ -23,11 +23,25 @@ describe("getLevelInfo", () => {
     expect(progress).toBe(50);
   });
 
-  it("max level: Legend, no next level, progress pinned at 100", () => {
-    const { level, nextLevel, progress } = getLevelInfo(9999);
-    expect(level.name).toBe("Legend");
+  // ⚠️ Pinned to LEVELS itself, not to a hard-coded name. This test asserted
+  // "Legend" at 9999 XP and went red the moment the ladder was extended
+  // upward with Icon (8,000) and Immortal (20,000) — and stayed red unnoticed,
+  // because `npm run build` runs eslint and the content audits but not vitest.
+  // Deriving the top rung means the next extension cannot silently break it.
+  it("top rung has no next level and progress pinned at 100", () => {
+    const top = LEVELS[LEVELS.length - 1];
+    const { level, nextLevel, progress } = getLevelInfo(top.xpNeeded + 1);
+    expect(level.name).toBe(top.name);
     expect(nextLevel).toBeNull();
     expect(progress).toBe(100);
+  });
+
+  it("an XP total inside the ladder reports the rung above it", () => {
+    // 9999 used to be 'max'. It is now mid-ladder, which is the whole point of
+    // the extension — nobody who had maxed out was left with nothing to climb.
+    const { level, nextLevel } = getLevelInfo(9999);
+    expect(level.name).toBe("Icon");
+    expect(nextLevel?.name).toBe("Immortal");
   });
 
   it("LEVELS thresholds are strictly increasing from 0", () => {

@@ -1383,3 +1383,64 @@ Proposal for Alex (do NOT ship unilaterally — item 2 is a football judgment):
      real player spends their last guesses.
 
 Bring (a)/(b) as before/after rankings, not as a shipped change.
+
+### ✅ RESOLVED 2026-08-05 — and the real defect was worse than filed
+
+All five items above are fixed and pushed. Two of the diagnoses in the section
+above were WRONG, and the corrections matter more than the fixes:
+
+**1. "Jude Bellingham missing" — he was never missing.** He is in the pool as
+`Q66241169` under the label **"Jude Belligoal"**, which is the LIVE Wikidata
+value, not a stale snapshot (alias vandalised to match). Searching our own data
+for "Bellingham" found nothing, which is exactly why it read as absent.
+
+⚠️ **The structural finding: Mystery Player renders text from a wiki anyone can
+edit, with no review step, and the same strings ship inside the iOS and Android
+binaries.** A football pun is the benign version of that. Footle and the Trail
+both use curated name data; this mode skipped it. Now guarded by
+`scripts/_name-overrides.mjs` + `scripts/fix-pool-names.mjs`, and by a unit test
+that asserts a roster of household names is guessable.
+
+**2. The career data was the big one, not the squads.** `fetch-careers.mjs` used
+`wdt:P54` — the TRUTHY prefix, which returns only preferred-rank statements.
+Rabiot came back as one club. 90% of scheduled answers had no career history, so
+the 420-point shared-club term was dead; on the other 11% it was *corrupted*,
+scoring national teams as clubs (Ben Old ranked 35, HOT GREEN, on a Chris Wood
+puzzle for sharing New Zealand caps).
+
+  national teams scored as clubs   1,894 -> 0
+  answers with real career history    44 -> 384 of 400
+  nationality values corrected                   404
+
+⚠️ `fetch-squads.mjs` documents the OPPOSITE symptom of the same prefix (175
+"current" Arsenal players). The rule is **rank, not recency, decides what truthy
+means** — the old comment stated the half-truth and that is what made it
+trustworthy-looking here.
+
+**Label rules were tried and rejected three times, each caught by checking the
+actual matches first:** `/national/` deletes Atlético Nacional, `/\bII\b/`
+deletes Willem II, `/Academy/` deletes Ferenc Puskás Football Academy. All real
+clubs. Exclusion is on the team's P31 CLASS, and the script prints every
+excluded and kept class as an audit — which caught four classes my hand-written
+pattern had missed.
+
+**Found in passing, both fixed:**
+- `gen-footle-practice.mjs` joined `["", "Volkan"]` to `" Volkan"`. 33 of the
+  Footle pool are stored with an empty first-name slot (PELE, NEYMAR, RAUL,
+  XAVI, CASEMIRO, VINICIUS…), so ~1 rotation in 12 shipped a leading space.
+- `matchGuess` compared only the LAST name part, so every multi-word surname
+  failed: "de Ligt", "van Dijk", "De Bruyne", "Di María" all matched nothing.
+- `tests/unit/scoring.test.js` had been RED since the ladder extension (asserted
+  "Legend" at 9999 XP). Nobody saw it because **`npm run build` runs eslint and
+  the content audits but NOT vitest.** Now pinned to `LEVELS` itself.
+  ⚠️ Consider adding vitest to the build chain — that is the actual gap.
+
+**STILL OPEN — Alex's call, unchanged:** the weighting proposal (nationality 220
+vs league country 300, plus partial credit for confederation). Now worth
+re-measuring on the repaired data before deciding; the old numbers were taken
+over corrupt inputs.
+
+**Residual, documented not hidden:** ~370 uncapped players keep citizenship, so
+an uncapped Englishman is "United Kingdom" and will not match a capped
+"England". Needs place-of-birth (P19). Tolerable — the schedule is fame-weighted
+and uncapped players are never the answer.

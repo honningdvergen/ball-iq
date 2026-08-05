@@ -24,6 +24,37 @@ describe('mystery player pool', () => {
     }
   });
 
+  it('lets a fan guess the household names by the name they would type', () => {
+    // ⚠️ THIS IS AN UPSTREAM-VANDALISM GUARD, not a spelling test.
+    //
+    // The pool is generated from Wikidata, so the names we render are editable
+    // by anyone, with no review step between a wiki edit and a live daily
+    // puzzle — and the same strings ship inside the iOS and Android binaries.
+    //
+    // Jude Bellingham was in the pool as "Jude Belligoal" for two days. A
+    // player typing "Bellingham" was told no such player existed, and because
+    // searching our own data for "Bellingham" also found nothing, it was
+    // misdiagnosed as a MISSING player rather than a renamed one.
+    //
+    // Every name here is a player a football fan would expect to be able to
+    // guess. A failure means either the pool lost them (a squad-query
+    // regression) or someone upstream changed their name — check which before
+    // reaching for scripts/_name-overrides.mjs.
+    // ⚠️ Full names for Bellingham and Mbappé ON PURPOSE. The pool holds Jude
+    // AND Jobe Bellingham, Kylian AND Ethan Mbappé, so those surnames are
+    // genuinely ambiguous and matchGuess is right to refuse them — the
+    // autocomplete is what disambiguates in the UI. Worth noting that while
+    // Jude was mislabelled, "Bellingham" resolved cleanly... to Jobe.
+    // 'de Ligt' stays as a bare multi-word surname: that one has exactly one
+    // match and used to fail, because only the final name part was compared.
+    const household = [
+      'Jude Bellingham', 'Haaland', 'Kylian Mbappé', 'Vinícius Júnior', 'Rodri',
+      'Donnarumma', 'Pickford', 'de Ligt', 'Isak', 'Gavi',
+    ];
+    const missing = household.filter((n) => !matchGuess(pool, n));
+    expect(missing).toEqual([]);
+  });
+
   it('holds nobody implausibly old for a current squad', () => {
     // Ze Roberto (b. 1974) and Steve Harper (b. 1975) both survived the first
     // filter pass because their memberships were never end-dated.

@@ -456,18 +456,6 @@
     "fame": 19
   },
   {
-    "id": "Q2617208",
-    "name": "Alan Pulido",
-    "club": "Real Madrid",
-    "slot": "FW",
-    "position": "forward",
-    "nat": "Mexico",
-    "born": 1991,
-    "dob": "1991-03-08",
-    "country": "Spain",
-    "fame": 28
-  },
-  {
     "id": "Q3329570",
     "name": "Alan Ruiz",
     "club": "Sporting CP",
@@ -514,18 +502,6 @@
     "dob": "1999-10-22",
     "country": "Germany",
     "fame": 29
-  },
-  {
-    "id": "Q19845456",
-    "name": "Alberto Abalde",
-    "club": "Real Madrid",
-    "slot": "FW",
-    "position": "small forward",
-    "nat": "Spain",
-    "born": 1995,
-    "dob": "1995-12-15",
-    "country": "Spain",
-    "fame": 16
   },
   {
     "id": "Q16524787",
@@ -9385,7 +9361,7 @@
   },
   {
     "id": "Q66241169",
-    "name": "Jude Belligoal",
+    "name": "Jude Bellingham",
     "club": "Real Madrid",
     "slot": "MF",
     "position": "midfielder",

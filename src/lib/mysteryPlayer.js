@@ -159,11 +159,20 @@ export function matchGuess(pool, text) {
   // Surname-only guesses are the common case ("saka", "odegaard"), but only
   // accept one if it is UNAMBIGUOUS — two players sharing a surname must not
   // silently resolve to whichever sorts first.
-  const surname = pool.filter((p) => {
+  //
+  // ⚠️ Match any TRAILING RUN of name parts, not just the last one. Comparing
+  // only the final token silently failed every multi-word surname in the game:
+  // "de Ligt" split to ["matthijs","de","ligt"], the last part is "ligt", and
+  // the guess "de ligt" matched nothing at all — despite exactly one such
+  // player existing. Same for van Dijk, De Bruyne, Di María, Van de Beek.
+  // Comparing part-aligned suffixes keeps "ligt" working too, so this is
+  // strictly more permissive without loosening the ambiguity rule below.
+  const suffix = pool.filter((p) => {
     const parts = normaliseName(p.name).split(' ');
-    return parts[parts.length - 1] === q;
+    for (let i = parts.length - 1; i >= 0; i--) if (parts.slice(i).join(' ') === q) return true;
+    return false;
   });
-  return surname.length === 1 ? surname[0] : null;
+  return suffix.length === 1 ? suffix[0] : null;
 }
 
 // ── Persistence + streak ────────────────────────────────────────────────────
