@@ -852,6 +852,7 @@ var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
 var total=qs.length,name=root.getAttribute('data-name')||'this club';
 var tiers=(root.getAttribute('data-tiers')||'').split('|');
 var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
+var play=root.getAttribute('data-play')||'/play';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
@@ -878,9 +879,10 @@ paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
 function finish(){
 rounds++;var G=grade(sc,run.length),left=total-run.length+more;
-var cont=(rounds<2&&total>run.length)
+var cont='<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
++((rounds<2&&total>run.length)
 ?'<a href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
-:'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
+:'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
@@ -919,7 +921,23 @@ root.classList.add('bq-live');start(Math.min(10,total));
 
 // rows = every question the page ships. `more` = how many further questions the
 // full pack holds beyond these, used for the honest app line at the end.
-function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '' }) {
+// ⚠️ `play` — the link INTO the product from the result screen.
+// Measured 2026-08-05: this widget runs on 124 English club pages (the ones
+// carrying essentially all the search traffic) and, before this parameter
+// existed, offered NO path into the app at all. Round 1 sent you to '#quiz' —
+// replay the same page — and round 2 sent you to the store, which on mobile
+// leaves the web funnel entirely. The word "account" appeared on a club page
+// only inside a meta tag.
+//
+// The other taster (renderTaster, used on just 10 pages, eight of them
+// localised near-orphans) already had "Play the full X quiz →". The good
+// done-state existed; it simply ran on the pages nobody visits.
+//
+// Deep link verified, not assumed: App.jsx:9136 reads ?club= / ?quiz=, and
+// :9166 calls launchClubQuiz/launchLeagueQuiz. The searchParams.delete() at
+// :9142 only tidies the DISPLAYED url via replaceState AFTER the value is
+// consumed — it does not discard it. UTM params are deliberately preserved.
+function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = `${SITE.base}/play` }) {
   const items = rows
     .map(shuffleOptions)
     .map((r) => {
@@ -941,7 +959,7 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '' }) {
         .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? `${n} Full set` : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
         .join('')}</div>`
     : '';
-  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-more="${more}" data-badge="${esc(badge)}">
+  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}">
 <div class="bq-head">${picker}
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>
@@ -1580,7 +1598,7 @@ ${heroTwoCol({
       { n: hard, label: 'hard ones' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length) }))}
+  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
 ${adSlot('afterQA')}
@@ -1906,7 +1924,7 @@ ${heroTwoCol({
       { n: hard, label: 'hard ones' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, play: `${SITE.base}/play?club=${cfg.slug}` }))}
 ${adSlot('afterQA')}
 ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts every
      club page at 13-29% scroll depth while /play reaches 95% and the /lists
