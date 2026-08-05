@@ -61,8 +61,17 @@ if (number >= todayNumber) {
 }
 // WORDLE_FULL_NAMES values are ARRAYS — ["Wesley","Sneijder"] — the same data
 // shape behind the SNIJDER unwinnable-puzzle incident. Join, don't assume.
+// ⚠️ The tuple is [firstNamePrefix, properSurname] and the PREFIX IS OFTEN
+// EMPTY — single-name players are stored as ["", "Volkan"] on purpose (PELE,
+// NEYMAR, KEPA, ISCO, ANTONY, VOLKAN...). A plain join(' ') then yields
+// " Volkan", with a leading space and no first name, which is what this file
+// shipped when the rotation reached Footle #64.
+// App.jsx renders `{prefix && <>{prefix} </>}<strong>{surname}</strong>` — it
+// drops the separator entirely when there is no prefix. Match that rule rather
+// than inventing a second one, so the marketing page and the app can never
+// disagree about a player's name.
 const fullRaw = WORDLE_FULL_NAMES[answer] || null;
-const full = Array.isArray(fullRaw) ? fullRaw.join(' ') : fullRaw;
+const full = Array.isArray(fullRaw) ? fullRaw.filter(Boolean).join(' ') : fullRaw;
 if (!full || typeof full !== 'string') {
   console.error(`[footle-practice] ${answer} has no usable full name — refusing`);
   process.exit(1);
