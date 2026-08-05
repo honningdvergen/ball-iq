@@ -1016,7 +1016,13 @@ ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
                there is more to say" and not "every answer". The store copy
                currently overclaims exactly this and is logged as task #63.
       Regenerate from src/questions.js before editing these figures. */ ''}
-<p class="editorial">This is one set from a bank of ${QB.length.toLocaleString('en-GB')} questions spanning 72 clubs, every major league and eight decades of football.</p>
+${/* ⚠️ NEVER PRINT THE EXACT QUESTION COUNT — binding product rule.
+      This line used to interpolate QB.length and shipped "a bank of 6,405
+      questions" onto every club page, while the hand-written homepage block
+      said 6,409. An editor auditing the site found both within one click.
+      "Thousands" says the same thing, cannot go stale, and cannot disagree
+      with another page. */ ''}
+<p class="editorial">This is one set from a bank of thousands of questions spanning 72 clubs, every major league and eight decades of football.</p>
 </section>`;
 }
 

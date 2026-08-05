@@ -81,6 +81,14 @@
       "destination": "/api/footle"
     },
     {
+      "source": "/reset",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/reset/(.*)",
+      "destination": "/index.html"
+    },
+    {
       "source": "/play",
       "destination": "/index.html"
     },
