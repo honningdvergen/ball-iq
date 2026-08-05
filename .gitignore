@@ -42,3 +42,4 @@ supabase/prod-snapshot/pg_dump-baseline.raw.sql
 android/.idea/deploymentTargetSelector.xml
 android/.idea/runConfigurations.xml
 .shots/
+.cache/
