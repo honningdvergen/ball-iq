@@ -17,7 +17,11 @@ import path from 'node:path';
 const [,, outPath, repoRoot] = process.argv;
 if (!outPath || !repoRoot) { console.error('usage: node process-wave-j.mjs <output.json> <repo-root>'); process.exit(1); }
 
-const CLUB_FIELD = { Bournemouth: 'Bournemouth', Brentford: 'Brentford', Burnley: 'Burnley', Wolves: 'Wolves', Coventry: 'Coventry City', HullCity: 'Hull City' };
+// ⚠️ EDIT PER WAVE: workflow club key -> the QB `club` display name.
+// An unmapped key is SKIPPED with a report line rather than guessed — that is
+// deliberate, because a wrong club field puts questions in the wrong pack and
+// nothing downstream would catch it.
+const CLUB_FIELD = { Santos: 'Santos', RealSociedad: 'Real Sociedad' };
 
 const decode = (s) => String(s ?? '')
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')

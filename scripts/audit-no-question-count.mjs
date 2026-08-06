@@ -31,7 +31,7 @@ const ROOT = 'dist';
 // Bare four-figure numbers are everywhere in football copy — years, crowds,
 // transfer fees. Only flag a number that is TIED TO QUESTIONS by its wording.
 const PATTERNS = [
-  /\b\d{1,3},\d{3}\s+(?:hand-curated\s+|hand-checked\s+|verified\s+|checked\s+|fact-checked\s+)?(?:football\s+trivia\s+)?questions\b/gi,
+  /\b\d{1,3},\d{3}\+?\s+(?:hand-curated\s+|hand-checked\s+|verified\s+|checked\s+|fact-checked\s+)?(?:football\s+)?(?:trivia\s+)?questions\b/gi,
   /\bbank of\s+\d{1,3},?\d{3}\b/gi,
   /\b\d{1,3},\d{3}\s+questions\s+in\s+the\s+bank\b/gi,
   /\bquestions?\s*:\s*\d{1,3},\d{3}\b/gi,

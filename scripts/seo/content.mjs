@@ -349,7 +349,7 @@ export const FOOTLE_PAGE = {
   ],
   body: [
     `Footle is Ball IQ's daily football word game — Wordle, but the answer is always a footballer. Every day there is one footballer to find, the same for everyone, and six guesses to find them. The tiles tell you how close you are: green for a letter in the right place, yellow for a letter that is in the surname but somewhere else, grey for a miss. Unlike classic Wordle, the surnames are not locked to five letters — SALAH is a very different puzzle from LEWANDOWSKI — so the size of the grid is itself a clue.`,
-    `It is free, plays right in the browser, and needs no account. When you solve it (or run out of guesses), you get the shareable emoji grid — "⚽ Ball IQ Footle #64 3/6" — to compare with your friends. In the free Ball IQ app, Footle also tracks your solve streak, and sits alongside the daily quiz challenge, 4,000+ fact-checked trivia questions and live multiplayer.`,
+    `It is free, plays right in the browser, and needs no account. When you solve it (or run out of guesses), you get the shareable emoji grid — "⚽ Ball IQ Footle #64 3/6" — to compare with your friends. In the free Ball IQ app, Footle also tracks your solve streak, and sits alongside the daily quiz challenge, thousands of fact-checked trivia questions and live multiplayer.`,
   ],
   faq: [
     { q: 'What is Footle?', a: "Footle is a daily football version of Wordle by Ball IQ: guess the footballer's surname in six tries, with green, yellow and grey tiles guiding you. One puzzle per day, the same player for everyone." },
@@ -357,5 +357,88 @@ export const FOOTLE_PAGE = {
     { q: 'When does a new Footle come out?', a: 'At midnight, local time. Everyone playing on the same calendar day gets the same footballer.' },
     { q: 'How is Footle different from Wordle?', a: "The answer is always a footballer's surname — legends and current stars alike — and the length varies from puzzle to puzzle, so the grid size is your first clue." },
     { q: 'Is this the same as other football Wordle games?', a: 'There are a few football guessing games out there — this one is Footle by Ball IQ, part of the Ball IQ football quiz game. If a friend shared a "⚽ Ball IQ Footle" emoji grid, this is where it came from.' },
+  ],
+};
+
+// ── /mystery-player/ and /transfer-trail/ — the two newest daily games ────────
+//
+// WHY THESE PAGES EXIST. Both games shipped and were then INVISIBLE: live,
+// finished, playable, and with no page pointing at them. That already cost us
+// once — the Transfer Trail sat done-and-dark for days because nothing linked
+// to it. Footle has /football-wordle/ and it is our most-played mode; these two
+// had nothing.
+//
+// ⚠️ SEARCH INTENT IS THE GENRE, NOT OUR NAME. Nobody searches "Mystery Player"
+// or "Transfer Trail" — those are our names for them, with no volume behind
+// them yet. People search the MECHANIC: "guess the footballer", "football
+// player guessing game", "guess the player from their transfers". So the h1 and
+// title lead with our name (brand) but the description, lede and body carry the
+// genre language a fan would actually type. Same trick that got
+// /football-wordle/ onto the "football wordle" SERP.
+//
+// ⚠️ We name no competitor and imitate no competitor's branding. The genre
+// descriptions below are plain English for what the game does.
+//
+// ⚠️ NEVER state the exact question count in this copy. Binding product rule,
+// gated by scripts/audit-no-question-count.mjs.
+export const MYSTERY_PAGE = {
+  slug: 'mystery-player',
+  game: 'Mystery Player',
+  alternateName: ['Guess the footballer', 'Football player guessing game'],
+  gameParam: 'mystery',
+  emoji: '🔍',
+  h1: 'Mystery Player — guess the secret footballer',
+  title: 'Mystery Player — Guess the Footballer Daily | Ball IQ',
+  description:
+    'Guess the secret footballer. Every guess is ranked by how close it is — club, league, position, nationality, age. Unlimited guesses, one a day, free.',
+  lede: 'One secret footballer a day. Every guess tells you how close you are — unlimited tries.',
+  statLine: 'Free · no sign-up · new player every day',
+  how: [
+    ['Name any player', 'Type any footballer from a top-club squad. There is no penalty for a wild first guess — it is information either way.'],
+    ['Read the rank', 'Every guess comes back with a number. That is where your player sits against the whole squad list for closeness to the secret one. The secret player is 1.'],
+    ['Use the colours', 'Green means you are hot — inside the top handful. Amber is warm. Grey means nothing in common worth chasing.'],
+    ['Narrow it down', 'Closeness weighs current club most, then clubs they have played for, league, nationality, position and age. A team-mate scores high; a keeper in another country does not.'],
+  ],
+  body: [
+    `Mystery Player is a daily football guessing game. There is one secret footballer, the same for everyone, and no limit on how many guesses you take to find them. What makes it work is the feedback: instead of a plain right or wrong, every name you try comes back with a rank showing how close that player is to the answer.`,
+    `Closeness is not a vibe — it is computed from things a football fan already thinks in. Playing for the same club counts for most. Sharing a club somewhere earlier in a career counts next. Then the league, the nationality, the position and how close in age the two players are. So guessing a team-mate of the answer lands you in the top ten immediately, while a goalkeeper in a different country tells you almost nothing except that you can rule out a whole direction.`,
+    `Everyone gets the same player on the same day, which is the point — a result is worth comparing. Solve it and you get a spoiler-safe grid to share that shows how your guesses ran hot and cold without giving the answer away. It is free, plays in the browser with no account, and the Ball IQ app keeps your solve streak.`,
+  ],
+  faq: [
+    { q: 'What is Mystery Player?', a: 'A daily football guessing game: one secret footballer, unlimited guesses, and every guess ranked by how similar that player is to the answer. The secret player is rank 1.' },
+    { q: 'How is the closeness ranked?', a: 'By attributes a fan already reasons about — current club first, then clubs the two players have both played for, league, nationality, position and age. Team-mates rank very high; a player with nothing in common ranks very low.' },
+    { q: 'How many guesses do I get?', a: 'As many as you want. There is no fail state, so a wild opening guess costs you nothing and usually tells you something.' },
+    { q: 'Is it free? Do I need an account?', a: 'Free and no account needed — it runs in your browser. The free Ball IQ app adds your solve streak alongside Footle, the Transfer Trail and the daily quiz.' },
+  ],
+};
+
+export const TRAIL_PAGE = {
+  slug: 'transfer-trail',
+  game: 'Transfer Trail',
+  alternateName: ['Guess the player from their career path', 'Football transfer history game'],
+  gameParam: 'trail',
+  emoji: '🧭',
+  h1: 'Transfer Trail — name the player from his clubs',
+  title: 'Transfer Trail — Guess the Player by Transfers | Ball IQ',
+  description:
+    "Name the footballer from his career path, one club at a time. Fewer clubs revealed means more points. A new career trail every day — free, no sign-up.",
+  lede: 'A career path, revealed one club at a time. Name the player before it runs out.',
+  statLine: 'Free · no sign-up · new career every day',
+  how: [
+    ['Start with one club', "You get the first club of a footballer's career and nothing else. Sometimes that is enough."],
+    ['Guess or reveal', 'Name the player, or reveal the next club on the trail. Every reveal makes it easier and costs you points.'],
+    ['Fewer clubs, more points', 'Getting it from two clubs is worth far more than getting it from six. The scoring rewards the early call.'],
+    ['One trail a day', 'The same career for everyone, every day. Share your result and compare how few clubs you needed.'],
+  ],
+  body: [
+    `Transfer Trail is a daily football guessing game built on career paths. You are shown the clubs a footballer played for, in order, starting with just the first one — and your job is to name him before the trail gives it away. Every club you reveal makes the answer more obvious and your score smaller.`,
+    `It rewards the kind of knowledge that quizzes usually miss. Plenty of people can name a Ballon d'Or winner; far fewer can look at a first club in the Belgian league and know where that career went next. Loan spells are marked as loans, and a return to a former club appears as its own step, because that is how a career actually reads.`,
+    `One trail a day, the same for everyone, so scores are worth comparing. Free, no account, plays in the browser — and in the Ball IQ app it sits alongside Footle, Mystery Player and the daily quiz, with your streak tracked across all of them.`,
+  ],
+  faq: [
+    { q: 'What is Transfer Trail?', a: "A daily football game where you name a player from his career path. You start with only his first club and can reveal the rest one at a time — the fewer you need, the higher you score." },
+    { q: 'How does the scoring work?', a: 'You score most for naming the player from as few clubs as possible. Every club you reveal reduces the points available, so an early correct call beats a safe late one.' },
+    { q: 'Are loan spells included?', a: 'Yes, and they are marked as loans rather than hidden — a loan is part of the career. A player returning to a club he had already played for appears as its own step on the trail.' },
+    { q: 'Is it free? Do I need an account?', a: 'Free, no account, straight in the browser. The free Ball IQ app keeps your streak and adds Footle, Mystery Player and the daily quiz.' },
   ],
 };

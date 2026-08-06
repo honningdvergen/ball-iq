@@ -37,7 +37,7 @@ import { QB } from '../src/questions.js';
 // homepage was still painting #1A1D27, a colour app.css:57 records the product
 // moving off. rootCss() emits the same bytes this file used to hardcode.
 import { rootCss } from '../src/design/tokens.js';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
@@ -1456,6 +1456,8 @@ ${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orpha
       EARN links, so leaving it unlinked from our own site was self-defeating. */ ''}
 <a href="${SITE.base}/study/football-trivia-memory/">Trivia memory study</a>
 <a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
+<a href="${SITE.base}/mystery-player/">Mystery Player — guess the footballer</a>
+<a href="${SITE.base}/transfer-trail/">Transfer Trail — guess by career path</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/terms/">Terms</a>
@@ -3486,6 +3488,14 @@ function buildFootlePage(cfg) {
         publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
       },
       {
+        '@type': 'FAQPage',
+        mainEntity: cfg.faq.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+      {
         '@type': 'WebApplication',
         name: 'Footle — the daily football word game',
         url: canonical,
@@ -3591,6 +3601,138 @@ const LEAGUE_PAGE_SLUGS = {
   'Primeira Liga': 'primeira-liga',
 };
 const DIR_POPULAR = ['Arsenal', 'Liverpool', 'Man United', 'Real Madrid', 'Barcelona', 'Bayern Munich', 'Man City', 'Chelsea', 'Juventus', 'PSG', 'Inter Milan', 'AC Milan'];
+
+// ── Daily-game landing pages (/mystery-player/, /transfer-trail/) ────────────
+//
+// Generalised from buildFootlePage, which is the proven shape for this page
+// type — it is what put Ball IQ on the "football wordle" SERP. Kept SEPARATE
+// from that function rather than refactoring it, because the Footle page also
+// carries a playable practice board, a hints/answer sibling page and its own
+// CSS; folding four pages into one builder to save duplication would make the
+// one that earns the most traffic harder to reason about.
+//
+// ⚠️ NO PLAYABLE TASTER HERE YET, AND THAT IS THE KNOWN WEAKNESS.
+// Measured 2026-07-28: pages with something to play hold 109-145s; list pages
+// without a taster got 2.3s. Footle's landing page has a real board. These two
+// do not, because the cheap version does not exist yet:
+//   - Mystery Player would need the 1,537-player pool + the ranking model,
+//     which is ~400 kB — far too heavy for a landing page.
+//   - Transfer Trail COULD have one cheaply: a past trail is just an array of
+//     club names plus an answer, the same "past puzzle, never today's" trick
+//     footlePracticeSection() already uses. That is the obvious next increment.
+// Shipping the readable version first is deliberate: right now these games have
+// NO search surface at all, and a page that exists beats a page that is perfect.
+function buildDailyGamePage(cfg) {
+  const canonical = `${SITE.base}/${cfg.slug}/`;
+  const playHref = `${SITE.base}/play?game=${cfg.gameParam}`;
+
+  // Same reasoning as the Footle page: a Google rich result needs an
+  // aggregateRating or offers we have not earned, so this is not for stars in
+  // the SERP. It is for machine comprehension by AI answer engines, a channel
+  // with actual evidence behind it (chatgpt.com referred a real session on
+  // 2026-07-28). A named Game entity with genre, free-to-play and a publisher
+  // is what those read.
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: cfg.game, item: canonical },
+        ],
+      },
+      {
+        '@type': 'Game',
+        name: cfg.game,
+        alternateName: cfg.alternateName,
+        url: canonical,
+        description: cfg.description,
+        genre: ['Puzzle', 'Sports trivia', 'Guessing game'],
+        gamePlatform: ['Web browser', 'iOS', 'Android'],
+        numberOfPlayers: { '@type': 'QuantitativeValue', value: 1 },
+        isAccessibleForFree: true,
+        inLanguage: 'en',
+        playMode: 'SinglePlayer',
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: cfg.faq.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+      {
+        '@type': 'WebApplication',
+        name: `${cfg.game} — ${cfg.lede}`,
+        url: canonical,
+        applicationCategory: 'GameApplication',
+        operatingSystem: 'Any',
+        browserRequirements: 'Requires JavaScript',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      },
+    ],
+  });
+
+  const howHtml = cfg.how
+    .map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`)
+    .join('\n');
+  const bodyHtml = cfg.body.map((pp) => `<p>${esc(pp)}</p>`).join('\n');
+
+  // Cross-links between the daily games. These are the ONLY internal links each
+  // new page would otherwise have beyond the nav, and an orphan page is exactly
+  // how the Transfer Trail stayed dark — so this is load-bearing, not garnish.
+  const siblings = [
+    { slug: 'football-wordle', name: 'Footle', blurb: "the daily football Wordle — guess the footballer's surname in six." },
+    { slug: 'mystery-player', name: 'Mystery Player', blurb: 'one secret footballer, unlimited guesses, every guess ranked by closeness.' },
+    { slug: 'transfer-trail', name: 'Transfer Trail', blurb: 'name the player from his career path, one club at a time.' },
+  ].filter((x) => x.slug !== cfg.slug);
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+<body>
+${NAV}
+<main id="main">
+${heroSection({
+    crumbItems: [
+      { name: 'Home', url: `${SITE.base}/` },
+      { name: cfg.game, url: canonical },
+    ],
+    badge: { text: cfg.emoji, emoji: true },
+    kind: 'Daily game',
+    name: cfg.game,
+    h1: cfg.h1,
+    lead: cfg.lede,
+    statLine: cfg.statLine,
+    playHref,
+    playLabel: `Play today's ${esc(cfg.game)} →`,
+  })}
+<section class="sec"><h2>How to play</h2>
+<div class="prose">
+${howHtml}
+</div></section>
+<section class="sec"><h2>What makes it different</h2>
+<div class="prose">
+${bodyHtml}
+</div></section>
+<section class="sec"><h2>The other daily games</h2>
+<div class="prose">
+${siblings.map((x) => `<p><a href="${SITE.base}/${x.slug}/"><strong>${esc(x.name)}</strong></a> — ${esc(x.blurb)}</p>`).join('\n')}
+</div></section>
+${appCtaBand('football')}
+<section class="sec"><h2>${esc(cfg.game)} FAQ</h2>
+${renderFaq(cfg.faq)}
+</section>
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { slug: cfg.slug, name: cfg.game };
+}
 
 function buildClubsDirectoryPage(catPages) {
   const canonical = `${SITE.base}/quiz/clubs/`;
@@ -3796,6 +3938,8 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/quiz/clubs/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
+    { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
@@ -3807,7 +3951,6 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     ...(listPages.length ? [{ loc: `${SITE.base}/lists/`, freq: 'weekly', pri: '0.7' }] : []),
     ...listPages.map((p) => ({ loc: `${SITE.base}/lists/${p.slug}/`, freq: 'monthly', pri: '0.6' })),
     ...questionPages.map((p) => ({ loc: `${SITE.base}/questions/${p.slug}/`, freq: 'monthly', pri: '0.7' })),
-    { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/study/${STUDY.slug}/`, freq: 'monthly', pri: '0.6' },
     { loc: `${SITE.base}/about/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
@@ -3970,6 +4113,7 @@ async function main() {
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
+  const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
