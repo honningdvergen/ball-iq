@@ -997,7 +997,19 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = 
   const lens = [10, 20, rows.length].filter((n, i, a) => n <= rows.length && a.indexOf(n) === i);
   const picker = lens.length > 1
     ? `<div class="bq-lenl">How many questions?</div><div class="bq-len">${lens
-        .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? `${n} Full set` : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
+        // ⚠️ "Full set" CARRIES NO NUMBER — it used to read "42 Full set".
+        // That is the pack size, i.e. exactly the "N questions in this pack"
+        // badge the no-counts rule names as the disguise it keeps coming back
+        // wearing. It was live on 124 pages with values from 15 to 609, so
+        // /quiz/hajduk-split/ told a searcher there were 15 questions and
+        // /quiz/beckham/ told them 16 — advertising the thinnest packs, and
+        // showing two wildly different figures one click apart.
+        //
+        // "10 Quick" and "20 Standard" KEEP their numbers on purpose: those are
+        // how many questions the player is choosing to answer, not a claim
+        // about how much content exists. The rule is about the size of the
+        // bank, not about counting things.
+        .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? 'Full set' : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
         .join('')}</div>`
     : '';
   return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}">

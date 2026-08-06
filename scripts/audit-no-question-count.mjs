@@ -36,6 +36,13 @@ const PATTERNS = [
   /\b\d{1,3},\d{3}\s+questions\s+in\s+the\s+bank\b/gi,
   /\bquestions?\s*:\s*\d{1,3},\d{3}\b/gi,
   /\bscanned all\s+\d{1,3},\d{3}\b/gi,
+  // ⚠️ THE FOURTH WAY IT SHIPPED (2026-08-06): the club-page length picker
+  // rendered "42 Full set" — the pack size, in a control. Live on 124 pages
+  // with values from 15 to 609, so the thinnest packs advertised how thin they
+  // were. Note this pattern has NO comma requirement: a per-pack count is two
+  // or three digits, which is exactly why the other patterns missed it.
+  /\b\d{1,4}\s+Full set\b/g,
+  /\b\d{1,4}\s+(?:questions?\s+)?in this (?:pack|quiz|club)\b/gi,
 ];
 
 // ⚠️ ONE EXEMPTION, AND IT IS PENDING A DECISION — NOT A PRECEDENT.
