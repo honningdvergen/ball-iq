@@ -133,7 +133,8 @@ const CSS = `
 
 .sr-mast{display:flex;align-items:center;justify-content:space-between;gap:var(--sp2);
          flex-wrap:wrap;padding:var(--sp2) var(--sp3);border-bottom:1px solid var(--bd)}
-.sr-mark{font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
+.sr-mark{display:inline-flex;align-items:center;min-height:44px;
+         font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
          color:var(--tx);text-transform:uppercase}
 .sr-mark em{font-style:normal;color:var(--grn)}
 .sr-nav{display:flex;gap:2px;flex-wrap:wrap}
@@ -196,6 +197,26 @@ const CSS = `
         font:var(--ty-body);cursor:pointer;transition:background-color .12s var(--ease)}
 .sr-opt:disabled{cursor:default}
 @media (hover:hover){.sr-opt:not(:disabled):hover{background:var(--pa2)}}
+
+/* ⚠️ PHONE FOLD BUDGET — every number here was measured, not estimated.
+   At 390×664 (iPhone 13) the stack above the first answer button ran to 641px:
+   masthead 133 (the nav wraps onto its own 44px row) · opening 34+67+62+52 ·
+   letterhead 69 · assessment frame 22+37+22 · caption 21 · question 87 · 15.
+   The button is 52px tall, so the fold sliced it in half and options 2-4 were
+   entirely below it: a page promising "five questions" showed a phone none of
+   them. Taking the air out of three ornamental gaps pulls option 1 fully into
+   view and starts option 2, which also signals there is more to scroll to.
+   Type sizes and the 44px tap-target floors are untouched — this only trims
+   the paper-file styling, and only on phones, because the desk-and-file
+   composition genuinely needs that air at desktop widths.
+   MUST STAY BELOW the rules it overrides: media queries add no specificity,
+   so a later plain .sr-assess/.sr-abody rule would otherwise win. */
+@media (max-width:699px){
+  .sr-open{padding-top:var(--sp3);padding-bottom:var(--sp3)}
+  .sr-lh{padding:10px var(--sp3)}
+  .sr-assess{margin-top:var(--sp2)}
+  .sr-abody{padding:var(--sp2)}
+}
 .sr-key{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
         border:1px solid var(--rule2);font:var(--ty-label);color:var(--mut)}
 .sr-opt[data-mark="hit"]{border-color:var(--v5);font-weight:700}

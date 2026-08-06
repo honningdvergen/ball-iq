@@ -449,12 +449,17 @@ ${mini ? storeBadgesMini() : storeBadges()}
     ? `<div class="hero-facts">${chips.map((c) => `<div class="hf"><b>${esc(String(c.n))}</b><span>${esc(c.label)}</span></div>`).join('')}</div>
 <p class="hero-free">Free to play &middot; no sign-up &middot; nothing to install</p>`
     : statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
-  return `${crumbs(crumbItems)}
+  // Split into head (what page am I on) and body (the pitch). The wrappers are
+  // inert on desktop and in the single-column hero — no padding or border, so
+  // the h1's bottom margin still collapses exactly as it did unwrapped. They
+  // exist so the two-column hero can order them INDEPENDENTLY on a phone: see
+  // the display:contents rule under .hero-grid.
+  return `<div class="hero-head">${crumbs(crumbItems)}
 <div class="kicker">${chip}<span class="eyebrow">${esc(kind)}</span></div>
-<h1>${esc(h1)}</h1>
-<p class="hero-lead">${esc(lead)}</p>
+<h1>${esc(h1)}</h1></div>
+<div class="hero-body"><p class="hero-lead">${esc(lead)}</p>
 ${ctaRow}
-${stat}`;
+${stat}</div>`;
 }
 
 // Single-column hero (Footle landing, listicles).
@@ -554,18 +559,41 @@ function adSlot(key, label) {
 }
 
 // Responsive related-quiz tile grid. Every tile links to a LIVE /quiz/<slug>/.
-function renderTiles(pages) {
-  const items = pages
-    .map((p) => {
-      const href = `${SITE.base}/quiz/${p.slug === HUB.slug ? '' : p.slug + '/'}`;
-      const b = badgeFor(p.slug, p.name);
-      const chip = b.emoji
-        ? `<span class="tbadge emoji">${b.text}</span>`
-        : `<span class="tbadge" style="${clubBadgeStyle(p.slug)}">${esc(b.text)}</span>`;
-      return `<a class="tile" href="${href}">${chip}<span class="tname">${esc(p.name)}</span></a>`;
-    })
-    .join('\n');
-  return `<div class="tiles">\n${items}\n</div>`;
+// ⚠️ THE MESH IS 116 TILES AND A PHONE SEES ABOUT NINE OF THEM.
+// Measured on /quiz/liverpool/ at 390×664: the tile grid is 3 columns, so 116
+// tiles is 39 rows — 2,028px, and the whole "More quizzes" section ran 1521 →
+// 5382, i.e. 49% of the entire page. Scroll on these pages dies around 25%
+// (y≈1985), so ~107 of those tiles were never seen by a human while pushing
+// the club's OWN content — what the quiz covers, how it's checked, the FAQ —
+// thousands of pixels further down.
+//
+// The tail is collapsed, NOT cut. Every link stays in the DOM inside the
+// <details>, so crawlers still walk the full mesh (they render the whole
+// document; that is the same reasoning the ordering comment above relies on).
+// This deliberately does NOT reorder the section: the mesh sits high on
+// purpose, because it is the internal-link engine and it has to land above the
+// scroll cliff. The defect was its SIZE, not its position.
+function renderTiles(pages, { collapseAfter = 24 } = {}) {
+  const tile = (p) => {
+    const href = `${SITE.base}/quiz/${p.slug === HUB.slug ? '' : p.slug + '/'}`;
+    const b = badgeFor(p.slug, p.name);
+    const chip = b.emoji
+      ? `<span class="tbadge emoji">${b.text}</span>`
+      : `<span class="tbadge" style="${clubBadgeStyle(p.slug)}">${esc(b.text)}</span>`;
+    return `<a class="tile" href="${href}">${chip}<span class="tname">${esc(p.name)}</span></a>`;
+  };
+
+  if (pages.length <= collapseAfter + 6) {
+    // Not worth a disclosure control for a handful of extra rows.
+    return `<div class="tiles">\n${pages.map(tile).join('\n')}\n</div>`;
+  }
+  const head = pages.slice(0, collapseAfter);
+  const tail = pages.slice(collapseAfter);
+  return `<div class="tiles">\n${head.map(tile).join('\n')}\n</div>
+<details class="tiles-more">
+<summary>Show all ${pages.length} quizzes<span class="ind" aria-hidden="true">+</span></summary>
+<div class="tiles">\n${tail.map(tile).join('\n')}\n</div>
+</details>`;
 }
 
 // ── Option shuffling for the STATIC pages ────────────────────────────────────
@@ -1237,7 +1265,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* nav */
   .nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #16181F}
   .nav-in{max-width:none;margin:0 auto;padding:13px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:inline-flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
+  .brand{display:inline-flex;align-items:center;min-height:44px;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
   .brand:hover{text-decoration:none}
   .brand img{width:32px;height:32px;border-radius:8px}
   .brand b{color:var(--amber);font-weight:900}
@@ -1250,9 +1278,9 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      browser-play CTA was missing from exactly the pages where a visitor has
      most demonstrated intent to play in a browser. They arrived searching
      "arsenal quiz", and the only action offered was an App Store trip. */
-  .nav-play{display:inline-flex;align-items:center;padding:9px 15px;border:1.5px solid rgba(88,204,2,.55);border-radius:12px;color:var(--grn-soft);font-weight:800;font-size:13.5px}
+  .nav-play{display:inline-flex;align-items:center;min-height:44px;padding:9px 15px;border:1.5px solid rgba(88,204,2,.55);border-radius:12px;color:var(--grn-soft);font-weight:800;font-size:13.5px}
   .nav-play:hover{text-decoration:none;border-color:var(--grn);background:rgba(88,204,2,.08)}
-  .nav-cta{display:inline-flex;align-items:center;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px}
+  .nav-cta{display:inline-flex;align-items:center;min-height:44px;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px}
   .nav-cta:hover{text-decoration:none;filter:brightness(1.04)}
   /* hero */
   .hero{padding:46px 0 40px;position:relative;overflow:hidden}
@@ -1263,6 +1291,8 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   /* two-column quiz hero: intro/CTA left, playable taster right */
   .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,0.98fr);gap:clamp(28px,4vw,52px);align-items:center}
   .hero-left,.hero-right{min-width:0}
+  /* Playable board sitting in the hero's right column (daily-game pages). */
+  .hero-play .eyebrow{display:block;margin-bottom:8px}
   /* MOBILE: stack to one column AND lift the playable taster ABOVE the
      marketing column.
      Measured on a real 375x812 viewport, 2026-07-28 (a container-width probe
@@ -1276,10 +1306,35 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      So a Google visitor was asked to install an app before answering anything.
      Order is swapped in CSS only: the DOM keeps hero-left first, so desktop's
      left-to-right layout and the heading order for crawlers are untouched. */
+  /* ⚠️ THE HEADING MUST NOT LEAVE THE FOLD TO MAKE ROOM FOR THE GAME.
+     Ordering the whole left column below the playable card did put the quiz on
+     screen — and pushed the h1 to y=796 on a club page, y=724 on the Trail. A
+     phone then opened on an unlabelled board with nothing naming the page or
+     the site. display:contents dissolves .hero-left so its two children become
+     grid items in their own right, and the heading can be ordered ABOVE the
+     card while the pitch stays below it. Desktop is untouched: the rule is
+     inside the narrow breakpoint, so .hero-left remains an ordinary block and
+     the two-column composition is byte-for-byte what it was. */
   @media(max-width:940px){
-    .hero-grid{grid-template-columns:1fr;gap:30px}
-    .hero-left{order:2}
-    .hero-right{order:1}
+    .hero-grid{grid-template-columns:1fr;gap:22px}
+    .hero-left{display:contents}
+    .hero-head{order:1}
+    .hero-right{order:2}
+    .hero-body{order:3}
+  }
+  /* The head now sits between the top of the page and the playable card, so
+     every pixel it spends is one the game loses. On the Transfer Trail the
+     board is 466px tall on its own: with a 224px head above it the guess input
+     landed at y=711 — the career ladder was visible but the box you type the
+     answer into was not, which is the same defect as an unreachable question.
+     Trimmed to the chrome only; the h1 keeps its full text and the badge
+     keeps its club colour, because both carry identity. */
+  @media(max-width:560px){
+    .hero{padding-top:28px}   /* 46px of decorative top padding on a 664px screen */
+    .hero-grid{gap:14px}
+    .hero-head .crumbs{margin-bottom:8px}
+    .hero-head .kicker{margin-bottom:10px}
+    .hero .hero-head h1{font-size:34px;line-height:.95}  /* .hero h1 is defined LATER at equal specificity — this must out-specify it, not just follow it */
   }
   /* "What the <club> quiz covers" topic grid */
   .covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:6px}
@@ -1292,7 +1347,12 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
   .cov p{font-size:13.5px;color:var(--tx3);line-height:1.5;margin:0}
   .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
-  .crumbs a{color:var(--tx3)}
+  /* 12px type gave a 16px-tall tap target. Padding lifts it over WCAG 2.2
+     2.5.8's 24px floor without changing how the trail looks — the box grows,
+     the text does not. Breadcrumbs are exempt from the 44px guideline (they
+     are a dense inline trail, not a primary control) but not from 24px. */
+  .crumbs a{color:var(--tx3);display:inline-block;padding:4px 0}
+  .crumbs .sep{padding:0 1px}
   .crumbs a:hover{color:#fff;text-decoration:none}
   .crumbs .sep{color:var(--tx4);margin:0 7px}
   /* clubs/players/nations -> /lists/. See listsMentioning(): every list page
@@ -1316,11 +1376,11 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .hero h1{font-family:'Anton',Inter,sans-serif;font-weight:400;font-size:clamp(40px,5.6vw,64px);line-height:.92;letter-spacing:.004em;text-transform:uppercase;color:#fff;margin-bottom:16px}
   .hero-lead{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--tx3);max-width:52ch;margin-bottom:26px}
   .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:22px}
-  .btn-green{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:13px;box-shadow:0 10px 26px -8px rgba(88,204,2,.55)}
+  .btn-green{display:inline-flex;align-items:center;min-height:44px;gap:8px;padding:14px 24px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:13px;box-shadow:0 10px 26px -8px rgba(88,204,2,.55)}
   .btn-green:hover{text-decoration:none;filter:brightness(1.05)}
   .hero-stat{font-family:var(--mono);font-size:13px;color:var(--tx4)}
   /* App Store badge */
-  .store-badge{display:inline-flex;align-items:center;gap:10px;padding:11px 18px;background:#000;border:1px solid var(--bd2);border-radius:13px}
+  .store-badge{display:inline-flex;align-items:center;min-height:44px;gap:10px;padding:11px 18px;background:#000;border:1px solid var(--bd2);border-radius:13px}
   .store-badge:hover{text-decoration:none;border-color:var(--bd3)}
   .store-badge svg{flex:0 0 auto}
   .store-badge-tx{display:flex;flex-direction:column;line-height:1.1;text-align:left}
@@ -1357,6 +1417,12 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      box around each one shrinks: 3 columns on a 390px phone instead of 2, and
      ~44px tall instead of 76px (still at the 44px touch-target norm). */
   .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+  .tiles-more{margin-top:10px}
+  .tiles-more>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 14px;background:var(--card2);border:1px solid var(--bd);border-radius:11px;cursor:pointer;font-size:14.5px;font-weight:700;color:var(--tx2)}
+  .tiles-more>summary::-webkit-details-marker{display:none}
+  .tiles-more[open]>summary{margin-bottom:10px}
+  .tiles-more[open]>summary .ind{transform:rotate(45deg)}
+  .tiles-more>summary .ind{display:inline-block;transition:transform .18s;font-size:17px;color:var(--tx4)}
   .tile{display:flex;align-items:center;gap:8px;padding:8px 10px;min-height:44px;background:var(--card2);border:1px solid var(--bd);border-radius:11px;transition:border-color .16s,transform .16s}
   .tile:hover{text-decoration:none;border-color:var(--bd3);transform:translateY(-2px)}
   .tbadge{width:26px;height:26px;flex:0 0 auto;border-radius:8px;background:#1F2430;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.02em}
@@ -1387,8 +1453,12 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .foot{border-top:1px solid #16181F;background:var(--bg2);margin-top:36px}
   .foot-in{max-width:none;margin:0 auto;padding:40px clamp(20px,4vw,48px) 48px}
   .foot .brand img{width:28px;height:28px}
-  .foot-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin:18px 0}
-  .foot-links a{color:var(--tx3);font-size:14px}
+  .foot-links{display:flex;flex-wrap:wrap;gap:2px 20px;margin:14px 0}
+  /* 14px type gave 22px-tall links, stacked one per row on a phone — under
+     even WCAG 2.2 2.5.8's 24px floor, with adjacent targets 10px apart. These
+     are navigation, not prose, so they get the full 44px. It costs nothing:
+     the footer is past the last thing anyone scrolls for. */
+  .foot-links a{display:inline-flex;align-items:center;min-height:44px;color:var(--tx3);font-size:14px}
   .foot-links a:hover{color:#fff;text-decoration:none}
   .foot-copy{color:var(--tx4);font-size:13px;margin-top:4px}
   .foot-disc{color:var(--tx4);font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
@@ -3628,8 +3698,16 @@ const TRAIL_PRACTICE_CSS = `<style>
      WKWebView never restores the scale on blur. */
   .tr-in{flex:1;min-width:0;border:1px solid var(--bd);border-radius:12px;background:var(--bg2,#12141c);color:var(--tx);padding:12px 14px;font-size:16px;font-family:inherit}
   .tr-go{border:none;border-radius:12px;background:var(--grn);color:#06230C;font-weight:800;padding:12px 18px;font-size:15px;cursor:pointer;font-family:inherit}
-  .tr-more{width:100%;border:1px solid var(--bd);border-radius:12px;background:none;color:var(--tx2);padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .tr-more{width:100%;min-height:44px;border:1px solid var(--bd);border-radius:12px;background:none;color:var(--tx2);padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   .tr-msg{margin:8px 0 0;color:var(--tx3);font-size:13.5px;min-height:1.2em}
+  /* Six rungs at 50px each is 300px of ladder above the guess box. Tightened
+     on phones only, where that 30px decides whether you can answer without
+     scrolling. The rungs are <li>, not controls, so the 44px tap floor does
+     not apply to them. */
+  @media(max-width:560px){
+    .tr-list{margin-bottom:10px}
+    .tr-list li{padding:7px 12px 7px 34px;margin-bottom:5px}
+  }
   .tr-note{margin:8px 0 0;color:var(--tx3);font-size:13px}
   .tr-done{text-align:center}
   .tr-name{font-size:20px;font-weight:900;color:var(--grn);margin:4px 0 2px}
@@ -3705,7 +3783,17 @@ function finish(won){
 draw();
 })();`;
 
-function trailPracticeSection(playHref) {
+// `inHero` returns the board WITHOUT its own <section> wrapper, for use as the
+// right column of heroTwoCol.
+//
+// ⚠️ WHY THE BOARD MOVED INTO THE HERO. Shipped as a standalone section it sat
+// at y=601 on a 664px phone — measured, not guessed. The hero above it is 537px
+// tall, so the one thing on the page a visitor can actually DO started 63px from
+// the bottom edge, under a call-to-action that sends them off-site to the app.
+// heroTwoCol already solves this for club pages: `.hero-right` takes `order:1`
+// under 940px, so the playable thing renders ABOVE the prose on a phone while
+// the DOM (and therefore the heading order crawlers read) is unchanged.
+function trailPracticeSection(playHref, { inHero = false } = {}) {
   const picked = pickPracticeTrail();
   // No past trail yet (the first day the game is live) — emit nothing rather
   // than spoil today's. The page still has its hero, how-to-play and FAQ.
@@ -3719,13 +3807,22 @@ function trailPracticeSection(playHref) {
     number,
     play: playHref,
   }).replace(/</g, '\\u003c');
-  return `<section class="sec" id="try">
+  const board = `<div class="tr-card" id="biq-trail"></div>
+<script type="application/json" id="biq-trail-data">${data}</script>
+<script>${TRAIL_PRACTICE_JS}</script>`;
+
+  if (inHero) {
+    return `${TRAIL_PRACTICE_CSS}<div class="hero-play">
 <div class="eyebrow">Past puzzle · Trail #${number} · no sign-up</div>
+${board}
+</div>`;
+  }
+
+  return `<section class="sec" id="try">
+${TRAIL_PRACTICE_CSS}<div class="eyebrow">Past puzzle · Trail #${number} · no sign-up</div>
 <h2>Try one</h2>
 <p style="margin:0 0 12px;color:var(--tx2)">A career from an earlier Trail. Name him from as few clubs as you can.</p>
-<div class="tr-card" id="biq-trail"></div>
-<script type="application/json" id="biq-trail-data">${data}</script>
-<script>${TRAIL_PRACTICE_JS}</script>
+${board}
 </section>`;
 }
 
@@ -3818,11 +3915,11 @@ function buildDailyGamePage(cfg) {
     { slug: 'transfer-trail', name: 'Transfer Trail', blurb: 'name the player from his career path, one club at a time.' },
   ].filter((x) => x.slug !== cfg.slug);
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
-<body>
-${NAV}
-<main id="main">
-${heroSection({
+  // A playable board, when the game has one, becomes the hero's right column so
+  // a phone meets it first (see trailPracticeSection). Without one, the hero
+  // stays single-column — there is nothing to put beside the copy.
+  const board = cfg.slug === 'transfer-trail' ? trailPracticeSection(playHref, { inHero: true }) : '';
+  const heroProps = {
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
       { name: cfg.game, url: canonical },
@@ -3835,8 +3932,13 @@ ${heroSection({
     statLine: cfg.statLine,
     playHref,
     playLabel: `Play today's ${esc(cfg.game)} →`,
-  })}
-${cfg.slug === 'transfer-trail' ? TRAIL_PRACTICE_CSS + trailPracticeSection(playHref) : ''}
+  };
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+<body>
+${NAV}
+<main id="main">
+${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
