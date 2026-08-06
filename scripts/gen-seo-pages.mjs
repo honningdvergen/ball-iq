@@ -205,6 +205,7 @@ const PAGE_FG = '#F0F1F5';
 const CLUB_BADGE = {
   'hajduk-split': 'HAJ',
   'boca-juniors': 'BOC', 'river-plate': 'RIV', 'flamengo': 'FLA', 'palmeiras': 'PAL', 'corinthians': 'COR',
+  'santos': 'SAN', 'real-sociedad': 'RSO',
   'manchester-united': 'MUN', arsenal: 'ARS', 'manchester-city': 'MCI', liverpool: 'LIV',
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
@@ -259,6 +260,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 const CLUB_COLOR = {
   'hajduk-split': '#0E4C92',
   'boca-juniors': '#0A2B72', 'river-plate': '#E1122E', 'flamengo': '#C52613', 'palmeiras': '#006437', 'corinthians': '#111111',
+  'santos': '#0B0B0B', 'real-sociedad': '#0067B1',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
   chelsea: '#034694', 'bayern-munich': '#DC052D', juventus: '#000000',

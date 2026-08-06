@@ -728,6 +728,8 @@ const CLUB_PACK_TO_QB = {
   Bournemouth: "Bournemouth", Brentford: "Brentford", Burnley: "Burnley", Wolves: "Wolves",
   Coventry: "Coventry City", HullCity: "Hull City",
   Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
+  // Wave N — two at a time from here on, so the curate step actually gets read.
+  Santos: "Santos", RealSociedad: "Real Sociedad",
   Schalke: "Schalke 04", Hamburg: "Hamburger SV",
   Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
   Sporting: "Sporting CP", SaintEtienne: "Saint-Étienne",
@@ -761,6 +763,9 @@ const CLUB_LEAGUES = {
   Bournemouth: "pl", Brentford: "pl", Burnley: "pl", Wolves: "pl",
   Coventry: "pl", HullCity: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
+  // Wave N. Santos joins the existing southamerica section (Flamengo,
+  // Corinthians, Palmeiras, Boca, River); Real Sociedad is a sixth laliga club.
+  Santos: "southamerica", RealSociedad: "laliga",
   Schalke: "bundesliga", Hamburg: "bundesliga",
   Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
   Sporting: "primeira", SaintEtienne: "ligue1",
@@ -816,6 +821,7 @@ export const CLUB_ABBR = {
   Flamengo: "FLA",
   Palmeiras: "PAL",
   Corinthians: "COR",
+  Santos: "SAN", RealSociedad: "RSO",
   Arsenal: "ARS", Liverpool: "LIV", ManUtd: "MUN", ManCity: "MCI", Chelsea: "CHE", Tottenham: "TOT", Newcastle: "NEW",
   Barcelona: "FCB", RealMadrid: "RMA", Atletico: "ATM",
   Juventus: "JUV", AcMilan: "ACM", InterMilan: "INT",
@@ -845,6 +851,7 @@ const CLUB_SLUG_TO_PACK = {
   "flamengo": "Flamengo",
   "palmeiras": "Palmeiras",
   "corinthians": "Corinthians",
+  "santos": "Santos", "real-sociedad": "RealSociedad",
   "arsenal": "Arsenal", "liverpool": "Liverpool", "manchester-united": "ManUtd",
   "manchester-city": "ManCity", "chelsea": "Chelsea", "tottenham": "Tottenham",
   "newcastle": "Newcastle", "barcelona": "Barcelona", "real-madrid": "RealMadrid",
@@ -923,6 +930,14 @@ export const CLUB_PACKS = {
   },
   Corinthians: {
     name: "Corinthians", icon: "⬛", color: "#111111",
+    questions: [],
+  },
+  Santos: {
+    name: "Santos", icon: "⚪", color: "#0B0B0B",
+    questions: [],
+  },
+  RealSociedad: {
+    name: "Real Sociedad", icon: "🔵", color: "#0067B1",
     questions: [],
   },
   Arsenal: {

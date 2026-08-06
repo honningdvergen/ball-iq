@@ -1,0 +1,450 @@
+[
+  {
+    "q": "In which year was Real Sociedad formally founded?",
+    "o": [
+      "1898",
+      "1902",
+      "1909",
+      "1919"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The club was constituted on 7 September 1909, growing out of the San Sebastián Recreation Club. King Alfonso XIII granted it the 'Real' (Royal) title a few months later, in February 1910.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "How many times have Real Sociedad been crowned champions of La Liga?",
+    "o": [
+      "Once",
+      "Twice",
+      "Three times",
+      "Four times"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Real Sociedad have two Spanish league titles, both won back-to-back in the early 1980s under Alberto Ormaetxea. They have never won it since.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad played their last game at Atotxa in 1993. Which stadium became their new home?",
+    "o": [
+      "San Mamés",
+      "El Sadar",
+      "Mendizorroza",
+      "Anoeta"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Anoeta opened in August 1993 and is now known as the Reale Arena. San Mamés belongs to Athletic Club, El Sadar to Osasuna and Mendizorroza to Alavés.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "John Aldridge was the signing that ended Real Sociedad's long tradition of fielding only Basque players. Which club did they buy him from?",
+    "o": [
+      "Oxford United",
+      "Liverpool",
+      "Everton",
+      "Newcastle United"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Aldridge moved from Liverpool to Real Sociedad on 14 September 1989 for about £1.25m, becoming the first non-Basque player the club had signed in over four decades. He had joined Liverpool from Oxford United in January 1987, which is why Oxford is such a tempting wrong answer.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "In which year did Real Sociedad abandon their policy of signing only Basque players?",
+    "o": [
+      "1979",
+      "1985",
+      "1989",
+      "1994"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The policy stood until 1989, when the club signed the Liverpool-born Republic of Ireland striker John Aldridge. Dalian Atkinson followed in 1990.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "A last-gasp equaliser away at Sporting Gijón on the final day of 1980-81 secured Real Sociedad's first league title. Who scored it?",
+    "o": [
+      "Roberto López Ufarte",
+      "Jesús María Zamora",
+      "Jesús María Satrústegui",
+      "Periko Alonso"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Jesús María Zamora struck in the dying seconds at El Molinón to make it 2-2, snatching the championship. Real Madrid had won their own game and briefly believed the title was theirs.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad took the 1980-81 championship on head-to-head record after finishing level on points with the runners-up. Which club missed out?",
+    "o": [
+      "Barcelona",
+      "Atlético Madrid",
+      "Real Madrid",
+      "Athletic Club"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Both Real Sociedad and Real Madrid finished on 45 points. Real Sociedad's 3-1 home win against Madrid outweighed their 1-0 defeat in the capital, giving them the title.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Which coach was in charge of Real Sociedad for both of their La Liga title wins?",
+    "o": [
+      "John Toshack",
+      "Javier Clemente",
+      "Miguel Muñoz",
+      "Alberto Ormaetxea"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Alberto Ormaetxea, a former Real Sociedad player, managed the side through the near-miss of 1979-80 and then the titles of 1980-81 and 1981-82.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Who was Real Sociedad's manager when they won the 1987 Copa del Rey?",
+    "o": [
+      "Alberto Ormaetxea",
+      "Luis Aragonés",
+      "John Toshack",
+      "Javier Clemente"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The Welshman John Toshack managed Real Sociedad from 1985 to 1989 and won the 1986-87 Copa del Rey, beating Atletico Madrid 4-2 on penalties after a 2-2 draw at La Romareda. He left for Real Madrid in 1989 and later returned to San Sebastian twice.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Dalian Atkinson, signed from Sheffield Wednesday in 1990 once Real Sociedad had opened their doors to non-Basques, stayed a single season. Which English club did he join next?",
+    "o": [
+      "Manchester City",
+      "Aston Villa",
+      "Ipswich Town",
+      "Coventry City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Atkinson moved to Aston Villa in 1991 for around £1.6m, and in October 1992 scored the solo goal at Wimbledon that was voted Goal of the Season in the Premier League's first campaign. Ipswich Town had been his first club.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Luis Arconada's most replayed moment came in the Euro 1984 final, when a free-kick squirmed under his body. Who struck it?",
+    "o": [
+      "Michel Platini",
+      "Alain Giresse",
+      "Jean Tigana",
+      "Luis Fernández"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Michel Platini's free-kick slid beneath the Real Sociedad goalkeeper and France went on to win 2-0. In Spain the goal is still known simply as 'the Arconada'.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad finished the 1979-80 league season a single point short of the championship. How many of their 34 games did they lose?",
+    "o": [
+      "None",
+      "One",
+      "Two",
+      "Four"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "They lost just once, but 14 draws cost them dearly and Real Madrid pipped them 53 points to 52. Their unbeaten run through the first 32 matchdays was a Spanish record at the time.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad reached the European Cup semi-finals in 1982-83, going out to the club that went on to lift the trophy. Which German side was it?",
+    "o": [
+      "Hamburger SV",
+      "Bayern Munich",
+      "Borussia Mönchengladbach",
+      "1. FC Köln"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Hamburger SV eliminated Real Sociedad in the last four and then beat Juventus 1-0 in the 1983 final. Real Sociedad had knocked out Víkingur, Celtic and Sporting CP on the way.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "The 1987 Copa del Rey final, which Real Sociedad won on penalties, was staged at which neutral stadium?",
+    "o": [
+      "Santiago Bernabéu, Madrid",
+      "Mestalla, Valencia",
+      "Sánchez Pizjuán, Seville",
+      "La Romareda, Zaragoza"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The final was played at La Romareda in Zaragoza on 27 June 1987 in front of around 37,000 fans. Lopez Ufarte (9') and Txiki Begiristain (36') scored inside the first half, Atletico Madrid levelled twice, and after 2-2 through extra time Real Sociedad won 4-2 on penalties.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Which pair of Real Sociedad players left for Barcelona in the summer of 1988 and became pillars of Johan Cruyff's Dream Team?",
+    "o": [
+      "Jesús María Zamora and Roberto López Ufarte",
+      "Luis Arconada and Alberto Górriz",
+      "Jesús María Satrústegui and José Antonio Larrañaga",
+      "José Mari Bakero and Txiki Begiristain"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "José Mari Bakero and Txiki Begiristain moved to the Camp Nou in 1988, arriving alongside new coach Johan Cruyff. Both won multiple league titles and the 1992 European Cup there.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad's 2020 Copa del Rey final was finally played in April 2021 at La Cartuja in Seville, and was settled 1-0. Which side did they beat to lift the cup?",
+    "o": [
+      "Valencia",
+      "Athletic Club",
+      "Real Betis",
+      "Sevilla"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Real Sociedad beat Athletic Club 1-0 — the first all-Basque Copa del Rey final since 1927, played behind closed doors because of the pandemic.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Who converted the 63rd-minute penalty that won Real Sociedad the 2020 Copa del Rey?",
+    "o": [
+      "Alexander Isak",
+      "David Silva",
+      "Mikel Oyarzabal",
+      "Mikel Merino"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Captain Mikel Oyarzabal sent Unai Simón the wrong way from the spot after Portu was brought down in the box.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Xabi Alonso came through Real Sociedad's academy and left the club in August 2004. Which side signed him?",
+    "o": [
+      "Liverpool",
+      "Chelsea",
+      "Real Madrid",
+      "Bayern Munich"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Liverpool paid around £10.5m for him in 2004; his moves to Real Madrid (2009) and Bayern Munich (2014) came much later.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Antoine Griezmann, who joined Real Sociedad's academy as a teenager, was sold in the summer of 2014. Where did he go?",
+    "o": [
+      "Barcelona",
+      "Atlético Madrid",
+      "Valencia",
+      "Real Madrid"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Atlético Madrid paid roughly €30m in 2014 after Griezmann's 16-goal La Liga season; his switch to Barcelona did not come until 2019.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "In August 2022 Real Sociedad banked the biggest transfer fee in their history for Alexander Isak. Which club bought him?",
+    "o": [
+      "Arsenal",
+      "Tottenham Hotspur",
+      "Liverpool",
+      "Newcastle United"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Newcastle United paid a then club-record €70m; Real Sociedad had signed Isak from Borussia Dortmund for about €10m in 2019.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "In which city do Real Sociedad play their home matches at the Reale Arena?",
+    "o": [
+      "Bilbao",
+      "Vitoria-Gasteiz",
+      "San Sebastián",
+      "Pamplona"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The ground, long known simply as their home ground, stands in San Sebastián (Donostia), the capital of Gipuzkoa.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Which coach was in charge of the Real Sociedad side that pushed Real Madrid all the way in the 2002-03 La Liga title race?",
+    "o": [
+      "John Toshack",
+      "Raynald Denoueix",
+      "Philippe Montanier",
+      "Martín Lasarte"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Frenchman Raynald Denoueix, previously of Nantes, took Real Sociedad to second place in his first season in Spain.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad finished as La Liga runners-up in 2002-03. How far behind the champions Real Madrid did they end up?",
+    "o": [
+      "Two points",
+      "One point",
+      "Six points",
+      "Nine points"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Real Madrid ended on 78 points to Real Sociedad's 76, wrapping up the title on the final day against Athletic.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Alongside Turkey's Nihat Kahveci, Real Sociedad's 2002-03 attack was led by a Serbian striker who was in his second spell at the club. Who was he?",
+    "o": [
+      "Savo Milošević",
+      "Darko Kovačević",
+      "Mateja Kežman",
+      "Nikola Žigić"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Darko Kovačević first played for Real Sociedad from 1996 to 1999, then returned mid-way through the 2001-02 season after spells at Juventus and Lazio.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "In which season were Real Sociedad relegated from La Liga to the Segunda División?",
+    "o": [
+      "2004-05",
+      "2008-09",
+      "2006-07",
+      "2001-02"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "They finished 19th in 2006-07 and dropped into the second tier, where they stayed for three seasons.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "The Copa del Rey lifted at La Cartuja was Real Sociedad's first major trophy since which year?",
+    "o": [
+      "1987",
+      "1982",
+      "1993",
+      "2003"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Their previous silverware was the 1987 Copa del Rey; the back-to-back La Liga titles of 1981 and 1982 came earlier still.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad reached the Champions League knockout rounds in 2023-24. Which club eliminated them in the round of 16?",
+    "o": [
+      "Bayern Munich",
+      "Manchester City",
+      "Paris Saint-Germain",
+      "Barcelona"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "PSG won 2-0 in Paris and 2-1 at the Reale Arena for a 4-1 aggregate, with Kylian Mbappé scoring in both legs.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad signed David Silva on a free transfer in August 2020. Which club had he just left?",
+    "o": [
+      "Valencia",
+      "Manchester City",
+      "Manchester United",
+      "Arsenal"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Silva joined after ten seasons at Manchester City; a serious knee injury in 2023 pre-season ended his career at Real Sociedad.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad's home ground underwent a major redevelopment completed in 2019. Which feature was taken out?",
+    "o": [
+      "An artificial pitch",
+      "The athletics running track",
+      "A standing terrace behind the north goal",
+      "A retractable roof"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "their home ground opened in 1993 as a multi-purpose municipal stadium; the roughly €47m rebuild, finished in October 2019, stripped out the running track and lifted capacity to about 40,000.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad won 1-0 at Old Trafford in the Europa League group stage in September 2022. Who scored the penalty that decided it?",
+    "o": [
+      "Alexander Sørloth",
+      "David Silva",
+      "Brais Méndez",
+      "Mikel Merino"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Brais Méndez converted on 59 minutes after referee Marco Di Bello gave a contested handball against Lisandro Martínez, a call VAR checked and let stand, and Real Sociedad held on at Old Trafford.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Before establishing himself at Real Sociedad, Xabi Alonso spent the first half of the 2000-01 season on loan at which Basque club?",
+    "o": [
+      "Eibar",
+      "Barakaldo",
+      "Real Unión",
+      "Alavés"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The Eibar loan was his first extended run of senior football; John Toshack, appointed in January 2001, recalled him, and later handed the 20-year-old the club captaincy.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  },
+  {
+    "q": "Real Sociedad won the Segunda División title in 2009-10 to climb back into La Liga. Which coach led that promotion?",
+    "o": [
+      "Chris Coleman",
+      "Martín Lasarte",
+      "Jagoba Arrasate",
+      "Philippe Montanier"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Uruguayan Martín Lasarte took charge in 2009 and went up at the first attempt; Chris Coleman had managed the club earlier in its second-tier spell.",
+    "club": "Real Sociedad",
+    "type": "mcq"
+  }
+]

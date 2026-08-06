@@ -2314,5 +2314,69 @@ export const CLUBS = [
       "a": "Yes \u2014 free in your browser, no sign-up, and every answer is explained."
     }
   ]
+},
+{
+  "club": "Santos",
+  "slug": "santos",
+  "name": "Santos",
+  "h1": "Santos FC Quiz",
+  "title": "Santos FC Quiz: Pelé, Neymar and Vila Belmiro",
+  "description": "A Santos quiz that runs from the 1962-63 world titles and Pelé's 1,000th goal to the Meninos da Vila, Neymar's Libertadores and the 2023 drop.",
+  "intro": [
+    "Santos were founded on 14 April 1912 in the port city they are named after, and since 12 October 1916 they have played at a ground everyone calls the Vila. Its official name is the Estádio Urbano Caldeira; nobody uses it. It holds around 16,000, which makes it one of the smallest home grounds of any major Brazilian club, and it is where a lot of the football in this quiz actually happened.",
+    "The 1960s side is the reason the club is known worldwide. Under Lula, who managed from 1954 to 1966, Santos won the Taça Brasil five years running from 1961, took the 1962 Copa Libertadores by beating two-time holders Peñarol in a Buenos Aires playoff, and retained it in 1963 against Boca Juniors at La Bombonera. Then came the Intercontinental Cups: 5-2 away to Benfica at the Estádio da Luz with a Pelé hat-trick in 1962, and a third match against AC Milan at the Maracanã in 1963, settled by a Dalmo penalty. Pelé had arrived in 1956 as a 15-year-old, brought to the club by Waldemar de Brito, and his 1,000th career goal came from the penalty spot at the Maracanã against Vasco da Gama on 19 November 1969. He said goodbye at the Vila in October 1974 against Ponte Preta, dropping to his knees in the centre circle.",
+    "The questions do not stop in the 1970s, because Santos keep producing players. Diego was 17 and Robinho 18 when the 2002 Brasileirão was won over two legs against Corinthians, ending a 34-year wait; Vanderlei Luxemburgo's side took another title in 2004. Neymar was 18 when he scored 11 goals in the 2010 Copa do Brasil run, and 19 when he won the 2011 Libertadores alongside Ganso, scored the Puskás goal against Flamengo at the Vila, and then watched Barcelona win 4-0 in the Club World Cup final in Yokohama. Rodrygo's move to Real Madrid was agreed when he was 17.",
+    "Recent years give the bank its sharper edges. Santos were relegated from Série A for the first time in their history in December 2023, won Série B the following year, and Neymar came back from Al-Hilal in January 2025. If you know your Pepe from your Coutinho, and can name who Santos beat in Argentina in 1998 as well as in 1963, this one will suit you."
+  ],
+  "faq": [
+    {
+      "q": "Where do Santos play their home games?",
+      "a": "At Vila Belmiro, opened on 12 October 1916 and named after the neighbourhood around it. Its official name is the Estádio Urbano Caldeira, honouring a club figure who died in 1933, but nobody calls it that. Capacity is only around 16,000, which makes it one of the smallest grounds used by a major Brazilian club."
+    },
+    {
+      "q": "How many Copa Libertadores have Santos won?",
+      "a": "Three. The first came in 1962, when they beat two-time defending champions Peñarol 3-0 in a Buenos Aires playoff with Pelé scoring twice, making them the first Brazilian club to win it. They retained it in 1963 against Boca Juniors, winning the second leg 2-1 at La Bombonera. The third was 2011, again against Peñarol, sealed 2-1 at the Pacaembu through Neymar and Danilo."
+    },
+    {
+      "q": "Why are Santos called O Peixe?",
+      "a": "It means The Fish. The club sits on the São Paulo coast next to Brazil's largest port, in the city of Santos, and fans and the press have used the nickname for a long time. It is the reason the club's identity is tied to the sea rather than to a colour or a founder."
+    },
+    {
+      "q": "Have Santos ever been relegated?",
+      "a": "Yes, once. A 2-1 home defeat by Fortaleza on the final day in December 2023 sent them down from Série A for the first time in their history. They won Série B in 2024 and came straight back up, and Neymar returned from Al-Hilal in January 2025."
+    }
+  ]
+},
+{
+  "club": "Real Sociedad",
+  "slug": "real-sociedad",
+  "name": "Real Sociedad",
+  "h1": "Real Sociedad Quiz",
+  "title": "Real Sociedad Quiz: From Atotxa to the Reale Arena",
+  "description": "A Real Sociedad quiz on the 1981 and 1982 titles, Zamora at El Molinón, the end of the Basque-only policy and the 2020 Copa del Rey.",
+  "intro": [
+    "Real Sociedad are the club of San Sebastián — Donostia, the capital of Gipuzkoa. They were constituted on 7 September 1909, growing out of the San Sebastián Recreation Club, and a few months later, in February 1910, King Alfonso XIII granted them the 'Real' title they have carried ever since. Bilbao has Athletic, Pamplona has Osasuna, Vitoria-Gasteiz has Alavés. San Sebastián has this.",
+    "The early 1980s are still the high-water mark. In 1979-80 they lost only one of their 34 league games and still finished a point short of Real Madrid, 52 to 53, because 14 draws piled up along the way. The following season they went one better: Jesús María Zamora's equaliser in the dying seconds at El Molinón made it 2-2 against Sporting Gijón on the final day, and the title came down to head-to-head record after Real Sociedad and Real Madrid both finished on 45 points. Alberto Ormaetxea, a former player, managed the near-miss and then both championships. In 1982-83 the same side reached the European Cup semi-finals, going out to Hamburger SV, who then beat Juventus in the final.",
+    "Then there is the policy. For over four decades Real Sociedad fielded only Basque players, and it ended in September 1989 when they paid Liverpool about £1.25m for John Aldridge. Dalian Atkinson followed from Sheffield Wednesday in 1990 and stayed a single season before joining Aston Villa. The club has always been better at producing than buying: José Mari Bakero and Txiki Begiristain left for Barcelona in 1988 and became pillars of Cruyff's side, Xabi Alonso went to Liverpool in 2004 after a formative loan spell at Eibar, Antoine Griezmann went to Atlético Madrid in 2014, and Alexander Isak's move to Newcastle United in 2022 brought in the biggest fee in the club's history.",
+    "The modern chapters are here too: Raynald Denoueix taking them to within two points of Real Madrid in 2002-03 with Nihat and Darko Kovačević up front, relegation in 2006-07 and Martín Lasarte's promotion at the first attempt in 2009-10, the running track finally ripped out of Anoeta in 2019, Mikel Oyarzabal's penalty beating Athletic Club at La Cartuja to end a wait for silverware that stretched back to 1987, Brais Méndez winning it at Old Trafford, and a Champions League round of 16 against PSG. Work through the questions and see how much of it you actually have."
+  ],
+  "faq": [
+    {
+      "q": "How many times have Real Sociedad won La Liga?",
+      "a": "Twice, back to back in the early 1980s under Alberto Ormaetxea. The first came in 1980-81, decided on head-to-head record after they and Real Madrid both finished on 45 points — Real Sociedad's 3-1 home win over Madrid outweighed the 1-0 defeat in the capital. Jesús María Zamora's last-gasp equaliser away at Sporting Gijón on the final day secured it. They retained the title in 1981-82 and have not won it since."
+    },
+    {
+      "q": "When did Real Sociedad stop signing only Basque players?",
+      "a": "In 1989. The policy had stood for more than four decades until the club bought John Aldridge from Liverpool on 14 September 1989 for around £1.25m, making the Liverpool-born Republic of Ireland striker their first non-Basque signing in over forty years. Dalian Atkinson arrived from Sheffield Wednesday the following year."
+    },
+    {
+      "q": "What is Real Sociedad's stadium and when did they move there?",
+      "a": "The Reale Arena, in San Sebastián, long known simply as Anoeta. They played their last game at Atotxa in 1993 and moved into Anoeta when it opened that August as a multi-purpose municipal ground. A rebuild of roughly €47m, completed in October 2019, stripped out the athletics running track and lifted capacity to about 40,000."
+    },
+    {
+      "q": "When did Real Sociedad last win the Copa del Rey?",
+      "a": "The 2020 final, played in April 2021 at La Cartuja in Seville after a year's delay and behind closed doors because of the pandemic. Real Sociedad beat Athletic Club 1-0 in the first all-Basque final since 1927, captain Mikel Oyarzabal converting a 63rd-minute penalty. It was their first major trophy since the 1987 Copa del Rey, won on penalties at La Romareda under John Toshack."
+    }
+  ]
 }
 ];
