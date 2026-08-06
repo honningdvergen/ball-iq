@@ -16,7 +16,8 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
-import { seededShuffle, pickDailyQuestions } from './lib/quiz.js';
+import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts } from './lib/quiz.js';
+import { conflictsWith } from './questionConflicts.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2 } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
@@ -9071,7 +9072,11 @@ function AppInner() {
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.
             const freshPool = applySeenFilter(clubPool, 10, qbHistKey);
-            qs = shuffle([...freshPool]).slice(0, 10).map(q => {
+            // Drop the second half of any answer-leak pair (see
+            // src/questionConflicts.js). Applied AFTER the shuffle so which of
+            // the two survives varies per session, and after applySeenFilter so
+            // the 14-day freshness rule still decides what is eligible at all.
+            qs = pickAvoidingConflicts(shuffle([...freshPool]), 10, conflictsWith).map(q => {
               const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
               return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
             });

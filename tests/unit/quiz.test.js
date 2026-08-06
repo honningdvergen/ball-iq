@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { seededShuffle, pickDailyQuestions, DAILY_SEED_MULTIPLIER, isModernEra } from '../../src/lib/quiz.js'
+import { seededShuffle, pickDailyQuestions, DAILY_SEED_MULTIPLIER, isModernEra, pickAvoidingConflicts } from '../../src/lib/quiz.js'
 
 // A stand-in bank. Deliberately not the real 4k questions — this pins the
 // ALGORITHM, which must hold for any bank.
@@ -174,3 +174,36 @@ describe('isModernEra', () => {
     expect(isModernEra(q('x', ['1950']))).toBe(true)
   })
 })
+
+describe('pickAvoidingConflicts', () => {
+  const pool = [1, 2, 3, 4, 5, 6].map((n) => ({ id: `q${n}` }));
+  // q1 leaks q2; q3 leaks q4. q5/q6 are clean.
+  const map = { q1: ['q2'], q2: ['q1'], q3: ['q4'], q4: ['q3'] };
+  const conflictsOf = (id) => map[id] || [];
+
+  it('never draws both halves of a leak pair', () => {
+    const got = pickAvoidingConflicts(pool, 4, conflictsOf).map((q) => q.id);
+    expect(got).toHaveLength(4);
+    expect(got.includes('q1') && got.includes('q2')).toBe(false);
+    expect(got.includes('q3') && got.includes('q4')).toBe(false);
+  });
+
+  it('NEVER shortens a game — tops up from skipped when it cannot avoid', () => {
+    // Only 3 questions and every one conflicts with every other, so a strict
+    // filter could return 1. A short quiz is worse than a visible pair.
+    const tiny = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+    const all = { a: ['b', 'c'], b: ['a', 'c'], c: ['a', 'b'] };
+    const got = pickAvoidingConflicts(tiny, 3, (id) => all[id]);
+    expect(got).toHaveLength(3);
+  });
+
+  it('returns the pool order when nothing conflicts', () => {
+    const got = pickAvoidingConflicts(pool, 3, () => []).map((q) => q.id);
+    expect(got).toEqual(['q1', 'q2', 'q3']);
+  });
+
+  it('tolerates ids with no entry in the map', () => {
+    const got = pickAvoidingConflicts(pool, 6, (id) => (id === 'q1' ? ['q2'] : undefined));
+    expect(got).toHaveLength(6);
+  });
+});

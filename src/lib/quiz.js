@@ -97,3 +97,41 @@ export function pickDailyQuestions(QB, dayIndex) {
   const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q));
   return seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER).slice(0, 7);
 }
+
+// ── Answer-leak avoidance ────────────────────────────────────────────────────
+//
+// 540 answers in the club packs appear inside another question's stem or hint.
+// Each of those questions is correct and was verified when it shipped; the
+// defect is the PAIR. Measured on 10-question sessions, 28.9% of club sessions
+// contained at least one leaked pair — Parma 66.5%, Porto 64.3% — so roughly
+// one session in three was handing out a free point.
+//
+// Taking one of each pair out of the draw fixes that without touching a single
+// verified question. Pure and exported so it can be tested directly.
+//
+// ⚠️ NEVER SHORTEN A GAME. If avoiding conflicts cannot fill `count` — a thin
+// pack where most questions conflict — the remainder is topped up from the
+// skipped candidates. A player noticing an easy pair is a small cost; a
+// 7-question "10-question quiz" is a bug. Same principle applySeenFilter uses.
+//
+// ⚠️ NOT FOR THE DAILY 7. Its selection must depend on the date and nothing
+// else (it feeds /c/ links, the beat-a-friend modal and an OG card). This takes
+// an already-shuffled pool and is order-dependent, so applying it there would
+// silently rewrite every past and future daily.
+export function pickAvoidingConflicts(pool, count, conflictsOf) {
+  const picked = [];
+  const skipped = [];
+  const taken = new Set();
+  for (const q of pool) {
+    if (picked.length >= count) break;
+    const clash = (conflictsOf(q.id) || []).some((id) => taken.has(id));
+    if (clash) { skipped.push(q); continue; }
+    picked.push(q);
+    taken.add(q.id);
+  }
+  for (const q of skipped) {
+    if (picked.length >= count) break;
+    picked.push(q);
+  }
+  return picked;
+}
