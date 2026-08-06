@@ -58,6 +58,17 @@ import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
+// Transfer Trail data for the playable practice board on /transfer-trail/.
+// Same rule as the Footle board: import the GAME's own module so the practice
+// puzzle cannot drift from the live one, and emit exactly ONE PAST trail.
+import {
+  TRAIL_PLAYERS,
+  TRAIL_ANSWER_LOG,
+  TRAIL_ANCHOR_DAY,
+  getTrailDayIndex,
+  getTrailAnswerForDayIndex,
+  acceptedNamesFor,
+} from '../src/lib/trail.js';
 // Footle answer schedule + the real grading function, for the playable practice
 // board on /football-wordle/. Importing the GAME's own module is deliberate:
 // the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
@@ -3604,6 +3615,120 @@ const LEAGUE_PAGE_SLUGS = {
 };
 const DIR_POPULAR = ['Arsenal', 'Liverpool', 'Man United', 'Real Madrid', 'Barcelona', 'Bayern Munich', 'Man City', 'Chelsea', 'Juventus', 'PSG', 'Inter Milan', 'AC Milan'];
 
+const TRAIL_PRACTICE_CSS = `<style>
+  .tr-card{border:1px solid var(--bd);border-radius:16px;background:var(--card);padding:16px 18px;margin:6px 0 4px}
+  .tr-list{list-style:none;margin:0 0 14px;padding:0;counter-reset:rung}
+  .tr-list li{position:relative;padding:9px 12px 9px 34px;margin:0 0 6px;border-radius:10px;font-weight:700;font-size:15px}
+  .tr-list li::before{counter-increment:rung;content:counter(rung);position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:var(--tx3)}
+  .tr-on{background:rgba(88,204,2,.10);border:1px solid rgba(88,204,2,.35);color:var(--tx)}
+  .tr-off{background:var(--bg2,#12141c);border:1px dashed var(--bd);color:var(--tx3)}
+  .tr-loan{font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-left:6px}
+  .tr-form{display:flex;gap:8px;margin:0 0 10px}
+  /* 16px is a HARD FLOOR — iOS auto-zooms on focusing any smaller input and
+     WKWebView never restores the scale on blur. */
+  .tr-in{flex:1;min-width:0;border:1px solid var(--bd);border-radius:12px;background:var(--bg2,#12141c);color:var(--tx);padding:12px 14px;font-size:16px;font-family:inherit}
+  .tr-go{border:none;border-radius:12px;background:var(--grn);color:#06230C;font-weight:800;padding:12px 18px;font-size:15px;cursor:pointer;font-family:inherit}
+  .tr-more{width:100%;border:1px solid var(--bd);border-radius:12px;background:none;color:var(--tx2);padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .tr-msg{margin:8px 0 0;color:var(--tx3);font-size:13.5px;min-height:1.2em}
+  .tr-note{margin:8px 0 0;color:var(--tx3);font-size:13px}
+  .tr-done{text-align:center}
+  .tr-name{font-size:20px;font-weight:900;color:var(--grn);margin:4px 0 2px}
+  .tr-sub{color:var(--tx2);font-size:14.5px;margin:0 0 12px}
+  .tr-cta .btn{display:inline-block;background:var(--grn);color:#06230C;border-radius:12px;padding:12px 20px;font-weight:800;text-decoration:none}
+</style>`;
+
+// ── Playable Transfer Trail practice board (/transfer-trail/) ───────────────
+//
+// WHY. Measured 2026-07-28: pages with something to play hold 109-145s; list
+// pages without a taster got 2.3s. /transfer-trail/ shipped without one, which
+// put a brand-new page straight into the losing bucket. Mystery Player cannot
+// have the same treatment cheaply (its pool plus ranking model is ~400 kB); a
+// trail is just an array of club names, so this one is nearly free.
+//
+// ⚠️ NEVER TODAY'S TRAIL. Emitting the live answer spoils the real game for
+// anyone who lands here first.
+//
+// ⚠️ AND THE WALK MUST BE BOUNDED AT TRAIL #1 — this is the trap the Footle
+// board's header describes, and it bites HARDER here. Footle has run for
+// months; the Trail launched 2026-08-03, so at time of writing only THREE past
+// puzzles exist. A naive "walk back 30 days" runs off the start of the log and
+// either throws or wraps to a future answer. So: clamp, and if no past trail
+// exists yet, emit NOTHING rather than something wrong.
+function pickPracticeTrail() {
+  const today = getTrailDayIndex();
+  const firstDay = TRAIL_ANCHOR_DAY;
+  // Prefer something a few weeks old so the board is not last night's puzzle,
+  // but clamp into the range that actually exists.
+  const wanted = today - 21;
+  const dayIndex = Math.max(firstDay, Math.min(wanted, today - 1));
+  if (dayIndex < firstDay || dayIndex >= today) return null;   // nothing past yet
+  const player = getTrailAnswerForDayIndex(dayIndex, TRAIL_ANSWER_LOG, TRAIL_PLAYERS);
+  if (!player || !Array.isArray(player.clubs) || player.clubs.length < 2) return null;
+  return { player, number: dayIndex - TRAIL_ANCHOR_DAY + 1 };
+}
+
+const TRAIL_PRACTICE_JS = `(function(){
+var root=document.getElementById('biq-trail');if(!root)return;
+var d=JSON.parse(document.getElementById('biq-trail-data').textContent);
+var shown=1,done=false;
+var norm=function(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/g,'')};
+var accepted=d.accept.map(norm);
+function draw(){
+  var rungs=d.clubs.map(function(c,i){
+    if(i<shown) return '<li class="tr-on">'+c+(d.loans[i]?' <span class="tr-loan">loan</span>':'')+'</li>';
+    return '<li class="tr-off">?</li>';
+  }).join('');
+  var left=d.clubs.length-shown;
+  root.innerHTML='<ol class="tr-list">'+rungs+'</ol>'+(done?'':
+    '<form class="tr-form"><input class="tr-in" type="text" placeholder="Name the player" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Name the player"><button class="tr-go" type="submit">Guess</button></form>'+
+    (left>0?'<button class="tr-more" type="button">Reveal next club ('+left+' left)</button>':'<p class="tr-note">That is the whole career — last guess.</p>')+
+    '<p class="tr-msg" role="status"></p>');
+  if(done) return;
+  var f=root.querySelector('.tr-form'),m=root.querySelector('.tr-more');
+  f.addEventListener('submit',function(e){e.preventDefault();
+    var v=norm(root.querySelector('.tr-in').value);
+    if(!v)return;
+    if(accepted.indexOf(v)>-1){finish(true);return}
+    root.querySelector('.tr-msg').textContent='Not him — reveal another club, or try again.';
+  });
+  if(m)m.addEventListener('click',function(){shown++;draw()});
+}
+function finish(won){
+  done=true;
+  var used=shown;
+  root.innerHTML='<ol class="tr-list">'+d.clubs.map(function(c,i){return '<li class="tr-on">'+c+(d.loans[i]?' <span class="tr-loan">loan</span>':'')+'</li>'}).join('')+'</ol>'+
+   '<div class="tr-done"><div class="tr-name">'+(won?'Got it — ':'It was ')+d.name+'</div>'+
+   (won?'<div class="tr-sub">From '+used+' club'+(used===1?'':'s')+'. Fewer clubs, more points.</div>':'')+
+   '<div class="tr-cta"><a class="btn" href="'+d.play+'">Play the live Transfer Trail →</a></div>'+
+   '<p class="tr-note">That was Trail #'+d.number+' — a past puzzle. The live one is a different career.</p></div>';
+}
+draw();
+})();`;
+
+function trailPracticeSection(playHref) {
+  const picked = pickPracticeTrail();
+  // No past trail yet (the first day the game is live) — emit nothing rather
+  // than spoil today's. The page still has its hero, how-to-play and FAQ.
+  if (!picked) return '';
+  const { player, number } = picked;
+  const data = JSON.stringify({
+    clubs: player.clubs,
+    loans: player.loans || player.clubs.map(() => false),
+    accept: acceptedNamesFor(player),
+    name: (player.display || []).join(' ').trim(),
+    number,
+    play: playHref,
+  }).replace(/</g, '\\u003c');
+  return `<section class="sec" id="try">
+<div class="eyebrow">Past puzzle · Trail #${number} · no sign-up</div>
+<h2>Try one</h2>
+<p style="margin:0 0 12px;color:var(--tx2)">A career from an earlier Trail. Name him from as few clubs as you can.</p>
+<div class="tr-card" id="biq-trail"></div>
+<script type="application/json" id="biq-trail-data">${data}</script>
+<script>${TRAIL_PRACTICE_JS}</script>
+</section>`;
+}
+
 // ── Daily-game landing pages (/mystery-player/, /transfer-trail/) ────────────
 //
 // Generalised from buildFootlePage, which is the proven shape for this page
@@ -3711,6 +3836,7 @@ ${heroSection({
     playHref,
     playLabel: `Play today's ${esc(cfg.game)} →`,
   })}
+${cfg.slug === 'transfer-trail' ? TRAIL_PRACTICE_CSS + trailPracticeSection(playHref) : ''}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
