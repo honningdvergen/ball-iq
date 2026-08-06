@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tide — Support</title>
+<meta name="description" content="Support and privacy information for Tide, a guided breathing app for iPhone.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://balliq.app/tide/">
+<style>
+  /* Tide's own palette, not Ball IQ's. Never pure black, never pure white —
+     the same rule the app itself is built on. */
+  :root {
+    --void:  #0F0A07;
+    --night: #1A1310;
+    --dusk:  #33200F;
+    --ember: #6B3A18;
+    --glow:  #C87A38;
+    --cream: #F5ECE1;
+    --accent:#E9A45C;
+    --muted: rgb(245 236 225 / 0.62);
+    --line:  rgb(245 236 225 / 0.14);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    padding: 0 1.5rem 5rem;
+    background:
+      radial-gradient(120% 80% at 50% 0%, var(--dusk) 0%, var(--void) 62%),
+      var(--void);
+    color: var(--cream);
+    font: 400 17px/1.65 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  main { max-width: 40rem; margin: 0 auto; }
+  header { padding: 5rem 0 2.5rem; text-align: center; }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 300;
+    font-size: 2.6rem;
+    letter-spacing: 0.34em;
+    margin: 0 0 0.6rem;
+    text-indent: 0.34em;   /* balance the trailing letterspace */
+  }
+  .tagline { color: var(--muted); margin: 0; font-size: 1.05rem; }
+  h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin: 2.8rem 0 0.75rem;
+    color: var(--accent);
+  }
+  p { margin: 0 0 1rem; }
+  a { color: var(--glow); }
+  a:hover { color: var(--accent); }
+  ul { padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    margin: 1.5rem 0;
+    background: rgb(245 236 225 / 0.03);
+  }
+  .card p:last-child { margin-bottom: 0; }
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  /* The safety card is the one thing on this page that must not be skimmed
+     past, so it is the only element that carries a colour of its own. */
+  .safety { border-color: rgb(233 164 92 / 0.35); }
+  .safety h2 { margin-top: 0; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>tide</h1>
+  <p class="tagline">Guided breathing you can do with your eyes closed.</p>
+</header>
+
+<h2>Getting help</h2>
+<p>
+  Email <a href="mailto:privacy@balliq.app">privacy@balliq.app</a> with anything
+  at all — a bug, a protocol that feels wrong, a sound that is too loud, or a
+  question about your data. It reaches a person, and it is the fastest way to
+  get something fixed.
+</p>
+<p>
+  If you are reporting a bug, it helps a great deal to say which protocol you
+  were running, roughly how far into the session it happened, and whether sound
+  was on.
+</p>
+
+<div class="card safety">
+  <h2>Before you use the Wim Hof protocol</h2>
+  <p>
+    Wim Hof breathing is thirty fast, deep breaths followed by holding the last
+    one in. It will probably make you light-headed and tingly. Some people
+    faint.
+  </p>
+  <ul>
+    <li>Never in or near water.</li>
+    <li>Never while driving.</li>
+    <li>Sit or lie down before you begin.</li>
+    <li>Stop whenever you want — nothing in the app is required.</li>
+  </ul>
+  <p>
+    If you are pregnant, or have a heart condition, epilepsy or high blood
+    pressure, speak to a doctor first. Tide is not a medical device and does not
+    diagnose, treat or manage any condition.
+  </p>
+</div>
+
+<h2>Your data</h2>
+<p>
+  Tide has no accounts, no backend and no analytics. There is nothing to sign
+  in to, and nothing is sent anywhere.
+</p>
+<p>
+  Your practice history — which protocol, how long, and any breath-hold times —
+  is written to your own device and stays there. It is not synced, not backed up
+  by us, and not readable by anyone but you. Deleting the app deletes it.
+</p>
+<p>
+  Because no data ever leaves your phone, there is nothing for us to hand over,
+  sell, or lose. If you would like your history gone sooner, delete the app.
+</p>
+
+<h2>Common questions</h2>
+
+<div class="card">
+  <p><strong>The app is silent.</strong> Check the Ring/Silent switch on the
+  side of your iPhone, then check that Sound is on in Settings — the gear icon
+  at the top right of any tab.</p>
+</div>
+
+<div class="card">
+  <p><strong>The session stopped when I left the app.</strong> That is intended.
+  Tide holds the screen awake during a session so you can set the phone down,
+  but it does not run in the background. Sessions that were interrupted are
+  still recorded in Practice.</p>
+</div>
+
+<div class="card">
+  <p><strong>Which protocol should I start with?</strong> Resonance. Even in,
+  even out, no holding — it is the calm baseline, and everything else is a
+  variation on it. The Practice tab explains all five.</p>
+</div>
+
+<div class="card">
+  <p><strong>Is there a subscription?</strong> No. Tide is free, and there is
+  nothing to buy inside it.</p>
+</div>
+
+<h2>Sounds</h2>
+<p>
+  The rain, waves, fire and bell are public-domain (CC0) field recordings; their
+  sources are credited inside the app. The breathing tone is not a recording at
+  all — it is generated on your phone, by the app, as you breathe.
+</p>
+
+<footer>
+  <p>Tide is made by Alexander Olsen. © 2026.</p>
+</footer>
+
+</main>
+</body>
+</html>
