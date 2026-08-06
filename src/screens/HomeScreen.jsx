@@ -6,7 +6,7 @@ import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
-import { answerIdForDay, mysteryDayIndex } from "../lib/mysteryPlayer.js";
+import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
@@ -167,7 +167,10 @@ function HomeScreenImpl({
   // Cheap enough to compute inline: an array lookup against the frozen log,
   // no ranking work. The heavy pool/ranking import stays inside the lazy
   // screen chunk so the home screen never pays for it.
+  // MYSTERY_ENABLED is the pull switch (see lib/mysteryPlayer.js) — the search
+  // bank cannot find Ronaldo, so the mode is hidden rather than shipped broken.
   const mysteryLive = (() => {
+    if (!MYSTERY_ENABLED) return false;
     try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex()); } catch { return false; }
   })();
 

@@ -17,6 +17,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts } from './lib/quiz.js';
+import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2 } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -7950,7 +7951,9 @@ function AppInner() {
       const joinPath = path.match(/^\/join\/([A-Za-z0-9]+)/);
       if (joinPath && normalizeJoinCode(joinPath[1])) return true;
       const sp = new URLSearchParams(BOOT_SEARCH);
-      if (["footle", "trail", "mystery"].includes(sp.get("game"))) return true;
+      // "mystery" intentionally absent while MYSTERY_ENABLED is false — a shared
+      // ?game=mystery link must not hold the boot screen for a hidden mode.
+      if (["footle", "trail", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
       if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;
@@ -9163,7 +9166,10 @@ function AppInner() {
       if (gameSlug === "daily") { startMode("daily"); return; }
       if (gameSlug === "trail") { setScreen("trail"); return; }
       // ?game=mystery — the /mystery redirect and the share link land here.
-      if (gameSlug === "mystery") { setScreen("mystery"); return; }
+      // Guarded: links to this mode are already out in the world (the web
+      // landing page, any shared result), and they must fall through to Home
+      // rather than open a game whose search bar cannot find Ronaldo.
+      if (gameSlug === "mystery") { if (MYSTERY_ENABLED) { setScreen("mystery"); return; } }
       if (stumpId && /^q_[a-z0-9]+$/.test(stumpId)) {
         // Async on purpose: the bank is lazy-loaded. The stump screen is
         // guest-friendly — recipients answer with zero login (same staging-

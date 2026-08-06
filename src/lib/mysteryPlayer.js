@@ -122,6 +122,31 @@ export function bandFor(rank, poolSize) {
 // day you ship.
 export const MYSTERY_ANCHOR_DAY = 20668; // days since epoch — day #1
 
+// ⚠️ MODE PULLED 2026-08-06 — Alex, after playing it: "i can not even search
+// for ronaldo... we simply do not have enough players in the search bank for
+// the mode to make sense at the moment."
+//
+// He is right, and the shape of the problem is worse than "not enough". The
+// pool is 1,537 players drawn from the CURRENT SQUADS of the 68 clubs we have
+// question packs for, which means it is both too big and the wrong people:
+//
+//   - it is full of squad filler nobody can name (Aaron Hayden, Abdallah Ali
+//     Mohamed) — 1,537 candidates to rank against, most of them noise
+//   - it contains ZERO legends, because legends are in nobody's current squad
+//   - it misses the most-typed names on earth: Ronaldo is at Al-Nassr and
+//     Messi at Inter Miami, neither of which is one of our 68 clubs
+//
+// So the first thing a player does — type the most famous name they know —
+// returns nothing, and the game looks broken rather than hard. Guessing is the
+// entire interaction; if the search bar cannot find Ronaldo there is no game.
+//
+// Flipping this to `true` is the ONLY thing needed to bring the mode back, so
+// fix the POOL first (a curated set of recognisable players across eras, not a
+// squad dump) and flip it after. Nothing else has been deleted: the screen,
+// the ranking, the schedule and the tests all remain, dormant. Landing it
+// inert rather than half-wired is the standing rule.
+export const MYSTERY_ENABLED = false;
+
 export function mysteryDayIndex(now = new Date()) {
   return Math.floor(now.getTime() / 86400000);
 }
