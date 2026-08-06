@@ -120,7 +120,14 @@ export default function MysteryPlayer({ onExit }) {
 
       {!won && (
         <p style={{ margin: '2px 16px 12px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
-          Guess any player in a top-club squad. Each guess is ranked by how similar they are to the secret player — club, country, position, nationality, age and clubs they have played for. <strong style={{ color: 'var(--t1)' }}>The secret player is 1.</strong>
+          {/* ⚠️ THIS LINE READ "The secret player is 1." — a sentence that stops
+              before it explains anything. It is trying to teach the rank scale:
+              every guess gets a position, and the answer sits at 1. Without that
+              spelled out the numbers look arbitrary, which is exactly how they
+              landed on the first person to play it: a famous Brazilian keeper
+              ranking past 1000 read as the game being broken rather than as him
+              simply being unlike the answer. Say what the number means. */}
+          Guess any player in a top-club squad. Each guess is ranked by how similar they are to the secret player — club, country, position, nationality, age and clubs they have played for. <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
         </p>
       )}
 

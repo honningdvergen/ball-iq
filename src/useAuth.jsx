@@ -45,6 +45,10 @@ const AuthContext = createContext(null)
 //     Safe across accounts: biq_login_streak IS cleared on sign-out, so a
 //     new user's first tick has no cached streak and the death check
 //     can't fire until a fresh death lands on a new day number.)
+//   - biq_modes_seen (UX dismiss-flag — which More-modes tiles this device has
+//     opened, so a "NEW" badge retires itself once seen. Per-device by intent:
+//     signing out and back in on your own phone should not re-announce a mode
+//     you already played.)
 //   - ballIQ_guestMode (handled separately by signOut)
 const USER_SCOPED_STATIC_KEYS = [
   'biq_xp',

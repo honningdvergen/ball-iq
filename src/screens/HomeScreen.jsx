@@ -135,6 +135,29 @@ function HomeScreenImpl({
     return () => clearTimeout(t);
   }, []);
 
+  // Which modes this device has already opened, so a NEW badge can retire
+  // itself the moment it has done its job. Self-clearing beats a hard-coded
+  // date: a badge that outlives the user's first visit stops meaning "new"
+  // and starts meaning "this app decorates things at random".
+  //
+  // ⚠️ biq_modes_seen is a DEVICE-SCOPED UX dismiss-flag, so it must NOT go in
+  // USER_SCOPED_STATIC_KEYS (useAuth.jsx) — signing out and back in on your own
+  // phone should not re-announce a mode you have already played. Same reasoning
+  // that biq_onboarded is documented as preserved there; the over-zealous
+  // catch-all inclusion caused real replay reports last time.
+  const [seenModes, setSeenModes] = React.useState(() => {
+    try { return JSON.parse(localStorage.getItem('biq_modes_seen') || '{}') || {}; }
+    catch { return {}; }
+  });
+  const markModeSeen = React.useCallback((key) => {
+    setSeenModes((prev) => {
+      if (prev[key]) return prev;
+      const next = { ...prev, [key]: 1 };
+      try { localStorage.setItem('biq_modes_seen', JSON.stringify(next)); } catch { /* private mode */ }
+      return next;
+    });
+  }, []);
+
   // Display name for the desktop rail cards (mirrors the greeting's name logic;
   // plain consts, not hooks, so hook order is untouched). Placeholder usernames
   // (Player / player_xxxxx) fall back to a neutral label rather than being shown.
@@ -500,7 +523,13 @@ function HomeScreenImpl({
       <div className="home-section-title">More modes</div>
       <div className="play-grid">
         {[
-          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
+          // ⚠️ TEN IDENTICAL TILES IS A LIST, NOT A MENU. Every card here was
+          // the same size, weight and icon treatment, so nothing separated the
+          // mode with 70-odd hand-built club packs behind it from the novelty
+          // one — and a first-time player got no recommended way in. Club Quiz
+          // is promoted to a full-width tile because it is the deepest content
+          // we have and the one that asks the player about themselves.
+          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   feature: true, onTap: () => startMode("clubquiz") },
           // Trail takes the second slot once it is live — League Quiz has ONE
           // lifetime play and Trail is a daily, so it earns the position. The
           // whole entry is gated on the schedule actually having a puzzle, so
@@ -509,7 +538,7 @@ function HomeScreenImpl({
           // Same gate as the Trail: the card only exists if the frozen
           // schedule actually has a puzzle for today, so nothing advertises a
           // mode that cannot be played. mysteryLive is computed above.
-          ...(mysteryLive ? [{ key:"mystery", Icon: Search, name: "Mystery Player", desc: "Guess who", onTap: () => setScreen("mystery") }] : []),
+          ...(mysteryLive ? [{ key:"mystery", Icon: Search, name: "Mystery Player", desc: "Guess who", isNew: true, onTap: () => setScreen("mystery") }] : []),
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
@@ -517,21 +546,25 @@ function HomeScreenImpl({
           { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
           { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
           { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
-        ].map(({ key, Icon, name, desc, onTap, iconColor }) => (
-          <button
-            key={key}
-            className="play-card"
-            onClick={onTap || (() => startMode(key))}
-          >
-            <span className="play-card-icon">
-              <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
-            </span>
-            <span className="play-card-body">
-              <span className="play-card-name">{name}</span>
-              <span className="play-card-desc">{desc}</span>
-            </span>
-          </button>
-        ))}
+        ].map(({ key, Icon, name, desc, onTap, iconColor, feature, isNew }) => {
+          const showNew = isNew && !seenModes[key];
+          return (
+            <button
+              key={key}
+              className={`play-card${feature ? " play-card--feature" : ""}`}
+              onClick={() => { markModeSeen(key); (onTap || (() => startMode(key)))(); }}
+            >
+              <span className="play-card-icon">
+                <Icon size={feature ? 24 : 20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
+              </span>
+              <span className="play-card-body">
+                <span className="play-card-name">{name}</span>
+                <span className="play-card-desc">{desc}</span>
+              </span>
+              {showNew && <span className="play-card-badge">NEW</span>}
+            </button>
+          );
+        })}
       </div>
       {/* Coming-Soon shelf — teaser line for modes that aren't ready yet.
           Section auto-hides if the array is empty. Only list a mode here once

@@ -1507,12 +1507,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           BB1 F-P4: `.profile-secondary-actions` class lets desktop CSS
           flip to side-by-side and cap each button to 280px so the pair
           reads as secondary, not as two competing primary actions. */}
-      <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
-        <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
-        {onShowWeekly && (
-          <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
-        )}
-      </div>
+      {/* ⚠️ BOTH OF THESE ARE MEANINGLESS BEFORE THE FIRST GAME, and they were
+          rendering directly above the "No stats yet — play your first game"
+          card. So the most prominent thing on a brand-new profile was an
+          invitation to share an empty scorecard, and a weekly summary of a
+          week with nothing in it. Gated on the SAME condition the empty state
+          uses, so the two can never disagree. */}
+      {(stats.gamesPlayed || 0) > 0 && (
+        <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
+          <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
+          {onShowWeekly && (
+            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
+          )}
+        </div>
+      )}
       {(stats.gamesPlayed || 0) === 0 ? (
         <div style={{
           background:"var(--s1)",
