@@ -13,6 +13,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+// Shared with scripts/audit-leaks.mjs so the wave gate and the bank audit can
+// never disagree about what counts as a defect.
+import { findLeaks } from './leak-rules.mjs';
 
 const [,, outPath, repoRoot] = process.argv;
 if (!outPath || !repoRoot) { console.error('usage: node process-wave-j.mjs <output.json> <repo-root>'); process.exit(1); }
@@ -70,13 +73,22 @@ for (const entry of data) {
     if (shared.length >= 2) dupePairs.push({ a: qs[i]._i, b: qs[j]._i, answer: qs[i].o[qs[i].a], shared: shared.slice(0, 5) });
   }
 
-  // within-club leak scan: answer string appears verbatim in another stem
-  const leaks = [];
-  for (const x of qs) for (const y of qs) {
-    if (x._i === y._i) continue;
-    const ans = norm(x.o[x.a]);
-    if (ans.length > 4 && norm(y.q).includes(ans)) leaks.push({ answerOf: x._i, inStemOf: y._i, answer: x.o[x.a] });
-  }
+  // ⚠️ WAS STEM-ONLY AND UNCLASSIFIED until 2026-08-06.
+  // Two gaps, both found by running the finished thing rather than reading it:
+  //   1. HINTS were never scanned, so an answer sitting in another question's
+  //      explanation went unexamined through every wave A-N. Wave N had 27.
+  //   2. Every match was reported at equal weight, so "Copa Libertadores" on a
+  //      Santos pack looked like a defect. Across the bank that inflated the
+  //      figure to 27.6% of questions; classified properly it is 15.8%.
+  // Both now live in leak-rules.mjs, shared with the bank-wide audit.
+  const allLeaks = findLeaks(qs.map((q) => ({ ...q, o: q.o, a: q.a })), { clubName: clubField });
+  const leaks = allLeaks.filter((l) => l.severity === 'strong').map((l) => ({
+    answerOf: qs[l.answerOf]?._i ?? l.answerOf,
+    inStemOf: qs[l.at]?._i ?? l.at,
+    answer: l.answer,
+    where: l.where,
+  }));
+  const weakCount = allLeaks.length - leaks.length;
 
   // cross-bank: new stems containing existing bank answers (report only)
   const bankHits = qs.filter(q => { const nq = norm(q.q); return [...bankAnswers].some(a => a.length > 12 && nq.includes(a)); }).map(q => q._i);
@@ -86,7 +98,8 @@ for (const entry of data) {
   report.push(`hint-bearing MCQs: ${hints} (page needs >=15) ${hints >= 15 ? 'OK' : '!! BELOW THRESHOLD'}`);
   report.push(`prose: ${entry.prose ? 'present' : '!! MISSING'}`);
   if (dupePairs.length) { report.push(`SEMANTIC-DUPE candidates (review, add loser to DROP):`); dupePairs.forEach(d => report.push(`  [${d.a}] vs [${d.b}] — answer "${d.answer}" shared:${d.shared.join('/')}`)); }
-  if (leaks.length) { report.push(`WITHIN-CLUB LEAKS (drop or reword one side):`); leaks.forEach(l => report.push(`  answer of [${l.answerOf}] ("${l.answer}") appears in stem of [${l.inStemOf}]`)); }
+  if (leaks.length) { report.push(`WITHIN-CLUB LEAKS — STRONG (drop or reword one side):`); leaks.forEach(l => report.push(`  answer of [${l.answerOf}] ("${l.answer}") appears in ${l.where} of [${l.inStemOf}]`)); }
+  if (weakCount) report.push(`  (${weakCount} weak leak(s) suppressed — competitions, the club itself, topic vocabulary)`);
   if (bankHits.length) report.push(`cross-bank stem/answer overlaps (informational): idx ${bankHits.join(',')}`);
 
   const outFile = path.join(path.dirname(new URL(import.meta.url).pathname), `wave-j-${entry.club.toLowerCase()}.json`);
