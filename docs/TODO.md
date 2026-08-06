@@ -9,30 +9,66 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
-## ⚡ THE TOP 8 — agreed 2026-08-06
+## ⚡ THE BOARD — rebuilt 2026-08-06, late
 
-Ordered by ROI against the **measured** bottleneck, which is no longer
-activation or retention. Activation was fixed (33% -> 82%), retention is
-healthy (72% return, 41/81 active last 7d). What is short is **signup VOLUME**,
-i.e. distribution. And **74% of signups happen inside the native app**, which
-makes acquisition a STORE question before it is a website question.
+Ranked against the **measured** bottleneck, which is not activation and not
+retention. Activation was fixed (33% -> 82%); retention is healthy (72% return,
+41/81 active in 7d). What is short is **signup VOLUME** — distribution. And
+**74% of signups happen inside the native app**, so acquisition is a STORE
+question before it is a website question. That single fact is why store assets
+outrank another club wave.
 
-| # | Task | Owner | Why it is this high |
-|---|---|---|---|
-| 1 | **iOS 1.5.0 build 54 — cut today, submit tomorrow** | CLAUDE cuts · ALEX submits | iOS is still on 1.4.0. Everything shipped 2026-08-06 (answer-leak avoidance, the phone-fold fixes, the Mystery Player rank copy) reaches iOS users only through this. Verified fixes are worth zero until they ship. |
-| 2 | **App Store screenshots + ASO refresh** | CLAUDE builds assets · ALEX uploads | The store listing IS the top of the funnel for 74% of signups, and the screenshots have been stale since 1.3.3. Only name + subtitle + keywords are indexed by Apple — the description is not. Cheapest real lever on signup volume. |
-| 3 | **Authority push — directory submissions + backlink outreach** | ALEX (kit is written) | "football quiz" sits at position 41 and Alex called top-10 there "life changing" (10-20x impressions). The measured constraint is AUTHORITY (#51 vs #8), not page count — so more pages do not move it. The kit was built and never executed. |
-| 4 | **Club wave: Leipzig + Atalanta** | CLAUDE (needs Alex's go-ahead to run the multi-agent forge) | Two big fanbases with no pack. Two clubs, not four, per Alex. ZERO ERROR pipeline: 2 generation lenses -> examiner -> adversarial skeptic, only double-survivors ship. |
-| 5 | **Mystery Player scoring weights** | CLAUDE | The mode's first real player could not read its ranking ("Alisson is above 1000?"). The copy was fixed 2026-08-06; the weighting swap (nationality 220 vs league-country 300) still needs re-measuring on the REPAIRED dataset before it is applied. |
-| 6 | **MP stats never save + verify "up to 8"** | CLAUDE fixes · ALEX 2-device test | Home advertises "Live rooms, up to 8 players" and that number has never been verified beyond the RPC layer. Stats are realtime-gated and currently write nothing. Marketing a claim we cannot demonstrate is the risk. |
-| 7 | ~~Editorial answer-leak cleanup~~ **DROPPED 2026-08-06 — measured as worthless** | — | I justified this as "widens the draw the avoidance narrowed". **Measured: it narrows nothing.** Across all 74 packs, 100% of every playable pack is still reachable — conflicts stop a PAIR co-occurring, they never wall off an individual question. Sessions are already leak-free (26.9% -> 0.0%, 94cbb74), so rewriting 470 verified questions would cost hours and buy nothing a player can detect. Re-open only if a pack gets so thin that avoidance starts forcing top-ups (`node scripts/audit-leaks.mjs` to check). |
-| 8 | **Emoji vs line icons on the Journey ladder** | ALEX (one decision, ~10 min to apply) | The modes grid uses green line icons; the Journey tiers use emoji. My recommendation is to KEEP the emoji — they read as rank medallions, not UI icons, and a line icon for "Legend" loses more than the consistency gains. |
+### NOW — highest ROI, mine to do
 
-**Deliberately not in the top 8** and why: partnership outreach (Alex is holding
-it), AdSense (waiting on Google, nothing to do), TikTok (real reach lever but
-Alex-owned content work — promote it the moment #1-#3 land), lifetime-download
-reporting (Alex deprioritised it), Capacitor 8 branch (no user-visible win yet).
+| # | Task | Why it is this high |
+|---|---|---|
+| 1 | **Cut a CLEAN iOS 1.5.0 build 54** | ⚠️ The archive built earlier tonight has Mystery Player ENABLED. iOS has never shipped that mode (live 1.4.0 = build 52, cut 3.5h before the mode landed), so submitting that archive would ADD a known-broken mode to iOS in the same week we pulled it from Android. Rebuild off current main, then Alex device-tests. |
+| 2 | **App Store screenshots + ASO refresh** | The listing IS the funnel top for 74% of signups and has been stale since 1.3.3. Apple indexes name + subtitle + keywords only — never the description. Cheapest real lever on signup volume. |
+| 3 | **Anchor the 78 rot-prone questions + gate it** | Alex spotted the class: claims about an open-ended PRESENT go false silently. Measured: the feared "which club does X play for" is effectively absent (1 of 6,469 — the bank already writes past-tense). The real exposure is **76 undated superlatives** ("who holds the all-time record for most PL goals?"). Fix is a one-word anchor ("As of 2026, …"), a pattern the bank already uses ~40 times. Gate new ones at forge time. |
+| 4 | **Club wave: Leipzig + Atalanta** | Two big fanbases with no pack. Two clubs, not four. ⚠️ Needs Alex's explicit go-ahead to run the multi-agent forge. |
 
+### NEXT — real, not urgent
+
+| # | Task | Note |
+|---|---|---|
+| 5 | **Rebuild the Mystery Player pool, then flip `MYSTERY_ENABLED`** | Not "more players" — a CURATED cross-era set. The current 1,537 are current-squad dumps: no legends, no Ronaldo, no Messi. One-line re-enable once the pool is right. |
+| 6 | **`/mystery-player/` web page is now a broken promise** | The landing page still sells a mode the app hides. De-link it, or leave it dark until #5. Small, but it is live and wrong. |
+| 7 | **MP stats never save + verify "up to 8"** | Home advertises "Live rooms, up to 8 players"; that number has never been verified past the RPC layer, and stats are realtime-gated and write nothing. Marketing a claim we cannot demonstrate. Needs Alex + a 2nd device. |
+| 8 | **Custom avatar** | Alex REALLY wants it. Hand-drawn SVG was rejected; needs real illustrated art. Storage design (encode into avatar_id) already worked out. |
+
+### ALEX-OWNED — I cannot move these
+
+| Task | Blocked on |
+|---|---|
+| **Authority push** — directories + backlink outreach | You. Kit is written (#51). This is THE lever on "football quiz" p41, which you called life-changing. Content volume is NOT the constraint; authority is (#51 vs #8). |
+| **Partnership outreach** | You, deliberately holding. |
+| **TikTok channel** | You. Biggest reach platform we are absent from. Promote it the moment 1–3 land. |
+| **Reddit karma drip** | You. Link posts are spam-filtered at 14 link karma; genuine comments first. |
+| **AdSense** | Google. Stuck in "Klargjøres" since 5 July. Nothing to do but wait. |
+| **VAPID secrets** (Footle web push) | You. The native half shipped; the web half is inert without them. |
+| **Clarity connector token** | You. |
+| **Three editorial rulings** | `/study/` question-count exemption · emoji vs line icons on the Journey ladder (I say KEEP the emoji) · whether the League picker keeps its counts like the club picker lost its. |
+
+### DEFERRED — with the trigger that should wake them
+
+| Task | Wake it when |
+|---|---|
+| Homepage rebuild (approved v5) · club-page competitive rebuild | After the store/ASO work — those move signups, these move an already-converting page. |
+| Capacitor 8 branch (iOS side + AGP 9 retest) | Before the next OS-forced upgrade. No user-visible win today. |
+| MP answer-key Phase 2 · CSP enforce · async challenges | When MP stops being a claim and becomes a used feature. |
+| Notification centre + native push | With, not before, a reason to notify. |
+| Pre-launch hardening: service_role rotation, load test, README, coverage, App.jsx refactor | Rotation before any contractor access; the rest at ~10× traffic. |
+| v1.1 audit follow-ups: Preferences adapter, profiles-UPDATE hardening, SW offline gap, ~23 unverified QA questions | Opportunistically. |
+| "Next →" under the Dynamic Island | Needs Alex's real iPhone — cannot reproduce on the simulator, so no fix will be written blind. |
+| Monetization checkpoint (Mediavine) | ~10k sessions/month. |
+
+### CLOSED — stop re-litigating these
+
+- **Editorial answer-leak cleanup — DROPPED.** Justified as "widens the draw"; measured, it narrows nothing (100% of every pack still reachable). Sessions already leak-free 26.9% -> 0.0%.
+- **Localisation / US-soccer layer — DEAD.** GSC says Egypt is 100% brand traffic and the US ranks 7.2 for our own name because "ball IQ" is US basketball jargon.
+- **Halting the Play 1.5.0 rollout — NOT DONE, on purpose.** Halting the only production release pulls the listing; a superseding upload keeps us live.
+
+---
 ---
 
 - [ ] **🎯 ALEX'S FEATURE: show who picked what at the reveal** (avatars beside
