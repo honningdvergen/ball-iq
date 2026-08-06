@@ -5332,8 +5332,6 @@ const CLUB_SEARCH_NICKNAMES = {
 
 function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);
-  // Show the real (verified) pool size per club; falls back to the pack count.
-  const [verifiedCounts, setVerifiedCounts] = React.useState(null);
   // Each league collapses to a short preview. The Premier League alone filled
   // more than a screen, so La Liga sat below the fold with nothing to suggest it
   // existed — someone looking for Barcelona had no reason to believe scrolling
@@ -5353,20 +5351,19 @@ function ClubQuizScreen({ onStart, onBack }) {
       return next;
     });
   }, []);
+  // ⚠️ THE PER-CLUB COUNT IS GONE — do not put it back (Alex, 2026-08-06).
+  // Each row read "Liverpool · 42 questions": the "N questions in this pack"
+  // badge the no-counts rule names as the disguise it keeps returning in. It
+  // also made the thinnest packs advertise their thinness — Hajduk Split's row
+  // said 15. Same call as the web length picker's "42 Full set" the same day.
+  // The crest, the name and the league grouping carry the row without it.
+  //
+  // Removing it also deleted the only reason this screen read the question
+  // index, so it now does strictly less work on open. The prefetch stays and is
+  // unrelated: landing here IS play intent, so warming the bank lets the parse
+  // overlap navigation instead of colliding with the next tap.
   React.useEffect(() => {
-    let alive = true;
-    // Counts read the INDEX, not the bank — 13× less to download and parse for
-    // a number the user is only reading. Landing on this screen IS play intent
-    // though, so warm the full bank in the background: the parse then overlaps
-    // navigation instead of colliding with a tap on Home.
     prefetchQuestions();
-    loadQuestionIndex().then((IDX) => {
-      if (!alive) return;
-      const c = {};
-      for (const [k, name] of Object.entries(CLUB_PACK_TO_QB)) c[k] = IDX.filter(q => q && q.club === name && q.type === "mcq" && q.n > 0).length;
-      setVerifiedCounts(c);
-    }).catch(() => {});
-    return () => { alive = false; };
   }, []);
   // Sprint #68 JJ4: ESC + focus-trap on the upsell modal.
   const proModalRef = useRef(null);
@@ -5440,7 +5437,6 @@ function ClubQuizScreen({ onStart, onBack }) {
                 ) : (
                   <div className="mode-list">
                     {matches.map(({ key, pack }) => {
-                      const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
                       const lightClub = clubReadableText(pack.color) === "#0a0a0a";
                       const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                       return (
@@ -5451,7 +5447,6 @@ function ClubQuizScreen({ onStart, onBack }) {
                           </div>
                           <div className="mi-body">
                             <div className="mi-name">{pack.name}</div>
-                            <div className="mi-desc">{count} questions</div>
                           </div>
                           <div className="mi-arrow">→</div>
                         </button>
@@ -5480,7 +5475,6 @@ function ClubQuizScreen({ onStart, onBack }) {
             </div>
             <div className="mode-list">
               {shown.map(([key, pack]) => {
-                const count = Math.max((verifiedCounts && verifiedCounts[key]) || 0, pack?.questions?.length || 0);
                 const lightClub = clubReadableText(pack.color) === "#0a0a0a";
                 const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                 return (
@@ -5491,7 +5485,6 @@ function ClubQuizScreen({ onStart, onBack }) {
                     </div>
                     <div className="mi-body">
                       <div className="mi-name">{pack.name}</div>
-                      <div className="mi-desc">{count} questions</div>
                     </div>
                     <div className="mi-arrow">→</div>
                   </button>
