@@ -1,11 +1,37 @@
 # Ball IQ — the list
 
-**Last updated: 2026-08-03.** Single source of truth for what's in flight.
+**Last updated: 2026-08-06.** Single source of truth for what's in flight.
 `[ ]` = open · **ALEX** = needs you · **CLAUDE** = I do it.
 
 Claude: update this file whenever something lands, and re-read it when asked
 "what's left". It exists because a chat scrollback is not a plan. Completed
 items are deleted, not archived — git history is the archive.
+
+---
+
+## ⚡ THE TOP 8 — agreed 2026-08-06
+
+Ordered by ROI against the **measured** bottleneck, which is no longer
+activation or retention. Activation was fixed (33% -> 82%), retention is
+healthy (72% return, 41/81 active last 7d). What is short is **signup VOLUME**,
+i.e. distribution. And **74% of signups happen inside the native app**, which
+makes acquisition a STORE question before it is a website question.
+
+| # | Task | Owner | Why it is this high |
+|---|---|---|---|
+| 1 | **iOS 1.5.0 build 54 — cut today, submit tomorrow** | CLAUDE cuts · ALEX submits | iOS is still on 1.4.0. Everything shipped 2026-08-06 (answer-leak avoidance, the phone-fold fixes, the Mystery Player rank copy) reaches iOS users only through this. Verified fixes are worth zero until they ship. |
+| 2 | **App Store screenshots + ASO refresh** | CLAUDE builds assets · ALEX uploads | The store listing IS the top of the funnel for 74% of signups, and the screenshots have been stale since 1.3.3. Only name + subtitle + keywords are indexed by Apple — the description is not. Cheapest real lever on signup volume. |
+| 3 | **Authority push — directory submissions + backlink outreach** | ALEX (kit is written) | "football quiz" sits at position 41 and Alex called top-10 there "life changing" (10-20x impressions). The measured constraint is AUTHORITY (#51 vs #8), not page count — so more pages do not move it. The kit was built and never executed. |
+| 4 | **Club wave: Leipzig + Atalanta** | CLAUDE (needs Alex's go-ahead to run the multi-agent forge) | Two big fanbases with no pack. Two clubs, not four, per Alex. ZERO ERROR pipeline: 2 generation lenses -> examiner -> adversarial skeptic, only double-survivors ship. |
+| 5 | **Mystery Player scoring weights** | CLAUDE | The mode's first real player could not read its ranking ("Alisson is above 1000?"). The copy was fixed 2026-08-06; the weighting swap (nationality 220 vs league-country 300) still needs re-measuring on the REPAIRED dataset before it is applied. |
+| 6 | **MP stats never save + verify "up to 8"** | CLAUDE fixes · ALEX 2-device test | Home advertises "Live rooms, up to 8 players" and that number has never been verified beyond the RPC layer. Stats are realtime-gated and currently write nothing. Marketing a claim we cannot demonstrate is the risk. |
+| 7 | **Editorial answer-leak cleanup, worst packs first** | CLAUDE | No longer urgent — draw-time avoidance took sessions containing a leak from 26.9% to 0.0% (94cbb74). Still worth doing for pack DEPTH, because every avoided pair narrows what a session can draw from. Porto, Parma, Man Utd first. |
+| 8 | **Emoji vs line icons on the Journey ladder** | ALEX (one decision, ~10 min to apply) | The modes grid uses green line icons; the Journey tiers use emoji. My recommendation is to KEEP the emoji — they read as rank medallions, not UI icons, and a line icon for "Legend" loses more than the consistency gains. |
+
+**Deliberately not in the top 8** and why: partnership outreach (Alex is holding
+it), AdSense (waiting on Google, nothing to do), TikTok (real reach lever but
+Alex-owned content work — promote it the moment #1-#3 land), lifetime-download
+reporting (Alex deprioritised it), Capacitor 8 branch (no user-visible win yet).
 
 ---
 
