@@ -59,6 +59,9 @@ const SEED_STATS = {
 // A grid running past the fold is honest — it is what a phone actually shows,
 // and it signals there is more. Only settle where the bottom edge is the
 // problem and nothing above it matters.
+// Subjects that are fine in a quiz and wrong on a storefront.
+const SENSITIVE = /disaster|died|death|deaths|killed|tragedy|crash|fire|riot|stadium collapse|munich air|hillsborough|heysel|bradford|ibrox|superga/i;
+
 const SHOTS = [
   { name: '01-home',           expect: 'More modes',   go: async (p) => {} },
   { name: '03-club-picker',    expect: 'Club Quizzes', go: async (p) => {
@@ -68,6 +71,57 @@ const SHOTS = [
       await p.waitForTimeout(1200); } },
   { name: '04-transfer-trail', expect: 'Transfer Trail', go: async (p) => {
       await p.getByText('Transfer Trail', { exact: true }).first().click(); } },
+
+  // ⚠️ A SOLVED BOARD, NOT AN EMPTY ONE. An empty grid shows the format; a
+  // solved one shows the payoff. The daily answer is read FROM THE APP rather
+  // than hard-coded, because it rotates — a pinned surname would silently start
+  // producing a losing board the next day.
+  { name: '02-footle', expect: 'Footle', go: async (p) => {
+      const answer = await p.evaluate(async () => {
+        const m = await import('/src/lib/wordle.js').catch(() => null);
+        return m ? m.getWordleAnswer() : null;
+      }).catch(() => null);
+      await p.getByText('Play', { exact: true }).first().click();
+      await p.waitForTimeout(1800);
+      if (answer) {
+        // Two near-misses then the answer — a board that looks earned.
+        for (const g of [answer.slice(0, 1) + 'A'.repeat(answer.length - 1), answer]) {
+          await p.keyboard.type(g.toUpperCase());
+          await p.getByText('ENTER', { exact: true }).first().click();
+          await p.waitForTimeout(1400);
+        }
+      }
+      await p.waitForTimeout(1200); } },
+
+  // ⚠️ MUST BE A CORRECT ANSWER. The first attempt at this shot captured a red
+  // "Incorrect" — technically the app working, useless as an advert. Options are
+  // shuffled per game, so the only reliable way is to answer, check, and move on
+  // to the next question if it was wrong.
+  { name: '05-quiz-explanation', expect: 'Why?', go: async (p) => {
+      await p.goto(BASE + '/play?club=liverpool', { waitUntil: 'networkidle' });
+      await p.waitForTimeout(3800);
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const opts = p.locator('.opt');
+        if (!(await opts.count())) break;
+        const stem = await p.evaluate(() => document.querySelector('.qd-q, .q, h2')?.textContent || '');
+        // ⚠️ A CORRECT ANSWER IS NOT ENOUGH — the SUBJECT has to be right too.
+        // The first clean capture landed on the Heysel Stadium disaster: 39
+        // people died. Perfectly good football history inside a quiz, grim as
+        // the shop window of an App Store listing. Skip anything that would
+        // read badly as an advert.
+        if (SENSITIVE.test(stem)) {
+          const skip = p.getByText(/^Next/).first();
+          await opts.first().click(); await p.waitForTimeout(900);
+          if (await skip.count()) { await skip.click(); await p.waitForTimeout(1500); }
+          continue;
+        }
+        await opts.nth(attempt % 4).click();
+        await p.waitForTimeout(1100);
+        const t = await p.evaluate(() => document.body.innerText);
+        if (/Correct!/i.test(t) && !/Incorrect/i.test(t)) return;   // got one
+        const next = p.getByText(/^Next/).first();
+        if (await next.count()) { await next.click(); await p.waitForTimeout(1500); }
+      } } },
 ];
 
 
