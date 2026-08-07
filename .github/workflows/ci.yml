@@ -16,6 +16,16 @@ on:
   pull_request:
   push:
     branches: [main]
+  # ⚠️ RE-RUN BY HAND. On 2026-08-06/07 GitHub dropped runs entirely: two pushes
+  # to main produced NO workflow run at all (not a failure — nothing), on top of
+  # an evening of "The job was not acquired by Runner of type hosted". With only
+  # push/pull_request triggers there was no way to get the safety net back
+  # without inventing a commit, so a bank edit touching 65 questions sat
+  # un-verified by CI. This makes re-running a button.
+  #
+  # Not a quota: the repo is PUBLIC, so Actions minutes are unlimited. That was
+  # the tidy theory and it was wrong — check before believing it next time.
+  workflow_dispatch:
 
 jobs:
   build-and-unit:
