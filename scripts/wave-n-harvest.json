@@ -1,0 +1,95 @@
+[
+ {
+  "club": "RBLeipzig",
+  "clubName": "RB Leipzig",
+  "full": 7,
+  "count": 7,
+  "survivors": [
+   {
+    "q": "Timo Werner joined RB Leipzig in 2016, in time for their first Bundesliga season. Which club did he sign from?",
+    "o": [
+     "Bayer Leverkusen",
+     "Werder Bremen",
+     "VfB Stuttgart",
+     "Borussia Mönchengladbach"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Werner came from boyhood club VfB Stuttgart, who had just been relegated, and promptly scored 21 Bundesliga goals in his first season at Leipzig."
+   },
+   {
+    "q": "Who was RB Leipzig's head coach when they finished second in their debut Bundesliga season in 2016-17?",
+    "o": [
+     "Julian Nagelsmann",
+     "Ralph Hasenhüttl",
+     "Jesse Marsch",
+     "Ralf Rangnick"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The Austrian arrived in 2016 having just kept newly promoted Ingolstadt in the Bundesliga, and immediately steered Leipzig into the Champions League."
+   },
+   {
+    "q": "When RB Leipzig began playing in 2009, which tier of German football were they in?",
+    "o": [
+     "The second tier",
+     "The third tier",
+     "The fourth tier",
+     "The fifth tier"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "They started in the fifth-tier NOFV-Oberliga Süd and won it at the first attempt, the first of four promotions in seven years."
+   },
+   {
+    "q": "RB Leipzig's full name is RasenBallsport Leipzig rather than Red Bull Leipzig. Why?",
+    "o": [
+     "Another German club already held the rights to the name 'Red Bull Leipzig'",
+     "German football's rules did not allow a company name in a club's name",
+     "Red Bull wanted the club to look independent so it could receive public money",
+     "The city of Leipzig controls what any club using its stadium may call itself"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The invented word 'RasenBallsport' (roughly 'lawn ball sports') exists purely so the initials could stay 'RB' — the club had to engineer a workaround for a restriction on what an official club name is permitted to contain."
+   },
+   {
+    "q": "In which season did RB Leipzig play their first Bundesliga match?",
+    "o": [
+     "2010-11",
+     "2013-14",
+     "2016-17",
+     "2019-20"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Promotion from the 2. Bundesliga in May 2016 put them in the top flight for 2016-17, where they finished second at the first attempt."
+   },
+   {
+    "q": "Who combined the jobs of sporting director and head coach to take RB Leipzig up to the Bundesliga in 2015-16?",
+    "o": [
+     "Ralf Rangnick",
+     "Roger Schmidt",
+     "Alexander Zorniger",
+     "Julian Nagelsmann"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Rangnick had run the sporting side since 2012 and stepped into the dugout himself for the promotion season, then handed the team over and went back upstairs."
+   },
+   {
+    "q": "In what year was RB Leipzig founded?",
+    "o": [
+     "1999",
+     "2004",
+     "2009",
+     "2014"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The club was formally founded on 19 May 2009, making it one of the youngest sides ever to reach the Bundesliga."
+   }
+  ],
+  "prose": null
+ }
+]
