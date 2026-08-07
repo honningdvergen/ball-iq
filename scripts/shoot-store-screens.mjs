@@ -72,9 +72,26 @@ const SHOTS = [
   { name: '01-home',           expect: 'More modes',   go: async (p) => {} },
   { name: '03-club-picker',    expect: 'Club Quizzes', go: async (p) => {
       await p.getByText('Club Quiz', { exact: true }).first().click(); } },
+  // ⚠️ HIDE THE GUEST UPSELL. The capture runs as a guest (no way to sign in
+  // headlessly), so Profile opens with a full-width "Save your progress /
+  // Sign in / Create account" card above the rating — the largest element on
+  // the screen. As a store shot it says "you are not signed in" before it says
+  // anything about the app. Suppressing it shows exactly what a real signed-in
+  // user sees, which is what the listing is advertising.
   { name: '06-profile',        expect: 'Ball IQ rating', settle: true, go: async (p) => {
       await p.getByText('Profile', { exact: true }).last().click();
-      await p.waitForTimeout(1200); } },
+      await p.waitForTimeout(1200);
+      await p.evaluate(() => {
+        // ⚠️ MATCH EXACTLY, NOT startsWith. querySelectorAll returns DOCUMENT
+        // ORDER, so ancestors come before descendants — and the banner is the
+        // first thing in the profile container, which makes the container's
+        // own textContent start with the same string. A startsWith+find hid
+        // the entire screen. The screen assertion is what caught it.
+        const title = [...document.querySelectorAll('div')]
+          .find((d) => (d.textContent || '').trim() === '🌟 Save your progress');
+        if (title?.parentElement) title.parentElement.style.display = 'none';
+      });
+      await p.waitForTimeout(400); } },
   { name: '04-transfer-trail', expect: 'Transfer Trail', go: async (p) => {
       await p.getByText('Transfer Trail', { exact: true }).first().click(); } },
 
@@ -152,8 +169,18 @@ const SHOTS = [
 async function settleScroll(p, tabH = 96) {
   await p.evaluate((tab) => {
     const vh = window.innerHeight;
-    const els = [...document.querySelectorAll('.play-card,.mode-item,.hr-card,.tr-card,section,.pd-rating')]
-      .filter((e) => e.getBoundingClientRect().height > 40);
+    // ⚠️ MATCH CARDS STRUCTURALLY, NOT ONLY BY CLASS. Half the profile screen
+    // is built from inline-styled divs with no class at all (the Scouting
+    // Report rows), so a class list found no boundary there and the shot cut
+    // mid-row with text bleeding through the translucent tab bar. A rounded
+    // corner is what actually makes something a card, so read for that.
+    const els = [...document.querySelectorAll('.play-card,.mode-item,.hr-card,.tr-card,section,.pd-rating,div')]
+      .filter((e) => {
+        const r = e.getBoundingClientRect();
+        if (r.height < 40 || r.width < 120) return false;
+        if (e.matches('.play-card,.mode-item,.hr-card,.tr-card,section,.pd-rating')) return true;
+        return parseFloat(getComputedStyle(e).borderTopLeftRadius) >= 12;
+      });
     if (!els.length) return;
     const y = window.scrollY;
     const bottoms = els.map((e) => e.getBoundingClientRect().bottom + y);

@@ -92,7 +92,15 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
     font-family:-apple-system,'Inter','Helvetica Neue',sans-serif;
     display:flex;flex-direction:column;align-items:center;
   }
-  .mark{display:flex;align-items:center;gap:18px;margin-top:86px}
+  /* The copy block owns the whole top area and centres inside it, so the void
+     left over by a one-line headline is split above and below instead of
+     dumping ~300px of dead space between the subline and the phone. */
+  .top{
+    flex:0 0 ${TOP_BLOCK}px;height:${TOP_BLOCK}px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding-bottom:40px;
+  }
+  .mark{display:flex;align-items:center;gap:18px}
   .mark img{width:64px;height:64px;border-radius:16px}
   .mark span{font-size:52px;font-weight:800;color:#fff;letter-spacing:-.5px}
   .mark b{color:${AMBER};font-weight:800}
@@ -138,17 +146,33 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   .batt{width:48px;height:25px;border:3px solid rgba(255,255,255,.55);border-radius:8px;padding:2.5px;position:relative}
   .batt i{display:block;height:100%;width:82%;background:#fff;border-radius:4px}
   .batt:after{content:'';position:absolute;right:-7px;top:8px;width:4px;height:9px;background:rgba(255,255,255,.55);border-radius:0 2px 2px 0}
+  /* ⚠️ THE ISLAND NEEDS AN EDGE TO EXIST AT ALL.
+     It was drawn as pure #000 on a #0A0A0A status bar — a 4/255 difference, so
+     it rendered as "no island". A real device reads because the cutout catches
+     a rim of light and the front camera sits just inside it. Both are drawn
+     here; without them a dark app makes the island invisible. */
   .island{
     position:absolute;top:${Math.round(PHONE_W*0.020)}px;left:50%;transform:translateX(-50%);
     width:${Math.round(PHONE_W*0.31)}px;height:${Math.round(PHONE_W*0.084)}px;
     background:#000;border-radius:999px;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,.10), inset 0 3px 8px rgba(0,0,0,.9);
+  }
+  .island:after{
+    content:'';position:absolute;top:50%;right:${Math.round(PHONE_W*0.020)}px;
+    transform:translateY(-50%);
+    width:${Math.round(PHONE_W*0.036)}px;height:${Math.round(PHONE_W*0.036)}px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #23262b 0%, #0d0f12 60%, #050506 100%);
+    box-shadow:0 0 0 1px rgba(255,255,255,.06);
   }
   .screen img{display:block;width:100%;flex:1 1 auto;min-height:0;object-fit:cover;object-position:top center}
 </style></head><body>
-  <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
-  <div class="eyebrow">${c.eyebrow}</div>
-  <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
-  <div class="sub">${c.sub}</div>
+  <div class="top">
+    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
+    <div class="eyebrow">${c.eyebrow}</div>
+    <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
+    <div class="sub">${c.sub}</div>
+  </div>
   <div class="phone"><div class="screen">
     <div class="statusbar">
       <span class="t">9:41</span><span class="island"></span>
