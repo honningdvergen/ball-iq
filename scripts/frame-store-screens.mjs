@@ -32,18 +32,30 @@ const RAW = resolve('screenshots/raw');
 const OUT = resolve('screenshots/framed');
 mkdirSync(OUT, { recursive: true });
 
-const W = 1320, H = 2868;
+// ⚠️ 1284x2778, NOT 1320x2868 — VERIFIED AGAINST THE LIVE LISTING.
+// 1320x2868 is the 6.9" size, and this app HAS NO 6.9" SLOT: App Store Connect
+// Media Manager offers 6.5" / 6.3" / 6.1" / 5.5" / 4.7" / 4" / 3.5", and the
+// five live screenshots are all named *-1284x2778.png. Uploading 6.9" assets
+// would have been rejected at the picker. Read the size off the listing before
+// rendering — do not assume the current largest size Apple documents.
+const W = 1284, H = 2778;
+const S = W / 1320;              // everything below was authored at 1320 wide
 // ⚠️ GEOMETRY IS EXACT, NOT APPROXIMATE — the tab bar was getting sliced.
 // The phone used to be taller than the canvas and object-fit:cover ate the
 // bottom of the app, which meant the nav bar (the thing that shows the app has
 // four sections) was always half-cut. Now the phone fits entirely, and the
 // capture viewport is DERIVED from this geometry so the app image lands at the
 // image area's exact aspect and nothing is cropped at either edge.
-//   phone 924x1908 · pad 12 · status band 109 · image area 900x1775
-//   -> capture at 440 x 868 (see CAPTURE_H in shoot-store-screens.mjs)
-const PHONE_W = 924, PAD = 12, BAND = 109;
-const TOP_BLOCK = 900, BOTTOM = 60;
+//   phone 899x1845 · pad 12 · status band 106 · image area 875x1739
+//   -> capture at 440 x 874 (see CAPTURE_H in shoot-store-screens.mjs)
+const PHONE_W = Math.round(924 * S), PAD = 12, BAND = Math.round(109 * S);
+const TOP_BLOCK = Math.round(900 * S), BOTTOM = Math.round(60 * S);
 const PHONE_H = H - TOP_BLOCK - BOTTOM;
+// The capture viewport must match the image area's aspect exactly or the framer
+// crops, and it crops the bottom — where the tab bar lives.
+const IMG_W = PHONE_W - PAD * 2, IMG_H = PHONE_H - BAND;
+console.log(`  frame ${W}x${H} · phone ${PHONE_W}x${PHONE_H} · image ${IMG_W}x${IMG_H}`
+  + `  ->  capture 440 x ${Math.round(440 * IMG_H / IMG_W)}`);
 const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
 
 // One entry per raw frame. `hi` is the phrase pulled out of the headline in the

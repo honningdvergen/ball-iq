@@ -1,0 +1,29 @@
+{
+ "h1": "Santos FC Quiz",
+ "title": "Santos FC Quiz: Pelé, Neymar and Vila Belmiro",
+ "description": "A Santos quiz that runs from the 1962-63 world titles and Pelé's 1,000th goal to the Meninos da Vila, Neymar's Libertadores and the 2023 drop.",
+ "intro": [
+  "Santos were founded on 14 April 1912 in the port city they are named after, and since 12 October 1916 they have played at a ground everyone calls the Vila. Its official name is the Estádio Urbano Caldeira; nobody uses it. It holds around 16,000, which makes it one of the smallest home grounds of any major Brazilian club, and it is where a lot of the football in this quiz actually happened.",
+  "The 1960s side is the reason the club is known worldwide. Under Lula, who managed from 1954 to 1966, Santos won the Taça Brasil five years running from 1961, took the 1962 Copa Libertadores by beating two-time holders Peñarol in a Buenos Aires playoff, and retained it in 1963 against Boca Juniors at La Bombonera. Then came the Intercontinental Cups: 5-2 away to Benfica at the Estádio da Luz with a Pelé hat-trick in 1962, and a third match against AC Milan at the Maracanã in 1963, settled by a Dalmo penalty. Pelé had arrived in 1956 as a 15-year-old, brought to the club by Waldemar de Brito, and his 1,000th career goal came from the penalty spot at the Maracanã against Vasco da Gama on 19 November 1969. He said goodbye at the Vila in October 1974 against Ponte Preta, dropping to his knees in the centre circle.",
+  "The questions do not stop in the 1970s, because Santos keep producing players. Diego was 17 and Robinho 18 when the 2002 Brasileirão was won over two legs against Corinthians, ending a 34-year wait; Vanderlei Luxemburgo's side took another title in 2004. Neymar was 18 when he scored 11 goals in the 2010 Copa do Brasil run, and 19 when he won the 2011 Libertadores alongside Ganso, scored the Puskás goal against Flamengo at the Vila, and then watched Barcelona win 4-0 in the Club World Cup final in Yokohama. Rodrygo's move to Real Madrid was agreed when he was 17.",
+  "Recent years give the bank its sharper edges. Santos were relegated from Série A for the first time in their history in December 2023, won Série B the following year, and Neymar came back from Al-Hilal in January 2025. If you know your Pepe from your Coutinho, and can name who Santos beat in Argentina in 1998 as well as in 1963, this one will suit you."
+ ],
+ "faq": [
+  {
+   "q": "Where do Santos play their home games?",
+   "a": "At Vila Belmiro, opened on 12 October 1916 and named after the neighbourhood around it. Its official name is the Estádio Urbano Caldeira, honouring a club figure who died in 1933, but nobody calls it that. Capacity is only around 16,000, which makes it one of the smallest grounds used by a major Brazilian club."
+  },
+  {
+   "q": "How many Copa Libertadores have Santos won?",
+   "a": "Three. The first came in 1962, when they beat two-time defending champions Peñarol 3-0 in a Buenos Aires playoff with Pelé scoring twice, making them the first Brazilian club to win it. They retained it in 1963 against Boca Juniors, winning the second leg 2-1 at La Bombonera. The third was 2011, again against Peñarol, sealed 2-1 at the Pacaembu through Neymar and Danilo."
+  },
+  {
+   "q": "Why are Santos called O Peixe?",
+   "a": "It means The Fish. The club sits on the São Paulo coast next to Brazil's largest port, in the city of Santos, and fans and the press have used the nickname for a long time. It is the reason the club's identity is tied to the sea rather than to a colour or a founder."
+  },
+  {
+   "q": "Have Santos ever been relegated?",
+   "a": "Yes, once. A 2-1 home defeat by Fortaleza on the final day in December 2023 sent them down from Série A for the first time in their history. They won Série B in 2024 and came straight back up, and Neymar returned from Al-Hilal in January 2025."
+  }
+ ]
+}

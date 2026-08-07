@@ -193,12 +193,13 @@ async function settleScroll(p, tabH = 96) {
 }
 
 const b = await webkit.launch();
-// ⚠️ 868, NOT 956 — DERIVED FROM THE FRAME, not chosen.
-// frame-store-screens.mjs leaves a 900x1775 image area inside the device,
-// an aspect of 1.9722. Capturing at any other height means the framer has to
-// crop, and it crops the BOTTOM — which is exactly where the tab bar lives.
-// If the frame geometry changes, recompute this.
-const CAPTURE_H = 868;
+// ⚠️ DERIVED FROM THE FRAME, not chosen. frame-store-screens.mjs renders at
+// 1284x2778 (the 6.5" size this listing actually uses — there is no 6.9" slot)
+// and leaves an 875x1739 image area inside the device, an aspect of 1.9874.
+// Capturing at any other height means the framer has to crop, and it crops the
+// BOTTOM — which is exactly where the tab bar lives. The framer PRINTS the
+// number it needs on every run; copy it here if the geometry changes.
+const CAPTURE_H = 874;
 const ctx = await b.newContext({ viewport: { width: 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
 await ctx.addInitScript((stats) => {
   localStorage.setItem('biq_onboarded', '1');

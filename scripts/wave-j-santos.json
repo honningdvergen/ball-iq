@@ -1,450 +1,450 @@
 [
-  {
-    "q": "In which year was Santos FC founded in the Brazilian port city of Santos?",
-    "o": [
-      "1892",
-      "1902",
-      "1912",
-      "1922"
-    ],
-    "a": 2,
-    "diff": "easy",
-    "hint": "Santos Foot-Ball Club was founded on 14 April 1912, at a meeting held at the Concórdia club by three local sports enthusiasts.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Since 1916 Santos have played their home games at a compact ground universally known by the name of the neighbourhood around it. Which ground?",
-    "o": [
-      "Morumbi",
-      "Vila Belmiro",
-      "Pacaembu",
-      "Canindé"
-    ],
-    "a": 1,
-    "diff": "easy",
-    "hint": "Vila Belmiro opened on 12 October 1916 and is one of the smallest grounds used by a major Brazilian club, holding only around 16,000.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos won the 1962 Intercontinental Cup by beating the reigning European champions 5-2 away from home, with Pelé scoring a hat-trick. Which club?",
-    "o": [
-      "Real Madrid",
-      "Benfica",
-      "AC Milan",
-      "Internazionale"
-    ],
-    "a": 1,
-    "diff": "easy",
-    "hint": "Benfica, holders of the 1961 and 1962 European Cups, were beaten 3-2 in Rio and then 5-2 at the Estádio da Luz, where Pelé scored three.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Pelé's 1,000th career goal, scored in November 1969 at the Maracanã, came against which club?",
-    "o": [
-      "Botafogo",
-      "Fluminense",
-      "Vasco da Gama",
-      "Flamengo"
-    ],
-    "a": 2,
-    "diff": "easy",
-    "hint": "Santos won 2-1 at Vasco da Gama on 19 November 1969; Pelé converted a penalty past goalkeeper Edgardo Andrada for the milestone.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos compete in which of Brazil's state championships, a competition they have won more than 20 times?",
-    "o": [
-      "Campeonato Carioca",
-      "Campeonato Mineiro",
-      "Campeonato Gaúcho",
-      "Campeonato Paulista"
-    ],
-    "a": 3,
-    "diff": "easy",
-    "hint": "Santos are from São Paulo state, so they play the Campeonato Paulista — the Carioca is Rio, the Mineiro is Minas Gerais and the Gaúcho is Rio Grande do Sul.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "How did Pelé score his 1,000th career goal for Santos?",
-    "o": [
-      "From a penalty",
-      "With a header",
-      "With an overhead kick",
-      "Direct from a free-kick"
-    ],
-    "a": 0,
-    "diff": "medium",
-    "hint": "Clodoaldo slipped him through, Vasco defender Fernando brought him down in the box, and Pelé converted the spot-kick himself late in the second half, beating goalkeeper Edgardo Andrada at the Maracanã on 19 November 1969.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos retained the Intercontinental Cup in 1963, needing a third match to see off which Italian club?",
-    "o": [
-      "Juventus",
-      "Internazionale",
-      "AC Milan",
-      "Fiorentina"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "Milan won the first leg 4-2 at San Siro; Santos took the return 4-2 and then the Maracanã playoff 1-0 through a Dalmo penalty.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos won a second straight Copa Libertadores in 1963, clinching it by winning the second leg away in Argentina. Which club did they beat in the final?",
-    "o": [
-      "River Plate",
-      "Independiente",
-      "Boca Juniors",
-      "Racing Club"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "Santos beat Boca Juniors 3-2 at the Maracanã and then 2-1 at La Bombonera, Coutinho and Pelé scoring in Buenos Aires.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "In the 1962 Copa Libertadores final Santos became the first Brazilian club to win the competition, taking a playoff against the two-time defending champions. Which club?",
-    "o": [
-      "Nacional",
-      "Peñarol",
-      "River Plate",
-      "Independiente"
-    ],
-    "a": 1,
-    "diff": "medium",
-    "hint": "Peñarol had won the first two editions in 1960 and 1961; Santos beat them 3-0 in a Buenos Aires playoff, Pelé scoring twice.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Which Santos centre-forward's one-two exchanges with Pelé — the famous 'tabelinha' — became the signature move of the club's 1960s attack?",
-    "o": [
-      "Coutinho",
-      "Dorval",
-      "Mengálvio",
-      "Pepe"
-    ],
-    "a": 0,
-    "diff": "medium",
-    "hint": "Coutinho (Antônio Wilson Vieira Honório) played alongside Pelé from 1958 to 1968; Pelé said that inside the box Coutinho was better than he was.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Who is Santos' second-highest goalscorer of all time, behind only Pelé?",
-    "o": [
-      "Coutinho",
-      "Pepe",
-      "Dorval",
-      "Mengálvio"
-    ],
-    "a": 1,
-    "diff": "medium",
-    "hint": "Pepe scored 405 goals for Santos between 1954 and 1969, staying for his whole career; his left foot earned him the nickname 'Canhão da Vila' — the Vila's cannon.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Pelé played his last competitive match for Santos in October 1974, dropping to his knees on the pitch to say goodbye. Who were the opponents?",
-    "o": [
-      "Guarani",
-      "Portuguesa",
-      "Ponte Preta",
-      "São Bento"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "Santos beat Ponte Preta 2-0 in the 1974 Campeonato Paulista on 2 October; Pelé played around 20 minutes before dropping to his knees in the centre circle to bid farewell. Cláudio Adão scored the opener.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos ended a 34-year wait for a Brazilian national championship in 2002, with a young Robinho and Diego in the side. Whom did they beat in the two-legged final?",
-    "o": [
-      "Corinthians",
-      "São Paulo",
-      "Palmeiras",
-      "Grêmio"
-    ],
-    "a": 0,
-    "diff": "medium",
-    "hint": "Santos beat Corinthians 2-0 and 3-2 under Émerson Leão; their previous national title had been the 1968 Torneio Roberto Gomes Pedrosa.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos won five straight Brazilian national titles in the Taça Brasil during the 1960s. In which year did that run begin?",
-    "o": [
-      "1959",
-      "1960",
-      "1961",
-      "1962"
-    ],
-    "a": 2,
-    "diff": "hard",
-    "hint": "Santos won the Taça Brasil every year from 1961 to 1965. Bahia took the first edition in 1959 and Palmeiras the 1960 one.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Which coach was in charge of Santos throughout their rise to world champions, managing the club from 1954 to 1966?",
-    "o": [
-      "Vicente Feola",
-      "Lula",
-      "Aymoré Moreira",
-      "Zezé Moreira"
-    ],
-    "a": 1,
-    "diff": "hard",
-    "hint": "Lula — Luís Alonso Pérez — led Santos from 1954 to 1966, the most decorated spell in the club's history.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Pelé arrived at Santos in 1956 as a 15-year-old, brought to the club by a former Brazil international who had coached him at Bauru. Who was he?",
-    "o": [
-      "Zizinho",
-      "Leônidas da Silva",
-      "Waldemar de Brito",
-      "Domingos da Guia"
-    ],
-    "a": 2,
-    "diff": "hard",
-    "hint": "Waldemar de Brito, who played for Brazil at the 1934 World Cup, coached Pelé at Bauru and presented him at home with the words 'this boy will be the best football player in the world'.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "In which year did Neymar complete his move from Santos to European football?",
-    "o": [
-      "2011",
-      "2012",
-      "2013",
-      "2014"
-    ],
-    "a": 2,
-    "diff": "easy",
-    "hint": "The deal was announced on 25 May 2013 and he was unveiled at the Camp Nou on 3 June 2013; the fee, first reported as €57m, was later restated as far higher.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos reached the 2011 Club World Cup final in Japan. Which European side beat them there?",
-    "o": [
-      "Manchester United",
-      "Barcelona",
-      "Inter Milan",
-      "Real Madrid"
-    ],
-    "a": 1,
-    "diff": "easy",
-    "hint": "Barcelona won 4-0 in Yokohama on 18 December 2011. Messi scored twice and took the Golden Ball, with Xavi and Cesc Fàbregas also on target.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Which No.10 playmaker formed a celebrated partnership with Neymar in Santos' 2011 Copa Libertadores-winning side?",
-    "o": [
-      "Oscar",
-      "Ganso",
-      "Lucas Moura",
-      "Philippe Coutinho"
-    ],
-    "a": 1,
-    "diff": "easy",
-    "hint": "Paulo Henrique Ganso wore 10 to Neymar's 11; he returned from injury to start the second leg of the 2011 final and left for São Paulo in September 2012.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos' 2002 Brasileirão title was inspired by two teenagers out of the club's academy, hailed as a new generation of 'Meninos da Vila'. Who were they?",
-    "o": [
-      "Neymar and Ganso",
-      "Diego and Robinho",
-      "Rodrygo and Gabigol",
-      "Kaká and Adriano"
-    ],
-    "a": 1,
-    "diff": "easy",
-    "hint": "Diego was 17 and Robinho 18 under coach Emerson Leão; Robinho was among the scorers in the 3-2 second leg of the final.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos are known throughout Brazil as 'O Peixe'. What does that nickname mean?",
-    "o": [
-      "The Fish",
-      "The Shark",
-      "The Wave",
-      "The Whale"
-    ],
-    "a": 0,
-    "diff": "easy",
-    "hint": "The club sits on the São Paulo coast beside Brazil's largest port, so fans and press have long called them the Fish.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Who was the coach when Santos won the Brasileirão again in 2004?",
-    "o": [
-      "Emerson Leão",
-      "Muricy Ramalho",
-      "Dorival Júnior",
-      "Vanderlei Luxemburgo"
-    ],
-    "a": 3,
-    "diff": "medium",
-    "hint": "Vanderlei Luxemburgo's side finished the 24-team, 46-round league on 89 points, three clear of Atlético Paranaense.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Which club did Santos beat in the 2011 Copa Libertadores final?",
-    "o": [
-      "Peñarol",
-      "Nacional",
-      "Boca Juniors",
-      "Independiente"
-    ],
-    "a": 0,
-    "diff": "medium",
-    "hint": "Goalless at the Centenário in Montevideo, then 2-1 at the Pacaembu, where Neymar and Danilo scored under Muricy Ramalho.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos won the Copa do Brasil for the first time in 2010 — which club did they beat in the final?",
-    "o": [
-      "Vitória",
-      "Grêmio",
-      "Fluminense",
-      "Atlético Mineiro"
-    ],
-    "a": 0,
-    "diff": "medium",
-    "hint": "An 18-year-old Neymar was the competition's top scorer with 11 goals as Santos beat Vitória over two legs.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Neymar returned to Santos in January 2025. Which club did he leave to make the move?",
-    "o": [
-      "Al-Nassr",
-      "Paris Saint-Germain",
-      "Al-Hilal",
-      "Al-Ittihad"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "He ended an injury-wrecked spell at Al-Hilal, the Saudi club he had joined from Paris Saint-Germain in 2023.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos were relegated from Série A for the first time in their history at the end of which season?",
-    "o": [
-      "2017",
-      "2020",
-      "2023",
-      "2025"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "A 2-1 home defeat by Fortaleza on the final day in December 2023 sent them down; they won Série B in 2024 and came straight back.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "In 2018 Santos agreed to sell teenage winger Rodrygo for around €45m to which club, where he arrived a year later?",
-    "o": [
-      "Manchester City",
-      "Real Madrid",
-      "Barcelona",
-      "Paris Saint-Germain"
-    ],
-    "a": 1,
-    "diff": "medium",
-    "hint": "Real Madrid announced the agreement in June 2018 when Rodrygo was 17, and he joined them in June 2019.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos reached the 2020 Copa Libertadores final after winning 3-0 at home against which Argentine club in the semi-finals?",
-    "o": [
-      "River Plate",
-      "Racing Club",
-      "Boca Juniors",
-      "Independiente"
-    ],
-    "a": 2,
-    "diff": "medium",
-    "hint": "Boca Juniors were beaten 3-0 on aggregate in January 2021; Santos then lost the all-Brazilian final to Palmeiras at the Maracanã.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Neymar opened the scoring in the 2-1 second-leg win that sealed the 2011 Copa Libertadores. Which teammate scored Santos' other goal?",
-    "o": [
-      "Ganso",
-      "Elano",
-      "Danilo",
-      "Zé Eduardo"
-    ],
-    "a": 2,
-    "diff": "hard",
-    "hint": "Right-back Danilo made it 2-0 on 69 minutes at the Pacaembu before a late own goal gave Peñarol a consolation.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Neymar's 2011 Puskás Award-winning goal, a jinking solo run through the penalty area, was scored against which Brazilian club?",
-    "o": [
-      "Flamengo",
-      "Corinthians",
-      "Internacional",
-      "Grêmio"
-    ],
-    "a": 0,
-    "diff": "hard",
-    "hint": "Scored on 27 July 2011 at home to make it 3-0 in the famous 5-4 defeat to Ronaldinho's Flamengo: Neymar drove in from near halfway, exchanged passes with Borges, jinked past Ronaldo Angelim in the box and lifted it over the keeper.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Santos won the Copa CONMEBOL in 1998 — which Argentine club did they beat in the final?",
-    "o": [
-      "Newell's Old Boys",
-      "Rosario Central",
-      "Estudiantes",
-      "Vélez Sarsfield"
-    ],
-    "a": 1,
-    "diff": "hard",
-    "hint": "Santos won the first leg 1-0 at home and drew 0-0 at the Gigante de Arroyito to take the cup 1-0 on aggregate.",
-    "club": "Santos",
-    "type": "mcq"
-  },
-  {
-    "q": "Which European club signed Diego from Santos in 2004?",
-    "o": [
-      "Werder Bremen",
-      "Juventus",
-      "Porto",
-      "Atlético Madrid"
-    ],
-    "a": 2,
-    "diff": "hard",
-    "hint": "Porto, who had just won the Champions League and lost Deco to Barcelona, paid around €7m that July. Diego later starred at Werder Bremen and Juventus.",
-    "club": "Santos",
-    "type": "mcq"
-  }
+ {
+  "q": "In which year was Santos FC founded in the Brazilian port city of Santos?",
+  "o": [
+   "1892",
+   "1902",
+   "1912",
+   "1922"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Santos Foot-Ball Club was founded on 14 April 1912, at a meeting held at the Concórdia club by three local sports enthusiasts.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Since 1916 Santos have played their home games at a compact ground universally known by the name of the neighbourhood around it. Which ground?",
+  "o": [
+   "Morumbi",
+   "Vila Belmiro",
+   "Pacaembu",
+   "Canindé"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Vila Belmiro opened on 12 October 1916 and is one of the smallest grounds used by a major Brazilian club, holding only around 16,000.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos won the 1962 Intercontinental Cup by beating the reigning European champions 5-2 away from home, with Pelé scoring a hat-trick. Which club?",
+  "o": [
+   "Real Madrid",
+   "Benfica",
+   "AC Milan",
+   "Internazionale"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Benfica, holders of the 1961 and 1962 European Cups, were beaten 3-2 in Rio and then 5-2 at the Estádio da Luz, where Pelé scored three.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Pelé's 1,000th career goal, scored in November 1969 at the Maracanã, came against which club?",
+  "o": [
+   "Botafogo",
+   "Fluminense",
+   "Vasco da Gama",
+   "Flamengo"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Santos won 2-1 at Vasco da Gama on 19 November 1969; Pelé converted a penalty past goalkeeper Edgardo Andrada for the milestone.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos compete in which of Brazil's state championships, a competition they have won more than 20 times?",
+  "o": [
+   "Campeonato Carioca",
+   "Campeonato Mineiro",
+   "Campeonato Gaúcho",
+   "Campeonato Paulista"
+  ],
+  "a": 3,
+  "diff": "easy",
+  "hint": "Santos are from São Paulo state, so they play the Campeonato Paulista — the Carioca is Rio, the Mineiro is Minas Gerais and the Gaúcho is Rio Grande do Sul.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "How did Pelé score his 1,000th career goal for Santos?",
+  "o": [
+   "From a penalty",
+   "With a header",
+   "With an overhead kick",
+   "Direct from a free-kick"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Clodoaldo slipped him through, Vasco defender Fernando brought him down in the box, and Pelé converted the spot-kick himself late in the second half, beating goalkeeper Edgardo Andrada at the Maracanã on 19 November 1969.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos retained the Intercontinental Cup in 1963, needing a third match to see off which Italian club?",
+  "o": [
+   "Juventus",
+   "Internazionale",
+   "AC Milan",
+   "Fiorentina"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Milan won the first leg 4-2 at San Siro; Santos took the return 4-2 and then the Maracanã playoff 1-0 through a Dalmo penalty.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos won a second straight Copa Libertadores in 1963, clinching it by winning the second leg away in Argentina. Which club did they beat in the final?",
+  "o": [
+   "River Plate",
+   "Independiente",
+   "Boca Juniors",
+   "Racing Club"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Santos beat Boca Juniors 3-2 at the Maracanã and then 2-1 at La Bombonera, Coutinho and Pelé scoring in Buenos Aires.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "In the 1962 Copa Libertadores final Santos became the first Brazilian club to win the competition, taking a playoff against the two-time defending champions. Which club?",
+  "o": [
+   "Nacional",
+   "Peñarol",
+   "River Plate",
+   "Independiente"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Peñarol had won the first two editions in 1960 and 1961; Santos beat them 3-0 in a Buenos Aires playoff, Pelé scoring twice.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Santos centre-forward's one-two exchanges with Pelé — the famous 'tabelinha' — became the signature move of the club's 1960s attack?",
+  "o": [
+   "Coutinho",
+   "Dorval",
+   "Mengálvio",
+   "Pepe"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Coutinho (Antônio Wilson Vieira Honório) played alongside Pelé from 1958 to 1968; Pelé said that inside the box Coutinho was better than he was.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Who is Santos' second-highest goalscorer of all time, behind only Pelé?",
+  "o": [
+   "Coutinho",
+   "Pepe",
+   "Dorval",
+   "Mengálvio"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Pepe scored 405 goals for Santos between 1954 and 1969, staying for his whole career; his left foot earned him the nickname 'Canhão da Vila' — the Vila's cannon.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Pelé played his last competitive match for Santos in October 1974, dropping to his knees on the pitch to say goodbye. Who were the opponents?",
+  "o": [
+   "Guarani",
+   "Portuguesa",
+   "Ponte Preta",
+   "São Bento"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Santos beat Ponte Preta 2-0 in the 1974 Campeonato Paulista on 2 October; Pelé played around 20 minutes before dropping to his knees in the centre circle to bid farewell. Cláudio Adão scored the opener.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos ended a 34-year wait for a Brazilian national championship in 2002, with a young Robinho and Diego in the side. Whom did they beat in the two-legged final?",
+  "o": [
+   "Corinthians",
+   "São Paulo",
+   "Palmeiras",
+   "Grêmio"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Santos beat Corinthians 2-0 and 3-2 under Émerson Leão; their previous national title had been the 1968 Torneio Roberto Gomes Pedrosa.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos won five straight Brazilian national titles in the Taça Brasil during the 1960s. In which year did that run begin?",
+  "o": [
+   "1959",
+   "1960",
+   "1961",
+   "1962"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Santos won the Taça Brasil every year from 1961 to 1965. Bahia took the first edition in 1959 and Palmeiras the 1960 one.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Which coach was in charge of Santos throughout their rise to world champions, managing the club from 1954 to 1966?",
+  "o": [
+   "Vicente Feola",
+   "Lula",
+   "Aymoré Moreira",
+   "Zezé Moreira"
+  ],
+  "a": 1,
+  "diff": "hard",
+  "hint": "Lula — Luís Alonso Pérez — led Santos from 1954 to 1966, the most decorated spell in the club's history.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Pelé arrived at Santos in 1956 as a 15-year-old, brought to the club by a former Brazil international who had coached him at Bauru. Who was he?",
+  "o": [
+   "Zizinho",
+   "Leônidas da Silva",
+   "Waldemar de Brito",
+   "Domingos da Guia"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Waldemar de Brito, who played for Brazil at the 1934 World Cup, coached Pelé at Bauru and presented him at Vila Belmiro with the words 'this boy will be the best football player in the world'.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "In which year did Neymar complete his move from Santos to European football?",
+  "o": [
+   "2011",
+   "2012",
+   "2013",
+   "2014"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "The deal was announced on 25 May 2013 and he was unveiled at the Camp Nou on 3 June 2013; the fee, first reported as €57m, was later restated as far higher.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos reached the 2011 Club World Cup final in Japan. Which European side beat them there?",
+  "o": [
+   "Manchester United",
+   "Barcelona",
+   "Inter Milan",
+   "Real Madrid"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Barcelona won 4-0 in Yokohama on 18 December 2011. Messi scored twice and took the Golden Ball, with Xavi and Cesc Fàbregas also on target.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Which No.10 playmaker formed a celebrated partnership with Neymar in Santos' 2011 Copa Libertadores-winning side?",
+  "o": [
+   "Oscar",
+   "Ganso",
+   "Lucas Moura",
+   "Philippe Coutinho"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Paulo Henrique Ganso wore 10 to Neymar's 11; he returned from injury to start the second leg of the 2011 final and left for São Paulo in September 2012.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos' 2002 Brasileirão title was inspired by two teenagers out of the club's academy, hailed as a new generation of 'Meninos da Vila'. Who were they?",
+  "o": [
+   "Neymar and Ganso",
+   "Diego and Robinho",
+   "Rodrygo and Gabigol",
+   "Kaká and Adriano"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Diego was 17 and Robinho 18 under coach Emerson Leão; Robinho was among the scorers in the 3-2 second leg of the final.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos are known throughout Brazil as 'O Peixe'. What does that nickname mean?",
+  "o": [
+   "The Fish",
+   "The Shark",
+   "The Wave",
+   "The Whale"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The club sits on the São Paulo coast beside Brazil's largest port, so fans and press have long called them the Fish.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Who was the coach when Santos won the Brasileirão again in 2004?",
+  "o": [
+   "Emerson Leão",
+   "Muricy Ramalho",
+   "Dorival Júnior",
+   "Vanderlei Luxemburgo"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Vanderlei Luxemburgo's side finished the 24-team, 46-round league on 89 points, three clear of Atlético Paranaense.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Which club did Santos beat in the 2011 Copa Libertadores final?",
+  "o": [
+   "Peñarol",
+   "Nacional",
+   "Boca Juniors",
+   "Independiente"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Goalless at the Centenário in Montevideo, then 2-1 at the Pacaembu, where Neymar and Danilo scored under Muricy Ramalho.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos won the Copa do Brasil for the first time in 2010 — which club did they beat in the final?",
+  "o": [
+   "Vitória",
+   "Grêmio",
+   "Fluminense",
+   "Atlético Mineiro"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "An 18-year-old Neymar was the competition's top scorer with 11 goals as Santos beat Vitória over two legs.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Neymar returned to Santos in January 2025. Which club did he leave to make the move?",
+  "o": [
+   "Al-Nassr",
+   "Paris Saint-Germain",
+   "Al-Hilal",
+   "Al-Ittihad"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "He ended an injury-wrecked spell at Al-Hilal, the Saudi club he had joined from Paris Saint-Germain in 2023.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos were relegated from Série A for the first time in their history at the end of which season?",
+  "o": [
+   "2017",
+   "2020",
+   "2023",
+   "2025"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "A 2-1 home defeat by Fortaleza on the final day in December 2023 sent them down; they won Série B in 2024 and came straight back.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "In 2018 Santos agreed to sell teenage winger Rodrygo for around €45m to which club, where he arrived a year later?",
+  "o": [
+   "Manchester City",
+   "Real Madrid",
+   "Barcelona",
+   "Paris Saint-Germain"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Real Madrid announced the agreement in June 2018 when Rodrygo was 17, and he joined them in June 2019.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos reached the 2020 Copa Libertadores final after winning 3-0 at home against which Argentine club in the semi-finals?",
+  "o": [
+   "River Plate",
+   "Racing Club",
+   "Boca Juniors",
+   "Independiente"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Boca Juniors were beaten 3-0 on aggregate in January 2021; Santos then lost the all-Brazilian final to Palmeiras at the Maracanã.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Neymar opened the scoring in the 2-1 second-leg win that sealed the 2011 Copa Libertadores. Which teammate scored Santos' other goal?",
+  "o": [
+   "Ganso",
+   "Elano",
+   "Danilo",
+   "Zé Eduardo"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Right-back Danilo made it 2-0 on 69 minutes at the Pacaembu before a late own goal gave Peñarol a consolation.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Neymar's 2011 Puskás Award-winning goal, a jinking solo run through the penalty area, was scored against which Brazilian club?",
+  "o": [
+   "Flamengo",
+   "Corinthians",
+   "Internacional",
+   "Grêmio"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Scored on 27 July 2011 at Vila Belmiro to make it 3-0 in the famous 5-4 defeat to Ronaldinho's Flamengo: Neymar drove in from near halfway, exchanged passes with Borges, jinked past Ronaldo Angelim in the box and lifted it over the keeper.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Santos won the Copa CONMEBOL in 1998 — which Argentine club did they beat in the final?",
+  "o": [
+   "Newell's Old Boys",
+   "Rosario Central",
+   "Estudiantes",
+   "Vélez Sarsfield"
+  ],
+  "a": 1,
+  "diff": "hard",
+  "hint": "Santos won the first leg 1-0 at Vila Belmiro and drew 0-0 at the Gigante de Arroyito to take the cup 1-0 on aggregate.",
+  "club": "Santos",
+  "type": "mcq"
+ },
+ {
+  "q": "Which European club signed Diego from Santos in 2004?",
+  "o": [
+   "Werder Bremen",
+   "Juventus",
+   "Porto",
+   "Atlético Madrid"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Porto, who had just won the Champions League and lost Deco to Barcelona, paid around €7m that July. Diego later starred at Werder Bremen and Juventus.",
+  "club": "Santos",
+  "type": "mcq"
+ }
 ]
