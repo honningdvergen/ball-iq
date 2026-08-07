@@ -19,6 +19,12 @@
 // have produced a card whose six sub-ratings do not average to their own
 // overall — the kind of detail a screenshot makes permanent.
 import { webkit } from '@playwright/test';
+// ⚠️ DERIVE THE DAILY ANSWER IN NODE, NOT IN THE PAGE.
+// The first version did `import('/src/lib/wordle.js')` inside the browser —
+// that path only exists in dev, so against a BUILT bundle it threw, the answer
+// came back null, the typing loop was skipped, and the shot shipped an empty
+// board. The screen assertion still passed, because the screen was Footle.
+import { getWordleAnswer } from '../src/lib/wordle.js';
 import { mkdirSync } from 'fs';
 import { resolve } from 'path';
 
@@ -76,19 +82,33 @@ const SHOTS = [
   // solved one shows the payoff. The daily answer is read FROM THE APP rather
   // than hard-coded, because it rotates — a pinned surname would silently start
   // producing a losing board the next day.
-  { name: '02-footle', expect: 'Footle', go: async (p) => {
-      const answer = await p.evaluate(async () => {
-        const m = await import('/src/lib/wordle.js').catch(() => null);
-        return m ? m.getWordleAnswer() : null;
-      }).catch(() => null);
+  { name: '02-footle', expect: 'Footle',
+    // The screen check is not enough here — assert the BOARD actually filled.
+    verify: async (p) => (await p.evaluate(() =>
+      [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 15,
+    go: async (p) => {
+      const answer = getWordleAnswer();
       await p.getByText('Play', { exact: true }).first().click();
       await p.waitForTimeout(1800);
       if (answer) {
-        // Two near-misses then the answer — a board that looks earned.
-        for (const g of [answer.slice(0, 1) + 'A'.repeat(answer.length - 1), answer]) {
-          await p.keyboard.type(g.toUpperCase());
+        // ⚠️ FILL ~5 ROWS. Two guesses proves nothing: the whole point of the
+        // screenshot is to TEACH the mechanic at a glance — greens locking in,
+        // ambers moving, the answer arriving on the last row. A near-empty
+        // board just looks like an unfinished game.
+        const A = answer.toUpperCase(), n = A.length;
+        const pool = 'AEIOURSTLNMB';
+        const decoys = [];
+        for (let r = 0; r < 4; r++) {
+          // Each row reveals a little more: keep r+1 real letters in place and
+          // fill the rest, so the colours visibly converge on the answer.
+          let g = '';
+          for (let i = 0; i < n; i++) g += (i <= r) ? A[i] : pool[(i * 3 + r * 5) % pool.length];
+          decoys.push(g);
+        }
+        for (const g of [...decoys, A]) {
+          await p.keyboard.type(g);
           await p.getByText('ENTER', { exact: true }).first().click();
-          await p.waitForTimeout(1400);
+          await p.waitForTimeout(1150);
         }
       }
       await p.waitForTimeout(1200); } },
@@ -146,7 +166,13 @@ async function settleScroll(p, tabH = 96) {
 }
 
 const b = await webkit.launch();
-const ctx = await b.newContext({ viewport: { width: 440, height: 956 }, deviceScaleFactor: 3 });
+// ⚠️ 868, NOT 956 — DERIVED FROM THE FRAME, not chosen.
+// frame-store-screens.mjs leaves a 900x1775 image area inside the device,
+// an aspect of 1.9722. Capturing at any other height means the framer has to
+// crop, and it crops the BOTTOM — which is exactly where the tab bar lives.
+// If the frame geometry changes, recompute this.
+const CAPTURE_H = 868;
+const ctx = await b.newContext({ viewport: { width: 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
 await ctx.addInitScript((stats) => {
   localStorage.setItem('biq_onboarded', '1');
   // The green "Welcome to Ball IQ!" tip is a SEPARATE flag from onboarding
@@ -178,7 +204,9 @@ for (const s of SHOTS) {
   const txt = await p.evaluate(() => document.body.innerText);
   // case-insensitive: WebKit's innerText applies text-transform, so a label
   // authored as "Ball IQ rating" reads back as "BALL IQ RATING".
-  const ok = txt.toLowerCase().includes(s.expect.toLowerCase());
+  let ok = txt.toLowerCase().includes(s.expect.toLowerCase());
+  // A shot may also assert on STATE, not just which screen it landed on.
+  if (ok && s.verify) ok = await s.verify(p).catch(() => false);
   if (!ok) bad++;
   await p.screenshot({ path: `${RAW}/${s.name}.png` });
   console.log(`  ${ok ? '✓' : '✗ WRONG SCREEN —'} ${s.name}  (looked for "${s.expect}")`);

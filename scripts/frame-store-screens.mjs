@@ -33,8 +33,17 @@ const OUT = resolve('screenshots/framed');
 mkdirSync(OUT, { recursive: true });
 
 const W = 1320, H = 2868;
-const PHONE_W = Math.round(W * 0.70);
-const PHONE_H = Math.round(PHONE_W * 2.16);       // taller than the canvas allows: it bleeds off
+// ⚠️ GEOMETRY IS EXACT, NOT APPROXIMATE — the tab bar was getting sliced.
+// The phone used to be taller than the canvas and object-fit:cover ate the
+// bottom of the app, which meant the nav bar (the thing that shows the app has
+// four sections) was always half-cut. Now the phone fits entirely, and the
+// capture viewport is DERIVED from this geometry so the app image lands at the
+// image area's exact aspect and nothing is cropped at either edge.
+//   phone 924x1908 · pad 12 · status band 109 · image area 900x1775
+//   -> capture at 440 x 868 (see CAPTURE_H in shoot-store-screens.mjs)
+const PHONE_W = 924, PAD = 12, BAND = 109;
+const TOP_BLOCK = 900, BOTTOM = 60;
+const PHONE_H = H - TOP_BLOCK - BOTTOM;
 const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
 
 // One entry per raw frame. `hi` is the phrase pulled out of the headline in the
@@ -83,7 +92,7 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
     font-family:-apple-system,'Inter','Helvetica Neue',sans-serif;
     display:flex;flex-direction:column;align-items:center;
   }
-  .mark{display:flex;align-items:center;gap:18px;margin-top:96px}
+  .mark{display:flex;align-items:center;gap:18px;margin-top:86px}
   .mark img{width:64px;height:64px;border-radius:16px}
   .mark span{font-size:52px;font-weight:800;color:#fff;letter-spacing:-.5px}
   .mark b{color:${AMBER};font-weight:800}
@@ -99,25 +108,36 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   /* The phone bleeds off the bottom: it is a window into the app, not an object
      sitting on a shelf. Matches the live set. */
   .phone{
-    position:relative;margin-top:86px;flex:0 0 auto;
+    position:relative;margin-top:auto;margin-bottom:${BOTTOM}px;flex:0 0 auto;
     width:${PHONE_W}px;height:${PHONE_H}px;
-    border-radius:${Math.round(PHONE_W*0.115)}px;
-    padding:${Math.round(PHONE_W*0.013)}px;
+    border-radius:${Math.round(PHONE_W*0.098)}px;
+    padding:${PAD}px;
     background:linear-gradient(150deg,#5a5f5c 0%,#15181a 20%,#0d0f10 62%,#42423f 100%);
     box-shadow:0 34px 90px rgba(0,0,0,.75);
   }
   .screen{
     width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column;
-    border-radius:${Math.round(PHONE_W*0.104)}px;background:#0A0A0A;
+    border-radius:${Math.round(PHONE_W*0.088)}px;background:#0A0A0A;
   }
   /* #0A0A0A, matching the app body — a pure-black bar drew a visible seam. */
+  /* ⚠️ DRAWN, NOT TYPED. The first version spelled the status icons with
+     characters ("▮▮▮ ᯤ ▰"), which sat at the wrong baseline and read as
+     obviously fake. Real bars, arc and battery, on iOS's own metrics. */
   .statusbar{
-    position:relative;flex:0 0 auto;height:${Math.round(PHONE_W*0.118)}px;background:#0A0A0A;
+    position:relative;flex:0 0 auto;height:${BAND}px;background:#0A0A0A;
     display:flex;align-items:center;justify-content:space-between;
-    padding:0 ${Math.round(PHONE_W*0.072)}px ${Math.round(PHONE_W*0.022)}px;
-    color:#fff;font-size:${Math.round(PHONE_W*0.044)}px;font-weight:600;
+    padding:14px 46px 0;
+    color:#fff;font-size:40px;font-weight:600;letter-spacing:-.3px;
   }
-  .statusbar .ic{font-size:${Math.round(PHONE_W*0.036)}px;letter-spacing:2px}
+  .statusbar .t{font-variant-numeric:tabular-nums;padding-left:10px}
+  .statusbar .ic{display:flex;align-items:center;gap:14px;padding-right:6px}
+  .bars{display:flex;align-items:flex-end;gap:4px;height:26px}
+  .bars i{width:7px;background:#fff;border-radius:2px}
+  .bars i:nth-child(1){height:9px}.bars i:nth-child(2){height:14px}
+  .bars i:nth-child(3){height:20px}.bars i:nth-child(4){height:26px}
+  .batt{width:48px;height:25px;border:3px solid rgba(255,255,255,.55);border-radius:8px;padding:2.5px;position:relative}
+  .batt i{display:block;height:100%;width:82%;background:#fff;border-radius:4px}
+  .batt:after{content:'';position:absolute;right:-7px;top:8px;width:4px;height:9px;background:rgba(255,255,255,.55);border-radius:0 2px 2px 0}
   .island{
     position:absolute;top:${Math.round(PHONE_W*0.020)}px;left:50%;transform:translateX(-50%);
     width:${Math.round(PHONE_W*0.31)}px;height:${Math.round(PHONE_W*0.084)}px;
@@ -130,7 +150,14 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
   <div class="sub">${c.sub}</div>
   <div class="phone"><div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="island"></span><span class="ic">▮▮▮ ᯤ ▰</span></div>
+    <div class="statusbar">
+      <span class="t">9:41</span><span class="island"></span>
+      <span class="ic">
+        <span class="bars"><i></i><i></i><i></i><i></i></span>
+        <svg width="34" height="25" viewBox="0 0 34 25" fill="none"><path d="M17 21.5l3.6-4.3a5.6 5.6 0 00-7.2 0L17 21.5z" fill="#fff"/><path d="M9.2 12.6a12 12 0 0115.6 0" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M4.4 7.2a19 19 0 0125.2 0" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+        <span class="batt"><i></i></span>
+      </span>
+    </div>
     <img src="${dataUri}">
   </div></div>
 </body></html>`;
