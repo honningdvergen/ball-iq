@@ -1,0 +1,762 @@
+[
+ {
+  "club": "Leipzig",
+  "full": 21,
+  "count": 21,
+  "survivors": [
+   {
+    "q": "RB Leipzig reached the Champions League semi-final in 2020. Who knocked them out?",
+    "o": [
+     "Bayern Munich",
+     "Atlético Madrid",
+     "Olympique Lyonnais",
+     "Paris Saint-Germain"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "PSG won the one-off Lisbon semi-final 3-0; Bayern beat Lyon in the other half of the draw and went on to win the trophy."
+   },
+   {
+    "q": "Timo Werner joined RB Leipzig in 2016, in time for their first Bundesliga season. Which club did he sign from?",
+    "o": [
+     "Bayer Leverkusen",
+     "Werder Bremen",
+     "VfB Stuttgart",
+     "Borussia Mönchengladbach"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Werner came from boyhood club VfB Stuttgart, who had just been relegated, and promptly scored 21 Bundesliga goals in his first season at Leipzig."
+   },
+   {
+    "q": "Who was RB Leipzig's head coach when they finished second in their debut Bundesliga season?",
+    "o": [
+     "Julian Nagelsmann",
+     "Ralph Hasenhüttl",
+     "Jesse Marsch",
+     "Ralf Rangnick"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The Austrian arrived in 2016 having just kept newly promoted Ingolstadt in the Bundesliga, and immediately steered Leipzig into the Champions League."
+   },
+   {
+    "q": "In their first ever DFB-Pokal tie, in 2011, fourth-tier RB Leipzig knocked out a Bundesliga club 3-2. Which one?",
+    "o": [
+     "Hamburger SV",
+     "VfL Wolfsburg",
+     "Werder Bremen",
+     "VfB Stuttgart"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Daniel Frahn scored a first-half hat-trick as Leipzig beat Wolfsburg in front of 31,212 at the Red Bull Arena — the young club's first genuine headline."
+   },
+   {
+    "q": "When RB Leipzig began playing in 2009, which tier of German football were they in?",
+    "o": [
+     "The second tier",
+     "The third tier",
+     "The fourth tier",
+     "The fifth tier"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "They started in the fifth-tier NOFV-Oberliga Süd and won it at the first attempt, the first of four promotions in seven years."
+   },
+   {
+    "q": "RB Leipzig were created in 2009 when Red Bull bought the playing rights of which existing club?",
+    "o": [
+     "1. FC Lokomotive Leipzig",
+     "SSV Markranstädt",
+     "BSG Chemie Leipzig",
+     "FC Sachsen Leipzig"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Red Bull paid a reported 350,000 euros for the licence of SSV Markranstädt, a small side from a town just west of Leipzig, and built a new club around it."
+   },
+   {
+    "q": "Julian Nagelsmann arrived at RB Leipzig in 2019 from which club?",
+    "o": [
+     "1899 Hoffenheim",
+     "Mainz 05",
+     "FC Augsburg",
+     "Bayer Leverkusen"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Nagelsmann made his name at Hoffenheim, where he took charge as a rookie in 2016 and reached the Champions League, before the Leipzig move was agreed a year in advance."
+   },
+   {
+    "q": "Which player was in RB Leipzig's squad in the third tier in 2013 and was still at the club for their run to the Champions League semi-final in 2020?",
+    "o": [
+     "Emil Forsberg",
+     "Yussuf Poulsen",
+     "Péter Gulácsi",
+     "Willi Orban"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Poulsen joined from Lyngby in 2013 when Leipzig were a 3. Liga side and rose with them all the way; Forsberg, Gulácsi and Orban all arrived in 2015, by which time the club were in the 2. Bundesliga."
+   },
+   {
+    "q": "Who was RB Leipzig's head coach when they won promotion to the Bundesliga in 2016?",
+    "o": [
+     "Alexander Zorniger",
+     "Ralph Hasenhüttl",
+     "Ralf Rangnick",
+     "Peter Pacult"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Rangnick, the club's sporting director and architect, stepped into the dugout himself for the 2015-16 promotion season and then handed the team to Hasenhüttl for the Bundesliga."
+   },
+   {
+    "q": "Which Germany international played for RB Leipzig in the third and second tiers before Bayern Munich signed him in 2015?",
+    "o": [
+     "Leon Goretzka",
+     "Emre Can",
+     "Niklas Süle",
+     "Joshua Kimmich"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Kimmich spent two seasons at Leipzig from 2013, and Bayern agreed to buy him in January 2015 — before Leipzig had ever played a Bundesliga game."
+   },
+   {
+    "q": "Who scored RB Leipzig's winning goal in their 2-1 Champions League quarter-final victory over Atlético Madrid in Lisbon in 2020?",
+    "o": [
+     "Marcel Sabitzer",
+     "Emil Forsberg",
+     "Tyler Adams",
+     "Yussuf Poulsen"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The American midfielder's deflected strike late on sent Leipzig into a European semi-final for the first time, after João Félix had equalised from the penalty spot."
+   },
+   {
+    "q": "Who managed RB Leipzig from 2012 until early 2015, winning promotion out of the Regionalliga and then out of the 3. Liga?",
+    "o": [
+     "Ralf Rangnick",
+     "Peter Pacult",
+     "Alexander Zorniger",
+     "Ralph Hasenhüttl"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Zorniger's high-pressing side went up in 2013 and again in 2014; he left in early 2015 and took over at another Bundesliga club that summer."
+   },
+   {
+    "q": "RB Leipzig's full name is RasenBallsport Leipzig rather than Red Bull Leipzig. Why?",
+    "o": [
+     "Another German club already held the rights to the name 'Red Bull Leipzig'",
+     "German football's rules did not allow a company name in a club's name",
+     "Red Bull wanted the club to look independent so it could receive public money",
+     "The city of Leipzig controls what any club using its stadium may call itself"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The invented word 'RasenBallsport' (roughly 'lawn ball sports') exists purely so the initials could stay 'RB' — the club had to engineer a workaround for a restriction on what an official club name is permitted to contain."
+   },
+   {
+    "q": "RB Leipzig lifted their first major trophy in 2022. Which competition was it?",
+    "o": [
+     "The Bundesliga",
+     "The DFB-Pokal",
+     "The Europa League",
+     "The DFL-Supercup"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The 2022 DFB-Pokal was the club's first silverware of any real weight, and they retained it the following season."
+   },
+   {
+    "q": "RB Leipzig sold Dominik Szoboszlai in 2023 to which club?",
+    "o": [
+     "Liverpool",
+     "Arsenal",
+     "Napoli",
+     "Bayern Munich"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Liverpool triggered the Hungarian's release clause, following the same Salzburg-to-Leipzig-to-Anfield path Naby Keïta had taken years earlier."
+   },
+   {
+    "q": "Which defender did RB Leipzig sell to Manchester City in 2023 for a fee that made him one of the most expensive defenders in history?",
+    "o": [
+     "Ibrahima Konaté",
+     "Dayot Upamecano",
+     "Joško Gvardiol",
+     "Willi Orban"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Gvardiol arrived from Dinamo Zagreb, starred at the 2022 World Cup for Croatia and moved to City the following summer."
+   },
+   {
+    "q": "In which season did RB Leipzig play their first Bundesliga match?",
+    "o": [
+     "2010-11",
+     "2013-14",
+     "2016-17",
+     "2019-20"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Promotion from the 2. Bundesliga in May 2016 put them in the top flight for 2016-17, where they finished second at the first attempt."
+   },
+   {
+    "q": "Who combined the jobs of sporting director and head coach to take RB Leipzig up to the Bundesliga in 2015-16?",
+    "o": [
+     "Ralf Rangnick",
+     "Roger Schmidt",
+     "Alexander Zorniger",
+     "Julian Nagelsmann"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Rangnick had run the sporting side since 2012 and stepped into the dugout himself for the promotion season, then handed the team over and went back upstairs."
+   },
+   {
+    "q": "Which coach replaced Domenico Tedesco at RB Leipzig in September 2022 and went on to win the 2023 DFB-Pokal?",
+    "o": [
+     "Jesse Marsch",
+     "Marco Rose",
+     "Ralph Hasenhüttl",
+     "Adi Hütter"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Rose, previously in charge at Salzburg, Mönchengladbach and Dortmund, took over after a poor start to the season and beat Eintracht Frankfurt 2-0 in the following June's final in Berlin."
+   },
+   {
+    "q": "Which Premier League side did RB Leipzig eliminate 4-0 on aggregate in the 2019-20 Champions League round of 16?",
+    "o": [
+     "Chelsea",
+     "Tottenham Hotspur",
+     "Liverpool",
+     "Manchester City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Nagelsmann's side won 1-0 at Spurs through a Timo Werner penalty and then 3-0 in Leipzig, a tie billed as the young coach against José Mourinho."
+   },
+   {
+    "q": "In what year was RB Leipzig founded?",
+    "o": [
+     "1999",
+     "2004",
+     "2009",
+     "2014"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The club was formally founded on 19 May 2009, making it one of the youngest sides ever to reach the Bundesliga."
+   }
+  ],
+  "prose": {
+   "slug": "rb-leipzig",
+   "name": "RB Leipzig",
+   "h1": "RB Leipzig Quiz",
+   "title": "RB Leipzig Quiz — Bundesliga Trivia & Answers | Ball IQ",
+   "description": "Free RB Leipzig quiz with explained answers — from the fifth tier in 2009 to the 2020 Champions League semi-final and back-to-back DFB-Pokal wins.",
+   "intro": [
+    "RB Leipzig are the club German football argues about, and the club that climbed quicker than almost anyone. They were founded on 19 May 2009, when Red Bull bought the playing rights of SSV Markranstädt — a small side from a town just west of Leipzig — for a reported 350,000 euros and built a new club around the licence. Even the name is a piece of engineering: German football's rules did not allow a company name inside a club's name, so the invented word 'RasenBallsport', roughly 'lawn ball sports', exists purely so the initials could stay RB. They started in the fifth-tier NOFV-Oberliga Süd and won it at the first attempt.",
+    "The first night that really announced them came in 2011, in the club's first ever DFB-Pokal tie: fourth-tier Leipzig beat Bundesliga side VfL Wolfsburg 3-2, Daniel Frahn helping himself to a first-half hat-trick in front of 31,212 at the Red Bull Arena. Alexander Zorniger's high-pressing team then went up out of the Regionalliga in 2013 and out of the 3. Liga in 2014, before Ralf Rangnick — the sporting director and architect of the whole project since 2012 — stepped into the dugout himself for the 2015-16 promotion season and handed the team to Ralph Hasenhüttl for the top flight. Four promotions in seven years took them to their first Bundesliga match in 2016-17, and Hasenhüttl's side finished second at the first attempt, with Timo Werner, signed from boyhood club VfB Stuttgart, scoring 21 Bundesliga goals.",
+    "Then came Europe. Julian Nagelsmann arrived in 2019 from Hoffenheim, where he had taken charge as a rookie in 2016, and in 2019-20 his side knocked Tottenham out of the Champions League 4-0 on aggregate — a Werner penalty in London, then 3-0 in Leipzig against José Mourinho. In Lisbon they beat Atlético Madrid 2-1, Tyler Adams' deflected late strike sending them into a European semi-final for the first time, before Paris Saint-Germain won the one-off semi 3-0 and Bayern, who had beaten Lyon in the other half of the draw, went on to lift the trophy. Silverware followed in 2022, when the DFB-Pokal became the club's first trophy of real weight; Marco Rose, who had replaced Domenico Tedesco in September 2022, retained it by beating Eintracht Frankfurt 2-0 in Berlin the following June.",
+    "There is a whole other quiz hiding in the players who passed through. Joshua Kimmich spent two seasons at Leipzig from 2013 in the third and second tiers, with Bayern agreeing to sign him in January 2015 — before Leipzig had ever played a Bundesliga game. Yussuf Poulsen joined from Lyngby the same year in the 3. Liga and was still there for that 2020 semi-final. Later the club became a selling machine: Dominik Szoboszlai left for Liverpool in 2023 when his release clause was triggered, following the Salzburg-to-Leipzig-to-Anfield path Naby Keïta had taken years earlier, while Joško Gvardiol moved to Manchester City that same summer for a fee that made him, in 2023, one of the most expensive defenders in history. Every question here carries a short explanation, so one you miss still teaches you the fact behind it. Play the sample set free in your browser, no sign-up, then open the Ball IQ app for the full RB Leipzig set, daily challenges and head-to-head multiplayer."
+   ],
+   "faq": [
+    {
+     "q": "Why are RB Leipzig called RasenBallsport Leipzig and not Red Bull Leipzig?",
+     "a": "Because German football's rules did not allow a company name inside a club's name. 'RasenBallsport' is an invented word, roughly meaning 'lawn ball sports', created so the club's initials could still be RB. The club was formed on 19 May 2009 after Red Bull bought the playing rights of SSV Markranstädt for a reported 350,000 euros."
+    },
+    {
+     "q": "How did RB Leipzig get from the fifth tier to the Bundesliga so quickly?",
+     "a": "They began in the fifth-tier NOFV-Oberliga Süd in 2009 and won it at the first attempt — the first of four promotions in seven years. Alexander Zorniger took them up out of the Regionalliga in 2013 and the 3. Liga in 2014, and Ralf Rangnick, the sporting director since 2012, took charge of the team himself for the 2015-16 promotion season. Their first Bundesliga campaign was 2016-17."
+    },
+    {
+     "q": "Have RB Leipzig won a trophy?",
+     "a": "Yes. The 2022 DFB-Pokal was the club's first silverware of any real weight, and they retained it the following season, with Marco Rose's side beating Eintracht Frankfurt 2-0 in the final in Berlin in June 2023."
+    },
+    {
+     "q": "How far have RB Leipzig gone in the Champions League?",
+     "a": "To the semi-final in 2020, under Julian Nagelsmann. They beat Tottenham 4-0 on aggregate in the round of 16 and then Atlético Madrid 2-1 in Lisbon, where Tyler Adams' late deflected strike took them into a European semi-final for the first time. Paris Saint-Germain won that one-off semi 3-0, and Bayern went on to win the trophy."
+    }
+   ]
+  }
+ },
+ {
+  "club": "Atalanta",
+  "full": 36,
+  "count": 36,
+  "survivors": [
+   {
+    "q": "Atalanta play their home matches in which northern Italian city?",
+    "o": [
+     "Bergamo",
+     "Brescia",
+     "Verona",
+     "Parma"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Atalanta are Bergamo's club through and through: the stadium sits in the Borgo Santa Caterina district and the famous academy is at Zingonia, just outside the city."
+   },
+   {
+    "q": "In which year was Atalanta founded?",
+    "o": [
+     "1897",
+     "1907",
+     "1919",
+     "1928"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The club was formed on 17 October 1907 by students of Bergamo's Liceo Classico Paolo Sarpi; a 1920 merger with fellow Bergamo side Bergamasca added the 'Bergamasca' to the name that survives today as Atalanta Bergamasca Calcio."
+   },
+   {
+    "q": "Atalanta sold their reigning Serie A top scorer to Juventus in 1997. Which striker had they sold to Juventus the previous summer, after one season in Bergamo?",
+    "o": [
+     "Nicola Amoruso",
+     "Christian Vieri",
+     "Vincenzo Montella",
+     "Marco Delvecchio"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Vieri joined Atalanta from Venezia in 1995, moved to Juventus in July 1996 and won the Scudetto there before leaving for Atletico Madrid."
+   },
+   {
+    "q": "Which club did Atalanta beat 3-0 in the 2024 Europa League final?",
+    "o": [
+     "Marseille",
+     "Bayer Leverkusen",
+     "Liverpool",
+     "Roma"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Leverkusen arrived in Dublin unbeaten in 51 matches under Xabi Alonso; Atalanta ended the run and won their first European trophy."
+   },
+   {
+    "q": "Who scored twice as Atalanta won 3-0 away to Liverpool in the 2024 Europa League quarter-final first leg?",
+    "o": [
+     "Ademola Lookman",
+     "Gianluca Scamacca",
+     "Teun Koopmeiners",
+     "Mario Pašalić"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Scamacca struck just before half-time and again on the hour at Anfield, and Pašalić added a late third; Liverpool won the return leg 1-0 but went out 3-1 on aggregate."
+   },
+   {
+    "q": "Which winger came through Atalanta's youth system and was sold to Juventus in January 2020 for €35m while on loan at Parma?",
+    "o": [
+     "Matteo Pessina",
+     "Roberto Gagliardini",
+     "Dejan Kulusevski",
+     "Amad Diallo"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Sweden-raised Kulusevski was developed by Atalanta, broke through on loan at Parma, and was sold to Juventus mid-season while staying at Parma until June."
+   },
+   {
+    "q": "Which winger came through Atalanta's youth system in his native Bergamo province and joined Milan in 1986, going on to win the European Cup there?",
+    "o": [
+     "Alberico Evani",
+     "Roberto Donadoni",
+     "Stefano Eranio",
+     "Attilio Lombardo"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Born in Cisano Bergamasco, Donadoni debuted for Atalanta in 1982 and made 96 league appearances before Milan signed him — a year before Arrigo Sacchi arrived to build his great side."
+   },
+   {
+    "q": "Which nickname, taken from their striped shirts, do Atalanta share with Inter?",
+    "o": [
+     "Rossoneri",
+     "Bianconeri",
+     "Nerazzurri",
+     "Giallorossi"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Nerazzurri simply means 'the black-and-blues'. Atalanta are also called the Orobici, after the ancient Orobii people of the Bergamo hills."
+   },
+   {
+    "q": "Atalanta's nickname 'La Dea' translates into English as what?",
+    "o": [
+     "The Goddess",
+     "The Old Lady",
+     "The Wolves",
+     "The Lightning"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The club takes its name from Atalanta, the fleet-footed huntress of Greek myth, whose profile appears on the crest — Bergamo fans give her a rank above mortal."
+   },
+   {
+    "q": "Atalanta won their first major trophy by beating which club 3-1 in the 1963 Coppa Italia final?",
+    "o": [
+     "Roma",
+     "Napoli",
+     "Torino",
+     "Fiorentina"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Angelo Domenghini scored a hat-trick at San Siro. The celebrations were muted — Bergamo-born Pope John XXIII died the following day."
+   },
+   {
+    "q": "Atalanta sold which midfielder to Juventus in August 2024?",
+    "o": [
+     "Marten de Roon",
+     "Remo Freuler",
+     "Mario Pašalić",
+     "Teun Koopmeiners"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Koopmeiners had arrived from AZ in 2021 and left for a guaranteed fee of around €51m plus bonuses — one of the biggest sales in Atalanta's history."
+   },
+   {
+    "q": "Atalanta scored 98 Serie A goals in 2019-20 without a single player reaching 20 in the league. Which two shared the club's league top-scorer spot on 18 each?",
+    "o": [
+     "Josip Iličić and Papu Gómez",
+     "Duván Zapata and Luis Muriel",
+     "Luis Muriel and Josip Iličić",
+     "Duván Zapata and Robin Gosens"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Muriel matched Zapata's 18 despite starting only 10 league games; with Iličić also on 15, Atalanta were the first Italian side since Juventus in 1951-52 to have three players score 15 or more."
+   },
+   {
+    "q": "Gian Piero Gasperini was appointed Atalanta coach in June 2016. Which club had he spent the previous three seasons managing?",
+    "o": [
+     "Palermo",
+     "Genoa",
+     "Torino",
+     "Inter"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Gasperini left Genoa, where he was in his second spell from 2013 to 2016, to take charge of an Atalanta side that had just finished 13th."
+   },
+   {
+    "q": "In February 2022 the Percassi family sold a large stake in Atalanta to a group led by which American investor?",
+    "o": [
+     "Rocco Commisso",
+     "Dan Friedkin",
+     "Stephen Pagliuca",
+     "James Pallotta"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Pagliuca, a Bain Capital co-chairman and Boston Celtics co-owner, led the group that took 55%; the Percassi family kept 45% and stayed the largest single shareholder, with Pagliuca named co-chairman."
+   },
+   {
+    "q": "Which striker won the Serie A Golden Boot with 24 goals for Atalanta in 1996-97 before joining Juventus?",
+    "o": [
+     "Christian Vieri",
+     "Claudio Caniggia",
+     "Filippo Inzaghi",
+     "Cristiano Doni"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Inzaghi's one season in Bergamo made his name — he scored against 15 different clubs that year and moved to Juventus the following summer."
+   },
+   {
+    "q": "Josip Iličić scored four goals in a single Champions League knockout match for Atalanta in March 2020. Who were the opponents?",
+    "o": [
+     "Valencia",
+     "Real Madrid",
+     "Ajax",
+     "Shakhtar Donetsk"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Atalanta won 4-3 at an empty Mestalla for an 8-4 aggregate victory; Iličić became the first player to score four in an away Champions League knockout tie."
+   },
+   {
+    "q": "Which manager took charge of Atalanta in 2016 and stayed for nine seasons?",
+    "o": [
+     "Gian Piero Gasperini",
+     "Stefano Colantuono",
+     "Edy Reja",
+     "Emiliano Mondonico"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Gasperini nearly lost the job after a poor start in 2016, then turned Atalanta into a Champions League regular and won the 2024 Europa League — the first major trophy of his career."
+   },
+   {
+    "q": "Atalanta lost their opening three group games in the 2019-20 Champions League and still reached the last 16. Which club did they beat 3-0 away in the final group match to go through?",
+    "o": [
+     "Dinamo Zagreb",
+     "Manchester City",
+     "Zenit Saint Petersburg",
+     "Shakhtar Donetsk"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "After defeats to Dinamo Zagreb, Shakhtar and Manchester City, Atalanta took seven points from the last three games and won in Kharkiv to finish second."
+   },
+   {
+    "q": "Which Argentina international captained Atalanta before a bust-up with Gasperini led to his move to Sevilla in January 2021?",
+    "o": [
+     "José Luis Palomino",
+     "Papu Gómez",
+     "Cristian Romero",
+     "Juan Musso"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The row reportedly began at half-time of a Champions League tie with Midtjylland on 1 December 2020, when he refused to switch to the right flank. Sevilla paid around €5m plus add-ons weeks later."
+   },
+   {
+    "q": "Which former Atalanta player turned retail entrepreneur was club president from 1990 to 1994 and returned in 2010 to launch its modern era?",
+    "o": [
+     "Ivan Ruggeri",
+     "Antonio Percassi",
+     "Massimo Moratti",
+     "Maurizio Zamparini"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Percassi bought the club back in June 2010, weeks after relegation to Serie B, and rebuilt it around the Zingonia academy and a self-sustaining transfer model."
+   },
+   {
+    "q": "Who captained Atalanta to the 2010-11 Serie B title, only to be banned from football months later for match-fixing?",
+    "o": [
+     "Gianpaolo Bellini",
+     "Cristiano Doni",
+     "Simone Padoin",
+     "Giacomo Bonaventura"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Doni scored 12 goals from midfield as Atalanta went straight back up as champions, then received a three-and-a-half-year ban in August 2011 in the Scommessopoli betting scandal."
+   },
+   {
+    "q": "Atalanta qualified for the Champions League for the first time by finishing third in which Serie A season?",
+    "o": [
+     "2016-17",
+     "2018-19",
+     "2017-18",
+     "2019-20"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "A final-day comeback win over Sassuolo in May 2019 sealed third place on 69 points, edging out Inter and Milan."
+   },
+   {
+    "q": "Atalanta's 1987-88 Cup Winners' Cup run began with a shock 2-1 defeat away to which Welsh club, then playing in English non-league football?",
+    "o": [
+     "Bangor City",
+     "Merthyr Tydfil",
+     "Rhyl",
+     "Caernarfon Town"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Merthyr, Welsh Cup holders, won 2-1 at Penydarren Park in September 1987; Atalanta needed a 2-0 win in Bergamo to scrape through 3-2 on aggregate and then went all the way to the semi-finals."
+   },
+   {
+    "q": "Atalanta sold which striker to Manchester United in the summer of 2023?",
+    "o": [
+     "Duván Zapata",
+     "Rasmus Højlund",
+     "Luis Muriel",
+     "Gianluca Scamacca"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Højlund had joined from Sturm Graz a year earlier and left for a fee reported at around £72m after a single Serie A season."
+   },
+   {
+    "q": "In 1987-88 Atalanta reached the Cup Winners' Cup semi-finals while playing in Serie B. Which Belgian club knocked them out and went on to win the trophy?",
+    "o": [
+     "Anderlecht",
+     "KV Mechelen",
+     "Club Brugge",
+     "Standard Liege"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Mechelen won both legs 2-1 and then beat Ajax in the final. Atalanta were in the competition as Coppa Italia runners-up, because winners Napoli had done the double and entered the European Cup."
+   },
+   {
+    "q": "Which coach guided Atalanta to the Serie B title in both 2005-06 and 2010-11?",
+    "o": [
+     "Stefano Colantuono",
+     "Delio Rossi",
+     "Luigi Delneri",
+     "Serse Cosmi"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Colantuono had more than one spell in Bergamo and won promotion as champions in each of those seasons — the second time at the first attempt after relegation."
+   },
+   {
+    "q": "Where did Atalanta play their home Champions League matches during their debut 2019-20 campaign?",
+    "o": [
+     "Their own ground in Bergamo",
+     "The Stadio Olimpico in Rome",
+     "San Siro in Milan",
+     "The Allianz Stadium in Turin"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Their Bergamo ground was in the middle of a major redevelopment, so Atalanta asked Inter and Milan for the use of San Siro. The work was finished in time for them to host European nights in Bergamo from 2020-21."
+   },
+   {
+    "q": "Atalanta's ground, opened in 1928 and long known as the Stadio Atleti Azzurri d'Italia, took the name of which sponsor in 2019?",
+    "o": [
+     "Mapei",
+     "Dacia",
+     "Allianz",
+     "Gewiss"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Gewiss, an electrical components firm from the Bergamo area, agreed the naming-rights deal that took effect on 1 July 2019, as the club began rebuilding the old ground stand by stand; the Gewiss Stadium name ran until 2025."
+   },
+   {
+    "q": "Who scored a hat-trick as Atalanta beat Bayer Leverkusen 3-0 to win the 2024 Europa League final?",
+    "o": [
+     "Gianluca Scamacca",
+     "Ademola Lookman",
+     "Mario Pasalic",
+     "Charles De Ketelaere"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Lookman's three goals in Dublin ended Leverkusen's unbeaten season and gave Atalanta only their second major trophy, more than 60 years after the first."
+   },
+   {
+    "q": "Atalanta led 1-0 in the 2020 Champions League quarter-final before conceding twice in the closing minutes. Which club knocked them out?",
+    "o": [
+     "Bayern Munich",
+     "RB Leipzig",
+     "Paris Saint-Germain",
+     "Lyon"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Mario Pašalić had put Atalanta ahead in Lisbon before Marquinhos and Eric Choupo-Moting struck at the death for PSG."
+   },
+   {
+    "q": "Which striker finished as Serie A's top scorer in 1996-97 with 24 goals, in what proved to be his only season at Atalanta?",
+    "o": [
+     "Filippo Inzaghi",
+     "Giuseppe Signori",
+     "Marco Simone",
+     "Enrico Chiesa"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Inzaghi arrived from Parma and won the Capocannoniere in his single Bergamo campaign, edging Vincenzo Montella, before Juventus signed him that summer."
+   },
+   {
+    "q": "As of 2026, Atalanta's most recent relegation from Serie A came at the end of which season?",
+    "o": [
+     "2002-03",
+     "2004-05",
+     "2009-10",
+     "2012-13"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Atalanta finished 18th in 2009-10 and went down, but won Serie B at the first attempt and have been a top-flight club ever since — the end of decades of yo-yoing."
+   },
+   {
+    "q": "Which Atalanta forward's 25 goals made him Serie A's top scorer in 2024-25?",
+    "o": [
+     "Mateo Retegui",
+     "Gianluca Scamacca",
+     "Ademola Lookman",
+     "Charles De Ketelaere"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Retegui arrived in 2024 and finished six clear of Moise Kean, becoming only the second Atalanta player to win the capocannoniere."
+   },
+   {
+    "q": "Atalanta's fiercest rivalry, the Derby Lombardo, is contested with which neighbouring club?",
+    "o": [
+     "Brescia",
+     "Como",
+     "Cremonese",
+     "Monza"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Bergamo and Brescia sit around 50km apart and their mutual dislike long predates football — a textbook case of Italian campanilismo that has produced some of Serie A's most volatile scenes."
+   },
+   {
+    "q": "Claudio Caniggia was an Atalanta player when he scored the goal that knocked Brazil out of the 1990 World Cup. Which Serie A club had Atalanta signed him from the year before?",
+    "o": [
+     "Hellas Verona",
+     "Napoli",
+     "Fiorentina",
+     "Lazio"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Caniggia left River Plate for Verona in 1988 and moved to Bergamo in 1989, scoring 26 goals in 85 league games across three years at Atalanta."
+   },
+   {
+    "q": "After leaving Atalanta in 2025, Gian Piero Gasperini took over at which Serie A club?",
+    "o": [
+     "Napoli",
+     "Juventus",
+     "Inter",
+     "Roma"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "He replaced the retiring Claudio Ranieri in the Roma dugout, while Ivan Jurić was appointed in Bergamo."
+   }
+  ],
+  "prose": {
+   "slug": "atalanta",
+   "name": "Atalanta",
+   "h1": "Atalanta Quiz",
+   "title": "Atalanta Quiz: Bergamo, Gasperini and Dublin 2024",
+   "description": "An Atalanta quiz on the 1963 Coppa Italia, Gasperini's nine seasons, Lookman's hat-trick in Dublin and the strikers Bergamo sold to Juventus.",
+   "intro": [
+    "Atalanta are Bergamo and Bergamo is Atalanta. The club was formed on 17 October 1907 by students of the city's Liceo Classico Paolo Sarpi, named after the fleet-footed huntress of Greek myth whose profile still sits on the crest, and became Atalanta Bergamasca Calcio after a 1920 merger with fellow Bergamo side Bergamasca. To supporters she is La Dea, the Goddess — a rank above mortal. Everyone else gets a choice: Nerazzurri, the black-and-blues, taken from the striped shirts and shared with Inter, or Orobici, after the ancient Orobii people of the Bergamo hills. The ground stands in the Borgo Santa Caterina district, the academy is out at Zingonia, and the fixture that matters most is the Derby Lombardo against Brescia, around 50km down the road — campanilismo of the purest Italian kind, and older than the football.",
+    "The first major trophy took until 1963, when Angelo Domenghini scored a hat-trick at San Siro to beat Torino 3-1 in the Coppa Italia final; the celebrations were muted, because Bergamo-born Pope John XXIII died the following day. Then came a run nobody has matched since: in 1987-88 Atalanta reached the Cup Winners' Cup semi-finals while playing in Serie B, in the competition only as Coppa Italia runners-up after winners Napoli did the double. It started with a 2-1 defeat away to Merthyr Tydfil, the Welsh Cup holders, at Penydarren Park, and ended against KV Mechelen, who beat Ajax in the final. Claudio Caniggia signed from Hellas Verona in 1989 and was an Atalanta player when he knocked Brazil out of the 1990 World Cup. Mostly, though, these were yo-yo years, and they ended badly: 18th and relegated in 2009-10.",
+    "What followed reset the club. Antonio Percassi — a former Atalanta player turned retail entrepreneur, and president once before from 1990 to 1994 — bought the club back in June 2010, weeks after that relegation, and rebuilt it around Zingonia and a self-sustaining transfer model. Stefano Colantuono, who had already won Serie B in 2005-06, took them straight back up as champions in 2010-11 with captain Cristiano Doni scoring 12 from midfield, months before Doni's three-and-a-half-year ban in the Scommessopoli betting scandal. Then Gian Piero Gasperini arrived in June 2016 from Genoa, inheriting a side that had finished 13th and nearly losing the job after a poor start. He stayed nine seasons. Third place in 2018-19, sealed by a final-day comeback against Sassuolo on 69 points, brought a first Champions League campaign — played at San Siro while the Bergamo ground was rebuilt, and salvaged after three straight group defeats by a 3-0 win away to Shakhtar Donetsk in Kharkiv.",
+    "The peaks kept coming. Josip Ilicic scored four at an empty Mestalla in March 2020 as Valencia were beaten 4-3 for an 8-4 aggregate win; a 98-goal league season that year had no 20-goal striker in it, just Duvan Zapata and Luis Muriel on 18 apiece and Ilicic on 15. PSG ended it in Lisbon with two goals in the closing minutes after Mario Pasalic had put Atalanta ahead. Four years later Gianluca Scamacca scored twice in a 3-0 win at Anfield, and Ademola Lookman's hat-trick in Dublin beat Bayer Leverkusen 3-0 to end their 51-match unbeaten run and win the Europa League. All the while Bergamo kept selling: Christian Vieri and Filippo Inzaghi to Juventus in the 1990s, Dejan Kulusevski and Teun Koopmeiners to Juventus since, Rasmus Hojlund to Manchester United. Gasperini left for Roma in 2025 and Ivan Juric took over. Now find out how much of it you actually know.\n"
+   ],
+   "faq": [
+    {
+     "q": "When did Atalanta win the Europa League?",
+     "a": "In 2024, beating Bayer Leverkusen 3-0 in the final in Dublin. Ademola Lookman scored all three goals, ending a Leverkusen side that had gone 51 matches unbeaten under Xabi Alonso. It was Atalanta's first European trophy and only their second major trophy, more than 60 years after the 1963 Coppa Italia — and the first of Gian Piero Gasperini's career. On the way they won 3-0 away to Liverpool in the quarter-final first leg, Gianluca Scamacca scoring twice and Mario Pasalic adding a late third; Liverpool won the return 1-0 but went out 3-1 on aggregate."
+    },
+    {
+     "q": "How long was Gian Piero Gasperini at Atalanta, and where did he go?",
+     "a": "Nine seasons. He was appointed in June 2016, having spent the previous three years managing Genoa in his second spell there, and took over a side that had just finished 13th. After a poor start he nearly lost the job; instead he turned Atalanta into a Champions League regular, finishing third in 2018-19 to qualify for the first time, and won the 2024 Europa League. He left in 2025 to take over at Roma, replacing the retiring Claudio Ranieri, and Ivan Juric was appointed in Bergamo."
+    },
+    {
+     "q": "Why are Atalanta called La Dea?",
+     "a": "Because the club is named after Atalanta, the fleet-footed huntress of Greek myth, whose profile appears on the crest — La Dea translates as 'the Goddess'. They are also called the Nerazzurri, meaning 'the black-and-blues', a nickname taken from their striped shirts and shared with Inter, and the Orobici, after the ancient Orobii people of the hills around Bergamo."
+    },
+    {
+     "q": "Where do Atalanta play their home games?",
+     "a": "In Bergamo, in northern Italy, at the ground in the Borgo Santa Caterina district that opened in 1928 and was long known as the Stadio Atleti Azzurri d'Italia. A naming-rights deal with Gewiss, an electrical components firm from the Bergamo area, took effect on 1 July 2019, and the Gewiss Stadium name ran until 2025. During their debut Champions League campaign in 2019-20 the ground was mid-redevelopment, so Atalanta played their home European ties at San Siro in Milan, returning to Bergamo for European nights from 2020-21."
+    }
+   ]
+  }
+ }
+]

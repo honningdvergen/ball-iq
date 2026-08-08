@@ -258,6 +258,8 @@ const CLUB_TAG = {
   realmadrid:["real madrid","zidane","benzema","modric","bale","ramos"],
   barcelona:["barcelona","messi","xavi","iniesta","cruyff","guardiola"],
   bayern:["bayern","lewandowski","müller","muller","neuer","lahm"],
+  leipzig:["leipzig","rb leipzig","rbl","red bull","werner","nagelsmann"],
+  atalanta:["atalanta","bergamo","la dea","gasperini","lookman"],
   juventus:["juventus","juve","ronaldo","buffon","conte"],
 };
 
@@ -708,6 +710,8 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 // have >=10 for that club — auto-upgrading each club as content is generated —
 // and falls back to the pack's starter questions otherwise.
 const CLUB_PACK_TO_QB = {
+  Leipzig: "RB Leipzig",
+  Atalanta: "Atalanta",
   Boca: "Boca Juniors",
   River: "River Plate",
   Flamengo: "Flamengo",
@@ -743,8 +747,8 @@ const CLUB_PACK_TO_QB = {
 const CLUB_LEAGUES = {
   Arsenal: "pl", Liverpool: "pl", ManUtd: "pl", ManCity: "pl", Chelsea: "pl", Tottenham: "pl", Newcastle: "pl",
   Barcelona: "laliga", RealMadrid: "laliga", Atletico: "laliga",
-  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea", Napoli: "seriea",
-  BayernMunich: "bundesliga", Dortmund: "bundesliga",
+  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea", Napoli: "seriea", Atalanta: "seriea",
+  BayernMunich: "bundesliga", Dortmund: "bundesliga", Leipzig: "bundesliga",
   PSG: "ligue1",
   Galatasaray: "superlig", Benfica: "primeira", Fenerbahce: "superlig",
   Porto: "primeira", Roma: "seriea",
@@ -818,6 +822,8 @@ function clubReadableText(hex) {
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
 // not raw initials. Falls back to clubInitials() for any unmapped key.
 export const CLUB_ABBR = {
+  Leipzig: "RBL",
+  Atalanta: "ATA",
   Boca: "BOC",
   River: "RIV",
   Flamengo: "FLA",
@@ -848,6 +854,8 @@ export const CLUB_ABBR = {
 // searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
 // these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
 const CLUB_SLUG_TO_PACK = {
+  "rb-leipzig": "Leipzig",
+  "atalanta": "Atalanta",
   "boca-juniors": "Boca",
   "river-plate": "River",
   "flamengo": "Flamengo",
@@ -914,6 +922,14 @@ const LEAGUE_QUIZ_SECTIONS = [
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
 export const CLUB_PACKS = {
+  Leipzig: {
+    name: "RB Leipzig", icon: "🐂", color: "#DD0741",
+    questions: [],
+  },
+  Atalanta: {
+    name: "Atalanta", icon: "⚫", color: "#1D71B8",
+    questions: [],
+  },
   Boca: {
     name: "Boca Juniors", icon: "🔵", color: "#0A2B72",
     questions: [],

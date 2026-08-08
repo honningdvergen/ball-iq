@@ -55,7 +55,7 @@ export const CLUBS_ID = [
     description:
       'Kuis Manchester United gratis dengan jawaban berpenjelasan: treble 1999, Sir Alex Ferguson, Cantona, Ronaldo, dan Old Trafford.',
     kind: 'Kuis klub',
-    statLine: 'Gratis · 42 soal Manchester United · tanpa daftar',
+    statLine: 'Gratis · Soal Manchester United dengan penjelasan · tanpa daftar',
     playLabel: 'Mulai kuis',
     intro: [
       'Setan Merah punya pendukung di seluruh dunia, dan Indonesia adalah salah satu basis terbesarnya. Kuis gratis ini menelusuri seluruh perjalanan klub: dari Newton Heath dan tragedi Munich 1958, era Sir Matt Busby yang berujung trofi Eropa 1968, 26 tahun Sir Alex Ferguson, treble 1999 dengan gol Solskjaer di masa tambahan, sampai Cantona, Beckham, Ronaldo, dan Rooney.',
@@ -121,7 +121,7 @@ export const CLUBS_ID = [
       bandH: 'Merasa paling paham Setan Merah? Buktikan di aplikasinya.',
       bandP: 'Rentetan harian, 1v1 langsung, rating sampai 99 — semua kuis dalam satu aplikasi. Aplikasinya berbahasa Inggris.',
       alsoH: 'Halaman yang sama dalam bahasa Inggris',
-      alsoP: 'Ini versi bahasa Indonesia dari kuis Manchester United kami. Versi aslinya, dengan 42 soal, ada di sini:',
+      alsoP: 'Ini versi bahasa Indonesia dari kuis Manchester United kami. Versi aslinya, dalam bahasa Inggris, ada di sini:',
       alsoLink: 'Manchester United quiz (English)',
       statsLine: 'Soal Manchester United di Ball IQ hadir dalam tiga tingkat: mudah, sedang, dan sulit — semuanya disertai penjelasan.',
     },
@@ -153,7 +153,7 @@ export const CLUBS_ID = [
     description:
       'Kuis Arsenal gratis dengan jawaban berpenjelasan: The Invincibles, Wenger, Henry, Bergkamp, dan rekor Piala FA.',
     kind: 'Kuis klub',
-    statLine: 'Gratis · 67 soal Arsenal · tanpa daftar',
+    statLine: 'Gratis · Soal Arsenal dengan penjelasan · tanpa daftar',
     playLabel: 'Mulai kuis',
     intro: [
       'Meriam London punya salah satu basis pendukung terbesar di Indonesia. Kuis gratis ini menelusuri seluruh sejarah klub: dari Dial Square dan para pekerja pabrik amunisi pada 1886, lini belakang legendaris era 1990-an, 22 tahun Arsène Wenger, Thierry Henry dan Dennis Bergkamp, sampai rekor Piala FA yang tidak tersentuh klub lain.',
@@ -206,7 +206,7 @@ export const CLUBS_ID = [
       bandH: 'Merasa paling paham Meriam London? Buktikan di aplikasinya.',
       bandP: 'Rentetan harian, 1v1 langsung, rating sampai 99 — semua kuis dalam satu aplikasi. Aplikasinya berbahasa Inggris.',
       alsoH: 'Halaman yang sama dalam bahasa Inggris',
-      alsoP: 'Ini versi bahasa Indonesia dari kuis Arsenal kami. Versi aslinya, dengan 67 soal, ada di sini:',
+      alsoP: 'Ini versi bahasa Indonesia dari kuis Arsenal kami. Versi aslinya, dalam bahasa Inggris, ada di sini:',
       alsoLink: 'Arsenal quiz (English)',
       statsLine: 'Soal Arsenal di Ball IQ hadir dalam tiga tingkat: mudah, sedang, dan sulit — semuanya disertai penjelasan.',
     },

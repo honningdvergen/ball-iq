@@ -2378,5 +2378,69 @@ export const CLUBS = [
       "a": "The 2020 final, played in April 2021 at La Cartuja in Seville after a year's delay and behind closed doors because of the pandemic. Real Sociedad beat Athletic Club 1-0 in the first all-Basque final since 1927, captain Mikel Oyarzabal converting a 63rd-minute penalty. It was their first major trophy since the 1987 Copa del Rey, won on penalties at La Romareda under John Toshack."
     }
   ]
-}
+},
+  {
+    "club": "RB Leipzig",
+    "slug": "rb-leipzig",
+    "name": "RB Leipzig",
+    "h1": "RB Leipzig Quiz",
+    "title": "RB Leipzig Quiz — Bundesliga Trivia & Answers | Ball IQ",
+    "description": "Free RB Leipzig quiz with explained answers — from the fifth tier in 2009 to the 2020 Champions League semi-final and back-to-back DFB-Pokal wins.",
+    "intro": [
+      "RB Leipzig are the club German football argues about, and the club that climbed quicker than almost anyone. They were founded on 19 May 2009, when Red Bull bought the playing rights of SSV Markranstädt — a small side from a town just west of Leipzig — for a reported 350,000 euros and built a new club around the licence. Even the name is a piece of engineering: German football's rules did not allow a company name inside a club's name, so the invented word 'RasenBallsport', roughly 'lawn ball sports', exists purely so the initials could stay RB. They started in the fifth-tier NOFV-Oberliga Süd and won it at the first attempt.",
+      "The first night that really announced them came in 2011, in the club's first ever DFB-Pokal tie: fourth-tier Leipzig beat Bundesliga side VfL Wolfsburg 3-2, Daniel Frahn helping himself to a first-half hat-trick in front of 31,212 at the Red Bull Arena. Alexander Zorniger's high-pressing team then went up out of the Regionalliga in 2013 and out of the 3. Liga in 2014, before Ralf Rangnick — the sporting director and architect of the whole project since 2012 — stepped into the dugout himself for the 2015-16 promotion season and handed the team to Ralph Hasenhüttl for the top flight. Four promotions in seven years took them to their first Bundesliga match in 2016-17, and Hasenhüttl's side finished second at the first attempt, with Timo Werner, signed from boyhood club VfB Stuttgart, scoring 21 Bundesliga goals.",
+      "Then came Europe. Julian Nagelsmann arrived in 2019 from Hoffenheim, where he had taken charge as a rookie in 2016, and in 2019-20 his side knocked Tottenham out of the Champions League 4-0 on aggregate — a Werner penalty in London, then 3-0 in Leipzig against José Mourinho. In Lisbon they beat Atlético Madrid 2-1, Tyler Adams' deflected late strike sending them into a European semi-final for the first time, before Paris Saint-Germain won the one-off semi 3-0 and Bayern, who had beaten Lyon in the other half of the draw, went on to lift the trophy. Silverware followed in 2022, when the DFB-Pokal became the club's first trophy of real weight; Marco Rose, who had replaced Domenico Tedesco in September 2022, retained it by beating Eintracht Frankfurt 2-0 in Berlin the following June.",
+      "There is a whole other quiz hiding in the players who passed through. Joshua Kimmich spent two seasons at Leipzig from 2013 in the third and second tiers, with Bayern agreeing to sign him in January 2015 — before Leipzig had ever played a Bundesliga game. Yussuf Poulsen joined from Lyngby the same year in the 3. Liga and was still there for that 2020 semi-final. Later the club became a selling machine: Dominik Szoboszlai left for Liverpool in 2023 when his release clause was triggered, following the Salzburg-to-Leipzig-to-Anfield path Naby Keïta had taken years earlier, while Joško Gvardiol moved to Manchester City that same summer for a fee that made him, in 2023, one of the most expensive defenders in history. Every question here carries a short explanation, so one you miss still teaches you the fact behind it. Play the sample set free in your browser, no sign-up, then open the Ball IQ app for the full RB Leipzig set, daily challenges and head-to-head multiplayer."
+    ],
+    "faq": [
+      {
+        "q": "Why are RB Leipzig called RasenBallsport Leipzig and not Red Bull Leipzig?",
+        "a": "Because German football's rules did not allow a company name inside a club's name. 'RasenBallsport' is an invented word, roughly meaning 'lawn ball sports', created so the club's initials could still be RB. The club was formed on 19 May 2009 after Red Bull bought the playing rights of SSV Markranstädt for a reported 350,000 euros."
+      },
+      {
+        "q": "How did RB Leipzig get from the fifth tier to the Bundesliga so quickly?",
+        "a": "They began in the fifth-tier NOFV-Oberliga Süd in 2009 and won it at the first attempt — the first of four promotions in seven years. Alexander Zorniger took them up out of the Regionalliga in 2013 and the 3. Liga in 2014, and Ralf Rangnick, the sporting director since 2012, took charge of the team himself for the 2015-16 promotion season. Their first Bundesliga campaign was 2016-17."
+      },
+      {
+        "q": "Have RB Leipzig won a trophy?",
+        "a": "Yes. The 2022 DFB-Pokal was the club's first silverware of any real weight, and they retained it the following season, with Marco Rose's side beating Eintracht Frankfurt 2-0 in the final in Berlin in June 2023."
+      },
+      {
+        "q": "How far have RB Leipzig gone in the Champions League?",
+        "a": "To the semi-final in 2020, under Julian Nagelsmann. They beat Tottenham 4-0 on aggregate in the round of 16 and then Atlético Madrid 2-1 in Lisbon, where Tyler Adams' late deflected strike took them into a European semi-final for the first time. Paris Saint-Germain won that one-off semi 3-0, and Bayern went on to win the trophy."
+      }
+    ]
+  },
+  {
+    "club": "Atalanta",
+    "slug": "atalanta",
+    "name": "Atalanta",
+    "h1": "Atalanta Quiz",
+    "title": "Atalanta Quiz: Bergamo, Gasperini and Dublin 2024",
+    "description": "An Atalanta quiz on the 1963 Coppa Italia, Gasperini's nine seasons, Lookman's hat-trick in Dublin and the strikers Bergamo sold to Juventus.",
+    "intro": [
+      "Atalanta are Bergamo and Bergamo is Atalanta. The club was formed on 17 October 1907 by students of the city's Liceo Classico Paolo Sarpi, named after the fleet-footed huntress of Greek myth whose profile still sits on the crest, and became Atalanta Bergamasca Calcio after a 1920 merger with fellow Bergamo side Bergamasca. To supporters she is La Dea, the Goddess — a rank above mortal. Everyone else gets a choice: Nerazzurri, the black-and-blues, taken from the striped shirts and shared with Inter, or Orobici, after the ancient Orobii people of the Bergamo hills. The ground stands in the Borgo Santa Caterina district, the academy is out at Zingonia, and the fixture that matters most is the Derby Lombardo against Brescia, around 50km down the road — campanilismo of the purest Italian kind, and older than the football.",
+      "The first major trophy took until 1963, when Angelo Domenghini scored a hat-trick at San Siro to beat Torino 3-1 in the Coppa Italia final; the celebrations were muted, because Bergamo-born Pope John XXIII died the following day. Then came a run nobody has matched since: in 1987-88 Atalanta reached the Cup Winners' Cup semi-finals while playing in Serie B, in the competition only as Coppa Italia runners-up after winners Napoli did the double. It started with a 2-1 defeat away to Merthyr Tydfil, the Welsh Cup holders, at Penydarren Park, and ended against KV Mechelen, who beat Ajax in the final. Claudio Caniggia signed from Hellas Verona in 1989 and was an Atalanta player when he knocked Brazil out of the 1990 World Cup. Mostly, though, these were yo-yo years, and they ended badly: 18th and relegated in 2009-10.",
+      "What followed reset the club. Antonio Percassi — a former Atalanta player turned retail entrepreneur, and president once before from 1990 to 1994 — bought the club back in June 2010, weeks after that relegation, and rebuilt it around Zingonia and a self-sustaining transfer model. Stefano Colantuono, who had already won Serie B in 2005-06, took them straight back up as champions in 2010-11 with captain Cristiano Doni scoring 12 from midfield, months before Doni's three-and-a-half-year ban in the Scommessopoli betting scandal. Then Gian Piero Gasperini arrived in June 2016 from Genoa, inheriting a side that had finished 13th and nearly losing the job after a poor start. He stayed nine seasons. Third place in 2018-19, sealed by a final-day comeback against Sassuolo on 69 points, brought a first Champions League campaign — played at San Siro while the Bergamo ground was rebuilt, and salvaged after three straight group defeats by a 3-0 win away to Shakhtar Donetsk in Kharkiv.",
+      "The peaks kept coming. Josip Ilicic scored four at an empty Mestalla in March 2020 as Valencia were beaten 4-3 for an 8-4 aggregate win; a 98-goal league season that year had no 20-goal striker in it, just Duvan Zapata and Luis Muriel on 18 apiece and Ilicic on 15. PSG ended it in Lisbon with two goals in the closing minutes after Mario Pasalic had put Atalanta ahead. Four years later Gianluca Scamacca scored twice in a 3-0 win at Anfield, and Ademola Lookman's hat-trick in Dublin beat Bayer Leverkusen 3-0 to end their 51-match unbeaten run and win the Europa League. All the while Bergamo kept selling: Christian Vieri and Filippo Inzaghi to Juventus in the 1990s, Dejan Kulusevski and Teun Koopmeiners to Juventus since, Rasmus Hojlund to Manchester United. Gasperini left for Roma in 2025 and Ivan Juric took over. Now find out how much of it you actually know.\n"
+    ],
+    "faq": [
+      {
+        "q": "When did Atalanta win the Europa League?",
+        "a": "In 2024, beating Bayer Leverkusen 3-0 in the final in Dublin. Ademola Lookman scored all three goals, ending a Leverkusen side that had gone 51 matches unbeaten under Xabi Alonso. It was Atalanta's first European trophy and only their second major trophy, more than 60 years after the 1963 Coppa Italia — and the first of Gian Piero Gasperini's career. On the way they won 3-0 away to Liverpool in the quarter-final first leg, Gianluca Scamacca scoring twice and Mario Pasalic adding a late third; Liverpool won the return 1-0 but went out 3-1 on aggregate."
+      },
+      {
+        "q": "How long was Gian Piero Gasperini at Atalanta, and where did he go?",
+        "a": "Nine seasons. He was appointed in June 2016, having spent the previous three years managing Genoa in his second spell there, and took over a side that had just finished 13th. After a poor start he nearly lost the job; instead he turned Atalanta into a Champions League regular, finishing third in 2018-19 to qualify for the first time, and won the 2024 Europa League. He left in 2025 to take over at Roma, replacing the retiring Claudio Ranieri, and Ivan Juric was appointed in Bergamo."
+      },
+      {
+        "q": "Why are Atalanta called La Dea?",
+        "a": "Because the club is named after Atalanta, the fleet-footed huntress of Greek myth, whose profile appears on the crest — La Dea translates as 'the Goddess'. They are also called the Nerazzurri, meaning 'the black-and-blues', a nickname taken from their striped shirts and shared with Inter, and the Orobici, after the ancient Orobii people of the hills around Bergamo."
+      },
+      {
+        "q": "Where do Atalanta play their home games?",
+        "a": "In Bergamo, in northern Italy, at the ground in the Borgo Santa Caterina district that opened in 1928 and was long known as the Stadio Atleti Azzurri d'Italia. A naming-rights deal with Gewiss, an electrical components firm from the Bergamo area, took effect on 1 July 2019, and the Gewiss Stadium name ran until 2025. During their debut Champions League campaign in 2019-20 the ground was mid-redevelopment, so Atalanta played their home European ties at San Siro in Milan, returning to Bergamo for European nights from 2020-21."
+      }
+    ]
+  }
 ];
