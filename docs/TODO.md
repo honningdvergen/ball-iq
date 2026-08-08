@@ -25,29 +25,8 @@ outrank another club wave.
 | 1 | **Cut a CLEAN iOS 1.5.0 build 54** | ⚠️ The archive built earlier tonight has Mystery Player ENABLED. iOS has never shipped that mode (live 1.4.0 = build 52, cut 3.5h before the mode landed), so submitting that archive would ADD a known-broken mode to iOS in the same week we pulled it from Android. Rebuild off current main, then Alex device-tests. |
 | 2 | **App Store screenshots + ASO refresh** | The listing IS the funnel top for 74% of signups and has been stale since 1.3.3. Apple indexes name + subtitle + keywords only — never the description. Cheapest real lever on signup volume. |
 | 3 | **Anchor the 78 rot-prone questions + gate it** | Alex spotted the class: claims about an open-ended PRESENT go false silently. Measured: the feared "which club does X play for" is effectively absent (1 of 6,469 — the bank already writes past-tense). The real exposure is **76 undated superlatives** ("who holds the all-time record for most PL goals?"). Fix is a one-word anchor ("As of 2026, …"), a pattern the bank already uses ~40 times. Gate new ones at forge time. |
-| 4 | **Club wave: Leipzig + Atalanta — FORGE RUNNING (2026-08-08)** | Go-ahead given. Run `wf_e18056e2-638`, ~130 agents. ⚠️ **IF THIS SESSION DIED, READ THE RECOVERY BOX BELOW** — `resumeFromRunId` is same-session only, but nothing is lost. |
-
-#### ⚠️ RECOVERY — Wave N forge, if the session ended mid-run
-
-`resumeFromRunId` only works inside the session that launched the run. A usage
-limit ends that. Every completed agent is already on disk, so recover with:
-
-```bash
-node scripts/forge-harvest.mjs \
-  ~/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_e18056e2-638 \
-  scripts/wave-n-harvest.json
-```
-
-That reads `journal.jsonl` + the `agent-*.jsonl` transcripts and writes every
-double-survivor in the shape `forge-curate.mjs` already consumes. Survivors are
-recovered as **every skeptic that returned `keep`** — the skeptic only sees a
-question the examiner passed, and sees it post-correction, so its embedded JSON
-is the final version. Partial runs are safe to harvest; re-run it any time.
-
-Then: top up whichever club is short by re-running only that club's lens,
-re-forge the **prose** (harvest returns `prose: null` — the prose agents run
-last), and rejoin the normal pipeline at `forge-curate.mjs`. Script:
-`scratchpad/wave-n-forge.js` (path in the Workflow tool result).
+| 4 | **Club wave: Leipzig + Atalanta — SHIPPED (cfaafae)** | Live 2026-08-08. Leipzig 20, Atalanta 33. Bank 6,522 · 76 packs · 74 club pages. ⚠️ Leipzig is under the new 25 floor — top it up in the next clubs wave. |
+| 5 | **Spanish localisation wave — NEXT** | Measured: `/es/quiz/river-plate` does **134 impr / 7 clicks** vs **8 / 0** for its English page; `/es/` Boca does 38/4 vs **0/0** English. Reuses verified questions via the `id` link, so no forge and no new facts. 8 candidates. ⚠️ Turkish INVERTS this (English Gala 776 vs Turkish 11) — per-market, never "localise everything". |
 
 ### NEXT — real, not urgent
 
