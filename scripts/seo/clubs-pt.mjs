@@ -47,7 +47,7 @@ export const CLUBS_PT = [
     description:
       'Quiz gratuito do Flamengo com respostas explicadas: a Libertadores de 1981 e 2019, Zico, Gabigol, o Maracanã e a era Jorge Jesus.',
     kind: 'Quiz de clube',
-    statLine: 'Grátis · 36 perguntas do Flamengo · sem cadastro',
+    statLine: 'Grátis · Perguntas do Flamengo com respostas explicadas · sem cadastro',
     playLabel: 'Jogar o quiz',
     intro: [
       'A maior torcida do Brasil merece um quiz à altura. Este é gratuito, feito para quem acompanha o Mengão de verdade, e percorre todo o arco do clube — do time de Zico que ganhou a Libertadores e o Mundial em 1981 à campanha de 2019 sob Jorge Jesus, com os dois gols de Gabigol nos minutos finais em Lima e os 90 pontos no Brasileirão.',
@@ -115,9 +115,9 @@ export const CLUBS_PT = [
       bandH: 'Acha que sabe tudo do Mengão? Prove no aplicativo.',
       bandP: 'Sequências, 1v1 ao vivo, um rating até 99 — e todos os quizzes em um só app. O aplicativo está em inglês.',
       alsoH: 'A mesma página em inglês',
-      alsoP: 'Esta é a versão em português do nosso quiz do Flamengo. A original, com as 36 perguntas, está aqui:',
+      alsoP: 'Esta é a versão em português do nosso quiz do Flamengo. A original, em inglês, está aqui:',
       alsoLink: 'Flamengo quiz (English)',
-      statsLine: (n, e, m, h) => `O Ball IQ tem ${n} perguntas do Flamengo — ${e} fáceis, ${m} médias e ${h} difíceis.`,
+      statsLine: 'As perguntas do Flamengo no Ball IQ vêm em três níveis — fáceis, médias e difíceis — todas com a resposta explicada.',
     },
   },
   {
@@ -130,7 +130,7 @@ export const CLUBS_PT = [
     description:
       'Quiz gratuito do Corinthians com respostas explicadas: o Mundial de 2012, a Libertadores, Sócrates e a Democracia Corintiana, Ronaldo e o Derby.',
     kind: 'Quiz de clube',
-    statLine: 'Grátis · 36 perguntas do Timão · sem cadastro',
+    statLine: 'Grátis · Perguntas do Timão com respostas explicadas · sem cadastro',
     playLabel: 'Jogar o quiz',
     intro: [
       'O Corinthians tem uma torcida que atravessa o país e uma história que vai muito além do futebol. Este quiz gratuito percorre tudo: o Mundial de 2012 em Yokohama, com o gol de Guerrero e Cássio eleito o melhor do torneio; a primeira Libertadores no mesmo ano, invicto; a Democracia Corintiana de Sócrates nos anos 80; o Mundial de 2000, o primeiro da história; Ronaldo em 2009; e o Derby contra o Palmeiras.',
@@ -183,7 +183,7 @@ export const CLUBS_PT = [
       alsoH: 'A mesma página em inglês',
       alsoP: 'Esta é a versão em português do nosso quiz do Corinthians. A original está aqui:',
       alsoLink: 'Corinthians quiz (English)',
-      statsLine: (n, e, m, h) => `O Ball IQ tem ${n} perguntas do Corinthians — ${e} fáceis, ${m} médias e ${h} difíceis.`,
+      statsLine: 'As perguntas do Corinthians no Ball IQ vêm em três níveis — fáceis, médias e difíceis — todas com a resposta explicada.',
     },
   },
   {
@@ -196,7 +196,7 @@ export const CLUBS_PT = [
     description:
       'Quiz gratuito do Palmeiras com respostas explicadas: as Libertadores de 1999, 2020 e 2021, Abel Ferreira, Ademir da Guia, Marcos e o Derby.',
     kind: 'Quiz de clube',
-    statLine: 'Grátis · 36 perguntas do Verdão · sem cadastro',
+    statLine: 'Grátis · Perguntas do Verdão com respostas explicadas · sem cadastro',
     playLabel: 'Jogar o quiz',
     intro: [
       'O Palmeiras é o clube dos números: o maior campeão brasileiro, três Libertadores e uma década recente que poucos times no continente conseguem igualar. Este quiz gratuito cobre tudo — a primeira Libertadores em 1999 com Scolari e Marcos, o bicampeonato continental de 2020 e 2021 sob Abel Ferreira, Ademir da Guia e o Palestra Itália, e o Derby contra o Corinthians.',
@@ -249,7 +249,7 @@ export const CLUBS_PT = [
       alsoH: 'A mesma página em inglês',
       alsoP: 'Esta é a versão em português do nosso quiz do Palmeiras. A original está aqui:',
       alsoLink: 'Palmeiras quiz (English)',
-      statsLine: (n, e, m, h) => `O Ball IQ tem ${n} perguntas do Palmeiras — ${e} fáceis, ${m} médias e ${h} difíceis.`,
+      statsLine: 'As perguntas do Palmeiras no Ball IQ vêm em três níveis — fáceis, médias e difíceis — todas com a resposta explicada.',
     },
   },
 ];

@@ -2,9 +2,21 @@
  {
   "club": "RBLeipzig",
   "clubName": "RB Leipzig",
-  "full": 7,
-  "count": 7,
+  "full": 21,
+  "count": 21,
   "survivors": [
+   {
+    "q": "RB Leipzig reached the Champions League semi-final in 2020. Who knocked them out?",
+    "o": [
+     "Bayern Munich",
+     "Atlético Madrid",
+     "Olympique Lyonnais",
+     "Paris Saint-Germain"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "PSG won the one-off Lisbon semi-final 3-0; Bayern beat Lyon in the other half of the draw and went on to win the trophy."
+   },
    {
     "q": "Timo Werner joined RB Leipzig in 2016, in time for their first Bundesliga season. Which club did he sign from?",
     "o": [
@@ -30,6 +42,18 @@
     "hint": "The Austrian arrived in 2016 having just kept newly promoted Ingolstadt in the Bundesliga, and immediately steered Leipzig into the Champions League."
    },
    {
+    "q": "In their first ever DFB-Pokal tie, in 2011, fourth-tier RB Leipzig knocked out a Bundesliga club 3-2. Which one?",
+    "o": [
+     "Hamburger SV",
+     "VfL Wolfsburg",
+     "Werder Bremen",
+     "VfB Stuttgart"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Daniel Frahn scored a first-half hat-trick as Leipzig beat Wolfsburg in front of 31,212 at the Red Bull Arena — the young club's first genuine headline."
+   },
+   {
     "q": "When RB Leipzig began playing in 2009, which tier of German football were they in?",
     "o": [
      "The second tier",
@@ -42,6 +66,90 @@
     "hint": "They started in the fifth-tier NOFV-Oberliga Süd and won it at the first attempt, the first of four promotions in seven years."
    },
    {
+    "q": "RB Leipzig were created in 2009 when Red Bull bought the playing rights of which existing club?",
+    "o": [
+     "1. FC Lokomotive Leipzig",
+     "SSV Markranstädt",
+     "BSG Chemie Leipzig",
+     "FC Sachsen Leipzig"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Red Bull paid a reported 350,000 euros for the licence of SSV Markranstädt, a small side from a town just west of Leipzig, and built a new club around it."
+   },
+   {
+    "q": "Julian Nagelsmann arrived at RB Leipzig in 2019 from which club?",
+    "o": [
+     "1899 Hoffenheim",
+     "Mainz 05",
+     "FC Augsburg",
+     "Bayer Leverkusen"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Nagelsmann made his name at Hoffenheim, where he took charge as a rookie in 2016 and reached the Champions League, before the Leipzig move was agreed a year in advance."
+   },
+   {
+    "q": "Which player was in RB Leipzig's squad in the third tier in 2013 and was still at the club for their run to the Champions League semi-final in 2020?",
+    "o": [
+     "Emil Forsberg",
+     "Yussuf Poulsen",
+     "Péter Gulácsi",
+     "Willi Orban"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Poulsen joined from Lyngby in 2013 when Leipzig were a 3. Liga side and rose with them all the way; Forsberg, Gulácsi and Orban all arrived in 2015, by which time the club were in the 2. Bundesliga."
+   },
+   {
+    "q": "Who was RB Leipzig's head coach when they won promotion to the Bundesliga in 2016?",
+    "o": [
+     "Alexander Zorniger",
+     "Ralph Hasenhüttl",
+     "Ralf Rangnick",
+     "Peter Pacult"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Rangnick, the club's sporting director and architect, stepped into the dugout himself for the 2015-16 promotion season and then handed the team to Hasenhüttl for the Bundesliga."
+   },
+   {
+    "q": "Which Germany international played for RB Leipzig in the third and second tiers before Bayern Munich signed him in 2015?",
+    "o": [
+     "Leon Goretzka",
+     "Emre Can",
+     "Niklas Süle",
+     "Joshua Kimmich"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Kimmich spent two seasons at Leipzig from 2013, and Bayern agreed to buy him in January 2015 — before Leipzig had ever played a Bundesliga game."
+   },
+   {
+    "q": "Who scored RB Leipzig's winning goal in their 2-1 Champions League quarter-final victory over Atlético Madrid in Lisbon in 2020?",
+    "o": [
+     "Marcel Sabitzer",
+     "Emil Forsberg",
+     "Tyler Adams",
+     "Yussuf Poulsen"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The American midfielder's deflected strike late on sent Leipzig into a European semi-final for the first time, after João Félix had equalised from the penalty spot."
+   },
+   {
+    "q": "Who managed RB Leipzig from 2012 until early 2015, winning promotion out of the Regionalliga and then out of the 3. Liga?",
+    "o": [
+     "Ralf Rangnick",
+     "Peter Pacult",
+     "Alexander Zorniger",
+     "Ralph Hasenhüttl"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Zorniger's high-pressing side went up in 2013 and again in 2014; he left in early 2015 and was appointed VfB Stuttgart's head coach that summer."
+   },
+   {
     "q": "RB Leipzig's full name is RasenBallsport Leipzig rather than Red Bull Leipzig. Why?",
     "o": [
      "Another German club already held the rights to the name 'Red Bull Leipzig'",
@@ -52,6 +160,42 @@
     "a": 1,
     "diff": "medium",
     "hint": "The invented word 'RasenBallsport' (roughly 'lawn ball sports') exists purely so the initials could stay 'RB' — the club had to engineer a workaround for a restriction on what an official club name is permitted to contain."
+   },
+   {
+    "q": "RB Leipzig lifted their first major trophy in 2022. Which competition was it?",
+    "o": [
+     "The Bundesliga",
+     "The DFB-Pokal",
+     "The Europa League",
+     "The DFL-Supercup"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The 2022 DFB-Pokal was the club's first silverware of any real weight, and they retained it the following season."
+   },
+   {
+    "q": "RB Leipzig sold Dominik Szoboszlai in 2023 to which club?",
+    "o": [
+     "Liverpool",
+     "Arsenal",
+     "Napoli",
+     "Bayern Munich"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Liverpool triggered the Hungarian's release clause, following the same Salzburg-to-Leipzig-to-Anfield path Naby Keïta had taken years earlier."
+   },
+   {
+    "q": "Which defender did RB Leipzig sell to Manchester City in 2023 for a fee that made him one of the most expensive defenders in history?",
+    "o": [
+     "Ibrahima Konaté",
+     "Dayot Upamecano",
+     "Joško Gvardiol",
+     "Willi Orban"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Gvardiol arrived from Dinamo Zagreb, starred at the 2022 World Cup for Croatia and moved to City the following summer. Konaté went to Liverpool and Upamecano to Bayern."
    },
    {
     "q": "In which season did RB Leipzig play their first Bundesliga match?",
@@ -78,6 +222,30 @@
     "hint": "Rangnick had run the sporting side since 2012 and stepped into the dugout himself for the promotion season, then handed the team over and went back upstairs."
    },
    {
+    "q": "Which coach replaced Domenico Tedesco at RB Leipzig in September 2022 and went on to win the 2023 DFB-Pokal?",
+    "o": [
+     "Jesse Marsch",
+     "Marco Rose",
+     "Ralph Hasenhüttl",
+     "Adi Hütter"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Rose, previously in charge at Salzburg, Mönchengladbach and Dortmund, took over after a poor start to the season and beat Eintracht Frankfurt 2-0 in the following June's final in Berlin."
+   },
+   {
+    "q": "Which Premier League side did RB Leipzig eliminate 4-0 on aggregate in the 2019-20 Champions League round of 16?",
+    "o": [
+     "Chelsea",
+     "Tottenham Hotspur",
+     "Liverpool",
+     "Manchester City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Nagelsmann's side won 1-0 at Spurs through a Timo Werner penalty and then 3-0 in Leipzig, a tie billed as the young coach against José Mourinho."
+   },
+   {
     "q": "In what year was RB Leipzig founded?",
     "o": [
      "1999",
@@ -88,6 +256,39 @@
     "a": 2,
     "diff": "easy",
     "hint": "The club was formally founded on 19 May 2009, making it one of the youngest sides ever to reach the Bundesliga."
+   }
+  ],
+  "prose": null
+ },
+ {
+  "club": "Atalanta",
+  "clubName": "Atalanta",
+  "full": 2,
+  "count": 2,
+  "survivors": [
+   {
+    "q": "Atalanta play their home matches in which northern Italian city?",
+    "o": [
+     "Bergamo",
+     "Brescia",
+     "Verona",
+     "Parma"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Atalanta are Bergamo's club through and through: the stadium sits in the Borgo Santa Caterina district and the famous academy is at Zingonia, just outside the city."
+   },
+   {
+    "q": "In which year was Atalanta founded?",
+    "o": [
+     "1897",
+     "1907",
+     "1919",
+     "1928"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The club was formed on 17 October 1907 by students of Bergamo's Liceo Classico Paolo Sarpi; a 1920 merger with fellow Bergamo side Bergamasca added the 'Bergamasca' to the name that survives today as Atalanta Bergamasca Calcio."
    }
   ],
   "prose": null

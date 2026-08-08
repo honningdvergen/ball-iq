@@ -43,6 +43,21 @@ const PATTERNS = [
   // or three digits, which is exactly why the other patterns missed it.
   /\b\d{1,4}\s+Full set\b/g,
   /\b\d{1,4}\s+(?:questions?\s+)?in this (?:pack|quiz|club)\b/gi,
+
+  // ⚠️ THE FIFTH WAY IT SHIPPED (2026-08-08): IN ANOTHER LANGUAGE.
+  // Every pattern above requires the English word "questions", and the gate
+  // walks the built pages including /es/, /pt/ and /tr/ — so it read
+  // "Gratis · 36 preguntas de Boca · sin registro" and saw nothing wrong. Eight
+  // counts were live across Spanish, Portuguese and Turkish pages.
+  //
+  // This is the same rule breaking for the same reason it always does: the
+  // count is genuinely useful-looking copy, so it gets re-added in whatever
+  // form the gate is not currently watching — a progress bar, a length picker,
+  // and now a translation. Add the noun for every language we publish in, the
+  // moment we publish in it.
+  /\b\d{1,4}\s+(?:preguntas|perguntas|pertanyaan|soal|fragen|domande|vragen|spørsmål|frågor|questões)\b/gi,
+  // Turkish agglutinates the case onto the noun: soru / sorunun / soruluk.
+  /\b\d{1,4}\s+soru\w*\b/gi,
 ];
 
 // ⚠️ ONE EXEMPTION, AND IT IS PENDING A DECISION — NOT A PRECEDENT.

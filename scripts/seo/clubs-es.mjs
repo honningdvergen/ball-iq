@@ -46,7 +46,7 @@ export const CLUBS_ES = [
       'Quiz gratis de Boca Juniors con respuestas explicadas: Riquelme, la era Bianchi, cuatro Libertadores en una década y el Superclásico.',
     // Hero copy.
     kind: 'Quiz de club',
-    statLine: 'Gratis · 36 preguntas de Boca · sin registro',
+    statLine: 'Gratis · Preguntas de Boca con respuestas explicadas · sin registro',
     playLabel: 'Jugar el quiz',
     intro: [
       'Ningún club del mundo suena como Boca Juniors. La Bombonera no aplaude: late. Este quiz gratuito está hecho para los que saben por qué, y recorre todo el arco moderno del Xeneize — la era de Carlos Bianchi que dejó cuatro Copas Libertadores en ocho temporadas, Juan Román Riquelme como el último gran enganche, las Intercontinentales de 2000 y 2003 ante Real Madrid y Milan, y el Superclásico que paraliza a un país.',
@@ -119,9 +119,9 @@ export const CLUBS_ES = [
       bandH: '¿Te creés que sabés de Boca? Demostralo en la app.',
       bandP: 'Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.',
       alsoH: 'La misma página en inglés',
-      alsoP: 'Esta página es la versión en español de nuestro quiz de Boca Juniors. La original, con las 36 preguntas, está acá:',
+      alsoP: 'Esta página es la versión en español de nuestro quiz de Boca Juniors. La original, en inglés, está acá:',
       alsoLink: 'Boca Juniors quiz (English)',
-      statsLine: (n, e, m, h) => `Ball IQ tiene ${n} preguntas de Boca Juniors — ${e} fáciles, ${m} medias y ${h} difíciles.`,
+      statsLine: 'Las preguntas de Boca Juniors en Ball IQ vienen en tres niveles — fáciles, medias y difíciles — y todas con la respuesta explicada.',
     },
   },
   {
@@ -134,7 +134,7 @@ export const CLUBS_ES = [
     description:
       'Quiz gratis de River Plate con respuestas explicadas: la era Gallardo, Madrid 2018, Francescoli, el descenso de 2011 y el Superclásico.',
     kind: 'Quiz de club',
-    statLine: 'Gratis · 38 preguntas de River · sin registro',
+    statLine: 'Gratis · Preguntas de River con respuestas explicadas · sin registro',
     playLabel: 'Jugar el quiz',
     intro: [
       'River Plate tiene la historia más ganadora del fútbol argentino y también su cicatriz más famosa. Este quiz gratuito recorre las dos cosas: la era de Marcelo Gallardo, con la Libertadores de 2015 y la final de Madrid en 2018; Enzo Francescoli, Ortega, Aimar y Crespo; el Monumental como sede de la final del Mundial 78; y el descenso de 2011, que ningún hincha de River necesita que le expliquen.',
@@ -199,7 +199,7 @@ export const CLUBS_ES = [
       alsoH: 'La misma página en inglés',
       alsoP: 'Esta página es la versión en español de nuestro quiz de River Plate. La original está acá:',
       alsoLink: 'River Plate quiz (English)',
-      statsLine: (n, e, m, h) => `Ball IQ tiene ${n} preguntas de River Plate — ${e} fáciles, ${m} medias y ${h} difíciles.`,
+      statsLine: 'Las preguntas de River Plate en Ball IQ vienen en tres niveles — fáciles, medias y difíciles — y todas con la respuesta explicada.',
     },
   },
 ];

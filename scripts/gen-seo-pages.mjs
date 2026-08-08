@@ -1884,7 +1884,14 @@ ${storeBadges()}
 </section>
 <section class="sec narrow">
 <h2>${esc(c.faqH)}</h2>
-${renderFaq(cfg.faq, { q: c.aboutQ, html: `${introHtml}\n<p class="stats">${esc(c.statsLine(all.length, easy, medium, hard))}</p>` })}
+${/* ⚠️ statsLine USED TO TAKE (n, easy, medium, hard) AND PRINT THEM.
+      That made every localised page render "Ball IQ has N questions about X —
+      E easy, M medium, H hard", which is the banned exact question count, in a
+      language the audit gate could not read. It is the fifth way that rule has
+      shipped and the first that was COMPUTED rather than typed, so no grep for
+      a digit-next-to-a-noun could ever have found it in source.
+      It is now a plain string. A function taking a count invites printing it. */
+  ''}${renderFaq(cfg.faq, { q: c.aboutQ, html: `${introHtml}${c.statsLine ? `\n<p class="stats">${esc(c.statsLine)}</p>` : ''}` })}
 </section>
 ${adSlot('afterFaq')}
 </main>

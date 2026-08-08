@@ -123,7 +123,7 @@ export const CLUBS_ID = [
       alsoH: 'Halaman yang sama dalam bahasa Inggris',
       alsoP: 'Ini versi bahasa Indonesia dari kuis Manchester United kami. Versi aslinya, dengan 42 soal, ada di sini:',
       alsoLink: 'Manchester United quiz (English)',
-      statsLine: (n, e, m, h) => `Ball IQ punya ${n} soal Manchester United — ${e} mudah, ${m} sedang, dan ${h} sulit.`,
+      statsLine: 'Soal Manchester United di Ball IQ hadir dalam tiga tingkat: mudah, sedang, dan sulit — semuanya disertai penjelasan.',
     },
   },
   // ── Arsenal ────────────────────────────────────────────────────────────────
@@ -208,7 +208,7 @@ export const CLUBS_ID = [
       alsoH: 'Halaman yang sama dalam bahasa Inggris',
       alsoP: 'Ini versi bahasa Indonesia dari kuis Arsenal kami. Versi aslinya, dengan 67 soal, ada di sini:',
       alsoLink: 'Arsenal quiz (English)',
-      statsLine: (n, e, m, h) => `Ball IQ punya ${n} soal Arsenal — ${e} mudah, ${m} sedang, dan ${h} sulit.`,
+      statsLine: 'Soal Arsenal di Ball IQ hadir dalam tiga tingkat: mudah, sedang, dan sulit — semuanya disertai penjelasan.',
     },
   },
 ];

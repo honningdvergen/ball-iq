@@ -123,9 +123,9 @@ export const CLUBS_TR = [
       bandH: 'Cimbom’u bildiğini mi düşünüyorsun? Uygulamada kanıtla.',
       bandP: 'Serileri, canlı 1v1, 99 üzerinden bir puan — ve bütün quizler tek uygulamada. Uygulama İngilizce.',
       alsoH: 'Aynı sayfanın İngilizcesi',
-      alsoP: 'Bu sayfa Galatasaray quizimizin Türkçe sürümü. 45 sorunun tamamı orijinalinde:',
+      alsoP: 'Bu sayfa Galatasaray quizimizin Türkçe sürümü. Soruların tamamı orijinalinde:',
       alsoLink: 'Galatasaray quiz (English)',
-      statsLine: (n, e, m, h) => `Ball IQ’da ${n} Galatasaray sorusu var — ${e} kolay, ${m} orta ve ${h} zor.`,
+      statsLine: 'Ball IQ’daki Galatasaray soruları üç zorluk seviyesinde: kolay, orta ve zor — hepsi açıklamalı.',
     },
   },
 ];
