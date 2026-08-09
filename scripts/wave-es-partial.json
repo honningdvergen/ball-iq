@@ -1,0 +1,1100 @@
+[
+ {
+  "slug": "barcelona",
+  "club": "Barcelona",
+  "translated": 42,
+  "source": 42,
+  "structural": [],
+  "review": null,
+  "questions": [
+   {
+    "id": "q_2be7cb",
+    "q": "El Barcelona jugó más de un siglo sin ningún patrocinador comercial en la parte delantera de la camiseta. Cuando por fin apareció un logo en 2006, el club hizo algo inaudito. ¿El qué?",
+    "o": [
+     "Cobró una cifra récord al patrocinador",
+     "PAGÓ al patrocinador en lugar de cobrar",
+     "Subastó el espacio entre los aficionados durante una temporada",
+     "Dejó la camiseta en blanco e imprimió el logo en los pantalones"
+    ],
+    "a": 1,
+    "hint": "El Barça pagaba a UNICEF alrededor de 1,5 millones al año por lucir su logo: el primer gran club que puso en el pecho a una organización benéfica y no a un pagador."
+   },
+   {
+    "id": "q_dc898d",
+    "q": "¿Qué momento se considera el punto de inflexión que lanzó el dominio moderno del Barcelona, su PRIMERA Copa de Europa, conquistada en 1992?",
+    "o": [
+     "Un 4-0 al AC Milan en Atenas",
+     "La falta de Ronald Koeman en la prórroga para ganar a la Sampdoria en Wembley",
+     "Una victoria en los penaltis ante el Steaua de Bucarest",
+     "La chilena de Rivaldo contra el Valencia"
+    ],
+    "a": 1,
+    "hint": "El 'Dream Team' de Cruyff conquistó por fin Europa cuando Koeman fusiló una falta indirecta en el minuto 112 en Wembley."
+   },
+   {
+    "id": "q_af730a",
+    "q": "En el Balón de Oro de 2010, los tres finalistas al mejor jugador del mundo eran TODOS del mismo club y de la misma cantera. ¿Qué tres jugadores?",
+    "o": [
+     "Messi, Xavi e Iniesta",
+     "Messi, Villa y Pedro",
+     "Xavi, Iniesta y Busquets",
+     "Messi, Eto'o y Henry"
+    ],
+    "a": 0,
+    "hint": "La Masia se convirtió en la primera cantera de la historia en colocar a los tres finalistas en un mismo año; Messi se llevó el premio por delante de Iniesta y Xavi."
+   },
+   {
+    "id": "q_85d8f9",
+    "q": "En 2017 el Barcelona firmó la mayor remontada de la historia de la Liga de Campeones, dando la vuelta a un 4-0 de la ida ante el PSG. ¿Quién marcó el caótico gol de la victoria en el descuento que puso el 6-1?",
+    "o": [
+     "Lionel Messi",
+     "Luis Suárez",
+     "Sergi Roberto",
+     "Neymar"
+    ],
+    "a": 2,
+    "hint": "Neymar se la puso y Sergi Roberto, que no era precisamente un goleador, la empujó en el minuto 95 para sellar 'La Remontada'."
+   },
+   {
+    "id": "q_ae441e",
+    "q": "El máximo goleador histórico del Barcelona acumuló la asombrosa cifra de 672 goles con el club. ¿Quién es?",
+    "o": [
+     "Lionel Messi",
+     "César Rodríguez",
+     "Luis Suárez",
+     "Samuel Eto'o"
+    ],
+    "a": 0,
+    "hint": "Los 672 goles de Messi entre 2004 y 2021 son un récord mundial con un solo club; los 232 de César Rodríguez habían sido el récord del club durante unos 57 años, hasta que Messi lo superó en 2012."
+   },
+   {
+    "id": "q_05c854",
+    "q": "Cuando Luis Figo volvió al Camp Nou con la camiseta del Real Madrid, los enfurecidos aficionados del Barça lanzaron al césped un objeto que se hizo célebre. ¿Cuál?",
+    "o": [
+     "Un muñeco en llamas",
+     "Una cabeza de cerdo cortada",
+     "Una caja de petardos",
+     "Una gallina viva"
+    ],
+    "a": 1,
+    "hint": "El fichaje de Figo por el Madrid en 2000 lo convirtió en el 'Judas' del fútbol; durante el Clásico de noviembre de 2002 una cabeza de cochinillo cayó cerca de su banderín de córner."
+   },
+   {
+    "id": "q_4147b6",
+    "q": "¿Qué delantero búlgaro, apodado 'El Pistolero', fue una estrella temperamental del Dream Team de Cruyff y ganó el Balón de Oro de 1994 estando en el Barça?",
+    "o": [
+     "Hristo Stoichkov",
+     "Gheorghe Hagi",
+     "Krasimir Balakov",
+     "Emil Kostadinov"
+    ],
+    "a": 0,
+    "hint": "Su carácter volcánico le llevó una vez a pisar el pie de un árbitro, lo que le costó una larga sanción; su pierna izquierda ayudó a ganar cuatro Ligas consecutivas en el Camp Nou."
+   },
+   {
+    "id": "q_fefffb",
+    "q": "El tridente MSN del Barcelona aterrorizó a Europa durante el triplete de 2015. ¿Qué trío formaba la MSN?",
+    "o": [
+     "Messi, Suárez y Neymar",
+     "Messi, Sánchez y Neymar",
+     "Messi, Silva y Neymar",
+     "Messi, Suárez y Neymar Sr."
+    ],
+    "a": 0,
+    "hint": "Messi, Suárez y Neymar combinaron un récord de 122 goles en 2014-15 y llevaron al Barça a su segundo triplete continental."
+   },
+   {
+    "id": "q_f56836",
+    "q": "¿Quién fundó el FC Barcelona en 1899 poniendo un anuncio en un periódico para buscar jugadores, un hombre nacido en Suiza cuyo nombre se catalanizó con el tiempo?",
+    "o": [
+     "Joan Gamper",
+     "Josep Sunyol",
+     "Hans Krankl",
+     "Ladislao Kubala"
+    ],
+    "a": 0,
+    "hint": "Nacido como Hans Gamper en Winterthur, llegó a ser presidente del club en cinco etapas; el trofeo actual de pretemporada lleva su nombre."
+   },
+   {
+    "id": "q_4f7ca6",
+    "q": "¿Qué significa literalmente el nombre 'Camp Nou' en catalán?",
+    "o": [
+     "La Catedral",
+     "Campo Nuevo",
+     "El Campo de los Sueños",
+     "La Gran Tribuna"
+    ],
+    "a": 1,
+    "hint": "Era el campo 'nuevo' (camp = campo, nou = nuevo) que sustituyó a Les Corts en 1957. La afición lo llamó 'el campo nuevo' con tanta insistencia que los socios acabaron votando para convertir Camp Nou en el nombre oficial del estadio."
+   },
+   {
+    "id": "q_46b80d",
+    "q": "El 19 de noviembre de 2005, un jugador del Barcelona hizo algo tan brillante en el Bernabéu que hasta los aficionados del Real Madrid se levantaron a aplaudirle. ¿Quién?",
+    "o": [
+     "Ronaldinho",
+     "Lionel Messi",
+     "Samuel Eto'o",
+     "Deco"
+    ],
+    "a": 0,
+    "hint": "Ronaldinho marcó dos goles en jugadas individuales en un 3-0; después reconoció que ni siquiera se dio cuenta de que la afición rival le estaba ovacionando en pie."
+   },
+   {
+    "id": "q_4ca3a1",
+    "q": "¿Qué legendario neerlandés, tras brillar como jugador, volvió como entrenador del Barcelona y construyó el 'Dream Team' de principios de los años noventa?",
+    "o": [
+     "Johan Cruyff",
+     "Louis van Gaal",
+     "Frank Rijkaard",
+     "Ronald Koeman"
+    ],
+    "a": 0,
+    "hint": "Cruyff sentó las bases tácticas —la posesión, la falsa posición, la filosofía de La Masia— que Guardiola perfeccionaría después."
+   },
+   {
+    "id": "q_ea8088",
+    "q": "¿Cuántas veces ha ganado el Barcelona la Copa de Europa / Liga de Campeones a lo largo de su historia?",
+    "o": [
+     "Tres",
+     "Cinco",
+     "Siete",
+     "Cuatro"
+    ],
+    "a": 1,
+    "hint": "1992, 2006, 2009, 2011 y 2015: su último título llegó con Luis Enrique y el tridente MSN en Berlín."
+   },
+   {
+    "id": "q_383fb9",
+    "q": "Pep Guardiola, el entrenador más laureado del Barcelona, ¿qué vínculo único tenía con el club antes de dirigirlo?",
+    "o": [
+     "Era canterano de La Masia y excapitán del club",
+     "Nació en la sala médica del Camp Nou",
+     "Antes entrenó al equipo femenino",
+     "Solo jugó en el filial, nunca en el primer equipo"
+    ],
+    "a": 0,
+    "hint": "Guardiola fue capitán del Dream Team como jugador; volvió para entrenar al Barça B antes de asumir el primer equipo en 2008."
+   },
+   {
+    "id": "q_df074a",
+    "q": "El Barcelona y el Real Madrid disputan 'El Clásico', pero el Barça tiene además un derbi LOCAL muy caliente contra ¿qué rival catalán?",
+    "o": [
+     "Espanyol",
+     "Girona",
+     "Sabadell",
+     "Sant Andreu"
+    ],
+    "a": 0,
+    "hint": "El 'derbi barceloní' contra el RCD Espanyol tiene un fuerte componente identitario; el Espanyol se alineó históricamente con el sentimiento español, no con el catalán."
+   },
+   {
+    "id": "q_b17fe2",
+    "q": "Antes de mudarse al Camp Nou en 1957, ¿qué estadio fue la casa del Barcelona durante más de tres décadas?",
+    "o": [
+     "Camp de Les Corts",
+     "Estadi de Sarrià",
+     "Camp de la Indústria",
+     "Estadi Olímpic"
+    ],
+    "a": 0,
+    "hint": "Les Corts, inaugurado en 1922 y apodado 'la Catedral del fútbol', se quedó pequeño ante el crecimiento de la masa social en los años cincuenta."
+   },
+   {
+    "id": "q_af0d1b",
+    "q": "Diego Maradona vivió dos temporadas turbulentas en el Barcelona en los años ochenta que acabaron de forma espectacular. ¿Qué escena infame remató su salida?",
+    "o": [
+     "Una tangana multitudinaria en la final de la Copa del Rey delante del Rey",
+     "Perdió el avión del equipo camino de una final",
+     "Una invasión de campo que lideró él mismo",
+     "Una petición de traspaso leída por megafonía en el Camp Nou"
+    ],
+    "a": 0,
+    "hint": "La final de la Copa del Rey de 1984 (la 'Batalla del Bernabéu') acabó en una tangana a patadas delante del rey Juan Carlos; poco después, Maradona fue vendido al Napoli."
+   },
+   {
+    "id": "q_07122c",
+    "q": "Completa esta famosa frase de Johan Cruyff sobre su filosofía futbolística en el Barcelona: 'Jugar al fútbol es muy sencillo, pero...'",
+    "o": [
+     "'...ganar es lo único que importa.'",
+     "'...jugar al fútbol sencillo es lo más difícil que hay.'",
+     "'...el balón decide el partido.'",
+     "'...un entrenador debe ser implacable.'"
+    ],
+    "a": 1,
+    "hint": "La paradoja de Cruyff resumía todo su ideario: juego de posición y pases limpios que parecen fáciles pero cuestan toda una vida de dominar."
+   },
+   {
+    "id": "q_57983e",
+    "q": "¿Con qué nombre se conoce la cantera del Barcelona, de la que salieron Messi, Xavi, Iniesta, Puyol y Busquets, tomado de una vieja masía cercana al estadio?",
+    "o": [
+     "La Masia",
+     "La Cantera",
+     "La Fábrica",
+     "La Cartuja"
+    ],
+    "a": 0,
+    "hint": "'La Masia' significa 'la masía'; el edificio rústico (Can Planes, construido en 1702) junto al viejo Camp Nou alojó a jóvenes jugadores durante décadas. ('La Fábrica' es la cantera del Real Madrid.)"
+   },
+   {
+    "id": "q_b4ca13",
+    "q": "En mayo de 2026, el Barcelona se proclamó campeón de Liga de la manera más apropiada. ¿Cómo selló el título de LaLiga 2025-26?",
+    "o": [
+     "Ganando al Real Madrid en el Clásico",
+     "En la última jornada, a domicilio ante el Sevilla",
+     "Con un empate sin goles en el campo del Espanyol",
+     "Ganando un playoff al Atlético"
+    ],
+    "a": 0,
+    "hint": "Una victoria por 2-0 en el Clásico ante el Real Madrid selló la 29ª Liga del Barça y su segundo campeonato consecutivo con Hansi Flick."
+   },
+   {
+    "id": "q_4ccaed",
+    "q": "En la final de la Liga de Campeones de 2006 en París, el Barcelona remontó para ganar 2-1 y levantar su segunda Copa de Europa. ¿A qué club inglés venció?",
+    "o": [
+     "Arsenal",
+     "Chelsea",
+     "Manchester United",
+     "Liverpool"
+    ],
+    "a": 0,
+    "hint": "El Barça ganó 2-1 a un Arsenal con diez, con goles de Eto'o y Belletti al final después de que Sol Campbell adelantara de cabeza a los ingleses."
+   },
+   {
+    "id": "q_f40cc1",
+    "q": "¿Qué mediapunta brasileño reactivó al Barcelona a mediados de los años 2000 y fue elegido Mejor Jugador del Mundo de la FIFA en 2004 y en 2005?",
+    "o": [
+     "Rivaldo",
+     "Ronaldinho",
+     "Kaká",
+     "Juninho Pernambucano"
+    ],
+    "a": 1,
+    "hint": "La magia y la sonrisa de Ronaldinho iluminaron el Camp Nou: dos premios consecutivos al mejor del mundo y el Balón de Oro de 2005."
+   },
+   {
+    "id": "q_e355c3",
+    "q": "Cuando Neymar dejó el Barcelona en 2017 por un récord mundial de 222 millones de euros, ¿a qué club fichó?",
+    "o": [
+     "Real Madrid",
+     "Manchester City",
+     "Paris Saint-Germain",
+     "Juventus"
+    ],
+    "a": 2,
+    "hint": "El PSG pagó su cláusula de rescisión en 2017 por 222 millones de euros, cifra que estableció el récord mundial de traspasos."
+   },
+   {
+    "id": "q_255610",
+    "q": "¿Qué central, hombre de un solo club, fue capitán del Barcelona de 2004 a 2014 y lo lideró durante la época dorada de Guardiola?",
+    "o": [
+     "Carles Puyol",
+     "Gerard Piqué",
+     "Rafael Márquez",
+     "Éric Abidal"
+    ],
+    "a": 0,
+    "hint": "Puyol, el defensa de la melena, fue el capitán inspirador del Barça durante una década y nunca jugó en otro club como profesional."
+   },
+   {
+    "id": "q_d4019e",
+    "q": "¿De qué club fichó el Barcelona al delantero Luis Suárez en 2014, formando el trío MSN junto a Messi y Neymar?",
+    "o": [
+     "Ajax",
+     "Atlético de Madrid",
+     "Inter de Milán",
+     "Liverpool"
+    ],
+    "a": 3,
+    "hint": "Suárez llegó del Liverpool en 2014 y de inmediato se entendió con Messi y Neymar para llevar al Barça al triplete."
+   },
+   {
+    "id": "q_61b861",
+    "q": "¿Qué centrocampista, canterano de La Masia que pasó toda su carrera sénior en el Barcelona entre 2002 y 2018, marcó después el gol de la victoria de España en la final del Mundial de 2010?",
+    "o": [
+     "Xavi",
+     "Sergio Busquets",
+     "Andrés Iniesta",
+     "Cesc Fàbregas"
+    ],
+    "a": 2,
+    "hint": "Iniesta, barcelonista de toda la vida, se deslizaba por el centro del campo del Barcelona y firmó el gol de España en la prórroga de la final de 2010."
+   },
+   {
+    "id": "q_de5ee6",
+    "q": "En la final de la Liga de Campeones de 2009 en Roma, el Barcelona ganó 2-0 al Manchester United. ¿Quién marcó el segundo gol con un cabezazo en suspensión?",
+    "o": [
+     "Samuel Eto'o",
+     "Thierry Henry",
+     "Lionel Messi",
+     "Andrés Iniesta"
+    ],
+    "a": 2,
+    "hint": "Eto'o abrió el marcador y el menudo Messi se elevó para cabecear el gol definitivo, sellando la primera corona europea de Guardiola."
+   },
+   {
+    "id": "q_4c8f8b",
+    "q": "El Barcelona ganó 3-1 al Manchester United en una final de la Liga de Campeones por segunda vez en tres años en 2011. ¿En qué estadio se jugó aquella final?",
+    "o": [
+     "Wembley",
+     "Old Trafford",
+     "Stadio Olimpico",
+     "San Siro"
+    ],
+    "a": 0,
+    "hint": "La final de 2011 se jugó en Wembley, donde los goles de Pedro, Messi y Villa superaron con claridad al United."
+   },
+   {
+    "id": "q_edc6a6",
+    "q": "¿Qué neerlandés dirigió al Barcelona en su triunfo en la Liga de Campeones de 2006 ante el Arsenal?",
+    "o": [
+     "Louis van Gaal",
+     "Frank Rijkaard",
+     "Ronald Koeman",
+     "Johan Cruyff"
+    ],
+    "a": 1,
+    "hint": "Rijkaard entrenó al Barça de 2003 a 2008 y lo devolvió a lo más alto de Europa con la final ganada en 2006."
+   },
+   {
+    "id": "q_13c6ac",
+    "q": "¿Quién era el entrenador del Barcelona cuando completó el triplete de 2015 de Liga, Copa del Rey y Liga de Campeones?",
+    "o": [
+     "Pep Guardiola",
+     "Tata Martino",
+     "Luis Enrique",
+     "Tito Vilanova"
+    ],
+    "a": 2,
+    "hint": "Luis Enrique, exjugador del Barça, guio al equipo de la MSN a un segundo triplete continental en 2015."
+   },
+   {
+    "id": "q_3b74b1",
+    "q": "Cuando Zlatan Ibrahimović fichó por el Barcelona procedente del Inter en 2009, ¿qué delantero se marchó al Inter como parte de la operación?",
+    "o": [
+     "Samuel Eto'o",
+     "Thierry Henry",
+     "Bojan Krkić",
+     "Alexander Hleb"
+    ],
+    "a": 0,
+    "hint": "El Barça envió a Eto'o más una gran cantidad de dinero al Inter para incorporar a Ibrahimović en uno de los mayores intercambios de 2009."
+   },
+   {
+    "id": "q_8f2b32",
+    "q": "Lionel Messi estableció el récord de goles en una sola temporada de Liga en 2011-12. ¿Cuántos goles ligueros marcó aquella campaña?",
+    "o": [
+     "43",
+     "46",
+     "50",
+     "54"
+    ],
+    "a": 2,
+    "hint": "Messi anotó 50 goles en LaLiga en 2011-12, un récord para una sola temporada en la máxima categoría española."
+   },
+   {
+    "id": "q_f8de76",
+    "q": "En 2012-13, el Barcelona igualó el récord de puntos de LaLiga. ¿Con cuántos puntos terminó?",
+    "o": [
+     "96",
+     "99",
+     "100",
+     "102"
+    ],
+    "a": 2,
+    "hint": "El Barça sumó 100 puntos en 2012-13, igualando el récord que el Real Madrid había establecido la temporada anterior."
+   },
+   {
+    "id": "q_1b1233",
+    "q": "¿Qué brasileño, jugando en el Barcelona, aseguró una plaza para la Liga de Campeones en 2001 con una chilena en el último minuto ante el Valencia?",
+    "o": [
+     "Ronaldinho",
+     "Rivaldo",
+     "Sonny Anderson",
+     "Giovanni"
+    ],
+    "a": 1,
+    "hint": "Rivaldo completó un hat-trick con una chilena espectacular en el descuento para ganar 3-2 al Valencia en la última jornada."
+   },
+   {
+    "id": "q_d8f3d4",
+    "q": "En la semifinal de la Liga de Campeones de 2009, ¿quién marcó un dramático gol en el descuento en Stamford Bridge que clasificó al Barcelona a costa del Chelsea?",
+    "o": [
+     "Andrés Iniesta",
+     "Xavi",
+     "Lionel Messi",
+     "Samuel Eto'o"
+    ],
+    "a": 0,
+    "hint": "Iniesta empató de un latigazo en el minuto 93 en el campo del Chelsea y metió al Barça en la final por el valor doble de los goles fuera de casa."
+   },
+   {
+    "id": "q_6b16c9",
+    "q": "¿Qué inglés dirigió al Barcelona en la temporada 1996-97, ganando la Recopa de Europa y fichando al brasileño Ronaldo?",
+    "o": [
+     "Terry Venables",
+     "Bobby Robson",
+     "Vic Buckingham",
+     "Kevin Keegan"
+    ],
+    "a": 1,
+    "hint": "La única temporada de Bobby Robson trajo la Recopa de Europa y la Copa del Rey, con Ronaldo marcando a placer."
+   },
+   {
+    "id": "q_7a72e8",
+    "q": "¿Quién dirigió al Barcelona durante una sola temporada en 2012-13 y lo llevó al título de Liga con 100 puntos antes de que la enfermedad pusiera fin a su etapa?",
+    "o": [
+     "Tata Martino",
+     "Tito Vilanova",
+     "Luis Enrique",
+     "Ernesto Valverde"
+    ],
+    "a": 1,
+    "hint": "Tito Vilanova, exayudante de Guardiola, ganó la Liga 2012-13 antes de dejar el cargo por enfermedad."
+   },
+   {
+    "id": "q_307e1f",
+    "q": "Lionel Messi estableció el récord mundial de goles en un año natural estando en el Barcelona en 2012. ¿Cuántos marcó entre club y selección?",
+    "o": [
+     "79",
+     "85",
+     "91",
+     "96"
+    ],
+    "a": 2,
+    "hint": "Messi marcó 91 goles a lo largo de 2012 y batió el histórico récord de año natural de Gerd Müller."
+   },
+   {
+    "id": "q_4b3f68",
+    "q": "El brasileño Ronaldo marcó 47 goles en su única temporada en el Barcelona, la 1996-97, antes de un traspaso récord mundial ¿a qué club?",
+    "o": [
+     "Real Madrid",
+     "AC Milan",
+     "Inter de Milán",
+     "PSV Eindhoven"
+    ],
+    "a": 2,
+    "hint": "Ronaldo se marchó al Inter de Milán en 1997 por una cifra récord mundial en aquel momento, tras una campaña prolífica en Cataluña."
+   },
+   {
+    "id": "q_0cc96d",
+    "q": "Johan Cruyff llegó al Barcelona como jugador en 1973 por una cifra récord mundial en aquel momento. ¿De qué club fichó?",
+    "o": [
+     "Ajax",
+     "Feyenoord",
+     "PSV Eindhoven",
+     "Real Madrid"
+    ],
+    "a": 0,
+    "hint": "Cruyff pasó del Ajax al Barça en 1973 e inspiró un célebre 5-0 en el Bernabéu aquella temporada."
+   },
+   {
+    "id": "q_37dbe3",
+    "q": "En 2009 el Barcelona se convirtió en el primer club en ganar los seis títulos posibles en un mismo año natural. ¿Qué trofeo completó la colección aquel diciembre?",
+    "o": [
+     "La Supercopa de Europa",
+     "La Copa del Rey",
+     "El Mundial de Clubes",
+     "La Supercopa de España"
+    ],
+    "a": 2,
+    "hint": "El equipo de Pep Guardiola ganó a Estudiantes en la final del Mundial de Clubes en Abu Dabi en diciembre de 2009, tras haber conquistado ya la Liga, la Copa del Rey, la Liga de Campeones y ambas Supercopas."
+   },
+   {
+    "id": "q_83f6b6",
+    "q": "En la Liga de Campeones de 2020, reorganizada por la COVID, el Barcelona fue desmontado por el Bayern de Múnich en unos cuartos de final a partido único en Lisboa. ¿Cuál fue el resultado final?",
+    "o": [
+     "8-2 para el Bayern",
+     "6-1 para el Bayern",
+     "5-0 para el Bayern",
+     "7-3 para el Bayern"
+    ],
+    "a": 0,
+    "hint": "Thomas Müller marcó dos veces y Philippe Coutinho, cedido en el Bayern por el Barcelona, salió del banquillo para añadir otros dos el 14 de agosto de 2020."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del FC Barcelona",
+   "title": "Quiz del FC Barcelona | Ball IQ",
+   "description": "Pon a prueba tus conocimientos sobre el FC Barcelona: Cruyff, el Dream Team, Guardiola, Messi y la Remontada. Preguntas verificadas, juego inmediato.",
+   "intro": [
+    "El Barcelona no es solo un club de fútbol: es un anuncio en un periódico de 1899, una masía del siglo XVIII convertida en cantera y una idea de juego que cambió el deporte. Este quiz recorre esa historia de principio a fin.",
+    "Hay preguntas que casi todo el mundo acierta —Wembley 92, la Remontada del 6-1, el año de los seis títulos— y otras que separan al aficionado del culé de verdad: quién pagó a quién por el patrocinio de la camiseta, qué cayó al césped cuando volvió Figo, cuántos puntos hicieron falta para igualar el récord de LaLiga.",
+    "Cada dato ha pasado un doble control antes de llegar aquí, y cada pregunta lleva una pista por si te quedas atascado. Los superlativos van fechados o anclados a una temporada concreta, para que no envejezcan mal.",
+    "Juega, falla, aprende algo y vuelve a intentarlo. La Masia tampoco se construyó en un día."
+   ],
+   "faq": [
+    {
+     "q": "¿Hasta cuándo llegan las preguntas?",
+     "a": "El quiz llega hasta la temporada 2025-26, incluido el título de Liga que el Barça selló en el Clásico de mayo de 2026. Los récords y las marcas históricas se anclan a una fecha o a una temporada concreta para que sigan siendo ciertos con el tiempo."
+    },
+    {
+     "q": "¿Necesito registrarme para jugar?",
+     "a": "No. Puedes empezar a jugar directamente desde esta página. La cuenta solo sirve para guardar tus resultados, competir con amigos y mantener viva tu racha diaria."
+    },
+    {
+     "q": "¿Es muy difícil?",
+     "a": "Hay de todo: preguntas que cualquier aficionado resolverá y otras pensadas para quien se sabe las alineaciones de memoria. Si te bloqueas, cada pregunta tiene una pista que te acerca sin regalarte la respuesta."
+    },
+    {
+     "q": "¿De dónde salen los datos?",
+     "a": "De fuentes públicas contrastadas. Cada pregunta pasa por dos revisiones antes de publicarse: una que comprueba el hecho y otra que intenta tumbarlo. Si no aguanta, no se publica."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "De Joan Gamper a La Masia, de Wembley 92 a la Remontada del 6-1.",
+   "tasterPh": "Prueba una pregunta antes de jugar",
+   "faqH": "Preguntas frecuentes",
+   "aboutQ": "¿De qué va el quiz del FC Barcelona?"
+  }
+ },
+ {
+  "slug": "sevilla",
+  "club": "Sevilla",
+  "translated": 42,
+  "source": 42,
+  "structural": [],
+  "review": null,
+  "questions": [
+   {
+    "id": "q_f47bcc",
+    "q": "¿En qué año se fundó el Sevilla FC, uno de los clubes de fútbol más antiguos de España?",
+    "o": [
+     "1890",
+     "1905",
+     "1878",
+     "1923"
+    ],
+    "a": 0,
+    "hint": "El Sevilla FC se fundó el 25 de enero de 1890, uno de los primerísimos clubes de España dedicados al fútbol."
+   },
+   {
+    "id": "q_ee7066",
+    "q": "¿Cuáles son los colores tradicionales de la primera equipación del Sevilla FC?",
+    "o": [
+     "Rojo y blanco",
+     "Azul y blanco",
+     "Todo rojo",
+     "Azul celeste"
+    ],
+    "a": 0,
+    "hint": "El Sevilla viste tradicionalmente camiseta blanca con detalles rojos, de ahí su identidad blanquirroja."
+   },
+   {
+    "id": "q_d8e3a5",
+    "q": "El Gran Derbi enfrenta al Sevilla con ¿qué gran rival de la ciudad?",
+    "o": [
+     "Real Betis",
+     "Real Madrid",
+     "Valencia",
+     "Villarreal"
+    ],
+    "a": 0,
+    "hint": "El derbi sevillano, El Gran Derbi, se disputa contra el vecino Real Betis."
+   },
+   {
+    "id": "q_4055f6",
+    "q": "El estadio del Sevilla, inaugurado en 1958, lleva el nombre de ¿qué expresidente del club?",
+    "o": [
+     "Ramón Sánchez-Pizjuán",
+     "Santiago Bernabéu",
+     "Luis Casanova",
+     "José Zorrilla"
+    ],
+    "a": 0,
+    "hint": "El estadio Ramón Sánchez-Pizjuán honra al presidente que impulsó su construcción y que murió en 1956, dos años antes de la inauguración."
+   },
+   {
+    "id": "q_869605",
+    "q": "¿En qué temporada ganó el Sevilla su primer campeonato de Liga?",
+    "o": [
+     "1945-46",
+     "1955-56",
+     "1963-64",
+     "1935-36"
+    ],
+    "a": 0,
+    "hint": "El Sevilla se proclamó campeón de España en la temporada 1945-46."
+   },
+   {
+    "id": "q_af6698",
+    "q": "El estadio del Sevilla y uno de los apodos del club proceden de ¿qué barrio de Sevilla?",
+    "o": [
+     "Nervión",
+     "Triana",
+     "Macarena",
+     "Los Remedios"
+    ],
+    "a": 0,
+    "hint": "El club está arraigado en el barrio de Nervión, lo que da a su afición el apodo de 'los nervionenses'."
+   },
+   {
+    "id": "q_4c2057",
+    "q": "El Sevilla ganó la final de la Copa de la UEFA de 2006 por 4-0 ante ¿qué club inglés?",
+    "o": [
+     "Middlesbrough",
+     "Newcastle United",
+     "Bolton Wanderers",
+     "Charlton Athletic"
+    ],
+    "a": 0,
+    "hint": "El Sevilla goleó 4-0 al Middlesbrough en la final de 2006 y ganó su primer gran título europeo."
+   },
+   {
+    "id": "q_934b13",
+    "q": "La final de la Copa de la UEFA de 2007 fue un duelo español en el que el Sevilla ganó en los penaltis a ¿qué club?",
+    "o": [
+     "Espanyol",
+     "Valencia",
+     "Real Zaragoza",
+     "Villarreal"
+    ],
+    "a": 0,
+    "hint": "El Sevilla venció al Espanyol en los penaltis tras el 2-2 y retuvo la Copa de la UEFA en 2007."
+   },
+   {
+    "id": "q_274120",
+    "q": "El Sevilla ganó 3-1 a ¿qué club inglés en la final de la Liga Europa de 2016?",
+    "o": [
+     "Liverpool",
+     "Everton",
+     "Tottenham Hotspur",
+     "Aston Villa"
+    ],
+    "a": 0,
+    "hint": "El Sevilla remontó para derrotar 3-1 al Liverpool en la final de 2016."
+   },
+   {
+    "id": "q_3dc3b4",
+    "q": "En la final de la Liga Europa de 2015, el Sevilla venció 3-2 a ¿qué club ucraniano?",
+    "o": [
+     "Dnipro",
+     "Shakhtar Donetsk",
+     "Dynamo Kyiv",
+     "Metalist Kharkiv"
+    ],
+    "a": 0,
+    "hint": "El Sevilla se impuso por 3-2 al Dnipro Dnipropetrovsk y levantó el título de 2015."
+   },
+   {
+    "id": "q_fc5174",
+    "q": "En la final de la Liga Europa de 2020, el Sevilla ganó 3-2 a ¿qué club italiano?",
+    "o": [
+     "Inter de Milán",
+     "AC Milan",
+     "Juventus",
+     "Nápoles"
+    ],
+    "a": 0,
+    "hint": "El Sevilla venció 3-2 al Inter de Milán en la final de 2020, disputada en Alemania."
+   },
+   {
+    "id": "q_5ca90b",
+    "q": "El Sevilla ganó la final de la Liga Europa de 2023 ante ¿qué club italiano, en la tanda de penaltis?",
+    "o": [
+     "Roma",
+     "Atalanta",
+     "Lazio",
+     "Fiorentina"
+    ],
+    "a": 0,
+    "hint": "El Sevilla superó a la Roma en los penaltis tras el 1-1 de la final de 2023."
+   },
+   {
+    "id": "q_dda111",
+    "q": "El Sevilla ganó la final de la Liga Europa de 2014 en los penaltis ante ¿qué club portugués?",
+    "o": [
+     "Benfica",
+     "Porto",
+     "Sporting CP",
+     "Braga"
+    ],
+    "a": 0,
+    "hint": "El Sevilla derrotó al Benfica en los penaltis en Turín para ganar la final de 2014."
+   },
+   {
+    "id": "q_dd9354",
+    "q": "El Sevilla ganó la Supercopa de Europa de 2006 por 3-0 ante ¿qué club, en Mónaco?",
+    "o": [
+     "Barcelona",
+     "Real Madrid",
+     "Valencia",
+     "Chelsea"
+    ],
+    "a": 0,
+    "hint": "El Sevilla venció 3-0 al Barcelona en Mónaco y se llevó la Supercopa de Europa de 2006."
+   },
+   {
+    "id": "q_5d5dd2",
+    "q": "La final de la Copa de la UEFA de 2006, que el Sevilla ganó 4-0, se jugó en ¿qué ciudad neerlandesa?",
+    "o": [
+     "Eindhoven",
+     "Ámsterdam",
+     "Róterdam",
+     "Utrecht"
+    ],
+    "a": 0,
+    "hint": "La final de 2006 se disputó en el Philips Stadion de Eindhoven."
+   },
+   {
+    "id": "q_22b18a",
+    "q": "La final de la Copa de la UEFA de 2007 que el Sevilla ganó en los penaltis se celebró en Hampden Park, ¿en qué ciudad?",
+    "o": [
+     "Glasgow",
+     "Mánchester",
+     "Cardiff",
+     "Dublín"
+    ],
+    "a": 0,
+    "hint": "Hampden Park, en Glasgow, acogió la final de 2007."
+   },
+   {
+    "id": "q_51c6ba",
+    "q": "La final de la Liga Europa de 2016 ganada por el Sevilla se disputó en ¿qué ciudad suiza?",
+    "o": [
+     "Basilea",
+     "Ginebra",
+     "Zúrich",
+     "Berna"
+    ],
+    "a": 0,
+    "hint": "La final de 2016 se jugó en el St. Jakob-Park de Basilea."
+   },
+   {
+    "id": "q_18e4de",
+    "q": "La final de la Liga Europa de 2015 ganada por el Sevilla se jugó en ¿qué capital?",
+    "o": [
+     "Varsovia",
+     "Kiev",
+     "Bucarest",
+     "Praga"
+    ],
+    "a": 0,
+    "hint": "La final de 2015 se celebró en el Estadio Nacional de Varsovia."
+   },
+   {
+    "id": "q_0aa9f2",
+    "q": "La final de la Liga Europa de 2020, ganada por el Sevilla, se disputó en ¿qué ciudad alemana?",
+    "o": [
+     "Colonia",
+     "Berlín",
+     "Múnich",
+     "Fráncfort"
+    ],
+    "a": 0,
+    "hint": "La final de 2020 se jugó en el RheinEnergieStadion de Colonia."
+   },
+   {
+    "id": "q_64d055",
+    "q": "La final de la Liga Europa de 2023 que el Sevilla ganó en los penaltis tuvo lugar en ¿qué ciudad?",
+    "o": [
+     "Budapest",
+     "Viena",
+     "Praga",
+     "Bucarest"
+    ],
+    "a": 0,
+    "hint": "La final de 2023 se celebró en el Puskás Aréna de Budapest."
+   },
+   {
+    "id": "q_0b296b",
+    "q": "En la tanda de penaltis de la final de la Liga Europa de 2023, ¿qué portero del Sevilla detuvo un lanzamiento decisivo?",
+    "o": [
+     "Yassine Bounou",
+     "Sergio Rico",
+     "Andrés Palop",
+     "David Soria"
+    ],
+    "a": 0,
+    "hint": "El portero marroquí Yassine 'Bono' Bounou paró un penalti y el Sevilla ganó la tanda de 2023."
+   },
+   {
+    "id": "q_9133c7",
+    "q": "¿Qué delantero internacional maliense se convirtió en icono del Sevilla y ganó el premio al Futbolista Africano del Año en 2007?",
+    "o": [
+     "Frédéric Kanouté",
+     "Didier Drogba",
+     "Samuel Eto'o",
+     "El Hadji Diouf"
+    ],
+    "a": 0,
+    "hint": "Frédéric Kanouté, nacido en Francia pero internacional con Malí, fue elegido Futbolista Africano del Año en 2007."
+   },
+   {
+    "id": "q_cbece8",
+    "q": "El Sevilla vendió al centrocampista Ivan Rakitić en 2014 a ¿qué club?",
+    "o": [
+     "Barcelona",
+     "Real Madrid",
+     "Bayern de Múnich",
+     "Juventus"
+    ],
+    "a": 0,
+    "hint": "Rakitić fichó por el Barcelona en 2014, donde llegó a ganar la Liga de Campeones."
+   },
+   {
+    "id": "q_fbf8c4",
+    "q": "¿Qué extremo, producto de la cantera del Sevilla, formó parte de la selección española campeona del Mundial de 2010?",
+    "o": [
+     "Jesús Navas",
+     "David Silva",
+     "Pedro",
+     "Santi Cazorla"
+    ],
+    "a": 0,
+    "hint": "El canterano Jesús Navas ganó el Mundial de 2010 con España."
+   },
+   {
+    "id": "q_913cc4",
+    "q": "Diego Maradona tuvo un breve paso por el Sevilla, ¿en qué periodo?",
+    "o": [
+     "1992-93",
+     "1986-87",
+     "1996-97",
+     "1982-83"
+    ],
+    "a": 0,
+    "hint": "Maradona jugó en el Sevilla en la temporada 1992-93, en una etapa breve y discreta."
+   },
+   {
+    "id": "q_b9f89b",
+    "q": "Diego Maradona, que llegó a jugar en el Sevilla, ¿a qué selección representó?",
+    "o": [
+     "Argentina",
+     "Brasil",
+     "Uruguay",
+     "Colombia"
+    ],
+    "a": 0,
+    "hint": "Maradona fue el legendario capitán de Argentina, a la que llevó al título del Mundial de 1986."
+   },
+   {
+    "id": "q_2e63bb",
+    "q": "¿Quién fue el director deportivo de largo recorrido del Sevilla, célebre por su olfato en los fichajes durante el crecimiento del club?",
+    "o": [
+     "Monchi",
+     "Txiki Begiristain",
+     "Luis Campos",
+     "Andrea Berta"
+    ],
+    "a": 0,
+    "hint": "Ramón Rodríguez Verdejo, conocido como Monchi, forjó como director deportivo la fama del Sevilla en el mercado."
+   },
+   {
+    "id": "q_b9bcab",
+    "q": "¿Qué entrenador llevó al Sevilla a tres Ligas Europa consecutivas en 2014, 2015 y 2016?",
+    "o": [
+     "Unai Emery",
+     "Julen Lopetegui",
+     "Juande Ramos",
+     "Jorge Sampaoli"
+    ],
+    "a": 0,
+    "hint": "Unai Emery ideó los tres triunfos europeos seguidos del Sevilla entre 2014 y 2016."
+   },
+   {
+    "id": "q_8b9b18",
+    "q": "¿Qué entrenador guio al Sevilla en sus dos Copas de la UEFA consecutivas de 2006 y 2007?",
+    "o": [
+     "Juande Ramos",
+     "Unai Emery",
+     "Joaquín Caparrós",
+     "Manolo Jiménez"
+    ],
+    "a": 0,
+    "hint": "Juande Ramos estaba al mando en las victorias consecutivas del Sevilla en la Copa de la UEFA de 2006 y 2007."
+   },
+   {
+    "id": "q_41fa71",
+    "q": "¿Qué joven defensa de la cantera del Sevilla murió en agosto de 2007 tras desplomarse durante un partido de Liga?",
+    "o": [
+     "Antonio Puerta",
+     "José Antonio Reyes",
+     "Diego Capel",
+     "Sergio Ramos"
+    ],
+    "a": 0,
+    "hint": "Antonio Puerta, de 22 años, murió en 2007 por una dolencia cardíaca; el club mantiene vivo su recuerdo como querido canterano."
+   },
+   {
+    "id": "q_1da58e",
+    "q": "José Antonio Reyes dejó el Sevilla en enero de 2004 para fichar por ¿qué club inglés?",
+    "o": [
+     "Arsenal",
+     "Chelsea",
+     "Manchester United",
+     "Liverpool"
+    ],
+    "a": 0,
+    "hint": "Reyes firmó por el Arsenal en enero de 2004 y formó parte de su temporada de los 'Invincibles'."
+   },
+   {
+    "id": "q_48b877",
+    "q": "¿Qué central se formó en la cantera del Sevilla antes de su traspaso al Real Madrid en 2005?",
+    "o": [
+     "Sergio Ramos",
+     "Gerard Piqué",
+     "Raúl Albiol",
+     "Carlos Marchena"
+    ],
+    "a": 0,
+    "hint": "Sergio Ramos se formó en las categorías inferiores del Sevilla antes de su fichaje por el Real Madrid en 2005."
+   },
+   {
+    "id": "q_007d35",
+    "q": "El lateral ofensivo del Sevilla Dani Alves, ¿a qué selección representó a nivel internacional?",
+    "o": [
+     "Brasil",
+     "Argentina",
+     "Portugal",
+     "Colombia"
+    ],
+    "a": 0,
+    "hint": "Dani Alves, lateral derecho incansable en el Sevilla, fue durante años internacional con Brasil."
+   },
+   {
+    "id": "q_819837",
+    "q": "El Sevilla ganó la final de la Copa del Rey de 2010 ante ¿qué club?",
+    "o": [
+     "Atlético de Madrid",
+     "Real Madrid",
+     "Barcelona",
+     "Valencia"
+    ],
+    "a": 0,
+    "hint": "El Sevilla venció 2-0 al Atlético de Madrid y ganó la Copa del Rey de 2010."
+   },
+   {
+    "id": "q_afb33c",
+    "q": "El Sevilla levantó la Copa del Rey de 2007 tras ganar en la final a ¿qué club?",
+    "o": [
+     "Getafe",
+     "Osasuna",
+     "Racing de Santander",
+     "Levante"
+    ],
+    "a": 0,
+    "hint": "El Sevilla derrotó 1-0 al Getafe en la final de la Copa del Rey de 2007."
+   },
+   {
+    "id": "q_4d7839",
+    "q": "El primer título de Copa del Rey del Sevilla, ganando al Sabadell en la final, llegó ¿en qué año?",
+    "o": [
+     "1935",
+     "1928",
+     "1941",
+     "1950"
+    ],
+    "a": 0,
+    "hint": "El Sevilla ganó su primera copa nacional en 1935, tras vencer al Sabadell en la final."
+   },
+   {
+    "id": "q_1e78a5",
+    "q": "El Sevilla se consolidó como especialista en ¿qué competición europea, que ganó en años como 2006, 2014 y 2020?",
+    "o": [
+     "Copa de la UEFA / Liga Europa",
+     "Liga de Campeones de la UEFA",
+     "Recopa de Europa",
+     "Copa Intertoto de la UEFA"
+    ],
+    "a": 0,
+    "hint": "El Sevilla se hizo célebre en la Copa de la UEFA y en su sucesora, la Liga Europa, que levantó en 2006, 2014 y 2020, entre otros años."
+   },
+   {
+    "id": "q_546b17",
+    "q": "En la final de la Liga Europa de 2015, ¿qué delantero marcó dos goles para el Sevilla, incluido el decisivo?",
+    "o": [
+     "Carlos Bacca",
+     "Kevin Gameiro",
+     "Wissam Ben Yedder",
+     "Álvaro Negredo"
+    ],
+    "a": 0,
+    "hint": "El delantero colombiano Carlos Bacca firmó un doblete en el 3-2 del Sevilla en la final de 2015."
+   },
+   {
+    "id": "q_9aa1e0",
+    "q": "¿Qué delantero brasileño fue un goleador prolífico del Sevilla a finales de los años 2000 y también jugó con Brasil?",
+    "o": [
+     "Luís Fabiano",
+     "Adriano",
+     "Grafite",
+     "Robinho"
+    ],
+    "a": 0,
+    "hint": "Luís Fabiano fue el letal ariete brasileño del Sevilla a finales de los años 2000."
+   },
+   {
+    "id": "q_a82c99",
+    "q": "¿Qué portero fue un héroe de la aventura europea del Sevilla a mediados de los años 2000, incluida la tanda de penaltis de la Copa de la UEFA de 2007?",
+    "o": [
+     "Andrés Palop",
+     "Iker Casillas",
+     "Santiago Cañizares",
+     "Pepe Reina"
+    ],
+    "a": 0,
+    "hint": "Andrés Palop, portero del Sevilla durante años, es recordado por sus paradas en las tandas y por un famoso gol de empate en el tramo final de un partido europeo."
+   },
+   {
+    "id": "q_4130aa",
+    "q": "El Sevilla vendió al delantero Álvaro Negredo en 2013 a ¿qué club inglés?",
+    "o": [
+     "Manchester City",
+     "Chelsea",
+     "Everton",
+     "West Ham United"
+    ],
+    "a": 0,
+    "hint": "Negredo dejó el Sevilla para irse al Manchester City en el verano de 2013."
+   },
+   {
+    "id": "q_1b15fe",
+    "q": "¿Qué centrocampista argentino fue el eje creativo del Sevilla campeón de la Liga Europa en 2019-20?",
+    "o": [
+     "Éver Banega",
+     "Lucas Ocampos",
+     "Franco Vázquez",
+     "Guido Pizarro"
+    ],
+    "a": 0,
+    "hint": "Éver Banega manejó los hilos en el centro del campo y dio asistencias clave en el título de 2020 del Sevilla antes de marcharse."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Sevilla FC",
+   "title": "Quiz del Sevilla FC — preguntas | Ball IQ",
+   "description": "Kanouté, Palop, Monchi y las noches europeas. Pon a prueba tu Ball IQ con el quiz del Sevilla FC: Nervión, la Copa del Rey y el Gran Derbi.",
+   "intro": [
+    "Fundado el 25 de enero de 1890, el Sevilla FC es uno de los clubes más antiguos del fútbol español, y también uno de los que mejor ha aprendido a ganar fuera de casa. Este quiz recorre esa historia desde Nervión hasta las finales continentales.",
+    "Hay preguntas sobre el Ramón Sánchez-Pizjuán y el presidente que le da nombre, sobre el título de Liga de 1945-46 y sobre la primera Copa del Rey de 1935 ante el Sabadell. Y, por supuesto, sobre El Gran Derbi.",
+    "La parte europea es la que separa al aficionado del erudito: Eindhoven 2006, Glasgow 2007, Turín 2014, Varsovia 2015, Basilea 2016, Colonia 2020 y Budapest 2023. Si sabes qué portero paró el penalti decisivo en Hungría, este quiz es tuyo.",
+    "También aparecen los nombres que hicieron grande al club: Kanouté, Palop, Luís Fabiano, Dani Alves, Rakitić, Jesús Navas, Bacca, Banega, Antonio Puerta y el paso fugaz de Maradona en 1992-93."
+   ],
+   "faq": [
+    {
+     "q": "¿De qué va el quiz del Sevilla FC?",
+     "a": "Cubre la historia del club desde su fundación en 1890 hasta la Liga Europa de 2023: estadio, apodos, títulos, entrenadores, fichajes y las finales europeas."
+    },
+    {
+     "q": "¿Qué títulos europeos ha ganado el Sevilla?",
+     "a": "La Copa de la UEFA en 2006 y 2007, y la Liga Europa en 2014, 2015, 2016, 2020 y 2023. También la Supercopa de Europa de 2006, tras ganar 3-0 al Barcelona en Mónaco."
+    },
+    {
+     "q": "¿Hay que registrarse para jugar?",
+     "a": "No. El quiz se juega gratis en el navegador. Si creas una cuenta guardarás tus resultados y podrás comparar tu Ball IQ con el de tus amigos."
+    },
+    {
+     "q": "¿Es difícil?",
+     "a": "Está pensado para que un sevillista se sienta como en casa y un aficionado neutral aprenda algo. Las preguntas van de lo básico (colores, rival de ciudad) a detalles de finales concretas."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "De Eindhoven 2006 a Budapest 2023: el club de las noches europeas.",
+   "tasterPh": "Elige una respuesta para empezar",
+   "faqH": "Preguntas frecuentes",
+   "aboutQ": "¿De qué va este quiz?"
+  }
+ }
+]

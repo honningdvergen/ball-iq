@@ -1,0 +1,3178 @@
+[
+ {
+  "slug": "real-madrid",
+  "club": "Real Madrid",
+  "translated": 42,
+  "source": 42,
+  "structural": [],
+  "review": {
+   "ok": false,
+   "problems": [
+    "BLOCKER — q_b1929c stem: broken word ships to users. \"el rostro cantera na de la portería del Madrid\" — 'cantera na' is a split/typo'd word. Fix to \"el rostro canterano de la portería del Madrid\" (English: 'the cantera-bred face of Madrid's goal').",
+    "FACT DRIFT — q_7accaa stem: \"centrocampista alemán de largo recorrido\" mistranslates 'long-serving'. In Spanish football usage 'de largo recorrido' describes a box-to-box runner, which is the opposite of Kroos's profile and changes what the stem asserts about him. Use \"centrocampista alemán de largos años en el club\" or \"veterano centrocampista alemán\".",
+    "MEANING INVERSION RISK — q_f2ec53 hint: \"Zidane costó unos 75 millones de euros a la Juventus\" reads as 'cost Juventus 75m' — the English says Madrid paid Juventus. Fix to \"Zidane costó unos 75 millones de euros, pagados a la Juventus\" or \"le costó al Madrid unos 75 millones de euros, procedente de la Juventus\".",
+    "MEANING LOSS — q_ef7e13 hint: \"antes de dirigir a España hasta el Mundial de 2010\" reads as 'coached Spain up to the 2010 World Cup'; the English 'coaching Spain to the 2010 World Cup' means he won it. Fix to \"antes de dirigir a España hasta ganar el Mundial de 2010\".",
+    "GRAMMAR — q_bd9e37 stem is garbled: \"se añadió al escudo en 1920, después de que le concediera el título ¿qué rey de España?\" leaves the subject dangling before the embedded question. Rewrite, e.g. \"¿Qué rey de España concedió al club el título que llevó la corona real a su escudo en 1920?\"",
+    "SOFT — prose intro line 1: \"Ningún club ha convivido tanto tiempo con el listón tan alto como el Real Madrid\" is an unanchored absolute across all clubs. It is rhetorical rather than a rotting record, but it is the only sentence in the prose that asserts a superlative without a date or a hedge; consider softening (\"Pocos clubes han convivido tanto tiempo…\").",
+    "MINOR — q_4011d1 stem: 'teenage winger' became \"joven extremo\", dropping the age specificity. \"al extremo adolescente Vinicius Junior\" keeps the English claim.",
+    "MINOR/consistency — option localisation is uneven: Inter was rendered \"Inter de Milán\" but q_f2ec53 keeps French \"Bordeaux\"/\"Marseille\" (Spanish: Burdeos/Marsella) and q_c19fce keeps \"Eintracht Frankfurt\" (Spanish press: Eintracht Fráncfort). Not a fact or index change — decide one policy and apply it to all four-option sets.",
+    "STYLE (no action required, but it recurs) — the trailing embedded-question pattern (\"…fichó del Manchester United a ¿qué centrocampista inglés?\") appears in q_bd9e37, q_20922e, q_29a348, q_4ea02d, q_4011d1, q_2c3b79, q_bba20a. It parses but reads clunky; a leading \"¿Qué …?\" would read more naturally if a copy pass is cheap."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_c19fce",
+    "q": "La racha de CINCO Copas de Europa consecutivas del Real Madrid (1956-60) se cerró con un demoledor 7-3 al Eintracht Frankfurt. Aquella noche dos jugadores madridistas marcaron sendos hat-tricks: ¿qué pareja fue?",
+    "o": [
+     "Di Stéfano y Puskás",
+     "Gento y Kopa",
+     "Di Stéfano y Gento",
+     "Puskás y Rial"
+    ],
+    "a": 0,
+    "hint": "Di Stéfano firmó tres y Puskás cuatro ante 127.000 espectadores en Hampden Park: sigue siendo la final de Copa de Europa con más goles y muchos la consideran la mejor final de la historia."
+   },
+   {
+    "id": "q_4d89c7",
+    "q": "En la final de 2014, el Real Madrid estaba a 90 segundos de perder «La Décima» ante el Atlético, hasta que un cabezazo en el minuto 93 la llevó a la prórroga. ¿Quién marcó ese gol salvador?",
+    "o": [
+     "Gareth Bale",
+     "Cristiano Ronaldo",
+     "Sergio Ramos",
+     "Marcelo"
+    ],
+    "a": 2,
+    "hint": "Sergio Ramos se elevó a un córner de Modric para poner el 1-1; el Madrid arrasó después en la prórroga para ganar 4-1 y conquistar por fin su décima corona europea, 12 años después de la novena."
+   },
+   {
+    "id": "q_140c04",
+    "q": "La Copa de Europa de 2002 del Real Madrid, «La Novena», se selló con un gol votado a menudo como el mejor de la historia de la Liga de Campeones. ¿Quién marcó aquella volea de zurda?",
+    "o": [
+     "Raúl",
+     "Zinedine Zidane",
+     "Roberto Carlos",
+     "Luis Figo"
+    ],
+    "a": 1,
+    "hint": "Enganchó un centro bombeado de Roberto Carlos en la frontal del área y lo voleó a la escuadra en Hampden Park para batir al Bayer Leverkusen."
+   },
+   {
+    "id": "q_d427aa",
+    "q": "El legendario grito de guerra madridista «90 minutos en el Bernabéu son muy largos» lo acuñó en 1985 un delantero convertido en ídolo de culto, picando al Inter de Milán antes de una remontada famosa. ¿Quién fue?",
+    "o": [
+     "Emilio Butragueño",
+     "Hugo Sánchez",
+     "Juanito",
+     "Santillana"
+    ],
+    "a": 2,
+    "hint": "Juanito provocó al Inter tras caer 2-0 en la ida de las semifinales de la Copa de la UEFA de 1985; el Madrid ganó 3-0 la vuelta en el Bernabéu (Santillana, Valdano y Míchel) para pasar, y la frase quedó como folclore eterno del Bernabéu."
+   },
+   {
+    "id": "q_dc4abb",
+    "q": "El Real Madrid fichó a Alfredo Di Stéfano en 1953 solo tras un extraño tira y afloja con un rival español que también había cerrado un acuerdo por él. ¿Qué club era?",
+    "o": [
+     "Barcelona",
+     "Atlético de Madrid",
+     "Valencia",
+     "Athletic de Bilbao"
+    ],
+    "a": 0,
+    "hint": "Dos clubes, uno de Colombia y otro de Argentina, reclamaban sus derechos; un mediador propuso repartírselo en temporadas alternas antes de que el Barcelona se retirara y el Madrid se lo quedara en exclusiva."
+   },
+   {
+    "id": "q_bd9e37",
+    "q": "¿Qué rey de España concedió al club el título que llevó la corona real al escudo del Real Madrid en 1920?",
+    "o": [
+     "Juan Carlos I",
+     "Alfonso XII",
+     "Alfonso XIII",
+     "Felipe VI"
+    ],
+    "a": 2,
+    "hint": "Concedió el título de «Real» al club en junio de 1920; la corona se retiró brevemente con la República de 1931 y se restauró en 1941. Ojo: el rey que murió en 1885 es otro Alfonso."
+   },
+   {
+    "id": "q_13ae58",
+    "q": "¿Quién tiene el récord de partidos con el Real Madrid, con 741 encuentros entre 1994 y 2010?",
+    "o": [
+     "Iker Casillas",
+     "Sergio Ramos",
+     "Manuel Sanchís",
+     "Raúl"
+    ],
+    "a": 3,
+    "hint": "Raúl supera a Casillas (725) y a Sanchís (710); el capitán formado en la cantera ganó seis Ligas y tres Ligas de Campeones a lo largo de 16 temporadas."
+   },
+   {
+    "id": "q_b89a9a",
+    "q": "Cristiano Ronaldo es el máximo goleador histórico del Real Madrid con unos 450 goles. ¿Quién ocupa el segundo puesto de esa lista?",
+    "o": [
+     "Raúl",
+     "Karim Benzema",
+     "Ferenc Puskás",
+     "Hugo Sánchez"
+    ],
+    "a": 1,
+    "hint": "Durante años el segundo puesto fue de Raúl, pero un francés se destapó en sus últimas temporadas y lo adelantó antes de marcharse a Arabia Saudí en 2023."
+   },
+   {
+    "id": "q_890e78",
+    "q": "El estadio Santiago Bernabéu lleva el nombre de un hombre que sirvió al club como jugador y como presidente durante muchísimos años. ¿En qué década lo rebautizó el club en su honor?",
+    "o": [
+     "Los años 40",
+     "Los años 50",
+     "Los años 60",
+     "Los años 70"
+    ],
+    "a": 1,
+    "hint": "Inaugurado en 1947 como «Nuevo Estadio Chamartín», pasó a llamarse Santiago Bernabéu en 1955, cuando él seguía siendo presidente e impulsaba la época dorada del Madrid."
+   },
+   {
+    "id": "q_ed3c7d",
+    "q": "El apodo del Real Madrid, «Los Merengues», ¿a qué aspecto del club se refiere?",
+    "o": [
+     "Sus celebraciones en las finales de copa",
+     "Su equipación totalmente blanca",
+     "La pastelería de un fundador",
+     "La cúpula de su estadio"
+    ],
+    "a": 1,
+    "hint": "Piensa en algo blanco y esponjoso como el merengue montado: el club lo viste desde sus primeros días, inspirado por el Corinthians inglés."
+   },
+   {
+    "id": "q_b1929c",
+    "q": "¿Qué portero entró como suplente en la final de 2002 y encadenó paradas a bocajarro para sellar la victoria, y luego pasó más de una década como el rostro canterano de la portería del Madrid mientras levantaba tres Ligas de Campeones?",
+    "o": [
+     "Keylor Navas",
+     "Iker Casillas",
+     "Thibaut Courtois",
+     "Francisco Buyo"
+    ],
+    "a": 1,
+    "hint": "«San Iker» salió de la cantera, fue capitán de España en el Mundial de 2010 y solo Raúl le supera en partidos con el Real Madrid."
+   },
+   {
+    "id": "q_28ee02",
+    "q": "El Real Madrid completó en 2014 la ansiada «Décima», pero ¿cuánto tiempo llevaban esperando los aficionados desde la anterior Copa de Europa, la novena?",
+    "o": [
+     "6 años",
+     "12 años",
+     "8 años",
+     "20 años"
+    ],
+    "a": 1,
+    "hint": "La novena llegó en 2002 con la volea de Zidane en Hampden; la sequía posterior convirtió «La Décima» en una obsesión que por fin terminó en Lisboa."
+   },
+   {
+    "id": "q_64e4bc",
+    "q": "¿Cómo se llama el filial del Real Madrid, histórica plataforma de lanzamiento de la cantera y dirigido en su día por Zinedine Zidane?",
+    "o": [
+     "Real Madrid Castilla",
+     "Real Madrid Aficionados",
+     "Real Madrid Atlético",
+     "Real Madrid Juvenil A"
+    ],
+    "a": 0,
+    "hint": "El Castilla ha producido talentos desde Butragueño hasta Casillas; Zidane lo entrenó antes de dar el salto y ganar tres Ligas de Campeones seguidas con el primer equipo."
+   },
+   {
+    "id": "q_be3cce",
+    "q": "¿Qué lateral izquierdo brasileño, famoso en el Real Madrid por un libre directo que desafiaba a la física ante Francia en 1997, se pasó más de una década desbordando por la banda del Madrid?",
+    "o": [
+     "Marcelo",
+     "Roberto Carlos",
+     "Cafu",
+     "Carlos Alberto"
+    ],
+    "a": 1,
+    "hint": "El libre directo con efecto de Roberto Carlos, que se curvó de forma imposible hasta entrar en la portería, se hizo legendario; fue fijo de la era galáctica entre 1996 y 2007."
+   },
+   {
+    "id": "q_786d8d",
+    "q": "Florentino Pérez, presidente del Real Madrid durante largos periodos, ganó su primera presidencia en 2000 con una promesa electoral asombrosa. ¿Qué prometió cumplir?",
+    "o": [
+     "Una nueva cubierta para el Bernabéu",
+     "El fichaje de Luis Figo",
+     "Zidane y Ronaldo",
+     "Abonos gratis"
+    ],
+    "a": 1,
+    "hint": "Pérez prometió traer al Madrid a Figo, del Barcelona (y devolver las cuotas a los socios si fracasaba); lograrlo lanzó la era de los Galácticos y una presidencia que se ha prolongado durante décadas."
+   },
+   {
+    "id": "q_332594",
+    "q": "¿Qué «destructor» brasileño, apodado El Tanque, fue el ancla del centro del campo del Madrid en cuatro Ligas de Campeones junto a Modric y Kroos?",
+    "o": [
+     "Xabi Alonso",
+     "Casemiro",
+     "Fernando Redondo",
+     "Claude Makelele"
+    ],
+    "a": 1,
+    "hint": "Casemiro era el recuperador del célebre trío Modric-Kroos-Casemiro; se marchó al Manchester United en 2022, tras el triunfo europeo de 2021-22."
+   },
+   {
+    "id": "q_bba20a",
+    "q": "Las victorias del Real Madrid en la Liga de Campeones de 2016, 2017 y 2018 lo convirtieron en el primer club de la era moderna en lograr ¿qué?",
+    "o": [
+     "Ganarla con un entrenador español",
+     "Ganarla tres veces seguidas",
+     "Ganarla sin perder un partido",
+     "Ganarla sin encajar un gol"
+    ],
+    "a": 1,
+    "hint": "El equipo de Zidane la levantó tres temporadas consecutivas: ningún club había ganado tres seguidas desde que la competición pasó a llamarse Liga de Campeones en 1992 (el Bayern fue el último en lograrlo, en la antigua Copa de Europa, entre 1974 y 1976)."
+   },
+   {
+    "id": "q_57f2de",
+    "q": "¿Qué elegante organizador argentino, corazón de la sala de máquinas del Real Madrid de finales de los noventa, rechazó una vez un puesto en su selección antes que cortarse su melena?",
+    "o": [
+     "Fernando Redondo",
+     "Jorge Valdano",
+     "Esteban Cambiasso",
+     "Santiago Solari"
+    ],
+    "a": 0,
+    "hint": "Apodado «El Príncipe» por su toque señorial, su regate con taconazo a Henning Berg en Old Trafford en 2000 dejó el gol servido a Raúl y es una de las jugadas más repetidas de la historia del club."
+   },
+   {
+    "id": "q_b7537c",
+    "q": "La primera Copa de Europa del Real Madrid llegó en 1956. ¿A quién ganaron en aquella final inaugural de París?",
+    "o": [
+     "Stade de Reims",
+     "Eintracht Frankfurt",
+     "AC Milan",
+     "Fiorentina"
+    ],
+    "a": 0,
+    "hint": "El Madrid remontó un 2-0 y un 3-2 en contra para ganar 4-3 al Reims francés, arrancando una dinastía que ganaría las cinco primeras ediciones del torneo."
+   },
+   {
+    "id": "q_7accaa",
+    "q": "¿Qué veterano centrocampista alemán, un metrónomo del pase fichado en 2014, se retiró tras la Liga de Campeones de 2024 del Madrid y se marchó en lo más alto?",
+    "o": [
+     "Mesut Özil",
+     "Toni Kroos",
+     "Sami Khedira",
+     "Bastian Schweinsteiger"
+    ],
+    "a": 1,
+    "hint": "Kroos ganó cinco Ligas de Campeones en el Madrid y se despidió en 2024, eligiendo retirarse en lugar de perseguir más títulos: una salida elegante y poco habitual."
+   },
+   {
+    "id": "q_7ef8b0",
+    "q": "La final récord de la Copa de Europa por 7-3 (1960) y la volea de Zidane (2002) se jugaron en el mismo estadio icónico. ¿Qué campo acogió ambas?",
+    "o": [
+     "Wembley",
+     "Hampden Park",
+     "Old Trafford",
+     "Stade de France"
+    ],
+    "a": 1,
+    "hint": "El Hampden Park de Glasgow acogió los dos clásicos: un terreno propicio que enmarca la historia europea del Madrid en dos épocas muy distintas."
+   },
+   {
+    "id": "q_0a308b",
+    "q": "La victoria del Real Madrid ante el Liverpool en la final de la Liga de Campeones de 2018 en Kiev la iluminó una chilena espectacular desde el banquillo. ¿Quién la marcó?",
+    "o": [
+     "Karim Benzema",
+     "Cristiano Ronaldo",
+     "Gareth Bale",
+     "Marco Asensio"
+    ],
+    "a": 2,
+    "hint": "Gareth Bale salió y marcó una chilena espectacular, y después añadió un segundo gol, en el 3-1 que selló el tercer título consecutivo del Madrid."
+   },
+   {
+    "id": "q_7661e2",
+    "q": "¿Qué exgaláctico centrocampista dirigió al Real Madrid hasta tres Ligas de Campeones consecutivas entre 2016 y 2018?",
+    "o": [
+     "Carlo Ancelotti",
+     "Zinedine Zidane",
+     "Rafael Benítez",
+     "Santiago Solari"
+    ],
+    "a": 1,
+    "hint": "Zinedine Zidane, héroe de la final de 2002 como jugador, volvió como entrenador y la ganó en cada una de sus tres primeras temporadas en el banquillo."
+   },
+   {
+    "id": "q_89bdc8",
+    "q": "En 2009 el Real Madrid batió el récord mundial de traspasos para fichar a Cristiano Ronaldo. ¿De qué club llegó?",
+    "o": [
+     "Sporting CP",
+     "Manchester United",
+     "Juventus",
+     "Manchester City"
+    ],
+    "a": 1,
+    "hint": "Ronaldo llegó del Manchester United por unos 80 millones de libras, entonces récord mundial, tras seis años cargados de títulos en Old Trafford."
+   },
+   {
+    "id": "q_6d6fe3",
+    "q": "A finales de 2024, ¿cuántas Copas de Europa / Ligas de Campeones había ganado el Real Madrid, un récord de la competición?",
+    "o": [
+     "13",
+     "14",
+     "15",
+     "16"
+    ],
+    "a": 2,
+    "hint": "Su victoria de 2024 ante el Borussia Dortmund en Wembley fue la decimoquinta, muy por delante de cualquier otro club."
+   },
+   {
+    "id": "q_04c278",
+    "q": "¿Qué centrocampista del Real Madrid ganó el Balón de Oro de 2018, poniendo fin a una década de dominio de Messi y Ronaldo?",
+    "o": [
+     "Toni Kroos",
+     "Luka Modric",
+     "Isco",
+     "Marco Asensio"
+    ],
+    "a": 1,
+    "hint": "El croata Luka Modric se llevó el premio de 2018 tras el triplete de Ligas de Campeones del Madrid y su camino hasta la final del Mundial."
+   },
+   {
+    "id": "q_fb15de",
+    "q": "¿Qué club había ganado más títulos de LaLiga en la historia de la competición a fecha de 2024?",
+    "o": [
+     "Barcelona",
+     "Real Madrid",
+     "Atlético de Madrid",
+     "Athletic de Bilbao"
+    ],
+    "a": 1,
+    "hint": "El Real Madrid encabeza el palmarés histórico de LaLiga con 36 títulos en 2024, muy por delante del Barcelona."
+   },
+   {
+    "id": "q_f2ec53",
+    "q": "El Real Madrid pulverizó el récord mundial de traspasos en 2001 para fichar a Zinedine Zidane. ¿Qué club lo vendió?",
+    "o": [
+     "Bordeaux",
+     "Juventus",
+     "Marseille",
+     "Inter de Milán"
+    ],
+    "a": 1,
+    "hint": "Zidane le costó al Madrid unos 75 millones de euros pagados a la Juventus, una cifra récord, el verano anterior a marcar su famosa volea en la final de 2002."
+   },
+   {
+    "id": "q_9d57e8",
+    "q": "La séptima Copa de Europa del Real Madrid, en 1998, puso fin a una espera de 32 años al ganar 1-0 a la Juventus. ¿Quién marcó el gol de la victoria?",
+    "o": [
+     "Raúl",
+     "Predrag Mijatovic",
+     "Fernando Morientes",
+     "Fernando Hierro"
+    ],
+    "a": 1,
+    "hint": "El delantero montenegrino Predrag Mijatovic empujó el único gol en Ámsterdam para acabar con la larga sequía del Madrid."
+   },
+   {
+    "id": "q_3f3f42",
+    "q": "¿A qué otro equipo español ganó el Real Madrid por 3-0 en una final de la Liga de Campeones íntegramente española en 2000?",
+    "o": [
+     "Valencia",
+     "Barcelona",
+     "Deportivo de La Coruña",
+     "Atlético de Madrid"
+    ],
+    "a": 0,
+    "hint": "El Madrid goleó 3-0 al Valencia en Hampden Park, con goles de Morientes, McManaman y Raúl."
+   },
+   {
+    "id": "q_4ea02d",
+    "q": "«La Quinta del Buitre», el célebre grupo de canteranos del Madrid de los años ochenta, tomó su nombre del apodo de ¿qué delantero?",
+    "o": [
+     "Hugo Sánchez",
+     "Emilio Butragueño",
+     "Santillana",
+     "Míchel"
+    ],
+    "a": 1,
+    "hint": "Emilio Butragueño era «El Buitre»; el quinteto de canteranos impulsó las cinco Ligas consecutivas del Madrid a partir de 1986."
+   },
+   {
+    "id": "q_20922e",
+    "q": "En 2003, en plena era de los Galácticos, el Real Madrid fichó del Manchester United a ¿qué centrocampista inglés?",
+    "o": [
+     "Steve McManaman",
+     "David Beckham",
+     "Michael Owen",
+     "Jonathan Woodgate"
+    ],
+    "a": 1,
+    "hint": "David Beckham llegó del Manchester United en 2003 y se convirtió en uno de los grandes fichajes galácticos."
+   },
+   {
+    "id": "q_ef7e13",
+    "q": "¿Qué entrenador llevó al Real Madrid a ganar la Liga de Campeones tanto en 2000 como en 2002?",
+    "o": [
+     "Vicente del Bosque",
+     "John Toshack",
+     "Jupp Heynckes",
+     "Fabio Capello"
+    ],
+    "a": 0,
+    "hint": "Vicente del Bosque, exjugador del Madrid, ganó dos coronas europeas y dos Ligas antes de dirigir a España hasta ganar el Mundial de 2010."
+   },
+   {
+    "id": "q_df738c",
+    "q": "¿Qué extremo veloz ganó seis Copas de Europa con el Real Madrid durante su primera época dorada (1956-1966)?",
+    "o": [
+     "Francisco Gento",
+     "Amancio",
+     "Raymond Kopa",
+     "José Santamaría"
+    ],
+    "a": 0,
+    "hint": "Francisco «Paco» Gento ganó seis Copas de Europa entre 1956 y 1966, un récord individual en la competición."
+   },
+   {
+    "id": "q_2f1f5c",
+    "q": "¿Qué delantero mexicano, célebre por sus definiciones acrobáticas de chilena, ganó varios Pichichis en el Real Madrid a finales de los años ochenta?",
+    "o": [
+     "Hugo Sánchez",
+     "Jorge Valdano",
+     "Iván Zamorano",
+     "Emilio Butragueño"
+    ],
+    "a": 0,
+    "hint": "Hugo Sánchez fue máximo goleador de LaLiga cuatro veces como jugador del Madrid y es famoso por marcar toda una temporada de goles a primer toque."
+   },
+   {
+    "id": "q_4011d1",
+    "q": "El Real Madrid fichó al joven extremo Vinicius Junior ¿de qué club brasileño?",
+    "o": [
+     "Santos",
+     "Flamengo",
+     "Palmeiras",
+     "Corinthians"
+    ],
+    "a": 1,
+    "hint": "Vinicius Junior llegó del Flamengo en 2018 y se convirtió en el hombre decisivo de la final de la Liga de Campeones de 2024."
+   },
+   {
+    "id": "q_29a348",
+    "q": "El equipo «Yé-yé» del Real Madrid, íntegramente español, ganó la Copa de Europa de 1966 al vencer 2-1 en la final a ¿qué club?",
+    "o": [
+     "Benfica",
+     "Partizan de Belgrado",
+     "Inter de Milán",
+     "Celtic"
+    ],
+    "a": 1,
+    "hint": "El Madrid remontó para ganar en Bruselas al Partizan de Belgrado yugoslavo y conquistar su sexta Copa de Europa."
+   },
+   {
+    "id": "q_09d08c",
+    "q": "¿En qué año ganó el Real Madrid su primer título de LaLiga?",
+    "o": [
+     "1929",
+     "1932",
+     "1936",
+     "1954"
+    ],
+    "a": 1,
+    "hint": "El Madrid conquistó el campeonato 1931-32, el primero, unas temporadas después de que la liga española arrancara en 1929."
+   },
+   {
+    "id": "q_7dd95e",
+    "q": "¿Quién fue el primer hombre en ganar la Copa de Europa con el Real Madrid como jugador y como entrenador?",
+    "o": [
+     "José Villalonga",
+     "Luis Molowny",
+     "Miguel Muñoz",
+     "Santiago Bernabéu"
+    ],
+    "a": 2,
+    "hint": "Miguel Muñoz jugó en los primeros triunfos europeos del Madrid y después dirigió al club hasta el trofeo en 1960 y 1966."
+   },
+   {
+    "id": "q_8d27c1",
+    "q": "El gran húngaro Ferenc Puskás, apodado el «Comandante Galopante», ¿cuántas veces ganó el Pichichi de LaLiga en el Real Madrid?",
+    "o": [
+     "Dos",
+     "Cuatro",
+     "Seis",
+     "Una"
+    ],
+    "a": 1,
+    "hint": "Puskás fue máximo goleador de LaLiga cuatro veces a principios de los sesenta, pese a llegar al Madrid pasados los treinta."
+   },
+   {
+    "id": "q_6f967e",
+    "q": "En su temporada récord de LaLiga 2011-12 a las órdenes de José Mourinho, ¿cuántos puntos sumó el Real Madrid?",
+    "o": [
+     "96",
+     "100",
+     "92",
+     "104"
+    ],
+    "a": 1,
+    "hint": "El equipo de Mourinho alcanzó los 100 puntos y marcó 121 goles, ambos récords de LaLiga en aquel momento, para destronar al Barcelona."
+   },
+   {
+    "id": "q_2c3b79",
+    "q": "Junto a Cristiano Ronaldo en 2009, el Real Madrid fichó también del AC Milan a ¿qué brasileño ganador del Balón de Oro?",
+    "o": [
+     "Robinho",
+     "Kaká",
+     "Ronaldinho",
+     "Alexandre Pato"
+    ],
+    "a": 1,
+    "hint": "Kaká, Balón de Oro en 2007, llegó del AC Milan en el mismo verano de récords que trajo a Ronaldo al Madrid."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Real Madrid",
+   "title": "Quiz del Real Madrid — Trivia madridista | Ball IQ",
+   "description": "Quiz gratis del Real Madrid con respuestas explicadas: las cinco primeras Copas de Europa, la Quinta del Buitre, los Galácticos y La Décima.",
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Gratis · Preguntas del Real Madrid con respuestas explicadas · sin registro",
+   "tasterPh": "Preguntas rápidas para medir tu Ball IQ madridista.",
+   "faqH": "Quiz del Real Madrid — Preguntas frecuentes",
+   "aboutQ": "Sobre el quiz del Real Madrid",
+   "intro": [
+    "Ningún club ha convivido tanto tiempo con el listón tan alto como el Real Madrid. Este quiz gratuito está hecho para quien conoce la historia entera y no solo el último título: las cinco primeras Copas de Europa entre 1956 y 1960 con Di Stéfano, Puskás y Gento, el 7-3 de Hampden Park, la Quinta del Buitre y las cinco Ligas seguidas desde 1986, la era de los Galácticos y la volea de Zidane de 2002, La Décima de Lisboa en 2014 y los tres títulos europeos consecutivos entre 2016 y 2018.",
+    "Las preguntas se ponen difíciles de verdad. Hay una para el gol de Mijatovic en Ámsterdam, otra para los 100 puntos de la Liga 2011-12 y otra para el rey que puso la corona en el escudo en 1920. Los datos van anclados a su momento: cuando un récord puede cambiar, la pregunta dice en qué temporada o en qué año se midió, para que la respuesta correcta siga siéndolo dentro de cinco años.",
+    "Cada pregunta del set del Real Madrid trae una explicación escrita, así que fallar también enseña algo sobre cómo el Madrid ganó lo que ganó. Con quince Copas de Europa hasta 2024, hay bastante que explicar.",
+    "Se juega aquí mismo, en el navegador, sin registro y sin descargar nada."
+   ],
+   "faq": [
+    {
+     "q": "¿El quiz del Real Madrid es gratis?",
+     "a": "Sí. Se juega aquí mismo en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas."
+    },
+    {
+     "q": "¿Qué temas cubre?",
+     "a": "Historia del club, las cinco Copas de Europa consecutivas de 1956 a 1960, la Quinta del Buitre, la era de los Galácticos, La Décima de 2014, los tres títulos europeos seguidos de 2016 a 2018, el Bernabéu, los presidentes, los fichajes récord y el palmarés del club. Va de fácil a realmente difícil."
+    },
+    {
+     "q": "¿De dónde salen las preguntas?",
+     "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+    },
+    {
+     "q": "¿La aplicación Ball IQ está en español?",
+     "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla — si has llegado hasta aquí, ya nos estás ayudando a decidirlo."
+    }
+   ]
+  }
+ },
+ {
+  "slug": "atletico-madrid",
+  "club": "Atlético Madrid",
+  "translated": 49,
+  "source": 49,
+  "structural": [],
+  "review": {
+   "ok": false,
+   "problems": [
+    "BLOCKING (trivial fix, 3 chars): three question stems are missing the opening inverted question mark. q_90b43a: \"El portero del Atlético Jan Oblak es internacional con qué selección?\" → needs \"¿Con qué selección es internacional el portero del Atlético, Jan Oblak?\". q_5f0218: \"Diego Godín, icónico capitán y central del Atlético, fue internacional con qué país?\" → \"...¿con qué país fue internacional?\". q_588485: \"Luis Aragonés... ganó después la Eurocopa 2008 al frente de qué selección?\" → \"...¿al frente de qué selección?\". Every other stem and all four FAQ questions punctuate correctly, so this is an isolated slip, but it renders on a live Spanish page.",
+    "NIT (anchoring precision): the four date-anchored stems render \"as of YYYY\" as bare \"en YYYY\" — q_c9bf32 \"En 2026, ¿quién ostenta el récord...\", q_af223f \"En 2024, el fichaje más caro...\", q_9a1254 \"(en 2026)\", q_195236 \"(en 2024)\". The anchor survives and the anti-rot function is intact, but \"a fecha de 2026\" / \"hasta 2026\" says \"as of\" rather than \"during\". Optional.",
+    "NIT (prose, countable claim not year-bound): intro paragraph 2 says \"las dos finales perdidas ante el Real Madrid\" with no years, inside a clause about the ongoing \"era Simeone\". The questions themselves anchor this to 2014 and 2016; the prose does not, so it would silently go stale on a third final. Suggest \"las dos finales perdidas ante el Real Madrid (2014 y 2016)\".",
+    "NIT (register, non-blocking): q_fcbcab hint uses \"Un organizador serbio\" for \"playmaker\" — peninsular usage is closer to \"director de juego\" or \"centrocampista organizador\". Same hint compresses \"the cup-final winner\" to \"el gol de la final\", losing \"decisivo\". q_014d37 keeps the English \"hat-trick\"; \"triplete\" is the more Spanish form, though hat-trick is common in Spain."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_ead9b3",
+    "q": "El Atlético de Madrid se fundó en 1903 como filial de otro club español. ¿De cuál?",
+    "o": [
+     "Athletic Bilbao",
+     "Real Madrid",
+     "FC Barcelona",
+     "Real Sociedad"
+    ],
+    "a": 0,
+    "hint": "Unos estudiantes vascos afincados en Madrid crearon una filial juvenil del equipo de su infancia, y por eso ambos visten de rojiblanco a rayas hasta hoy."
+   },
+   {
+    "id": "q_91589b",
+    "q": "¿Por qué a los aficionados y jugadores del Atlético se les apoda 'Los Colchoneros'?",
+    "o": [
+     "Sus rayas rojiblancas eran iguales que la tela con la que se hacían los colchones",
+     "Su primer campo se levantó sobre una antigua fábrica de colchones",
+     "Su fundador tenía un negocio de ropa de cama",
+     "Los aficionados lanzaron colchones al campo en señal de protesta"
+    ],
+    "a": 0,
+    "hint": "La tela barata de rayas rojas y blancas cubría los colchones españoles de la época, y la camiseta era idéntica."
+   },
+   {
+    "id": "q_d4c3b2",
+    "q": "El animal del escudo del Atlético, tomado directamente del escudo de Madrid, ¿cuál es?",
+    "o": [
+     "Un oso empinado sobre un madroño",
+     "Un león",
+     "Un lobo",
+     "Un águila"
+    ],
+    "a": 0,
+    "hint": "'El Oso y el Madroño' simboliza la ciudad desde la Edad Media; hoy una estatua se alza a las puertas del Metropolitano."
+   },
+   {
+    "id": "q_06ded0",
+    "q": "El Atlético ganó su primer título de Liga en 1940 llevando un nombre poco habitual. ¿Cuál?",
+    "o": [
+     "Atlético Aviación",
+     "Atlético Nacional",
+     "Athletic de Madrid",
+     "Atlético Militar"
+    ],
+    "a": 0,
+    "hint": "Una unión en 1939 con un club de la aviación militar mantuvo con vida a un equipo casi en quiebra; no se quitaron el 'Aviación' del nombre hasta 1947."
+   },
+   {
+    "id": "q_6573e5",
+    "q": "En la última jornada de la temporada 2013-14, el Atlético selló el título de Liga con un empate 1-1 en el Camp Nou gracias al cabezazo de un defensa. ¿Quién fue?",
+    "o": [
+     "Diego Godín",
+     "Miranda",
+     "Filipe Luís",
+     "Juanfran"
+    ],
+    "a": 0,
+    "hint": "El gol del uruguayo en el minuto 49 fue la primera vez en los 67 años de historia del Camp Nou que un equipo visitante se proclamaba campeón allí."
+   },
+   {
+    "id": "q_9854d4",
+    "q": "El Atlético ha perdido dos finales de la Liga de Campeones ante un mismo rival, en 2014 y 2016. ¿Cuál?",
+    "o": [
+     "Real Madrid",
+     "Bayern de Múnich",
+     "Liverpool",
+     "Juventus"
+    ],
+    "a": 0,
+    "hint": "El empate de Sergio Ramos en el minuto 93 en 2014 y una tanda de penaltis en 2016 convirtieron ambas finales en dolorosos derbis madrileños."
+   },
+   {
+    "id": "q_c80511",
+    "q": "¿Quién marcó el gol del Atlético en la final de 2014, antes de que Sergio Ramos rompiera el corazón colchonero en el descuento?",
+    "o": [
+     "Diego Godín",
+     "Diego Costa",
+     "Raúl García",
+     "Koke"
+    ],
+    "a": 0,
+    "hint": "Fue el mismo que había cabeceado el gol del título en el Camp Nou la semana anterior: Godín marcó en la jornada decisiva de LaLiga y también en la final europea de aquella temporada."
+   },
+   {
+    "id": "q_e2ed2a",
+    "q": "¿Quién es el máximo goleador histórico del Atlético de Madrid, tras superar en 2024 a la leyenda del club Luis Aragonés?",
+    "o": [
+     "Antoine Griezmann",
+     "Fernando Torres",
+     "Diego Costa",
+     "Radamel Falcao"
+    ],
+    "a": 0,
+    "hint": "Las dos etapas del francés en el club le permitieron superar en enero de 2024 el récord que Aragonés ostentaba desde hacía décadas."
+   },
+   {
+    "id": "q_641eeb",
+    "q": "¿Qué delantero de la cantera, apodado 'El Niño', se convirtió con 19 años en el capitán más joven de la historia del Atlético antes de fichar por el Liverpool en 2007?",
+    "o": [
+     "Fernando Torres",
+     "Sergio Agüero",
+     "David Villa",
+     "Raúl"
+    ],
+    "a": 0,
+    "hint": "Seguidor del Liverpool desde niño, llevaba en el Atlético un brazalete de capitán con 'You'll Never Walk Alone' escrito por dentro, algo que se descubrió por accidente meses antes de su marcha a Anfield."
+   },
+   {
+    "id": "q_6b09a7",
+    "q": "La final de la Copa de Europa de 1974 entre el Atlético y el Bayern de Múnich tiene un rasgo único en la historia de la competición. ¿Cuál?",
+    "o": [
+     "Es la única final de la Copa de Europa / Liga de Campeones que se ha repetido",
+     "Es la única final decidida por un gol en propia puerta",
+     "Fue la primera final que se decidió en los penaltis",
+     "Es la única final jugada a puerta cerrada"
+    ],
+    "a": 0,
+    "hint": "Tras el 1-1, el Bayern arrolló 4-0 en la repetición dos días después; desde entonces ninguna final ha necesitado un segundo partido."
+   },
+   {
+    "id": "q_fcbcab",
+    "q": "El Doblete de 1995-96 del Atlético se cerró con un 1-0 en la prórroga ante el Barcelona en la final de la Copa del Rey. ¿Quién cabeceó el gol en el minuto 102?",
+    "o": [
+     "Milinko Pantić",
+     "Lyuboslav Penev",
+     "Kiko",
+     "José Luis Caminero"
+    ],
+    "a": 0,
+    "hint": "Un organizador serbio fichado con 29 años, era la chispa creativa de aquel equipo, y se elevó para cabecear el gol de la final."
+   },
+   {
+    "id": "q_35f0bf",
+    "q": "¿Qué entrenador llevó al Atlético de Madrid al histórico Doblete de Liga y Copa de 1995-96, el único doblete nacional en la historia del club?",
+    "o": [
+     "Radomir Antić",
+     "Luis Aragonés",
+     "César Luis Menotti",
+     "Javier Aguirre"
+    ],
+    "a": 0,
+    "hint": "El entrenador serbio es el único hombre que ha dirigido a los tres: Real Madrid, Barcelona y Atlético."
+   },
+   {
+    "id": "q_825f86",
+    "q": "En 2000, bajo la polémica presidencia de Jesús Gil, el Atlético sufrió una humillación. ¿Cuál?",
+    "o": [
+     "El descenso a Segunda División",
+     "La expulsión de las competiciones europeas",
+     "Una resta de puntos por impago de salarios",
+     "El cierre del estadio por incidentes de la afición"
+    ],
+    "a": 0,
+    "hint": "Gil restó importancia al descenso y bautizó lo que vino después como una 'Temporada en el Infierno', pero hicieron falta dos años en la categoría de plata para volver a subir."
+   },
+   {
+    "id": "q_8f9db2",
+    "q": "El estadio en el que el Atlético jugó durante décadas hasta 2017 estaba a orillas de un río de Madrid. ¿Cuál?",
+    "o": [
+     "Manzanares",
+     "Guadalquivir",
+     "Ebro",
+     "Tajo"
+    ],
+    "a": 0,
+    "hint": "El Vicente Calderón, bautizado en honor a un presidente muy querido, abrazaba el Manzanares antes de la mudanza al Metropolitano en 2017."
+   },
+   {
+    "id": "q_49439e",
+    "q": "Diego Simeone se hizo cargo del Atlético en diciembre de 2011. ¿Qué había sido antes en el club?",
+    "o": [
+     "Un centrocampista combativo que jugó en el equipo",
+     "Entrenador de las categorías inferiores",
+     "Director general del club",
+     "Fisioterapeuta"
+    ],
+    "a": 0,
+    "hint": "El 'Cholo' fue un mediocentro tenaz en el equipo de finales de los noventa antes de volver como el entrenador que marcaría a una generación."
+   },
+   {
+    "id": "q_e2adde",
+    "q": "La filosofía defensiva, de desgaste físico y obsesión por el balón parado que Simeone implantó en el Atlético se conoce popularmente como…",
+    "o": [
+     "Cholismo",
+     "Tiki-taka",
+     "Catenaccio",
+     "Gegenpressing"
+    ],
+    "a": 0,
+    "hint": "Bautizado por su apodo 'Cholo', prima la organización y la garra sobre la estética: lo contrario del brillo galáctico del vecino de la ciudad."
+   },
+   {
+    "id": "q_451951",
+    "q": "¿En qué final de la Liga Europa marcó Diego Forlán los dos goles del Atlético de Madrid para ganar al Fulham?",
+    "o": [
+     "2010",
+     "2012",
+     "2018",
+     "2014"
+    ],
+    "a": 0,
+    "hint": "El doblete del uruguayo en Hamburgo, con un gol decisivo en el minuto 116 de la prórroga, dio al club su primer título europeo en décadas."
+   },
+   {
+    "id": "q_e050c9",
+    "q": "¿Quién marcó dos goles en la final de la Liga Europa de 2018, un 3-0 al Marsella en Lyon?",
+    "o": [
+     "Antoine Griezmann",
+     "Diego Costa",
+     "Kevin Gameiro",
+     "Ángel Correa"
+    ],
+    "a": 0,
+    "hint": "Su doblete, que le valió el premio al mejor del partido, llegó el año antes de su fichaje por el Barcelona; el capitán Gabi anotó el tercero a bocajarro."
+   },
+   {
+    "id": "q_f6d25e",
+    "q": "La victoria del Atlético en la final de la Copa del Rey de 2013 fue especialmente dulce por dónde se jugó y contra quién. ¿Cuál fue el escenario y el rival?",
+    "o": [
+     "En el Bernabéu, contra el Real Madrid",
+     "En el Camp Nou, contra el Barcelona",
+     "En Mestalla, contra el Valencia",
+     "En el Calderón, contra el Sevilla"
+    ],
+    "a": 0,
+    "hint": "Los goles de Diego Costa y Miranda pusieron fin a 14 años y 25 partidos sin ganar al eterno rival, y encima en su propia casa."
+   },
+   {
+    "id": "q_c9bf32",
+    "q": "En 2026, ¿quién ostenta el récord de partidos en la historia del Atlético de Madrid, superando los 700 encuentros como jugador de un solo club?",
+    "o": [
+     "Koke",
+     "Gabi",
+     "Adelardo",
+     "Tomás Reñones"
+    ],
+    "a": 0,
+    "hint": "El centrocampista y capitán formado en la cantera pulverizó los 553 partidos que Adelardo tenía desde hacía décadas, y siguió sumando."
+   },
+   {
+    "id": "q_af223f",
+    "q": "En 2024, el fichaje más caro del Atlético era un adolescente comprado al Benfica en 2019 por 127,2 millones de euros. ¿Quién?",
+    "o": [
+     "João Félix",
+     "Julián Álvarez",
+     "Rodri",
+     "Thomas Lemar"
+    ],
+    "a": 0,
+    "hint": "La perla portuguesa llegó para sustituir los goles de Griezmann; ni siquiera el traspaso de Julián Álvarez desde el Manchester City en 2024 lo superó."
+   },
+   {
+    "id": "q_f1051f",
+    "q": "En la tanda de penaltis de la final de la Liga de Campeones de 2016, el lanzamiento de un jugador del Atlético se estrelló en el palo y abrió la puerta a que Cristiano Ronaldo diera el título al Real Madrid. ¿Quién falló?",
+    "o": [
+     "Juanfran",
+     "Koke",
+     "Saúl",
+     "Gabi"
+    ],
+    "a": 0,
+    "hint": "El fallo del lateral derecho en la madera, en Milán, fue el más cruel de una década desgarradora de finales."
+   },
+   {
+    "id": "q_7db234",
+    "q": "Radamel Falcao, 'El Tigre' que llevó al Atlético a ganar la Liga Europa de 2012, ¿cuántos goles marcó en aquella final ante el Athletic Club?",
+    "o": [
+     "Dos",
+     "Uno",
+     "Tres",
+     "Ninguno: asistió en los dos"
+    ],
+    "a": 0,
+    "hint": "Su doblete antes del minuto 34 en Bucarest, más un gol de Diego, cerró un 3-0 y consolidó su fama mundial."
+   },
+   {
+    "id": "q_a40fcb",
+    "q": "El segundo título de Liga del Atlético con Simeone, logrado en 2021, se decidió en la última jornada con el gol de un delantero en Valladolid. ¿Quién lo marcó?",
+    "o": [
+     "Luis Suárez",
+     "Ángel Correa",
+     "João Félix",
+     "Yannick Carrasco"
+    ],
+    "a": 0,
+    "hint": "Descartado por el Barcelona el verano anterior, el gol del uruguayo en el minuto 67 completó un título memorable y una redención personal."
+   },
+   {
+    "id": "q_9a1254",
+    "q": "¿Cuántas veces ha ganado el Atlético de Madrid el título de Liga en su historia (en 2026)?",
+    "o": [
+     "11",
+     "8",
+     "15",
+     "5"
+    ],
+    "a": 0,
+    "hint": "Desde el Atlético Aviación de 1940 hasta los campeones de Simeone en 2021, esas once coronas les convierten en la clara tercera fuerza de España."
+   },
+   {
+    "id": "q_64236e",
+    "q": "El portero Jan Oblak, fijo en la era Simeone, es famoso por ganar una y otra vez un galardón individual. ¿Cuál?",
+    "o": [
+     "El Trofeo Zamora al portero menos goleado",
+     "El Pichichi al máximo goleador",
+     "El Trofeo Yashin",
+     "El Trofeo Di Stéfano"
+    ],
+    "a": 0,
+    "hint": "Bautizado en honor al legendario portero Ricardo Zamora, que además dirigió al primer Atlético campeón, Oblak lo ha conquistado un número récord de veces."
+   },
+   {
+    "id": "q_1b48dd",
+    "q": "Cuando el Atlético inauguró su nuevo estadio en 2017, ¿qué nombre le puso, en homenaje a un viejo campo de los años veinte?",
+    "o": [
+     "Metropolitano",
+     "Vicente Calderón II",
+     "Estadio del Manzanares",
+     "Estadio Cholo Simeone"
+    ],
+    "a": 0,
+    "hint": "El nombre 'Metropolitano' recuperaba la casa del club anterior al Calderón, de 1923; durante años llevó delante el patrocinio 'Wanda'."
+   },
+   {
+    "id": "q_36bdbb",
+    "q": "Antoine Griezmann llegó por primera vez al Atlético de Madrid en 2014 procedente de otro club español. ¿Cuál?",
+    "o": [
+     "Real Sociedad",
+     "Valencia",
+     "Villarreal",
+     "Málaga"
+    ],
+    "a": 0,
+    "hint": "Se hizo un nombre en la Real Sociedad, en San Sebastián, antes de su traspaso al Atlético por unos 30 millones de euros."
+   },
+   {
+    "id": "q_9f36f3",
+    "q": "Sergio 'Kun' Agüero dejó el Atlético de Madrid en 2011 para fichar por un club inglés. ¿Cuál?",
+    "o": [
+     "Manchester City",
+     "Chelsea",
+     "Manchester United",
+     "Liverpool"
+    ],
+    "a": 0,
+    "hint": "Se marchó al Manchester City, donde acabó siendo su máximo goleador histórico."
+   },
+   {
+    "id": "q_90b43a",
+    "q": "¿Con qué selección es internacional el portero del Atlético Jan Oblak?",
+    "o": [
+     "Eslovenia",
+     "Croacia",
+     "Serbia",
+     "Eslovaquia"
+    ],
+    "a": 0,
+    "hint": "Oblak es desde hace años el portero titular de Eslovenia."
+   },
+   {
+    "id": "q_769de3",
+    "q": "¿Cuál es la nacionalidad de Diego Simeone, entrenador de larga trayectoria en el Atlético?",
+    "o": [
+     "Argentina",
+     "Uruguaya",
+     "Chilena",
+     "Española"
+    ],
+    "a": 0,
+    "hint": "El 'Cholo' Simeone es argentino, nacido en Buenos Aires."
+   },
+   {
+    "id": "q_ec7cf2",
+    "q": "El Atlético de Madrid disputa el derbi madrileño contra un gran rival de la ciudad. ¿Cuál?",
+    "o": [
+     "Real Madrid",
+     "Rayo Vallecano",
+     "Getafe",
+     "FC Barcelona"
+    ],
+    "a": 0,
+    "hint": "El derbi madrileño enfrenta al Atlético con su vecino, el Real Madrid."
+   },
+   {
+    "id": "q_5f0218",
+    "q": "¿Con qué selección fue internacional Diego Godín, icónico capitán y central del Atlético?",
+    "o": [
+     "Uruguay",
+     "Argentina",
+     "Colombia",
+     "Chile"
+    ],
+    "a": 0,
+    "hint": "Godín fue un fijo en la selección de Uruguay durante más de una década."
+   },
+   {
+    "id": "q_c9a7ba",
+    "q": "En la final de la Liga de Campeones de 2016 ante el Real Madrid, ¿quién marcó el gol del empate del Atlético en el minuto 79 que forzó la prórroga?",
+    "o": [
+     "Yannick Carrasco",
+     "Antoine Griezmann",
+     "Fernando Torres",
+     "Saúl Ñíguez"
+    ],
+    "a": 0,
+    "hint": "Carrasco llegó a rematar en el suelo para poner el 1-1 antes de que el Real Madrid ganara la tanda en Milán."
+   },
+   {
+    "id": "q_59cac0",
+    "q": "El Atlético de Madrid fichó a Radamel Falcao en 2011 procedente de un club portugués. ¿Cuál?",
+    "o": [
+     "FC Porto",
+     "Benfica",
+     "Sporting CP",
+     "Braga"
+    ],
+    "a": 0,
+    "hint": "'El Tigre' llegó desde el FC Porto, donde había sido un goleador prolífico en Europa."
+   },
+   {
+    "id": "q_eff807",
+    "q": "Cuando Griezmann dejó el Atlético por el Barcelona en 2019, ¿de cuánto era la cláusula de rescisión que pagó el Barça?",
+    "o": [
+     "120 M€",
+     "80 M€",
+     "100 M€",
+     "150 M€"
+    ],
+    "a": 0,
+    "hint": "El Barcelona pagó la cláusula fija de 120 millones de euros que figuraba en su contrato."
+   },
+   {
+    "id": "q_588485",
+    "q": "¿Al frente de qué selección ganó Luis Aragonés la Eurocopa 2008, tras ser leyenda del Atlético como jugador y como entrenador?",
+    "o": [
+     "España",
+     "Grecia",
+     "Portugal",
+     "Italia"
+    ],
+    "a": 0,
+    "hint": "'El Sabio de Hortaleza' llevó a España al triunfo en la Eurocopa de 2008."
+   },
+   {
+    "id": "q_195236",
+    "q": "¿Cuántas veces ha ganado el Atlético de Madrid la Copa del Rey (en 2024)?",
+    "o": [
+     "10",
+     "5",
+     "7",
+     "13"
+    ],
+    "a": 0,
+    "hint": "Sus diez Copas van desde 1960 hasta la final de 2013 en el Bernabéu."
+   },
+   {
+    "id": "q_d8265f",
+    "q": "Camino de la final de la Liga de Campeones de 2014, el Atlético eliminó en semifinales a un club inglés. ¿Cuál?",
+    "o": [
+     "Chelsea",
+     "Manchester City",
+     "Liverpool",
+     "Arsenal"
+    ],
+    "a": 0,
+    "hint": "Empataron 0-0 en casa y ganaron 3-1 en Stamford Bridge para eliminar al Chelsea."
+   },
+   {
+    "id": "q_014d37",
+    "q": "El Atlético ganó 4-1 al Chelsea en la Supercopa de Europa de 2012 gracias al hat-trick de un delantero. ¿Quién fue?",
+    "o": [
+     "Radamel Falcao",
+     "Diego Costa",
+     "Arda Turan",
+     "Adrián López"
+    ],
+    "a": 0,
+    "hint": "Los tres goles de Falcao en la primera parte dejaron helado en Mónaco al vigente campeón de Europa."
+   },
+   {
+    "id": "q_77a0d6",
+    "q": "¿Qué entrenador llevó al Atlético de Madrid al título de la Liga Europa de 2010?",
+    "o": [
+     "Quique Sánchez Flores",
+     "Gregorio Manzano",
+     "Abel Resino",
+     "Javier Aguirre"
+    ],
+    "a": 0,
+    "hint": "Quique Sánchez Flores dirigió la victoria ante el Fulham inspirada por Forlán, y después también la Supercopa."
+   },
+   {
+    "id": "q_df33ec",
+    "q": "El estadio Metropolitano del Atlético, inaugurado en 2017, tiene un aforo aproximado de…",
+    "o": [
+     "68.000",
+     "55.000",
+     "80.000",
+     "45.000"
+    ],
+    "a": 0,
+    "hint": "El Metropolitano tiene unas 68.000 localidades, un salto notable respecto al Calderón."
+   },
+   {
+    "id": "q_416920",
+    "q": "El Atlético ganó su primer título europeo en 1962, la Recopa de Europa, tras vencer en un partido de desempate a un equipo italiano. ¿Cuál?",
+    "o": [
+     "Fiorentina",
+     "AC Milan",
+     "Roma",
+     "Torino"
+    ],
+    "a": 0,
+    "hint": "Tras el 1-1, arrollaron 3-0 a la Fiorentina en la final repetida."
+   },
+   {
+    "id": "q_784cb1",
+    "q": "Saúl Ñíguez marcó un célebre gol en solitario en la ida de las semifinales de la Liga de Campeones de 2016. ¿Contra qué club?",
+    "o": [
+     "Bayern de Múnich",
+     "Barcelona",
+     "Real Madrid",
+     "Bayer Leverkusen"
+    ],
+    "a": 0,
+    "hint": "Su carrera driblando y su definición dieron al Atlético un 1-0 en casa ante el Bayern."
+   },
+   {
+    "id": "q_eeedc5",
+    "q": "¿Qué delantero mexicano ganó el Pichichi en el Atlético antes de un polémico traspaso al eterno rival, el Real Madrid, en 1985?",
+    "o": [
+     "Hugo Sánchez",
+     "Luis García",
+     "Rafael Márquez",
+     "Cuauhtémoc Blanco"
+    ],
+    "a": 0,
+    "hint": "Hugo Sánchez cruzó la ciudad y se convirtió en leyenda del Bernabéu."
+   },
+   {
+    "id": "q_a2c6ca",
+    "q": "¿Qué delantero italiano fue el máximo goleador del Atlético en 1997-98 antes de fichar por la Lazio, y más tarde brilló con Italia en los Mundiales?",
+    "o": [
+     "Christian Vieri",
+     "Filippo Inzaghi",
+     "Fabrizio Ravanelli",
+     "Enrico Chiesa"
+    ],
+    "a": 0,
+    "hint": "'Bobo' Vieri metió goles durante una sola temporada en el Atlético antes de su millonario traspaso a la Lazio."
+   },
+   {
+    "id": "q_b554b6",
+    "q": "El título de Liga del Atlético en 2013-14 fue su primera corona liguera española desde…",
+    "o": [
+     "1996",
+     "1977",
+     "1991",
+     "1985"
+    ],
+    "a": 0,
+    "hint": "Su título anterior llegó en la temporada del Doblete, 1995-96, con Radomir Antić."
+   },
+   {
+    "id": "q_bd5559",
+    "q": "Antes de la llegada de Julián Álvarez en 2024, el segundo fichaje más caro del Atlético era un extremo francés comprado al Mónaco en 2018. ¿Quién?",
+    "o": [
+     "Thomas Lemar",
+     "Antoine Griezmann",
+     "Yannick Carrasco",
+     "Gelson Martins"
+    ],
+    "a": 0,
+    "hint": "Los aproximadamente 70 millones de euros de Lemar solo quedaban por detrás de João Félix entre sus fichajes récord."
+   },
+   {
+    "id": "q_0bb88e",
+    "q": "¿Qué entrenador mexicano clasificó al Atlético para la Liga de Campeones en 2008, poniendo fin a 11 años de ausencia en la competición?",
+    "o": [
+     "Javier Aguirre",
+     "César Luis Menotti",
+     "Gregorio Manzano",
+     "Quique Sánchez Flores"
+    ],
+    "a": 0,
+    "hint": "'El Vasco' Aguirre devolvió a la élite europea a un equipo liderado por Forlán."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Atlético de Madrid",
+   "title": "Quiz del Atlético de Madrid | Ball IQ",
+   "description": "Pon a prueba tu Ball IQ colchonero: del Atlético Aviación al Cholismo, la Liga del Camp Nou y las finales de Lisboa y Milán. Gratis y sin registro.",
+   "intro": [
+    "El Atlético de Madrid no se explica solo con títulos. Nació en 1903 como filial de unos estudiantes vascos, sobrevivió a una unión con la aviación militar, bajó a Segunda en 2000 y volvió para ganar la Liga en el Camp Nou. Este quiz recorre esa historia.",
+    "Hay preguntas de la era Simeone —el Cholismo, las dos finales perdidas ante el Real Madrid, el título sellado en Valladolid en 2021— y otras del Atlético anterior: la final repetida de 1974, la Recopa de 1962, el Doblete de Radomir Antić.",
+    "Cada pregunta trae una pista para los momentos en los que la memoria falla, y cuatro opciones con respuesta inmediata. Se juega en un par de minutos, en el móvil o en el ordenador.",
+    "Los datos están verificados y los superlativos van anclados a un año o a una temporada concreta, para que la respuesta correcta siga siéndolo dentro de dos años."
+   ],
+   "faq": [
+    {
+     "q": "¿Es gratis el quiz del Atlético de Madrid?",
+     "a": "Sí. Se juega directamente en el navegador, sin registro ni descarga. Si quieres guardar tu racha y comparar resultados con tus amigos, puedes crear una cuenta en Ball IQ."
+    },
+    {
+     "q": "¿De qué épocas son las preguntas?",
+     "a": "Sobre todo del Atlético moderno, de los años noventa en adelante: el Doblete de 1995-96, los años de Torres y Agüero y toda la etapa de Simeone. También aparecen hitos clásicos como la Recopa de 1962, la final de 1974 y el primer título de 1940."
+    },
+    {
+     "q": "¿Cómo comprobáis los datos?",
+     "a": "Cada pregunta pasa por dos revisiones antes de publicarse, y toda afirmación de récord o de 'el primero' va fechada o atada a una temporada concreta, para que no se vuelva falsa con el paso del tiempo."
+    },
+    {
+     "q": "¿Puedo jugar desde el móvil?",
+     "a": "Sí. La página funciona igual de bien en el móvil, y Ball IQ está además disponible como aplicación para iOS y Android."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Del Metropolitano al Calderón: la historia rojiblanca, pregunta a pregunta.",
+   "tasterPh": "Toca una opción para empezar",
+   "faqH": "Preguntas frecuentes",
+   "aboutQ": "Sobre las preguntas"
+  }
+ },
+ {
+  "slug": "real-betis",
+  "club": "Real Betis",
+  "translated": 39,
+  "source": 39,
+  "structural": [],
+  "review": {
+   "ok": false,
+   "problems": [
+    "FACT CHANGED — q_bbabb4 hint: English says Serra Ferrer led Betis to \"a first-ever top-four finish\"; the Spanish says \"al primer puesto entre los cuatro primeros de su historia\", which reads as FIRST PLACE (champions) and is also self-contradictory with q_ad8d29's hint (\"Tras acabar cuarto en Liga\"). Fix to: \"...y a la primera clasificación entre los cuatro primeros de su historia\" (or \"...al primer top-4 de su historia\").",
+    "FACT INVENTED IN PROSE — intro paragraph 1: \"la [Copa] de 2005 que abrió las puertas de la Liga de Campeones\" attributes Champions League qualification to the Copa del Rey. The cup gave a UEFA Cup place; the CL spot came from finishing fourth in Liga that same season (as q_ad8d29's own hint states). Suggest: \"la de 2005, del curso que acabó con el Betis cuarto y en la Liga de Campeones\".",
+    "UNANCHORED CLAIM — intro paragraph 1: \"vive el fútbol como pocos clubes del mundo\" is an unverifiable near-superlative with no anchor and no counterpart in the English source. Suggest cutting it or replacing with something concrete (e.g. \"...y desde entonces se ha ganado fama de afición incondicional\").",
+    "MINOR / ADDED EMPHASIS — q_944d03: English \"famously beat\" became \"ganó 1-0 en casa, para sorpresa de todos\", which asserts universal surprise rather than notoriety. Suggest \"ganó por 1-0 en casa, en uno de sus resultados más recordados\" or simply drop the clause; the hint is already correct.",
+    "INFORMATIONAL, NOT A TRANSLATION DEFECT — q_289209 calls Villamarín an \"expresidente\" (following the English \"former club president\"), but his presidency ran 1955-1965, so in 1961 he was the sitting president. The Spanish faithfully reproduces the English, so it is not a localisation error, but the English source itself is worth correcting (\"del presidente del club que había comprado el campo\")."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_4664f8",
+    "q": "¿En qué año se fundó el Real Betis?",
+    "o": [
+     "1899",
+     "1907",
+     "1914",
+     "1923"
+    ],
+    "a": 1,
+    "hint": "El Real Betis Balompié se fundó en Sevilla el 12 de septiembre de 1907, originalmente con otro nombre."
+   },
+   {
+    "id": "q_1033d0",
+    "q": "Cuando se fundó en 1907, el club que acabaría siendo el Real Betis, ¿con qué nombre nació?",
+    "o": [
+     "Real Balompédica",
+     "Sevilla Balompié",
+     "Betis FC",
+     "Triana Sporting"
+    ],
+    "a": 1,
+    "hint": "Nació como Sevilla Balompié en 1907; la identidad 'Betis' llegó con la fusión de 1914 con el Betis FC y el patronazgo real."
+   },
+   {
+    "id": "q_9b0c4e",
+    "q": "El Real Betis añadió el título de 'Real' a su nombre en 1914 bajo el patronazgo de ¿qué rey español?",
+    "o": [
+     "Juan Carlos I",
+     "Alfonso XII",
+     "Alfonso XIII",
+     "Felipe VI"
+    ],
+    "a": 2,
+    "hint": "El rey Alfonso XIII concedió el título de 'Real' en 1914, y por eso el escudo del club lleva una corona real."
+   },
+   {
+    "id": "q_28d628",
+    "q": "El 'Betis' del nombre del club viene de Baetis, el nombre romano de ¿qué río andaluz?",
+    "o": [
+     "Ebro",
+     "Guadiana",
+     "Tajo",
+     "Guadalquivir"
+    ],
+    "a": 3,
+    "hint": "Baetis era el nombre romano del gran río que atraviesa Sevilla."
+   },
+   {
+    "id": "q_a97efe",
+    "q": "En el nombre del Real Betis, ¿cuál es la traducción al inglés de la palabra 'Real'?",
+    "o": [
+     "Royal",
+     "Genuine",
+     "River",
+     "Regional"
+    ],
+    "a": 0,
+    "hint": "'Real' se traduce al inglés como 'Royal' en los nombres de clubes españoles, y refleja el patronazgo real concedido en 1914."
+   },
+   {
+    "id": "q_330f59",
+    "q": "El Real Betis ganó el título de Liga por primera vez, ¿en qué temporada?",
+    "o": [
+     "1929-30",
+     "1934-35",
+     "1948-49",
+     "1962-63"
+    ],
+    "a": 1,
+    "hint": "A las órdenes del entrenador irlandés Patrick O'Connell, el Betis se proclamó campeón de España en la temporada 1934-35."
+   },
+   {
+    "id": "q_8715f1",
+    "q": "El Real Betis juega con camiseta de rayas verticales de ¿qué dos colores?",
+    "o": [
+     "Rojo y blanco",
+     "Azul y blanco",
+     "Verde y blanco",
+     "Verde y negro"
+    ],
+    "a": 2,
+    "hint": "El Betis ha vestido rayas verticales verdiblancas a lo largo de toda su historia."
+   },
+   {
+    "id": "q_beb24b",
+    "q": "El famoso cántico bético '¡Viva el Betis manque pierda!' expresa ¿qué sentimiento?",
+    "o": [
+     "El Betis ganará todos los partidos",
+     "Viva el Betis aunque pierda",
+     "El Betis no teme a ningún rival",
+     "El Betis es el orgullo de España"
+    ],
+    "a": 1,
+    "hint": "'Manque pierda' es andaluz por 'aunque pierda': un lema que celebra la lealtad incondicional."
+   },
+   {
+    "id": "q_289209",
+    "q": "En 1961, el estadio del Real Betis pasó a llamarse como ¿qué expresidente del club, que había comprado el campo?",
+    "o": [
+     "Ramón Sánchez-Pizjuán",
+     "Benito Villamarín",
+     "Manuel Ruiz de Lopera",
+     "Luis del Sol"
+    ],
+    "a": 1,
+    "hint": "Benito Villamarín, presidente entre 1955 y 1965, compró el estadio, y en 1961 el campo pasó a llevar su nombre en su honor."
+   },
+   {
+    "id": "q_62e1c0",
+    "q": "En 1997, el estadio del Real Betis pasó a llamarse brevemente como ¿qué presidente de entonces?",
+    "o": [
+     "José María del Nido",
+     "Ángel Haro",
+     "Manuel Ruiz de Lopera",
+     "Manuel Villanova"
+    ],
+    "a": 2,
+    "hint": "Durante un tiempo el campo se conoció como Estadio Manuel Ruiz de Lopera, por el presidente que mandaba en los años noventa."
+   },
+   {
+    "id": "q_7911f7",
+    "q": "El campo del Real Betis se inauguró en 1929 en ¿qué barrio de Sevilla, que además le dio uno de sus primeros nombres?",
+    "o": [
+     "Nervión",
+     "Heliópolis",
+     "Los Remedios",
+     "Macarena"
+    ],
+    "a": 1,
+    "hint": "El estadio se inauguró en 1929 y durante mucho tiempo se le conoció como Estadio de Heliópolis, por su barrio."
+   },
+   {
+    "id": "q_39acdb",
+    "q": "Al Real Betis se le asocia tradicionalmente con las raíces obreras de ¿qué barrio de Sevilla?",
+    "o": [
+     "Santa Cruz",
+     "El Arenal",
+     "Triana",
+     "Nervión"
+    ],
+    "a": 2,
+    "hint": "El Betis tiene apoyo histórico en zonas obreras de Sevilla como Triana."
+   },
+   {
+    "id": "q_222eff",
+    "q": "El Real Betis disputa el derbi sevillano, 'El Gran Derbi', ¿contra qué club?",
+    "o": [
+     "Sevilla FC",
+     "Real Zaragoza",
+     "Cádiz CF",
+     "Málaga CF"
+    ],
+    "a": 0,
+    "hint": "El Gran Derbi es la feroz rivalidad ciudadana entre el Real Betis y el Sevilla FC."
+   },
+   {
+    "id": "q_c3703c",
+    "q": "¿En qué año levantó el Real Betis la Copa del Rey por primera vez?",
+    "o": [
+     "1968",
+     "1977",
+     "1985",
+     "1992"
+    ],
+    "a": 1,
+    "hint": "El Betis ganó su primera Copa del Rey en 1977 tras una final dramática."
+   },
+   {
+    "id": "q_c706d3",
+    "q": "El Real Betis ganó su primera Copa del Rey en 1977 con una victoria en la final ante ¿qué club?",
+    "o": [
+     "Real Sociedad",
+     "Deportivo Alavés",
+     "Athletic Bilbao",
+     "Racing de Santander"
+    ],
+    "a": 2,
+    "hint": "El Betis derrotó al Athletic Bilbao para conquistar su primera Copa del Rey en 1977."
+   },
+   {
+    "id": "q_7c8718",
+    "q": "La final de la Copa del Rey de 1977, primer título copero del Real Betis, ¿cómo se decidió finalmente tras un 2-2?",
+    "o": [
+     "Un partido de desempate",
+     "Una tanda de penaltis",
+     "Un gol de oro",
+     "Un sorteo a cara o cruz"
+    ],
+    "a": 1,
+    "hint": "Tras el 2-2 en la prórroga, el Betis se impuso en una interminable tanda de penaltis para ganar su primera Copa del Rey."
+   },
+   {
+    "id": "q_2cc152",
+    "q": "La final de la Copa del Rey de 1977 del Real Betis se jugó en ¿qué estadio de Madrid?",
+    "o": [
+     "Santiago Bernabéu",
+     "Vicente Calderón",
+     "La Romareda",
+     "Balaídos"
+    ],
+    "a": 1,
+    "hint": "La final de 1977 se disputó en el Vicente Calderón, el estadio del Atlético de Madrid."
+   },
+   {
+    "id": "q_043441",
+    "q": "El Real Betis ganó la final de la Copa del Rey de 2005 ante ¿qué club?",
+    "o": [
+     "Espanyol",
+     "Getafe",
+     "Osasuna",
+     "Real Zaragoza"
+    ],
+    "a": 2,
+    "hint": "El Betis ganó 2-1 a Osasuna en la prórroga para conquistar la Copa del Rey de 2005."
+   },
+   {
+    "id": "q_d4f0fa",
+    "q": "Incluyendo el triunfo de 2005, ¿cuántas Copas del Rey había ganado el Real Betis a finales de 2005?",
+    "o": [
+     "Una",
+     "Dos",
+     "Tres",
+     "Cuatro"
+    ],
+    "a": 1,
+    "hint": "En 2005 el Betis había levantado la Copa del Rey dos veces: el triunfo de 2005 se sumaba a otro de varias décadas antes."
+   },
+   {
+    "id": "q_98d71f",
+    "q": "El Real Betis ganó la final de la Copa del Rey de 2022, ¿ante qué club?",
+    "o": [
+     "Levante",
+     "Espanyol",
+     "Valencia",
+     "Real Sociedad"
+    ],
+    "a": 2,
+    "hint": "El Betis venció al Valencia en la tanda de penaltis para levantar la Copa del Rey de 2022."
+   },
+   {
+    "id": "q_a91e9d",
+    "q": "La final de la Copa del Rey de 2022 que ganó el Real Betis se disputó en ¿qué estadio de Sevilla?",
+    "o": [
+     "Estadio de La Cartuja",
+     "Ramón Sánchez-Pizjuán",
+     "Santiago Bernabéu",
+     "La Rosaleda"
+    ],
+    "a": 0,
+    "hint": "La final de 2022 se jugó en el Estadio de La Cartuja, en Sevilla."
+   },
+   {
+    "id": "q_128cca",
+    "q": "¿Qué rey de España entregó el trofeo al capitán del Real Betis tras la final de la Copa del Rey de 2022?",
+    "o": [
+     "Juan Carlos I",
+     "Felipe VI",
+     "Alfonso XIII",
+     "Felipe V"
+    ],
+    "a": 1,
+    "hint": "El rey Felipe VI entregó la Copa del Rey de 2022 al capitán bético, vencedor de la final."
+   },
+   {
+    "id": "q_c9337c",
+    "q": "El Real Betis sufrió un descenso sorprendente de Primera al final de ¿qué temporada, en torno al cambio de milenio?",
+    "o": [
+     "1996-97",
+     "1999-2000",
+     "2003-04",
+     "1990-91"
+    ],
+    "a": 1,
+    "hint": "El Betis descendió en la 1999-2000, apenas un par de años después de una etapa de gasto récord."
+   },
+   {
+    "id": "q_9a6e32",
+    "q": "¿Qué extremo formado en la cantera estableció el récord de partidos con el Real Betis y llevó al equipo como capitán a la Copa del Rey de 2022?",
+    "o": [
+     "Poli Rincón",
+     "Alfonso Pérez",
+     "Joaquín",
+     "Finidi George"
+    ],
+    "a": 2,
+    "hint": "Joaquín, canterano del Betis, debutó en 2000 y terminó con 521 partidos con el club, levantando la Copa del Rey de 2022 como capitán."
+   },
+   {
+    "id": "q_e4c9f5",
+    "q": "En 1998, el Real Betis sorprendió al fútbol pagando un récord mundial de traspaso por ¿qué delantero brasileño?",
+    "o": [
+     "Sávio",
+     "Denílson",
+     "Amoroso",
+     "Élber"
+    ],
+    "a": 1,
+    "hint": "El Betis batió el récord mundial de traspasos para fichar al joven extremo brasileño Denílson en 1998."
+   },
+   {
+    "id": "q_b96d9d",
+    "q": "El fichaje récord del Real Betis en 1998 llegó procedente de ¿qué club brasileño?",
+    "o": [
+     "São Paulo",
+     "Flamengo",
+     "Corinthians",
+     "Santos"
+    ],
+    "a": 0,
+    "hint": "El Betis fichó a su brasileño récord del São Paulo en 1998."
+   },
+   {
+    "id": "q_a692ce",
+    "q": "¿Qué entrenador chileno se hizo cargo del Real Betis en julio de 2020?",
+    "o": [
+     "Marcelo Bielsa",
+     "Juan Antonio Pizzi",
+     "Manuel Pellegrini",
+     "Jorge Sampaoli"
+    ],
+    "a": 2,
+    "hint": "Manuel Pellegrini, antes en el Manchester City, tomó las riendas del Betis en 2020."
+   },
+   {
+    "id": "q_bbabb4",
+    "q": "El Real Betis ganó la Copa del Rey de 2005 y alcanzó por primera vez la Liga de Campeones a las órdenes de ¿qué veterano entrenador?",
+    "o": [
+     "Luis Aragonés",
+     "Lorenzo Serra Ferrer",
+     "Javier Clemente",
+     "Víctor Fernández"
+    ],
+    "a": 1,
+    "hint": "Lorenzo Serra Ferrer llevó al Betis a la Copa del Rey de 2005 y a la primera clasificación entre los cuatro primeros de su historia."
+   },
+   {
+    "id": "q_a3e9be",
+    "q": "¿Qué entrenador, más tarde en el banquillo del Barcelona, llevó al Real Betis a un fútbol vistoso entre 2017 y 2019?",
+    "o": [
+     "Pepe Mel",
+     "Gus Poyet",
+     "Quique Setién",
+     "Rubi"
+    ],
+    "a": 2,
+    "hint": "Quique Setién dirigió al Betis de 2017 a 2019 antes de asumir el cargo en el Barcelona en 2020."
+   },
+   {
+    "id": "q_ad8d29",
+    "q": "El Real Betis debutó en la fase de grupos de la Liga de Campeones, ¿en qué temporada?",
+    "o": [
+     "2001-02",
+     "2005-06",
+     "2010-11",
+     "1995-96"
+    ],
+    "a": 1,
+    "hint": "Tras acabar cuarto en Liga, el Betis disputó su primera campaña en la Liga de Campeones en 2005-06."
+   },
+   {
+    "id": "q_8d17c3",
+    "q": "En 2025, el Real Betis alcanzó la primera gran final europea de su historia, ¿en qué competición de la UEFA?",
+    "o": [
+     "Liga de Campeones",
+     "Liga Europa",
+     "Liga Conferencia Europa",
+     "Recopa de Europa"
+    ],
+    "a": 2,
+    "hint": "El Betis llegó a la final de la Liga Conferencia Europa de 2025, su primera final europea, pero cayó ante un equipo inglés."
+   },
+   {
+    "id": "q_944d03",
+    "q": "En su primera fase de grupos de la Liga de Campeones, el Real Betis ganó 1-0 en casa, para sorpresa de todos, a ¿qué club inglés?",
+    "o": [
+     "Liverpool",
+     "Arsenal",
+     "Chelsea",
+     "Manchester United"
+    ],
+    "a": 2,
+    "hint": "El Betis se impuso 1-0 al Chelsea en casa en su primera fase de grupos de la Liga de Campeones."
+   },
+   {
+    "id": "q_9538cd",
+    "q": "Tras su primera fase de grupos de la Liga de Campeones, el Real Betis pasó a la Copa de la UEFA, donde fue eliminado por ¿qué club rumano?",
+    "o": [
+     "Rapid de Bucarest",
+     "Steaua de Bucarest",
+     "Dinamo de Bucarest",
+     "CFR Cluj"
+    ],
+    "a": 1,
+    "hint": "Tercero en su grupo de la Liga de Campeones, el Betis pasó a la Copa de la UEFA y cayó en octavos ante el Steaua de Bucarest."
+   },
+   {
+    "id": "q_126484",
+    "q": "Rafael Gordillo, mito del Real Betis que después ganó cinco Ligas seguidas en el Real Madrid, disputó dos Mundiales con ¿qué selección?",
+    "o": [
+     "Portugal",
+     "Argentina",
+     "España",
+     "México"
+    ],
+    "a": 2,
+    "hint": "Gordillo, estrella del Betis y del Real Madrid, fue fijo en la selección española de los años ochenta y jugó dos Mundiales."
+   },
+   {
+    "id": "q_43ac44",
+    "q": "El estadio del Real Betis en Sevilla acogió partidos de ¿qué Mundial masculino?",
+    "o": [
+     "1966",
+     "1982",
+     "1990",
+     "2002"
+    ],
+    "a": 1,
+    "hint": "España organizó el Mundial de 1982 y el campo del Betis en Sevilla acogió algunos de los partidos."
+   },
+   {
+    "id": "q_5d4580",
+    "q": "El Real Betis Balompié compite en la primera división del fútbol de ¿qué país?",
+    "o": [
+     "Portugal",
+     "España",
+     "Italia",
+     "México"
+    ],
+    "a": 1,
+    "hint": "El Betis es uno de los clubes históricos del fútbol español, con sede en Sevilla."
+   },
+   {
+    "id": "q_50f994",
+    "q": "'Balompié', en el nombre Real Betis Balompié, es una palabra española que designa ¿qué deporte?",
+    "o": [
+     "Baloncesto",
+     "Balonmano",
+     "Fútbol",
+     "Fútbol sala"
+    ],
+    "a": 2,
+    "hint": "'Balompié' (literalmente 'balón-pie') es un término antiguo en español para el fútbol."
+   },
+   {
+    "id": "q_391de4",
+    "q": "El Gran Derbi, una de las rivalidades más pasionales de España, es un derbi ciudadano que se disputa en ¿qué ciudad?",
+    "o": [
+     "Madrid",
+     "Valencia",
+     "Sevilla",
+     "Bilbao"
+    ],
+    "a": 2,
+    "hint": "El Gran Derbi es el derbi de la ciudad de Sevilla entre sus dos grandes clubes."
+   },
+   {
+    "id": "q_0c5f58",
+    "q": "¿Con qué apodo, basado en sus colores, se conoce ampliamente al Real Betis?",
+    "o": [
+     "Blaugrana",
+     "Verdiblancos",
+     "Rojiblancos",
+     "Colchoneros"
+    ],
+    "a": 1,
+    "hint": "'Verdiblancos' es el apodo tradicional del club sevillano Real Betis."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Real Betis",
+   "title": "Quiz del Real Betis — Trivia verdiblanca | Ball IQ",
+   "description": "Quiz gratis del Real Betis con respuestas explicadas: la Liga de 1935, las Copas del Rey de 1977, 2005 y 2022, Joaquín y El Gran Derbi.",
+   "intro": [
+    "El Real Betis Balompié nació en Sevilla en 1907 y desde entonces vive el fútbol como pocos clubes del mundo. Este quiz gratuito recorre todo el arco verdiblanco: la Liga de 1934-35 con Patrick O'Connell en el banquillo, la Copa del Rey de 1977 decidida en una tanda de penaltis interminable, la de 2005, la de 2022 levantada en La Cartuja ante el Valencia y, en 2025, la primera gran final europea de la historia del club.",
+    "Las preguntas se ponen difíciles de verdad: el récord mundial de traspaso que el Betis pagó por Denílson en 1998, el descenso de la 1999-2000, el 1-0 al Chelsea en casa en su estreno en la Liga de Campeones, los 521 partidos de Joaquín. Cuando un dato no se puede verificar, la pregunta no se publica.",
+    "Cada respuesta trae una explicación escrita, así que fallar también enseña algo sobre cómo el Betis llegó hasta aquí — y sobre por qué en Sevilla se canta '¡Viva el Betis manque pierda!'."
+   ],
+   "faq": [
+    {
+     "q": "¿El quiz del Real Betis es gratis?",
+     "a": "Sí. Se juega aquí mismo, en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas."
+    },
+    {
+     "q": "¿Qué temas cubre?",
+     "a": "La fundación de 1907 y el origen del nombre, la Liga de 1934-35, las Copas del Rey de 1977, 2005 y 2022, el Benito Villamarín y Heliópolis, la etapa de Denílson, el descenso de la 1999-2000, la Liga de Campeones de 2005-06, Joaquín, Serra Ferrer, Setién y Pellegrini, y El Gran Derbi. Va de fácil a realmente difícil."
+    },
+    {
+     "q": "¿De dónde salen las preguntas?",
+     "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+    },
+    {
+     "q": "¿La aplicación Ball IQ está en español?",
+     "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla; si has llegado hasta aquí, ya nos estás ayudando a decidirlo."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Gratis · Preguntas del Betis con respuestas explicadas · sin registro",
+   "tasterPh": "Preguntas rápidas para medir tu Ball IQ bético.",
+   "faqH": "Quiz del Real Betis — Preguntas frecuentes",
+   "aboutQ": "Sobre el quiz del Real Betis"
+  }
+ },
+ {
+  "slug": "athletic-bilbao",
+  "club": "Athletic Bilbao",
+  "translated": 40,
+  "source": 40,
+  "structural": [],
+  "review": {
+   "ok": false,
+   "problems": [
+    "PASS on the four content checks I was asked to verify, with the exceptions listed below. (b) all 40 questions keep the same four options in the same order with the same `a` index — verified mechanically against the bank (src/questions.js), including the en-dash→hyphen change in season strings (1929–30 → 1929-30) and scores, which is house Spanish style on the existing /es/ pages and is safe because the build guard compares digits. (c) register is peninsular throughout: 'portero' (q_10ff30, q_833ae4, q_b82be1), 'entrenador' (q_09e658, q_03d003, q_37f572, q_ca8878), plus penaltis / derbi / banquillo / plantilla / cantera / mediapunta / aforo / casco viejo; no arquero, técnico, acá or voseo anywhere. (d) competition names all use Spanish forms: Primera División, Copa del Rey, Copa del Generalísimo, Supercopa de España, Liga de Campeones, Liga Europa, Copa de la UEFA, Recopa de Europa, Copa Intertoto, Copa de Europa, Eurocopa 2024, Mundial — and Nápoles / Bayern de Múnich / Atlético de Madrid. (e) the prose states no question count anywhere, including statLine and tasterPh (it says 'Unas preguntas rápidas', avoiding Boca's 'Diez preguntas rápidas', so it cannot go stale if the taster is resized).",
+    "BLOCKING — build will throw: scripts/gen-seo-pages.mjs:1778-1796 (buildClubPageIntl) compares each translated correct answer to the bank's English answer, and requires an `en` field naming the exact English answer whenever the Spanish is translated prose rather than a surviving proper noun. I simulated the guard against the real bank: 9 of the 40 entries fail without `en` — q_ec0a38 (Red-and-white vertical stripes), q_a501aa (Basque roots or developed in the Basque region), q_fe937c (On a barge (La Gabarra) along the river), q_19d0f3 (Eight), q_804c9b (La Cartuja, Seville), q_606b66 (Bayern Munich), q_0b79ab (Atlético Madrid), q_948b2b (Napoli), q_c64db6 (The European Cup). Every one of those that lands in the taster/sample arrays must carry `en` set to the English string verbatim. q_b19250 passes only by luck ('Los Leones' is a substring of 'The Lions (Los Leones)').",
+    "BLOCKING — wrong shape for the pipeline: the submission is {questions:[40], prose:{...}}, but scripts/seo/clubs-es.mjs entries need club, slug, lang, name, h1, title, description, kind, statLine, playLabel, intro, faq, a `taster` array of 10, a `sample` array of 12 (only these 22 are rendered and only these are id-checked), and a `copy` block. 11 of the 14 `copy` keys are missing entirely: tasterEyebrow, tasterH, tasterNote, playSection, playSub, bandH, bandP, alsoH, alsoP, alsoLink, statsLine. The three that were supplied (tasterPh, faqH, aboutQ) are at the top level of `prose`, but the generator reads them off cfg.copy (scripts/gen-seo-pages.mjs:1814, 1843, 1888, 1896), so as submitted they would render empty.",
+    "WARNING for whoever writes the missing `copy` block: do NOT copy Boca's or River's. scripts/seo/clubs-es.mjs contains 14 Rioplatense forms in those blocks ('¿Cuánto sabés de…', 'Jugá el quiz', 'Tocá una respuesta', 'Demostralo en la app', 'acá'). For Athletic these must be tuteo peninsular ('sabes', 'Juega', 'Toca', 'Demuéstralo', 'aquí') — the submitted FAQ already does this correctly ('Se juega aquí mismo', 'si has llegado hasta aquí'), so the register is right where text exists; the risk is only in the keys that are missing.",
+    "PRE-EXISTING LIVE BUG this page would inherit: gen-seo-pages.mjs:1843 renders esc(c.playLabel), but playLabel lives at the top level of the club entry, not inside `copy`. dist/es/quiz/boca-juniors/index.html currently ships 'undefined →' as the taster CTA link text (same on river-plate). Fix the generator to read cfg.playLabel (or add playLabel to each copy block) in the same change, or Athletic ships the same broken CTA. Not part of my brief but it is in the exact code path this page goes through.",
+    "FACT UPGRADE in the prose (violates check a): intro paragraph 1 says 'Los Leones visten las rayas rojiblancas más reconocibles de España' — a bare superlative. The source (q_ec0a38 hint) says 'among the most recognisable kits in Spain', and the Spanish hint correctly keeps the hedge ('una de las más reconocibles de España'). Only the prose breaks it. Change to 'unas de las rayas rojiblancas más reconocibles de España'.",
+    "UNANCHORED SUPERLATIVE in the prose (violates check e): 'Kepa al Chelsea en 2018 por un récord mundial para un portero' drops the 'then/at the time' anchor that both the English source and the Spanish hint carry ('récord mundial para un portero en aquel momento'). Change to 'por lo que entonces era un récord mundial para un portero'.",
+    "NEW CLAIM not in the English source, and unanchored: 'una filosofía que ningún otro grande ha imitado' (intro para 1). The source only calls the policy 'distinctive'. This is an absolute universal claim with no date anchor. Suggest 'una filosofía que ningún otro club grande de España sigue' or simply 'una filosofía que no tiene equivalente entre los grandes'.",
+    "NEW CLAIM not in the English source, and it rots: 'El último gran ciclo lo dirigió Javier Clemente' (intro para 2). Nothing in the source asserts that Clemente's was the most recent great cycle, and 'último' is exactly the kind of undated claim that goes stale on the next title. Suggest 'El gran ciclo de los ochenta lo dirigió Javier Clemente'.",
+    "MINOR hint drift, q_09e658: English 'masterminded consecutive league titles and a cup double in the 1980s' became 'firmó dos títulos de Liga consecutivos y un doblete de Liga y Copa en los años ochenta'. It adds a count ('dos') and pins down which double. Both are true and consistent with q_ae203f, but they are assertions the English did not make. Either accept knowingly or soften to 'títulos de Liga consecutivos y un doblete'.",
+    "MINOR hint drift, q_b82be1: 'a long international career' became 'una larguísima trayectoria'. Intensifier added; 'larga' is the faithful word. Also q_774246: 'still prolific into his late thirties' became 'todavía muy goleador cerca de los cuarenta' — roughly equivalent, and the looseness is inherited from the English (Aduriz was 34 at the 2015 Supercopa), so if anyone tightens this, tighten the English question first and re-translate."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_49a5a7",
+    "q": "¿En qué año se fundó el Athletic Club (Athletic de Bilbao)?",
+    "o": [
+     "1912",
+     "1878",
+     "1898",
+     "1928"
+    ],
+    "a": 2,
+    "hint": "El Athletic se fundó en 1898, lo que lo convierte en uno de los clubes de fútbol más antiguos de España."
+   },
+   {
+    "id": "q_b19250",
+    "q": "¿Cuál es el apodo del Athletic de Bilbao?",
+    "o": [
+     "Los Toros",
+     "Los Leones",
+     "Las Águilas",
+     "Los Lobos"
+    ],
+    "a": 1,
+    "hint": "Se les conoce como Los Leones."
+   },
+   {
+    "id": "q_ec0a38",
+    "q": "¿Cuáles son los colores tradicionales de la primera equipación del Athletic de Bilbao?",
+    "o": [
+     "Rayas azules y blancas",
+     "Todo de rojo",
+     "Rayas blancas y negras",
+     "Rayas verticales rojiblancas"
+    ],
+    "a": 3,
+    "hint": "Su camiseta a rayas rojiblancas es una de las más reconocibles de España."
+   },
+   {
+    "id": "q_a501aa",
+    "q": "La particular filosofía de fichajes del Athletic de Bilbao limita sus incorporaciones a jugadores con ¿qué característica?",
+    "o": [
+     "Solo nacionalidad española",
+     "Raíces vascas o formación en el País Vasco",
+     "Solo canteranos del club",
+     "Solo jugadores sub-23"
+    ],
+    "a": 1,
+    "hint": "La célebre política de cantera limita la plantilla a jugadores nacidos en el País Vasco o formados allí."
+   },
+   {
+    "id": "q_bf668b",
+    "q": "El Athletic de Bilbao fue uno de los clubes fundadores de la Primera División española, que arrancó ¿en qué año?",
+    "o": [
+     "1929",
+     "1902",
+     "1945",
+     "1953"
+    ],
+    "a": 0,
+    "hint": "Fue uno de los clubes fundadores de la primera edición de la Primera División, en 1929."
+   },
+   {
+    "id": "q_b87434",
+    "q": "El estadio original de San Mamés se inauguró ¿en qué año?",
+    "o": [
+     "1898",
+     "1927",
+     "1913",
+     "1950"
+    ],
+    "a": 2,
+    "hint": "El primer San Mamés se inauguró en 1913 y acogió en sus inicios un partido contra el Racing de Irún."
+   },
+   {
+    "id": "q_9b259e",
+    "q": "El actual San Mamés, ya reconstruido, se inauguró ¿en qué año?",
+    "o": [
+     "2004",
+     "2013",
+     "2016",
+     "2009"
+    ],
+    "a": 1,
+    "hint": "El nuevo San Mamés se inauguró en 2013 con un aforo cercano a los 53.000 espectadores."
+   },
+   {
+    "id": "q_02d6ec",
+    "q": "Durante el franquismo, el Athletic se vio obligado a adoptar ¿qué versión castellanizada de su nombre?",
+    "o": [
+     "Atlético de Bilbao",
+     "Real Bilbao",
+     "Bilbao Club de Fútbol",
+     "Deportivo Bilbao"
+    ],
+    "a": 0,
+    "hint": "La castellanización franquista convirtió la palabra inglesa 'Athletic' en 'Atlético de Bilbao', hasta que el club recuperó después su nombre."
+   },
+   {
+    "id": "q_df92a5",
+    "q": "La cantera y la ciudad deportiva del Athletic de Bilbao están en ¿qué localidad cercana a Bilbao?",
+    "o": [
+     "Zubieta",
+     "Valdebebas",
+     "Lezama",
+     "Sant Joan Despí"
+    ],
+    "a": 2,
+    "hint": "Lezama, abierto en 1971, es el corazón de la célebre cantera del Athletic."
+   },
+   {
+    "id": "q_fe937c",
+    "q": "¿Cómo celebra tradicionalmente el Athletic de Bilbao sus grandes títulos en la ciudad?",
+    "o": [
+     "En una gabarra por la ría (La Gabarra)",
+     "En autobuses descubiertos",
+     "A caballo por el casco viejo",
+     "Con una procesión de antorchas por el monte"
+    ],
+    "a": 0,
+    "hint": "La Gabarra, una barcaza fluvial, pasea los títulos por la ría del Nervión desde 1983."
+   },
+   {
+    "id": "q_78bdfa",
+    "q": "El disputadísimo 'derbi vasco' del Athletic de Bilbao se juega contra ¿qué club vecino?",
+    "o": [
+     "Real Sociedad",
+     "Osasuna",
+     "Deportivo Alavés",
+     "SD Eibar"
+    ],
+    "a": 0,
+    "hint": "La Real Sociedad, de San Sebastián, es el gran rival vasco del Athletic."
+   },
+   {
+    "id": "q_cf44a2",
+    "q": "A mediados de los años cuarenta el Athletic ganó la Copa tres años seguidos, empezando ¿en qué año?",
+    "o": [
+     "1943",
+     "1930",
+     "1950",
+     "1958"
+    ],
+    "a": 0,
+    "hint": "El Athletic levantó la Copa (entonces Copa del Generalísimo) en 1943, 1944 y 1945."
+   },
+   {
+    "id": "q_646173",
+    "q": "¿En qué temporada ganó el Athletic de Bilbao su primer título de Liga?",
+    "o": [
+     "1934-35",
+     "1929-30",
+     "1942-43",
+     "1955-56"
+    ],
+    "a": 1,
+    "hint": "El Athletic se proclamó campeón de España por primera vez en 1929-30, en los primeros años de la Liga."
+   },
+   {
+    "id": "q_ae203f",
+    "q": "¿En qué temporada ganó el Athletic de Bilbao el segundo de sus dos títulos de Liga consecutivos de principios de los ochenta?",
+    "o": [
+     "1983-84",
+     "1955-56",
+     "1997-98",
+     "2020-21"
+    ],
+    "a": 0,
+    "hint": "Tras el campeonato de 1982-83, el Athletic revalidó el título de Liga en 1983-84."
+   },
+   {
+    "id": "q_19d0f3",
+    "q": "A mediados de los años ochenta, ¿cuántos títulos de Liga había ganado el Athletic de Bilbao?",
+    "o": [
+     "Tres",
+     "Cinco",
+     "Ocho",
+     "Doce"
+    ],
+    "a": 2,
+    "hint": "El Athletic sumaba ocho campeonatos de Primera a mediados de los ochenta."
+   },
+   {
+    "id": "q_e8d4db",
+    "q": "El Athletic de Bilbao ganó la final de la Copa del Rey de 2024 en los penaltis ¿contra qué club?",
+    "o": [
+     "Sevilla",
+     "Real Betis",
+     "Valencia",
+     "Mallorca"
+    ],
+    "a": 3,
+    "hint": "El Athletic se impuso al Mallorca por 4-2 en los penaltis tras el 1-1."
+   },
+   {
+    "id": "q_804c9b",
+    "q": "¿En qué estadio se disputó la final de la Copa del Rey de 2024?",
+    "o": [
+     "La Cartuja, Sevilla",
+     "Santiago Bernabéu",
+     "Metropolitano",
+     "Mestalla"
+    ],
+    "a": 0,
+    "hint": "La final se jugó en el estadio neutral de La Cartuja, en Sevilla."
+   },
+   {
+    "id": "q_d2a557",
+    "q": "El Athletic de Bilbao perdió con claridad la final de la Copa del Rey de 2021 ¿contra qué club?",
+    "o": [
+     "Sevilla",
+     "Real Madrid",
+     "Barcelona",
+     "Valencia"
+    ],
+    "a": 2,
+    "hint": "El Barcelona ganó la final de 2021 por 4-0, con doblete de Lionel Messi."
+   },
+   {
+    "id": "q_a601fe",
+    "q": "El premio de la Liga al máximo goleador español lleva el nombre de ¿qué delantero del Athletic de Bilbao?",
+    "o": [
+     "Telmo Zarra",
+     "José Ángel Iribar",
+     "Julen Guerrero",
+     "Dani"
+    ],
+    "a": 0,
+    "hint": "El Trofeo Zarra homenajea a Telmo Zarra, un delantero muy goleador de los años cuarenta y cincuenta."
+   },
+   {
+    "id": "q_10ff30",
+    "q": "¿Qué capitán del Athletic de Bilbao ayudó a sacar al campo la entonces prohibida bandera vasca antes de un derbi en diciembre de 1976?",
+    "o": [
+     "Andoni Goikoetxea",
+     "Dani",
+     "Manuel Sarabia",
+     "José Ángel Iribar"
+    ],
+    "a": 3,
+    "hint": "El portero y capitán José Ángel Iribar ayudó a desplegar la ikurriña, que se legalizó poco después, en 1977."
+   },
+   {
+    "id": "q_51d1f7",
+    "q": "¿Qué mediapunta de un solo club fue el emblema y el ídolo de la afición del Athletic de Bilbao durante los años noventa?",
+    "o": [
+     "Julen Guerrero",
+     "Markel Susaeta",
+     "Ander Iturraspe",
+     "Iker Muniain"
+    ],
+    "a": 0,
+    "hint": "Julen Guerrero, organizador salido de la cantera, se convirtió en icono de los noventa e internacional con España."
+   },
+   {
+    "id": "q_bb623a",
+    "q": "El defensa Andoni Goikoetxea se ganó el apodo de 'el Carnicero de Bilbao' tras una entrada en 1983 que rompió el tobillo de ¿quién?",
+    "o": [
+     "Johan Cruyff",
+     "Michel Platini",
+     "Diego Maradona",
+     "Zico"
+    ],
+    "a": 2,
+    "hint": "Su durísima entrada a Diego Maradona en el Camp Nou en 1983 dio origen al siniestro apodo."
+   },
+   {
+    "id": "q_774246",
+    "q": "¿Qué veterano delantero marcó un triplete en el partido de ida de la Supercopa de España que el Athletic de Bilbao ganó en 2015?",
+    "o": [
+     "Iker Muniain",
+     "Aritz Aduriz",
+     "Iñaki Williams",
+     "Markel Susaeta"
+    ],
+    "a": 1,
+    "hint": "Aritz Aduriz, todavía muy goleador cerca de los cuarenta, marcó tres en la goleada de la ida."
+   },
+   {
+    "id": "q_d74071",
+    "q": "¿Qué extremo formado en el Athletic de Bilbao ganó la Eurocopa 2024 con España?",
+    "o": [
+     "Nico Williams",
+     "Iker Muniain",
+     "Óscar de Marcos",
+     "Unai Gómez"
+    ],
+    "a": 0,
+    "hint": "Nico Williams, canterano del Athletic, marcó en la final de la Eurocopa 2024 que ganó España."
+   },
+   {
+    "id": "q_9f86b8",
+    "q": "En enero de 2018 el Athletic de Bilbao vendió al defensa Aymeric Laporte, entonces la venta más cara de su historia, ¿a qué club?",
+    "o": [
+     "Manchester City",
+     "Chelsea",
+     "Paris Saint-Germain",
+     "Bayern de Múnich"
+    ],
+    "a": 0,
+    "hint": "Laporte fichó por el Manchester City por unos 65 millones de euros, el mayor traspaso cobrado por el Athletic hasta entonces."
+   },
+   {
+    "id": "q_833ae4",
+    "q": "En 2018 el Chelsea pagó lo que entonces era un récord mundial por un portero para fichar a ¿qué canterano del Athletic de Bilbao?",
+    "o": [
+     "Unai Simón",
+     "Gorka Iraizoz",
+     "Iago Herrerín",
+     "Kepa Arrizabalaga"
+    ],
+    "a": 3,
+    "hint": "Kepa Arrizabalaga fichó por el Chelsea por unos 80 millones de euros, récord mundial para un portero en aquel momento."
+   },
+   {
+    "id": "q_11edea",
+    "q": "El centrocampista Ander Herrera dejó el Athletic de Bilbao en 2014 para fichar por ¿qué club inglés?",
+    "o": [
+     "Manchester United",
+     "Manchester City",
+     "Arsenal",
+     "Liverpool"
+    ],
+    "a": 0,
+    "hint": "Herrera firmó por el Manchester United en el verano de 2014."
+   },
+   {
+    "id": "q_606b66",
+    "q": "En 2012 el Athletic de Bilbao vendió al centrocampista Javi Martínez a ¿qué club alemán?",
+    "o": [
+     "Borussia Dortmund",
+     "Bayern de Múnich",
+     "Schalke 04",
+     "Bayer Leverkusen"
+    ],
+    "a": 1,
+    "hint": "Javi Martínez fichó por el Bayern de Múnich en la que entonces fue la venta más cara del club, y allí ganó la Liga de Campeones en 2013."
+   },
+   {
+    "id": "q_09e658",
+    "q": "¿Qué entrenador dirigió al dominador Athletic de Bilbao campeón de principios de los años ochenta?",
+    "o": [
+     "Javier Clemente",
+     "Marcelo Bielsa",
+     "Ernesto Valverde",
+     "Luis Fernández"
+    ],
+    "a": 0,
+    "hint": "Javier Clemente firmó dos títulos de Liga consecutivos y un doblete de Liga y Copa en los años ochenta."
+   },
+   {
+    "id": "q_03d003",
+    "q": "¿Qué entrenador argentino llevó al Athletic de Bilbao a las finales de la Liga Europa y de la Copa del Rey de 2012?",
+    "o": [
+     "Diego Simeone",
+     "Mauricio Pochettino",
+     "Marcelo Bielsa",
+     "Jorge Sampaoli"
+    ],
+    "a": 2,
+    "hint": "Marcelo 'el Loco' Bielsa dirigió al Athletic entre 2011 y 2013."
+   },
+   {
+    "id": "q_37f572",
+    "q": "¿Qué entrenador eslovaco llevó al Athletic de Bilbao al doblete de Liga y Copa en 1955-56?",
+    "o": [
+     "Ferdinand Daučík",
+     "Fred Pentland",
+     "Ronnie Allen",
+     "Rafael Iriondo"
+    ],
+    "a": 0,
+    "hint": "El equipo de Ferdinand Daučík le ganó el título de 1955-56 a sus rivales por un solo punto y además se llevó la Copa."
+   },
+   {
+    "id": "q_1e03be",
+    "q": "¿Qué inglés del bombín construyó el dominador Athletic de Bilbao de finales de los años veinte y principios de los treinta?",
+    "o": [
+     "Ronnie Allen",
+     "Fred Pentland",
+     "Howard Kendall",
+     "Ferdinand Daučík"
+    ],
+    "a": 1,
+    "hint": "Fred Pentland, apodado 'el Bombín', conquistó varios títulos de Liga y varias Copas."
+   },
+   {
+    "id": "q_ca8878",
+    "q": "¿Qué entrenador llevó al Athletic de Bilbao a conquistar la Copa del Rey de 2024?",
+    "o": [
+     "Ernesto Valverde",
+     "Marcelo Bielsa",
+     "Gaizka Garitano",
+     "Joaquín Caparrós"
+    ],
+    "a": 0,
+    "hint": "Ernesto Valverde, en su tercera etapa en el club, puso fin a la larga sequía de títulos en 2024."
+   },
+   {
+    "id": "q_b9ca91",
+    "q": "El Athletic de Bilbao llegó a la final de la Copa de la UEFA de 1977 y la perdió por el valor doble de los goles a domicilio ¿contra qué club italiano?",
+    "o": [
+     "AC Milan",
+     "Internazionale",
+     "Torino",
+     "Juventus"
+    ],
+    "a": 3,
+    "hint": "La eliminatoria acabó 2-2 en el global y la Juventus se llevó el título por el valor doble de los goles fuera de casa."
+   },
+   {
+    "id": "q_0b79ab",
+    "q": "En la final de la Liga Europa de 2012 el Athletic de Bilbao perdió 3-0 ¿contra qué otro club español?",
+    "o": [
+     "Atlético de Madrid",
+     "Real Madrid",
+     "Sevilla",
+     "Valencia"
+    ],
+    "a": 0,
+    "hint": "El Atlético de Madrid ganó la final de Bucarest por 3-0 en mayo de 2012."
+   },
+   {
+    "id": "q_948b2b",
+    "q": "Para meterse en la fase de grupos de la Liga de Campeones 2014-15, el Athletic de Bilbao superó la eliminatoria previa ¿contra qué club italiano?",
+    "o": [
+     "Roma",
+     "Nápoles",
+     "Lazio",
+     "Fiorentina"
+    ],
+    "a": 1,
+    "hint": "El Athletic eliminó al Nápoles a doble partido y lo selló en el nuevo San Mamés para llegar a la fase de grupos."
+   },
+   {
+    "id": "q_a1a881",
+    "q": "El Athletic de Bilbao se clasificó para la Liga de Campeones al ser subcampeón de Liga ¿en qué temporada, con Luis Fernández en el banquillo?",
+    "o": [
+     "1997-98",
+     "1983-84",
+     "2009-10",
+     "2020-21"
+    ],
+    "a": 0,
+    "hint": "El subcampeonato de 1997-98 metió al Athletic en la Liga de Campeones de la temporada siguiente."
+   },
+   {
+    "id": "q_c64db6",
+    "q": "Como vigente campeón de la Liga española, ¿en qué competición europea participó el Athletic de Bilbao a mediados de los años ochenta?",
+    "o": [
+     "La Recopa de Europa",
+     "La Copa de la UEFA",
+     "La Copa de Europa",
+     "La Copa Intertoto"
+    ],
+    "a": 2,
+    "hint": "Los campeones nacionales de aquella época entraban en la Copa de Europa, antecesora de la Liga de Campeones."
+   },
+   {
+    "id": "q_b481d5",
+    "q": "¿Qué delantero del Athletic de Bilbao formó parte de la selección española campeona del Mundial de 2010?",
+    "o": [
+     "Aritz Aduriz",
+     "Fernando Llorente",
+     "Iñaki Williams",
+     "Julen Guerrero"
+    ],
+    "a": 1,
+    "hint": "Fernando Llorente viajó a Sudáfrica 2010 como jugador del Athletic y levantó el trofeo con España."
+   },
+   {
+    "id": "q_b82be1",
+    "q": "¿Qué portero, campeón de Liga con el Athletic de Bilbao en los años ochenta, llegó a disputar cuatro Mundiales con España (1986, 1990, 1994 y 1998)?",
+    "o": [
+     "Andoni Zubizarreta",
+     "José Ángel Iribar",
+     "Carmelo Cedrún",
+     "Unai Simón"
+    ],
+    "a": 0,
+    "hint": "Andoni Zubizarreta empezó su carrera en la portería del Athletic antes de una larguísima trayectoria como portero titular de España."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Athletic de Bilbao",
+   "title": "Quiz del Athletic de Bilbao — Los Leones | Ball IQ",
+   "description": "Quiz gratis del Athletic de Bilbao con respuestas explicadas: la cantera, San Mamés, Clemente, Bielsa, la Copa del Rey de 2024 y La Gabarra.",
+   "intro": [
+    "El Athletic Club nació en 1898 y desde entonces juega a otra cosa. Los Leones visten unas de las rayas rojiblancas más reconocibles de España, fueron uno de los clubes fundadores de la Primera División en 1929 y siguen fieles a una filosofía poco común entre los grandes: solo fichan a jugadores nacidos en el País Vasco o formados allí. La cantera se trabaja en Lezama, abierto en 1971, y el escaparate es San Mamés: el original se inauguró en 1913 y el actual, en 2013, con un aforo cercano a los 53.000. Ni el nombre se libró de la historia, porque la castellanización franquista obligó a cambiar el 'Athletic' inglés por 'Atlético de Bilbao' antes de que el club recuperara el suyo. Y el partido que de verdad para la semana es el derbi vasco contra la Real Sociedad.",
+    "La sala de trofeos se llenó pronto. El primer título de Liga llegó en 1929-30, en los primeros años de la competición, y el equipo dominador de finales de los veinte y principios de los treinta lo construyó un inglés con bombín, Fred Pentland, al que en Bilbao aún se recuerda como 'el Bombín'. A mediados de los cuarenta llegaron tres Copas seguidas —1943, 1944 y 1945— y en 1955-56 el eslovaco Ferdinand Daučík firmó el doblete, ganando la Liga por un solo punto. El último gran ciclo lo dirigió Javier Clemente: campeón en 1982-83, campeón otra vez en 1983-84 y doblete con la Copa. A mediados de los ochenta el Athletic acumulaba ocho campeonatos de Primera y disputaba la Copa de Europa como vigente campeón de España.",
+    "En Europa la historia va de noches grandes y finales que se escaparon. En 1977 el Athletic llegó a la final de la Copa de la UEFA y la perdió contra la Juventus por el valor doble de los goles a domicilio, con 2-2 en el global. El subcampeonato de Liga de 1997-98, con Luis Fernández en el banquillo, devolvió al club a la Liga de Campeones. En 2012, el Athletic de Marcelo Bielsa alcanzó la final de la Liga Europa —perdida 3-0 en Bucarest ante el Atlético de Madrid— y también la de Copa. Dos años después, eliminó al Nápoles en la previa y selló en el nuevo San Mamés el billete a la fase de grupos. En 2015 llegó la Supercopa de España, con triplete de Aritz Aduriz en la ida. La final de Copa de 2021 acabó en 4-0 para el Barcelona, con doblete de Messi; la de 2024, en La Cartuja y ante el Mallorca, se decidió en los penaltis por 4-2 y devolvió la Copa a Bilbao con Ernesto Valverde. La gabarra volvió a bajar por la ría, como viene haciendo desde 1983.",
+    "Y luego están los nombres. Telmo Zarra, cuyo apellido da nombre al trofeo del máximo goleador español. José Ángel Iribar, portero y capitán, que ayudó a sacar al campo la ikurriña cuando todavía estaba prohibida, en diciembre de 1976. Andoni Goikoetxea, 'el Carnicero de Bilbao' desde aquella entrada a Maradona en el Camp Nou en 1983. Julen Guerrero, ídolo absoluto de los noventa. Andoni Zubizarreta, cuatro Mundiales con España. Fernando Llorente, campeón del mundo en 2010 siendo jugador del Athletic, y Nico Williams, canterano y campeón de la Eurocopa 2024. Por el camino, Lezama surtió al fútbol europeo: Javi Martínez al Bayern de Múnich en 2012, Ander Herrera al Manchester United en 2014, Aymeric Laporte al Manchester City y Kepa al Chelsea en 2018 por un récord mundial para un portero. Ahora toca ver cuánto de todo esto te sabes de verdad.\n"
+   ],
+   "faq": [
+    {
+     "q": "¿El quiz del Athletic de Bilbao es gratis?",
+     "a": "Sí. Se juega aquí mismo, en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas."
+    },
+    {
+     "q": "¿Qué temas cubre?",
+     "a": "La historia del club desde 1898, la filosofía de cantera y Lezama, los dos San Mamés, las Ligas de Pentland y de Javier Clemente, las Copas de los años cuarenta y el doblete de 1955-56, las noches europeas de 1977, 2012 y 2014, la Copa del Rey de 2024 y los ídolos: Zarra, Iribar, Guerrero, Zubizarreta, Llorente, Aduriz, Kepa, Laporte y Nico Williams. Va de fácil a realmente difícil."
+    },
+    {
+     "q": "¿De dónde salen las preguntas?",
+     "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+    },
+    {
+     "q": "¿La aplicación Ball IQ está en español?",
+     "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla, así que si has llegado hasta aquí ya nos estás ayudando a decidirlo."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Gratis · Preguntas del Athletic con respuestas explicadas · sin registro",
+   "tasterPh": "Unas preguntas rápidas para medir tu Ball IQ del Athletic.",
+   "faqH": "Quiz del Athletic de Bilbao — Preguntas frecuentes",
+   "aboutQ": "Sobre el quiz del Athletic de Bilbao"
+  }
+ },
+ {
+  "slug": "valencia",
+  "club": "Valencia",
+  "translated": 35,
+  "source": 35,
+  "structural": [],
+  "review": {
+   "ok": true,
+   "problems": [
+    "MINOR fact-tightening, q_628a5e: English 'acquired a controlling stake' became 'adquirió una participación mayoritaria'. A controlling stake is not strictly a majority stake, so the Spanish asserts slightly more than the English. The underlying fact is still true (Lim took ~70% via Meriton) and the answer is unaffected, but 'una participación de control' would be an exact match.",
+    "MINOR fact-narrowing, q_ede2ea: English 'Which former Real Madrid great' became '¿Qué gran exjugador del Real Madrid', which narrows 'great' to 'former player'. True of Di Stéfano and of all four options, so the question still works, but it is a small addition of specificity the English did not make.",
+    "STYLE, 5 questions (q_8b7c4f, q_2cbf81, q_299902, q_a9b888, q_160739): the English trailing-clause structure was carried over literally, producing mid-sentence question marks — e.g. 'El Valencia perdió la final de la Liga de Campeones de 2000 ante ¿qué club?'. Grammatical but clunky in Spanish; natural phrasing is fronted: '¿Ante qué club perdió el Valencia la final de la Liga de Campeones de 2000?'.",
+    "STYLE, q_5ad687 and q_38b80c: '¿A qué club fichó David Silva…' / '¿A qué club fichó Gaizka Mendieta…' misuses the verb — 'fichar a' means to sign someone, 'fichar por' means to join. Should be '¿Por qué club fichó…?' or '¿A qué club se marchó…?'. (q_38b80c's own hint gets it right: 'dejó el Valencia por la Lazio'.)",
+    "CONSISTENCY, hints: city names were localised (Mánchester, Milán, París, Atenas, Bruselas, Gotemburgo, Mónaco) but club names were left in English inside the running prose — 'Bayern Munich' (Sp. Bayern de Múnich) and 'Marseille' (Sp. Marsella) appear in the hints for q_2cbf81, q_3dbe59, q_ee11f2, q_dd8659, q_3d34d9, q_c0b13b, q_160739. Option strings can stay as-is if preferred, but the hint prose reads as untranslated. Same applies to 'Bordeaux' (Burdeos) in the q_3dbe59 options.",
+    "CONSISTENCY, prose: the page mixes forms of address. Intro paragraph 3 uses vosotros ('Si os creéis que os lo sabéis todo'), while tasterPh ('para medir tu Ball IQ') and the last FAQ answer ('si has llegado hasta aquí') use tú. Both are peninsular, but pick one — tú is the safer default for the rest of the /es/ surface."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_8364ea",
+    "q": "¿Cómo se llama el estadio del Valencia?",
+    "o": [
+     "La Rosaleda",
+     "Mestalla",
+     "El Sadar",
+     "Balaídos"
+    ],
+    "a": 1,
+    "hint": "El Valencia juega en Mestalla desde 1923; el nombre viene de la acequia que pasaba junto al solar."
+   },
+   {
+    "id": "q_12003a",
+    "q": "¿Con qué apodo se conoce habitualmente al Valencia CF?",
+    "o": [
+     "Los Colchoneros",
+     "Los Leones",
+     "Los Che",
+     "Los Blanquiazules"
+    ],
+    "a": 2,
+    "hint": "«Che» es una interjección valenciana, y tanto el club como su afición son conocidos desde hace mucho como Los Che."
+   },
+   {
+    "id": "q_3ba968",
+    "q": "¿Qué animal aparece en el escudo del Valencia CF?",
+    "o": [
+     "Un murciélago",
+     "Un águila",
+     "Un león",
+     "Un toro"
+    ],
+    "a": 0,
+    "hint": "El murciélago corona el escudo del Valencia, tomado del escudo de armas de la ciudad de Valencia."
+   },
+   {
+    "id": "q_8b7c4f",
+    "q": "El Valencia perdió la final de la Liga de Campeones de 2000 ante ¿qué club?",
+    "o": [
+     "Barcelona",
+     "Atlético Madrid",
+     "Deportivo La Coruña",
+     "Real Madrid"
+    ],
+    "a": 3,
+    "hint": "El Real Madrid ganó 3-0 al Valencia en París en la primera final de la Copa de Europa entre dos equipos españoles."
+   },
+   {
+    "id": "q_2cbf81",
+    "q": "El Valencia perdió la final de la Liga de Campeones de 2001 ante ¿qué club?",
+    "o": [
+     "Bayern Munich",
+     "Juventus",
+     "AC Milan",
+     "Borussia Dortmund"
+    ],
+    "a": 0,
+    "hint": "El Bayern Munich ganó al Valencia en los penaltis tras un 1-1, la segunda final perdida de forma consecutiva por el equipo español."
+   },
+   {
+    "id": "q_f59f7e",
+    "q": "¿A qué delantero fichó el Valencia procedente del Real Zaragoza en 2005, que acabaría marcando más de 100 goles con el club?",
+    "o": [
+     "Roberto Soldado",
+     "David Villa",
+     "Fernando Morientes",
+     "Nikola Žigić"
+    ],
+    "a": 1,
+    "hint": "David Villa marcó unos 129 goles en cinco temporadas en el Valencia tras llegar del Zaragoza en 2005."
+   },
+   {
+    "id": "q_5ad687",
+    "q": "¿A qué club fichó David Silva cuando dejó el Valencia en 2010?",
+    "o": [
+     "Chelsea",
+     "Arsenal",
+     "Manchester City",
+     "Manchester United"
+    ],
+    "a": 2,
+    "hint": "Silva pasó del Valencia al Manchester City en el verano de 2010 y estuvo allí una década."
+   },
+   {
+    "id": "q_2fec56",
+    "q": "¿Quién era el entrenador del Valencia cuando ganó la Copa de la UEFA de 2004?",
+    "o": [
+     "Héctor Cúper",
+     "Unai Emery",
+     "Claudio Ranieri",
+     "Rafael Benítez"
+    ],
+    "a": 3,
+    "hint": "Rafael Benítez ganó la Liga y la Copa de la UEFA con el Valencia en 2003-04 antes de marcharse al Liverpool."
+   },
+   {
+    "id": "q_4e7e86",
+    "q": "¿En qué década se fundó el Valencia CF?",
+    "o": [
+     "Década de 1890",
+     "Década de 1910",
+     "Década de 1930",
+     "Década de 1950"
+    ],
+    "a": 1,
+    "hint": "El Valencia CF se fundó en marzo de 1919 y celebró su centenario en la temporada 2018-19."
+   },
+   {
+    "id": "q_4d4954",
+    "q": "¿Qué club es el rival ciudadano del Valencia en el derbi valenciano?",
+    "o": [
+     "Villarreal",
+     "Hércules",
+     "Elche",
+     "Levante"
+    ],
+    "a": 3,
+    "hint": "El Levante UD es el otro gran club de la ciudad de Valencia, lo que convierte ese partido en el verdadero derbi de la ciudad."
+   },
+   {
+    "id": "q_3dbe59",
+    "q": "¿A qué club ganó el Valencia en la final de la Copa de la UEFA de 2004?",
+    "o": [
+     "Newcastle United",
+     "Bordeaux",
+     "Marseille",
+     "Villarreal"
+    ],
+    "a": 2,
+    "hint": "El Valencia ganó 2-0 al Marseille en la final de Gotemburgo para completar el doblete de Liga y Copa de la UEFA."
+   },
+   {
+    "id": "q_38b80c",
+    "q": "¿A qué club fichó Gaizka Mendieta cuando dejó el Valencia en 2001?",
+    "o": [
+     "Lazio",
+     "Roma",
+     "Juventus",
+     "Internazionale"
+    ],
+    "a": 0,
+    "hint": "Mendieta dejó el Valencia por la Lazio en 2001, en uno de los mayores traspasos de la época."
+   },
+   {
+    "id": "q_cf0bdc",
+    "q": "¿Qué entrenador llevó al Valencia a las finales de la Liga de Campeones de 2000 y 2001?",
+    "o": [
+     "Claudio Ranieri",
+     "Héctor Cúper",
+     "Luis Aragonés",
+     "Rafael Benítez"
+    ],
+    "a": 1,
+    "hint": "El entrenador argentino Héctor Cúper llevó al Valencia a dos finales consecutivas de la Copa de Europa antes de fichar por el Inter."
+   },
+   {
+    "id": "q_fb7dbf",
+    "q": "¿Qué portero llegó al Valencia procedente del Real Madrid en 1998 y acabó pasando una década en el club?",
+    "o": [
+     "Andrés Palop",
+     "Diego Alves",
+     "Santiago Cañizares",
+     "Vicente Guaita"
+    ],
+    "a": 2,
+    "hint": "Santiago Cañizares dejó el Real Madrid por el Valencia en 1998 y se quedó hasta 2008, atravesando los años de títulos de Cúper y Benítez."
+   },
+   {
+    "id": "q_ee11f2",
+    "q": "¿En qué estadio se disputó la final de la Liga de Campeones de 2001, en la que el Valencia fue derrotado?",
+    "o": [
+     "Old Trafford, Mánchester",
+     "San Siro, Milán",
+     "Stade de France, París",
+     "Estadio Olímpico, Atenas"
+    ],
+    "a": 1,
+    "hint": "La final de 2001 entre el Bayern Munich y el Valencia se jugó en San Siro, en Milán."
+   },
+   {
+    "id": "q_fbb4eb",
+    "q": "¿Qué central argentino llegó al Valencia en 2000 y se convirtió en un pilar de la defensa que ganó la Liga?",
+    "o": [
+     "Walter Samuel",
+     "Nicolás Otamendi",
+     "Fabricio Coloccini",
+     "Roberto Ayala"
+    ],
+    "a": 3,
+    "hint": "Roberto Ayala llegó del Milan en 2000 y fue el ancla de la defensa del Valencia en los dos títulos de Liga."
+   },
+   {
+    "id": "q_cd8fbb",
+    "q": "¿A qué club ganó el Valencia en la final de la Copa del Rey de 2019?",
+    "o": [
+     "Real Madrid",
+     "Barcelona",
+     "Sevilla",
+     "Atlético Madrid"
+    ],
+    "a": 1,
+    "hint": "El Valencia ganó 2-1 al Barcelona en Sevilla y se llevó la Copa del Rey en su temporada del centenario."
+   },
+   {
+    "id": "q_299902",
+    "q": "El Valencia ganó la Copa de Ferias en ¿qué dos años consecutivos?",
+    "o": [
+     "1958 y 1959",
+     "1962 y 1963",
+     "1965 y 1966",
+     "1968 y 1969"
+    ],
+    "a": 1,
+    "hint": "El Valencia ganó la Copa de Ferias en 1962 y la revalidó en 1963; después perdió la final de 1964."
+   },
+   {
+    "id": "q_cbe275",
+    "q": "¿Qué centrocampista formó pareja en el centro del campo del Valencia con David Albelda a las órdenes de Rafael Benítez?",
+    "o": [
+     "Pablo Aimar",
+     "Miguel Ángel Angulo",
+     "Rubén Baraja",
+     "Vicente Rodríguez"
+    ],
+    "a": 2,
+    "hint": "Rubén Baraja y David Albelda fueron el doble pivote detrás de los títulos de Liga del Valencia de 2002 y 2004."
+   },
+   {
+    "id": "q_8c9f62",
+    "q": "¿A qué delantero noruego fichó el Valencia procedente del Rosenborg en 2000?",
+    "o": [
+     "Tore André Flo",
+     "Jostein Flo",
+     "Ole Gunnar Solskjær",
+     "John Carew"
+    ],
+    "a": 3,
+    "hint": "John Carew llegó al Valencia desde el Rosenborg en 2000 y jugó la final de la Liga de Campeones de 2001."
+   },
+   {
+    "id": "q_6bcd28",
+    "q": "¿Cuántas temporadas consecutivas terminó el Valencia tercero en Liga con Unai Emery?",
+    "o": [
+     "Dos",
+     "Cuatro",
+     "Una",
+     "Tres"
+    ],
+    "a": 3,
+    "hint": "El Valencia de Emery terminó tercero en 2009-10, 2010-11 y 2011-12, por detrás del Barcelona y el Real Madrid en cada una."
+   },
+   {
+    "id": "q_8001d6",
+    "q": "¿A qué club inglés eliminó el Valencia en las semifinales de la Liga de Campeones 2000-01?",
+    "o": [
+     "Leeds United",
+     "Arsenal",
+     "Manchester United",
+     "Liverpool"
+    ],
+    "a": 0,
+    "hint": "El Valencia empató 0-0 en Elland Road y ganó la vuelta 3-0 en Mestalla para eliminar al Leeds United y llegar a la final de 2001."
+   },
+   {
+    "id": "q_57e4a2",
+    "q": "¿Quién dirigía al Valencia cuando ganó la Copa del Rey de 2008?",
+    "o": [
+     "Unai Emery",
+     "Quique Sánchez Flores",
+     "Ronald Koeman",
+     "Rafael Benítez"
+    ],
+    "a": 2,
+    "hint": "Ronald Koeman ganó la Copa del Rey de 2008 ante el Getafe y fue destituido pocos días después, con el club cerca de la zona de descenso."
+   },
+   {
+    "id": "q_8e10be",
+    "q": "¿Cuántos títulos de Liga ha ganado el Valencia?",
+    "o": [
+     "Cuatro",
+     "Seis",
+     "Ocho",
+     "Dos"
+    ],
+    "a": 1,
+    "hint": "Los seis títulos de Liga del Valencia llegaron en 1942, 1944, 1947, 1971, 2002 y 2004."
+   },
+   {
+    "id": "q_549940",
+    "q": "¿A qué club ganó el Valencia en la final de la Recopa de Europa de 1980?",
+    "o": [
+     "Nottingham Forest",
+     "Juventus",
+     "Arsenal",
+     "Barcelona"
+    ],
+    "a": 2,
+    "hint": "El Valencia ganó al Arsenal en la final de 1980 en Bruselas tras 120 minutos sin goles."
+   },
+   {
+    "id": "q_628a5e",
+    "q": "¿Qué empresario adquirió una participación mayoritaria en el Valencia en 2014?",
+    "o": [
+     "Tony Fernandes",
+     "Vincent Tan",
+     "Dmitry Rybolovlev",
+     "Peter Lim"
+    ],
+    "a": 3,
+    "hint": "El empresario singapurense Peter Lim tomó el control del Valencia a través de Meriton Holdings en 2014."
+   },
+   {
+    "id": "q_dd8659",
+    "q": "¿A qué jugador del Valencia le pararon el penalti que puso fin a la tanda de la final de la Liga de Campeones de 2001?",
+    "o": [
+     "Gaizka Mendieta",
+     "Mauricio Pellegrino",
+     "Rubén Baraja",
+     "Amedeo Carboni"
+    ],
+    "a": 1,
+    "hint": "El lanzamiento de Mauricio Pellegrino fue detenido y le dio el título al Bayern Munich en Milán."
+   },
+   {
+    "id": "q_3d34d9",
+    "q": "¿Qué portero paró tres penaltis al Valencia en la tanda de la final de la Liga de Campeones de 2001?",
+    "o": [
+     "Edwin van der Sar",
+     "Jens Lehmann",
+     "Iker Casillas",
+     "Oliver Kahn"
+    ],
+    "a": 3,
+    "hint": "Oliver Kahn, del Bayern, firmó tres paradas en la tanda para ganar la final de 2001."
+   },
+   {
+    "id": "q_a9b888",
+    "q": "El Valencia fichó al mediapunta Pablo Aimar en 2001 procedente de ¿qué club argentino?",
+    "o": [
+     "Boca Juniors",
+     "Independiente",
+     "River Plate",
+     "Racing Club"
+    ],
+    "a": 2,
+    "hint": "Aimar llegó al Valencia desde el River Plate en enero de 2001 y se quedó hasta 2006."
+   },
+   {
+    "id": "q_12b5e4",
+    "q": "¿Quién tiene el récord de partidos disputados con el Valencia?",
+    "o": [
+     "Ricardo Arias",
+     "David Albelda",
+     "Miguel Ángel Angulo",
+     "Fernando Gómez"
+    ],
+    "a": 3,
+    "hint": "El centrocampista Fernando Gómez disputó más de 550 partidos con el Valencia entre 1983 y 1998, un récord del club."
+   },
+   {
+    "id": "q_ede2ea",
+    "q": "¿Qué gran exjugador del Real Madrid dirigió al Valencia en el título de Liga de 1970-71?",
+    "o": [
+     "Ferenc Puskás",
+     "Alfredo Di Stéfano",
+     "Francisco Gento",
+     "Amancio Amaro"
+    ],
+    "a": 1,
+    "hint": "Alfredo Di Stéfano se hizo cargo del banquillo de Mestalla en 1970 y ganó la Liga en su primera temporada."
+   },
+   {
+    "id": "q_006442",
+    "q": "El Valencia ganó 2-0 al Real Madrid en la final de la Copa del Rey de 1979: ¿quién marcó sus dos goles?",
+    "o": [
+     "Darío Felman",
+     "Rainer Bonhof",
+     "Mario Kempes",
+     "Ricardo Arias"
+    ],
+    "a": 2,
+    "hint": "Mario Kempes marcó dos veces al Real Madrid y le dio al Valencia la Copa del Rey de 1979."
+   },
+   {
+    "id": "q_3ec230",
+    "q": "¿Quién era el entrenador del Valencia cuando ganó al Porto la Supercopa de Europa de 2004?",
+    "o": [
+     "Rafael Benítez",
+     "Claudio Ranieri",
+     "Ronald Koeman",
+     "Quique Sánchez Flores"
+    ],
+    "a": 1,
+    "hint": "Claudio Ranieri había vuelto en una segunda etapa tras la marcha de Benítez al Liverpool, y ganó la Supercopa en Mónaco."
+   },
+   {
+    "id": "q_c0b13b",
+    "q": "¿A qué club eliminó el Valencia en las semifinales de la Copa de la UEFA 2003-04?",
+    "o": [
+     "Marseille",
+     "Newcastle United",
+     "Bordeaux",
+     "Villarreal"
+    ],
+    "a": 3,
+    "hint": "El Valencia ganó a su rival regional, el Villarreal, en semifinales antes de derrotar al Marseille en la final."
+   },
+   {
+    "id": "q_160739",
+    "q": "El primer gol del Valencia en la final de la Copa de la UEFA de 2004 fue un penalti transformado por ¿qué jugador?",
+    "o": [
+     "Rubén Baraja",
+     "Francisco Rufete",
+     "David Albelda",
+     "Vicente Rodríguez"
+    ],
+    "a": 3,
+    "hint": "El extremo Vicente Rodríguez marcó desde el punto de penalti antes de que Mista añadiera el segundo en el 2-0 ante el Marseille."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz del Valencia CF",
+   "title": "Quiz del Valencia CF — Trivia de Mestalla | Ball IQ",
+   "description": "Quiz gratis del Valencia CF con respuestas explicadas: Mestalla, las finales de 2000 y 2001, la era Benítez, David Villa y la Copa del Rey de 2019.",
+   "intro": [
+    "Pocos campos de España se levantan como Mestalla. El Valencia juega ahí desde 1923, con el murciélago en el escudo y Los Che empujando desde la grada. Este quiz gratuito recorre todo el arco moderno del club: las dos finales seguidas de la Liga de Campeones con Héctor Cúper en 2000 y 2001, el doblete de Rafael Benítez en 2003-04 con la Liga y la Copa de la UEFA, los goles de David Villa, y la Copa del Rey levantada en 2019, la temporada del centenario.",
+    "Las preguntas van en serio. Empiezan por lo que sabe cualquier aficionado —el estadio, el apodo, el escudo— y acaban en la tanda de penaltis de Milán: quién falló el último lanzamiento y quién se lo paró. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale.",
+    "Todas las respuestas del set del Valencia llevan una explicación escrita, así que fallar también enseña algo: por qué Benítez ganó lo que ganó, cómo acabó Alfredo Di Stéfano en el banquillo de Mestalla o de dónde salió aquel murciélago. Si os creéis que os lo sabéis todo del Valencia, aquí se ve rápido."
+   ],
+   "faq": [
+    {
+     "q": "¿El quiz del Valencia CF es gratis?",
+     "a": "Sí. Se juega aquí mismo en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas."
+    },
+    {
+     "q": "¿Qué temas cubre?",
+     "a": "Historia del club, Mestalla y el escudo, la Copa de Ferias de los años sesenta, la Recopa de 1980, Mario Kempes, las finales europeas de 2000 y 2001, el doblete de Benítez en 2004, David Villa y David Silva, la Copa del Rey de 2019 y los récords del club. Va de fácil a realmente difícil."
+    },
+    {
+     "q": "¿De dónde salen las preguntas?",
+     "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+    },
+    {
+     "q": "¿La aplicación Ball IQ está en español?",
+     "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla, así que si has llegado hasta aquí ya nos estás ayudando a decidirlo."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Gratis · Preguntas del Valencia con respuestas explicadas · sin registro",
+   "tasterPh": "Unas preguntas rápidas para medir tu Ball IQ del Valencia.",
+   "faqH": "Quiz del Valencia CF — Preguntas frecuentes",
+   "aboutQ": "Sobre el quiz del Valencia CF"
+  }
+ },
+ {
+  "slug": "real-sociedad",
+  "club": "Real Sociedad",
+  "translated": 32,
+  "source": 32,
+  "structural": [],
+  "review": {
+   "ok": false,
+   "problems": [
+    "(e) VIOLATION — unanchored recency claim in the prose FAQ. `prose.faq[2].q` asks \"¿Cuál fue el último gran título de la Real Sociedad?\" — an open-ended \"most recent\" claim with no date anchor. It rots silently the day they win anything else, and it is in ungated SEO prose. The English source only ever states this fact anchored to a specific event (q_55cdb2: \"first major trophy since which year?\"). Fix: re-anchor the question, e.g. \"¿Cuál ha sido el último gran título de la Real Sociedad hasta 2026?\", or reframe to the anchored form: \"¿Qué título ganó la Real Sociedad en La Cartuja?\". The answer text itself is fine (it already anchors to 1987 and to the 2020 Copa).",
+    "(a) MINOR meaning drift — q_ff6010 hint. English: \"took charge in 2009 and went up at the first attempt\". Spanish: \"se hizo cargo del equipo en 2009 y logró el ascenso a la primera\". \"a la primera\" here reads far more naturally as \"promotion to the first division\" than as \"at the first attempt\", so the \"first attempt\" fact is effectively lost (and the sentence then says something the next clause already implies). Suggest: \"…y logró el ascenso en su primer intento\" or \"…y subió a Primera en su primera temporada\".",
+    "(a) MINOR wording drift — q_8cd821 hint. English \"his first extended run of senior football\" became \"su primera etapa larga en el fútbol profesional\". Both are true of the Eibar loan (Segunda is professional), but \"senior football\" is a first-team/sénior claim, not a professional-status claim. Suggest \"su primera etapa larga con un primer equipo\".",
+    "(c/d) STYLE NIT — the head-to-head tiebreak is rendered as \"por el particular\" three times (q_57b341 stem, q_57b341 hint by implication, prose.intro[1], prose.faq[0].a). Peninsular football usage is \"por el average particular\" or \"por el enfrentamiento directo\"; bare \"por el particular\" is clipped commentary shorthand and reads incomplete in written prose. Not a fact change — same assertion as the English \"on head-to-head record\". Recommend \"por el average particular\".",
+    "NOTE — everything else checks out. (b) All 32 questions are present, in the same order, with matching ids; every option list is the same four items in the same order (only club-name Hispanicisation: Atlético de Madrid, Bayern de Múnich, Hamburgo, 1. FC Colonia, Sporting de Gijón, Sporting de Portugal), and every `a` index still points at the same referent — spot-verified on all 32, including the reordered-looking ones (q_e2ffb7 a=2 → 2006-07; q_414d6c a=1 → La pista de atletismo; q_dfe900 a=0 → Dos puntos). (a) No fact changed: dates, fees (1,25 M£ / 1,6 M£ / 10,5 M£ / 30 M€ / 70 M€ / 10 M€ / 47 M€), scores (2-2 y 4-2 en penaltis, 3-1/1-0, 53-52, 78-76, 45 puntos, 4-1 global), minutes (9, 36, 59, 63), aforo 40.000 y 37.000 espectadores, and the 1927 all-Basque-final claim all carry over exactly. (c) Register is peninsular throughout: portero, entrenador, banquillo, penaltis, cesión, traspaso, cantera, aforo, césped artificial, portería, categoría de plata; no arquero/técnico/penales/cancha anywhere; decimal comma and thousands point used correctly. (d) Competition names are the Spanish forms: Liga / Primera / Segunda División, Copa del Rey, Copa de Europa, Liga de Campeones, Liga Europa, Eurocopa (Premier League correctly left untranslated). (e) The prose states no question count anywhere — intro, statLine, FAQ and aboutQ are all count-free, so the NEVER-print-the-count rule holds."
+   ]
+  },
+  "questions": [
+   {
+    "id": "q_6fe7d2",
+    "q": "¿En qué año se fundó formalmente la Real Sociedad?",
+    "o": [
+     "1898",
+     "1902",
+     "1909",
+     "1919"
+    ],
+    "a": 2,
+    "hint": "El club se constituyó el 7 de septiembre de 1909, a partir del San Sebastián Recreation Club. El rey Alfonso XIII le concedió el título de 'Real' unos meses después, en febrero de 1910."
+   },
+   {
+    "id": "q_d86e6b",
+    "q": "¿Cuántas veces se ha proclamado campeona de Liga la Real Sociedad?",
+    "o": [
+     "Una vez",
+     "Dos veces",
+     "Tres veces",
+     "Cuatro veces"
+    ],
+    "a": 1,
+    "hint": "La Real Sociedad tiene dos títulos de Liga, ganados de forma consecutiva a principios de los años ochenta con Alberto Ormaetxea en el banquillo. No ha vuelto a ganarla desde entonces."
+   },
+   {
+    "id": "q_5f0bf6",
+    "q": "La Real Sociedad jugó su último partido en Atotxa en 1993. ¿Qué estadio pasó a ser su nueva casa?",
+    "o": [
+     "San Mamés",
+     "El Sadar",
+     "Mendizorroza",
+     "Anoeta"
+    ],
+    "a": 3,
+    "hint": "Anoeta se inauguró en agosto de 1993 y hoy se conoce como Reale Arena. San Mamés pertenece al Athletic Club, El Sadar a Osasuna y Mendizorroza al Alavés."
+   },
+   {
+    "id": "q_c34330",
+    "q": "John Aldridge fue el fichaje que puso fin a la larga tradición de la Real Sociedad de alinear solo a jugadores vascos. ¿A qué club se lo compró?",
+    "o": [
+     "Oxford United",
+     "Liverpool",
+     "Everton",
+     "Newcastle United"
+    ],
+    "a": 1,
+    "hint": "Aldridge pasó del Liverpool a la Real Sociedad el 14 de septiembre de 1989 por unos 1,25 millones de libras, y se convirtió en el primer jugador no vasco fichado por el club en más de cuatro décadas. Había llegado al Liverpool desde el Oxford United en enero de 1987, y por eso el Oxford es una respuesta errónea tan tentadora."
+   },
+   {
+    "id": "q_1aa6db",
+    "q": "¿En qué año abandonó la Real Sociedad su política de fichar únicamente a jugadores vascos?",
+    "o": [
+     "1979",
+     "1985",
+     "1989",
+     "1994"
+    ],
+    "a": 2,
+    "hint": "La política se mantuvo hasta 1989, cuando el club fichó al delantero de la República de Irlanda John Aldridge, nacido en Liverpool. Dalian Atkinson llegó en 1990."
+   },
+   {
+    "id": "q_238299",
+    "q": "Un gol del empate en el último suspiro en el campo del Sporting de Gijón, en la última jornada de la 1980-81, dio a la Real Sociedad su primer título de Liga. ¿Quién lo marcó?",
+    "o": [
+     "Roberto López Ufarte",
+     "Jesús María Zamora",
+     "Jesús María Satrústegui",
+     "Periko Alonso"
+    ],
+    "a": 1,
+    "hint": "Jesús María Zamora marcó en los segundos finales en El Molinón para poner el 2-2 y arrebatar el campeonato. El Real Madrid había ganado su partido y llegó a creer por un momento que el título era suyo."
+   },
+   {
+    "id": "q_57b341",
+    "q": "La Real Sociedad se llevó el campeonato de la 1980-81 por el particular tras acabar empatada a puntos con el subcampeón. ¿Qué club se quedó sin el título?",
+    "o": [
+     "Barcelona",
+     "Atlético de Madrid",
+     "Real Madrid",
+     "Athletic Club"
+    ],
+    "a": 2,
+    "hint": "Tanto la Real Sociedad como el Real Madrid terminaron con 45 puntos. El 3-1 de la Real en casa ante el Madrid pesó más que su derrota por 1-0 en la capital, y le dio el título."
+   },
+   {
+    "id": "q_067903",
+    "q": "¿Qué entrenador dirigía a la Real Sociedad en sus dos títulos de Liga?",
+    "o": [
+     "John Toshack",
+     "Javier Clemente",
+     "Miguel Muñoz",
+     "Alberto Ormaetxea"
+    ],
+    "a": 3,
+    "hint": "Alberto Ormaetxea, exjugador de la Real Sociedad, dirigió al equipo en el subcampeonato agónico de la 1979-80 y después en los títulos de la 1980-81 y la 1981-82."
+   },
+   {
+    "id": "q_cb7d3b",
+    "q": "¿Quién era el entrenador de la Real Sociedad cuando ganó la Copa del Rey de 1987?",
+    "o": [
+     "Alberto Ormaetxea",
+     "Luis Aragonés",
+     "John Toshack",
+     "Javier Clemente"
+    ],
+    "a": 2,
+    "hint": "El galés John Toshack dirigió a la Real Sociedad entre 1985 y 1989 y ganó la Copa del Rey 1986-87, batiendo al Atlético de Madrid por 4-2 en los penaltis tras un 2-2 en La Romareda. Se marchó al Real Madrid en 1989 y más tarde volvió a San Sebastián en dos ocasiones."
+   },
+   {
+    "id": "q_ce5078",
+    "q": "Dalian Atkinson, fichado del Sheffield Wednesday en 1990 una vez que la Real Sociedad abrió sus puertas a los no vascos, se quedó una sola temporada. ¿A qué club inglés fue después?",
+    "o": [
+     "Manchester City",
+     "Aston Villa",
+     "Ipswich Town",
+     "Coventry City"
+    ],
+    "a": 1,
+    "hint": "Atkinson fichó por el Aston Villa en 1991 por unos 1,6 millones de libras y en octubre de 1992 marcó en Wimbledon el gol en solitario elegido mejor gol de la temporada en la primera campaña de la Premier League. El Ipswich Town había sido su primer club."
+   },
+   {
+    "id": "q_3b3d25",
+    "q": "El momento más repetido de Luis Arconada llegó en la final de la Eurocopa de 1984, cuando una falta se le coló por debajo del cuerpo. ¿Quién la lanzó?",
+    "o": [
+     "Michel Platini",
+     "Alain Giresse",
+     "Jean Tigana",
+     "Luis Fernández"
+    ],
+    "a": 0,
+    "hint": "La falta de Michel Platini se deslizó por debajo del portero de la Real Sociedad y Francia acabó ganando por 2-0. En España el gol se sigue conociendo simplemente como 'el Arconada'."
+   },
+   {
+    "id": "q_ddb1f9",
+    "q": "La Real Sociedad terminó la Liga 1979-80 a un solo punto del campeonato. ¿Cuántos de sus 34 partidos perdió?",
+    "o": [
+     "Ninguno",
+     "Uno",
+     "Dos",
+     "Cuatro"
+    ],
+    "a": 1,
+    "hint": "Solo perdió una vez, pero los 14 empates le salieron caros y el Real Madrid se impuso por 53 puntos a 52. Su racha invicta durante las 32 primeras jornadas era entonces un récord en España."
+   },
+   {
+    "id": "q_5cf576",
+    "q": "La Real Sociedad llegó a las semifinales de la Copa de Europa en la 1982-83 y cayó ante el club que después levantó el trofeo. ¿Qué equipo alemán fue?",
+    "o": [
+     "Hamburgo",
+     "Bayern de Múnich",
+     "Borussia Mönchengladbach",
+     "1. FC Colonia"
+    ],
+    "a": 0,
+    "hint": "El Hamburgo eliminó a la Real Sociedad en semifinales y después ganó a la Juventus por 1-0 en la final de 1983. La Real había dejado en el camino al Víkingur, al Celtic y al Sporting de Portugal."
+   },
+   {
+    "id": "q_e89ae6",
+    "q": "La final de la Copa del Rey de 1987, que la Real Sociedad ganó en los penaltis, se disputó en un estadio neutral. ¿Cuál?",
+    "o": [
+     "Santiago Bernabéu, Madrid",
+     "Mestalla, Valencia",
+     "Sánchez Pizjuán, Sevilla",
+     "La Romareda, Zaragoza"
+    ],
+    "a": 3,
+    "hint": "La final se jugó en La Romareda, en Zaragoza, el 27 de junio de 1987 ante unos 37.000 espectadores. López Ufarte (min. 9) y Txiki Begiristain (min. 36) marcaron en la primera parte, el Atlético de Madrid empató dos veces y, tras el 2-2 en la prórroga, la Real Sociedad ganó 4-2 en los penaltis."
+   },
+   {
+    "id": "q_f4be78",
+    "q": "¿Qué pareja de jugadores de la Real Sociedad se marchó al Barcelona en el verano de 1988 y se convirtió en pilar del Dream Team de Johan Cruyff?",
+    "o": [
+     "Jesús María Zamora y Roberto López Ufarte",
+     "Luis Arconada y Alberto Górriz",
+     "Jesús María Satrústegui y José Antonio Larrañaga",
+     "José Mari Bakero y Txiki Begiristain"
+    ],
+    "a": 3,
+    "hint": "José Mari Bakero y Txiki Begiristain llegaron al Camp Nou en 1988, a la vez que el nuevo entrenador Johan Cruyff. Ambos ganaron allí varias Ligas y la Copa de Europa de 1992."
+   },
+   {
+    "id": "q_4f4af2",
+    "q": "La final de la Copa del Rey de 2020 de la Real Sociedad se acabó jugando en abril de 2021 en La Cartuja, en Sevilla, y se resolvió por 1-0. ¿A qué equipo ganó para levantar el título?",
+    "o": [
+     "Valencia",
+     "Athletic Club",
+     "Real Betis",
+     "Sevilla"
+    ],
+    "a": 1,
+    "hint": "La Real Sociedad ganó 1-0 al Athletic Club en la primera final de Copa del Rey entre dos equipos vascos desde 1927, disputada a puerta cerrada por la pandemia."
+   },
+   {
+    "id": "q_394a3e",
+    "q": "¿Quién transformó el penalti del minuto 63 que dio a la Real Sociedad la Copa del Rey de 2020?",
+    "o": [
+     "Alexander Isak",
+     "David Silva",
+     "Mikel Oyarzabal",
+     "Mikel Merino"
+    ],
+    "a": 2,
+    "hint": "El capitán Mikel Oyarzabal engañó a Unai Simón desde los once metros después de que Portu fuera derribado en el área."
+   },
+   {
+    "id": "q_a1f3c3",
+    "q": "Xabi Alonso se formó en la cantera de la Real Sociedad y dejó el club en agosto de 2004. ¿Qué equipo lo fichó?",
+    "o": [
+     "Liverpool",
+     "Chelsea",
+     "Real Madrid",
+     "Bayern de Múnich"
+    ],
+    "a": 0,
+    "hint": "El Liverpool pagó unos 10,5 millones de libras por él en 2004; sus traspasos al Real Madrid (2009) y al Bayern de Múnich (2014) llegaron mucho después."
+   },
+   {
+    "id": "q_268f2b",
+    "q": "Antoine Griezmann, que entró en la cantera de la Real Sociedad siendo adolescente, fue traspasado en el verano de 2014. ¿Adónde fue?",
+    "o": [
+     "Barcelona",
+     "Atlético de Madrid",
+     "Valencia",
+     "Real Madrid"
+    ],
+    "a": 1,
+    "hint": "El Atlético de Madrid pagó unos 30 millones de euros en 2014 tras una temporada de 16 goles de Griezmann en Liga; su marcha al Barcelona no llegó hasta 2019."
+   },
+   {
+    "id": "q_d76673",
+    "q": "En agosto de 2022 la Real Sociedad ingresó el mayor traspaso de su historia por Alexander Isak. ¿Qué club lo compró?",
+    "o": [
+     "Arsenal",
+     "Tottenham Hotspur",
+     "Liverpool",
+     "Newcastle United"
+    ],
+    "a": 3,
+    "hint": "El Newcastle United pagó 70 millones de euros, entonces récord del club; la Real Sociedad había fichado a Isak del Borussia Dortmund por unos 10 millones en 2019."
+   },
+   {
+    "id": "q_051ee5",
+    "q": "¿En qué ciudad disputa la Real Sociedad sus partidos como local en el Reale Arena?",
+    "o": [
+     "Bilbao",
+     "Vitoria-Gasteiz",
+     "San Sebastián",
+     "Pamplona"
+    ],
+    "a": 2,
+    "hint": "El campo, conocido durante mucho tiempo simplemente como su estadio, está en San Sebastián (Donostia), capital de Gipuzkoa."
+   },
+   {
+    "id": "q_103183",
+    "q": "¿Qué entrenador dirigía a la Real Sociedad que peleó la Liga hasta el final con el Real Madrid en la 2002-03?",
+    "o": [
+     "John Toshack",
+     "Raynald Denoueix",
+     "Philippe Montanier",
+     "Martín Lasarte"
+    ],
+    "a": 1,
+    "hint": "El francés Raynald Denoueix, antes en el Nantes, llevó a la Real Sociedad al segundo puesto en su primera temporada en España."
+   },
+   {
+    "id": "q_dfe900",
+    "q": "La Real Sociedad terminó subcampeona de Liga en la 2002-03. ¿A cuánto acabó del campeón, el Real Madrid?",
+    "o": [
+     "Dos puntos",
+     "Un punto",
+     "Seis puntos",
+     "Nueve puntos"
+    ],
+    "a": 0,
+    "hint": "El Real Madrid terminó con 78 puntos por los 76 de la Real Sociedad, y cerró el título en la última jornada ante el Athletic."
+   },
+   {
+    "id": "q_5aec3d",
+    "q": "Junto al turco Nihat Kahveci, el ataque de la Real Sociedad de la 2002-03 lo lideraba un delantero serbio que vivía su segunda etapa en el club. ¿Quién era?",
+    "o": [
+     "Savo Milošević",
+     "Darko Kovačević",
+     "Mateja Kežman",
+     "Nikola Žigić"
+    ],
+    "a": 1,
+    "hint": "Darko Kovačević jugó primero en la Real Sociedad entre 1996 y 1999, y volvió a mitad de la temporada 2001-02 tras sus etapas en la Juventus y la Lazio."
+   },
+   {
+    "id": "q_e2ffb7",
+    "q": "¿En qué temporada descendió la Real Sociedad de Primera a Segunda División?",
+    "o": [
+     "2004-05",
+     "2008-09",
+     "2006-07",
+     "2001-02"
+    ],
+    "a": 2,
+    "hint": "Terminó decimonovena en la 2006-07 y bajó a la segunda categoría, donde permaneció tres temporadas."
+   },
+   {
+    "id": "q_55cdb2",
+    "q": "La Copa del Rey levantada en La Cartuja fue el primer título importante de la Real Sociedad desde... ¿qué año?",
+    "o": [
+     "1987",
+     "1982",
+     "1993",
+     "2003"
+    ],
+    "a": 0,
+    "hint": "Su título anterior era la Copa del Rey de 1987; las dos Ligas consecutivas de 1981 y 1982 son todavía anteriores."
+   },
+   {
+    "id": "q_4782ab",
+    "q": "La Real Sociedad alcanzó las eliminatorias de la Liga de Campeones en la 2023-24. ¿Qué club la eliminó en octavos de final?",
+    "o": [
+     "Bayern de Múnich",
+     "Manchester City",
+     "Paris Saint-Germain",
+     "Barcelona"
+    ],
+    "a": 2,
+    "hint": "El PSG ganó 2-0 en París y 2-1 en el Reale Arena para un 4-1 global, con Kylian Mbappé marcando en los dos partidos."
+   },
+   {
+    "id": "q_87bd40",
+    "q": "La Real Sociedad fichó a David Silva como agente libre en agosto de 2020. ¿Qué club acababa de dejar?",
+    "o": [
+     "Valencia",
+     "Manchester City",
+     "Manchester United",
+     "Arsenal"
+    ],
+    "a": 1,
+    "hint": "Silva llegó tras diez temporadas en el Manchester City; una grave lesión de rodilla en la pretemporada de 2023 puso fin a su carrera en la Real Sociedad."
+   },
+   {
+    "id": "q_414d6c",
+    "q": "El estadio de la Real Sociedad vivió una gran remodelación que se completó en 2019. ¿Qué elemento se eliminó?",
+    "o": [
+     "Un césped artificial",
+     "La pista de atletismo",
+     "Un fondo de pie tras la portería norte",
+     "Una cubierta retráctil"
+    ],
+    "a": 1,
+    "hint": "Su estadio se inauguró en 1993 como recinto municipal polivalente; la reforma, de unos 47 millones de euros y terminada en octubre de 2019, eliminó la pista de atletismo y elevó el aforo hasta unos 40.000 espectadores."
+   },
+   {
+    "id": "q_5775b3",
+    "q": "La Real Sociedad ganó 1-0 en Old Trafford en la fase de grupos de la Liga Europa en septiembre de 2022. ¿Quién marcó el penalti que decidió el partido?",
+    "o": [
+     "Alexander Sørloth",
+     "David Silva",
+     "Brais Méndez",
+     "Mikel Merino"
+    ],
+    "a": 2,
+    "hint": "Brais Méndez transformó el penalti en el minuto 59 después de que el árbitro Marco Di Bello señalara unas manos discutidas de Lisandro Martínez, una decisión que el VAR revisó y mantuvo, y la Real Sociedad aguantó el resultado en Old Trafford."
+   },
+   {
+    "id": "q_8cd821",
+    "q": "Antes de asentarse en la Real Sociedad, Xabi Alonso pasó la primera mitad de la temporada 2000-01 cedido en un club vasco. ¿En cuál?",
+    "o": [
+     "Eibar",
+     "Barakaldo",
+     "Real Unión",
+     "Alavés"
+    ],
+    "a": 0,
+    "hint": "La cesión al Eibar fue su primera etapa larga en el fútbol profesional; John Toshack, que llegó al banquillo en enero de 2001, lo hizo volver y más tarde le dio el brazalete de capitán con 20 años."
+   },
+   {
+    "id": "q_ff6010",
+    "q": "La Real Sociedad ganó el título de Segunda División en la 2009-10 para volver a Primera. ¿Qué entrenador dirigió ese ascenso?",
+    "o": [
+     "Chris Coleman",
+     "Martín Lasarte",
+     "Jagoba Arrasate",
+     "Philippe Montanier"
+    ],
+    "a": 1,
+    "hint": "El uruguayo Martín Lasarte se hizo cargo del equipo en 2009 y logró el ascenso a la primera; Chris Coleman había dirigido al club antes, durante esa etapa en la categoría de plata."
+   }
+  ],
+  "prose": {
+   "h1": "Quiz de la Real Sociedad",
+   "title": "Quiz de la Real Sociedad | Ball IQ",
+   "description": "Pon a prueba lo que sabes de la Real Sociedad: las Ligas de Ormaetxea, la Copa de La Cartuja, Arconada, Xabi Alonso e Isak.",
+   "intro": [
+    "De Atotxa al Reale Arena, de las dos Ligas seguidas de principios de los ochenta a la Copa del Rey levantada a puerta cerrada en La Cartuja: la historia de la Real Sociedad tiene capítulos que cualquier txuri-urdin se sabe de memoria y detalles que separan al aficionado del erudito.",
+    "Aquí hay preguntas sobre el gol de Zamora en El Molinón, sobre el título que se decidió por el particular con el Real Madrid, sobre la falta de Platini que persigue a Luis Arconada y sobre el fichaje de John Aldridge que cambió para siempre la política de cantera del club.",
+    "También sobre lo moderno: la Real de Denoueix que aguantó hasta la última jornada, el penalti de Oyarzabal, la noche de Old Trafford y los traspasos de Xabi Alonso, Griezmann e Isak.",
+    "Todas las respuestas están verificadas y cada pregunta lleva su pista. Juega y descubre hasta dónde llega tu Ball IQ realista."
+   ],
+   "faq": [
+    {
+     "q": "¿Cuántas Ligas ha ganado la Real Sociedad?",
+     "a": "Dos, ganadas de forma consecutiva en la 1980-81 y la 1981-82, ambas con Alberto Ormaetxea en el banquillo. La primera se decidió por el particular ante el Real Madrid tras acabar empatados a 45 puntos."
+    },
+    {
+     "q": "¿Cuándo dejó la Real Sociedad de fichar solo a jugadores vascos?",
+     "a": "En 1989, con la llegada del delantero irlandés John Aldridge desde el Liverpool. Fue el primer jugador no vasco fichado por el club en más de cuatro décadas; Dalian Atkinson llegó al año siguiente."
+    },
+    {
+     "q": "¿Qué gran título ganó la Real Sociedad en 2020?",
+     "a": "La Copa del Rey de 2020, disputada en abril de 2021 en La Cartuja y ganada por 1-0 al Athletic Club con un penalti de Mikel Oyarzabal. Era su primer título importante desde la Copa de 1987."
+    },
+    {
+     "q": "¿Dónde juega la Real Sociedad?",
+     "a": "En el Reale Arena de San Sebastián, inaugurado en 1993 como Anoeta. La reforma terminada en octubre de 2019 eliminó la pista de atletismo y dejó el aforo en unos 40.000 espectadores."
+    }
+   ],
+   "kind": "Quiz de club",
+   "playLabel": "Jugar el quiz",
+   "statLine": "Ligas, Copas y cantera: de Atotxa al Reale Arena",
+   "tasterPh": "Prueba una pregunta antes de empezar",
+   "faqH": "Preguntas frecuentes sobre la Real Sociedad",
+   "aboutQ": "Sobre este quiz de la Real Sociedad"
+  }
+ }
+]
