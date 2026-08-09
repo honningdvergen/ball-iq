@@ -97,7 +97,6 @@ function DesktopFootleHero({ onPlay }) {
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
 function HomeScreenImpl({
-  clubPreview = [],
   profile,
   loginStreak,
   streakPulsing,
@@ -533,7 +532,7 @@ function HomeScreenImpl({
           // one — and a first-time player got no recommended way in. Club Quiz
           // is promoted to a full-width tile because it is the deepest content
           // we have and the one that asks the player about themselves.
-          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   feature: true, onTap: () => startMode("clubquiz") },
+          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   accentIcon: true, onTap: () => startMode("clubquiz") },
           // Trail takes the second slot once it is live — League Quiz has ONE
           // lifetime play and Trail is a daily, so it earns the position. The
           // whole entry is gated on the schedule actually having a puzzle, so
@@ -550,34 +549,21 @@ function HomeScreenImpl({
           { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
           { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
           { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
-        ].map(({ key, Icon, name, desc, onTap, iconColor, feature, isNew }) => {
+        ].map(({ key, Icon, name, desc, onTap, iconColor, accentIcon, isNew }) => {
           const showNew = isNew && !seenModes[key];
           return (
             <button
               key={key}
-              className={`play-card${feature ? " play-card--feature" : ""}`}
+              className={`play-card${accentIcon ? " play-card--accent" : ""}`}
               onClick={() => { markModeSeen(key); (onTap || (() => startMode(key)))(); }}
             >
               <span className="play-card-icon">
-                <Icon size={feature ? 24 : 20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
+                <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
               </span>
               <span className="play-card-body">
                 <span className="play-card-name">{name}</span>
                 <span className="play-card-desc">{desc}</span>
               </span>
-              {/* ⚠️ A FULL-WIDTH CARD MUST EARN ITS WIDTH.
-                  The feature card spans both columns but its content sat on the
-                  left, leaving ~55% empty — which reads as a layout that failed,
-                  not as a promoted mode. "Play with Friends" directly above gets
-                  away with full width because two buttons fill it. Crests fill
-                  this one AND make "Pick your club" concrete. */}
-              {feature && clubPreview.length > 0 && (
-                <span className="play-card-crests" aria-hidden="true">
-                  {clubPreview.map((c) => (
-                    <span key={c.key} className="pc-crest" style={{ background: c.color, color: c.fg }}>{c.abbr}</span>
-                  ))}
-                </span>
-              )}
               {showNew && <span className="play-card-badge">NEW</span>}
             </button>
           );
