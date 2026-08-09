@@ -421,6 +421,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .play-card--feature .play-card-icon{width:48px;height:48px;margin-bottom:0;flex:0 0 auto;border-color:var(--accent);}
 .play-card--feature .play-card-name{font-size:18px;}
 .play-card--feature .play-card-desc{font-size:13px;-webkit-line-clamp:1;}
+/* Crest strip. ⚠️ IT LIVES INSIDE THE BODY, UNDER THE TEXT — not to the right
+   of it. Placed alongside, the strip is flex:0 0 auto and wins the width
+   fight, which truncated the title to "Cl…". Stacking gives both the full
+   remaining width and lets the card grow instead of clipping. */
+.play-card--feature .play-card-body{min-width:0;display:flex;flex-direction:column;}
+.play-card-crests{display:flex;align-items:center;gap:6px;margin-top:9px;}
+.pc-crest{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;letter-spacing:0.02em;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);}
+@media(max-width:340px){.pc-crest:nth-child(n+4){display:none;}}
+
 /* Play-card "coming soon" modifier — amber pill in the top-right + muted look. */
 .play-card.coming-soon{opacity:0.78;}
 .play-card.coming-soon .play-card-badge{position:absolute;top:8px;right:8px;background:rgba(255,193,7,0.15);color:#FFC107;font-size:9px;letter-spacing:0.12em;padding:3px 8px;text-transform:uppercase;}

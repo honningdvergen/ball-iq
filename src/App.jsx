@@ -897,6 +897,7 @@ const QUIZ_SLUG_TO_CAT = {
 // ?quiz=…), not the marketing homepage — the boot routing above already
 // handles these params; shares just never used them.
 const PACK_TO_CLUB_SLUG = Object.fromEntries(Object.entries(CLUB_SLUG_TO_PACK).map(([s, k]) => [k, s]));
+
 const CAT_TO_QUIZ_SLUG = Object.fromEntries(Object.entries(QUIZ_SLUG_TO_CAT).map(([s, c]) => [c, s]));
 
 // ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
@@ -1386,6 +1387,26 @@ export const CLUB_PACKS = {
     questions: [],
   },
 };
+
+// Crest chips shown on the Club Quiz card.
+// ⚠️ MUST SIT AFTER CLUB_PACKS. `const` is not hoisted, so declaring this
+// above CLUB_PACKS evaluated it before CLUB_PACKS existed and the whole app
+// rendered a blank screen — a module-init failure, not a React one, so it
+// showed up as "undefined is not an object" with no component in the trace. DERIVED from CLUB_PACKS, never a
+// hand-typed list: a renamed or removed pack silently drops out of the strip
+// instead of rendering a club we no longer have. Order is the display order.
+export const CLUB_CREST_PREVIEW = ["Arsenal", "Liverpool", "Barcelona", "RealMadrid", "Juventus"]
+  .filter((k) => CLUB_PACKS[k])
+  .map((k) => {
+    const color = CLUB_PACKS[k].color || "#222";
+    // Relative luminance -> pick black or white text. Real Madrid ships white
+    // and Juventus black, so a hard-coded label colour is unreadable on one of
+    // them whichever you pick.
+    const h = color.replace("#", "");
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return { key: k, abbr: CLUB_ABBR[k] || clubInitials(CLUB_PACKS[k].name), color, fg: lum > 0.55 ? "#0B0B0B" : "#FFFFFF" };
+  });
 
 // Multiplayer/local topics — the "what you play" axis. ids are "mixed" |
 // "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by TopicPickerSheet (used
@@ -11001,6 +11022,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="home">
             <HomeScreen
+              clubPreview={CLUB_CREST_PREVIEW}
               profile={profile}
               loginStreak={loginStreak}
               streakPulsing={streakPulsing}

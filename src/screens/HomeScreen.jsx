@@ -97,6 +97,7 @@ function DesktopFootleHero({ onPlay }) {
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
 function HomeScreenImpl({
+  clubPreview = [],
   profile,
   loginStreak,
   streakPulsing,
@@ -564,6 +565,19 @@ function HomeScreenImpl({
                 <span className="play-card-name">{name}</span>
                 <span className="play-card-desc">{desc}</span>
               </span>
+              {/* ⚠️ A FULL-WIDTH CARD MUST EARN ITS WIDTH.
+                  The feature card spans both columns but its content sat on the
+                  left, leaving ~55% empty — which reads as a layout that failed,
+                  not as a promoted mode. "Play with Friends" directly above gets
+                  away with full width because two buttons fill it. Crests fill
+                  this one AND make "Pick your club" concrete. */}
+              {feature && clubPreview.length > 0 && (
+                <span className="play-card-crests" aria-hidden="true">
+                  {clubPreview.map((c) => (
+                    <span key={c.key} className="pc-crest" style={{ background: c.color, color: c.fg }}>{c.abbr}</span>
+                  ))}
+                </span>
+              )}
               {showNew && <span className="play-card-badge">NEW</span>}
             </button>
           );
