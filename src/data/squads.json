@@ -11,6 +11,16 @@
       "started": "2021-01-01"
     },
     {
+      "id": "Q58323172",
+      "name": "Bruno Guimarães",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Spain",
+      "born": 1997,
+      "dob": "1997-11-16",
+      "started": "2026-08-08"
+    },
+    {
       "id": "Q59306386",
       "name": "Bukayo Saka",
       "position": "winger",
@@ -59,16 +69,6 @@
       "born": 1998,
       "dob": "1998-06-29",
       "started": "2025-08-01"
-    },
-    {
-      "id": "Q63032399",
-      "name": "Fábio Vieira",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Portugal",
-      "born": 2000,
-      "dob": "2000-05-30",
-      "started": "2022-01-01"
     },
     {
       "id": "Q25175970",
@@ -139,16 +139,6 @@
       "born": 1994,
       "dob": "1994-12-04",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q100243106",
-      "name": "Marcelo Flores",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Canada",
-      "born": 2003,
-      "dob": "2003-10-01",
-      "started": "2020-01-01"
     },
     {
       "id": "Q107584170",
@@ -293,16 +283,6 @@
       "started": "2018-01-01"
     },
     {
-      "id": "Q20916833",
-      "name": "Allan",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1997,
-      "dob": "1997-03-03",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q27919507",
       "name": "Ben Woodburn",
       "position": "forward",
@@ -331,16 +311,6 @@
       "born": 2005,
       "dob": "2005-02-07",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q20983677",
-      "name": "Cameron Brannagan",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1996,
-      "dob": "1996-05-09",
-      "started": "2015-01-01"
     },
     {
       "id": "Q28801927",
@@ -416,7 +386,7 @@
       "id": "Q2476368",
       "name": "Harry Wilson",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1997,
       "dob": "1997-03-22",
@@ -553,16 +523,6 @@
       "started": "2025-01-11"
     },
     {
-      "id": "Q22280163",
-      "name": "Ryan Fulton",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "United Kingdom",
-      "born": 1996,
-      "dob": "1996-05-23",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q56257870",
       "name": "Ryan Gravenberch",
       "position": "midfielder",
@@ -576,7 +536,7 @@
       "id": "Q21062024",
       "name": "Ryan Kent",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1996,
       "dob": "1996-11-11",
@@ -643,26 +603,6 @@
       "born": 1998,
       "dob": "1998-04-14",
       "started": "2023-09-01"
-    },
-    {
-      "id": "Q19116103",
-      "name": "André Onana",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Cameroon",
-      "born": 1996,
-      "dob": "1996-04-02",
-      "started": "2023-07-20"
-    },
-    {
-      "id": "Q22004378",
-      "name": "Ashley Fletcher",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 1995,
-      "dob": "1995-10-02",
-      "started": "2015-01-01"
     },
     {
       "id": "Q27019988",
@@ -855,16 +795,6 @@
       "started": "2024-08-30"
     },
     {
-      "id": "Q22951255",
-      "name": "Marcus Rashford",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-10-31",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q38000669",
       "name": "Mason Mount",
       "position": "central midfielder",
@@ -878,7 +808,7 @@
       "id": "Q35831063",
       "name": "Matheus Cunha",
       "position": "attacker",
-      "slot": null,
+      "slot": "FW",
       "nat": "Brazil",
       "born": 1999,
       "dob": "1999-05-27",
@@ -997,16 +927,6 @@
       "started": "2025-09-01"
     },
     {
-      "id": "Q67175861",
-      "name": "Issa Kaboré",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Burkina Faso",
-      "born": 2001,
-      "dob": "2001-05-12",
-      "started": "2020-07-29"
-    },
-    {
       "id": "Q21130217",
       "name": "Jack Byrne",
       "position": "midfielder",
@@ -1087,16 +1007,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q123785598",
-      "name": "Mahamadou Susoho",
-      "position": null,
-      "slot": null,
-      "nat": "Spain",
-      "born": 2005,
-      "dob": "2005-01-20",
-      "started": "2017-01-01"
-    },
-    {
       "id": "Q44737396",
       "name": "Marc Guéhi",
       "position": "centre-back",
@@ -1105,16 +1015,6 @@
       "born": 2000,
       "dob": "2000-07-13",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q20994192",
-      "name": "Marlos Moreno",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Colombia",
-      "born": 1996,
-      "dob": "1996-09-20",
-      "started": "2016-01-01"
     },
     {
       "id": "Q701297",
@@ -1175,16 +1075,6 @@
       "born": 1999,
       "dob": "1999-02-07",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q15980269",
-      "name": "Patrick Roberts",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-02-05",
-      "started": "2015-01-01"
     },
     {
       "id": "Q30729096",
@@ -1257,16 +1147,6 @@
       "started": "2024-07-18"
     },
     {
-      "id": "Q21142452",
-      "name": "Thomas Agyepong",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Ghana",
-      "born": 1996,
-      "dob": "1996-10-10",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q39500352",
       "name": "Tijjani Reijnders",
       "position": "midfielder",
@@ -1275,16 +1155,6 @@
       "born": 1998,
       "dob": "1998-07-29",
       "started": "2025-06-10"
-    },
-    {
-      "id": "Q26707066",
-      "name": "Uriel Antuna",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Mexico",
-      "born": 1997,
-      "dob": "1997-08-21",
-      "started": "2017-01-01"
     }
   ],
   "Tottenham Hotspur": [
@@ -1319,16 +1189,6 @@
       "started": "2024-07-02"
     },
     {
-      "id": "Q113547044",
-      "name": "Ashley Phillips",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 2005,
-      "dob": "2005-06-26",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q21620981",
       "name": "Cameron Carter-Vickers",
       "position": "defender",
@@ -1357,16 +1217,6 @@
       "born": 1998,
       "dob": "1998-04-27",
       "started": "2022-08-30"
-    },
-    {
-      "id": "Q102362241",
-      "name": "Dane Scarlett",
-      "position": "centre-forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 2004,
-      "dob": "2004-03-24",
-      "started": "2020-01-01"
     },
     {
       "id": "Q59914139",
@@ -1422,7 +1272,7 @@
       "id": "Q15084554",
       "name": "Georges-Kévin Nkoudou",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "France",
       "born": 1995,
       "dob": "1995-02-13",
@@ -1539,16 +1389,6 @@
       "started": "2025-07-01"
     },
     {
-      "id": "Q19577463",
-      "name": "Nathan Oduwa",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 1996,
-      "dob": "1996-03-05",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q44080929",
       "name": "Pedro Porro",
       "position": "full-back",
@@ -1557,16 +1397,6 @@
       "born": 1999,
       "dob": "1999-09-13",
       "started": "2023-07-01"
-    },
-    {
-      "id": "Q86835512",
-      "name": "Radu Drăgușin",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Romania",
-      "born": 2002,
-      "dob": "2002-02-03",
-      "started": "2024-01-01"
     },
     {
       "id": "Q20806743",
@@ -1582,7 +1412,7 @@
       "id": "Q18817134",
       "name": "Rodrigo Bentancur",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Uruguay",
       "born": 1997,
       "dob": "1997-06-25",
@@ -1637,16 +1467,6 @@
       "born": 2003,
       "dob": "2003-04-21",
       "started": "2025-08-01"
-    },
-    {
-      "id": "Q126684328",
-      "name": "Yang Min-hyuk",
-      "position": "winger",
-      "slot": "FW",
-      "nat": "South Korea",
-      "born": 2006,
-      "dob": "2006-04-16",
-      "started": "2024-12-16"
     }
   ],
   "Newcastle United": [
@@ -1659,16 +1479,6 @@
       "born": 1998,
       "dob": "1998-05-14",
       "started": "2025-08-01"
-    },
-    {
-      "id": "Q15984451",
-      "name": "Achraf Lazaar",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Italy",
-      "born": 1992,
-      "dob": "1992-01-22",
-      "started": "2016-01-01"
     },
     {
       "id": "Q135891358",
@@ -1704,7 +1514,7 @@
       "id": "Q59064",
       "name": "Andros Townsend",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1991,
       "dob": "1991-07-16",
@@ -1721,16 +1531,6 @@
       "started": "2025-07-11"
     },
     {
-      "id": "Q129257493",
-      "name": "Antonio José Cordero Campillo",
-      "position": "winger",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2006,
-      "dob": "2006-11-14",
-      "started": "2025-07-01"
-    },
-    {
       "id": "Q125805788",
       "name": "Bazoumana Touré",
       "position": "midfielder",
@@ -1741,23 +1541,13 @@
       "started": "2026-01-01"
     },
     {
-      "id": "Q58323172",
-      "name": "Bruno Guimarães",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-11-16",
-      "started": "2022-01-01"
-    },
-    {
       "id": "Q3196721",
       "name": "Chancel Mbemba",
       "position": "centre-back",
       "slot": "DF",
       "nat": "Democratic Republic of the Congo",
-      "born": 1988,
-      "dob": "1988-08-08",
+      "born": 1994,
+      "dob": "1994-08-08",
       "started": "2015-01-01"
     },
     {
@@ -1951,16 +1741,6 @@
       "started": "2025-08-01"
     },
     {
-      "id": "Q91531",
-      "name": "Odysseas Vlachodimos",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Greece",
-      "born": 1994,
-      "dob": "1994-04-26",
-      "started": "2024-01-01"
-    },
-    {
       "id": "Q129887028",
       "name": "Sean Steur",
       "position": "midfielder",
@@ -2123,16 +1903,6 @@
       "started": "2019-01-01"
     },
     {
-      "id": "Q110644260",
-      "name": "Endrick",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Brazil",
-      "born": 2006,
-      "dob": "2006-07-21",
-      "started": "2024-07-01"
-    },
-    {
       "id": "Q19509544",
       "name": "Federico Valverde",
       "position": "midfielder",
@@ -2153,16 +1923,6 @@
       "started": "2019-01-01"
     },
     {
-      "id": "Q123289726",
-      "name": "Franco Mastantuono",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Argentina",
-      "born": 2007,
-      "dob": "2007-08-14",
-      "started": "2026-04-22"
-    },
-    {
       "id": "Q30301454",
       "name": "Ibrahima Konaté",
       "position": "centre-back",
@@ -2171,16 +1931,6 @@
       "born": 1999,
       "dob": "1999-05-25",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q58756067",
-      "name": "Javier Sánchez de Felipe",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-03-14",
-      "started": "2018-01-01"
     },
     {
       "id": "Q86322500",
@@ -2194,7 +1944,7 @@
     },
     {
       "id": "Q66241169",
-      "name": "Jude Belligoal",
+      "name": "Jude Bellingham",
       "position": "midfielder",
       "slot": "MF",
       "nat": "United Kingdom",
@@ -2283,6 +2033,16 @@
       "started": "2016-01-01"
     },
     {
+      "id": "Q133698867",
+      "name": "Yan D.Diomande",
+      "position": "winger",
+      "slot": "FW",
+      "nat": "Ivory Coast",
+      "born": 2006,
+      "dob": "2006-11-14",
+      "started": "2026-08-06"
+    },
+    {
       "id": "Q108159340",
       "name": "Αrda Güler",
       "position": "attacking midfielder",
@@ -2335,26 +2095,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q113499581",
-      "name": "Arthur Vermeeren",
-      "position": null,
-      "slot": null,
-      "nat": "Belgium",
-      "born": 2005,
-      "dob": "2005-02-07",
-      "started": "2024-01-26"
-    },
-    {
-      "id": "Q16236859",
-      "name": "Clément Lenglet",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1995,
-      "dob": "1995-06-17",
-      "started": "2025-07-01"
-    },
-    {
       "id": "Q23771427",
       "name": "Dávid Hancko",
       "position": "defender",
@@ -2373,16 +2113,6 @@
       "born": 2002,
       "dob": "2002-12-18",
       "started": "2020-07-01"
-    },
-    {
-      "id": "Q64733000",
-      "name": "Horațiu Moldovan",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Romania",
-      "born": 1998,
-      "dob": "1998-01-20",
-      "started": "2024-01-01"
     },
     {
       "id": "Q109380452",
@@ -2555,30 +2285,10 @@
       "started": "2024-07-27"
     },
     {
-      "id": "Q15081905",
-      "name": "Thomas Lemar",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 1995,
-      "dob": "1995-11-12",
-      "started": "2018-01-01"
-    },
-    {
-      "id": "Q60689743",
-      "name": "Víctor Mollejo",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Spain",
-      "born": 2001,
-      "dob": "2001-01-21",
-      "started": "2019-01-01"
-    },
-    {
       "id": "Q7944670",
       "name": "Vitolo",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1989,
       "dob": "1989-11-02",
@@ -2627,26 +2337,6 @@
       "started": "2023-01-17"
     },
     {
-      "id": "Q109853508",
-      "name": "Bryan Zaragoza",
-      "position": "winger",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2001,
-      "dob": "2001-09-09",
-      "started": "2024-07-01"
-    },
-    {
-      "id": "Q60839691",
-      "name": "Chris Richards",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United States",
-      "born": 2000,
-      "dob": "2000-03-28",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q100272666",
       "name": "Daniel Peretz",
       "position": "goalkeeper",
@@ -2675,26 +2365,6 @@
       "born": 2007,
       "dob": "2007-03-29",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q120837303",
-      "name": "Frans Krätzig",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Germany",
-      "born": 2003,
-      "dob": "2003-01-14",
-      "started": "2017-01-01"
-    },
-    {
-      "id": "Q110611871",
-      "name": "Gabriel Vidović",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Croatia",
-      "born": 2003,
-      "dob": "2003-12-01",
-      "started": "2022-01-01"
     },
     {
       "id": "Q969725",
@@ -2897,16 +2567,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q28800473",
-      "name": "Sarpreet Singh",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "New Zealand",
-      "born": 1999,
-      "dob": "1999-02-20",
-      "started": "2019-01-01"
-    },
-    {
       "id": "Q111308591",
       "name": "Tom Bischof",
       "position": null,
@@ -2959,16 +2619,6 @@
       "started": "2023-01-01"
     },
     {
-      "id": "Q106691309",
-      "name": "Cher Ndour",
-      "position": null,
-      "slot": null,
-      "nat": "Italy",
-      "born": 2004,
-      "dob": "2004-07-27",
-      "started": "2023-07-12"
-    },
-    {
       "id": "Q112170256",
       "name": "Désiré Doué",
       "position": "winger",
@@ -3017,16 +2667,6 @@
       "born": 1996,
       "dob": "1996-04-03",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q120681423",
-      "name": "Gabriel Moscardo",
-      "position": "defensive midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 2005,
-      "dob": "2005-09-28",
-      "started": "2024-01-25"
     },
     {
       "id": "Q129088593",
@@ -3109,6 +2749,16 @@
       "started": "2025-08-01"
     },
     {
+      "id": "Q72648",
+      "name": "Lucas Digne",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "France",
+      "born": 1993,
+      "dob": "1993-07-20",
+      "started": "2026-08-09"
+    },
+    {
       "id": "Q18924954",
       "name": "Lucas Hernandez",
       "position": "defender",
@@ -3119,14 +2769,14 @@
       "started": "2023-01-01"
     },
     {
-      "id": "Q120970447",
-      "name": "Lucas Lavallée",
-      "position": null,
-      "slot": null,
+      "id": "Q108910786",
+      "name": "Maghnes Akliouche",
+      "position": "attacking midfielder",
+      "slot": "MF",
       "nat": "France",
-      "born": 2003,
-      "dob": "2003-01-01",
-      "started": "2022-01-01"
+      "born": 2002,
+      "dob": "2002-02-25",
+      "started": "2026-08-06"
     },
     {
       "id": "Q36371294",
@@ -3137,16 +2787,6 @@
       "born": 1999,
       "dob": "1999-02-25",
       "started": "2024-06-01"
-    },
-    {
-      "id": "Q131717489",
-      "name": "Naoufel El Hannach",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Morocco",
-      "born": 2006,
-      "dob": "2006-12-07",
-      "started": "2024-08-06"
     },
     {
       "id": "Q134311556",
@@ -3187,26 +2827,6 @@
       "born": 2006,
       "dob": "2006-07-10",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q18394009",
-      "name": "Renato Sanches",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Portugal",
-      "born": 1997,
-      "dob": "1997-08-18",
-      "started": "2022-08-01"
-    },
-    {
-      "id": "Q23762670",
-      "name": "Roli Pereira de Sa",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 1996,
-      "dob": "1996-12-10",
-      "started": "2015-01-01"
     },
     {
       "id": "Q124175192",
@@ -3267,29 +2887,9 @@
       "born": 2001,
       "dob": "2001-10-16",
       "started": "2024-08-01"
-    },
-    {
-      "id": "Q123512674",
-      "name": "Yoram Zague",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 2006,
-      "dob": "2006-05-15",
-      "started": "2024-01-01"
     }
   ],
   "Inter Milan": [
-    {
-      "id": "Q315282",
-      "name": "Adem Ljajić",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Serbia",
-      "born": 1991,
-      "dob": "1991-09-29",
-      "started": "2015-01-01"
-    },
     {
       "id": "Q28561068",
       "name": "Alessandro Bastoni",
@@ -3319,16 +2919,6 @@
       "born": 1996,
       "dob": "1996-04-28",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q42316627",
-      "name": "Andreaw Gravillon",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1998,
-      "dob": "1998-02-08",
-      "started": "2019-01-01"
     },
     {
       "id": "Q17403395",
@@ -3419,16 +3009,6 @@
       "born": 1988,
       "dob": "1988-02-10",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q21622771",
-      "name": "Giacomo Sciacca",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Italy",
-      "born": 1996,
-      "dob": "1996-04-19",
-      "started": "2015-01-01"
     },
     {
       "id": "Q763465",
@@ -3551,16 +3131,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q62076054",
-      "name": "Sebastiano Esposito",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Italy",
-      "born": 2002,
-      "dob": "2002-07-02",
-      "started": "2019-01-01"
-    },
-    {
       "id": "Q21066014",
       "name": "Silvester Shkalla",
       "position": "defender",
@@ -3569,39 +3139,9 @@
       "born": 1995,
       "dob": "1995-08-10",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q108143767",
-      "name": "Tibo Persyn",
-      "position": null,
-      "slot": null,
-      "nat": "Belgium",
-      "born": 2002,
-      "dob": "2002-03-13",
-      "started": "2018-07-01"
-    },
-    {
-      "id": "Q111346268",
-      "name": "Valentín Carboni",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Argentina",
-      "born": 2005,
-      "dob": "2005-03-05",
-      "started": "2022-07-01"
     }
   ],
   "Juventus": [
-    {
-      "id": "Q16524787",
-      "name": "Alberto Brignoli",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Italy",
-      "born": 1991,
-      "dob": "1991-08-19",
-      "started": "2015-01-01"
-    },
     {
       "id": "Q22673201",
       "name": "Andrea Favilli",
@@ -3673,16 +3213,6 @@
       "started": "2024-07-01"
     },
     {
-      "id": "Q23762815",
-      "name": "Dušan Vlahović",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Serbia",
-      "born": 2000,
-      "dob": "2000-01-28",
-      "started": "2022-01-01"
-    },
-    {
       "id": "Q105477844",
       "name": "Fabio Miretti",
       "position": "midfielder",
@@ -3701,16 +3231,6 @@
       "born": 1998,
       "dob": "1998-06-24",
       "started": "2022-01-31"
-    },
-    {
-      "id": "Q249198",
-      "name": "Filip Kostić",
-      "position": "left midfielder",
-      "slot": "MF",
-      "nat": "Serbia",
-      "born": 1992,
-      "dob": "1992-11-01",
-      "started": "2022-08-01"
     },
     {
       "id": "Q99617367",
@@ -3803,16 +3323,6 @@
       "started": "2023-01-01"
     },
     {
-      "id": "Q19861120",
-      "name": "Mattia Vitale",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Italy",
-      "born": 1997,
-      "dob": "1997-10-01",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q42317168",
       "name": "Michele Di Gregorio",
       "position": "goalkeeper",
@@ -3856,7 +3366,7 @@
       "id": "Q93504",
       "name": "Roberto Pereyra",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Argentina",
       "born": 1991,
       "dob": "1991-01-07",
@@ -3903,26 +3413,6 @@
       "started": "2024-08-28"
     },
     {
-      "id": "Q50349931",
-      "name": "Tiago Djaló",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Portugal",
-      "born": 2000,
-      "dob": "2000-04-09",
-      "started": "2024-01-22"
-    },
-    {
-      "id": "Q31871265",
-      "name": "Timothy Weah",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United States",
-      "born": 2000,
-      "dob": "2000-02-22",
-      "started": "2023-07-01"
-    },
-    {
       "id": "Q29998966",
       "name": "Weston McKennie",
       "position": "midfielder",
@@ -3931,6 +3421,16 @@
       "born": 1998,
       "dob": "1998-08-28",
       "started": "2021-01-01"
+    },
+    {
+      "id": "Q50628268",
+      "name": "Zeki Çelik",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Turkey",
+      "born": 1997,
+      "dob": "1997-02-17",
+      "started": "2026-07-01"
     }
   ],
   "AC Milan": [
@@ -3963,16 +3463,6 @@
       "born": 1991,
       "dob": "1991-01-11",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q113572629",
-      "name": "Andreas Jungdal",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Kingdom of Denmark",
-      "born": 2002,
-      "dob": "2002-02-22",
-      "started": "2022-07-01"
     },
     {
       "id": "Q20831432",
@@ -4028,7 +3518,7 @@
       "id": "Q84247209",
       "name": "Daniel Maldini",
       "position": "playmaker",
-      "slot": null,
+      "slot": "MF",
       "nat": "Italy",
       "born": 2001,
       "dob": "2001-10-11",
@@ -4075,16 +3565,6 @@
       "started": "2026-06-30"
     },
     {
-      "id": "Q24007299",
-      "name": "Jens Petter Hauge",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Norway",
-      "born": 1999,
-      "dob": "1999-10-12",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q15715173",
       "name": "José Mauri",
       "position": "midfielder",
@@ -4103,16 +3583,6 @@
       "born": 2002,
       "dob": "2002-06-12",
       "started": "2025-08-13"
-    },
-    {
-      "id": "Q64896366",
-      "name": "Lorenzo Colombo",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Italy",
-      "born": 2002,
-      "dob": "2002-03-08",
-      "started": "2020-01-01"
     },
     {
       "id": "Q130316144",
@@ -4175,16 +3645,6 @@
       "started": "2025-07-01"
     },
     {
-      "id": "Q98815671",
-      "name": "Pierre Kalulu",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 2000,
-      "dob": "2000-06-05",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q30055335",
       "name": "Rafael Leão",
       "position": "winger",
@@ -4218,7 +3678,7 @@
       "id": "Q57017297",
       "name": "Samuel Chukwueze",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Nigeria",
       "born": 1999,
       "dob": "1999-05-22",
@@ -4347,16 +3807,6 @@
       "started": "2020-07-01"
     },
     {
-      "id": "Q20995048",
-      "name": "Felix Passlack",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Germany",
-      "born": 1998,
-      "dob": "1998-05-29",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q36184031",
       "name": "Gregor Kobel",
       "position": "goalkeeper",
@@ -4445,16 +3895,6 @@
       "born": 1993,
       "dob": "1993-04-01",
       "started": "2019-01-01"
-    },
-    {
-      "id": "Q17518494",
-      "name": "Pascal Stenzel",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Germany",
-      "born": 1996,
-      "dob": "1996-03-20",
-      "started": "2015-01-01"
     },
     {
       "id": "Q21923379",
@@ -4599,6 +4039,16 @@
       "started": "2019-01-01"
     },
     {
+      "id": "Q160472",
+      "name": "Marc-André ter Stegen",
+      "position": "goalkeeper",
+      "slot": "GK",
+      "nat": "Germany",
+      "born": 1992,
+      "dob": "1992-04-30",
+      "started": "2026-08-01"
+    },
+    {
       "id": "Q127607065",
       "name": "Maximilian Ibrahimović",
       "position": "left winger",
@@ -4699,20 +4149,10 @@
       "started": "2019-01-01"
     },
     {
-      "id": "Q21286402",
-      "name": "Takehiro Tomiyasu",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Japan",
-      "born": 1998,
-      "dob": "1998-11-05",
-      "started": "2025-12-01"
-    },
-    {
       "id": "Q19588392",
       "name": "Václav Černý",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Czech Republic",
       "born": 1997,
       "dob": "1997-10-17",
@@ -4720,16 +4160,6 @@
     }
   ],
   "Napoli": [
-    {
-      "id": "Q21403452",
-      "name": "Adam Ounas",
-      "position": "wing half",
-      "slot": null,
-      "nat": "France",
-      "born": 1996,
-      "dob": "1996-11-11",
-      "started": "2017-01-01"
-    },
     {
       "id": "Q18637410",
       "name": "Alberto Grassi",
@@ -4774,7 +4204,7 @@
       "id": "Q471403",
       "name": "Amin Younes",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Germany",
       "born": 1993,
       "dob": "1993-08-06",
@@ -4814,7 +4244,7 @@
       "id": "Q27801691",
       "name": "David Neres",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Brazil",
       "born": 1997,
       "dob": "1997-03-03",
@@ -4921,26 +4351,6 @@
       "started": "2021-01-01"
     },
     {
-      "id": "Q65553869",
-      "name": "Michael Folorunsho",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Italy",
-      "born": 1998,
-      "dob": "1998-02-07",
-      "started": "2019-07-01"
-    },
-    {
-      "id": "Q85713553",
-      "name": "Miguel Gutiérrez",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 2001,
-      "dob": "2001-07-27",
-      "started": "2025-01-01"
-    },
-    {
       "id": "Q29441778",
       "name": "Noa Lang",
       "position": "midfielder",
@@ -5031,16 +4441,6 @@
       "started": "2016-01-01"
     },
     {
-      "id": "Q69580745",
-      "name": "Walid Cheddira",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Morocco",
-      "born": 1998,
-      "dob": "1998-01-22",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q19968773",
       "name": "Zinédine Machach",
       "position": "midfielder",
@@ -5052,26 +4452,6 @@
     }
   ],
   "Galatasaray": [
-    {
-      "id": "Q17432101",
-      "name": "Alperen Uysal",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Turkey",
-      "born": 1994,
-      "dob": "1994-01-01",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q20688718",
-      "name": "Angeliño",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-01-04",
-      "started": "2023-07-12"
-    },
     {
       "id": "Q138866974",
       "name": "Arda Tagay",
@@ -5283,16 +4663,6 @@
       "started": "2026-01-29"
     },
     {
-      "id": "Q15043990",
-      "name": "Przemysław Frankowski",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Poland",
-      "born": 1995,
-      "dob": "1995-04-12",
-      "started": "2025-07-01"
-    },
-    {
       "id": "Q18217954",
       "name": "Roland Sallai",
       "position": "forward",
@@ -5301,16 +4671,6 @@
       "born": 1997,
       "dob": "1997-05-22",
       "started": "2024-09-13"
-    },
-    {
-      "id": "Q63699748",
-      "name": "Sacha Boey",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "France",
-      "born": 2000,
-      "dob": "2000-09-13",
-      "started": "2021-07-26"
     },
     {
       "id": "Q2071136",
@@ -5346,7 +4706,7 @@
       "id": "Q2478788",
       "name": "Umut Gündoğan",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Belgium",
       "born": 1990,
       "dob": "1990-06-12",
@@ -5361,16 +4721,6 @@
       "born": 1998,
       "dob": "1998-12-29",
       "started": "2025-07-31"
-    },
-    {
-      "id": "Q713711",
-      "name": "Wilfried Zaha",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 1992,
-      "dob": "1992-11-10",
-      "started": "2023-07-25"
     },
     {
       "id": "Q136706059",
@@ -5433,16 +4783,6 @@
       "born": 1995,
       "dob": "1995-06-17",
       "started": "2026-07-01"
-    },
-    {
-      "id": "Q5186215",
-      "name": "Cristian Lema",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Argentina",
-      "born": 1990,
-      "dob": "1990-09-12",
-      "started": "2018-01-01"
     },
     {
       "id": "Q3050480",
@@ -5528,21 +4868,11 @@
       "id": "Q18127780",
       "name": "Nuno Santos",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Portugal",
       "born": 1995,
       "dob": "1995-02-13",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q56788302",
-      "name": "Orkun Kökçü",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Turkey",
-      "born": 2000,
-      "dob": "2000-12-29",
-      "started": "2023-06-10"
     },
     {
       "id": "Q15907851",
@@ -5553,16 +4883,6 @@
       "born": 1993,
       "dob": "1993-05-17",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q134993871",
-      "name": "Rafael Luís",
-      "position": "defensive midfielder",
-      "slot": "MF",
-      "nat": "Portugal",
-      "born": 2005,
-      "dob": "2005-02-18",
-      "started": "2025-01-01"
     },
     {
       "id": "Q117322318",
@@ -5590,7 +4910,7 @@
       "id": "Q27691",
       "name": "Alberto Bueno",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1988,
       "dob": "1988-03-20",
@@ -5645,16 +4965,6 @@
       "born": 1999,
       "dob": "1999-09-19",
       "started": "2021-01-01"
-    },
-    {
-      "id": "Q20974228",
-      "name": "Diogo Verdasca",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Portugal",
-      "born": 1996,
-      "dob": "1996-10-26",
-      "started": "2016-01-01"
     },
     {
       "id": "Q16887738",
@@ -5730,7 +5040,7 @@
       "id": "Q16236986",
       "name": "Ivo Rodrigues",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Portugal",
       "born": 1995,
       "dob": "1995-03-30",
@@ -5760,7 +5070,7 @@
       "id": "Q607790",
       "name": "Jesús Manuel Corona",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Mexico",
       "born": 1993,
       "dob": "1993-01-06",
@@ -5932,7 +5242,7 @@
       "id": "Q5525513",
       "name": "Gary Mackay-Steven",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1990,
       "dob": "1990-08-31",
@@ -6042,7 +5352,7 @@
       "id": "Q18217681",
       "name": "Michael Duffy",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1994,
       "dob": "1994-07-28",
@@ -6119,16 +5429,6 @@
       "started": "2019-01-01"
     },
     {
-      "id": "Q4069670",
-      "name": "Stuart Armstrong",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1992,
-      "dob": "1992-03-30",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q23005609",
       "name": "Tomoki Iwata",
       "position": "midfielder",
@@ -6137,16 +5437,6 @@
       "born": 1997,
       "dob": "1997-04-07",
       "started": "2023-07-01"
-    },
-    {
-      "id": "Q16264162",
-      "name": "Yōsuke Ideguchi",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Japan",
-      "born": 1996,
-      "dob": "1996-08-23",
-      "started": "2022-01-01"
     }
   ],
   "Rangers": [
@@ -6214,7 +5504,7 @@
       "id": "Q55500500",
       "name": "Glenn Middleton",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 2000,
       "dob": "2000-01-01",
@@ -6289,16 +5579,6 @@
       "born": 1997,
       "dob": "1997-01-03",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q60842113",
-      "name": "José Cifuentes",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Ecuador",
-      "born": 1999,
-      "dob": "1999-03-12",
-      "started": "2023-01-01"
     },
     {
       "id": "Q6386855",
@@ -6413,16 +5693,6 @@
   ],
   "Marseille": [
     {
-      "id": "Q30138117",
-      "name": "Abdallah Ali Mohamed",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1999,
-      "dob": "1999-04-11",
-      "started": "2019-07-03"
-    },
-    {
       "id": "Q22279825",
       "name": "Antoine Rabillard",
       "position": "forward",
@@ -6461,16 +5731,6 @@
       "born": 1991,
       "dob": "1991-04-11",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q59306395",
-      "name": "Christopher Rocchia",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1998,
-      "dob": "1998-02-01",
-      "started": "2017-01-01"
     },
     {
       "id": "Q29901014",
@@ -6668,7 +5928,7 @@
       "id": "Q62085431",
       "name": "Ayase Ueda",
       "position": "attacker",
-      "slot": null,
+      "slot": "FW",
       "nat": "Japan",
       "born": 1998,
       "dob": "1998-08-28",
@@ -6867,26 +6127,6 @@
   ],
   "PSV": [
     {
-      "id": "Q109096490",
-      "name": "Adamo Nagalo",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Burkina Faso",
-      "born": 2002,
-      "dob": "2002-09-22",
-      "started": "2024-09-02"
-    },
-    {
-      "id": "Q20898221",
-      "name": "Antonio Latorre Grueso",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-11-21",
-      "started": "2019-07-05"
-    },
-    {
       "id": "Q130459793",
       "name": "Ayodele Thomas",
       "position": "left winger",
@@ -6895,16 +6135,6 @@
       "born": 2007,
       "dob": "2007-07-23",
       "started": "2024-01-01"
-    },
-    {
-      "id": "Q22003403",
-      "name": "Bob Groenendijk",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1996,
-      "dob": "1996-05-15",
-      "started": "2015-01-01"
     },
     {
       "id": "Q140288733",
@@ -6937,16 +6167,6 @@
       "started": "2025-08-01"
     },
     {
-      "id": "Q18921825",
-      "name": "Erick Gutiérrez",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Mexico",
-      "born": 1995,
-      "dob": "1995-06-15",
-      "started": "2018-01-01"
-    },
-    {
       "id": "Q108518721",
       "name": "Esmir Bajraktarević",
       "position": "midfielder",
@@ -6955,6 +6175,16 @@
       "born": 2005,
       "dob": "2005-03-10",
       "started": "2025-01-02"
+    },
+    {
+      "id": "Q249198",
+      "name": "Filip Kostić",
+      "position": "left midfielder",
+      "slot": "MF",
+      "nat": "Serbia",
+      "born": 1992,
+      "dob": "1992-11-01",
+      "started": "2026-08-01"
     },
     {
       "id": "Q26385193",
@@ -6977,16 +6207,6 @@
       "started": "2024-09-01"
     },
     {
-      "id": "Q112192997",
-      "name": "Jason van Duiven",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 2005,
-      "dob": "2005-02-24",
-      "started": "2018-01-01"
-    },
-    {
       "id": "Q28038574",
       "name": "Jerdy Schouten",
       "position": "midfielder",
@@ -6997,16 +6217,6 @@
       "started": "2023-08-01"
     },
     {
-      "id": "Q21712225",
-      "name": "Joey Konings",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1998,
-      "dob": "1998-04-21",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q27518278",
       "name": "Joey Veerman",
       "position": "midfielder",
@@ -7015,16 +6225,6 @@
       "born": 1998,
       "dob": "1998-11-19",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q20972371",
-      "name": "Jurich Carolina",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1998,
-      "dob": "1998-07-15",
-      "started": "2015-01-01"
     },
     {
       "id": "Q20676495",
@@ -7045,16 +6245,6 @@
       "born": 1992,
       "dob": "1992-12-01",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q21064889",
-      "name": "Martijn Berden",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1997,
-      "dob": "1997-07-29",
-      "started": "2015-01-01"
     },
     {
       "id": "Q1362594",
@@ -7117,16 +6307,6 @@
       "started": "2020-01-01"
     },
     {
-      "id": "Q20890517",
-      "name": "Ramon-Pascal Lundqvist",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Sweden",
-      "born": 1997,
-      "dob": "1997-05-10",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q62597239",
       "name": "Ricardo Pepi",
       "position": "forward",
@@ -7135,16 +6315,6 @@
       "born": 2003,
       "dob": "2003-01-09",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q20972400",
-      "name": "Sam Lammers",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1997,
-      "dob": "1997-04-30",
-      "started": "2015-01-01"
     },
     {
       "id": "Q57456989",
@@ -7165,26 +6335,398 @@
       "born": 1996,
       "dob": "1996-06-09",
       "started": "2015-01-01"
+    }
+  ],
+  "Anderlecht": [
+    {
+      "id": "Q138317076",
+      "name": "Adjani Mujangi Bia",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Belgium",
+      "born": 2010,
+      "dob": "2010-01-01",
+      "started": "2026-01-01"
     },
     {
-      "id": "Q21064853",
-      "name": "Sven Blummel",
+      "id": "Q372709",
+      "name": "Alexander Büttner",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Kingdom of the Netherlands",
+      "born": 1989,
+      "dob": "1989-02-11",
+      "started": "2016-01-01"
+    },
+    {
+      "id": "Q66729700",
+      "name": "Alexis Flips",
       "position": "forward",
       "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1996,
-      "dob": "1996-09-08",
+      "nat": "France",
+      "born": 2000,
+      "dob": "2000-01-18",
+      "started": "2023-08-12"
+    },
+    {
+      "id": "Q645957",
+      "name": "Colin Coosemans",
+      "position": "goalkeeper",
+      "slot": "GK",
+      "nat": "Belgium",
+      "born": 1992,
+      "dob": "1992-08-03",
+      "started": "2021-07-01"
+    },
+    {
+      "id": "Q50042926",
+      "name": "Dauda Mohammed",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Ghana",
+      "born": 1998,
+      "dob": "1998-02-20",
+      "started": "2019-06-30"
+    },
+    {
+      "id": "Q18046760",
+      "name": "Derrick Luckassen",
+      "position": "defender",
+      "slot": "DF",
+      "nat": "Ghana",
+      "born": 1995,
+      "dob": "1995-07-03",
+      "started": "2019-08-31"
+    },
+    {
+      "id": "Q132130428",
+      "name": "Elyess Dao",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "France",
+      "born": 2006,
+      "dob": "2006-01-01",
+      "started": "2025-01-01"
+    },
+    {
+      "id": "Q46696898",
+      "name": "Francis Amuzu",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Belgium",
+      "born": 1999,
+      "dob": "1999-08-23",
+      "started": "2018-01-01"
+    },
+    {
+      "id": "Q135692995",
+      "name": "Gabriel Biladi",
+      "position": "winger",
+      "slot": "FW",
+      "nat": "Belgium",
+      "born": 2009,
+      "dob": "2009-01-01",
+      "started": "2025-01-01"
+    },
+    {
+      "id": "Q56011432",
+      "name": "Hannes Delcroix",
+      "position": "centre-back",
+      "slot": "DF",
+      "nat": "Belgium",
+      "born": 1999,
+      "dob": "1999-02-28",
+      "started": "2018-07-01"
+    },
+    {
+      "id": "Q27680",
+      "name": "Ivan Obradović",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Serbia",
+      "born": 1988,
+      "dob": "1988-07-25",
       "started": "2015-01-01"
     },
     {
-      "id": "Q21129889",
-      "name": "Yanick van Osch",
+      "id": "Q20807270",
+      "name": "Josh Cullen",
+      "position": "defender",
+      "slot": "DF",
+      "nat": "Ireland",
+      "born": 1996,
+      "dob": "1996-04-07",
+      "started": "2020-10-05"
+    },
+    {
+      "id": "Q112306203",
+      "name": "Justin Heekeren",
+      "position": null,
+      "slot": null,
+      "nat": null,
+      "born": 2000,
+      "dob": "2000-11-27",
+      "started": "2026-01-01"
+    },
+    {
+      "id": "Q28925148",
+      "name": "Justin Lonwijk",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Suriname",
+      "born": 1999,
+      "dob": "1999-12-21",
+      "started": "2023-07-25"
+    },
+    {
+      "id": "Q594733",
+      "name": "Kara Mbodji",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Senegal",
+      "born": 1989,
+      "dob": "1989-11-22",
+      "started": "2015-01-01"
+    },
+    {
+      "id": "Q16235815",
+      "name": "Kenny Saief",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "United States",
+      "born": 1993,
+      "dob": "1993-12-17",
+      "started": "2018-01-01"
+    },
+    {
+      "id": "Q104192876",
+      "name": "Lucas Lissens",
+      "position": null,
+      "slot": null,
+      "nat": "Belgium",
+      "born": 2001,
+      "dob": "2001-05-25",
+      "started": "2021-01-01"
+    },
+    {
+      "id": "Q4806248",
+      "name": "Ludwig Augustinsson",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Sweden",
+      "born": 1994,
+      "dob": "1994-04-21",
+      "started": "2024-01-01"
+    },
+    {
+      "id": "Q105588793",
+      "name": "Luis Vázquez",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Argentina",
+      "born": 2001,
+      "dob": "2001-01-14",
+      "started": "2023-07-26"
+    },
+    {
+      "id": "Q39082413",
+      "name": "Lukas Nmecha",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "United Kingdom",
+      "born": 1998,
+      "dob": "1998-12-14",
+      "started": "2020-08-20"
+    },
+    {
+      "id": "Q37810302",
+      "name": "Majeed Ashimeru",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Ghana",
+      "born": 1997,
+      "dob": "1997-10-10",
+      "started": "2021-01-13"
+    },
+    {
+      "id": "Q66124949",
+      "name": "Marco Kana",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Belgium",
+      "born": 2002,
+      "dob": "2002-08-08",
+      "started": "2019-07-01"
+    },
+    {
+      "id": "Q104840987",
+      "name": "Mario Stroeykens",
+      "position": "inside forward",
+      "slot": "FW",
+      "nat": "Belgium",
+      "born": 2004,
+      "dob": "2004-09-29",
+      "started": "2020-01-01"
+    },
+    {
+      "id": "Q138529886",
+      "name": "Mattis Seghers",
+      "position": "goalkeeper",
+      "slot": "GK",
+      "nat": "Belgium",
+      "born": 2009,
+      "dob": "2009-01-01",
+      "started": "2026-01-01"
+    },
+    {
+      "id": "Q14250217",
+      "name": "Maxime Dupé",
+      "position": "goalkeeper",
+      "slot": "GK",
+      "nat": "France",
+      "born": 1993,
+      "dob": "1993-03-04",
+      "started": "2023-07-18"
+    },
+    {
+      "id": "Q65504236",
+      "name": "Mohamed Bouchouari",
+      "position": null,
+      "slot": null,
+      "nat": "Belgium",
+      "born": 2000,
+      "dob": "2000-11-15",
+      "started": "2020-12-28"
+    },
+    {
+      "id": "Q64433049",
+      "name": "Moussa N'Diaye",
+      "position": "defender",
+      "slot": "DF",
+      "nat": "Senegal",
+      "born": 2002,
+      "dob": "2002-06-18",
+      "started": "2022-08-25"
+    },
+    {
+      "id": "Q27671274",
+      "name": "Mustapha Bundu",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Sierra Leone",
+      "born": 1997,
+      "dob": "1997-02-27",
+      "started": "2020-08-07"
+    },
+    {
+      "id": "Q136558732",
+      "name": "Naoufal Bohamdi-Kamoni",
+      "position": "winger",
+      "slot": "FW",
+      "nat": "Belgium",
+      "born": 2007,
+      "dob": "2007-01-01",
+      "started": "2025-01-01"
+    },
+    {
+      "id": "Q16854449",
+      "name": "Peter Žulj",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Austria",
+      "born": 1993,
+      "dob": "1993-06-09",
+      "started": "2019-01-01"
+    },
+    {
+      "id": "Q3928947",
+      "name": "Rafael Galhardo",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Brazil",
+      "born": 1991,
+      "dob": "1991-10-30",
+      "started": "2016-01-01"
+    },
+    {
+      "id": "Q342228",
+      "name": "Stefano Okaka",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Italy",
+      "born": 1989,
+      "dob": "1989-08-09",
+      "started": "2015-01-01"
+    },
+    {
+      "id": "Q2395878",
+      "name": "Stéphane Badji",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Senegal",
+      "born": 1990,
+      "dob": "1990-01-18",
+      "started": "2016-01-01"
+    },
+    {
+      "id": "Q68485418",
+      "name": "Taylor Harwood-Bellis",
+      "position": "defender",
+      "slot": "DF",
+      "nat": "United Kingdom",
+      "born": 2002,
+      "dob": "2002-01-30",
+      "started": "2021-07-01"
+    },
+    {
+      "id": "Q131450234",
+      "name": "Terry Van De Ven",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Belgium",
+      "born": 2008,
+      "dob": "2008-01-01",
+      "started": "2024-01-01"
+    },
+    {
+      "id": "Q113516868",
+      "name": "Théo Leoni",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Belgium",
+      "born": 2000,
+      "dob": "2000-04-21",
+      "started": "2022-07-01"
+    },
+    {
+      "id": "Q961878",
+      "name": "Thomas Delaney",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Kingdom of Denmark",
+      "born": 1991,
+      "dob": "1991-09-03",
+      "started": "2023-08-22"
+    },
+    {
+      "id": "Q111103404",
+      "name": "Tudor Mendel-Idowu",
+      "position": null,
+      "slot": null,
+      "nat": "United Kingdom",
+      "born": 2005,
+      "dob": "2005-01-01",
+      "started": "2023-07-27"
+    },
+    {
+      "id": "Q13033770",
+      "name": "Warner Hahn",
       "position": "goalkeeper",
       "slot": "GK",
       "nat": "Kingdom of the Netherlands",
-      "born": 1997,
-      "dob": "1997-03-24",
-      "started": "2015-01-01"
+      "born": 1992,
+      "dob": "1992-06-15",
+      "started": "2021-01-01"
     }
   ],
   "Beşiktaş": [
@@ -7219,26 +6761,6 @@
       "started": "2025-09-11"
     },
     {
-      "id": "Q22833412",
-      "name": "Amir Hadžiahmetović",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Bosnia and Herzegovina",
-      "born": 1997,
-      "dob": "1997-03-08",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q541542",
-      "name": "Aras Özbiliz",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Turkey",
-      "born": 1990,
-      "dob": "1990-03-09",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q136289791",
       "name": "Asım Efe Işık",
       "position": null,
@@ -7252,7 +6774,7 @@
       "id": "Q19613570",
       "name": "Cengiz Ünder",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Turkey",
       "born": 1997,
       "dob": "1997-07-14",
@@ -7307,16 +6829,6 @@
       "born": 1992,
       "dob": "1992-08-16",
       "started": "2018-01-01"
-    },
-    {
-      "id": "Q86300746",
-      "name": "Jean Onana",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Cameroon",
-      "born": 2000,
-      "dob": "2000-01-08",
-      "started": "2023-07-01"
     },
     {
       "id": "Q6298271",
@@ -7412,7 +6924,7 @@
       "id": "Q335413",
       "name": "Tolgay Arslan",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Turkey",
       "born": 1990,
       "dob": "1990-08-16",
@@ -7472,7 +6984,7 @@
   "Trabzonspor": [
     {
       "id": "Q19116103",
-      "name": "André Onana",
+      "name": "Andrcu Onana",
       "position": "goalkeeper",
       "slot": "GK",
       "nat": "Cameroon",
@@ -7581,6 +7093,16 @@
       "started": "2018-06-30"
     },
     {
+      "id": "Q1354960",
+      "name": "Mohamed Salah",
+      "position": "winger",
+      "slot": "FW",
+      "nat": "Egypt",
+      "born": 1992,
+      "dob": "1992-06-15",
+      "started": "2026-08-06"
+    },
+    {
       "id": "Q22003375",
       "name": "Muhammet Beşir",
       "position": "forward",
@@ -7659,16 +7181,6 @@
       "born": 1999,
       "dob": "1999-12-06",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q19610875",
-      "name": "Uğurcan Çakır",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Turkey",
-      "born": 1996,
-      "dob": "1996-04-05",
-      "started": "2015-01-01"
     }
   ],
   "Club Brugge": [
@@ -7706,7 +7218,7 @@
       "id": "Q3638841",
       "name": "Bernie Ibini-Isei",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Australia",
       "born": 1992,
       "dob": "1992-10-12",
@@ -7770,16 +7282,6 @@
       "nat": "Belgium",
       "born": 1996,
       "dob": "1996-06-04",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q22944417",
-      "name": "Dylan Seys",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Belgium",
-      "born": 1996,
-      "dob": "1996-09-26",
       "started": "2015-01-01"
     },
     {
@@ -7883,26 +7385,6 @@
       "started": "2022-01-01"
     },
     {
-      "id": "Q21066171",
-      "name": "Jordan Renson",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Belgium",
-      "born": 1996,
-      "dob": "1996-05-14",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q2681814",
-      "name": "Jordi Vanlerberghe",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Belgium",
-      "born": 1996,
-      "dob": "1996-06-27",
-      "started": "2017-07-01"
-    },
-    {
       "id": "Q105808781",
       "name": "Jorne Spileers",
       "position": null,
@@ -7923,16 +7405,6 @@
       "started": "2023-01-14"
     },
     {
-      "id": "Q6379176",
-      "name": "Kaveh Rezaei",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Iran",
-      "born": 1992,
-      "dob": "1992-04-05",
-      "started": "2018-08-22"
-    },
-    {
       "id": "Q105222269",
       "name": "Kyriani Sabbe",
       "position": null,
@@ -7951,16 +7423,6 @@
       "born": 1991,
       "dob": "1991-07-03",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q56183407",
-      "name": "Loïs Openda",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Belgium",
-      "born": 2000,
-      "dob": "2000-02-16",
-      "started": "2018-07-01"
     },
     {
       "id": "Q41779982",
@@ -8063,26 +7525,6 @@
       "started": "2018-07-01"
     },
     {
-      "id": "Q15695544",
-      "name": "Simon Deli",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Ivory Coast",
-      "born": 1991,
-      "dob": "1991-10-27",
-      "started": "2019-07-10"
-    },
-    {
-      "id": "Q569272",
-      "name": "Sinan Bolat",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Belgium",
-      "born": 1988,
-      "dob": "1988-09-03",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q129061",
       "name": "Stefano Denswil",
       "position": "defender",
@@ -8091,16 +7533,6 @@
       "born": 1993,
       "dob": "1993-05-07",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q27281906",
-      "name": "Thibault Vlietinck",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Belgium",
-      "born": 1997,
-      "dob": "1997-08-19",
-      "started": "2017-07-01"
     },
     {
       "id": "Q127273307",
@@ -8128,21 +7560,11 @@
       "id": "Q96249912",
       "name": "Andrija Radulović",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": null,
       "born": 2002,
       "dob": "2002-07-03",
       "started": "2019-01-01"
-    },
-    {
-      "id": "Q18022181",
-      "name": "Bruno Oliveira de Matos",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1990,
-      "dob": "1990-06-05",
-      "started": "2015-01-01"
     },
     {
       "id": "Q16239878",
@@ -8168,21 +7590,11 @@
       "id": "Q54512527",
       "name": "José Luis Rodríguez",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Panama",
       "born": 1998,
       "dob": "1998-06-19",
       "started": "2024-01-01"
-    },
-    {
-      "id": "Q23882864",
-      "name": "Jovan Vićić",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": null,
-      "born": 1997,
-      "dob": "1997-02-23",
-      "started": "2015-01-01"
     },
     {
       "id": "Q930764",
@@ -8198,7 +7610,7 @@
       "id": "Q313575",
       "name": "Marko Arnautović",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Austria",
       "born": 1989,
       "dob": "1989-04-19",
@@ -8268,7 +7680,7 @@
       "id": "Q23771922",
       "name": "Nemanja Radonjić",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Serbia",
       "born": 1996,
       "dob": "1996-02-15",
@@ -8348,7 +7760,7 @@
       "id": "Q4438843",
       "name": "Slavoljub Srnić",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Serbia",
       "born": 1992,
       "dob": "1992-01-12",
@@ -8393,16 +7805,6 @@
       "born": 1993,
       "dob": "1993-02-13",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q16236639",
-      "name": "Vladimir Jovović",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Montenegro",
-      "born": 1994,
-      "dob": "1994-10-26",
-      "started": "2015-01-01"
     }
   ],
   "Dinamo Zagreb": [
@@ -8792,7 +8194,7 @@
       "id": "Q1392925",
       "name": "Ryan Mendes",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "France",
       "born": 1990,
       "dob": "1990-01-08",
@@ -8819,16 +8221,6 @@
       "started": "2017-01-01"
     },
     {
-      "id": "Q121353909",
-      "name": "Tyler Bindon",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "New Zealand",
-      "born": 2005,
-      "dob": "2005-01-27",
-      "started": "2025-02-01"
-    },
-    {
       "id": "Q20190657",
       "name": "Xaver Schlager",
       "position": "midfielder",
@@ -8844,7 +8236,7 @@
       "id": "Q111366053",
       "name": "Alejandro Garnacho",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 2004,
       "dob": "2004-07-01",
@@ -8894,21 +8286,11 @@
       "id": "Q5041170",
       "name": "Carles Gil",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1992,
       "dob": "1992-11-22",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q28363823",
-      "name": "Douglas Luiz",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1998,
-      "dob": "1998-05-09",
-      "started": "2026-01-28"
     },
     {
       "id": "Q3275904",
@@ -8961,16 +8343,6 @@
       "started": "2024-06-01"
     },
     {
-      "id": "Q80933819",
-      "name": "Indiana Vassilev",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United States",
-      "born": 2001,
-      "dob": "2001-02-16",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q125376751",
       "name": "Johan Manzambi",
       "position": "forward",
@@ -9004,21 +8376,11 @@
       "id": "Q20890178",
       "name": "Leon Bailey",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Jamaica",
       "born": 1997,
       "dob": "1997-08-09",
       "started": "2021-08-04"
-    },
-    {
-      "id": "Q72648",
-      "name": "Lucas Digne",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1993,
-      "dob": "1993-07-20",
-      "started": "2022-01-01"
     },
     {
       "id": "Q17492941",
@@ -9091,16 +8453,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q108200581",
-      "name": "Samuel Iling-Junior",
-      "position": null,
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 2003,
-      "dob": "2003-10-04",
-      "started": "2024-07-01"
-    },
-    {
       "id": "Q4125587",
       "name": "Victor Lindelöf",
       "position": "defender",
@@ -9109,16 +8461,6 @@
       "born": 1994,
       "dob": "1994-07-17",
       "started": "2025-08-31"
-    },
-    {
-      "id": "Q20716703",
-      "name": "Wesley",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Brazil",
-      "born": 1996,
-      "dob": "1996-11-26",
-      "started": "2019-07-01"
     }
   ],
   "Everton": [
@@ -9146,7 +8488,7 @@
       "id": "Q12481043",
       "name": "David Henen",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Belgium",
       "born": 1996,
       "dob": "1996-04-19",
@@ -9161,16 +8503,6 @@
       "born": 1988,
       "dob": "1988-10-15",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q356126",
-      "name": "Gerard Deulofeu",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Spain",
-      "born": 1994,
-      "dob": "1994-03-13",
-      "started": "2015-01-01"
     },
     {
       "id": "Q46679",
@@ -9243,26 +8575,6 @@
       "started": "2021-01-01"
     },
     {
-      "id": "Q22087253",
-      "name": "Liam Walsh",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-09-15",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q95191648",
-      "name": "Nathangelo Markelo",
-      "position": null,
-      "slot": null,
-      "nat": "Kingdom of the Netherlands",
-      "born": 1999,
-      "dob": "1999-01-07",
-      "started": "2017-07-01"
-    },
-    {
       "id": "Q66363735",
       "name": "Norberto Bercique Gomes Betuncal",
       "position": "forward",
@@ -9276,7 +8588,7 @@
       "id": "Q3637067",
       "name": "Oumar Niasse",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Senegal",
       "born": 1990,
       "dob": "1990-04-18",
@@ -9331,16 +8643,6 @@
       "born": 1999,
       "dob": "1999-05-29",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q4022527",
-      "name": "Yannick Bolasie",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Democratic Republic of the Congo",
-      "born": 1989,
-      "dob": "1989-05-24",
-      "started": "2016-08-15"
     }
   ],
   "Leeds United": [
@@ -9448,7 +8750,7 @@
       "id": "Q14851962",
       "name": "Jordan Botaka",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Democratic Republic of the Congo",
       "born": 1993,
       "dob": "1993-06-24",
@@ -9475,16 +8777,6 @@
       "started": "2021-07-31"
     },
     {
-      "id": "Q2053285",
-      "name": "Laurens De Bock",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Belgium",
-      "born": 1992,
-      "dob": "1992-11-07",
-      "started": "2018-01-10"
-    },
-    {
       "id": "Q17411153",
       "name": "Lee Erwin",
       "position": "forward",
@@ -9508,7 +8800,7 @@
       "id": "Q58008555",
       "name": "Liam McCarron",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 2001,
       "dob": "2001-03-07",
@@ -9657,16 +8949,6 @@
       "started": "2016-01-01"
     },
     {
-      "id": "Q27859514",
-      "name": "Edson Álvarez",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Mexico",
-      "born": 1997,
-      "dob": "1997-10-24",
-      "started": "2023-08-10"
-    },
-    {
       "id": "Q313936",
       "name": "Håvard Nordtveit",
       "position": "full-back",
@@ -9675,16 +8957,6 @@
       "born": 1990,
       "dob": "1990-06-21",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q2643777",
-      "name": "James Ward-Prowse",
-      "position": "central midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1994,
-      "dob": "1994-11-01",
-      "started": "2023-08-14"
     },
     {
       "id": "Q26704890",
@@ -9717,6 +8989,16 @@
       "started": "2015-01-01"
     },
     {
+      "id": "Q140968932",
+      "name": "Joshua Ajala",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "United Kingdom",
+      "born": 2006,
+      "dob": "2006-11-13",
+      "started": "2026-01-01"
+    },
+    {
       "id": "Q137830306",
       "name": "Keiber Lamadrid",
       "position": "left midfielder",
@@ -9737,20 +9019,10 @@
       "started": "2023-01-01"
     },
     {
-      "id": "Q21061716",
-      "name": "Kyle Knoyle",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 1996,
-      "dob": "1996-09-24",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q17279171",
       "name": "Luka Belić",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Serbia",
       "born": 1996,
       "dob": "1996-04-18",
@@ -9760,51 +9032,21 @@
       "id": "Q20730207",
       "name": "Martin Samuelsen",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Norway",
       "born": 1997,
       "dob": "1997-04-17",
       "started": "2015-01-01"
     },
     {
-      "id": "Q15081929",
-      "name": "Maxwel Cornet",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "France",
-      "born": 1996,
-      "dob": "1996-09-27",
-      "started": "2022-01-01"
-    },
-    {
       "id": "Q1966430",
       "name": "Michail Antonio",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1990,
       "dob": "1990-03-28",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q28872567",
-      "name": "Nayef Aguerd",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Morocco",
-      "born": 1996,
-      "dob": "1996-03-30",
-      "started": "2022-01-01"
-    },
-    {
-      "id": "Q326159",
-      "name": "Niclas Füllkrug",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Germany",
-      "born": 1993,
-      "dob": "1993-02-09",
-      "started": "2024-08-01"
     },
     {
       "id": "Q2066714",
@@ -9885,16 +9127,6 @@
       "born": 1998,
       "dob": "1998-10-03",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q20823439",
-      "name": "Thilo Kehrer",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Germany",
-      "born": 1996,
-      "dob": "1996-09-21",
-      "started": "2022-08-17"
     },
     {
       "id": "Q20860081",
@@ -9979,16 +9211,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q129655662",
-      "name": "Ander Ezpeleta",
-      "position": "defensive midfielder",
-      "slot": "MF",
-      "nat": "Spain",
-      "born": 2008,
-      "dob": "2008-01-06",
-      "started": "2024-01-01"
-    },
-    {
       "id": "Q40958022",
       "name": "Andoni Gorosabel",
       "position": "full-back",
@@ -10059,16 +9281,6 @@
       "started": "2026-01-01"
     },
     {
-      "id": "Q118724991",
-      "name": "Elijah Gift",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2006,
-      "dob": "2006-06-11",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q22004701",
       "name": "Gorka Guruzeta",
       "position": "centre-forward",
@@ -10087,16 +9299,6 @@
       "born": 2003,
       "dob": "2003-01-27",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q123463830",
-      "name": "Igor Oyono",
-      "position": "centre-forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2008,
-      "dob": "2008-02-07",
-      "started": "2024-01-01"
     },
     {
       "id": "Q133701998",
@@ -10137,16 +9339,6 @@
       "born": 1999,
       "dob": "1999-07-02",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q98929942",
-      "name": "Jon Morcillo",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 1998,
-      "dob": "1998-09-15",
-      "started": "2020-01-01"
     },
     {
       "id": "Q106637226",
@@ -10239,16 +9431,6 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q114627806",
-      "name": "Unai Egiluz",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 2002,
-      "dob": "2002-03-19",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q23908113",
       "name": "Unai Simón",
       "position": "goalkeeper",
@@ -10294,7 +9476,7 @@
       "id": "Q109327842",
       "name": "Abde Ezzalzouli",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 2001,
       "dob": "2001-12-17",
@@ -10369,26 +9551,6 @@
       "born": 1998,
       "dob": "1998-07-08",
       "started": "2019-01-01"
-    },
-    {
-      "id": "Q19949691",
-      "name": "Ezequiel Ávila",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Argentina",
-      "born": 1994,
-      "dob": "1994-02-06",
-      "started": "2024-01-01"
-    },
-    {
-      "id": "Q115923122",
-      "name": "Félix Garreta",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 2004,
-      "dob": "2004-04-21",
-      "started": "2022-01-01"
     },
     {
       "id": "Q98872225",
@@ -10521,16 +9683,6 @@
       "started": "2023-07-01"
     },
     {
-      "id": "Q252596",
-      "name": "Martín Montoya",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1991,
-      "dob": "1991-04-14",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q99738875",
       "name": "Natan Bernardo de Souza",
       "position": "defender",
@@ -10549,16 +9701,6 @@
       "born": 1992,
       "dob": "1992-08-25",
       "started": "2024-08-01"
-    },
-    {
-      "id": "Q18428483",
-      "name": "Sofyan Amrabat",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Morocco",
-      "born": 1996,
-      "dob": "1996-08-21",
-      "started": "2025-01-01"
     },
     {
       "id": "Q2469796",
@@ -10626,7 +9768,7 @@
       "id": "Q4873341",
       "name": "Batuhan Altıntaş",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Turkey",
       "born": 1996,
       "dob": "1996-03-14",
@@ -10755,16 +9897,6 @@
   ],
   "Fiorentina": [
     {
-      "id": "Q21590318",
-      "name": "Alban Lafont",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "France",
-      "born": 1999,
-      "dob": "1999-01-23",
-      "started": "2018-01-01"
-    },
-    {
       "id": "Q21171299",
       "name": "Albert Guðmundsson",
       "position": "attacking midfielder",
@@ -10773,16 +9905,6 @@
       "born": 1997,
       "dob": "1997-06-15",
       "started": "2025-07-01"
-    },
-    {
-      "id": "Q106860340",
-      "name": "Amir Richardson",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United States",
-      "born": 2002,
-      "dob": "2002-01-24",
-      "started": "2024-01-01"
     },
     {
       "id": "Q21293144",
@@ -10798,7 +9920,7 @@
       "id": "Q54055",
       "name": "Cristian Tello",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1991,
       "dob": "1991-08-11",
@@ -10823,6 +9945,16 @@
       "born": 1998,
       "dob": "1998-11-17",
       "started": "2022-01-01"
+    },
+    {
+      "id": "Q123289726",
+      "name": "Franco Mastantuono",
+      "position": "forward",
+      "slot": "FW",
+      "nat": "Argentina",
+      "born": 2007,
+      "dob": "2007-08-14",
+      "started": "2026-08-01"
     },
     {
       "id": "Q101579946",
@@ -10855,16 +9987,6 @@
       "started": "2020-01-01"
     },
     {
-      "id": "Q59649459",
-      "name": "Lucas Beltrán",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Italy",
-      "born": 2001,
-      "dob": "2001-03-29",
-      "started": "2023-08-01"
-    },
-    {
       "id": "Q27889974",
       "name": "Moise Kean",
       "position": "forward",
@@ -10873,16 +9995,6 @@
       "born": 2000,
       "dob": "2000-02-28",
       "started": "2024-07-01"
-    },
-    {
-      "id": "Q43381082",
-      "name": "Nicolás González",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Argentina",
-      "born": 1998,
-      "dob": "1998-04-06",
-      "started": "2021-01-01"
     },
     {
       "id": "Q106768944",
@@ -10923,26 +10035,6 @@
       "born": 1999,
       "dob": "1999-06-03",
       "started": "2018-01-01"
-    },
-    {
-      "id": "Q15644548",
-      "name": "Robin Gosens",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Germany",
-      "born": 1994,
-      "dob": "1994-07-05",
-      "started": "2025-01-01"
-    },
-    {
-      "id": "Q42336731",
-      "name": "Szymon Żurkowski",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Poland",
-      "born": 1997,
-      "dob": "1997-09-25",
-      "started": "2019-01-28"
     }
   ],
   "Lazio": [
@@ -11010,7 +10102,7 @@
       "id": "Q16880180",
       "name": "Jonathan Rodríguez Menéndez",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1991,
       "dob": "1991-07-09",
@@ -11067,16 +10159,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q15744604",
-      "name": "Ricardo Kishna",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Kingdom of the Netherlands",
-      "born": 1995,
-      "dob": "1995-01-04",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q13543997",
       "name": "Riza Durmisi",
       "position": "full-back",
@@ -11097,16 +10179,6 @@
       "started": "2020-01-01"
     },
     {
-      "id": "Q51133356",
-      "name": "Taty Castellanos",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Argentina",
-      "born": 1998,
-      "dob": "1998-10-03",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q15690382",
       "name": "Wallace Fortuna dos Santos",
       "position": "centre-back",
@@ -11125,148 +10197,6 @@
       "born": 1994,
       "dob": "1994-03-06",
       "started": "2015-01-01"
-    }
-  ],
-  "Torino": [
-    {
-      "id": "Q2707160",
-      "name": "Afriyie Acquah",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Ghana",
-      "born": 1992,
-      "dob": "1992-01-05",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q26251753",
-      "name": "Ardian Ismajli",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Kosovo",
-      "born": 1996,
-      "dob": "1996-09-30",
-      "started": "2025-01-01"
-    },
-    {
-      "id": "Q112081015",
-      "name": "Cesare Casadei",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Italy",
-      "born": 2003,
-      "dob": "2003-01-10",
-      "started": "2025-02-02"
-    },
-    {
-      "id": "Q5219259",
-      "name": "Daniele Baselli",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Italy",
-      "born": 1992,
-      "dob": "1992-03-12",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q971732",
-      "name": "Danilo Avelar",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Italy",
-      "born": 1989,
-      "dob": "1989-06-09",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q577481",
-      "name": "Duván Zapata",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Colombia",
-      "born": 1991,
-      "dob": "1991-04-01",
-      "started": "2024-01-01"
-    },
-    {
-      "id": "Q110486415",
-      "name": "Emirhan İlkhan",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Turkey",
-      "born": 2004,
-      "dob": "2004-06-01",
-      "started": "2022-08-01"
-    },
-    {
-      "id": "Q60842316",
-      "name": "Franco Israel",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Uruguay",
-      "born": 2000,
-      "dob": "2000-04-22",
-      "started": "2025-07-27"
-    },
-    {
-      "id": "Q97711680",
-      "name": "Krisztofer Horváth",
-      "position": "attacking midfielder",
-      "slot": "MF",
-      "nat": "Hungary",
-      "born": 2002,
-      "dob": "2002-01-08",
-      "started": "2020-09-01"
-    },
-    {
-      "id": "Q17501875",
-      "name": "Nikola Vlašić",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Croatia",
-      "born": 1997,
-      "dob": "1997-10-04",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q20641406",
-      "name": "Simone Rosso",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Italy",
-      "born": 1995,
-      "dob": "1995-11-10",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q210279",
-      "name": "Tomás Rincón",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Venezuela",
-      "born": 1988,
-      "dob": "1988-01-13",
-      "started": "2017-01-01"
-    },
-    {
-      "id": "Q1450945",
-      "name": "Valentino Lazaro",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Austria",
-      "born": 1996,
-      "dob": "1996-03-24",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q56257819",
-      "name": "Zakaria Aboukhlal",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Morocco",
-      "born": 2000,
-      "dob": "2000-02-18",
-      "started": "2025-01-01"
     }
   ],
   "Sporting CP": [
@@ -11301,20 +10231,10 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q713719",
-      "name": "Bruno César",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1988,
-      "dob": "1988-11-03",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q18707866",
       "name": "Bruno Jacinto da Silva",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Brazil",
       "born": 1995,
       "dob": "1995-08-21",
@@ -11339,16 +10259,6 @@
       "born": 1989,
       "dob": "1989-05-23",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q109719273",
-      "name": "Flávio Nazinho",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Portugal",
-      "born": 2003,
-      "dob": "2003-07-20",
-      "started": "2022-07-01"
     },
     {
       "id": "Q10557449",
@@ -11414,31 +10324,11 @@
       "id": "Q96401757",
       "name": "Joelson Fernandes",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Portugal",
       "born": 2003,
       "dob": "2003-02-28",
       "started": "2020-01-01"
-    },
-    {
-      "id": "Q112043053",
-      "name": "José Marsà",
-      "position": null,
-      "slot": null,
-      "nat": "Spain",
-      "born": 2002,
-      "dob": "2002-03-04",
-      "started": "2021-01-01"
-    },
-    {
-      "id": "Q104587845",
-      "name": "Koba Leïn Koindredi",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 2001,
-      "dob": "2001-10-27",
-      "started": "2024-01-01"
     },
     {
       "id": "Q126283247",
@@ -11459,16 +10349,6 @@
       "born": 1994,
       "dob": "1994-07-27",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q15831118",
-      "name": "Matheus Pereira",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Brazil",
-      "born": 1996,
-      "dob": "1996-05-05",
-      "started": "2015-01-01"
     },
     {
       "id": "Q3909869",
@@ -11504,7 +10384,7 @@
       "id": "Q794914",
       "name": "Ricardo Esgaio",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Portugal",
       "born": 1993,
       "dob": "1993-05-16",
@@ -11646,7 +10526,7 @@
       "id": "Q83256324",
       "name": "Edmilson Correia",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Guinea-Bissau",
       "born": 2000,
       "dob": "2000-06-06",
@@ -11700,16 +10580,6 @@
       "nat": "France",
       "born": 1993,
       "dob": "1993-05-01",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q6453717",
-      "name": "Kévin Malcuit",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1991,
-      "dob": "1991-07-31",
       "started": "2015-01-01"
     },
     {
@@ -11815,16 +10685,6 @@
   ],
   "Sunderland": [
     {
-      "id": "Q350383",
-      "name": "Adam Matthews",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 1992,
-      "dob": "1992-01-13",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q6381120",
       "name": "DeAndre Yedlin",
       "position": "full-back",
@@ -11925,16 +10785,6 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q3949436",
-      "name": "Santiago Vergini",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Argentina",
-      "born": 1988,
-      "dob": "1988-08-03",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q107742783",
       "name": "Simon Adingra",
       "position": "forward",
@@ -11973,29 +10823,9 @@
       "born": 2006,
       "dob": "2006-04-18",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q122772050",
-      "name": "Zak Johnson",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 2004,
-      "dob": "2004-07-30",
-      "started": "2021-01-01"
     }
   ],
   "Ipswich Town": [
-    {
-      "id": "Q80661874",
-      "name": "Ali Al-Hamadi",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 2002,
-      "dob": "2002-03-01",
-      "started": "2024-01-01"
-    },
     {
       "id": "Q23887764",
       "name": "Andre Dozzell",
@@ -12015,16 +10845,6 @@
       "born": 2001,
       "dob": "2001-01-09",
       "started": "2026-01-01"
-    },
-    {
-      "id": "Q55956044",
-      "name": "Arijanet Muric",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Switzerland",
-      "born": 1998,
-      "dob": "1998-11-07",
-      "started": "2024-01-01"
     },
     {
       "id": "Q4791073",
@@ -12175,6 +10995,16 @@
       "born": 1995,
       "dob": "1995-09-24",
       "started": "2024-01-01"
+    },
+    {
+      "id": "Q19594166",
+      "name": "Saša Lukić",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Serbia",
+      "born": 1996,
+      "dob": "1996-08-13",
+      "started": "2026-08-01"
     },
     {
       "id": "Q116464263",
@@ -12399,6 +11229,16 @@
       "started": "2023-09-01"
     },
     {
+      "id": "Q21286402",
+      "name": "Takehiro Tomiyasu",
+      "position": "defender",
+      "slot": "DF",
+      "nat": "Japan",
+      "born": 1998,
+      "dob": "1998-11-05",
+      "started": "2026-08-01"
+    },
+    {
       "id": "Q100735281",
       "name": "Yéremy Pino",
       "position": "midfielder",
@@ -12414,7 +11254,7 @@
       "id": "Q21091691",
       "name": "Alex Iwobi",
       "position": "playmaker",
-      "slot": null,
+      "slot": "MF",
       "nat": "Nigeria",
       "born": 1996,
       "dob": "1996-05-03",
@@ -12439,16 +11279,6 @@
       "born": 1997,
       "dob": "1997-08-08",
       "started": "2020-01-01"
-    },
-    {
-      "id": "Q4886312",
-      "name": "Ben Pringle",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1989,
-      "dob": "1989-07-25",
-      "started": "2015-01-01"
     },
     {
       "id": "Q309966",
@@ -12484,7 +11314,7 @@
       "id": "Q6096043",
       "name": "Ivan Cavaleiro",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Portugal",
       "born": 1993,
       "dob": "1993-10-18",
@@ -12511,16 +11341,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q3302625",
-      "name": "Maxime Le Marchand",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1989,
-      "dob": "1989-10-11",
-      "started": "2018-07-12"
-    },
-    {
       "id": "Q6111102",
       "name": "Rohan Ince",
       "position": "defender",
@@ -12529,16 +11349,6 @@
       "born": 1992,
       "dob": "1992-11-08",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q955451",
-      "name": "Rui Fonte",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Portugal",
-      "born": 1990,
-      "dob": "1990-04-23",
-      "started": "2017-01-01"
     },
     {
       "id": "Q7384073",
@@ -12569,16 +11379,6 @@
       "born": 1998,
       "dob": "1998-02-14",
       "started": "2024-08-01"
-    },
-    {
-      "id": "Q19594166",
-      "name": "Saša Lukić",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Serbia",
-      "born": 1996,
-      "dob": "1996-08-13",
-      "started": "2023-01-01"
     },
     {
       "id": "Q18041089",
@@ -12626,7 +11426,7 @@
       "id": "Q326365",
       "name": "Anthony Knockaert",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "France",
       "born": 1991,
       "dob": "1991-11-20",
@@ -12641,26 +11441,6 @@
       "born": 2002,
       "dob": "2002-08-18",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q713904",
-      "name": "Beram Kayal",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Israel",
-      "born": 1988,
-      "dob": "1988-05-02",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q116432094",
-      "name": "Brajan Gruda",
-      "position": null,
-      "slot": null,
-      "nat": "Germany",
-      "born": 2004,
-      "dob": "2004-05-31",
-      "started": "2024-01-01"
     },
     {
       "id": "Q113472432",
@@ -12925,16 +11705,6 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q107558242",
-      "name": "Alex Paulsen",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "New Zealand",
-      "born": 2002,
-      "dob": "2002-07-04",
-      "started": "2024-07-01"
-    },
-    {
       "id": "Q114901851",
       "name": "Álvaro Rodríguez",
       "position": null,
@@ -12965,16 +11735,6 @@
       "started": "2021-01-01"
     },
     {
-      "id": "Q17496546",
-      "name": "Emerson Hyndman",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United States",
-      "born": 1996,
-      "dob": "1996-04-07",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q348813",
       "name": "Fraser Forster",
       "position": "goalkeeper",
@@ -13003,16 +11763,6 @@
       "born": 2005,
       "dob": "2005-02-16",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q3397610",
-      "name": "Lee Tomlin",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 1989,
-      "dob": "1989-01-12",
-      "started": "2015-01-01"
     },
     {
       "id": "Q17496370",
@@ -13090,7 +11840,7 @@
       "id": "Q415373",
       "name": "Akaki Gogia",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Germany",
       "born": 1992,
       "dob": "1992-01-18",
@@ -13157,16 +11907,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q61849572",
-      "name": "Jan Žambůrek",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Czech Republic",
-      "born": 2001,
-      "dob": "2001-02-13",
-      "started": "2019-08-30"
-    },
-    {
       "id": "Q16860684",
       "name": "John Swift",
       "position": "midfielder",
@@ -13180,7 +11920,7 @@
       "id": "Q310404",
       "name": "Josh McEachran",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "United Kingdom",
       "born": 1993,
       "dob": "1993-03-01",
@@ -13267,16 +12007,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q15082662",
-      "name": "Saïd Benrahma",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "France",
-      "born": 1995,
-      "dob": "1995-08-10",
-      "started": "2018-01-01"
-    },
-    {
       "id": "Q16632974",
       "name": "Saman Ghoddos",
       "position": "midfielder",
@@ -13285,16 +12015,6 @@
       "born": 1993,
       "dob": "1993-09-06",
       "started": "2021-01-01"
-    },
-    {
-      "id": "Q20977918",
-      "name": "Sergi Canós",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-02-02",
-      "started": "2015-01-01"
     },
     {
       "id": "Q26212017",
@@ -13315,16 +12035,6 @@
       "born": 1993,
       "dob": "1993-05-10",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q122972260",
-      "name": "Yunus Emre Konak",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Turkey",
-      "born": 2006,
-      "dob": "2006-01-10",
-      "started": "2024-01-11"
     }
   ],
   "Burnley": [
@@ -13357,16 +12067,6 @@
       "born": 1993,
       "dob": "1993-09-18",
       "started": "2017-01-01"
-    },
-    {
-      "id": "Q15078228",
-      "name": "Christopher Long",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 1995,
-      "dob": "1995-02-25",
-      "started": "2015-01-01"
     },
     {
       "id": "Q97379196",
@@ -13412,7 +12112,7 @@
       "id": "Q170038",
       "name": "Jóhann Berg Guðmundsson",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Iceland",
       "born": 1990,
       "dob": "1990-10-27",
@@ -13447,16 +12147,6 @@
       "born": 1990,
       "dob": "1990-05-28",
       "started": "2025-07-01"
-    },
-    {
-      "id": "Q112130343",
-      "name": "Luca Koleosho",
-      "position": null,
-      "slot": null,
-      "nat": "Canada",
-      "born": 2004,
-      "dob": "2004-09-15",
-      "started": "2023-01-01"
     },
     {
       "id": "Q42725482",
@@ -13519,16 +12209,6 @@
       "started": "2025-06-26"
     },
     {
-      "id": "Q2210473",
-      "name": "Wout Weghorst",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Kingdom of the Netherlands",
-      "born": 1992,
-      "dob": "1992-08-07",
-      "started": "2022-01-31"
-    },
-    {
       "id": "Q106882153",
       "name": "Zeki Amdouni",
       "position": "forward",
@@ -13540,16 +12220,6 @@
     }
   ],
   "Wolves": [
-    {
-      "id": "Q18125441",
-      "name": "Aaron Collins",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-05-27",
-      "started": "2016-01-01"
-    },
     {
       "id": "Q20807778",
       "name": "Aaron Hayden",
@@ -13571,16 +12241,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q879557",
-      "name": "Björn Bergmann Sigurðarson",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Iceland",
-      "born": 1991,
-      "dob": "1991-02-26",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q21005744",
       "name": "Bright Enobakhare",
       "position": "forward",
@@ -13588,16 +12248,6 @@
       "nat": "Nigeria",
       "born": 1998,
       "dob": "1998-02-08",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q23770449",
-      "name": "Connor Hunte",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 1996,
-      "dob": "1996-09-12",
       "started": "2015-01-01"
     },
     {
@@ -13621,16 +12271,6 @@
       "started": "2020-01-01"
     },
     {
-      "id": "Q113578056",
-      "name": "Hugo Bueno",
-      "position": null,
-      "slot": null,
-      "nat": "Spain",
-      "born": 2002,
-      "dob": "2002-09-18",
-      "started": "2022-01-01"
-    },
-    {
       "id": "Q18551518",
       "name": "Hwang Hee-chan",
       "position": "forward",
@@ -13639,16 +12279,6 @@
       "born": 1996,
       "dob": "1996-01-26",
       "started": "2022-01-01"
-    },
-    {
-      "id": "Q6096043",
-      "name": "Ivan Cavaleiro",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Portugal",
-      "born": 1993,
-      "dob": "1993-10-18",
-      "started": "2016-08-31"
     },
     {
       "id": "Q6172641",
@@ -13674,7 +12304,7 @@
       "id": "Q615786",
       "name": "Joe Mason",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Ireland",
       "born": 1991,
       "dob": "1991-05-13",
@@ -13731,20 +12361,10 @@
       "started": "2025-08-28"
     },
     {
-      "id": "Q19841320",
-      "name": "Léo Bonatini",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Brazil",
-      "born": 1994,
-      "dob": "1994-03-28",
-      "started": "2018-01-01"
-    },
-    {
       "id": "Q30899761",
       "name": "Leonardo Campana",
       "position": "attacker",
-      "slot": null,
+      "slot": "FW",
       "nat": "Ecuador",
       "born": 2000,
       "dob": "2000-07-24",
@@ -13811,16 +12431,6 @@
       "born": 1995,
       "dob": "1995-07-05",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q21622687",
-      "name": "Bassala Sambou",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Germany",
-      "born": 1997,
-      "dob": "1997-10-15",
-      "started": "2015-01-01"
     },
     {
       "id": "Q28113071",
@@ -13913,16 +12523,6 @@
       "started": "2017-07-01"
     },
     {
-      "id": "Q18128284",
-      "name": "Kyle Spence",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-01-14",
-      "started": "2016-01-01"
-    },
-    {
       "id": "Q18356479",
       "name": "Marko Maroši",
       "position": "goalkeeper",
@@ -13993,16 +12593,6 @@
       "born": 1992,
       "dob": "1992-09-30",
       "started": "2022-08-01"
-    },
-    {
-      "id": "Q19655029",
-      "name": "Greg Luer",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "United Kingdom",
-      "born": 1994,
-      "dob": "1994-12-06",
-      "started": "2015-01-01"
     },
     {
       "id": "Q56254739",
@@ -14120,7 +12710,7 @@
       "id": "Q19968626",
       "name": "Aleix García",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1997,
       "dob": "1997-06-28",
@@ -14190,7 +12780,7 @@
       "id": "Q822781",
       "name": "Jonas Hofmann",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Germany",
       "born": 1992,
       "dob": "1992-07-14",
@@ -14230,7 +12820,7 @@
       "id": "Q5981954",
       "name": "Lucas Vázquez",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1991,
       "dob": "1991-07-01",
@@ -14277,6 +12867,16 @@
       "started": "2015-01-01"
     },
     {
+      "id": "Q85713553",
+      "name": "Miguel Gutiérrez",
+      "position": "full-back",
+      "slot": "DF",
+      "nat": "Spain",
+      "born": 2001,
+      "dob": "2001-07-27",
+      "started": "2026-01-01"
+    },
+    {
       "id": "Q105047331",
       "name": "Noah Mbamba",
       "position": "defender",
@@ -14315,16 +12915,6 @@
       "born": 1998,
       "dob": "1998-01-02",
       "started": "2021-01-13"
-    },
-    {
-      "id": "Q61968862",
-      "name": "Victor Boniface",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Nigeria",
-      "born": 2000,
-      "dob": "2000-12-23",
-      "started": "2023-07-22"
     }
   ],
   "AS Monaco": [
@@ -14419,26 +13009,6 @@
       "started": "2023-08-30"
     },
     {
-      "id": "Q17501954",
-      "name": "Gil Bastião Dias",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Portugal",
-      "born": 1996,
-      "dob": "1996-09-28",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q5964146",
-      "name": "Hélder Costa",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Portugal",
-      "born": 1994,
-      "dob": "1994-01-12",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q27736740",
       "name": "Jean-Eudes Aholou",
       "position": "midfielder",
@@ -14459,16 +13029,6 @@
       "started": "2016-01-31"
     },
     {
-      "id": "Q121437938",
-      "name": "Jordan Semedo",
-      "position": null,
-      "slot": null,
-      "nat": "France",
-      "born": 2003,
-      "dob": "2003-01-15",
-      "started": "2021-07-01"
-    },
-    {
       "id": "Q42299353",
       "name": "Jordan Teze",
       "position": "defender",
@@ -14482,7 +13042,7 @@
       "id": "Q30938528",
       "name": "Jordi Mboula",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1999,
       "dob": "1999-03-16",
@@ -14517,16 +13077,6 @@
       "born": 1989,
       "dob": "1989-11-24",
       "started": "2025-08-01"
-    },
-    {
-      "id": "Q108910786",
-      "name": "Maghnes Akliouche",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 2002,
-      "dob": "2002-02-25",
-      "started": "2021-01-01"
     },
     {
       "id": "Q59915117",
@@ -14569,16 +13119,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q27671254",
-      "name": "Samuel Grandsir",
-      "position": "wing half",
-      "slot": null,
-      "nat": "France",
-      "born": 1996,
-      "dob": "1996-08-14",
-      "started": "2018-07-01"
-    },
-    {
       "id": "Q56033749",
       "name": "Sofiane Diop",
       "position": "midfielder",
@@ -14607,16 +13147,6 @@
       "born": 1996,
       "dob": "1996-09-21",
       "started": "2024-01-05"
-    },
-    {
-      "id": "Q40848615",
-      "name": "Willem Geubbels",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "France",
-      "born": 2001,
-      "dob": "2001-08-16",
-      "started": "2018-07-01"
     },
     {
       "id": "Q58484930",
@@ -14694,7 +13224,7 @@
       "id": "Q20990947",
       "name": "Franco López",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Argentina",
       "born": 1998,
       "dob": "1998-04-01",
@@ -14718,16 +13248,6 @@
       "nat": "Argentina",
       "born": 1990,
       "dob": "1990-01-12",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q16581700",
-      "name": "Joaquín Arzura",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Argentina",
-      "born": 1993,
-      "dob": "1993-05-18",
       "started": "2016-01-01"
     },
     {
@@ -14864,11 +13384,21 @@
       "id": "Q366682",
       "name": "Tabaré Viudez",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Uruguay",
       "born": 1989,
       "dob": "1989-09-08",
       "started": "2015-01-01"
+    },
+    {
+      "id": "Q57293140",
+      "name": "Thiago Almada",
+      "position": "midfielder",
+      "slot": "MF",
+      "nat": "Argentina",
+      "born": 2001,
+      "dob": "2001-04-26",
+      "started": "2026-08-01"
     }
   ],
   "Flamengo": [
@@ -14976,7 +13506,7 @@
       "id": "Q13578003",
       "name": "Giorgian de Arrascaeta",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Italy",
       "born": 1994,
       "dob": "1994-06-01",
@@ -14996,7 +13526,7 @@
       "id": "Q19968638",
       "name": "Jonas Gomes de Sousa",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Brazil",
       "born": 1991,
       "dob": "1991-10-03",
@@ -15056,21 +13586,11 @@
       "id": "Q3869209",
       "name": "Mário Sérgio Santos Costa",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Brazil",
       "born": 1990,
       "dob": "1990-05-29",
       "started": "2017-01-01"
-    },
-    {
-      "id": "Q20994192",
-      "name": "Marlos Moreno",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Colombia",
-      "born": 1996,
-      "dob": "1996-09-20",
-      "started": "2018-01-01"
     },
     {
       "id": "Q28663925",
@@ -15116,7 +13636,7 @@
       "id": "Q3438450",
       "name": "Rodrigo Caio",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Brazil",
       "born": 1993,
       "dob": "1993-08-17",
@@ -15175,16 +13695,6 @@
       "started": "2020-01-01"
     },
     {
-      "id": "Q1341709",
-      "name": "Dudu",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1992,
-      "dob": "1992-01-07",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q18246631",
       "name": "Erik Lima",
       "position": "forward",
@@ -15218,7 +13728,7 @@
       "id": "Q14921884",
       "name": "Gabriel Girotto Franco",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Brazil",
       "born": 1992,
       "dob": "1992-07-10",
@@ -15258,7 +13768,7 @@
       "id": "Q15975282",
       "name": "Jorge Eduardo Recalde",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Paraguay",
       "born": 1992,
       "dob": "1992-05-08",
@@ -15273,26 +13783,6 @@
       "born": 2000,
       "dob": "2000-06-24",
       "started": "2019-01-01"
-    },
-    {
-      "id": "Q2082547",
-      "name": "Lucas Marques",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Brazil",
-      "born": 1988,
-      "dob": "1988-03-26",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q22006384",
-      "name": "Lucas Taylor",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Brazil",
-      "born": 1995,
-      "dob": "1995-04-10",
-      "started": "2015-01-01"
     },
     {
       "id": "Q22006724",
@@ -15335,20 +13825,10 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q27443365",
-      "name": "Raphael Veiga",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1995,
-      "dob": "1995-06-19",
-      "started": "2017-01-01"
-    },
-    {
       "id": "Q17037521",
       "name": "Régis Augusto Salmazzo",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Brazil",
       "born": 1992,
       "dob": "1992-11-30",
@@ -15368,7 +13848,7 @@
       "id": "Q21030271",
       "name": "Thiago dos Santos",
       "position": "stopper",
-      "slot": null,
+      "slot": "DF",
       "nat": "Brazil",
       "born": 1989,
       "dob": "1989-09-05",
@@ -15410,7 +13890,7 @@
       "id": "Q1155889",
       "name": "André Carrillo",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Peru",
       "born": 1991,
       "dob": "1991-06-14",
@@ -15455,16 +13935,6 @@
       "born": 1991,
       "dob": "1991-08-23",
       "started": "2016-01-01"
-    },
-    {
-      "id": "Q932827",
-      "name": "Fagner",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Brazil",
-      "born": 1989,
-      "dob": "1989-06-11",
-      "started": "2015-01-01"
     },
     {
       "id": "Q30916190",
@@ -15570,20 +14040,10 @@
       "id": "Q10552199",
       "name": "Lucca Borges de Brito",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Brazil",
       "born": 1990,
       "dob": "1990-02-14",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q19577870",
-      "name": "Marciel",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Brazil",
-      "born": 1995,
-      "dob": "1995-03-08",
       "started": "2015-01-01"
     },
     {
@@ -15712,7 +14172,7 @@
       "id": "Q18759062",
       "name": "Emem Eduok",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Nigeria",
       "born": 1994,
       "dob": "1994-01-31",
@@ -15752,7 +14212,7 @@
       "id": "Q1632576",
       "name": "Hrvoje Milić",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Croatia",
       "born": 1989,
       "dob": "1989-05-10",
@@ -15861,26 +14321,6 @@
   ],
   "Chelsea": [
     {
-      "id": "Q123227962",
-      "name": "Aaron Anselmino",
-      "position": null,
-      "slot": null,
-      "nat": "Argentina",
-      "born": 2005,
-      "dob": "2005-04-29",
-      "started": "2024-01-01"
-    },
-    {
-      "id": "Q111366053",
-      "name": "Alejandro Garnacho",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Spain",
-      "born": 2004,
-      "dob": "2004-07-01",
-      "started": "2025-08-30"
-    },
-    {
       "id": "Q19561048",
       "name": "Alex Kiwomya",
       "position": "forward",
@@ -15889,16 +14329,6 @@
       "born": 1996,
       "dob": "1996-05-20",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q23887767",
-      "name": "Axel Disasi",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 1998,
-      "dob": "1998-03-11",
-      "started": "2023-01-01"
     },
     {
       "id": "Q317389",
@@ -15919,26 +14349,6 @@
       "born": 2003,
       "dob": "2003-03-15",
       "started": "2021-01-01"
-    },
-    {
-      "id": "Q42847487",
-      "name": "Billy Gilmour",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "United Kingdom",
-      "born": 2001,
-      "dob": "2001-06-11",
-      "started": "2019-01-01"
-    },
-    {
-      "id": "Q97158493",
-      "name": "Caleb Wiley",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United States",
-      "born": 2004,
-      "dob": "2004-12-22",
-      "started": "2024-01-01"
     },
     {
       "id": "Q85751626",
@@ -15971,16 +14381,6 @@
       "started": "2026-08-01"
     },
     {
-      "id": "Q105575806",
-      "name": "David Datro Fofana",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Ivory Coast",
-      "born": 2002,
-      "dob": "2002-12-22",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q96105248",
       "name": "Enzo Fernández",
       "position": "midfielder",
@@ -16009,16 +14409,6 @@
       "born": 2007,
       "dob": "2007-04-30",
       "started": "2026-07-01"
-    },
-    {
-      "id": "Q23688811",
-      "name": "Jake Clarke-Salter",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 1997,
-      "dob": "1997-09-22",
-      "started": "2016-01-01"
     },
     {
       "id": "Q111627959",
@@ -16171,16 +14561,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q113515002",
-      "name": "Mike Penders",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Belgium",
-      "born": 2005,
-      "dob": "2005-07-31",
-      "started": "2024-08-27"
-    },
-    {
       "id": "Q87715532",
       "name": "Moisés Caicedo",
       "position": "midfielder",
@@ -16219,6 +14599,16 @@
       "born": 2000,
       "dob": "2000-03-09",
       "started": "2024-08-01"
+    },
+    {
+      "id": "Q96040600",
+      "name": "Pep Chavarría",
+      "position": null,
+      "slot": null,
+      "nat": "Spain",
+      "born": 1998,
+      "dob": "1998-04-10",
+      "started": "2026-01-01"
     },
     {
       "id": "Q39076401",
@@ -16293,36 +14683,6 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q20688718",
-      "name": "Angeliño",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-01-04",
-      "started": "2024-05-31"
-    },
-    {
-      "id": "Q20066885",
-      "name": "Artem Dovbyk",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Ukraine",
-      "born": 1997,
-      "dob": "1997-06-21",
-      "started": "2024-08-01"
-    },
-    {
-      "id": "Q20882773",
-      "name": "Arturo Calabresi",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Italy",
-      "born": 1996,
-      "dob": "1996-03-17",
-      "started": "2015-01-01"
-    },
-    {
       "id": "Q63966349",
       "name": "Devyne Rensch",
       "position": "defender",
@@ -16383,16 +14743,6 @@
       "started": "2016-07-14"
     },
     {
-      "id": "Q22005877",
-      "name": "Kostas Tsimikas",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Greece",
-      "born": 1996,
-      "dob": "1996-05-12",
-      "started": "2025-08-31"
-    },
-    {
       "id": "Q22046804",
       "name": "Lorenzo Di Livio",
       "position": "midfielder",
@@ -16431,16 +14781,6 @@
       "born": 2000,
       "dob": "2000-02-08",
       "started": "2021-01-01"
-    },
-    {
-      "id": "Q52419871",
-      "name": "Matías Nani",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Argentina",
-      "born": 1998,
-      "dob": "1998-03-26",
-      "started": "2017-01-01"
     },
     {
       "id": "Q43387229",
@@ -16493,36 +14833,6 @@
       "started": "2025-01-24"
     },
     {
-      "id": "Q60407856",
-      "name": "Saud Abdulhamid",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Saudi Arabia",
-      "born": 1999,
-      "dob": "1999-07-18",
-      "started": "2024-08-27"
-    },
-    {
-      "id": "Q12984",
-      "name": "Stephan El Shaarawy",
-      "position": "winger",
-      "slot": "FW",
-      "nat": "Italy",
-      "born": 1992,
-      "dob": "1992-10-27",
-      "started": "2021-01-01"
-    },
-    {
-      "id": "Q45951841",
-      "name": "William Bianda",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "France",
-      "born": 2000,
-      "dob": "2000-04-30",
-      "started": "2018-07-01"
-    },
-    {
       "id": "Q2525331",
       "name": "William Vainqueur",
       "position": "midfielder",
@@ -16531,188 +14841,6 @@
       "born": 1988,
       "dob": "1988-11-19",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q50628268",
-      "name": "Zeki Çelik",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Turkey",
-      "born": 1997,
-      "dob": "1997-02-17",
-      "started": "2022-07-05"
-    }
-  ],
-  "Basel": [
-    {
-      "id": "Q4680091",
-      "name": "Adama Traoré",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Australia",
-      "born": 1990,
-      "dob": "1990-02-03",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q10404987",
-      "name": "Alexander Fransson",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Sweden",
-      "born": 1994,
-      "dob": "1994-04-02",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q4754719",
-      "name": "Andraž Šporar",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Slovenia",
-      "born": 1994,
-      "dob": "1994-02-27",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q20950164",
-      "name": "Blás Riveros",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Paraguay",
-      "born": 1998,
-      "dob": "1998-02-03",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q5217565",
-      "name": "Daniel Høegh",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Kingdom of Denmark",
-      "born": 1991,
-      "dob": "1991-01-06",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q19960240",
-      "name": "Dereck Kutesa",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Switzerland",
-      "born": 1997,
-      "dob": "1997-12-06",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q24052364",
-      "name": "Eray Cömert",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Switzerland",
-      "born": 1998,
-      "dob": "1998-02-04",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q22342690",
-      "name": "Jonas Omlin",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Switzerland",
-      "born": 1994,
-      "dob": "1994-01-10",
-      "started": "2018-07-01"
-    },
-    {
-      "id": "Q114133037",
-      "name": "Juan Gauto",
-      "position": null,
-      "slot": null,
-      "nat": "Argentina",
-      "born": 2004,
-      "dob": "2004-06-02",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q61643707",
-      "name": "Kemal Ademi",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Switzerland",
-      "born": 1996,
-      "dob": "1996-01-23",
-      "started": "2019-07-01"
-    },
-    {
-      "id": "Q679530",
-      "name": "Michael Lang",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Switzerland",
-      "born": 1991,
-      "dob": "1991-02-08",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q17525065",
-      "name": "Mirko Salvi",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Switzerland",
-      "born": 1994,
-      "dob": "1994-02-14",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q111336227",
-      "name": "Noa Dundas",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Kingdom of the Netherlands",
-      "born": 2004,
-      "dob": "2004-04-13",
-      "started": "2022-01-01"
-    },
-    {
-      "id": "Q2736028",
-      "name": "Omar Gaber",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Egypt",
-      "born": 1992,
-      "dob": "1992-01-30",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q16234212",
-      "name": "Renato Steffen",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Switzerland",
-      "born": 1991,
-      "dob": "1991-11-03",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q20752808",
-      "name": "Robin Huser",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Switzerland",
-      "born": 1998,
-      "dob": "1998-01-24",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q252190",
-      "name": "Xherdan Shaqiri",
-      "position": "attacking midfielder",
-      "slot": "MF",
-      "nat": "Switzerland",
-      "born": 1991,
-      "dob": "1991-10-10",
-      "started": "2024-08-01"
     }
   ],
   "Sevilla": [
@@ -16720,7 +14848,7 @@
       "id": "Q14558450",
       "name": "Adnan Januzaj",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Belgium",
       "born": 1995,
       "dob": "1995-02-05",
@@ -16740,7 +14868,7 @@
       "id": "Q180553",
       "name": "Alexis Sánchez",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Chile",
       "born": 1988,
       "dob": "1988-12-19",
@@ -16817,16 +14945,6 @@
       "started": "2022-01-01"
     },
     {
-      "id": "Q15963931",
-      "name": "Munir El Haddadi",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Morocco",
-      "born": 1995,
-      "dob": "1995-09-01",
-      "started": "2019-01-01"
-    },
-    {
       "id": "Q91531",
       "name": "Odysseas Vlachodimos",
       "position": "goalkeeper",
@@ -16860,173 +14978,11 @@
       "id": "Q38053896",
       "name": "Ruben Vargas",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Switzerland",
       "born": 1998,
       "dob": "1998-08-05",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q961878",
-      "name": "Thomas Delaney",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Kingdom of Denmark",
-      "born": 1991,
-      "dob": "1991-09-03",
-      "started": "2021-08-25"
-    }
-  ],
-  "Schalke 04": [
-    {
-      "id": "Q114825245",
-      "name": "Assan Ouédraogo",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Germany",
-      "born": 2006,
-      "dob": "2006-05-09",
-      "started": "2023-07-01"
-    },
-    {
-      "id": "Q61741137",
-      "name": "Derry Murkin",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "United Kingdom",
-      "born": 1999,
-      "dob": "1999-07-27",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q21554897",
-      "name": "Fabian Reese",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Germany",
-      "born": 1997,
-      "dob": "1997-11-29",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q20827816",
-      "name": "Felix Schröter",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Germany",
-      "born": 1996,
-      "dob": "1996-01-23",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q27174724",
-      "name": "Hamza Mendyl",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Ivory Coast",
-      "born": 1997,
-      "dob": "1997-10-21",
-      "started": "2018-08-17"
-    },
-    {
-      "id": "Q2107476",
-      "name": "Johannes Geis",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Germany",
-      "born": 1993,
-      "dob": "1993-08-17",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q10538186",
-      "name": "Júnior Caiçara",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Brazil",
-      "born": 1989,
-      "dob": "1989-04-27",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q339252",
-      "name": "Loris Karius",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Germany",
-      "born": 1993,
-      "dob": "1993-06-22",
-      "started": "2025-01-01"
-    },
-    {
-      "id": "Q21588109",
-      "name": "Markus Schubert",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Germany",
-      "born": 1998,
-      "dob": "1998-06-12",
-      "started": "2019-01-01"
-    },
-    {
-      "id": "Q105955082",
-      "name": "Martin Wasinski",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Belgium",
-      "born": 2004,
-      "dob": "2004-04-07",
-      "started": "2024-07-01"
-    },
-    {
-      "id": "Q62604184",
-      "name": "Nassim Boujellab",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Germany",
-      "born": 1999,
-      "dob": "1999-06-20",
-      "started": "2019-04-06"
-    },
-    {
-      "id": "Q27957334",
-      "name": "Nikola Katić",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Bosnia and Herzegovina",
-      "born": 1996,
-      "dob": "1996-10-10",
-      "started": "2025-01-01"
-    },
-    {
-      "id": "Q56071338",
-      "name": "Rabbi Matondo",
-      "position": "wing half",
-      "slot": null,
-      "nat": "United Kingdom",
-      "born": 2000,
-      "dob": "2000-09-09",
-      "started": "2019-01-01"
-    },
-    {
-      "id": "Q15644548",
-      "name": "Robin Gosens",
-      "position": "full-back",
-      "slot": "DF",
-      "nat": "Germany",
-      "born": 1994,
-      "dob": "1994-07-05",
-      "started": "2026-01-01"
-    },
-    {
-      "id": "Q348266",
-      "name": "Younès Belhanda",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 1990,
-      "dob": "1990-02-25",
-      "started": "2016-01-01"
     }
   ],
   "Olympique Lyonnais": [
@@ -17039,16 +14995,6 @@
       "born": 1997,
       "dob": "1997-08-29",
       "started": "2023-01-01"
-    },
-    {
-      "id": "Q20968568",
-      "name": "Aldo Kalulu",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "France",
-      "born": 1996,
-      "dob": "1996-01-21",
-      "started": "2015-01-01"
     },
     {
       "id": "Q130218534",
@@ -17091,16 +15037,6 @@
       "started": "2022-01-01"
     },
     {
-      "id": "Q17612806",
-      "name": "Duje Ćaleta-Car",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Croatia",
-      "born": 1996,
-      "dob": "1996-09-17",
-      "started": "2024-07-08"
-    },
-    {
       "id": "Q110644260",
       "name": "Endrick",
       "position": "forward",
@@ -17109,16 +15045,6 @@
       "born": 2006,
       "dob": "2006-07-21",
       "started": "2025-01-01"
-    },
-    {
-      "id": "Q83945711",
-      "name": "Florent da Silva",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 2003,
-      "dob": "2003-04-02",
-      "started": "2021-07-01"
     },
     {
       "id": "Q23762797",
@@ -17211,16 +15137,6 @@
       "started": "2015-01-01"
     },
     {
-      "id": "Q123126188",
-      "name": "Mahamadou Diawara",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 2005,
-      "dob": "2005-02-17",
-      "started": "2023-01-01"
-    },
-    {
       "id": "Q438796",
       "name": "Mapou Yanga-Mbiwa",
       "position": "centre-back",
@@ -17264,7 +15180,7 @@
       "id": "Q189184",
       "name": "Rafael Pereira da Silva",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Brazil",
       "born": 1990,
       "dob": "1990-07-09",
@@ -17309,16 +15225,6 @@
       "born": 1996,
       "dob": "1996-01-05",
       "started": "2020-01-22"
-    },
-    {
-      "id": "Q64736343",
-      "name": "Yaya Soumaré",
-      "position": "wing half",
-      "slot": null,
-      "nat": "France",
-      "born": 2000,
-      "dob": "2000-06-23",
-      "started": "2015-01-01"
     }
   ],
   "Barcelona": [
@@ -17353,16 +15259,6 @@
       "started": "2024-01-01"
     },
     {
-      "id": "Q66743376",
-      "name": "Ansu Fati",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2002,
-      "dob": "2002-10-31",
-      "started": "2019-01-01"
-    },
-    {
       "id": "Q45179405",
       "name": "Anthony Gordon",
       "position": "winger",
@@ -17371,16 +15267,6 @@
       "born": 2001,
       "dob": "2001-02-24",
       "started": "2026-07-01"
-    },
-    {
-      "id": "Q104784108",
-      "name": "Chadi Riad",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Morocco",
-      "born": 2003,
-      "dob": "2003-06-17",
-      "started": "2022-11-08"
     },
     {
       "id": "Q19560313",
@@ -17463,16 +15349,6 @@
       "started": "2023-12-01"
     },
     {
-      "id": "Q77237821",
-      "name": "Iñaki Peña",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Spain",
-      "born": 1999,
-      "dob": "1999-03-02",
-      "started": "2022-01-01"
-    },
-    {
       "id": "Q104835054",
       "name": "Jimer Fory",
       "position": "defender",
@@ -17516,7 +15392,7 @@
       "id": "Q21621620",
       "name": "José Arnaiz",
       "position": "wing half",
-      "slot": null,
+      "slot": "MF",
       "nat": "Spain",
       "born": 1995,
       "dob": "1995-04-15",
@@ -17596,7 +15472,7 @@
       "id": "Q66606355",
       "name": "Pedri",
       "position": "centerhalf",
-      "slot": null,
+      "slot": "DF",
       "nat": "Spain",
       "born": 2002,
       "dob": "2002-11-25",
@@ -17683,16 +15559,6 @@
       "started": "2025-01-01"
     },
     {
-      "id": "Q113976796",
-      "name": "Víctor Barberà",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2004,
-      "dob": "2004-08-20",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q188997",
       "name": "Wojciech Szczęsny",
       "position": "goalkeeper",
@@ -17711,188 +15577,6 @@
       "born": 2007,
       "dob": "2007-05-21",
       "started": "2026-01-01"
-    }
-  ],
-  "Valencia": [
-    {
-      "id": "Q15830921",
-      "name": "Aderlan Leandro de Jesus Santos",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Brazil",
-      "born": 1989,
-      "dob": "1989-04-09",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q20898221",
-      "name": "Antonio Latorre Grueso",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-11-21",
-      "started": "2016-01-01"
-    },
-    {
-      "id": "Q22001795",
-      "name": "Arnaut Danjuma",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Nigeria",
-      "born": 1997,
-      "dob": "1997-01-31",
-      "started": "2025-08-01"
-    },
-    {
-      "id": "Q98091477",
-      "name": "Cenk Özkacar",
-      "position": "defender",
-      "slot": "DF",
-      "nat": "Turkey",
-      "born": 2000,
-      "dob": "2000-10-06",
-      "started": "2023-06-01"
-    },
-    {
-      "id": "Q113648535",
-      "name": "Diego López Noguerol",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 2002,
-      "dob": "2002-05-13",
-      "started": "2022-08-01"
-    },
-    {
-      "id": "Q21977948",
-      "name": "Fran Villalba",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Spain",
-      "born": 1998,
-      "dob": "1998-05-11",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q724147",
-      "name": "Geoffrey Kondogbia",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 1993,
-      "dob": "1993-02-15",
-      "started": "2018-01-01"
-    },
-    {
-      "id": "Q18222883",
-      "name": "Jaume Doménech",
-      "position": "goalkeeper",
-      "slot": "GK",
-      "nat": "Spain",
-      "born": 1990,
-      "dob": "1990-11-05",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q104587845",
-      "name": "Koba Leïn Koindredi",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "France",
-      "born": 2001,
-      "dob": "2001-10-27",
-      "started": "2022-01-01"
-    },
-    {
-      "id": "Q20994107",
-      "name": "Maxi Gómez",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Uruguay",
-      "born": 1996,
-      "dob": "1996-08-14",
-      "started": "2019-01-01"
-    },
-    {
-      "id": "Q16235035",
-      "name": "Rubén Sobrino",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 1992,
-      "dob": "1992-06-01",
-      "started": "2019-01-31"
-    },
-    {
-      "id": "Q21584736",
-      "name": "Sadiq Umar",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Nigeria",
-      "born": 1997,
-      "dob": "1997-02-02",
-      "started": "2025-01-01"
-    },
-    {
-      "id": "Q7420322",
-      "name": "Santi Mina",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 1995,
-      "dob": "1995-12-07",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q20977918",
-      "name": "Sergi Canós",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-02-02",
-      "started": "2023-08-01"
-    },
-    {
-      "id": "Q18920270",
-      "name": "Tropi",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Spain",
-      "born": 1995,
-      "dob": "1995-05-12",
-      "started": "2015-01-01"
-    },
-    {
-      "id": "Q37506695",
-      "name": "Unai Núñez",
-      "position": "centre-back",
-      "slot": "DF",
-      "nat": "Spain",
-      "born": 1997,
-      "dob": "1997-01-30",
-      "started": "2026-01-01"
-    },
-    {
-      "id": "Q24084219",
-      "name": "Uroš Račić",
-      "position": "midfielder",
-      "slot": "MF",
-      "nat": "Serbia",
-      "born": 1998,
-      "dob": "1998-03-17",
-      "started": "2018-01-01"
-    },
-    {
-      "id": "Q14375620",
-      "name": "Zakaria Bakkali",
-      "position": "wing half",
-      "slot": null,
-      "nat": "Belgium",
-      "born": 1996,
-      "dob": "1996-01-26",
-      "started": "2015-01-01"
     }
   ]
 }

@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lineup Builder — Pick Your XI | Ball IQ</title>
+<meta name="description" content="Build any starting XI from 3,600+ real footballers — current squads, other clubs, and legends. Pick a formation, fill the pitch, share your team.">
+<link rel="canonical" href="https://balliq.app/lineup/">
+<meta property="og:title" content="Lineup Builder — Pick Your XI">
+<meta property="og:description" content="Build any XI from 3,600+ real footballers. Rumoured signings, all-time teams, whatever you like.">
+<meta property="og:url" content="https://balliq.app/lineup/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
+<link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+<style>
+:root{
+  --bg:#0A0A0A; --s1:#0F1117; --s2:#14161E; --s3:#1C1F28;
+  --border:#242836; --border2:#2A2D3A;
+  --text:#fff; --t2:#A6ADBB; --t3:#6F7787;
+  --accent:#58CC02; --accent-dim:rgba(88,204,2,.10); --accent-b:rgba(88,204,2,.28);
+  --line:rgba(255,255,255,.26);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.5;overscroll-behavior-y:contain;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:16px 14px 40px}
+a{color:var(--accent)}
+
+header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.logo{font-weight:900;letter-spacing:-.02em;font-size:15px;text-decoration:none;color:var(--text)}
+.logo span{color:var(--accent)}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-left:auto}
+h1{font-size:clamp(22px,5.6vw,30px);line-height:1.1;margin:0 0 4px;letter-spacing:-.025em;font-weight:900}
+.lede{margin:0 0 16px;color:var(--t2);font-size:14px}
+
+.bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.field{flex:1 1 150px;min-width:0}
+select,input[type=search],button{font:inherit;font-size:14px}
+select,input[type=search]{
+  width:100%;background:var(--s2);color:var(--text);border:1px solid var(--border2);
+  border-radius:11px;padding:11px 12px;min-height:44px;-webkit-appearance:none;appearance:none;
+}
+select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%236F7787' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{
+  background:var(--s2);color:var(--text);border:1px solid var(--border2);border-radius:11px;
+  padding:11px 14px;min-height:44px;cursor:pointer;font-weight:700;white-space:nowrap;
+  transition:background .14s,border-color .14s;
+}
+.btn:hover{background:var(--s3)}
+.btn--go{background:var(--accent);color:#06230C;border-color:var(--accent);font-weight:800;flex:1 1 auto}
+.btn--go:hover{filter:brightness(1.06);background:var(--accent)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+#linkOut{position:absolute;left:-9999px}
+
+/* ── pitch ──────────────────────────────────────────────── */
+.pitch{
+  /* A pitch is 105x68, so the plan view is portrait. Constrained on desktop so
+     it stays a pitch instead of becoming a very tall corridor. */
+  position:relative;border-radius:14px;overflow:hidden;
+  max-width:640px;margin:0 auto;aspect-ratio:.70;
+  background:linear-gradient(170deg,#17371c 0%,#123016 45%,#0d2611 100%);
+  border:1px solid var(--border2);
+}
+/* Mown stripes: cheap, crisp at any size, and they make the markings read as
+   markings rather than as decorative lines on a dark box. */
+.pitch::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.045) 0 8.33%,transparent 8.33% 16.66%);
+}
+/* The pitch OUTLINE is an SVG rather than nested divs: the markings then scale
+   as one drawing with the container instead of drifting apart at odd widths. */
+.markings{position:absolute;inset:0;pointer-events:none;width:100%;height:100%}
+.markings *{stroke:var(--line);fill:none;stroke-width:1.5;vector-effect:non-scaling-stroke}
+/* A stretched <circle> is an ellipse. The centre circle is therefore drawn in
+   CSS, where aspect-ratio:1 keeps it round at every container width. */
+.centre{position:absolute;left:50%;top:50%;width:19%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border:1.5px solid var(--line);border-radius:50%;pointer-events:none}
+.spot{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;
+  background:var(--line);border-radius:50%;pointer-events:none}
+/* ⚠️ ROWS ARE PLACED BY PITCH DEPTH, not spread evenly. Defenders belong just
+   ahead of their own box, forwards up near the opponent's, midfield on the
+   halfway line — that is what makes it read as a team shape rather than four
+   rows of circles. Positions are percentages from the bottom (own goal). */
+.rows{position:absolute;inset:0;z-index:1}
+.row{position:absolute;left:0;right:0;display:flex;justify-content:center;
+  gap:2%;flex-wrap:nowrap;transform:translateY(50%);padding:0 3%}
+
+/* ⚠️ SLOTS SHARE THE ROW, they do not take a fixed slice. flex-basis:17% gave
+   every slot ~58px regardless of how many were in the row, so a three-man
+   forward line wasted half the pitch width and names as short as "Frimpong"
+   were forced to break mid-word. flex:1 1 0 divides the row evenly; the disc
+   keeps its own max-width so two-player rows do not grow giant heads. */
+.slot{
+  flex:1 1 0;max-width:130px;min-width:0;background:none;border:0;padding:0;cursor:pointer;
+  color:#fff;font:inherit;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  -webkit-tap-highlight-color:transparent;
+}
+.disc{
+  position:relative;width:100%;aspect-ratio:1;max-width:74px;margin:0 auto;border-radius:50%;
+  overflow:hidden;background:rgba(0,0,0,.35);border:2.5px solid rgba(255,255,255,.55);
+  box-shadow:0 4px 14px rgba(0,0,0,.45);
+  display:flex;align-items:center;justify-content:center;transition:border-color .14s,transform .14s;
+}
+.slot:hover .disc{border-color:var(--accent);transform:translateY(-2px)}
+.slot.filled .disc{border-color:rgba(255,255,255,.14);box-shadow:0 4px 16px rgba(0,0,0,.5)}
+.disc img{position:absolute;left:0;top:0;max-width:none;display:block}
+.disc img.cutimg{position:absolute;inset:0;width:100%;height:100%;max-width:100%;object-fit:cover}
+.disc.cut{background:radial-gradient(circle at 50% 28%,#22452a 0%,#122616 62%,#0c1a0f 100%)}
+.disc .ph{font-size:24px;color:rgba(255,255,255,.45);font-weight:200;line-height:1;
+  position:relative;top:-8%}
+/* Empty-slot label sits INSIDE the ring, where the face will go. */
+.pos{position:absolute;left:0;right:0;bottom:22%;z-index:2;text-align:center;
+  font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);pointer-events:none}
+.slotwrap{position:relative;width:100%;max-width:74px;display:block}
+/* Drag affordances. The ghost is body-level so it is never clipped by the
+   pitch's overflow:hidden, and pointer-events:none keeps it from being the
+   element under the cursor. */
+.ghost{position:fixed;z-index:60;pointer-events:none;margin:0;
+  border-color:var(--accent) !important;box-shadow:0 12px 32px rgba(0,0,0,.6);
+  transform:scale(1.12);opacity:.95}
+.slot.dragging .disc{opacity:.25}
+.slot.over .disc{border-color:#fff;transform:scale(1.10)}
+.slot.over::after{content:"";position:absolute;inset:-6px;border-radius:50%;
+  border:2px dashed rgba(255,255,255,.5);pointer-events:none}
+.slot{touch-action:manipulation}
+/* ⚠️ THE PLATE MUST NOT BE WIDER THAN ITS SLOT. With nowrap and a fixed
+   max-width, full names bled sideways into the neighbouring player — "Cody
+   Gak|Alexander Is|Hugo Ekitike" — which is worse than the wrong-surname bug it
+   replaced. Wrapping inside the slot keeps every plate in its own column. */
+.nm{font-size:9.5px;font-weight:750;line-height:1.15;text-align:center;color:#fff;
+  /* break-word, NOT anywhere: `anywhere` split names mid-syllable — "Alexan-der",
+     "Szobos-zlai", "Frim-pong". break-word only splits a word that cannot fit on
+     a line by itself, so names divide at the space where they should. */
+  max-width:100%;white-space:normal;overflow-wrap:break-word;hyphens:none;
+  background:rgba(6,10,7,.80);border:1px solid rgba(255,255,255,.10);
+  padding:2px 5px;border-radius:6px;letter-spacing:-.012em}
+.slot.filled .pos{color:var(--accent)}
+
+/* ── picker sheet ───────────────────────────────────────── */
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.panel{
+  width:100%;max-width:560px;max-height:86vh;background:var(--s1);
+  border:1px solid var(--border2);border-radius:18px 18px 0 0;
+  display:flex;flex-direction:column;padding:14px 14px calc(14px + env(safe-area-inset-bottom));
+}
+@media(min-width:620px){ .sheet{align-items:center} .panel{border-radius:18px;max-height:78vh} }
+/* ⚠️ ON DESKTOP, CONSTRAIN BY HEIGHT, NOT WIDTH. Driving a portrait
+   aspect-ratio off the available width turned the pitch into a 1,400px column
+   with dead space either side — the taller the browser, the sillier it got.
+   Sizing from the viewport height keeps it a pitch you can see all at once. */
+@media(min-width:760px){
+  .pitch{height:min(78vh,820px);width:calc(min(78vh,820px) * .70);max-width:100%}
+  .wrap{max-width:900px}
+}
+.panel h2{margin:0 0 2px;font-size:16px;font-weight:800}
+.panel .sub{margin:0 0 10px;font-size:12.5px;color:var(--t3)}
+.list{overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.opt{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:var(--s2);border:1px solid var(--border);border-radius:11px;
+  padding:8px 10px;min-height:56px;cursor:pointer;color:var(--text);
+}
+.opt:hover{background:var(--s3);border-color:var(--border2)}
+.opt .disc{width:40px;height:40px;flex:0 0 40px;border-width:1px}
+.opt .who{min-width:0;flex:1}
+.opt .who b{display:block;font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt .who small{display:block;font-size:11.5px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--accent);
+  background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:6px;padding:2px 6px}
+.close{margin-top:10px}
+.more{padding:10px;text-align:center;color:var(--t3);font-size:12px}
+
+.credits{margin-top:20px;padding-top:14px;border-top:1px solid var(--border)}
+.credits summary{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--t3);cursor:pointer;list-style:none}
+.credits summary::-webkit-details-marker{display:none}
+.credits summary::after{content:" ▾";color:var(--t3)}
+.credits[open] summary::after{content:" ▴"}
+.credits p{margin-top:8px}
+.credits p{margin:0;font-size:11px;color:var(--t3);line-height:1.55}
+.credits a{color:var(--t2)}
+.foot{margin-top:20px;font-size:12px;color:var(--t3)}
+.status{padding:26px 0;text-align:center;color:var(--t3);font-size:14px}
+.err{color:#FF6B6B}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">Ball<span>IQ</span></a>
+  <span class="eyebrow">Lineup Builder</span>
+</header>
+
+<h1>Pick your XI</h1>
+<p class="lede">Every player, not just one squad — current teams, rivals, rumoured signings and legends. Pick a formation and tap a shirt to fill it.</p>
+
+<div class="bar">
+  <div class="field"><select id="loadTeam" aria-label="Start from a real team"></select></div>
+  <div class="field" style="flex:0 1 124px"><select id="form" aria-label="Formation"></select></div>
+</div>
+<div class="bar">
+  <div class="field"><input id="teamName" type="text" maxlength="34" placeholder="Name your team" aria-label="Team name"></div>
+  <button class="btn" id="clear" type="button">Clear</button>
+</div>
+
+<div id="status" class="status">Loading players…</div>
+
+<div class="pitch" id="pitch" hidden>
+  <svg class="markings" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="1" y="1" width="98" height="98"/>
+    <line x1="1" y1="50" x2="99" y2="50"/>
+    <rect x="24" y="1" width="52" height="15"/>
+    <rect x="37" y="1" width="26" height="6"/>
+    <rect x="24" y="84" width="52" height="15"/>
+    <rect x="37" y="93" width="26" height="6"/>
+  </svg>
+  <span class="centre"></span><span class="spot"></span>
+  <div class="rows" id="rows"></div>
+</div>
+
+<div class="bar" style="margin-top:12px">
+  <button class="btn btn--go" id="download" type="button">Download image</button>
+  <button class="btn" id="copyLink" type="button">Copy share link</button>
+</div>
+<p class="foot" id="foot"></p>
+<input type="text" id="linkOut" readonly hidden aria-label="Share link">
+
+<details class="credits">
+  <summary id="creditsSum">Photo credits</summary>
+  <p id="credits">Photographs come from Wikimedia Commons under their own free licences. Each photographer is credited here once their picture is on the pitch.</p>
+</details>
+
+</div>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="panel">
+    <h2 id="sheetTitle">Choose a player</h2>
+    <p class="sub" id="sheetSub"></p>
+    <input type="search" id="search" placeholder="Search every player…" autocomplete="off" aria-label="Search every player">
+    <div class="list" id="list"></div>
+    <button class="btn close" id="closeSheet" type="button">Close</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// 14 shapes, 4-3-3 first because it is the one people reach for. Rows run
+// defence-first and render bottom-up, so the keeper sits at the near end the
+// way a TV graphic draws it.
+var FORMATIONS = {
+  '4-3-3':   [['GK'],['DF','DF','DF','DF'],['MF','MF','MF'],['FW','FW','FW']],
+  '4-4-2':   [['GK'],['DF','DF','DF','DF'],['MF','MF','MF','MF'],['FW','FW']],
+  '4-2-3-1': [['GK'],['DF','DF','DF','DF'],['MF','MF'],['MF','MF','MF'],['FW']],
+  '4-3-2-1': [['GK'],['DF','DF','DF','DF'],['MF','MF','MF'],['FW','FW'],['FW']],
+  '4-1-4-1': [['GK'],['DF','DF','DF','DF'],['MF'],['MF','MF','MF','MF'],['FW']],
+  '4-1-2-1-2':[['GK'],['DF','DF','DF','DF'],['MF'],['MF','MF'],['MF'],['FW','FW']],
+  '4-2-2-2': [['GK'],['DF','DF','DF','DF'],['MF','MF'],['MF','MF'],['FW','FW']],
+  '4-4-1-1': [['GK'],['DF','DF','DF','DF'],['MF','MF','MF','MF'],['FW'],['FW']],
+  '4-5-1':   [['GK'],['DF','DF','DF','DF'],['MF','MF','MF','MF','MF'],['FW']],
+  '3-5-2':   [['GK'],['DF','DF','DF'],['MF','MF','MF','MF','MF'],['FW','FW']],
+  '3-4-3':   [['GK'],['DF','DF','DF'],['MF','MF','MF','MF'],['FW','FW','FW']],
+  '3-2-4-1': [['GK'],['DF','DF','DF'],['MF','MF'],['MF','MF','MF','MF'],['FW']],
+  '5-3-2':   [['GK'],['DF','DF','DF','DF','DF'],['MF','MF','MF'],['FW','FW']],
+  '5-4-1':   [['GK'],['DF','DF','DF','DF','DF'],['MF','MF','MF','MF'],['FW']]
+};
+var MAX_ROWS = 60;   // 3,656 DOM rows would jam a phone; search narrows it
+
+var $ = function(id){ return document.getElementById(id); };
+var ALL = [], BY_ID = {}, TEAMS = {}, formation = '4-3-3', picked = [], openIdx = -1;
+
+// ⚠️ NO SURNAME RULE. Reducing to a surname mangles exactly the players fans
+// identify by their OTHER name: Alisson Becker -> "Becker", Kepa Arrizabalaga
+// -> "Arrizabalaga", Gabriel Magalhães -> "Magalhães", Vinícius Júnior ->
+// "Júnior". Brazilian and Iberian players commonly go by the FIRST name and
+// others by the last, and nothing in the data says which — Wikidata's P1813
+// (short name) is empty for every one of them, and the Wikipedia title is
+// identical to the label. So the full name is used: less punchy, never wrong.
+// A wrong name on a share image is worse than a long one.
+function shirtName(full){ return String(full || '').trim(); }
+
+// Search has to survive accents: someone types "sesko" and means Šeško,
+// "odegaard" and means Ødegaard. Without folding, the marquee names are exactly
+// the ones that cannot be found.
+function fold(s){
+  return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/ø/gi, 'o').replace(/ð/gi, 'd').replace(/þ/gi, 'th')
+    .replace(/æ/gi, 'ae').replace(/ß/gi, 'ss').replace(/ł/gi, 'l').toLowerCase();
+}
+
+// Direct CDN path. Special:FilePath answers 302 -> 301 -> 200, which is two
+// wasted round trips per thumbnail and, worse, a redirect chain the canvas can
+// lose the CORS header across at export time. `h` is the md5 prefix of the
+// underscored filename, computed at build time.
+// ⚠️ THE CDN ONLY SERVES PRE-RENDERED WIDTHS. Arbitrary sizes are NOT generated
+// on this path — measured across several files, 120/250/330/500 always return
+// 200 while 800 and 1024 always return 400. The first version asked for
+// whatever width it wanted and every single request 400'd, then quietly
+// succeeded through the Special:FilePath fallback. It looked fine and cost an
+// extra failed round trip on every image: a 100% failure rate hiding behind a
+// working fallback.
+var BUCKETS = [120, 250, 330, 500];
+function commons(p, width){
+  var f = String(p.f).replace(/ /g, '_'), e = encodeURIComponent(f);
+  var bucket = null;
+  for (var i = 0; i < BUCKETS.length; i++) if (BUCKETS[i] >= width) { bucket = BUCKETS[i]; break; }
+  // Above the largest bucket, only Special:FilePath will render it. Slower
+  // (302 -> 301 -> 200) but it is the only thing that works, so it is used
+  // deliberately rather than discovered by failing.
+  if (!p.h || !bucket) return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + e + '?width=' + width;
+  return 'https://upload.wikimedia.org/wikipedia/commons/thumb/'
+    + p.h.charAt(0) + '/' + p.h + '/' + e + '/' + bucket + 'px-' + e;
+}
+// Fallback for the cases the thumb path does not cover — an original smaller
+// than the requested width, or an unusual media type. Without this those
+// players silently render as an initial.
+function commonsFallback(p, width){
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/'
+    + encodeURIComponent(String(p.f).replace(/ /g, '_')) + '?width=' + width;
+}
+function filePage(file){
+  return 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(String(file).replace(/ /g, '_'));
+}
+function initialsOf(n){
+  var w = String(n || '?').trim().split(/\s+/);
+  return (w[0].charAt(0) + (w.length > 1 ? w[w.length-1].charAt(0) : '')).toUpperCase();
+}
+function fillDisc(disc, p, size){
+  disc.textContent = '';
+  disc.classList.remove('cut');
+  // p.f is the eligibility gate: a curated null override strips the photo, and
+  // must also strip any cutout previously generated from the rejected file.
+  if (p.f && CUTOUTS.has(p.i)){
+    disc.classList.add('cut');
+    var ci = document.createElement('img');
+    ci.className = 'cutimg'; ci.alt = p.n; ci.loading = 'lazy'; ci.decoding = 'async';
+    ci.src = '/lineup/cutouts/' + p.i + '.png';
+    disc.appendChild(ci); return;
+  }
+  if (!p.f){
+    var ph = document.createElement('span');
+    ph.className = 'ph'; ph.textContent = initialsOf(p.n);
+    disc.appendChild(ph); return;
+  }
+  var box = p.x;
+  // ⚠️ ASK FOR A SENSIBLE WIDTH. This used to request box[3] — the width the
+  // EXPORT needs, up to 2400px — to fill a 78px disc. That wasted bandwidth on
+  // every card and, worse, 400s outright whenever the original is smaller than
+  // the requested thumb, so perfectly good photos fell back to an initial.
+  // On-page needs 3x the disc for retina and nothing more; the export asks
+  // separately for what it needs.
+  var w = Math.max(200, Math.min(600, Math.round(size * 3)));
+  var img = document.createElement('img');
+  img.alt = p.n; img.loading = 'lazy'; img.decoding = 'async';
+  // ⚠️ NO crossOrigin ON PAGE IMAGES. Only the canvas needs CORS, and the
+  // export loads its own copies. Setting it here breaks the Special:FilePath
+  // fallback outright — that redirect chain drops the CORS header, so a
+  // cross-origin <img> fails where a plain one succeeds. Belt-and-braces cost
+  // us the braces.
+  img.src = commons(p, w);
+  img.addEventListener('load', function(){
+    var W = img.naturalWidth, H = img.naturalHeight, D = disc.clientWidth || size;
+    if (!W || !H) return;
+    if (box){
+      // Normalised box -> pixels needs the real aspect ratio, which only the
+      // loaded image knows. Getting this wrong is silent: the crop lands on a
+      // chest and still looks like "a photo".
+      // ⚠️ A SQUARE CROP CANNOT EXCEED THE SHORTER SIDE. box[2] is in WIDTH
+      // units, so on a landscape photo a crop of 1.0 asks for a square taller
+      // than the image; the disc then cannot be filled and the head renders
+      // small and floating. Gyökeres and Ødegaard both had crop = 1 — the
+      // photos were fine, the maths was not.
+      var cropPx = Math.min(box[2] * W, H), scale = D / cropPx;
+      // ⚠️ ANCHOR ON THE STORED CROP'S CENTRE, NOT ITS ORIGIN. The stored box
+      // was centred on the face at its ORIGINAL side; when that side gets
+      // clamped to a landscape image's height, keeping the original left edge
+      // shifts every face left-and-down by (origSide - clamped)/2 — Alex saw
+      // Mainoo and Santos drift left and Cunha sit low, all by the same
+      // recipe. The face centre is origin + originalSide/2 on both axes.
+      // ⚠️ The crop is a SQUARE sized in WIDTH units: half a side is
+      // box[2]/2 * W on BOTH axes. Anchoring y with box[2]/2 * H panned every
+      // portrait photo down and guillotined the forehead (H > W means
+      // box[2]*H/2 overshoots the real centre).
+      var fx = (box[0] * W + box[2] * W / 2) * scale;
+      var fy = (box[1] * H + box[2] * W / 2) * scale;
+      img.style.width  = (W * scale) + 'px';
+      img.style.height = (H * scale) + 'px';
+      img.style.left   = Math.min(0, Math.max(D - W * scale, D / 2 - fx)) + 'px';
+      img.style.top    = Math.min(0, Math.max(D - H * scale, D / 2 - fy)) + 'px';
+    } else {
+      var s2 = Math.max(D / W, D / H);
+      img.style.width  = (W * s2) + 'px';
+      img.style.height = (H * s2) + 'px';
+      img.style.left   = ((D - W * s2) / 2) + 'px';
+      img.style.top    = Math.min(0, (D - H * s2) * 0.18) + 'px';
+    }
+  });
+  var triedFallback = false;
+  img.addEventListener('error', function(){
+    if (!triedFallback){ triedFallback = true; img.src = commonsFallback(p, w); return; }
+    disc.textContent = '';
+    var ph = document.createElement('span');
+    ph.className = 'ph'; ph.textContent = initialsOf(p.n);
+    disc.appendChild(ph);
+  });
+  disc.appendChild(img);
+}
+
+// GK sits on his line; the outfield rows spread between just outside the box
+// and the edge of the opponent's. One function, so the export cannot drift
+// away from the on-screen layout.
+function rowDepths(n){
+  var out = [0.115];                       // keeper, clear of the goal line
+  for (var i = 0; i < n - 1; i++) out.push(0.30 + i * (0.835 - 0.30) / Math.max(1, n - 2));
+  return out;
+}
+
+// ── drag to reposition ────────────────────────────────────
+// Pointer Events, not HTML5 drag-and-drop: the latter does not fire on touch at
+// all, and 66% of this audience is on a phone.
+//
+// ⚠️ TAP AND DRAG SHARE THE SAME GESTURE START. A tap must still open the
+// picker, so a drag only begins after the pointer has moved past a threshold —
+// and on TOUCH it additionally needs a short hold, because otherwise a finger
+// swiping to scroll the page would rip a player off the pitch. That hold is why
+// touch-action can stay permissive and the page still scrolls normally.
+var drag = null;
+
+function slotCentre(el){
+  var r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+function beginDrag(e, idx, el){
+  var disc = el.querySelector('.disc');
+  if (!disc) return;
+  var r = disc.getBoundingClientRect();
+  var ghost = disc.cloneNode(true);
+  ghost.className = 'disc ghost';
+  ghost.style.width = r.width + 'px';
+  ghost.style.height = r.height + 'px';
+  document.body.appendChild(ghost);
+  drag = { idx: idx, ghost: ghost, w: r.width, over: -1 };
+  el.classList.add('dragging');
+  moveGhost(e);
+}
+// Nearest slot centre, not elementFromPoint: the ghost sits under the cursor
+// and would otherwise be the element found.
+function targetAt(x, y, w){
+  var best = -1, bestD = Infinity;
+  var all = document.querySelectorAll('.slot');
+  for (var i = 0; i < all.length; i++){
+    var c = slotCentre(all[i]);
+    var d = Math.hypot(c.x - x, c.y - y);
+    if (d < bestD){ bestD = d; best = i; }
+  }
+  return bestD > w * 1.6 ? -1 : best;        // dropped nowhere useful
+}
+function moveGhost(e){
+  if (!drag) return;
+  drag.ghost.style.left = (e.clientX - drag.w / 2) + 'px';
+  drag.ghost.style.top  = (e.clientY - drag.w / 2) + 'px';
+  var best = targetAt(e.clientX, e.clientY, drag.w);
+  if (best !== drag.over){
+    var all = document.querySelectorAll('.slot');
+    for (var k = 0; k < all.length; k++) all[k].classList.remove('over');
+    if (best > -1 && best !== drag.idx) all[best].classList.add('over');
+    drag.over = best;
+  }
+}
+// ⚠️ RESOLVE THE DROP FROM THE POINTERUP, NOT THE LAST MOVE. Browsers coalesce
+// pointermove aggressively — WebKit delivered 2 of 12 here — so the last move
+// the page SEES can be well short of where the finger actually finished. Using
+// the release coordinates means the drop lands where the user let go, which is
+// also the only thing they can perceive.
+function endDrag(ev){
+  if (!drag) return;
+  var from = drag.idx;
+  var to = ev ? targetAt(ev.clientX, ev.clientY, drag.w) : drag.over;
+  if (to === from) to = -1;
+  drag.ghost.remove();
+  document.querySelectorAll('.slot').forEach(function(s){
+    s.classList.remove('over'); s.classList.remove('dragging');
+  });
+  drag = null;
+  if (to > -1 && to !== from){
+    // Swap, don't insert: dropping onto an occupied shirt trades the two
+    // players, which is what a manager means by moving someone.
+    var tmp = picked[to]; picked[to] = picked[from]; picked[from] = tmp;
+    render();
+  }
+}
+
+function wireDrag(b, i){
+  // ⚠️ LISTEN ON THE WINDOW, NOT THE ELEMENT. setPointerCapture on the slot
+  // looked right and did nothing measurable — no ghost, no drop target, and it
+  // also swallowed the tap. Once a press starts, the gesture belongs to the
+  // document: window listeners always see the move, and they are torn down on
+  // release so nothing leaks between gestures.
+  b.addEventListener('pointerdown', function(e){
+    if (e.button && e.button !== 0) return;
+    var sx = e.clientX, sy = e.clientY;
+    var isTouch = e.pointerType !== 'mouse';
+    var armed = !isTouch;                      // mouse arms instantly
+    var hold = isTouch ? setTimeout(function(){ armed = true; }, 200) : null;
+    var started = false;
+
+    function onMove(ev){
+      if (!started){
+        if (!armed || !picked[i]) return;
+        if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return;
+        started = true;
+        beginDrag(ev, i, b);
+        return;
+      }
+      ev.preventDefault();
+      moveGhost(ev);
+    }
+    function onUp(ev){
+      clearTimeout(hold);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      if (started){ endDrag(ev); return; }
+      endDrag();
+      // Never became a drag, and the pointer barely moved: it was a tap.
+      if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 10) openPicker(i, slots()[i]);
+    }
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+  });
+}
+
+// ⚠️ PRE-FILL USES CURRENT SQUADS, NOT THE "known for" CLUB LABEL. Filtering the
+// fame pool by club led with Rooney, Fellaini and Smalling for Manchester
+// United, because that label records the club a player is famous for, not the
+// one he plays for. Squad membership is the only field that means "is there
+// now" — so this is the fastest route to a real XI, and the answer to "who
+// replaces him".
+function prefill(club){
+  var buckets = TEAMS[club];
+  if (!buckets) return;
+  var want = slots();
+  var next = new Array(want.length).fill(null);
+  var used = {};
+
+  // ⚠️ SELECT BY RELEVANCE, ARRANGE BY POSITION — never the other way round.
+  // Preferring position first pulled Cameron Borthwick-Jackson and Joe Riley
+  // into Manchester United's back four ahead of Martínez and Mazraoui, and
+  // Steven Caulker into Liverpool's, purely because those long-gone reserves
+  // are the ones tagged "full-back". So: take the best N defenders the squad
+  // has, THEN put whichever of those are full-backs on the outside.
+  var dfIdx = [];
+  for (var i = 0; i < want.length; i++) if (want[i] === 'DF') dfIdx.push(i);
+  if (dfIdx.length){
+    var pickDF = (buckets.DF || []).slice(0, dfIdx.length);   // already fame-ranked
+    var isFB = {}; (buckets.FB || []).forEach(function(id){ isFB[id] = 1; });
+    var flanks = pickDF.filter(function(id){ return isFB[id]; });
+    var middle = pickDF.filter(function(id){ return !isFB[id]; });
+    var order = [];
+    if (dfIdx.length >= 4 && flanks.length){
+      order.push(flanks.shift());
+      while (order.length < dfIdx.length - (flanks.length ? 1 : 0)) order.push(middle.shift() || flanks.shift());
+      if (flanks.length) order.push(flanks.shift());
+    } else {
+      order = middle.concat(flanks);
+    }
+    for (var d = 0; d < dfIdx.length; d++){
+      var id = order[d];
+      if (id && !used[id]){ used[id] = 1; next[dfIdx[d]] = BY_ID[id] || null; }
+    }
+  }
+
+  var taken = { GK: 0, MF: 0, FW: 0 };
+  for (var k = 0; k < want.length; k++){
+    if (want[k] === 'DF') continue;
+    var list = buckets[want[k]] || [];
+    var pid;
+    do { pid = list[taken[want[k]]++]; } while (pid && used[pid]);
+    if (pid){ used[pid] = 1; next[k] = BY_ID[pid] || null; }
+  }
+  picked = next;
+  // Renaming on every pre-fill: the box said "Newcastle United" over a
+  // Manchester United XI because it only filled when empty.
+  $('teamName').value = club;
+  render();
+}
+
+function slots(){
+  var out = [], rows = FORMATIONS[formation];
+  for (var r = 0; r < rows.length; r++) for (var c = 0; c < rows[r].length; c++) out.push(rows[r][c]);
+  return out;
+}
+function render(){
+  var rowsEl = $('rows'); rowsEl.textContent = '';
+  var rows = FORMATIONS[formation], idx = 0;
+  var depths = rowDepths(rows.length);
+  for (var r = 0; r < rows.length; r++){
+    var rowEl = document.createElement('div'); rowEl.className = 'row';
+    rowEl.style.bottom = (depths[r] * 100) + '%';
+    for (var c = 0; c < rows[r].length; c++){
+      (function(i, pos){
+        var p = picked[i];
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'slot' + (p ? ' filled' : '');
+        b.setAttribute('aria-label', p ? (p.n + ', ' + pos + ' — change') : ('Empty ' + pos + ' — choose a player'));
+        var disc = document.createElement('span'); disc.className = 'disc';
+        if (p) fillDisc(disc, p, 74);
+        else { var s = document.createElement('span'); s.className = 'ph'; s.textContent = '+'; disc.appendChild(s); }
+        // Wrapper, because .disc clips to a circle and would clip the badge.
+        var wrap = document.createElement('span'); wrap.className = 'slotwrap';
+        wrap.appendChild(disc);
+        if (!p){
+          var po = document.createElement('span'); po.className = 'pos'; po.textContent = pos;
+          wrap.appendChild(po);
+        }
+        b.appendChild(wrap);
+        if (p){ var nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = shirtName(p.n); b.appendChild(nm); }
+        wireDrag(b, i);
+        rowEl.appendChild(b);
+      })(idx++, rows[r][c]);
+    }
+    rowsEl.appendChild(rowEl);
+  }
+  var n = picked.filter(Boolean).length;
+  $('foot').textContent = n === 11 ? 'Full XI selected.' : (n + ' of 11 picked.');
+  credits(); save();
+}
+
+function credits(){
+  var used = picked.filter(function(p){ return p && p.a; });
+  var el = $('credits');
+  if (!used.length){
+    el.textContent = 'Photographs come from Wikimedia Commons under their own free licences. Each photographer is credited here once their picture is on the pitch.';
+    return;
+  }
+  el.textContent = '';
+  var seen = {}, first = true, n = 0;
+  used.forEach(function(p){
+    if (seen[p.i]) return; seen[p.i] = 1; n++;
+    if (!first) el.appendChild(document.createTextNode(' · '));
+    first = false;
+    var a = document.createElement('a');
+    a.href = filePage(p.f); a.target = '_blank'; a.rel = 'noopener nofollow';
+    a.textContent = p.n;
+    el.appendChild(a);
+    el.appendChild(document.createTextNode(' © ' + p.a + ' (' + p.l + ')'));
+  });
+  var sum = document.getElementById('creditsSum');
+  if (sum) sum.textContent = 'Photo credits (' + n + ')';
+}
+
+function openPicker(i, pos){
+  openIdx = i;
+  $('sheetTitle').textContent = 'Choose a ' + ({GK:'goalkeeper',DF:'defender',MF:'midfielder',FW:'forward'}[pos] || 'player');
+  $('sheetSub').textContent = ALL.length.toLocaleString() + ' players · any club, any era · tap to place';
+  $('search').value = '';
+  drawList('');
+  $('sheet').hidden = false;
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ $('search').focus(); }, 40);
+}
+function closePicker(){ $('sheet').hidden = true; openIdx = -1; document.body.style.overflow = ''; }
+
+function drawList(q){
+  var listEl = $('list'); listEl.textContent = '';
+  var pos = slots()[openIdx];
+  var fq = fold(q);
+  var used = {};
+  picked.forEach(function(p, i){ if (p && i !== openIdx) used[p.i] = 1; });
+
+  // ALL is pre-sorted by fame, so preserving order means a search for "silva"
+  // offers Bernardo before a reserve. Players in the slot's own position come
+  // first, but everyone stays selectable — a fan may well want a midfielder up
+  // front, and refusing that is worse than allowing it.
+  // ⚠️ NAME RELEVANCE BEATS SLOT AFFINITY. Slot-first partitioning made a
+  // fame-zero midfielder named Sakari outrank Bukayo Saka on the query "saka"
+  // because the open slot was MF — the most famous player in the pool lost
+  // his own surname. With a query: exact word match, then word-prefix, then
+  // substring, fame order within each tier. Slot-first only applies to
+  // BROWSING (empty query), where "show me midfielders" is the intent.
+  var t0 = [], t1 = [], t2 = [], other = [], shown = 0, total = 0;
+  for (var k = 0; k < ALL.length; k++){
+    var p = ALL[k];
+    if (used[p.i]) continue;
+    if (fq && p.search.indexOf(fq) === -1) continue;
+    total++;
+    if (t0.length + t1.length + t2.length + other.length >= MAX_ROWS * 2) continue;
+    if (!fq){ (p.s === pos ? t0 : other).push(p); continue; }
+    var words = p.search.split(' ');
+    var tier = 2;
+    for (var w = 0; w < words.length; w++){
+      if (words[w] === fq){ tier = 0; break; }
+      if (words[w].indexOf(fq) === 0) tier = 1;
+    }
+    (tier === 0 ? t0 : tier === 1 ? t1 : t2).push(p);
+  }
+  var rows = t0.concat(t1, t2, other).slice(0, MAX_ROWS);
+  rows.forEach(function(p){
+    shown++;
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt';
+    var disc = document.createElement('span'); disc.className = 'disc';
+    fillDisc(disc, p, 40);
+    var who = document.createElement('span'); who.className = 'who';
+    var nm = document.createElement('b'); nm.textContent = p.n;
+    var sub = document.createElement('small');
+    var bits = [];
+    if (p.c) bits.push(p.c);
+    if (p.b) bits.push('b. ' + p.b);
+    if (p.t) bits.push(p.t);
+    sub.textContent = bits.join(' · ');
+    who.appendChild(nm); who.appendChild(sub);
+    b.appendChild(disc); b.appendChild(who);
+    if (p.s) { var t = document.createElement('span'); t.className = 'tag'; t.textContent = p.s; b.appendChild(t); }
+    b.addEventListener('click', function(){ picked[openIdx] = p; closePicker(); render(); });
+    listEl.appendChild(b);
+  });
+  if (!shown){
+    var empty = document.createElement('p');
+    empty.className = 'status';
+    empty.textContent = q ? 'No player matches “' + q + '”.' : 'No players available.';
+    listEl.appendChild(empty);
+  } else if (total > shown){
+    // Never silently truncate: say what was cut, or the list reads as the whole
+    // pool and the tool looks like it is missing players.
+    var more = document.createElement('p');
+    more.className = 'more';
+    more.textContent = 'Showing ' + shown + ' of ' + total.toLocaleString() + ' matches — keep typing to narrow it.';
+    listEl.appendChild(more);
+  }
+}
+
+// ── share link ────────────────────────────────────────────
+// The link IS the product's distribution. Every builder we looked at has one,
+// and for us each share is also a link back to balliq.app — which is the
+// authority problem this tool exists to attack. Encoded in the hash so it never
+// hits the server and no shortener or database is needed.
+function encodeState(){
+  var ids = picked.map(function(p){ return p ? String(p.i).replace(/^Q/, '') : '0'; }).join('-');
+  var q = 'f=' + encodeURIComponent(formation) + '&p=' + ids;
+  var nm = $('teamName').value.trim();
+  if (nm) q += '&t=' + encodeURIComponent(nm);
+  return location.origin + location.pathname + '#' + q;
+}
+function decodeState(){
+  var h = location.hash.replace(/^#/, '');
+  if (!h) return false;
+  var q = {};
+  h.split('&').forEach(function(kv){
+    var i = kv.indexOf('='); if (i < 0) return;
+    q[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1));
+  });
+  if (!q.p) return false;
+  if (FORMATIONS[q.f]) formation = q.f;
+  if (q.t) $('teamName').value = q.t;
+  picked = q.p.split('-').map(function(n){ return n === '0' ? null : (BY_ID['Q' + n] || null); });
+  return true;
+}
+
+// ── image export ──────────────────────────────────────────
+// 1080x1350 is the 4:5 portrait that survives a social feed without being
+// cropped. Everything is drawn rather than screenshotted so the output does not
+// inherit the page's chrome.
+var CW = 1080, CH = 1350;
+
+function loadImg(p, width){
+  return new Promise(function(res){
+    var img = new Image();
+    if (p.f && CUTOUTS.has(p.i)){
+      img.onload = function(){ img._cut = true; res(img); };
+      img.onerror = function(){ res(null); };
+      img.src = '/lineup/cutouts/' + p.i + '.png';
+      return;
+    }
+    // ⚠️ Without crossOrigin the canvas is tainted and toBlob throws at the
+    // moment of download. Wikimedia's CDN sends access-control-allow-origin:*,
+    // but only on the direct upload.wikimedia.org URL — which is why the CDN
+    // path is built at load time rather than following Special:FilePath.
+    img.crossOrigin = 'anonymous';
+    var tried = false;
+    img.onload = function(){ res(img); };
+    img.onerror = function(){
+      // ⚠️ THE FALLBACK CANNOT BE Special:FilePath HERE. Its 302 drops the CORS
+      // header, so a crossOrigin load fails on the redirect — the export would
+      // lose exactly the photos it most wanted. Step DOWN a bucket instead:
+      // every bucket is CORS-clean, and a slightly softer photo beats a letter.
+      if (!tried){ tried = true; img.src = commons(p, 250); return; }
+      res(null);
+    };
+    // 500 is the largest bucket the CDN reliably serves, and buckets are the
+    // only CORS-safe path. Capped deliberately rather than asking for 900 and
+    // silently degrading to an initial.
+    img.src = commons(p, Math.min(500, width));
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+
+function drawPitch(ctx, x, y, w, h){
+  var g = ctx.createLinearGradient(0, y, 0, y + h);
+  g.addColorStop(0, '#0e2011'); g.addColorStop(1, '#0a1a0c');
+  ctx.fillStyle = g; roundRect(ctx, x, y, w, h, 22); ctx.fill();
+  ctx.save(); roundRect(ctx, x, y, w, h, 22); ctx.clip();
+  ctx.fillStyle = 'rgba(255,255,255,.025)';
+  for (var i = 0; i < 12; i += 2) ctx.fillRect(x, y + h * i / 12, w, h / 12);
+  ctx.restore();
+
+  ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 2.5;
+  var m = 16, px = x + m, py = y + m, pw = w - m * 2, ph = h - m * 2;
+  ctx.strokeRect(px, py, pw, ph);
+  ctx.beginPath(); ctx.moveTo(px, py + ph / 2); ctx.lineTo(px + pw, py + ph / 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(px + pw / 2, py + ph / 2, pw * 0.13, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(px + pw / 2, py + ph / 2, 4, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fill();
+  [0, 1].forEach(function(end){
+    var bw = pw * 0.56, bh = ph * 0.135, bx = px + (pw - bw) / 2;
+    var by = end ? py + ph - bh : py;
+    ctx.strokeRect(bx, by, bw, bh);
+    var sw = pw * 0.28, sh = ph * 0.055, sx = px + (pw - sw) / 2;
+    ctx.strokeRect(sx, end ? py + ph - sh : py, sw, sh);
+  });
+}
+
+function drawDisc(ctx, img, p, cx, cy, r){
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fill();
+  ctx.clip();
+  if (img && img._cut){
+    var g2 = ctx.createRadialGradient(cx, cy - r * 0.45, r * 0.2, cx, cy, r * 1.4);
+    g2.addColorStop(0, '#22452a'); g2.addColorStop(0.62, '#122616'); g2.addColorStop(1, '#0c1a0f');
+    ctx.fillStyle = g2; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    var Dc = r * 2, sC = Math.max(Dc / img.naturalWidth, Dc / img.naturalHeight);
+    ctx.drawImage(img, cx - img.naturalWidth * sC / 2, cy - r, img.naturalWidth * sC, img.naturalHeight * sC);
+  } else if (img){
+    var W = img.naturalWidth, H = img.naturalHeight, D = r * 2, box = p.x;
+    if (box){
+      // Same clamp as the page: a square crop cannot exceed the shorter side,
+      // and the face centre — not the crop origin — is what gets centred.
+      var crop = Math.min(box[2] * W, H), sc = D / crop;
+      // Same centre-anchor fix as the page — the export shares the crop model.
+      var fx = (box[0] * W + box[2] * W / 2) * sc, fy = (box[1] * H + box[2] * W / 2) * sc;
+      var dx = Math.min(0, Math.max(D - W * sc, D / 2 - fx));
+      var dy = Math.min(0, Math.max(D - H * sc, D / 2 - fy));
+      ctx.drawImage(img, cx - r + dx, cy - r + dy, W * sc, H * sc);
+    } else {
+      var s2 = Math.max(D / W, D / H);
+      ctx.drawImage(img, cx - r + (D - W * s2) / 2, cy - r + Math.min(0, (D - H * s2) * 0.18), W * s2, H * s2);
+    }
+  } else {
+    ctx.fillStyle = 'rgba(255,255,255,.5)';
+    ctx.font = '700 ' + Math.round(r) + 'px Inter, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(initialsOf(p.n), cx, cy);
+  }
+  ctx.restore();
+  ctx.strokeStyle = '#58CC02'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+}
+
+async function exportImage(){
+  var btn = $('download');
+  var chosen = picked.filter(Boolean);
+  if (!chosen.length){ flash(btn, 'Pick someone first'); return; }
+  var label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Rendering…';
+  try {
+    var cvs = document.createElement('canvas');
+    cvs.width = CW; cvs.height = CH;
+    var ctx = cvs.getContext('2d');
+    ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, CW, CH);
+
+    var title = ($('teamName').value.trim() || 'My XI');
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.font = '900 52px Inter, -apple-system, sans-serif';
+    ctx.fillText(title, 48, 82);
+    ctx.fillStyle = '#6F7787'; ctx.font = '800 22px Inter, sans-serif';
+    ctx.fillText(formation.toUpperCase(), 48, 118);
+
+    var pitchTop = 148, pitchH = CH - pitchTop - 172;
+    drawPitch(ctx, 40, pitchTop, CW - 80, pitchH);
+
+    // Load every photo before drawing anything, so a slow image cannot produce
+    // a half-rendered export.
+    // 900px is plenty for a 124px disc even on a heavy zoom, and stays under
+    // the original size of nearly every Commons photo — asking for more just
+    // earns a 400 and a fallback round trip.
+    var imgs = await Promise.all(picked.map(function(p){
+      return p && p.f ? loadImg(p, Math.max(400, Math.min(900, p.x ? p.x[3] : 500))) : Promise.resolve(null);
+    }));
+
+    var rows = FORMATIONS[formation], idx = 0;
+    var depths = rowDepths(rows.length);
+    for (var r = 0; r < rows.length; r++){
+      // Same depth model as the pitch on screen — the download has to be the
+      // thing the user arranged, not a re-interpretation of it. Depth is
+      // measured from the own goal, so it is subtracted from the bottom edge.
+      var rowY = pitchTop + pitchH - depths[r] * pitchH;
+      var n = rows[r].length;
+      var radius = Math.min(62, (CW - 140) / (n * 2.35));
+      var gap = (CW - 120) / n;
+      for (var c = 0; c < n; c++){
+        var cx = 60 + gap * (c + 0.5);
+        var p = picked[idx], img = imgs[idx];
+        if (p){
+          drawDisc(ctx, img, p, cx, rowY, radius);
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+          ctx.font = '700 ' + Math.round(radius * 0.38) + 'px Inter, sans-serif';
+          ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 6;
+          ctx.fillText(shirtName(p.n), cx, rowY + radius + 30);
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.arc(cx, rowY, radius, 0, Math.PI * 2); ctx.stroke();
+        }
+        idx++;
+      }
+    }
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#58CC02'; ctx.font = '900 30px Inter, sans-serif';
+    ctx.fillText('balliq.app/lineup', 48, CH - 108);
+
+    // ⚠️ ATTRIBUTION MUST TRAVEL WITH THE EXPORT. The downloaded PNG is what
+    // gets posted, and CC BY / BY-SA require crediting the photographer wherever
+    // the photo appears. An image with the credits left behind on the web page
+    // is a licence breach the moment someone shares it.
+    ctx.fillStyle = '#6F7787'; ctx.font = '400 17px Inter, sans-serif';
+    // Initials-card players have no photo and therefore no credit — without
+    // this filter they printed as "null (null)" in the shared PNG.
+    var credit = 'Photos: ' + chosen.filter(function(p){ return p.a; })
+      .map(function(p){ return p.a + ' (' + p.l + ')'; })
+      .filter(function(v, i, a){ return a.indexOf(v) === i; }).join(', ');
+    var words = credit.split(' '), line = '', y = CH - 74;
+    for (var w2 = 0; w2 < words.length && y < CH - 16; w2++){
+      var test = line + words[w2] + ' ';
+      if (ctx.measureText(test).width > CW - 96){ ctx.fillText(line, 48, y); line = words[w2] + ' '; y += 22; }
+      else line = test;
+    }
+    if (line && y < CH - 8) ctx.fillText(line.trim(), 48, y);
+
+    var blob = await new Promise(function(res){ cvs.toBlob(res, 'image/png'); });
+    if (!blob) throw new Error('canvas produced no image');
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = title.replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '-balliq.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    flash(btn, 'Saved', label);
+  } catch (e){
+    // Say what broke. A silent failure here reads as a broken product.
+    flash(btn, 'Export failed', label);
+    console.error('export failed:', e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function flash(btn, msg, back){
+  var original = back || btn.textContent;
+  btn.textContent = msg;
+  setTimeout(function(){ btn.textContent = original; }, 1800);
+}
+
+function save(){
+  try { localStorage.setItem('biq_lineup', JSON.stringify({
+    formation: formation, name: $('teamName').value,
+    ids: picked.map(function(p){ return p ? p.i : null; }) })); } catch (e) {}
+  // Keep the ADDRESS BAR in sync with the team. Sharing then works the way
+  // people actually share — copy the URL — instead of depending on them
+  // finding a button. replaceState so the back button still leaves the page.
+  try { history.replaceState(null, '', encodeState()); } catch (e) {}
+}
+function restore(){
+  try {
+    var s = JSON.parse(localStorage.getItem('biq_lineup') || 'null');
+    if (!s) return;
+    if (FORMATIONS[s.formation]) formation = s.formation;
+    if (s.name) $('teamName').value = s.name;
+    picked = (s.ids || []).map(function(id){ return id ? (BY_ID[id] || null) : null; });
+  } catch (e) {}
+}
+
+// Cutout manifest: players with a locally-hosted transparent cutout render
+// FotMob-style on a clean gradient instead of a cropped match photo.
+var CUTOUTS = new Set();
+// ⚠️ THE MANIFEST GATES FIRST RENDER. It used to load in a fire-and-forget
+// fetch; whenever player data won that race, every disc rendered as a
+// photo-crop with CUTOUTS still empty — cutouts "randomly" missing on fast
+// loads. A missing manifest degrades to photo-crops, never to a blank page.
+var cutoutsReady = fetch('/lineup/cutouts/manifest.json', { cache: 'no-cache' })
+  .then(function(r){ return r.ok ? r.json() : []; })
+  .then(function(ids){ (ids || []).forEach(function(id){ CUTOUTS.add(id); }); })
+  .catch(function(){});
+Promise.all([
+  fetch('/data/lineup.json', { cache: 'no-cache' })
+    .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+  cutoutsReady,
+]).then(function(both){ var j = both[0];
+    ALL = j.players;
+    TEAMS = j.teams || {};
+    // ⚠️ NO CLUB FILTER AT ALL. A club dropdown contradicts the product: the
+    // point is that ANY player can go in ANY shirt. It also shipped a restored
+    // "Arsenal (57)" from a previous session, which read as a hard limit on
+    // who was available. Search is the only filter that makes sense here.
+    ALL.forEach(function(p){ p.search = fold(p.n); BY_ID[p.i] = p; });
+
+    var lt = $('loadTeam');
+    var o1 = document.createElement('option');
+    o1.value = ''; o1.textContent = 'Start from a real team…';
+    lt.appendChild(o1);
+    Object.keys(TEAMS).sort().forEach(function(c){
+      var o = document.createElement('option'); o.value = c; o.textContent = c; lt.appendChild(o);
+    });
+
+    var fs = $('form');
+    Object.keys(FORMATIONS).forEach(function(f){
+      var o = document.createElement('option'); o.value = f; o.textContent = f; fs.appendChild(o);
+    });
+
+    // A shared link must win over whatever is in this browser's storage —
+    // someone opening a friend's XI expects to see the friend's XI.
+    restore();
+    decodeState();
+    fs.value = formation;
+    var want = slots().length;
+    picked = picked.slice(0, want);
+    while (picked.length < want) picked.push(null);
+
+    $('status').hidden = true;
+    $('pitch').hidden = false;
+    render();
+  })
+  .catch(function(e){
+    var s = $('status'); s.className = 'status err';
+    s.textContent = 'Could not load the players (' + e.message + '). Reload to try again.';
+  });
+
+$('form').addEventListener('change', function(e){
+  formation = e.target.value;
+  var want = slots().length;
+  picked = picked.slice(0, want);
+  while (picked.length < want) picked.push(null);
+  render();
+});
+$('clear').addEventListener('click', function(){ picked = new Array(slots().length).fill(null); render(); });
+$('loadTeam').addEventListener('change', function(e){
+  if (e.target.value) prefill(e.target.value);
+  e.target.value = '';           // it is an action, not a filter — reset the label
+});
+$('teamName').addEventListener('input', save);
+$('download').addEventListener('click', exportImage);
+$('copyLink').addEventListener('click', function(){
+  var btn = this, url = encodeState();
+  // navigator.clipboard needs a secure context, which a LAN-IP test URL is not.
+  // Falling back to a hidden input + execCommand means the button works when
+  // testing on a phone over http, not only on the deployed https site.
+  function fallback(){
+    var el = $('linkOut');
+    el.hidden = false; el.value = url; el.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    el.hidden = true;
+    flash(btn, ok ? 'Link copied' : 'Copy failed');
+  }
+  if (navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(url).then(function(){ flash(btn, 'Link copied'); }, fallback);
+  } else fallback();
+});
+$('search').addEventListener('input', function(e){ drawList(e.target.value); });
+$('closeSheet').addEventListener('click', closePicker);
+$('sheet').addEventListener('click', function(e){ if (e.target === $('sheet')) closePicker(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !$('sheet').hidden) closePicker(); });
+})();
+</script>
+</body>
+</html>

@@ -9,34 +9,116 @@ items are deleted, not archived — git history is the archive.
 
 ---
 
-## ⚡ THE BOARD — rebuilt 2026-08-06, late
+## ⚡ THE BOARD — rebuilt 2026-08-09, after the 7-day GSC read
 
-Ranked against the **measured** bottleneck, which is not activation and not
-retention. Activation was fixed (33% -> 82%); retention is healthy (72% return,
-41/81 active in 7d). What is short is **signup VOLUME** — distribution. And
-**74% of signups happen inside the native app**, so acquisition is a STORE
-question before it is a website question. That single fact is why store assets
-outrank another club wave.
+Ranked against the **measured** bottleneck. Two things are now measured rather
+than assumed:
 
-### NOW — highest ROI, mine to do
+1. **Distribution is the constraint**, not activation (82%) or retention (72%
+   return). 74% of signups happen inside the native app.
+2. **Authority is the ceiling on every SEO page we own.** 7-day GSC: club pages
+   sit at position 8.6, the 49 lists at 27.5. Lists that DO reach page one beat
+   their position benchmark by 2.2x — the format works, the ranking does not.
+   More pages do not fix this. See [[project_gsc_7day_2026_08_09]].
 
-| # | Task | Why it is this high |
+| # | Task | Owner | Why it ranks here |
+|---|---|---|---|
+| 1 | **Partnership outreach** | ALEX | Distribution is the measured bottleneck and nothing I ship moves it. Pitch material is built. |
+| 2 | **Authority building** — directories, Discord, backlinks | ALEX | The single ceiling on ALL 284 pages. Club pages p8.6, lists p27.5. Raising authority lifts every page at once; another page lifts none. |
+| 3 | **`/mystery-player/` sells a mode the app hides** | claude | ⚠️ LIVE DEFECT. Page is HTTP 200 with a full pitch while `MYSTERY_ENABLED=false`. Someone searches, installs, mode is absent. Cheap: de-index or de-link until the pool is rebuilt. |
+| 4 | **Italian localisation on Serie A clubs** | claude | The ONLY lever measured to convert: localised pages 8.06% CTR vs 3.05% English, same position. ⚠️ Per-market — Turkish INVERTS it, so treat as a test. |
+| 5 | **Re-read GSC ~30 Aug to judge the title test** | claude | 76 titles moved from "Trivia" to "Quiz with Answers" on measured CTR (1.4% vs 9.3%). It is a HYPOTHESIS until re-measured. Cheap, and it decides whether to repeat the pattern on player/league pages. |
+| 6 | **Distractor sweep — the club-qualifier class** | claude | Alex found a "hard" question where no distractor had played for the club named in the stem. The plausibility gate checks name-twins and eras, NOT club membership. The moat is the bank. |
+| 7 | **Top up 3 sub-floor packs** | claude | Hajduk 15, RB Leipzig 20, Bournemouth 24 — all under the 25 floor agreed 2026-08-09. 10-Q sessions on a 15-Q pack repeat almost immediately. |
+| 8 | **Mystery Player pool rebuild, then flip the flag** | claude | A finished mode is dark. Needs a CURATED cross-era pool, not more squad fillers. Also the honest fix for #3. |
+| 9 | **MP: verify "up to 8" + stats saving** | ALEX+claude | Home advertises "up to 8 players"; that has never been proven past the RPC layer. Needs a 2nd device. Marketing a number we cannot demonstrate. |
+| 10 | **AdSense: switch on ad units when approved** | ALEX | `AD_CLIENT=''` and all four slots commented, so approval alone earns nothing. ads.txt is correct; the console is just queueing. |
+
+**Deliberately NOT on the list:** more `/lists` (49 already compete for the same
+authority), more English club pages (the tail converts at ~1-5 impressions a
+quarter), and a broad bug sweep (playtesters ~100% precision vs 3-6% for
+sweeping audits).
+
+**Parked but real:** Capacitor 8 merge (branch `upgrade/capacitor-8`), homepage
+v5 rebuild, club-page competitive rebuild, TikTok, Reddit karma drip.
+
+⚠️ **Prod status is never knowable from this repo** — Android and iOS release
+state must be read from the consoles, not inferred here.
+
+## 🎨 APP ICON — flagged by Alex's friend as "AI sloppy", 2026-08-10. He is right.
+
+Current `assets/icon.png` (1024²): a flaming football with a question mark cut
+into it, orange fire and sparks on navy. Judged at 60/120/180px, not as a poster.
+
+**Why it reads as generated art:**
+1. **Three ideas in one square** — ball + fire + question mark. An icon carries one.
+2. **Fire, embers and soft 3D shading are the tell**, and they are the first
+   things to turn to mush at 60px.
+3. **A "?" on a football is the most predictable trivia mark there is.** Nothing
+   about it is ours.
+4. **⚠️ The palette does not match the product.** Orange/navy, when the app and
+   all 191 generated pages are `#58CC02` green on `#0A0A0A`. The icon does not
+   belong to the app it opens.
+
+**Three directions to draw, all legible at 20px:**
+- **Monogram** — "IQ" in the app's weight, green on near-black, a ball-panel
+  hexagon forming the counter of the Q. Ties the icon to the name.
+- **One panel** — a single ball pentagon as a bold flat shape, cropped hard.
+  Unmistakably football, no effects, scales to nothing.
+- **Scout's mark** — only if the Scouting Report world wins the homepage; the
+  icon should then come from that world.
+
+Produce as real renders at 1024/180/60 and judge at size. Do not ship a concept
+that was only ever seen large.
+
+### 🌍 LEAGUE COVERAGE LADDER — Alex, 2026-08-10: "prioritise by biggest fanbases"
+
+**Builder coverage ≠ quiz packs.** A builder club needs only a Wikipedia
+article + the squad parser; no questions, no editorial. So league waves are
+cheap and mechanical.
+
+Measured gap (containment-match ESTIMATE — Man City/PSG/Lyon/Athletic are
+false negatives, true tier-1 gap ≈ 45-50 clubs):
+
+| Tier | Leagues | Have/Total |
 |---|---|---|
-| 1 | **Cut a CLEAN iOS 1.5.0 build 54** | ⚠️ The archive built earlier tonight has Mystery Player ENABLED. iOS has never shipped that mode (live 1.4.0 = build 52, cut 3.5h before the mode landed), so submitting that archive would ADD a known-broken mode to iOS in the same week we pulled it from Android. Rebuild off current main, then Alex device-tests. |
-| 2 | **App Store screenshots + ASO refresh** | The listing IS the funnel top for 74% of signups and has been stale since 1.3.3. Apple indexes name + subtitle + keywords only — never the description. Cheapest real lever on signup volume. |
-| 3 | **Anchor the 78 rot-prone questions + gate it** | Alex spotted the class: claims about an open-ended PRESENT go false silently. Measured: the feared "which club does X play for" is effectively absent (1 of 6,469 — the bank already writes past-tense). The real exposure is **76 undated superlatives** ("who holds the all-time record for most PL goals?"). Fix is a one-word anchor ("As of 2026, …"), a pattern the bank already uses ~40 times. Gate new ones at forge time. |
-| 4 | **Club wave: Leipzig + Atalanta — SHIPPED (cfaafae)** | Live 2026-08-08. Leipzig 20, Atalanta 33. Bank 6,522 · 76 packs · 74 club pages. ⚠️ Leipzig is under the new 25 floor — top it up in the next clubs wave. |
-| 5 | **Spanish localisation wave — RUNNING (2026-08-08)** | Run `wf_7b835253-b7b`, 16 agents, 272 questions across 8 Spanish clubs. Recovery if the session dies: the script is regenerable — it is `/tmp/es-tpl.js` with `__CLUBS__` replaced by the bank query in this commit message; translator output is in that run's `journal.jsonl`. |
-| 5b | *(rationale)* | Measured: `/es/quiz/river-plate` does **134 impr / 7 clicks** vs **8 / 0** for its English page; `/es/` Boca does 38/4 vs **0/0** English. Reuses verified questions via the `id` link, so no forge and no new facts. 8 candidates. ⚠️ Turkish INVERTS this (English Gala 776 vs Turkish 11) — per-market, never "localise everything". |
+| 1 — FULL coverage first | PL ✅20/20 · Bundesliga ~5/18 · La Liga ~7/20 · Serie A ~10/20 · Ligue 1 ~5/18 | ~47/96 |
+| 2 | Eredivisie, Championship, Belgian Pro League, Süper Lig, Brasileirão, Argentine Primera, MLS (+Liga MX, not in leagues.mjs) | ~17/158 |
+| 3 — due course | Primeira Liga, Scottish Prem, Eliteserien, Allsvenskan, Danish Superliga, HNL, Saudi | ~7/102 |
 
-### NEXT — real, not urgent
+**Method per wave:** resolve the league's clubs from its Wikipedia SEASON
+article (2026–27 …) — never by name search (trap fired 6×) — extend the club→
+article map, run fetch-squads-wiki, fetch photos --core for new ids, faces,
+rebuild. ⚠️ Atalanta + RB Leipzig have quiz PACKS but were never added to the
+squad map — include in wave 1. Tier-1 wave slots after the builder is LIVE;
+it widens a shipped product rather than delaying it.
 
-| # | Task | Note |
-|---|---|---|
-| 5 | **Rebuild the Mystery Player pool, then flip `MYSTERY_ENABLED`** | Not "more players" — a CURATED cross-era set. The current 1,537 are current-squad dumps: no legends, no Ronaldo, no Messi. One-line re-enable once the pool is right. |
-| 6 | **`/mystery-player/` web page is now a broken promise** | The landing page still sells a mode the app hides. De-link it, or leave it dark until #5. Small, but it is live and wrong. |
-| 7 | **MP stats never save + verify "up to 8"** | Home advertises "Live rooms, up to 8 players"; that number has never been verified past the RPC layer, and stats are realtime-gated and write nothing. Marketing a claim we cannot demonstrate. Needs Alex + a 2nd device. |
-| 8 | **Custom avatar** | Alex REALLY wants it. Hand-drawn SVG was rejected; needs real illustrated art. Storage design (encode into avatar_id) already worked out. |
+### 📋 WEEK PLAN additions + builder-pool decision (Alex, 2026-08-10)
+
+- **#16 STORE PAGE BEFORE THE SOCIAL PUSH** — Alex has social plans timed to
+  the PL start (<2 weeks). The listing must convert FIRST: new screenshots
+  (incl. lineup builder), trivia→quiz rename done, description current.
+  Possibly the most time-critical item of the week.
+- **#17 /get smart link + UTM per-post attribution** — measure which posts
+  drive installs; the redirect already exists.
+- **Norwegian listing?** — depends on the language of Alex's social audience;
+  ask when his plans firm up.
+- **BUILDER POOL DECIDED:** default = current squads + academy prospects with
+  first-team squad numbers (exactly what the Wikipedia templates encode).
+  **LEGENDS TOGGLE approved by Alex** ("toggle on and we include all the
+  inactive retired players like Zidane and Beckham") — retired players leave
+  the default pool and return via the toggle, replacing the born<1980 hard cut
+  at integration time.
+
+### 🅿️ PARKED — app icon (Alex, 2026-08-10: "park it for now")
+
+Three in-house fire attempts all failed (petals / teardrop / drips) and the
+traced-flame composite read WORSE than the current icon. Current icon stays.
+What survives: the vector ball+? foundation and the flame tracer are committed
+(`assets/icon-work/`, `scripts/flametrace/`), and
+`assets/icon-work/GENERATION-BRIEF.md` is a paste-ready prompt with acceptance
+tests (judge at 64px!) for whenever Alex runs an external image tool. The
+in-session generation service is dead: 0.2 credits, 2/image, no trial.
 
 ### ALEX-OWNED — I cannot move these
 
@@ -50,6 +132,9 @@ outrank another club wave.
 | **VAPID secrets** (Footle web push) | You. The native half shipped; the web half is inert without them. |
 | **Clarity connector token** | You. |
 | **Three editorial rulings** | `/study/` question-count exemption · emoji vs line icons on the Journey ladder (I say KEEP the emoji) · whether the League picker keeps its counts like the club picker lost its. |
+| **Store name: "trivia" → "quiz"** — DECIDED yes by Alex 2026-08-10 ("quiz ranks higher on web, let us not overcomplicate") | Next store-console session: read live name/subtitle/keywords in BOTH consoles, propose exact swap. ⚠️ Never repeat a word across name+subtitle+keywords — a repeat wastes an indexed slot. Norwegian Play listing needs the same pass. Original caveat (App Store search ≠ Google) noted and accepted. WEB evidence is strong — "with answers" beat "trivia" 6.6× in GSC and we rewrote all 76 club titles off "trivia" as our worst-converting intent. But App Store search ≠ Google and I have NO store search-volume data, so the web finding is suggestive, not proof. ⚠️ Regardless of the rename: only name+subtitle+keywords are indexed, and a word repeated across them wastes a slot — if "trivia" sits in both the name and keywords that is already a bug. Renaming also costs brand recognition. Next step: I read the current name/subtitle/keywords in both consoles and propose an exact swap. |
+| **Which visual world for /lineup** | You. `DESIGN.md` assigns "The Scouting Report"; the builder is in the current app world. Scope was "homepage first, then decide" — this is the decide. |
+| **Play API-level warning (due 31 Aug 2026)** | Build 15 (targetSdk 36) SUBMITTED for review 2026-08-10. ⚠️ Verify the banner actually clears after rollout — the 'Ikke inkludert' table showed build 14 already at mål-SDK 36, so the notice may be about something we have not read. If it persists post-rollout, open the notice and read the full text. Previously: You — upload only. ⚠️ NOT a code fix: the repo already has `targetSdkVersion 36` and `versionCode 15`, while production is **14 (1.5.1)**. The warning describes the LIVE build. Cut build 15 and upload; nothing needs writing first. |
 
 ### DEFERRED — with the trigger that should wake them
 
@@ -101,7 +186,230 @@ outrank another club wave.
   UI. Wants a 2-device test — the same test [[project_mp_stats_realtime_gated]]
   is already waiting on.
 
-## 💡 LINEUP BUILDER — Alex's idea, 2026-08-03. Strategically well-aimed; it is a DATA problem.
+## 💡 LINEUP BUILDER — BUILT 2026-08-10, deployed inert. Alex's idea, 2026-08-03.
+
+**BAR SET BY ALEX 2026-08-10:** *"we will not make it available until it is at
+the level of or BETTER than our competitors."* Not linked, not in the sitemap,
+until it clears that. Do not link it early.
+
+### ✅ Done
+
+- `public/lineup/index.html` — one global pool of **3,656 players** (any club,
+  any era), 14 formations (4-3-3 default), rows placed by real pitch depth,
+  canvas image export at 1080×1350, share link in the address bar, accent-folded
+  search ("sesko" → Šeško). Commits `47943ff` → `9ea65b8` → `053e837`.
+- `squads.json` rebuilt (`17d6650`) — 65 clubs, 1,545 players, all 20 PL clubs,
+  reserves and academy. Cross-club supersede pass with an abort guard.
+- **3,759 licence-verified Commons photos** (`7884e92`) + **3,726 Vision face
+  crops (99.1%)**. Crop is a RECTANGLE applied in CSS — no derivative images
+  hosted, so nothing rides into the native binary.
+- Attribution renders on the page AND is drawn into the exported PNG (licence
+  condition — the PNG is what gets posted).
+
+### 🔧 FIX — these read as "broken", not "missing"
+
+1. **Drag-and-drop to reposition.** Every rival has it; its absence is the single
+   thing that will make us feel like the lesser tool.
+2. **Pre-fill a real club or national XI, then edit.** Fastest route to a
+   finished team, and it makes the "who replaces him" case one tap. FotMob and
+   MyLineups both have it.
+3. **Photo RECENCY + quality.** P18 is often neither newest nor club kit — Ben
+   White's is 2018, Saka/Rice/Raya are in national kit, Iniesta's has a trophy
+   over his face. Fix: rank each player's Commons **category** by
+   `DateTimeOriginal` instead of taking P18. Same job serves Alex's "new club
+   kit" ask. ⚠️ Not automatable for kit detection; recency only.
+4. **Mononym names.** "Marcelo Vieira" → "Vieira" is wrong. Needs a
+   "commonly known as" field we do not have. Suffixes already fixed.
+
+### ✅ RESOLVED 2026-08-10 — the builder no longer borrows Mystery's eligibility
+
+Root cause of every "player X is missing" report: the builder consumed
+mysteryPool.json, whose gates exist for a similarity game (career + position +
+nat + born all required). Measured live:
+- **Yoro & Andrey Santos: Wikidata has NO P54 club membership at all** → no
+  career rows → Mystery gate rejects → builder inherited the rejection.
+- **Heaven: has P54 + photo, missing only a position** → same gate.
+- **Gittens & Quenda: ZERO freely-licensed Commons photos exist** — verified.
+
+Fix (`build-lineup-data.mjs` rewritten): builder has its own rule — squads ∪
+mysteryPool ∪ core (fame≥25), photoless players included as INITIALS CARDS,
+sorted active → photographed → fame. All 12 spot-check names present, enforced
+with exit(1) in the build. Pre-fill still requires photos (an XI of initials
+reads as broken). Sub-25-fame youngsters (Quenda, Lacey) arrive via the SQUAD
+REFRESH, not by fetching tens of thousands of fame-10 items.
+
+### 🔧 FIX — found by Alex playtesting a Man United XI, 2026-08-10 (history)
+
+**Two gates exclude exactly the players a fan wants, and a third makes club
+lists read as historical.**
+
+- **The 25-sitelink fame floor.** Shea Lacey is fame **10** on Wikidata, so he
+  cannot enter the pool at all. Every academy prospect is in this position.
+- **The photo requirement** (`build-lineup-data.mjs` skips anyone without a
+  usable Commons photo). For a lineup builder this is the wrong trade: a fan
+  typing a name wants the player, and initials are an acceptable card.
+- **⚠️ WIKIDATA HAS NO OPEN CLUB SPELL FOR EITHER.** Measured: Andrey Santos
+  (Q106171073, fame 32) and Shea Lacey (Q117207006, fame 10) both show **0 open
+  club memberships**. So a squad-based fetch will not find them either — this is
+  a source gap, not only a filter gap. Andrey Santos is ALSO a bug: fame 32 is
+  above our floor, so he should already be in the pool and is not. Find out why
+  before widening anything.
+- **Club labels are "known for", not "current".** A Manchester United filter
+  offers 51 players led by Rooney, Mata, Ashley Young, Hernández, Fellaini,
+  Smalling and Rojo. Building a current United XI is therefore actively
+  awkward — this is what pre-fill (item 2) has to solve.
+
+**⚠️ ROOT CAUSE FOUND — the legends photo sweep was never run.** 5,298 of 8,491
+pool players are excluded for having no usable photo, including **Pelé,
+Maradona, Zidane, Beckham, Cruyff, Totti, Ronaldo and Luke Shaw** (187 of them
+fame 60+). When Alex said "current players first, legends after", only the
+active+recent tiers were fetched and the `--all` pass was never run. Luke Shaw
+was caught by it too: Wikidata has no open club spell for him, so tier() filed
+a fame-66 current Premier League player as a *legend*. **⚠️ tier() must not
+decide who gets a photo — a missing open spell is a data gap, not a career
+stage.** Sweep started 2026-08-10 (`fetch-mystery-photos.mjs --all`, 5,085
+players); rebuild `lineup.json` after it, then re-run both verifiers.
+
+**Multi-person photos.** Kobbie Mainoo's card shows a second player behind him.
+The detector takes the largest face, but a tight crop is not enough when two
+people are in frame. `playerFaces.json` already records a `faces` count per
+photo — prefer `faces === 1` when choosing, and fall back to the largest.
+
+Fix order: (a) finish the --all photo sweep (in progress), (b) find why Andrey Santos is missing despite clearing the floor,
+(b) allow photoless players with an initials card, (c) drop the floor for the
+BUILDER pool only — the Mystery Player answer pool must keep its fame floor or
+the daily answer becomes an academy trialist.
+
+### ➕ ADD
+
+5. Bench (subs), captain armband, kit colour, manager name — cheap and expected.
+6. **⭐ QUIZ THE XI.** Build a team, then get quizzed on those eleven players
+   from the bank. No competitor can copy this; it is what makes the builder
+   OURS rather than a commodity, and it feeds the activation bottleneck.
+
+### ⛔ DELIBERATELY NOT BUILDING — decided 2026-08-10, do not re-propose
+
+- **Player rating sliders** (MyLineups has them). They would be invented numbers,
+  and principle 2 is never claim more than the bank can prove — "every answer
+  explained" already shipped false once.
+- **Season simulation / tactics-board drawing** (TeamBranch). Different product,
+  and maintenance for one person.
+- **Custom uploaded players.** Moderation and licence exposure.
+
+### ❓ OPEN DECISION FOR ALEX
+
+- **Which visual world does /lineup belong to?** `DESIGN.md` assigns "The
+  Scouting Report" (newsprint, Archivo Narrow, near-monochrome). The builder is
+  built in the CURRENT app world (#0A0A0A / #58CC02 / Inter), matching the app
+  and the 191 generated pages. Scope was "homepage first, then decide" — this is
+  the "then decide".
+
+### 👁️ PHOTO SURVEY of the top-5 Google lineup builders — LOOKED AT, 2026-08-10
+
+Playwright screenshots of all five, read by eye (not fetched-and-summarised):
+
+| Site | Player representation, as actually rendered |
+|---|---|
+| lineup-builder.co.uk (#1 result) | **NO photos.** Icon / shirt / shield / number graphics; "18,000 players" is a NAMES database. Footer disclaims ownership of all logos. |
+| fotmob.com/lineup-builder | **THE BAR.** Small circles, real headshot cutouts on clean light background, surname below, current squads (Lammens, Mbeumo, Dorgu). Licensed — they are a data company. |
+| buildlineup.com | Jersey graphics + numbers. No photos. |
+| createformation.com | Real headshot CUTOUTS, EA-game / PL-media style, floating on the pitch. "19,000 player images", free, ad-funded — near-certainly UNLICENSED hotlinking. Not our path. |
+| chosen11.com | Coloured token discs. No photos. |
+
+**Verdict: only 2 of 5 use real faces; one licenses them, one appears to steal
+them. Three use graphics. We are already the second-best LEGAL face builder.**
+
+The legal route to FotMob's look with our own licensed photos:
+**person-segmentation cutouts.** macOS Vision (VNGeneratePersonSegmentationRequest,
+local, free) strips the noisy match background from our Commons photos →
+uniform FotMob-style cutout on a clean backdrop. Derivatives of CC BY / CC
+BY-SA are permitted WITH attribution + a note of modification — standard
+Commons practice ("cropped, background removed"). Needs hosting (~3-5k WebP
+cutouts ≈ 50-100MB): Supabase Storage on the Pro plan is the natural home;
+NOT the repo (bloat) and never the native binary. ⚠️ ALEX DECISION: approve
+the bucket + pipeline before building.
+
+**Squad data beyond Wikidata — CORRECTED after verification 2026-08-10:**
+⚠️ football-data.org's FREE tier does NOT include squads (verified on their
+pricing page — squad data starts at the €29/mo tier). The earlier board entry
+recommended it unverified; that was wrong. Real options, in order:
+
+1. **Wikipedia current-squad templates (lead candidate, free).** Every club
+   article carries a fan-maintained "Current squad" section in structured
+   {{football squad player}} templates — updated within hours of transfers,
+   CC BY-SA with attribution, same ecosystem as our photos. Needs a template
+   parser via the MediaWiki API. Fixes stale-United, adds Yoro/Heaven/Quenda
+   via squad membership.
+2. **API-Football free tier** (100 req/day — enough for a weekly refresh of
+   ~70 clubs). ⚠️ Terms not yet read; verify commercial/ad-funded use first.
+3. **football-data.org €29/mo** — the paid, zero-maintenance option if squad
+   freshness ever justifies spend.
+
+**Paid photo/data services — Alex green-lit spend 2026-08-10 ("as long as we
+can legally use them, quality standard high"):** the free stack (Commons +
+re-pick + cutouts) is competitive first; spend closes residual gaps only.
+Candidates to evaluate WHEN a gap remains: Sportmonks (player images licensed
+within subscription), football-data.org €29 squads, enterprise feeds
+(StatsPerform — likely out of range). ⚠️ Any signup/payment is ALEX's action;
+read the licence terms for redistribution/display rights before paying —
+"API access" does not always mean "image display rights".
+
+**Supabase Storage: `player-cutouts` bucket CREATED 2026-08-10** — public
+read, 500KB/file, PNG+WebP only. ⚠️ NO write policy exists; open an INSERT
+policy only for the upload run, then drop it (REVOKE discipline). Existing
+`avatars` bucket untouched.
+
+**Cutout prototype VERDICT (gallery sent to Alex):** 7 of 9 hit the FotMob
+bar from our own licensed photos. The two misses (Ekitike blur, Frimpong
+profile) are SOURCE-quality problems the running re-pick fixes — segmentation
+cannot invent pixels. ⚠️ Mainoo showed that OVERLAPPING players merge into one
+Vision instance, so the two-face fix is the re-pick preferring single-subject
+photos, with the cutout as the finish. Correct order: re-pick first, cut
+second. Cutout batch + Supabase Storage bucket (Alex approved) run AFTER the
+pipeline completes, on the best photo per player.
+
+### Competitive position (measured 2026-08-10)
+
+| | Us | Best rival |
+|---|---|---|
+| Real photos **on web** | ✅ licence-cleared | only FotMob |
+| Pool | 3,656 | MyLineups ~10k |
+| Formations | 14 | FotMob 14 + free form |
+| Export + share link | ✅ | all of them |
+| Drag & drop | ❌ | all of them |
+| Bench / captain / kit | ❌ | MyLineups |
+
+**The thesis:** rivals compete on quantity of options. Fans pick the tool that
+produces a picture worth posting, fastest. MyLineups has ~10,000 players and
+shows none of their faces on web — that is the opening, and licence-cleared
+photos are a moat because copying them means doing the same legal work.
+
+### ⚠️ Traps banked from this build
+
+- **Commons 429s a few-thousand-image sweep** and returns a 2,167-byte HTML
+  page. Fetched blind it reaches a detector as "unreadable" and gets cached as a
+  verdict. Detection read 62% → 51% and looked like a property of the photos;
+  after magic-byte checks and backoff it came back **99.1%**. A transient
+  failure must record NOTHING so the next run retries it.
+- **The CDN only serves pre-rendered widths** — 120/250/330/500 always 200,
+  800/1024 always 400. Asking for arbitrary widths 400'd on 100% of requests and
+  succeeded via fallback, hiding a total failure behind a working page.
+- **`Special:FilePath`'s 302 drops CORS**, so it cannot serve a crossOrigin image
+  (breaks canvas export and the on-page fallback).
+- **A `<button>` does not inherit body colour** — every player name rendered in
+  the UA's default dark text on dark grass, invisible.
+- **`overflow:hidden` on the photo disc clipped the position badges** to blobs.
+
+### Data gaps
+
+- 7 club packs absent from squads.json (failed the 14–45 sanity gate):
+  Fenerbahçe, Torino, Parma, **Boca Juniors**, Basel, Schalke 04, Valencia.
+- Going global fixed the keeper hole (108 → 349 GKs), so per-club XI shortfalls
+  only matter if a club-scoped mode returns.
+
+---
+
+### Original reasoning (2026-08-03) — why it was worth building
 
 **Why it is a better idea than it first sounds.** Our measured ceiling is
 AUTHORITY, and the thing we lack is linkable assets — nobody links to a JS
@@ -1573,3 +1881,33 @@ when it is 81.8%. Always UNION `scores` with `user_game_state`
 A deeper read of these numbers and a plan to improve them further — e.g. where
 the 20-35 weekly signups actually come from, and which surface converts best.
 Needs a source/attribution query; `scores` will not answer it.
+
+## Photo excellence pipeline (2026-08-10, evening — BINDING bar from Alex)
+"One bad-resolution photo and nobody uses the builder twice." Rules: recent
+(≤ ~1 yr), head-on, sharp, uniform face share (42%); anything less renders the
+two-letter initials card, never a bad photo.
+- [x] Centring bug fixed (clamped crops kept origin, drifted left/low — page + export)
+- [x] `src/data/photoOverrides.json` — hand-curated last word; null = initials card
+      (Lammens→Mar 2026 portrait, Cunha→Jun 2026; Mount/Heaven/Yoro→cards)
+- [x] Two-letter monograms (MM/AH/LY) on page + export
+- [ ] Commons FULL-TEXT SEARCH harvest — uncategorized 2025/26 match series
+      (Bryan Berlin-class uploaders: per-player crops, 2800px+, CC BY-SA).
+      Search by MATCH, not player: one series covers dozens of players.
+- [ ] Mechanical quality gate in build-lineup-data: face px in source < threshold
+      OR photo > ~1 yr old OR face unframeable at 42% → initials card
+- [ ] Contact-sheet eyeball pass per club before Alex retests (judge at 64px)
+- [ ] Mbeumo: occluded P18 (foreground blur) — cutout stage removes it; verify
+
+## Scan execution log (2026-08-10, late evening — going item by item with Alex)
+- [x] P0-1 split-brain homepage — VERIFIED SMALLER than scanned: prerender h1/structure
+      already matched; topped up the missing Scouting-Report promise (4b40a31)
+- [x] P0-2 loop instrumentation — loop-hit logs in api/c|q|join|p + Clarity loopEvent()
+      at 7 share/conversion sites (276e95c). Grep Vercel logs t:"loop-hit"
+- [→] P0-3 partnership pitch — kit already existed (docs/PARTNERSHIP-PITCH.md); ALEX SENDS
+- [x] P1 pack-size counts scrubbed from taster hero + bq-note + print page (e840042)
+- [x] P1 terrace-verdict ladder on results/share card/share text (36e1017)
+- [x] P2 "a 8-letter surname" grammar (0e7af15)
+- [x] (same evening, pre-scan) Ball IQ Test mode killed (e19214f)
+- next: send-it-back name capture · SEO beat-my-score share · streak unification (M)
+- Alex decisions pending: guess-the-XI daily (vs builder bar) · Trail in daily loop ·
+  mode-sprawl measurement before thinning

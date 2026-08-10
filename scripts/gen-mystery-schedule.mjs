@@ -10,16 +10,21 @@
 // Math.random(). Re-running produces byte-identical output.
 import { writeFileSync } from 'fs';
 const { default: pool } = await import('../src/data/mysteryPool.json', { with: { type: 'json' } });
+const { default: answerIds } = await import('../src/data/mysteryAnswers.json', { with: { type: 'json' } });
 
-// A daily puzzle whose answer nobody can name is broken, not hard. Fame is the
-// Wikipedia-language count — see fetch-fame.mjs for why a bank-name match was
-// rejected as a notability signal.
-const MIN_FAME = 45;
+// ⚠️ DRAW FROM THE ANSWER POOL, NOT FROM THE GUESS POOL WITH A FAME FILTER.
+// That was the original bug in a second disguise. The guess pool is deliberately
+// inclusive — 8,491 players, because refusing a real footballer as a guess is
+// the worst thing this game can do. But fame alone does not make a good ANSWER:
+// Niels Bohr has 186 Wikipedia languages and one amateur club, so
+// `pool.filter(p => p.fame >= 45)` would schedule him as a daily puzzle.
+// mysteryAnswers.json is the curated set — fame >= 55 AND a real career.
+const ANSWERS = new Set(answerIds);
 const DAYS = 400;
 const MIN_GAP = 60; // no answer repeats inside this many days
 
-const eligible = pool.filter((p) => p.fame >= MIN_FAME).sort((a, b) => a.id.localeCompare(b.id));
-if (eligible.length < 60) throw new Error(`only ${eligible.length} eligible — lower MIN_FAME`);
+const eligible = pool.filter((p) => ANSWERS.has(p.id)).sort((a, b) => a.id.localeCompare(b.id));
+if (eligible.length < 60) throw new Error(`only ${eligible.length} eligible answers`);
 
 let seed = 20260803;
 const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
@@ -58,7 +63,7 @@ const spread = Math.max(...Object.values(counts)) - Math.min(...Object.values(co
 
 writeFileSync('src/data/mysterySchedule.json', JSON.stringify(log));
 const byId = Object.fromEntries(pool.map((p) => [p.id, p]));
-console.log(`eligible players : ${eligible.length} (fame >= ${MIN_FAME})`);
+console.log(`eligible answers : ${eligible.length} (curated answer pool)`);
 console.log(`schedule         : ${log.length} days, ${Object.keys(counts).length} distinct answers`);
 console.log(`uses per player  : ${Math.min(...Object.values(counts))}-${Math.max(...Object.values(counts))} (spread ${spread})`);
 console.log(`\nfirst 8 days:`);

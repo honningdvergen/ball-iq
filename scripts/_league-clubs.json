@@ -1,0 +1,314 @@
+{
+ "Bundesliga": [
+  {
+   "qid": "Q15755",
+   "article": "FC Augsburg"
+  },
+  {
+   "qid": "Q141971",
+   "article": "1. FC Union Berlin"
+  },
+  {
+   "qid": "Q51976",
+   "article": "SV Werder Bremen"
+  },
+  {
+   "qid": "Q41420",
+   "article": "Borussia Dortmund"
+  },
+  {
+   "qid": "Q692691",
+   "article": "SV Elversberg"
+  },
+  {
+   "qid": "Q38245",
+   "article": "Eintracht Frankfurt"
+  },
+  {
+   "qid": "Q106394",
+   "article": "SC Freiburg"
+  },
+  {
+   "qid": "Q51974",
+   "article": "Hamburger SV"
+  },
+  {
+   "qid": "Q22707",
+   "article": "TSG 1899 Hoffenheim"
+  },
+  {
+   "qid": "Q104770",
+   "article": "1. FC Köln"
+  },
+  {
+   "qid": "Q702455",
+   "article": "RB Leipzig"
+  },
+  {
+   "qid": "Q104761",
+   "article": "Bayer 04 Leverkusen"
+  },
+  {
+   "qid": "Q105254",
+   "article": "1. FSV Mainz 05"
+  },
+  {
+   "qid": "Q101959",
+   "article": "Borussia Mönchengladbach"
+  },
+  {
+   "qid": "Q15789",
+   "article": "FC Bayern Munich"
+  },
+  {
+   "qid": "Q160532",
+   "article": "SC Paderborn 07"
+  },
+  {
+   "qid": "Q32494",
+   "article": "FC Schalke 04"
+  },
+  {
+   "qid": "Q4512",
+   "article": "VfB Stuttgart"
+  }
+ ],
+ "La Liga": [
+  {
+   "qid": "Q223620",
+   "article": "Deportivo Alavés"
+  },
+  {
+   "qid": "Q8687",
+   "article": "Athletic Bilbao"
+  },
+  {
+   "qid": "Q8701",
+   "article": "Atlético Madrid"
+  },
+  {
+   "qid": "Q7156",
+   "article": "FC Barcelona"
+  },
+  {
+   "qid": "Q8749",
+   "article": "RC Celta de Vigo"
+  },
+  {
+   "qid": "Q8760",
+   "article": "Deportivo de A Coruña"
+  },
+  {
+   "qid": "Q10512",
+   "article": "Elche CF"
+  },
+  {
+   "qid": "Q8780",
+   "article": "RCD Espanyol"
+  },
+  {
+   "qid": "Q8806",
+   "article": "Getafe CF"
+  },
+  {
+   "qid": "Q8823",
+   "article": "Levante UD"
+  },
+  {
+   "qid": "Q8857",
+   "article": "Málaga CF"
+  },
+  {
+   "qid": "Q10286",
+   "article": "CA Osasuna"
+  },
+  {
+   "qid": "Q12236",
+   "article": "Racing de Santander"
+  },
+  {
+   "qid": "Q10300",
+   "article": "Rayo Vallecano"
+  },
+  {
+   "qid": "Q8723",
+   "article": "Real Betis"
+  },
+  {
+   "qid": "Q8682",
+   "article": "Real Madrid CF"
+  },
+  {
+   "qid": "Q10315",
+   "article": "Real Sociedad"
+  },
+  {
+   "qid": "Q10329",
+   "article": "Sevilla FC"
+  },
+  {
+   "qid": "Q10333",
+   "article": "Valencia CF"
+  },
+  {
+   "qid": "Q12297",
+   "article": "Villarreal CF"
+  }
+ ],
+ "Serie A": [
+  {
+   "qid": "Q1886",
+   "article": "Atalanta BC"
+  },
+  {
+   "qid": "Q1893",
+   "article": "Bologna FC 1909"
+  },
+  {
+   "qid": "Q1900",
+   "article": "Cagliari Calcio"
+  },
+  {
+   "qid": "Q1120838",
+   "article": "Como 1907"
+  },
+  {
+   "qid": "Q2052",
+   "article": "ACF Fiorentina"
+  },
+  {
+   "qid": "Q845043",
+   "article": "Frosinone Calcio"
+  },
+  {
+   "qid": "Q2074",
+   "article": "Genoa CFC"
+  },
+  {
+   "qid": "Q631",
+   "article": "Inter Milan"
+  },
+  {
+   "qid": "Q1422",
+   "article": "Juventus FC"
+  },
+  {
+   "qid": "Q2609",
+   "article": "SS Lazio"
+  },
+  {
+   "qid": "Q13391",
+   "article": "US Lecce"
+  },
+  {
+   "qid": "Q1543",
+   "article": "AC Milan"
+  },
+  {
+   "qid": "Q289482",
+   "article": "AC Monza"
+  },
+  {
+   "qid": "Q2641",
+   "article": "SSC Napoli"
+  },
+  {
+   "qid": "Q2693",
+   "article": "Parma Calcio 1913"
+  },
+  {
+   "qid": "Q2739",
+   "article": "AS Roma"
+  },
+  {
+   "qid": "Q8603",
+   "article": "US Sassuolo Calcio"
+  },
+  {
+   "qid": "Q2768",
+   "article": "Torino FC"
+  },
+  {
+   "qid": "Q2798",
+   "article": "Udinese Calcio"
+  },
+  {
+   "qid": "Q501245",
+   "article": "Venezia FC"
+  }
+ ],
+ "Ligue 1": [
+  {
+   "qid": "Q845137",
+   "article": "Angers SCO"
+  },
+  {
+   "qid": "Q182876",
+   "article": "AJ Auxerre"
+  },
+  {
+   "qid": "Q218372",
+   "article": "Stade Brestois 29"
+  },
+  {
+   "qid": "Q328658",
+   "article": "Le Havre AC"
+  },
+  {
+   "qid": "Q210864",
+   "article": "Le Mans FC"
+  },
+  {
+   "qid": "Q191843",
+   "article": "RC Lens"
+  },
+  {
+   "qid": "Q19516",
+   "article": "Lille OSC"
+  },
+  {
+   "qid": "Q48911",
+   "article": "FC Lorient"
+  },
+  {
+   "qid": "Q704",
+   "article": "Olympique Lyonnais"
+  },
+  {
+   "qid": "Q132885",
+   "article": "Olympique de Marseille"
+  },
+  {
+   "qid": "Q180305",
+   "article": "AS Monaco FC"
+  },
+  {
+   "qid": "Q185163",
+   "article": "OGC Nice"
+  },
+  {
+   "qid": "Q1051013",
+   "article": "Paris FC"
+  },
+  {
+   "qid": "Q483020",
+   "article": "Paris Saint-Germain FC"
+  },
+  {
+   "qid": "Q19509",
+   "article": "Stade Rennais FC"
+  },
+  {
+   "qid": "Q126334",
+   "article": "RC Strasbourg Alsace"
+  },
+  {
+   "qid": "Q19518",
+   "article": "Toulouse FC"
+  },
+  {
+   "qid": "Q501693",
+   "article": "ES Troyes AC"
+  }
+ ]
+}

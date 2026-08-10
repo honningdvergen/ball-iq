@@ -761,7 +761,7 @@ function renderTaster(rows, name, playHref) {
 <div class="eyebrow">Free taster · No sign-up</div>
 <h2 id="taster-h">How well do you know ${esc(name)}?</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.getApp}">
-<p class="tph">${rows.length} questions to rate your ${esc(name)} Ball IQ. <a href="${play}">Play now →</a></p>
+<p class="tph">Rate your ${esc(name)} Ball IQ — hand-written questions, answers explained. <a href="${play}">Play now →</a></p>
 </div>
 <p class="taster-note">Sample questions shown — the full quiz has many more.</p>
 <script type="application/json" id="biq-taster-data">${data}</script>
@@ -930,7 +930,7 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
 +'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
-+(rounds>=2?'<p class="bq-note">'+left+' more '+esc(name)+' questions in the app, plus a new daily game and your streak.</p>':'');
++(rounds>=2?'<p class="bq-note">More '+esc(name)+' questions in the app, plus a new daily game and your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();start(Math.min(20,total))});
 var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)});
@@ -1560,7 +1560,7 @@ ${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orpha
 <a href="${SITE.base}/terms/">Terms</a>
 <a href="${SITE.base}/privacy.html">Privacy</a>
 </div>
-<p class="foot-copy">Ball IQ is 100% free — no ads in the app.</p>
+<p class="foot-copy">Ball IQ is free to play — no sign-up needed.</p>
 <p class="foot-copy">© 2026 ${esc(SITE.name)} — ${esc(SITE.tagline)}.</p>
 <p class="foot-disc">Ball IQ is an independent football trivia game and is not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club or competition. All team and competition names are used for identification and editorial reference only.</p>
 </div></footer>
@@ -2418,7 +2418,7 @@ ${style}
 <section class="sec narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/lists/">Football lists</a> › <span>${esc(cfg.h1)}</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 6px">${esc(cfg.h1)}</h1>
-<p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · from the Ball IQ football team</p>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · hand-checked by Ball IQ</p>
 ${/* Only the FIRST intro paragraph sits above the taster. The full intro ran
       ~990px, which pushed the taster to 15.1% of the page against a ~14%
       average scroll — technically reachable, practically not. The remaining
@@ -2496,7 +2496,12 @@ ${footer()}`;
 //   - print styles, because these get printed for actual pub quizzes
 function buildClubQuestionsPage(cfg, rows) {
   if (rows.length < 20) return null;   // too thin to be worth a page
-  const canonical = `${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/`;
+  // ⚠️ CANONICAL POINTS AT THE /quiz/ TWIN, not self (AdSense scan 2026-08-11):
+  // 75 of 282 sitemap URLs were /questions/ near-duplicates of /quiz/ pages —
+  // the doorway pattern the "low value content" verdict names. The page stays
+  // live for humans and print; it just stops competing with its twin in the
+  // index. REVERSIBLE after approval if "with answers" rankings need it back.
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const rounds = [];
   for (let i = 0; i < rows.length; i += 10) rounds.push(rows.slice(i, i + 10));
 
@@ -2556,7 +2561,7 @@ ${as}
 <section class="sec">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/quiz/${cfg.slug}/">${esc(cfg.name)} quiz</a> › <span>Questions and answers</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">${esc(cfg.name)} Quiz Questions and Answers</h1>
-<p style="margin:0 0 6px;color:var(--tx2);max-width:64ch">${rows.length} ${esc(cfg.name)} questions in rounds of ten, with the answers kept separate so you can read them out. Free to use for a pub quiz, a matchday WhatsApp group or your own revision — no sign-up, and the page prints cleanly.</p>
+<p style="margin:0 0 6px;color:var(--tx2);max-width:64ch">${esc(cfg.name)} questions in rounds of ten, with the answers kept separate so you can read them out. Free to use for a pub quiz, a matchday WhatsApp group or your own revision — no sign-up, and the page prints cleanly.</p>
 <div class="qa-toc">
 ${toc}
 </div>
@@ -4369,7 +4374,9 @@ async function main() {
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, questionPages);
+  // /questions/ pages are canonicalized to their /quiz/ twins and OUT of the
+  // sitemap while the AdSense doorway remediation stands (scan 2026-08-11).
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, []);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
