@@ -345,8 +345,28 @@ function fillDisc(disc, p, size){
   if (p.f && CUTOUTS.has(p.i)){
     disc.classList.add('cut');
     var ci = document.createElement('img');
-    ci.className = 'cutimg'; ci.alt = p.n; ci.loading = 'lazy'; ci.decoding = 'async';
-    ci.src = '/lineup/cutouts/' + p.i + '.png';
+    ci.alt = p.n; ci.loading = 'lazy'; ci.decoding = 'async';
+    var cm = CUTMETA[p.i];
+    if (cm){
+      // Face-anchored: face width -> 40% of the disc, face centre parked just
+      // above disc centre. Same model as photo crops; uniform heads by law.
+      ci.addEventListener('load', function(){
+        var W = ci.naturalWidth, H = ci.naturalHeight, D = disc.clientWidth || size;
+        if (!W || !H) return;
+        var sc = (0.40 * D) / (cm.w * W);
+        ci.style.width = (W * sc) + 'px'; ci.style.height = (H * sc) + 'px';
+        ci.style.left = (D / 2 - (cm.x + cm.w / 2) * W * sc) + 'px';
+        ci.style.top  = (D * 0.44 - (cm.y + cm.h * 0.5) * H * sc) + 'px';
+      });
+    } else {
+      ci.className = 'cutimg';
+    }
+    // Bucket miss -> fall back to the photo-crop path rather than a broken disc.
+    ci.addEventListener('error', function(){
+      CUTOUTS.delete(p.i);
+      fillDisc(disc, p, size);
+    });
+    ci.src = CUTOUT_BASE + p.i + '.png';
     disc.appendChild(ci); return;
   }
   if (!p.f){
@@ -781,9 +801,10 @@ function loadImg(p, width){
   return new Promise(function(res){
     var img = new Image();
     if (p.f && CUTOUTS.has(p.i)){
+      img.crossOrigin = 'anonymous';
       img.onload = function(){ img._cut = true; res(img); };
       img.onerror = function(){ res(null); };
-      img.src = '/lineup/cutouts/' + p.i + '.png';
+      img.src = CUTOUT_BASE + p.i + '.png';
       return;
     }
     // ⚠️ Without crossOrigin the canvas is tainted and toBlob throws at the
@@ -849,8 +870,17 @@ function drawDisc(ctx, img, p, cx, cy, r){
     var g2 = ctx.createRadialGradient(cx, cy - r * 0.45, r * 0.2, cx, cy, r * 1.4);
     g2.addColorStop(0, '#22452a'); g2.addColorStop(0.62, '#122616'); g2.addColorStop(1, '#0c1a0f');
     ctx.fillStyle = g2; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-    var Dc = r * 2, sC = Math.max(Dc / img.naturalWidth, Dc / img.naturalHeight);
-    ctx.drawImage(img, cx - img.naturalWidth * sC / 2, cy - r, img.naturalWidth * sC, img.naturalHeight * sC);
+    var Dc = r * 2, cmx = (typeof CUTMETA !== 'undefined' && CUTMETA[p.i]) || null;
+    if (cmx){
+      var sF = (0.40 * Dc) / (cmx.w * img.naturalWidth);
+      ctx.drawImage(img,
+        cx - r + (Dc / 2 - (cmx.x + cmx.w / 2) * img.naturalWidth * sF),
+        cy - r + (Dc * 0.44 - (cmx.y + cmx.h * 0.5) * img.naturalHeight * sF),
+        img.naturalWidth * sF, img.naturalHeight * sF);
+    } else {
+      var sC = Math.max(Dc / img.naturalWidth, Dc / img.naturalHeight);
+      ctx.drawImage(img, cx - img.naturalWidth * sC / 2, cy - r, img.naturalWidth * sC, img.naturalHeight * sC);
+    }
   } else if (img){
     var W = img.naturalWidth, H = img.naturalHeight, D = r * 2, box = p.x;
     if (box){
@@ -1003,15 +1033,24 @@ function restore(){
 
 // Cutout manifest: players with a locally-hosted transparent cutout render
 // FotMob-style on a clean gradient instead of a cropped match photo.
+var CUTOUT_BASE = 'https://blcisypmngimqkwxrrdm.supabase.co/storage/v1/object/public/player-cutouts/';
 var CUTOUTS = new Set();
 // ⚠️ THE MANIFEST GATES FIRST RENDER. It used to load in a fire-and-forget
 // fetch; whenever player data won that race, every disc rendered as a
 // photo-crop with CUTOUTS still empty — cutouts "randomly" missing on fast
 // loads. A missing manifest degrades to photo-crops, never to a blank page.
-var cutoutsReady = fetch('/lineup/cutouts/manifest.json', { cache: 'no-cache' })
-  .then(function(r){ return r.ok ? r.json() : []; })
-  .then(function(ids){ (ids || []).forEach(function(id){ CUTOUTS.add(id); }); })
-  .catch(function(){});
+var CUTMETA = {};
+var cutoutsReady = Promise.all([
+  fetch('/lineup/cutouts/manifest.json', { cache: 'no-cache' })
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(ids){ (ids || []).forEach(function(id){ CUTOUTS.add(id); }); }),
+  // Per-cutout face boxes: every cutout renders through the SAME face-anchored
+  // model as photos, so head sizes stop depending on how tight the source was
+  // (Mainoo read half Bruno's size before this). null meta -> cover-fit.
+  fetch('/lineup/cutouts/meta.json', { cache: 'no-cache' })
+    .then(function(r){ return r.ok ? r.json() : {}; })
+    .then(function(m){ CUTMETA = m || {}; }),
+]).catch(function(){});
 Promise.all([
   fetch('/data/lineup.json', { cache: 'no-cache' })
     .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
