@@ -43,3 +43,8 @@ android/.idea/deploymentTargetSelector.xml
 android/.idea/runConfigurations.xml
 .shots/
 .cache/
+
+# Cutout PNGs are HOSTED IN THE SUPABASE BUCKET (player-cutouts), never in git:
+# 895 files / ~380MB that would bake into history and churn on every re-cut.
+# The manifest + provenance ledger stay tracked — they are data, not assets.
+public/lineup/cutouts/*.png

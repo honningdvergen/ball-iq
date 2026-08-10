@@ -1,0 +1,52 @@
+<!doctype html><meta charset="utf-8"><style>
+body{margin:0;background:#333}
+#stage{position:relative;width:1024px;height:1024px;background:#0A0A0A;overflow:hidden}
+#stage img{position:absolute;left:0;top:0;width:1024px;height:1024px;
+  /* fire rises: keep the crown, fade the bottom splatter out */
+  -webkit-mask-image:linear-gradient(to bottom, black 46%, rgba(0,0,0,.55) 58%, transparent 70%);
+  mask-image:linear-gradient(to bottom, black 46%, rgba(0,0,0,.55) 58%, transparent 70%)}
+#stage svg{position:absolute;left:0;top:0}
+</style>
+<div id="stage">
+  <img src="file:///tmp/flame_outer.png">
+  <img src="file:///tmp/flame_inner.png">
+  <svg width="1024" height="1024" viewBox="0 0 1024 1024" id="ballsvg"></svg>
+</div>
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const el = (n, at, p) => { const e = document.createElementNS(NS, n);
+  for (const k in at) e.setAttribute(k, at[k]); if (p) p.appendChild(e); return e; };
+const svg = document.getElementById('ballsvg');
+const cx = 519.5, cy = 435.5, R = 306;
+const INK = '#14171C', WHITE = '#F6F7F3';
+
+const clip = el('clipPath', { id: 'bc' }, svg);
+el('circle', { cx, cy, r: R }, clip);
+el('circle', { cx, cy, r: R, fill: WHITE }, svg);
+const g = el('g', { 'clip-path': 'url(#bc)' }, svg);
+
+// centre pentagon, vertex-up
+function pentagon(pcx, pcy, pr, rotDeg, fill, parent) {
+  const pts = [];
+  for (let v = 0; v < 5; v++) {
+    const a = (rotDeg + v * 72 - 90) * Math.PI / 180;
+    pts.push(`${pcx + Math.cos(a) * pr},${pcy + Math.sin(a) * pr}`);
+  }
+  el('polygon', { points: pts.join(' '), fill }, parent);
+}
+pentagon(cx, cy, R * 0.34, 0, INK, g);
+// seams from centre-pentagon vertices to the rim panels
+for (let k = 0; k < 5; k++) {
+  const a = (k * 72 - 90) * Math.PI / 180;
+  el('line', { x1: cx + Math.cos(a) * R * 0.32, y1: cy + Math.sin(a) * R * 0.32,
+    x2: cx + Math.cos(a) * R * 0.78, y2: cy + Math.sin(a) * R * 0.78,
+    stroke: INK, 'stroke-width': R * 0.055 }, g);
+  pentagon(cx + Math.cos(a) * R * 1.02, cy + Math.sin(a) * R * 1.02, R * 0.34, 36 + k * 72, INK, g);
+}
+// the gold question mark, over the panels like today
+const t = el('text', { x: cx, y: cy + R * 0.38, 'text-anchor': 'middle',
+  'font-family': '-apple-system, Inter, sans-serif', 'font-weight': '900',
+  'font-size': R * 1.15, fill: '#F2A413', stroke: '#0A0A0A', 'stroke-width': R * 0.045,
+  'paint-order': 'stroke' }, svg);
+t.textContent = '?';
+</script>
