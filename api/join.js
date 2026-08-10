@@ -40,6 +40,17 @@ const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
 
 export default function handler(req) {
   const url = new URL(req.url);
+  // Loop instrumentation (opportunity scan 2026-08-10 P0): one line per hit,
+  // same shape as api/get.js's get-click. bot=true means an OG crawler
+  // unfurled the link somewhere — i.e. a share LANDED in a chat; bot=false is
+  // a human click-through. Grep Vercel logs for t:"loop-hit".
+  console.log(JSON.stringify({
+    t: 'loop-hit',
+    loop: 'join',
+    bot: /bot|crawler|spider|preview|facebookexternalhit|whatsapp|telegram|slack|discord|skype/i
+      .test(req.headers.get('user-agent') || ''),
+    country: req.headers.get('x-vercel-ip-country') || null,
+  }));
   const origin = url.origin;
   const raw = (url.searchParams.get('c') || '').trim().toUpperCase();
   const name = (url.searchParams.get('n') || '').slice(0, 22);

@@ -207,7 +207,9 @@ export default function FootleBand() {
         <div className="fb-cols">
         <div>
         <p className="fb-note">
-          Try No. {FP_NUMBER} from the archive — a {LEN}-letter surname, and nothing about
+          {/* "an 8-letter", "an 11-letter" — the article follows the SOUND of the
+              number, so it cannot be hard-coded while LEN varies. */}
+          Try No. {FP_NUMBER} from the archive — {/^(8|11|18)$/.test(String(LEN)) ? 'an' : 'a'} {LEN}-letter surname, and nothing about
           tonight’s is given away.
         </p>
 

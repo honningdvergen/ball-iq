@@ -25,7 +25,7 @@ import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multi
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
-import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from './lib/scoring.js';
+import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
@@ -502,26 +502,6 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, 
 }
 
 
-async function getBallIQQuestions() {
-  const { QB } = await loadQuestions();
-  const seed = Math.floor(Date.now() / TIMINGS.DAY_MS);
-  const mcqOnly = QB.filter(q => q.type === "mcq");
-  const shuffled = seededShuffle(mcqOnly, seed * 1013904223);
-  const takeFresh = (difficulty, count) => {
-    const bucket = shuffled.filter(q => q.diff === difficulty);
-    const fresh = applySeenFilter(bucket, count, qbHistKey);
-    return fresh.slice(0, count);
-  };
-  const easy = takeFresh("easy", 5);
-  const med  = takeFresh("medium", 6);
-  const hard = takeFresh("hard", 4);
-  return shuffle([...easy, ...med, ...hard]).map(q => {
-    const histKey = qbHistKey(q);
-    const indices = [0,1,2,3].slice(0, q.o.length);
-    const sh = seededShuffle(indices, seed + easy.indexOf(q) + 1);
-    return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
-  });
-}
 
 // dateToYMD, keyForDate, dayIndexForDate extracted to ./lib/date.js
 // (Sprint #14 Stage 2).
@@ -560,53 +540,6 @@ async function getTrueFalseQs() {
 }
 
 
-function calcBallIQ(score, total) {
-  // Real-IQ-bell-curve inspired mapping in the 60–160 range, pure accuracy.
-  //  Calibration targets:
-  //    - Perfect 15/15 → 160
-  //    - 8/15 correct  → ~99 (roughly average)
-  //    - 0/15 correct  → 60
-  //  Formula: 60 + pct^1.5 * 100, clamp [60, 160], round.
-  if (!total) return 60;
-  const pct = Math.max(0, Math.min(1, score / total));
-  const iq = 60 + Math.pow(pct, 1.5) * 100;
-  return Math.round(Math.max(60, Math.min(160, iq)));
-}
-
-// Football-culture rank labels — fun, descriptive, and crucially they make
-// no statistical claim. The earlier "Top X% of football fans" version was
-// pulled because the buckets weren't derived from real user data, which
-// risked falling foul of App Store guideline 2.3 (Accurate Metadata).
-//
-// Voice: 3rd-person observational across all tiers (channeling/plays/argues/etc).
-// Single source of truth — iqLabel() reads from this array.
-const IQ_LABELS = [
-  { min: 155, label: "Channeling José Mourinho 👑" },
-  { min: 150, label: "Pronounces Bruno Fernandes like BROO-no Fer-NANDSH 🇵🇹" },
-  { min: 145, label: "Clearly plays Football Manager ⌨️" },
-  { min: 140, label: "Smarter than most football pundits 📺" },
-  { min: 135, label: "Could manage in the Championship 🧠" },
-  { min: 130, label: "Could manage a League Two side ⚽" },
-  { min: 125, label: "Watches the U21s for fun 🔭" },
-  { min: 120, label: "Knows every Champions League anthem word 🎵" },
-  { min: 115, label: "Has a favourite lesser-known league 🌍" },
-  { min: 110, label: "Argues about the offside rule correctly 📐" },
-  { min: 105, label: "Watches Match of the Day till the end 📺" },
-  { min: 100, label: "Solid pub quiz teammate ⚽" },
-  { min: 95,  label: "Watches El Clasico but skips the League Cup 👀" },
-  { min: 90,  label: "Knows more than most fans' dads 😅" },
-  { min: 85,  label: "Calls it soccer sometimes 😬" },
-  { min: 80,  label: "Still learning the offside rule 😬" },
-  { min: 75,  label: "Thought Zidane was a manager first 😂" },
-  { min: 0,   label: "Asked if Ronaldo plays for Brazil 💀" },
-];
-
-function iqLabel(iq) {
-  for (const tier of IQ_LABELS) {
-    if (iq >= tier.min) return tier.label;
-  }
-  return IQ_LABELS[IQ_LABELS.length - 1].label;
-}
 
 function levenshtein(a, b) {
   const m = a.length, n = b.length;
@@ -1910,6 +1843,26 @@ function playSound(type) {
 // playSound pattern at line 3082). OS-level haptics disabled silently no-ops
 // inside the plugin itself, so no extra guard needed for that case.
 const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
+// Loop instrumentation (opportunity scan 2026-08-10 P0): a named Clarity event
+// at each share invocation and pending-token conversion, so k-factor per loop
+// stops being a guess. Fire-and-forget; web-only by construction (Clarity
+// never loads in the native shell, and the stub queue absorbs early calls).
+// Terrace-voice verdict ladder (scan P1): one quotable line per accuracy
+// band, used by the results screen AND the share text so the most-seen screen
+// and the most-sent sentence carry the same football verdict. No statistical
+// claims (App Store 2.3 — the IQ_LABELS lesson).
+function resultVerdict(pct) {
+  if (pct === 100) return "Ballon d'Or form";
+  if (pct >= 80) return "Top-corner finish";
+  if (pct >= 60) return "Solid at the back";
+  if (pct >= 40) return "Squad rotation material";
+  return "Sunday league, first half";
+}
+function loopEvent(name) {
+  try {
+    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
+  } catch {}
+}
 // Belt-and-braces for index.html's head script: re-apply the native-app class
 // that hides desktop landing chrome (.landing-top / .landing-bottom / etc.).
 // Covers any case where the bridge wasn't injected before the head script ran.
@@ -2304,8 +2257,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
   // auto-fail-after-20s signal was creating frustration on re-entry
   // (the timer-at-full initial render read as "stale state"). Daily
-  // joins survival/legends/chaos/balliq in skipping the timer.
-  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "balliq" && mode !== "daily" && q?.type !== "tf";
+  // joins survival/legends/chaos in skipping the timer.
+  const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "daily" && q?.type !== "tf";
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
@@ -2316,7 +2269,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // math is inert on mobile — the mobile chrome (.q-top/.timer-row/.streak-bar/
   // .q-tag) stays byte-identical. quizLabel is the mode/club/league badge passed
   // from the mount site; the per-question category is the secondary label. ──
-  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", balliq:`${APP_NAME} Test`, legends:"Legends", chaos:"Chaos", survival:"Survival", local:"Local" };
+  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", legends:"Legends", chaos:"Chaos", survival:"Survival", local:"Local" };
   const qdBadge = quizLabel || QD_MODE_BADGE[mode] || "Quiz";
   const qdCat = q ? (CAT_LABELS[q.cat] || q.cat || "") : "";
   const qdCounter = mode === "survival" ? `Q ${idx + 1}` : `Q ${String(idx + 1).padStart(2, "0")} / ${total}`;
@@ -3703,7 +3656,6 @@ function getXPForResult(score, total, mode) {
 // Variants:
 //   'wordle'    — Today's Puzzle. Score + emoji-tile grid.
 //   'standard'  — Classic / Survival / Daily / Chaos / Legends / WC2026.
-//   'balliq'    — APP_NAME Test. IQ number, funny label, percentile.
 //   'hotstreak' — Hot Streak. Big streak number with orange accent.
 //
 // Returns a Promise<Blob> of a PNG. The card layout is fixed at 390×600
@@ -3875,27 +3827,6 @@ async function generateShareCard(type, data) {
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, Math.min(gy + 28, H - 60));
-  } else if (type === "balliq") {
-    const iq = data?.iq ?? 0;
-    const label = data?.label || "";
-
-    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText("BALL IQ TEST", cx, 130);
-
-    ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
-    ctx.fillStyle = "#58CC02";
-    ctx.fillText(String(iq), cx, 260);
-
-    // Funny label — wrapped to 300px
-    ctx.font = '600 16px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    _wrapText(ctx, label, cx, 308, 300, 22);
-
-    // Subtitle
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else if (type === "hotstreak") {
     const score = data?.score ?? 0;
 
@@ -3947,7 +3878,7 @@ async function generateShareCard(type, data) {
     ctx.fill();
 
     // Tier tagline keyed to accuracy.
-    const tier = accuracy >= 90 ? "Elite ⚽" : accuracy >= 70 ? "Sharp!" : accuracy >= 50 ? "Solid effort" : "Room to grow";
+    const tier = resultVerdict(accuracy);
     ctx.font = '800 24px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText(tier, cx, 382);
@@ -3988,6 +3919,7 @@ async function generateShareCard(type, data) {
 //   opts.onToast      - (msg) => void  | optional — used for the Saved/copy toast
 //   opts.textFallback - string         | optional — text to share if image flow fails
 async function shareCard(type, data, opts = {}) {
+  loopEvent("share-card-" + type);
   const { onToast = () => {}, textFallback = "" } = opts;
   let blob;
   try {
@@ -4044,7 +3976,6 @@ async function shareCard(type, data, opts = {}) {
         return `Got Footle${n} in ${data.score} guesses — can you beat me? ${wLink}`;
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
-      if (type === "balliq")    return `My Ball IQ is ${data.iq} — what's yours? ${link}`;
       if (data?.modeLabel && data?.score != null && data?.total != null) {
         return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
       }
@@ -4281,101 +4212,6 @@ function HardRightBurst({ onComplete }) {
     return () => { alive = false; };
   }, [onComplete]);
   return <canvas ref={canvasRef} aria-hidden="true" style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,pointerEvents:"none",zIndex:500}} />;
-}
-
-
-// ─── BALL IQ RESULTS ─────────────────────────────────────────────────────────
-// Extracted into its own component so hooks are never called conditionally
-function BallIQResults({ result, iqHistory, onRetry, onShare, onHome }) {
-  const iq = calcBallIQ(result.score, result.total);
-  const pctile = iqPercentile(iq);
-  const label = iqLabel(iq);
-  const ringPct = Math.min((iq - 60) / 100, 1);
-  const showIQConfetti = iq >= 120;
-
-  const [displayIQ, setDisplayIQ] = useState(60);
-  const [ringDisplay, setRingDisplay] = useState(0);
-  const [revealed, setRevealed] = useState(false);
-
-  useEffect(() => {
-    // Audit Phase 5 (E1): cancelled flag matches Confetti/HardRightBurst
-    // pattern in this file. Without it, the rAF chain inside setTimeout
-    // continues running setDisplayIQ/setRingDisplay on the unmounted
-    // component if the user dismisses results within ~1.8s of mount
-    // (400ms delay + 1400ms animation).
-    let cancelled = false;
-    const delay = setTimeout(() => {
-      if (cancelled) return;
-      setRevealed(true);
-      const start = 60;
-      const duration = 1400;
-      const startTime = Date.now();
-      const tick = () => {
-        if (cancelled) return;
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setDisplayIQ(Math.round(start + (iq - start) * eased));
-        setRingDisplay(ringPct * eased);
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }, 400);
-    return () => { cancelled = true; clearTimeout(delay); };
-  }, []);
-
-  return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
-      {showIQConfetti && revealed && <Confetti />}
-      <ResultsCloseBtn onClose={onHome} />
-      <div className={`iq-result${revealed ? " iq-revealed" : ""}`}>
-        <div style={{fontSize:13,color:"var(--t2)",fontWeight:600,marginBottom:4}}>Your {APP_NAME}</div>
-        <div className="iq-score-wrap">
-          <div className={`iq-ring iq-ring-hero${iq >= 120 ? " great" : ""}`} style={{background:`conic-gradient(var(--accent) ${ringDisplay*360}deg, var(--s3) 0deg)`}}>
-            <div className="iq-ring-inner iq-ring-inner-hero">
-              <div className="iq-num iq-num-hero">{displayIQ}</div>
-              <div className="iq-sub">{APP_NAME}</div>
-            </div>
-          </div>
-        </div>
-        {/* Funny label rendered as a prominent pill directly below the hero
-            ring — leans into the IQ score as the headline metric. */}
-        <div className="iq-label-pill" style={{opacity: revealed ? 1 : 0, transform: revealed ? "translateY(0)" : "translateY(6px)", transition:"opacity 0.5s 0.5s,transform 0.5s 0.5s"}}>{label}</div>
-        <div className="iq-pct" style={{opacity: revealed ? 1 : 0, transition:"opacity 0.5s 1.6s", lineHeight:1.8}}>
-          {pctile >= 90 && <div style={{fontSize:12,color:"var(--gold)",fontWeight:700,marginTop:4}}>🏆 Elite level knowledge!</div>}
-          {pctile >= 75 && pctile < 90 && <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginTop:4}}>⚡ Sharp — you really know your football</div>}
-          {pctile >= 50 && pctile < 75 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Keep playing to climb higher!</div>}
-          {pctile < 50 && <div style={{fontSize:12,color:"var(--t2)",marginTop:4}}>Retake the test to boost your score</div>}
-        </div>
-      </div>
-      <div className="s-row">
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--green)"}}>{result.score}</div><div className="sbox-k">Correct</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}>{result.total - result.score}</div><div className="sbox-k">Wrong</div></div>
-        {/* Streak tile only when there's an actual streak to brag about. */}
-        {(result.bestStreak||0) >= 3 && (
-          <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}>{result.bestStreak}</div><div className="sbox-k">Streak</div></div>
-        )}
-      </div>
-      {iqHistory && iqHistory.length > 1 && (
-        <div className="iq-history">
-          <div className="iq-hist-label">Your last {iqHistory.length} scores</div>
-          <div className="iq-hist-bars">
-            {iqHistory.map((h, i) => (
-              <div key={i} className="iq-hist-col">
-                <div className="iq-hist-bar" style={{height:`${Math.round(((h.iq-60)/100)*44)+4}px`, background: h.iq >= 120 ? "var(--accent)" : h.iq >= 100 ? "var(--gold)" : "var(--t3)"}}/>
-                <div className="iq-hist-n">{h.iq}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      <div className="results-actions">
-        <button className="btn-3d" onClick={onRetry}>Retake Test</button>
-        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
-      </div>
-    </div>
-  );
 }
 
 
@@ -4635,7 +4471,7 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHistory, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport }) {
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -4643,9 +4479,6 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
   const isSpeed = mode === "speed";
   const isDaily = mode === "daily";
 
-  if (mode === "balliq") {
-    return <BallIQResults result={result} iqHistory={iqHistory} onRetry={onRetry} onShare={onShare} onHome={onHome} />;
-  }
 
   const xpEarned = getXPForResult(result.score, result.total, mode);
   const showConfetti = isSurvival ? result.score >= 10 : pct >= 80;
@@ -4665,7 +4498,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, iqHisto
   // Stump-a-mate ammo (contextual, per Alex's call): prefer the hardest
   // question that got the player (self-deprecating share beats a brag for
   // k-factor), else the hardest one they aced. Plain code, NOT hooks — this
-  // sits below the balliq-mode early return. askedQuestions rows are the
+  // askedQuestions rows are the
   // shuffled play copies, but stumpLink only reads id/q/cat, and the
   // recipient re-resolves the original row from the bank by id.
   const diffRank = { hard: 3, medium: 2, easy: 1 };
@@ -5248,7 +5081,7 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
   const isFirstRun = prevBest === 0 && score > 0;
   const pct = answered > 0 ? Math.round((score / answered) * 100) : 0;
   const emoji = score >= 25 ? "🐐" : score >= 15 ? "🔥" : score >= 8 ? "⚡" : "⏱️";
-  const title = score >= 25 ? "Unstoppable!" : score >= 15 ? "On Fire!" : score >= 8 ? "Sharp!" : "Keep Practising!";
+  const title = score >= 25 ? "Prime Messi numbers" : score >= 15 ? "Golden Boot pace" : score >= 8 ? "Poacher's instinct" : "Pre-season sharpness";
   const xpEarned = score * 8;
   useEffect(() => { if (isNewBest && !isFirstRun && score >= 5) haptic("levelup"); }, [isNewBest, isFirstRun, score]);
   return (
@@ -5296,7 +5129,7 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
   const isPerfect = score === total;
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
   const emoji = pct === 100 ? "🧠" : pct >= 80 ? "✅" : pct >= 60 ? "⚽" : pct >= 40 ? "🤔" : "❌";
-  const title = pct === 100 ? "Perfect — You Know Your Football!" : pct >= 80 ? "Sharp!" : pct >= 60 ? "Solid!" : pct >= 40 ? "Room to Improve" : "Back to School!";
+  const title = resultVerdict(pct);
   const xpEarned = score * 8;
   return (
     <div className="screen" style={{paddingTop:8, position:"relative"}}>
@@ -6032,6 +5865,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   // balliq.app/get (api/get.js) resolves per RECIPIENT: iOS -> App Store,
   // Android -> Play, desktop -> the web app.
   const shareApp = async () => {
+    loopEvent("share-get");
     const text = `⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get`;
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
@@ -6759,10 +6593,6 @@ const FAQ_ENTRIES = [
     a: `Friends can join the lobby any time before the host starts. If someone loses connection during a game, their existing answers stay in the room and the game continues for everyone else. Reconnecting brings them back to the current question with their score intact.`,
   },
   {
-    q: "How does the Ball IQ Test work?",
-    a: "The Ball IQ Test asks you 15 carefully calibrated questions across difficulty levels. Your score is mapped to an IQ-like scale from 60 to 160 based on accuracy. There's no time limit — answer at your own pace.",
-  },
-  {
     q: "What is Footle?",
     a: "Footle is our daily football word game — guess a footballer's surname in 6 attempts. The same player is shown to everyone each day and resets at midnight.",
   },
@@ -6927,65 +6757,6 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
     </div>
   );
 });
-
-// ─── IQ RECAP OVERLAY ─────────────────────────────────────────────────────────
-// Lightweight modal shown when the user taps the home-screen IQ chip and
-// already has at least one APP_NAME result. Displays the most recent score,
-// its label/percentile, the date taken, and share / retake actions.
-function IqRecapOverlay({ entry, onClose, onRetake }) {
-  if (!entry) return null;
-  const iq = entry.iq;
-  const label = iqLabel(iq);
-  const when = entry.date
-    ? new Date(entry.date).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })
-    : null;
-  const doShare = async () => {
-    const msg = `🧠 My ${APP_NAME} is ${iq}\n${label}\n\nCould you beat me?\nballiq.app`;
-    try {
-      if (navigator.share) { await navigator.share({ title: APP_NAME, text: msg }); return; }
-      if (navigator.clipboard) { await navigator.clipboard.writeText(msg); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Copied to clipboard' })); } catch {} return; }
-    } catch {}
-  };
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position:"fixed", top:0, right:0, bottom:0, left:0, inset:0, zIndex:999,
-        background:"rgba(0,0,0,0.75)",
-        display:"flex", alignItems:"flex-end",
-        animation:"fadeIn 0.2s ease",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width:"100%", background:"var(--bg)",
-          borderRadius:"20px 20px 0 0",
-          padding:"28px 24px calc(36px + env(safe-area-inset-bottom, 34px))",
-          animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)",
-          textAlign:"center",
-        }}
-      >
-        <div className="ds-eyebrow" style={{marginBottom:6}}>Your {APP_NAME}</div>
-        <div
-          className="numeric"
-          style={{
-            fontSize:72, fontWeight:900, color:"#58CC02",
-            letterSpacing:"-0.03em", lineHeight:1,
-            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
-          }}
-        >{iq}</div>
-        <div style={{marginTop:10, fontSize:17, fontWeight:800, color:"var(--t1)", letterSpacing:"-0.01em"}}>{label}</div>
-        {when && <div style={{marginTop:10, fontSize:12, color:"var(--t3)"}}>Tested {when}</div>}
-        <div style={{marginTop:22}}>
-          <button className="btn-3d ghost" onClick={doShare} style={{marginBottom:14}}>Share Score</button>
-          <button className="btn-3d" onClick={() => { onClose(); onRetake(); }} style={{marginBottom:14}}>Retake Test</button>
-          <button className="btn-3d ghost" onClick={onClose} aria-label="Close IQ recap">Close</button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── XP BAR COMPONENT ─────────────────────────────────────────────────────────
 function XPBar({ xp, streak }) {
@@ -7268,7 +7039,6 @@ const HOW_TO_PLAY = {
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
-  balliq: { title:`🧠 ${APP_NAME} Test`, steps:["15 questions across all categories","Difficulty ramps up as you go","Your score maps to a 60–160 scale","Earn a football-culture rank label","Your history is saved for tracking"] },
 };
 
 // Shared hide style so the home-screen tab wrappers reference the same object
@@ -8062,6 +7832,7 @@ function AppInner() {
   });
   const clearPendingJoin = useCallback(() => {
     setPendingJoinCode(null);
+    loopEvent("join-token-consumed");
     try { localStorage.removeItem("biq_pending_join"); } catch {}
   }, []);
 
@@ -8214,13 +7985,6 @@ function AppInner() {
     return null;
   });
 
-  const [iqHistory, setIqHistory] = useState(() => {
-    try {
-      const raw = localStorage.getItem("biq_iq_history");
-      if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) return p; }
-    } catch {}
-    return [];
-  });
   const [hotstreakBest, setHotstreakBest] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_hotstreak_best");
@@ -8230,12 +7994,10 @@ function AppInner() {
   });
   const [showRatePrompt, setShowRatePrompt] = useState(false);
   const [rateView, setRateView] = useState("ask"); // 'ask' (loving it?) → 'store' (go rate). Unhappy → feedback, never the store.
-  const [showBallIQIntro, setShowBallIQIntro] = useState(false);
   const [showFirstQuizTip, setShowFirstQuizTip] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showKnownIssues, setShowKnownIssues] = useState(false);
-  const [iqRecap, setIqRecap] = useState(null); // { iq, date } or null
   const [ratePromptShown, setRatePromptShown] = useState(false);
   const [xp, setXp] = useState(() => {
     try {
@@ -8614,6 +8376,7 @@ function AppInner() {
   // on every app load — which is exactly what was killing web /play.
   useEffect(() => {
     if (!pendingChallenge) return;
+    loopEvent("challenge-arrived");
     const age = challengeDayOffset(pendingChallenge.date);
     if (age > 1) {
       showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
@@ -8776,10 +8539,6 @@ function AppInner() {
     try {
       const raw = localStorage.getItem("biq_profile");
       if (raw !== null) setProfileState(JSON.parse(raw));
-    } catch {}
-    try {
-      const raw = localStorage.getItem("biq_iq_history");
-      if (raw !== null) setIqHistory(JSON.parse(raw));
     } catch {}
     try {
       const raw = localStorage.getItem("biq_xp");
@@ -8998,9 +8757,6 @@ function AppInner() {
         safeSetItem("biq_first_tip_shown", "1");
       }
 
-      // "balliq_confirmed" is only used as a transient signal from the
-      // intro modal — store it as plain "balliq" so every downstream check
-      // (results routing, history save, share card, best-IQ toast) works.
       // Online Multiplayer requires a real account — guests have no userId
       // to host or join rooms. Block before any state transition so the home
       // screen doesn't briefly flash and the OnlineEntry never mounts.
@@ -9008,21 +8764,19 @@ function AppInner() {
         openAuthPrompt("online");
         return;
       }
-      setMode(m === "balliq_confirmed" ? "balliq" : m);
+      setMode(m);
       if (m === "online") { setScreen("online-stage1"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       if (m === "leaguequiz") { setScreen("league-quiz"); return; }
       // Reset category for special modes that ignore it
-      if (m === "balliq" || m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
+      if (m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
         showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
         return;
       }
       let qs = [];
-      if (m === "balliq") { setShowBallIQIntro(true); return; }
-      if (m === "balliq_confirmed") { qs = await getBallIQQuestions(); }
-      else if (m === "daily") { qs = await getDailyQs(); setActiveDailyDate(new Date()); }
+      if (m === "daily") { qs = await getDailyQs(); setActiveDailyDate(new Date()); }
       else if (m === "survival") { qs = await getQs({ cat: "All", diff, n: 300, includeLegends: true }); }
       else if (m === "legends") { qs = await getQs({ cat: "Legends", diff, n: 10 }); }
       else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
@@ -9568,8 +9322,7 @@ function AppInner() {
   }, [notifEnabled]);
 
   const handleComplete = useCallback((res) => {
-    // Don't pollute stats with BallIQ (different total) or daily (counted separately)
-    if (mode !== "balliq") saveStats(res);
+    saveStats(res);
 
     // Milestone celebrations
     const newTotal = (stats.gamesPlayed || 0) + 1;
@@ -9610,7 +9363,7 @@ function AppInner() {
       celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
     }
 
-    // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily/balliq)
+    // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily)
     if (mode === "classic" && res.score && res.total === 10 && res.score > (stats.bestScore || 0)) {
       const isFirst = !stats.bestScore;
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🎯 First score: ${res.score}/10!` : `🎯 New personal best: ${res.score}/10!`), 1400));
@@ -9634,12 +9387,6 @@ function AppInner() {
       celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`🎖️ ${cat} mastery — ${res.score} in a row`), 1600));
     }
 
-    // 🏆 BALL IQ new high
-    if (mode === "balliq" && res.iq && res.iq > (stats.bestIQ || 0)) {
-      const isFirst = !stats.bestIQ;
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🧠 Your ${APP_NAME}: ${res.iq}!` : `🧠 New ${APP_NAME} high: ${res.iq}!`), TIMINGS.ANSWER_REVEAL));
-      haptic("hardCorrect");
-    }
 
     // 💪 SURVIVAL new best (wrong answers = 0 means they only died on one)
     if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0) && res.score >= 10) {
@@ -9700,24 +9447,6 @@ function AppInner() {
     const earned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
     awardXp(earned);
 
-    // Save BallIQ history (last 7 scores) + best IQ in stats
-    if (mode === "balliq") {
-      const iq = calcBallIQ(res.score, res.total);
-      try {
-        const raw = localStorage.getItem("biq_profile");
-        if (raw !== null) setProfileState(JSON.parse(raw));
-      } catch {}
-      try {
-        const hist = (() => { try { const raw = localStorage.getItem("biq_iq_history"); return raw !== null ? JSON.parse(raw) : []; } catch { return []; } })();
-        const updated = [...hist, { iq, date: Date.now() }].slice(-7);
-        safeSetItem("biq_iq_history", JSON.stringify(updated));
-      } catch {}
-      setStats(prev => {
-        const updated = { ...prev, bestIQ: Math.max(prev.bestIQ || 0, iq) };
-        safeSetItem("biq_stats", JSON.stringify(updated));
-        return updated;
-      });
-    }
 
     // Save daily completion (today or a past "catch-up" day)
     if (mode === "daily") {
@@ -9851,14 +9580,9 @@ function AppInner() {
         const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
         return `⚽ ${APP_NAME} — Daily 7\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
-      balliq: (() => {
-        const iq = calcBallIQ(score, total);
-        const label = iqLabel(iq);
-        return `🧠 ${APP_NAME} Test\nMy ${APP_NAME}: ${iq}\n${label}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
-      })(),
       classic: (() => {
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
-        return `${medal} ${APP_NAME} — Classic Quiz\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
+        return `${medal} ${APP_NAME} — Classic Quiz\n${resultVerdict(pct)}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
       speed:     `⚡ ${APP_NAME} — Speed Round\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       survival:  `🔥 ${APP_NAME} — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
@@ -9901,7 +9625,6 @@ function AppInner() {
       survival: "Survival",
       hotstreak: "Hot Streak",
       truefalse: "True or False",
-      balliq: `${APP_NAME} Test`,
       speed: "Speed Round",
       legends: "Legends & History",
       local: "Local Multiplayer",
@@ -9909,11 +9632,7 @@ function AppInner() {
     };
     let cardType = "standard";
     let cardData;
-    if (mode === "balliq") {
-      const iq = calcBallIQ(score, total);
-      cardType = "balliq";
-      cardData = { iq, label: iqLabel(iq) };
-    } else if (mode === "hotstreak") {
+    if (mode === "hotstreak") {
       cardType = "hotstreak";
       cardData = { score };
     } else {
@@ -9972,6 +9691,7 @@ function AppInner() {
     const avatarUrl = authProfile?.avatar_url;
     if (avatarUrl) params.set("img", avatarUrl);
     const url = `https://balliq.app/p?${params.toString()}`;
+    loopEvent("share-p");
     const text = `Can you beat me at ${APP_NAME}? ⚽`;
     try {
       if (IS_NATIVE) {
@@ -10004,7 +9724,6 @@ function AppInner() {
     setDailyDone(false);
     setDailyScore(null);
     setDailyHistory({});
-    setIqHistory([]);
     setHotstreakBest(0);
     setLoginStreak(0);
     setXp(0);
@@ -10044,7 +9763,6 @@ function AppInner() {
     setXp(0);
     setLoginStreak(0);
     setBestLoginStreak(0);
-    setIqHistory([]);
     setHotstreakBest(0);
     try {
       // Single-key wipes — write the empty stats object, delete everything else.
@@ -10339,6 +10057,7 @@ function AppInner() {
   // shared LINK, not a friendship, so the common case for Rematch is that
   // nobody is notified at all. Callers need to know that to say something true.
   const sendPlayInvite = useCallback(async (addresseeId, code) => {
+    loopEvent("share-join");
     if (!addresseeId || !code) return false;
     try {
       const { error } = await supabase.rpc("send_play_invite", { p_addressee: addresseeId, p_code: code });
@@ -10363,18 +10082,6 @@ function AppInner() {
   const closeHelp = useCallback(() => setShowHelp(false), []);
   const openKnownIssues = useCallback(() => setShowKnownIssues(true), []);
   const closeKnownIssues = useCallback(() => setShowKnownIssues(false), []);
-  const openIqChip = useCallback(() => {
-    // Empty history → send them straight into the APP_NAME Test.
-    // Otherwise show a recap of their most recent score with share options.
-    if (!iqHistory || iqHistory.length === 0) {
-      startMode("balliq");
-      return;
-    }
-    haptic("soft");
-    setIqRecap(iqHistory[iqHistory.length - 1]);
-  }, [iqHistory, startMode]);
-  const closeIqRecap = useCallback(() => setIqRecap(null), []);
-  const retakeIqTest = useCallback(() => startMode("balliq"), [startMode]);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
   // 1.1 streak freeze: shields now AUTO-protect a missed day (consumed in
@@ -10382,6 +10089,7 @@ function AppInner() {
   // so the old manual "Use Shield" action is gone — spending one by hand would
   // just waste it. The Daily-tab banner is now informational (shieldCount).
   const shareDaily = useCallback(async () => {
+    loopEvent("share-daily");
     // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
     // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
     // canvas→Blob path can silently fail. Plain text works universally.
@@ -10437,7 +10145,6 @@ function AppInner() {
   const joinGateRef = useRef(null);
   // Sprint #68 JJ4: trap focus + ESC-to-close on the three pre-launch
   // bottom-sheet modals that previously had no a11y wiring.
-  const ballIQIntroRef = useRef(null);
   const ratePromptRef = useRef(null);
   // Sprint #71 MM1: in-app confirm modal for "leave the multiplayer room?"
   // replaces a window.confirm() that rendered as the iOS native dialog.
@@ -10448,7 +10155,6 @@ function AppInner() {
   useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
-  useModalA11y({ isOpen: !!showBallIQIntro, onClose: () => setShowBallIQIntro(false), ref: ballIQIntroRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   // Stable identity, deliberately: useModalA11y's effect deps are
   // [isOpen, onClose, ref], so an inline arrow re-runs the whole effect on
@@ -10712,25 +10418,6 @@ function AppInner() {
                 <div style={{fontSize:12,fontWeight:500,opacity:0.85}}>Start with today's Footle — one puzzle, everyone gets the same player.</div>
               </div>
               <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} style={{background:"rgba(0,0,0,0.2)",border:"none",borderRadius:22,minWidth:44,minHeight:44,width:44,height:44,fontSize:16,fontWeight:800,color:"#0a1a00",cursor:"pointer",flexShrink:0}} aria-label="Dismiss tip">×</button>
-            </div>
-          </div>
-        )}
-        {/* APP_NAME Intro */}
-        {showBallIQIntro && (
-          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.8)",zIndex:997,display:"flex",alignItems:"flex-end"}} onClick={() => setShowBallIQIntro(false)}>
-            <div ref={ballIQIntroRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={`About the ${APP_NAME} Test`} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
-              <div style={{fontSize:48,marginBottom:12}}>🧠</div>
-              <div style={{fontSize:22,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{APP_NAME} Test</div>
-              <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:20,flexWrap:"wrap"}}>
-                {[["📋","15 questions"],["⏱️","No timer"],["🎯","MCQ only"],["📊","Get your IQ"]].map(([icon,label]) => (
-                  <div key={label} style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:600,color:"var(--t2)",display:"flex",alignItems:"center",gap:4}}>
-                    <span>{icon}</span><span>{label}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>Answer 15 questions across all categories. Your score determines your {APP_NAME} — from 60 (beginner) to 160 (elite). The test is the same for everyone so scores are comparable.</div>
-              <button className="btn btn-p" onClick={() => { setShowBallIQIntro(false); startMode("balliq_confirmed"); }}>Start Test 🧠</button>
-              <button className="btn btn-s" style={{marginTop:8}} onClick={() => setShowBallIQIntro(false)}>Maybe later</button>
             </div>
           </div>
         )}
@@ -11231,8 +10918,6 @@ function AppInner() {
           </div>
         )}
 
-        {/* ── IQ RECAP OVERLAY ── */}
-        {iqRecap && <IqRecapOverlay entry={iqRecap} onClose={closeIqRecap} onRetake={retakeIqTest} />}
 
         {/* The separate "Modes" screen has been removed — all mode tiles live on the Home tab. */}
 
@@ -11381,12 +11066,6 @@ function AppInner() {
         {/* ── QUIZ ── */}
         {screen === "quiz" && mode !== "hotstreak" && mode !== "truefalse" && (
           <div className="quiz-screen-wrap">
-            {mode === "balliq" && (
-              <div style={{marginTop:14,marginBottom:4}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",fontWeight:500,letterSpacing:0.2,marginBottom:4}}>{APP_NAME} Test · 20 Questions</div>
-                <div style={{fontSize:13,color:"var(--t2)"}}>Mixed difficulty — answer as many as you can</div>
-              </div>
-            )}
             {mode === "legends" && (
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",borderRadius:12,border:"1px solid rgba(251,191,36,0.15)"}}>
                 <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>📜 Legends & History</div>
@@ -11485,7 +11164,6 @@ function AppInner() {
             mode={mode}
             onHome={goHome}
             survivalBest={stats.bestStreak}
-            iqHistory={iqHistory}
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}
