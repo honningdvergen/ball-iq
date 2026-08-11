@@ -3,10 +3,17 @@
 
 import { test, expect } from '@playwright/test';
 
+// Third-party AdSense iframes throw cross-origin SecurityErrors under
+// http://localhost (webkit especially) — ad-script noise, not app errors.
+const AD_FRAME_NOISE = /googlesyndication|adtrafficquality|googleads|doubleclick/;
+
 test('home renders without console errors after extraction', async ({ page }) => {
   const errors = [];
   const networkFails = [];
-  page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+  page.on('pageerror', (e) => {
+    if (AD_FRAME_NOISE.test(e.message)) return;
+    errors.push(`pageerror: ${e.message}`);
+  });
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
       const t = msg.text();
@@ -14,6 +21,7 @@ test('home renders without console errors after extraction', async ({ page }) =>
       // detail. Filter them to networkFails for separate inspection so a
       // backend RLS response doesn't mask real JS errors from the refactor.
       if (/Failed to load resource/.test(t)) return;
+      if (AD_FRAME_NOISE.test(t)) return;
       errors.push(`console.error: ${t}`);
     }
   });
@@ -65,11 +73,15 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
   });
 
   const errors = [];
-  page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+  page.on('pageerror', (e) => {
+    if (AD_FRAME_NOISE.test(e.message)) return;
+    errors.push(`pageerror: ${e.message}`);
+  });
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
       const t = msg.text();
       if (/Failed to load resource/.test(t)) return;
+      if (AD_FRAME_NOISE.test(t)) return;
       errors.push(`console.error: ${t}`);
     }
   });
@@ -78,8 +90,10 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  // Tap the Profile tab — the bottom nav exposes it by label "Profile".
-  const profileTab = page.locator('.tab-item').filter({ hasText: 'Profile' });
+  // Tap the Profile tab. Mobile exposes it in the .tab-bar, desktop in the
+  // .biq-nav left rail — both live in the DOM, so filter for the visible one.
+  const profileTab = page.locator('.tab-item, .biq-nav .bn-item')
+    .filter({ hasText: 'Profile', visible: true });
   await profileTab.first().click();
   await page.waitForTimeout(400);
 
@@ -92,7 +106,7 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
   expect(errors, `Console/page errors: ${errors.join('\n')}`).toEqual([]);
 });
 
-test('K1 — Profile avatar emoji picker opens (guest)', async ({ page, context }) => {
+test('K1 — Profile avatar tap routes guests to the save auth prompt', async ({ page, context }) => {
   await context.addInitScript(() => {
     try {
       localStorage.setItem('ballIQ_guestMode', 'true');
@@ -103,9 +117,17 @@ test('K1 — Profile avatar emoji picker opens (guest)', async ({ page, context 
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  await page.locator('.tab-item').filter({ hasText: 'Profile' }).first().click();
+  await page.locator('.tab-item, .biq-nav .bn-item')
+    .filter({ hasText: 'Profile', visible: true }).first().click();
   await page.waitForTimeout(400);
-  // The profile avatar button — guests get the emoji picker directly.
+  // The emoji picker is gone (photo avatars replaced the emoji set). A guest
+  // has nowhere to upload a photo TO, so tapping the avatar deliberately
+  // opens the 'save' auth prompt instead of dead-tapping (ProfileScreen
+  // openAvatarPicker). Assert the overlay's distinctive sub-copy — the
+  // guest banner on the profile itself shares the "Save your progress"
+  // headline, so the headline alone can't prove the overlay opened.
   await page.getByRole('button', { name: 'Edit profile photo' }).first().click();
-  await expect(page.getByText('Choose your avatar')).toBeVisible({ timeout: 3000 });
+  await expect(
+    page.getByText('so your XP, stats, and streak follow you to any device')
+  ).toBeVisible({ timeout: 3000 });
 });

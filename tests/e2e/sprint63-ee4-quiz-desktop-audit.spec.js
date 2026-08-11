@@ -51,7 +51,10 @@ async function shotMode({ page, testInfo, modeName, openLocator }) {
 test("Footle mid-play", async ({ page }, testInfo) => {
   await shotMode({
     page, testInfo, modeName: 'footle',
-    openLocator: (p) => p.locator('.footle-hero'),
+    // Mobile card is .footle-hero; desktop (>=1024px) hides it and shows the
+    // inline DesktopFootleHero whose CTA is .ffh-cta. A hidden element still
+    // counts, so filter for the visible one or the click hangs on desktop.
+    openLocator: (p) => p.locator('.footle-hero, .ffh-cta').filter({ visible: true }),
   })
 })
 
@@ -67,7 +70,7 @@ for (const [modeName, label] of [
   ['survival', 'Survival'],
   ['hotstreak', 'Hot Streak'],
   ['legends', 'Legends'],
-  ['balliq', 'Test'],   // "Ball IQ Test" button text contains "Test"
+  // 'balliq' removed — the Ball IQ Test mode was killed 2026-08-10.
   ['chaos', 'Chaos'],
   ['wc2026', 'World Cup'],
 ]) {

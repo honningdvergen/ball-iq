@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Shield, ClipboardList, Route, Search } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -547,7 +547,9 @@ function HomeScreenImpl({
           { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
           { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
-          { key:"balliq",    Icon: Brain,      name:`${APP_NAME} Test`,  desc:"What's your IQ?" },
+          // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
+          // This tile outlived the mode and silently started an unbranded
+          // generic quiz — the grid entry goes too.
           { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
         ].map(({ key, Icon, name, desc, onTap, iconColor, isNew }) => {
           const showNew = isNew && !seenModes[key];

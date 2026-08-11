@@ -88,7 +88,16 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
+      # ⚠️ The app throws "supabaseKey is required" at module scope when this
+      # env var is missing, which black-screens EVERY route and made all
+      # interactive e2e tests fail on every run (the key lives in the
+      # git-ignored .env.local, which CI never had). This is a PUBLISHABLE
+      # client key — it ships verbatim in the public JS bundle on balliq.app,
+      # so embedding it here as a fallback leaks nothing. Set the
+      # VITE_SUPABASE_KEY repo secret to override it (e.g. after a rotation).
       - name: Playwright e2e
+        env:
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY || 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR' }}
         run: npx playwright test
 
       - name: Upload Playwright report

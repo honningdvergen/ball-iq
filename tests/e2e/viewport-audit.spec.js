@@ -56,9 +56,10 @@ test('daily tab — full page', async ({ page }, testInfo) => {
   await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
-  // Tap the Daily tab in the bottom tab bar. Its label is "Daily".
-  // Match by accessible text — the .tab-item's .tab-label child carries it.
-  const dailyTab = page.locator('button.tab-item:has-text("Daily")')
+  // Tap the Daily tab — mobile .tab-bar item or desktop .biq-nav rail item,
+  // whichever is visible (both exist in the DOM; the hidden one hangs a click).
+  const dailyTab = page.locator('.tab-item, .biq-nav .bn-item')
+    .filter({ hasText: 'Daily', visible: true })
   if (await dailyTab.count()) {
     await dailyTab.first().click()
     await page.waitForTimeout(500)
