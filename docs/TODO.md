@@ -1934,3 +1934,8 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
       the Footle normalizer against full display instead
 - [ ] my spot-check SILENTLY SKIPPED when club labels broke (if(ist) guard) —
       make it fail loud when the expected XI is absent
+
+- [ ] CI: flip e2e continue-on-error -> strict after two green runs on main
+      (the 131-failure era ended 2026-08-11: env var + 12 stale specs + the
+      zombie Test tile — see 832ee3c). Also: Alex may set VITE_SUPABASE_KEY
+      as a repo secret and delete the in-repo fallback if preferred.
