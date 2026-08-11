@@ -1917,3 +1917,20 @@ Emoji rebus → name the club (e.g. 🔴👹 → Man United, ⚪👑 → Real Ma
 Natural share artifact (the rebus IS the share); pairs with the daily-hub
 packaging idea from the scan. Data: hand-curated emoji strings per club —
 editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
+
+- [ ] TRAIL WAVE N (careers): 45 unique careers over a 397-day schedule = each
+      returns ~fortnightly for daily players. Runway fine (into late 2027);
+      VARIETY is the real gap. Forge +40 careers post-kickoff, same locked
+      editorial rules, extend the frozen log deliberately.
+
+## Guess the XI — pipeline state (2026-08-11 evening)
+- [x] build-xi-pool.mjs: 10 verified XIs (5 UCL finals × both teams) — PLAYERS
+      verified correct (Dida/Cafu Milan, Dudek/Carragher Liverpool, etc.)
+- [ ] ⚠️ club labels polluted by citation `| title =` matches — derive from the
+      match infobox team1/team2 instead (table order = team order)
+- [ ] WC finals + Euro use different lineup markup ("found 0 XI tables",
+      dropped loudly) — needs a second parser variant
+- [ ] surname field breaks on Dutch names ("van der Sar" → "Sar") — match via
+      the Footle normalizer against full display instead
+- [ ] my spot-check SILENTLY SKIPPED when club labels broke (if(ist) guard) —
+      make it fail loud when the expected XI is absent
