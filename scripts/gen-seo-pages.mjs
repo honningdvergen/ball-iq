@@ -4347,6 +4347,8 @@ function buildLlmsTxt(livePages, clubPages, playerPages = [], listPages = []) {
   const cats = livePages.filter((p) => p.slug !== HUB.slug);
   const quizLinks = [
     `- [Football quizzes hub](${SITE.base}/quiz/): Every free football trivia category, each answer explained.`,
+    `- [Transfer Trail](${SITE.base}/transfer-trail/): daily game — name the player from their transfer history, one club revealed per miss.`,
+    `- [Mystery Player](${SITE.base}/mystery-player/): daily guessing game — find the footballer, every guess tells you warmer or colder.`,
     ...cats.map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers, each with a fact-checked explanation.`),
   ].join('\n');
   const clubLinks = clubPages
