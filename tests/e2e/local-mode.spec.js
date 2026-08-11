@@ -66,10 +66,11 @@ test.describe('Local mode — no crash on mount across all sub-modes', () => {
       await assertNoCrash(page, errs, `Local ${mode}`);
       // After load, the handoff screen renders the player name + a Tap-to-start
       // affordance (or in survival, a different intro). Ensure body has SOME
-      // gameplay scaffold visible rather than the spinner alone.
-      const text = await page.evaluate(() => document.body.innerText);
-      // Loading text only briefly; should be gone after 2s timeout above.
-      expect(text).not.toContain('Loading questions…');
+      // gameplay scaffold visible rather than the spinner alone. Poll instead
+      // of trusting the fixed wait in startLocalGame — under full-suite
+      // parallel load the async question fetch can exceed 2s and a snapshot
+      // assertion flakes (seen once on iphone-15-pro-max, load-dependent).
+      await expect(page.getByText('Loading questions…')).toHaveCount(0, { timeout: 10000 });
     });
   }
 });

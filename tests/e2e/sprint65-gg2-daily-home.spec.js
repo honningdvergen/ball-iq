@@ -31,7 +31,10 @@ test('daily — full page', async ({ page }, testInfo) => {
   await page.goto('/play')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
-  const dailyTab = page.locator('button.tab-item:has-text("Daily")')
+  // Mobile tab-bar item or desktop .biq-nav rail item — whichever is visible
+  // (both exist in the DOM; clicking the hidden one hangs).
+  const dailyTab = page.locator('.tab-item, .biq-nav .bn-item')
+    .filter({ hasText: 'Daily', visible: true })
   if (await dailyTab.count()) {
     await dailyTab.first().click()
     await page.waitForTimeout(500)

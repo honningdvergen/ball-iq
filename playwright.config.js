@@ -36,6 +36,12 @@ export default defineConfig({
   // Auto-start the app for the default local baseURL. reuseExistingServer
   // lets a dev keep `npm run dev`-style servers running on 4173 locally;
   // CI always boots a fresh one.
+  //
+  // ⚠️ VITE_SUPABASE_KEY must be present (via .env.local or the env) or the
+  // app throws at boot and EVERY interactive test fails on a black screen —
+  // this silently broke the whole suite for weeks (CI had no key; git
+  // worktrees don't inherit the untracked .env.local). ci.yml now injects
+  // it; locally, copy .env.local from the main checkout into new worktrees.
   webServer: {
     command: 'npx vite --port 4173 --strictPort',
     url: 'http://localhost:4173',

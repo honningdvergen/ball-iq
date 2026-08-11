@@ -18,14 +18,22 @@ function seedGuestMode(context) {
   });
 }
 
+// Third-party AdSense iframes throw cross-origin SecurityErrors under
+// http://localhost (webkit especially) — ad-script noise, not app errors.
+const AD_FRAME_NOISE = /googlesyndication|adtrafficquality|googleads|doubleclick/;
+
 test('Daily tab — no console errors after extraction', async ({ page, context }) => {
   await seedGuestMode(context);
   const errors = [];
-  page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+  page.on('pageerror', (e) => {
+    if (AD_FRAME_NOISE.test(e.message)) return;
+    errors.push(`pageerror: ${e.message}`);
+  });
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
       const t = msg.text();
       if (/Failed to load resource/.test(t)) return;
+      if (AD_FRAME_NOISE.test(t)) return;
       errors.push(`console.error: ${t}`);
     }
   });
@@ -34,10 +42,11 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  // Sprint #27 Y2: at desktop viewports the mobile tab bar is replaced
-  // by .desktop-nav. Both targets exist in the DOM at all viewports —
-  // the inactive one is display:none. Filter for the visible one.
-  const dailyNav = page.locator('.tab-item, .desktop-nav .dn-list button')
+  // At desktop viewports the mobile tab bar is replaced by the .biq-nav
+  // left rail (desktop-web refresh; previously .desktop-nav). Both targets
+  // exist in the DOM at all viewports — the inactive one is display:none.
+  // Filter for the visible one.
+  const dailyNav = page.locator('.tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Daily', visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(500);
@@ -47,39 +56,53 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   expect(errors, `JS errors: ${errors.join('\n')}`).toEqual([]);
 });
 
-test('Daily tab — Sprint #24 v4 layout renders', async ({ page, context }) => {
+test('Daily tab — "Today first" redesign renders', async ({ page, context }) => {
+  // v4's tactics-card hero was replaced by the "Today first" Daily redesign:
+  // greeting + Daily title with NEW PUZZLES IN countdown pill, the two
+  // today-puzzle row-cards (Footle green / Daily 7 amber), the streak strip
+  // with a last-14-days form group, and the Recent days table. Mobile and
+  // desktop variants both live in the DOM (display:contents/none swap at
+  // 1024px), so every text assertion filters for the visible copy.
   await seedGuestMode(context);
 
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // Sprint #27 Y2: at desktop viewports the mobile tab bar is replaced
-  // by .desktop-nav. Both targets exist in the DOM at all viewports —
-  // the inactive one is display:none. Filter for the visible one.
-  const dailyNav = page.locator('.tab-item, .desktop-nav .dn-list button')
+  // Desktop uses the .biq-nav left rail; mobile the .tab-bar. Filter for
+  // whichever is visible at this viewport.
+  const dailyNav = page.locator('.tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Daily', visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(400);
 
-  // Greeting strip with KO countdown chip — unchanged from v3
-  await expect(page.locator('.daily-greet')).toBeVisible();
-  await expect(page.locator('.daily-greet-ko-val')).toBeVisible();
+  await expect(page.locator('.daily-screen')).toBeVisible();
 
-  // Tactics card hero (Sprint #24 Stage 2): MATCHDAY tag, orange
-  // streak number, divider, form strip with 14 cells, axis labels.
-  await expect(page.locator('.tactics-card')).toBeVisible();
-  await expect(page.locator('.tactics-tag')).toBeVisible();
-  await expect(page.locator('.tactics-num')).toBeVisible();
-  await expect(page.locator('.tactics-strip .tactics-cell')).toHaveCount(14);
-  await expect(page.locator('.tactics-strip-l')).toContainText(/today/i);
+  // Shared between both breakpoint variants.
+  await expect(page.getByText('NEW PUZZLES IN').filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByText('7 questions · ~3 min').filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByText('Recent days').filter({ visible: true }).first()).toBeVisible();
 
-  // CRITICAL: streak number must NOT be rendered in JetBrains Mono.
-  // Round 5 diagnosis identified the mono/tabular treatment as the
-  // "techy" feel the v3 -> v4 redesign was specifically replacing.
-  // Spec the font-family explicitly so future regressions break here.
-  const numFont = await page.locator('.tactics-num').evaluate(el => getComputedStyle(el).fontFamily);
-  expect(numFont, 'tactics-num must NOT render in JetBrains Mono').not.toMatch(/JetBrains Mono|SF Mono|Menlo|monospace/i);
-  expect(numFont, 'tactics-num must use Inter (proportional)').toMatch(/Inter/i);
+  // The two variants carry different copy — assert the one that's live.
+  const isDesktop = await page.locator('.daily-desktop').isVisible();
+  if (isDesktop) {
+    await expect(page.getByText('surname of a footballer').filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByText(/\d+ \/ 2 played/).filter({ visible: true }).first()).toBeVisible();
+    // Desktop streak card reuses the Home rail's hr-streak shape: 14 form cells.
+    const streak = page.locator('.daily-desktop .hr-streak');
+    await expect(streak).toBeVisible();
+    await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
+  } else {
+    await expect(page.getByText('Guess the player').filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByText(/\d+ of 2 played/).filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByText(/\d+ day streak/).filter({ visible: true }).first()).toBeVisible();
+    const form = page.getByRole('group', { name: 'Form — last 14 days' }).filter({ visible: true }).first();
+    await expect(form).toBeVisible();
+    await expect(form.locator('span')).toHaveCount(14);
+  }
+
+  // v4 elements that MUST be gone — guard against accidental revival.
+  await expect(page.locator('.tactics-card')).toHaveCount(0);
+  await expect(page.locator('.daily-greet')).toHaveCount(0);
 
   // v3 elements that MUST be gone — guard against accidental revival.
   await expect(page.locator('.form-hero')).toHaveCount(0);

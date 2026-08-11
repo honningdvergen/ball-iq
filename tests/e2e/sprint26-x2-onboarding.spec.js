@@ -44,8 +44,10 @@ test('guest with biq_onboarded=1 skips onboarding', async ({ page, context }) =>
 
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
-  // Tab bar visible = we reached the main app, onboarding was skipped.
-  await expect(page.locator('.tab-bar')).toBeVisible();
+  // Main-app nav visible = we reached the app, onboarding was skipped.
+  // Mobile renders the .tab-bar; desktop (>=1024px) hides it and shows the
+  // .biq-nav left rail instead — accept whichever is live.
+  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 });
 
 test('onboarded user does NOT replay onboarding after refresh', async ({ page, context }) => {
@@ -58,12 +60,12 @@ test('onboarded user does NOT replay onboarding after refresh', async ({ page, c
 
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('.tab-bar')).toBeVisible();
+  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 
   await page.reload();
   await page.waitForLoadState('networkidle');
-  // Tab bar visible after reload too — biq_onboarded persisted, no replay.
-  await expect(page.locator('.tab-bar')).toBeVisible();
+  // Nav visible after reload too — biq_onboarded persisted, no replay.
+  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 });
 
 // NOTE on signed-in cross-device path: the authProfile-driven sync
