@@ -1911,3 +1911,9 @@ two-letter initials card, never a bad photo.
 - next: send-it-back name capture · SEO beat-my-score share · streak unification (M)
 - Alex decisions pending: guess-the-XI daily (vs builder bar) · Trail in daily loop ·
   mode-sprawl measurement before thinning
+
+## 🎯 ALEX 2026-08-11: "Guess the club by emojis" mode — approved idea, build when time allows
+Emoji rebus → name the club (e.g. 🔴👹 → Man United, ⚪👑 → Real Madrid).
+Natural share artifact (the rebus IS the share); pairs with the daily-hub
+packaging idea from the scan. Data: hand-curated emoji strings per club —
+editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
