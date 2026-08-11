@@ -38,8 +38,16 @@ async function api(url) {
 // Parse both teams' starter blocks. Team names come from the kit-block titles
 // ("| title = Liverpool<ref.../>"), in document order matching the two tables.
 function parseLineups(wikitext) {
-  const titles = [...wikitext.matchAll(/\|\s*title\s*=\s*([^<\n|]+)/g)]
-    .map((m) => m[1].trim()).filter((t) => t && !/kit|colours/i.test(t));
+  // team1/team2 from the match infobox — the only place team identity is
+  // structural. Values may be piped links or {{flag}} wrappers; take the
+  // display text. Table order equals team order in every checked article.
+  const team = (n) => {
+    const m = wikitext.match(new RegExp('\\|\\s*team' + n + '\\s*=\\s*([^\\n]+)'));
+    if (!m) return null;
+    return m[1].replace(/\{\{[^}]*\}\}/g, '').replace(/\[\[(?:[^\]|]*\|)?([^\]]+)\]\]/g, '$1')
+      .replace(/<[^>]*>/g, '').trim() || null;
+  };
+  const titles = [team(1), team(2)].filter(Boolean);
   const teams = [];
   // Starter tables: rows of |POS ||'''NO'''|| ... [[link]] up to '''Substitutes:'''
   const blocks = wikitext.split(/'''Substitutes:'''/);
@@ -95,8 +103,9 @@ writeFileSync('src/data/xiPool.json', JSON.stringify(pool, null, 1));
 console.log(`xiPool.json: ${pool.length} verified XIs from ${MATCHES.length} matches`);
 if (failures.length) { console.log('DROPPED (loud, per the rules):'); failures.forEach((f) => console.log('  ✗ ' + f)); }
 // spot-check: Istanbul Liverpool XI must contain Gerrard and Dudek
-const ist = pool.find((x) => x.id.includes('2005') && x.club === 'Liverpool');
-if (ist) {
+const ist = pool.find((x) => x.id.includes('2005') && /Liverpool/.test(x.club));
+if (!ist) { console.error('✗ SPOT-CHECK: Istanbul Liverpool XI ABSENT from pool — club labels broken again'); process.exit(1); }
+{
   const names = ist.players.map((p) => p.name).join(', ');
   console.log(`\nIstanbul spot-check (${ist.players.length}): ${names}`);
   if (!/Gerrard/.test(names) || !/Dudek/.test(names)) { console.error('✗ SPOT-CHECK FAILED'); process.exit(1); }
