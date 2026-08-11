@@ -83,11 +83,19 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     const text = skipped ? "" : entry.trim();
     if (!skipped && !text) return;
     const hit = !skipped && guessMatchesPlayer(text, player);
+    // ⚠️ iOS WKWebView: unmounting a FOCUSED input strands the keyboard on
+    // screen and leaves the viewport in its keyboard-resized, scroll-locked
+    // state (playtester report, 2026-08-11: "keyboard would not go away and
+    // the app would not let him scroll"). This attempt ends the game exactly
+    // when it's a hit or the final miss — blur BEFORE the state update
+    // unmounts the input. Mid-game guesses keep focus for rapid re-guessing.
+    const willEnd = hit || misses + 1 >= TRAIL_MAX_ATTEMPTS;
+    if (willEnd) { try { document.activeElement?.blur?.(); } catch {} }
     setAttempts((a) => [...a, { text, skipped: !!skipped }]);
     setEntry("");
     if (hit) haptic("hardCorrect");
     else { haptic("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
-  }, [done, entry, player]);
+  }, [done, entry, player, misses]);
 
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
   const [reportSent, setReportSent] = useState(false);

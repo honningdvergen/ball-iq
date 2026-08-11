@@ -2634,6 +2634,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         </div>
       ) : (
         <TypedInput key={idx} question={q} diff={diff} hintsEnabled={hintsEnabled} onAnswer={(correct, userText) => {
+          // ⚠️ iOS WKWebView strands the keyboard if a focused input unmounts
+          // (key={idx} remounts on advance; Results replaces it on the last
+          // question). Blur on submit — the reveal phase wants the keyboard
+          // down anyway so the explanation is visible. Same fix as Trail.
+          try { document.activeElement?.blur?.(); } catch {}
           setTypedResult(correct ? "correct" : "wrong");
           if (correct && q.diff === "hard") {
             haptic("hardCorrect");
