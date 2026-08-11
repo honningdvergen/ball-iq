@@ -848,5 +848,855 @@
     "pos": "LF"
    }
   ]
+ },
+ {
+  "id": "1998-fifa-world-cup-final-0",
+  "match": "World Cup final, Paris 1998",
+  "club": "Brazil",
+  "date": "May 2020}}",
+  "players": [
+   {
+    "qid": "Q295891",
+    "name": "Cláudio Taffarel",
+    "surname": "Taffarel",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q178683",
+    "name": "Cafu",
+    "surname": "Cafu",
+    "no": 2,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q440945",
+    "name": "Júnior Baiano",
+    "surname": "Baiano",
+    "no": 4,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q297721",
+    "name": "Aldair",
+    "surname": "Aldair",
+    "no": 3,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q429039",
+    "name": "Roberto Carlos",
+    "surname": "Carlos",
+    "no": 6,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q215890",
+    "name": "Dunga",
+    "surname": "Dunga",
+    "no": 8,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q316436",
+    "name": "César Sampaio",
+    "surname": "Sampaio",
+    "no": 5,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q46741",
+    "name": "Leonardo",
+    "surname": "Leonardo",
+    "no": 18,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q483577",
+    "name": "Rivaldo",
+    "surname": "Rivaldo",
+    "no": 10,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q204825",
+    "name": "Bebeto",
+    "surname": "Bebeto",
+    "no": 20,
+    "pos": "CF"
+   },
+   {
+    "qid": "Q529207",
+    "name": "Ronaldo",
+    "surname": "Ronaldo",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "1998-fifa-world-cup-final-1",
+  "match": "World Cup final, Paris 1998",
+  "club": "France",
+  "date": "May 2020}}",
+  "players": [
+   {
+    "qid": "Q191139",
+    "name": "Fabien Barthez",
+    "surname": "Barthez",
+    "no": 16,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q180326",
+    "name": "Lilian Thuram",
+    "surname": "Thuram",
+    "no": 15,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q290769",
+    "name": "Frank Leboeuf",
+    "surname": "Leboeuf",
+    "no": 18,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q193625",
+    "name": "Marcel Desailly",
+    "surname": "Desailly",
+    "no": 8,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q44073",
+    "name": "Bixente Lizarazu",
+    "surname": "Lizarazu",
+    "no": 3,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q508711",
+    "name": "Didier Deschamps",
+    "surname": "Deschamps",
+    "no": 7,
+    "pos": "DM"
+   },
+   {
+    "qid": "Q286511",
+    "name": "Christian Karembeu",
+    "surname": "Karembeu",
+    "no": 19,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q269883",
+    "name": "Emmanuel Petit",
+    "surname": "Petit",
+    "no": 17,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q1835",
+    "name": "Zinedine Zidane",
+    "surname": "Zidane",
+    "no": 10,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q217482",
+    "name": "Youri Djorkaeff",
+    "surname": "Djorkaeff",
+    "no": 6,
+    "pos": "CF"
+   },
+   {
+    "qid": "Q125669",
+    "name": "Stéphane Guivarc'h",
+    "surname": "Guivarc'h",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "2006-fifa-world-cup-final-0",
+  "match": "World Cup final, Berlin 2006",
+  "club": "Italy",
+  "date": "July 2026}}",
+  "players": [
+   {
+    "qid": "Q68060",
+    "name": "Gianluigi Buffon",
+    "surname": "Buffon",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q182907",
+    "name": "Gianluca Zambrotta",
+    "surname": "Zambrotta",
+    "no": 19,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q102027",
+    "name": "Fabio Cannavaro",
+    "surname": "Cannavaro",
+    "no": 5,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q185081",
+    "name": "Marco Materazzi",
+    "surname": "Materazzi",
+    "no": 23,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q230529",
+    "name": "Fabio Grosso",
+    "surname": "Grosso",
+    "no": 3,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q189716",
+    "name": "Mauro Camoranesi",
+    "surname": "Camoranesi",
+    "no": 16,
+    "pos": "RM"
+   },
+   {
+    "qid": "Q116980",
+    "name": "Gennaro Gattuso",
+    "surname": "Gattuso",
+    "no": 8,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q43926",
+    "name": "Andrea Pirlo",
+    "surname": "Pirlo",
+    "no": 21,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q232789",
+    "name": "Simone Perrotta",
+    "surname": "Perrotta",
+    "no": 20,
+    "pos": "LM"
+   },
+   {
+    "qid": "Q20110",
+    "name": "Francesco Totti",
+    "surname": "Totti",
+    "no": 10,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q186478",
+    "name": "Luca Toni",
+    "surname": "Toni",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "2006-fifa-world-cup-final-1",
+  "match": "World Cup final, Berlin 2006",
+  "club": "France",
+  "date": "July 2026}}",
+  "players": [
+   {
+    "qid": "Q191139",
+    "name": "Fabien Barthez",
+    "surname": "Barthez",
+    "no": 16,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q44513",
+    "name": "Willy Sagnol",
+    "surname": "Sagnol",
+    "no": 19,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q180326",
+    "name": "Lilian Thuram",
+    "surname": "Thuram",
+    "no": 15,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q1937",
+    "name": "William Gallas",
+    "surname": "Gallas",
+    "no": 5,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q1935",
+    "name": "Eric Abidal",
+    "surname": "Abidal",
+    "no": 3,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q46347",
+    "name": "Patrick Vieira",
+    "surname": "Vieira",
+    "no": 4,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q184362",
+    "name": "Claude Makélélé",
+    "surname": "Makélélé",
+    "no": 6,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q1918",
+    "name": "Franck Ribéry",
+    "surname": "Ribéry",
+    "no": 22,
+    "pos": "RW"
+   },
+   {
+    "qid": "Q1835",
+    "name": "Zinedine Zidane",
+    "surname": "Zidane",
+    "no": 10,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q1913",
+    "name": "Florent Malouda",
+    "surname": "Malouda",
+    "no": 7,
+    "pos": "LW"
+   },
+   {
+    "qid": "Q45901",
+    "name": "Thierry Henry",
+    "surname": "Henry",
+    "no": 12,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "2010-fifa-world-cup-final-0",
+  "match": "World Cup final, Johannesburg 2010",
+  "club": "Netherlands",
+  "date": "June 2026}}",
+  "players": [
+   {
+    "qid": "Q182685",
+    "name": "Maarten Stekelenburg",
+    "surname": "Stekelenburg",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q201367",
+    "name": "Gregory van der Wiel",
+    "surname": "Wiel",
+    "no": 2,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q946457",
+    "name": "John Heitinga",
+    "surname": "Heitinga",
+    "no": 3,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q126461",
+    "name": "Joris Mathijsen",
+    "surname": "Mathijsen",
+    "no": 4,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q173360",
+    "name": "Giovanni van Bronckhorst",
+    "surname": "Bronckhorst",
+    "no": 5,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q151853",
+    "name": "Mark van Bommel",
+    "surname": "Bommel",
+    "no": 6,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q185650",
+    "name": "Nigel de Jong",
+    "surname": "Jong",
+    "no": 8,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q43913",
+    "name": "Arjen Robben",
+    "surname": "Robben",
+    "no": 11,
+    "pos": "RW"
+   },
+   {
+    "qid": "Q124086",
+    "name": "Wesley Sneijder",
+    "surname": "Sneijder",
+    "no": 10,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q294214",
+    "name": "Dirk Kuyt",
+    "surname": "Kuyt",
+    "no": 7,
+    "pos": "LW"
+   },
+   {
+    "qid": "Q2339",
+    "name": "Robin van Persie",
+    "surname": "Persie",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "2010-fifa-world-cup-final-1",
+  "match": "World Cup final, Johannesburg 2010",
+  "club": "Spain",
+  "date": "June 2026}}",
+  "players": [
+   {
+    "qid": "Q11584",
+    "name": "Iker Casillas",
+    "surname": "Casillas",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q483309",
+    "name": "Sergio Ramos",
+    "surname": "Ramos",
+    "no": 15,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q17507",
+    "name": "Gerard Piqué",
+    "surname": "Piqué",
+    "no": 3,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q17158",
+    "name": "Carles Puyol",
+    "surname": "Puyol",
+    "no": 5,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q188793",
+    "name": "Joan Capdevila",
+    "surname": "Capdevila",
+    "no": 11,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q49704",
+    "name": "Sergio Busquets",
+    "surname": "Busquets",
+    "no": 16,
+    "pos": "DM"
+   },
+   {
+    "qid": "Q208104",
+    "name": "Xabi Alonso",
+    "surname": "Alonso",
+    "no": 14,
+    "pos": "DM"
+   },
+   {
+    "qid": "Q17500",
+    "name": "Xavi",
+    "surname": "Xavi",
+    "no": 8,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q43729",
+    "name": "Andrés Iniesta",
+    "surname": "Iniesta",
+    "no": 6,
+    "pos": "RW"
+   },
+   {
+    "qid": "Q179773",
+    "name": "Pedro",
+    "surname": "Pedro",
+    "no": 18,
+    "pos": "LW"
+   },
+   {
+    "qid": "Q83006",
+    "name": "David Villa",
+    "surname": "Villa",
+    "no": 7,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "2022-fifa-world-cup-final-0",
+  "match": "World Cup final, Lusail 2022",
+  "club": "Argentina",
+  "date": "December 2022}}",
+  "players": [
+   {
+    "qid": "Q3275904",
+    "name": "Emiliano Martínez",
+    "surname": "Martínez",
+    "no": 23,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q22082590",
+    "name": "Nahuel Molina",
+    "surname": "Molina",
+    "no": 26,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q28058687",
+    "name": "Cristian Romero",
+    "surname": "Romero",
+    "no": 13,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q182063",
+    "name": "Nicolás Otamendi",
+    "surname": "Otamendi",
+    "no": 19,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q3876530",
+    "name": "Nicolás Tagliafico",
+    "surname": "Tagliafico",
+    "no": 3,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q96105248",
+    "name": "Enzo Fernández",
+    "surname": "Fernández",
+    "no": 24,
+    "pos": "DM"
+   },
+   {
+    "qid": "Q33297140",
+    "name": "Alexis Mac Allister",
+    "surname": "Allister",
+    "no": 20,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q6110670",
+    "name": "Rodrigo De Paul",
+    "surname": "Paul",
+    "no": 7,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q615",
+    "name": "Lionel Messi",
+    "surname": "Messi",
+    "no": 10,
+    "pos": "RF"
+   },
+   {
+    "qid": "Q59381180",
+    "name": "Julián Alvarez",
+    "surname": "Alvarez",
+    "no": 9,
+    "pos": "CF"
+   },
+   {
+    "qid": "Q251683",
+    "name": "Ángel Di María",
+    "surname": "María",
+    "no": 11,
+    "pos": "LF"
+   }
+  ]
+ },
+ {
+  "id": "2022-fifa-world-cup-final-1",
+  "match": "World Cup final, Lusail 2022",
+  "club": "France",
+  "date": "December 2022}}",
+  "players": [
+   {
+    "qid": "Q1907",
+    "name": "Hugo Lloris",
+    "surname": "Lloris",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q47170176",
+    "name": "Jules Koundé",
+    "surname": "Koundé",
+    "no": 5,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q489039",
+    "name": "Raphaël Varane",
+    "surname": "Varane",
+    "no": 4,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q20723878",
+    "name": "Dayot Upamecano",
+    "surname": "Upamecano",
+    "no": 18,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q23703372",
+    "name": "Théo Hernandez",
+    "surname": "Hernandez",
+    "no": 22,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q46951844",
+    "name": "Aurélien Tchouaméni",
+    "surname": "Tchouaméni",
+    "no": 8,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q18962",
+    "name": "Adrien Rabiot",
+    "surname": "Rabiot",
+    "no": 14,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q20851003",
+    "name": "Ousmane Dembélé",
+    "surname": "Dembélé",
+    "no": 11,
+    "pos": "RW"
+   },
+   {
+    "qid": "Q455462",
+    "name": "Antoine Griezmann",
+    "surname": "Griezmann",
+    "no": 7,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q21621995",
+    "name": "Kylian Mbappé",
+    "surname": "Mbappé",
+    "no": 10,
+    "pos": "LW"
+   },
+   {
+    "qid": "Q1911",
+    "name": "Olivier Giroud",
+    "surname": "Giroud",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "uefa-euro-2016-final-0",
+  "match": "Euro 2016 final, Saint-Denis",
+  "club": "Portugal",
+  "date": "December 2019}}",
+  "players": [
+   {
+    "qid": "Q294980",
+    "name": "Rui Patrício",
+    "surname": "Patrício",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q481330",
+    "name": "Cédric",
+    "surname": "Cédric",
+    "no": 21,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q485697",
+    "name": "Pepe",
+    "surname": "Pepe",
+    "no": 3,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q2736254",
+    "name": "José Fonte",
+    "surname": "Fonte",
+    "no": 4,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q4241680",
+    "name": "Raphaël Guerreiro",
+    "surname": "Guerreiro",
+    "no": 5,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q304416",
+    "name": "William Carvalho",
+    "surname": "Carvalho",
+    "no": 14,
+    "pos": "DM"
+   },
+   {
+    "qid": "Q18394009",
+    "name": "Renato Sanches",
+    "surname": "Sanches",
+    "no": 16,
+    "pos": "RW"
+   },
+   {
+    "qid": "Q2724855",
+    "name": "Adrien Silva",
+    "surname": "Silva",
+    "no": 23,
+    "pos": "AM"
+   },
+   {
+    "qid": "Q6298271",
+    "name": "João Mário",
+    "surname": "Mário",
+    "no": 10,
+    "pos": "LW"
+   },
+   {
+    "qid": "Q482947",
+    "name": "Nani",
+    "surname": "Nani",
+    "no": 17,
+    "pos": "CF"
+   },
+   {
+    "qid": "Q11571",
+    "name": "Cristiano Ronaldo",
+    "surname": "Ronaldo",
+    "no": 7,
+    "pos": "CF"
+   }
+  ]
+ },
+ {
+  "id": "uefa-euro-2016-final-1",
+  "match": "Euro 2016 final, Saint-Denis",
+  "club": "France",
+  "date": "December 2019}}",
+  "players": [
+   {
+    "qid": "Q1907",
+    "name": "Hugo Lloris",
+    "surname": "Lloris",
+    "no": 1,
+    "pos": "GK"
+   },
+   {
+    "qid": "Q1938",
+    "name": "Bacary Sagna",
+    "surname": "Sagna",
+    "no": 19,
+    "pos": "RB"
+   },
+   {
+    "qid": "Q1915",
+    "name": "Laurent Koscielny",
+    "surname": "Koscielny",
+    "no": 21,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q13308",
+    "name": "Samuel Umtiti",
+    "surname": "Umtiti",
+    "no": 22,
+    "pos": "CB"
+   },
+   {
+    "qid": "Q1916",
+    "name": "Patrice Evra",
+    "surname": "Evra",
+    "no": 3,
+    "pos": "LB"
+   },
+   {
+    "qid": "Q60545",
+    "name": "Moussa Sissoko",
+    "surname": "Sissoko",
+    "no": 18,
+    "pos": "RM"
+   },
+   {
+    "qid": "Q129027",
+    "name": "Paul Pogba",
+    "surname": "Pogba",
+    "no": 15,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q1921",
+    "name": "Blaise Matuidi",
+    "surname": "Matuidi",
+    "no": 14,
+    "pos": "CM"
+   },
+   {
+    "qid": "Q376247",
+    "name": "Dimitri Payet",
+    "surname": "Payet",
+    "no": 8,
+    "pos": "LM"
+   },
+   {
+    "qid": "Q455462",
+    "name": "Antoine Griezmann",
+    "surname": "Griezmann",
+    "no": 7,
+    "pos": "SS"
+   },
+   {
+    "qid": "Q1911",
+    "name": "Olivier Giroud",
+    "surname": "Giroud",
+    "no": 9,
+    "pos": "CF"
+   }
+  ]
  }
 ]

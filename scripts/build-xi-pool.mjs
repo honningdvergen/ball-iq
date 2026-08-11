@@ -50,7 +50,7 @@ function parseLineups(wikitext) {
   const titles = [team(1), team(2)].filter(Boolean);
   const teams = [];
   // Starter tables: rows of |POS ||'''NO'''|| ... [[link]] up to '''Substitutes:'''
-  const blocks = wikitext.split(/'''Substitutes:'''/);
+  const blocks = wikitext.split(/'''Substit(?:utes|utions):'''/);
   for (let b = 0; b < blocks.length - 1 && teams.length < 2; b++) {
     const seg = blocks[b];
     const rows = [...seg.matchAll(/^\|\s*([A-Z]{2})\s*\|\|\s*'''(\d+)'''\s*\|\|.*?\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/gm)];
@@ -109,5 +109,13 @@ if (!ist) { console.error('✗ SPOT-CHECK: Istanbul Liverpool XI ABSENT from poo
   const names = ist.players.map((p) => p.name).join(', ');
   console.log(`\nIstanbul spot-check (${ist.players.length}): ${names}`);
   if (!/Gerrard/.test(names) || !/Dudek/.test(names)) { console.error('✗ SPOT-CHECK FAILED'); process.exit(1); }
-  console.log('✓ spot-check passed');
+  console.log('✓ Istanbul spot-check passed');
+}
+// Second loud spot-check: Lusail 2022 Argentina — Messi AND Emiliano Martínez.
+{
+  const lus = pool.find((x) => x.id.includes('2022-fifa') && /Argentina/.test(x.club));
+  if (!lus) { console.error('✗ SPOT-CHECK: Lusail Argentina XI ABSENT'); process.exit(1); }
+  const names = lus.players.map((p) => p.name).join(', ');
+  if (!/Messi/.test(names) || !/Mart/.test(names)) { console.error('✗ Lusail spot-check FAILED: ' + names); process.exit(1); }
+  console.log('✓ Lusail spot-check passed (' + names.split(', ').slice(0, 4).join(', ') + '…)');
 }
