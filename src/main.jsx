@@ -13,9 +13,14 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import { initAds } from './lib/ads.js'
-// Root render-crash net for the marketing tree (the game tree gets the same
-// boundary via GameRoot). Without it a render throw under the bare Suspense
-// white-screened the page with zero Sentry capture.
+// Root render-crash net for BOTH trees. GameRoot carries its own boundary for
+// errors inside the game tree, but a rejected React.lazy(GameRoot) import
+// (e.g. supabase.js throwing at module scope on a missing VITE_SUPABASE_KEY)
+// kills GameRoot before that boundary ever mounts — the rejection propagates
+// past the bare Suspense and black-screens the page with zero Sentry capture.
+// That failure mode hid a chronic e2e misconfig for weeks (2026-08-11) and
+// would equally hide a misconfigured prod deploy, so the boundary must live
+// HERE, above the lazy roots, in the statically-imported entry chunk.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 
 // Sentry initialization — runs before app mount so render errors land in
@@ -227,9 +232,11 @@ if (showMarketing) {
   try { document.body.classList.add('biq-app') } catch { /* noop */ }
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <React.Suspense fallback={<SplashFallback />}>
-        <GameRoot />
-      </React.Suspense>
+      <ErrorBoundary>
+        <React.Suspense fallback={<SplashFallback />}>
+          <GameRoot />
+        </React.Suspense>
+      </ErrorBoundary>
     </React.StrictMode>,
   )
 }
