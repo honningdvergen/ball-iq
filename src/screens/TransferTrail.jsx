@@ -156,7 +156,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   };
 
   return (
-    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 }}>
+    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
       {won && Confetti ? <Confetti /> : null}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 4px" }}>
