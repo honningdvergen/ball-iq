@@ -2348,6 +2348,55 @@ function renderSiblingLists(slug) {
 </section>`;
 }
 
+
+// ── /lists PLAY MODE (scan bet #2, 2026-08-11) ─────────────────────────────
+// "Name every one before you peek": the static table ships fully VISIBLE
+// (crawlers and peek-first readers lose nothing); pressing Play hides the
+// answer column via JS and turns the page into a Sporcle-class type-in.
+// Matching is deliberately GENEROUS: a guess hits on the full value or any
+// distinctive word (>=4 chars), and reveals every row it identifies —
+// typing "madrid" earning both Madrids rewards knowledge, it does not cheat.
+// Zero sign-up, zero bundle: this block is the whole engine.
+const LIST_PLAY_JS = `(function(){
+var data=document.getElementById('lp-data');if(!data)return;
+var D=JSON.parse(data.textContent);
+var bar=document.getElementById('lp-bar'),btn=document.getElementById('lp-start');
+var wrap=document.getElementById('lp-live'),inp=document.getElementById('lp-input');
+var score=document.getElementById('lp-score'),give=document.getElementById('lp-give');
+var shareB=document.getElementById('lp-share');
+if(!btn)return;
+var playing=false,found={},total=Object.keys(D.groups).length,t0=0;
+function fold(x){return x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\\s+/g,' ').trim()}
+function rows(){return Array.prototype.slice.call(document.querySelectorAll('.ltable tbody tr')).filter(function(r){return !r.classList.contains('ltable-ad')})}
+function setHidden(on){rows().forEach(function(r,i){var td=r.children[D.col];if(!td)return;
+  if(on&&!(found[D.rowGroup[i]])){td.classList.add('lp-hid')}else{td.classList.remove('lp-hid')}})}
+function refresh(){var n=Object.keys(found).length;score.textContent=n+' / '+total+' found';
+  if(n===total)finish(true)}
+function reveal(g){if(found[g])return false;found[g]=1;
+  rows().forEach(function(r,i){if(D.rowGroup[i]===g){r.children[D.col].classList.remove('lp-hid');r.classList.add('lp-got');
+    if(!reveal._s){reveal._s=1;r.scrollIntoView({block:'center',behavior:'smooth'});setTimeout(function(){reveal._s=0},350)}}});
+  return true}
+function guess(v){var f=fold(v);if(!f)return;var hit=false;
+  Object.keys(D.groups).forEach(function(g){if(found[g])return;
+    var ks=D.groups[g];for(var k=0;k<ks.length;k++){if(ks[k]===f){hit=reveal(g)||hit;break}}});
+  if(hit){inp.value='';refresh();try{if(navigator.vibrate)navigator.vibrate(8)}catch(e){}}
+  else{inp.classList.add('lp-shake');setTimeout(function(){inp.classList.remove('lp-shake')},260)}}
+function finish(win){playing=false;setHidden(false);inp.disabled=true;give.hidden=true;shareB.hidden=false;
+  var n=Object.keys(found).length,mins=Math.round((Date.now()-t0)/6000)/10;
+  score.textContent=(win?'All '+total+' named in '+mins+' min 🏆':n+' / '+total+' before peeking');
+  shareB.dataset.text=(win?'I named all '+total+' — '+D.title+' in '+mins+' min 🏆':'I named '+n+' of '+total+' — '+D.title+' 👀')+'\\nTry it: '+location.origin+location.pathname}
+btn.addEventListener('click',function(){playing=true;t0=Date.now();bar.hidden=true;wrap.hidden=false;
+  setHidden(true);inp.focus();
+  try{if(window.clarity)window.clarity('event','list-play-start')}catch(e){}});
+give.addEventListener('click',function(){finish(false);
+  try{if(window.clarity)window.clarity('event','list-play-giveup')}catch(e){}});
+inp.addEventListener('keydown',function(e){if(e.key==='Enter')guess(inp.value)});
+inp.addEventListener('input',function(){if(inp.value.length>=3)guess(inp.value)});
+shareB.addEventListener('click',function(){var t=shareB.dataset.text||'';
+  try{if(navigator.share){navigator.share({text:t});return}}catch(e){}
+  try{navigator.clipboard.writeText(t);shareB.textContent='Copied 📋'}catch(e){}});
+})();`;
+
 function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
   const canonical = `${SITE.base}/lists/${cfg.slug}/`;
   const cols = cfg.columns;
@@ -2393,6 +2442,27 @@ function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
       return tr;
     })
     .join('\n');
+  // Play-mode answer key. The ANSWER column is the first column that is not
+  // year-shaped (on "winners by year" lists column 0 is the season). Guesses
+  // match the folded full value or any distinctive word of it; rows sharing a
+  // value (Real Madrid's fifteen European Cups) form one group so one guess
+  // reveals them all and the score counts UNIQUE answers.
+  const yearish = (v) => /^\d{4}([–-]\d{2,4})?$/.test(String(v).trim());
+  const playCol = cfg.playCol ?? cols.findIndex((_, ci) => rows.filter((r) => yearish(r[ci])).length < rows.length * 0.5);
+  const foldJs = (x) => String(x).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const STOP = new Set(['real', 'club', 'united', 'city', 'town', 'athletic', 'atletico', 'sporting', 'inter', 'saint', 'santos', 'deportivo', 'racing', 'union', 'west', 'east', 'north', 'south']);
+  const groups = {}; const rowGroup = [];
+  for (const r of rows) {
+    const v = foldJs(r[playCol] ?? '');
+    rowGroup.push(v);
+    if (!groups[v]) {
+      const words = v.split(' ').filter((w) => w.length >= 4 && !STOP.has(w));
+      groups[v] = [...new Set([v, ...words])];
+    }
+  }
+  const playData = { col: playCol, title: cfg.h1, groups, rowGroup };
+  const playable = playCol >= 0 && Object.keys(groups).length >= 8;
+
   const table = `<div class="ltable-wrap"><table class="ltable">
 <thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>
 <tbody>
@@ -2443,7 +2513,20 @@ ${taster.length ? `<section class="sec narrow">
 ${renderQA(taster)}
 </section>` : ''}
 <section class="sec narrow">
+${playable ? `<div id="lp-bar" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px;padding:13px 16px;border:1px solid var(--accent-b, rgba(88,204,2,.28));border-radius:13px;background:rgba(88,204,2,.06)">
+<span style="font-weight:800;color:#fff">Reckon you can name them all?</span>
+<button id="lp-start" type="button" style="margin-left:auto;background:var(--accent,#58CC02);color:#06230C;border:0;border-radius:999px;padding:9px 20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit">Play — hide the answers</button>
+</div>
+<div id="lp-live" hidden style="position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;margin:0 0 12px;padding:10px 12px;border:1px solid var(--bd2);border-radius:13px;background:var(--card2,#14161E)">
+<input id="lp-input" type="search" placeholder="Type a name…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your guess" style="flex:1;min-width:0;background:var(--card,#0F1117);border:1px solid var(--bd2);border-radius:10px;padding:10px 13px;color:#fff;font-size:16px;font-family:inherit;outline:none">
+<span id="lp-score" style="font-weight:800;color:var(--accent,#58CC02);white-space:nowrap;font-size:13px">0 found</span>
+<button id="lp-give" type="button" style="background:none;border:1px solid var(--bd2);border-radius:10px;padding:9px 12px;color:var(--tx3);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Give up</button>
+<button id="lp-share" type="button" hidden style="background:var(--accent,#58CC02);color:#06230C;border:0;border-radius:10px;padding:9px 14px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit">Share score</button>
+</div>
+<style>.lp-hid{color:transparent!important;text-shadow:0 0 14px rgba(255,255,255,.45);user-select:none}.lp-got .lt-first{color:var(--accent,#58CC02)!important}.lp-shake{animation:lpsh .25s}@keyframes lpsh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}</style>
+<script type="application/json" id="lp-data">${jsonLd ? JSON.stringify(playData).replace(/</g, '\\u003c') : JSON.stringify(playData)}</script>` : ''}
 ${table}
+${playable ? `<script>${LIST_PLAY_JS}</script>` : ''}
 </section>
 ${cfg.intro.length > 1 ? `<section class="sec narrow">
 ${cfg.intro.slice(1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
