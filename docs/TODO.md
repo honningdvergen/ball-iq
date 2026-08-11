@@ -1939,3 +1939,9 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
       (the 131-failure era ended 2026-08-11: env var + 12 stale specs + the
       zombie Test tile — see 832ee3c). Also: Alex may set VITE_SUPABASE_KEY
       as a repo secret and delete the in-repo fallback if preferred.
+
+- [ ] CI e2e residue (post-831ee3c): runner subset shows 35/86 failing on
+      expectNoCrash "console errors" — CI-environment console noise (likely
+      network-dependent services on the runner), NOT the env-var class. Widen
+      the console-error filter for CI or stub network calls; then the strict
+      flip. Local full run remains 405/407.
