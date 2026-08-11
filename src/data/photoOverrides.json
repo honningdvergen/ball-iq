@@ -91,7 +91,19 @@
  "Q27889974": null,
  "Q54055": null,
  "Q2359678": null,
- "Q5213217": null,
+ "Q5213217": {
+  "file": "Dan Burn England v Panama 27 June 26-048.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Bryan Berlin",
+  "when": "2026-06-27",
+  "why": "harvest 2026-08-11: June 2026 England series, 3333x5000, near-frontal — replaces the blurry-zoom null",
+  "box": {
+   "x": 0.3861,
+   "y": 0.1704,
+   "w": 0.2742,
+   "h": 0.1828
+  }
+ },
  "Q335026": null,
  "Q126903": null,
  "Q64005114": null,
