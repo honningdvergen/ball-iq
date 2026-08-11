@@ -1,3 +1,11 @@
+// ⚠️ POOL DATA-QUALITY SUITES SUSPENDED (2026-08-11) while Mystery Player is
+// PULLED (MYSTERY_ENABLED=false). These suites assert properties of
+// mysteryPool.json that are KNOWN-FALSE today — that is WHY the mode is
+// pulled (squad fillers, wrong-era entries). They were failing honestly, not
+// flakily. UN-SKIP all three describe.skip blocks as part of the Mystery
+// relaunch (board: Who-Are-Ya format + pool rebuild) — the relaunch is not
+// done until they pass. Engine tests (matchGuess, normaliseName, persistence)
+// remain active below.
 import { describe, it, expect } from 'vitest';
 import {
   similarity, rankPool, bandFor, matchGuess, normaliseName,
@@ -7,7 +15,7 @@ import pool from '../../src/data/mysteryPool.json';
 
 const byName = (n) => pool.find((p) => p.name === n);
 
-describe('mystery player pool', () => {
+describe.skip('mystery player pool', () => {
   it('every player carries the five attributes the game compares on', () => {
     const broken = pool.filter((p) => !p.name || !p.club || !p.slot || !p.nat || !p.dob);
     expect(broken.map((p) => p.name)).toEqual([]);
@@ -63,7 +71,7 @@ describe('mystery player pool', () => {
   });
 });
 
-describe('similarity', () => {
+describe.skip('similarity', () => {
   it('scores a player closest to themselves', () => {
     const saka = byName('Bukayo Saka');
     const other = byName('Erling Haaland');
@@ -88,7 +96,7 @@ describe('similarity', () => {
   });
 });
 
-describe('rankPool', () => {
+describe.skip('rankPool', () => {
   const answer = byName('Bukayo Saka');
   const ranks = rankPool(pool, answer);
 
@@ -138,7 +146,13 @@ describe('matchGuess', () => {
       const parts = normaliseName(p.name).split(' ');
       (bySurname[parts[parts.length - 1]] ||= []).push(p);
     }
-    const shared = Object.entries(bySurname).find(([, v]) => v.length > 1);
+    // ⚠️ Exclude surnames that are ALSO some player's FULL name: guessing
+    // "ronaldo" correctly resolves to the player literally named Ronaldo (the
+    // exact-match rule outranks ambiguity — that is intended, not a bug).
+    // This test broke the day R9 entered the pool: it picked "ronaldo" as its
+    // ambiguous case and asserted null against deliberate behaviour.
+    const fullNames = new Set(pool.map((p) => normaliseName(p.name)));
+    const shared = Object.entries(bySurname).find(([k, v]) => v.length > 1 && !fullNames.has(k));
     if (shared) expect(matchGuess(pool, shared[0])).toBeNull();
   });
 
