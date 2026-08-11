@@ -234,3 +234,33 @@ and the example needs somewhere to live.
 Send 3–5 at a time, not 30. Follow up **once**, after 7 days, with the finished
 first quiz attached rather than a reminder. One yes is the entire objective —
 this is not a numbers game, it is a single recurring relationship.
+
+---
+
+## Show, don't tell — live examples for the email (Alex's addition, 2026-08-11)
+
+Publishers say yes to things they can PLAY in 30 seconds. Every pitch email
+links three live pieces, no sign-up required on any of them:
+
+1. **Transfer Trail** — https://balliq.app/trail
+   The daily career-ladder game. Reference the share artifact in the email
+   body: "Transfer Trail #9 — Ajax → Real Madrid → Inter → Galatasaray →
+   Nice → Al-Gharafa. It was Wesley Sneijder." One line and the reader has
+   already played it in their head — THAT is the format a club-media weekly
+   quiz wants. (The Sneijder trail is a great example precisely because
+   round 5 fools everyone.)
+2. **Footle** — https://balliq.app/football-wordle/
+   The daily word game with the practice board playable right on the page.
+   The green/yellow grid share is the proven viral artifact of the genre.
+3. **Daily 7 challenge link** — https://balliq.app/c/6.20260811.Alex
+   A LIVE taunt card: the link itself unfurls as "Alex scored 6/7 — beat me"
+   in WhatsApp/Slack/iMessage. Update the date+score before sending so the
+   card is fresh. This demonstrates the co-branded share loop a partner's
+   audience would generate.
+
+Suggested email line: "Everything below is playable in your browser right
+now — the weekly club quiz we'd build for you works exactly like these,
+under your branding, with two links back to us."
+
+⚠️ Send AFTER the current deploy settles (photos + voice pass are in it) so
+what they click matches what we promise.
