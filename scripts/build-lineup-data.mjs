@@ -146,29 +146,66 @@ const isActive = (id, inSquad) => {
 // ── photo resolution: a re-picked photo beats P18, either beats nothing ────
 const TARGET_FACE = 0.42;      // fraction of the card the face occupies
 const CARD_PX = 320;
+// ⚠️ CARD_PX ALONE ASKED FOR 1x AND SHIPPED IT TO EVERY DEVICE. srcW used to
+// be CARD_PX/side, which delivers a crop of exactly 320px — so all 5,463
+// cropped photos were 1x, on retina phones and in the 1080px export alike.
+// Measured across the pool: ZERO players were being served a retina-sharp
+// crop. That is what "high resolution photos for everyone" was failing on.
+//
+// CROP_PX is the width we now want ACROSS THE CROP. The request is capped by
+// what Commons actually holds (scripts/_source-dims.json) — asking for more
+// than the original just returns the original and wastes a redirect — and by
+// MAX_SRC so a tight face on a huge original cannot pull a multi-megabyte
+// file onto a pitch showing eleven of them.
+const CROP_PX = 640;
+// ⚠️ 500 IS A HARD CEILING, NOT A PREFERENCE. The Commons CDN serves only
+// pre-rendered widths — MEASURED on a real file this session: 250 and 500
+// return real JPEGs, 640/800/1000/1500/1800 ALL return HTTP 400. The only
+// path that renders arbitrary widths is Special:FilePath, which redirects
+// 302->301->200 AND drops the CORS header — and a tainted canvas breaks the
+// "Download image" export outright. So asking for more than 500 buys a slow
+// round trip and a broken export, not a sharper face.
+//
+// This is why the crop path CANNOT deliver "high resolution for everyone".
+// A Commons-hosted crop tops out at side*500 px. True retina needs images we
+// host ourselves, which is exactly what the cutout pipeline produces: cut
+// once, store a square PNG, serve it from our own bucket with CORS intact and
+// the head already scaled to a fixed fraction. Cutouts fix resolution, head
+// uniformity and CORS in one move; crop-width tuning fixes none of them.
+const MAX_SRC = 500;
+let SRC_DIMS = {};
+try { SRC_DIMS = JSON.parse(readFileSync('scripts/_source-dims.json', 'utf8')); }
+catch { console.warn('  ! _source-dims.json missing — run scripts/fetch-source-dims.mjs; falling back to uncapped requests'); }
 // Same framing maths as build-player-faces.mjs — ONE crop model everywhere,
 // so the picker, the pitch and the export cannot disagree.
-function repickBox(b) {
+function repickBox(b, id) {
   if (!b || b.h == null) return null;          // early trial rows lacked h
   const side = Math.min(1, b.w / TARGET_FACE);
   const cx = b.x + b.w / 2, cy = b.y + b.h * 0.42;
   const x = Math.max(0, Math.min(1 - side, cx - side / 2));
   const y = Math.max(0, Math.min(1 - side, cy - side / 2));
-  const srcW = Math.min(2400, Math.ceil(CARD_PX / side / 50) * 50);
-  return [+x.toFixed(4), +y.toFixed(4), +side.toFixed(4), srcW];
+  return [+x.toFixed(4), +y.toFixed(4), +side.toFixed(4), srcWidthFor(side, id)];
+}
+// Shared by BOTH box paths. The pre-baked FACES boxes carry their own stale
+// 1x srcW and bypass repickBox entirely — recomputing there too is the
+// difference between fixing 2,129 players and fixing a subset of them.
+function srcWidthFor(side, id) {
+  const want = Math.ceil(CROP_PX / side / 50) * 50;
+  const have = (SRC_DIMS[id] || {}).w || 0;
+  return Math.min(MAX_SRC, have || MAX_SRC, want);
 }
 function photoOf(id) {
   if (id in OVERRIDES) {
     const ov = OVERRIDES[id];
     if (!ov) return null;                        // curated "no acceptable photo"
-    return { f: ov.file, a: ov.author, l: ov.licence, x: repickBox(ov.box) };
+    return { f: ov.file, a: ov.author, l: ov.licence, x: repickBox(ov.box, id) };
   }
   const rp = REPICK[id];
-  if (rp && rp.file) return { f: rp.file, a: rp.author, l: rp.licence, x: repickBox(rp.box) };
+  if (rp && rp.file) return { f: rp.file, a: rp.author, l: rp.licence, x: repickBox(rp.box, id) };
   const ph = PHOTOS[id], file = P18[id];
   if (ph && file) {
     const fc = FACES[id];
-    return { f: file, a: ph.author, l: ph.licence, x: fc ? [fc.x, fc.y, fc.s, fc.srcW] : null };
+    return { f: file, a: ph.author, l: ph.licence, x: fc ? [fc.x, fc.y, fc.s, srcWidthFor(fc.s, id)] : null };
   }
   return null;
 }
