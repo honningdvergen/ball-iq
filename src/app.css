@@ -834,20 +834,30 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .install-banner-ios-step{padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--s2);color:var(--t1);font-weight:600;font-size:10.5px;}
 /* ── TAB BAR ── */
 /* ── TAB BAR — frosted glass, pill indicator ── */
+/* FLOATING PILL (2026-08-12, Alex: "Threads/Instagram look ... is that Swift
+   only?" — it is not, it is this). The bar lifts off the bottom edge instead
+   of being docked to it: the whole element clears the home indicator, so the
+   old inside-padding trick is gone and the height is a plain 60px.
+   ⚠️ THE SAME VALUES MUST BE MIRRORED in the @media(display-mode:standalone)
+   block below, which re-pins .tab-bar with !important — miss it and installed
+   PWAs plus the native app keep the docked bar while only browsers float. */
 .tab-bar{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:420px;
-  background:rgba(12,14,19,0.85);
-  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  border-top:0.5px solid rgba(255,255,255,0.08);
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:max(calc(env(safe-area-inset-bottom, 0px) + 10px), 22px);
+  width:calc(100% - 26px);max-width:400px;
+  background:rgba(14,16,22,0.82);
+  backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+  border:0.5px solid rgba(255,255,255,0.10);
+  border-radius:30px;
+  box-shadow:0 10px 34px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
   display:flex;align-items:stretch;z-index:100;
   padding-top:6px;
-  padding-bottom:max(env(safe-area-inset-bottom,34px),34px);
+  padding-bottom:6px;
   /* Height matches the padding so .tab-item (align-items:stretch) gets a real
      inner box on every device, even when env(safe-area-inset-bottom) resolves
      to 0 (Android, iPad portrait, desktop browsers). Without this parity the
      icons get squeezed and clip at the top of the bar. */
-  height:calc(58px + max(env(safe-area-inset-bottom,34px),34px));
+  height:60px;
 }
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
@@ -871,7 +881,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:var(--accent);}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
-.tab-content{padding-bottom:calc(66px + max(env(safe-area-inset-bottom,34px),34px));background:var(--bg);}
+.tab-content{padding-bottom:calc(78px + max(env(safe-area-inset-bottom,0px),16px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
 
 /* ── DAILY SCREEN ── */
@@ -2596,23 +2606,23 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .play-grid {
     grid-template-columns: 1fr 1fr !important;
   }
+  /* Mirrors the floating pill above. These values must move together. */
   .tab-bar {
     display: flex !important;
     position: fixed !important;
     top: auto !important;
-    bottom: 0 !important;
+    bottom: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 22px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 100% !important;
-    max-width: 420px !important;
-    height: calc(58px + max(env(safe-area-inset-bottom,34px),34px)) !important;
+    width: calc(100% - 26px) !important;
+    max-width: 400px !important;
+    height: 60px !important;
     margin: 0 !important;
     padding-top: 6px !important;
-    padding-bottom: max(env(safe-area-inset-bottom,34px),34px) !important;
-    border-top: 0.5px solid rgba(255,255,255,0.08) !important;
-    border-bottom: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    padding-bottom: 6px !important;
+    border: 0.5px solid rgba(255,255,255,0.10) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30) !important;
   }
   .tab-item.active::before {
     top: 6px !important;
@@ -2624,7 +2634,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      the mobile tab-bar is re-shown above — so restore .tab-content's bottom
      clearance that the >=1024 reflow zeroed (else content hides behind it). */
   .biq-nav { display: none !important; }
-  .tab-content { padding-bottom: calc(66px + max(env(safe-area-inset-bottom,34px),34px)) !important; }
+  .tab-content { padding-bottom: calc(78px + max(env(safe-area-inset-bottom,0px),16px)) !important; }
   .hdr { display: flex !important; }
   .hdr .logo { display: block !important; }
   .ds-eyebrow {
